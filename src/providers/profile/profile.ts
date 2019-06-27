@@ -108,7 +108,7 @@ export class ProfileProvider {
 
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
-    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['name'] = name;
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
   }
 
   private async getWalletGroupName(keyId: string) {
@@ -469,7 +469,7 @@ export class ProfileProvider {
           } else {
             this.logger.warn(`Key Derivation failed for wallet: ${walletId}`);
 
-            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
+            this.persistenceProvider.clearLastAddress(walletId);
           }
 
           this.storeProfileIfDirty();
@@ -1150,11 +1150,11 @@ export class ProfileProvider {
     const walletId = wallet.credentials.walletId;
 
     wallet.removeAllListeners();
-    this.profile.deleteWallet(walletId); // TODO ref delete to hide
+    this.profile.deleteWallet(walletId);
 
-    /* delete this.wallet[walletId]; */ this.persistenceProvider.removeAllWalletData(
-      walletId
-    );
+    delete this.wallet[walletId];
+
+    this.persistenceProvider.removeAllWalletData(walletId);
     this.events.publish('Local/WalletListChange');
 
     return this.storeProfileIfDirty();

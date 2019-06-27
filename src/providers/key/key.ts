@@ -31,7 +31,6 @@ export class KeyProvider {
       this.keys = [];
       keys = keys ? keys : [];
       keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
-      console.log('3##########################');
       this.loadActiveWGKey();
       return Promise.resolve();
     });

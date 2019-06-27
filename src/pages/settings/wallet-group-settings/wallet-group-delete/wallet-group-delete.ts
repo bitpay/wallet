@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // providers
 import { KeyProvider } from '../../../../providers/key/key';
@@ -9,31 +9,27 @@ import { OnGoingProcessProvider } from '../../../../providers/on-going-process/o
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../providers/push-notifications/push-notifications';
-import { WalletTabsChild } from '../../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-group-delete',
   templateUrl: 'wallet-group-delete.html'
 })
-export class WalletGroupDeletePage extends WalletTabsChild {
+export class WalletGroupDeletePage {
   public walletsGroup;
 
   private keyId: string;
   constructor(
-    public profileProvider: ProfileProvider,
-    public navCtrl: NavController,
+    private profileProvider: ProfileProvider,
+    private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    public walletTabsProvider: WalletTabsProvider
-  ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
-  }
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private events: Events
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletDeletePage');
@@ -50,11 +46,11 @@ export class WalletGroupDeletePage extends WalletTabsChild {
       'Are you sure you want to delete all wallets in group?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
-      if (res) this.deleteWallet();
+      if (res) this.deleteWalletGroup();
     });
   }
 
-  public deleteWallet(): void {
+  public deleteWalletGroup(): void {
     this.onGoingProcessProvider.set('deletingWallet');
     const opts = {
       keyId: this.keyId
@@ -63,19 +59,27 @@ export class WalletGroupDeletePage extends WalletTabsChild {
     this.profileProvider
       .deleteWalletGroup(wallets)
       .then(() => {
+        this.onGoingProcessProvider.clear();
+
+        wallets.forEach(wallet => {
+          this.pushNotificationsProvider.unsubscribe(wallet);
+        });
+
         if (this.keyId) {
           const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
 
           if (!keyInUse) {
-            this.keyProvider.removeKey(this.keyId);
+            this.keyProvider.removeKey(this.keyId).then(() => {
+              delete this.profileProvider.walletsGroups[this.keyId];
+              this.keyProvider.loadActiveWGKey().then(() => {
+                this.goHome();
+              });
+            });
           } else {
             this.logger.warn('Key was not removed. Still in use');
+            this.goHome();
           }
         }
-
-        this.onGoingProcessProvider.clear();
-        this.pushNotificationsProvider.unsubscribe(this.wallet);
-        this.close();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -85,5 +89,12 @@ export class WalletGroupDeletePage extends WalletTabsChild {
           err.message || err
         );
       });
+  }
+
+  private goHome() {
+    this.events.publish('Home/reloadStatus');
+    setTimeout(() => {
+      this.navCtrl.popToRoot();
+    }, 1000);
   }
 }

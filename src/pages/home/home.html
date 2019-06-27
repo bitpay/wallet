@@ -112,7 +112,7 @@
       </ion-card-content>
     </ion-card>
 
-    <label-tip type="warn" *ngIf="selectedWalletGroup.needsBackup">
+    <label-tip type="warn" *ngIf="selectedWalletGroup && selectedWalletGroup.needsBackup">
       <span label-tip-title translate>Wallets Needs Backup</span>
       <div label-tip-body>
         <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>

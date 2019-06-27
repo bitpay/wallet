@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -29,7 +29,8 @@ export class WalletDeletePage extends WalletTabsChild {
     private logger: Logger,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    public walletTabsProvider: WalletTabsProvider
+    public walletTabsProvider: WalletTabsProvider,
+    private events: Events
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -57,20 +58,25 @@ export class WalletDeletePage extends WalletTabsChild {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
+        this.onGoingProcessProvider.clear();
+        this.pushNotificationsProvider.unsubscribe(this.wallet);
+
         const keyId: string = this.wallet.credentials.keyId;
         if (keyId) {
           const keyInUse = this.profileProvider.isKeyInUse(keyId);
 
           if (!keyInUse) {
-            this.keyProvider.removeKey(keyId);
+            this.keyProvider.removeKey(keyId).then(() => {
+              delete this.profileProvider.walletsGroups[keyId];
+              this.keyProvider.loadActiveWGKey().then(() => {
+                this.goHome();
+              });
+            });
           } else {
             this.logger.warn('Key was not removed. Still in use');
+            this.goHome();
           }
         }
-
-        this.onGoingProcessProvider.clear();
-        this.pushNotificationsProvider.unsubscribe(this.wallet);
-        this.close();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -80,5 +86,12 @@ export class WalletDeletePage extends WalletTabsChild {
           err.message || err
         );
       });
+  }
+
+  private goHome() {
+    this.events.publish('Home/reloadStatus');
+    setTimeout(() => {
+      this.close();
+    }, 1000);
   }
 }

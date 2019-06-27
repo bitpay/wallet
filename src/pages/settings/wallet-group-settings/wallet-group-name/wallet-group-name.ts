@@ -43,8 +43,8 @@ export class WalletGroupNamePage {
 
   public save(): void {
     this.profileProvider.setWalletGroupName(
-      this.walletNameForm.value.walletName,
-      this.keyId
+      this.keyId,
+      this.walletNameForm.value.walletName
     );
     this.navCtrl.pop();
   }
