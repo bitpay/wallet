@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { Content } from 'ionic-angular';
 
 @Directive({
@@ -8,11 +8,18 @@ export class ScrolledIntoView {
   @Input('scrollArea')
   scrollArea: Content;
 
-  constructor() {}
+  constructor(private elm: ElementRef) {}
 
   ngAfterViewInit() {
-    this.scrollArea.ionScroll.subscribe(event => {
-      console.log('scroll', event.scrollTop);
+    this.scrollArea.ionScroll.subscribe(({ contentHeight, scrollTop }) => {
+      const scanButtonAreaHeight = 70;
+      const { offsetTop, offsetHeight } = this.elm.nativeElement;
+      if (
+        scrollTop + contentHeight - scanButtonAreaHeight >
+        offsetTop + offsetHeight
+      ) {
+        console.log('in view');
+      }
     });
   }
 }
