@@ -1,7 +1,8 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
   <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
     [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
-  <ion-item-sliding #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" [@archiveAnimation]>
+  <ion-item-sliding #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view
+    [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView()" [@archiveAnimation]>
     <button ion-item *ngIf="discountedCard" class="discount-item" (click)="buyCard(discountedCard.name)">
       <img-loader class="logo" [src]="discountedCard.icon"></img-loader>
       <div class="ellipsis">Save {{discountedCard.discounts[0].amount}}% off {{discountedCard.displayName}}</div>
