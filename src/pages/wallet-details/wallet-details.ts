@@ -381,7 +381,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   public openBackup() {
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      keyId: this.wallet.credentials.keyId
     });
   }
 

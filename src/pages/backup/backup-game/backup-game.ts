@@ -38,8 +38,7 @@ export class BackupGamePage {
   public useIdeograms;
   public wallet;
   public keys;
-
-  private walletId: string;
+  public keyId: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -54,8 +53,7 @@ export class BackupGamePage {
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.keyId = this.navParams.data.keyId;
     this.setFlow();
   }
 
@@ -132,9 +130,9 @@ export class BackupGamePage {
 
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
     this.mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
-      this.wallet.credentials.keyId
+      this.keyId
     );
-    this.useIdeograms = this.keys.mnemonic.indexOf('\u3000') >= 0;
+    this.useIdeograms = this.mnemonicWords.indexOf('\u3000') >= 0;
     this.password = '';
     this.customWords = [];
     this.selectComplete = false;
@@ -157,11 +155,9 @@ export class BackupGamePage {
 
       try {
         key = keyClient.fromMnemonic(customSentence, {
-          coin: this.wallet.coin,
-          network: this.wallet.credentials.network,
-          passphrase: password,
-          account: this.wallet.credentials.account,
-          n: this.wallet.credentials.n
+          useLegacyCoinType: false,
+          useLegacyPurpose: false,
+          passphrase: password
         });
       } catch (err) {
         this.showErrorInfoSheet(err);
@@ -173,7 +169,7 @@ export class BackupGamePage {
         return;
       }
     }
-    this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+    this.profileProvider.setBackupGroupFlag(this.keyId);
     this.showSuccessModal();
   }
 

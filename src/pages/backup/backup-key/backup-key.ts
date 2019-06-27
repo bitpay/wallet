@@ -12,7 +12,6 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-backup-key',
@@ -33,7 +32,6 @@ export class BackupKeyPage {
     private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
@@ -45,31 +43,23 @@ export class BackupKeyPage {
   }
 
   ionViewDidEnter() {
-    this.deleted = this.isDeletedSeed();
-
-    if (this.deleted) {
+    if (!this.wallet.canSign) {
       const title = this.translate.instant(
         'Wallet recovery phrase not available'
       );
       let err = this.translate.instant(
         'You can still export it from "Export Wallet" option.'
       );
-      if (this.wallet.coin == 'bch')
-        err =
-          err +
-          ' ' +
-          this.translate.instant(
-            'Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.'
-          );
       this.showErrorInfoSheet(err, title);
       this.navCtrl.pop();
       this.logger.warn('no mnemonics');
       return;
     }
 
-    this.walletProvider
-      .getKeys(this.wallet)
-      .then(keys => {
+    this.keyProvider
+      .handleEncryptedWallet(this.keyId)
+      .then((password: string) => {
+        const keys = this.keyProvider.get(this.keyId, password);
         if (_.isEmpty(keys)) {
           this.logger.warn('Empty keys');
         }
@@ -77,8 +67,7 @@ export class BackupKeyPage {
         this.credentialsEncrypted = false;
         this.keys = keys;
         this.setFlow();
-      })
-      .catch(err => {
+      }).catch(err => {
         if (
           err &&
           err.message != 'FINGERPRINT_CANCELLED' &&
@@ -104,15 +93,11 @@ export class BackupKeyPage {
     errorInfoSheet.present();
   }
 
-  private isDeletedSeed(): boolean {
-    return this.keyProvider.isDeletedSeed(this.wallet.credentials.keyId);
-  }
-
   public goToBackupGame(): void {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
-      keys: this.keys
-      /*  walletId: this.walletId TODO */
+      keys: this.keys,
+      keyId: this.keyId
     });
   }
 
