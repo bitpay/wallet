@@ -330,7 +330,7 @@ export class IncomingDataProvider {
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
-        type: 'ethereumAddress',
+        type: 'EthereumAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
