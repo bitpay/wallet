@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import CWC from 'crypto-wallet-core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
@@ -116,7 +115,9 @@ export class IncomingDataProvider {
   }
 
   private isValidEthereumAddress(data: string): boolean {
-    return !!CWC.validation.validateAddress('ETH', 'livenet', data);
+    return !!this.bwcProvider
+      .getBitcoreEth()
+      .validation.validateAddress('ETH', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
