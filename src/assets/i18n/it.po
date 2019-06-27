@@ -245,6 +245,9 @@ msgstr "Prima di recuperare l'indirizzo del tuo portafoglio, è consigliato che 
 msgid "Below Minimum Amount"
 msgstr "Sotto l'importo minimo"
 
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+msgstr ""
+
 msgid "BitPay Card URI"
 msgstr "Carta BitPay URI"
 
