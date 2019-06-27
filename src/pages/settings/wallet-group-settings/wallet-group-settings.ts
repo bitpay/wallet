@@ -79,6 +79,9 @@ export class WalletGroupSettingsPage {
         .then(() => {
           const key = this.keyProvider.getKey(this.keyId);
           this.keyProvider.addKey(key);
+          this.profileProvider.walletsGroups[
+            this.keyId
+          ].isPrivKeyEncrypted = true;
           this.logger.debug('Key encrypted');
         })
         .catch(err => {
@@ -92,6 +95,9 @@ export class WalletGroupSettingsPage {
         .then(() => {
           const key = this.keyProvider.getKey(this.keyId);
           this.keyProvider.addKey(key);
+          this.profileProvider.walletsGroups[
+            this.keyId
+          ].isPrivKeyEncrypted = false;
           this.logger.debug('Key decrypted');
         })
         .catch(err => {

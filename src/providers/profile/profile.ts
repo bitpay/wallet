@@ -217,14 +217,13 @@ export class ProfileProvider {
     wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
-    wallet.canSign = !(await this.keyProvider.isDeletedSeed(keyId));
+    wallet.canSign = keyId ? true : false;
     wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
     this.updateWalletFromConfig(wallet);
 
     this.wallet[walletId] = wallet;
-    console.log(this.wallet[walletId]);
 
     wallet.removeAllListeners();
 
@@ -274,7 +273,6 @@ export class ProfileProvider {
       }
     });
 
-    console.log('################### INIT WALLET GROUP VIEWMODEL');
     // INIT WALLET GROUP VIEWMODEL
     if (keyId) {
       this.walletsGroups[keyId] = {};
@@ -286,9 +284,7 @@ export class ProfileProvider {
       this.walletsGroups[
         keyId
       ].isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
-      this.walletsGroups[
-        keyId
-      ].canSign = !(await this.keyProvider.isDeletedSeed(keyId));
+      this.walletsGroups[keyId].canSign = true;
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
@@ -300,7 +296,6 @@ export class ProfileProvider {
       this.walletsGroups['read-only'].canSign = false;
     }
 
-    console.log('this.walletsGroups', this.walletsGroups);
     const backedUp = wallet.needsBackup ? false : true;
     let date;
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
