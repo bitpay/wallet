@@ -20,6 +20,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { Coin } from '../../../providers/wallet/wallet';
 
 // Pages
 import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
@@ -579,10 +580,14 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
+  }
+
+  public checkIfCoin() {
+    return !!Coin[this.wallet.coin];
   }
 
   private resetValues(): void {
