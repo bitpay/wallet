@@ -507,9 +507,10 @@ export class ProfileProvider {
       });
   }
 
-  private askToEncryptKey(key): Promise<any> {
+  private askToEncryptKey(key, addingNewAccount?: boolean): Promise<any> {
     if (!key) return Promise.resolve();
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
+    if (addingNewAccount && !key.isPrivKeyEncrypted()) return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
@@ -1167,13 +1168,13 @@ export class ProfileProvider {
     return Promise.all(promises);
   }
 
-  public createWallet(opts): Promise<any> {
+  public createWallet(addingNewAccount: boolean, opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._createWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key).then(() => {
+        return this.askToEncryptKey(data.key, addingNewAccount).then(() => {
           this.onGoingProcessProvider.resume();
           return this.addAndBindWalletClient(data.walletClient, data.key, {
             bwsurl: opts.bwsurl
@@ -1183,13 +1184,13 @@ export class ProfileProvider {
     });
   }
 
-  public joinWallet(opts): Promise<any> {
+  public joinWallet(addingNewAccount: boolean, opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._joinWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key).then(() => {
+        return this.askToEncryptKey(data.key, addingNewAccount).then(() => {
           this.onGoingProcessProvider.resume();
           return this.addAndBindWalletClient(data.walletClient, data.key, {
             bwsurl: opts.bwsurl

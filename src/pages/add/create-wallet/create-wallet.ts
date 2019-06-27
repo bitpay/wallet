@@ -273,7 +273,7 @@ export class CreateWalletPage implements OnInit {
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createWallet(opts)
+      .createWallet(this.addingNewAccount, opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);

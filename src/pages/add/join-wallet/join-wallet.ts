@@ -265,7 +265,7 @@ export class JoinWalletPage {
     this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider
-      .joinWallet(opts)
+      .joinWallet(this.addingNewAccount, opts)
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
