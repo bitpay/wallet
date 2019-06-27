@@ -9,6 +9,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -19,6 +20,7 @@ import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
+import { WalletDuplicatePage } from './wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
 import { WalletServiceUrlPage } from './wallet-settings-advanced/wallet-service-url/wallet-service-url';
@@ -29,6 +31,7 @@ import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-
   templateUrl: 'wallet-settings.html'
 })
 export class WalletSettingsPage {
+  public showDuplicateWallet: boolean;
   public wallet;
   public canSign: boolean;
   public needsBackup: boolean;
@@ -53,7 +56,8 @@ export class WalletSettingsPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.deleted = false;
   }
@@ -83,6 +87,9 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
+      this.showDuplicateWallet = res === 'enabled' ? true : false;
+    });
   }
 
   public hiddenBalanceChange(): void {
@@ -221,6 +228,11 @@ export class WalletSettingsPage {
   }
   public openTransactionHistory(): void {
     this.navCtrl.push(WalletTransactionHistoryPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openDuplicateWallet(): void {
+    this.navCtrl.push(WalletDuplicatePage, {
       walletId: this.wallet.credentials.walletId
     });
   }
