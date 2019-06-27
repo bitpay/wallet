@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import CWC from 'crypto-wallet-core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
@@ -112,6 +113,10 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
     );
+  }
+
+  private isValidEthereumAddress(data: string): boolean {
+    return !!CWC.validation.validateAddress('ETH', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -316,6 +321,25 @@ export class IncomingDataProvider {
     }
   }
 
+  private handlePlainEthereumAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Ethereum plain address');
+    const coin = Coin.ETH;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'ethereumAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
@@ -440,6 +464,11 @@ export class IncomingDataProvider {
       this.handlePlainBitcoinCashAddress(data, redirParams);
       return true;
 
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      this.handlePlainEthereumAddress(data, redirParams);
+      return true;
+
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       this.goToCoinbase(data);
@@ -547,6 +576,14 @@ export class IncomingDataProvider {
         data,
         type: 'BitcoinCashAddress',
         title: this.translate.instant('Bitcoin Cash Address')
+      };
+
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      return {
+        data,
+        type: 'EthereumAddress',
+        title: this.translate.instant('Ethereum Address')
       };
 
       // Coinbase
