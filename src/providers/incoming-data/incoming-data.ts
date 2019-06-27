@@ -117,7 +117,7 @@ export class IncomingDataProvider {
   private isValidEthereumAddress(data: string): boolean {
     return !!this.bwcProvider
       .getCore()
-      .validation.validateAddress('ETH', 'livenet', data);
+      .Validation.validateAddress('ETH', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
