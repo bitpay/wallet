@@ -1,8 +1,7 @@
 <ion-header>
   <ion-navbar class="home-header">
-    <ion-buttons left class="add-button">
-      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]"
-        [ngClass]="{copay: appProvider.info.name === 'copay'}">
+    <ion-buttons left class="add-button" *ngIf="selectedWalletGroup && !selectedWalletGroup.isDeletedSeed">
+      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]" [ngClass]="{copay: appProvider.info.name === 'copay'}">
         <img src="assets/img/plus.svg" />
       </button>
     </ion-buttons>
@@ -47,8 +46,7 @@
           </button>
         </div>
       </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData"
-        [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
       </page-clipboard-card>
     </div>
 
@@ -61,8 +59,7 @@
         </ion-row>
       </ion-card-header>
       <ion-card-content class="server-message-content">
-        <div class="server-message-icon" *ngIf="serverMessages[0].category"
-          [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
+        <div class="server-message-icon" *ngIf="serverMessages[0].category" [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
           <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessages[0].category == 'critical'" />
           <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessages[0].category == 'info'" />
         </div>
@@ -76,8 +73,7 @@
         <div class="server-message-body" *ngIf="serverMessages[0].body">
           {{ serverMessages[0].body }}
         </div>
-        <div class="server-message-button" *ngIf="serverMessages[0].link"
-          (click)="openServerMessageLink(serverMessages[0].link)">
+        <div class="server-message-button" *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
           <span *ngIf="serverMessages[0].linkText">{{
             serverMessages[0].linkText
           }}</span>
@@ -131,16 +127,14 @@
           {{'Done' | translate}}
         </span>
       </div>
-      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)"
-        *ngIf="showReorder">
+      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)" *ngIf="showReorder">
         <ion-item-sliding *ngFor="let wallet of wallets" #slidingItem>
           <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
             <wallet-item-content [wallet]="wallet"></wallet-item-content>
           </button>
         </ion-item-sliding>
       </ion-list>
-      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)"
-        *ngIf="!showReorder">
+      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)" *ngIf="!showReorder">
         <div *ngFor="let wallet of wallets">
           <ion-item-sliding #slidingItem>
             <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
@@ -153,8 +147,7 @@
               </button>
             </ion-item-options>
             <ion-item-options side="right">
-              <button class="action action--receive" ion-button
-                (click)="onWalletAction(wallet, 'receive', slidingItem)">
+              <button class="action action--receive" ion-button (click)="onWalletAction(wallet, 'receive', slidingItem)">
                 <div class="action__icon"><img src="assets/img/receive.svg" /></div>
                 <div class="action__text">Receive</div>
               </button>

@@ -192,19 +192,6 @@ export class WalletSettingsPage {
     });
   }
 
-  public openBackupSettings(): void {
-    if (this.derivationStrategy == 'BIP45') {
-      this.navCtrl.push(WalletExportPage, {
-        walletId: this.wallet.credentials.walletId,
-        showNoPrivKeyOpt: true
-      });
-    } else {
-      this.navCtrl.push(BackupKeyPage, {
-        walletId: this.wallet.credentials.walletId
-      });
-    }
-  }
-
   public openWalletInformation(): void {
     this.navCtrl.push(WalletInformationPage, {
       walletId: this.wallet.credentials.walletId

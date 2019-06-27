@@ -267,7 +267,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => {});
+        wallet.openWallet(() => { });
       }
     );
     this.events.subscribe('Local/ConfigUpdate', opts => {
@@ -293,6 +293,9 @@ export class ProfileProvider {
       ].isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
       this.walletsGroups[keyId].canSign = true;
       backedUp = this.walletsGroups[keyId].needsBackup ? false : true;
+      this.walletsGroups[keyId].isDeletedSeed = this.keyProvider.isDeletedSeed(
+        keyId
+      );
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
@@ -303,13 +306,14 @@ export class ProfileProvider {
       this.walletsGroups['read-only'].isPrivKeyEncrypted = false;
       this.walletsGroups['read-only'].canSign = false;
       backedUp = true;
+      this.walletsGroups['read-only'].isDeletedSeed = true;
     }
 
     let date;
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-        date ? date : ''
+      date ? date : ''
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
     return Promise.resolve(true);
@@ -661,8 +665,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-              wallet.credentials.network,
-              JSON.stringify(mergeAddressBook)
+            wallet.credentials.network,
+            JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();

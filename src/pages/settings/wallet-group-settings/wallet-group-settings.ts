@@ -4,14 +4,16 @@ import { NavController, NavParams } from 'ionic-angular';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
-import { KeyProvider } from '../../../providers/key/key';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
+import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from './wallet-group-name/wallet-group-name';
@@ -43,7 +45,8 @@ export class WalletGroupSettingsPage {
     private navParams: NavParams,
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {}
 
   async ionViewDidLoad() {
@@ -122,9 +125,25 @@ export class WalletGroupSettingsPage {
   }
 
   public openBackupSettings(): void {
-    this.navCtrl.push(BackupKeyPage, {
-      keyId: this.navParams.data.keyId
-    });
+    const opts = {
+      keyId: this.keyId
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+
+    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      wallets[0].credentials.rootPath
+    );
+
+    if (derivationStrategy == 'BIP45') {
+      this.navCtrl.push(WalletExportPage, {
+        walletId: wallets[0].credentials.walletId,
+        showNoPrivKeyOpt: true
+      });
+    } else {
+      this.navCtrl.push(BackupKeyPage, {
+        keyId: this.navParams.data.keyId
+      });
+    }
   }
 
   public openWalletGroupName(): void {
