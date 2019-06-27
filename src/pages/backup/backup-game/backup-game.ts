@@ -36,7 +36,6 @@ export class BackupGamePage {
   public selectComplete: boolean;
   public mnemonicHasPassphrase;
   public useIdeograms;
-  public wallet;
   public keys;
   public keyId: string;
 

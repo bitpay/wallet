@@ -18,11 +18,10 @@ import { ProfileProvider } from '../../../providers/profile/profile';
   templateUrl: 'backup-key.html'
 })
 export class BackupKeyPage {
-  public deleted: boolean;
   public mnemonicWords: string[];
   public wordToShow: number;
   public credentialsEncrypted: boolean;
-  public wallet;
+  public walletGroup;
   public keys;
 
   private keyId: string;
@@ -38,12 +37,12 @@ export class BackupKeyPage {
     private keyProvider: KeyProvider
   ) {
     this.keyId = this.navParams.data.keyId;
-    this.wallet = this.profileProvider.getWalletGroup(this.keyId);
-    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted;
+    this.walletGroup = this.profileProvider.getWalletGroup(this.keyId);
+    this.credentialsEncrypted = this.walletGroup.isPrivKeyEncrypted;
   }
 
   ionViewDidEnter() {
-    if (!this.wallet.canSign) {
+    if (!this.walletGroup.canSign) {
       const title = this.translate.instant(
         'Wallet recovery phrase not available'
       );
