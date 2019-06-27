@@ -208,7 +208,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => { });
+        wallet.openWallet(() => {});
       }
     );
     this.events.subscribe('Local/ConfigUpdate', opts => {
@@ -225,7 +225,7 @@ export class ProfileProvider {
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-      date ? date : ''
+        date ? date : ''
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
 
@@ -389,7 +389,7 @@ export class ProfileProvider {
           } else {
             this.logger.warn(`Key Derivation failed for wallet: ${walletId}`);
 
-            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
+            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
           }
 
           this.storeProfileIfDirty();
@@ -576,8 +576,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-            wallet.credentials.network,
-            JSON.stringify(mergeAddressBook)
+              wallet.credentials.network,
+              JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();

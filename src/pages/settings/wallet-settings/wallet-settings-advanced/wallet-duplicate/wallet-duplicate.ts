@@ -16,13 +16,9 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
-import {
-  Coin,
-  WalletProvider
-} from '../../../../../providers/wallet/wallet';
+import { Coin, WalletProvider } from '../../../../../providers/wallet/wallet';
 import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
-
 
 @Component({
   selector: 'page-wallet-duplicate',
@@ -56,7 +52,6 @@ export class WalletDuplicatePage extends WalletTabsChild {
     public profileProvider: ProfileProvider,
     public walletTabsProvider: WalletTabsProvider,
     public derivationPathHelperProvider: DerivationPathHelperProvider
-
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.defaults = this.configProvider.getDefaults();
@@ -68,7 +63,11 @@ export class WalletDuplicatePage extends WalletTabsChild {
       this.wallet.credentials.rootPath
     );
     this.comment = this.replaceParametersProvider.replace(
-      this.translate.instant("To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."), { appName });
+      this.translate.instant(
+        'To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe.'
+      ),
+      { appName }
+    );
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Filter out already duplicated wallets
@@ -80,17 +79,27 @@ export class WalletDuplicatePage extends WalletTabsChild {
 
     if (xPubKeyIndex[this.wallet.credentials.xPubKey]) {
       this.nonEligibleWallet = this.wallet;
-      this.nonEligibleWallet.excludeReason = this.translate.instant('Already duplicated');
+      this.nonEligibleWallet.excludeReason = this.translate.instant(
+        'Already duplicated'
+      );
     } else if (derivationStrategy != 'BIP44') {
       this.nonEligibleWallet = this.wallet;
-      this.nonEligibleWallet.excludeReason = this.translate.instant('Non BIP44 wallet');
+      this.nonEligibleWallet.excludeReason = this.translate.instant(
+        'Non BIP44 wallet'
+      );
     } else if (!this.wallet.canSign) {
       this.nonEligibleWallet = this.wallet;
-      this.nonEligibleWallet.excludeReason = this.translate.instant('Read only wallet');
+      this.nonEligibleWallet.excludeReason = this.translate.instant(
+        'Read only wallet'
+      );
     } else if (this.wallet.needsBackup) {
       this.nonEligibleWallet = this.wallet;
-      this.nonEligibleWallet.excludeReason = this.translate.instant('Wallet Needs Backup');
-      this.nonEligibleWallet.body = this.translate.instant(`Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.`);
+      this.nonEligibleWallet.excludeReason = this.translate.instant(
+        'Wallet Needs Backup'
+      );
+      this.nonEligibleWallet.body = this.translate.instant(
+        `Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.`
+      );
     } else {
       this.availableWallet = this.wallet;
     }
@@ -123,7 +132,9 @@ export class WalletDuplicatePage extends WalletTabsChild {
   }
 
   public duplicate(wallet) {
-    this.logger.info(`Duplicating wallet for BCH: ${wallet.id} - ${wallet.name}`);
+    this.logger.info(
+      `Duplicating wallet for BCH: ${wallet.id} - ${wallet.name}`
+    );
 
     let opts: any = {
       name: wallet.name + '[BCH]',
@@ -187,45 +198,47 @@ export class WalletDuplicatePage extends WalletTabsChild {
     if (!isNew) return Promise.resolve();
     if (wallet.n == 1) return Promise.resolve();
 
-    this.logger.debug(`Adding copayers for BCH wallet config: ${wallet.m} - ${wallet.n}`);
+    this.logger.debug(
+      `Adding copayers for BCH wallet config: ${wallet.m} - ${wallet.n}`
+    );
 
-    return this.walletProvider.copyCopayers(wallet, newWallet)
+    return this.walletProvider.copyCopayers(wallet, newWallet);
   }
 
-  private importOrCreate(wallet, keys, opts): Promise<{
+  private importOrCreate(
+    wallet,
+    keys,
+    opts
+  ): Promise<{
     walletBch: any;
     isNew?: boolean;
   }> {
-    return this.walletProvider
-      .fetchStatus(wallet, {})
-      .then(status => {
-        opts.singleAddress = status.wallet.singleAddress;
-        // first try to import
-        return this.profileProvider
-          .importExtendedPrivateKey(keys.xPrivKey, opts)
-          .then(newWallet => {
-            let walletBch;
+    return this.walletProvider.fetchStatus(wallet, {}).then(status => {
+      opts.singleAddress = status.wallet.singleAddress;
+      // first try to import
+      return this.profileProvider
+        .importExtendedPrivateKey(keys.xPrivKey, opts)
+        .then(newWallet => {
+          let walletBch;
 
-            newWallet.forEach(wallet => {
-              if (wallet.coin === 'bch') {
-                walletBch = wallet;
-              }
-            });
-
-            if (walletBch) {
-              return Promise.resolve({ walletBch });
-            } else {
-              opts.extendedPrivateKey = keys.xPrivKey;
-              opts.useLegacyCoinType = true;
-              return this.profileProvider
-                .createWallet(opts)
-                .then(walletBch => {
-                  return Promise.resolve({ walletBch, isNew: true });
-                })
+          newWallet.forEach(wallet => {
+            if (wallet.coin === 'bch') {
+              walletBch = wallet;
             }
-          })
-      })
-  };
+          });
+
+          if (walletBch) {
+            return Promise.resolve({ walletBch });
+          } else {
+            opts.extendedPrivateKey = keys.xPrivKey;
+            opts.useLegacyCoinType = true;
+            return this.profileProvider.createWallet(opts).then(walletBch => {
+              return Promise.resolve({ walletBch, isNew: true });
+            });
+          }
+        });
+    });
+  }
 
   public openHelpExternalLink(): void {
     let url =
