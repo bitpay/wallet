@@ -103,6 +103,10 @@ export class HomeGiftCards implements OnInit {
       : this.showArchiveSheet(event);
   }
 
+  public onPromoScrollIntoView() {
+    console.log('scrolled into view');
+  }
+
   private async viewGiftCards(cardName: string, cards: GiftCard[]) {
     const activeCards = cards.filter(c => !c.archived);
     activeCards.length === 1
