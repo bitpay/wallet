@@ -91,6 +91,9 @@ export class PaperWalletPage {
       })[0],
       bch: _.filter(this.wallets, w => {
         return w.coin == 'bch';
+      })[0],
+      eth: _.filter(this.wallets, w => {
+        return w.coin == 'eth';
       })[0]
     };
   }
@@ -295,9 +298,9 @@ export class PaperWalletPage {
         this.onGoingProcessProvider.clear();
         this.logger.debug(
           'Success sweep. Destination address:' +
-            data.destinationAddress +
-            ' - transaction id: ' +
-            data.txid
+          data.destinationAddress +
+          ' - transaction id: ' +
+          data.txid
         );
         this.openFinishModal();
       })
