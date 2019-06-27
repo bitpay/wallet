@@ -162,8 +162,9 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.BACKUP(walletId));
   }
 
-  setBackupGroupFlag(keyId: string) {
-    return this.storage.set(Keys.BACKUP_GROUP(keyId), Date.now());
+  setBackupGroupFlag(keyId: string, timestamp?) {
+    timestamp = timestamp || Date.now();
+    return this.storage.set(Keys.BACKUP_GROUP(keyId), timestamp);
   }
 
   getBackupGroupFlag(keyId: string) {

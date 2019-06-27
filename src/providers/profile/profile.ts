@@ -122,9 +122,9 @@ export class ProfileProvider {
     this.wallet[walletId].needsBackup = false;
   }
 
-  public setBackupGroupFlag(keyId: string): void {
+  public setBackupGroupFlag(keyId: string, timestamp?): void {
     // TODO migrate backup flag
-    this.persistenceProvider.setBackupGroupFlag(keyId);
+    this.persistenceProvider.setBackupGroupFlag(keyId, timestamp);
     this.logger.debug('Backup flag stored');
     this.walletsGroups[keyId].needsBackup = false;
   }
@@ -161,15 +161,24 @@ export class ProfileProvider {
       });
   }
 
-  private getBackupGroupInfo(keyId): Promise<any> {
+  private getBackupGroupInfo(keyId, wallet?): Promise<any> {
     if (!this.requiresGroupBackup(keyId)) {
       return Promise.resolve({ needsBackup: false });
     }
     return this.persistenceProvider
       .getBackupGroupFlag(keyId)
-      .then(timestamp => {
+      .then(async timestamp => {
         if (timestamp) {
           return Promise.resolve({ needsBackup: false, timestamp });
+        } else {
+          const backupInfo = await this.getBackupInfo(wallet);
+          if (!backupInfo.needsBackup) {
+            this.setBackupGroupFlag(keyId, backupInfo.timestamp);
+            return Promise.resolve({
+              needsBackup: false,
+              timestamp: backupInfo.timestamp
+            });
+          }
         }
         return Promise.resolve({ needsBackup: true });
       })
@@ -212,9 +221,6 @@ export class ProfileProvider {
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
     wallet.cachedStatus = {};
-    const backupInfo = await this.getBackupInfo(wallet);
-    wallet.backupTimestamp = backupInfo.timestamp ? backupInfo.timestamp : '';
-    wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
     wallet.canSign = keyId ? true : false;
@@ -273,10 +279,11 @@ export class ProfileProvider {
       }
     });
 
+    let backedUp;
     // INIT WALLET GROUP VIEWMODEL
     if (keyId) {
       this.walletsGroups[keyId] = {};
-      const groupBackupInfo = await this.getBackupGroupInfo(keyId);
+      const groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
       this.walletsGroups[keyId].needsBackup = groupBackupInfo.needsBackup;
       this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
       this.walletsGroups[keyId].name =
@@ -285,6 +292,7 @@ export class ProfileProvider {
         keyId
       ].isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
       this.walletsGroups[keyId].canSign = true;
+      backedUp = this.walletsGroups[keyId].needsBackup ? false : true;
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
@@ -294,9 +302,9 @@ export class ProfileProvider {
       this.walletsGroups['read-only'].name = 'Read Only Wallets';
       this.walletsGroups['read-only'].isPrivKeyEncrypted = false;
       this.walletsGroups['read-only'].canSign = false;
+      backedUp = true;
     }
 
-    const backedUp = wallet.needsBackup ? false : true;
     let date;
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
