@@ -5,8 +5,8 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ItemSliding, NavController } from 'ionic-angular';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Content, ItemSliding, NavController } from 'ionic-angular';
 import { timer } from 'rxjs/observable/timer';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -59,6 +59,9 @@ export class HomeGiftCards implements OnInit {
   public discountedCard: CardConfig;
   public hideDiscount: boolean = false;
   public disableArchiveAnimation: boolean = true; // Removes flicker on iOS when returning to home tab
+
+  @Input('scrollArea')
+  scrollArea: Content;
 
   @ViewChild(ItemSliding)
   slidingItem: ItemSliding;
