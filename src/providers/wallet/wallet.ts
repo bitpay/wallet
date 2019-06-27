@@ -1655,4 +1655,35 @@ export class WalletProvider {
       return 'bitcoin';
     }
   }
+
+  public copyCopayers(wallet: any, newWallet: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let walletPrivKey = this.bwcProvider
+        .getBitcore()
+        .PrivateKey.fromString(wallet.credentials.walletPrivKey);
+      let copayer = 1;
+      let i = 0;
+
+      _.each(wallet.credentials.publicKeyRing, item => {
+        let name = item.copayerName || 'copayer ' + copayer++;
+        newWallet._doJoinWallet(
+          newWallet.credentials.walletId,
+          walletPrivKey,
+          item.xPubKey,
+          item.requestPubKey,
+          name,
+          {
+            coin: newWallet.credentials.coin
+          },
+          (err: any) => {
+            // Ignore error is copayer already in wallet
+            if (err && !(err instanceof this.errors.COPAYER_IN_WALLET))
+              return reject(err);
+            if (++i == wallet.credentials.publicKeyRing.length)
+              return resolve();
+          }
+        );
+      });
+    });
+  }
 }

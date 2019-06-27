@@ -383,7 +383,7 @@ export class HomePage {
   }
 
   private checkPriceChart() {
-    this.persistenceProvider.getPriceChartFlag().then(res => {
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
       this.showPriceChart = res === 'enabled' ? true : false;
       this.updateCharts();
     });
