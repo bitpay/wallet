@@ -587,7 +587,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public checkIfCoin() {
-    return !!Coin[this.wallet.coin];
+    return !!Coin[this.unit];
   }
 
   private resetValues(): void {
