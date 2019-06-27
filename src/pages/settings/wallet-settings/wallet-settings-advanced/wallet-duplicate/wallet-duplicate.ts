@@ -232,9 +232,12 @@ export class WalletDuplicatePage extends WalletTabsChild {
           } else {
             opts.extendedPrivateKey = keys.xPrivKey;
             opts.useLegacyCoinType = true;
-            return this.profileProvider.createWallet(opts).then(walletBch => {
-              return Promise.resolve({ walletBch, isNew: true });
-            });
+            const addingNewAccount = false;
+            return this.profileProvider
+              .createWallet(addingNewAccount, opts)
+              .then(walletBch => {
+                return Promise.resolve({ walletBch, isNew: true });
+              });
           }
         });
     });
