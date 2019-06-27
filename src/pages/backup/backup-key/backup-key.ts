@@ -66,7 +66,8 @@ export class BackupKeyPage {
         this.credentialsEncrypted = false;
         this.keys = keys;
         this.setFlow();
-      }).catch(err => {
+      })
+      .catch(err => {
         if (
           err &&
           err.message != 'FINGERPRINT_CANCELLED' &&

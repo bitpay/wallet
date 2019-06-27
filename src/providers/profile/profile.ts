@@ -1155,12 +1155,15 @@ export class ProfileProvider {
     return this.storeProfileIfDirty();
   }
 
-  public deleteWalletGroup(wallets): Promise<any> {
+  public deleteWalletGroup(keyId: string, wallets): Promise<any> {
     let promises = [];
     wallets.forEach(wallet => {
       promises.push(this.deleteWalletClient(wallet));
     });
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => {
+      this.persistenceProvider.removeAllWalletGroupData(keyId);
+      return Promise.resolve();
+    });
   }
 
   public createWallet(addingNewAccount: boolean, opts): Promise<any> {
@@ -1325,9 +1328,5 @@ export class ProfileProvider {
     );
 
     return keyIdIndex >= 0;
-  }
-
-  public storeWalletGroup(walletGroup) {
-    return this.persistenceProvider.storeWalletGroup(walletGroup);
   }
 }

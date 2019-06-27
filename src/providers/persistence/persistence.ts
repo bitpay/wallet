@@ -340,6 +340,12 @@ export class PersistenceProvider {
     this.removeWalletOrder(walletId);
   }
 
+  removeAllWalletGroupData(keyId: string) {
+    this.removeWalletGroupName(keyId);
+    this.clearBackupGroupFlag(keyId);
+    this.removeWalletGroupOrder(keyId);
+  }
+
   getActiveGiftCards(network: Network) {
     return this.storage.get(Keys.ACTIVE_GIFT_CARDS(network));
   }
