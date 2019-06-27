@@ -40,21 +40,5 @@
       </div>
     </ion-list>
   </div>
-
-  <div *ngIf="walletsEth && walletsEth[0]">
-    <ion-item-divider>
-      <div class="title">
-        <span translate>Ethereum Wallets</span>
-      </div>
-    </ion-item-divider>
-
-    <ion-list>
-      <div>
-        <button ion-item detail-none *ngFor="let wallet of walletsEth" (click)="optionClicked(wallet)">
-          <wallet-item-content [wallet]="wallet"></wallet-item-content>
-        </button>
-      </div>
-    </ion-list>
-  </div>
   <ion-item-divider></ion-item-divider>
 </action-sheet>
