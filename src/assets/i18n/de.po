@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(mögliche Doppelausgabe)"
@@ -94,9 +94,6 @@ msgstr "Zu Kontakten hinzufügen"
 
 msgid "Add funds"
 msgstr "Guthaben aufladen"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr ""
@@ -617,6 +614,9 @@ msgstr ""
 msgid "Disabled"
 msgstr "Deaktiviert"
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr "Privaten Schlüssel nicht zur Sicherung hinzufügen"
 
@@ -940,6 +940,9 @@ msgstr "Guthaben Verstecken"
 
 msgid "Hide advanced options"
 msgstr "Erweiterte Optionen ausblenden"
+
+msgid "Hide discount?"
+msgstr ""
 
 msgid "Home"
 msgstr "Start"
@@ -1847,9 +1850,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "Erweiterte Optionen anzeigen"
 
@@ -2300,6 +2300,9 @@ msgstr "Wallet Eingänge"
 msgid "Wallet Name"
 msgstr "Wallet-Name"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2413,6 +2416,9 @@ msgstr "Auszahlung"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
 msgstr "Ohne Verschlüsselung könnte ein Dieb oder ein anderes Programm auf diesem Gerät auf ihr Guthaben zugreifen können."
+
+msgid "Would you like to hide this gift card discount?"
+msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
 msgstr "Möchten Sie diese Geldbörse mit einem Passwort schützen?"
