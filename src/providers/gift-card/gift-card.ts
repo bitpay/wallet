@@ -533,7 +533,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
     if (this.getNetwork() !== Network.livenet) return;
-    this.analyticsProvider.trackEvent(eventName, eventParams);
+    this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
   getDiscountEventParams(discountedCard: CardConfig, context?: string) {
@@ -575,7 +575,7 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova || true ? cardConfig.discounts : undefined
+    discounts: isCordova ? cardConfig.discounts : undefined
   };
 }
 
