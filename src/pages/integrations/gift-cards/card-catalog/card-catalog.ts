@@ -4,7 +4,11 @@ import { NavController } from 'ionic-angular';
 import { BuyCardPage } from '../buy-card/buy-card';
 
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
+import {
+  ActionSheetProvider,
+  AnalyticsProvider,
+  PlatformProvider
+} from '../../../../providers';
 import {
   GiftCardProvider,
   hasVisibleDiscount
@@ -29,6 +33,7 @@ export class CardCatalogPage extends WideHeaderPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider,
     public giftCardProvider: GiftCardProvider,
     platormProvider: PlatformProvider,
     private navCtrl: NavController,
@@ -91,6 +96,15 @@ export class CardCatalogPage extends WideHeaderPage {
 
   buyCard(cardConfig: CardConfig) {
     this.navCtrl.push(BuyCardPage, { cardConfig });
+    if (this.hasPercentageDiscount(cardConfig)) {
+      this.analyticsProvider.trackEvent(
+        'clickedGiftCardDiscount',
+        this.analyticsProvider.getDiscountEventParams(
+          cardConfig,
+          'Gift Card List'
+        )
+      );
+    }
   }
 
   hasPercentageDiscount(cardConfig: CardConfig) {

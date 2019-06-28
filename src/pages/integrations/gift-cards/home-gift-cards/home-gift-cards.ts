@@ -94,9 +94,22 @@ export class HomeGiftCards implements OnInit {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public async buyCard(cardName: string) {
+  public async buyCard(cardName: string, discountContext?: string) {
     const cardConfig = await this.giftCardProvider.getCardConfig(cardName);
     this.navCtrl.push(BuyCardPage, { cardConfig });
+    if (this.discountedCard && this.discountedCard.name === cardName) {
+      this.logDiscountClick(discountContext);
+    }
+  }
+
+  public logDiscountClick(context: string) {
+    this.analyticsProvider.trackEvent(
+      'clickedGiftCardDiscount',
+      this.analyticsProvider.getDiscountEventParams(
+        this.discountedCard,
+        context
+      )
+    );
   }
 
   public onGiftCardAction(event, purchasedCards: GiftCard[]) {
@@ -105,11 +118,14 @@ export class HomeGiftCards implements OnInit {
       : this.showArchiveSheet(event);
   }
 
-  public onPromoScrollIntoView() {
-    this.analyticsProvider.trackEvent('viewedGiftCardDiscount', {
-      brand: this.discountedCard.name,
-      percentage: this.discountedCard.discounts[0].amount
-    });
+  public onPromoScrollIntoView(context: string) {
+    this.analyticsProvider.trackEvent(
+      'presentedWithGiftCardDiscount',
+      this.analyticsProvider.getDiscountEventParams(
+        this.discountedCard,
+        context
+      )
+    );
   }
 
   private async viewGiftCards(cardName: string, cards: GiftCard[]) {
