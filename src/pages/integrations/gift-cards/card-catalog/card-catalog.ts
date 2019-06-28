@@ -97,9 +97,9 @@ export class CardCatalogPage extends WideHeaderPage {
   buyCard(cardConfig: CardConfig) {
     this.navCtrl.push(BuyCardPage, { cardConfig });
     if (this.hasPercentageDiscount(cardConfig)) {
-      this.analyticsProvider.trackEvent(
+      this.giftCardProvider.logEvent(
         'clickedGiftCardDiscount',
-        this.analyticsProvider.getDiscountEventParams(
+        this.giftCardProvider.getDiscountEventParams(
           cardConfig,
           'Gift Card List'
         )
