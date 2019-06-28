@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FCM } from '@ionic-native/fcm';
+import { FCMNG } from 'fcm-ng';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
@@ -29,7 +29,7 @@ export class PushNotificationsProvider {
     public logger: Logger,
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
-    private FCMPlugin: FCM,
+    private FCMPlugin: FCMNG,
     private events: Events
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
