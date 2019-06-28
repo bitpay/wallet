@@ -8,12 +8,17 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { mergeMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
+import { AnalyticsProvider } from '../analytics/analytics';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
-import { GiftCardMap, PersistenceProvider } from '../persistence/persistence';
+import {
+  GiftCardMap,
+  Network,
+  PersistenceProvider
+} from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { TimeProvider } from '../time/time';
 import {
@@ -39,6 +44,7 @@ export class GiftCardProvider extends InvoiceProvider {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAQAAAA38nkBAAAADklEQVR42mP8/4Vx8CEAn9BhqacD+5kAAAAASUVORK5CYII=';
 
   constructor(
+    private analyticsProvider: AnalyticsProvider,
     private configProvider: ConfigProvider,
     private imageLoader: ImageLoader,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -525,6 +531,21 @@ export class GiftCardProvider extends InvoiceProvider {
     await promiseSerial(fetchBatches);
   }
 
+  logEvent(eventName: string, eventParams: { [key: string]: any }) {
+    if (this.getNetwork() !== Network.livenet) return;
+    this.analyticsProvider.trackEvent(eventName, eventParams);
+  }
+
+  getDiscountEventParams(discountedCard: CardConfig, context?: string) {
+    const discount = discountedCard.discounts[0];
+    return {
+      brand: discountedCard.name,
+      code: discount.code,
+      context,
+      percentage: discount.amount
+    };
+  }
+
   public register() {
     this.homeIntegrationsProvider.register({
       name: 'giftcards',
@@ -554,7 +575,7 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova ? cardConfig.discounts : undefined
+    discounts: isCordova || true ? cardConfig.discounts : undefined
   };
 }
 

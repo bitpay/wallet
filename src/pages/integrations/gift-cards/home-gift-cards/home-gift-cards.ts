@@ -103,12 +103,9 @@ export class HomeGiftCards implements OnInit {
   }
 
   public logDiscountClick(context: string) {
-    this.analyticsProvider.trackEvent(
+    this.giftCardProvider.logEvent(
       'clickedGiftCardDiscount',
-      this.analyticsProvider.getDiscountEventParams(
-        this.discountedCard,
-        context
-      )
+      this.giftCardProvider.getDiscountEventParams(this.discountedCard, context)
     );
   }
 
@@ -119,12 +116,9 @@ export class HomeGiftCards implements OnInit {
   }
 
   public onPromoScrollIntoView(context: string) {
-    this.analyticsProvider.trackEvent(
+    this.giftCardProvider.logEvent(
       'presentedWithGiftCardDiscount',
-      this.analyticsProvider.getDiscountEventParams(
-        this.discountedCard,
-        context
-      )
+      this.giftCardProvider.getDiscountEventParams(this.discountedCard, context)
     );
   }
 
