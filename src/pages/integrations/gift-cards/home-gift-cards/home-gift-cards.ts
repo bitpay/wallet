@@ -11,7 +11,6 @@ import { timer } from 'rxjs/observable/timer';
 import { debounceTime } from 'rxjs/operators';
 import {
   ActionSheetProvider,
-  AnalyticsProvider,
   AppProvider,
   PersistenceProvider
 } from '../../../../providers';
@@ -70,7 +69,6 @@ export class HomeGiftCards implements OnInit {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
-    private analyticsProvider: AnalyticsProvider,
     private giftCardProvider: GiftCardProvider,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider
