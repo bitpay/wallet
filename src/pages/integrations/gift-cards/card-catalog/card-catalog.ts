@@ -4,11 +4,7 @@ import { NavController } from 'ionic-angular';
 import { BuyCardPage } from '../buy-card/buy-card';
 
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ActionSheetProvider,
-  AnalyticsProvider,
-  PlatformProvider
-} from '../../../../providers';
+import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import {
   GiftCardProvider,
   hasVisibleDiscount
@@ -33,7 +29,6 @@ export class CardCatalogPage extends WideHeaderPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
-    private analyticsProvider: AnalyticsProvider,
     public giftCardProvider: GiftCardProvider,
     platormProvider: PlatformProvider,
     private navCtrl: NavController,

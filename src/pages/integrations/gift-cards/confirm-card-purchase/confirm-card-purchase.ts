@@ -17,7 +17,6 @@ import { FinishModalPage } from '../../../finish/finish';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
-  AnalyticsProvider,
   EmailNotificationsProvider,
   FeeProvider,
   TxConfirmNotificationProvider,
@@ -106,8 +105,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
-    AppProvider: AppProvider,
-    private analyticsProvider: AnalyticsProvider
+    AppProvider: AppProvider
   ) {
     super(
       app,
