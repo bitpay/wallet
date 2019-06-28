@@ -110,14 +110,15 @@ export class PriceCard {
 
   public updateCharts() {
     this.isoCode ===
-    this.configProvider.get().wallet.settings.alternativeIsoCode
+    this.configProvider.get().wallet.settings.default.alternativeIsoCode
       ? this.updateCurrentPrice()
       : this.getPrices();
   }
 
   private setIsoCode() {
-    const alternativeIsoCode = this.configProvider.get().wallet.settings
-      .alternativeIsoCode;
+    const {
+      alternativeIsoCode
+    } = this.configProvider.get().wallet.settings.default;
     this.isoCode = _.includes(this.fiatCodes, alternativeIsoCode)
       ? alternativeIsoCode
       : 'USD';

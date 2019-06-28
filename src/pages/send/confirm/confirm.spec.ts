@@ -14,10 +14,11 @@ describe('ConfirmPage', () => {
       instance = testEnv.instance;
       instance.navParams = {
         data: {
-          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
+          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF',
+          coin: 'btc'
         }
       };
-      instance.tx = { coin: 'BTC' };
+      instance.tx = { coin: 'btc' };
       spyOn(instance.onGoingProcessProvider, 'set');
       fixture.detectChanges();
     })));

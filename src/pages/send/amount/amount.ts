@@ -20,12 +20,12 @@ import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { Coin } from '../../../providers/wallet/wallet';
 
 // Pages
 import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { Coin } from '../../../providers/wallet/wallet';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
@@ -136,10 +136,6 @@ export class AmountPage extends WalletTabsChild {
       this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
-    this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
-    this.satToUnit = 1 / this.unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings.unitDecimals;
-
     // BitPay Card ID or Wallet ID
     this._id = this.navParams.data.id;
 
@@ -205,6 +201,14 @@ export class AmountPage extends WalletTabsChild {
       ? this.navParams.data.wallet.coin
       : this.wallet && this.wallet.coin;
 
+    this.unitToSatoshi = this.config.wallet.settings[
+      parentWalletCoin
+    ].unitToSatoshi;
+    this.satToUnit = 1 / this.unitToSatoshi;
+    this.unitDecimals = this.config.wallet.settings[
+      parentWalletCoin
+    ].unitDecimals;
+
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
       this.availableUnits.push({
         name: 'Bitcoin',
@@ -252,8 +256,12 @@ export class AmountPage extends WalletTabsChild {
       this.altUnitIndex = this.unitIndex;
       this.unitIndex = this.availableUnits.length;
     } else {
-      this.fiatCode = this.config.wallet.settings.alternativeIsoCode || 'USD';
-      fiatName = this.config.wallet.settings.alternativeName || this.fiatCode;
+      this.fiatCode =
+        this.config.wallet.settings[parentWalletCoin].alternativeIsoCode ||
+        'USD';
+      fiatName =
+        this.config.wallet.settings[parentWalletCoin].alternativeName ||
+        this.fiatCode;
       this.altUnitIndex = this.availableUnits.length;
     }
 
@@ -322,6 +330,7 @@ export class AmountPage extends WalletTabsChild {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
+      this.wallet.coin,
       this.wallet.cachedStatus.availableBalanceSat
     );
     this.zone.run(() => {
@@ -410,9 +419,10 @@ export class AmountPage extends WalletTabsChild {
         : '';
 
       if (this.availableUnits[this.unitIndex].isFiat) {
-        let a = this.fromFiat(result);
+        let a = this.fromFiat(result, this.wallet.coin);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(
+            this.wallet.coin,
             a * this.unitToSatoshi,
             true
           );
@@ -423,9 +433,9 @@ export class AmountPage extends WalletTabsChild {
         }
       } else {
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
-          this.toFiat(result)
+          this.toFiat(result, this.wallet.coin)
         );
-        this.checkAmountForBitpaycard(this.toFiat(result));
+        this.checkAmountForBitpaycard(this.toFiat(result, this.wallet.coin));
       }
     }
   }
@@ -444,12 +454,13 @@ export class AmountPage extends WalletTabsChild {
       return this.filterProvider.formatFiatAmount(val);
     else
       return this.txFormatProvider.formatAmount(
+        this.wallet.coin,
         val.toFixed(this.unitDecimals) * this.unitToSatoshi,
         true
       );
   }
 
-  private fromFiat(val, coin?: string): number {
+  private fromFiat(val: number, coin: string = 'btc'): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
     return parseFloat(
       (
@@ -458,8 +469,8 @@ export class AmountPage extends WalletTabsChild {
     );
   }
 
-  private toFiat(val: number, coin?: Coin): number {
-    if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
+  private toFiat(val: number, coin: string = 'btc'): number {
+    if (!this.rateProvider.getRate(this.fiatCode, coin)) return undefined;
 
     return parseFloat(
       this.rateProvider
@@ -538,7 +549,7 @@ export class AmountPage extends WalletTabsChild {
     } else {
       let amount = _amount;
       amount = unit.isFiat
-        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
+        ? (this.fromFiat(amount, coin) * this.unitToSatoshi).toFixed(0)
         : (amount * this.unitToSatoshi).toFixed(0);
       data = {
         recipientType: this.recipientType,
@@ -573,6 +584,10 @@ export class AmountPage extends WalletTabsChild {
         ' alternativeUnit:' +
         this.alternativeUnit
     );
+  }
+
+  public checkIfCoin() {
+    return !!Coin[this.unit];
   }
 
   private resetValues(): void {

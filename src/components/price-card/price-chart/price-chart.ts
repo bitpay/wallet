@@ -14,7 +14,7 @@ export class PriceChart {
   public isoCode: string;
 
   constructor(private configProvider: ConfigProvider) {
-    this.isoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
+    this.isoCode = this.configProvider.get().wallet.settings.default.alternativeIsoCode;
   }
 
   drawCanvas(coin) {

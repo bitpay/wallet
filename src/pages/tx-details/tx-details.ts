@@ -341,7 +341,9 @@ export class TxDetailsPage {
   }
 
   private updateFiatRate() {
-    const settings = this.configProvider.get().wallet.settings;
+    const settings = this.configProvider.get().wallet.settings[
+      this.wallet.coin
+    ];
     this.rateProvider
       .getHistoricFiatRate(
         settings.alternativeIsoCode,

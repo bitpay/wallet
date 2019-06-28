@@ -81,6 +81,7 @@ export class ConfirmPage extends WalletTabsChild {
   // Platform info
   public isCordova: boolean;
 
+  private unitToSatoshi: number;
   // custom fee flag
   public usingCustomFee: boolean = false;
   public usingMerchantFee: boolean = false;
@@ -120,9 +121,6 @@ export class ConfirmPage extends WalletTabsChild {
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
-    this.configFeeLevel = this.config.wallet.settings.feeLevel
-      ? this.config.wallet.settings.feeLevel
-      : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
@@ -199,6 +197,10 @@ export class ConfirmPage extends WalletTabsChild {
     };
     this.tx.origToAddress = this.tx.toAddress;
 
+    this.configFeeLevel = this.config.wallet.settings[this.tx.coin].feeLevel
+      ? this.config.wallet.settings[this.tx.coin].feeLevel
+      : 'normal';
+
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
       this.tx.feeRate = +this.navParams.data.requiredFeeRate;
@@ -212,6 +214,10 @@ export class ConfirmPage extends WalletTabsChild {
         .Address(this.tx.toAddress)
         .toString(true);
     }
+
+    this.unitToSatoshi = this.configProvider.get().wallet.settings[
+      this.tx.coin
+    ].unitToSatoshi;
 
     this.getAmountDetails();
 
@@ -244,7 +250,10 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.amount = this.decimalPipe.transform(
+      this.tx.amount / this.unitToSatoshi,
+      '1.2-6'
+    );
   }
 
   private afterWalletSelectorSet() {
@@ -625,7 +634,7 @@ export class ConfirmPage extends WalletTabsChild {
       'miner-fee-notice',
       {
         coinName,
-        fee: sendMaxInfo.fee / 1e8,
+        fee: sendMaxInfo.fee / this.unitToSatoshi,
         coin: this.tx.coin.toUpperCase(),
         msg: !_.isEmpty(warningMsg) ? warningMsg : ''
       }
@@ -636,7 +645,7 @@ export class ConfirmPage extends WalletTabsChild {
   private verifyExcludedUtxos(_, sendMaxInfo) {
     const warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      const amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
+      const amountBelowFeeStr = sendMaxInfo.amountBelowFee / this.unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -647,7 +656,8 @@ export class ConfirmPage extends WalletTabsChild {
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      const amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
+      const amountAboveMaxSizeStr =
+        sendMaxInfo.amountAboveMaxSize / this.unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
@@ -840,7 +850,7 @@ export class ConfirmPage extends WalletTabsChild {
         const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
 
-        const amount = (this.tx.amount / 1e8).toFixed(8);
+        const amount = (this.tx.amount / this.unitToSatoshi).toFixed(8);
         const unit = txp.coin.toUpperCase();
         const name = wallet.name;
         const message = this.replaceParametersProvider.replace(

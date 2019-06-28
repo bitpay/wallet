@@ -92,7 +92,9 @@ describe('FeePolicyPage', () => {
         const opts = {
           wallet: {
             settings: {
-              feeLevel: 'normal'
+              default: {
+                feeLevel: 'normal'
+              }
             }
           }
         };

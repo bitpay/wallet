@@ -20,14 +20,17 @@ export class FiatToUnitPipe implements PipeTransform {
   transform(amount: number, coin: string, alternative?: string) {
     alternative = alternative
       ? alternative
-      : this.walletSettings.alternativeIsoCode;
+      : this.walletSettings[coin].alternativeIsoCode;
     let amount_ = this.rateProvider.fromFiat(
       amount,
       alternative,
       coin.toLowerCase()
     );
     return (
-      this.decimalPipe.transform(amount_ / 1e8 || 0, '1.2-8') +
+      this.decimalPipe.transform(
+        amount_ / this.walletSettings[coin].unitToSatoshi || 0,
+        '1.2-8'
+      ) +
       ' ' +
       coin.toUpperCase()
     );

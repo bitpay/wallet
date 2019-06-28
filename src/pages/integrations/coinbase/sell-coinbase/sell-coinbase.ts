@@ -351,7 +351,7 @@ export class SellCoinbasePage {
   public sellConfirm(): void {
     let config = this.configProvider.get();
     let configWallet = config.wallet;
-    let walletSettings = configWallet.settings;
+    let walletSettings = configWallet.settings[this.coin];
 
     let message = 'Selling bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';

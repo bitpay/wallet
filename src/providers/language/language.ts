@@ -71,7 +71,8 @@ export class LanguageProvider {
   }
 
   public load() {
-    let lang = this.configProvider.get().wallet.settings.defaultLanguage;
+    let lang = this.configProvider.get().wallet.settings.default
+      .defaultLanguage;
     if (!_.isEmpty(lang)) this.current = lang;
     else {
       // Get from browser
@@ -90,7 +91,7 @@ export class LanguageProvider {
     this.translate.use(lang);
     moment.locale(lang);
     this.configProvider.set({
-      wallet: { settings: { defaultLanguage: lang } }
+      wallet: { settings: { default: { defaultLanguage: lang } } }
     });
   }
 
