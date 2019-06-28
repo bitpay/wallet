@@ -22,17 +22,21 @@ export class ScrolledIntoView {
   constructor(private elm: ElementRef) {}
 
   ngAfterViewInit() {
-    this.scrollArea.ionScroll.subscribe(({ contentHeight, scrollTop }) => {
-      const scanButtonAreaHeight = 70;
-      const { offsetTop, offsetHeight } = this.elm.nativeElement;
-      if (
-        scrollTop + contentHeight - scanButtonAreaHeight >
-        offsetTop + offsetHeight
-      ) {
-        if (this.inView) return;
-        this.viewEnter.emit(true);
-        this.inView = true;
-      }
-    });
+    this.checkIfInView(0, this.scrollArea.contentHeight);
+    this.scrollArea.ionScroll.subscribe(({ contentHeight, scrollTop }) =>
+      this.checkIfInView(scrollTop, contentHeight)
+    );
+  }
+  checkIfInView(contentScroll, contentHeight) {
+    const scanButtonAreaHeight = 70;
+    const { offsetTop, offsetHeight } = this.elm.nativeElement;
+    if (
+      contentScroll + contentHeight - scanButtonAreaHeight >
+      offsetTop + offsetHeight
+    ) {
+      if (this.inView) return;
+      this.viewEnter.emit(true);
+      this.inView = true;
+    }
   }
 }
