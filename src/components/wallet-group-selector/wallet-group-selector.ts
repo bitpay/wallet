@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
 // Pages
-import { AddPage } from '../../pages/add/add';
+import { AddWalletPage } from '../../pages/add-wallet/add-wallet';
 
 // Providers
 import { KeyProvider } from '../../providers/key/key';
@@ -69,8 +69,8 @@ export class WalletGroupSelectorComponent {
     this.events.publish('Home/reloadStatus');
   }
 
-  public goToAddPage(): void {
-    this.navCtrl.push(AddPage).then(() => {
+  public goToAddWalletPage(): void {
+    this.navCtrl.push(AddWalletPage).then(() => {
       this.dismiss();
     });
   }

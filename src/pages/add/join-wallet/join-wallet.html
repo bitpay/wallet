@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Shared Wallet' | translate}}</ion-title>
+    <ion-title>{{'Shared Account' | translate}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
         <span translate>Join</span>
@@ -14,6 +14,11 @@
     <ion-item *ngIf="!addingNewAccount">
       <ion-label floating>{{'Wallet name' | translate}}</ion-label>
       <ion-input type="text" formControlName="walletName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>{{'Account name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="accountName"></ion-input>
     </ion-item>
 
     <ion-item>

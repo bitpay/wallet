@@ -120,7 +120,7 @@
         </ion-note>
       </button>
 
-      <ion-item-divider *ngIf="walletsGroups">{{'Wallets Groups' | translate}}</ion-item-divider>
+      <ion-item-divider *ngIf="(walletsGroups | json) != '{}'">{{'Wallets' | translate}}</ion-item-divider>
 
       <button ion-item *ngFor="let walletsGroup of walletsGroups | keys; let i = index" (click)="openWalletGroupSettings(walletsGroup)">
         <ion-icon class="item-img" item-start>

@@ -46,7 +46,7 @@ export class WalletDeletePage extends WalletTabsChild {
   public showDeletePopup(): void {
     const title = this.translate.instant('Warning!');
     const message = this.translate.instant(
-      'Are you sure you want to delete this wallet?'
+      'Are you sure you want to delete this account?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (res) this.deleteWallet();

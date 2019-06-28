@@ -18,8 +18,6 @@ import { ImportWalletPage } from './import-wallet/import-wallet';
   templateUrl: 'add.html'
 })
 export class AddPage {
-  private addingNewAccount: boolean;
-
   public title: string;
 
   constructor(
@@ -31,18 +29,18 @@ export class AddPage {
     private translate: TranslateService,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
-    this.addingNewAccount = this.navParam.data.addingNewAccount;
-    if (this.addingNewAccount) {
-      const keyId = this.keyProvider.activeWGKey;
-      const walletGroupName = this.profileProvider.getWalletGroup(keyId).name;
+    const keyId = this.keyProvider.activeWGKey;
+    const addingNewAccount = this.navParam.data.addingNewAccount;
+    const walletGroup = this.profileProvider.getWalletGroup(keyId);
+    if (walletGroup && walletGroup.name && addingNewAccount) {
       this.title = this.replaceParametersProvider.replace(
         this.translate.instant('Add Account to {{walletGroupName}}'),
         {
-          walletGroupName
+          walletGroupName: walletGroup.name
         }
       );
     } else {
-      this.title = this.translate.instant('Add Wallet');
+      this.title = this.translate.instant('Add Account');
     }
   }
 
@@ -53,7 +51,7 @@ export class AddPage {
   public goToSelectCurrencyPage(isShared: boolean): void {
     this.navCtrl.push(SelectCurrencyPage, {
       isShared,
-      addingNewAccount: this.addingNewAccount
+      addingNewAccount: this.navParam.data.addingNewAccount
     });
   }
 

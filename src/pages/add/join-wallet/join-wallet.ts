@@ -72,6 +72,7 @@ export class JoinWalletPage {
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
       walletName: [null],
+      accountName: [null, Validators.required],
       myName: [null, Validators.required],
       invitationCode: [
         null,
@@ -193,6 +194,7 @@ export class JoinWalletPage {
     }
     const opts: Partial<WalletOptions> = {
       keyId,
+      name: this.joinForm.value.accountName,
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,

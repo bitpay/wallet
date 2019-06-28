@@ -1,4 +1,5 @@
 /* Pages */
+import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { AddPage } from '../pages/add/add';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
@@ -118,6 +119,7 @@ import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
 
 export const PAGES = [
   AddPage,
+  AddWalletPage,
   AmountPage,
   AddressbookPage,
   AddressbookAddPage,
