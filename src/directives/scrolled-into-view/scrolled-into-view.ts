@@ -22,16 +22,15 @@ export class ScrolledIntoView {
   constructor(private elm: ElementRef) {}
 
   ngAfterViewInit() {
-    this.checkIfInView(0, this.scrollArea.contentHeight);
-    this.scrollArea.ionScroll.subscribe(({ contentHeight, scrollTop }) =>
-      this.checkIfInView(scrollTop, contentHeight)
-    );
+    this.checkIfElementInView();
+    this.scrollArea.ionScroll.subscribe(() => this.checkIfElementInView());
   }
-  checkIfInView(contentScroll, contentHeight) {
+  checkIfElementInView() {
     const scanButtonAreaHeight = 70;
+    const { scrollTop, contentHeight } = this.scrollArea;
     const { offsetTop, offsetHeight } = this.elm.nativeElement;
     if (
-      contentScroll + contentHeight - scanButtonAreaHeight >
+      scrollTop + contentHeight - scanButtonAreaHeight >
       offsetTop + offsetHeight
     ) {
       if (this.inView) return;
