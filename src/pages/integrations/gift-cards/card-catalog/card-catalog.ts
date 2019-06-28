@@ -92,14 +92,15 @@ export class CardCatalogPage extends WideHeaderPage {
   buyCard(cardConfig: CardConfig) {
     this.navCtrl.push(BuyCardPage, { cardConfig });
     if (this.hasPercentageDiscount(cardConfig)) {
-      this.giftCardProvider.logEvent(
-        'clickedGiftCardDiscount',
-        this.giftCardProvider.getDiscountEventParams(
-          cardConfig,
-          'Gift Card List'
-        )
-      );
+      this.logDiscountClick(cardConfig);
     }
+  }
+
+  logDiscountClick(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent(
+      'clickedGiftCardDiscount',
+      this.giftCardProvider.getDiscountEventParams(cardConfig, 'Gift Card List')
+    );
   }
 
   hasPercentageDiscount(cardConfig: CardConfig) {
