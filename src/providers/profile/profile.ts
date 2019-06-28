@@ -592,9 +592,9 @@ export class ProfileProvider {
     });
   }
 
-  public importExtendedPrivateKey(xPriv: string, opts): Promise<any> {
+  public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     this.logger.info('Importing Wallet xPrivKey');
-    opts.xPriv = xPriv;
+    opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl
