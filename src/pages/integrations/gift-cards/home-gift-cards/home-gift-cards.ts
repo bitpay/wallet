@@ -11,6 +11,7 @@ import { timer } from 'rxjs/observable/timer';
 import { debounceTime } from 'rxjs/operators';
 import {
   ActionSheetProvider,
+  AnalyticsProvider,
   AppProvider,
   PersistenceProvider
 } from '../../../../providers';
@@ -69,6 +70,7 @@ export class HomeGiftCards implements OnInit {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
+    private analyticsProvider: AnalyticsProvider,
     private giftCardProvider: GiftCardProvider,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider
@@ -104,7 +106,10 @@ export class HomeGiftCards implements OnInit {
   }
 
   public onPromoScrollIntoView() {
-    console.log('scrolled into view');
+    this.analyticsProvider.trackEvent('viewedGiftCardDiscount', {
+      brand: this.discountedCard.name,
+      percentage: this.discountedCard.discounts[0].amount
+    });
   }
 
   private async viewGiftCards(cardName: string, cards: GiftCard[]) {
