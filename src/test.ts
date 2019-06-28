@@ -61,12 +61,10 @@ import {
 } from 'ionic-mocks';
 
 import { AndroidFingerprintAuthMock } from '@ionic-native-mocks/android-fingerprint-auth';
-import { FCMMock } from '@ionic-native-mocks/fcm';
 import { FileMock } from '@ionic-native-mocks/file';
 import { QRScannerMock } from '@ionic-native-mocks/qr-scanner';
 import { TouchIDMock } from '@ionic-native-mocks/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-import { FCM } from '@ionic-native/fcm';
 import { File } from '@ionic-native/file';
 import { QRScanner } from '@ionic-native/qr-scanner';
 
@@ -181,7 +179,6 @@ const ionicProviders = [
     useFactory: () => ViewControllerMock.instance()
   },
   { provide: DomProvider, useClass: DomProviderMock },
-  { provide: FCM, useClass: FCMMock },
   { provide: File, useClass: FileMock },
   { provide: QRScanner, useClass: QRScannerMock },
   { provide: TouchID, useClass: TouchIDMock },
