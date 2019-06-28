@@ -35,6 +35,7 @@ export class SendPage extends WalletTabsChild {
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
+    'EthereumAddress',
     'BitcoinUri',
     'BitcoinCashUri'
   ];
