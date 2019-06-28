@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Validation } from 'crypto-wallet-core';
 
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
@@ -59,6 +60,9 @@ export class AddressProvider {
     str: string
   ): boolean {
     if (this.isValid(str)) {
+      if (coin === 'eth') {
+        return true;
+      }
       const address = this.extractAddress(str);
       return this.getCoin(address) == coin &&
         this.getNetwork(address) == network
@@ -92,6 +96,7 @@ export class AddressProvider {
     const Address = this.bitcore.Address;
     const URICash = this.bitcoreCash.URI;
     const AddressCash = this.bitcoreCash.Address;
+    const AddressEth = Validation;
 
     // Bip21 uri
     let uri, uriAddress;
@@ -116,6 +121,7 @@ export class AddressProvider {
     if (Address.isValid(str, 'testnet')) return true;
     if (AddressCash.isValid(str, 'livenet')) return true;
     if (AddressCash.isValid(str, 'testnet')) return true;
+    if (AddressEth.validateAddress('ETH', 'mainnet', str)) return true;
 
     return false;
   }

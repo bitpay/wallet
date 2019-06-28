@@ -979,7 +979,19 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts)
           .then(data => {
-            const coin = opts.coin == 'btc' ? '[BTC]' : '[BCH]';
+            // Need Mapping of Coins here
+            let coin = '[BTC]';
+            switch (opts.coin) {
+              case 'btc':
+                coin = '[BTC]';
+                break;
+              case 'bch':
+                coin = '[BCH]';
+                break;
+              case 'eth':
+                coin = '[ETH]';
+                break;
+            }
             const name =
               opts.name ||
               `${this.translate.instant('Personal Wallet')} ${coin}`;

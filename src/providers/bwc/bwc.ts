@@ -1,3 +1,5 @@
+import { Deriver, Transactions, Validation } from 'crypto-wallet-core';
+
 import { Injectable } from '@angular/core';
 
 import { Logger } from '../../providers/logger/logger';
@@ -21,7 +23,7 @@ export class BwcProvider {
   }
 
   public getCore() {
-    return BWC.Core;
+    return { Deriver, Transactions, Validation };
   }
 
   public getErrors() {

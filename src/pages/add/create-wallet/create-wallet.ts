@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -72,7 +73,8 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private bwcProvider: BwcProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -81,10 +83,9 @@ export class CreateWalletPage implements OnInit {
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault =
-      this.coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
+    this.derivationPathByDefault = this.bwcProvider
+      .getCore()
+      .Deriver.pathFor(this.coin.toUpperCase(), 'mainnet');
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
@@ -102,10 +103,9 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
+    this.createLabel = this.translate.instant(
+      `${this.coin.toUpperCase()} Wallet`
+    );
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
