@@ -230,9 +230,7 @@ export class ImportWalletPage {
     );
     this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
     this.events.publish('Local/WalletListChange');
-    this.app
-      .getRootNavs()[0]
-      .setRoot(TabsPage)
+    this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {

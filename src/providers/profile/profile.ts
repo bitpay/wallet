@@ -125,10 +125,13 @@ export class ProfileProvider {
     return name;
   }
 
-  public setBackupGroupFlag(keyId: string, timestamp?): void {
+  public setBackupGroupFlag(
+    keyId: string,
+    timestamp?: string,
+    migrating?: boolean
+  ): void {
     this.persistenceProvider.setBackupGroupFlag(keyId, timestamp);
     this.logger.debug('Backup flag stored');
-    const migrating = timestamp ? true : false;
     if (!migrating) this.walletsGroups[keyId].needsBackup = false;
   }
 
@@ -180,7 +183,7 @@ export class ProfileProvider {
         } else {
           const backupInfo = await this.getBackupInfo(wallet);
           if (backupInfo && !backupInfo.needsBackup) {
-            this.setBackupGroupFlag(keyId, backupInfo.timestamp);
+            this.setBackupGroupFlag(keyId, backupInfo.timestamp, true);
             return Promise.resolve({
               needsBackup: false,
               timestamp: backupInfo.timestamp
