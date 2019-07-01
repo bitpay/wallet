@@ -57,7 +57,9 @@ export class BwcErrorProvider {
         body = this.translate.instant('Network error');
         break;
       case 'MAINTENANCE_ERROR':
-        body = this.translate.instant('Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/.');
+        body = this.translate.instant(
+          'Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/.'
+        );
         break;
       case 'NOT_FOUND':
         body = this.translate.instant('Wallet service not found');
