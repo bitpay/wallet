@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class BwcErrorProvider {
-  constructor(private translate: TranslateService) { }
+  constructor(private translate: TranslateService) {}
 
   public msg(err, prefix?: string): string {
     if (!err) return 'Unknown error';
