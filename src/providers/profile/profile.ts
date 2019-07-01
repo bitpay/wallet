@@ -116,17 +116,14 @@ export class ProfileProvider {
     return name;
   }
 
-  public setBackupFlag(walletId: string): void {
-    this.persistenceProvider.setBackupFlag(walletId);
-    this.logger.debug('Backup flag stored');
-    this.wallet[walletId].needsBackup = false;
-  }
-
   public setBackupGroupFlag(keyId: string, timestamp?): void {
-    // TODO migrate backup flag
     this.persistenceProvider.setBackupGroupFlag(keyId, timestamp);
     this.logger.debug('Backup flag stored');
     this.walletsGroups[keyId].needsBackup = false;
+  }
+
+  public setWalletBackup(walletId: string): void {
+    this.wallet[walletId].needsBackup = false;
   }
 
   private requiresGroupBackup(keyId: string) {
@@ -285,6 +282,7 @@ export class ProfileProvider {
       this.walletsGroups[keyId] = {};
       const groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
       this.walletsGroups[keyId].needsBackup = groupBackupInfo.needsBackup;
+      wallet.needsBackup = groupBackupInfo.needsBackup;
       this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
       this.walletsGroups[keyId].name =
         (await this.getWalletGroupName(keyId)) || wallet.name;
@@ -299,6 +297,7 @@ export class ProfileProvider {
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
+      wallet.needsBackup = false;
       this.walletsGroups['read-only'].order = await this.getWalletGroupOrder(
         'read-only'
       );
@@ -1147,8 +1146,8 @@ export class ProfileProvider {
     return this.wallet[walletId];
   }
 
-  public getWalletGroup(keyId: string) {
-    if (!keyId) return;
+  public getWalletGroup(keyId) {
+    keyId = keyId ? keyId : 'read-only';
     return this.walletsGroups[keyId];
   }
 

@@ -278,11 +278,9 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (
-          this.createForm.value.selectedSeed == 'set' ||
-          this.addingNewAccount
-        ) {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        if (this.createForm.value.selectedSeed == 'set') {
+          this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
+          this.profileProvider.setWalletBackup(wallet.credentials.id);
         }
         if (!this.addingNewAccount) {
           this.profileProvider.setWalletGroupName(

@@ -169,6 +169,13 @@ export class BackupGamePage {
       }
     }
     this.profileProvider.setBackupGroupFlag(this.keyId);
+    const opts = {
+      ketId: this.keyId
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    wallets.forEach(w => {
+      this.profileProvider.setWalletBackup(w.credentials.walletId);
+    });
     this.showSuccessModal();
   }
 

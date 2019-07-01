@@ -23,7 +23,6 @@ import { WalletGroupNamePage } from './wallet-group-name/wallet-group-name';
   templateUrl: 'wallet-group-settings.html'
 })
 export class WalletGroupSettingsPage {
-  public needsBackup: boolean;
   public encryptEnabled: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
@@ -33,6 +32,7 @@ export class WalletGroupSettingsPage {
   public walletsGroup;
   public wallets;
   public canSign: boolean;
+  public needsBackup: boolean;
 
   private keyId: string;
 
@@ -54,6 +54,7 @@ export class WalletGroupSettingsPage {
     this.keyId = this.navParams.data.keyId;
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     this.canSign = this.walletsGroup.canSign;
+    this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
   }
 

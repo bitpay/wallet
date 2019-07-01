@@ -220,9 +220,10 @@ export class ImportWalletPage {
   private async finish(wallets: any[]) {
     wallets.forEach(wallet => {
       this.walletProvider.updateRemotePreferences(wallet);
-      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.pushNotificationsProvider.updateSubscription(wallet);
+      this.profileProvider.setBackupGroupFlag(wallet.credentials.walletId);
     });
+    this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
     this.profileProvider.setWalletGroupName(
       wallets[0].credentials.keyId,
       this.importForm.value.walletName
