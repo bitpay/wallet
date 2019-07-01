@@ -205,7 +205,9 @@ export class HomePage {
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
       // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', this.setWallets);
+      this.events.subscribe('Local/WalletListChange', () =>
+        this.setWallets(true)
+      );
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletFocusHandler);

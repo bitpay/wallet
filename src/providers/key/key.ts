@@ -47,6 +47,10 @@ export class KeyProvider {
     return this.persistenceProvider.setActiveWGKey(keyId);
   }
 
+  public removeActiveWGKey() {
+    return this.persistenceProvider.removeActiveWGKey();
+  }
+
   private storeKeysIfDirty(): Promise<any> {
     if (!this.isDirty) {
       this.logger.debug('The keys have not been saved. Not dirty');

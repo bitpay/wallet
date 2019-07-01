@@ -58,7 +58,7 @@ export class WalletGroupDeletePage {
     const wallets = this.profileProvider.getWallets(opts);
     this.profileProvider
       .deleteWalletGroup(this.keyId, wallets)
-      .then(() => {
+      .then(async () => {
         this.onGoingProcessProvider.clear();
 
         wallets.forEach(wallet => {
@@ -69,11 +69,13 @@ export class WalletGroupDeletePage {
           const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
 
           if (!keyInUse) {
-            this.keyProvider.removeKey(this.keyId).then(() => {
-              delete this.profileProvider.walletsGroups[this.keyId];
-              this.keyProvider.loadActiveWGKey().then(() => {
-                this.goHome();
-              });
+            if (this.keyProvider.activeWGKey === this.keyId) {
+              await this.keyProvider.removeActiveWGKey();
+            }
+            await this.keyProvider.removeKey(this.keyId);
+            delete this.profileProvider.walletsGroups[this.keyId];
+            this.keyProvider.loadActiveWGKey().then(() => {
+              this.goHome();
             });
           } else {
             this.logger.warn('Key was not removed. Still in use');
@@ -92,7 +94,7 @@ export class WalletGroupDeletePage {
   }
 
   private goHome() {
-    this.events.publish('Home/reloadStatus');
+    this.events.publish('Local/WalletListChange');
     setTimeout(() => {
       this.navCtrl.popToRoot();
     }, 1000);

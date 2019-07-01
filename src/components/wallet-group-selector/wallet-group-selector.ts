@@ -67,7 +67,7 @@ export class WalletGroupSelectorComponent {
   public setActiveWalletGroup(selectedWalletGroup): void {
     this.dismiss();
     this.keyProvider.setActiveWGKey(selectedWalletGroup.key);
-    this.events.publish('Home/reloadStatus');
+    this.events.publish('Local/WalletListChange');
   }
 
   public goToAddWalletPage(): void {

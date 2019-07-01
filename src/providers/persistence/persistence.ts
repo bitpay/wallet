@@ -576,6 +576,10 @@ export class PersistenceProvider {
     return this.storage.get(Keys.ACTIVE_KEY);
   }
 
+  removeActiveWGKey() {
+    return this.storage.remove(Keys.ACTIVE_KEY);
+  }
+
   setLockStatus(isLocked: string) {
     return this.storage.set('lockStatus', isLocked);
   }

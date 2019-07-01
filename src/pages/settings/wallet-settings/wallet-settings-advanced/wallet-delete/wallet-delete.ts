@@ -57,7 +57,7 @@ export class WalletDeletePage extends WalletTabsChild {
     this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider
       .deleteWalletClient(this.wallet)
-      .then(() => {
+      .then(async () => {
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
 
@@ -66,11 +66,13 @@ export class WalletDeletePage extends WalletTabsChild {
           const keyInUse = this.profileProvider.isKeyInUse(keyId);
 
           if (!keyInUse) {
-            this.keyProvider.removeKey(keyId).then(() => {
-              delete this.profileProvider.walletsGroups[keyId];
-              this.keyProvider.loadActiveWGKey().then(() => {
-                this.goHome();
-              });
+            if (this.keyProvider.activeWGKey === keyId) {
+              await this.keyProvider.removeActiveWGKey();
+            }
+            await this.keyProvider.removeKey(keyId);
+            delete this.profileProvider.walletsGroups[keyId];
+            this.keyProvider.load().then(() => {
+              this.goHome();
             });
           } else {
             this.logger.warn('Key was not removed. Still in use');
@@ -89,7 +91,7 @@ export class WalletDeletePage extends WalletTabsChild {
   }
 
   private goHome() {
-    this.events.publish('Home/reloadStatus');
+    this.events.publish('Local/WalletListChange');
     setTimeout(() => {
       this.close();
     }, 1000);
