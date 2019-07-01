@@ -4,11 +4,13 @@ import { Injectable } from '@angular/core';
 export class DerivationPathHelperProvider {
   public defaultBTC: string;
   public defaultBCH: string;
+  public defaultETH: string;
   public defaultTestnet: string;
 
   public constructor() {
     this.defaultBTC = "m/44'/0'/0'";
     this.defaultBCH = "m/44'/145'/0'";
+    this.defaultETH = "m/44'/60'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
@@ -56,6 +58,9 @@ export class DerivationPathHelperProvider {
       case "145'": // for BCH
         networkName = 'livenet';
         break;
+      case "60'": // for ETH
+        networkName = 'livenet';
+        break;
     }
     return networkName;
   }
@@ -84,6 +89,9 @@ export class DerivationPathHelperProvider {
         break;
       case 'bch':
         isValid = ["145'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'eth':
+        isValid = ["60'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
     }
 
