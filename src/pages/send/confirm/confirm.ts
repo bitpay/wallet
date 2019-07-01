@@ -151,7 +151,10 @@ export class ConfirmPage extends WalletTabsChild {
     } else {
       amount = this.navParams.data.amount;
       try {
-        networkName = new B.Address(this.navParams.data.toAddress).network.name;
+        if (this.navParams.data.coin !== 'eth') {
+          networkName = new B.Address(this.navParams.data.toAddress).network
+            .name;
+        }
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
           this.translate.instant(
@@ -679,7 +682,7 @@ export class ConfirmPage extends WalletTabsChild {
         return reject(msg);
       }
 
-      if (tx.amount > Number.MAX_SAFE_INTEGER) {
+      if (tx.amount > Number.MAX_SAFE_INTEGER && wallet.coin !== 'eth') {
         const msg = this.translate.instant('Amount too big');
         return reject(msg);
       }

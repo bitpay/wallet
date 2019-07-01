@@ -225,6 +225,14 @@ export class AmountPage extends WalletTabsChild {
       });
     }
 
+    if (parentWalletCoin === 'eth' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Ethereum',
+        id: 'eth',
+        shortName: 'ETH'
+      });
+    }
+
     this.unitIndex = 0;
 
     if (this.navParams.data.coin) {
