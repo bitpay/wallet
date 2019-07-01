@@ -92,10 +92,7 @@ export class TxFormatProvider {
       return v1 + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (
-      !this.rate.isCoinAvailable(coin)
-    )
-      return null;
+    if (!this.rate.isCoinAvailable(coin)) return null;
     return val();
   }
 
@@ -146,8 +143,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-        ? this.formatAmountStr(coin, tx.fees)
-        : 'N/A';
+      ? this.formatAmountStr(coin, tx.fees)
+      : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
