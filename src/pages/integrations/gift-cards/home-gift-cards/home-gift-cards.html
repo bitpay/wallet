@@ -1,17 +1,40 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
   <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
     [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+  <ion-item-sliding #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view
+    [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView('Home Gift Card List Discount Item')"
+    [@archiveAnimation]>
+    <button ion-item *ngIf="discountedCard" class="discount-item"
+      (click)="buyCard(discountedCard.name, 'Home Gift Card List Discount Item')">
+      <img-loader class="logo" [src]="discountedCard.icon"></img-loader>
+      <div class="ellipsis">Save {{discountedCard.discounts[0].amount}}% off {{discountedCard.displayName}}</div>
+    </button>
+    <ion-item-options side="right">
+      <button ion-button color="danger" (click)="showHideDiscountItemSheet()">
+        <div class="archive__icon">
+          <ion-icon ios="md-close" md="md-close"></ion-icon>
+        </div>
+        <div class="archive__text">Hide?</div>
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
   <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-card-button" (click)="buyGiftCards()" tappable
     translate>Buy Gift Card</div>
 </ion-list>
 <action-card *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
-  <div action-card-header><img src="assets/img/icon-credit-card.svg"></div>
-  <div action-card-title translate>Buy Gift Cards</div>
   <div action-card-body>
-    {{'Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber.' |
-    translate:{appName: appName} }}
+    <img class="gift-card-brands" src="assets/img/gift-cards/gift-cards.png">
+    <div class="discount-wrapper">
+      <div *ngIf="discountedCard" class="gift-card-featured-discount"
+        (click)="$event.stopPropagation(); buyCard(discountedCard.name, 'Home Buy Gift Cards Discount Label')" tappable
+        scrolled-into-view [scrollArea]="scrollArea"
+        (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
+        <img [src]="discountedCard.icon">
+        Save {{discountedCard.discounts[0].amount}}% off {{discountedCard.displayName}}
+      </div>
+    </div>
   </div>
   <div action-card-button translate>
-    Shop Now
+    Buy Gift Cards
   </div>
 </action-card>

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -94,9 +94,6 @@ msgstr "연락처로 추가"
 
 msgid "Add funds"
 msgstr "자금 추가"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Add this BitPay account ({{email}})?"
@@ -617,6 +614,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -940,6 +940,9 @@ msgstr "잔액 숨기기"
 
 msgid "Hide advanced options"
 msgstr "고급 옵션 숨기기"
+
+msgid "Hide discount?"
+msgstr ""
 
 msgid "Home"
 msgstr "홈"
@@ -1847,9 +1850,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "고급 옵션 표시"
 
@@ -2300,6 +2300,9 @@ msgstr "지갑 입금"
 msgid "Wallet Name"
 msgstr "지갑 이름"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2412,6 +2415,9 @@ msgid "Withdraw"
 msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"

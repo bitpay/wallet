@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ActionSheetProvider } from '../../../../providers';
+import { hasVisibleDiscount } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -13,6 +14,7 @@ export class BuyCardPage {
   amount: number;
   cardConfig: CardConfig;
   printAlertShown = false;
+  hasPercentageDiscount: boolean = false;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -23,6 +25,7 @@ export class BuyCardPage {
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
+    this.hasPercentageDiscount = hasVisibleDiscount(this.cardConfig);
   }
 
   ionViewWillEnter() {

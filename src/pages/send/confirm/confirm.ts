@@ -2,6 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -12,6 +13,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
+import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
@@ -88,6 +90,7 @@ export class ConfirmPage extends WalletTabsChild {
   public isOpenSelector: boolean;
 
   constructor(
+    protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
     protected bwcErrorProvider: BwcErrorProvider,
     protected bwcProvider: BwcProvider,
@@ -274,7 +277,7 @@ export class ConfirmPage extends WalletTabsChild {
     ) {
       return Promise.resolve();
     }
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
 
@@ -285,22 +288,6 @@ export class ConfirmPage extends WalletTabsChild {
         coin
       });
 
-      if (!this.wallets || !this.wallets.length) {
-        return reject(this.translate.instant('No wallets available'));
-      }
-
-      const filteredWallets = _.filter(this.wallets, w => {
-        // no balance yet?
-        if (_.isEmpty(w.cachedStatus)) return true;
-
-        return w.cachedStatus.availableBalanceSat > minAmount;
-      });
-
-      if (_.isEmpty(filteredWallets)) {
-        return reject(this.translate.instant('Insufficient funds'));
-      }
-
-      this.wallets = _.clone(filteredWallets);
       return resolve();
     });
   }
@@ -332,7 +319,7 @@ export class ConfirmPage extends WalletTabsChild {
               this.translate.instant(
                 'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
               ),
-              this.translate.instant('Insufficient funds'),
+              this.translate.instant('No enough confirmed funds'),
               true
             );
           } else if (previousView === 'AmountPage') {
@@ -751,7 +738,7 @@ export class ConfirmPage extends WalletTabsChild {
       if (option || typeof option === 'undefined') {
         this.isWithinWalletTabs()
           ? this.navCtrl.pop()
-          : this.navCtrl.popToRoot();
+          : this.app.getRootNavs()[0].setRoot(TabsPage); // using setRoot(TabsPage) as workaround when coming from scanner
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -788,7 +775,7 @@ export class ConfirmPage extends WalletTabsChild {
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
           ? this.navCtrl.pop()
-          : this.navCtrl.popToRoot();
+          : this.app.getRootNavs()[0].setRoot(TabsPage); // using setRoot(TabsPage) as workaround when coming from scanner
       }
     });
   }
@@ -937,11 +924,15 @@ export class ConfirmPage extends WalletTabsChild {
         this.events.publish('OpenWallet', this.wallet);
       });
     } else {
-      this.navCtrl.popToRoot().then(() => {
-        setTimeout(() => {
-          this.events.publish('OpenWallet', this.wallet);
-        }, 1000);
-      });
+      // using setRoot(TabsPage) as workaround when coming from scanner
+      this.app
+        .getRootNavs()[0]
+        .setRoot(TabsPage)
+        .then(() => {
+          setTimeout(() => {
+            this.events.publish('OpenWallet', this.wallet);
+          }, 1000);
+        });
     }
   }
 
