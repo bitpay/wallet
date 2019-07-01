@@ -203,7 +203,7 @@ export class ProfileProvider {
 
   private async bindWalletClient(wallet): Promise<boolean> {
     const walletId = wallet.credentials.walletId;
-    const keyId = wallet.credentials.keyId;
+    let keyId = wallet.credentials.keyId;
     if (this.wallet[walletId] && this.wallet[walletId].started) {
       this.logger.info('This wallet has been initialized. Skip. ' + walletId);
       return Promise.resolve(false);
@@ -276,42 +276,50 @@ export class ProfileProvider {
       }
     });
 
-    let backedUp;
     // INIT WALLET GROUP VIEWMODEL
+
+    let groupBackupInfo,
+      needsBackup,
+      order,
+      name,
+      isPrivKeyEncrypted,
+      canSign,
+      isDeletedSeed;
+
     if (keyId) {
-      this.walletsGroups[keyId] = {};
-      const groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
-      this.walletsGroups[keyId].needsBackup = groupBackupInfo.needsBackup;
-      wallet.needsBackup = groupBackupInfo.needsBackup;
-      this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
-      this.walletsGroups[keyId].name =
-        (await this.getWalletGroupName(keyId)) || wallet.name;
-      this.walletsGroups[
-        keyId
-      ].isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
-      this.walletsGroups[keyId].canSign = true;
-      backedUp = this.walletsGroups[keyId].needsBackup ? false : true;
-      this.walletsGroups[keyId].isDeletedSeed = this.keyProvider.isDeletedSeed(
-        keyId
-      );
+      groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
+      needsBackup = groupBackupInfo.needsBackup;
+      order = await this.getWalletGroupOrder(keyId);
+      name = (await this.getWalletGroupName(keyId)) || wallet.name;
+      isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
+      canSign = true;
+      isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
     } else {
-      this.walletsGroups['read-only'] = {};
-      this.walletsGroups['read-only'].needsBackup = false;
-      wallet.needsBackup = false;
-      this.walletsGroups['read-only'].order = await this.getWalletGroupOrder(
-        'read-only'
-      );
-      this.walletsGroups['read-only'].name = 'Read Only Wallets';
-      this.walletsGroups['read-only'].isPrivKeyEncrypted = false;
-      this.walletsGroups['read-only'].canSign = false;
-      backedUp = true;
-      this.walletsGroups['read-only'].isDeletedSeed = true;
+      keyId = 'read-only';
+      needsBackup = false;
+      order = await this.getWalletGroupOrder('read-only');
+      name = 'Read Only Wallets';
+      isPrivKeyEncrypted = false;
+      canSign = false;
+      isDeletedSeed = true;
     }
 
+    wallet.needsBackup = needsBackup;
+
+    this.walletsGroups[keyId] = {
+      order,
+      name,
+      isPrivKeyEncrypted,
+      needsBackup,
+      canSign,
+      isDeletedSeed
+    };
+
     let date;
-    if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
+    if (groupBackupInfo && groupBackupInfo.timestamp)
+      date = new Date(Number(groupBackupInfo.timestamp));
     this.logger.info(
-      `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
+      `Binding wallet: ${wallet.id} - Backed up: ${!needsBackup} ${
         date ? date : ''
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
