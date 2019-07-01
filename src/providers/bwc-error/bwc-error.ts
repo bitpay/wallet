@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class BwcErrorProvider {
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   public msg(err, prefix?: string): string {
     if (!err) return 'Unknown error';
@@ -55,6 +55,9 @@ export class BwcErrorProvider {
         break;
       case 'CONNECTION_ERROR':
         body = this.translate.instant('Network error');
+        break;
+      case 'MAINTENANCE_ERROR':
+        body = this.translate.instant('Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/.');
         break;
       case 'NOT_FOUND':
         body = this.translate.instant('Wallet service not found');
