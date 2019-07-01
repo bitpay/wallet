@@ -354,7 +354,17 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     await this.giftCardProvider.saveGiftCard(card);
     this.onGoingProcessProvider.clear();
     this.logger.debug('Saved new gift card with status: ' + card.status);
+    this.logDiscountedPurchase();
     this.finish(card);
+  }
+
+  private logDiscountedPurchase() {
+    if (!getVisibleDiscount(this.cardConfig)) return;
+    const params = {
+      ...this.giftCardProvider.getDiscountEventParams(this.cardConfig),
+      discounted: true
+    };
+    this.giftCardProvider.logEvent('purchasedGiftCard', params);
   }
 
   private async promptEmail() {
@@ -404,7 +414,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
-      discounts: discount && discount.code ? [discount.code] : [],
+      discounts: discount ? [discount.code] : [],
       uuid: wallet.id,
       email,
       buyerSelectedTransactionCurrency: COIN,
