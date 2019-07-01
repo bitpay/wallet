@@ -99,7 +99,7 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel = this.translate.instant(`${this.coin.toUpperCase()} Wallet`);
+    this.createLabel = this.translate.instant(`${this.coin.toUpperCase()} Account`);
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
