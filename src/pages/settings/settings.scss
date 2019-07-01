@@ -24,6 +24,13 @@ page-settings {
     height: 25px;
   }
 
+  .wallet-group-header {
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+  }
+
   .settings-icon.item-img {
     opacity: 0.5;
   }

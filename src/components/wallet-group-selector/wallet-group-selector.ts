@@ -37,12 +37,13 @@ export class WalletGroupSelectorComponent {
       this.keyProvider.activeWGKey
     );
 
-    this.walletsGroups = _.values(
+    const walletsGroups = _.values(
       _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
         value.key = key;
         return value;
       })
     );
+    this.walletsGroups = _.sortBy(walletsGroups, 'order');
     await Observable.timer(50).toPromise();
     this.slideIn = true;
     this.overrideHardwareBackButton();

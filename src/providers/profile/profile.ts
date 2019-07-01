@@ -106,6 +106,15 @@ export class ProfileProvider {
     return order;
   }
 
+  public setWalletGroupOrder(keyId: string, index: number): void {
+    this.persistenceProvider.setWalletGroupOrder(keyId, index).then(() => {
+      this.logger.debug(
+        'Wallet Group new order stored for ' + keyId + ': ' + index
+      );
+    });
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
+  }
+
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;

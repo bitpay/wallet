@@ -54,7 +54,8 @@ export class SettingsPage {
   public touchIdAvailable: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
-  public walletsGroups;
+  public walletsGroups: any[];
+  public showReorder: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -73,6 +74,7 @@ export class SettingsPage {
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
+    this.showReorder = false;
   }
 
   ionViewDidLoad() {
@@ -83,7 +85,13 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
-    this.walletsGroups = this.profileProvider.walletsGroups;
+    const walletsGroups = _.values(
+      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
+        value.keyId = key;
+        return value;
+      })
+    );
+    this.walletsGroups = _.sortBy(walletsGroups, 'order');
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -251,6 +259,19 @@ export class SettingsPage {
   }
 
   public openWalletGroupSettings(walletGroup): void {
-    this.navCtrl.push(WalletGroupSettingsPage, { keyId: walletGroup.key });
+    this.navCtrl.push(WalletGroupSettingsPage, { keyId: walletGroup.keyId });
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public reorderWallets(indexes): void {
+    const element = this.walletsGroups[indexes.from];
+    this.walletsGroups.splice(indexes.from, 1);
+    this.walletsGroups.splice(indexes.to, 0, element);
+    _.each(this.walletsGroups, (walletGroup, index: number) => {
+      this.profileProvider.setWalletGroupOrder(walletGroup.keyId, index);
+    });
   }
 }

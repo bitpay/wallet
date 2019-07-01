@@ -457,25 +457,6 @@ page-home {
     }
   }
 
-  .reorder-done {
-    color: color($colors, primary);
-  }
-
-  .reorder-button {
-    display: flex;
-    position: relative;
-
-    &:after {
-      // For easier tappability
-      content: '';
-      position: absolute;
-      height: 30px;
-      width: 40px;
-      top: -10px;
-      left: -10px;
-    }
-  }
-
   .wallets-container {
     margin-top: 20px;
     margin-bottom: -15px;
