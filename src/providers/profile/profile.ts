@@ -41,6 +41,7 @@ export class ProfileProvider {
   public UPDATE_PERIOD_FAST = 5;
   private throttledBwsEvent;
   private validationLock: boolean = false;
+  private errors = this.bwcProvider.getErrors();
 
   constructor(
     private logger: Logger,
@@ -981,7 +982,7 @@ export class ProfileProvider {
             key.createCredentials(opts.password, {
               coin: opts.coin,
               network,
-              account: 0,
+              account: opts.account || 0,
               n: opts.n || 1
             })
           );
@@ -1003,7 +1004,7 @@ export class ProfileProvider {
             key.createCredentials(null, {
               coin: opts.coin,
               network,
-              account: 0,
+              account: opts.account || 0,
               n: opts.n || 1
             })
           );
@@ -1087,12 +1088,24 @@ export class ProfileProvider {
                 coin: opts.coin
               },
               err => {
-                if (err) {
+                const copayerRegistered =
+                  err instanceof this.errors.COPAYER_REGISTERED;
+                if (err && !copayerRegistered) {
                   const msg = this.bwcErrorProvider.msg(
                     err,
                     this.translate.instant('Error creating wallet')
                   );
                   return reject(msg);
+                } else if (copayerRegistered) {
+                  // try with account + 1
+                  opts.account = opts.account ? opts.account + 1 : 1;
+                  if (opts.account === 4)
+                    return reject(
+                      this.translate.instant(
+                        'Three accounts from the same coin and network is the limit for a wallet'
+                      )
+                    );
+                  return resolve(this._createWallet(opts));
                 } else {
                   return resolve(data);
                 }
