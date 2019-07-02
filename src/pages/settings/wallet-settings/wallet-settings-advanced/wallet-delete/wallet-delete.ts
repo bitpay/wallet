@@ -61,23 +61,21 @@ export class WalletDeletePage extends WalletTabsChild {
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
 
-        const keyId: string = this.wallet.credentials.keyId;
-        if (keyId) {
-          const keyInUse = this.profileProvider.isKeyInUse(keyId);
+        const keyId: string = this.wallet.credentials.keyId || 'read-only';
+        const keyInUse = this.profileProvider.isKeyInUse(keyId);
 
-          if (!keyInUse) {
-            if (this.keyProvider.activeWGKey === keyId) {
-              await this.keyProvider.removeActiveWGKey();
-            }
-            await this.keyProvider.removeKey(keyId);
-            delete this.profileProvider.walletsGroups[keyId];
-            this.keyProvider.load().then(() => {
-              this.goHome();
-            });
-          } else {
-            this.logger.warn('Key was not removed. Still in use');
-            this.goHome();
+        if (!keyInUse) {
+          if (this.keyProvider.activeWGKey === keyId) {
+            await this.keyProvider.removeActiveWGKey();
           }
+          await this.keyProvider.removeKey(keyId);
+          delete this.profileProvider.walletsGroups[keyId];
+          this.keyProvider.load().then(() => {
+            this.goHome();
+          });
+        } else {
+          this.logger.warn('Key was not removed. Still in use');
+          this.goHome();
         }
       })
       .catch(err => {

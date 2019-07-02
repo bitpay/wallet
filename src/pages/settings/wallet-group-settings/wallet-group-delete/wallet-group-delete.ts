@@ -65,22 +65,20 @@ export class WalletGroupDeletePage {
           this.pushNotificationsProvider.unsubscribe(wallet);
         });
 
-        if (this.keyId) {
-          const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
+        const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
 
-          if (!keyInUse) {
-            if (this.keyProvider.activeWGKey === this.keyId) {
-              await this.keyProvider.removeActiveWGKey();
-            }
-            await this.keyProvider.removeKey(this.keyId);
-            delete this.profileProvider.walletsGroups[this.keyId];
-            this.keyProvider.loadActiveWGKey().then(() => {
-              this.goHome();
-            });
-          } else {
-            this.logger.warn('Key was not removed. Still in use');
-            this.goHome();
+        if (!keyInUse) {
+          if (this.keyProvider.activeWGKey === this.keyId) {
+            await this.keyProvider.removeActiveWGKey();
           }
+          this.keyProvider.removeKey(this.keyId);
+          delete this.profileProvider.walletsGroups[this.keyId];
+          this.keyProvider.loadActiveWGKey().then(() => {
+            this.goHome();
+          });
+        } else {
+          this.logger.warn('Key was not removed. Still in use');
+          this.goHome();
         }
       })
       .catch(err => {

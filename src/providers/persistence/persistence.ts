@@ -31,7 +31,7 @@ const Keys = {
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
-  BACKUP_GROUP: keyId => 'group-backup-' + keyId,
+  BACKUP_WALLET_GROUP: keyId => 'walletGroupBackup-' + keyId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
   CLEAN_AND_SCAN_ADDRESSES: 'CleanAndScanAddresses',
@@ -164,15 +164,15 @@ export class PersistenceProvider {
 
   setBackupGroupFlag(keyId: string, timestamp?) {
     timestamp = timestamp || Date.now();
-    return this.storage.set(Keys.BACKUP_GROUP(keyId), timestamp);
+    return this.storage.set(Keys.BACKUP_WALLET_GROUP(keyId), timestamp);
   }
 
   getBackupGroupFlag(keyId: string) {
-    return this.storage.get(Keys.BACKUP_GROUP(keyId));
+    return this.storage.get(Keys.BACKUP_WALLET_GROUP(keyId));
   }
 
   clearBackupGroupFlag(keyId: string) {
-    return this.storage.remove(Keys.BACKUP_GROUP(keyId));
+    return this.storage.remove(Keys.BACKUP_WALLET_GROUP(keyId));
   }
 
   setCleanAndScanAddresses(walletId: string) {
