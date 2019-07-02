@@ -221,14 +221,16 @@ export class ImportWalletPage {
     wallets.forEach(wallet => {
       this.walletProvider.updateRemotePreferences(wallet);
       this.pushNotificationsProvider.updateSubscription(wallet);
-      this.profileProvider.setBackupGroupFlag(wallet.credentials.walletId);
+      this.profileProvider.setWalletBackup(wallet.credentials.walletId);
     });
-    this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
-    this.profileProvider.setWalletGroupName(
-      wallets[0].credentials.keyId,
-      this.importForm.value.walletName
-    );
-    this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
+    if (wallets && wallets[0]) {
+      this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
+      this.profileProvider.setWalletGroupName(
+        wallets[0].credentials.keyId,
+        this.importForm.value.walletName
+      );
+      this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
+    }
     this.events.publish('Local/WalletListChange');
     this.app.getRootNavs()[0].setRoot(TabsPage);
   }
