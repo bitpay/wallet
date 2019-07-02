@@ -139,27 +139,41 @@ export class CopayersPage {
     this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider
       .deleteWalletClient(this.wallet)
-      .then(() => {
+      .then(async () => {
+        this.onGoingProcessProvider.clear();
+        this.pushNotificationsProvider.unsubscribe(this.wallet);
+
         const keyId: string = this.wallet.credentials.keyId;
         if (keyId) {
           const keyInUse = this.profileProvider.isKeyInUse(keyId);
 
           if (!keyInUse) {
-            this.keyProvider.removeKey(keyId);
+            if (this.keyProvider.activeWGKey === keyId) {
+              await this.keyProvider.removeActiveWGKey();
+            }
+            await this.keyProvider.removeKey(keyId);
+            delete this.profileProvider.walletsGroups[keyId];
+            this.keyProvider.loadActiveWGKey().then(() => {
+              this.dismiss();
+            });
           } else {
             this.logger.warn('Key was not removed. Still in use');
+            this.dismiss();
           }
         }
-
-        this.onGoingProcessProvider.clear();
-        this.pushNotificationsProvider.unsubscribe(this.wallet);
-        this.viewCtrl.dismiss();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
+  }
+
+  public dismiss() {
+    this.events.publish('Local/WalletListChange');
+    setTimeout(() => {
+      this.viewCtrl.dismiss();
+    }, 1000);
   }
 
   public showFullInfo(): void {

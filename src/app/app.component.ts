@@ -231,10 +231,6 @@ export class CopayApp {
                 this.logger.warn('Non agreed disclaimer');
                 this.rootPage = DisclaimerPage;
                 break;
-              case 'ONBOARDINGNONCOMPLETED':
-                this.logger.warn('Onboarding non completed');
-                this.rootPage = OnboardingPage;
-                break;
               default:
                 this.popupProvider.ionicAlert(
                   'Could not initialize the app',

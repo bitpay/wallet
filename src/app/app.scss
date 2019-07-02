@@ -569,3 +569,22 @@ label-tip.warn.no-arrowhead:before {
 .slide-confirm-fast {
   transition: transform 0.3s;
 }
+
+.reorder-done {
+  color: color($colors, primary);
+}
+
+.reorder-button {
+  display: flex;
+  position: relative;
+
+  &:after {
+    // For easier tappability
+    content: '';
+    position: absolute;
+    height: 30px;
+    width: 40px;
+    top: -10px;
+    left: -10px;
+  }
+}

@@ -6,10 +6,10 @@
 
 
 <ion-content no-bounce>
-  <div class="key-container" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
+  <div class="key-container" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
     <div class="word-container">
       <div class="word-title" translate>Write down each word.</div>
-      <div class="word" copy-to-clipboard="{{ wallet.network == 'testnet' ? keys?.mnemonic : null }}">
+      <div class="word">
         <span>{{mnemonicWords[wordToShow]}}</span>
       </div>
       <div class="word-number">
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="bottom-absolute" [ngClass]="{'right-align': wordToShow == 0}" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
+  <div class="bottom-absolute" [ngClass]="{'right-align': wordToShow == 0}" *ngIf="walletGroup.canSign && mnemonicWords && mnemonicWords[0]">
     <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
       {{'Previous' | translate}}
     </button>

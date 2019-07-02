@@ -1,0 +1,28 @@
+page-add-wallet {
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    .item-title {
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .item-subtitle {
+      color: black;
+      font-size: 16px;
+      white-space: normal;
+    }
+
+    ion-icon.item-icon {
+      margin-left: 3px;
+
+      img {
+        $icon-dimension: 40px;
+        height: $icon-dimension;
+        width: $icon-dimension;
+      }
+    }
+  }
+}

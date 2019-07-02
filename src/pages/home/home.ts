@@ -31,6 +31,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { InvoiceProvider } from '../../providers/invoice/invoice';
+import { KeyProvider } from '../../providers/key/key';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -54,6 +55,8 @@ export class HomePage {
   showCard;
   @ViewChild('priceCard')
   priceCard;
+  @ViewChild('walletGroupSelector')
+  walletGroupSelector;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -66,6 +69,7 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
+  public selectedWalletGroup;
 
   public showRateCard: boolean;
   public showReorder: boolean;
@@ -103,11 +107,13 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
     private invoiceProvider: InvoiceProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private keyProvider: KeyProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
+    this.selectedWalletGroup = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -199,7 +205,9 @@ export class HomePage {
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
       // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', this.setWallets);
+      this.events.subscribe('Local/WalletListChange', () =>
+        this.setWallets(true)
+      );
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletFocusHandler);
@@ -339,6 +347,10 @@ export class HomePage {
     }
   );
 
+  public showWalletGroupSelectorView() {
+    this.walletGroupSelector.present();
+  }
+
   private setWallets = (shouldUpdate: boolean = false) => {
     // TEST
     /* 
@@ -349,7 +361,17 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
-    this.wallets = this.profileProvider.getWallets();
+    let opts: any = {};
+    if (this.keyProvider.activeWGKey === 'read-only') {
+      opts.readOnly = true;
+    } else if (this.keyProvider.activeWGKey) {
+      opts.keyId = this.keyProvider.activeWGKey;
+    }
+    this.selectedWalletGroup = this.profileProvider.getWalletGroup(
+      this.keyProvider.activeWGKey
+    );
+
+    this.wallets = this.profileProvider.getWallets(opts);
 
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
@@ -768,7 +790,7 @@ export class HomePage {
   }
 
   public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+    this.navCtrl.push(AddPage, { addingNewAccount: true });
   }
 
   public goToWalletDetails(wallet, params): void {

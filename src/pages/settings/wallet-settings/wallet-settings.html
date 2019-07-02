@@ -1,4 +1,4 @@
-<wide-header-page [headerColor]="wallet && wallet.color" title="{{'Wallet Preferences' | translate}}">
+<wide-header-page [headerColor]="wallet && wallet.color" title="{{'Account Preferences' | translate}}">
   <div page-content>
     <ion-list class="settings-list">
       <ion-item-divider class="item-without-title"></ion-item-divider>
@@ -16,28 +16,7 @@
         <ion-label>{{'Hide Balance' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
       </ion-item>
-      <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
-      <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
-        <span translate *ngIf="derivationStrategy != 'BIP45'">Backup</span>
-        <span translate *ngIf="derivationStrategy == 'BIP45'">Backup File</span>
-        <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-          {{'Needs backup' | translate}}
-        </ion-note>
-      </button>
-      <div *ngIf="canSign">
-        <ion-item class="with-label no-border">
-          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
-          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
-        </ion-item>
-        <label-tip type="info">
-          <span label-tip-title translate>Password Not Recoverable</span>
-          <div label-tip-body>
-            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
-            <br>
-            <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
-          </div>
-        </label-tip>
-      </div>
+      <ion-item-divider *ngIf="canSign && touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
       <div *ngIf="canSign && touchIdAvailable">
         <ion-item>
           <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
@@ -52,7 +31,7 @@
         <span translate>Addresses</span>
       </button>
       <button ion-item *ngIf="derivationStrategy != 'BIP45'" (click)="openExportWallet()">
-        <span translate>Export Wallet Metadata</span>
+        <span translate>Export Account Metadata</span>
       </button>
       <button ion-item (click)="openWalletServiceUrl()">
         <span>Wallet Service URL</span>

@@ -1,0 +1,27 @@
+<div class="wallet-group-selector-container" [ngClass]="{'close': !slideIn, 'open': slideIn}">
+  <div class="backdrop" [ngClass]="{'backdrop-fade-in': slideIn}" (click)="dismiss()"></div>
+  <div class="wallet-group-selector" [ngClass]="{'opened': slideIn, 'closed': !slideIn }">
+    <div class="title">
+      {{'Wallets' | translate}}
+    </div>
+    <ion-list>
+      <ion-item detail-none class="wallet-group-item" *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="setActiveWalletGroup(walletsGroup)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/icon-wallet.svg" />
+        </ion-icon>
+        <div class="wallet-group-name">
+          <span>{{walletsGroup.name}}</span>
+        </div>
+        <ion-icon *ngIf="walletsGroup.key == selectedWalletGroup.key" class="item-img" item-end>
+          <img src="assets/img/icon-check-selected.svg" />
+        </ion-icon>
+      </ion-item>
+      <ion-item detail-none class="wallet-group-item" (click)="goToAddWalletPage()">
+        <ion-icon item-start name="add" class="plus-icon item-img"></ion-icon>
+        <div class="wallet-group-name create">
+          <span>{{'Create new wallet' | translate}}</span>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>

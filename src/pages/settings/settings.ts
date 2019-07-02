@@ -32,6 +32,7 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
+import { WalletGroupSettingsPage } from './wallet-group-settings/wallet-group-settings';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -42,8 +43,6 @@ export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
   public languages;
-  public walletsBtc;
-  public walletsBch;
   public config;
   public selectedAlternative;
   public isCordova: boolean;
@@ -55,6 +54,8 @@ export class SettingsPage {
   public touchIdAvailable: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
+  public walletsGroups: any[];
+  public showReorder: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -72,9 +73,8 @@ export class SettingsPage {
     private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
-    this.walletsBch = [];
-    this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
+    this.showReorder = false;
   }
 
   ionViewDidLoad() {
@@ -85,12 +85,13 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
-    this.walletsBtc = this.profileProvider.getWallets({
-      coin: 'btc'
-    });
-    this.walletsBch = this.profileProvider.getWallets({
-      coin: 'bch'
-    });
+    const walletsGroups = _.values(
+      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
+        value.keyId = key;
+        return value;
+      })
+    );
+    this.walletsGroups = _.sortBy(walletsGroups, 'order');
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -255,5 +256,22 @@ export class SettingsPage {
       okText,
       cancelText
     );
+  }
+
+  public openWalletGroupSettings(walletGroup): void {
+    this.navCtrl.push(WalletGroupSettingsPage, { keyId: walletGroup.keyId });
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public reorderWallets(indexes): void {
+    const element = this.walletsGroups[indexes.from];
+    this.walletsGroups.splice(indexes.from, 1);
+    this.walletsGroups.splice(indexes.to, 0, element);
+    _.each(this.walletsGroups, (walletGroup, index: number) => {
+      this.profileProvider.setWalletGroupOrder(walletGroup.keyId, index);
+    });
   }
 }
