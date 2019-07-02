@@ -1279,12 +1279,6 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.readOnly) {
-      ret = _.filter(ret, x => {
-        return !x.credentials.keyId;
-      });
-    }
-
     if (opts.coin) {
       ret = _.filter(ret, x => {
         return x.credentials.coin == opts.coin;
@@ -1347,13 +1341,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       const MAX = 100;
       opts = opts ? opts : {};
-
-      if (this.keyProvider.activeWGKey === 'read-only') {
-        opts.readOnly = true;
-      } else {
-        opts.keyId = this.keyProvider.activeWGKey;
-      }
-
+      opts.keyId = this.keyProvider.activeWGKey;
       const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
         return reject('No wallets available');

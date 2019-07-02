@@ -362,11 +362,7 @@ export class HomePage {
 
     this.profileProvider.setLastKnownBalance();
     let opts: any = {};
-    if (this.keyProvider.activeWGKey === 'read-only') {
-      opts.readOnly = true;
-    } else if (this.keyProvider.activeWGKey) {
-      opts.keyId = this.keyProvider.activeWGKey;
-    }
+    opts.keyId = this.keyProvider.activeWGKey;
     this.selectedWalletGroup = this.profileProvider.getWalletGroup(
       this.keyProvider.activeWGKey
     );

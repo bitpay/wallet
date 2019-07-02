@@ -170,7 +170,7 @@ export class BackupGamePage {
     }
     this.profileProvider.setBackupGroupFlag(this.keyId);
     const opts = {
-      ketId: this.keyId
+      keyId: this.keyId
     };
     const wallets = this.profileProvider.getWallets(opts);
     wallets.forEach(w => {
