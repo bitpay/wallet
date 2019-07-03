@@ -53,6 +53,11 @@ export class BwcErrorProvider {
       case 'INSUFFICIENT_FUNDS':
         body = this.translate.instant('Insufficient funds');
         break;
+      case 'MAINTENANCE_ERROR':
+        body = this.translate.instant(
+          'Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/.'
+        );
+        break;
       case 'CONNECTION_ERROR':
         body = this.translate.instant('Network error');
         break;
