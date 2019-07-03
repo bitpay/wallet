@@ -26,6 +26,7 @@ export interface GiftCardMap {
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
+  ORDER_ADDRESS: address => 'order-address-' + address,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
@@ -503,6 +504,18 @@ export class PersistenceProvider {
 
   removeShapeshiftToken(network: string) {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
+  }
+
+  setAddressOrder(address: string, order: number) {
+    return this.storage.set(Keys.ORDER_ADDRESS(address), order);
+  }
+
+  getAddressOrder(address: string) {
+    return this.storage.get(Keys.ORDER_ADDRESS(address));
+  }
+
+  removeAddressOrder(address: string) {
+    return this.storage.remove(Keys.ORDER_ADDRESS(address));
   }
 
   setWalletOrder(walletId: string, order: number) {

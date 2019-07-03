@@ -33,20 +33,48 @@ page-addressbook {
       max-width: 300px;
     }
   }
-  .contact {
-    ion-label {
-      display: flex;
-      align-items: center;
-      gravatar {
-        margin-right: 1.5rem;
-      }
-    }
-    .contact-info {
-      overflow: hidden;
-      .item-title {
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
+}
+
+.addressbook ion-item-sliding.item-wrapper {
+  button.item.item-block .item-inner {
+    align-items: start;
+  }
+}
+
+.addressbook ion-item-sliding.reorder-active {
+  box-shadow: none;
+
+  button.item.item-block {
+    box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
+    transform: scale3d(1.05, 1.05, 1.05);
+    transition: box-shadow 300ms ease, transform 300ms ease;
+  }
+}
+
+.sortContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.reorder-done {
+  color: color($colors, primary);
+}
+
+.reorder-button {
+  display: flex;
+  position: relative;
+
+  &:after {
+    // For easier tappability
+    content: '';
+    position: absolute;
+    height: 30px;
+    width: 40px;
+    top: -10px;
+    left: -10px;
   }
 }
