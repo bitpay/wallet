@@ -1,0 +1,34 @@
+<div class="header">
+  <img class="home-logo" src="assets/img/app/logo.svg" />
+</div>
+<div class="body">
+  <div class="title">
+    {{'Wallets' | translate}}
+  </div>
+  <div>
+
+    <div class="wallet-group">
+      <div detail-none class="wallet-group-item" [ngClass]="{'success': walletsGroup.key == selectedWalletGroup.key}" *ngFor="let walletsGroup of walletsGroups" (click)="setActiveWalletGroup(walletsGroup)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/add-wallet/wallet.svg" class="icon-wallet-group" />
+        </ion-icon>
+        <div class="wallet-group-name ellipsis">
+          <span>{{walletsGroup.name}}</span>
+        </div>
+        <!-- <ion-icon *ngIf="walletsGroup.key == selectedWalletGroup.key" class="item-img" item-end>
+              <img src="assets/img/icon-check-selected.svg" />
+            </ion-icon> -->
+      </div>
+      <div detail-none class="wallet-group-item create" (click)="goToAddWalletPage()">
+        <ion-icon item-start name="add" class="plus-icon item-img"></ion-icon>
+        <div class="wallet-group-name">
+          <span>{{'Add/Import' | translate}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="footer" (click)="close()">
+  CLOSE
+</div>

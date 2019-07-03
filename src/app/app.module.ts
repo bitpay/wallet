@@ -5,7 +5,7 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { Config, IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 /* Modules */
 import {
@@ -20,6 +20,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+
+import { ModalEnterFadeIn, ModalLeaveFadeOut } from '../assets/ionic-modal-transition-pack';
 
 /* Copay App */
 import env from '../environments';
@@ -135,4 +137,13 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     FormatCurrencyPipe
   ]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(public config: Config) {
+    this.setCustomTransitions();
+  }
+
+  private setCustomTransitions() {
+    this.config.setTransition('ModalEnterFadeIn', ModalEnterFadeIn);
+    this.config.setTransition('ModalLeaveFadeOut', ModalLeaveFadeOut);
+  }
+}

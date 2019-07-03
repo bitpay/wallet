@@ -18,6 +18,7 @@ import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-int
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
+import { WalletGroupSelectorPage } from '../wallet-group-selector/wallet-group-selector';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -40,6 +41,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -55,8 +57,6 @@ export class HomePage {
   showCard;
   @ViewChild('priceCard')
   priceCard;
-  @ViewChild('walletGroupSelector')
-  walletGroupSelector;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -78,6 +78,7 @@ export class HomePage {
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
+  public isBlur: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -111,6 +112,7 @@ export class HomePage {
     private keyProvider: KeyProvider
   ) {
     this.slideDown = false;
+    this.isBlur = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
     this.selectedWalletGroup = {};
@@ -347,8 +349,24 @@ export class HomePage {
     }
   );
 
-  public showWalletGroupSelectorView() {
-    this.walletGroupSelector.present();
+  public openWalletGroupSelectorModal(): void {
+    this.isBlur = true;
+
+    let modal = this.modalCtrl.create(
+      WalletGroupSelectorPage,
+      null,
+      {
+        showBackdrop: true,
+        enableBackdropDismiss: false,
+        enterAnimation: 'ModalEnterFadeIn',
+        leaveAnimation: 'ModalLeaveFadeOut'
+      }
+    );
+    modal.present();
+    modal.onDidDismiss(async () => {
+      this.isBlur = false;
+      console.log("openWalletGroupSelectorModal dismissed");
+    });
   }
 
   private setWallets = (shouldUpdate: boolean = false) => {
@@ -486,8 +504,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-              ? price / 1e-8
-              : price;
+                ? price / 1e-8
+                : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -608,9 +626,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;

@@ -1,0 +1,86 @@
+page-wallet-group-selector {
+  background: rgba(255, 255, 255, 0.2);
+      
+      .header {
+        padding-top: 2rem;
+        text-align: center;
+        .home-logo {
+          width: 10rem;
+        }
+      }
+
+      .body {
+        padding: 3rem;
+        height: 100%;
+        margin-bottom: 7rem;
+        .title {
+          color: grey;
+          font-size: 18px;
+          font-weight: 500;
+          border-bottom: 1px solid grey;
+        }
+
+        .wallet-group {
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          margin-top: 2rem;
+          .wallet-group-item {
+            max-width: 16rem;
+            min-width: 16rem;
+            cursor: pointer;
+            flex: 1 0 45%;
+            margin: 5px;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
+
+            .item-img {
+              display: flex;
+              justify-content: center;
+              margin-top: 0.5rem;
+              margin-bottom: 2rem;
+            }
+            .wallet-group-name {
+              font-size: 16px;
+              text-align: center;
+
+            }
+          }
+          .create {
+            opacity: 0.4;
+            background: white;
+            .plus-icon {
+              background: rgb(211, 210, 210);
+              height: 50px;
+              width: 50px;
+              margin: auto;
+              border-radius: 50px;
+              font-size: 33px;
+              margin-top: 0.5rem;
+              margin-bottom: 2rem;
+            }
+          }
+          .success {
+            box-shadow: 0 7px 12px color($background-colors, success);
+          }
+        }
+      }
+
+      .footer {
+        padding: 2rem;
+        margin: 0 1.75rem;
+        border-top: 0.1rem solid rgba(255, 255, 255, 0.45);
+        position: absolute;
+        bottom: 0rem;
+        left: 0rem;
+        right: 0rem;
+        text-align: center;
+        color: grey;
+        font-size: 2rem;
+        letter-spacing: 2.86px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+}
