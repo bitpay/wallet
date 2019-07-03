@@ -5,7 +5,12 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Config, IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {
+  Config,
+  IonicApp,
+  IonicErrorHandler,
+  IonicModule
+} from 'ionic-angular';
 
 /* Modules */
 import {
@@ -21,7 +26,10 @@ import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
-import { ModalEnterFadeIn, ModalLeaveFadeOut } from '../assets/ionic-modal-transition-pack';
+import {
+  ModalEnterFadeIn,
+  ModalLeaveFadeOut
+} from '../assets/ionic-modal-transition-pack';
 
 /* Copay App */
 import env from '../environments';

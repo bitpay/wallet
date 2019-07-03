@@ -41,7 +41,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
-
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -352,20 +351,17 @@ export class HomePage {
   public openWalletGroupSelectorModal(): void {
     this.isBlur = true;
 
-    let modal = this.modalCtrl.create(
-      WalletGroupSelectorPage,
-      null,
-      {
-        showBackdrop: true,
-        enableBackdropDismiss: false,
-        enterAnimation: 'ModalEnterFadeIn',
-        leaveAnimation: 'ModalLeaveFadeOut'
-      }
-    );
+    let modal = this.modalCtrl.create(WalletGroupSelectorPage, null, {
+      showBackdrop: false,
+      enableBackdropDismiss: false,
+      cssClass: 'fullscreen-modal-no-backdrop',
+      enterAnimation: 'ModalEnterFadeIn',
+      leaveAnimation: 'ModalLeaveFadeOut'
+    });
     modal.present();
     modal.onDidDismiss(async () => {
       this.isBlur = false;
-      console.log("openWalletGroupSelectorModal dismissed");
+      console.log('openWalletGroupSelectorModal dismissed');
     });
   }
 
@@ -504,8 +500,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-                ? price / 1e-8
-                : price;
+              ? price / 1e-8
+              : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -626,9 +622,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-      opts.walletId +
-      ' alsohistory:' +
-      opts.alsoUpdateHistory
+        opts.walletId +
+        ' alsohistory:' +
+        opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
