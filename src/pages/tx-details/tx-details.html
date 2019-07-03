@@ -158,6 +158,16 @@
       </div>
     </div>
 
+    <div padding>
+      <label-tip type="warn" header="no-header" class="no-arrowhead" *ngIf="btx.isRBF && btx.confirmations === -1">
+        <div label-tip-body translate>
+          <span translate>This is an RBF transaction. Until it confirms, the transaction could be replaced/redirected by the sender.</span>
+          <br>
+          <a class="label-tip-link" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360028824532-Why-can-t-I-pay-a-BitPay-invoice-using-RBF-')" translate>Read More</a>
+        </div>
+      </label-tip>
+    </div>
+
     <div text-center padding>
       <button ion-button clear (click)="viewOnBlockchain()">
         {{'View on blockchain' | translate}}
