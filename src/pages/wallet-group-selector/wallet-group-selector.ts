@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import { Events, NavController, Platform, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { ViewController } from 'ionic-angular';
 
 // Pages
 import { AddWalletPage } from '../../pages/add-wallet/add-wallet';

@@ -361,7 +361,6 @@ export class HomePage {
     modal.present();
     modal.onDidDismiss(async () => {
       this.isBlur = false;
-      console.log('openWalletGroupSelectorModal dismissed');
     });
   }
 

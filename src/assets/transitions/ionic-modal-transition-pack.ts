@@ -1,8 +1,7 @@
 import { Animation, PageTransition } from 'ionic-angular';
 
-/* ==================================================
-Fade
-================================================== */
+// Fade transitions
+
 export class ModalEnterFadeIn extends PageTransition {
   public init() {
     super.init();

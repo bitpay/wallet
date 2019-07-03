@@ -15,9 +15,6 @@
       <div class="wallet-group-name ellipsis">
         <span>{{walletsGroup.name}}</span>
       </div>
-      <!-- <ion-icon *ngIf="walletsGroup.key == selectedWalletGroup.key" class="item-img" item-end>
-              <img src="assets/img/icon-check-selected.svg" />
-            </ion-icon> -->
     </div>
     <div detail-none class="wallet-group-item create" (click)="goToAddWalletPage()">
       <ion-icon item-start name="add" class="plus-icon item-img"></ion-icon>
@@ -27,7 +24,7 @@
     </div>
   </div>
 
-  <div class="footer" (click)="close()">
+  <div class="footer" (click)="close()" translate>
     CLOSE
   </div>
 </div>

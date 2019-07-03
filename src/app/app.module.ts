@@ -29,7 +29,7 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import {
   ModalEnterFadeIn,
   ModalLeaveFadeOut
-} from '../assets/ionic-modal-transition-pack';
+} from '../assets/transitions/ionic-modal-transition-pack';
 
 /* Copay App */
 import env from '../environments';
