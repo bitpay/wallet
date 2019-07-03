@@ -82,9 +82,44 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
-    this.addressBookAdd.controls['address'].setValue(
-      this.parseAddress(this.addressBookAdd.value.address)
+    let newAddress: string = this.parseAddress(
+      this.addressBookAdd.value.address
     );
+
+    this.addressBookAdd.controls['address'].setValue(newAddress);
+    let newAddressOrder: number;
+
+    let promises = [];
+    promises.push(
+      this.ab
+        .list()
+        .then(addressBook => {
+          newAddressOrder = Object.keys(addressBook).length;
+          this.ab
+            .setAddressOrder(newAddress, newAddressOrder)
+            .then(() => {})
+            .catch(err => {
+              this.logger.debug('Error setting new address order', err);
+            });
+        })
+        .catch(err => {
+          this.logger.debug('Error retrieving address book length', err);
+        })
+    );
+
+    Promise.all(promises).then(() => {
+      console.log('Address book length is ', newAddressOrder);
+    });
+
+    console.log(promises);
+
+    // this.ab
+    //   .setAddressOrder(newAddress, newAddressOrder)
+    //   .then(() => {})
+    //   .catch(err => {
+    //     this.logger.debug('Error setting new address order', err);
+    //   });
+
     this.ab
       .add(this.addressBookAdd.value)
       .then(() => {
