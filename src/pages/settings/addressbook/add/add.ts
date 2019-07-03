@@ -107,19 +107,6 @@ export class AddressbookAddPage {
         })
     );
 
-    Promise.all(promises).then(() => {
-      console.log('Address book length is ', newAddressOrder);
-    });
-
-    console.log(promises);
-
-    // this.ab
-    //   .setAddressOrder(newAddress, newAddressOrder)
-    //   .then(() => {})
-    //   .catch(err => {
-    //     this.logger.debug('Error setting new address order', err);
-    //   });
-
     this.ab
       .add(this.addressBookAdd.value)
       .then(() => {
