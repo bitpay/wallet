@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
+import { AddWalletPage } from '../add-wallet/add-wallet';
 import { AddPage } from '../add/add';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -359,8 +360,9 @@ export class HomePage {
       leaveAnimation: 'ModalLeaveFadeOut'
     });
     modal.present();
-    modal.onDidDismiss(async () => {
+    modal.onDidDismiss((goToAddWallet?: boolean) => {
       this.isBlur = false;
+      if (goToAddWallet) this.navCtrl.push(AddWalletPage);
     });
   }
 
