@@ -245,6 +245,9 @@ msgstr "Sotto l'importo minimo"
 msgid "BitPay Card URI"
 msgstr "Carta BitPay URI"
 
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+msgstr ""
+
 msgid "BitPay does not receive and does not control miner fees."
 msgstr ""
 
