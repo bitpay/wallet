@@ -107,6 +107,7 @@ export class KeyProvider {
 
   public removeKey(keyId: string): Promise<any> {
     this.logger.debug('Removing key: ' + keyId);
+    if (keyId === 'read-only') return Promise.resolve();
 
     const selectedKey = this.keys.findIndex(k => k.id == keyId);
 

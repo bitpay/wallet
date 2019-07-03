@@ -1269,15 +1269,13 @@ export class ProfileProvider {
 
     let ret = _.values(this.wallet);
 
-    if (opts.keyId) {
-      ret = _.filter(ret, x => {
-        return x.credentials.keyId == opts.keyId;
-      });
-    }
-
-    if (opts.readOnly) {
+    if (opts.keyId === 'read-only') {
       ret = _.filter(ret, x => {
         return !x.credentials.keyId;
+      });
+    } else if (opts.keyId) {
+      ret = _.filter(ret, x => {
+        return x.credentials.keyId == opts.keyId;
       });
     }
 
@@ -1343,13 +1341,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       const MAX = 100;
       opts = opts ? opts : {};
-
-      if (this.keyProvider.activeWGKey === 'read-only') {
-        opts.readOnly = true;
-      } else {
-        opts.keyId = this.keyProvider.activeWGKey;
-      }
-
+      opts.keyId = this.keyProvider.activeWGKey;
       const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
         return reject('No wallets available');
@@ -1368,10 +1360,13 @@ export class ProfileProvider {
   }
 
   public isKeyInUse(keyId: string): boolean {
-    const keyIdIndex = this.profile.credentials.findIndex(
-      c => c.keyId == keyId
-    );
-
+    const keyIdIndex = this.profile.credentials.findIndex(c => {
+      if (keyId === 'read-only') {
+        return !c.keyId;
+      } else {
+        return c.keyId == keyId;
+      }
+    });
     return keyIdIndex >= 0;
   }
 }
