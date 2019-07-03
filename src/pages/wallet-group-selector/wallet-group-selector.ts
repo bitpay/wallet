@@ -1,38 +1,34 @@
 import { Component } from '@angular/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import { Events, NavController, Platform, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 
 // Pages
 import { AddWalletPage } from '../../pages/add-wallet/add-wallet';
+import { TabsPage } from '../../pages/tabs/tabs';
 
 // Providers
 import { KeyProvider } from '../../providers/key/key';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 @Component({
-  selector: 'wallet-group-selector',
+  selector: 'page-wallet-group-selector',
   templateUrl: 'wallet-group-selector.html'
 })
-export class WalletGroupSelectorComponent {
+export class WalletGroupSelectorPage {
   private deregisterBackButtonAction;
 
-  public slideIn: boolean;
   public walletsGroups: any[];
   public selectedIndex: number;
   public selectedWalletGroup;
 
   constructor(
+    private viewCtrl: ViewController,
     private events: Events,
     private platform: Platform,
     private keyProvider: KeyProvider,
     private navCtrl: NavController,
     private profileProvider: ProfileProvider
   ) {
-    this.slideIn = false;
-  }
-
-  public async present(): Promise<void> {
     this.selectedWalletGroup = this.profileProvider.getWalletGroup(
       this.keyProvider.activeWGKey
     );
@@ -44,19 +40,12 @@ export class WalletGroupSelectorComponent {
       })
     );
     this.walletsGroups = _.sortBy(walletsGroups, 'order');
-    await Observable.timer(50).toPromise();
-    this.slideIn = true;
     this.overrideHardwareBackButton();
-  }
-
-  public dismiss() {
-    this.slideIn = false;
-    this.deregisterBackButtonAction();
   }
 
   overrideHardwareBackButton() {
     this.deregisterBackButtonAction = this.platform.registerBackButtonAction(
-      () => this.dismiss()
+      () => this.close()
     );
   }
 
@@ -65,14 +54,21 @@ export class WalletGroupSelectorComponent {
   }
 
   public setActiveWalletGroup(selectedWalletGroup): void {
-    this.dismiss();
+    this.close();
     this.keyProvider.setActiveWGKey(selectedWalletGroup.key);
     this.events.publish('Local/WalletListChange');
   }
 
   public goToAddWalletPage(): void {
-    this.navCtrl.push(AddWalletPage).then(() => {
-      this.dismiss();
+    this.navCtrl.setRoot(TabsPage).then(() => {
+      this.navCtrl.push(AddWalletPage).then(() => {
+        this.close();
+      });
     });
+  }
+
+  public close(): void {
+    this.deregisterBackButtonAction();
+    this.viewCtrl.dismiss();
   }
 }

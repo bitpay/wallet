@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar class="home-header">
+  <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
     <ion-buttons left class="add-button" *ngIf="selectedWalletGroup && !selectedWalletGroup.isDeletedSeed">
       <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]" [ngClass]="{copay: appProvider.info.name === 'copay'}">
         <img src="assets/img/plus.svg" />
@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>
       <img *ngIf="!selectedWalletGroup" class="home-logo" src="assets/img/app/logo.svg" />
-      <button ion-button class="wallet-group-dropdown" [ngClass]="{'fix-margin': txpsN > 0 }" *ngIf="selectedWalletGroup" (click)="showWalletGroupSelectorView()">
+      <button ion-button class="wallet-group-dropdown" [ngClass]="{'fix-margin': txpsN > 0 }" *ngIf="selectedWalletGroup" (click)="openWalletGroupSelectorModal()">
         <span class="ellipsis">{{selectedWalletGroup.name}}</span>
         <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
       </button>
@@ -21,10 +21,9 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <wallet-group-selector #walletGroupSelector></wallet-group-selector>
 </ion-header>
 
-<ion-content class="fullscreen-tab" #scrollArea>
+<ion-content class="fullscreen-tab" [ngClass]="{blur: isBlur}" #scrollArea>
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorder" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

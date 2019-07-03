@@ -18,6 +18,7 @@ import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-int
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
+import { WalletGroupSelectorPage } from '../wallet-group-selector/wallet-group-selector';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -55,8 +56,6 @@ export class HomePage {
   showCard;
   @ViewChild('priceCard')
   priceCard;
-  @ViewChild('walletGroupSelector')
-  walletGroupSelector;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -78,6 +77,7 @@ export class HomePage {
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
+  public isBlur: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -111,6 +111,7 @@ export class HomePage {
     private keyProvider: KeyProvider
   ) {
     this.slideDown = false;
+    this.isBlur = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
     this.selectedWalletGroup = {};
@@ -347,8 +348,20 @@ export class HomePage {
     }
   );
 
-  public showWalletGroupSelectorView() {
-    this.walletGroupSelector.present();
+  public openWalletGroupSelectorModal(): void {
+    this.isBlur = true;
+
+    let modal = this.modalCtrl.create(WalletGroupSelectorPage, null, {
+      showBackdrop: false,
+      enableBackdropDismiss: false,
+      cssClass: 'fullscreen-modal-no-backdrop',
+      enterAnimation: 'ModalEnterFadeIn',
+      leaveAnimation: 'ModalLeaveFadeOut'
+    });
+    modal.present();
+    modal.onDidDismiss(async () => {
+      this.isBlur = false;
+    });
   }
 
   private setWallets = (shouldUpdate: boolean = false) => {

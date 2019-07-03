@@ -14,6 +14,10 @@ page-home {
     background: none;
   }
 
+  .blur {
+    filter: blur(12px);
+  }
+
   .home-header {
     .notifications-badge {
       border-radius: 9px;
