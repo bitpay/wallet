@@ -16,7 +16,7 @@ export class ModalEnterFadeIn extends PageTransition {
     backdrop.fromTo('opacity', 0.01, 0.4);
     this.element(this.enteringView.pageRef())
       .easing('ease-in')
-      .duration(400)
+      .duration(200)
       .add(backdrop)
       .add(wrapper);
   }
@@ -35,7 +35,7 @@ export class ModalLeaveFadeOut extends PageTransition {
     backdrop.fromTo('opacity', 0.4, 0.0);
     this.element(this.leavingView.pageRef())
       .easing('ease-out')
-      .duration(250)
+      .duration(150)
       .add(backdrop)
       .add(wrapper);
   }

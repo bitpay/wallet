@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { Events, NavController, Platform, ViewController } from 'ionic-angular';
+import { Events, Platform, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-
-// Pages
-import { AddWalletPage } from '../../pages/add-wallet/add-wallet';
-import { TabsPage } from '../../pages/tabs/tabs';
 
 // Providers
 import { KeyProvider } from '../../providers/key/key';
@@ -26,7 +22,6 @@ export class WalletGroupSelectorPage {
     private events: Events,
     private platform: Platform,
     private keyProvider: KeyProvider,
-    private navCtrl: NavController,
     private profileProvider: ProfileProvider
   ) {
     this.selectedWalletGroup = this.profileProvider.getWalletGroup(
@@ -60,15 +55,11 @@ export class WalletGroupSelectorPage {
   }
 
   public goToAddWalletPage(): void {
-    this.navCtrl.setRoot(TabsPage).then(() => {
-      this.navCtrl.push(AddWalletPage).then(() => {
-        this.close();
-      });
-    });
+    this.close(true);
   }
 
-  public close(): void {
+  public close(goToAddWallet?: boolean): Promise<any> {
     this.deregisterBackButtonAction();
-    this.viewCtrl.dismiss();
+    return this.viewCtrl.dismiss(goToAddWallet);
   }
 }
