@@ -304,7 +304,12 @@ export class ProfileProvider {
       groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
       needsBackup = groupBackupInfo.needsBackup;
       order = await this.getWalletGroupOrder(keyId);
-      name = (await this.getWalletGroupName(keyId)) || wallet.name;
+      name = await this.getWalletGroupName(keyId);
+      if (!name) {
+        // use wallets name for wallets group name at migration
+        name = wallet.name;
+        this.setWalletGroupName(keyId, wallet.name);
+      }
       isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
