@@ -82,6 +82,7 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
+import { EnabledAccountsPage } from '../pages/settings/wallet-group-settings/enabled-accounts/enabled-accounts';
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
@@ -95,7 +96,6 @@ import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-set
 /* Wallet Advanced Settings */
 import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
 import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletDuplicatePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
 import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
@@ -159,6 +159,7 @@ export const PAGES = [
   ...GIFT_CARD_PAGES,
   GravatarPage,
   FingerprintModalPage,
+  EnabledAccountsPage,
   HomePage,
   LanguagePage,
   LockPage,
@@ -199,7 +200,6 @@ export const PAGES = [
   WalletServiceUrlPage,
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
-  WalletDeletePage,
   WalletGroupExtendedPrivateKeyPage,
   WalletGroupDeletePage,
   WalletGroupSelectorPage,

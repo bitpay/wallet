@@ -9,6 +9,10 @@
     <ion-list class="settings-list">
       <ion-item-divider></ion-item-divider>
 
+      <button ion-item (click)="openEnabledAccountsPage()">
+        <div translate>Enabled Accounts</div>
+      </button>
+
       <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
         <div translate float-left>Name</div>
         <div text-end text-wrap ion-text color="light-grey">

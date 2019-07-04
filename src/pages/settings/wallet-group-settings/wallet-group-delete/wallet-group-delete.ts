@@ -32,7 +32,7 @@ export class WalletGroupDeletePage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: WalletDeletePage');
+    this.logger.info('Loaded: WalletGroupDeletePage');
   }
 
   ionViewWillEnter() {
