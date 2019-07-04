@@ -801,7 +801,7 @@ export class HomePage {
   }
 
   public goToAddView(): void {
-    this.navCtrl.push(AddPage, { addingNewAccount: true });
+    this.navCtrl.push(AddPage, { addingNewWallet: true });
   }
 
   public goToWalletDetails(wallet, params): void {

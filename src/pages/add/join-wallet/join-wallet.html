@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Shared Account' | translate}}</ion-title>
+    <ion-title>{{'Shared Wallet' | translate}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
         <span translate>Join</span>
@@ -11,14 +11,14 @@
 
 <ion-content no-bounce>
   <form [formGroup]="joinForm">
-    <ion-item *ngIf="!addingNewAccount">
-      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
+    <ion-item *ngIf="!addingNewWallet">
+      <ion-label floating>{{'Profile name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="profileName"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>{{'Account name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="accountName"></ion-input>
+      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="walletName"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -46,19 +46,19 @@
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!addingNewAccount">
+      <ion-item *ngIf="!addingNewWallet">
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(joinForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="joinForm.value.selectedSeed == 'set' && !addingNewAccount">
+      <ion-item *ngIf="joinForm.value.selectedSeed == 'set' && !addingNewWallet">
         <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
         <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="joinForm.value.selectedSeed == 'set' && !addingNewAccount">
+      <ion-item *ngIf="joinForm.value.selectedSeed == 'set' && !addingNewWallet">
         <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
         <ion-input type="text" formControlName="derivationPath"></ion-input>
       </ion-item>

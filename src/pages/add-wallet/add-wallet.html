@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Add Wallet' | translate}}">
+<wide-header-page title="{{'Add Profile' | translate}}">
   <div page-content>
     <ion-list class="settings-list">
       <button class="list-button" ion-item (click)="goToAddPage()">
@@ -7,7 +7,7 @@
         </ion-icon>
         <div class="item-title" translate>Create New</div>
       </button>
-      <button *ngIf="!addingNewAccount" class="list-button" ion-item (click)="goToImportWallet()">
+      <button *ngIf="!addingNewWallet" class="list-button" ion-item (click)="goToImportWallet()">
         <ion-icon item-start>
           <img src="assets/img/add-wallet/import.svg" />
         </ion-icon>

@@ -10,14 +10,14 @@
 </ion-header>
 <ion-content no-bounce>
   <form [formGroup]="createForm">
-    <ion-item *ngIf="!addingNewAccount">
-      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type=" text" formControlName="walletName"></ion-input>
+    <ion-item *ngIf="!addingNewWallet">
+      <ion-label floating>{{'Profile name' | translate}}</ion-label>
+      <ion-input type=" text" formControlName="profileName"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>{{'Account name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="accountName"></ion-input>
+      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="walletName"></ion-input>
     </ion-item>
 
     <div *ngIf="isShared">
@@ -52,14 +52,14 @@
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!addingNewAccount">
+      <ion-item *ngIf="!addingNewWallet">
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewAccount">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewWallet">
         <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
         <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
@@ -76,7 +76,7 @@
         </div>
       </label-tip>
 
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewAccount">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewWallet">
         <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
         <ion-input type="text" formControlName="derivationPath"></ion-input>
       </ion-item>

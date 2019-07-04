@@ -36,7 +36,7 @@ export class JoinWalletPage {
   public okText: string;
   public cancelText: string;
   public joinForm: FormGroup;
-  public addingNewAccount: boolean;
+  public addingNewWallet: boolean;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -67,12 +67,12 @@ export class JoinWalletPage {
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
     this.showAdvOpts = false;
-    this.addingNewAccount = this.navParams.get('addingNewAccount');
+    this.addingNewWallet = this.navParams.get('addingNewWallet');
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
-      walletName: [null],
-      accountName: [null, Validators.required],
+      profileName: [null],
+      walletName: [null, Validators.required],
       myName: [null, Validators.required],
       invitationCode: [
         null,
@@ -84,8 +84,8 @@ export class JoinWalletPage {
       derivationPath: [null]
     });
 
-    if (!this.addingNewAccount) {
-      this.joinForm.get('walletName').setValidators([Validators.required]);
+    if (!this.addingNewWallet) {
+      this.joinForm.get('profileName').setValidators([Validators.required]);
     }
 
     this.seedOptions = [
@@ -189,12 +189,12 @@ export class JoinWalletPage {
 
   public setOptsAndJoin(): void {
     let keyId;
-    if (this.addingNewAccount) {
+    if (this.addingNewWallet) {
       keyId = this.keyProvider.activeWGKey;
     }
     const opts: Partial<WalletOptions> = {
       keyId,
-      name: this.joinForm.value.accountName,
+      name: this.joinForm.value.walletName,
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
@@ -267,16 +267,16 @@ export class JoinWalletPage {
     this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider
-      .joinWallet(this.addingNewAccount, opts)
+      .joinWallet(this.addingNewWallet, opts)
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (!this.addingNewAccount) {
+        if (!this.addingNewWallet) {
           this.profileProvider.setWalletGroupName(
             wallet.credentials.keyId,
-            this.joinForm.value.walletName
+            this.joinForm.value.profileName
           );
         }
         // using setRoot(TabsPage) as workaround when coming from scanner
