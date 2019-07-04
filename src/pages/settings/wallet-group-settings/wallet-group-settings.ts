@@ -13,11 +13,11 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
+import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from './wallet-group-name/wallet-group-name';
-import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-wallet-group-settings',
