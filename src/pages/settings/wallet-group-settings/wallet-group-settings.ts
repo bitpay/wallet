@@ -18,6 +18,7 @@ import { EnabledWalletsPage } from './enabled-wallets/enabled-wallets';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from './wallet-group-name/wallet-group-name';
+import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-wallet-group-settings',
@@ -50,10 +51,11 @@ export class WalletGroupSettingsPage {
     private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {}
 
-  async ionViewDidLoad() {
+  ionViewWillEnter() {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
+    this.wallets = this.profileProvider.getWallets({ keyId: this.keyId });
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
@@ -127,18 +129,13 @@ export class WalletGroupSettingsPage {
   }
 
   public openBackupSettings(): void {
-    const opts = {
-      keyId: this.keyId
-    };
-    const wallets = this.profileProvider.getWallets(opts);
-
     const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      wallets[0].credentials.rootPath
+      this.wallets[0].credentials.rootPath
     );
 
     if (derivationStrategy == 'BIP45') {
       this.navCtrl.push(WalletExportPage, {
-        walletId: wallets[0].credentials.walletId,
+        walletId: this.wallets[0].credentials.walletId,
         showNoPrivKeyOpt: true
       });
     } else {
@@ -188,5 +185,9 @@ export class WalletGroupSettingsPage {
     this.navCtrl.push(EnabledWalletsPage, {
       keyId: this.navParams.data.keyId
     });
+  }
+  
+  openWalletSettings(id) {
+    this.navCtrl.push(WalletSettingsPage, { walletId: id });
   }
 }

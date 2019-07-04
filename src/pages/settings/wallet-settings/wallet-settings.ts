@@ -63,12 +63,6 @@ export class WalletSettingsPage {
     this.deleted = false;
   }
 
-  ionViewWillEnter() {
-    if (this.platformProvider.isCordova) {
-      this.statusBar.styleDefault();
-    }
-  }
-
   ionViewWillLeave() {
     if (
       this.platformProvider.isCordova &&
@@ -78,7 +72,7 @@ export class WalletSettingsPage {
     }
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
