@@ -108,7 +108,7 @@
     </ion-card>
 
     <label-tip class="no-arrowhead" type="warn" *ngIf="selectedWalletGroup && selectedWalletGroup.needsBackup">
-      <span label-tip-title translate>Wallets Needs Backup</span>
+      <span label-tip-title translate>Profile Needs Backup</span>
       <div label-tip-body>
         <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
       </div>
@@ -117,7 +117,7 @@
     <div class="wallets-container" *ngIf="wallets && wallets.length">
       <div class="section-header">
         <span translate>
-          Accounts
+          Wallets
         </span>
         <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()" class="reorder-button" tappable>
           <img src="assets/img/sort.svg">

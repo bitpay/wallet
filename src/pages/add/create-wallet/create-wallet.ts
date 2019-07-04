@@ -57,7 +57,7 @@ export class CreateWalletPage implements OnInit {
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
-  public addingNewAccount: boolean;
+  public addingNewWallet: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -81,7 +81,7 @@ export class CreateWalletPage implements OnInit {
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
-    this.addingNewAccount = this.navParams.get('addingNewAccount');
+    this.addingNewWallet = this.navParams.get('addingNewWallet');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
@@ -93,8 +93,8 @@ export class CreateWalletPage implements OnInit {
     this.showAdvOpts = false;
 
     this.createForm = this.fb.group({
-      walletName: [null],
-      accountName: [null, Validators.required],
+      profileName: [null],
+      walletName: [null, Validators.required],
       myName: [null],
       totalCopayers: [1],
       requiredCopayers: [1],
@@ -107,13 +107,13 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    if (!this.addingNewAccount) {
-      this.createForm.get('walletName').setValidators([Validators.required]);
+    if (!this.addingNewWallet) {
+      this.createForm.get('profileName').setValidators([Validators.required]);
     }
     this.createLabel =
       this.coin === 'btc'
-        ? this.translate.instant('BTC Account')
-        : this.translate.instant('BCH Account');
+        ? this.translate.instant('BTC Wallet')
+        : this.translate.instant('BCH Wallet');
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -180,12 +180,12 @@ export class CreateWalletPage implements OnInit {
 
   public setOptsAndCreate(): void {
     let keyId;
-    if (this.addingNewAccount) {
+    if (this.addingNewWallet) {
       keyId = this.keyProvider.activeWGKey;
     }
     const opts: Partial<WalletOptions> = {
       keyId,
-      name: this.createForm.value.accountName,
+      name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
       myName:
@@ -273,7 +273,7 @@ export class CreateWalletPage implements OnInit {
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createWallet(this.addingNewAccount, opts)
+      .createWallet(this.addingNewWallet, opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
@@ -282,10 +282,10 @@ export class CreateWalletPage implements OnInit {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.id);
         }
-        if (!this.addingNewAccount) {
+        if (!this.addingNewWallet) {
           this.profileProvider.setWalletGroupName(
             wallet.credentials.keyId,
-            this.createForm.value.walletName
+            this.createForm.value.profileName
           );
         }
         this.navCtrl.popToRoot().then(() => {

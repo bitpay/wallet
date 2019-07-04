@@ -30,17 +30,17 @@ export class AddPage {
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
     const keyId = this.keyProvider.activeWGKey;
-    const addingNewAccount = this.navParam.data.addingNewAccount;
+    const addingNewWallet = this.navParam.data.addingNewWallet;
     const walletGroup = this.profileProvider.getWalletGroup(keyId);
-    if (walletGroup && walletGroup.name && addingNewAccount) {
+    if (walletGroup && walletGroup.name && addingNewWallet) {
       this.title = this.replaceParametersProvider.replace(
-        this.translate.instant('Add Account to {{walletGroupName}}'),
+        this.translate.instant('Add Wallet to {{walletGroupName}}'),
         {
           walletGroupName: walletGroup.name
         }
       );
     } else {
-      this.title = this.translate.instant('Add Account');
+      this.title = this.translate.instant('Add Wallet');
     }
   }
 
@@ -51,12 +51,14 @@ export class AddPage {
   public goToSelectCurrencyPage(isShared: boolean): void {
     this.navCtrl.push(SelectCurrencyPage, {
       isShared,
-      addingNewAccount: this.navParam.data.addingNewAccount
+      addingNewWallet: this.navParam.data.addingNewWallet
     });
   }
 
   public goToJoinWallet(): void {
-    this.navCtrl.push(JoinWalletPage);
+    this.navCtrl.push(JoinWalletPage, {
+      addingNewWallet: this.navParam.data.addingNewWallet
+    });
   }
 
   public goToImportWallet(): void {

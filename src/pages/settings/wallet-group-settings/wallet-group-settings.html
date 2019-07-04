@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Wallet Settings' | translate}}">
+<wide-header-page title="{{'Profile Settings' | translate}}">
   <div page-content>
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
@@ -9,8 +9,8 @@
     <ion-list class="settings-list">
       <ion-item-divider></ion-item-divider>
 
-      <button ion-item (click)="openEnabledAccountsPage()">
-        <div translate>Enabled Accounts</div>
+      <button ion-item (click)="openEnabledWalletsPage()">
+        <div translate>Enabled Wallets</div>
       </button>
 
       <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">

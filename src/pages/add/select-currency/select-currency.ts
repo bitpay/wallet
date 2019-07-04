@@ -13,7 +13,7 @@ import { CreateWalletPage } from '../create-wallet/create-wallet';
 export class SelectCurrencyPage {
   public coin: string;
   private isShared: boolean;
-  private addingNewAccount: boolean;
+  private addingNewWallet: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -21,7 +21,7 @@ export class SelectCurrencyPage {
     private navParam: NavParams
   ) {
     this.isShared = this.navParam.data.isShared;
-    this.addingNewAccount = this.navParam.data.addingNewAccount;
+    this.addingNewWallet = this.navParam.data.addingNewWallet;
   }
 
   ionViewDidLoad() {
@@ -32,7 +32,7 @@ export class SelectCurrencyPage {
     this.navCtrl.push(CreateWalletPage, {
       isShared: this.isShared,
       coin,
-      addingNewAccount: this.addingNewAccount
+      addingNewWallet: this.addingNewWallet
     });
   }
 }

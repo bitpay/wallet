@@ -82,7 +82,7 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
-import { EnabledAccountsPage } from '../pages/settings/wallet-group-settings/enabled-accounts/enabled-accounts';
+import { EnabledWalletsPage } from '../pages/settings/wallet-group-settings/enabled-wallets/enabled-wallets';
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
@@ -159,7 +159,7 @@ export const PAGES = [
   ...GIFT_CARD_PAGES,
   GravatarPage,
   FingerprintModalPage,
-  EnabledAccountsPage,
+  EnabledWalletsPage,
   HomePage,
   LanguagePage,
   LockPage,

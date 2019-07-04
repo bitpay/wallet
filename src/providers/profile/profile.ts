@@ -558,10 +558,10 @@ export class ProfileProvider {
       });
   }
 
-  private askToEncryptKey(key, addingNewAccount?: boolean): Promise<any> {
+  private askToEncryptKey(key, addingNewWallet?: boolean): Promise<any> {
     if (!key) return Promise.resolve();
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
-    if (addingNewAccount && !key.isPrivKeyEncrypted()) return Promise.resolve();
+    if (addingNewWallet && !key.isPrivKeyEncrypted()) return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
@@ -1125,7 +1125,7 @@ export class ProfileProvider {
                   if (opts.account === 4)
                     return reject(
                       this.translate.instant(
-                        'Three accounts from the same coin and network is the limit for a wallet'
+                        'Three wallets from the same coin and network is the limit for a profile'
                       )
                     );
                   return resolve(this._createWallet(opts));
@@ -1234,13 +1234,13 @@ export class ProfileProvider {
     });
   }
 
-  public createWallet(addingNewAccount: boolean, opts): Promise<any> {
+  public createWallet(addingNewWallet: boolean, opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._createWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key, addingNewAccount).then(() => {
+        return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
           this.onGoingProcessProvider.resume();
           return this.addAndBindWalletClient(data.walletClient, data.key, {
             bwsurl: opts.bwsurl
@@ -1250,13 +1250,13 @@ export class ProfileProvider {
     });
   }
 
-  public joinWallet(addingNewAccount: boolean, opts): Promise<any> {
+  public joinWallet(addingNewWallet: boolean, opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._joinWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key, addingNewAccount).then(() => {
+        return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
           this.onGoingProcessProvider.resume();
           return this.addAndBindWalletClient(data.walletClient, data.key, {
             bwsurl: opts.bwsurl

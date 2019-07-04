@@ -8,10 +8,10 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'page-enabled-accounts',
-  templateUrl: 'enabled-accounts.html'
+  selector: 'page-enabled-wallets',
+  templateUrl: 'enabled-wallets.html'
 })
-export class EnabledAccountsPage {
+export class EnabledWalletsPage {
   public wallets;
 
   private keyId: string;
@@ -23,7 +23,7 @@ export class EnabledAccountsPage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: EnabledAccountsPage');
+    this.logger.info('Loaded: EnabledWalletsPage');
   }
 
   ionViewWillEnter() {
