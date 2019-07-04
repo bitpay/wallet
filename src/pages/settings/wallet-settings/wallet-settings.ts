@@ -61,7 +61,7 @@ export class WalletSettingsPage {
     this.deleted = false;
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(

@@ -1,7 +1,11 @@
-<wide-header-page [headerColor]="wallet && wallet.color" title="{{'Account Preferences' | translate}}">
-  <div page-content>
+<ion-header>
+  <ion-navbar [navbar-bg]="wallet?.color">
+    <ion-title>{{'Account Preferences' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
     <ion-list class="settings-list">
-      <ion-item-divider class="item-without-title"></ion-item-divider>
       <button ion-item (click)="openWalletName()">
         <div translate float-left>Name</div>
         <ion-note item-end>
@@ -47,5 +51,4 @@
       </button>
       <ion-item-divider></ion-item-divider>
     </ion-list>
-  </div>
-</wide-header-page>
+</ion-content>

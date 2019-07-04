@@ -116,8 +116,8 @@
 
     <div class="wallets-container" *ngIf="wallets && wallets.length">
       <div class="section-header">
-        <span translate>
-          Wallets
+        <span *ngIf="appProvider.info.name != 'copay' && wallets.length > 1" translate>
+          Accounts
         </span>
         <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()" class="reorder-button" tappable>
           <img src="assets/img/sort.svg">
