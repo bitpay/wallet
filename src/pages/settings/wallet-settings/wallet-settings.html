@@ -42,9 +42,6 @@
       <button ion-item (click)="openDuplicateWallet()" *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc' && showDuplicateWallet">
         <span translate>Duplicate</span>
       </button>
-      <button ion-item (click)="openDeleteWallet()">
-        <span translate>Delete</span>
-      </button>
       <ion-item-divider></ion-item-divider>
     </ion-list>
   </div>
