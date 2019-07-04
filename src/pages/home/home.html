@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
     <ion-buttons left class="add-button" *ngIf="selectedWalletGroup && !selectedWalletGroup.isDeletedSeed">
-      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]" [ngClass]="{copay: appProvider.info.name === 'copay'}">
+      <button ion-button clear (click)="goToAddView()" [ngClass]="{copay: appProvider.info.name === 'copay'}">
         <img src="assets/img/plus.svg" />
       </button>
     </ion-buttons>
@@ -88,7 +88,7 @@
       <price-card #priceCard></price-card>
     </div>
 
-    <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
+    <create-new-wallet *ngIf="(!wallets || !wallets[0]) && !selectedWalletGroup"></create-new-wallet>
 
     <ion-card class="server-message" *ngIf="accessDenied">
       <ion-card-content class="server-message-content">
@@ -117,7 +117,7 @@
     <div class="wallets-container" *ngIf="wallets && wallets.length">
       <div class="section-header">
         <span translate>
-          Wallets
+          Accounts
         </span>
         <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()" class="reorder-button" tappable>
           <img src="assets/img/sort.svg">

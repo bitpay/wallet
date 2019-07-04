@@ -215,6 +215,23 @@ export class ProfileProvider {
     });
   }
 
+  private isWalletHidden(wallet): Promise<boolean> {
+    return new Promise(resolve => {
+      this.persistenceProvider
+        .getHideWalletFlag(wallet.credentials.walletId)
+        .then(shouldHideWallet => {
+          const isHidden =
+            shouldHideWallet && shouldHideWallet.toString() == 'true'
+              ? true
+              : false;
+          return resolve(isHidden);
+        })
+        .catch(err => {
+          this.logger.error(err);
+        });
+    });
+  }
+
   private async bindWalletClient(wallet): Promise<boolean> {
     const walletId = wallet.credentials.walletId;
     let keyId = wallet.credentials.keyId;
@@ -234,6 +251,7 @@ export class ProfileProvider {
     wallet.cachedStatus = {};
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
+    wallet.hidden = await this.isWalletHidden(wallet);
     wallet.canSign = keyId ? true : false;
     wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
@@ -1331,6 +1349,14 @@ export class ProfileProvider {
         return w.cachedStatus.availableBalanceSat > 0;
       });
     }
+
+    if (!opts.showHidden) {
+      // remove hidden wallets
+      ret = _.filter(ret, w => {
+        return !w.hidden;
+      });
+    }
+
     return _.sortBy(ret, 'order');
   }
 
@@ -1339,6 +1365,14 @@ export class ProfileProvider {
     this.persistenceProvider.setHideBalanceFlag(
       walletId,
       this.wallet[walletId].balanceHidden
+    );
+  }
+
+  public toggleHideWalletFlag(walletId: string): void {
+    this.wallet[walletId].hidden = !this.wallet[walletId].hidden;
+    this.persistenceProvider.setHideWalletFlag(
+      walletId,
+      this.wallet[walletId].hidden
     );
   }
 
