@@ -458,9 +458,12 @@ export class BitPayCardProvider {
         this.setCurrencySymbol(x);
         this.persistenceProvider
           .getLastKnownBalance(x.eid)
-          .then(({ balance = null, updatedOn = null }) => {
-            x.balance = Number(balance);
-            x.updateOn = updatedOn;
+          .then(balanceCache => {
+            x.balance =
+              balanceCache && balanceCache.balance
+                ? Number(balanceCache.balance)
+                : null;
+            x.updateOn = balanceCache && balanceCache.updatedOn;
           });
 
         // async refresh

@@ -7,7 +7,7 @@
   <div *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
     <div class="wallet-item-content__amount">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
     <div class="wallet-item-content__fiat" *ngIf="wallet.cachedStatus">
-      {{ wallet?.cachedStatus.totalBalanceAlternative }}
+      {{ wallet?.cachedStatus.availableBalanceAlternative }}
       {{ wallet?.cachedStatus.alternativeIsoCode }}
     </div>
   </div>

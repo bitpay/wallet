@@ -31,12 +31,12 @@ export class KeyProvider {
       this.keys = [];
       keys = keys ? keys : [];
       keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
-      this.loadActiveWGKey();
+      await this.loadActiveWGKey();
       return Promise.resolve();
     });
   }
 
-  public async loadActiveWGKey() {
+  private async loadActiveWGKey() {
     const defaultKeyId = this.keys && this.keys[0] ? this.keys[0].id : null;
     this.activeWGKey =
       (await this.persistenceProvider.getActiveWGKey()) || defaultKeyId;
@@ -47,8 +47,9 @@ export class KeyProvider {
     return this.persistenceProvider.setActiveWGKey(keyId);
   }
 
-  public removeActiveWGKey() {
-    return this.persistenceProvider.removeActiveWGKey();
+  public async removeActiveWGKey() {
+    await this.persistenceProvider.removeActiveWGKey();
+    await this.loadActiveWGKey();
   }
 
   private storeKeysIfDirty(): Promise<any> {
@@ -114,10 +115,7 @@ export class KeyProvider {
     if (selectedKey >= 0) {
       this.keys.splice(selectedKey, 1);
       this.isDirty = true;
-      return this.storeKeysIfDirty().then(() => {
-        this.logger.debug('Key removed successfully');
-        return Promise.resolve();
-      });
+      return this.storeKeysIfDirty();
     } else {
       const err = 'No matches for key id: ' + keyId;
       this.logger.debug(err);
