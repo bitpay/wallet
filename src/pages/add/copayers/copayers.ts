@@ -148,14 +148,12 @@ export class CopayersPage {
           const keyInUse = this.profileProvider.isKeyInUse(keyId);
 
           if (!keyInUse) {
-            if (this.keyProvider.activeWGKey === keyId) {
-              await this.keyProvider.removeActiveWGKey();
-            }
             await this.keyProvider.removeKey(keyId);
             delete this.profileProvider.walletsGroups[keyId];
-            this.keyProvider.loadActiveWGKey().then(() => {
-              this.dismiss();
-            });
+            if (this.keyProvider.activeWGKey === keyId) {
+              await this.keyProvider.removeActiveWGKey();
+              await this.keyProvider.loadActiveWGKey();
+            }
           } else {
             this.logger.warn('Key was not removed. Still in use');
             this.dismiss();

@@ -68,14 +68,13 @@ export class WalletGroupDeletePage {
         const keyInUse = this.profileProvider.isKeyInUse(this.keyId);
 
         if (!keyInUse) {
-          if (this.keyProvider.activeWGKey === this.keyId) {
-            await this.keyProvider.removeActiveWGKey();
-          }
           this.keyProvider.removeKey(this.keyId);
           delete this.profileProvider.walletsGroups[this.keyId];
-          this.keyProvider.loadActiveWGKey().then(() => {
-            this.goHome();
-          });
+          if (this.keyProvider.activeWGKey === this.keyId) {
+            await this.keyProvider.removeActiveWGKey();
+            await this.keyProvider.loadActiveWGKey();
+          }
+          this.goHome();
         } else {
           this.logger.warn('Key was not removed. Still in use');
           this.goHome();

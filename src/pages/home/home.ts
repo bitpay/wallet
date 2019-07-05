@@ -375,14 +375,13 @@ export class HomePage {
     },100);
     */
 
-    this.profileProvider.setLastKnownBalance();
     let opts: any = {};
     opts.keyId = this.keyProvider.activeWGKey;
+    this.wallets = this.profileProvider.getWallets(opts);
     this.selectedWalletGroup = this.profileProvider.getWalletGroup(
       this.keyProvider.activeWGKey
     );
-
-    this.wallets = this.profileProvider.getWallets(opts);
+    this.profileProvider.setLastKnownBalance();
 
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
@@ -719,7 +718,7 @@ export class HomePage {
 
     const promises = [];
 
-    _.each(this.wallets, wallet => {
+    _.each(this.profileProvider.wallet, wallet => {
       promises.push(pr(wallet));
     });
 

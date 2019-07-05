@@ -211,7 +211,6 @@ export class WalletProvider {
           wallet.coin,
           cache.totalBalanceSat
         );
-
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
           cache.lockedBalanceSat
@@ -235,6 +234,11 @@ export class WalletProvider {
         this.rateProvider
           .whenRatesAvailable(wallet.coin)
           .then(() => {
+            const availableBalanceAlternative = this.rateProvider.toFiat(
+              cache.availableBalanceSat,
+              cache.alternativeIsoCode,
+              wallet.coin
+            );
             const totalBalanceAlternative = this.rateProvider.toFiat(
               cache.totalBalanceSat,
               cache.alternativeIsoCode,
@@ -261,6 +265,9 @@ export class WalletProvider {
               wallet.coin
             );
 
+            cache.availableBalanceAlternative = this.filter.formatFiatAmount(
+              availableBalanceAlternative
+            );
             cache.totalBalanceAlternative = this.filter.formatFiatAmount(
               totalBalanceAlternative
             );
