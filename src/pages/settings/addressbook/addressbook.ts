@@ -61,9 +61,6 @@ export class AddressbookPage {
         Promise.all(promises).then(() => {
           this.addressbook = contacts;
         });
-
-        this.addressbook = _.clone(contacts);
-        this.filteredAddressbook = _.clone(this.addressbook);
       })
       .catch(err => {
         this.logger.error(err);
