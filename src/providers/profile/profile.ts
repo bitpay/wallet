@@ -895,6 +895,7 @@ export class ProfileProvider {
       return this.keyProvider.addKeys(newKeys).then(() => {
         profile.credentials = newCrededentials;
         profile.dirty = true;
+        this.keyProvider.loadActiveWGKey();
         return this.storeProfileIfDirty();
       });
     } else {

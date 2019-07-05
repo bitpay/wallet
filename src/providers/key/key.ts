@@ -36,7 +36,7 @@ export class KeyProvider {
     });
   }
 
-  private async loadActiveWGKey() {
+  public async loadActiveWGKey() {
     const defaultKeyId = this.keys && this.keys[0] ? this.keys[0].id : null;
     this.activeWGKey =
       (await this.persistenceProvider.getActiveWGKey()) || defaultKeyId;
