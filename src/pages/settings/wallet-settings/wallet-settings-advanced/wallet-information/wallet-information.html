@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Wallet Information' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
-    <ion-item (click)="saveBlack()">
+    <ion-item>
       <div translate float-left>Name (at creation)</div>
       <ion-note item-end>
         {{walletName}}

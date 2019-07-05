@@ -69,8 +69,6 @@ export class ProfileProvider {
   private updateWalletFromConfig(wallet): void {
     const config = this.configProvider.get();
     const defaults = this.configProvider.getDefaults();
-    const defaultColor =
-      this.appProvider.info.nameCase == 'Copay' ? '#1abb9b' : '#647ce8';
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS =
       config.bwsFor &&
@@ -79,10 +77,6 @@ export class ProfileProvider {
     wallet.name =
       (config.aliasFor && config.aliasFor[wallet.id]) ||
       wallet.credentials.walletName;
-    wallet.color =
-      config.colorFor && config.colorFor[wallet.id]
-        ? config.colorFor[wallet.id]
-        : defaultColor;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
     // });
   }

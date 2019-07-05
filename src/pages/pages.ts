@@ -89,7 +89,6 @@ import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wal
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
-import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 
@@ -193,7 +192,6 @@ export const PAGES = [
   TxpPage,
   WalletSettingsPage,
   WalletNamePage,
-  WalletColorPage,
   WalletInformationPage,
   WalletAddressesPage,
   WalletExportPage,

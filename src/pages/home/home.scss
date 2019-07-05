@@ -66,6 +66,14 @@ page-home {
       }
     }
 
+    .toolbar-content {
+      ion-title {
+        &.title-ios {
+          padding: 0 50px 1px;
+        }
+      }
+    }
+
     .fix-margin {
       max-width: 70%;
       margin-right: 4rem;
