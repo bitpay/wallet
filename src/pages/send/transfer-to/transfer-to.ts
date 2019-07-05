@@ -140,17 +140,6 @@ export class TransferToPage {
             return Promise.resolve();
           })
         );
-
-        // contactsList.push({
-        //   name: _.isObject(v) ? v.name : v,
-        //   address: k,
-        //   order: this.addressBookProvider.getAddressOrder(k),
-        //   network: this.addressProvider.getNetwork(k),
-        //   email: _.isObject(v) ? v.email : null,
-        //   recipientType: 'contact',
-        //   coin: this.addressProvider.getCoin(k),
-        //   getAddress: () => Promise.resolve(k)
-        // });
       });
 
       Promise.all(promises).then(() => {
