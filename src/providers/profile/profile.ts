@@ -328,7 +328,7 @@ export class ProfileProvider {
         name = wallet.name;
         this.setWalletGroupName(keyId, wallet.name);
       }
-      isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
+      isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
     } else {

@@ -93,8 +93,6 @@ export class KeyProvider {
   }
 
   public getKey(keyId: string) {
-    this.logger.debug('Getting key: ' + keyId);
-
     let selectedKey = this.keys.find(k => k.id == keyId);
 
     if (selectedKey) {
