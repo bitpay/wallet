@@ -15,7 +15,6 @@ import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
-import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDuplicatePage } from './wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
@@ -180,12 +179,6 @@ export class WalletSettingsPage {
 
   public openWalletName(): void {
     this.navCtrl.push(WalletNamePage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-
-  public openWalletColor(): void {
-    this.navCtrl.push(WalletColorPage, {
       walletId: this.wallet.credentials.walletId
     });
   }

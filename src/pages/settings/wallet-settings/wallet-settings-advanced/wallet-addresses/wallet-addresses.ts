@@ -160,8 +160,7 @@ export class WalletAddressesPage {
       noBalance: this.noBalance,
       withBalance: this.withBalance,
       coin: this.wallet.coin,
-      walletName: this.wallet.name,
-      walletColor: this.wallet.color
+      walletName: this.wallet.name
     });
     modal.present();
   }

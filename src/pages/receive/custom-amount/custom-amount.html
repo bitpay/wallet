@@ -1,8 +1,8 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [hideBackButton]="true" [navbar-bg]="wallet.color">
+  <ion-navbar [hideBackButton]="true" class="app-color">
     <ion-buttons left>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>{{ wallet.name }}</ion-title>
