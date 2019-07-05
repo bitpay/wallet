@@ -67,6 +67,9 @@ page-wallet-details {
   }
 
   .balance-hidden {
+    width: 100vw;
+    margin-left: -5rem;
+    text-align: center;
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -75,6 +78,10 @@ page-wallet-details {
   }
 
   .balance-error {
+    width: 100vw;
+    margin-left: -5rem;
+    padding: 0rem 2rem;
+    text-align: center;
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -95,6 +102,9 @@ page-wallet-details {
   }
 
   .balance-scanning {
+    width: 100vw;
+    margin-left: -5rem;
+    text-align: center;
     .title {
       font-size: 20px;
       font-weight: 500;
