@@ -49,7 +49,6 @@ export class KeyProvider {
 
   public async removeActiveWGKey() {
     await this.persistenceProvider.removeActiveWGKey();
-    await this.loadActiveWGKey();
   }
 
   private storeKeysIfDirty(): Promise<any> {
