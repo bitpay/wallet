@@ -1,3 +1,10 @@
+.contact-container {
+  align-items: start;
+  box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
+  transform: scale3d(1.05, 1.05, 1.05);
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
 .contact {
   ion-label {
     display: flex;

@@ -49,31 +49,12 @@
       class="sliding-container addressbook"
       reorder="{{showReorder}}"
       (ionItemReorder)="reorderAddresses($event)"
-      *ngIf="showReorder"
     >
-      <ion-item-sliding
-        *ngFor="let entry of (addressbook | orderBy: ['order'])"
-        #slidingItem
-      >
-        <button ion-item detail-none (click)="viewEntry(entry)">
+      <ion-item *ngFor="let entry of (addressbook | orderBy: ['order'])">
+        <button detail-none (click)="viewEntry(entry)">
           <address-item-content [entry]="entry"></address-item-content>
         </button>
-      </ion-item-sliding>
-    </ion-list>
-    <ion-list
-      class="sliding-container addressbook"
-      reorder="{{showReorder}}"
-      (ionItemReorder)="reorderAddresses($event)"
-      *ngIf="!showReorder"
-    >
-      <ion-item-sliding
-        *ngFor="let entry of (addressbook | orderBy: ['order'])"
-        #slidingItem
-      >
-        <button ion-item detail-none (click)="viewEntry(entry)">
-          <address-item-content [entry]="entry"></address-item-content>
-        </button>
-      </ion-item-sliding>
+      </ion-item>
     </ion-list>
   </div>
 </ion-content>
