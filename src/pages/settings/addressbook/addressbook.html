@@ -50,11 +50,14 @@
       reorder="{{showReorder}}"
       (ionItemReorder)="reorderAddresses($event)"
     >
-      <ion-item *ngFor="let entry of (addressbook | orderBy: ['order'])">
-        <button detail-none (click)="viewEntry(entry)">
-          <address-item-content [entry]="entry"></address-item-content>
-        </button>
-      </ion-item>
+      <button
+        ion-item
+        detail-none
+        *ngFor="let entry of (addressbook | orderBy: ['order'])"
+        (click)="viewEntry(entry)"
+      >
+        <address-item-content [entry]="entry"></address-item-content>
+      </button>
     </ion-list>
   </div>
 </ion-content>
