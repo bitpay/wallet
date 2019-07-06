@@ -35,16 +35,16 @@ page-addressbook {
   }
 }
 
-.addressbook ion-item-sliding.item-wrapper {
-  button.item.item-block .item-inner {
+.addressbook ion-item.item-wrapper {
+  button {
     align-items: start;
   }
 }
 
-.addressbook ion-item-sliding.reorder-active {
+.addressbook ion-item.reorder-active {
   box-shadow: none;
 
-  button.item.item-block {
+  button {
     box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
     transform: scale3d(1.05, 1.05, 1.05);
     transition: box-shadow 300ms ease, transform 300ms ease;
