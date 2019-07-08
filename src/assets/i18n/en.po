@@ -306,9 +306,6 @@ msgstr ""
 msgid "Below Minimum Amount"
 msgstr "Below Minimum Amount"
 
-msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
-msgstr ""
-
 msgid "BitPay Card URI"
 msgstr "BitPay Card URI"
 

@@ -242,9 +242,6 @@ msgstr "Antes de reclamar la dirección de su billetera, se recomienda que prime
 msgid "Below Minimum Amount"
 msgstr "Monto inferior al mínimo"
 
-msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
-msgstr ""
-
 msgid "BitPay Card URI"
 msgstr "URI de la BitPay Card"
 
