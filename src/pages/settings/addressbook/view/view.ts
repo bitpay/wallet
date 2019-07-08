@@ -60,6 +60,7 @@ export class AddressbookViewPage {
       this.addressBookProvider
         .remove(addr)
         .then(() => {
+          this.addressBookProvider.removeAddressOrder(addr);
           this.navCtrl.pop();
         })
         .catch(err => {
