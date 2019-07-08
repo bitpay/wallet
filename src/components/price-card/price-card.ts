@@ -1,5 +1,6 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { ConfigProvider, Logger, PriceProvider } from '../../providers';
 import { PriceChart } from './price-chart/price-chart';
 
@@ -61,10 +62,7 @@ export class PriceCard {
         .getHistoricalBitcoinPrice(this.isoCode, coin.unitCode)
         .subscribe(
           response => {
-            const resFiltered = _.filter(response, 'rate');
-            this.coins[index].historicalRates = resFiltered
-              .map(res => res.rate)
-              .reverse();
+            this.coins[index].historicalRates = response.reverse();
             this.updateValues(index);
           },
           err => {
@@ -75,6 +73,13 @@ export class PriceCard {
   }
 
   public updateCurrentPrice() {
+    const lastRequest = this.coins[0].historicalRates[
+      this.coins[0].historicalRates.length - 1
+    ].ts;
+    if (moment(lastRequest).isBefore(moment(), 'days')) {
+      this.getPrices();
+      return;
+    }
     _.forEach(this.coins, (coin, i) => {
       this.priceProvider
         .getCurrentBitcoinPrice(this.isoCode, coin.unitCode)
@@ -82,7 +87,7 @@ export class PriceCard {
           response => {
             this.coins[i].historicalRates[
               this.coins[i].historicalRates.length - 1
-            ] = response.rate;
+            ] = response;
             this.updateValues(i);
           },
           err => {
@@ -95,10 +100,11 @@ export class PriceCard {
   private updateValues(i: number) {
     this.coins[i].currentPrice = this.coins[i].historicalRates[
       this.coins[i].historicalRates.length - 1
-    ];
+    ].rate;
     this.coins[i].averagePrice =
-      ((this.coins[i].currentPrice - this.coins[i].historicalRates[0]) * 100) /
-      this.coins[i].historicalRates[0];
+      ((this.coins[i].currentPrice - this.coins[i].historicalRates[0].rate) *
+        100) /
+      this.coins[i].historicalRates[0].rate;
     this.drawCanvas(i);
   }
 
