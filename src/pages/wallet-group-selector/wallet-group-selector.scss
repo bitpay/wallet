@@ -4,13 +4,13 @@ page-wallet-group-selector {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 65px 30px auto 65px;
+    grid-template-rows: 100px 40px auto 70px;
     padding: 0rem 3rem;
 
     .header {
       align-self: center;
       justify-self: center;
-      margin-top: 2rem;
+      margin-top: 3.5rem;
       .home-logo {
         width: 10rem;
       }
@@ -18,6 +18,7 @@ page-wallet-group-selector {
 
     .title {
       color: rgb(180, 180, 180);
+      align-self: center;
       font-size: 18px;
       font-weight: 500;
       border-bottom: 1px solid rgba(180, 180, 180, 0.3);
