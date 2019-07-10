@@ -459,7 +459,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   private toFiat(val: number, coin?: Coin): number {
-    if (!this.rateProvider.getRate(coin, this.fiatCode)) return undefined;
+    if (!this.rateProvider.getRate(this.fiatCode, coin)) return undefined;
 
     return parseFloat(
       this.rateProvider
@@ -569,9 +569,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
