@@ -15,11 +15,8 @@ import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
-import { BackupKeyPage } from '../../backup/backup-key/backup-key';
-import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletDuplicatePage } from './wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
@@ -186,25 +183,6 @@ export class WalletSettingsPage {
     });
   }
 
-  public openWalletColor(): void {
-    this.navCtrl.push(WalletColorPage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-
-  public openBackupSettings(): void {
-    if (this.derivationStrategy == 'BIP45') {
-      this.navCtrl.push(WalletExportPage, {
-        walletId: this.wallet.credentials.walletId,
-        showNoPrivKeyOpt: true
-      });
-    } else {
-      this.navCtrl.push(BackupKeyPage, {
-        walletId: this.wallet.credentials.walletId
-      });
-    }
-  }
-
   public openWalletInformation(): void {
     this.navCtrl.push(WalletInformationPage, {
       walletId: this.wallet.credentials.walletId
@@ -233,11 +211,6 @@ export class WalletSettingsPage {
   }
   public openDuplicateWallet(): void {
     this.navCtrl.push(WalletDuplicatePage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-  public openDeleteWallet(): void {
-    this.navCtrl.push(WalletDeletePage, {
       walletId: this.wallet.credentials.walletId
     });
   }

@@ -1,0 +1,102 @@
+page-wallet-group-selector {
+  background: rgba(255, 255, 255, 0.7);
+  .selector {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 100px 40px auto 70px;
+    padding: 0rem 3rem;
+
+    .header {
+      align-self: center;
+      justify-self: center;
+      margin-top: 3.5rem;
+      .home-logo {
+        width: 10rem;
+      }
+    }
+
+    .title {
+      color: rgb(180, 180, 180);
+      align-self: center;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(180, 180, 180, 0.3);
+    }
+
+    .wallet-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      grid-template-rows: repeat(auto-fill, 150px);
+      justify-items: center;
+      align-items: center;
+      overflow-y: scroll;
+      margin-top: 2rem;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      @media (max-width: 400px) {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        .wallet-group-item {
+          width: 12rem !important;
+          .wallet-group-name {
+            font-size: 14px !important;
+          }
+        }
+      }
+
+      .wallet-group-item {
+        width: 16rem;
+        cursor: pointer;
+        flex: 1 0 45%;
+        margin: 5px;
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 5px;
+        box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
+
+        .item-img {
+          display: flex;
+          justify-content: center;
+          margin-top: 0.5rem;
+          margin-bottom: 2rem;
+        }
+        .wallet-group-name {
+          font-size: 16px;
+          text-align: center;
+        }
+      }
+      .create {
+        opacity: 0.4;
+        background: white;
+
+        .plus-icon {
+          background: rgb(230, 230, 230);
+          height: 50px;
+          width: 50px;
+          margin: auto;
+          border-radius: 50px;
+          font-size: 33px;
+          margin-top: 0.5rem;
+          margin-bottom: 2rem;
+        }
+      }
+
+      .success {
+        box-shadow: 0 7px 12px color($background-colors, success);
+        border: 2px solid #01d1a2;
+      }
+    }
+
+    .footer {
+      padding: 2rem;
+      text-align: center;
+      color: color($colors, dark);
+      font-size: 1.6rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+}

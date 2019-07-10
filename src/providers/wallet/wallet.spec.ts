@@ -71,6 +71,9 @@ describe('Provider: Wallet Provider', () => {
         }
       ]);
     }
+    getActiveWGKey() {
+      return Promise.resolve('keyId');
+    }
   }
 
   beforeEach(() => {

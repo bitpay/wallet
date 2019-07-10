@@ -1,38 +1,40 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{ 'Address Book' | translate }}</ion-title>
     <ion-buttons *ngIf="!isEmptyList" right>
-      <button ion-button (click)="addEntry()">
-        {{'Add' | translate}}
-      </button>
+      <button ion-button (click)="addEntry()">{{ 'Add' | translate }}</button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>
-
   <div class="zero-state" *ngIf="isEmptyList">
     <ion-icon class="zero-state-icon">
       <img class="svg" src="assets/img/address-book-add.svg" />
     </ion-icon>
     <div class="zero-state-heading" translate>No contacts yet</div>
-    <div class="zero-state-description" translate>Get started by adding your first one.</div>
+    <div class="zero-state-description" translate>
+      Get started by adding your first one.
+    </div>
     <button ion-button class="button-standard" (click)="addEntry()">
-      {{'Add Contact' | translate}}
+      {{ 'Add Contact' | translate }}
     </button>
   </div>
 
   <div *ngIf="!isEmptyList">
     <ion-searchbar placeholder="{{'Search a contact' | translate}}" (ionInput)="getItems($event)"></ion-searchbar>
-    <ion-list>
-      <button class="contact" ion-item *ngFor="let entry of filteredAddressbook | orderBy : ['name']" (click)="viewEntry(entry)">
-        <gravatar [name]="entry.name" [height]="30" [width]="30" [email]="entry.email"></gravatar>
-        <div class="contact-info">
-          <div clss="item-title">{{ entry.name }}</div>
-          <div class="item-subtitle">{{ entry.address }}</div>
-        </div>
+    <div class="sortContainer">
+      <span *ngIf="!showReorder && addressbook.length > 1" (click)="reorder()" class="reorder-button" tappable>
+        <img src="assets/img/sort.svg" />
+      </span>
+      <span *ngIf="showReorder" (click)="reorder()" class="reorder-done" tappable>
+        {{ 'Done' | translate }}
+      </span>
+    </div>
+
+    <ion-list class="sliding-container addressbook" reorder="{{showReorder}}" (ionItemReorder)="reorderAddresses($event)">
+      <button ion-item detail-none *ngFor="let entry of (addressbook | orderBy: ['order'])" (click)="viewEntry(entry)">
+        <address-item-content [entry]="entry"></address-item-content>
       </button>
     </ion-list>
   </div>

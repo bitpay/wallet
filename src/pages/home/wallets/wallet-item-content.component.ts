@@ -10,11 +10,11 @@ export class WalletItemContent {
 
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);
-    const totalBalanceStr =
+    const availableBalanceStr =
       wallet.cachedStatus &&
-      wallet.cachedStatus.totalBalanceStr &&
-      wallet.cachedStatus.totalBalanceStr.replace(` ${currency}`, '');
-    return totalBalanceStr || lastKnownBalance;
+      wallet.cachedStatus.availableBalanceStr &&
+      wallet.cachedStatus.availableBalanceStr.replace(` ${currency}`, '');
+    return availableBalanceStr || lastKnownBalance;
   }
 
   getLastKownBalance(wallet, currency) {
@@ -24,10 +24,10 @@ export class WalletItemContent {
     );
   }
 
-  hasZeroBalance(wallet, currecy) {
+  hasZeroBalance(wallet, currency) {
     return (
-      (wallet.cachedStatus && wallet.cachedStatus.totalBalanceSat === 0) ||
-      this.getLastKownBalance(wallet, currecy) === '0.00'
+      (wallet.cachedStatus && wallet.cachedStatus.availableBalanceSat === 0) ||
+      this.getLastKownBalance(wallet, currency) === '0.00'
     );
   }
 }

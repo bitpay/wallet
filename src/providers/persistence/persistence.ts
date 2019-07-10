@@ -25,11 +25,14 @@ export interface GiftCardMap {
 }
 
 const Keys = {
+  ACTIVE_KEY: 'activeKey',
   ADDRESS_BOOK: network => 'addressbook-' + network,
+  ORDER_ADDRESS: address => 'orderAddress-' + address,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
+  BACKUP_WALLET_GROUP: keyId => 'walletGroupBackup-' + keyId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
   CLEAN_AND_SCAN_ADDRESSES: 'CleanAndScanAddresses',
@@ -52,10 +55,10 @@ const Keys = {
   },
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
+  HIDE_WALLET: walletId => 'hideWallet-' + walletId,
   KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
-  ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
   PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
@@ -63,7 +66,8 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
+  WALLET_GROUP_NAME: keyId => 'walletGroupName-' + keyId
 };
 
 interface Storage {
@@ -159,6 +163,19 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.BACKUP(walletId));
   }
 
+  setBackupGroupFlag(keyId: string, timestamp?) {
+    timestamp = timestamp || Date.now();
+    return this.storage.set(Keys.BACKUP_WALLET_GROUP(keyId), timestamp);
+  }
+
+  getBackupGroupFlag(keyId: string) {
+    return this.storage.get(Keys.BACKUP_WALLET_GROUP(keyId));
+  }
+
+  clearBackupGroupFlag(keyId: string) {
+    return this.storage.remove(Keys.BACKUP_WALLET_GROUP(keyId));
+  }
+
   setCleanAndScanAddresses(walletId: string) {
     return this.storage.set(Keys.CLEAN_AND_SCAN_ADDRESSES, walletId);
   }
@@ -191,21 +208,21 @@ export class PersistenceProvider {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   }
 
-  setDisclaimerAccepted() {
-    return this.storage.set(Keys.AGREE_DISCLAIMER, true);
+  setHideWalletFlag(walletId: string, val) {
+    return this.storage.set(Keys.HIDE_WALLET(walletId), val);
   }
 
-  setOnboardingCompleted() {
-    return this.storage.set(Keys.ONBOARDING_COMPLETED, true);
+  getHideWalletFlag(walletId: string) {
+    return this.storage.get(Keys.HIDE_WALLET(walletId));
+  }
+
+  setDisclaimerAccepted() {
+    return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
   // for compatibility
   getCopayDisclaimerFlag() {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
-  }
-
-  getCopayOnboardingFlag() {
-    return this.storage.get(Keys.ONBOARDING_COMPLETED);
   }
 
   setRemotePrefsStoredFlag() {
@@ -331,6 +348,11 @@ export class PersistenceProvider {
     this.removeTxHistory(walletId);
     this.clearBackupFlag(walletId);
     this.removeWalletOrder(walletId);
+  }
+
+  removeAllWalletGroupData(keyId: string) {
+    this.removeWalletGroupName(keyId);
+    this.clearBackupGroupFlag(keyId);
   }
 
   getActiveGiftCards(network: Network) {
@@ -518,6 +540,18 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
+  setAddressOrder(address: string, order: number) {
+    return this.storage.set(Keys.ORDER_ADDRESS(address), order);
+  }
+
+  getAddressOrder(address: string) {
+    return this.storage.get(Keys.ORDER_ADDRESS(address));
+  }
+
+  removeAddressOrder(address: string) {
+    return this.storage.remove(Keys.ORDER_ADDRESS(address));
+  }
+
   setWalletOrder(walletId: string, order: number) {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   }
@@ -528,6 +562,30 @@ export class PersistenceProvider {
 
   removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
+  }
+
+  setWalletGroupName(keyId: string, name: string) {
+    return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
+  }
+
+  getWalletGroupName(keyId: string) {
+    return this.storage.get(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  removeWalletGroupName(keyId: string) {
+    return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  setActiveWGKey(keyId: string) {
+    return this.storage.set(Keys.ACTIVE_KEY, keyId);
+  }
+
+  getActiveWGKey() {
+    return this.storage.get(Keys.ACTIVE_KEY);
+  }
+
+  removeActiveWGKey() {
+    return this.storage.remove(Keys.ACTIVE_KEY);
   }
 
   setLockStatus(isLocked: string) {

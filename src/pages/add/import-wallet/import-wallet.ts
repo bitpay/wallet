@@ -12,6 +12,7 @@ import { TabsPage } from '../../tabs/tabs';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
+import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -52,6 +53,7 @@ export class ImportWalletPage {
     private bwcProvider: BwcProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
+    private keyProvider: KeyProvider,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
@@ -78,6 +80,7 @@ export class ImportWalletPage {
     this.formFile = null;
 
     this.importForm = this.form.group({
+      walletName: [null, Validators.required],
       words: [null, Validators.required],
       backupText: [null],
       passphrase: [null],
@@ -217,9 +220,19 @@ export class ImportWalletPage {
   private async finish(wallets: any[]) {
     wallets.forEach(wallet => {
       this.walletProvider.updateRemotePreferences(wallet);
-      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.pushNotificationsProvider.updateSubscription(wallet);
+      this.profileProvider.setWalletBackup(wallet.credentials.walletId);
     });
+    if (wallets && wallets[0]) {
+      this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
+      this.profileProvider.setWalletGroupName(
+        wallets[0].credentials.keyId,
+        this.importForm.value.walletName
+      );
+      this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
+    }
+    this.events.publish('Local/WalletListChange');
+    // using setRoot(TabsPage) as workaround when coming from scanner
     this.app
       .getRootNavs()[0]
       .setRoot(TabsPage)
