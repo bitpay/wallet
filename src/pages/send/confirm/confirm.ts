@@ -247,7 +247,10 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.amount = this.decimalPipe.transform(
+      this.tx.amount / this.config.wallet.settings.unitToSatoshi,
+      '1.2-6'
+    );
   }
 
   private afterWalletSelectorSet() {
@@ -612,7 +615,7 @@ export class ConfirmPage extends WalletTabsChild {
       'miner-fee-notice',
       {
         coinName,
-        fee: sendMaxInfo.fee / 1e8,
+        fee: sendMaxInfo.fee / this.config.wallet.settings.unitToSatoshi,
         coin: this.tx.coin.toUpperCase(),
         msg: !_.isEmpty(warningMsg) ? warningMsg : ''
       }
@@ -623,7 +626,8 @@ export class ConfirmPage extends WalletTabsChild {
   private verifyExcludedUtxos(_, sendMaxInfo) {
     const warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      const amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
+      const amountBelowFeeStr =
+        sendMaxInfo.amountBelowFee / this.config.wallet.settings.unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -634,7 +638,9 @@ export class ConfirmPage extends WalletTabsChild {
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      const amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
+      const amountAboveMaxSizeStr =
+        sendMaxInfo.amountAboveMaxSize /
+        this.config.wallet.settings.unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
@@ -827,7 +833,9 @@ export class ConfirmPage extends WalletTabsChild {
         const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
 
-        const amount = (this.tx.amount / 1e8).toFixed(8);
+        const amount = (
+          this.tx.amount / this.config.wallet.settings.unitToSatoshi
+        ).toFixed(8);
         const unit = txp.coin.toUpperCase();
         const name = wallet.name;
         const message = this.replaceParametersProvider.replace(

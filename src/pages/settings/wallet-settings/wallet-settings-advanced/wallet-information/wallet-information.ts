@@ -3,6 +3,7 @@ import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
+import { ConfigProvider } from '../../../../../providers/config/config';
 import { Logger } from '../../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 
@@ -27,9 +28,11 @@ export class WalletInformationPage {
   public pubKeys;
   public externalSource: string;
   public canSign: boolean;
+  public unitToSatoshi: number;
 
   constructor(
     private profileProvider: ProfileProvider,
+    private configProvider: ConfigProvider,
     private navParams: NavParams,
     private logger: Logger
   ) {}
@@ -40,6 +43,7 @@ export class WalletInformationPage {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.unitToSatoshi = this.configProvider.get().wallet.settings.unitToSatoshi;
     this.walletName = this.wallet.name;
     this.coin = this.wallet.coin;
     this.walletId = this.wallet.credentials.walletId;

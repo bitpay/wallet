@@ -461,7 +461,7 @@ export class ShapeshiftConfirmPage {
 
   private showSendMaxWarning(): Promise<any> {
     return new Promise(resolve => {
-      let fee = this.sendMaxInfo.fee / 1e8;
+      let fee = this.sendMaxInfo.fee / this.configWallet.settings.unitToSatoshi;
       let msg = this.replaceParametersProvider.replace(
         this.translate.instant(
           '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
@@ -481,7 +481,9 @@ export class ShapeshiftConfirmPage {
   private verifyExcludedUtxos() {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = this.sendMaxInfo.amountBelowFee / 1e8;
+      let amountBelowFeeStr =
+        this.sendMaxInfo.amountBelowFee /
+        this.configWallet.settings.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -492,7 +494,9 @@ export class ShapeshiftConfirmPage {
     }
 
     if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = this.sendMaxInfo.amountAboveMaxSize / 1e8;
+      let amountAboveMaxSizeStr =
+        this.sendMaxInfo.amountAboveMaxSize /
+        this.configWallet.settings.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
