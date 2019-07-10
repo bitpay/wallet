@@ -84,7 +84,7 @@
     <plugin name="cordova-plugin-vibration" spec="3.1.0" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
     <plugin name="cordova-custom-config" spec="https://github.com/cmgustavo/cordova-custom-config.git#3a1902fb700dc8c1e9ac9db592aa48d7d900cde0" />
-    <plugin name="cordova-plugin-customurlscheme-ng" spec="5.0.0">
+    <plugin name="cordova-plugin-customurlscheme-ng" spec="5.0.1">
       <variable name="URL_SCHEME" value="bitcoin" />
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
@@ -92,7 +92,7 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="3.0.2" />
+    <plugin name="cordova-plugin-fcm-ng" spec="4.0.0" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 
@@ -134,6 +134,7 @@
     </platform>
 
     <platform name="android">
+      <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">

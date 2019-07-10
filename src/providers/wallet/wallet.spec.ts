@@ -2,6 +2,7 @@ import { TestUtils } from '../../test';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
+import { KeyProvider } from '../key/key';
 import { PersistenceProvider } from '../persistence/persistence';
 import { RateProvider } from '../rate/rate';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -25,6 +26,7 @@ describe('Provider: Wallet Provider', () => {
   let touchidProvider: TouchIdProvider;
   let txFormatProvider: TxFormatProvider;
   let walletProvider: WalletProvider;
+  let keyProvider: KeyProvider;
 
   class PersistenceProviderMock {
     constructor() {}
@@ -52,6 +54,26 @@ describe('Provider: Wallet Provider', () => {
     getTxHistory(_walletId: string) {
       return Promise.resolve(txsFromLocal);
     }
+    getKeys() {
+      return Promise.resolve([
+        {
+          id: 'keyId1',
+          xPrivKey: 'xPrivKey1',
+          version: 1,
+          mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+          mnemonicHasPassphrase: false
+        },
+        {
+          id: 'keyId2',
+          xPrivKey: 'xPrivKey2',
+          version: 1,
+          mnemonicHasPassphrase: false
+        }
+      ]);
+    }
+    getActiveWGKey() {
+      return Promise.resolve('keyId');
+    }
   }
 
   beforeEach(() => {
@@ -65,6 +87,7 @@ describe('Provider: Wallet Provider', () => {
     touchidProvider = testBed.get(TouchIdProvider);
     txFormatProvider = testBed.get(TxFormatProvider);
     walletProvider = testBed.get(WalletProvider);
+    keyProvider = testBed.get(KeyProvider);
 
     spyOn(feeProvider, 'getFeeLevels').and.returnValue(
       Promise.resolve({
@@ -111,9 +134,14 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       const opts = {};
       const expectedStatus = wallet.cachedStatus;
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        expect(status).toEqual(expectedStatus);
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          expect(status).toEqual(expectedStatus);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should get the status from a wallet that already have cachedStatus and pendingTxps, without opts', () => {
@@ -123,9 +151,14 @@ describe('Provider: Wallet Provider', () => {
 
       wallet.cachedStatus.pendingTxps = [pendingTxp];
       const expectedStatus = wallet.cachedStatus;
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        expect(status).toEqual(expectedStatus);
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          expect(status).toEqual(expectedStatus);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should get tx.pendingForUs as true if tx.status is pending', () => {
@@ -135,9 +168,14 @@ describe('Provider: Wallet Provider', () => {
 
       pendingTxp.status = 'pending';
       wallet.cachedStatus.pendingTxps = [pendingTxp];
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        expect(status.pendingTxps[0].pendingForUs).toBeTruthy();
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          expect(status.pendingTxps[0].pendingForUs).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should set different statusForUs for different action types', () => {
@@ -163,10 +201,15 @@ describe('Provider: Wallet Provider', () => {
       wallet.copayerId = 'copayerId1';
       wallet.cachedStatus.pendingTxps = [pendingTxp1, pendingTxp2];
 
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        expect(status.pendingTxps[0].statusForUs).toEqual('accepted');
-        expect(status.pendingTxps[1].statusForUs).toEqual('rejected');
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          expect(status.pendingTxps[0].statusForUs).toEqual('accepted');
+          expect(status.pendingTxps[1].statusForUs).toEqual('rejected');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should get the status from a wallet that does not have cachedStatus', () => {
@@ -205,11 +248,16 @@ describe('Provider: Wallet Provider', () => {
       };
       Object.assign(expectedStatus, statusMock, additionalExpectedStatusInfo);
 
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        delete status['statusUpdatedOn'];
-        delete expectedStatus['statusUpdatedOn'];
-        expect(status).toEqual(expectedStatus);
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          delete status['statusUpdatedOn'];
+          delete expectedStatus['statusUpdatedOn'];
+          expect(status).toEqual(expectedStatus);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should get the correct status when config.spendUnconfirmed is enabled', () => {
@@ -256,10 +304,15 @@ describe('Provider: Wallet Provider', () => {
       };
       Object.assign(expectedStatus, statusMock, additionalExpectedStatusInfo);
 
-      walletProvider.fetchStatus(wallet, opts).then(status => {
-        delete status['statusUpdatedOn'];
-        expect(status).toEqual(expectedStatus);
-      });
+      walletProvider
+        .fetchStatus(wallet, opts)
+        .then(status => {
+          delete status['statusUpdatedOn'];
+          expect(status).toEqual(expectedStatus);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -308,9 +361,14 @@ describe('Provider: Wallet Provider', () => {
     it('should get the last address stored', () => {
       const wallet: WalletMock = new WalletMock();
       const force = false;
-      walletProvider.getAddress(wallet, force).then(address => {
-        expect(address).toEqual('storedAddress');
-      });
+      walletProvider
+        .getAddress(wallet, force)
+        .then(address => {
+          expect(address).toEqual('storedAddress');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should reject to generate new address if wallet is not complete', () => {
@@ -339,9 +397,14 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
 
       const force = true;
-      walletProvider.getAddress(wallet, force).then(address => {
-        expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
-      });
+      walletProvider
+        .getAddress(wallet, force)
+        .then(address => {
+          expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('should reject to generate new address if connection error', () => {
@@ -358,9 +421,14 @@ describe('Provider: Wallet Provider', () => {
         return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
       };
       const force = true;
-      walletProvider.getAddress(wallet, force).then(mainAddress => {
-        expect(mainAddress).toEqual('address1');
-      });
+      walletProvider
+        .getAddress(wallet, force)
+        .then(mainAddress => {
+          expect(mainAddress).toEqual('address1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -389,9 +457,14 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       wallet.network = 'livenet';
       wallet.credentials.addressType = 'P2PKH';
-      walletProvider.getLowAmount(wallet).then(fee => {
-        expect(fee).toEqual(16400);
-      });
+      walletProvider
+        .getLowAmount(wallet)
+        .then(fee => {
+          expect(fee).toEqual(16400);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('Should approx utxo amount, from which the uxto is economically redeemable for a 2-2 wallet', () => {
@@ -400,38 +473,58 @@ describe('Provider: Wallet Provider', () => {
       wallet.credentials.addressType = 'P2SH';
       wallet.m = 2;
       wallet.n = 2;
-      walletProvider.getLowAmount(wallet).then(fee => {
-        expect(Math.floor(fee)).toEqual(24066);
-      });
+      walletProvider
+        .getLowAmount(wallet)
+        .then(fee => {
+          expect(Math.floor(fee)).toEqual(24066);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: getTxNote', () => {
     it('Should wallet.getTxNote and get the note of a particular tx', () => {
       const wallet: WalletMock = new WalletMock();
-      walletProvider.getTxNote(wallet, 'txid').then(note => {
-        expect(note).toEqual('Note');
-      });
+      walletProvider
+        .getTxNote(wallet, 'txid')
+        .then(note => {
+          expect(note).toEqual('Note');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: editTxNote', () => {
     it('Should call wallet.editTxNote', () => {
       const wallet: WalletMock = new WalletMock();
-      walletProvider.editTxNote(wallet, 'txid').then(note => {
-        expect(note).toEqual('NoteEdited');
-      });
+      walletProvider
+        .editTxNote(wallet, 'txid')
+        .then(note => {
+          expect(note).toEqual('NoteEdited');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: getTxp', () => {
     it('Should call wallet.getTx and get the txp', () => {
       const wallet: WalletMock = new WalletMock();
-      walletProvider.getTxp(wallet, 'txpid').then(txp => {
-        expect(txp).toEqual({
-          txid: 'txid'
+      walletProvider
+        .getTxp(wallet, 'txpid')
+        .then(txp => {
+          expect(txp).toEqual({
+            txid: 'txid'
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
     });
   });
 
@@ -451,13 +544,18 @@ describe('Provider: Wallet Provider', () => {
         }
       ];
       wallet.completeHistoryIsValid = true;
-      walletProvider.getTx(wallet, 'txid1').then(tx => {
-        expect(tx).toEqual({
-          amount: 10000,
-          fees: 99,
-          txid: 'txid1'
+      walletProvider
+        .getTx(wallet, 'txid1')
+        .then(tx => {
+          expect(tx).toEqual({
+            amount: 10000,
+            fees: 99,
+            txid: 'txid1'
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
       walletProvider.getTx(wallet, 'txid3').catch(err => {
         expect(err).toBeDefined();
       });
@@ -481,13 +579,18 @@ describe('Provider: Wallet Provider', () => {
         ])
       );
 
-      walletProvider.getTx(wallet, 'txid1').then(tx => {
-        expect(tx).toEqual({
-          amount: 10000,
-          fees: 99,
-          txid: 'txid1'
+      walletProvider
+        .getTx(wallet, 'txid1')
+        .then(tx => {
+          expect(tx).toEqual({
+            amount: 10000,
+            fees: 99,
+            txid: 'txid1'
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
     });
   });
 
@@ -513,6 +616,9 @@ describe('Provider: Wallet Provider', () => {
         .fetchTxHistory(wallet, progressFn, opts)
         .then(txHistory => {
           expect(txHistory).toEqual(wallet.completeHistory);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
     });
 
@@ -527,20 +633,10 @@ describe('Provider: Wallet Provider', () => {
         .then(txHistory => {
           expect(wallet.completeHistoryIsValid).toBeTruthy();
           expect(txHistory).toEqual(expectedTxHistory);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-    });
-  });
-
-  describe('Function: isEncrypted', () => {
-    it('Should return undefined if there is no wallet', () => {
-      const result: boolean = walletProvider.isEncrypted(null);
-      expect(result).toBeUndefined();
-    });
-
-    it('Should return true if PrivKey is encrypted', () => {
-      const wallet: WalletMock = new WalletMock();
-      const result: boolean = walletProvider.isEncrypted(wallet);
-      expect(result).toBeTruthy();
     });
   });
 
@@ -552,9 +648,14 @@ describe('Provider: Wallet Provider', () => {
         amount: 10000
       };
 
-      walletProvider.createTx(wallet, txp).then(createdTxp => {
-        expect(createdTxp.outputs).toBeDefined();
-      });
+      walletProvider
+        .createTx(wallet, txp)
+        .then(createdTxp => {
+          expect(createdTxp.outputs).toBeDefined();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -566,24 +667,38 @@ describe('Provider: Wallet Provider', () => {
         amount: 10000
       };
 
-      walletProvider.publishTx(wallet, txp).then(publishedTxp => {
-        expect(publishedTxp.txid).toEqual('txid1');
-      });
+      walletProvider
+        .publishTx(wallet, txp)
+        .then(publishedTxp => {
+          expect(publishedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: signTx', () => {
-    it('Should return the signed txid', () => {
+    it('Should return the signed txid', async () => {
+      await keyProvider.load();
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
         amount: 10000
       };
       const pass = 'password';
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
 
-      walletProvider.signTx(wallet, txp, pass).then(signedTxp => {
-        expect(signedTxp.txid).toEqual('txid1');
-      });
+      walletProvider
+        .signTx(wallet, txp, pass)
+        .then(signedTxp => {
+          expect(signedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -596,9 +711,14 @@ describe('Provider: Wallet Provider', () => {
         status: 'accepted'
       };
 
-      walletProvider.broadcastTx(wallet, txp).then(broadcastedTxp => {
-        expect(broadcastedTxp.txid).toEqual('txid1');
-      });
+      walletProvider
+        .broadcastTx(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -610,9 +730,14 @@ describe('Provider: Wallet Provider', () => {
         amount: 10000
       };
 
-      walletProvider.rejectTx(wallet, txp).then(rejectedTxp => {
-        expect(rejectedTxp.txid).toEqual('txid1');
-      });
+      walletProvider
+        .rejectTx(wallet, txp)
+        .then(rejectedTxp => {
+          expect(rejectedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -624,9 +749,14 @@ describe('Provider: Wallet Provider', () => {
         amount: 10000
       };
 
-      walletProvider.removeTx(wallet, txp).then(() => {
-        expect(wallet.cachedStatus.isValid).toBeFalsy();
-      });
+      walletProvider
+        .removeTx(wallet, txp)
+        .then(() => {
+          expect(wallet.cachedStatus.isValid).toBeFalsy();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -660,9 +790,14 @@ describe('Provider: Wallet Provider', () => {
     it('Should recreate and change notAuthorized property to false', () => {
       const wallet: WalletMock = new WalletMock();
 
-      walletProvider.recreate(wallet).then(() => {
-        expect(wallet.notAuthorized).toBeFalsy();
-      });
+      walletProvider
+        .recreate(wallet)
+        .then(() => {
+          expect(wallet.notAuthorized).toBeFalsy();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -670,9 +805,14 @@ describe('Provider: Wallet Provider', () => {
     it('Should start scanning', () => {
       const wallet: WalletMock = new WalletMock();
 
-      walletProvider.startScan(wallet).then(() => {
-        expect(wallet.scanning).toBeTruthy();
-      });
+      walletProvider
+        .startScan(wallet)
+        .then(() => {
+          expect(wallet.scanning).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -699,16 +839,21 @@ describe('Provider: Wallet Provider', () => {
     it('Should call getMainAddresses and get main addresses', () => {
       const wallet: WalletMock = new WalletMock();
       const opts = {};
-      walletProvider.getMainAddresses(wallet, opts).then(addresses => {
-        expect(addresses).toEqual([
-          {
-            address: 'address1'
-          },
-          {
-            address: 'address2'
-          }
-        ]);
-      });
+      walletProvider
+        .getMainAddresses(wallet, opts)
+        .then(addresses => {
+          expect(addresses).toEqual([
+            {
+              address: 'address1'
+            },
+            {
+              address: 'address2'
+            }
+          ]);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -716,103 +861,45 @@ describe('Provider: Wallet Provider', () => {
     it('Should call getBalance and get the balance', () => {
       const wallet: WalletMock = new WalletMock();
       const opts = {};
-      walletProvider.getBalance(wallet, opts).then(balance => {
-        expect(balance).toEqual({
-          totalAmount: 1000
+      walletProvider
+        .getBalance(wallet, opts)
+        .then(balance => {
+          expect(balance).toEqual({
+            totalAmount: 1000
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
     });
   });
 
   describe('Function: getLowUtxos', () => {
     it('Should get the low utxos', () => {
       const wallet: WalletMock = new WalletMock();
-      walletProvider.getLowUtxos(wallet).then(lowUtxos => {
-        expect(lowUtxos).toEqual({
-          allUtxos: [
-            { satoshis: 1000 },
-            { satoshis: 2000 },
-            { satoshis: 3000 },
-            { satoshis: 9000000 }
-          ],
-          lowUtxos: [
-            { satoshis: 1000 },
-            { satoshis: 2000 },
-            { satoshis: 3000 }
-          ],
-          totalLow: 6000,
-          warning: false,
-          minFee: 3150
+      walletProvider
+        .getLowUtxos(wallet)
+        .then(lowUtxos => {
+          expect(lowUtxos).toEqual({
+            allUtxos: [
+              { satoshis: 1000 },
+              { satoshis: 2000 },
+              { satoshis: 3000 },
+              { satoshis: 9000000 }
+            ],
+            lowUtxos: [
+              { satoshis: 1000 },
+              { satoshis: 2000 },
+              { satoshis: 3000 }
+            ],
+            totalLow: 6000,
+            warning: false,
+            minFee: 3150
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
-    });
-  });
-
-  describe('Function: encrypt', () => {
-    const wallet: WalletMock = new WalletMock();
-
-    it('Should call askPassword to encrypt wallet', () => {
-      const spyAskPassword = spyOn<any>(
-        walletProvider,
-        'askPassword'
-      ).and.returnValue(Promise.resolve('password1'));
-      walletProvider.encrypt([].concat(wallet));
-      expect(spyAskPassword).toHaveBeenCalled();
-    });
-
-    it('Should reject the promise if password is an empty string', () => {
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
-        Promise.resolve('')
-      );
-      walletProvider.encrypt([].concat(wallet)).catch(msg => {
-        expect(msg).toBeDefined(); // 'No password'
-      });
-    });
-  });
-
-  describe('Function: decrypt', () => {
-    const wallet: WalletMock = new WalletMock();
-
-    it('Should call askPassword to decrypt wallet', () => {
-      const spyAskPassword = spyOn<any>(
-        walletProvider,
-        'askPassword'
-      ).and.returnValue(Promise.resolve('password1'));
-      walletProvider.decrypt([].concat(wallet));
-      expect(spyAskPassword).toHaveBeenCalled();
-    });
-
-    it('Should reject the promise if password is an empty string', () => {
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
-        Promise.resolve('')
-      );
-      walletProvider.decrypt([].concat(wallet)).catch(msg => {
-        expect(msg).toBeDefined();
-      });
-    });
-  });
-
-  describe('Function: handleEncryptedWallet', () => {
-    const wallet: WalletMock = new WalletMock();
-
-    it('Should call askPassword', () => {
-      const spyAskPassword = spyOn<any>(
-        walletProvider,
-        'askPassword'
-      ).and.returnValue(Promise.resolve('password1'));
-      walletProvider.handleEncryptedWallet(wallet).then(pass => {
-        expect(pass).toEqual('password1');
-      });
-      expect(spyAskPassword).toHaveBeenCalled();
-    });
-
-    it('Should reject the promise if password is an empty string', () => {
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
-        Promise.resolve('')
-      );
-      walletProvider.handleEncryptedWallet(wallet).catch(msg => {
-        expect(msg).toBeDefined();
-      });
     });
   });
 
@@ -823,9 +910,14 @@ describe('Provider: Wallet Provider', () => {
     };
 
     it('Should reject the txp', () => {
-      walletProvider.reject(wallet, txp).then(rejectedTxp => {
-        expect(rejectedTxp.txid).toEqual('txid1');
-      });
+      walletProvider
+        .reject(wallet, txp)
+        .then(rejectedTxp => {
+          expect(rejectedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -836,54 +928,82 @@ describe('Provider: Wallet Provider', () => {
     };
 
     it('Should publish the txp', () => {
-      walletProvider.onlyPublish(wallet, txp).then(() => {
-        expect(wallet.cachedStatus.isValid).toBeFalsy();
-      });
+      walletProvider
+        .onlyPublish(wallet, txp)
+        .then(() => {
+          expect(wallet.cachedStatus.isValid).toBeFalsy();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: prepare', () => {
-    const wallet: WalletMock = new WalletMock();
-
-    it('Should call touchidProvider and then handleEncryptedWallet', () => {
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
+    it('Should call touchidProvider and then handleEncryptedWallet', async () => {
+      const wallet: WalletMock = new WalletMock();
+      await keyProvider.load();
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
       );
       spyOn(touchidProvider, 'checkWallet').and.returnValue(Promise.resolve());
-      walletProvider.prepare(wallet).then(pass => {
-        expect(pass).toEqual('password1');
-      });
+      walletProvider
+        .prepare(wallet)
+        .then(pass => {
+          expect(pass).toEqual('password1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
   describe('Function: publishAndSign', () => {
     const wallet: WalletMock = new WalletMock();
     let txp;
-
-    it('Should prepare, sign and broadcast the txp if the status is pending', () => {
+    it('Should prepare, sign and broadcast the txp if the status is pending', async () => {
+      await keyProvider.load();
       txp = {
         txid: 'txid1',
         status: 'pending'
       };
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
       );
-      walletProvider.publishAndSign(wallet, txp).then(broadcastedTxp => {
-        expect(broadcastedTxp).toEqual(txp);
-      });
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
+      walletProvider
+        .publishAndSign(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp).toEqual(txp);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
-    it('Should prepare, publish, sign and broadcast the txp if the status is accepted', () => {
+    it('Should prepare, publish, sign and broadcast the txp if the status is accepted', async () => {
+      await keyProvider.load();
+
       txp = {
         txid: 'txid1',
         status: 'accepted'
       };
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
       );
-      walletProvider.publishAndSign(wallet, txp).then(broadcastedTxp => {
-        expect(broadcastedTxp).toEqual(txp);
-      });
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
+      walletProvider
+        .publishAndSign(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp).toEqual(txp);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -891,34 +1011,51 @@ describe('Provider: Wallet Provider', () => {
     const wallet: WalletMock = new WalletMock();
     let pass;
     wallet.credentials.network = 'livenet';
-    wallet.credentials.mnemonicHasPassphrase = false;
 
-    it('Should get the encoded wallet info for a BIP44 wallet', () => {
+    it('Should get the encoded wallet info for a BIP44 wallet', async () => {
+      await keyProvider.load();
       pass = 'password1';
-      wallet.credentials.derivationStrategy = 'BIP44';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/44'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
 
-      walletProvider.getEncodedWalletInfo(wallet, pass).then(walletInfo => {
-        expect(walletInfo).toEqual(
-          "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/0'/0'|false|btc"
-        );
-      });
+      walletProvider
+        .getEncodedWalletInfo(wallet, pass)
+        .then(walletInfo => {
+          expect(walletInfo).toEqual(
+            "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/0'/0'|false|btc"
+          );
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
-    it('Should get the encoded wallet info for a BIP44 wallet without mnemonics', () => {
+    it('Should get the encoded wallet info for a BIP44 wallet without mnemonics', async () => {
+      await keyProvider.load();
       pass = 'password2';
-      wallet.credentials.derivationStrategy = 'BIP44';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/44'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
+      wallet.credentials.keyId = 'keyId2';
 
-      walletProvider.getEncodedWalletInfo(wallet, pass).then(walletInfo => {
-        expect(walletInfo).toEqual("2|xPrivKey1|livenet|m/44'/0'/0'|false|btc");
-      });
+      walletProvider
+        .getEncodedWalletInfo(wallet, pass)
+        .then(walletInfo => {
+          expect(walletInfo).toEqual(
+            "2|xPrivKey2|livenet|m/44'/0'/0'|false|btc"
+          );
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
 
     it('Should be reject for a BIP45 wallet', () => {
       pass = 'password1';
-      wallet.credentials.derivationStrategy = 'BIP45';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/45'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
 
       walletProvider.getEncodedWalletInfo(wallet, pass).catch(err => {
         expect(err).toBeDefined();
@@ -930,7 +1067,8 @@ describe('Provider: Wallet Provider', () => {
     const wallet: WalletMock = new WalletMock();
     let pass;
 
-    it('Should get the keys of a wallet', () => {
+    it('Should get the keys of a wallet', async () => {
+      await keyProvider.load();
       pass = 'password1';
 
       const keys = walletProvider.getKeysWithPassword(wallet, pass);
@@ -966,16 +1104,22 @@ describe('Provider: Wallet Provider', () => {
   describe('Function: getKeys', () => {
     const wallet: WalletMock = new WalletMock();
 
-    it('Should get the keys of a wallet', () => {
-      spyOn<any>(walletProvider, 'askPassword').and.returnValue(
+    it('Should get the keys of a wallet', async () => {
+      await keyProvider.load();
+      spyOn<any>(keyProvider, 'askPassword').and.returnValue(
         Promise.resolve('password1')
       );
-      walletProvider.getKeys(wallet).then(keys => {
-        expect(keys).toEqual({
-          mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
-          xPrivKey: 'xPrivKey1'
+      walletProvider
+        .getKeys(wallet)
+        .then(keys => {
+          expect(keys).toEqual({
+            mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+            xPrivKey: 'xPrivKey1'
+          });
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
         });
-      });
     });
   });
 
@@ -984,9 +1128,14 @@ describe('Provider: Wallet Provider', () => {
     const opts = {};
 
     it('Should get the send max info of a wallet', () => {
-      walletProvider.getSendMaxInfo(wallet, opts).then(sendMaxInfo => {
-        expect(sendMaxInfo).toEqual(sendMaxInfoMock);
-      });
+      walletProvider
+        .getSendMaxInfo(wallet, opts)
+        .then(sendMaxInfo => {
+          expect(sendMaxInfo).toEqual(sendMaxInfoMock);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
     });
   });
 
@@ -1009,43 +1158,6 @@ describe('Provider: Wallet Provider', () => {
       const coin = 'btc';
       const protocol = walletProvider.getProtocolHandler(coin);
       expect(protocol).toEqual('bitcoin');
-    });
-  });
-
-  describe('Function: copyCopayers', () => {
-    const wallet: WalletMock = new WalletMock();
-    wallet.credentials.publicKeyRing = [
-      {
-        copayerName: 'copayer1',
-        xPubKey: 'xPubKey1',
-        requestPubKey: 'requestPubKey1'
-      },
-      {
-        copayerName: 'copayer2',
-        xPubKey: 'xPubKey2',
-        requestPubKey: 'requestPubKey2'
-      }
-    ];
-    wallet.credentials.walletPrivKey = 'walletPrivKey1';
-    const newWallet: WalletMock = new WalletMock();
-
-    it('Should work without errors', () => {
-      (walletProvider as any).bwcProvider.getBitcore = () => {
-        const bitcore = {
-          PrivateKey: {
-            fromString: (walletPrivKey: string) => walletPrivKey
-          }
-        };
-        return bitcore;
-      };
-      walletProvider
-        .copyCopayers(wallet, newWallet)
-        .then(() => {
-          expect().nothing();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
-        });
     });
   });
 });

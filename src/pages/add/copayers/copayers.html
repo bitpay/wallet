@@ -1,5 +1,5 @@
-<ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
+<ion-header>
+  <ion-navbar>
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -9,7 +9,7 @@
       {{ wallet.name }} [<span translate>{{wallet.m}}-of-{{wallet.n}}</span>]
     </ion-title>
     <ion-buttons right>
-      <button *ngIf="!wallet.notAuthorized && secret" ion-button clear (click)="showDeletePopup()" translate>
+      <button *ngIf="!wallet.notAuthorized && secret" ion-button (click)="showDeletePopup()" translate>
         Cancel
       </button>
     </ion-buttons>

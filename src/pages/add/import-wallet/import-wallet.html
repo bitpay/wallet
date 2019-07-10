@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ createLabel }}</ion-title>
+    <ion-title>{{ 'Import Wallet' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="import()" [disabled]="!importForm.valid">
         <span translate>Import</span>
@@ -21,21 +21,12 @@
     </ion-segment>
   </div>
 
-  <ion-card *ngIf="importErr" (click)="importErr = false">
-    <ion-item class="assertive">
-      <div translate>Could not access the wallet at the server. Please check:</div>
-      <ul>
-        <li translate>The password of the recovery phrase (if set)</li>
-        <li translate>The derivation path</li>
-        <li translate>The Wallet Service URL</li>
-      </ul>
-      <small>
-        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.</span>
-      </small>
-    </ion-item>
-  </ion-card>
-
   <form [formGroup]="importForm">
+    <ion-item>
+      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="walletName"></ion-input>
+    </ion-item>
+
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">
@@ -63,14 +54,6 @@
       </ion-item>
     </div>
 
-    <ion-item *ngIf="selectedTab != 'file'" [hidden]="true">
-      <ion-label floating>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin">
-        <ion-option value="btc">Bitcoin (BTC)</ion-option>
-        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
-      </ion-select>
-    </ion-item>
-
     <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
       <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
       <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
@@ -88,24 +71,6 @@
             This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
           </div>
         </label-tip>
-
-        <ion-item>
-          <ion-label floating>{{'Derivation path' | translate}}</ion-label>
-          <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
-        </ion-item>
-
-        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}">
-          <ion-label>Testnet</ion-label>
-          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
-        </ion-item>
-
-        <label-tip *ngIf="importForm.value.testnetEnabled" type="warn">
-          <span label-tip-title translate>Testnet Wallet</span>
-          <div label-tip-body translate>
-            The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.
-          </div>
-        </label-tip>
-
       </div>
 
       <ion-item>

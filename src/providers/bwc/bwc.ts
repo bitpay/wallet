@@ -32,6 +32,18 @@ export class BwcProvider {
     return BWC.Utils;
   }
 
+  public getKey() {
+    return BWC.Key;
+  }
+
+  public upgradeCredentialsV1(x) {
+    return BWC.upgradeCredentialsV1(x);
+  }
+
+  public upgradeMultipleCredentialsV1(x) {
+    return BWC.upgradeMultipleCredentialsV1(x);
+  }
+
   public getClient(walletData?, opts?) {
     opts = opts || {};
 
@@ -42,7 +54,8 @@ export class BwcProvider {
       timeout: 100000,
       transports: ['polling']
     });
-    if (walletData) bwc.import(walletData, opts);
+
+    if (walletData) bwc.fromString(walletData);
     return bwc;
   }
 }

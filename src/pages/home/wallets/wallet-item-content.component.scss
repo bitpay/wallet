@@ -1,0 +1,44 @@
+wallet-item-content {
+  align-items: center;
+  display: flex;
+  padding-right: 7px;
+  width: 100%;
+
+  .wallet-item-content {
+    color: black;
+
+    &__amount {
+      color: black;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    &__credentials {
+      color: #aaaeb6;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    &__fiat {
+      color: #aaaeb6;
+      font-size: 14px;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    &__left {
+      margin-right: 10px;
+      text-align: left;
+    }
+
+    &__name {
+      color: black;
+      font-size: 16px;
+    }
+
+    &__right {
+      text-align: right;
+      flex-grow: 1;
+    }
+  }
+}

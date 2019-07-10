@@ -14,6 +14,10 @@ page-home {
     background: none;
   }
 
+  .blur {
+    filter: blur(12px);
+  }
+
   .home-header {
     .notifications-badge {
       border-radius: 9px;
@@ -38,6 +42,41 @@ page-home {
       img {
         opacity: 0.6;
       }
+    }
+
+    .wallet-group-dropdown {
+      border-radius: 20px;
+      background-color: color($colors, light);
+      color: color($colors, dark);
+      box-shadow: none;
+      font-size: 17px;
+      max-width: 90%;
+      &:hover,
+      &:focus,
+      &:active {
+        &.button-md,
+        &.button-ios {
+          background-color: #ededed;
+          color: black;
+          box-shadow: none;
+        }
+      }
+      ion-icon {
+        padding-left: 10px;
+      }
+    }
+
+    .toolbar-content {
+      ion-title {
+        &.title-ios {
+          padding: 0 50px 1px;
+        }
+      }
+    }
+
+    .fix-margin {
+      max-width: 70%;
+      margin-right: 4rem;
     }
 
     .home-logo {
@@ -102,11 +141,6 @@ page-home {
     }
   }
 
-  .card {
-    z-index: 1;
-    position: relative;
-  }
-
   .clipboard-card {
     z-index: 0;
   }
@@ -118,13 +152,13 @@ page-home {
   .content-animation {
     z-index: 5;
     margin-top: 0px;
-    -webkit-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -moz-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -o-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    -webkit-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -moz-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -o-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
     animation-name: bounce-card;
-    animation-duration: 0.7s;
-    animation-delay: 0.8s;
+    animation-duration: 0.4s;
+    animation-delay: 0.5s;
   }
 
   ion-refresher {
@@ -359,7 +393,7 @@ page-home {
 
   .scan-button {
     position: absolute;
-    z-index: 999;
+    z-index: 9;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
@@ -435,14 +469,6 @@ page-home {
     }
   }
 
-  .reorder-done {
-    color: color($colors, primary);
-  }
-
-  .reorder-button {
-    display: flex;
-  }
-
   .wallets-container {
     margin-top: 20px;
     margin-bottom: -15px;
@@ -459,45 +485,6 @@ page-home {
       &.activated {
         background-color: $feather;
       }
-    }
-
-    .primary-text {
-      color: black;
-      font-size: 16px;
-    }
-
-    .wallet-name {
-      margin-bottom: 2px;
-    }
-
-    .wallet-name-and-credentials {
-      margin-right: 3px;
-    }
-
-    .secondary-text {
-      color: #aaaeb6;
-      font-size: 14px;
-      margin-top: 4px;
-
-      @media (max-width: 330px) {
-        font-size: 13px;
-      }
-    }
-
-    &.reorder-enabled .wallet-amount {
-      .secondary-text {
-        @media (max-width: 400px) {
-          font-size: 11px;
-        }
-      }
-
-      @media (max-width: 330px) {
-        display: none;
-      }
-    }
-
-    .testnet {
-      filter: grayscale(100%);
     }
 
     .item-inner {
@@ -560,7 +547,11 @@ page-home {
 
     ion-reorder {
       flex-basis: 60px;
-      margin-left: 2px;
+      margin-left: 3px;
+
+      ion-icon {
+        margin-bottom: 2px;
+      }
     }
 
     label-tip {

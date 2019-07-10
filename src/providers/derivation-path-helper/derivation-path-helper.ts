@@ -39,6 +39,10 @@ export class DerivationPathHelperProvider {
   }
 
   public getNetworkName(path: string): string {
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 'livenet';
+
     const coinCode = this.parsePath(path).coinCode;
     let networkName: string;
 
@@ -57,6 +61,10 @@ export class DerivationPathHelperProvider {
   }
 
   public getAccount(path: string): number {
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 0;
+
     const account = this.parsePath(path).account || '';
     const match = account.match(/(\d+)'/);
     if (!match) return undefined;
@@ -66,6 +74,9 @@ export class DerivationPathHelperProvider {
   public isValidDerivationPathCoin(path: string, coin: string): boolean {
     let isValid: boolean;
     const coinCode = this.parsePath(path).coinCode;
+
+    // BIP45
+    if (path == "m/45'") return true;
 
     switch (coin) {
       case 'btc':

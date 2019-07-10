@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Wallet Information' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
-    <ion-item (click)="saveBlack()">
+    <ion-item>
       <div translate float-left>Name (at creation)</div>
       <ion-note item-end>
         {{walletName}}
@@ -44,9 +44,9 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Derivation Strategy</span>
+      <span translate>Derivation Path</span>
       <ion-note item-end>
-        {{derivationStrategy}}
+        {{rootPath}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
@@ -56,7 +56,7 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Account</span>({{derivationStrategy}})
+      <span translate>Account</span>
       <ion-note item-end>
         #{{account}}
       </ion-note>
@@ -76,14 +76,8 @@
           {{pk}}
         </div>
       </div>
-      <span *ngIf="$index == 0">({{basePath}})</span>
+      <span *ngIf="i == 0">({{rootPath}})</span>
     </ion-item>
-    <div *ngIf="!needsBackup && canSign">
-      <ion-item-divider class="item-without-title"></ion-item-divider>
-      <button ion-item (click)="openWalletExtendedPrivateKey()">
-        <span translate>Extended Private Key</span>
-      </button>
-    </div>
     <ion-item-divider *ngIf="balanceByAddress">Balance By Address</ion-item-divider>
     <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
       <span>{{a.address}}</span>

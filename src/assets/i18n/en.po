@@ -59,10 +59,6 @@ msgstr ""
 "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come "
 "from UTXOs smaller than the network fee provided."
 
-#| msgid ""
-#| "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} "
-#| "{{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} "
-#| "({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
 msgid ""
 "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} "
 "{{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} "
@@ -121,6 +117,9 @@ msgstr "Add Contact"
 msgid "Add Recipient"
 msgstr "Add Recipient"
 
+msgid "Add Wallet"
+msgstr "Add Wallet"
+
 msgid "Add account"
 msgstr "Add account"
 
@@ -129,13 +128,6 @@ msgstr "Add as a contact"
 
 msgid "Add funds"
 msgstr "Add funds"
-
-msgid ""
-"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Google Play, and Uber."
-msgstr ""
-"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Google Play, and Uber."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Add this BitPay account ({{email}})?"
@@ -282,9 +274,6 @@ msgstr "Backup wallet"
 msgid "Bad wallet invitation"
 msgstr "Bad wallet invitation"
 
-msgid "Balance Hidden"
-msgstr "Balance Hidden"
-
 msgid "Basic Wallet"
 msgstr "Basic Wallet"
 
@@ -389,9 +378,6 @@ msgstr "Calculating send max..."
 
 msgid "Cancel"
 msgstr "Cancel"
-
-msgid "Cancel invitation"
-msgstr "Cancel invitation"
 
 msgid "Canceling Gift Card..."
 msgstr "Canceling Gift Card..."
@@ -690,7 +676,6 @@ msgstr "Derivation Strategy"
 msgid "Derivation path"
 msgstr "Derivation path"
 
-#| msgid "Your wallet is backed up!"
 msgid "Destination wallet needs to be backed up"
 msgstr "Destination wallet needs to be backed up"
 
@@ -702,6 +687,10 @@ msgstr "Disable notifications"
 
 msgid "Disabled"
 msgstr "Disabled"
+
+#| msgid "Account"
+msgid "Discount"
+msgstr "Discount"
 
 msgid "Do not include private key"
 msgstr "Do not include private key"
@@ -789,6 +778,9 @@ msgstr "Enter a password to encrypt your wallet"
 msgid "Enter a transaction memo"
 msgstr "Enter a transaction memo"
 
+msgid "Enter an email address"
+msgstr "Enter an email address"
+
 msgid "Enter bitcoin address"
 msgstr "Enter bitcoin address"
 
@@ -821,9 +813,6 @@ msgstr "Error connecting to ShapeShift"
 
 msgid "Error creating wallet"
 msgstr "Error creating wallet"
-
-msgid "Error deleting addressbook"
-msgstr "Error deleting addressbook"
 
 msgid "Error deleting entry"
 msgstr "Error deleting entry"
@@ -1049,6 +1038,9 @@ msgstr "Help & support"
 msgid "Help and support information is available at the website."
 msgstr "Help and support information is available at the website."
 
+msgid "Hidden"
+msgstr "Hidden"
+
 msgid "Hide"
 msgstr "Hide"
 
@@ -1057,6 +1049,9 @@ msgstr "Hide Balance"
 
 msgid "Hide advanced options"
 msgstr "Hide advanced options"
+
+msgid "Hide discount?"
+msgstr "Hide discount?"
 
 msgid "Home"
 msgstr "Home"
@@ -1124,6 +1119,13 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "If enabled, wallets will also try to spend unconfirmed funds."
 
 msgid ""
+"If there is an issue with this payment, or a refund needs to be made, we "
+"will contact you at this address."
+msgstr ""
+"If there is an issue with this payment, or a refund needs to be made, we "
+"will contact you at this address."
+
+msgid ""
 "If you have funds stored on a website then you should move them into a "
 "secure wallet... like this one!"
 msgstr ""
@@ -1180,6 +1182,15 @@ msgstr "Incorrect network address"
 msgid "Information"
 msgstr "Information"
 
+msgid ""
+"Inspired by physical wallets, the home view is now clean and more spacious "
+"such that all the important details are accessible and summarized in a "
+"glance."
+msgstr ""
+"Inspired by physical wallets, the home view is now clean and more spacious "
+"such that all the important details are accessible and summarized in a "
+"glance."
+
 msgid "Insufficient funds"
 msgstr "Insufficient funds"
 
@@ -1207,12 +1218,14 @@ msgstr "Invalid data"
 msgid "Invalid derivation path"
 msgstr "Invalid derivation path"
 
-#| msgid "Invalid derivation path"
 msgid "Invalid derivation path for selected coin"
 msgstr "Invalid derivation path for selected coin"
 
 msgid "Invitation Code"
 msgstr "Invitation Code"
+
+msgid "Invoice URL"
+msgstr "Invoice URL"
 
 msgid "Is this correct?"
 msgstr "Is this correct?"
@@ -1298,6 +1311,9 @@ msgstr "Locktime in effect. Please wait to create a new spend proposal"
 
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime in effect. Please wait to remove this spend proposal"
+
+msgid "Log out"
+msgstr "Log out"
 
 msgid "Low Fee"
 msgstr "Low Fee"
@@ -1396,6 +1412,9 @@ msgstr "Network error"
 msgid "New copayer"
 msgstr "New copayer"
 
+msgid "New look and feel"
+msgstr "New look and feel"
+
 msgid "New payment proposal"
 msgstr "New payment proposal"
 
@@ -1459,7 +1478,6 @@ msgstr "Not enough funds"
 msgid "Not enough funds for fee"
 msgstr "Not enough funds for fee"
 
-#| msgid "Not enough funds for fee"
 msgid "Not enough funds for fee {{shiftFee}}"
 msgstr "Not enough funds for fee {{shiftFee}}"
 
@@ -1510,6 +1528,9 @@ msgstr "Now it's time for you to create wallets to store your funds into."
 
 msgid "OK"
 msgstr "OK"
+
+msgid "OPEN IN BROWSER"
+msgstr "OPEN IN BROWSER"
 
 msgid "Off"
 msgstr "Off"
@@ -1687,6 +1708,9 @@ msgstr "Preparing backup..."
 msgid "Previous"
 msgstr "Previous"
 
+msgid "Price Chart"
+msgstr "Price Chart"
+
 msgid "Print"
 msgstr "Print"
 
@@ -1799,6 +1823,9 @@ msgstr "Recreating Wallet..."
 msgid "Redeem Now"
 msgstr "Redeem Now"
 
+msgid "Refund Email"
+msgstr "Refund Email"
+
 msgid "Reject Payment Proposal"
 msgstr "Reject Payment Proposal"
 
@@ -1882,9 +1909,6 @@ msgstr "Scan again"
 
 msgid "Scanning Wallet funds..."
 msgstr "Scanning Wallet funds..."
-
-msgid "Scanning funds"
-msgstr "Scanning funds"
 
 msgid "Search Transactions"
 msgstr "Search Transactions"
@@ -2012,7 +2036,6 @@ msgstr "Share Address"
 msgid "Share Claim Code"
 msgstr "Share Claim Code"
 
-#| msgid "Share"
 msgid "Share logs"
 msgstr "Share logs"
 
@@ -2030,9 +2053,6 @@ msgstr "Share {{appName}}"
 
 msgid "Shared Wallet"
 msgstr "Shared Wallet"
-
-msgid "Shop Now"
-msgstr "Shop Now"
 
 msgid "Show advanced options"
 msgstr "Show advanced options"
@@ -2108,6 +2128,9 @@ msgstr "Sweep paper wallet"
 
 msgid "Sweeping Wallet..."
 msgstr "Sweeping Wallet..."
+
+msgid "Swipe to Send/Receive"
+msgstr "Swipe to Send/Receive"
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "THIS ACTION CANNOT BE REVERSED"
@@ -2343,7 +2366,6 @@ msgstr ""
 "This password is only for this device, and it cannot be recovered. To avoid "
 "losing funds, write your password down."
 
-#| msgid "This bitcoin payment request has expired."
 msgid "This payment requires a miner fee of:"
 msgstr "This payment requires a miner fee of:"
 
@@ -2383,6 +2405,9 @@ msgid ""
 msgstr ""
 "This wallet is not registered at the given Bitcore Wallet Service (BWS). You "
 "can recreate it from the local information."
+
+msgid "This wallet is waiting for authorized users/devices to join."
+msgstr "This wallet is waiting for authorized users/devices to join."
 
 msgid "Timeline"
 msgstr "Timeline"
@@ -2596,17 +2621,14 @@ msgstr ""
 "WARNING: Key derivation is not working on this device/wallet. Actions cannot "
 "be performed on this wallet."
 
-msgid "Waiting for copayers"
-msgstr "Waiting for copayers"
-
-msgid "Waiting..."
-msgstr "Waiting..."
-
 msgid "Wallet Addresses"
 msgstr "Wallet Addresses"
 
 msgid "Wallet Color"
 msgstr "Wallet Color"
+
+msgid "Wallet Incomplete"
+msgstr "Wallet Incomplete"
 
 msgid "Wallet Information"
 msgstr "Wallet Information"
@@ -2616,6 +2638,10 @@ msgstr "Wallet Inputs"
 
 msgid "Wallet Name"
 msgstr "Wallet Name"
+
+#| msgid "Wallet needs backup"
+msgid "Wallet Needs Backup"
+msgstr "Wallet Needs Backup"
 
 msgid "Wallet Preferences"
 msgstr "Wallet Preferences"
@@ -2678,6 +2704,9 @@ msgstr "Wallet recovery phrase not available"
 msgid "Wallet service not found"
 msgstr "Wallet service not found"
 
+msgid "Wallets"
+msgstr "Wallets"
+
 msgid "Warning!"
 msgstr "Warning!"
 
@@ -2722,6 +2751,9 @@ msgstr ""
 msgid "Website"
 msgstr "Website"
 
+msgid "What changed?"
+msgstr "What changed?"
+
 msgid "What do you call this wallet?"
 msgstr "What do you call this wallet?"
 
@@ -2758,6 +2790,10 @@ msgid ""
 msgstr ""
 "Without encryption, a thief or another application on this device may be "
 "able to access your funds."
+
+#| msgid "Would you like to protect this wallet with a password?"
+msgid "Would you like to hide this gift card discount?"
+msgstr "Would you like to hide this gift card discount?"
 
 msgid "Would you like to protect this wallet with a password?"
 msgstr "Would you like to protect this wallet with a password?"
@@ -2812,6 +2848,13 @@ msgstr ""
 "translation website. We’re looking forward to hearing from you!"
 
 msgid ""
+"You can now send or receive a payment directly from the home view by sliding "
+"your wallet to the left or right."
+msgstr ""
+"You can now send or receive a payment directly from the home view by sliding "
+"your wallet to the left or right."
+
+msgid ""
 "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr ""
 "You can scan bitcoin addresses, payment requests, paper wallets, and more."
@@ -2850,9 +2893,6 @@ msgid ""
 msgstr ""
 "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 
-#| msgid ""
-#| "Your BitPay Card is ready. Add funds to your card to start using it at "
-#| "stores and ATMs worldwide."
 msgid ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
 "stores."
@@ -2901,9 +2941,6 @@ msgstr ""
 "to your wallet by withdrawing funds you may have stored on an exchange to "
 "your wallet address. Or other {coinName} users can send you money by "
 "scanning your QR code."
-
-msgid "Your wallet is backed up!"
-msgstr "Your wallet is backed up!"
 
 msgid ""
 "Your wallet key will be encrypted. The encrypt password cannot be recovered. "
@@ -2972,11 +3009,39 @@ msgstr "{{txpsSuccess}} proposals signed"
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
 
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid ""
+#~ "Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
+#~ "Google Play, and Uber."
+#~ msgstr ""
+#~ "Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
+#~ "Google Play, and Uber."
+
+#~ msgid "Shop Now"
+#~ msgstr "Shop Now"
+
+#~ msgid "Cancel invitation"
+#~ msgstr "Cancel invitation"
+
+#~ msgid "Error deleting addressbook"
+#~ msgstr "Error deleting addressbook"
+
+#~ msgid "Scanning funds"
+#~ msgstr "Scanning funds"
+
+#~ msgid "Waiting for copayers"
+#~ msgstr "Waiting for copayers"
+
+#~ msgid "Waiting..."
+#~ msgstr "Waiting..."
+
+#~ msgid "Your wallet is backed up!"
+#~ msgstr "Your wallet is backed up!"
+
+#~ msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
+#~ msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 
 #~ msgid "Add amount"
 #~ msgstr "Add amount"

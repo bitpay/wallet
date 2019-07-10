@@ -9,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -47,7 +48,8 @@ export class CopayersPage {
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -137,16 +139,39 @@ export class CopayersPage {
     this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider
       .deleteWalletClient(this.wallet)
-      .then(() => {
+      .then(async () => {
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
-        this.viewCtrl.dismiss();
+
+        const keyId: string = this.wallet.credentials.keyId;
+        if (keyId) {
+          const keyInUse = this.profileProvider.isKeyInUse(keyId);
+
+          if (!keyInUse) {
+            await this.keyProvider.removeKey(keyId);
+            delete this.profileProvider.walletsGroups[keyId];
+            if (this.keyProvider.activeWGKey === keyId) {
+              await this.keyProvider.removeActiveWGKey();
+              await this.keyProvider.loadActiveWGKey();
+            }
+          } else {
+            this.logger.warn('Key was not removed. Still in use');
+            this.dismiss();
+          }
+        }
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
+  }
+
+  public dismiss() {
+    this.events.publish('Local/WalletListChange');
+    setTimeout(() => {
+      this.viewCtrl.dismiss();
+    }, 1000);
   }
 
   public showFullInfo(): void {

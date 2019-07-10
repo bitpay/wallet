@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-05-27 13:13\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -94,9 +94,6 @@ msgstr "연락처로 추가"
 
 msgid "Add funds"
 msgstr "자금 추가"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Add this BitPay account ({{email}})?"
@@ -226,9 +223,6 @@ msgstr "지갑 백업"
 
 msgid "Bad wallet invitation"
 msgstr "나쁜 지갑 초청"
-
-msgid "Balance Hidden"
-msgstr "숨겨진 잔액"
 
 msgid "Basic Wallet"
 msgstr "기본 지갑"
@@ -620,6 +614,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -631,6 +628,9 @@ msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Crowdin에 귀하의 언어가 없나요? Crowdin 소유자에게 문의하세요! 저희는 귀하의 언어를 지원하고 싶습니다."
+
+msgid "Done"
+msgstr ""
 
 msgid "Download"
 msgstr "다운로드"
@@ -941,6 +941,9 @@ msgstr "잔액 숨기기"
 msgid "Hide advanced options"
 msgstr "고급 옵션 숨기기"
 
+msgid "Hide discount?"
+msgstr ""
+
 msgid "Home"
 msgstr "홈"
 
@@ -1026,6 +1029,9 @@ msgid "Incorrect network address"
 msgstr "올바르지 않은 네트워크 주소"
 
 msgid "Information"
+msgstr ""
+
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1133,6 +1139,9 @@ msgstr "락타임입니다. 새로운 지출 제안을 생성하시려면 잠시
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "락타임입니다. 이 지출 제안을 제거하시려면 잠시만 기다려주세요"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1224,6 +1233,9 @@ msgid "Network error"
 msgstr "네트워크 오류"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1502,6 +1514,9 @@ msgstr "백업 준비 중..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1691,9 +1706,6 @@ msgstr "다시 스캔"
 msgid "Scanning Wallet funds..."
 msgstr "지갑  스캔 중..."
 
-msgid "Scanning funds"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -1838,9 +1850,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "고급 옵션 표시"
 
@@ -1915,6 +1924,9 @@ msgstr "페이퍼 지갑 스윕"
 
 msgid "Sweeping Wallet..."
 msgstr "지갑 스윕 중..."
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "이 작업은 되돌릴 수 없습니다"
@@ -2288,6 +2300,9 @@ msgstr "지갑 입금"
 msgid "Wallet Name"
 msgstr "지갑 이름"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2372,6 +2387,9 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "이 지갑을 뭐라고 부르시겠습니까?"
 
@@ -2397,6 +2415,9 @@ msgid "Withdraw"
 msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
@@ -2434,6 +2455,9 @@ msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "저희의 Crowdin 커뮤니티 번역 웹사이트에 가입하여 기여하실 수 있습니다. 귀하의 소식을 기다리겠습니다!"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "비트코인 주소, 지불 요청, 페이퍼 지갑 등을 스캔하실 수 있습니다."
@@ -2527,9 +2551,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} 거래 다운로드됨"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.n}}의 {{wallet.m}}"

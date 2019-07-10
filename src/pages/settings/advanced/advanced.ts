@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 
 // providers
-import { AppProvider } from '../../../providers/app/app';
-import { ConfigProvider } from '../../../providers/config/config';
-import { Logger } from '../../../providers/logger/logger';
+import { AppProvider, ConfigProvider, Logger } from '../../../providers';
 
 @Component({
   selector: 'page-advanced',

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { NavController, Platform } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -29,6 +30,8 @@ export class ShapeshiftSettingsPage {
   constructor(
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
+    private platform: Platform,
+    private statusBar: StatusBar,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
     private configProvider: ConfigProvider,
@@ -40,6 +43,18 @@ export class ShapeshiftSettingsPage {
     });
     this.showInHome = !!this.service[0].show;
     this.headerColor = '#0d172c';
+  }
+
+  ionViewWillEnter() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleBlackOpaque();
+    }
+  }
+
+  ionViewWillLeave() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleDefault();
+    }
   }
 
   ionViewDidLoad() {

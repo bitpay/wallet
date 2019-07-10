@@ -1,4 +1,9 @@
 page-amount {
+  ion-header ion-navbar ion-title {
+    .toolbar-title {
+      color: white;
+    }
+  }
   ion-content.content {
     background: white;
   }

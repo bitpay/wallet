@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2019-05-27 13:14\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -94,9 +94,6 @@ msgstr "Toevoegen als contactpersoon"
 
 msgid "Add funds"
 msgstr "Saldo toevoegen"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr ""
@@ -226,9 +223,6 @@ msgstr "Backup van portemonnee maken"
 
 msgid "Bad wallet invitation"
 msgstr "Foutieve portemonnee-uitnodiging"
-
-msgid "Balance Hidden"
-msgstr ""
 
 msgid "Basic Wallet"
 msgstr ""
@@ -620,6 +614,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -631,6 +628,9 @@ msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Ziet u uw taal niet op Crowdin? Neem contact op met de Eigenaar op Crowdin! We willen graag uw taal ondersteunen."
+
+msgid "Done"
+msgstr ""
 
 msgid "Download"
 msgstr "Download"
@@ -941,6 +941,9 @@ msgstr "Verberg Saldo"
 msgid "Hide advanced options"
 msgstr "Verberg geavanceerde opties"
 
+msgid "Hide discount?"
+msgstr ""
+
 msgid "Home"
 msgstr "Start"
 
@@ -1026,6 +1029,9 @@ msgid "Incorrect network address"
 msgstr "Onjuist netwerk adres"
 
 msgid "Information"
+msgstr ""
+
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1133,6 +1139,9 @@ msgstr "Tijdslot van kracht. Wacht a.u.b. met het maken van een nieuw bestedings
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Tijdslot van kracht. Wacht a.u.b. met het verwijderen van dit bestedingsvoorstel"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1224,6 +1233,9 @@ msgid "Network error"
 msgstr "Netwerk fout"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1502,6 +1514,9 @@ msgstr "Backup voorbereiden..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1691,9 +1706,6 @@ msgstr "Scan nogmaals"
 msgid "Scanning Wallet funds..."
 msgstr "Saldo Portemonnee scannen..."
 
-msgid "Scanning funds"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -1838,9 +1850,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "Geavanceerde opties weergeven"
 
@@ -1915,6 +1924,9 @@ msgstr "Saldo papieren portemonnee opnemen"
 
 msgid "Sweeping Wallet..."
 msgstr "Saldo Portemonnee opnemen..."
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "DEZE ACTIE IS ONOMKEERBAAR"
@@ -2288,6 +2300,9 @@ msgstr "Ontvangsten Portemonnee"
 msgid "Wallet Name"
 msgstr "Naam Portemonnee"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2372,6 +2387,9 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "Hoe noemt u deze portemonnee?"
 
@@ -2397,6 +2415,9 @@ msgid "Withdraw"
 msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
@@ -2434,6 +2455,9 @@ msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "U kunt een bijdrage leveren door u aan te melden bij onze Crowdin gemeenschap vertalings website. Wij kijken er naar uit om van u te horen!"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "U kunt bitcoin adressen scannen, betalingsverzoeken, papieren portemonnees, en meer."
@@ -2527,9 +2551,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transacties gedownload"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-van-{{wallet.n}}"

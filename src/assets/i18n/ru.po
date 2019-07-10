@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2019-05-27 13:14\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -94,9 +94,6 @@ msgstr "Добавить контакт"
 
 msgid "Add funds"
 msgstr "Пополнить счёт"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Добавить эту учетную запись BitPay ({{email}})?"
@@ -226,9 +223,6 @@ msgstr "Резервное копирование"
 
 msgid "Bad wallet invitation"
 msgstr "Недействительное приглашение"
-
-msgid "Balance Hidden"
-msgstr "Баланс Скрыт"
 
 msgid "Basic Wallet"
 msgstr ""
@@ -620,6 +614,9 @@ msgstr "Отключить уведомления"
 msgid "Disabled"
 msgstr "Отключено"
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr "Не включать закрытый ключ"
 
@@ -631,6 +628,9 @@ msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Не видите свой язык на Crowdin? Свяжитесь с владельцем по Crowdin! Мы с удовольствием поддержим ваш язык."
+
+msgid "Done"
+msgstr ""
 
 msgid "Download"
 msgstr "Скачать"
@@ -941,6 +941,9 @@ msgstr "Скрыть баланс"
 msgid "Hide advanced options"
 msgstr "Скрыть дополнительные параметры"
 
+msgid "Hide discount?"
+msgstr ""
+
 msgid "Home"
 msgstr "Главная"
 
@@ -1026,6 +1029,9 @@ msgid "Incorrect network address"
 msgstr "Неправильный сетевой адресс"
 
 msgid "Information"
+msgstr ""
+
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1133,6 +1139,9 @@ msgstr "Действует блокировка. Пожалуйста, подо�
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Действует блокировка. Пожалуйста, подождите, чтобы удалить предложенный платёж"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1224,6 +1233,9 @@ msgid "Network error"
 msgstr "Ошибка сети"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1502,6 +1514,9 @@ msgstr "Подготовка резервной копии..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1691,9 +1706,6 @@ msgstr "Oтсканируйте еще раз"
 msgid "Scanning Wallet funds..."
 msgstr "Сканирование адресов кошелька..."
 
-msgid "Scanning funds"
-msgstr "Проверка средств"
-
 msgid "Search Transactions"
 msgstr "Поиск транзакций"
 
@@ -1838,9 +1850,6 @@ msgstr "Поделиться {{appName}}"
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "Показать дополнительные параметры"
 
@@ -1915,6 +1924,9 @@ msgstr "Пополнить с бумажного кошелька"
 
 msgid "Sweeping Wallet..."
 msgstr "Считывание кошелька..."
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
@@ -2288,6 +2300,9 @@ msgstr "Вводы кошелька"
 msgid "Wallet Name"
 msgstr "Название кошелька"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2372,6 +2387,9 @@ msgstr ""
 msgid "Website"
 msgstr "Сайт"
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "Как вы называете этот кошелёк?"
 
@@ -2397,6 +2415,9 @@ msgid "Withdraw"
 msgstr "Снятие"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
@@ -2433,6 +2454,9 @@ msgid "You can continue to view your archived cards here if you need to access t
 msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr ""
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
 msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
@@ -2527,9 +2551,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-из-{{wallet.n}}"

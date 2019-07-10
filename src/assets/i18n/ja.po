@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-05-27 13:13\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -94,9 +94,6 @@ msgstr "連絡先に追加"
 
 msgid "Add funds"
 msgstr "資金を追加"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "将礼品卡添加到您的 \"div class=\"notranslate\">0 </div> 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "この BitPay アカウント ({{email}}) を追加しますか。"
@@ -228,9 +225,6 @@ msgstr "ウォレットをバックアップ"
 
 msgid "Bad wallet invitation"
 msgstr "不正なウォレット招待コード"
-
-msgid "Balance Hidden"
-msgstr ""
 
 msgid "Basic Wallet"
 msgstr ""
@@ -622,6 +616,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -633,6 +630,9 @@ msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管理者に連絡とってみてください。是非とも対応したく思っております。"
+
+msgid "Done"
+msgstr ""
 
 msgid "Download"
 msgstr "ダウンロード"
@@ -943,6 +943,9 @@ msgstr "残高を非表示"
 msgid "Hide advanced options"
 msgstr "詳細設定を非表示"
 
+msgid "Hide discount?"
+msgstr ""
+
 msgid "Home"
 msgstr "ホーム"
 
@@ -1028,6 +1031,9 @@ msgid "Incorrect network address"
 msgstr "サーバーのアドレスが不正です"
 
 msgid "Information"
+msgstr ""
+
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1135,6 +1141,9 @@ msgstr "Locktime待ち中です。新しい送金の提案が作成できるま�
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime待ち中です。この送金の提案が削除できるまであとしばらくお待ち下さい。"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1226,6 +1235,9 @@ msgid "Network error"
 msgstr "ネットワークにエラーが発生した"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1504,6 +1516,9 @@ msgstr "バックアップを準備中..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1693,9 +1708,6 @@ msgstr "もう一度スキャンし直してください。"
 msgid "Scanning Wallet funds..."
 msgstr "ウォレット残高照会中…"
 
-msgid "Scanning funds"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -1842,9 +1854,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
@@ -1919,6 +1928,9 @@ msgstr "ペーパーウォレットの全残高インポート"
 
 msgid "Sweeping Wallet..."
 msgstr "ビットコイン回収中…"
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
@@ -2292,6 +2304,9 @@ msgstr "ウォレットの入力"
 msgid "Wallet Name"
 msgstr "ウォレット名"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2376,6 +2391,9 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "このウォレットの名前は何ですか？"
 
@@ -2401,6 +2419,9 @@ msgid "Withdraw"
 msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
@@ -2438,6 +2459,9 @@ msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Crowdinのサイトにて翻訳者登録をして、今すぐに投稿をいただけます。お待ちしております。"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "ビットコインアドレス、支払い請求、ペーパーウォレットなどをスキャンできます。"
@@ -2531,9 +2555,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"

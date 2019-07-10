@@ -81,14 +81,15 @@ export class PinModalPage {
 
   ionViewDidLoad() {
     this.onPauseSubscription = this.platform.pause.subscribe(() => {
-      clearInterval(this.countDown);
-      clearTimeout(this.lockReleaseTimeout);
-      this.expires = this.disableButtons = null;
+      this.lockReleaseTimeout.unref();
+      this.countDown.unref();
       this.currentPin = this.firstPinEntered = '';
     });
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.disableButtons = true;
-      this.checkIfLocked();
+      setTimeout(() => {
+        this.checkIfLocked();
+      }, 1000);
     });
   }
 
@@ -157,6 +158,7 @@ export class PinModalPage {
       this.currentAttempts == this.ATTEMPT_LIMIT &&
       this.action !== 'lockSetUp'
     ) {
+      this.countDown = this.lockReleaseTimeout = null;
       this.currentAttempts = 0;
       this.persistenceProvider.setLockStatus('locked');
       this.showLockTimer();
@@ -168,6 +170,10 @@ export class PinModalPage {
 
   private showLockTimer(): void {
     this.disableButtons = true;
+    if (this.countDown) {
+      this.countDown.ref();
+      return;
+    }
     const bannedUntil =
       Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
     this.countDown = setInterval(() => {
@@ -180,6 +186,10 @@ export class PinModalPage {
   }
 
   private setLockRelease(): void {
+    if (this.lockReleaseTimeout) {
+      this.lockReleaseTimeout.ref();
+      return;
+    }
     this.lockReleaseTimeout = setTimeout(() => {
       clearInterval(this.countDown);
       this.expires = this.disableButtons = null;

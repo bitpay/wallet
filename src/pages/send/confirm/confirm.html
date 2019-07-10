@@ -87,8 +87,7 @@
 
       <div class="wallet" *ngIf="tx.recipientType == 'wallet'">
         <ion-icon item-start>
-          <img *ngIf="tx.network == 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <img *ngIf="tx.network == 'testnet'" [ngClass]="{ testnet: tx.network === 'testnet' }" src="assets/img/currencies/{{tx.coin}}.svg" class="icon-wallet" />
         </ion-icon>
         <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
           <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
@@ -152,8 +151,7 @@
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
         <div class="last-item" item-end *ngIf="!isWithinWalletTabs()">

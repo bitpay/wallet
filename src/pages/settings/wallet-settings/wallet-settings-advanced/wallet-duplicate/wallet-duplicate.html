@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Duplicate Wallet</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="availableWallet">
+    <div class="explanation">
+      <span>{{comment}}</span>
+      <a (click)="openHelpExternalLink()" translate>
+        <span translate>Help &amp; support</span>
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="nonEligibleWallet">
+    <label-tip class="no-arrowhead" type="warn">
+      <span label-tip-title translate>{{nonEligibleWallet.excludeReason}}</span>
+      <div label-tip-body translate>{{nonEligibleWallet.body}}</div>
+    </label-tip>
+  </div>
+
+  <button ion-button class="button-standard" (click)="duplicate(availableWallet)" [disabled]="nonEligibleWallet">
+    {{'Duplicate to BCH' | translate}}
+  </button>
+</ion-content>

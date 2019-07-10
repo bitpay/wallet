@@ -1,0 +1,30 @@
+<ion-slides speed="500">
+  <ion-slide *ngFor="let coin of coins">
+    <ion-card>
+      <ion-card-content>
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="assets/img/currencies/{{coin.unitCode}}.svg">
+          </ion-avatar>
+          <h2>{{coin.name}}</h2>
+        </ion-item>
+        <div class="price">
+          <div class="amount-content">
+            <div class="expression-container">
+              <span class="expression">
+                {{ coin.currentPrice| number:'1.2-2' }}
+                <span class="unit">{{ isoCode }}</span>
+              </span>
+            </div>
+            <div class="average-container">
+              <ion-icon name="md-arrow-dropup" color="success" *ngIf="coin.averagePrice > 0"></ion-icon>
+              <ion-icon name="md-arrow-dropdown" color="danger" *ngIf="coin.averagePrice < 0"></ion-icon>
+              <span class="average">{{ coin.averagePrice | number:'1.2-2' }} % <span class="average-time">| 7d</span></span>
+            </div>
+          </div>
+          <price-chart #canvas></price-chart>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-slide>
+</ion-slides>

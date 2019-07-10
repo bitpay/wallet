@@ -7,20 +7,20 @@
 <ion-content>
   <ion-list class="settings-list">
     <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
-    <ion-item>
+    <ion-item class="pointer" (tap)="itemTapped()">
       <ion-icon class="custom-icon" name="ios-download-outline" item-start></ion-icon>
       {{'Version' | translate}}
       <ion-note item-end>
         v{{version}}
       </ion-note>
     </ion-item>
-    <ion-item class="commit-hash" (click)="openExternalLink()">
+    <ion-item class="pointer" (click)="openExternalLink()">
       <ion-icon class="custom-icon" name="logo-github" item-start></ion-icon>
       Commit hash
       <ion-note item-end>
         #{{commitHash}}
       </ion-note>
-    </ion-item> 
+    </ion-item>
     <ion-item-divider class="item-without-title"></ion-item-divider>
     <button ion-item (click)="openSendFeedbackPage()">
       <ion-icon class="item-img" item-start>
@@ -36,8 +36,8 @@
     <button ion-item (click)="openTermsOfUse()">
       <ion-icon class="custom-icon" name="ios-list-box-outline" item-start></ion-icon>
       {{'Terms of Use' | translate }}
-    </button> 
-    <ion-item-divider class="item-without-title"></ion-item-divider> 
+    </button>
+    <ion-item-divider class="item-without-title"></ion-item-divider>
     <button ion-item (click)="openSessionLog()">
       <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
       {{ 'Session log' | translate }}

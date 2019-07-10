@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-05-27 13:14\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -94,9 +94,6 @@ msgstr "添加到联系人"
 
 msgid "Add funds"
 msgstr "添加资金"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "将礼品卡添加到您的 {appName} 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "添加该BitPay账户({{email}})?"
@@ -226,9 +223,6 @@ msgstr "备份钱包"
 
 msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
-
-msgid "Balance Hidden"
-msgstr "隐藏余额"
 
 msgid "Basic Wallet"
 msgstr ""
@@ -620,6 +614,9 @@ msgstr "禁用通知"
 msgid "Disabled"
 msgstr "已禁用"
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr "不包括私钥"
 
@@ -631,6 +628,9 @@ msgstr "我想要现在确认我的账户 ！"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
+
+msgid "Done"
+msgstr ""
 
 msgid "Download"
 msgstr "下载"
@@ -941,6 +941,9 @@ msgstr "隐藏的平衡"
 msgid "Hide advanced options"
 msgstr "隐藏高级选项"
 
+msgid "Hide discount?"
+msgstr ""
+
 msgid "Home"
 msgstr "主屏幕"
 
@@ -1026,6 +1029,9 @@ msgid "Incorrect network address"
 msgstr "网络地址不正确"
 
 msgid "Information"
+msgstr ""
+
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1133,6 +1139,9 @@ msgstr "Locktime 在进行中。请稍等以创建新的花费提议"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime 在进行中。请稍等以删除花费提议"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1224,6 +1233,9 @@ msgid "Network error"
 msgstr "网络错误"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1502,6 +1514,9 @@ msgstr "正在准备备份..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1691,9 +1706,6 @@ msgstr "重新扫描"
 msgid "Scanning Wallet funds..."
 msgstr "正在扫描钱包资金..."
 
-msgid "Scanning funds"
-msgstr "正在扫描资金..."
-
 msgid "Search Transactions"
 msgstr "搜索交易"
 
@@ -1838,9 +1850,6 @@ msgstr "分享 {{appName}}"
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr "立即购买"
-
 msgid "Show advanced options"
 msgstr "显示高级选项"
 
@@ -1915,6 +1924,9 @@ msgstr "Sweep 纸钱包"
 
 msgid "Sweeping Wallet..."
 msgstr "正在导出钱包"
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "此操作无法撤消"
@@ -2288,6 +2300,9 @@ msgstr "钱包总共进账"
 msgid "Wallet Name"
 msgstr "钱包的名字"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2372,6 +2387,9 @@ msgstr ""
 msgid "Website"
 msgstr "网站"
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "你叫这个钱包是什么？"
 
@@ -2398,6 +2416,9 @@ msgstr "提现"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
 msgstr "如果没有加密，窃贼或该设备上的其他app可能能够访问您的资金。"
+
+msgid "Would you like to hide this gift card discount?"
+msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
 msgstr "你想用密码保护这个钱包吗？"
@@ -2434,6 +2455,9 @@ msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "您可以通过签约我们 Crowdin 社区翻译网站作出贡献。我们期待你的听力 ！"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "您可以扫描比特币地址、 付款申请、 纸钱包和更多。"
@@ -2527,9 +2551,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "下载的 {{updatingTxHistoryProgress}} 交易"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr "{{wallet.credentials.m}}的{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}{{wallet.n}}"

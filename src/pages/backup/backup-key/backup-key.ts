@@ -9,49 +9,56 @@ import { BackupGamePage } from '../backup-game/backup-game';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-backup-key',
   templateUrl: 'backup-key.html'
 })
 export class BackupKeyPage {
-  public deleted: boolean;
   public mnemonicWords: string[];
   public wordToShow: number;
   public credentialsEncrypted: boolean;
-  public wallet;
+  public walletGroup;
   public keys;
 
-  private walletId: string;
+  private keyId: string;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider
   ) {
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
+    this.keyId = this.navParams.data.keyId;
+    this.walletGroup = this.profileProvider.getWalletGroup(this.keyId);
+    this.credentialsEncrypted = this.walletGroup.isPrivKeyEncrypted;
   }
 
   ionViewDidEnter() {
-    this.deleted = this.isDeletedSeed();
-    if (this.deleted) {
+    if (!this.walletGroup.canSign) {
+      const title = this.translate.instant(
+        'Wallet recovery phrase not available'
+      );
+      let err = this.translate.instant(
+        'You can still export it from "Export Wallet" option.'
+      );
+      this.showErrorInfoSheet(err, title);
+      this.navCtrl.pop();
       this.logger.warn('no mnemonics');
       return;
     }
 
-    this.walletProvider
-      .getKeys(this.wallet)
-      .then(keys => {
+    this.keyProvider
+      .handleEncryptedWallet(this.keyId)
+      .then((password: string) => {
+        const keys = this.keyProvider.get(this.keyId, password);
         if (_.isEmpty(keys)) {
           this.logger.warn('Empty keys');
         }
@@ -86,21 +93,11 @@ export class BackupKeyPage {
     errorInfoSheet.present();
   }
 
-  private isDeletedSeed(): boolean {
-    if (
-      !this.wallet.credentials.mnemonic &&
-      !this.wallet.credentials.mnemonicEncrypted
-    )
-      return true;
-
-    return false;
-  }
-
   public goToBackupGame(): void {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
       keys: this.keys,
-      walletId: this.walletId
+      keyId: this.keyId
     });
   }
 
