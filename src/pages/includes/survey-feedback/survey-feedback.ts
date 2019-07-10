@@ -15,7 +15,7 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
   templateUrl: 'survey-feedback.html'
 })
 export class SurveyFeedbackPage {
-  public isShowSurveyCard: boolean;
+  public isShowRateCard: boolean;
   public feedbackCardBody: string;
   constructor(
     private appProvider: AppProvider,
@@ -25,13 +25,13 @@ export class SurveyFeedbackPage {
     private translate: TranslateService,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
-    this.isShowSurveyCard = false;
+    this.isShowRateCard = false;
   }
 
-  public setShowSurveyCard(value) {
-    this.isShowSurveyCard = value;
+  public setShowRateCard(value) {
+    this.isShowRateCard = value;
 
-    if (this.isShowSurveyCard) {
+    if (this.isShowRateCard) {
       let appName = this.appProvider.info.nameCase;
       this.feedbackCardBody = this.replaceParametersProvider.replace(
         this.translate.instant(
@@ -43,7 +43,7 @@ export class SurveyFeedbackPage {
   }
 
   public hideCard(): void {
-    this.isShowSurveyCard = false;
+    this.isShowRateCard = false;
     this.logger.debug('Feedback card dismissed.');
     this.persistenceProvider.getFeedbackInfo().then(info => {
       let feedbackInfo = info;
