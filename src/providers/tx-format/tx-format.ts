@@ -170,11 +170,13 @@ export class TxFormatProvider {
     currency: string,
     onlyIntegers?: boolean
   ) {
-    let settings = this.configProvider.get().wallet.settings;
-    let unitToSatoshi = settings.unitToSatoshi;
+    let {
+      unitToSatoshi,
+      alternativeIsoCode
+    } = this.configProvider.get().wallet.settings;
+    const satToUnit = 1 / unitToSatoshi;
     let amountUnitStr;
     let amountSat;
-    let alternativeIsoCode = settings.alternativeIsoCode;
 
     // If fiat currency
     if (
@@ -192,13 +194,13 @@ export class TxFormatProvider {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert sat to BTC or BCH
-      amount = (amountSat * unitToSatoshi).toFixed(8);
+      amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert unit to BTC or BCH
-      amount = (amountSat * unitToSatoshi).toFixed(8);
+      amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     }
 
