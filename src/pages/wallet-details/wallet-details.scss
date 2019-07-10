@@ -114,7 +114,7 @@ page-wallet-details {
   .fix-margin {
     margin-top: -4.5rem;
     .box-notification {
-      padding: 0.1rem;
+      padding: 1rem 0.5rem;
       margin: 0 1.3rem 1.3rem 1.3rem;
       min-height: 4rem;
       display: flex;
@@ -351,24 +351,6 @@ page-wallet-details {
   .double-spend {
     text-align: end;
     font-size: 12.5px;
-  }
-
-  .zero-state {
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .history-wrapper {
-      align-items: center;
-      flex-grow: 1;
-      display: flex;
-      width: 100%;
-    }
-
-    .prompt-user {
-      margin-bottom: 2rem;
-    }
   }
 }
 
