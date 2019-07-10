@@ -95,21 +95,6 @@ export class ProfileProvider {
     return order;
   }
 
-  private async getWalletGroupOrder(keyId: string) {
-    const order =
-      (await this.persistenceProvider.getWalletGroupOrder(keyId)) || 0;
-    return order;
-  }
-
-  public setWalletGroupOrder(keyId: string, index: number): void {
-    this.persistenceProvider.setWalletGroupOrder(keyId, index).then(() => {
-      this.logger.debug(
-        'Wallet Group new order stored for ' + keyId + ': ' + index
-      );
-    });
-    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
-  }
-
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
@@ -315,7 +300,6 @@ export class ProfileProvider {
     if (keyId) {
       groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
       needsBackup = groupBackupInfo.needsBackup;
-      order = await this.getWalletGroupOrder(keyId);
       name = await this.getWalletGroupName(keyId);
       if (!name) {
         // use wallets name for wallets group name at migration
@@ -328,7 +312,6 @@ export class ProfileProvider {
     } else {
       keyId = 'read-only';
       needsBackup = false;
-      order = await this.getWalletGroupOrder('read-only');
       name = 'Read Only Wallets';
       isPrivKeyEncrypted = false;
       canSign = false;
