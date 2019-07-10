@@ -1,12 +1,14 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   App,
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -115,7 +117,9 @@ export class ConfirmPage extends WalletTabsChild {
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
     protected appProvider: AppProvider,
-    protected keyProvider: KeyProvider
+    protected keyProvider: KeyProvider,
+    protected platform: Platform,
+    protected statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -139,10 +143,16 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleBlackOpaque();
+    }
     this.navCtrl.swipeBackEnabled = true;
   }
 
   ionViewWillEnter() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleDefault();
+    }
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     const B =
