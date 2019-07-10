@@ -31,7 +31,8 @@
     <info-sheet-template *ngSwitchCase="'backup-needed-with-activity'" type="info">
       <span sheet-title-text translate>Needs Backup</span>
       <span sheet-text translate>
-        Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen.
+        Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery
+        phrase so that your funds can be recovered in case your phone was lost or stolen.
       </span>
       <span sheet-button-text translate>Continue</span>
       <span sheet-second-button-text translate>Not right now</span>
@@ -73,7 +74,8 @@
     <info-sheet-template *ngSwitchCase="'backup-later-warning'" type="warning">
       <span sheet-title-text translate>Do this later?</span>
       <span sheet-text translate>
-        Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings.
+        Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away
+        securely. You can always complete this later from your wallet settings.
       </span>
       <span sheet-button-text translate>Ok</span>
       <span sheet-second-button-text translate>Continue Backup</span>
@@ -83,7 +85,8 @@
       <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType}
         }}</span>
       <span sheet-text translate>
-        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
+        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered
+        without it.
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -91,7 +94,8 @@
     <info-sheet-template *ngSwitchCase="'backup-safeguard-warning'" type="info">
       <span sheet-title-text translate>Safeguard your recovery phrase</span>
       <span sheet-text translate>
-        Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the order they appear.
+        Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the
+        order they appear.
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -99,7 +103,8 @@
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>
-        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
+        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses,
+        balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
       </span>
       <span sheet-button-text translate>I understand</span>
       <span sheet-second-button-text translate>Go Back</span>
@@ -185,7 +190,9 @@
       <span
         sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
       <span sheet-text translate>
-        If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can "translate" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that "old" address.
+        If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses,
+        you can "translate" them using the BCH Translator tool and paste the corresponding address in CashAddr format
+        for that "old" address.
       </span>
       <span sheet-button-text translate>Translate address</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -194,7 +201,8 @@
     <info-sheet-template *ngSwitchCase="'appreciate-review'" type="love">
       <span sheet-title-text translate>We appreciate your review</span>
       <span sheet-text translate>
-        5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
+        5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed
+        to the app!
       </span>
       <span sheet-button-text>{{'Rate on the {storeName}' | translate: {storeName: params?.storeName} }}</span>
     </info-sheet-template>
@@ -202,7 +210,8 @@
     <info-sheet-template *ngSwitchCase="'backup-failed'" type="danger">
       <span sheet-title-text translate>Incorrect backup phrase</span>
       <span sheet-text translate>
-        It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again.
+        It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll
+        need it to recover your money. Please review and try again.
       </span>
       <span sheet-button-text translate>START OVER</span>
     </info-sheet-template>
@@ -244,7 +253,8 @@
     <info-sheet-template *ngSwitchCase="'report-issue'" type="info">
       <span sheet-title-text translate>Report an issue</span>
       <span sheet-text translate>
-        Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team.
+        Found something broken? Please report it as a bug. If you need immediate help with a problem you are having,
+        then get help by contacting our support team.
       </span>
       <span sheet-button-text translate>Get help</span>
       <span sheet-second-button-text translate>Report issue</span>
