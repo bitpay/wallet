@@ -170,7 +170,7 @@ export class TxFormatProvider {
     currency: string,
     onlyIntegers?: boolean
   ) {
-    let {
+    const {
       unitToSatoshi,
       alternativeIsoCode
     } = this.configProvider.get().wallet.settings;
