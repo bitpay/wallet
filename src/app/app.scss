@@ -115,7 +115,7 @@ ion-spinner * {
 }
 
 .toolbar.toolbar-md .back-button {
-  margin-top: -7px;
+  margin: -7px 0 0 0;
 }
 
 .tabbar {
@@ -211,6 +211,7 @@ ion-spinner * {
 }
 
 .icon-services {
+  overflow: hidden;
   background-color: none;
   border-radius: $icon-border-radius;
   width: 35px;
@@ -592,5 +593,69 @@ label-tip.warn.no-arrowhead:before {
 .app-color {
   .toolbar-background {
     background: #14245e !important;
+  }
+}
+
+page-wallet-details,
+page-receive,
+page-send,
+page-amount,
+page-multi-send,
+page-bitpay-card-intro,
+page-bitpay-card,
+page-shapeshift,
+.wallet-details-header {
+  @include toolbar-button-color(white);
+
+  ion-title .toolbar-title {
+    color: white;
+  }
+
+  button.modal-close-button.bar-button {
+    margin-top: -1px;
+    color: white;
+  }
+  ion-title {
+    &.title-ios {
+      padding: 0 50px 1px;
+    }
+    .toolbar-title {
+      text-align: left;
+      opacity: 0.7;
+      font-weight: 600;
+    }
+  }
+
+  &:not(.no-subtitle) {
+    ion-title .toolbar-title {
+      font-weight: 100;
+      font-size: 16px;
+    }
+  }
+
+  ion-toolbar {
+    min-height: 0;
+    margin-top: -6px;
+
+    &.toolbar-md {
+      padding-top: 0;
+    }
+  }
+
+  &__balance,
+  &__balance-hidden,
+  &__subtitle {
+    text-align: left;
+    color: white;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 4.5rem;
+
+    ion-icon {
+      font-size: 16px;
+      font-weight: 100;
+      margin-left: 5px;
+    }
   }
 }

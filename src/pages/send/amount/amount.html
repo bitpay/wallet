@@ -5,7 +5,7 @@
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+    <ion-title *ngIf="wallet && wallet.name">{{ wallet.name }}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet && !requestingAmount" class="app-color">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
@@ -24,11 +24,14 @@
 
     <div class="amount-header-margin">
       <div class="amount-header">
-        <div style="flex: 1">
-          <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
+        <div class="switcher">
+          <div class="switcher__content" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
             <img class="switcher__icon" src="assets/img/icon-swap.svg">
             <div class="switcher__label">{{unit}}</div>
           </div>
+        </div>
+        <div class="amount-text" translate>
+          Enter amount
         </div>
         <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
       </div>
