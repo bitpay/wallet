@@ -177,7 +177,7 @@ export class ReceivePage extends WalletTabsChild {
 
   public goToBackup(): void {
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      keyId: this.wallet.credentials.keyId
     });
   }
 

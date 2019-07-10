@@ -1,6 +1,4 @@
 page-wallet-settings {
-  @include toolbar-button-color(white);
-
   .assertive {
     color: color($colors, danger);
 
@@ -13,22 +11,8 @@ page-wallet-settings {
     font-size: 12.5px;
   }
 
-  wide-header-page .wide-header__title {
-    color: white;
-  }
-
   ion-item-divider.item.item-divider {
     padding-left: 16px;
-  }
-
-  .settings-color-block {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    float: left;
-    margin: 1rem;
-    background-color: color($colors, primary);
   }
 
   .item-without-title {

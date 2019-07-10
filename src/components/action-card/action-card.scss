@@ -8,10 +8,12 @@ action-card.card {
   .action-card {
     &__content {
       background: white;
+
       > * {
         margin: 15px;
       }
     }
+
     &__title {
       font-size: 20px;
       font-weight: 500;
@@ -24,13 +26,25 @@ action-card.card {
     }
 
     &__cta {
-      background: #f8f8f8;
+      color: map-get($colors, primary);
       cursor: pointer;
       font-size: 18px;
+      font-weight: 500;
       margin: 30px -20px 0;
+      position: relative;
+
+      &:before {
+        background: rgba(136, 154, 196, 0.1);
+        content: '';
+        display: block;
+        height: 1px;
+        transform: translateX(18px);
+        top: -20px;
+        width: calc(100% - 36px);
+      }
 
       > div {
-        padding: 20px;
+        padding: 16px;
       }
     }
   }

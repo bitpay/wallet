@@ -2,7 +2,7 @@
 export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
-export { FCM } from '@ionic-native/fcm';
+export { FCMNG } from 'fcm-ng';
 export { File } from '@ionic-native/file';
 export { LaunchReview } from '@ionic-native/launch-review';
 export { QRScanner } from '@ionic-native/qr-scanner';
@@ -19,6 +19,7 @@ export { UserAgent } from '@ionic-native/user-agent';
 export { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
 export { AddressBookProvider } from '../providers/address-book/address-book';
 export { AddressProvider } from '../providers/address/address';
+export { AnalyticsProvider } from '../providers/analytics/analytics';
 export { AppIdentityProvider } from '../providers/app-identity/app-identity';
 export { AppProvider } from '../providers/app/app';
 export { BackupProvider } from '../providers/backup/backup';

@@ -20,8 +20,8 @@ export class PriceChart {
   drawCanvas(coin) {
     let rates = [];
     let labels = [];
-    _.map(coin.historicalRates, (rate, i) => {
-      rates.push(rate);
+    _.forEach(coin.historicalRates, (historicalRate, i) => {
+      rates.push(historicalRate.rate);
       labels.push(`${i}`);
     });
     const context: CanvasRenderingContext2D = (this.lineCanvas

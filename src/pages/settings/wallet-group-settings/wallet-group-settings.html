@@ -1,0 +1,64 @@
+<wide-header-page title="{{'Profile Settings' | translate}}">
+  <div page-content>
+    <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
+      <span label-tip-title translate>No Private Key</span>
+      <div label-tip-body translate>
+        This wallet is 'Read Only', so the private key is not available.
+      </div>
+    </label-tip>
+    <ion-list class="settings-list">
+      <ion-item-divider></ion-item-divider>
+
+      <button ion-item (click)="openEnabledWalletsPage()">
+        <div translate>Enabled Wallets</div>
+      </button>
+
+      <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
+        <div translate float-left>Name</div>
+        <div text-end text-wrap ion-text color="light-grey">
+          {{walletsGroup && walletsGroup.name}}
+        </div>
+      </button>
+
+      <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
+        <span translate>Backup</span>
+        <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
+          {{'Needs backup' | translate}}
+        </ion-note>
+      </button>
+
+      <div *ngIf="canSign">
+        <ion-item class="with-label">
+          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="needsBackup && !encryptEnabled"></ion-toggle>
+        </ion-item>
+        <label-tip type="info">
+          <span label-tip-title translate>Password Not Recoverable</span>
+          <div label-tip-body>
+            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+            <br>
+            <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+          </div>
+        </label-tip>
+      </div>
+
+      <div *ngIf="touchIdAvailable">
+        <ion-item>
+          <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+          <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+        </ion-item>
+      </div>
+
+      <div *ngIf="!needsBackup && canSign">
+        <ion-item-divider></ion-item-divider>
+        <button ion-item (click)="openWalletGroupExtendedPrivateKey()">
+          <span translate>Extended Private Key</span>
+        </button>
+      </div>
+
+      <button ion-item (click)="openWalletGroupDelete()">
+        <span translate>Delete</span>
+      </button>
+    </ion-list>
+  </div>
+</wide-header-page>

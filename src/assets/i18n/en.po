@@ -117,7 +117,6 @@ msgstr "Add Contact"
 msgid "Add Recipient"
 msgstr "Add Recipient"
 
-#| msgid "BCH Wallet"
 msgid "Add Wallet"
 msgstr "Add Wallet"
 
@@ -129,13 +128,6 @@ msgstr "Add as a contact"
 
 msgid "Add funds"
 msgstr "Add funds"
-
-msgid ""
-"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Google Play, and Uber."
-msgstr ""
-"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Google Play, and Uber."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Add this BitPay account ({{email}})?"
@@ -696,6 +688,10 @@ msgstr "Disable notifications"
 msgid "Disabled"
 msgstr "Disabled"
 
+#| msgid "Account"
+msgid "Discount"
+msgstr "Discount"
+
 msgid "Do not include private key"
 msgstr "Do not include private key"
 
@@ -782,7 +778,6 @@ msgstr "Enter a password to encrypt your wallet"
 msgid "Enter a transaction memo"
 msgstr "Enter a transaction memo"
 
-#| msgid "Enter email address"
 msgid "Enter an email address"
 msgstr "Enter an email address"
 
@@ -1043,7 +1038,6 @@ msgstr "Help & support"
 msgid "Help and support information is available at the website."
 msgstr "Help and support information is available at the website."
 
-#| msgid "Balance Hidden"
 msgid "Hidden"
 msgstr "Hidden"
 
@@ -1055,6 +1049,9 @@ msgstr "Hide Balance"
 
 msgid "Hide advanced options"
 msgstr "Hide advanced options"
+
+msgid "Hide discount?"
+msgstr "Hide discount?"
 
 msgid "Home"
 msgstr "Home"
@@ -1227,7 +1224,6 @@ msgstr "Invalid derivation path for selected coin"
 msgid "Invitation Code"
 msgstr "Invitation Code"
 
-#| msgid "Invalid URL"
 msgid "Invoice URL"
 msgstr "Invoice URL"
 
@@ -1827,7 +1823,6 @@ msgstr "Recreating Wallet..."
 msgid "Redeem Now"
 msgstr "Redeem Now"
 
-#| msgid "Invalid Email"
 msgid "Refund Email"
 msgstr "Refund Email"
 
@@ -2058,9 +2053,6 @@ msgstr "Share {{appName}}"
 
 msgid "Shared Wallet"
 msgstr "Shared Wallet"
-
-msgid "Shop Now"
-msgstr "Shop Now"
 
 msgid "Show advanced options"
 msgstr "Show advanced options"
@@ -2635,7 +2627,6 @@ msgstr "Wallet Addresses"
 msgid "Wallet Color"
 msgstr "Wallet Color"
 
-#| msgid "Wallet complete"
 msgid "Wallet Incomplete"
 msgstr "Wallet Incomplete"
 
@@ -2647,6 +2638,10 @@ msgstr "Wallet Inputs"
 
 msgid "Wallet Name"
 msgstr "Wallet Name"
+
+#| msgid "Wallet needs backup"
+msgid "Wallet Needs Backup"
+msgstr "Wallet Needs Backup"
 
 msgid "Wallet Preferences"
 msgstr "Wallet Preferences"
@@ -2709,7 +2704,6 @@ msgstr "Wallet recovery phrase not available"
 msgid "Wallet service not found"
 msgstr "Wallet service not found"
 
-#| msgid "BCH Wallet"
 msgid "Wallets"
 msgstr "Wallets"
 
@@ -2796,6 +2790,10 @@ msgid ""
 msgstr ""
 "Without encryption, a thief or another application on this device may be "
 "able to access your funds."
+
+#| msgid "Would you like to protect this wallet with a password?"
+msgid "Would you like to hide this gift card discount?"
+msgstr "Would you like to hide this gift card discount?"
 
 msgid "Would you like to protect this wallet with a password?"
 msgstr "Would you like to protect this wallet with a password?"
@@ -3013,6 +3011,16 @@ msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid ""
+#~ "Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
+#~ "Google Play, and Uber."
+#~ msgstr ""
+#~ "Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
+#~ "Google Play, and Uber."
+
+#~ msgid "Shop Now"
+#~ msgstr "Shop Now"
 
 #~ msgid "Cancel invitation"
 #~ msgstr "Cancel invitation"

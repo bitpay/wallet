@@ -14,6 +14,10 @@ page-home {
     background: none;
   }
 
+  .blur {
+    filter: blur(12px);
+  }
+
   .home-header {
     .notifications-badge {
       border-radius: 9px;
@@ -38,6 +42,41 @@ page-home {
       img {
         opacity: 0.6;
       }
+    }
+
+    .wallet-group-dropdown {
+      border-radius: 20px;
+      background-color: color($colors, light);
+      color: color($colors, dark);
+      box-shadow: none;
+      font-size: 17px;
+      max-width: 90%;
+      &:hover,
+      &:focus,
+      &:active {
+        &.button-md,
+        &.button-ios {
+          background-color: #ededed;
+          color: black;
+          box-shadow: none;
+        }
+      }
+      ion-icon {
+        padding-left: 10px;
+      }
+    }
+
+    .toolbar-content {
+      ion-title {
+        &.title-ios {
+          padding: 0 50px 1px;
+        }
+      }
+    }
+
+    .fix-margin {
+      max-width: 70%;
+      margin-right: 4rem;
     }
 
     .home-logo {
@@ -100,11 +139,6 @@ page-home {
     & .item-inner {
       border: 0 !important;
     }
-  }
-
-  .card {
-    z-index: 1;
-    position: relative;
   }
 
   .clipboard-card {
@@ -359,7 +393,7 @@ page-home {
 
   .scan-button {
     position: absolute;
-    z-index: 999;
+    z-index: 9;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
@@ -432,25 +466,6 @@ page-home {
 
     100% {
       transform: translateY(0);
-    }
-  }
-
-  .reorder-done {
-    color: color($colors, primary);
-  }
-
-  .reorder-button {
-    display: flex;
-    position: relative;
-
-    &:after {
-      // For easier tappability
-      content: '';
-      position: absolute;
-      height: 30px;
-      width: 40px;
-      top: -10px;
-      left: -10px;
     }
   }
 

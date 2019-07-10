@@ -14,4 +14,11 @@ card-catalog-page {
       border-bottom: 0.55px solid #f4f4f4;
     }
   }
+
+  ion-note.discount {
+    background: #f2f2fa;
+    border-radius: 20px;
+    color: map-get($colors, primary);
+    padding: 5px 12px;
+  }
 }

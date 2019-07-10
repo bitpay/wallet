@@ -5,7 +5,10 @@ import { BuyCardPage } from '../buy-card/buy-card';
 
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
-import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
+import {
+  GiftCardProvider,
+  hasVisibleDiscount
+} from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-page';
 
@@ -88,6 +91,20 @@ export class CardCatalogPage extends WideHeaderPage {
 
   buyCard(cardConfig: CardConfig) {
     this.navCtrl.push(BuyCardPage, { cardConfig });
+    if (this.hasPercentageDiscount(cardConfig)) {
+      this.logDiscountClick(cardConfig);
+    }
+  }
+
+  logDiscountClick(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent(
+      'clickedGiftCardDiscount',
+      this.giftCardProvider.getDiscountEventParams(cardConfig, 'Gift Card List')
+    );
+  }
+
+  hasPercentageDiscount(cardConfig: CardConfig) {
+    return hasVisibleDiscount(cardConfig);
   }
 
   private showError() {

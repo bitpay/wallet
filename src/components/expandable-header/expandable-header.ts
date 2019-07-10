@@ -101,6 +101,7 @@ export class ExpandableHeaderComponent {
   }
 
   transformPrimaryContent(transformations: number[], is3d: boolean): void {
+    let backColorGradient;
     const [opacity, scale, translateY] = transformations;
     const transform3d = `scale3d(${scale}, ${scale}, ${scale}) translateY(${translateY}px)`;
     const transform2d = `scale(${scale}, ${scale}) translate(0, ${translateY}px)`;
@@ -116,6 +117,20 @@ export class ExpandableHeaderComponent {
         'transform',
         transformStr
       );
+
+    backColorGradient = this.calculateBackColorGradient(opacity);
+
+    const linearGradient = `linear-gradient(180deg, #14245E ${backColorGradient}% , #22378c)`;
+
+    this.renderer.setElementStyle(
+      this.element.nativeElement,
+      'background-image',
+      linearGradient
+    );
+  }
+
+  calculateBackColorGradient(opacity: number): number {
+    return (1 - opacity) * 100;
   }
 
   transformFooterContent(transformations: number[]): void {

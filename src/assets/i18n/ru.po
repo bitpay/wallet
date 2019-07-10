@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -94,9 +94,6 @@ msgstr "Добавить контакт"
 
 msgid "Add funds"
 msgstr "Пополнить счёт"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Добавить эту учетную запись BitPay ({{email}})?"
@@ -617,6 +614,9 @@ msgstr "Отключить уведомления"
 msgid "Disabled"
 msgstr "Отключено"
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr "Не включать закрытый ключ"
 
@@ -940,6 +940,9 @@ msgstr "Скрыть баланс"
 
 msgid "Hide advanced options"
 msgstr "Скрыть дополнительные параметры"
+
+msgid "Hide discount?"
+msgstr ""
 
 msgid "Home"
 msgstr "Главная"
@@ -1847,9 +1850,6 @@ msgstr "Поделиться {{appName}}"
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "Показать дополнительные параметры"
 
@@ -2300,6 +2300,9 @@ msgstr "Вводы кошелька"
 msgid "Wallet Name"
 msgstr "Название кошелька"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2412,6 +2415,9 @@ msgid "Withdraw"
 msgstr "Снятие"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"

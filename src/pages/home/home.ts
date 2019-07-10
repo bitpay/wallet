@@ -12,12 +12,14 @@ import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
+import { AddWalletPage } from '../add-wallet/add-wallet';
 import { AddPage } from '../add/add';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
+import { WalletGroupSelectorPage } from '../wallet-group-selector/wallet-group-selector';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -31,6 +33,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { InvoiceProvider } from '../../providers/invoice/invoice';
+import { KeyProvider } from '../../providers/key/key';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -66,6 +69,7 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
+  public selectedWalletGroup;
 
   public showRateCard: boolean;
   public showReorder: boolean;
@@ -74,6 +78,7 @@ export class HomePage {
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
+  public isBlur: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -103,11 +108,14 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
     private invoiceProvider: InvoiceProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private keyProvider: KeyProvider
   ) {
     this.slideDown = false;
+    this.isBlur = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
+    this.selectedWalletGroup = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -199,7 +207,9 @@ export class HomePage {
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
       // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', this.setWallets);
+      this.events.subscribe('Local/WalletListChange', () =>
+        this.setWallets(true)
+      );
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletFocusHandler);
@@ -339,6 +349,23 @@ export class HomePage {
     }
   );
 
+  public openWalletGroupSelectorModal(): void {
+    this.isBlur = true;
+
+    let modal = this.modalCtrl.create(WalletGroupSelectorPage, null, {
+      showBackdrop: false,
+      enableBackdropDismiss: false,
+      cssClass: 'fullscreen-modal-no-backdrop',
+      enterAnimation: 'ModalEnterFadeIn',
+      leaveAnimation: 'ModalLeaveFadeOut'
+    });
+    modal.present();
+    modal.onDidDismiss((goToAddWallet?: boolean) => {
+      this.isBlur = false;
+      if (goToAddWallet) this.navCtrl.push(AddWalletPage);
+    });
+  }
+
   private setWallets = (shouldUpdate: boolean = false) => {
     // TEST
     /* 
@@ -348,8 +375,13 @@ export class HomePage {
     },100);
     */
 
+    let opts: any = {};
+    opts.keyId = this.keyProvider.activeWGKey;
+    this.wallets = this.profileProvider.getWallets(opts);
+    this.selectedWalletGroup = this.profileProvider.getWalletGroup(
+      this.keyProvider.activeWGKey
+    );
     this.profileProvider.setLastKnownBalance();
-    this.wallets = this.profileProvider.getWallets();
 
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
@@ -383,7 +415,7 @@ export class HomePage {
   }
 
   private checkPriceChart() {
-    this.persistenceProvider.getPriceChartFlag().then(res => {
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
       this.showPriceChart = res === 'enabled' ? true : false;
       this.updateCharts();
     });
@@ -686,7 +718,7 @@ export class HomePage {
 
     const promises = [];
 
-    _.each(this.wallets, wallet => {
+    _.each(this.profileProvider.wallet, wallet => {
       promises.push(pr(wallet));
     });
 
@@ -768,7 +800,7 @@ export class HomePage {
   }
 
   public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+    this.navCtrl.push(AddPage, { addingNewWallet: true });
   }
 
   public goToWalletDetails(wallet, params): void {

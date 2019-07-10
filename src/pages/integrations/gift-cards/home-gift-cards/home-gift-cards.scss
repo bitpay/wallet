@@ -1,0 +1,46 @@
+.discount-wrapper {
+  margin-bottom: -12px;
+  margin-top: 14px;
+}
+
+button.discount-item {
+  height: 75px;
+
+  &.activated {
+    background: $feather;
+  }
+
+  img-loader {
+    flex-shrink: 0;
+    margin-left: 2px;
+
+    img {
+      $discount-img-dim: 40px;
+      height: $discount-img-dim;
+      border-radius: 50%;
+      margin-right: 13px;
+      width: $discount-img-dim;
+    }
+  }
+}
+
+.gift-card-featured-discount {
+  align-items: center;
+  background: #f6f7fc;
+  border-radius: 20px;
+  display: inline-flex;
+  color: #565d6d;
+  padding: 8px 17px;
+  text-align: left;
+
+  img {
+    border-radius: 50%;
+    height: 23px;
+    width: 23px;
+    margin-right: 10px;
+  }
+}
+
+img.gift-card-brands {
+  max-height: 160px;
+}

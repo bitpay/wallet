@@ -25,7 +25,8 @@
         <div>{{'Sending From' | translate}}</div>
         <div class="wallet">
           <ion-icon *ngIf="wallet && wallet.coin" item-start>
-            <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
+            <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg"
+              class="icon-wallet" />
           </ion-icon>
           <div>{{wallet ? wallet.name : '...'}}</div>
           <div class="last-item" item-end>
@@ -45,6 +46,14 @@
           <ion-note item-end>
             <span *ngIf="onlyIntegers">{{amount | number : '1.0-0'}}</span>
             <span *ngIf="!onlyIntegers">{{amount | number : '1.2-2'}}</span>
+            {{currencyIsoCode}}
+          </ion-note>
+        </ion-item>
+        <ion-item *ngIf="totalDiscount">
+          <span>{{'Discount' | translate}}</span>
+          <ion-note item-end>
+            <span *ngIf="onlyIntegers">-{{totalDiscount | number : '1.0-0'}}</span>
+            <span *ngIf="!onlyIntegers">-{{totalDiscount | number : '1.2-2'}}</span>
             {{currencyIsoCode}}
           </ion-note>
         </ion-item>
@@ -84,7 +93,10 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)"
+    buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()"
+    [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}">
+  </page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
       purchase' | translate}}</button>

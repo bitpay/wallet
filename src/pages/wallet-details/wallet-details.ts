@@ -379,7 +379,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   public openBackup() {
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      keyId: this.wallet.credentials.keyId
     });
   }
 
@@ -428,8 +428,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   public openBalanceDetails(): void {
     this.navCtrl.push(WalletBalancePage, {
-      status: this.wallet.cachedStatus,
-      color: this.wallet.color
+      status: this.wallet.cachedStatus
     });
   }
 

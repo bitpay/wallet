@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-06-27 13:49\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -94,9 +94,6 @@ msgstr "Ajouter comme contact"
 
 msgid "Add funds"
 msgstr "Ajouter des fonds"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "Ajoutez des cartes-cadeaux de marques comme Amazon, Delta, Google Play et Uber à votre portefeuille {appName}."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Voulez-vous ajouter ce compte BitPay ({{email}}) ?"
@@ -617,6 +614,9 @@ msgstr "Désactiver les notifications"
 msgid "Disabled"
 msgstr "Désactivé"
 
+msgid "Discount"
+msgstr "Remise"
+
 msgid "Do not include private key"
 msgstr "Ne pas inclure la clé privée"
 
@@ -630,7 +630,7 @@ msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd lo
 msgstr "Vous ne voyez pas votre langue sur Crowdin ? Contactez le propriétaire sur Crowdin ! Nous serions ravis de prendre en charge votre langue."
 
 msgid "Done"
-msgstr ""
+msgstr "Terminé"
 
 msgid "Download"
 msgstr "Télécharger"
@@ -941,6 +941,9 @@ msgstr "Masquer le solde"
 msgid "Hide advanced options"
 msgstr "Masquer les options avancées"
 
+msgid "Hide discount?"
+msgstr "Masquer la remise ?"
+
 msgid "Home"
 msgstr "Accueil"
 
@@ -1029,7 +1032,7 @@ msgid "Information"
 msgstr "Information"
 
 msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
-msgstr ""
+msgstr "Inspirée par les portefeuilles physiques, la vue d'accueil est maintenant épurée et plus spacieuse, de sorte que tous les détails importants sont accessibles et résumés d'un simple coup d'œil."
 
 msgid "Insufficient funds"
 msgstr "Fonds insuffisants"
@@ -1137,7 +1140,7 @@ msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime effectif. Veuillez patienter pour supprimer cette proposition de dépense"
 
 msgid "Log out"
-msgstr ""
+msgstr "Se déconnecter"
 
 msgid "Low Fee"
 msgstr "Frais faibles"
@@ -1233,7 +1236,7 @@ msgid "New copayer"
 msgstr "Nouveau Copayer"
 
 msgid "New look and feel"
-msgstr ""
+msgstr "Nouveau design"
 
 msgid "New payment proposal"
 msgstr "Nouvelle proposition de paiement"
@@ -1512,7 +1515,7 @@ msgid "Previous"
 msgstr "Précédent"
 
 msgid "Price Chart"
-msgstr ""
+msgstr "Graphique du prix"
 
 msgid "Print"
 msgstr "Imprimer"
@@ -1847,9 +1850,6 @@ msgstr "Partager {{appName}}"
 msgid "Shared Wallet"
 msgstr "Portefeuille partagé"
 
-msgid "Shop Now"
-msgstr "Acheter maintenant"
-
 msgid "Show advanced options"
 msgstr "Afficher les options avancées"
 
@@ -1926,7 +1926,7 @@ msgid "Sweeping Wallet..."
 msgstr "Balayage du portefeuille..."
 
 msgid "Swipe to Send/Receive"
-msgstr ""
+msgstr "Faites glisser pour envoyer et recevoir"
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
@@ -2300,6 +2300,9 @@ msgstr "Entrées de portefeuille"
 msgid "Wallet Name"
 msgstr "Nom du portefeuille"
 
+msgid "Wallet Needs Backup"
+msgstr "Le portefeuille a besoin d'une sauvegarde"
+
 msgid "Wallet Preferences"
 msgstr "Préférences du portefeuille"
 
@@ -2385,7 +2388,7 @@ msgid "Website"
 msgstr "Site internet"
 
 msgid "What changed?"
-msgstr ""
+msgstr "Qu'est-ce qui a changé ?"
 
 msgid "What do you call this wallet?"
 msgstr "Comment voulez-vous appeler ce portefeuille ?"
@@ -2413,6 +2416,9 @@ msgstr "Retirer"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
 msgstr "Sans chiffrement, un voleur ou une autre application sur cet appareil peut être en mesure d’accéder à vos fonds."
+
+msgid "Would you like to hide this gift card discount?"
+msgstr "Voulez-vous cacher cette remise de carte-cadeau ?"
 
 msgid "Would you like to protect this wallet with a password?"
 msgstr "Souhaitez-vous protéger ce portefeuille avec un mot de passe ?"
@@ -2451,7 +2457,7 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "Vous pouvez apporter des contributions en vous inscrivant sur notre site internet de traduction communautaire Crowdin. Nous sommes impatients de vous y voir !"
 
 msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
-msgstr ""
+msgstr "Vous pouvez maintenant envoyer ou recevoir un paiement directement depuis la vue d'accueil en glissant votre portefeuille à gauche ou à droite."
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Vous pouvez numériser des adresses bitcoin, des demandes de paiement, des portefeuilles de papier et plus."
