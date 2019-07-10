@@ -27,7 +27,7 @@ export class CopayersPage {
   public isCordova: boolean;
 
   public wallet;
-  public copayers;
+  public copayers: any[];
   public secret;
 
   private onResumeSubscription: Subscription;
@@ -55,6 +55,7 @@ export class CopayersPage {
     this.appName = this.appProvider.info.userVisibleName;
     this.appUrl = this.appProvider.info.url;
     this.isCordova = this.platformProvider.isCordova;
+    this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
@@ -107,6 +108,7 @@ export class CopayersPage {
 
     if (this.wallet && opts.walletId == this.wallet.id) {
       this.copayers = this.wallet.cachedStatus.wallet.copayers;
+      console.log('this.copayers: ', this.copayers);
       this.secret = this.wallet.cachedStatus.wallet.secret;
       if (
         this.wallet.cachedStatus.wallet.status == 'complete' &&
