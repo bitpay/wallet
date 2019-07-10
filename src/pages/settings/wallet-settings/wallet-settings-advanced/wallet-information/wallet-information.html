@@ -82,7 +82,7 @@
     <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
       <span>{{a.address}}</span>
       <ion-note item-end>
-        {{(a.amount / unitToSatoshi).toFixed(8)}} BTC
+        {{(a.amount / unitToSatoshi).toFixed(8)}} {{coin.toUpperCase()}}
       </ion-note>
     </ion-item>
     <ion-item-divider></ion-item-divider>
