@@ -147,8 +147,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
-      : 'N/A';
+        ? this.formatAmountStr(coin, tx.fees)
+        : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
@@ -171,6 +171,7 @@ export class TxFormatProvider {
     onlyIntegers?: boolean
   ) {
     let settings = this.configProvider.get().wallet.settings;
+    let satToBtc = 1 / 100000000;
     let unitToSatoshi = settings.unitToSatoshi;
     let amountUnitStr;
     let amountSat;
@@ -192,13 +193,13 @@ export class TxFormatProvider {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert sat to BTC or BCH
-      amount = (amountSat * unitToSatoshi).toFixed(8);
+      amount = (amountSat * satToBtc).toFixed(8);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert unit to BTC or BCH
-      amount = (amountSat * unitToSatoshi).toFixed(8);
+      amount = (amountSat * satToBtc).toFixed(8);
       currency = coin.toUpperCase();
     }
 
