@@ -642,6 +642,7 @@ export class ProfileProvider {
 
     await this.bindWalletClient(wallet);
 
+    this.saveCoinConfig(wallet.coin);
     this.saveBwsUrl(walletId, opts);
 
     return this.storeProfileIfDirty().then(() => {
@@ -661,6 +662,16 @@ export class ProfileProvider {
     }
 
     this.configProvider.set({ bwsFor });
+  }
+
+  private saveCoinConfig(coin: string): void {
+    const coinOpts = this.configProvider.getCoinOpts(coin);
+    const newOpts = {
+      wallet: {
+        settings: coinOpts
+      }
+    };
+    this.configProvider.set(newOpts);
   }
 
   private shouldSkipValidation(walletId: string): boolean {

@@ -4,6 +4,12 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 
+export interface CoinOpts {
+  btc: Partial<Config['wallet']['settings']>;
+  bch: Partial<Config['wallet']['settings']>;
+  eth: Partial<Config['wallet']['settings']>;
+}
+
 export interface Config {
   limits: {
     totalCopayers: number;
@@ -102,12 +108,33 @@ export interface Config {
 export class ConfigProvider {
   public configCache: Config;
   public readonly configDefault: Config;
+  public readonly coinOpts: CoinOpts;
 
   constructor(
     private logger: Logger,
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized');
+    this.coinOpts = {
+      btc: {
+        unitName: 'BTC',
+        unitToSatoshi: 100000000,
+        unitDecimals: 8,
+        unitCode: 'btc'
+      },
+      bch: {
+        unitName: 'BTC',
+        unitToSatoshi: 100000000,
+        unitDecimals: 8,
+        unitCode: 'btc'
+      },
+      eth: {
+        unitName: 'ETH',
+        unitToSatoshi: 1e18,
+        unitDecimals: 18,
+        unitCode: 'eth'
+      }
+    };
     this.configDefault = {
       // wallet limits
       limits: {
@@ -251,6 +278,10 @@ export class ConfigProvider {
     this.persistence.storeConfig(this.configCache).then(() => {
       this.logger.info('Config saved');
     });
+  }
+
+  public getCoinOpts(coin: string) {
+    return this.coinOpts[coin];
   }
 
   public get(): Config {
