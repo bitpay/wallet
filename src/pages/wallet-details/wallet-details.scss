@@ -360,6 +360,19 @@ page-wallet-details {
   border-radius: 5px;
 }
 
+.box-notification {
+  &.warning {
+    background-color: $background-color;
+    color: color($colors, warning);
+    a {
+      font-size: 14px;
+      @media (max-width: 370px) {
+        font-size: 11.5px;
+      }
+    }
+  }
+}
+
 .wallet-details-header {
   ion-title {
     &.title-ios {
