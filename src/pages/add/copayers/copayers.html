@@ -9,7 +9,7 @@
       {{ wallet.name }} [<span translate>{{wallet.m}}-of-{{wallet.n}}</span>]
     </ion-title>
     <ion-buttons right>
-      <button *ngIf="!wallet.notAuthorized && secret" ion-button (click)="showDeletePopup()" translate>
+      <button *ngIf="wallet.notAuthorized || (!wallet.notAuthorized && secret)" ion-button (click)="showDeletePopup()" translate>
         Cancel
       </button>
     </ion-buttons>
@@ -17,10 +17,11 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div class="copayers-header">
+  <div *ngIf="!wallet.notAuthorized" class="copayers-header">
     <div class="copayers-header-content">
       <div class="title" translate>Wallet Invitation</div>
       <div class="text" translate>Share this address with the devices joining this account.</div>
+      <div class="text" translate>Each copayer have their own set of 12 words. To recover funds stored in a Shared Wallet you will need 12 words from each of your copayers.</div>
     </div>
   </div>
   <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
@@ -29,9 +30,6 @@
       <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}" qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
     </div>
   </div>
-  <button *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
-    {{ 'Share this invitation with your copayers' | translate }}
-  </button>
 
   <div class="white-card" *ngIf="!wallet.notAuthorized">
     <span class="title">{{'Waiting for authorized users to join' | translate}}</span>
@@ -42,9 +40,9 @@
             <ion-icon name="checkmark" item-end color="success"></ion-icon>
           </div>
         </div>
-        <div class="timeline-content-label">
-          <div *ngIf="copayer.id == wallet.copayerId" class="action">{{'Me'|translate}}</div>
-          <div *ngIf="copayer.id != wallet.copayerId" class="action">{{copayer.name}}</div>
+        <div class="timeline-content-label ellipsis">
+          <div *ngIf="copayer.id == wallet.copayerId" class="name ellipsis">{{'Me'|translate}}</div>
+          <div *ngIf="copayer.id != wallet.copayerId" class="name ellipsis">{{copayer.name}}</div>
         </div>
       </div>
     </div>
@@ -55,14 +53,19 @@
             <ion-icon name="ios-time-outline" item-end></ion-icon>
           </div>
         </div>
-        <div class="timeline-content-label">
-          <div class="action">{{'Waiting'|translate}}</div>
+        <div class="timeline-content-label ellipsis">
+          <div class="name ellipsis">{{'Waiting'|translate}}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="wallet.notAuthorized" padding>
+  <button class="share-button" *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
+    {{ 'Share this invitation with your copayers' | translate }}
+    &rarr;
+  </button>
+
+  <div class="error-msg" *ngIf="wallet.notAuthorized" padding>
     <h3 class="assertive" translate>Wallet incomplete and broken</h3>
     <div translate>Delete it and create a new one</div>
   </div>

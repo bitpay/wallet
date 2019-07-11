@@ -5,11 +5,17 @@ page-copayers {
     background: linear-gradient(180deg, #14245e -0%, #22378c);
     color: white;
     &-content {
-      padding: 5rem 3rem 3rem 3rem;
+      padding: 3rem 3rem 3rem 3rem;
+      @media (max-width: 370px) {
+        padding: 1.2rem 3rem 3rem 3rem;
+      }
       .title {
         font-size: 18px;
         font-weight: 500;
         padding-bottom: 2rem;
+        @media (max-width: 370px) {
+          padding-bottom: 1rem;
+        }
       }
       .text {
         opacity: 0.7;
@@ -26,6 +32,9 @@ page-copayers {
       border: none;
       width: 100%;
       box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
+      @media (max-width: 350px) {
+        margin-top: -10rem;
+      }
       .copy-icon {
         position: absolute;
         top: 1.5rem;
@@ -45,6 +54,15 @@ page-copayers {
     }
   }
 
+  .share-button {
+    margin-left: 3.5rem;
+  }
+
+  .error-msg {
+    text-align: center;
+  }
+
+  // Timeline styles
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
@@ -78,7 +96,7 @@ page-copayers {
       top: 3px;
       ion-icon {
         font-size: 25px;
-        color: black;
+        color: color($colors, dark);
       }
     }
     .timeline-content {
@@ -94,9 +112,11 @@ page-copayers {
         margin-right: 0.5rem;
         position: relative;
         z-index: 11;
-        img,
-        .rejected {
-          z-index: 12;
+
+        .ion-ios-checkmark {
+          &::before {
+            font-size: 30px;
+          }
         }
 
         > div {
@@ -120,23 +140,13 @@ page-copayers {
       &-label {
         flex-grow: 1;
 
-        > .action {
+        > .name {
           font-size: 16px;
           @media (max-width: 330px) {
             font-size: 14px;
           }
         }
-        > .name {
-          color: #aaa;
-          font-size: 14px;
-        }
       }
     }
-  }
-
-  ion-spinner {
-    width: 26px;
-    height: 16px;
-    vertical-align: middle;
   }
 }
