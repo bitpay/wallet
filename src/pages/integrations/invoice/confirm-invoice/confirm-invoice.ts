@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   App,
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
@@ -101,7 +103,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
     public clipboardProvider: ClipboardProvider,
     events: Events,
     appProvider: AppProvider,
-    keyProvider: KeyProvider
+    keyProvider: KeyProvider,
+    platform: Platform,
+    statusBar: StatusBar
   ) {
     super(
       app,
@@ -129,7 +133,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
       clipboardProvider,
       events,
       appProvider,
-      keyProvider
+      keyProvider,
+      platform,
+      statusBar
     );
     this.hideSlideButton = false;
     this.invoicePaid = false;
