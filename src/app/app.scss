@@ -608,7 +608,8 @@ page-shapeshift,
   @include toolbar-button-color(white);
 
   ion-title .toolbar-title {
-    color: white;
+    color: color($colors, light);
+    font-weight: 75;
   }
 
   button.modal-close-button.bar-button {
