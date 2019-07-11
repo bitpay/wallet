@@ -21,7 +21,7 @@
     <div class="copayers-header-content">
       <div class="title" translate>Wallet Invitation</div>
       <div class="text" translate>Share this address with the devices joining this account.</div>
-      <div class="text" translate>Each copayer have their own set of 12 words. To recover funds stored in a Shared Wallet you will need 12 words from each of your copayers.</div>
+      <div class="text" translate>Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer.</div>
     </div>
   </div>
   <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
@@ -32,7 +32,7 @@
   </div>
 
   <div class="white-card" *ngIf="!wallet.notAuthorized">
-    <span class="title">{{'Waiting for authorized users to join' | translate}}</span>
+    <span class="title">{{'Waiting for authorized copayers to join' | translate}}</span>
     <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
       <div class="timeline-content">
         <div class="timeline-content-icon">
