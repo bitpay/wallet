@@ -34,31 +34,30 @@ page-amount {
     }
   }
   .amount-header {
+    flex: 1;
     display: flex;
     width: 100%;
     position: relative;
     align-items: center;
     .switcher {
-      flex: 1;
-      display: inline-flex;
-      align-items: center;
+      @media (max-height: $short-screen + 70px) {
+        width: 73px;
+      }
+      width: 81px;
       background: rgba(0, 0, 0, 0.06);
       padding: 0.75rem 1rem;
       border-radius: 3px;
       cursor: pointer;
-      width: 81px;
-      @media (max-height: $short-screen + 70px) {
-        width: 75px;
-      }
       &__icon {
         margin-right: 10px;
+        margin-top: 4px;
+        float: left;
       }
       &__label {
         color: #060606;
         font-size: 18px;
-        margin-top: 1px;
         @media (max-height: $short-screen + 70px) {
-          font-size: 15px;
+          font-size: 14px;
         }
       }
     }
