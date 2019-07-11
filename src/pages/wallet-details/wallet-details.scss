@@ -40,6 +40,7 @@ page-wallet-details {
   }
 
   .balance-header {
+    position: relative;
     margin-top: 15px;
     margin-left: 5rem;
     height: 17rem;
@@ -117,15 +118,6 @@ page-wallet-details {
 
   .fix-margin {
     margin-top: -4.5rem;
-
-    .box-notification {
-      padding: 1rem 0.5rem;
-      margin: 0 1.3rem 1.3rem 1.3rem;
-      min-height: 4rem;
-      display: flex;
-      justify-content: center;
-      border-radius: 5px 5px 5px 5px;
-    }
   }
 
   .history-wrapper {
@@ -307,17 +299,16 @@ page-wallet-details {
 
     .left-buttons {
       flex-grow: 1;
-      padding-left: 1rem;
+      padding-left: 1.3rem;
       opacity: 0.5;
     }
 
     .search-button {
-      padding: 0;
-      padding-bottom: 8px;
+      padding: 0 0.5rem 8px 0;
     }
 
     ion-spinner {
-      margin: 0;
+      margin: 0 1.3rem 0 0;
       width: 20px;
       height: 20px;
 
@@ -364,5 +355,18 @@ page-wallet-details {
     background: white;
     padding: 3rem 2rem;
     border-radius: 5px;
+  }
+
+  .top-notification {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    &.warning {
+      color: color($colors, warning);
+    }
+    ion-icon {
+      vertical-align: middle;
+      margin-left: 5px;
+    }
   }
 }
