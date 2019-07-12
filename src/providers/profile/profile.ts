@@ -979,7 +979,6 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts)
           .then(data => {
-            // Need Mapping of Coins here
             let coin = `[${opts.coin.toUpperCase()}]`;
             const name =
               opts.name ||
