@@ -48,7 +48,7 @@
       </div>
       <div class="address-container">
         <div class="text-address ellipsis">
-          <img *ngIf="address" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
             <span class="address-placeholder" translate>Generating new address...</span>
           </div>

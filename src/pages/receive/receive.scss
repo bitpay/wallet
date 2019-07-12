@@ -31,24 +31,21 @@ page-receive {
     }
     .address-container {
       color: rgb(80, 80, 80);
-      width: 100%;
       text-align: center;
       font-size: 15px;
       .text-address {
-        width: 100%;
         background: color($colors, light);
         color: color($colors, light-grey);
         padding: 1.3rem 1rem;
         border-radius: 3px;
-        &.ellipsis img {
-          vertical-align: middle;
-        }
+        position: relative;
         .address-text {
-          max-width: 300px;
+          width: 100%;
           vertical-align: middle;
           display: inline-block;
           opacity: 1;
           transition: opacity 500ms ease;
+          padding: 0 30px;
           .address-placeholder {
             font-size: 14px;
             @media (max-height: 530px) {
@@ -56,13 +53,17 @@ page-receive {
             }
           }
         }
+        .copy-to-clip {
+          position: absolute;
+          left: 10px;
+          margin-top: 2px;
+        }
         .new-address-btn {
+          position: absolute;
+          right: 10px;
           width: 25px;
           height: 25px;
           padding: 0px;
-          vertical-align: middle;
-          padding-bottom: 3px;
-          margin-left: 5px;
           background-color: transparent;
         }
       }
