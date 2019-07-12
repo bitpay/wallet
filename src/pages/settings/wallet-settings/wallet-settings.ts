@@ -70,7 +70,10 @@ export class WalletSettingsPage {
   }
 
   ionViewWillLeave() {
-    if (this.platformProvider.isCordova && this.navCtrl.getPrevious().name === 'WalletDetailsPage') {
+    if (
+      this.platformProvider.isCordova &&
+      this.navCtrl.getPrevious().name === 'WalletDetailsPage'
+    ) {
       this.statusBar.styleBlackOpaque();
     }
   }
