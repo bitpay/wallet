@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -10,6 +11,7 @@ import { DerivationPathHelperProvider } from '../../../providers/derivation-path
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -54,9 +56,23 @@ export class WalletSettingsPage {
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider,
+    private statusBar: StatusBar
   ) {
     this.deleted = false;
+  }
+
+  ionViewWillEnter() {
+    if (this.platformProvider.isCordova) {
+      this.statusBar.styleDefault();
+    }
+  }
+
+  ionViewWillLeave() {
+    if (this.platformProvider.isCordova && this.navCtrl.getPrevious().name === 'WalletDetailsPage') {
+      this.statusBar.styleBlackOpaque();
+    }
   }
 
   ionViewDidLoad() {

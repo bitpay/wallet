@@ -9,7 +9,6 @@ import {
   Events,
   NavController,
   NavParams,
-  Platform,
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -102,7 +101,6 @@ export class AmountPage extends WalletTabsChild {
     walletTabsProvider: WalletTabsProvider,
     private events: Events,
     private viewCtrl: ViewController,
-    private platform: Platform,
     private statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
@@ -162,7 +160,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    if (this.platform.is('cordova') && this.cardName) {
+    if (this.platformProvider.isCordova && this.cardName) {
       this.statusBar.styleBlackOpaque();
     }
     this.disableHardwareKeyboard = false;
@@ -176,7 +174,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('cordova') && this.cardName) {
+    if (this.platformProvider.isCordova && this.cardName) {
       this.statusBar.styleDefault();
     }
     this._disableHardwareKeyboard();

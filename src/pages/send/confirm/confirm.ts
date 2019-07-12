@@ -7,8 +7,7 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -118,7 +117,6 @@ export class ConfirmPage extends WalletTabsChild {
     protected events: Events,
     protected appProvider: AppProvider,
     protected keyProvider: KeyProvider,
-    protected platform: Platform,
     protected statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
@@ -143,14 +141,14 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
+    if (this.isCordova) {
       this.statusBar.styleBlackOpaque();
     }
     this.navCtrl.swipeBackEnabled = true;
   }
 
   ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
+    if (this.isCordova) {
       this.statusBar.styleDefault();
     }
     this.navCtrl.swipeBackEnabled = false;

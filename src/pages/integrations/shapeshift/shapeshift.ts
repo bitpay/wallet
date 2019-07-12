@@ -5,8 +5,7 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -19,6 +18,7 @@ import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../../../providers/time/time';
@@ -51,7 +51,7 @@ export class ShapeshiftPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     protected translate: TranslateService,
     private popupProvider: PopupProvider,
-    private platform: Platform,
+    private platformProvider: PlatformProvider,
     private statusBar: StatusBar
   ) {
     this.oauthCodeForm = this.formBuilder.group({
@@ -71,7 +71,7 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
+    if (this.platformProvider.isCordova) {
       this.statusBar.styleBlackOpaque();
     }
     if (this.navParams.data.code) {
@@ -86,7 +86,7 @@ export class ShapeshiftPage {
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
+    if (this.platformProvider.isCordova) {
       this.statusBar.styleDefault();
     }
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
