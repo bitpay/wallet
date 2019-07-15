@@ -6,18 +6,17 @@
         This wallet is 'Read Only', so the private key is not available.
       </div>
     </label-tip>
-    <ion-list class="settings-list">
-      <ion-item-divider></ion-item-divider>
-
-      <button ion-item (click)="openEnabledWalletsPage()">
-        <div translate>Enabled Wallets</div>
-      </button>
+    <ion-list class="settings-list"> 
 
       <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
         <div translate float-left>Name</div>
         <div text-end text-wrap ion-text color="light-grey">
           {{walletsGroup && walletsGroup.name}}
         </div>
+      </button>
+
+      <button ion-item (click)="openEnabledWalletsPage()">
+        <span translate>Enabled Wallets</span>
       </button>
 
       <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
@@ -49,12 +48,9 @@
         </ion-item>
       </div>
 
-      <div *ngIf="!needsBackup && canSign">
-        <ion-item-divider></ion-item-divider>
-        <button ion-item (click)="openWalletGroupExtendedPrivateKey()">
-          <span translate>Extended Private Key</span>
-        </button>
-      </div>
+      <button *ngIf="!needsBackup && canSign" ion-item (click)="openWalletGroupExtendedPrivateKey()">
+        <span translate>Extended Private Key</span>
+      </button>
 
       <button ion-item (click)="openWalletGroupDelete()">
         <span translate>Delete</span>
