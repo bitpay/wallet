@@ -6,8 +6,7 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -108,7 +107,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     clipboardProvider: ClipboardProvider,
     events: Events,
     AppProvider: AppProvider,
-    platform: Platform,
     statusBar: StatusBar
   ) {
     super(
@@ -138,7 +136,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       events,
       AppProvider,
       keyProvider,
-      platform,
       statusBar
     );
     this.hideSlideButton = false;
