@@ -190,6 +190,13 @@ export class HomePage {
     this.fetchWalletStatus(opts);
   };
 
+  private walletActionHandler = opts => {
+    this.logger.debug('RECV Local/TxAction @home', opts);
+    opts = opts || {};
+    opts.alsoUpdateHistory = true;
+    this.fetchWalletStatus(opts);
+  };
+
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
 
@@ -212,7 +219,7 @@ export class HomePage {
       );
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
-      this.events.subscribe('Local/TxAction', this.walletFocusHandler);
+      this.events.subscribe('Local/TxAction', this.walletActionHandler);
 
       // Wallet is focused on some inner view, therefore, we refresh its status and txs
       this.events.subscribe('Local/WalletFocus', this.walletFocusHandler);
@@ -447,6 +454,7 @@ export class HomePage {
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
+          'EthereumAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
@@ -514,7 +522,7 @@ export class HomePage {
         this.slideDown = true;
       })
       .catch(err => {
-        this.logger.warn('Paste from clipboard err: ', err);
+        this.logger.warn('Paste from clipboard: ', err);
       });
   }
 
@@ -648,10 +656,14 @@ export class HomePage {
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId });
+          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
         }
       })
       .catch(err => {
+        if (err == 'INPROGRESS') return;
+
+        this.logger.warn('Update error:', err);
+
         this.processWalletError(wallet, err);
 
         this.events.publish('Local/WalletUpdate', {
@@ -661,7 +673,7 @@ export class HomePage {
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId });
+          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
         }
       });
   };

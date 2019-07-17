@@ -34,7 +34,7 @@ export class AddPage {
     const walletGroup = this.profileProvider.getWalletGroup(keyId);
     if (walletGroup && walletGroup.name && addingNewWallet) {
       this.title = this.replaceParametersProvider.replace(
-        this.translate.instant('Add Wallet to {{walletGroupName}}'),
+        this.translate.instant('{{walletGroupName}}'),
         {
           walletGroupName: walletGroup.name
         }

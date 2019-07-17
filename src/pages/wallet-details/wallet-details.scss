@@ -40,6 +40,7 @@ page-wallet-details {
   }
 
   .balance-header {
+    position: relative;
     margin-top: 15px;
     margin-left: 5rem;
     height: 17rem;
@@ -54,6 +55,7 @@ page-wallet-details {
     cursor: pointer;
     font-size: 32px;
     font-weight: 600;
+
     @media (max-width: 350px) {
       font-size: 28px;
     }
@@ -70,6 +72,7 @@ page-wallet-details {
     width: 100vw;
     margin-left: -5rem;
     text-align: center;
+
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -82,6 +85,7 @@ page-wallet-details {
     margin-left: -5rem;
     padding: 0rem 2rem;
     text-align: center;
+
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -105,6 +109,7 @@ page-wallet-details {
     width: 100vw;
     margin-left: -5rem;
     text-align: center;
+
     .title {
       font-size: 20px;
       font-weight: 500;
@@ -113,14 +118,6 @@ page-wallet-details {
 
   .fix-margin {
     margin-top: -4.5rem;
-    .box-notification {
-      padding: 1rem 0.5rem;
-      margin: 0 1.3rem 1.3rem 1.3rem;
-      min-height: 4rem;
-      display: flex;
-      justify-content: center;
-      border-radius: 5px 5px 5px 5px;
-    }
   }
 
   .history-wrapper {
@@ -132,11 +129,13 @@ page-wallet-details {
       height: 5rem;
       border-bottom: 0;
       border-radius: 5px 5px 0 0;
+
       .ng-star-inserted {
         font-size: 18px;
         font-weight: 600;
         color: #444444;
       }
+
       &--large {
         &.item {
           ion-label {
@@ -300,17 +299,16 @@ page-wallet-details {
 
     .left-buttons {
       flex-grow: 1;
-      padding-left: 1rem;
+      padding-left: 1.3rem;
       opacity: 0.5;
     }
 
     .search-button {
-      padding: 0;
-      padding-bottom: 8px;
+      padding: 0 0.5rem 8px 0;
     }
 
     ion-spinner {
-      margin: 0;
+      margin: 0 1.3rem 0 0;
       width: 20px;
       height: 20px;
 
@@ -352,79 +350,23 @@ page-wallet-details {
     text-align: end;
     font-size: 12.5px;
   }
-}
 
-.white-card {
-  background: white;
-  padding: 3rem 2rem;
-  border-radius: 5px;
-}
-
-.wallet-details-header {
-  ion-title {
-    &.title-ios {
-      padding: 0 50px 1px;
-    }
-    .toolbar-title {
-      text-align: left;
-      opacity: 0.7;
-      font-weight: 600;
-    }
+  .white-card {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 5px;
   }
 
-  &:not(.no-subtitle) {
-    ion-title .toolbar-title {
-      font-weight: 100;
-      font-size: 16px;
+  .top-notification {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    &.warning {
+      color: color($colors, warning);
     }
-  }
-
-  ion-toolbar {
-    min-height: 0;
-    margin-top: -6px;
-
-    &.toolbar-md {
-      padding-top: 0;
-    }
-  }
-
-  &__balance,
-  &__balance-hidden,
-  &__subtitle {
-    text-align: left;
-    color: white;
-    padding-bottom: 10px;
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 4.5rem;
-
     ion-icon {
-      font-size: 16px;
-      font-weight: 100;
+      vertical-align: middle;
       margin-left: 5px;
     }
-  }
-}
-
-.icon-services {
-  overflow: hidden;
-}
-
-page-wallet-details,
-page-receive,
-page-send,
-page-multi-send,
-page-bitpay-card-intro,
-page-bitpay-card,
-.wallet-details-header {
-  @include toolbar-button-color(white);
-
-  ion-title .toolbar-title {
-    color: white;
-  }
-
-  button.modal-close-button.bar-button {
-    margin-top: -1px;
-    color: white;
   }
 }

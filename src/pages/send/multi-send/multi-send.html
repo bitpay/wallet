@@ -49,7 +49,7 @@
           </ion-item-divider>
           <ion-list class="pointer" (click)="openAmountModal(item, idx)">
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
-              <img [ngClass]="{ testnet: item.recipient.network === 'testnet' }" src="assets/img/currencies/{{item.recipient.coin}}.svg" class="icon-wallet" />
+              <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
               <span class="name">{{item.recipient.name}}</span>
             </div>
 

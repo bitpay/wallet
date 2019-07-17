@@ -21,6 +21,21 @@
   <div class="wrapper wrapper--feather">
     <expandable-header class="balance-card" [scrollArea]="scrollArea">
       <expandable-header-primary class="balance-header">
+
+        <div *ngIf="wallet.network == 'testnet'" class="top-notification warning">
+          <a class="energized" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
+            {{'Learn more about testnet blockchain' | translate}}
+            <ion-icon name="arrow-forward"></ion-icon>
+          </a>
+        </div>
+
+        <div *ngIf="lowUtxosWarning && wallet.network == 'livenet'" class="top-notification warning">
+          <a class="energized" (click)="openAddresses()">
+            {{'Spending this balance will need significant Bitcoin network fees'|translate}}
+            <ion-icon name="arrow-forward"></ion-icon>
+          </a>
+        </div>
+
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && !walletNotRegistered && (wallet.cachedStatus || wallet.lastKnownBalance)">
             <div class="balance-str">
@@ -100,24 +115,8 @@
 
     </expandable-header>
 
-    <div class="fix-margin">
-      <div *ngIf="wallet.network == 'testnet'" class="box-notification warning">
-        <a class="energized" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
-          <ion-icon name="warning"></ion-icon>
-          {{'Learn more about testnet blockchain' | translate}}
-          <ion-icon name="arrow-forward"></ion-icon>
-        </a>
-      </div>
-
-      <div *ngIf="lowUtxosWarning && wallet.network == 'livenet'" class="box-notification warning">
-        <a class="energized" (click)="openAddresses()">
-          <ion-icon name="alert"></ion-icon>
-          {{'Spending this balance will need significant Bitcoin network fees'|translate}}
-          <ion-icon name="arrow-forward"></ion-icon>
-        </a>
-      </div>
-
-      <div class="history-wrapper">
+    <div class="fix-margin"> 
+      <div class="history-wrapper"> 
 
         <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]" class="tx-history">
           <ion-item-divider *ngIf="wallet.incorrectDerivation">

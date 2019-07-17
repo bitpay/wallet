@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   App,
@@ -105,7 +106,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
-    AppProvider: AppProvider
+    AppProvider: AppProvider,
+    statusBar: StatusBar
   ) {
     super(
       app,
@@ -133,7 +135,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       clipboardProvider,
       events,
       AppProvider,
-      keyProvider
+      keyProvider,
+      statusBar
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
