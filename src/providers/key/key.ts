@@ -13,6 +13,7 @@ export class KeyProvider {
   private isDirty: boolean;
   private Key = this.bwcProvider.getKey();
   private keys: any[];
+  public activeWGKey: string;
 
   constructor(
     private logger: Logger,
@@ -26,12 +27,28 @@ export class KeyProvider {
   }
 
   public load(): Promise<any> {
-    return this.persistenceProvider.getKeys().then(keys => {
+    return this.persistenceProvider.getKeys().then(async keys => {
       this.keys = [];
       keys = keys ? keys : [];
       keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
+      await this.loadActiveWGKey();
       return Promise.resolve();
     });
+  }
+
+  public async loadActiveWGKey() {
+    const defaultKeyId = this.keys && this.keys[0] ? this.keys[0].id : null;
+    this.activeWGKey =
+      (await this.persistenceProvider.getActiveWGKey()) || defaultKeyId;
+  }
+
+  public setActiveWGKey(keyId: string) {
+    this.activeWGKey = keyId;
+    return this.persistenceProvider.setActiveWGKey(keyId);
+  }
+
+  public async removeActiveWGKey() {
+    await this.persistenceProvider.removeActiveWGKey();
   }
 
   private storeKeysIfDirty(): Promise<any> {
@@ -76,8 +93,6 @@ export class KeyProvider {
   }
 
   public getKey(keyId: string) {
-    this.logger.debug('Getting key: ' + keyId);
-
     let selectedKey = this.keys.find(k => k.id == keyId);
 
     if (selectedKey) {
@@ -90,16 +105,14 @@ export class KeyProvider {
 
   public removeKey(keyId: string): Promise<any> {
     this.logger.debug('Removing key: ' + keyId);
+    if (keyId === 'read-only') return Promise.resolve();
 
     const selectedKey = this.keys.findIndex(k => k.id == keyId);
 
     if (selectedKey >= 0) {
       this.keys.splice(selectedKey, 1);
       this.isDirty = true;
-      return this.storeKeysIfDirty().then(() => {
-        this.logger.debug('Key removed successfully');
-        return Promise.resolve();
-      });
+      return this.storeKeysIfDirty();
     } else {
       const err = 'No matches for key id: ' + keyId;
       this.logger.debug(err);

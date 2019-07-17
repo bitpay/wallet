@@ -1,5 +1,5 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
+  <ion-navbar class="app-color">
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -12,9 +12,9 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet.color">
+  <ion-toolbar class="app-color">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
-      <span>{{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr}}</span>
+      <span>{{wallet.cachedStatus && wallet.cachedStatus.spendableBalanceStr}}</span>
       <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
     </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
@@ -48,7 +48,7 @@
       </div>
       <div class="address-container">
         <div class="text-address ellipsis">
-          <img *ngIf="address" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
             <span class="address-placeholder" translate>Generating new address...</span>
           </div>

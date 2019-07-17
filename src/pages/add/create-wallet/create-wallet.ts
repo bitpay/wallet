@@ -6,9 +6,11 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -56,6 +58,7 @@ export class CreateWalletPage implements OnInit {
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
+  public addingNewWallet: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -72,23 +75,26 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private bwcProvider: BwcProvider,
+    private keyProvider: KeyProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
+    this.addingNewWallet = this.navParams.get('addingNewWallet');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault =
-      this.coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
+    this.derivationPathByDefault = this.bwcProvider
+      .getCore()
+      .Deriver.pathFor(this.coin, 'livenet');
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
     this.createForm = this.fb.group({
+      profileName: [null],
       walletName: [null, Validators.required],
       myName: [null],
       totalCopayers: [1],
@@ -102,13 +108,16 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
+    if (!this.addingNewWallet) {
+      this.createForm.get('profileName').setValidators([Validators.required]);
+    }
+    this.createLabel = this.translate.instant(
+      `${this.coin.toUpperCase()} Wallet`
+    );
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
+    this.updateSeedSourceSelect();
   }
 
   ngOnInit() {
@@ -119,12 +128,9 @@ export class CreateWalletPage implements OnInit {
 
   public setTotalCopayers(n: number): void {
     this.createForm.controls['totalCopayers'].setValue(n);
-    this.updateRCSelect(n);
-    this.updateSeedSourceSelect();
   }
 
   private updateRCSelect(n: number): void {
-    this.createForm.controls['totalCopayers'].setValue(n);
     const maxReq = this.COPAYER_PAIR_LIMITS[n];
     this.signatures = _.range(1, maxReq + 1);
     this.createForm.controls['requiredCopayers'].setValue(
@@ -173,7 +179,12 @@ export class CreateWalletPage implements OnInit {
   }
 
   public setOptsAndCreate(): void {
+    let keyId;
+    if (this.addingNewWallet) {
+      keyId = this.keyProvider.activeWGKey;
+    }
     const opts: Partial<WalletOptions> = {
+      keyId,
       name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
@@ -262,15 +273,24 @@ export class CreateWalletPage implements OnInit {
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createWallet(opts)
+      .createWallet(this.addingNewWallet, opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
         if (this.createForm.value.selectedSeed == 'set') {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+          this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
+          this.profileProvider.setWalletBackup(wallet.credentials.id);
+        }
+        if (!this.addingNewWallet) {
+          this.profileProvider.setWalletGroupName(
+            wallet.credentials.keyId,
+            this.createForm.value.profileName
+          );
         }
         this.navCtrl.popToRoot().then(() => {
+          this.keyProvider.setActiveWGKey(wallet.credentials.keyId);
+          this.events.publish('Local/WalletListChange');
           setTimeout(() => {
             this.events.publish('OpenWallet', wallet);
           }, 1000);

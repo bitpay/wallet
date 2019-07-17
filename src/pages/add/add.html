@@ -1,5 +1,10 @@
-<wide-header-page title="{{'Add Wallet' | translate}}">
+<wide-header-page title="{{title}}">
   <div page-content>
+    <label-tip class="info" type="info" header="no-header">
+      <div label-tip-body translate>
+        Add a new wallet to this Profile. All wallets from a Profile share the same recovery phrase.
+      </div>
+    </label-tip>
     <ion-list class="settings-list">
       <button class="list-button" ion-item (click)="goToSelectCurrencyPage(false)">
         <ion-icon item-start>
@@ -21,13 +26,6 @@
         </ion-icon>
         <div class="item-title" translate>Join Shared Wallet</div>
         <span class="item-subtitle" translate>Requires invitation to join</span>
-      </button>
-      <button class="list-button" ion-item (click)="goToImportWallet()">
-        <ion-icon item-start>
-          <img src="assets/img/add-wallet/import.svg" />
-        </ion-icon>
-        <div class="item-title" translate>Import Wallet</div>
-        <span class="item-subtitle" translate>Recover your wallet using your passphrase</span>
       </button>
     </ion-list>
   </div>

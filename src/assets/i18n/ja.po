@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-06-25 19:20\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -94,9 +94,6 @@ msgstr "連絡先に追加"
 
 msgid "Add funds"
 msgstr "資金を追加"
-
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "将礼品卡添加到您的 \"div class=\"notranslate\">0 </div> 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "この BitPay アカウント ({{email}}) を追加しますか。"
@@ -619,6 +616,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -942,6 +942,9 @@ msgstr "残高を非表示"
 
 msgid "Hide advanced options"
 msgstr "詳細設定を非表示"
+
+msgid "Hide discount?"
+msgstr ""
 
 msgid "Home"
 msgstr "ホーム"
@@ -1851,9 +1854,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
@@ -2304,6 +2304,9 @@ msgstr "ウォレットの入力"
 msgid "Wallet Name"
 msgstr "ウォレット名"
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2416,6 +2419,9 @@ msgid "Withdraw"
 msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"

@@ -1,4 +1,4 @@
-import { Events } from 'ionic-angular';
+/* import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -394,9 +394,6 @@ describe('Profile Provider', () => {
     getCopayDisclaimerFlag() {
       return Promise.resolve(true);
     }
-    getCopayOnboardingFlag() {
-      return Promise.resolve(true);
-    }
     getKeys() {
       return Promise.resolve(keysArrayFromStorage);
     }
@@ -694,7 +691,7 @@ describe('Profile Provider', () => {
   });
 
   describe('bindProfile', () => {
-    it('should work without errors if onboardingCompleted and disclaimerAccepted', async () => {
+    it('should work without errors if disclaimerAccepted', async () => {
       const profile = {
         credentials: [
           profileProvider.wallet.id1.credentials,
@@ -703,7 +700,6 @@ describe('Profile Provider', () => {
       };
 
       spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
-      profileProvider.profile.onboardingCompleted = true;
       profileProvider.profile.disclaimerAccepted = true;
 
       await profileProvider
@@ -738,34 +734,6 @@ describe('Profile Provider', () => {
         .isDisclaimerAccepted()
         .then(() => {
           expect(profileProvider.profile.disclaimerAccepted).toBeTruthy();
-        })
-        .catch(err => {
-          expect(err).not.toBeDefined();
-        });
-    });
-  });
-
-  describe('isOnboardingCompleted', () => {
-    it('should return promise resolve if onboardingCompleted is true', () => {
-      profileProvider.profile.onboardingCompleted = true;
-
-      profileProvider
-        .isOnboardingCompleted()
-        .then(() => {
-          expect().nothing();
-        })
-        .catch(err => {
-          expect(err).not.toBeDefined();
-        });
-    });
-
-    it('should set onboardingCompleted with true', () => {
-      profileProvider.profile.onboardingCompleted = false;
-
-      profileProvider
-        .isOnboardingCompleted()
-        .then(() => {
-          expect(profileProvider.profile.onboardingCompleted).toBeTruthy();
         })
         .catch(err => {
           expect(err).not.toBeDefined();
@@ -1036,19 +1004,6 @@ describe('Profile Provider', () => {
     });
   });
 
-  describe('setOnboardingCompleted', () => {
-    it('should set onboardingCompleted with true', () => {
-      profileProvider
-        .setOnboardingCompleted()
-        .then(() => {
-          expect(profileProvider.profile.onboardingCompleted).toBeTruthy();
-        })
-        .catch(err => {
-          expect(err).not.toBeDefined();
-        });
-    });
-  });
-
   describe('setLastKnownBalance', () => {
     it('should set the last known balance', () => {
       profileProvider.setLastKnownBalance();
@@ -1307,3 +1262,4 @@ describe('Profile Provider', () => {
     });
   });
 });
+ */

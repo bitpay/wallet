@@ -87,7 +87,7 @@
 
       <div class="wallet" *ngIf="tx.recipientType == 'wallet'">
         <ion-icon item-start>
-          <img *ngIf="tx.network == 'testnet'" [ngClass]="{ testnet: tx.network === 'testnet' }" src="assets/img/currencies/{{tx.coin}}.svg" class="icon-wallet" />
+          <img [ngClass]="{ testnet: tx.network === 'testnet' }" src="assets/img/currencies/{{tx.coin}}.svg" class="icon-wallet" />
         </ion-icon>
         <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
           <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->

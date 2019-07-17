@@ -16,6 +16,7 @@ export class AddressbookPage {
   public filteredAddressbook: object[] = [];
 
   public isEmptyList: boolean;
+  public showReorder: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -24,6 +25,7 @@ export class AddressbookPage {
     private logger: Logger,
     private addressbookProvider: AddressBookProvider
   ) {
+    this.showReorder = false;
     this.initAddressbook();
   }
 
@@ -39,19 +41,57 @@ export class AddressbookPage {
         this.isEmptyList = _.isEmpty(addressBook);
 
         let contacts: object[] = [];
+        const promises = [];
         _.each(addressBook, (contact, k: string) => {
-          contacts.push({
-            name: _.isObject(contact) ? contact.name : contact,
-            address: k,
-            email: _.isObject(contact) ? contact.email : null
-          });
+          promises.push(
+            this.getAddressOrder(k).then(value => {
+              let entry = {
+                address: contact['address'],
+                email: contact['email'],
+                name: contact['name'],
+                order: value
+              };
+
+              contacts.push(entry);
+              return Promise.resolve();
+            })
+          );
         });
-        this.addressbook = _.clone(contacts);
-        this.filteredAddressbook = _.clone(this.addressbook);
+
+        Promise.all(promises).then(() => {
+          this.addressbook = contacts;
+        });
       })
       .catch(err => {
         this.logger.error(err);
       });
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public setAddressOrder(address: string, index: number): void {
+    this.addressbookProvider.setAddressOrder(address, index).then(() => {
+      this.logger.debug(
+        'Address new order stored for ' + address + ': ' + index
+      );
+    });
+    if (this.addressbook[address]) this.addressbook[address]['order'] = index;
+  }
+
+  public async getAddressOrder(address: string): Promise<any> {
+    return this.addressbookProvider.getAddressOrder(address);
+  }
+
+  public reorderAddresses(indexes): void {
+    const element = this.addressbook[indexes.from];
+    this.addressbook.splice(indexes.from, 1);
+    this.addressbook.splice(indexes.to, 0, element);
+    _.each(this.addressbook, (entry, index: number) => {
+      entry['order'] = index;
+      this.setAddressOrder(entry['address'], index);
+    });
   }
 
   public addEntry(): void {

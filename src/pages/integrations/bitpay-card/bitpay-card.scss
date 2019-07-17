@@ -16,7 +16,8 @@ page-bitpay-card {
   }
 
   .balance-card {
-    background: $bitpay-card-primary-color;
+    //background: $bitpay-card-primary-color;
+    background: linear-gradient(180deg, #14245e -0%, #22378c);
   }
 
   .balance-header {

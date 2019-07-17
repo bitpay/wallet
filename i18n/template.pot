@@ -104,11 +104,6 @@ msgstr ""
 msgid "Add funds"
 msgstr ""
 
-msgid ""
-"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Google Play, and Uber."
-msgstr ""
-
 msgid "Add this BitPay account ({{email}})?"
 msgstr ""
 
@@ -269,6 +264,9 @@ msgid ""
 msgstr ""
 
 msgid "Below Minimum Amount"
+msgstr ""
+
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -648,6 +646,9 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+msgid "Discount"
+msgstr ""
+
 msgid "Do not include private key"
 msgstr ""
 
@@ -986,6 +987,9 @@ msgid "Hide Balance"
 msgstr ""
 
 msgid "Hide advanced options"
+msgstr ""
+
+msgid "Hide discount?"
 msgstr ""
 
 msgid "Home"
@@ -1941,9 +1945,6 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-msgid "Shop Now"
-msgstr ""
-
 msgid "Show advanced options"
 msgstr ""
 
@@ -2459,6 +2460,9 @@ msgstr ""
 msgid "Wallet Name"
 msgstr ""
 
+msgid "Wallet Needs Backup"
+msgstr ""
+
 msgid "Wallet Preferences"
 msgstr ""
 
@@ -2587,6 +2591,9 @@ msgstr ""
 msgid ""
 "Without encryption, a thief or another application on this device may be "
 "able to access your funds."
+msgstr ""
+
+msgid "Would you like to hide this gift card discount?"
 msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"

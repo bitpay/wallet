@@ -116,10 +116,10 @@ export class AboutPage {
     this.versionItemTapped++;
     if (this.versionItemTapped >= 5) {
       this.versionItemTapped = 0;
-      this.persistenceProvider.getPriceChartFlag().then(res => {
+      this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
         res === 'enabled'
-          ? this.persistenceProvider.removePriceChartFlag()
-          : this.persistenceProvider.setPriceChartFlag('enabled');
+          ? this.persistenceProvider.removeHiddenFeaturesFlag()
+          : this.persistenceProvider.setHiddenFeaturesFlag('enabled');
         this.navCtrl.popToRoot();
       });
     }

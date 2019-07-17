@@ -4,6 +4,7 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import {
   Events,
   NavController,
@@ -99,7 +100,8 @@ export class AmountPage extends WalletTabsChild {
     private changeDetectorRef: ChangeDetectorRef,
     walletTabsProvider: WalletTabsProvider,
     private events: Events,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -158,6 +160,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
+    if (this.platformProvider.isCordova && this.cardName) {
+      this.statusBar.styleBlackOpaque();
+    }
     this.disableHardwareKeyboard = false;
     this.expression = '';
     this.useSendMax = false;
@@ -169,6 +174,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
+    if (this.platformProvider.isCordova && this.cardName) {
+      this.statusBar.styleDefault();
+    }
     this._disableHardwareKeyboard();
   }
 

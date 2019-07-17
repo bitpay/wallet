@@ -24,6 +24,7 @@ export type InfoSheetType =
   | 'default-error'
   | 'gift-card-archived'
   | 'gift-cards-unavailable'
+  | 'hide-gift-card-discount-item'
   | 'insufficient-funds'
   | 'above-maximum-gift-card-amount'
   | 'below-minimum-gift-card-amount'

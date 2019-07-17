@@ -14,30 +14,42 @@ page-home {
     background: none;
   }
 
+  .blur {
+    filter: blur(12px);
+  }
+
   .home-header {
-    .notifications-badge {
-      border-radius: 9px;
-      font-size: 15px;
-      padding: 3px 7px;
-      padding-top: 4px;
-      font-weight: 600;
-      margin-right: 5px;
-    }
-
-    .add-button {
-      margin-left: 1rem;
-
-      ion-icon {
-        font-size: 3rem;
+    .scan-button {
+      margin-right: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      .scan-img {
+        mask-image: url(../assets/img/scan.svg);
+        background-color: color($colors, secondary);
+        height: 3rem;
+        width: 3rem;
+        mask-repeat: no-repeat;
+        mask-position: 50% 50%;
       }
     }
 
     .settings-button {
-      margin-right: 1rem;
-
       img {
         opacity: 0.6;
       }
+    }
+
+    .toolbar-content {
+      ion-title {
+        &.title-ios {
+          padding: 0 50px 1px;
+        }
+      }
+    }
+
+    .fix-margin {
+      max-width: 70%;
+      margin-right: 4rem;
     }
 
     .home-logo {
@@ -100,11 +112,6 @@ page-home {
     & .item-inner {
       border: 0 !important;
     }
-  }
-
-  .card {
-    z-index: 1;
-    position: relative;
   }
 
   .clipboard-card {
@@ -222,6 +229,30 @@ page-home {
     font-weight: 500;
     margin-bottom: 10px;
     margin-top: 20px;
+    .wallet-options {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      .reorder-button {
+        ion-icon {
+          color: color($colors, primary);
+          font-size: 24px;
+        }
+      }
+    }
+    .notifications-badge {
+      border-radius: 9px;
+      font-size: 13px;
+      padding-top: 2px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    .wallet-group-dropdown {
+      display: flex;
+      ion-icon {
+        margin-left: 10px;
+      }
+    }
   }
 
   // Styles for gift cards and Bitpay cards
@@ -357,24 +388,6 @@ page-home {
     height: 73px;
   }
 
-  .scan-button {
-    position: absolute;
-    z-index: 999;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 27px 22px 26px 19px;
-    border-radius: 30px;
-    box-shadow: 0 7px 31px 0 rgba(0, 0, 0, 0.17);
-    color: white;
-    font-weight: 500;
-
-    ion-avatar {
-      margin-top: -3px;
-      margin-right: 10px;
-    }
-  }
-
   ion-fab {
     ion-icon.icon {
       font-size: 0;
@@ -435,30 +448,10 @@ page-home {
     }
   }
 
-  .reorder-done {
-    color: color($colors, primary);
-  }
-
-  .reorder-button {
-    display: flex;
-    position: relative;
-
-    &:after {
-      // For easier tappability
-      content: '';
-      position: absolute;
-      height: 30px;
-      width: 40px;
-      top: -10px;
-      left: -10px;
-    }
-  }
-
   .wallets-container {
     margin-top: 20px;
-    margin-bottom: -15px;
-
     .section-header {
+      margin-top: 20px;
       margin-bottom: 18px;
     }
   }

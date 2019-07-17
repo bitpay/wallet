@@ -319,6 +319,13 @@ export class BitPayCardProvider {
                   return cb(data.error, history);
                 },
                 data => {
+                  this.logger.info(
+                    'Error loading BitPay Card transaction history for ',
+                    'card id: ',
+                    cardId,
+                    'Message: ',
+                    data.error
+                  );
                   return cb(
                     this._setError('BitPay Card Error: Get History', data)
                   );
@@ -326,6 +333,13 @@ export class BitPayCardProvider {
               );
             },
             data => {
+              this.logger.info(
+                'Error loading BitPay Card invoice history for ',
+                'card id: ',
+                cardId,
+                'Message: ',
+                data.error
+              );
               return cb(
                 this._setError('BitPay Card Error: Get Invoices', data)
               );
@@ -458,9 +472,12 @@ export class BitPayCardProvider {
         this.setCurrencySymbol(x);
         this.persistenceProvider
           .getLastKnownBalance(x.eid)
-          .then(({ balance = null, updatedOn = null }) => {
-            x.balance = Number(balance);
-            x.updateOn = updatedOn;
+          .then(balanceCache => {
+            x.balance =
+              balanceCache && balanceCache.balance
+                ? Number(balanceCache.balance)
+                : null;
+            x.updateOn = balanceCache && balanceCache.updatedOn;
           });
 
         // async refresh

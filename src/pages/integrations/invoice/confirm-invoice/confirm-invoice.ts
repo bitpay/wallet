@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -73,6 +75,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private browserUrl: string;
   private invoicePaid: boolean;
   constructor(
+    app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
@@ -99,9 +102,11 @@ export class ConfirmInvoicePage extends ConfirmPage {
     public clipboardProvider: ClipboardProvider,
     events: Events,
     appProvider: AppProvider,
-    keyProvider: KeyProvider
+    keyProvider: KeyProvider,
+    statusBar: StatusBar
   ) {
     super(
+      app,
       actionSheetProvider,
       bwcErrorProvider,
       bwcProvider,
@@ -126,7 +131,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
       clipboardProvider,
       events,
       appProvider,
-      keyProvider
+      keyProvider,
+      statusBar
     );
     this.hideSlideButton = false;
     this.invoicePaid = false;

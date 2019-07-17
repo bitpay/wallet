@@ -1,25 +1,20 @@
 <ion-header>
-  <ion-navbar class="home-header">
-    <ion-buttons left class="add-button">
-      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]" [ngClass]="{copay: appProvider.info.name === 'copay'}">
-        <img src="assets/img/plus.svg" />
+  <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
+    <ion-buttons left class="settings-button">
+      <button class="modal-close-button" (click)="settings()" ion-button>
+        <img src="assets/img/settings.svg" />
       </button>
     </ion-buttons>
     <ion-title>
       <img class="home-logo" src="assets/img/app/logo.svg" />
     </ion-title>
-    <ion-buttons right class="settings-button">
-      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
-        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
-      </button>
-      <button class="modal-close-button" (click)="settings()" ion-button>
-        <img src="assets/img/settings.svg" />
-      </button>
-    </ion-buttons>
+    <div class="scan-button" *ngIf="wallets && wallets[0]" (click)="scan()">
+      <div class="scan-img"></div>
+    </div>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="fullscreen-tab">
+<ion-content class="fullscreen-tab" [ngClass]="{blur: isBlur}" #scrollArea>
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorder" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -84,7 +79,7 @@
       <price-card #priceCard></price-card>
     </div>
 
-    <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
+    <create-new-wallet *ngIf="(!wallets || !wallets[0]) && !selectedWalletGroup"></create-new-wallet>
 
     <ion-card class="server-message" *ngIf="accessDenied">
       <ion-card-content class="server-message-content">
@@ -95,7 +90,8 @@
           Access denied
         </div>
         <div class="server-message-body" translate>
-          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.
+          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of
+          payment and we are therefore unable to service you.
         </div>
         <div class="server-message-button" (click)="openCountryBannedLink()">
           <span translate>Learn more</span>
@@ -103,18 +99,34 @@
       </ion-card-content>
     </ion-card>
 
-    <div class="wallets-container" *ngIf="wallets && wallets.length">
+    <div class="wallets-container">
       <div class="section-header">
-        <span translate>
-          Wallets
+        <span class="wallet-group-dropdown" *ngIf="selectedWalletGroup" (click)="openWalletGroupSelectorModal()">
+          <span class="ellipsis">{{selectedWalletGroup.name}}</span>
+          <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
         </span>
-        <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()" class="reorder-button" tappable>
-          <img src="assets/img/sort.svg">
-        </span>
-        <span *ngIf="showReorder" (click)="reorder()" class="reorder-done" tappable>
-          {{'Done' | translate}}
-        </span>
+        <div class="wallet-options" *ngIf="wallets && wallets.length">
+          <span *ngIf="!showReorder" (click)="reorder()" class="reorder-button" tappable>
+            <ion-icon name="ios-create-outline"></ion-icon>
+          </span>
+          <span *ngIf="showReorder" (click)="reorder()" class="reorder-done" tappable>
+            {{'Done' | translate}}
+          </span>
+          <span icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
+            <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
+          </span>
+        </div>
       </div>
+
+      <div *ngIf="showReorder || !(wallets && wallets.length)" class="add-card-button" (click)="goToAddView()" translate>Add Wallet</div>
+
+      <label-tip class="no-arrowhead" type="warn" *ngIf="!showReorder && selectedWalletGroup && selectedWalletGroup.needsBackup" margin-top>
+        <span label-tip-title translate>Profile Needs Backup</span>
+        <div label-tip-body>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
+        </div>
+      </label-tip>
+
       <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)" *ngIf="showReorder">
         <ion-item-sliding *ngFor="let wallet of wallets" #slidingItem>
           <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
@@ -145,12 +157,6 @@
             <span label-tip-title translate>Wallet Incomplete</span>
             <div label-tip-body>
               <span translate>This wallet is waiting for authorized users/devices to join.</span>
-            </div>
-          </label-tip>
-          <label-tip type="warn" *ngIf="wallet.isComplete() && wallet.needsBackup">
-            <span label-tip-title translate>Wallet Needs Backup</span>
-            <div label-tip-body>
-              <span translate>Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
             </div>
           </label-tip>
         </div>
@@ -194,7 +200,7 @@
         showBitPayCard && showBitpayCardGetStarted && wallets && wallets[0]
       "></bitpay-card-home>
 
-    <gift-cards *ngIf="showGiftCards && wallets && wallets[0]"></gift-cards>
+    <gift-cards *ngIf="showGiftCards && wallets && wallets[0]" [scrollArea]="scrollArea"></gift-cards>
 
     <div *ngIf="
         homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
@@ -209,10 +215,5 @@
       </div>
     </div>
   </div>
-
-  <button *ngIf="wallets && wallets[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
-    <ion-avatar item-start> <img src="assets/img/scan.svg" /> </ion-avatar>
-    <div>Scan</div>
-  </button>
 
 </ion-content>

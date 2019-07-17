@@ -22,6 +22,11 @@
   </div>
 
   <form [formGroup]="importForm">
+    <ion-item>
+      <ion-label floating>{{'Profile name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="profileName"></ion-input>
+    </ion-item>
+
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">

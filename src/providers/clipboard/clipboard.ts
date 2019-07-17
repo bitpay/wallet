@@ -30,7 +30,7 @@ export class ClipboardProvider {
     } else if (this.isElectron) {
       return this.electronProvider.readFromClipboard();
     } else {
-      return Promise.reject('Not supported');
+      return Promise.reject('Not supported for this device');
     }
   }
 
@@ -53,15 +53,21 @@ export class ClipboardProvider {
   }
 
   public clearClipboardIfValidData(typeArray: string[]): void {
-    this.getData().then(data => {
-      const validDataFromClipboard = this.incomingDataProvider.parseData(data);
-      if (
-        validDataFromClipboard &&
-        typeArray.indexOf(validDataFromClipboard.type) != -1
-      ) {
-        this.logger.info('Cleaning clipboard data');
-        this.clear(); // clear clipboard data if exist
-      }
-    });
+    this.getData()
+      .then(data => {
+        const validDataFromClipboard = this.incomingDataProvider.parseData(
+          data
+        );
+        if (
+          validDataFromClipboard &&
+          typeArray.indexOf(validDataFromClipboard.type) != -1
+        ) {
+          this.logger.info('Cleaning clipboard data: done');
+          this.clear(); // clear clipboard data if exist
+        }
+      })
+      .catch(err => {
+        this.logger.debug('Cleaning clipboard data: ', err);
+      });
   }
 }
