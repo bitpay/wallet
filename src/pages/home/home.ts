@@ -190,6 +190,14 @@ export class HomePage {
     this.fetchWalletStatus(opts);
   };
 
+
+  private walletActionHandler = opts => {
+    this.logger.debug('RECV Local/TxAction @home', opts);
+    opts = opts || {};
+    opts.alsoUpdateHistory = true;
+    this.fetchWalletStatus(opts);
+  };
+
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
 
@@ -212,7 +220,7 @@ export class HomePage {
       );
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
-      this.events.subscribe('Local/TxAction', this.walletFocusHandler);
+      this.events.subscribe('Local/TxAction', this.walletActionHandler);
 
       // Wallet is focused on some inner view, therefore, we refresh its status and txs
       this.events.subscribe('Local/WalletFocus', this.walletFocusHandler);
@@ -652,19 +660,19 @@ export class HomePage {
         }
       })
       .catch(err => {
+        if (err == 'INPROGRESS') return;
         this.processWalletError(wallet, err);
 
-        if (wallet.error) {
-          this.events.publish('Local/WalletUpdate', {
-            walletId: opts.walletId,
-            finished: true,
-            error: wallet.error
-          });
-        }
+        this.events.publish('Local/WalletUpdate', {
+          walletId: opts.walletId,
+          finished: true,
+          error: wallet.error
+        });
 
         if (opts.alsoUpdateHistory) {
           this.fetchTxHistory({ walletId: opts.walletId });
         }
+
       });
   };
 
