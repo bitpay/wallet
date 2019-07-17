@@ -56,7 +56,7 @@ describe('HomePage', () => {
           );
           expect(subscribeSpy).toHaveBeenCalledWith(
             'Local/TxAction',
-            instance.walletFocusHandler
+            instance.walletActionHandler
           );
           expect(subscribeSpy).toHaveBeenCalledWith(
             'Local/WalletFocus',
