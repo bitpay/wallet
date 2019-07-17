@@ -976,6 +976,10 @@ export class WalletProvider {
     });
   }
 
+  private isHistoryCached(wallet): boolean  {
+    return wallet.completeHistory && wallet.completeHistoryIsValid;
+  };
+
   public getTx(wallet, txid: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const finish = list => {
@@ -987,7 +991,7 @@ export class WalletProvider {
         return tx;
       };
 
-      if (wallet.completeHistory && wallet.completeHistoryIsValid) {
+      if (this.isHistoryCached(wallet)) {
         const tx = finish(wallet.completeHistory);
         return resolve(tx);
       } else {
@@ -1006,6 +1010,7 @@ export class WalletProvider {
     });
   }
 
+
   public fetchTxHistory(
     wallet,
     progressFn,
@@ -1016,11 +1021,7 @@ export class WalletProvider {
 
       if (!wallet.isComplete()) return resolve();
 
-      const isHistoryCached = () => {
-        return wallet.completeHistory && wallet.completeHistoryIsValid;
-      };
-
-      if (isHistoryCached() && !opts.force) {
+      if (this.isHistoryCached(wallet) && !opts.force) {
         return resolve(wallet.completeHistory);
       }
 
