@@ -84,7 +84,7 @@ export class WalletProvider {
   // Ratio of "many utxos" warning in total balance (fee/amount)
   private TOTAL_LOW_WARNING_RATIO: number = 0.3;
 
-  private WALLET_STATUS_MAX_TRIES: number = 10;
+  private WALLET_STATUS_MAX_TRIES: number = 5;
   private WALLET_STATUS_DELAY_BETWEEN_TRIES: number = 1.6 * 1000;
   private SOFT_CONFIRMATION_LIMIT: number = 12;
   private SAFE_CONFIRMATIONS: number = 6;
@@ -319,6 +319,8 @@ export class WalletProvider {
         let diff = false;
         _.each(s1, (v, k) => {
           if (s2[k] == v) diff = true;
+          else 
+            this.logger.debug(`Status condition not meet: ${k} is ${s2[k]} not ${v}` );
         });
 
         return diff;
@@ -1022,6 +1024,7 @@ export class WalletProvider {
       if (!wallet.isComplete()) return resolve();
 
       if (this.isHistoryCached(wallet) && !opts.force) {
+        this.logger.debug('Returning cached history for ' + wallet.id);
         return resolve(wallet.completeHistory);
       }
 
