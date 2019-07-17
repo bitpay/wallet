@@ -182,7 +182,6 @@ export class HomePage {
     this.fetchWalletStatus(opts);
   };
 
-
   private walletActionHandler = opts => {
     this.logger.debug('RECV Local/TxAction @home', opts);
     opts = opts || {};
@@ -629,6 +628,7 @@ export class HomePage {
       })
       .catch(err => {
         if (err == 'INPROGRESS') return;
+
         this.logger.warn('Update error:', err);
 
         this.processWalletError(wallet, err);
@@ -639,9 +639,8 @@ export class HomePage {
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force  });
+          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
         }
-
       });
   };
 

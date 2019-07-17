@@ -319,8 +319,10 @@ export class WalletProvider {
         let diff = false;
         _.each(s1, (v, k) => {
           if (s2[k] == v) diff = true;
-          else 
-            this.logger.debug(`Status condition not meet: ${k} is ${s2[k]} not ${v}` );
+          else
+            this.logger.debug(
+              `Status condition not meet: ${k} is ${s2[k]} not ${v}`
+            );
         });
 
         return diff;
@@ -978,9 +980,9 @@ export class WalletProvider {
     });
   }
 
-  private isHistoryCached(wallet): boolean  {
+  private isHistoryCached(wallet): boolean {
     return wallet.completeHistory && wallet.completeHistoryIsValid;
-  };
+  }
 
   public getTx(wallet, txid: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1011,7 +1013,6 @@ export class WalletProvider {
       }
     });
   }
-
 
   public fetchTxHistory(
     wallet,
