@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
+  <div class="white-card" *ngIf="!wallet.notAuthorized">
     <span class="title">{{'Waiting for authorized copayers to join' | translate}}</span>
     <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
       <div class="timeline-content">

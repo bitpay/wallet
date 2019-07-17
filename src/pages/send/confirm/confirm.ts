@@ -120,8 +120,11 @@ export class ConfirmPage extends WalletTabsChild {
     protected statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
-    this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+    this.bitcore = {
+      btc: this.bwcProvider.getBitcore(),
+      bch: this.bitcoreCash
+    };
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
@@ -153,8 +156,7 @@ export class ConfirmPage extends WalletTabsChild {
     }
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
-    const B =
-      this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
+    const B = this.bitcore[this.navParams.data.coin];
     let networkName;
     let amount;
     if (this.fromMultiSend) {
@@ -164,7 +166,10 @@ export class ConfirmPage extends WalletTabsChild {
     } else {
       amount = this.navParams.data.amount;
       try {
-        networkName = new B.Address(this.navParams.data.toAddress).network.name;
+        if (B) {
+          networkName = new B.Address(this.navParams.data.toAddress).network
+            .name;
+        }
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
           this.translate.instant(
@@ -727,7 +732,13 @@ export class ConfirmPage extends WalletTabsChild {
       }
 
       this.walletProvider
-        .createTx(wallet, txp)
+        .getAddress(this.wallet, false)
+        .then(address => {
+          txp.from = address;
+        })
+        .then(() => {
+          return this.walletProvider.createTx(wallet, txp);
+        })
         .then(ctxp => {
           return resolve(ctxp);
         })

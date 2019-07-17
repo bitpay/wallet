@@ -719,12 +719,6 @@ export class HomePage {
             wallet.id,
             wallet.cachedStatus.availableBalanceStr
           );
-
-          this.events.publish('Local/WalletUpdate', {
-            walletId: wallet.id,
-            finished: true
-          });
-
           return Promise.resolve();
         })
         .catch(err => {
