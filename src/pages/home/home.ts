@@ -454,6 +454,7 @@ export class HomePage {
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
+          'EthereumAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
