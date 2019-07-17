@@ -521,7 +521,7 @@ export class HomePage {
         this.slideDown = true;
       })
       .catch(err => {
-        this.logger.warn('Paste from clipboard err: ', err);
+        this.logger.warn('Paste from clipboard: ', err);
       });
   }
 
