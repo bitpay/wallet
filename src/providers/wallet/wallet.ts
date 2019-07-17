@@ -30,11 +30,16 @@ export interface HistoryOptionsI {
 
 export enum Coin {
   BTC = 'btc',
+  BCH = 'bch',
+  ETH = 'eth'
+}
+
+export enum UTXO_COINS {
+  BTC = 'btc',
   BCH = 'bch'
 }
 
 export interface WalletOptions {
-  keyId: any;
   name: any;
   m: any;
   n: any;
@@ -56,6 +61,7 @@ export interface WalletOptions {
 
 export interface TransactionProposal {
   amount: any;
+  from: string;
   toAddress: any;
   outputs: Array<{
     toAddress: any;
@@ -176,7 +182,7 @@ export class WalletProvider {
 
         const configGet = this.configProvider.get();
         const config = configGet.wallet;
-
+        const settings = config.settings[wallet.coin];
         const cache = wallet.cachedStatus;
 
         // Address with Balance
@@ -203,7 +209,7 @@ export class WalletProvider {
         }
 
         // Selected unit
-        cache.unitToSatoshi = config.settings.unitToSatoshi;
+        cache.unitToSatoshi = settings.unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         // STR
@@ -211,6 +217,7 @@ export class WalletProvider {
           wallet.coin,
           cache.totalBalanceSat
         );
+
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
           cache.lockedBalanceSat
@@ -228,17 +235,12 @@ export class WalletProvider {
           cache.pendingAmount
         );
 
-        cache.alternativeName = config.settings.alternativeName;
-        cache.alternativeIsoCode = config.settings.alternativeIsoCode;
+        cache.alternativeName = settings.alternativeName;
+        cache.alternativeIsoCode = settings.alternativeIsoCode;
 
         this.rateProvider
           .whenRatesAvailable(wallet.coin)
           .then(() => {
-            const availableBalanceAlternative = this.rateProvider.toFiat(
-              cache.availableBalanceSat,
-              cache.alternativeIsoCode,
-              wallet.coin
-            );
             const totalBalanceAlternative = this.rateProvider.toFiat(
               cache.totalBalanceSat,
               cache.alternativeIsoCode,
@@ -265,9 +267,6 @@ export class WalletProvider {
               wallet.coin
             );
 
-            cache.availableBalanceAlternative = this.filter.formatFiatAmount(
-              availableBalanceAlternative
-            );
             cache.totalBalanceAlternative = this.filter.formatFiatAmount(
               totalBalanceAlternative
             );
@@ -1107,6 +1106,9 @@ export class WalletProvider {
         txp,
         password
       );
+      if (!UTXO_COINS[txp.coin.toUpperCase()]) {
+        return resolve(signatures);
+      }
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
@@ -1130,23 +1132,42 @@ export class WalletProvider {
 
       if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-        if (err) {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            this.removeTx(wallet, txp);
-            return reject(err);
-          } else {
-            return reject(err);
+      if (!txp.signatures) {
+        wallet.broadcastRawTx(txp, (err, txid) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
           }
-        }
 
-        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-        if (memo) this.logger.info('Memo: ', memo);
+          this.logger.info('Transaction broadcasted: ', txid);
 
-        return resolve(broadcastedTxp);
-      });
+          return resolve(txp);
+        });
+      } else {
+        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
+          }
+
+          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+          if (memo) this.logger.info('Memo: ', memo);
+
+          return resolve(broadcastedTxp);
+        });
+      }
     });
   }
 
@@ -1662,36 +1683,5 @@ export class WalletProvider {
     } else {
       return 'bitcoin';
     }
-  }
-
-  public copyCopayers(wallet: any, newWallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let walletPrivKey = this.bwcProvider
-        .getBitcore()
-        .PrivateKey.fromString(wallet.credentials.walletPrivKey);
-      let copayer = 1;
-      let i = 0;
-
-      _.each(wallet.credentials.publicKeyRing, item => {
-        let name = item.copayerName || 'copayer ' + copayer++;
-        newWallet._doJoinWallet(
-          newWallet.credentials.walletId,
-          walletPrivKey,
-          item.xPubKey,
-          item.requestPubKey,
-          name,
-          {
-            coin: newWallet.credentials.coin
-          },
-          (err: any) => {
-            // Ignore error is copayer already in wallet
-            if (err && !(err instanceof this.errors.COPAYER_IN_WALLET))
-              return reject(err);
-            if (++i == wallet.credentials.publicKeyRing.length)
-              return resolve();
-          }
-        );
-      });
-    });
   }
 }
