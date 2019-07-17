@@ -616,7 +616,7 @@ export class HomePage {
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId });
+          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
         }
       })
       .catch(err => {
