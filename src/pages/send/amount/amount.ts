@@ -467,7 +467,13 @@ export class AmountPage extends WalletTabsChild {
   }
 
   private toFiat(val: number, coin?: Coin): number {
-    if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
+    if (
+      !this.rateProvider.getRate(
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].id
+      )
+    )
+      return undefined;
 
     return parseFloat(
       this.rateProvider

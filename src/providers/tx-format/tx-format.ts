@@ -92,11 +92,7 @@ export class TxFormatProvider {
       return v1 + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (
-      (!this.rate.isBtcAvailable() && coin == 'btc') ||
-      (!this.rate.isBchAvailable() && coin == 'bch')
-    )
-      return null;
+    if (!this.rate.isCoinAvailable(coin)) return null;
     return val();
   }
 
