@@ -1,104 +1,104 @@
 page-receive {
-  .message-container {
-    text-align: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-    .title {
-      color: color($colors, danger);
-      font-size: 20px;
-      text-align: center;
+  .bar-button {
+    margin-right: 10px;
+    .horizontal-lg {
+      font-size: 45px;
     }
-    .subtitle {
-      padding: 20px;
-      text-align: center;
+    .horizontal-lg::before {
+      content: '\f1c8';
     }
   }
-  .backup {
-    color: color($colors, light);
-    cursor: pointer;
-    background-color: color($colors, warning);
-    padding: 10px 0;
-    text-align: center;
-    .icon {
-      vertical-align: middle;
-      margin: 0 5px;
-    }
-  }
-  .wallets-container {
-    padding-left: 2rem;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    border-top: 1px solid color($colors, light);
-    .wallet-text {
-      padding-left: 24px;
-      font-size: 1.7rem;
-      > span {
-        font-size: 12.5px;
-        font-weight: 300;
-      }
-    }
-  }
-  .loading-address {
-    margin: 0 auto;
-    width: 220px;
-    height: 180px;
-    display: flex;
-    text-align: center;
-    justify-content: middle;
-    align-items: center;
-    @media (min-height: 525px) {
-      height: 260px;
-    }
-    ion-spinner {
-      width: 50px;
-      height: 50px;
-      margin: 0 auto;
-    }
-  }
-  .card {
-    z-index: 1;
-    position: relative;
-  }
-  .receive-container {
-    z-index: 1;
-    position: relative;
-  }
-  .address-container {
-    bottom: 0;
-    background-color: rgb(248, 248, 248);
-    border-top: 1px solid rgb(229, 229, 229);
-    color: rgb(80, 80, 80);
-    width: 100%;
-    padding: 15px;
-    text-align: center;
-    font-size: 15px;
-  }
-  .text-address.ellipsis img {
-    vertical-align: middle;
-  }
+
   .scroll-content .wrapper {
     display: flex;
     flex-direction: column;
-    background-color: rgb(251, 251, 251);
+    background-color: white;
   }
   .scroll-content {
-    background-color: rgb(251, 251, 251);
+    background-color: white;
   }
-  .new-address-btn {
-    width: 25px;
-    height: 25px;
-    padding: 0px;
-    vertical-align: middle;
-    padding-bottom: 3px;
-    margin-left: 5px;
-    background-color: transparent;
+
+  .receive-content {
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px #cccccc;
+    z-index: 1000;
+    .title {
+      font-size: 15px;
+      padding: 0 0 16px 0;
+      border: none;
+      font-weight: 500;
+    }
+    .address-container {
+      color: rgb(80, 80, 80);
+      text-align: center;
+      font-size: 15px;
+      .text-address {
+        background: color($colors, light);
+        color: color($colors, light-grey);
+        padding: 1.3rem 1rem;
+        border-radius: 3px;
+        position: relative;
+        .address-text {
+          width: 100%;
+          vertical-align: middle;
+          display: inline-block;
+          opacity: 1;
+          transition: opacity 500ms ease;
+          padding: 0 30px;
+          .address-placeholder {
+            font-size: 14px;
+            @media (max-height: 530px) {
+              font-size: 11.5px;
+            }
+          }
+        }
+        .copy-to-clip {
+          position: absolute;
+          left: 10px;
+          margin-top: 2px;
+        }
+        .new-address-btn {
+          position: absolute;
+          right: 10px;
+          width: 25px;
+          height: 25px;
+          padding: 0px;
+          background-color: transparent;
+        }
+      }
+    }
   }
+  .qr-container {
+    height: 100%;
+    position: relative;
+    .card {
+      z-index: 1;
+      position: relative;
+    }
+    .lines-background {
+      background: url(../assets/img/curved-lines-background.png) center center
+        no-repeat #ececec;
+      opacity: 0.1;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .qr-card {
+      @media (max-height: 560px) {
+        width: 60%;
+      }
+    }
+    .prompt-user {
+      .title-icon {
+        position: relative;
+      }
+    }
+  }
+
   .spin-backwards {
     animation: spin-backwards 0.5s ease-out 1;
   }
@@ -110,19 +110,8 @@ page-receive {
       transform: rotate(-360deg);
     }
   }
-  .qr-container {
-    height: 100%;
-  }
   .loading-dots {
     display: inline-block;
-  }
-  .address-text {
-    width: 70%;
-    max-width: 300px;
-    vertical-align: middle;
-    display: inline-block;
-    opacity: 1;
-    transition: opacity 500ms ease;
   }
   .fade-in-out {
     opacity: 0.1;
@@ -164,20 +153,6 @@ page-receive {
     }
     to {
       transform: rotate(360deg);
-    }
-  }
-  .clipboard-actionsheet {
-    background-color: red;
-    color: black;
-    font-weight: 400;
-  }
-  .bar-button {
-    margin-right: 10px;
-    .horizontal-lg {
-      font-size: 45px;
-    }
-    .horizontal-lg::before {
-      content: '\f1c8';
     }
   }
 }

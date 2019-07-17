@@ -1,4 +1,4 @@
-<ion-header class="wallet-details-header">
+<ion-header>
   <ion-navbar>
     <ion-title>
       {{'Payment Proposal' | translate}}
@@ -53,19 +53,20 @@
       </div>
     </div>
 
-    <ion-item class="item-fee" *ngIf="tx && tx.feeStr">
-      <div class="fee-title">
-        {{'Fee' | translate}} {{tx.feeLevelStr}}
+    <ion-item class="container-txp-info" *ngIf="tx && tx.feeStr && tx.action != 'received'">
+      <div>{{'Bitcoin miner fee:' | translate}}</div>
+      <b>{{tx.feeLevelName}}</b>
+      <div class="txp-info">
+        <span class="ellipsis comment">
+          <div>{{tx.feeStr}}</div>
+          <div>
+            {{tx.feeFiatStr}} &middot;
+            <span *ngIf="tx.feeRateStr">{{tx.feeRateStr}}
+              <span translate> of total amount</span>
+            </span>
+          </div>
+        </span>
       </div>
-      <ion-note>
-        <span class="fee-amount">{{tx.feeStr}}</span>
-        <div class="fee-details">
-          {{tx.feeFiatStr}} &middot;
-          <span *ngIf="tx.feeRateStr">{{tx.feeRateStr}}
-            <span translate> of total amount</span>
-          </span>
-        </div>
-      </ion-note>
     </ion-item>
 
     <div padding class="proposal-rejection" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired">
@@ -79,75 +80,44 @@
     <ion-item class="container-from">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
-        <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        </ion-icon>
+        <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
 
-    <ion-item *ngIf="isShared">
-      <ion-label>
-        <span translate>Created by</span>
-      </ion-label>
-      <ion-note item-end>
-        <span>{{tx.creatorName}}</span>
-      </ion-note>
+    <ion-item class="container-txp-info" *ngIf="isShared">
+      <span>{{'Created by' | translate}}</span>
+      <div class="txp-info">
+        <span class="ellipsis comment">
+          {{tx.creatorName}}
+        </span>
+      </div>
     </ion-item>
 
-    <ion-item *ngIf="tx && tx.ts || tx.createdOn">
-      <ion-label>
-        <span translate>Date</span>
-      </ion-label>
-      <ion-note item-end>
-        <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
-      </ion-note>
+    <ion-item class="container-txp-info" *ngIf="tx && tx.ts || tx.createdOn">
+      <span>{{'Date' | translate}}</span>
+      <div class="txp-info">
+        <span class="ellipsis comment">
+          <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+        </span>
+      </div>
     </ion-item>
 
-    <ion-item *ngIf="tx && tx.message">
+    <ion-item class="container-txp-info" *ngIf="tx && tx.message">
       <span translate>Memo</span>
-      <div class="item-memo" text-wrap>
-        <ion-note>{{tx.message}}</ion-note>
+      <div class="txp-info">
+        <span class="ellipsis comment">{{tx.message}}</span>
       </div>
     </ion-item>
 
     <div *ngIf="tx && tx.paypro">
       <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
-      <ion-item>
-        <span>{{'Pay To'|translate}}</span>
-        <ion-note item-end>
-          {{tx.paypro.domain}}
-        </ion-note>
-      </ion-item>
-      <ion-item>
-        <span translate>Certified by</span>
-        <div class="item-memo" text-wrap>
-          <ion-note *ngIf="tx.paypro.caTrusted" icon-start item-end>
-            <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
-            <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
-            {{tx.paypro.caName}} {{'(Trusted)' | translate}}
-          </ion-note>
-          <ion-note *ngIf="!tx.paypro.caTrusted" icon-start item-end>
-            <span *ngIf="tx.paypro.selfSigned">
-              <ion-icon color="danger" name="unlock"></ion-icon>
-              <span translate>Self-signed Certificate</span>
-            </span>
-            <span *ngIf="!tx.paypro.selfSigned">
-              <ion-icon color="warning" name="lock"></ion-icon>
-              {{tx.paypro.caName}}
-              <br>
-              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
-            </span>
-          </ion-note>
-        </div>
-      </ion-item>
       <ion-item *ngIf="paymentExpired">
         <ion-label>
           {{'Expired'|translate}}
         </ion-label>
         <ion-note color="danger" item-end>
-          <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+          <time>{{tx.paypro.expires | amTimeAgo }}</time>
         </ion-note>
       </ion-item>
       <ion-item *ngIf="!paymentExpired">
@@ -167,23 +137,24 @@
     </div>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
-        <div class="timeline-content">
-          <div class="timeline-content-icon">
-            <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-            <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+      <ion-item>
+        <span>{{'Timeline' | translate}}</span>
+        <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+          <div class="timeline-content">
+            <div class="timeline-content-icon">
+              <div class="rejected" *ngIf="a.type === 'reject'">!</div>
+              <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+            </div>
+            <div class="timeline-content-label">
+              <div class="action">{{a.description}}</div>
+              <div class="name">{{a.by}}</div>
+            </div>
+            <ion-note class="ellipsis">
+              <time>{{ a.time * 1000 | amTimeAgo}}</time>
+            </ion-note>
           </div>
-          <div class="timeline-content-label">
-            <div class="action">{{a.description}}</div>
-            <div class="name">{{a.by}}</div>
-          </div>
-          <ion-note class="ellipsis">
-            <time>{{ a.time * 1000 | amTimeAgo}}</time>
-          </ion-note>
         </div>
-      </div>
-      <ion-item-divider></ion-item-divider>
+      </ion-item>
     </div>
 
     <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
@@ -199,7 +170,8 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}">
+  </page-slide-to-accept>
   <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && !isCordova">
     <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
   </ion-toolbar>

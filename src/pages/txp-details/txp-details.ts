@@ -82,19 +82,15 @@ export class TxpDetailsPage {
     this.wallet = this.tx.wallet
       ? this.tx.wallet
       : this.profileProvider.getWallet(this.tx.walletId);
-    this.tx = this.txFormatProvider.processTx(
-      this.wallet.coin,
-      this.tx,
-      this.walletProvider.useLegacyAddress()
-    );
+    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.copayers = this.wallet.status.wallet.copayers;
+    this.copayers = this.wallet.cachedStatus.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
-    this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
+    this.canSign = this.wallet.canSign;
     this.color = this.wallet.color;
     this.hideSlideButton = false;
 
@@ -127,11 +123,11 @@ export class TxpDetailsPage {
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
   }
 
-  ionViewWillEnter() {
+  ionViewWillLoad() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillLeave() {
+  ionViewWillUnload() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
@@ -231,13 +227,14 @@ export class TxpDetailsPage {
           this.paymentExpired = true;
           this.showErrorInfoSheet(
             err,
-            this.translate.instant('Error in Payment Protocol')
+            this.translate.instant('Error fetching this invoice')
           );
         });
     }
   }
 
-  private paymentTimeControl(expirationTime): void {
+  private paymentTimeControl(expires): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
     let setExpirationTime = (): void => {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
@@ -388,11 +385,7 @@ export class TxpDetailsPage {
           copayerId: this.wallet.credentials.copayerId
         });
 
-        this.tx = this.txFormatProvider.processTx(
-          this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
-        );
+        this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
 
         if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 

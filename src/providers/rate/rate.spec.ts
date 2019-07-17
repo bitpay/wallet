@@ -16,8 +16,15 @@ describe('RateProvider', () => {
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 1 }
   ];
+  const fiatResponse = {
+    ts: 1559315523000,
+    rate: 8427.66,
+    fetchedOn: 1559315104699
+  };
   let btcUrl: string = 'https://bitpay.com/api/rates';
   let bchUrl: string = 'https://bitpay.com/api/rates/bch';
+  let fiatRateUrl: string =
+    'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';
 
   beforeEach(() => {
     const testBed = TestUtils.configureProviderTestingModule();
@@ -195,5 +202,13 @@ describe('RateProvider', () => {
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
+  });
+
+  it('should get historic fiat rate', () => {
+    service.getHistoricFiatRate('USD', 'btc', '1559315523000').then(a => {
+      expect(a).toEqual(fiatResponse);
+      httpMock.expectOne(fiatRateUrl).flush(fiatResponse);
+      httpMock.verify();
+    });
   });
 });

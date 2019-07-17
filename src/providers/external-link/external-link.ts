@@ -49,8 +49,8 @@ export class ExternalLinkProvider {
   private openBrowser(res: boolean, url: string) {
     let old = (window as any).handleOpenURL;
 
+    // Ignore external URLs: avoid opening action sheet
     (window as any).handleOpenURL = url => {
-      // Ignore external URLs
       this.logger.debug('Skip: ' + url);
     };
 

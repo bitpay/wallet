@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -6,18 +7,19 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { KeyProvider } from '../../../providers/key/key';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
-import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
-import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
+import { WalletDuplicatePage } from './wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
 import { WalletServiceUrlPage } from './wallet-settings-advanced/wallet-service-url/wallet-service-url';
@@ -28,6 +30,7 @@ import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-
   templateUrl: 'wallet-settings.html'
 })
 export class WalletSettingsPage {
+  public showDuplicateWallet: boolean;
   public wallet;
   public canSign: boolean;
   public needsBackup: boolean;
@@ -36,9 +39,9 @@ export class WalletSettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
-  public deleted: boolean = false;
+  public derivationStrategy: string;
+  public deleted: boolean;
   private config;
-  public notVaultWallet: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -51,16 +54,40 @@ export class WalletSettingsPage {
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
-  ) {}
+    private keyProvider: KeyProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider,
+    private statusBar: StatusBar
+  ) {
+    this.deleted = false;
+  }
+
+  ionViewWillEnter() {
+    if (this.platformProvider.isCordova) {
+      this.statusBar.styleDefault();
+    }
+  }
+
+  ionViewWillLeave() {
+    if (
+      this.platformProvider.isCordova &&
+      this.navCtrl.getPrevious().name === 'WalletDetailsPage'
+    ) {
+      this.statusBar.styleBlackOpaque();
+    }
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.canSign = this.wallet.canSign();
+    this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      this.wallet.credentials.rootPath
+    );
+    this.canSign = this.wallet.canSign;
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
-    this.encryptEnabled = this.walletProvider.isEncrypted(this.wallet);
+    this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
     });
@@ -76,9 +103,8 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
-    this.persistenceProvider.getVault().then(vault => {
-      this.notVaultWallet =
-        !vault || !vault.walletIds.includes(this.wallet.credentials.walletId);
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
+      this.showDuplicateWallet = res === 'enabled' ? true : false;
     });
   }
 
@@ -92,13 +118,13 @@ export class WalletSettingsPage {
     if (!this.wallet) return;
     const val = this.encryptEnabled;
 
-    if (val && !this.walletProvider.isEncrypted(this.wallet)) {
+    if (val && !this.wallet.isPrivKeyEncrypted) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
-      this.walletProvider
-        .encrypt([].concat(this.wallet))
+      this.keyProvider
+        .encrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.export())
+            JSON.parse(this.wallet.toString())
           );
           this.logger.debug('Wallet encrypted');
         })
@@ -107,12 +133,12 @@ export class WalletSettingsPage {
           const title = this.translate.instant('Could not encrypt wallet');
           this.showErrorInfoSheet(err, title);
         });
-    } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
-      this.walletProvider
-        .decrypt([].concat(this.wallet))
+    } else if (!val && this.wallet.isPrivKeyEncrypted) {
+      this.keyProvider
+        .decrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.export())
+            JSON.parse(this.wallet.toString())
           );
           this.logger.debug('Wallet decrypted');
         })
@@ -176,18 +202,6 @@ export class WalletSettingsPage {
     });
   }
 
-  public openWalletColor(): void {
-    this.navCtrl.push(WalletColorPage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-
-  public openBackupSettings(): void {
-    this.navCtrl.push(BackupWarningPage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-
   public openWalletInformation(): void {
     this.navCtrl.push(WalletInformationPage, {
       walletId: this.wallet.credentials.walletId
@@ -200,7 +214,8 @@ export class WalletSettingsPage {
   }
   public openExportWallet(): void {
     this.navCtrl.push(WalletExportPage, {
-      walletId: this.wallet.credentials.walletId
+      walletId: this.wallet.credentials.walletId,
+      showNoPrivKeyOpt: false
     });
   }
   public openWalletServiceUrl(): void {
@@ -213,8 +228,8 @@ export class WalletSettingsPage {
       walletId: this.wallet.credentials.walletId
     });
   }
-  public openDeleteWallet(): void {
-    this.navCtrl.push(WalletDeletePage, {
+  public openDuplicateWallet(): void {
+    this.navCtrl.push(WalletDuplicatePage, {
       walletId: this.wallet.credentials.walletId
     });
   }

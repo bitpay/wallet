@@ -1316,21 +1316,17 @@ export class CoinbaseProvider {
   }
 
   public register(): void {
-    let show: boolean = false;
-    this.getStoredToken(accessToken => {
-      if (accessToken) {
-        show = true;
-      }
-      this.isActive(isActive => {
-        this.homeIntegrationsProvider.register({
-          name: 'coinbase',
-          title: 'Coinbase',
-          icon: 'assets/img/coinbase/coinbase-icon.png',
-          location: '33 Countries',
-          page: 'CoinbasePage',
-          show: !!this.configProvider.get().showIntegration['coinbase'] || show,
-          linked: isActive
-        });
+    this.isActive(isActive => {
+      this.homeIntegrationsProvider.register({
+        name: 'coinbase',
+        title: 'Coinbase',
+        icon: 'assets/img/coinbase/coinbase-icon.png',
+        logo: 'assets/img/coinbase/coinbase-logo-white.svg',
+        background: '#0667d0',
+        location: '33 Countries',
+        page: 'CoinbasePage',
+        show: !!this.configProvider.get().showIntegration['coinbase'],
+        linked: isActive
       });
     });
   }

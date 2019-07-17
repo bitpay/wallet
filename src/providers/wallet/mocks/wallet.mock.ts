@@ -121,13 +121,10 @@ export class WalletMock {
     addressType: string;
     scanStatus: string;
     walletId: string;
+    keyId: string;
     walletName: string;
     network?: string;
-    derivationStrategy?: string;
-    mnemonicHasPassphrase?: boolean;
     publicKeyRing?: any[];
-    walletPrivKey?: string;
-    getBaseAddressDerivationPath?: () => {};
   };
   coin: string;
   id: string;
@@ -140,6 +137,7 @@ export class WalletMock {
   scanning?: boolean;
   status: StatusMock;
   totalBalanceSat: string;
+  completeHistoryIsValid: boolean;
 
   constructor() {
     this.cachedStatus = statusMock;
@@ -147,7 +145,8 @@ export class WalletMock {
       addressType: 'P2PKH',
       scanStatus: null,
       walletId: 'walletid1',
-      walletName: 'Test wallet'
+      walletName: 'Test wallet',
+      keyId: 'keyId1'
     };
     this.coin = 'btc';
     this.id = 'walletid1';
@@ -164,6 +163,11 @@ export class WalletMock {
   getStatus(_opts, cb) {
     return cb(null, this.status);
   }
+  getRootPath() {
+    return 'path';
+  }
+  setNotificationsInterval(_x) {}
+
   getTxNote(_opts, cb) {
     return cb(null, 'Note');
   }
@@ -206,9 +210,6 @@ export class WalletMock {
     ];
     return cb(null, txsFromLocal);
   }
-  isPrivKeyEncrypted() {
-    return true;
-  }
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
       amount: 1000,
@@ -235,7 +236,7 @@ export class WalletMock {
     const txpPublished = _opts.txp;
     return cb(null, txpPublished);
   }
-  signTxProposal(_txp, _pass, cb) {
+  pushSignatures(_txp, _signatures, cb) {
     const signedTxp = _txp;
     return cb(null, signedTxp);
   }
@@ -296,14 +297,6 @@ export class WalletMock {
     ];
     return cb(null, utxos);
   }
-  encryptPrivateKey(_pass) {}
-  decryptPrivateKey(_pass) {}
-  checkPassword(_pass) {
-    return true;
-  }
-  canSign() {
-    return true;
-  }
   getKeys(_pass) {
     const keysWithMnemonics = {
       mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
@@ -320,20 +313,9 @@ export class WalletMock {
   getSendMaxInfo(_opts, cb) {
     return cb(null, sendMaxInfoMock);
   }
-  _doJoinWallet(
-    _walletId,
-    _walletPrivKey,
-    _xPubKey,
-    _requestPubKey,
-    _copayerName,
-    _opts,
-    cb
-  ) {
-    return cb(null);
-  }
   createAddress(_opts, cb) {
     const addr = {
-      address: 'address2'
+      address: '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69' // Use a valid address to get a resolved promise
     };
     return cb(null, addr);
   }

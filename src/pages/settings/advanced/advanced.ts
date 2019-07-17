@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
 
 // providers
-import { ConfigProvider } from '../../../providers/config/config';
+import { AppProvider, ConfigProvider, Logger } from '../../../providers';
 
 @Component({
   selector: 'page-advanced',
@@ -10,9 +9,15 @@ import { ConfigProvider } from '../../../providers/config/config';
 })
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
-  public useLegacyAddress: boolean;
+  public isCopay: boolean;
 
-  constructor(private configProvider: ConfigProvider, private logger: Logger) {}
+  constructor(
+    private configProvider: ConfigProvider,
+    private logger: Logger,
+    private appProvider: AppProvider
+  ) {
+    this.isCopay = this.appProvider.info.name === 'copay';
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AdvancedPage');
@@ -22,22 +27,12 @@ export class AdvancedPage {
     let config = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
-    this.useLegacyAddress = config.wallet.useLegacyAddress;
   }
 
   public spendUnconfirmedChange(): void {
     let opts = {
       wallet: {
         spendUnconfirmed: this.spendUnconfirmed
-      }
-    };
-    this.configProvider.set(opts);
-  }
-
-  public useLegacyAddressChange(): void {
-    let opts = {
-      wallet: {
-        useLegacyAddress: this.useLegacyAddress
       }
     };
     this.configProvider.set(opts);

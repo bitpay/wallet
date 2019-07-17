@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -10,6 +11,7 @@ import { AmountPage } from '../../send/amount/amount';
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 
@@ -45,7 +47,9 @@ export class BitPayCardPage {
     private timeProvider: TimeProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private statusBar: StatusBar,
+    private platformProvider: PlatformProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -72,6 +76,18 @@ export class BitPayCardPage {
         this.update();
       }
     );
+  }
+
+  ionViewWillEnter() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleLightContent();
+    }
+  }
+
+  ionViewWillLeave() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
   }
 
   private setDateRange(preset: string) {
@@ -112,7 +128,7 @@ export class BitPayCardPage {
     if (!_.isEmpty(history.transactionList)) return cb();
 
     let dateRange = this.setDateRange('all');
-    this.bitPayCardProvider.getHistory(
+    this.bitPayCardProvider.updateHistory(
       this.cardId,
       dateRange,
       (err, history) => {
@@ -127,7 +143,7 @@ export class BitPayCardPage {
     let dateRange = this.setDateRange(this.dateRange.value);
 
     this.loadingHistory = true;
-    this.bitPayCardProvider.getHistory(
+    this.bitPayCardProvider.updateHistory(
       this.cardId,
       dateRange,
       (err, history) => {

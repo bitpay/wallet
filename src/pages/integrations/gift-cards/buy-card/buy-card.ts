@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { ActionSheetProvider } from '../../../../providers';
+import { hasVisibleDiscount } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -11,11 +13,30 @@ import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-p
 export class BuyCardPage {
   amount: number;
   cardConfig: CardConfig;
+  printAlertShown = false;
+  hasPercentageDiscount: boolean = false;
 
-  constructor(private nav: NavController, private navParams: NavParams) {}
+  constructor(
+    private actionSheetProvider: ActionSheetProvider,
+    private nav: NavController,
+    private navParams: NavParams,
+    private zone: NgZone
+  ) {}
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
+    this.hasPercentageDiscount = hasVisibleDiscount(this.cardConfig);
+  }
+
+  ionViewWillEnter() {
+    if (this.cardConfig.printRequired && !this.printAlertShown) {
+      this.printAlertShown = true;
+      this.actionSheetProvider
+        .createInfoSheet('print-required', {
+          displayName: this.cardConfig.displayName
+        })
+        .present();
+    }
   }
 
   cancel() {
@@ -33,7 +54,7 @@ export class BuyCardPage {
   }
 
   onAmountChange(amount: number) {
-    this.amount = amount;
+    this.zone.run(() => (this.amount = amount));
   }
 
   onAmountClick() {

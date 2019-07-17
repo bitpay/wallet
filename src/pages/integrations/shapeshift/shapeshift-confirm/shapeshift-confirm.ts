@@ -35,8 +35,9 @@ export class ShapeshiftConfirmPage {
   @ViewChild('slideButton')
   slideButton;
 
-  private amount: number;
-  private rateUnit: number;
+  private depositAmount: number;
+  private rate: number;
+
   private fromWalletId: string;
   private toWalletId: string;
   private createdTx;
@@ -48,7 +49,7 @@ export class ShapeshiftConfirmPage {
   private sendMaxInfo;
   private accessToken: string;
 
-  public currency: string;
+  public withdrawalFee: number;
   public currencyIsoCode: string;
   public isCordova: boolean;
   public toWallet;
@@ -66,6 +67,8 @@ export class ShapeshiftConfirmPage {
   public txSent;
   public network: string;
   public hideSlideButton: boolean;
+  public remainingTimeStr: string;
+  public paymentExpired: boolean;
 
   constructor(
     private bwcProvider: BwcProvider,
@@ -95,8 +98,6 @@ export class ShapeshiftConfirmPage {
 
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
-    this.amount = this.navParams.data.amount;
-    this.currency = this.navParams.data.currency;
     this.fromWalletId = this.navParams.data.id;
     this.toWalletId = this.navParams.data.toWalletId;
 
@@ -111,15 +112,39 @@ export class ShapeshiftConfirmPage {
       return;
     }
 
-    this.shapeshiftProvider.getLimit(this.getCoinPair(), (_, lim) => {
-      let min = Number(lim.min);
-      let max = Number(lim.limit);
+    this.shapeshiftProvider.getMarketInfo(this.getCoinPair(), (error, lim) => {
+      if (error) return this.showErrorAndBack(null, error);
+
+      this.rate = Number(lim.rate);
+
+      /*
+       * Coin Pair
+       *
+       * BTC -> BCH
+       *   min (BTC)
+       *   max (BTC)
+       *   rate (BCH) per 1 BTC
+       *   fee (BCH)
+       *
+       * BCH -> BTC
+       *   min (BCH)
+       *   max (BCH)
+       *   rate (BTC) per 1 BCH
+       *   fee (BTC)
+       */
+
+      const depositMin = Number(lim.minimum);
+      const depositMax = Number(lim.maxLimit);
+      this.withdrawalFee = Number(lim.minerFee);
 
       if (this.useSendMax) {
         this.onGoingProcessProvider.set('calculatingSendMax');
-        this.setMaxInfo(max, min)
-          .then(() => {
+        this.setMaxInfo(depositMax, depositMin)
+          .then(amountSat => {
             this.onGoingProcessProvider.clear();
+            this.depositAmount = Number(
+              (amountSat / this.configWallet.settings.unitToSatoshi).toFixed(8)
+            );
             this.createShift();
           })
           .catch(err => {
@@ -128,9 +153,18 @@ export class ShapeshiftConfirmPage {
             this.showErrorAndBack(null, err);
           });
       } else {
-        let amountNumber = Number(this.amount);
-        if (this.isMinimum(amountNumber, min)) return;
-        if (this.isMaximum(amountNumber, max)) return;
+        this.depositAmount = Number(this.navParams.data.amount);
+
+        if (!this.isValid(this.depositAmount, depositMin, depositMax)) return;
+
+        // Calculate fee for withdraw (convert depositAmount to same unit as withdrawalFee)
+        const withdrawalAmount = Number(
+          (this.depositAmount * this.rate).toFixed(8)
+        );
+        if (
+          !this.hasEnoughFundsForWithdraw(withdrawalAmount, this.withdrawalFee)
+        )
+          return;
         this.createShift();
       }
     });
@@ -148,28 +182,35 @@ export class ShapeshiftConfirmPage {
     this.navCtrl.swipeBackEnabled = false;
   }
 
-  private isMaximum(amount: number, max: number): boolean {
+  private isValid(amount: number, min: number, max: number): boolean {
     if (amount > max) {
       let message = this.replaceParametersProvider.replace(
         this.translate.instant('Maximum amount allowed is {{max}}'),
         { max }
       );
       this.showErrorAndBack(null, message);
-      return true;
-    }
-    return false;
-  }
-
-  private isMinimum(amount: number, min: number): boolean {
-    if (amount < min) {
+      return false;
+    } else if (amount < min) {
       let message = this.replaceParametersProvider.replace(
         this.translate.instant('Minimum amount required is {{min}}'),
         { min }
       );
       this.showErrorAndBack(null, message);
-      return true;
+      return false;
     }
-    return false;
+    return true;
+  }
+
+  private hasEnoughFundsForWithdraw(amount: number, fee: number) {
+    if (amount <= fee) {
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant('Not enough funds for fee {{shiftFee}}'),
+        { fee }
+      );
+      this.showErrorAndBack(null, message);
+      return false;
+    }
+    return true;
   }
 
   private setMaxInfo(max: number, min: number): Promise<any> {
@@ -185,7 +226,6 @@ export class ShapeshiftConfirmPage {
             }
 
             this.sendMaxInfo = sendMaxInfo;
-            this.amount = sendMaxInfo.amount;
 
             let maxSat = parseInt(
               (max * this.configWallet.settings.unitToSatoshi).toFixed(0),
@@ -195,18 +235,18 @@ export class ShapeshiftConfirmPage {
               (min * this.configWallet.settings.unitToSatoshi).toFixed(0),
               10
             );
-            if (this.amount > maxSat) {
+
+            if (sendMaxInfo.amount > maxSat) {
               this.popupProvider
                 .ionicAlert(
                   this.translate.instant('ShapeShift max limit reached'),
                   'Maximum amount allowed is ' + max
                 )
                 .then(() => {
-                  this.amount = max;
                   this.useSendMax = false;
-                  return resolve();
+                  return resolve(maxSat);
                 });
-            } else if (this.amount < minSat) {
+            } else if (sendMaxInfo.amount < minSat) {
               let err = this.replaceParametersProvider.replace(
                 this.translate.instant(
                   'ShapeShift requires a minimum value of {{min}}'
@@ -216,7 +256,7 @@ export class ShapeshiftConfirmPage {
               return reject(err);
             } else {
               this.showSendMaxWarning().then(() => {
-                return resolve();
+                return resolve(sendMaxInfo.amount);
               });
             }
           }
@@ -274,7 +314,7 @@ export class ShapeshiftConfirmPage {
 
   private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      if (!wallet.canSign) {
         let err = this.translate.instant('No signing proposal: No private key');
         return reject(err);
       }
@@ -340,7 +380,7 @@ export class ShapeshiftConfirmPage {
         date: now,
         amount: this.amountStr,
         rate:
-          this.rateUnit +
+          this.rate +
           ' ' +
           this.toWallet.coin.toUpperCase() +
           ' per ' +
@@ -365,15 +405,12 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private createTx(wallet, toAddress: string): Promise<any> {
+  private createTx(
+    wallet,
+    toAddress: string,
+    depositSat: number
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
-      let amount = this.useSendMax
-        ? this.amount
-        : parseInt(
-            (this.amount * this.configWallet.settings.unitToSatoshi).toFixed(0),
-            10
-          );
-
       this.message =
         this.fromWallet.coin.toUpperCase() +
         ' to ' +
@@ -382,13 +419,13 @@ export class ShapeshiftConfirmPage {
 
       outputs.push({
         toAddress,
-        amount,
+        amount: depositSat,
         message: this.message
       });
 
       let txp: Partial<TransactionProposal> = {
         toAddress,
-        amount,
+        amount: depositSat,
         outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
@@ -476,7 +513,7 @@ export class ShapeshiftConfirmPage {
   private getNewAddressFormat(addr: string, coin: string): string {
     if (coin == 'btc') return addr;
     let a = this.bitcore.Address(addr).toObject();
-    return this.bitcoreCash.Address.fromObject(a).toString();
+    return this.bitcoreCash.Address.fromObject(a).toString(true);
   }
 
   private getCoinPair(): string {
@@ -513,67 +550,71 @@ export class ShapeshiftConfirmPage {
                 withdrawal: withdrawalAddress,
                 pair: this.getCoinPair(),
                 returnAddress,
-                token: this.accessToken
+                token: this.accessToken,
+                depositAmount: this.depositAmount
               };
-              this.shapeshiftProvider.shift(data, (err, shapeData) => {
+              this.shapeshiftProvider.sendamount(data, (err, shapeData) => {
                 if (err || shapeData.error) {
                   this.onGoingProcessProvider.clear();
                   this.showErrorAndBack(null, err || shapeData.error);
                   return;
                 }
 
+                this.paymentTimeControl(shapeData.expiration);
+
                 let toAddress = this.getNewAddressFormat(
                   shapeData.deposit,
                   this.fromWallet.coin
                 );
 
-                this.createTx(this.fromWallet, toAddress)
+                // To Sat
+                const depositSat = Number(
+                  (
+                    this.depositAmount *
+                    this.configWallet.settings.unitToSatoshi
+                  ).toFixed(0)
+                );
+                const withdrawalAmountSat = Number(
+                  (
+                    shapeData.withdrawalAmount *
+                    this.configWallet.settings.unitToSatoshi
+                  ).toFixed(0)
+                );
+
+                this.createTx(this.fromWallet, toAddress, depositSat)
                   .then(ctxp => {
+                    this.onGoingProcessProvider.clear();
                     // Save in memory
                     this.createdTx = ctxp;
                     this.shapeInfo = shapeData;
 
-                    this.shapeshiftProvider.getRate(
-                      this.getCoinPair(),
-                      (_, r) => {
-                        this.onGoingProcessProvider.clear();
-                        this.rateUnit = r.rate;
-                        let amountUnit = this.txFormatProvider.satToUnit(
-                          ctxp.amount
-                        );
-                        let withdrawalSat = Number(
-                          (this.rateUnit * amountUnit * 100000000).toFixed()
-                        );
+                    // Fee rate
+                    let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
+                    this.feeRatePerStr = per.toFixed(2) + '%';
 
-                        // Fee rate
-                        let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
-                        this.feeRatePerStr = per.toFixed(2) + '%';
+                    // Amount + Unit
+                    this.amountStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.amount
+                    );
+                    this.withdrawalStr = this.txFormatProvider.formatAmountStr(
+                      this.toWallet.coin,
+                      withdrawalAmountSat
+                    );
+                    this.feeStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.fee
+                    );
+                    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.amount + ctxp.fee
+                    );
 
-                        // Amount + Unit
-                        this.amountStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.amount
-                        );
-                        this.withdrawalStr = this.txFormatProvider.formatAmountStr(
-                          this.toWallet.coin,
-                          withdrawalSat
-                        );
-                        this.feeStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.fee
-                        );
-                        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.amount + ctxp.fee
-                        );
-
-                        // Convert to fiat
-                        this.setFiatTotalAmount(
-                          ctxp.amount,
-                          ctxp.fee,
-                          withdrawalSat
-                        );
-                      }
+                    // Convert to fiat
+                    this.setFiatTotalAmount(
+                      ctxp.amount,
+                      ctxp.fee,
+                      withdrawalAmountSat
                     );
                   })
                   .catch(err => {
@@ -654,5 +695,34 @@ export class ShapeshiftConfirmPage {
 
   public cancel(): void {
     this.navCtrl.popToRoot({ animate: false });
+  }
+
+  private paymentTimeControl(expires: string): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
+    this.paymentExpired = false;
+    this.setExpirationTime(expirationTime);
+
+    const countDown = setInterval(() => {
+      this.setExpirationTime(expirationTime, countDown);
+    }, 1000);
+  }
+
+  private setExpirationTime(expirationTime: number, countDown?): void {
+    const now = Math.floor(Date.now() / 1000);
+
+    if (now > expirationTime) {
+      this.paymentExpired = true;
+      this.remainingTimeStr = this.translate.instant('Expired');
+      if (countDown) {
+        /* later */
+        clearInterval(countDown);
+      }
+      return;
+    }
+
+    const totalSecs = expirationTime - now;
+    const m = Math.floor(totalSecs / 60);
+    const s = totalSecs % 60;
+    this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 }

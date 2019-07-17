@@ -33,20 +33,29 @@ page-addressbook {
       max-width: 300px;
     }
   }
-  .contact {
-    ion-label {
-      display: flex;
-      align-items: center;
-      gravatar {
-        margin-right: 1.5rem;
-      }
+
+  .addressbook ion-item.item-wrapper {
+    button {
+      align-items: start;
     }
-    .contact-info {
-      overflow: hidden;
-      .item-title {
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
+  }
+
+  .addressbook ion-item.reorder-active {
+    box-shadow: none;
+
+    button {
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
+      transform: scale3d(1.05, 1.05, 1.05);
+      transition: box-shadow 300ms ease, transform 300ms ease;
     }
+  }
+
+  .sortContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 10px;
+    margin-bottom: 5px;
   }
 }

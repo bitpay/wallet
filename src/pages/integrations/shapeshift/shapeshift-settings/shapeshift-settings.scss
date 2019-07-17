@@ -1,4 +1,11 @@
 page-shapeshift-settings {
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
+  }
   ion-label,
   .item-title {
     white-space: normal;
@@ -12,8 +19,11 @@ page-shapeshift-settings {
   }
   ion-spinner {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     margin-left: -1em;
+    * {
+      stroke: #0d172c !important;
+    }
   }
 }

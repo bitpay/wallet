@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Transaction History' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -15,11 +15,9 @@
       </span>
     </button>
 
-    <ion-item-divider>
-      <span translate>
-        The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
-      </span>
-    </ion-item-divider>
+    <div class="explanation" translate>
+      The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
+    </div>
     <button ion-button class="button-standard" color="danger" (click)="clearTransactionHistory()">
       <span translate>Clear cache</span>
     </button>

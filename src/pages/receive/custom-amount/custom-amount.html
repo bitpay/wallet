@@ -1,8 +1,8 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [hideBackButton]="true" [navbar-bg]="wallet.color">
+  <ion-navbar [hideBackButton]="true" class="app-color">
     <ion-buttons left>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>{{ wallet.name }}</ion-title>
@@ -16,34 +16,33 @@
 
 <ion-content no-bounce>
   <div class="wrapper">
-    <div class="qr-container">
-      <div class="card qr-card">
-        <div class="qr-card-header">
-          <span class="qr-card-title">{{'Payment Request' | translate}}</span>
-          <ion-icon (click)="showPaymentRequestInfo()">
-            <img src="assets/img/icon-info-blue.svg">
-          </ion-icon>
+    <div *ngIf="wallet" class="receive-content">
+      <div class="title-container">
+        <span class="title">{{'Payment Request' | translate}}</span>
+        <ion-icon (click)="showPaymentRequestInfo()">
+          <img src="assets/img/icon-info-blue.svg">
+        </ion-icon>
+      </div>
+      <div class="address-container">
+        <div class="text-address ellipsis">
+          <div class="address-text ellipsis">
+            <span>{{ address }}</span>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="qr-container">
+      <div class="lines-background"></div>
+      <div class="card qr-card">
+        <img class="copy-icon" copy-to-clipboard="{{ qrAddress }}" src="assets/img/paste-clipboard.svg" width="18" />
         <div>
           <div class="qr-card-amount">
             <span>{{amountUnitStr}}</span>
             <br>
             <small>({{altAmountStr}})</small>
           </div>
-          <ngx-qrcode (click)="showFullInfo()" *ngIf="address" hide-toast="true" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}"
-            qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="wallet" class="receive-content">
-      <div class="address-container">
-        <div class="text-address ellipsis">
-          <img src="assets/img/icon-bitcoin-small.svg" alt="" width="12" />
-          <span class="address-divider"></span>
-          <div class="address-text ellipsis">
-            <span>{{ address }}</span>
-          </div>
+          <ngx-qrcode (click)="showFullInfo()" *ngIf="address" hide-toast="true" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
         </div>
       </div>
     </div>

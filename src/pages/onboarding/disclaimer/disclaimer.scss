@@ -1,45 +1,36 @@
 page-disclaimer {
-  & > ion-content {
-    background-image: $onboarding-background-image !important;
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-  text-align: center;
-  ion-header {
-    .toolbar-title,
-    ion-icon {
-      color: color($colors, primary);
-    }
-    .toolbar-background {
-      background-color: transparent;
-    }
-  }
-  .link {
-    font-size: 2vh;
-    cursor: pointer;
-  }
   .checkbox-list {
+    padding: 40px 30px 15px 15px;
+    text-align: center;
     ion-item {
-      font-size: 14px;
+      line-height: 25px;
       background: none;
-      color: #fff;
+    }
+    .checkbox-icon {
+      border-radius: 50%;
+      border-width: 1px;
+      border-style: solid;
+      border-color: color($colors, secondary);
+      width: 30px;
+      height: 30px;
+      .checkbox-inner {
+        left: 11px;
+        top: 5px;
+        width: 7px;
+        height: 15px;
+      }
+    }
+    .checkbox-checked {
+      border-color: color($colors, success);
+      background-color: color($colors, success);
+      border-width: 0px;
+    }
+    .external-link {
+      cursor: pointer;
+      color: color($colors, secondary);
     }
   }
-  .top-description {
-    font-size: 1.4rem;
-    padding: 0 4rem 0 4rem;
-    color: $onboarding-comment-color;
-  }
-  .title {
-    color: color($colors, blank);
-  }
-  ion-footer {
-    background-color: color($colors, secondary);
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
-  }
-  a.externalLink {
-    cursor: pointer;
-    color: color($colors, light-grey);
+  .footer-container {
+    background-color: color($colors, blank);
   }
 }

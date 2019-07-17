@@ -39,6 +39,12 @@
         </div>
         <div translate class="option-text">Share Claim Code</div>
       </div>
+      <div *ngIf="!params.hidePrint" class="option" (click)="optionClicked('print-card')">
+        <div class="option-icon">
+          <img src="assets/img/printer-p.svg" height="19" width="18">
+        </div>
+        <div translate class="option-text">Print Card</div>
+      </div>
     </div>
     <div (click)="dismiss()" class="cancel-btn" translate>Cancel</div>
   </div>

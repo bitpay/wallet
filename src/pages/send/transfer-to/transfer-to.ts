@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -61,8 +61,7 @@ export class TransferToPage {
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private addressProvider: AddressProvider,
-    private viewCtrl: ViewController
+    private addressProvider: AddressProvider
   ) {
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
@@ -124,29 +123,39 @@ export class TransferToPage {
       if (!this.hasContacts) return;
 
       let contactsList = [];
+      const promises = [];
       _.each(ab, (v, k: string) => {
-        contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: this.addressProvider.getNetwork(k),
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: this.addressProvider.getCoin(k),
-          getAddress: () => Promise.resolve(k)
-        });
+        promises.push(
+          this.addressBookProvider.getAddressOrder(k).then(value => {
+            contactsList.push({
+              name: _.isObject(v) ? v.name : v,
+              address: k,
+              order: value,
+              network: this.addressProvider.getNetwork(k),
+              email: _.isObject(v) ? v.email : null,
+              recipientType: 'contact',
+              coin: this.addressProvider.getCoin(k),
+              getAddress: () => Promise.resolve(k)
+            });
+            return Promise.resolve();
+          })
+        );
       });
-      this.contactsList = contactsList.filter(c =>
-        this.filterIrrelevantRecipients(c)
-      );
-      let shortContactsList = _.clone(
-        this.contactsList.slice(
-          0,
-          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
-        )
-      );
-      this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore =
-        this.contactsList.length > shortContactsList.length;
+
+      Promise.all(promises).then(() => {
+        this.contactsList = contactsList.filter(c =>
+          this.filterIrrelevantRecipients(c)
+        );
+        let shortContactsList = _.clone(
+          this.contactsList.slice(
+            0,
+            (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+          )
+        );
+        this.filteredContactsList = _.clone(shortContactsList);
+        this.contactsShowMore =
+          this.contactsList.length > shortContactsList.length;
+      });
     });
   }
 
@@ -217,33 +226,6 @@ export class TransferToPage {
   }
 
   public close(item): void {
-    this._useAsModal ? this.closeModal(item) : this.goToAmount(item);
-  }
-
-  public closeModal(item): void {
-    if (!item) {
-      this.viewCtrl.dismiss();
-      return;
-    }
-    item
-      .getAddress()
-      .then((addr: string) => {
-        if (!addr) {
-          // Error is already formated
-          this.popupProvider.ionicAlert('Error - no address');
-          return;
-        }
-        this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        item.toAddress = addr;
-        this.viewCtrl.dismiss(item);
-      })
-      .catch(err => {
-        this.logger.error('Send: could not getAddress', err);
-        this.viewCtrl.dismiss();
-      });
-  }
-
-  public goToAmount(item): void {
     item
       .getAddress()
       .then((addr: string) => {
@@ -261,7 +243,8 @@ export class TransferToPage {
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network
+          network: item.network,
+          useAsModal: this._useAsModal
         });
       })
       .catch(err => {

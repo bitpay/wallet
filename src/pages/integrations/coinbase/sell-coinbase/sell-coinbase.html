@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}" no-bounce>
   <ion-list *ngIf="sellRequestInfo">
     <ion-item>
       <div class="selling-label">
@@ -14,7 +14,7 @@
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
         <div class="alternative">
-          <span *ngIf="isFiat">{{sellRequestInfo.subtotal}} {{sellRequestInfo.currency}}</span> @ ${{sellPrice.amount}} per BTC
+          <span *ngIf="isFiat">{{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}</span> @ ${{sellPrice.amount}} per BTC
         </div>
       </div>
     </ion-item>
@@ -23,9 +23,8 @@
       <button ion-item detail-none (click)="showWallets()" class="wallets-list">
         <div>From</div>
         <div class="wallet">
-          <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <ion-icon *ngIf="wallet && wallet.coin" item-start>
+            <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
           </ion-icon>
           <div>{{wallet ? wallet.name : '...'}}</div>
           <div class="last-item" item-end>
@@ -44,34 +43,31 @@
         </ion-select>
       </ion-item>
 
-      <ion-item-divider>
-        At what percentage lower price would you accept to sell?
-      </ion-item-divider>
-
-      <ion-item>
-        <ion-label stacked>Price Sensitivity</ion-label>
+      <ion-item padding-bottom>
+        <ion-label stacked>At what percentage lower price would you accept to sell?</ion-label>
         <ion-select [(ngModel)]="selectedPriceSensitivity">
           <ion-option *ngFor="let item of priceSensitivity" [value]="item">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="selectedPriceSensitivity">
-        <div>
+      <label-tip type="info" header="no-header" *ngIf="selectedPriceSensitivity">
+        <div label-tip-body>
           Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
+          <br>
+          <div *ngIf="sellRequestInfo">
+            Estimated sale value:
+            <strong>
+              {{sellRequestInfo.total.amount | currency : '' : 2}} {{sellRequestInfo.total.currency}}
+            </strong>
+          </div>
+          <div *ngIf="sellRequestInfo">
+            Still sell if price fall until:
+            <strong>
+              {{(sellRequestInfo.total.amount - (selectedPriceSensitivity.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}} {{sellRequestInfo.total.currency}}
+            </strong>
+          </div>
         </div>
-        <div *ngIf="sellRequestInfo">
-          Estimated sale value:
-          <strong>
-            {{sellRequestInfo.total.amount | currency : '' : 2}} {{sellRequestInfo.total.currency}}
-          </strong>
-        </div>
-        <div *ngIf="sellRequestInfo">
-          Still sell if price fall until:
-          <strong>
-            {{(sellRequestInfo.total.amount - (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}} {{sellRequestInfo.total.currency}}
-          </strong>
-        </div>
-      </ion-item>
+      </label-tip>
 
       <ion-item-divider>
         Transaction details
@@ -80,6 +76,12 @@
         Amount
         <ion-note item-end>
           {{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="sellRequestInfo.fee">
+        Fee
+        <ion-note item-end>
+          {{sellRequestInfo.fee.amount}} {{sellRequestInfo.fee.currency}}
         </ion-note>
       </ion-item>
       <ion-item *ngFor="let fee of sellRequestInfo.fees">
@@ -92,18 +94,18 @@
       </ion-item>
       <ion-item>
         Total to receive
-        <ion-note>
+        <ion-note item-end>
           {{sellRequestInfo.total.amount}} {{sellRequestInfo.total.currency}}
         </ion-note>
       </ion-item>
+      <ion-item-divider></ion-item-divider>
 
     </ion-item-group>
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet"
-    buttonText="Slide to confirm" (slideDone)="sellConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet" buttonText="Slide to confirm" (slideDone)="sellConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet">Confirm sale</button>
   </ion-toolbar>

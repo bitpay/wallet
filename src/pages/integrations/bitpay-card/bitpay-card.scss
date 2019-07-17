@@ -1,4 +1,10 @@
 page-bitpay-card {
+  $bitpay-card-primary-color: #2a3f90;
+
+  .toolbar-background {
+    background: $bitpay-card-primary-color;
+  }
+
   .initial-message {
     height: 60%;
     display: flex;
@@ -8,9 +14,12 @@ page-bitpay-card {
     text-align: center;
     padding: 0 20px;
   }
+
   .balance-card {
-    background: $toolbar-background;
+    //background: $bitpay-card-primary-color;
+    background: linear-gradient(180deg, #14245e -0%, #22378c);
   }
+
   .balance-header {
     position: relative;
     color: color($colors, light);
@@ -21,12 +30,14 @@ page-bitpay-card {
     align-items: center;
     justify-content: center;
   }
+
   .balance-str {
     cursor: pointer;
     margin-bottom: 20px;
     font-size: 35px;
     font-weight: 600;
   }
+
   .card-info {
     ion-spinner {
       position: absolute;
@@ -35,6 +46,7 @@ page-bitpay-card {
       right: 0;
       width: 20px;
       height: 20px;
+
       * {
         stroke: color($colors, light);
       }

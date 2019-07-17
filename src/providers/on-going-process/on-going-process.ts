@@ -20,7 +20,7 @@ export class OnGoingProcessProvider {
     this.ongoingProcess = [];
   }
 
-  public getProccessNames() {
+  private getProcessNames() {
     const processNames = {
       broadcastingTx: this.translate.instant('Broadcasting transaction...'),
       calculatingFee: this.translate.instant('Calculating fee...'),
@@ -32,7 +32,6 @@ export class OnGoingProcessProvider {
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
-      deletingVault: 'Deleting Vault...',
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),
@@ -40,7 +39,6 @@ export class OnGoingProcessProvider {
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
       importingWallet: this.translate.instant('Importing Wallet...'),
-      importingVault: 'Importing Vault Wallets...',
       joiningWallet: this.translate.instant('Joining Wallet...'),
       recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
@@ -81,7 +79,7 @@ export class OnGoingProcessProvider {
       this.loading.dismiss();
     } catch (e) {
       // No problem
-      this.logger.warn('on-going-process is still active. No problem.', e);
+      this.logger.warn('no active on-going-process. No problem.', e);
     }
     this.loading = null;
     this.logger.debug('ongoingProcess clear');
@@ -104,7 +102,7 @@ export class OnGoingProcessProvider {
   public set(processName: string): void {
     this.logger.debug('ongoingProcess active: ', processName);
     this.ongoingProcess.push(processName);
-    let showName = this.getProccessNames()[processName] || processName;
+    let showName = this.getProcessNames()[processName] || processName;
     if (!this.loading) {
       this.loading = this.loadingCtrl.create();
     }

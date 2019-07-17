@@ -1,0 +1,38 @@
+<ion-content no-bounce>
+  <ion-slides #newDesignTourSlides pager="true" class="new-design-slides">
+    <ion-slide>
+      <div class="page-title" translate>What changed?</div>
+      <div class="img-container">
+        <img src="assets/img/app/onboarding/new-design-tour1.png" />
+      </div>
+      <div class="slide-info">
+        <div class="info">
+          <div class="title" translate>New look and feel</div>
+          <div class="text" translate>
+            Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance.
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="page-title" translate>What changed?</div>
+      <div class="img-container">
+        <img src="assets/img/app/onboarding/new-design-tour2.png" />
+      </div>
+      <div class="slide-info">
+        <div class="info">
+          <div class="title" translate>Swipe to Send/Receive</div>
+          <div class="text" translate>
+            You can now send or receive a payment directly from the home view by sliding your wallet to the left or right.
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="newDesignTourSlides.getActiveIndex() < 1" translate>
+    Next
+  </button>
+  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newDesignTourSlides.getActiveIndex() == 1" translate>
+    Done
+  </button>
+</ion-content>

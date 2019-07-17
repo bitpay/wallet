@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar hideBackButton>
     <ion-title>{{'Transfer to' | translate}}</ion-title>
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
@@ -14,5 +14,5 @@
     <ion-searchbar placeholder="{{'Search Wallets or Contacts' | translate}}" [(ngModel)]="search"></ion-searchbar>
   </div>
 
-  <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true"></page-transfer-to>
+  <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" (addRecipient)="close($event)"></page-transfer-to>
 </ion-content>

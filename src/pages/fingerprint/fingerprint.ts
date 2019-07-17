@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { Platform, ViewController } from 'ionic-angular';
 
 // Providers
 import { TouchIdProvider } from '../../providers/touchid/touchid';
@@ -14,7 +14,7 @@ export class FingerprintModalPage {
   constructor(
     private touchid: TouchIdProvider,
     private platform: Platform,
-    private navCtrl: NavController
+    private viewCtrl: ViewController
   ) {
     this.unregister = this.platform.registerBackButtonAction(() => {});
     this.checkFingerprint();
@@ -23,7 +23,7 @@ export class FingerprintModalPage {
   public checkFingerprint(): void {
     this.touchid.check().then(() => {
       this.unregister();
-      this.navCtrl.pop({ animate: true });
+      this.viewCtrl.dismiss();
     });
   }
 }

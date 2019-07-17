@@ -4,6 +4,7 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import {
   Events,
   NavController,
@@ -65,8 +66,6 @@ export class AmountPage extends WalletTabsChild {
   public expression;
   public amount;
 
-  public shiftMax: number;
-  public shiftMin: number;
   public showSendMax: boolean;
   public allowSend: boolean;
   public recipientType: string;
@@ -101,7 +100,8 @@ export class AmountPage extends WalletTabsChild {
     private changeDetectorRef: ChangeDetectorRef,
     walletTabsProvider: WalletTabsProvider,
     private events: Events,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -147,8 +147,6 @@ export class AmountPage extends WalletTabsChild {
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
-    this.shiftMax = this.navParams.data.shiftMax;
-    this.shiftMin = this.navParams.data.shiftMin;
 
     this.cardName = this.navParams.get('cardName');
   }
@@ -162,6 +160,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
+    if (this.platformProvider.isCordova && this.cardName) {
+      this.statusBar.styleBlackOpaque();
+    }
     this.disableHardwareKeyboard = false;
     this.expression = '';
     this.useSendMax = false;
@@ -173,6 +174,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
+    if (this.platformProvider.isCordova && this.cardName) {
+      this.statusBar.styleDefault();
+    }
     this._disableHardwareKeyboard();
   }
 
@@ -326,7 +330,7 @@ export class AmountPage extends WalletTabsChild {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
-      this.wallet.status.availableBalanceSat
+      this.wallet.cachedStatus.availableBalanceSat
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
@@ -609,6 +613,18 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public closeModal(item): void {
-    this.viewCtrl.dismiss(item);
+    if (this.viewCtrl.name === 'AmountPage') {
+      if (!item) {
+        this.viewCtrl.dismiss();
+        return;
+      }
+
+      this.events.publish('addRecipient', item);
+      this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
+        this.viewCtrl.dismiss();
+      });
+    } else {
+      this.viewCtrl.dismiss(item);
+    }
   }
 }

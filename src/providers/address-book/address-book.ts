@@ -69,6 +69,18 @@ export class AddressBookProvider {
     });
   }
 
+  public setAddressOrder(address: string, index: number): Promise<any> {
+    return this.persistenceProvider.setAddressOrder(address, index);
+  }
+
+  public getAddressOrder(address): Promise<any> {
+    return this.persistenceProvider.getAddressOrder(address);
+  }
+
+  public removeAddressOrder(address: string) {
+    this.persistenceProvider.removeAddressOrder(address);
+  }
+
   public add(entry): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.addressProvider.getNetwork(entry.address);
@@ -148,26 +160,6 @@ export class AddressBookProvider {
         })
         .catch(err => {
           return reject(err);
-        });
-    });
-  }
-
-  public removeAll(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .removeAddressbook('livenet')
-        .then(() => {
-          this.persistenceProvider.removeAddressbook('testnet').then(() => {
-            return resolve();
-          });
-        })
-        .catch(() => {
-          let msg = this.translate.instant('Error deleting addressbook');
-          return reject(msg);
-        })
-        .catch(() => {
-          let msg = this.translate.instant('Error deleting addressbook');
-          return reject(msg);
         });
     });
   }

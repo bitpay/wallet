@@ -5,16 +5,6 @@ page-buy-coinbase {
       margin-bottom: 90px;
     }
   }
-  .buying-label {
-    display: flex;
-    align-items: center;
-    .buying-img {
-      margin-right: 2rem;
-    }
-    span {
-      font-size: 1.8rem;
-    }
-  }
   .amount-label {
     padding-top: 2rem;
     .amount {
@@ -28,15 +18,20 @@ page-buy-coinbase {
       color: color($colors, grey);
     }
   }
+  .buying-label {
+    overflow: hidden;
+    font-size: 20px;
+  }
+  .buying-img {
+    float: left;
+    margin-right: 7px;
+    width: 30px;
+  }
   .wallets-list {
     .wallet {
       display: flex;
       align-items: center;
       margin-top: 1rem;
-      .icon-wallet {
-        background-color: color($colors, primary);
-        margin-right: 1rem;
-      }
     }
   }
 

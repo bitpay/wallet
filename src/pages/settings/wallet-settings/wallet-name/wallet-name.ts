@@ -70,7 +70,9 @@ export class WalletNamePage {
       this.wallet.credentials.walletId
     ] = this.walletNameForm.value.walletName;
     this.configProvider.set(opts);
-    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
+    this.events.publish('Local/ConfigUpdate', {
+      walletId: this.wallet.credentials.walletId
+    });
     this.navCtrl.pop();
   }
 }

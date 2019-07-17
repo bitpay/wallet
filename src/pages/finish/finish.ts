@@ -9,7 +9,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 export class FinishModalPage {
   public finishText: string;
   public finishComment: string;
-  public cssClass: string; // success, warning, danger
+  public cssClass: string; // success, warning, danger, primary
 
   constructor(
     private viewCtrl: ViewController,

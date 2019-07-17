@@ -11,7 +11,6 @@ export interface Config {
   };
 
   wallet: {
-    useLegacyAddress: boolean;
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -72,8 +71,6 @@ export interface Config {
 
   pushNotificationsEnabled: boolean;
 
-  inAppNotificationsEnabled: boolean;
-
   desktopNotificationsEnabled: boolean;
 
   confirmedTxsNotifications: {
@@ -120,7 +117,6 @@ export class ConfigProvider {
 
       // wallet default config
       wallet: {
-        useLegacyAddress: false,
         requiredCopayers: 2,
         totalCopayers: 3,
         spendUnconfirmed: false,
@@ -186,8 +182,6 @@ export class ConfigProvider {
 
       pushNotificationsEnabled: true,
 
-      inAppNotificationsEnabled: true,
-
       desktopNotificationsEnabled: true,
 
       confirmedTxsNotifications: {
@@ -233,14 +227,11 @@ export class ConfigProvider {
 
   private logImportantConfig(config: Config): void {
     const spendUnconfirmed = config.wallet.spendUnconfirmed;
-    const useLegacyAddress = config.wallet.useLegacyAddress;
     const lockMethod = config && config.lock ? config.lock.method : null;
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
         spendUnconfirmed +
-        ' - useLegacyAddress: ' +
-        useLegacyAddress +
         ' - lockMethod: ' +
         lockMethod
     );
@@ -290,9 +281,6 @@ export class ConfigProvider {
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled = this.configDefault.pushNotificationsEnabled;
-    }
-    if (!this.configCache.inAppNotificationsEnabled) {
-      this.configCache.inAppNotificationsEnabled = this.configDefault.inAppNotificationsEnabled;
     }
     if (!this.configCache.desktopNotificationsEnabled) {
       this.configCache.desktopNotificationsEnabled = this.configDefault.desktopNotificationsEnabled;

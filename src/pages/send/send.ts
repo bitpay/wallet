@@ -64,7 +64,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('update:address', this.updateAddressHandler);
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
 
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
@@ -73,7 +73,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('update:address', this.updateAddressHandler);
+    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
   }
 
   private updateAddressHandler: any = data => {
@@ -83,7 +83,9 @@ export class SendPage extends WalletTabsChild {
 
   public shouldShowZeroState() {
     return (
-      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
+      this.wallet &&
+      this.wallet.cachedStatus &&
+      !this.wallet.cachedStatus.totalBalanceSat
     );
   }
 
@@ -213,6 +215,9 @@ export class SendPage extends WalletTabsChild {
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
+      } else if (parsedData && parsedData.type == 'BitPayCard') {
+        this.close();
+        this.incomingDataProvider.redir(this.search);
       } else {
         this.invalidAddress = true;
       }

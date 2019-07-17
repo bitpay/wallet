@@ -34,18 +34,20 @@ page-wallet-details {
   }
 
   .balance-card {
-    background: color($colors, primary);
+    // background: color($colors, primary);
+    background: linear-gradient(180deg, #14245e -0%, #22378c);
     overflow: hidden;
   }
 
   .balance-header {
+    position: relative;
     margin-top: 15px;
-    height: 12rem;
+    margin-left: 5rem;
+    height: 17rem;
     color: color($colors, light);
-    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
 
@@ -53,15 +55,24 @@ page-wallet-details {
     cursor: pointer;
     font-size: 32px;
     font-weight: 600;
+
+    @media (max-width: 350px) {
+      font-size: 28px;
+    }
   }
 
   .balance-alt-str {
-    padding-top: 5px;
+    padding-top: 10px;
     font-size: 14px;
     font-weight: 400;
+    opacity: 0.7;
   }
 
   .balance-hidden {
+    width: 100vw;
+    margin-left: -5rem;
+    text-align: center;
+
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -70,6 +81,11 @@ page-wallet-details {
   }
 
   .balance-error {
+    width: 100vw;
+    margin-left: -5rem;
+    padding: 0rem 2rem;
+    text-align: center;
+
     .title {
       cursor: pointer;
       font-size: 20px;
@@ -81,6 +97,7 @@ page-wallet-details {
     margin-top: 5px;
     font-size: 13px;
     cursor: pointer;
+    opacity: 0.7;
 
     ion-icon {
       vertical-align: text-bottom;
@@ -89,26 +106,36 @@ page-wallet-details {
   }
 
   .balance-scanning {
+    width: 100vw;
+    margin-left: -5rem;
+    text-align: center;
+
     .title {
       font-size: 20px;
       font-weight: 500;
     }
   }
 
-  .box-notification {
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .fix-margin {
+    margin-top: -4.5rem;
   }
 
   .history-wrapper {
-    margin-top: 1.3rem;
+    padding: 0rem 1.3rem;
   }
 
   .tx-history {
     .tx-history-header {
+      height: 5rem;
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+
+      .ng-star-inserted {
+        font-size: 18px;
+        font-weight: 600;
+        color: #444444;
+      }
+
       &--large {
         &.item {
           ion-label {
@@ -119,6 +146,7 @@ page-wallet-details {
 
       &.item {
         min-height: 26px;
+        background: $feather-dark;
 
         ion-label {
           margin: 0;
@@ -129,11 +157,13 @@ page-wallet-details {
           padding: 0 !important;
         }
       }
+
       ion-label {
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
+
       .txps-badge {
         margin-right: 1rem;
       }
@@ -214,7 +244,7 @@ page-wallet-details {
     display: flex;
     align-items: center;
     height: 3rem;
-    padding: 0 5px;
+    padding: 0 0.5rem 7rem 0;
 
     img {
       float: left;
@@ -269,16 +299,16 @@ page-wallet-details {
 
     .left-buttons {
       flex-grow: 1;
-      padding-left: 2px;
+      padding-left: 1.3rem;
+      opacity: 0.5;
     }
 
     .search-button {
-      padding: 0;
-      padding-bottom: 8px;
+      padding: 0 0.5rem 8px 0;
     }
 
     ion-spinner {
-      margin: 0;
+      margin: 0 1.3rem 0 0;
       width: 20px;
       height: 20px;
 
@@ -299,6 +329,7 @@ page-wallet-details {
   .locked-balance.item {
     background-color: color($background-colors, warning);
     cursor: pointer;
+    border-radius: 0 0 5px 5px;
 
     .item-inner {
       padding-bottom: 5px;
@@ -320,63 +351,22 @@ page-wallet-details {
     font-size: 12.5px;
   }
 
-  .zero-state {
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .history-wrapper {
-      align-items: center;
-      flex-grow: 1;
-      display: flex;
-      width: 100%;
-    }
-
-    .prompt-user {
-      margin-bottom: 2rem;
-    }
-  }
-}
-
-.wallet-details-header {
-  ion-title .toolbar-title {
-    font-weight: 500;
+  .white-card {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 5px;
   }
 
-  &:not(.no-subtitle) {
-    ion-title .toolbar-title {
-      font-weight: 100;
-      font-size: 16px;
+  .top-notification {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    &.warning {
+      color: color($colors, warning);
     }
-  }
-
-  ion-toolbar {
-    min-height: 0;
-    margin-top: -6px;
-
-    &.toolbar-md {
-      padding-top: 0;
-    }
-  }
-
-  &__balance,
-  &__balance-hidden,
-  &__subtitle {
-    text-align: center;
-    color: white;
-    padding-bottom: 10px;
-    font-size: 18px;
-    font-weight: 500;
-
     ion-icon {
-      font-size: 16px;
-      font-weight: 100;
+      vertical-align: middle;
       margin-left: 5px;
     }
   }
-}
-
-.icon-services {
-  overflow: hidden;
 }

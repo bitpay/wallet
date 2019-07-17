@@ -1,11 +1,24 @@
 card-catalog-page {
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+  }
+
   .settings-list {
     position: relative;
     z-index: 0;
+    padding-bottom: 50px;
 
     ion-item-divider.item {
       border-bottom: 0;
-      padding-bottom: 0;
+      padding-bottom: 10px;
+      border-bottom: 0.55px solid #f4f4f4;
     }
+  }
+
+  ion-note.discount {
+    background: #f2f2fa;
+    border-radius: 20px;
+    color: map-get($colors, primary);
+    padding: 5px 12px;
   }
 }

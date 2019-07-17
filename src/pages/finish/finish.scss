@@ -15,13 +15,29 @@ page-finish {
         }
         &-text {
           font-size: 2.8rem;
+          line-height: 35px;
           color: #ffffff;
+          margin: 0 1rem 0 1rem;
         }
         &-comment {
+          margin: auto;
           padding: 2rem;
-          font-size: 2rem;
+          font-size: 1.6rem;
           color: #ffffff;
+          opacity: 0.7;
+          max-width: 35rem;
         }
+      }
+      .success-img {
+        mask-image: url(../assets/img/backup/success.svg);
+        height: 19rem;
+        width: 50%;
+        background-color: color($colors, success);
+        mask-repeat: no-repeat;
+        mask-position: 50% 50%;
+        mask-size: 14rem;
+        margin: auto;
+        transform: translate(0, -10%);
       }
     }
     .footer {
@@ -39,6 +55,9 @@ page-finish {
       font-weight: 600;
       cursor: pointer;
     }
+  }
+  .primary {
+    background-color: color($colors, secondary);
   }
   .success {
     background-color: #11d1a6;

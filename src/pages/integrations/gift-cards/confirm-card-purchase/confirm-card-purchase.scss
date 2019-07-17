@@ -16,6 +16,10 @@ confirm-card-purchase-page {
     border: none;
   }
 
+  .settings-list ion-item-divider {
+    padding-left: 16px;
+  }
+
   .confirm-header {
     padding-top: 25px;
 
@@ -72,11 +76,6 @@ confirm-card-purchase-page {
       display: flex;
       align-items: center;
       margin-top: 1rem;
-
-      .icon-wallet {
-        background-color: color($colors, primary);
-        margin-right: 1rem;
-      }
     }
   }
 

@@ -1,31 +1,37 @@
 page-custom-amount {
   .scroll-content {
-    background-color: rgb(251, 251, 251);
+    background-color: white;
     margin-top: 0rem;
     .wrapper {
       display: flex;
       flex-direction: column;
-      background-color: rgb(251, 251, 251);
+      background-color: white;
     }
   }
 
   .qr-container {
     height: 100%;
+    position: relative;
+    .lines-background {
+      background: url(../assets/img/curved-lines-background.png) center center
+        no-repeat #ececec;
+      opacity: 0.1;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
     .qr-card {
-      .qr-card-header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 5rem;
-        border-bottom: 1px solid rgb(229, 229, 229);
-        .qr-card-title {
-          font-weight: bold;
-        }
-        ion-icon {
-          position: absolute;
-          right: 2rem;
-          width: 2rem;
-        }
+      max-height: 425px;
+      @media (max-height: 530px) {
+        width: 60%;
+      }
+      .copy-icon {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
       }
       .qr-card-amount {
         text-align: center;
@@ -40,26 +46,48 @@ page-custom-amount {
     }
   }
   .receive-content {
+    .title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 5rem;
+      padding-left: 15px;
+      padding-right: 15px;
+      .title {
+        font-size: 18px;
+        font-weight: 500;
+      }
+      ion-icon {
+        width: 2rem;
+      }
+    }
     .address-container {
       bottom: 0;
-      background-color: rgb(248, 248, 248);
-      border-top: 1px solid rgb(229, 229, 229);
       color: rgb(80, 80, 80);
       width: 100%;
       padding: 15px;
       text-align: center;
       font-size: 15px;
-      .text-address.ellipsis img {
-        vertical-align: middle;
+      display: flex;
+      justify-content: center;
+      .text-address {
+        width: 80%;
+        background: color($colors, light);
+        color: color($colors, light-grey);
+        padding: 1.5rem 1rem;
+        border-radius: 3px;
+        &.ellipsis img {
+          vertical-align: middle;
+        }
+        .address-text {
+          width: 70%;
+          max-width: 300px;
+          vertical-align: middle;
+          display: inline-block;
+          opacity: 1;
+          transition: opacity 500ms ease;
+        }
       }
-    }
-    .address-text {
-      width: 70%;
-      max-width: 300px;
-      vertical-align: middle;
-      display: inline-block;
-      opacity: 1;
-      transition: opacity 500ms ease;
     }
   }
 }

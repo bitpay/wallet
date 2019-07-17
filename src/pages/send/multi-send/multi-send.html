@@ -1,11 +1,16 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar [navbar-bg]="wallet && wallet.color">
+  <ion-navbar class="app-color">
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
+        <span translate>Continue</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
-      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+  <ion-toolbar *ngIf="wallet" class="app-color">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
+      <span>{{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
     </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
       <span class="title" translate>[Balance Hidden]</span>
@@ -31,8 +36,8 @@
           </ion-icon>
         </ion-item>
         <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
-          <button ion-button class="button-add" outline (click)="addRecipient()">{{ 'Add Recipient' | translate}}</button>
-          <button ion-button class="button-cancel" outline (click)="cancelRecipient()">{{ 'Cancel' | translate}}</button>
+          <button ion-button class="button-add" outline (click)="newRecipient()">{{ 'Add Recipient' | translate}}</button>
+          <button ion-button class="button-cancel" outline (click)="cleanSearch()">{{ 'Cancel' | translate}}</button>
         </div>
       </div>
 
@@ -40,22 +45,15 @@
         <div class="card" *ngFor="let item of multiRecipients; let idx = index">
           <ion-item-divider>
             <span class="ellipsis">{{ 'Recipient' | translate}} {{idx +1}}</span>
-            <button ion-button item-right class="button-add" outline (click)="openAmountModal(item, idx)">
-              <span *ngIf="!item.amountToShow">{{ 'Add amount' | translate}}</span>
-              <span *ngIf="item.amountToShow">{{ 'Change amount' | translate}}</span>
-            </button>
-            <ion-icon class="close-icon" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
+            <ion-icon class="close-icon pointer" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
           </ion-item-divider>
-          <ion-list>
+          <ion-list class="pointer" (click)="openAmountModal(item, idx)">
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
-              <ion-icon item-left>
-                <img *ngIf="item.recipient.network == 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-                <img *ngIf="item.recipient.network != 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-              </ion-icon>
+              <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
               <span class="name">{{item.recipient.name}}</span>
             </div>
 
-            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient" (longPress)="toggleAddress()">
+            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
                 <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
               </ion-icon>
@@ -77,10 +75,6 @@
           </ion-list>
         </div>
       </div>
-
-      <button ion-button *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" class="button-standard" (click)="goToConfirm()">
-        {{'Continue' | translate}}
-      </button>
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address, contact or wallet.</span>

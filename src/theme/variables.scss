@@ -45,9 +45,11 @@ $background-colors: (
   info: #eff1f8
 );
 // App background color
-$background-color: #f8f8f9;
+$background-color: white;
 // Item list background color
 $list-background-color: #ffffff;
+$feather-dark: #f8f8f9;
+$feather: #fbfbff;
 // Refresh color
 $refresher-icon-color: color($colors, primary);
 $refresher-icon-font-size: 14px;
@@ -62,13 +64,18 @@ $list-border-color: color($colors, light);
 $toolbar-ios-title-text-color: color($colors, light);
 $toolbar-md-title-text-color: color($colors, light);
 // Onboarding colors
-$onboarding-gradient-top-color: $toolbar-background;
 $onboarding-gradient-bottom-color: $color-secondary-dark;
 $onboarding-background-image: linear-gradient(
   to bottom,
   $onboarding-gradient-top-color 0%,
   $onboarding-gradient-bottom-color 100%
 );
+// Removes green border below the input (Android)
+$text-input-md-highlight-color-invalid: transparent;
+$text-input-md-highlight-color-valid: transparent;
+$text-input-md-show-invalid-highlight: transparent;
+$text-input-md-highlight-color: transparent;
+$text-input-md-show-valid-highlight: transparent;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -145,11 +152,16 @@ $button-md-text-transform: none;
 }
 
 // Removes border-bottom
-.md ion-list > .item:last-child,
-.md ion-list > .item-wrapper:last-child .item,
-.ios ion-list > .item:last-child,
-.ios ion-list > .item-wrapper:last-child .item {
-  border-bottom: none;
+.md,
+.ios {
+  .card {
+    ion-list > .item:last-child,
+    ion-list > .item-wrapper:last-child .item,
+    ion-list > .item:last-child,
+    ion-list > .item-wrapper:last-child .item {
+      border-bottom: none;
+    }
+  }
 }
 
 /* Fix iPhone X screen */

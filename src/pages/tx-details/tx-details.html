@@ -1,4 +1,4 @@
-<ion-header class="wallet-details-header">
+<ion-header>
   <ion-navbar>
     <ion-title>{{title | translate}}</ion-title>
   </ion-navbar>
@@ -33,7 +33,10 @@
               <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
             </span>
           </div>
-          <div class="alternative">{{btx.alternativeAmountStr}}</div>
+          <div class="alternative">
+            <span *ngIf="!btx.fiatRateStr">...</span>
+            <span *ngIf="btx.fiatRateStr">{{btx.fiatRateStr}}</span>
+          </div>
         </div>
       </div>
     </ion-item>
@@ -47,19 +50,19 @@
       </div>
     </label-tip>
 
-    <ion-item class="with-label" *ngIf="btx && btx.feeStr && btx.action != 'received'">
-      <div class="fee-title">
-        {{'Fee' | translate}}
+    <ion-item class="container-tx-info" [ngClass]="{'with-label': btx.action == 'received' && btx.lowFees}" *ngIf="btx && btx.feeStr && btx.action != 'received'">
+      <span>{{'Bitcoin miner fee:' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          <div>{{btx.feeStr}}</div>
+          <div>
+            {{btx.feeFiatStr}} &middot;
+            <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}}
+              <span translate> of total amount</span>
+            </span>
+          </div>
+        </span>
       </div>
-      <ion-note>
-        <span class="fee-amount">{{btx.feeStr}}</span>
-        <div class="fee-details">
-          {{btx.feeFiatStr}} &middot;
-          <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}}
-            <span translate> of total amount</span>
-          </span>
-        </div>
-      </ion-note>
     </ion-item>
 
     <label-tip *ngIf="btx.action == 'received' && btx.lowFees" type="danger">
@@ -71,56 +74,57 @@
 
     <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
 
-    <ion-item class="container-from">
-      <span *ngIf="btx.action === 'sent'" translate>From</span>
-      <span *ngIf="btx.action !== 'sent'" translate>To</span>
-      <div class="wallet" *ngIf="wallet">
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        <div>{{wallet.name}}</div>
+    <ion-item class="container-tx-info" *ngIf="btx.action != 'received' && isShared">
+      <span>{{'Created by' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          {{btx.creatorName}}
+        </span>
       </div>
     </ion-item>
 
-    <ion-item *ngIf="btx.action != 'received' && isShared">
-      <ion-label>{{'Created by' | translate}}</ion-label>
-      <ion-note item-end>
-        {{btx.creatorName}}
-      </ion-note>
+    <ion-item class="container-tx-info" *ngIf="btx.ts || btx.createdOn || btx.time">
+      <span>{{'Date' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+        </span>
+      </div>
     </ion-item>
 
-    <ion-item *ngIf="btx.ts || btx.createdOn || btx.time">
-      <ion-label>{{'Date' | translate}}</ion-label>
-      <ion-note item-end>
-        <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
-      </ion-note>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>{{'Confirmations' | translate}}</ion-label>
-      <ion-note item-end>
-        <span *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
+    <ion-item class="container-tx-info">
+      <span>{{'Confirmations' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment" *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
           Unconfirmed
           <span *ngIf="btx.feeRate">(
             <span translate>Fee rate</span>:
             {{btx.feeRate}})
           </span>
         </span>
-        <span *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
+        <span class="ellipsis comment" *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
           {{btx.confirmations}}
         </span>
-        <span *ngIf="btx.safeConfirmed">
+        <span class="ellipsis comment" *ngIf="btx.safeConfirmed">
           {{btx.safeConfirmed}}
         </span>
-      </ion-note>
+      </div>
     </ion-item>
 
-    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate">
-      <span item-label translate>Memo</span>
-    </editable-item>
+    <div *ngIf="!btx.confirmations || btx.confirmations == 0" class="unconfirmed-message">
+      <a class="positive" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360025484512-Missing-transactions-Why-is-my-transaction-unconfirmed-')">
+        {{'Why is my transaction unconfirmed?' | translate}}
+      </a>
+    </div>
 
-    <ion-item class="container-tx-id">
+    <ion-item>
+      <ion-label stacked>{{'Memo' | translate}}</ion-label>
+      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" (blur)="saveMemoInfo()" [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="container-tx-info">
       <span translate>Transaction ID</span>
-      <div class="tx-id">
+      <div class="tx-info">
         <div class="ellipsis id" copy-to-clipboard="{{ btx.txid }}">
           <span>{{ btx.txid }}</span>
         </div>
@@ -133,7 +137,9 @@
     </ion-item>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
+      <ion-item detail-none>
+        <div>{{'Timeline' | translate}}</div>
+      </ion-item>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">

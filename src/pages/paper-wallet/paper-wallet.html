@@ -5,27 +5,23 @@
 </ion-header>
 
 <ion-content>
-  <div class="message" *ngIf="noMatchingWallet">
-    <span translate>No wallets available to receive funds</span>
-  </div>
-  <div *ngIf="!noMatchingWallet">
-    <h4 class="title">
-      <span translate>Funds found</span>:
-      <span *ngFor="let b of balances">
-        {{b.balance | satToUnit: b.coin}}
-      </span>
-      <span *ngIf="balances.length == 0">...</span>
-    </h4>
+  <h4 class="title" *ngIf="balances && balances.length > 0">
+    <span translate>Funds found</span>:
+    <div *ngFor="let b of balances">
+      {{b.balance | satToUnit: b.coin}}
+    </div>
+  </h4>
+  <div *ngIf="selectedWallet">
     <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
-    <button ion-item *ngIf="wallet" detail-none (click)="showWallets()">
+    <button ion-item detail-none (click)="showWallets()">
       <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img class="icon-wallet" [ngClass]="{ testnet: selectedWallet.network === 'testnet' }" src="assets/img/currencies/{{selectedWallet.coin}}.svg" />
       </ion-icon>
-      <h2>{{wallet.name}}
-        <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
+      <h2>{{selectedWallet.name}}
+        <span *ngIf="selectedWallet.credentials.m > 1">{{selectedWallet.credentials.m}}-{{selectedWallet.credentials.n}}</span>
       </h2>
-      <span *ngIf="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
-      <span *ngIf="wallet.balanceHidden" translate>[Balance Hidden]</span>
+      <span *ngIf="!selectedWallet.balanceHidden"> {{selectedWallet.cachedStatus.totalBalanceStr}} </span>
+      <span *ngIf="selectedWallet.balanceHidden" translate>[Balance Hidden]</span>
       <span class="assertive" *ngIf="error">{{error}}</span>
       <div item-end>
         <button ion-button clear color="grey" icon-only>
@@ -37,9 +33,9 @@
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balances.length == 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balances.length == 0 || noMatchingWallet">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0">
       {{'Sweep' | translate}}
     </button>
   </ion-toolbar>

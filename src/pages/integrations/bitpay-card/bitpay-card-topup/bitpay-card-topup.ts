@@ -200,7 +200,7 @@ export class BitPayCardTopUpPage {
 
   private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      if (!wallet.canSign) {
         let err = this.translate.instant('No signing proposal: No private key');
         return reject(err);
       }
@@ -213,6 +213,10 @@ export class BitPayCardTopUpPage {
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
+          this.logger.warn('Paypro error: removing payment proposal');
+          this.walletProvider.removeTx(wallet, txp).catch(() => {
+            this.logger.warn('Could not delete payment proposal');
+          });
           return reject(err);
         });
     });
@@ -317,8 +321,9 @@ export class BitPayCardTopUpPage {
           txp['origToAddress'] = txp.toAddress;
 
           if (wallet.coin && wallet.coin == 'bch') {
-            // Use legacy address
-            txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+            txp.toAddress = this.bitcoreCash
+              .Address(txp.toAddress)
+              .toString(true);
             txp.outputs[0].toAddress = txp.toAddress;
           }
 
@@ -340,7 +345,11 @@ export class BitPayCardTopUpPage {
   private getSendMaxInfo(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getCurrentFeeRate(wallet.coin, wallet.credentials.network)
+        .getFeeRate(
+          wallet.coin,
+          wallet.credentials.network,
+          this.feeProvider.getCurrentFeeLevel()
+        )
         .then(feePerKb => {
           this.walletProvider
             .getSendMaxInfo(wallet, {

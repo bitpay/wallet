@@ -42,20 +42,6 @@ page-tx-details {
       }
     }
   }
-  .item-fee {
-    .fee-title {
-      margin-bottom: 5px;
-      color: color($colors, grey);
-    }
-    .fee-amount {
-      font-weight: 400;
-    }
-    .fee-details {
-      font-size: 12.5px;
-      margin-bottom: 5px;
-      color: color($colors, light-grey);
-    }
-  }
   @mixin row-flex {
     display: flex;
     align-items: center;
@@ -63,18 +49,12 @@ page-tx-details {
   }
   .container-to,
   .container-from,
-  .container-tx-id {
+  .container-tx-info {
     .wallet,
-    .tx-id {
+    .tx-info {
       @include row-flex;
-      .icon-wallet {
-        width: 25px;
-        height: 25px;
-        margin-right: 1.8rem;
-        box-shadow: none;
-        &.disabled {
-          background-color: color($colors, grey);
-        }
+      .comment {
+        color: color($colors, light-grey);
       }
       .id {
         font-size: 12.5px;
@@ -82,15 +62,13 @@ page-tx-details {
       }
     }
   }
+  .unconfirmed-message {
+    padding: 10px 10px 10px 16px;
+    font-size: 1.6rem;
+  }
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
-    &:nth-child(2) {
-      border-top: 1px solid $item-border-color;
-    }
-    &:last-child {
-      border-bottom: 1px solid $item-border-color;
-    }
     padding: 17px $item-lateral-padding;
     > * {
       padding-right: 0;

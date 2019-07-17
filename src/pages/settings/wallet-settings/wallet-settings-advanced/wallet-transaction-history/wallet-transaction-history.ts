@@ -81,7 +81,7 @@ export class WalletTransactionHistoryPage {
   public csvHistory() {
     this.logger.info('Generating CSV from History');
     this.walletProvider
-      .getTxHistory(this.wallet, null, {})
+      .fetchTxHistory(this.wallet, null, {})
       .then(txs => {
         if (_.isEmpty(txs)) {
           this.logger.warn('Failed to generate CSV: no transactions');

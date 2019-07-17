@@ -1,0 +1,79 @@
+price-card {
+  .card .item-block {
+    padding: 0;
+  }
+  .card {
+    margin-top: 0;
+  }
+  .price {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-template-rows: 80px;
+    @media (max-width: 500px) {
+      grid-template-columns: 1fr 170px;
+      grid-template-rows: 70px;
+    }
+    @media (max-width: 400px) {
+      grid-template-columns: 1fr 120px;
+      grid-template-rows: 60px;
+    }
+    .amount-content {
+      display: grid;
+      grid-template-rows: 50px 30px;
+      justify-items: start;
+      @media (max-width: 500px) {
+        grid-template-rows: 40px 30px;
+      }
+      @media (max-width: 400px) {
+        grid-template-rows: 30px 30px;
+      }
+      .expression-container {
+        grid-row-start: 1;
+        justify-content: start;
+        align-content: start;
+        .expression {
+          font-size: 32px;
+          font-weight: 500;
+          @media (max-width: 500px) {
+            font-size: 24px;
+          }
+          @media (max-width: 400px) {
+            font-size: 18px;
+          }
+          .unit {
+            font-size: 12px;
+            color: #4a4a4a;
+            position: relative;
+            top: -13px;
+            @media (max-width: 500px) {
+              font-size: 10px;
+              top: -10px;
+            }
+            @media (max-width: 400px) {
+              font-size: 8px;
+              top: -7px;
+            }
+          }
+        }
+      }
+      .average-container {
+        grid-row-start: 2;
+        justify-self: start;
+        align-self: start;
+        ion-icon {
+          vertical-align: text-top;
+        }
+        .average {
+          font-size: 16px;
+          color: #4a4a4a;
+          @media (max-width: 500px) {
+            font-size: 12px;
+          }
+        }
+        .average-time {
+          opacity: 0.4;
+        }
+      }
+    }
+  }
+}

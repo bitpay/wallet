@@ -117,11 +117,13 @@ export class FileStorage implements IStorage {
           return new Promise((resolve, reject) => {
             fileEntry.createWriter(fileWriter => {
               fileWriter.onwriteend = () => {
+                this.log.debug('Successful file write...');
                 return resolve();
               };
 
-              fileWriter.onerror = () => {
-                return reject();
+              fileWriter.onerror = e => {
+                this.log.error('Failed file write: ' + e.toString());
+                return reject(e.toString());
               };
 
               if (_.isObject(v)) v = JSON.stringify(v);

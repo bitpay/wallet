@@ -4,11 +4,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}" no-bounce>
   <ion-list *ngIf="buyRequestInfo">
     <ion-item>
-      <div class="sending-label">
-        <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+      <div class="buying-label">
+        <img class="buying-img" src="assets/img/buy-bitcoin.svg">
         <span>Buying</span>
       </div>
       <div class="amount-label">
@@ -29,9 +29,8 @@
       <button ion-item detail-none (click)="showWallets()" class="wallets-list">
         <div>Receive in</div>
         <div class="wallet">
-          <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <ion-icon *ngIf="wallet && wallet.coin" item-start>
+            <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
           </ion-icon>
           <div>{{wallet ? wallet.name : '...'}}</div>
           <div class="last-item" item-end>
@@ -51,6 +50,12 @@
           {{buyRequestInfo.subtotal.amount}} {{buyRequestInfo.subtotal.currency}}
         </ion-note>
       </ion-item>
+      <ion-item *ngIf="buyRequestInfo.fee">
+        <span>Fee</span>
+        <ion-note item-end>
+          {{buyRequestInfo.fee.amount}} {{buyRequestInfo.fee.currency}}
+        </ion-note>
+      </ion-item>
       <ion-item *ngFor="let fee of buyRequestInfo.fees">
         <span class="capitalized">{{fee.type}} fee</span>
         <ion-note item-end>
@@ -63,13 +68,13 @@
           {{buyRequestInfo.total.amount}} {{buyRequestInfo.total.currency}}
         </ion-note>
       </ion-item>
+      <ion-item-divider></ion-item-divider>
     </ion-item-group>
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId"
-    buttonText="Slide to confirm" (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId" buttonText="Slide to confirm" (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId">Confirm purchase</button>
   </ion-toolbar>

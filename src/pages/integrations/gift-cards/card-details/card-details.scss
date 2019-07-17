@@ -15,7 +15,6 @@ card-details-page {
   }
 
   .balance {
-    color: $background-color;
     font-size: 25px;
     font-weight: 500;
     margin: 30px 0;
@@ -33,6 +32,18 @@ card-details-page {
 
     + .actions-wrapper {
       margin-top: 55px;
+    }
+  }
+
+  @media print {
+    .actions-wrapper {
+      display: none;
+    }
+
+    .card-info {
+      img.card-info__body.barcode-image {
+        filter: invert(0) !important;
+      }
     }
   }
 
@@ -93,6 +104,12 @@ card-details-page {
       .pin {
         margin-top: 10px;
       }
+    }
+
+    img.card-info__body.barcode-image {
+      height: 75px;
+      margin: 5px auto -5px;
+      filter: invert(3%);
     }
 
     ngx-barcode.card-info__body {

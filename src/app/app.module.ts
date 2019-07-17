@@ -5,7 +5,12 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {
+  Config,
+  IonicApp,
+  IonicErrorHandler,
+  IonicModule
+} from 'ionic-angular';
 
 /* Modules */
 import {
@@ -20,6 +25,11 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+
+import {
+  ModalEnterFadeIn,
+  ModalLeaveFadeOut
+} from '../assets/transitions/ionic-modal-transition-pack';
 
 /* Copay App */
 import env from '../environments';
@@ -38,22 +48,22 @@ import { SatToUnitPipe } from '../pipes/satToUnit';
 /* Directives */
 import { Animate } from '../directives/animate/animate';
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
 import { FixedScrollBgColor } from '../directives/fixed-scroll-bg-color/fixed-scroll-bg-color';
 import { IonContentBackgroundColor } from '../directives/ion-content-background-color/ion-content-background-color';
 import { LongPress } from '../directives/long-press/long-press';
 import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
 import { RevealAtScrollPosition } from '../directives/reveal-at-scroll-pos/reveal-at-scroll-pos';
+import { ScrolledIntoView } from '../directives/scrolled-into-view/scrolled-into-view';
 import { WideHeaderBarButton } from '../pages/templates/wide-header-page/wide-header-bar-button';
 
 /* Components */
-import { COMPONENTS } from './../components/components';
+import { COMPONENTS } from '../components/components';
 
 /* Providers */
-import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
-import { ProvidersModule } from './../providers/providers.module';
-
 import { LanguageLoader } from '../providers/language-loader/language-loader';
+import { ProvidersModule } from '../providers/providers.module';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -85,6 +95,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     NoLowFee,
     Animate,
     RevealAtScrollPosition,
+    ScrolledIntoView,
     WideHeaderBarButton,
     /* Pipes */
     FiatToUnitPipe,
@@ -130,7 +141,17 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }
+    },
+    FormatCurrencyPipe
   ]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(public config: Config) {
+    this.setCustomTransitions();
+  }
+
+  private setCustomTransitions() {
+    this.config.setTransition('ModalEnterFadeIn', ModalEnterFadeIn);
+    this.config.setTransition('ModalLeaveFadeOut', ModalLeaveFadeOut);
+  }
+}

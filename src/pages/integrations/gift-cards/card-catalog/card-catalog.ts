@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { BuyCardPage } from '../buy-card/buy-card';
 
-import { ActionSheetProvider } from '../../../../providers';
-import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
+import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
+import {
+  GiftCardProvider,
+  hasVisibleDiscount
+} from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-page';
 
@@ -12,31 +16,48 @@ import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-
   selector: 'card-catalog-page',
   templateUrl: 'card-catalog.html'
 })
-export class CardCatalogPage implements OnInit {
+export class CardCatalogPage extends WideHeaderPage {
   public allCards: CardConfig[];
-  public featuredCards: CardConfig[];
-  public moreCards: CardConfig[];
   public searchQuery: string = '';
-  public numFeaturedCards: number;
-  public numMoreCards: number;
+  public visibleCards: CardConfig[] = [];
+  public cardConfigMap: { [name: string]: CardConfig };
+
+  public getHeaderFn = this.getHeader.bind(this);
 
   @ViewChild(WideHeaderPage)
   wideHeaderPage: WideHeaderPage;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
-    private giftCardProvider: GiftCardProvider,
-    private navCtrl: NavController
-  ) {}
+    public giftCardProvider: GiftCardProvider,
+    platormProvider: PlatformProvider,
+    private navCtrl: NavController,
+    private translate: TranslateService
+  ) {
+    super(platormProvider);
+  }
 
-  async ngOnInit() {
-    this.allCards = await this.giftCardProvider.getAvailableCards().catch(_ => {
-      this.showError();
-      return [] as CardConfig[];
-    });
-    this.updateCardList();
-    this.numFeaturedCards = this.featuredCards.length;
-    this.numMoreCards = this.moreCards.length;
+  ngOnInit() {
+    this.title = 'Gift Cards';
+  }
+
+  ionViewWillEnter() {
+    this.giftCardProvider
+      .getAvailableCards()
+      .then(allCards => {
+        this.cardConfigMap = allCards
+          .sort((a, b) => (a.featured && !b.featured ? -1 : 1))
+          .reduce(
+            (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
+            {}
+          );
+        this.allCards = allCards;
+        this.updateCardList();
+      })
+      .catch(_ => {
+        this.showError();
+        return [] as CardConfig[];
+      });
   }
 
   onSearch(query: string) {
@@ -44,16 +65,46 @@ export class CardCatalogPage implements OnInit {
     this.updateCardList();
   }
 
+  getHeader(record, recordIndex, records) {
+    if (record.featured && recordIndex === 0) {
+      return this.translate.instant('Featured Brands');
+    }
+    const prevRecord = records[recordIndex - 1];
+    if (
+      (!record.featured && prevRecord && prevRecord.featured) ||
+      (!record.featured && !prevRecord && this.searchQuery)
+    ) {
+      return this.translate.instant('More Brands');
+    }
+    return null;
+  }
+
+  trackBy(record) {
+    return record.name;
+  }
+
   updateCardList() {
-    const matchingCards = this.allCards.filter(c =>
+    this.visibleCards = this.allCards.filter(c =>
       isCardInSearchResults(c, this.searchQuery)
     );
-    this.featuredCards = matchingCards.filter(c => c.featured);
-    this.moreCards = matchingCards.filter(c => !c.featured);
   }
 
   buyCard(cardConfig: CardConfig) {
     this.navCtrl.push(BuyCardPage, { cardConfig });
+    if (this.hasPercentageDiscount(cardConfig)) {
+      this.logDiscountClick(cardConfig);
+    }
+  }
+
+  logDiscountClick(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent(
+      'clickedGiftCardDiscount',
+      this.giftCardProvider.getDiscountEventParams(cardConfig, 'Gift Card List')
+    );
+  }
+
+  hasPercentageDiscount(cardConfig: CardConfig) {
+    return hasVisibleDiscount(cardConfig);
   }
 
   private showError() {
@@ -65,11 +116,11 @@ export class CardCatalogPage implements OnInit {
   }
 }
 
-export function isCardInSearchResults(c: CardConfig, search: string) {
+export function isCardInSearchResults(c: CardConfig, search: string = '') {
   const cardName = c.name.toLowerCase();
   const query = search.toLowerCase();
   const matchableText = [cardName, stripPunctuation(cardName)];
-  return matchableText.some(text => text.indexOf(query) > -1);
+  return search && matchableText.some(text => text.indexOf(query) > -1);
 }
 
 export function stripPunctuation(text: string) {

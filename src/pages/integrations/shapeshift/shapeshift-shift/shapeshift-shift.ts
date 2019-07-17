@@ -26,7 +26,6 @@ export class ShapeshiftShiftPage {
   public fromWallets;
   public fromWallet;
   public toWallet;
-  public rate: number;
   public limit;
   public network: string;
   public fromWalletSelectorTitle: string;
@@ -72,11 +71,10 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), w => {
-      // Available cached funds
-      if (!w.cachedBalance) return null;
-      let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
-      return hasCachedFunds;
+    this.fromWallets = this.profileProvider.getWallets({
+      onlyComplete: true,
+      network: this.network,
+      hasFunds: true
     });
 
     if (_.isEmpty(this.fromWallets)) {
@@ -118,23 +116,26 @@ export class ShapeshiftShiftPage {
       this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
 
     this.toWallets = this.toWallets.filter(w => !w.needsBackup);
+
+    if (_.isEmpty(this.toWallets)) {
+      let msg = this.translate.instant(
+        'Destination wallet needs to be backed up'
+      );
+      this.showErrorAndBack(null, msg);
+      return;
+    }
+
     this.onToWalletSelect(this.toWallets[0]);
 
     let msg = this.translate.instant(
       'ShapeShift is not available at this moment. Please, try again later.'
     );
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
-    this.shapeshiftProvider.getRate(pair, (error, rate: number) => {
+
+    this.shapeshiftProvider.getMarketInfo(pair, (error, limit) => {
       if (error) return this.showErrorAndBack(null, msg);
-      this.rate = rate;
-
-      this.shapeshiftProvider.getMarketInfo(pair, (error, limit) => {
-        if (error) return this.showErrorAndBack(null, msg);
-        this.limit = limit;
-
-        if (this.limit['rate'] == 0 || this.rate['rate'] == 0)
-          return this.showErrorAndBack(null, msg);
-      });
+      this.limit = limit;
+      if (this.limit['rate'] == 0) return this.showErrorAndBack(null, msg);
     });
   }
 
@@ -166,9 +167,7 @@ export class ShapeshiftShiftPage {
       fixedUnit: true,
       coin: this.fromWallet.coin,
       id: this.fromWallet.id,
-      toWalletId: this.toWallet.id,
-      shiftMax: this.limit.limit + ' ' + this.fromWallet.coin.toUpperCase(),
-      shiftMin: this.limit.minimum + ' ' + this.fromWallet.coin.toUpperCase()
+      toWalletId: this.toWallet.id
     });
   }
 

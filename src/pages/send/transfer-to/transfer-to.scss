@@ -3,14 +3,8 @@ page-transfer-to {
     display: flex;
     text-align: center;
   }
-  .title {
-    font-weight: 500;
-    img {
-      vertical-align: sub;
-      margin-right: 5px;
-    }
-  }
   .wallet-warning {
+    color: color($colors, danger);
     ion-label {
       white-space: inherit;
     }

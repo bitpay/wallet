@@ -1,25 +1,42 @@
+@mixin modal-wrapper {
+  position: absolute;
+  top: 0 !important;
+  left: 0 !important;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .wallet-details-modal,
 .fullscreen-modal {
   .modal-wrapper {
-    position: absolute;
-    top: 0 !important;
-    left: 0 !important;
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
+    @include modal-wrapper;
   }
+
   ion-backdrop {
     visibility: visible !important;
   }
 }
 
+.fullscreen-modal-no-backdrop {
+  .modal-wrapper {
+    @include modal-wrapper;
+  }
+
+  ion-backdrop {
+    visibility: hidden !important;
+  }
+}
+
 .fullscreen-modal,
+.fullscreen-modal-no-backdrop,
 .finish-modal {
   z-index: 999999 !important;
 }
 
 .wallet-details-modal {
   transition: opacity 300ms ease;
+
   &.scanning {
     opacity: 0;
     pointer-events: none;

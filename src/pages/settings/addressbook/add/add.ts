@@ -24,7 +24,7 @@ import { ScanPage } from '../../../scan/scan';
   templateUrl: 'add.html'
 })
 export class AddressbookAddPage {
-  private addressBookAdd: FormGroup;
+  public addressBookAdd: FormGroup;
 
   public isCordova: boolean;
   public appName: string;
@@ -60,7 +60,7 @@ export class AddressbookAddPage {
       );
     }
     this.appName = this.appProvider.info.nameCase;
-    this.events.subscribe('update:address', this.updateAddressHandler);
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
   }
 
   ionViewDidLoad() {
@@ -68,7 +68,7 @@ export class AddressbookAddPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('update:address', this.updateAddressHandler);
+    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
   }
 
   private updateAddressHandler: any = data => {
@@ -82,9 +82,28 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
-    this.addressBookAdd.controls['address'].setValue(
-      this.parseAddress(this.addressBookAdd.value.address)
+    let newAddress: string = this.parseAddress(
+      this.addressBookAdd.value.address
     );
+
+    this.addressBookAdd.controls['address'].setValue(newAddress);
+    let newAddressOrder: number;
+
+    this.ab
+      .list()
+      .then(addressBook => {
+        newAddressOrder = Object.keys(addressBook).length;
+        this.ab
+          .setAddressOrder(newAddress, newAddressOrder)
+          .then(() => {})
+          .catch(err => {
+            this.logger.debug('Error setting new address order', err);
+          });
+      })
+      .catch(err => {
+        this.logger.debug('Error retrieving address book length', err);
+      });
+
     this.ab
       .add(this.addressBookAdd.value)
       .then(() => {

@@ -1,4 +1,7 @@
 page-wallet-balance {
+  .item-inner {
+    border-bottom: none !important;
+  }
   .balance-container {
     display: flex;
     justify-content: space-between;

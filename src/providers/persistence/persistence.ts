@@ -25,11 +25,14 @@ export interface GiftCardMap {
 }
 
 const Keys = {
+  ACTIVE_KEY: 'activeKey',
   ADDRESS_BOOK: network => 'addressbook-' + network,
+  ORDER_ADDRESS: address => 'orderAddress-' + address,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
+  BACKUP_WALLET_GROUP: keyId => 'walletGroupBackup-' + keyId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
   CLEAN_AND_SCAN_ADDRESSES: 'CleanAndScanAddresses',
@@ -39,7 +42,10 @@ const Keys = {
   CONFIG: 'config',
   FEEDBACK: 'feedback',
   FOCUSED_WALLET_ID: 'focusedWalletId',
-  GIFT_CARD_CONFIG_CACHE: 'giftCardConfigCache',
+  GIFT_CARD_CONFIG_CACHE: (network: Network) => {
+    const suffix = network === Network.livenet ? '' : `-${network}`;
+    return `giftCardConfigCache${suffix}`;
+  },
   ACTIVE_GIFT_CARDS: (network: Network) => {
     return `activeGiftCards-${network}`;
   },
@@ -47,19 +53,21 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  HOME_TIP: 'homeTip',
+  HIDE_WALLET: walletId => 'hideWallet-' + walletId,
+  KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
-  ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
+  PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
-  SERVER_MESSAGE_DISMISSED: 'serverMessageDismissed',
+  SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  VAULT: 'vault'
+  WALLET_GROUP_NAME: keyId => 'walletGroupName-' + keyId
 };
 
 interface Storage {
@@ -87,6 +95,10 @@ export class PersistenceProvider {
       : new LocalStorage(this.logger);
   }
 
+  storeProfileLegacy(profileOld): Promise<void> {
+    return this.storage.set(Keys.PROFILE_OLD, profileOld);
+  }
+
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);
   }
@@ -103,24 +115,12 @@ export class PersistenceProvider {
     });
   }
 
-  deleteProfile() {
-    return this.storage.remove(Keys.PROFILE);
+  setKeys(keys: any[]) {
+    return this.storage.set(Keys.KEYS, keys);
   }
 
-  storeVault(vault): Promise<void> {
-    return this.storage.set(Keys.VAULT, vault);
-  }
-
-  getVault(): Promise<any> {
-    return new Promise(resolve => {
-      this.storage.get(Keys.VAULT).then(vault => {
-        resolve(vault);
-      });
-    });
-  }
-
-  deleteVault() {
-    return this.storage.remove(Keys.VAULT);
+  getKeys() {
+    return this.storage.get(Keys.KEYS);
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -163,6 +163,19 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.BACKUP(walletId));
   }
 
+  setBackupGroupFlag(keyId: string, timestamp?) {
+    timestamp = timestamp || Date.now();
+    return this.storage.set(Keys.BACKUP_WALLET_GROUP(keyId), timestamp);
+  }
+
+  getBackupGroupFlag(keyId: string) {
+    return this.storage.get(Keys.BACKUP_WALLET_GROUP(keyId));
+  }
+
+  clearBackupGroupFlag(keyId: string) {
+    return this.storage.remove(Keys.BACKUP_WALLET_GROUP(keyId));
+  }
+
   setCleanAndScanAddresses(walletId: string) {
     return this.storage.set(Keys.CLEAN_AND_SCAN_ADDRESSES, walletId);
   }
@@ -187,14 +200,6 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.CONFIG);
   }
 
-  getHomeTipAccepted() {
-    return this.storage.get(Keys.HOME_TIP);
-  }
-
-  setHomeTipAccepted(homeTip) {
-    return this.storage.set(Keys.HOME_TIP, homeTip);
-  }
-
   setHideBalanceFlag(walletId: string, val) {
     return this.storage.set(Keys.HIDE_BALANCE(walletId), val);
   }
@@ -203,21 +208,21 @@ export class PersistenceProvider {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   }
 
-  setDisclaimerAccepted() {
-    return this.storage.set(Keys.AGREE_DISCLAIMER, true);
+  setHideWalletFlag(walletId: string, val) {
+    return this.storage.set(Keys.HIDE_WALLET(walletId), val);
   }
 
-  setOnboardingCompleted() {
-    return this.storage.set(Keys.ONBOARDING_COMPLETED, true);
+  getHideWalletFlag(walletId: string) {
+    return this.storage.get(Keys.HIDE_WALLET(walletId));
+  }
+
+  setDisclaimerAccepted() {
+    return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
   // for compatibility
   getCopayDisclaimerFlag() {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
-  }
-
-  getCopayOnboardingFlag() {
-    return this.storage.get(Keys.ONBOARDING_COMPLETED);
   }
 
   setRemotePrefsStoredFlag() {
@@ -310,16 +315,20 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setBalanceCache(cardId: string, data) {
-    return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
+  setLastKnownBalance(id: string, balance: string) {
+    let updatedOn = Math.floor(Date.now() / 1000);
+    return this.storage.set(Keys.BALANCE_CACHE(id), {
+      updatedOn,
+      balance
+    });
   }
 
-  getBalanceCache(cardId: string) {
-    return this.storage.get(Keys.BALANCE_CACHE(cardId));
+  getLastKnownBalance(id: string) {
+    return this.storage.get(Keys.BALANCE_CACHE(id));
   }
 
-  removeBalanceCache(cardId: string) {
-    return this.storage.remove(Keys.BALANCE_CACHE(cardId));
+  removeLastKnownBalance(id: string) {
+    return this.storage.remove(Keys.BALANCE_CACHE(id));
   }
 
   setAppIdentity(network: string, data) {
@@ -341,8 +350,9 @@ export class PersistenceProvider {
     this.removeWalletOrder(walletId);
   }
 
-  setGiftCardConfigCache(data) {
-    return this.storage.set(Keys.GIFT_CARD_CONFIG_CACHE, data);
+  removeAllWalletGroupData(keyId: string) {
+    this.removeWalletGroupName(keyId);
+    this.clearBackupGroupFlag(keyId);
   }
 
   getActiveGiftCards(network: Network) {
@@ -353,12 +363,16 @@ export class PersistenceProvider {
     return this.storage.set(Keys.ACTIVE_GIFT_CARDS(network), data);
   }
 
-  getGiftCardConfigCache() {
-    return this.storage.get(Keys.GIFT_CARD_CONFIG_CACHE);
+  getGiftCardConfigCache(network: Network) {
+    return this.storage.get(Keys.GIFT_CARD_CONFIG_CACHE(network));
   }
 
-  removeGiftCardConfigCache() {
-    return this.storage.remove(Keys.GIFT_CARD_CONFIG_CACHE);
+  removeGiftCardConfigCache(network: Network) {
+    return this.storage.remove(Keys.GIFT_CARD_CONFIG_CACHE(network));
+  }
+
+  setGiftCardConfigCache(network: Network, data) {
+    return this.storage.set(Keys.GIFT_CARD_CONFIG_CACHE(network), data);
   }
 
   setGiftCardUserInfo(data) {
@@ -371,6 +385,18 @@ export class PersistenceProvider {
 
   removeGiftCardUserInfo() {
     return this.storage.remove(Keys.GIFT_CARD_USER_INFO);
+  }
+
+  setHideGiftCardDiscountItem(data: boolean) {
+    return this.storage.set(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM, data);
+  }
+
+  getHideGiftCardDiscountItem() {
+    return this.storage.get(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM);
+  }
+
+  removeHideGiftCardDiscountItem() {
+    return this.storage.remove(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM);
   }
 
   setTxConfirmNotification(txid: string, val) {
@@ -478,16 +504,16 @@ export class PersistenceProvider {
     return this.storage.get(Keys.GIFT_CARDS(cardName, network));
   }
 
-  setServerMessageDismissed(val) {
-    return this.storage.set(Keys.SERVER_MESSAGE_DISMISSED, val);
+  setServerMessageDismissed(id) {
+    return this.storage.set(Keys.SERVER_MESSAGE_DISMISSED(id), 'dismissed');
   }
 
-  getServerMessageDismissed() {
-    return this.storage.get(Keys.SERVER_MESSAGE_DISMISSED);
+  getServerMessageDismissed(id) {
+    return this.storage.get(Keys.SERVER_MESSAGE_DISMISSED(id));
   }
 
-  removeServerMessageDismissed() {
-    return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED);
+  removeServerMessageDismissed(id) {
+    return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
   }
 
   setShapeshift(network: string, gcs) {
@@ -514,6 +540,18 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
+  setAddressOrder(address: string, order: number) {
+    return this.storage.set(Keys.ORDER_ADDRESS(address), order);
+  }
+
+  getAddressOrder(address: string) {
+    return this.storage.get(Keys.ORDER_ADDRESS(address));
+  }
+
+  removeAddressOrder(address: string) {
+    return this.storage.remove(Keys.ORDER_ADDRESS(address));
+  }
+
   setWalletOrder(walletId: string, order: number) {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   }
@@ -524,6 +562,30 @@ export class PersistenceProvider {
 
   removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
+  }
+
+  setWalletGroupName(keyId: string, name: string) {
+    return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
+  }
+
+  getWalletGroupName(keyId: string) {
+    return this.storage.get(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  removeWalletGroupName(keyId: string) {
+    return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  setActiveWGKey(keyId: string) {
+    return this.storage.set(Keys.ACTIVE_KEY, keyId);
+  }
+
+  getActiveWGKey() {
+    return this.storage.get(Keys.ACTIVE_KEY);
+  }
+
+  removeActiveWGKey() {
+    return this.storage.remove(Keys.ACTIVE_KEY);
   }
 
   setLockStatus(isLocked: string) {
@@ -548,6 +610,31 @@ export class PersistenceProvider {
 
   removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
+  }
+
+  setNewDesignSlidesFlag(value: string) {
+    return this.storage.set('newDesignSlides', value);
+  }
+
+  getNewDesignSlidesFlag() {
+    return this.storage.get('newDesignSlides');
+  }
+
+  removeNewDesignSlidesFlag() {
+    return this.storage.remove('newDesignSlides');
+  }
+
+  setHiddenFeaturesFlag(value: string) {
+    this.logger.debug('Hidden features: ', value);
+    return this.storage.set('hiddenFeatures', value);
+  }
+
+  getHiddenFeaturesFlag() {
+    return this.storage.get('hiddenFeatures');
+  }
+
+  removeHiddenFeaturesFlag() {
+    return this.storage.remove('hiddenFeatures');
   }
 }
 

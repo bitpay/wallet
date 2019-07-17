@@ -2,16 +2,26 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DerivationPathHelperProvider {
-  public default: string;
+  public defaultBTC: string;
+  public defaultBCH: string;
   public defaultTestnet: string;
 
   public constructor() {
-    this.default = "m/44'/0'/0'";
+    this.defaultBTC = "m/44'/0'/0'";
+    this.defaultBCH = "m/44'/145'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
+  public parsePath(path: string) {
+    return {
+      purpose: path.split('/')[1],
+      coinCode: path.split('/')[2],
+      account: path.split('/')[3]
+    };
+  }
+
   public getDerivationStrategy(path: string): string {
-    const purpose = path.split('/')[1];
+    const purpose = this.parsePath(path).purpose;
     let derivationStrategy: string;
 
     switch (purpose) {
@@ -29,23 +39,54 @@ export class DerivationPathHelperProvider {
   }
 
   public getNetworkName(path: string): string {
-    const coinType = path.split('/')[2];
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 'livenet';
+
+    const coinCode = this.parsePath(path).coinCode;
     let networkName: string;
 
-    switch (coinType) {
-      case "0'":
+    switch (coinCode) {
+      case "0'": // for BTC
         networkName = 'livenet';
         break;
-      case "1'":
+      case "1'": // testnet for all coins
         networkName = 'testnet';
+        break;
+      case "145'": // for BCH
+        networkName = 'livenet';
         break;
     }
     return networkName;
   }
 
   public getAccount(path: string): number {
-    const match = path.split('/')[3].match(/(\d+)'/);
+    // BIP45
+    const purpose = this.parsePath(path).purpose;
+    if (purpose == "45'") return 0;
+
+    const account = this.parsePath(path).account || '';
+    const match = account.match(/(\d+)'/);
     if (!match) return undefined;
     return +match[1];
+  }
+
+  public isValidDerivationPathCoin(path: string, coin: string): boolean {
+    let isValid: boolean;
+    const coinCode = this.parsePath(path).coinCode;
+
+    // BIP45
+    if (path == "m/45'") return true;
+
+    switch (coin) {
+      case 'btc':
+        isValid = ["0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'bch':
+        isValid = ["145'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+    }
+
+    return isValid;
   }
 }

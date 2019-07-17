@@ -1,74 +1,88 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>ShapeShift</ion-title>
+<ion-header class="wide-header">
+  <ion-navbar [navbar-bg]="headerColor">
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="100" src="assets/img/shapeshift/logo-white-shapeshift.svg" alt="ShapeShift">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
-  <div class="container" *ngIf="!accessToken">
-    <div class="center-header">
-      <img src="assets/img/shapeshift/logo-shapeshift.svg" width="200" alt="Shapeshift">
-      <div padding>
-        <h4 translate>The Safest, Fastest Asset Exchange on Earth</h4>
-        <p translate>Trade any leading blockchain asset for any other. Protection by Design.</p>
-      </div>
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+        <expandable-header-primary>
+          <img margin-left width="155" src="assets/img/shapeshift/logo-white-shapeshift.svg" alt="ShapeShift">
+          
+        </expandable-header-primary>
+        <ion-buttons end>
+          <button class="shift-button" *ngIf="accessToken" clear no-low-fee (click)="goTo('Shift')" [disabled]="disabled">
+            Shift
+            <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </expandable-header>
+  
+    <div class="container" *ngIf="!accessToken">
+      <div class="center-header">
+        <div>
+          <h4 translate>The Safest, Fastest Asset Exchange on Earth</h4>
+          <p translate>Trade any leading blockchain asset for any other. Protection by Design.</p>
+        </div>
 
-      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" color="light" no-low-fee (click)="openAuthenticateWindow()">
-        {{'Connect to ShapeShift Account' | translate}}
-      </button>
-      <button *ngIf="!showOauthForm" ion-button clear small color="light" (click)="openSignupWindow()">
-        {{'Sign Up for ShapeShift' | translate}} &rarr;
-      </button>
-      <button ion-button clear small color="light" (click)="openExternalLink('https://shapeshift.io')">
-        {{'Visit ShapeShift.io' | translate}} &rarr;
-      </button>
-      <div *ngIf="error">
-        <span ion-text color="danger">{{error}}</span>
-      </div>
-      <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
-        <ion-label color="light" stacked>OAuth Code</ion-label>
-        <ion-input color="light" type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
-        <button ion-button outline type="submit" class="button-standard" color="light" [disabled]="!oauthCodeForm.valid">{{'Connect to ShapeShift Account' | translate}}</button>
-      </form>
+        <button *ngIf="!showOauthForm" ion-button outline class="button-standard" no-low-fee (click)="openAuthenticateWindow()">
+          {{'Connect to ShapeShift Account' | translate}}
+        </button>
+        <button *ngIf="!showOauthForm" ion-button clear small color="grey" (click)="openSignupWindow()">
+          {{'Sign Up for ShapeShift' | translate}} &rarr;
+        </button>
+        <button ion-button clear small color="grey" (click)="openExternalLink('https://shapeshift.io')">
+          {{'Visit ShapeShift.io' | translate}} &rarr;
+        </button>
+        <div *ngIf="error">
+          <span ion-text color="danger">{{error}}</span>
+        </div>
+        <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
+          <ion-label stacked>OAuth Code</ion-label>
+          <ion-input type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
+          <button ion-button outline type="submit" class="button-standard" [disabled]="!oauthCodeForm.valid">{{'Connect to ShapeShift Account' | translate}}</button>
+        </form>
 
-      <button ion-button clear small color="light" class="bottom-position" (click)="openExternalLink('https://info.shapeshift.io/blog/2018/09/04/introducing-shapeshift-membership/')">
-        {{'Why does this require authentication?' | translate}} &rarr;
-      </button>
+        <button ion-button clear small color="light-grey" class="bottom-position" (click)="openExternalLink('https://info.shapeshift.io/blog/2018/09/04/introducing-shapeshift-membership/')">
+          {{'Why does this require authentication?' | translate}} &rarr;
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div class="container" *ngIf="accessToken">
-    <div class="main-header">
-      <img src="assets/img/shapeshift/logo-shapeshift.svg" width="180" (click)="update()">
-      <button ion-button icon-right no-low-fee margin-top (click)="goTo('Shift')" *ngIf="!disabled">
-        <span>Shift</span>
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
+    <div class="container" *ngIf="accessToken">
       <div *ngIf="disabled" padding-horizontal ion-text color="danger">
         Shapeshift is temporally disabled for this device. You can try it on our Desktop versions.
       </div>
-    </div>
 
-    <ion-list>
-      <ion-item-divider>{{'Transactions' | translate}}
-        <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
-      </ion-item-divider>
-      <button ion-item *ngFor="let item of (shifts.data | keys : 'date') | orderBy : ['-order']" (click)="openShiftModal(item.value)">
-        <ion-label>
-          <div class="ellipsis">{{item.value.title || item.value.address}}</div>
-          <div class="status">
-            <span class="assertive" *ngIf="item.value.status == 'failed'" translate>Failed</span>
-            <span class="balanced" *ngIf="item.value.status == 'complete'" translate>Completed</span>
-            <span class="royal" *ngIf="item.value.status == 'received'" translate>Pending</span>
-            <span class="calm" *ngIf="item.value.status == 'no_deposits'" translate>Pending</span>
+      <ion-list>
+        <ion-item-divider>{{'Transactions' | translate}}
+          <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
+        </ion-item-divider>
+        <button ion-item *ngFor="let item of (shifts.data | keys : 'date') | orderBy : ['-order']" (click)="openShiftModal(item.value)">
+          <ion-label>
+            <div class="ellipsis">{{item.value.title || item.value.address}}</div>
+            <div class="status">
+              <span class="assertive" *ngIf="item.value.status == 'failed'" translate>Failed</span>
+              <span class="balanced" *ngIf="item.value.status == 'complete'" translate>Completed</span>
+              <span class="royal" *ngIf="item.value.status == 'received'" translate>Pending</span>
+              <span class="calm" *ngIf="item.value.status == 'no_deposits'" translate>Pending</span>
+            </div>
+          </ion-label>
+          <div item-content text-end>
+            <div class="text-bold">{{ item.value.amount }}</div>
+            <div class="date calm">{{item.value.date | amTimeAgo}}</div>
           </div>
-        </ion-label>
-        <div item-content text-end>
-          <div class="text-bold">{{ item.value.amount }}</div>
-          <div class="date calm">{{item.value.date | amTimeAgo}}</div>
-        </div>
-      </button>
-    </ion-list>
+        </button>
+      </ion-list>
+    </div>
   </div>
 </ion-content>
 

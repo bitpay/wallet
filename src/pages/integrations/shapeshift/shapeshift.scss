@@ -1,38 +1,33 @@
 page-shapeshift {
-  .container {
-    height: 100%;
+  ion-title .toolbar-title {
+    color: white;
+  }
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
   }
   .center-header {
-    h4 {
-      color: color($colors, light);
-    }
-    p {
-      color: color($colors, light);
-      font-weight: 300;
-      margin-bottom: 30px;
-    }
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin-top: 10%;
+    padding: 0 20px;
     text-align: center;
-    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center
-      center no-repeat #28394d;
+    p {
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
     .bottom-position {
-      position: absolute;
-      bottom: 10px;
+      margin-bottom: 20px;
     }
   }
-  .main-header {
-    padding: 25px 0;
-    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center
-      center no-repeat #28394d;
-    text-align: center;
-    img {
-      display: block;
-      margin: 0 auto;
+  .shift-button {
+    font-size: 16px;
+    background: none;
+    color: white;
+    ion-icon {
+      vertical-align: text-bottom;
+      margin-left: 3px;
     }
   }
   .shift-problems {
@@ -46,10 +41,12 @@ page-shapeshift {
     font-size: 12.5px;
   }
   .form-container {
+    text-align: left;
     width: 100%;
-    input {
-      text-align: center;
-      color: white;
+  }
+  ion-spinner {
+    * {
+      stroke: #0d172c !important;
     }
   }
 }

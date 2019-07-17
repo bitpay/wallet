@@ -1,62 +1,76 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Coinbase</ion-title>
+<ion-header class="wide-header">
+  <ion-navbar [navbar-bg]="headerColor">
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img src="assets/img/coinbase/coinbase-logo.png" width="70">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+        <expandable-header-primary>
+          <img margin-left src="assets/img/coinbase/coinbase-logo.png" width="150">
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
 
-  <ion-list>
-    <ion-item-divider></ion-item-divider>
-    <ion-item>
-      <ion-label>{{'Show in Home' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>{{'Show in Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+    
+    <ion-spinner *ngIf="loading"></ion-spinner>
 
-  <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
-    <ion-item-divider>Account</ion-item-divider>
-    <ion-item>
-      <span>ID</span>
-      <ion-note item-end>
-        {{coinbaseAccount.id}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span>Name</span>
-      <ion-note item-end>
-        {{coinbaseAccount.name}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span>Balance</span>
-      <ion-note item-end>
-        {{coinbaseAccount.balance.amount}} {{coinbaseAccount.balance.currency}}
-      </ion-note>
-    </ion-item>
-  </ion-list>
+    <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
+      <ion-item-divider>Account</ion-item-divider>
+      <ion-item>
+        <span>ID</span>
+        <ion-note item-end>
+          {{coinbaseAccount.id}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <span>Name</span>
+        <ion-note item-end>
+          {{coinbaseAccount.name}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <span>Balance</span>
+        <ion-note item-end>
+          {{coinbaseAccount.balance.amount}} {{coinbaseAccount.balance.currency}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
 
-  <ion-list *ngIf="coinbaseUser">
-    <ion-item-divider>User Information</ion-item-divider>
-    <ion-item>
-      <span>ID</span>
-      <ion-note item-end>
-        {{coinbaseUser.id}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span>Email</span>
-      <ion-note item-end>
-        {{coinbaseUser.email}}
-      </ion-note>
-    </ion-item>
-  </ion-list>
+    <ion-list *ngIf="coinbaseUser">
+      <ion-item-divider>User Information</ion-item-divider>
+      <ion-item>
+        <span>ID</span>
+        <ion-note item-end>
+          {{coinbaseUser.id}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <span>Email</span>
+        <ion-note item-end>
+          {{coinbaseUser.email}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
 
-  <ion-list *ngIf="coinbaseAccount">
-    <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="revokeToken()">
-      <span class="assertive">Log out</span>
-    </button>
-  </ion-list>
+    <div padding-bottom padding-top>
+      <button *ngIf="coinbaseAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+        {{'Log out' | translate}}
+      </button>
+    </div>
 
+  </div>
 </ion-content>

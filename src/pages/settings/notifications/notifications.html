@@ -7,7 +7,6 @@
 
 
 <ion-content>
-  <ion-item-divider></ion-item-divider>
   <ion-list class="settings-list">
     <div *ngIf="usePushNotifications">
       <ion-item>
@@ -21,13 +20,6 @@
         Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
       </span>
     </ion-item-divider>
-
-    <div *ngIf="usePushNotifications && pushNotifications">
-      <ion-item>
-        <ion-label>{{ 'Enable in-app notification' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="inAppNotifications" (ionChange)="inAppNotificationChange()"></ion-toggle>
-      </ion-item>
-    </div>
 
     <div *ngIf="usePushNotifications && pushNotifications">
       <ion-item>

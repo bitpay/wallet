@@ -1,16 +1,15 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Wallet Information' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
-    <ion-item-divider></ion-item-divider>
-    <ion-item (click)="saveBlack()">
+    <ion-item>
       <div translate float-left>Name (at creation)</div>
-      <div text-end text-wrap ion-text color="light-grey">
+      <ion-note item-end>
         {{walletName}}
-      </div>
+      </ion-note>
     </ion-item>
     <ion-item>
       <span translate>Coin</span>
@@ -21,9 +20,9 @@
     <ion-item copy-to-clipboard="{{walletId}}">
       <span>Wallet Id</span>
       <div padding-top>
-        <ion-note text-wrap>
+        <div text-wrap>
           {{walletId}}
-        </ion-note>
+        </div>
       </div>
     </ion-item>
     <ion-item>
@@ -45,9 +44,9 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Derivation Strategy</span>
+      <span translate>Derivation Path</span>
       <ion-note item-end>
-        {{derivationStrategy}}
+        {{rootPath}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
@@ -57,7 +56,7 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Account</span>({{derivationStrategy}})
+      <span translate>Account</span>
       <ion-note item-end>
         #{{account}}
       </ion-note>
@@ -73,18 +72,12 @@
     <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
       <span>Copayer {{i}}</span>
       <div padding-top>
-        <ion-note text-wrap>
+        <div text-wrap>
           {{pk}}
-        </ion-note>
+        </div>
       </div>
-      <span *ngIf="$index == 0">({{basePath}})</span>
+      <span *ngIf="i == 0">({{rootPath}})</span>
     </ion-item>
-    <div *ngIf="!needsBackup && canSign">
-      <ion-item-divider></ion-item-divider>
-      <button ion-item (click)="openWalletExtendedPrivateKey()">
-        <span translate>Extended Private Key</span>
-      </button>
-    </div>
     <ion-item-divider *ngIf="balanceByAddress">Balance By Address</ion-item-divider>
     <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
       <span>{{a.address}}</span>

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Enabled Wallets' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <label-tip class="info" type="info" header="no-header">
+    <div label-tip-body translate>
+      Your wallets won't be removed from this device. You can enable/disable whenever you need it.
+    </div>
+  </label-tip>
+  <ion-list class="settings-list">
+    <ion-item *ngFor="let wallet of wallets">
+      <ion-label>{{wallet.name}}</ion-label>
+      <ion-toggle checked="{{!wallet.hidden}}" (ionChange)="hiddenWalletChange(wallet.id, wallet.hidden)"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,13 +1,22 @@
-wide-header-page {
+wide-header-page,
+card-catalog-page {
   @include fix-ios-bg-scroll();
 
+  expandable-header-primary {
+    line-height: 1.2;
+  }
+
   .wide-header {
+    .toolbar-background {
+      background: white;
+    }
+
     ion-title .toolbar-title {
       font-weight: 400;
     }
 
     &__title {
-      color: white;
+      color: black;
       font-size: 25px;
       font-weight: 500;
       padding-top: 30px;
@@ -19,6 +28,7 @@ wide-header-page {
       .ios & {
         padding-top: 3rem; // Fix iOS 10.3
         padding-top: calc(6px + env(safe-area-inset-top));
+
         ion-title {
           padding-top: 3rem; // Fix iOS 10.3
           padding-top: env(safe-area-inset-top);
@@ -34,4 +44,23 @@ wide-header-page {
       }
     }
   }
+}
+
+card-catalog-page,
+page-add,
+page-add-wallet,
+page-settings,
+purchased-cards-page {
+  @include fix-ios-bg-scroll($top-color: white);
+  @include toolbar-button-color();
+
+  ion-title .toolbar-title {
+    color: black;
+  }
+}
+
+@include toolbar-button-color();
+
+ion-title .toolbar-title {
+  color: black;
 }

@@ -1,53 +1,66 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>ShapeShift</ion-title>
+<ion-header class="wide-header">
+  <ion-navbar [navbar-bg]="headerColor">
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="100" src="assets/img/shapeshift/logo-white-shapeshift.svg" alt="ShapeShift">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item-divider></ion-item-divider>
-    <ion-item [ngClass]="{'with-label': unverifiedAccount}">
-      <ion-label>{{'Show in Home' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
-    </ion-item>
-    <label-tip *ngIf="unverifiedAccount" type="warn">
-      <span label-tip-title translate>Unverified Account</span>
-      <div label-tip-body translate>
-        Please complete your account verification on ShapeShift website.
-        <br>
-        <a class="label-tip-link" (click)="openAuthenticateWindow()" translate>Verify Account</a>
-      </div>
-    </label-tip>
-  </ion-list>
-  <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+        <expandable-header-primary>
+          <img margin-left width="155" src="assets/img/shapeshift/logo-white-shapeshift.svg" alt="ShapeShift">
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+  
+    <ion-list>
+      <ion-item [ngClass]="{'with-label': unverifiedAccount}">
+        <ion-label>{{'Show in Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+      <label-tip *ngIf="unverifiedAccount" type="warn">
+        <span label-tip-title translate>Unverified Account</span>
+        <div label-tip-body translate>
+          Please complete your account verification on ShapeShift website.
+          <br>
+          <a class="label-tip-link" (click)="openAuthenticateWindow()" translate>Verify Account</a>
+        </div>
+      </label-tip>
+    </ion-list>
+    <ion-spinner *ngIf="loading"></ion-spinner>
 
-  <ion-list *ngIf="shapeshiftUser">
-    <ion-item-divider>User Information</ion-item-divider>
-    <ion-item *ngIf="shapeshiftUser.username">
-      <span>Username</span>
-      <ion-note item-end>
-        {{shapeshiftUser.username}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span>ID</span>
-      <ion-note item-end>
-        {{shapeshiftUser.id}}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <span>Email</span>
-      <ion-note item-end>
-        {{shapeshiftUser.email}}
-      </ion-note>
-    </ion-item>
-  </ion-list>
+    <ion-list *ngIf="shapeshiftUser">
+      <ion-item-divider>User Information</ion-item-divider>
+      <ion-item *ngIf="shapeshiftUser.username">
+        <span>Username</span>
+        <ion-note item-end>
+          {{shapeshiftUser.username}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <span>ID</span>
+        <ion-note item-end>
+          {{shapeshiftUser.id}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <span>Email</span>
+        <ion-note item-end>
+          {{shapeshiftUser.email}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
 
-  <ion-list *ngIf="shapeshiftUser || unverifiedAccount">
-    <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="revokeToken()">
-      <span class="assertive">Log out</span>
-    </button>
-  </ion-list>
+    <div padding-bottom padding-top>
+      <button *ngIf="shapeshiftUser || unverifiedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+        {{'Log out' | translate}}
+      </button>
+    </div>
+  </div>
 </ion-content>

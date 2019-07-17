@@ -1,136 +1,70 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  Events,
+  ModalController,
   Navbar,
   NavController,
   NavParams,
   Slides
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // pages
-import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
+import { FinishModalPage } from '../../finish/finish';
 
 // providers
-import {
-  ActionSheetProvider,
-  InfoSheetType
-} from '../../../providers/action-sheet/action-sheet';
-import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { KeyProvider } from '../../../providers/key/key';
+import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-backup-game',
   templateUrl: 'backup-game.html'
 })
 export class BackupGamePage {
-  @ViewChild(Slides)
-  slides: Slides;
+  @ViewChild('gameSlides')
+  gameSlides: Slides;
   @ViewChild(Navbar)
   navBar: Navbar;
 
-  private fromOnboarding: boolean;
-  private isVaultWallet: boolean;
-  private vault;
-
-  public currentIndex: number;
-  public deleted: boolean;
   public mnemonicWords: string[];
   public shuffledMnemonicWords;
   public password: string;
   public customWords;
   public selectComplete: boolean;
-  public error: boolean;
-  public credentialsEncrypted: boolean;
   public mnemonicHasPassphrase;
   public useIdeograms;
-  public wallet;
   public keys;
-
-  private walletId: string;
+  public keyId: string;
 
   constructor(
-    private events: Events,
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
     private bwcProvider: BwcProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
+    private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
-    public actionSheetProvider: ActionSheetProvider
+    private keyProvider: KeyProvider
   ) {
-    this.walletId = this.navParams.get('walletId');
-    this.fromOnboarding = this.navParams.get('fromOnboarding');
-    this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.vault = this.profileProvider.getVault();
-    this.isVaultWallet =
-      this.vault &&
-      this.vault.walletIds &&
-      this.vault.walletIds.includes(this.wallet.credentials.walletId);
-    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
-  }
-
-  ionViewDidEnter() {
-    this.deleted = this.isDeletedSeed();
-    if (this.deleted) {
-      this.logger.warn('no mnemonics');
-      return;
-    }
-
-    this.walletProvider
-      .getKeys(this.wallet)
-      .then(keys => {
-        if (_.isEmpty(keys)) {
-          this.logger.warn('Empty keys');
-        }
-        this.credentialsEncrypted = false;
-        this.keys = keys;
-        this.setFlow();
-      })
-      .catch(err => {
-        if (
-          err &&
-          err.message != 'FINGERPRINT_CANCELLED' &&
-          err.message != 'PASSWORD_CANCELLED'
-        ) {
-          const title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
-        }
-        this.navCtrl.pop();
-      });
-  }
-
-  ngOnInit() {
-    this.currentIndex = 0;
-    this.navBar.backButtonClick = () => {
-      if (this.slides) this.slidePrev();
-      else this.navCtrl.pop();
-    };
+    this.mnemonicWords = this.navParams.data.words;
+    this.keys = this.navParams.data.keys;
+    this.keyId = this.navParams.data.keyId;
+    this.setFlow();
   }
 
   ionViewDidLoad() {
-    if (this.slides) this.slides.lockSwipes(true);
-  }
-
-  private showErrorInfoSheet(
-    err: Error | string,
-    infoSheetTitle: string
-  ): void {
-    if (!err) return;
-    this.logger.warn('Could not get keys:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    if (this.gameSlides) this.gameSlides.lockSwipes(true);
+    this.navBar.backButtonClick = () => {
+      if (this.customWords.length > 0) {
+        this.clear();
+      } else {
+        this.navCtrl.pop();
+      }
+    };
   }
 
   private shuffledWords(words: string[]) {
@@ -152,13 +86,22 @@ export class BackupGamePage {
     this.customWords.push(newWord);
     this.shuffledMnemonicWords[index].selected = true;
     this.shouldContinue();
+    setTimeout(() => {
+      this.gameSlides.lockSwipes(false);
+      this.gameSlides.slideNext();
+      this.gameSlides.lockSwipes(true);
+    }, 300);
   }
 
   public removeButton(index: number, item): void {
-    // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;
     this.shouldContinue();
+    setTimeout(() => {
+      this.gameSlides.lockSwipes(false);
+      this.gameSlides.slidePrev();
+      this.gameSlides.lockSwipes(true);
+    }, 300);
   }
 
   private shouldContinue(): void {
@@ -168,154 +111,101 @@ export class BackupGamePage {
         : false;
   }
 
-  private isDeletedSeed(): boolean {
-    if (
-      !this.wallet.credentials.mnemonic &&
-      !this.wallet.credentials.mnemonicEncrypted
-    )
-      return true;
-
-    return false;
-  }
-
-  private slidePrev(): void {
-    this.slides.lockSwipes(false);
-    if (this.currentIndex == 0) this.navCtrl.pop();
-    else {
-      this.slides.slidePrev();
-      this.currentIndex = this.slides.getActiveIndex();
-    }
-    this.slides.lockSwipes(true);
-  }
-
-  public slideNext(reset: boolean): void {
-    if (reset) {
-      this.resetGame();
-    }
-
-    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase) this.finalStep();
-    else {
-      this.slides.lockSwipes(false);
-      this.slides.slideNext();
-    }
-
-    this.currentIndex = this.slides.getActiveIndex();
-    this.slides.lockSwipes(true);
-  }
-
-  private resetGame() {
+  public clear(): void {
     this.customWords = [];
     this.shuffledMnemonicWords.forEach(word => {
       word.selected = false;
     });
     this.selectComplete = false;
+    setTimeout(() => {
+      this.gameSlides.lockSwipes(false);
+      this.gameSlides.slideTo(0);
+      this.gameSlides.lockSwipes(true);
+    }, 300);
   }
 
-  private setFlow(): void {
-    if (!this.keys) return;
+  private setFlow() {
+    if (!this.mnemonicWords) return;
 
-    let words = this.keys.mnemonic;
-
-    this.mnemonicWords = words.split(/[\u3000\s]+/);
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
-    this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
-    this.useIdeograms = words.indexOf('\u3000') >= 0;
+    this.mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
+      this.keyId
+    );
+    this.useIdeograms = this.mnemonicWords.indexOf('\u3000') >= 0;
     this.password = '';
     this.customWords = [];
     this.selectComplete = false;
-    this.error = false;
-
-    words = _.repeat('x', 300);
-
-    if (this.currentIndex == 2) this.slidePrev();
   }
 
-  private confirm(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.error = false;
+  public finalStep(): void {
+    const customWordList = _.map(this.customWords, 'word');
 
-      const customWordList = _.map(this.customWords, 'word');
+    if (!_.isEqual(this.mnemonicWords, customWordList)) {
+      this.showErrorInfoSheet('Mnemonic string mismatch');
+      return;
+    }
 
-      if (!_.isEqual(this.mnemonicWords, customWordList)) {
-        return reject('Mnemonic string mismatch');
-      }
+    if (this.mnemonicHasPassphrase) {
+      const keyClient = this.bwcProvider.getKey();
+      const separator = this.useIdeograms ? '\u3000' : ' ';
+      const customSentence = customWordList.join(separator);
+      const password = this.password || '';
+      let key;
 
-      if (this.mnemonicHasPassphrase) {
-        const walletClient = this.bwcProvider.getClient();
-        const separator = this.useIdeograms ? '\u3000' : ' ';
-        const customSentence = customWordList.join(separator);
-        const password = this.password || '';
-
-        try {
-          walletClient.seedFromMnemonic(customSentence, {
-            network: this.wallet.credentials.network,
-            passphrase: password,
-            account: this.wallet.credentials.account
-          });
-        } catch (err) {
-          walletClient.credentials.xPrivKey = _.repeat('x', 64);
-          return reject(err);
-        }
-
-        if (
-          walletClient.credentials.xPrivKey.substr(
-            walletClient.credentials.xPrivKey
-          ) != this.keys.xPrivKey
-        ) {
-          delete walletClient.credentials;
-          return reject('Private key mismatch');
-        }
-      }
-
-      if (this.isVaultWallet) {
-        const vaultWallets = this.profileProvider.getVaultWallets();
-        vaultWallets.forEach(wallet => {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      try {
+        key = keyClient.fromMnemonic(customSentence, {
+          useLegacyCoinType: false,
+          useLegacyPurpose: false,
+          passphrase: password
         });
-        this.vault.needsBackup = false;
-        this.profileProvider.storeVault(this.vault);
-      } else {
-        this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+      } catch (err) {
+        this.showErrorInfoSheet(err);
+        return;
       }
 
-      return resolve();
+      if (key.xPrivKey != this.keys.xPrivKey) {
+        this.showErrorInfoSheet('Private key mismatch');
+        return;
+      }
+    }
+    this.profileProvider.setBackupGroupFlag(this.keyId);
+    const opts = {
+      keyId: this.keyId
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    wallets.forEach(w => {
+      this.profileProvider.setWalletBackup(w.credentials.walletId);
+    });
+    this.showSuccessModal();
+  }
+
+  private showSuccessModal() {
+    const finishText = this.translate.instant(
+      'Your recovery phrase is verified'
+    );
+    const finishComment = this.translate.instant(
+      'Be sure to store your recovery phrase in a safe and secure place'
+    );
+    const cssClass = 'primary';
+    const params = { finishText, finishComment, cssClass };
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
+      showBackdrop: true,
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
+    });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.popToRoot();
     });
   }
 
-  private finalStep(): void {
-    this.onGoingProcessProvider.set('validatingWords');
-    this.confirm()
-      .then(async () => {
-        this.onGoingProcessProvider.clear();
-        const walletType =
-          this.wallet.coin === 'btc' ? 'bitcoin' : 'bitcoin cash';
-        const key: InfoSheetType = this.isVaultWallet
-          ? 'backup-ready-vault'
-          : 'backup-ready';
-        const infoSheet = this.actionSheetProvider.createInfoSheet(key, {
-          walletType
-        });
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
-          if (this.fromOnboarding) {
-            this.navCtrl.push(DisclaimerPage);
-          } else {
-            this.navCtrl.popToRoot();
-            this.events.publish('Wallet/setAddress', true);
-          }
-        });
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this.logger.warn('Failed to verify backup: ', err);
-        this.error = true;
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'backup-failed'
-        );
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
-          this.setFlow();
-        });
-      });
+  private showErrorInfoSheet(err) {
+    this.logger.warn('Failed to verify backup: ', err);
+    const infoSheet = this.actionSheetProvider.createInfoSheet('backup-failed');
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
+      this.clear();
+      this.setFlow();
+    });
   }
 }

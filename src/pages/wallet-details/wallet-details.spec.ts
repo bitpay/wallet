@@ -17,7 +17,8 @@ describe('WalletDetailsPage', () => {
       status: {},
       canSign: () => true,
       isComplete: () => true,
-      isPrivKeyEncrypted: () => true
+      isPrivKeyEncrypted: () => true,
+      setNotificationsInterval: () => true
     };
     spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
     return TestUtils.configurePageTestingModule([WalletDetailsPage]).then(
@@ -34,16 +35,23 @@ describe('WalletDetailsPage', () => {
   describe('Lifecycle Hooks', () => {
     describe('ionViewDidLoad', () => {
       it('should subscribe to events', () => {
-        const spy = spyOn(instance.events, 'subscribe');
-        instance.ionViewDidLoad();
-        expect(spy).toHaveBeenCalledTimes(1);
+        const subscribeSpy = spyOn(instance.events, 'subscribe');
+        instance.ionViewWillLoad();
+        expect(subscribeSpy).toHaveBeenCalledWith(
+          'Local/WalletUpdate',
+          instance.updateStatus
+        );
+        expect(subscribeSpy).toHaveBeenCalledWith(
+          'Local/WalletHistoryUpdate',
+          instance.updateHistory
+        );
       });
     });
     describe('ionViewDidEnter', () => {
-      it('should update history', () => {
-        const spy = spyOn(instance, 'updateAll');
+      it('should publish to wallet focus event', () => {
+        const subscribeSpy = spyOn(instance.events, 'publish');
         instance.ionViewDidEnter();
-        expect(spy).toHaveBeenCalled();
+        expect(subscribeSpy).toHaveBeenCalled();
       });
     });
   });

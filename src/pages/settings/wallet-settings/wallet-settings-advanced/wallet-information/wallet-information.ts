@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
+import { NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 
 // providers
-import { ConfigProvider } from '../../../../../providers/config/config';
+import { Logger } from '../../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
-
-// pages
-import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-wallet-information',
@@ -28,21 +23,14 @@ export class WalletInformationPage {
   public coin: string;
   public network: string;
   public addressType: string;
-  public derivationStrategy: string;
-  public basePath: string;
+  public rootPath: string;
   public pubKeys;
   public externalSource: string;
   public canSign: boolean;
-  public needsBackup: boolean;
-  private colorCounter = 1;
-  private BLACK_WALLET_COLOR = '#202020';
 
   constructor(
     private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
     private navParams: NavParams,
-    private navCtrl: NavController,
-    private events: Events,
     private logger: Logger
   ) {}
 
@@ -65,36 +53,9 @@ export class WalletInformationPage {
     this.account = this.wallet.credentials.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
-    this.derivationStrategy =
-      this.wallet.credentials.derivationStrategy || 'BIP45';
-    this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
+    this.rootPath = this.wallet.credentials.rootPath;
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
-    this.canSign = this.wallet.canSign();
-    this.needsBackup = this.wallet.needsBackup;
-  }
-
-  public saveBlack(): void {
-    if (this.colorCounter != 5) {
-      this.colorCounter++;
-      return;
-    }
-    this.save(this.BLACK_WALLET_COLOR);
-  }
-
-  private save(color): void {
-    let opts = {
-      colorFor: {}
-    };
-    opts.colorFor[this.wallet.credentials.walletId] = color;
-    this.configProvider.set(opts);
-    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot();
-  }
-
-  public openWalletExtendedPrivateKey(): void {
-    this.navCtrl.push(WalletExtendedPrivateKeyPage, {
-      walletId: this.wallet.credentials.walletId
-    });
+    this.canSign = this.wallet.canSign;
   }
 }

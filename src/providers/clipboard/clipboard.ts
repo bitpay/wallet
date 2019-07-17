@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Clipboard } from '@ionic-native/clipboard';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastController } from 'ionic-angular';
 
 // providers
 import { ElectronProvider } from '../../providers/electron/electron';
@@ -15,21 +13,25 @@ export class ClipboardProvider {
   private isElectron: boolean;
 
   constructor(
-    public toastCtrl: ToastController,
-    public platform: PlatformProvider,
+    public platformProvider: PlatformProvider,
     public logger: Logger,
-    public translate: TranslateService,
     private clipboard: Clipboard,
     private electronProvider: ElectronProvider,
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.logger.debug('ClipboardProvider initialized');
-    this.isCordova = this.platform.isCordova;
-    this.isElectron = this.platform.isElectron;
+    this.isCordova = this.platformProvider.isCordova;
+    this.isElectron = this.platformProvider.isElectron;
   }
 
   public async getData(): Promise<any> {
-    return this.paste();
+    if (this.isCordova) {
+      return this.clipboard.paste();
+    } else if (this.isElectron) {
+      return this.electronProvider.readFromClipboard();
+    } else {
+      return Promise.reject('Not supported for this device');
+    }
   }
 
   public copy(value: string) {
@@ -42,17 +44,6 @@ export class ClipboardProvider {
     }
   }
 
-  private async paste(): Promise<any> {
-    if (this.isCordova) {
-      return this.clipboard.paste();
-    } else if (this.isElectron) {
-      return this.electronProvider.readFromClipboard();
-    } else {
-      this.logger.warn('Paste from clipboard not supported');
-      return;
-    }
-  }
-
   public clear(): void {
     if (this.isCordova) {
       this.clipboard.copy(null);
@@ -62,15 +53,21 @@ export class ClipboardProvider {
   }
 
   public clearClipboardIfValidData(typeArray: string[]): void {
-    this.getData().then(data => {
-      const validDataFromClipboard = this.incomingDataProvider.parseData(data);
-      if (
-        validDataFromClipboard &&
-        typeArray.indexOf(validDataFromClipboard.type) != -1
-      ) {
-        this.logger.info('Cleaning clipboard data');
-        this.clear(); // clear clipboard data if exist
-      }
-    });
+    this.getData()
+      .then(data => {
+        const validDataFromClipboard = this.incomingDataProvider.parseData(
+          data
+        );
+        if (
+          validDataFromClipboard &&
+          typeArray.indexOf(validDataFromClipboard.type) != -1
+        ) {
+          this.logger.info('Cleaning clipboard data: done');
+          this.clear(); // clear clipboard data if exist
+        }
+      })
+      .catch(err => {
+        this.logger.debug('Cleaning clipboard data: ', err);
+      });
   }
 }

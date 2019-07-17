@@ -202,12 +202,12 @@ describe('TxFormatProvider', () => {
 
     it('should return same tx if tx.action is invalid', () => {
       tx.action = 'invalid';
-      expect(txFormatProvider.processTx('btc', tx, false)).toEqual(tx);
+      expect(txFormatProvider.processTx('btc', tx)).toEqual(tx);
     });
 
     it('should return tx with defined values if tx.action is received', () => {
       tx.action = 'received';
-      let result = txFormatProvider.processTx('btc', tx, false);
+      let result = txFormatProvider.processTx('btc', tx);
 
       expect(tx.toAddress).toBeDefined();
       expect(tx.toAddress).toEqual('mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb');
@@ -217,43 +217,27 @@ describe('TxFormatProvider', () => {
       expect(result).toEqual(tx);
     });
 
-    it('should return tx.toAddress in CashAddress format if coin is BCH and useLegacyAddress is false', () => {
+    it('should return tx.toAddress in CashAddress format if coin is BCH', () => {
       tx.action = 'received';
       tx.outputs[0].toAddress = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx, false);
+      txFormatProvider.processTx('bch', tx);
       expect(tx.toAddress).toEqual(
         'qz0ys7q7utlsd7fmcsecxtpp9y8j8xhxtsy35kmzka'
       );
     });
 
-    it('should return tx.toAddress in Copay legacy format if coin is BCH and useLegacyAddress is true', () => {
-      tx.action = 'received';
-      tx.outputs[0].toAddress = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx, true);
-      expect(tx.toAddress.toString()).toEqual(tx.outputs[0].toAddress);
-    });
-
-    it('should return tx.addressTo in CashAddress format if coin is BCH and useLegacyAddress is false', () => {
+    it('should return tx.addressTo in CashAddress format if coin is BCH', () => {
       tx.action = 'received';
       tx.addressTo = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx, false);
+      txFormatProvider.processTx('bch', tx);
       expect(tx.addressTo.toString()).toEqual(
         'qz0ys7q7utlsd7fmcsecxtpp9y8j8xhxtsy35kmzka'
       );
     });
 
-    it('should return tx.addressTo in Copay legacy format if coin is BCH and useLegacyAddress is true', () => {
-      tx.action = 'received';
-      tx.addressTo = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx, true);
-      expect(tx.addressTo.toString()).toEqual(
-        'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt'
-      );
-    });
-
     it('should return same tx.amount if only has one output', () => {
       tx.action = 'sent';
-      txFormatProvider.processTx('btc', tx, false);
+      txFormatProvider.processTx('btc', tx);
       expect(tx.hasMultiplesOutputs).toBeFalsy();
       expect(tx.amount).toEqual(447100);
     });
@@ -272,7 +256,7 @@ describe('TxFormatProvider', () => {
           toAddress: 'mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb'
         }
       ];
-      txFormatProvider.processTx('btc', tx, false);
+      txFormatProvider.processTx('btc', tx);
       expect(tx.hasMultiplesOutputs).toBeTruthy();
       expect(tx.amount).toEqual(1094200);
     });

@@ -3,24 +3,14 @@ page-onboarding {
     background-image: $onboarding-welcome-bg, $onboarding-background-image;
     background-position: top center;
     background-size: contain;
-    background-repeat: no-repeat;
   }
   .logo-tagline {
-    margin-top: calc(5vh + 5vw);
-    text-align: center;
+    height: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
-      max-width: 150px;
-      margin: 5rem 0;
+      width: 15rem;
     }
-    p {
-      line-height: 1.6;
-      font-size: 1.6rem;
-    }
-  }
-  .primary-color {
-    color: $onboarding-primary-color;
-  }
-  .comment-color {
-    color: $onboarding-comment-color;
   }
 }

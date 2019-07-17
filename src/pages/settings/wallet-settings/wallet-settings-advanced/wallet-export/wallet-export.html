@@ -1,22 +1,11 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Export wallet' | translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet?.color">
-    <ion-segment [(ngModel)]="segments" color="blank">
-      <ion-segment-button value="file/text">
-        {{'File/Text' | translate}}
-      </ion-segment-button>
-      <ion-segment-button value="qr-code" (click)="generateQrCode()">
-        {{'QR Code' | translate}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div [ngSwitch]="segments">
-    <ion-list *ngSwitchCase="'file/text'">
-      <ion-item-divider></ion-item-divider>
+  <div>
+    <ion-list>
       <div *ngIf="!backupWalletPlainText">
         <form [formGroup]="exportWalletForm">
           <ion-item>
@@ -36,16 +25,17 @@
               The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
             </div>
           </label-tip>
-          <div *ngIf="canSign">
-            <ion-item-divider></ion-item-divider>
-            <ion-item (click)="showAdvChange()">
-              <span translate *ngIf="!showAdv">Show advanced options</span>
-              <span translate *ngIf="showAdv">Hide advanced options</span>
-              <div item-end>
-                <ion-icon color="grey" *ngIf="!showAdv" name="ios-arrow-down-outline"></ion-icon>
-                <ion-icon color="grey" *ngIf="showAdv" name="ios-arrow-up-outline"></ion-icon>
-              </div>
-            </ion-item>
+          <label-tip class="no-arrowhead" *ngIf="canSign && !showNoPrivKeyOpt" type="warn">
+            <span label-tip-title translate>No Private Key</span>
+            <div label-tip-body translate>
+              The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
+            </div>
+          </label-tip>
+          <div *ngIf="canSign && showNoPrivKeyOpt">
+            <button ion-button class="button-standard button-secondary" (click)="showAdv = !showAdv">
+              <span *ngIf="!showAdv">{{'Show advanced options' | translate}}</span>
+              <span *ngIf="showAdv">{{'Hide advanced options' | translate}}</span>
+            </button>
           </div>
           <ion-item [ngClass]="{'with-label': exportWalletForm.value.noSignEnabled }" *ngIf="showAdv">
             <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
@@ -59,8 +49,7 @@
             </div>
           </label-tip>
 
-          <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()"
-            [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
+          <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
             <span translate>Download</span>
           </button>
           <button *ngIf="isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
@@ -80,17 +69,6 @@
         <span translate>Backup wallet</span>
         <p translate>Copy this text as it is to a safe place (notepad or email)</p>
         <ion-textarea rows="12">{{backupWalletPlainText}}</ion-textarea>
-      </div>
-    </ion-list>
-    <ion-list *ngSwitchCase="'qr-code'">
-      <div class="qrCode" *ngIf="supported && showQrCode">
-        <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-        <ion-item-divider>
-          <span translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</span>
-        </ion-item-divider>
-      </div>
-      <div class="not-supported-message" *ngIf="!supported && showQrCode">
-        <span translate>Exporting via QR not supported for this wallet</span>
       </div>
     </ion-list>
   </div>

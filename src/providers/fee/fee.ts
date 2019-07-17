@@ -56,16 +56,9 @@ export class FeeProvider {
       this.getFeeLevels(coin)
         .then(response => {
           let feeLevelRate;
-
-          if (response.fromCache) {
-            feeLevelRate = _.find(response.levels[network], o => {
-              return o.level == feeLevel;
-            });
-          } else {
-            feeLevelRate = _.find(response.levels[network], o => {
-              return o.level == feeLevel;
-            });
-          }
+          feeLevelRate = _.find(response.levels[network], o => {
+            return o.level == feeLevel;
+          });
           if (!feeLevelRate || !feeLevelRate.feePerKb) {
             let msg =
               this.translate.instant('Could not get dynamic fee for level:') +
@@ -86,18 +79,6 @@ export class FeeProvider {
                 ' SAT/B'
             );
           return resolve(feeRate);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  public getCurrentFeeRate(coin: string, network: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getFeeRate(coin, network, this.getCurrentFeeLevel())
-        .then((data: number) => {
-          return resolve(data);
         })
         .catch(err => {
           return reject(err);

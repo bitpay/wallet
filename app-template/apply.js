@@ -138,7 +138,7 @@ package.title = config.userVisibleName;
 package.homepage = config.url;
 package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
-package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
+package.cordova.plugins['cordova-plugin-customurlscheme-ng'].SECOND_URL_SCHEME =
   config.packageName;
 package.build.appId = config.packageNameIdDesktop;
 package.build.productName = config.userVisibleName;

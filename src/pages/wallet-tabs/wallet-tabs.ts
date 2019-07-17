@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavParams, Platform } from 'ionic-angular';
-import { Subscription } from 'rxjs';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Events, NavParams } from 'ionic-angular';
 
 // Pages
 import { ReceivePage } from '../receive/receive';
@@ -13,7 +13,7 @@ import { WalletTabsProvider } from './wallet-tabs.provider';
 
 @Component({
   template: `
-    <ion-tabs selectedIndex="1" #tabs>
+    <ion-tabs [selectedIndex]="selectedTabIndex" #tabs>
       <ion-tab
         [root]="receiveRoot"
         tabTitle="{{'Receive'|translate}}"
@@ -40,53 +40,49 @@ export class WalletTabsPage {
   activityRoot = WalletDetailsPage;
   sendRoot = SendPage;
 
+  selectedTabIndex: number = 1;
+
   walletId: string;
 
   private isElectron: boolean;
-  private onPauseSubscription: Subscription;
-  private onResumeSubscription: Subscription;
   constructor(
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
     private events: Events,
     private platformProvider: PlatformProvider,
-    private platform: Platform
+    private statusBar: StatusBar
   ) {
     this.isElectron = this.platformProvider.isElectron;
+    if (typeof this.navParams.get('selectedTabIndex') !== 'undefined') {
+      this.selectedTabIndex = this.navParams.get('selectedTabIndex');
+    }
   }
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
 
-    this.onPauseSubscription = this.platform.pause.subscribe(() => {
-      this.unsubscribeEvents();
-    });
-    this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      this.subscribeEvents();
-    });
-
     if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
-    this.subscribeEvents();
   }
 
-  private subscribeEvents(): void {
-    this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    this.events.subscribe('Local/TxAction', this.localTxActionHandler);
+  ionViewWillEnter() {
+    if (this.platformProvider.isIOS) {
+      setTimeout(() => this.statusBar.styleLightContent(), 300);
+    }
   }
 
-  private unsubscribeEvents(): void {
-    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
+  ionViewWillLeave() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
   }
 
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      this.events.publish('Wallet/updateAll');
-      this.events.publish('Wallet/setAddress', false);
+      this.events.publish('Local/WalletFocus', { walletId: this.walletId });
     });
   }
 
@@ -96,32 +92,12 @@ export class WalletTabsPage {
 
   ngOnDestroy() {
     this.walletTabsProvider.clear();
-    this.onPauseSubscription.unsubscribe();
-    this.onResumeSubscription.unsubscribe();
     this.events.publish('Wallet/disableHardwareKeyboard');
-    this.events.publish('Home/reloadStatus');
-    this.unsubscribeEvents();
     this.unsubscribeChildPageEvents();
   }
 
   private unsubscribeChildPageEvents() {
-    this.events.unsubscribe('Wallet/updateAll');
-    this.events.unsubscribe('update:address');
-    this.events.unsubscribe('Wallet/setAddress');
+    this.events.unsubscribe('Local/AddressScan');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
-
-  private bwsEventHandler: any = (walletId, type) => {
-    // Update current address
-    if (this.walletId == walletId && type == 'NewIncomingTx')
-      this.events.publish('Wallet/setAddress', true);
-    // Update wallet details
-    if (this.walletId == walletId && type != 'NewAddress')
-      this.events.publish('Wallet/updateAll');
-  };
-
-  private localTxActionHandler: any = opts => {
-    if (this.walletId == opts.walletId)
-      this.events.publish('Wallet/updateAll', opts);
-  };
 }

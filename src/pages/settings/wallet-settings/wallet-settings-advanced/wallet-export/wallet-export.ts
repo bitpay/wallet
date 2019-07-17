@@ -18,22 +18,18 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html'
 })
-export class WalletExportPage extends WalletTabsChild {
+export class WalletExportPage {
   public wallet;
-  public segments: string = 'file/text';
-  public password: string = '';
-  public result: string = '';
+  public password: string;
   public exportWalletForm: FormGroup;
-  public showAdv: boolean = false;
+  public showAdv: boolean;
   public isEncrypted: boolean;
-  public showAdvanced: boolean = false;
+  public showAdvanced: boolean;
   public canSign: boolean;
   public backupWalletPlainText;
   public isCordova: boolean;
@@ -41,11 +37,11 @@ export class WalletExportPage extends WalletTabsChild {
   public isIOS: boolean;
   public exportWalletInfo;
   public supported: boolean;
-  public showQrCode: boolean;
+  public showNoPrivKeyOpt: boolean;
 
   constructor(
-    public profileProvider: ProfileProvider,
-    public navCtrl: NavController,
+    private profileProvider: ProfileProvider,
+    private navCtrl: NavController,
     private walletProvider: WalletProvider,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
@@ -56,14 +52,15 @@ export class WalletExportPage extends WalletTabsChild {
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
     private clipboard: Clipboard,
-    public toastCtrl: ToastController,
+    private toastCtrl: ToastController,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    public walletTabsProvider: WalletTabsProvider,
     private configProvider: ConfigProvider,
     private bwcErrorProvider: BwcErrorProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
+    this.password = '';
+    this.showAdv = false;
+    this.showAdvanced = false;
     this.exportWalletForm = this.formBuilder.group(
       {
         password: ['', Validators.required],
@@ -72,6 +69,7 @@ export class WalletExportPage extends WalletTabsChild {
       },
       { validator: this.matchingPasswords('password', 'confirmPassword') }
     );
+    this.showNoPrivKeyOpt = this.navParams.data.showNoPrivKeyOpt;
   }
 
   ionViewDidLoad() {
@@ -80,8 +78,8 @@ export class WalletExportPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isEncrypted = this.wallet.isPrivKeyEncrypted();
-    this.canSign = this.wallet.canSign();
+    this.isEncrypted = this.wallet.isPrivKeyEncrypted;
+    this.canSign = this.wallet.canSign;
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
@@ -100,10 +98,6 @@ export class WalletExportPage extends WalletTabsChild {
     };
   }
 
-  public showAdvChange(): void {
-    this.showAdv = !this.showAdv;
-  }
-
   public getPassword(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.password) return resolve(this.password);
@@ -119,48 +113,6 @@ export class WalletExportPage extends WalletTabsChild {
         });
     });
   }
-
-  public generateQrCode() {
-    if (this.exportWalletInfo || !this.isEncrypted) {
-      this.segments = 'qr-code';
-    }
-
-    this.showQrCode = false;
-
-    this.getPassword()
-      .then((password: string) => {
-        this.walletProvider
-          .getEncodedWalletInfo(this.wallet, password)
-          .then(code => {
-            this.showQrCode = true;
-            if (!code) this.supported = false;
-            else {
-              this.supported = true;
-              this.exportWalletInfo = code;
-            }
-
-            this.segments = 'qr-code';
-          })
-          .catch((err: string) => {
-            this.supported = false;
-            if (err) this.showErrorInfoSheet(err);
-          });
-      })
-      .catch(err => {
-        this.showQrCode = false;
-        this.segments = 'file/text';
-        if (
-          err &&
-          err.message != 'FINGERPRINT_CANCELLED' &&
-          err.message != 'PASSWORD_CANCELLED'
-        )
-          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
-      });
-  }
-
-  /*
-    EXPORT WITHOUT PRIVATE KEY - PENDING
-  */
 
   public noSignEnabledChange(): void {
     if (!this.supported) return;
@@ -191,12 +143,12 @@ export class WalletExportPage extends WalletTabsChild {
 
             this.backupProvider
               .walletDownload(
-                this.exportWalletForm.value.password,
+                this.navParams.data.walletId,
                 opts,
-                this.navParams.data.walletId
+                this.exportWalletForm.value.password
               )
               .then(() => {
-                this.close();
+                this.navCtrl.pop();
               })
               .catch(() => {
                 this.showErrorInfoSheet();
@@ -252,9 +204,9 @@ export class WalletExportPage extends WalletTabsChild {
               };
 
               const ew = this.backupProvider.walletExport(
-                this.exportWalletForm.value.password,
+                this.navParams.data.walletId,
                 opts,
-                this.navParams.data.walletId
+                this.exportWalletForm.value.password
               );
               if (!ew) {
                 this.showErrorInfoSheet();

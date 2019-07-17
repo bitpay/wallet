@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
@@ -8,6 +9,7 @@ import * as _ from 'lodash';
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
@@ -28,10 +30,15 @@ export class BitPayCardIntroPage {
     private popupProvider: PopupProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private navCtrl: NavController,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private statusBar: StatusBar,
+    private platformProvider: PlatformProvider
   ) {}
 
   ionViewWillEnter() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleLightContent();
+    }
     if (this.navParams.data.secret) {
       let pairData = {
         secret: this.navParams.data.secret,
@@ -90,6 +97,12 @@ export class BitPayCardIntroPage {
       }
       this.accounts = accounts;
     });
+  }
+
+  ionViewWillLeave() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleLightContent();
+    }
   }
 
   public bitPayCardInfo() {

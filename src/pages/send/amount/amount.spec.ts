@@ -12,7 +12,7 @@ describe('AmountPage', () => {
 
   const wallet = {
     coin: 'bch',
-    status: {
+    cachedStatus: {
       totalBalanceStr: '1.000000',
       totalBalanceSat: 100000000,
       availableBalanceStr: '1.000000',
@@ -38,7 +38,7 @@ describe('AmountPage', () => {
       instance.ionViewDidLoad();
       instance.sendMax();
       expect(instance.expression).toBe(
-        instance.wallet.status.availableBalanceSat / 1e8
+        instance.wallet.cachedStatus.availableBalanceSat / 1e8
       );
     });
 
