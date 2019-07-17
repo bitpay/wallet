@@ -661,6 +661,8 @@ export class HomePage {
       })
       .catch(err => {
         if (err == 'INPROGRESS') return;
+        this.logger.warn('Update error:', err);
+
         this.processWalletError(wallet, err);
 
         this.events.publish('Local/WalletUpdate', {
@@ -670,7 +672,7 @@ export class HomePage {
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId });
+          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force  });
         }
 
       });
