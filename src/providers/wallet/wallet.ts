@@ -34,6 +34,11 @@ export enum Coin {
   ETH = 'eth'
 }
 
+export enum UTXO_COINS {
+  BTC = 'btc',
+  BCH = 'bch'
+}
+
 export interface WalletOptions {
   name: any;
   m: any;
@@ -56,6 +61,7 @@ export interface WalletOptions {
 
 export interface TransactionProposal {
   amount: any;
+  from: string;
   toAddress: any;
   outputs: Array<{
     toAddress: any;
@@ -1100,6 +1106,9 @@ export class WalletProvider {
         txp,
         password
       );
+      if (!UTXO_COINS[txp.coin.toUpperCase()]) {
+        return resolve(signatures);
+      }
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
@@ -1123,23 +1132,42 @@ export class WalletProvider {
 
       if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-        if (err) {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            this.removeTx(wallet, txp);
-            return reject(err);
-          } else {
-            return reject(err);
+      if (!txp.signatures) {
+        wallet.broadcastRawTx(txp, (err, txid) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
           }
-        }
 
-        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-        if (memo) this.logger.info('Memo: ', memo);
+          this.logger.info('Transaction broadcasted: ', txid);
 
-        return resolve(broadcastedTxp);
-      });
+          return resolve(txp);
+        });
+      } else {
+        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
+          }
+
+          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+          if (memo) this.logger.info('Memo: ', memo);
+
+          return resolve(broadcastedTxp);
+        });
+      }
     });
   }
 

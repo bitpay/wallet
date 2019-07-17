@@ -745,7 +745,13 @@ export class ConfirmPage extends WalletTabsChild {
       }
 
       this.walletProvider
-        .createTx(wallet, txp)
+        .getAddress(this.wallet, false)
+        .then(address => {
+          txp.from = address;
+        })
+        .then(() => {
+          return this.walletProvider.createTx(wallet, txp);
+        })
         .then(ctxp => {
           return resolve(ctxp);
         })
