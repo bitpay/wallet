@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as _ from 'lodash';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 @Component({
@@ -6,9 +7,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
   templateUrl: 'wallet-selector.html'
 })
 export class WalletSelectorComponent extends ActionSheetParent {
-  public wallets;
-  public walletsBtc;
-  public walletsBch;
+  public walletsGroups;
   public title: string;
   public selectedWalletId: string;
 
@@ -17,15 +16,9 @@ export class WalletSelectorComponent extends ActionSheetParent {
   }
 
   ngOnInit() {
-    this.wallets = this.params.wallets;
+    this.walletsGroups = _.groupBy(this.params.wallets, 'groupName');
     this.title = this.params.title;
     this.selectedWalletId = this.params.selectedWalletId;
-    this.separateWallets();
-  }
-
-  private separateWallets(): void {
-    this.walletsBtc = this.wallets.filter(wallet => wallet.coin === 'btc');
-    this.walletsBch = this.wallets.filter(wallet => wallet.coin === 'bch');
   }
 
   public optionClicked(option): void {

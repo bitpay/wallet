@@ -320,6 +320,8 @@ export class ProfileProvider {
 
     wallet.needsBackup = needsBackup;
 
+    wallet.groupName = name;
+
     this.walletsGroups[keyId] = {
       order,
       name,
