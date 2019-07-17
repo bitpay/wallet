@@ -13,7 +13,6 @@ import { AddressbookViewPage } from './view/view';
 export class AddressbookPage {
   private cache: boolean = false;
   public addressbook: object[] = [];
-  public filteredAddressbook: object[] = [];
 
   public isEmptyList: boolean;
   public showReorder: boolean;
@@ -49,7 +48,7 @@ export class AddressbookPage {
                 address: contact['address'],
                 email: contact['email'],
                 name: contact['name'],
-                order: value
+                order: value ? value : 0
               };
 
               contacts.push(entry);
@@ -112,7 +111,7 @@ export class AddressbookPage {
         let name = item['name'];
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });
-      this.filteredAddressbook = result;
+      this.addressbook = result;
     } else {
       // Reset items back to all of the items
       this.initAddressbook();
