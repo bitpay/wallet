@@ -1070,7 +1070,7 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts)
           .then(data => {
-            const coin = opts.coin == 'btc' ? '[BTC]' : '[BCH]';
+            const coin = `[${opts.coin.toUpperCase()}]`;
             const name =
               opts.name ||
               `${this.translate.instant('Personal Wallet')} ${coin}`;
