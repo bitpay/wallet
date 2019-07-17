@@ -654,13 +654,11 @@ export class HomePage {
       .catch(err => {
         this.processWalletError(wallet, err);
 
-        if (wallet.error) {
-          this.events.publish('Local/WalletUpdate', {
-            walletId: opts.walletId,
-            finished: true,
-            error: wallet.error
-          });
-        }
+        this.events.publish('Local/WalletUpdate', {
+          walletId: opts.walletId,
+          finished: true,
+          error: wallet.error
+        });
 
         if (opts.alsoUpdateHistory) {
           this.fetchTxHistory({ walletId: opts.walletId });
@@ -710,12 +708,6 @@ export class HomePage {
             wallet.id,
             wallet.cachedStatus.availableBalanceStr
           );
-
-          this.events.publish('Local/WalletUpdate', {
-            walletId: wallet.id,
-            finished: true
-          });
-
           return Promise.resolve();
         })
         .catch(err => {
