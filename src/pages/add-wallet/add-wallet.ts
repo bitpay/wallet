@@ -6,6 +6,7 @@ import { JoinWalletPage } from '../add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../add/select-currency/select-currency';
 
 // providers
+import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -17,13 +18,18 @@ import * as _ from 'lodash';
 })
 export class AddWalletPage {
   public walletsGroups;
+  public allowMultiplePrimaryWallets: boolean;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private configProvider: ConfigProvider
   ) {
+    const config = this.configProvider.get();
+    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
+
     this.walletsGroups = _.values(
       _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
         value.keyId = key;

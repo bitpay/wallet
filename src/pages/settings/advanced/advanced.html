@@ -17,4 +17,15 @@
       </div>
     </label-tip>
   </ion-list>
+  <ion-list class="settings-list">
+    <ion-item class="with-label no-border">
+      <ion-label>{{'Allow Multiple Primary Wallets' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="allowMultiplePrimaryWallets" (ionChange)="allowMultiplePrimaryWalletsChange()"></ion-toggle>
+    </ion-item>
+    <label-tip class="info" type="info" header="no-header">
+      <div label-tip-body>
+        <div translate>If enabled, the new wallets will have a separate backup phrase.</div>
+      </div>
+    </label-tip>
+  </ion-list>
 </ion-content>

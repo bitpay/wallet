@@ -1,7 +1,7 @@
 <wide-header-page title="{{'Add Wallet' | translate}}">
   <div page-content>
     <ion-list class="settings-list">
-      <button class="list-button" ion-item (click)="goToAddPage()">
+      <button class="list-button" ion-item (click)="goToAddPage()" *ngIf="allowMultiplePrimaryWallets">
         <ion-icon item-start>
           <img src="assets/img/add-wallet/wallet.svg" />
         </ion-icon>
