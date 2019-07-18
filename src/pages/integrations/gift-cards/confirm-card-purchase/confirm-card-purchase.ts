@@ -31,6 +31,7 @@ import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
+  getActivationFee,
   getVisibleDiscount,
   GiftCardProvider
 } from '../../../../providers/gift-card/gift-card';
@@ -70,6 +71,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public networkFee: number;
   public totalAmount: number;
   public totalDiscount: number;
+  public activationFee: number;
   public amountUnitStr: string;
   public network: string;
   public onlyIntegers: boolean;
@@ -149,6 +151,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.navParams.get('cardName')
     );
     this.onlyIntegers = this.cardConfig.currency === 'JPY';
+    this.activationFee = getActivationFee(this.amount, this.cardConfig);
   }
 
   ionViewDidLoad() {
@@ -228,7 +231,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const networkFee = await this.satToFiat(wallet.coin, networkFeeSat);
     this.networkFee = Number(networkFee);
     this.totalAmount =
-      this.amount - this.totalDiscount + this.invoiceFee + this.networkFee;
+      this.amount -
+      this.totalDiscount +
+      this.activationFee +
+      this.invoiceFee +
+      this.networkFee;
   }
 
   private isCryptoCurrencySupported(wallet, invoice) {

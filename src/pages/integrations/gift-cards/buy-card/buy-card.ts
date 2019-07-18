@@ -1,7 +1,10 @@
 import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ActionSheetProvider } from '../../../../providers';
-import { hasVisibleDiscount } from '../../../../providers/gift-card/gift-card';
+import {
+  getActivationFee,
+  hasVisibleDiscount
+} from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -73,9 +76,29 @@ export class BuyCardPage {
     this.nav.push(ConfirmCardPurchasePage, data);
   }
 
+  checkForActivationFee() {
+    const activationFee = getActivationFee(this.amount, this.cardConfig);
+    return activationFee > 0
+      ? this.showActivationFeeSheet(activationFee)
+      : this.continue();
+  }
+
+  showActivationFeeSheet(fee: number) {
+    const sheet = this.actionSheetProvider.createInfoSheet(
+      'activation-fee-included',
+      {
+        currency: this.cardConfig.currency,
+        displayName: this.cardConfig.displayName,
+        fee
+      }
+    );
+    this.zone.run(() => sheet.present());
+    sheet.onDidDismiss(ok => ok && this.continue());
+  }
+
   next() {
     this.cardConfig && this.cardConfig.supportedAmounts
-      ? this.continue()
+      ? this.checkForActivationFee()
       : this.enterAmount();
   }
 }

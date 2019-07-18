@@ -9,6 +9,7 @@ import { of } from 'rxjs/observable/of';
 import { mergeMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
 import { AnalyticsProvider } from '../analytics/analytics';
+import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
@@ -27,6 +28,7 @@ import {
   CardConfig,
   CardConfigMap,
   GiftCard,
+  GiftCardActivationFee,
   GiftCardSaveParams
 } from './gift-card.types';
 
@@ -45,6 +47,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   constructor(
     private analyticsProvider: AnalyticsProvider,
+    private appProvider: AppProvider,
     private configProvider: ConfigProvider,
     private imageLoader: ImageLoader,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -453,7 +456,11 @@ export class GiftCardProvider extends InvoiceProvider {
   async fetchAvailableCardMap() {
     const url = `${this.credentials.BITPAY_API_URL}/gift-cards/cards`;
     const availableCardMap = (await this.http
-      .get(url)
+      .get(url, {
+        headers: {
+          'x-bitpay-version': this.appProvider.info.version
+        }
+      })
       .toPromise()) as AvailableCardMap;
     this.cacheApiCardConfig(availableCardMap);
     return availableCardMap;
@@ -561,7 +568,7 @@ function getCardConfigFromApiConfigMap(
   isCordova: boolean
 ) {
   const cardNames = Object.keys(availableCardMap);
-  return cardNames
+  const availableCards = cardNames
     .filter(
       cardName =>
         availableCardMap[cardName] && availableCardMap[cardName].length
@@ -570,6 +577,7 @@ function getCardConfigFromApiConfigMap(
       getCardConfigFromApiBrandConfig(cardName, availableCardMap[cardName])
     )
     .map(cardConfig => removeDiscountsIfNotMobile(cardConfig, isCordova));
+  return availableCards;
 }
 
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
@@ -600,8 +608,14 @@ function getCardConfigFromApiBrandConfig(
     )
     .sort((a, b) => a - b);
 
+  const activationFees = cards
+    .filter(c => c.activationFees)
+    .reduce(
+      (allFees, card) => allFees.concat(card.activationFees),
+      [] as GiftCardActivationFee[]
+    );
   const { amount, type, maxAmount, minAmount, ...config } = firstCard;
-  const baseConfig = { ...config, name: cardName };
+  const baseConfig = { ...config, name: cardName, activationFees };
 
   return range
     ? {
@@ -610,6 +624,20 @@ function getCardConfigFromApiBrandConfig(
         maxAmount: range.maxAmount
       }
     : { ...baseConfig, supportedAmounts };
+}
+
+export function getActivationFee(
+  amount: number,
+  cardConfig: CardConfig
+): number {
+  const activationFees = (cardConfig && cardConfig.activationFees) || [];
+  const fixedFee = activationFees.find(
+    fee =>
+      fee.type === 'fixed' &&
+      amount >= fee.amountRange.min &&
+      amount <= fee.amountRange.max
+  );
+  return (fixedFee && fixedFee.fee) || 0;
 }
 
 export function filterDisplayableConfig(cardConfig: CardConfig) {
