@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -11,7 +10,6 @@ import { DerivationPathHelperProvider } from '../../../providers/derivation-path
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -40,7 +38,7 @@ export class WalletSettingsPage {
   public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
   public derivationStrategy: string;
-  public deleted: boolean;
+  public deleted: boolean = false;
   private config;
 
   constructor(
@@ -57,25 +55,13 @@ export class WalletSettingsPage {
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private persistenceProvider: PersistenceProvider,
-    private platformProvider: PlatformProvider,
-    private statusBar: StatusBar,
     private events: Events
   ) {
-    this.deleted = false;
-  }
-
-  ionViewWillLeave() {
-    if (
-      this.platformProvider.isCordova &&
-      this.navCtrl.getPrevious().name === 'WalletDetailsPage'
-    ) {
-      this.statusBar.styleBlackOpaque();
-    }
+    this.logger.info('Loaded:  WalletSettingsPage');
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
   ionViewWillEnter() {
-    this.logger.info('Loaded:  WalletSettingsPage');
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
       this.wallet.credentials.rootPath
     );
@@ -230,6 +216,7 @@ export class WalletSettingsPage {
   }
 
   public hiddenWalletChange(walletId: string): void {
+    if (!walletId) return;
     this.profileProvider.toggleHideWalletFlag(walletId);
     this.events.publish('Local/WalletListChange');
   }
