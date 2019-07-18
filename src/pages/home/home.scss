@@ -319,6 +319,16 @@ page-home {
     }
   }
 
+  ion-item-sliding.card-item-sliding {
+    padding-bottom: 1rem;
+    button.item.item-block {
+      border-radius: 5px;
+      .item-inner {
+        border: 0;
+      }
+    }
+  }
+
   .bitpay-card {
     .card-item {
       button {
