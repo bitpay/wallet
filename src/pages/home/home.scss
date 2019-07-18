@@ -19,21 +19,18 @@ page-home {
   }
 
   .home-header {
-    .scan-button {
-      margin-right: 1rem;
-      display: flex;
-      justify-content: flex-end;
-      .scan-img {
-        mask-image: url(../assets/img/scan.svg);
-        background-color: color($colors, secondary);
-        height: 3rem;
-        width: 3rem;
-        mask-repeat: no-repeat;
-        mask-position: 50% 50%;
-      }
+    .notifications-badge {
+      border-radius: 9px;
+      font-size: 15px;
+      padding: 3px 7px;
+      padding-top: 4px;
+      font-weight: 600;
+      margin-right: 5px;
     }
 
     .settings-button {
+      margin-right: 1rem;
+
       img {
         opacity: 0.6;
       }
@@ -56,12 +53,6 @@ page-home {
       height: 24px;
       position: relative;
       top: 3px;
-    }
-
-    button.copay {
-      img {
-        filter: grayscale(100%);
-      }
     }
   }
 
@@ -229,30 +220,21 @@ page-home {
     font-weight: 500;
     margin-bottom: 10px;
     margin-top: 20px;
-    .wallet-options {
-      height: 20px;
-      display: flex;
-      align-items: center;
-      .reorder-button {
-        ion-icon {
-          color: color($colors, primary);
-          font-size: 24px;
-        }
-      }
-    }
-    .notifications-badge {
-      border-radius: 9px;
-      font-size: 13px;
-      padding-top: 2px;
-      font-weight: 600;
-      margin-left: 10px;
-    }
-    .wallet-group-dropdown {
-      display: flex;
-      ion-icon {
-        margin-left: 10px;
-      }
-    }
+  }
+
+  .add-card-button {
+    @include center;
+    background: #f4f5fb;
+    color: #5f7bf7;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    width: 92%;
+    margin: 15px auto;
+    margin-top: 0;
+    height: 73px;
   }
 
   // Styles for gift cards and Bitpay cards
@@ -284,12 +266,11 @@ page-home {
     background: none;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
-    padding-bottom: 1rem;
 
     ion-item-options {
       border-bottom: 0;
       margin-top: 1px;
-      height: $gift-card-item-height + 14px;
+      height: $gift-card-item-height + 16px;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -320,12 +301,10 @@ page-home {
 
     button.item.item-block {
       font-size: 16px;
-      border-radius: 5px;
       box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
 
       .item-inner {
-        border: 0;
-        height: $gift-card-item-height;
+        height: $gift-card-item-height + 16px;
 
         ion-label {
           &.label-ios,
@@ -336,6 +315,16 @@ page-home {
             margin: 0;
           }
         }
+      }
+    }
+  }
+
+  ion-item-sliding.card-item-sliding {
+    padding-bottom: 1rem;
+    button.item.item-block {
+      border-radius: 5px;
+      .item-inner {
+        border: 0;
       }
     }
   }
@@ -373,19 +362,22 @@ page-home {
     }
   }
 
-  .add-card-button {
-    @include center;
-    background: #f4f5fb;
-    color: #5f7bf7;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 18px;
+  .scan-button {
+    position: absolute;
+    z-index: 9;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 27px 22px 26px 19px;
+    border-radius: 30px;
+    box-shadow: 0 7px 31px 0 rgba(0, 0, 0, 0.17);
+    color: white;
     font-weight: 500;
-    text-align: center;
-    width: 92%;
-    margin: 15px auto;
-    margin-top: 0;
-    height: 73px;
+
+    ion-avatar {
+      margin-top: -3px;
+      margin-right: 10px;
+    }
   }
 
   ion-fab {
@@ -459,6 +451,19 @@ page-home {
   .sliding-container {
     height: auto;
 
+    .ng-star-inserted:first-child .item.item-block {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .ng-star-inserted:last-child .item.item-block {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      .item-inner {
+        border: 0;
+      }
+    }
+
     button.item {
       &.activated {
         background-color: $feather;
@@ -467,7 +472,7 @@ page-home {
 
     .item-inner {
       text-align: right;
-      margin: 8px 2px 8px 0;
+      margin: 0 2px 0 0;
     }
 
     .action {
@@ -508,18 +513,11 @@ page-home {
     }
 
     &.wallets {
-      margin-top: 16px;
-
       button.item.item-block {
         div.item-inner {
           display: flex;
           align-items: center;
         }
-      }
-
-      ion-item-sliding.item-wrapper {
-        height: 93px;
-        margin: -8px 0;
       }
     }
 

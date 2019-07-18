@@ -103,6 +103,22 @@
         </ion-list>
       </div>
 
+      <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
+        {{'Primary Wallets' | translate}}
+      </ion-item-divider>
+
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/add-wallet/wallet.svg" class="icon-settings" />
+        </ion-icon>
+        <ion-label>
+          <span *ngIf="walletsGroup.name">{{walletsGroup.name}}</span>
+        </ion-label>
+      </button>
+      <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
+        Add Wallet
+      </button>
+
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
       </ion-item-divider>
@@ -118,19 +134,6 @@
             {{integration.show ? ('On'|translate) : ('Off'|translate)}}
           </span>
         </ion-note>
-      </button>
-
-      <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
-        {{'Profiles' | translate}}
-      </ion-item-divider>
-
-      <button ion-item *ngFor="let walletsGroup of walletsGroups" (click)="openWalletGroupSettings(walletsGroup)">
-        <ion-icon class="item-img" item-start>
-          <img src="assets/img/add-wallet/wallet.svg" class="icon-settings" />
-        </ion-icon>
-        <ion-label>
-          {{walletsGroup.name}}
-        </ion-label>
       </button>
 
       <ion-item-divider>{{'More' | translate}}</ion-item-divider>

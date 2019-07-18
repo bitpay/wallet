@@ -17,6 +17,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { AddPage } from '../add/add';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
@@ -83,6 +84,7 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
+
     const walletsGroups = _.values(
       _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
         value.keyId = key;
@@ -258,5 +260,9 @@ export class SettingsPage {
 
   public openWalletGroupSettings(walletGroup): void {
     this.navCtrl.push(WalletGroupSettingsPage, { keyId: walletGroup.keyId });
+  }
+
+  public goToAddView(): void {
+    this.navCtrl.push(AddPage);
   }
 }

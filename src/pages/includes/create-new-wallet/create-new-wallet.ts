@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Pages
-import { AddWalletPage } from '../../add-wallet/add-wallet';
+import { AddPage } from '../../add/add';
 
 @Component({
   selector: 'create-new-wallet',
@@ -12,6 +12,6 @@ export class CreateNewWalletPage {
   constructor(private navCtrl: NavController) {}
 
   public goToAddWalletPage() {
-    this.navCtrl.push(AddWalletPage);
+    this.navCtrl.push(AddPage);
   }
 }

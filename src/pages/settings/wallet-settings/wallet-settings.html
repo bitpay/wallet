@@ -1,44 +1,56 @@
-<wide-header-page title="{{'Wallet Preferences' | translate}}">
-  <div page-content>
-    <ion-list class="settings-list">
-      <ion-item-divider class="item-without-title"></ion-item-divider>
-      <button ion-item (click)="openWalletName()">
-        <div translate float-left>Name</div>
-        <ion-note item-end>
-          {{wallet && wallet.name}}
-        </ion-note>
-      </button>
-      <ion-item>
-        <ion-label>{{'Hide Balance' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
-      </ion-item>
-      <ion-item-divider *ngIf="canSign && touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
-      <div *ngIf="canSign && touchIdAvailable">
-        <ion-item>
-          <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
-          <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
-        </ion-item>
+<ion-header>
+  <ion-navbar [navbar-bg]="wallet?.color">
+    <ion-title>{{'Wallet Settings' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="settings-list">
+    <button ion-item (click)="openWalletName()">
+      <div translate float-left>Name</div>
+      <ion-note item-end>
+        {{wallet && wallet.name}}
+      </ion-note>
+    </button>
+    <ion-item>
+      <ion-label>Enabled</ion-label>
+      <ion-toggle checked="{{!wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
+    </ion-item>
+    <label-tip class="info" type="info" header="no-header">
+      <div label-tip-body translate>
+        The wallet won't be removed from this device. You can enable/hidden whenever you need it.
       </div>
-      <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
-      <button ion-item (click)="openWalletInformation()">
-        <span translate>Information</span>
-      </button>
-      <button ion-item (click)="openWalletAddresses()">
-        <span translate>Addresses</span>
-      </button>
-      <button ion-item *ngIf="derivationStrategy != 'BIP45'" (click)="openExportWallet()">
-        <span translate>Export Wallet Metadata</span>
-      </button>
-      <button ion-item (click)="openWalletServiceUrl()">
-        <span>Wallet Service URL</span>
-      </button>
-      <button ion-item (click)="openTransactionHistory()">
-        <span translate>Transaction History</span>
-      </button>
-      <button ion-item (click)="openDuplicateWallet()" *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc' && showDuplicateWallet">
-        <span translate>Duplicate</span>
-      </button>
-      <ion-item-divider></ion-item-divider>
-    </ion-list>
-  </div>
-</wide-header-page>
+    </label-tip>
+    <ion-item>
+      <ion-label>{{'Hide Balance' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
+    </ion-item>
+    <ion-item-divider *ngIf="canSign && touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
+    <div *ngIf="canSign && touchIdAvailable">
+      <ion-item>
+        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+      </ion-item>
+    </div>
+    <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
+    <button ion-item (click)="openWalletInformation()">
+      <span translate>Information</span>
+    </button>
+    <button ion-item (click)="openWalletAddresses()">
+      <span translate>Addresses</span>
+    </button>
+    <button ion-item *ngIf="derivationStrategy != 'BIP45'" (click)="openExportWallet()">
+      <span translate>Export Wallet Metadata</span>
+    </button>
+    <button ion-item (click)="openWalletServiceUrl()">
+      <span>Wallet Service URL</span>
+    </button>
+    <button ion-item (click)="openTransactionHistory()">
+      <span translate>Transaction History</span>
+    </button>
+    <button ion-item (click)="openDuplicateWallet()" *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc' && showDuplicateWallet">
+      <span translate>Duplicate</span>
+    </button>
+    <ion-item-divider></ion-item-divider>
+  </ion-list>
+</ion-content>

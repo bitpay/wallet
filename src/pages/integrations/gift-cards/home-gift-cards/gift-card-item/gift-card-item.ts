@@ -20,7 +20,7 @@ export type CardItemAction = 'archive' | 'view';
 @Component({
   selector: 'gift-card-item',
   template: `
-    <ion-item-sliding #slidingItem>
+    <ion-item-sliding class="card-item-sliding" #slidingItem>
       <button ion-item (click)="performAction('view')">
         <img-loader class="logo" [src]="cardConfig?.logo"></img-loader>
         <ion-note

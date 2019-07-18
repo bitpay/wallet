@@ -22,7 +22,6 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletGroupSelectorPage } from '../pages/wallet-group-selector/wallet-group-selector';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
 
@@ -82,10 +81,8 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
-import { EnabledWalletsPage } from '../pages/settings/wallet-group-settings/enabled-wallets/enabled-wallets';
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
-import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
@@ -158,7 +155,6 @@ export const PAGES = [
   ...GIFT_CARD_PAGES,
   GravatarPage,
   FingerprintModalPage,
-  EnabledWalletsPage,
   HomePage,
   LanguagePage,
   LockPage,
@@ -200,9 +196,7 @@ export const PAGES = [
   WalletDuplicatePage,
   WalletGroupExtendedPrivateKeyPage,
   WalletGroupDeletePage,
-  WalletGroupSelectorPage,
   WalletGroupSettingsPage,
-  WalletGroupNamePage,
   WalletDetailsPage,
   WalletTabsChild,
   WalletTabsPage,
