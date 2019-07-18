@@ -102,7 +102,6 @@
     <div class="section-header" *ngIf="walletsGroups && walletsGroups.length > 0" translate>Wallets</div>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header"></div>
       <ion-list class="sliding-container wallets">
         <div *ngFor="let wallet of walletGroup">
           <ion-item-sliding #slidingItem>
@@ -122,12 +121,6 @@
               </button>
             </ion-item-options>
           </ion-item-sliding>
-          <label-tip type="info" *ngIf="!wallet.isComplete()">
-            <span label-tip-title translate>Wallet Incomplete</span>
-            <div label-tip-body>
-              <span translate>This wallet is waiting for authorized users/devices to join.</span>
-            </div>
-          </label-tip>
         </div>
       </ion-list>
     </div>
