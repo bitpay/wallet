@@ -55,7 +55,7 @@ export class WalletGroupSettingsPage {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
-    this.wallets = this.profileProvider.getWallets({ keyId: this.keyId });
+    this.wallets = this.profileProvider.getWallets({ keyId: this.keyId, showHidden: true });
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;

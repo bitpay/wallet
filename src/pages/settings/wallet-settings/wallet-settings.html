@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar [navbar-bg]="wallet?.color">
-    <ion-title>{{'Account Preferences' | translate}}</ion-title>
+    <ion-title>{{'Wallet Settings' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,6 +12,15 @@
           {{wallet && wallet.name}}
         </ion-note>
       </button>
+      <ion-item>
+        <ion-label>Enabled</ion-label>
+        <ion-toggle checked="{{!wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id, wallet.hidden)"></ion-toggle>
+      </ion-item>
+      <label-tip class="info" type="info" header="no-header">
+        <div label-tip-body translate>
+          The wallet won't be removed from this device. You can enable/hidden whenever you need it.
+        </div>
+      </label-tip>
       <ion-item>
         <ion-label>{{'Hide Balance' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
