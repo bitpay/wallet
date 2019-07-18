@@ -1,7 +1,7 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
   <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
     [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
-  <ion-item-sliding #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view
+  <ion-item-sliding class="card-item-sliding" #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view
     [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView('Home Gift Card List Discount Item')"
     [@archiveAnimation]>
     <button ion-item *ngIf="discountedCard" class="discount-item"
