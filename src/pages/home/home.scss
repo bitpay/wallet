@@ -270,7 +270,7 @@ page-home {
     ion-item-options {
       border-bottom: 0;
       margin-top: 1px;
-      height: $gift-card-item-height + 14px;
+      height: $gift-card-item-height + 16px;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -304,7 +304,7 @@ page-home {
       box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
 
       .item-inner {
-        height: $gift-card-item-height;
+        height: $gift-card-item-height + 16px;
 
         ion-label {
           &.label-ios,
@@ -472,7 +472,7 @@ page-home {
 
     .item-inner {
       text-align: right;
-      margin: 8px 2px 8px 0;
+      margin: 0 2px 0 0;
     }
 
     .action {
@@ -513,8 +513,6 @@ page-home {
     }
 
     &.wallets {
-      margin-top: 16px;
-
       button.item.item-block {
         div.item-inner {
           display: flex;
