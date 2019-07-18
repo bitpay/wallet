@@ -7,7 +7,6 @@
       </div>
     </label-tip>
     <ion-list class="settings-list">
-
       <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
         <div translate float-left>Name</div>
         <div text-end text-wrap ion-text color="light-grey">
@@ -15,8 +14,17 @@
         </div>
       </button>
 
-      <button ion-item (click)="openEnabledWalletsPage()">
-        <span translate>Enabled Wallets</span>
+      <ion-item-divider>{{'Wallets' | translate}}</ion-item-divider>
+      <button ion-item *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" />
+        </ion-icon>
+        <ion-label>
+          {{wallet.name}}
+        </ion-label>
+        <ion-note item-end>
+          {{ wallet.hidden ? ('Hidden'|translate) : ('Enabled'|translate) }}
+        </ion-note>
       </button>
 
       <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
@@ -54,7 +62,7 @@
 
       <button ion-item (click)="openWalletGroupDelete()">
         <span translate>Delete</span>
-      </button>
+      </button> 
     </ion-list>
   </div>
 </wide-header-page>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
@@ -58,15 +58,10 @@ export class WalletSettingsPage {
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private persistenceProvider: PersistenceProvider,
     private platformProvider: PlatformProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private events: Events
   ) {
     this.deleted = false;
-  }
-
-  ionViewWillEnter() {
-    if (this.platformProvider.isCordova) {
-      this.statusBar.styleDefault();
-    }
   }
 
   ionViewWillLeave() {
@@ -78,7 +73,7 @@ export class WalletSettingsPage {
     }
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
@@ -232,5 +227,10 @@ export class WalletSettingsPage {
     this.navCtrl.push(WalletDuplicatePage, {
       walletId: this.wallet.credentials.walletId
     });
+  }
+
+  public hiddenWalletChange(walletId: string): void {
+    this.profileProvider.toggleHideWalletFlag(walletId);
+    this.events.publish('Local/WalletListChange');
   }
 }
