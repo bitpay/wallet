@@ -14,7 +14,7 @@
       </button>
       <ion-item>
         <ion-label>Enabled</ion-label>
-        <ion-toggle checked="{{!wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id, wallet.hidden)"></ion-toggle>
+        <ion-toggle checked="{{!wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
       </ion-item>
       <label-tip class="info" type="info" header="no-header">
         <div label-tip-body translate>

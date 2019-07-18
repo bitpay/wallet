@@ -47,11 +47,12 @@ export class WalletGroupSettingsPage {
     private translate: TranslateService,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider
-  ) {}
-
-  ionViewWillEnter() {
+  ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
+  }
+
+  ionViewWillEnter() {
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     this.wallets = this.profileProvider.getWallets({
       keyId: this.keyId,
@@ -141,20 +142,20 @@ export class WalletGroupSettingsPage {
       });
     } else {
       this.navCtrl.push(BackupKeyPage, {
-        keyId: this.navParams.data.keyId
+        keyId: this.keyId
       });
     }
   }
 
   public openWalletGroupDelete(): void {
     this.navCtrl.push(WalletGroupDeletePage, {
-      keyId: this.navParams.data.keyId
+      keyId: this.keyId
     });
   }
 
   public openWalletGroupExtendedPrivateKey(): void {
     this.navCtrl.push(WalletGroupExtendedPrivateKeyPage, {
-      keyId: this.navParams.data.keyId
+      keyId: this.keyId
     });
   }
 
