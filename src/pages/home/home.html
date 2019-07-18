@@ -102,7 +102,6 @@
     <div class="section-header" *ngIf="walletsGroups && walletsGroups.length > 0" translate>Wallets</div>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header"></div>
       <ion-list class="sliding-container wallets">
         <div *ngFor="let wallet of walletGroup">
           <ion-item-sliding #slidingItem>
@@ -122,12 +121,6 @@
               </button>
             </ion-item-options>
           </ion-item-sliding>
-          <label-tip type="info" *ngIf="!wallet.isComplete()">
-            <span label-tip-title translate>Wallet Incomplete</span>
-            <div label-tip-body>
-              <span translate>This wallet is waiting for authorized users/devices to join.</span>
-            </div>
-          </label-tip>
         </div>
       </ion-list>
     </div>
@@ -144,7 +137,7 @@
         wallets[0]
       ">
       <div *ngFor="let card of bitpayCardItems" class="card-item sliding-container">
-        <ion-item-sliding>
+        <ion-item-sliding class="card-item-sliding">
           <button ion-item (click)="goToCard(card.id)">
             <img src="assets/img/app/logo-negative.svg" />
             <ion-note class="ellipsis" item-end>
@@ -176,7 +169,7 @@
       ">
       <div class="section-header" translate>Services</div>
       <div *ngFor="let service of (homeIntegrations | orderBy: ['title'])" class="card-item sliding-container">
-        <ion-item-sliding>
+        <ion-item-sliding class="card-item-sliding">
           <button ion-item (click)="goTo(service.page, service.name)" [ngStyle]="{'background': service.background}">
             <img src="{{service.logo}}" width="145" alt="{{ service.title || service.name }}" />
           </button>
