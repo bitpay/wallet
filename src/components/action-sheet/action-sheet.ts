@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, NgZone } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { DomProvider } from '../../providers/dom/dom';
@@ -15,7 +15,11 @@ export class ActionSheetComponent {
   @HostBinding('class.open')
   public slideIn: boolean = false;
 
-  constructor(private domProvider: DomProvider, private platform: Platform) {}
+  constructor(
+    private domProvider: DomProvider,
+    private platform: Platform,
+    private zone: NgZone
+  ) {}
 
   ngOnInit() {
     this.overrideHardwareBackButton();
@@ -24,11 +28,11 @@ export class ActionSheetComponent {
   public async present(componentRef: any) {
     this.parentComponentRef = componentRef;
     await Observable.timer(50).toPromise();
-    this.slideIn = true;
+    this.zone.run(() => (this.slideIn = true));
   }
 
   public async dismiss(data?: any): Promise<void> {
-    this.slideIn = false;
+    this.zone.run(() => (this.slideIn = false));
     this.dismissFunction && this.dismissFunction(data);
     await Observable.timer(this.transitionDuration).toPromise();
     this.domProvider.removeComponent(this.parentComponentRef);

@@ -49,6 +49,14 @@
             {{currencyIsoCode}}
           </ion-note>
         </ion-item>
+        <ion-item *ngIf="activationFee">
+          <span>{{'Activation Fee' | translate}}</span>
+          <ion-note item-end>
+            <span *ngIf="onlyIntegers">{{activationFee | number : '1.0-0'}}</span>
+            <span *ngIf="!onlyIntegers">{{activationFee | number : '1.2-2'}}</span>
+            {{currencyIsoCode}}
+          </ion-note>
+        </ion-item>
         <ion-item *ngIf="totalDiscount">
           <span>{{'Discount' | translate}}</span>
           <ion-note item-end>

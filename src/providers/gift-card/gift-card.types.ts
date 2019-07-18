@@ -11,7 +11,17 @@ export interface GiftCardDiscount {
   amount: number;
 }
 
+export interface GiftCardActivationFee {
+  amountRange: {
+    min: number;
+    max: number;
+  };
+  fee: number;
+  type: 'fixed' | 'percentage';
+}
+
 export interface CommonCardConfig {
+  activationFees?: GiftCardActivationFee[];
   cardImage: string;
   currency: string;
   defaultClaimCodeType: ClaimCodeType;
@@ -28,6 +38,7 @@ export interface CommonCardConfig {
   minAmount?: number;
   maxAmount?: number;
   printRequired?: boolean;
+  redeemButtonText?: string;
   redeemInstructions?: string;
   redeemUrl?: string;
   terms: string;

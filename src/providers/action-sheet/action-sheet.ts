@@ -7,6 +7,7 @@ import { WalletSelectorComponent } from '../../components/wallet-selector/wallet
 import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
+  | 'activation-fee-included'
   | 'address-copied'
   | 'archive-all-gift-cards'
   | 'archive-gift-card'
