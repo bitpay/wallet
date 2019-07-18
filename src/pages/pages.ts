@@ -22,7 +22,6 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletGroupSelectorPage } from '../pages/wallet-group-selector/wallet-group-selector';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
 
@@ -200,7 +199,6 @@ export const PAGES = [
   WalletDuplicatePage,
   WalletGroupExtendedPrivateKeyPage,
   WalletGroupDeletePage,
-  WalletGroupSelectorPage,
   WalletGroupSettingsPage,
   WalletGroupNamePage,
   WalletDetailsPage,

@@ -12,27 +12,22 @@ import { CreateWalletPage } from '../create-wallet/create-wallet';
 })
 export class SelectCurrencyPage {
   public coin: string;
-  private isShared: boolean;
-  private addingNewWallet: boolean;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
     private navParam: NavParams
-  ) {
-    this.isShared = this.navParam.data.isShared;
-    this.addingNewWallet = this.navParam.data.addingNewWallet;
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SelectCurrencyPage');
   }
 
-  public goToCreateWallet(coin): void {
+  public goToCreateWallet(coin: string): void {
     this.navCtrl.push(CreateWalletPage, {
-      isShared: this.isShared,
+      isShared: this.navParam.data.isShared,
       coin,
-      addingNewWallet: this.addingNewWallet
+      keyId: this.navParam.data.keyId
     });
   }
 }

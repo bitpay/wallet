@@ -26,11 +26,6 @@ import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
-import {
-  ModalEnterFadeIn,
-  ModalLeaveFadeOut
-} from '../assets/transitions/ionic-modal-transition-pack';
-
 /* Copay App */
 import env from '../environments';
 import { CopayApp } from './app.component';
@@ -146,12 +141,5 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
   ]
 })
 export class AppModule {
-  constructor(public config: Config) {
-    this.setCustomTransitions();
-  }
-
-  private setCustomTransitions() {
-    this.config.setTransition('ModalEnterFadeIn', ModalEnterFadeIn);
-    this.config.setTransition('ModalLeaveFadeOut', ModalLeaveFadeOut);
-  }
+  constructor(public config: Config) {}
 }

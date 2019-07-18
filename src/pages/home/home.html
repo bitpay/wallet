@@ -1,21 +1,21 @@
 <ion-header>
   <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
-    <ion-buttons left class="settings-button">
+    <ion-title>
+      <img class="home-logo" src="assets/img/app/logo.svg" />
+    </ion-title>
+    <ion-buttons right class="settings-button">
+      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
+        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
+      </button>
       <button class="modal-close-button" (click)="settings()" ion-button>
         <img src="assets/img/settings.svg" />
       </button>
     </ion-buttons>
-    <ion-title>
-      <img class="home-logo" src="assets/img/app/logo.svg" />
-    </ion-title>
-    <div class="scan-button" *ngIf="wallets && wallets[0]" (click)="scan()">
-      <div class="scan-img"></div>
-    </div>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="fullscreen-tab" [ngClass]="{blur: isBlur}" #scrollArea>
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorder" pullMin="90" pullMax="180">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -99,43 +99,12 @@
       </ion-card-content>
     </ion-card>
 
-    <div class="wallets-container">
-      <div class="section-header">
-        <span class="wallet-group-dropdown" *ngIf="selectedWalletGroup" (click)="openWalletGroupSelectorModal()">
-          <span class="ellipsis">{{selectedWalletGroup.name}}</span>
-          <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
-        </span>
-        <div class="wallet-options" *ngIf="wallets && wallets.length">
-          <span *ngIf="!showReorder" (click)="reorder()" class="reorder-button" tappable>
-            <ion-icon name="ios-create-outline"></ion-icon>
-          </span>
-          <span *ngIf="showReorder" (click)="reorder()" class="reorder-done" tappable>
-            {{'Done' | translate}}
-          </span>
-          <span icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
-            <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
-          </span>
-        </div>
-      </div>
+    <div class="section-header" *ngIf="walletsGroups && walletsGroups.length > 0" translate>Wallets</div>
 
-      <div *ngIf="showReorder || !(wallets && wallets.length)" class="add-card-button" (click)="goToAddView()" translate>Add Wallet</div>
-
-      <label-tip class="no-arrowhead" type="warn" *ngIf="!showReorder && selectedWalletGroup && selectedWalletGroup.needsBackup" margin-top>
-        <span label-tip-title translate>Profile Needs Backup</span>
-        <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
-        </div>
-      </label-tip>
-
-      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)" *ngIf="showReorder">
-        <ion-item-sliding *ngFor="let wallet of wallets" #slidingItem>
-          <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
-            <wallet-item-content [wallet]="wallet"></wallet-item-content>
-          </button>
-        </ion-item-sliding>
-      </ion-list>
-      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)" *ngIf="!showReorder">
-        <div *ngFor="let wallet of wallets">
+    <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
+      <div class="section-header"></div>
+      <ion-list class="sliding-container wallets">
+        <div *ngFor="let wallet of walletGroup">
           <ion-item-sliding #slidingItem>
             <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
               <wallet-item-content [wallet]="wallet"></wallet-item-content>
@@ -215,5 +184,10 @@
       </div>
     </div>
   </div>
+
+  <button *ngIf="wallets && wallets[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
+    <ion-avatar item-start> <img src="assets/img/scan.svg" /> </ion-avatar>
+    <div>Scan</div>
+  </button>
 
 </ion-content>

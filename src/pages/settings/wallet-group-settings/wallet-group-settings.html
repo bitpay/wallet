@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Profile Settings' | translate}}">
+<wide-header-page title="{{'Wallets Settings' | translate}}">
   <div page-content>
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
@@ -6,7 +6,7 @@
         This wallet is 'Read Only', so the private key is not available.
       </div>
     </label-tip>
-    <ion-list class="settings-list"> 
+    <ion-list class="settings-list">
 
       <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
         <div translate float-left>Name</div>
