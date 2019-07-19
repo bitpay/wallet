@@ -12,14 +12,11 @@
         <span translate> It's recommended that you write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
       </div>
     </label-tip>
-
     <div class="mnemonicPhraseContainer" *ngIf="!mnemonicEncrypted">
-      <div class="title"> {{"Mnemonic Phrase" | translate}}</div>
-
+      <div class="mnemonic-title"> {{"Mnemonic Phrase" | translate}}</div>
       <div class="mnemonic-word-container">
         {{mnemonicPhrase}}
       </div>
-
       <button ion-button class="button-standard" copy-to-clipboard="{{mnemonicPhrase}}">
         {{'Copy to clipboard' | translate}}
       </button>
