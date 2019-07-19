@@ -13,11 +13,10 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
+import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
-import { EnabledWalletsPage } from './enabled-wallets/enabled-wallets';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
-import { WalletGroupNamePage } from './wallet-group-name/wallet-group-name';
 
 @Component({
   selector: 'page-wallet-group-settings',
@@ -48,12 +47,17 @@ export class WalletGroupSettingsPage {
     private translate: TranslateService,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider
-  ) {}
-
-  async ionViewDidLoad() {
+  ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
+  }
+
+  ionViewWillEnter() {
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
+    this.wallets = this.profileProvider.getWallets({
+      keyId: this.keyId,
+      showHidden: true
+    });
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
@@ -127,42 +131,31 @@ export class WalletGroupSettingsPage {
   }
 
   public openBackupSettings(): void {
-    const opts = {
-      keyId: this.keyId
-    };
-    const wallets = this.profileProvider.getWallets(opts);
-
     const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      wallets[0].credentials.rootPath
+      this.wallets[0].credentials.rootPath
     );
 
     if (derivationStrategy == 'BIP45') {
       this.navCtrl.push(WalletExportPage, {
-        walletId: wallets[0].credentials.walletId,
+        walletId: this.wallets[0].credentials.walletId,
         showNoPrivKeyOpt: true
       });
     } else {
       this.navCtrl.push(BackupKeyPage, {
-        keyId: this.navParams.data.keyId
+        keyId: this.keyId
       });
     }
   }
 
-  public openWalletGroupName(): void {
-    this.navCtrl.push(WalletGroupNamePage, {
-      keyId: this.navParams.data.keyId
-    });
-  }
-
   public openWalletGroupDelete(): void {
     this.navCtrl.push(WalletGroupDeletePage, {
-      keyId: this.navParams.data.keyId
+      keyId: this.keyId
     });
   }
 
   public openWalletGroupExtendedPrivateKey(): void {
     this.navCtrl.push(WalletGroupExtendedPrivateKeyPage, {
-      keyId: this.navParams.data.keyId
+      keyId: this.keyId
     });
   }
 
@@ -184,9 +177,7 @@ export class WalletGroupSettingsPage {
     );
   }
 
-  public openEnabledWalletsPage(): void {
-    this.navCtrl.push(EnabledWalletsPage, {
-      keyId: this.navParams.data.keyId
-    });
+  openWalletSettings(id) {
+    this.navCtrl.push(WalletSettingsPage, { walletId: id });
   }
 }

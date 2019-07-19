@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
 // providers
+import { DerivationPathHelperProvider } from '../../providers/derivation-path-helper/derivation-path-helper';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
@@ -59,7 +60,8 @@ export class ProfileProvider {
     private translate: TranslateService,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -295,7 +297,8 @@ export class ProfileProvider {
       name,
       isPrivKeyEncrypted,
       canSign,
-      isDeletedSeed;
+      isDeletedSeed,
+      canAddAccount;
 
     if (keyId) {
       groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
@@ -309,6 +312,7 @@ export class ProfileProvider {
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      canAddAccount = this.checkAccountCreation(wallet);
     } else {
       keyId = 'read-only';
       needsBackup = false;
@@ -316,9 +320,11 @@ export class ProfileProvider {
       isPrivKeyEncrypted = false;
       canSign = false;
       isDeletedSeed = true;
+      canAddAccount = false;
     }
 
     wallet.needsBackup = needsBackup;
+    wallet.keyId = keyId;
 
     this.walletsGroups[keyId] = {
       order,
@@ -326,7 +332,8 @@ export class ProfileProvider {
       isPrivKeyEncrypted,
       needsBackup,
       canSign,
-      isDeletedSeed
+      isDeletedSeed,
+      canAddAccount
     };
 
     let date;
@@ -338,6 +345,45 @@ export class ProfileProvider {
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
     return Promise.resolve(true);
+  }
+
+  public checkAccountCreation(wallet): boolean {
+    /* Allow account creation only for wallets:
+    n=1 : BIP44 - P2PKH - BTC o BCH only if it is 145'
+    n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
+    */
+
+    if (!wallet) {
+      return false;
+    } else if (this.keyProvider.isDeletedSeed(wallet.credentials.keyId)) {
+      return false;
+    } else {
+      const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        wallet.credentials.rootPath
+      );
+
+      const coinCode = this.derivationPathHelperProvider.parsePath(
+        wallet.credentials.rootPath
+      ).coinCode;
+
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        (wallet.coin == 'btc' || (wallet.coin == 'bch' && coinCode == "145'"))
+      ) {
+        return true;
+      }
+      if (
+        wallet.n > 1 &&
+        wallet.credentials.addressType == 'P2SH' &&
+        derivationStrategy == 'BIP48' &&
+        (wallet.coin == 'btc' || (wallet.coin == 'bch' && coinCode == "145'"))
+      ) {
+        return true;
+      }
+      return false;
+    }
   }
 
   public setFastRefresh(wallet): void {
@@ -873,7 +919,6 @@ export class ProfileProvider {
       return this.keyProvider.addKeys(newKeys).then(() => {
         profile.credentials = newCrededentials;
         profile.dirty = true;
-        this.keyProvider.loadActiveWGKey();
         return this.storeProfileIfDirty();
       });
     } else {
@@ -1371,7 +1416,6 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       const MAX = 100;
       opts = opts ? opts : {};
-      opts.keyId = this.keyProvider.activeWGKey;
       const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
         return reject('No wallets available');

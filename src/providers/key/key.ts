@@ -13,7 +13,6 @@ export class KeyProvider {
   private isDirty: boolean;
   private Key = this.bwcProvider.getKey();
   private keys: any[];
-  public activeWGKey: string;
 
   constructor(
     private logger: Logger,
@@ -31,24 +30,8 @@ export class KeyProvider {
       this.keys = [];
       keys = keys ? keys : [];
       keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
-      await this.loadActiveWGKey();
       return Promise.resolve();
     });
-  }
-
-  public async loadActiveWGKey() {
-    const defaultKeyId = this.keys && this.keys[0] ? this.keys[0].id : null;
-    this.activeWGKey =
-      (await this.persistenceProvider.getActiveWGKey()) || defaultKeyId;
-  }
-
-  public setActiveWGKey(keyId: string) {
-    this.activeWGKey = keyId;
-    return this.persistenceProvider.setActiveWGKey(keyId);
-  }
-
-  public async removeActiveWGKey() {
-    await this.persistenceProvider.removeActiveWGKey();
   }
 
   private storeKeysIfDirty(): Promise<any> {

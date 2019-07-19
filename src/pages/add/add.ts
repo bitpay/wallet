@@ -1,64 +1,90 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import * as _ from 'lodash';
 
 // pages
-import { JoinWalletPage } from './join-wallet/join-wallet';
-import { SelectCurrencyPage } from './select-currency/select-currency';
+import { AddWalletPage } from '../add-wallet/add-wallet';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../add/join-wallet/join-wallet';
+import { SelectCurrencyPage } from '../add/select-currency/select-currency';
 
 // providers
-import { KeyProvider } from '../../providers/key/key';
-import { Logger } from '../../providers/logger/logger';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
-import { ImportWalletPage } from './import-wallet/import-wallet';
+import { ConfigProvider, Logger, ProfileProvider } from '../../providers';
 
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html'
 })
 export class AddPage {
-  public title: string;
+  public allowMultiplePrimaryWallets: boolean;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
-    private navParam: NavParams,
-    private profileProvider: ProfileProvider,
-    private keyProvider: KeyProvider,
-    private translate: TranslateService,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private configProvider: ConfigProvider,
+    private profileProvider: ProfileProvider
   ) {
-    const keyId = this.keyProvider.activeWGKey;
-    const addingNewWallet = this.navParam.data.addingNewWallet;
-    const walletGroup = this.profileProvider.getWalletGroup(keyId);
-    if (walletGroup && walletGroup.name && addingNewWallet) {
-      this.title = this.replaceParametersProvider.replace(
-        this.translate.instant('{{walletGroupName}}'),
-        {
-          walletGroupName: walletGroup.name
-        }
-      );
-    } else {
-      this.title = this.translate.instant('Add Wallet');
-    }
+    const config = this.configProvider.get();
+    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AddPage');
   }
 
-  public goToSelectCurrencyPage(isShared: boolean): void {
-    this.navCtrl.push(SelectCurrencyPage, {
-      isShared,
-      addingNewWallet: this.navParam.data.addingNewWallet
-    });
+  public goToAddWalletPage(
+    isShared: boolean,
+    isJoin: boolean,
+    isCreate: boolean
+  ): void {
+    let walletsGroups = _.values(
+      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
+        value.keyId = key;
+        return value;
+      })
+    );
+    walletsGroups = _.filter(walletsGroups, 'canAddAccount');
+
+    if (walletsGroups.length === 0) {
+      this.goToNextPage(isCreate, isJoin, isShared);
+    } else if (
+      (this.allowMultiplePrimaryWallets && walletsGroups.length >= 1) ||
+      (!this.allowMultiplePrimaryWallets && walletsGroups.length > 1)
+    ) {
+      this.navCtrl.push(AddWalletPage, {
+        isCreate,
+        isJoin,
+        isShared
+      });
+    } else if (
+      !this.allowMultiplePrimaryWallets &&
+      walletsGroups.length === 1
+    ) {
+      this.goToNextPageWithKeyId(isCreate, isJoin, isShared, walletsGroups[0]);
+    }
   }
 
-  public goToJoinWallet(): void {
-    this.navCtrl.push(JoinWalletPage, {
-      addingNewWallet: this.navParam.data.addingNewWallet
-    });
+  private goToNextPage(isCreate, isJoin, isShared) {
+    if (isCreate) {
+      this.navCtrl.push(SelectCurrencyPage, {
+        isShared
+      });
+    } else if (isJoin) {
+      this.navCtrl.push(JoinWalletPage);
+    }
+  }
+
+  private goToNextPageWithKeyId(isCreate, isJoin, isShared, walletGroup) {
+    if (isCreate) {
+      this.navCtrl.push(SelectCurrencyPage, {
+        isShared,
+        keyId: walletGroup.keyId
+      });
+    } else if (isJoin) {
+      this.navCtrl.push(JoinWalletPage, {
+        keyId: walletGroup.keyId
+      });
+    }
   }
 
   public goToImportWallet(): void {

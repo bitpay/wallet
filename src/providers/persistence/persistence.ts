@@ -25,7 +25,6 @@ export interface GiftCardMap {
 }
 
 const Keys = {
-  ACTIVE_KEY: 'activeKey',
   ADDRESS_BOOK: network => 'addressbook-' + network,
   ORDER_ADDRESS: address => 'orderAddress-' + address,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
@@ -578,18 +577,6 @@ export class PersistenceProvider {
 
   removeWalletGroupName(keyId: string) {
     return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
-  }
-
-  setActiveWGKey(keyId: string) {
-    return this.storage.set(Keys.ACTIVE_KEY, keyId);
-  }
-
-  getActiveWGKey() {
-    return this.storage.get(Keys.ACTIVE_KEY);
-  }
-
-  removeActiveWGKey() {
-    return this.storage.remove(Keys.ACTIVE_KEY);
   }
 
   setLockStatus(isLocked: string) {

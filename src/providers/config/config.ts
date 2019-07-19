@@ -96,6 +96,8 @@ export interface Config {
     btc: string;
     bch: string;
   };
+
+  allowMultiplePrimaryWallets: boolean;
 }
 
 @Injectable()
@@ -200,7 +202,9 @@ export class ConfigProvider {
       blockExplorerUrl: {
         btc: 'insight.bitcore.io/#/BTC/',
         bch: 'insight.bitcore.io/#/BCH/'
-      }
+      },
+
+      allowMultiplePrimaryWallets: false
     };
   }
 

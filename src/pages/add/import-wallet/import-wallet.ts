@@ -12,7 +12,6 @@ import { TabsPage } from '../../tabs/tabs';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -53,7 +52,6 @@ export class ImportWalletPage {
     private bwcProvider: BwcProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
-    private keyProvider: KeyProvider,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
@@ -80,7 +78,6 @@ export class ImportWalletPage {
     this.formFile = null;
 
     this.importForm = this.form.group({
-      profileName: [null, Validators.required],
       words: [null, Validators.required],
       backupText: [null],
       passphrase: [null],
@@ -227,9 +224,8 @@ export class ImportWalletPage {
       this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
       this.profileProvider.setWalletGroupName(
         wallets[0].credentials.keyId,
-        this.importForm.value.profileName
+        wallets[0].credentials.walletName
       );
-      this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
     }
     this.events.publish('Local/WalletListChange');
     // using setRoot(TabsPage) as workaround when coming from scanner

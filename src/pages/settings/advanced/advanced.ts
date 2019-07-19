@@ -11,6 +11,7 @@ import { WalletRecoverPage } from './wallet-recover-page/wallet-recover-page';
 })
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
+  public allowMultiplePrimaryWallets: boolean;
   public isCopay: boolean;
 
   constructor(
@@ -30,6 +31,7 @@ export class AdvancedPage {
     let config = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
+    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
   }
 
   public spendUnconfirmedChange(): void {
@@ -41,7 +43,14 @@ export class AdvancedPage {
     this.configProvider.set(opts);
   }
 
+  public allowMultiplePrimaryWalletsChange(): void {
+    let opts = {
+      allowMultiplePrimaryWallets: this.allowMultiplePrimaryWallets
+    };
+    this.configProvider.set(opts);
+  }
+
   public openWalletRecoveryPage() {
     this.navCtrl.push(WalletRecoverPage);
   }
-}
+

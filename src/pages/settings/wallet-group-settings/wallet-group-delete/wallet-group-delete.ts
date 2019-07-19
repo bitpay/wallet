@@ -70,10 +70,6 @@ export class WalletGroupDeletePage {
         if (!keyInUse) {
           this.keyProvider.removeKey(this.keyId);
           delete this.profileProvider.walletsGroups[this.keyId];
-          if (this.keyProvider.activeWGKey === this.keyId) {
-            await this.keyProvider.removeActiveWGKey();
-            await this.keyProvider.loadActiveWGKey();
-          }
           this.goHome();
         } else {
           this.logger.warn('Key was not removed. Still in use');

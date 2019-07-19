@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Profile Settings' | translate}}">
+<wide-header-page title="{{'Wallet Key Settings' | translate}}">
   <div page-content>
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
@@ -6,19 +6,10 @@
         This wallet is 'Read Only', so the private key is not available.
       </div>
     </label-tip>
-    <ion-list class="settings-list"> 
 
-      <button *ngIf="canSign" ion-item (click)="openWalletGroupName()">
-        <div translate float-left>Name</div>
-        <div text-end text-wrap ion-text color="light-grey">
-          {{walletsGroup && walletsGroup.name}}
-        </div>
-      </button>
 
-      <button ion-item (click)="openEnabledWalletsPage()">
-        <span translate>Enabled Wallets</span>
-      </button>
-
+    <ion-list class="settings-list">
+      <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
       <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
         <span translate>Backup</span>
         <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
@@ -47,6 +38,23 @@
           <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
         </ion-item>
       </div>
+
+      <ion-item-divider>{{'Wallets' | translate}}</ion-item-divider>
+      <button ion-item *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" />
+        </ion-icon>
+        <ion-label>
+          {{wallet.name}}
+        </ion-label>
+        <ion-note item-end>
+          {{ wallet.hidden ? ('Hidden'|translate) : ('Enabled'|translate) }}
+        </ion-note>
+      </button>
+
+
+
+      <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
 
       <button *ngIf="!needsBackup && canSign" ion-item (click)="openWalletGroupExtendedPrivateKey()">
         <span translate>Extended Private Key</span>
