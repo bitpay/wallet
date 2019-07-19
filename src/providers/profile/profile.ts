@@ -97,16 +97,6 @@ export class ProfileProvider {
     return order;
   }
 
-  public setWalletGroupName(keyId: string, name: string): void {
-    this.persistenceProvider.setWalletGroupName(keyId, name);
-    if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
-  }
-
-  private async getWalletGroupName(keyId: string) {
-    const name = await this.persistenceProvider.getWalletGroupName(keyId);
-    return name;
-  }
-
   public setBackupGroupFlag(
     keyId: string,
     timestamp?: string,
@@ -237,6 +227,8 @@ export class ProfileProvider {
     wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
+    wallet.canAddNewAccount = this.checkAccountCreation(wallet);
+
     this.updateWalletFromConfig(wallet);
 
     this.wallet[walletId] = wallet;
@@ -294,33 +286,22 @@ export class ProfileProvider {
     let groupBackupInfo,
       needsBackup,
       order,
-      name,
       isPrivKeyEncrypted,
       canSign,
-      isDeletedSeed,
-      canAddAccount;
+      isDeletedSeed;
 
     if (keyId) {
       groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
       needsBackup = groupBackupInfo.needsBackup;
-      name = await this.getWalletGroupName(keyId);
-      if (!name) {
-        // use wallets name for wallets group name at migration
-        name = wallet.name;
-        this.setWalletGroupName(keyId, wallet.name);
-      }
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
-      canAddAccount = this.checkAccountCreation(wallet);
     } else {
       keyId = 'read-only';
       needsBackup = false;
-      name = 'Read Only Wallets';
       isPrivKeyEncrypted = false;
       canSign = false;
       isDeletedSeed = true;
-      canAddAccount = false;
     }
 
     wallet.needsBackup = needsBackup;
@@ -328,12 +309,10 @@ export class ProfileProvider {
 
     this.walletsGroups[keyId] = {
       order,
-      name,
       isPrivKeyEncrypted,
       needsBackup,
       canSign,
-      isDeletedSeed,
-      canAddAccount
+      isDeletedSeed
     };
 
     let date;
@@ -1144,10 +1123,10 @@ export class ProfileProvider {
                 } else if (copayerRegistered) {
                   // try with account + 1
                   opts.account = opts.account ? opts.account + 1 : 1;
-                  if (opts.account === 4)
+                  if (opts.account === 20)
                     return reject(
                       this.translate.instant(
-                        'Three wallets from the same coin and network is the limit for a profile'
+                        'You reach the limit of twenty wallets from the same coin and network'
                       )
                     );
                   return resolve(this._createWallet(opts));
@@ -1376,6 +1355,12 @@ export class ProfileProvider {
       // remove hidden wallets
       ret = _.filter(ret, w => {
         return !w.hidden;
+      });
+    }
+
+    if (opts.canAddNewAccount) {
+      ret = _.filter(ret, w => {
+        return w.canAddNewAccount;
       });
     }
 

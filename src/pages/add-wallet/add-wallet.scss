@@ -25,4 +25,16 @@ page-add-wallet {
       }
     }
   }
+  .subtitle {
+    color: #aaaeb6;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  .icon-settings {
+    width: 25px;
+    height: 25px;
+    border-radius: $icon-border-radius;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    padding: 0rem;
+  }
 }

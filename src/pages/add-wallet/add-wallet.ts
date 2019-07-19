@@ -30,13 +30,11 @@ export class AddWalletPage {
     const config = this.configProvider.get();
     this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
 
-    this.walletsGroups = _.values(
-      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
-        value.keyId = key;
-        return value;
-      })
-    );
-    this.walletsGroups = _.filter(this.walletsGroups, 'canAddAccount');
+    const opts = {
+      canAddNewAccount: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
   }
 
   ionViewDidLoad() {

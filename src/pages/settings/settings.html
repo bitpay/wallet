@@ -104,18 +104,24 @@
       </div>
 
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
-        {{"Wallet Keys" | translate}}
+        {{'Wallets by Keys' | translate}}
       </ion-item-divider>
 
-      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup)">
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
         <ion-icon class="item-img" item-start>
-          <img src="assets/img/add-wallet/wallet.svg" class="icon-settings" />
+          <img src="assets/img/wallet-group.svg" class="icon-settings" />
         </ion-icon>
         <ion-label>
-          <span *ngIf="walletsGroup.name">{{walletsGroup.name}}</span>
+          <div>{{walletsGroup[0].name}}</div>
+          <div class="subtitle ellipsis" *ngIf="walletsGroup.length > 1">
+            <span *ngFor="let wallet of walletsGroup; let i = index">
+              {{wallet.name}}
+              <span *ngIf="i < walletsGroup.length - 1">-</span>
+            </span>
+          </div>
         </ion-label>
       </button>
-      <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
+      <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/icon-plus.svg" width="18" />
         </ion-icon>
