@@ -1,8 +1,10 @@
-<img class="icon-wallet" [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
+<img class="icon-wallet" [ngClass]="{ testnet: wallet.network === 'testnet' }"
+  src="assets/img/currencies/{{wallet.coin}}.svg" />
 <div class="wallet-item-content__left ellipsis">
   <div class="wallet-item-content__name ellipsis">{{ wallet.name }}</div>
   <div class="wallet-item-content__credentials">
-    <span>{{ wallet.credentials.m }}/{{ wallet.credentials.n }}</span>
+    <span>{{ wallet.coin.toUpperCase() }} <span
+        *ngIf="wallet.credentials.n > 1">({{ wallet.credentials.m }}/{{ wallet.credentials.n }})</span></span>
     <span *ngIf="!wallet.isComplete()"> - {{ 'Incomplete' | translate }}</span>
   </div>
 </div>
