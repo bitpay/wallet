@@ -116,11 +116,10 @@
         </ion-label>
       </button>
       <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
-        <ion-label>
-          (+)
-          <span translate>Add Wallet</span>
-        </ion-label>
- 
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/icon-plus.svg" width="18" />
+        </ion-icon>
+        <span translate>Add Wallet</span>
       </button>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
