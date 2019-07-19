@@ -99,6 +99,10 @@ export class PersistenceProvider {
     return this.storage.set(Keys.PROFILE_OLD, profileOld);
   }
 
+  getProfileLegacy(): Promise<void> {
+    return this.storage.get(Keys.PROFILE_OLD);
+  }
+
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);
   }

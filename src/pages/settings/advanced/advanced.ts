@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
 // providers
 import { AppProvider, ConfigProvider, Logger } from '../../../providers';
+import { WalletRecoverPage } from './wallet-recover-page/wallet-recover-page';
 
 @Component({
   selector: 'page-advanced',
@@ -13,6 +15,7 @@ export class AdvancedPage {
 
   constructor(
     private configProvider: ConfigProvider,
+    private navCtrl: NavController,
     private logger: Logger,
     private appProvider: AppProvider
   ) {
@@ -36,5 +39,9 @@ export class AdvancedPage {
       }
     };
     this.configProvider.set(opts);
+  }
+
+  public openWalletRecoveryPage() {
+    this.navCtrl.push(WalletRecoverPage);
   }
 }

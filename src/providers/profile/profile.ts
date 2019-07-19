@@ -828,6 +828,7 @@ export class ProfileProvider {
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
+
   public bindProfile(profile): Promise<any> {
     const bindWallets = (): Promise<any> => {
       const profileLength = profile.credentials.length;
@@ -934,6 +935,19 @@ export class ProfileProvider {
     }
 
     return this.bindWalletClient(walletClient);
+  }
+
+  public getProfileLegacy(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.persistenceProvider.getProfileLegacy().then(
+        (oldProfile) => {
+          return resolve(oldProfile);
+        }
+      ).catch((err) => {
+        this.logger.info("Error getting old Profile", err);
+        return reject(err);
+      })
+    });
   }
 
   public loadAndBindProfile(): Promise<any> {

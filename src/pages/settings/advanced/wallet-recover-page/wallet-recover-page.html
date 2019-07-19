@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Old Wallet Recovery Tool'}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="settings-list">
+    <button ion-item *ngFor="let wallet of wallets" (click)="openWalletMnemonicRecoverPage(wallet.name, wallet.keyId)">
+      <div class='wallet-container'>
+        <img src="assets/img/add-wallet/wallet.svg" class="icon-settings" />
+        <div class="wallet-name">
+          {{wallet.name}}
+        </div>
+      </div>
+    </button>
+  </ion-list>
+</ion-content>

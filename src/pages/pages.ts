@@ -91,6 +91,8 @@ import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings
 /* Wallet Settings */
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
+import { WalletMnemonicRecoverPage }  from './settings/advanced/wallet-recover-page/wallet-mnemonic-recover-page/wallet-mnemonic-recover-page';
+import { WalletRecoverPage }  from './settings/advanced/wallet-recover-page/wallet-recover-page';
 
 /* Wallet Advanced Settings */
 import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
@@ -204,6 +206,8 @@ export const PAGES = [
   WalletGroupSettingsPage,
   WalletGroupNamePage,
   WalletDetailsPage,
+  WalletRecoverPage,
+  WalletMnemonicRecoverPage,
   WalletTabsChild,
   WalletTabsPage,
   WalletBalancePage,
