@@ -81,4 +81,32 @@
       }
     }
   }
+
+  ion-item.item,
+  button.item {
+    padding: 12px 0 12px 22px;
+    border-bottom: 0;
+
+    .item-inner {
+      margin-left: 8px;
+
+      ion-note.note {
+        background: #f4f5fb;
+        color: #565d6d;
+        font-weight: 300;
+        padding: 6px 10px;
+        border-radius: 4px;
+      }
+      ion-note.note.wallet-warning {
+        background: none;
+        color: #e56c7b;
+      }
+    }
+
+    &:last-child {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
 }
