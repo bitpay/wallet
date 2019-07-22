@@ -7,13 +7,13 @@
   <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
     <span label-tip-title translate>No Private Key</span>
     <div label-tip-body translate>
-      This wallet is 'Read Only', so the private key is not available.
+      Read Only wallets don't include the private key.
     </div>
   </label-tip>
 
   <ion-list class="settings-list">
 
-    <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="canSign || touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
     <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
       <span translate>Backup</span>
       <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
