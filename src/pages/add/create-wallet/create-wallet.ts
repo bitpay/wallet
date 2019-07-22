@@ -271,7 +271,7 @@ export class CreateWalletPage implements OnInit {
         this.pushNotificationsProvider.updateSubscription(wallet);
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
-          this.profileProvider.setWalletBackup(wallet.credentials.id);
+          this.profileProvider.setWalletBackup(wallet.credentials.walletId);
         }
         this.navCtrl.popToRoot().then(() => {
           this.events.publish('Local/WalletListChange');
