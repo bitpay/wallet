@@ -79,7 +79,7 @@
       <price-card #priceCard></price-card>
     </div>
 
-    <create-new-wallet *ngIf="(!wallets || !wallets[0]) && !selectedWalletGroup"></create-new-wallet>
+    <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 
     <ion-card class="server-message" *ngIf="accessDenied">
       <ion-card-content class="server-message-content">
@@ -123,6 +123,12 @@
           </ion-item-sliding>
         </div>
       </ion-list>
+      <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" margin-top>
+        <span label-tip-title translate>Needs Backup</span>
+        <div label-tip-body>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+        </div>
+      </label-tip>
     </div>
 
     <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>Read Only Wallets</div>
