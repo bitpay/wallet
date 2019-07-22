@@ -227,7 +227,7 @@ export class ProfileProvider {
     wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
-    wallet.canAddNewAccount = this.checkAccountCreation(wallet);
+    wallet.canAddNewAccount = this.checkAccountCreation(wallet, keyId);
 
     this.updateWalletFromConfig(wallet);
 
@@ -326,15 +326,25 @@ export class ProfileProvider {
     return Promise.resolve(true);
   }
 
-  public checkAccountCreation(wallet): boolean {
+  public checkAccountCreation(wallet, keyId: string): boolean {
     /* Allow account creation only for wallets:
-    n=1 : BIP44 - P2PKH - BTC o BCH only if it is 145'
-    n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
+    wallet n=1 : BIP44 - P2PKH - BTC o BCH only if it is 145'
+    wallet n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
+    key : !use44forMultisig - !use0forBCH - compliantDerivation - !BIP45
     */
+
+    const key = this.keyProvider.getKey(keyId);
 
     if (!wallet) {
       return false;
-    } else if (this.keyProvider.isDeletedSeed(wallet.credentials.keyId)) {
+    } else if (!key) {
+      return false;
+    } else if (
+      key.use44forMultisig ||
+      key.use0forBCH ||
+      !key.compliantDerivation ||
+      key.BIP45
+    ) {
       return false;
     } else {
       const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
