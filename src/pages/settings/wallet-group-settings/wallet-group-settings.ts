@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -33,6 +34,7 @@ export class WalletGroupSettingsPage {
   public wallets;
   public canSign: boolean;
   public needsBackup: boolean;
+  public showReorder: boolean;
 
   private keyId: string;
 
@@ -50,6 +52,7 @@ export class WalletGroupSettingsPage {
   ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
+    this.showReorder = false;
   }
 
   ionViewWillEnter() {
@@ -179,5 +182,18 @@ export class WalletGroupSettingsPage {
 
   openWalletSettings(id) {
     this.navCtrl.push(WalletSettingsPage, { walletId: id });
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public reorderAccounts(indexes): void {
+    const element = this.wallets[indexes.from];
+    this.wallets.splice(indexes.from, 1);
+    this.wallets.splice(indexes.to, 0, element);
+    _.each(this.wallets, (wallet, index: number) => {
+      this.profileProvider.setWalletOrder(wallet.id, index);
+    });
   }
 }
