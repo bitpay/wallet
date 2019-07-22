@@ -68,5 +68,11 @@ page-wallet-group-settings {
       margin-top: 0;
       height: 73px;
     }
+
+    ion-item-divider {
+      .reorder-option {
+        padding-right: 8px !important;
+      }
+    }
   }
 }
