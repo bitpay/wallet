@@ -31,7 +31,8 @@ export class AddWalletPage {
     this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
 
     const opts = {
-      canAddNewAccount: true
+      canAddNewAccount: true,
+      showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
