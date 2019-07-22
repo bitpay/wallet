@@ -85,13 +85,9 @@ export class SettingsPage {
       this.language.getCurrent()
     );
 
-    const walletsGroups = _.values(
-      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
-        value.keyId = key;
-        return value;
-      })
-    );
-    this.walletsGroups = _.sortBy(walletsGroups, 'order');
+    const wallets = this.profileProvider.getWallets();
+    this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -258,8 +254,8 @@ export class SettingsPage {
     );
   }
 
-  public openWalletGroupSettings(walletGroup): void {
-    this.navCtrl.push(WalletGroupSettingsPage, { keyId: walletGroup.keyId });
+  public openWalletGroupSettings(keyId: string): void {
+    this.navCtrl.push(WalletGroupSettingsPage, { keyId });
   }
 
   public goToAddView(): void {

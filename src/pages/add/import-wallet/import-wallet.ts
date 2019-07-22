@@ -222,10 +222,6 @@ export class ImportWalletPage {
     });
     if (wallets && wallets[0]) {
       this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
-      this.profileProvider.setWalletGroupName(
-        wallets[0].credentials.keyId,
-        wallets[0].credentials.walletName
-      );
     }
     this.events.publish('Local/WalletListChange');
     // using setRoot(TabsPage) as workaround when coming from scanner

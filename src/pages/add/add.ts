@@ -37,13 +37,11 @@ export class AddPage {
     isJoin: boolean,
     isCreate: boolean
   ): void {
-    let walletsGroups = _.values(
-      _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
-        value.keyId = key;
-        return value;
-      })
-    );
-    walletsGroups = _.filter(walletsGroups, 'canAddAccount');
+    const opts = {
+      canAddNewAccount: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    const walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
 
     if (walletsGroups.length === 0) {
       this.goToNextPage(isCreate, isJoin, isShared);

@@ -273,12 +273,6 @@ export class CreateWalletPage implements OnInit {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.id);
         }
-        if (!addingNewWallet) {
-          this.profileProvider.setWalletGroupName(
-            wallet.credentials.keyId,
-            wallet.credentials.walletName
-          );
-        }
         this.navCtrl.popToRoot().then(() => {
           this.events.publish('Local/WalletListChange');
           setTimeout(() => {

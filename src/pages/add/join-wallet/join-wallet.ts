@@ -262,12 +262,6 @@ export class JoinWalletPage {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (!addingNewWallet) {
-          this.profileProvider.setWalletGroupName(
-            wallet.credentials.keyId,
-            wallet.credentials.walletName
-          );
-        }
         // using setRoot(TabsPage) as workaround when coming from scanner
         this.app
           .getRootNavs()[0]

@@ -65,8 +65,7 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  WALLET_GROUP_NAME: keyId => 'walletGroupName-' + keyId
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
 };
 
 interface Storage {
@@ -350,7 +349,6 @@ export class PersistenceProvider {
   }
 
   removeAllWalletGroupData(keyId: string) {
-    this.removeWalletGroupName(keyId);
     this.clearBackupGroupFlag(keyId);
   }
 
@@ -561,18 +559,6 @@ export class PersistenceProvider {
 
   removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
-  }
-
-  setWalletGroupName(keyId: string, name: string) {
-    return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
-  }
-
-  getWalletGroupName(keyId: string) {
-    return this.storage.get(Keys.WALLET_GROUP_NAME(keyId));
-  }
-
-  removeWalletGroupName(keyId: string) {
-    return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
   }
 
   setLockStatus(isLocked: string) {
