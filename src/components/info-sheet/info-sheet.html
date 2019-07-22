@@ -165,6 +165,13 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'activation-fee-included'" type="info">
+      <span sheet-title-text translate>Activation Fee</span>
+      <span sheet-text translate>{{'{displayName} gift cards contain an additional activation fee of {fee} {currency}.' |
+        translate: params }}</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'gift-cards-unavailable'" type="danger">
       <span sheet-title-text translate>Temporarily Unavailable</span>
       <span sheet-text translate>Gift card purchases are temporarily unavailable. Please try again later.</span>

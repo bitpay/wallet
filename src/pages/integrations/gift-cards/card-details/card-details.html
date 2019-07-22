@@ -81,7 +81,7 @@
             <ng-container *ngIf="cardConfig.printRequired">{{'Print' | translate}}</ng-container>
           </button>
           <button ion-button *ngIf="showClaimLinkUI()" class="button-standard" (click)="viewRedemptionCode()">
-            {{'View Redemption Code' | translate}}
+            {{ cardConfig.redeemButtonText || 'View Redemption Code' | translate}}
           </button>
           <button ion-button class="button-standard button-secondary" (click)="openArchiveSheet()">
             {{"I've used this card" | translate}}
