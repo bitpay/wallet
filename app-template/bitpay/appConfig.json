@@ -24,8 +24,8 @@
   "WindowsApplicationId": "BitPayforWindows",
   "pushSenderId": "1036948132229",
   "description": "Secure Bitcoin Wallet",
-  "version": "5.9.5",
-  "androidVersion": "59500000",
+  "version": "5.9.6",
+  "androidVersion": "59600000",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": true,
