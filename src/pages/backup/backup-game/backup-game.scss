@@ -43,9 +43,10 @@ page-backup-game {
             }
             .dash-line {
               border-bottom: 1px color($colors, primary) dashed;
-              width: 100%;
               position: absolute;
-              bottom: 3.5rem;
+              top: 11.3rem;
+              left: 15%;
+              right: 15%;
             }
           }
           .word-number {
