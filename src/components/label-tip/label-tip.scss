@@ -24,6 +24,13 @@ label-tip {
     left: 25px;
   }
 
+  // Remove arrowhead from label
+  &.info.no-arrowhead:before,
+  &.warn.no-arrowhead:before,
+  &.danger.no-arrowhead:before {
+    display: none !important;
+  }
+
   &.danger {
     background: color($background-colors, danger);
 
