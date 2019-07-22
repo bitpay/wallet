@@ -76,11 +76,11 @@ export class AddPage {
     if (isCreate) {
       this.navCtrl.push(SelectCurrencyPage, {
         isShared,
-        keyId: walletGroup.keyId
+        keyId: walletGroup[0].credentials.keyId
       });
     } else if (isJoin) {
       this.navCtrl.push(JoinWalletPage, {
-        keyId: walletGroup.keyId
+        keyId: walletGroup[0].credentials.keyId
       });
     }
   }
