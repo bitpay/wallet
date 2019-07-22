@@ -554,11 +554,6 @@ ion-item.with-label.item {
   box-shadow: none !important;
 }
 
-// Remove arrowhead from label
-label-tip.warn.no-arrowhead:before {
-  display: none;
-}
-
 .slide-confirm-down {
   transform: translate(0px, 90px);
 }
