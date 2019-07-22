@@ -55,6 +55,7 @@ export class HomePage {
   priceCard;
   public wallets;
   public walletsGroups;
+  public readOnlyWalletsGroup;
   public txpsN: number;
   public serverMessages: any[];
   public homeIntegrations;
@@ -358,7 +359,19 @@ export class HomePage {
     */
 
     this.wallets = this.profileProvider.getWallets();
-    this.walletsGroups = _.values(_.groupBy(this.wallets, 'keyId'));
+    this.readOnlyWalletsGroup = _.filter(this.wallets, wallet => {
+      return wallet.keyId == 'read-only';
+    });
+
+    this.walletsGroups = _.values(
+      _.groupBy(
+        _.filter(this.wallets, wallet => {
+          return wallet.keyId != 'read-only';
+        }),
+        'keyId'
+      )
+    );
+
     this.profileProvider.setLastKnownBalance();
 
     // Avoid heavy tasks that can slow down the unlocking experience
