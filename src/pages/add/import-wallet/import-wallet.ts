@@ -340,44 +340,48 @@ export class ImportWalletPage {
     if (this.importForm.value.bwsURL)
       opts.bwsurl = this.importForm.value.bwsURL;
 
-    const derivationPath = this.importForm.value.derivationPath;
+    if (this.importForm.value.derivationPathEnabled) {
+      const derivationPath = this.importForm.value.derivationPath;
 
-    opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-      derivationPath
-    );
-    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      derivationPath
-    );
-    opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
+      );
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
 
-    opts.coin = this.importForm.value.coin;
+      opts.coin = this.importForm.value.coin;
+
+      if (
+        !opts.networkName ||
+        !opts.derivationStrategy ||
+        !Number.isInteger(opts.account)
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
+        return;
+      }
+
+      if (
+        !this.derivationPathHelperProvider.isValidDerivationPathCoin(
+          this.importForm.value.derivationPath,
+          this.importForm.value.coin
+        )
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
+          'Invalid derivation path for selected coin'
+        );
+        this.popupProvider.ionicAlert(title, subtitle);
+        return;
+      }
+    }
 
     opts.passphrase = this.importForm.value.passphrase || null;
-
-    if (
-      !opts.networkName ||
-      !opts.derivationStrategy ||
-      !Number.isInteger(opts.account)
-    ) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant('Invalid derivation path');
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
-
-    if (
-      !this.derivationPathHelperProvider.isValidDerivationPathCoin(
-        this.importForm.value.derivationPath,
-        this.importForm.value.coin
-      )
-    ) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant(
-        'Invalid derivation path for selected coin'
-      );
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
 
     const words: string = this.importForm.value.words || null;
 
