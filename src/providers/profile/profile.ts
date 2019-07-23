@@ -987,6 +987,12 @@ export class ProfileProvider {
     });
   }
 
+  public removeProfileLegacy(): Promise<any> {
+    return this.persistenceProvider.removeProfileLegacy().catch(err => {
+      this.logger.info('Error getting old Profile', err);
+    });
+  }
+
   public loadAndBindProfile(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider

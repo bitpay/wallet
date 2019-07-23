@@ -28,18 +28,13 @@ export class AdvancedPage {
     private appProvider: AppProvider
   ) {
     this.isCopay = this.appProvider.info.name === 'copay';
-    this.oldProfileAvailable = true;
-    this.profileProvider
-      .getProfileLegacy()
-      .then(oldProfile => {
-        if (oldProfile) {
-          this.oldProfileAvailable = true;
-        }
-      })
-      .catch(err => {
-        this.logger.info('Error loading old profile: ', err);
+    this.profileProvider.getProfileLegacy().then(oldProfile => {
+      if (oldProfile) {
+        this.oldProfileAvailable = true;
+      } else {
         this.oldProfileAvailable = false;
-      });
+      }
+    });
   }
 
   ionViewDidLoad() {
