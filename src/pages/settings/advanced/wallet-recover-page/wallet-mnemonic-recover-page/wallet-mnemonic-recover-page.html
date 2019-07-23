@@ -28,9 +28,6 @@
 
     <div class="mnemonic-phrase-container" *ngIf="!mnemonicEncrypted">
       <div class="mnemonic-word-container">{{ mnemonicPhrase }}</div>
-      <button ion-button class="button-standard" copy-to-clipboard="{{mnemonicPhrase}}">
-        {{ 'Copy to clipboard' | translate }}
-      </button>
     </div>
   </div>
 </ion-content>
