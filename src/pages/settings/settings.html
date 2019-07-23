@@ -98,8 +98,8 @@
                 ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
           <button ion-item (click)="addBitpayCard()">
-            <ion-icon class="item-img settings-icon" item-start>
-              <img src="assets/img/icon-plus.svg" width="18" />
+            <ion-icon class="item-img" item-start>
+              <div class="icon-plus"></div>
             </ion-icon>
             <span translate>Add Card</span>
           </button>
@@ -111,8 +111,8 @@
       </ion-item-divider>
 
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-        <ion-icon class="item-img" item-start>
-          <img src="assets/img/wallet-group.svg" class="icon-settings" />
+        <ion-icon class="settings-icon" item-start>
+          <img src="assets/img/wallet-group.svg" width="24" />
         </ion-icon>
         <ion-label>
           <div>{{walletsGroup[0].name}}</div>
@@ -125,8 +125,8 @@
         </ion-label>
       </button>
       <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
-        <ion-icon class="item-img settings-icon" item-start>
-          <img src="assets/img/icon-plus.svg" width="18" />
+        <ion-icon class="item-img" item-start>
+          <div class="icon-plus"></div>
         </ion-icon>
         <span translate>Add Wallet</span>
       </button>

@@ -655,3 +655,15 @@ page-shapeshift,
     }
   }
 }
+
+.icon-plus {
+  mask-image: url(../assets/img/icon-plus.svg);
+  height: 18px;
+  width: 18px;
+  background-color: #cdd1d8;
+  mask-repeat: no-repeat;
+  mask-position: 50% 50%;
+  mask-size: 2rem;
+  margin: auto;
+  transform: translate(0, -10%);
+}

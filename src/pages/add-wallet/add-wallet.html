@@ -9,8 +9,8 @@
 
     <ion-list class="settings-list">
       <button ion-item *ngFor="let walletsGroup of walletsGroups" (click)="goToAddPage(walletsGroup[0].keyId)">
-        <ion-icon class="item-img" item-start>
-          <img src="assets/img/wallet-group.svg" class="icon-settings" />
+        <ion-icon class="settings-icon" item-start>
+          <img src="assets/img/wallet-group.svg" width="24" />
         </ion-icon>
         <ion-label>
           <div>{{walletsGroup[0].name}}</div>
@@ -24,8 +24,8 @@
       </button>
 
       <button ion-item (click)="goToAddPage()" *ngIf="allowMultiplePrimaryWallets">
-        <ion-icon class="item-img settings-icon" item-start>
-          <img src="assets/img/icon-plus.svg" width="18" />
+        <ion-icon class="item-img" item-start>
+          <div class="icon-plus"></div>
         </ion-icon>
         <span translate>Create a new key</span>
       </button>
