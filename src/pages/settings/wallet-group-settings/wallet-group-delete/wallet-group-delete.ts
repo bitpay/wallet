@@ -52,6 +52,7 @@ export class WalletGroupDeletePage {
 
   public deleteWalletGroup(): void {
     this.onGoingProcessProvider.set('deletingWallet');
+    this.profileProvider.removeProfileLegacy();
     const opts = {
       keyId: this.keyId
     };

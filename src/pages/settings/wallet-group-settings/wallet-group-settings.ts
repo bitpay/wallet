@@ -84,6 +84,8 @@ export class WalletGroupSettingsPage {
   public encryptChange(): void {
     const val = this.encryptEnabled;
 
+    this.profileProvider.removeProfileLegacy();
+
     if (val && !this.walletsGroup.isPrivKeyEncrypted) {
       this.logger.debug('Encrypting private key for', this.walletsGroup.name);
       this.keyProvider
