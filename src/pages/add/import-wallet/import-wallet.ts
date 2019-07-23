@@ -270,7 +270,9 @@ export class ImportWalletPage {
       .importWithDerivationPath(opts)
       .then((wallets: any[]) => {
         this.onGoingProcessProvider.clear();
-        this.finish(wallets);
+
+        if (wallets && wallets.length)
+          this.finish(wallets);
       })
       .catch(err => {
         if (err == 'WALLET_DOES_NOT_EXIST') {
