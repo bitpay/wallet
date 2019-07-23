@@ -66,6 +66,24 @@
             This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
           </div>
         </label-tip>
+
+        <ion-item>
+          <ion-label>{{'Specify derivation path' | translate}}</ion-label>
+          <ion-toggle formControlName="derivationPathEnabled" (ionChange)="derivationPathEnabled = !derivationPathEnabled; changeDerivationPathValidators(derivationPathEnabled);"></ion-toggle>
+        </ion-item>
+
+        <ion-item *ngIf="derivationPathEnabled">
+          <ion-label floating>{{'Coin' | translate}}</ion-label>
+          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin" (ionChange)="setDerivationPath($event)">
+            <ion-option value="btc">Bitcoin (BTC)</ion-option>
+            <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="derivationPathEnabled">
+          <ion-label floating>{{'Derivation path' | translate}}</ion-label>
+          <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
+        </ion-item>
       </div>
 
       <ion-item>

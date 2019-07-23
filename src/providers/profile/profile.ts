@@ -1124,13 +1124,15 @@ export class ProfileProvider {
               err => {
                 const copayerRegistered =
                   err instanceof this.errors.COPAYER_REGISTERED;
+                const isSetSeed = opts.mnemonic || opts.extendedPrivateKey;
+
                 if (err && !copayerRegistered) {
                   const msg = this.bwcErrorProvider.msg(
                     err,
                     this.translate.instant('Error creating wallet')
                   );
                   return reject(msg);
-                } else if (copayerRegistered) {
+                } else if (copayerRegistered && !isSetSeed) {
                   // try with account + 1
                   opts.account = opts.account ? opts.account + 1 : 1;
                   if (opts.account === 20)
