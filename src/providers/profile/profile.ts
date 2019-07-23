@@ -997,6 +997,25 @@ export class ProfileProvider {
     });
   }
 
+  public importWithDerivationPath(opts): Promise<any> {
+    this.logger.info('Importing Wallet with derivation path');
+    return this._importWithDerivationPath(opts).then(data => {
+      console.log('============importWithDerivationPath data: ', data);
+      return this.addAndBindWalletClient(data.walletClient, data.key, {
+        bwsurl: opts.bwsurl
+      });
+    });
+  }
+
+  public _importWithDerivationPath(opts): Promise<any> {
+    const showOpts = _.clone(opts);
+    if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
+    if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+
+    this.logger.debug('Importing Wallet:', JSON.stringify(showOpts));
+    return this.seedWallet(opts);
+  }
+
   private seedWallet(opts?): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};

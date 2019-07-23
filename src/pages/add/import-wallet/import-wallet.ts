@@ -264,6 +264,32 @@ export class ImportWalletPage {
       });
   }
 
+  private importWithDerivationPath(opts): void {
+    this.onGoingProcessProvider.set('importingWallet');
+    this.profileProvider
+      .importWithDerivationPath(opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
+        } else {
+          const title = this.translate.instant('Error');
+          this.showErrorInfoSheet(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
+  }
+
   private importMnemonic(words: string, opts): void {
     this.onGoingProcessProvider.set('importingWallet');
     this.profileProvider
@@ -353,6 +379,11 @@ export class ImportWalletPage {
         derivationPath
       );
 
+      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
+        we should change the name to 'isMultisig'
+      */
+      opts.n = opts.derivationStrategy == 'BIP48' ? 2 : 1;
+
       opts.coin = this.importForm.value.coin;
 
       if (
@@ -393,7 +424,10 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-      return this.importExtendedPrivateKey(words, opts);
+      opts.extendedPrivateKey = words;
+      return this.importForm.value.derivationPathEnabled
+        ? this.importWithDerivationPath(opts)
+        : this.importExtendedPrivateKey(words, opts);
     } else {
       const wordList = words.trim().split(/[\u3000\s]+/);
 
@@ -406,8 +440,11 @@ export class ImportWalletPage {
         return;
       }
     }
+    opts.mnemonic = words;
 
-    this.importMnemonic(words, opts);
+    this.importForm.value.derivationPathEnabled
+      ? this.importWithDerivationPath(opts)
+      : this.importMnemonic(words, opts);
   }
 
   public fileChangeEvent($event) {
