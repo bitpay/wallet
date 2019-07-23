@@ -15,16 +15,13 @@ export class WalletRecoverPage {
     private profileProvider: ProfileProvider,
     private navCtrl: NavController
   ) {
-    this.profileProvider
-      .getProfileLegacy()
-      .then(oldProfile => {
-        this.wallets = _.filter(oldProfile.credentials, value => {
-          return (
-            value.mnemonic !== undefined ||
-            value.mnemonicEncrypted !== undefined
-          );
-        });
+    this.profileProvider.getProfileLegacy().then(oldProfile => {
+      this.wallets = _.filter(oldProfile.credentials, value => {
+        return (
+          value.mnemonic !== undefined || value.mnemonicEncrypted !== undefined
+        );
       });
+    });
   }
 
   public openWalletMnemonicRecoverPage(name: string, credential: any) {
