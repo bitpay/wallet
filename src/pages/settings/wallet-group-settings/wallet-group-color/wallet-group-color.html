@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Color' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list radio-group [(ngModel)]="currentColorIndex">
+    <ion-item *ngFor="let color of colors; let i = index">
+      <ion-label>
+        <span class="settings-color-block" [ngStyle]="{'background-color': color}"></span>
+      </ion-label>
+      <ion-radio (click)="save(i)" [value]="i"></ion-radio>
+    </ion-item>
+  </ion-list>
+</ion-content>

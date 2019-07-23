@@ -81,6 +81,7 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
+import { WalletGroupColorPage } from '../pages/settings/wallet-group-settings/wallet-group-color/wallet-group-color';
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
@@ -195,6 +196,7 @@ export const PAGES = [
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
   WalletGroupExtendedPrivateKeyPage,
+  WalletGroupColorPage,
   WalletGroupDeletePage,
   WalletGroupSettingsPage,
   WalletDetailsPage,

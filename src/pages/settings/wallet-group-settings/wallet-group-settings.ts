@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
@@ -16,6 +17,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
+import { WalletGroupColorPage } from './wallet-group-color/wallet-group-color';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
 
@@ -35,10 +37,13 @@ export class WalletGroupSettingsPage {
   public canSign: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
+  public allowMultiplePrimaryWallets: boolean;
+  public selectedColor: string;
 
   private keyId: string;
 
   constructor(
+    private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
@@ -56,6 +61,8 @@ export class WalletGroupSettingsPage {
   }
 
   ionViewWillEnter() {
+    let config = this.configProvider.get();
+    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     this.wallets = this.profileProvider.getWallets({
       keyId: this.keyId,
@@ -64,6 +71,7 @@ export class WalletGroupSettingsPage {
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
+    this.selectedColor = this.walletsGroup.color;
   }
 
   public touchIdChange(): void {
@@ -182,6 +190,10 @@ export class WalletGroupSettingsPage {
 
   openWalletSettings(id) {
     this.navCtrl.push(WalletSettingsPage, { walletId: id });
+  }
+
+  openColorSettings() {
+    this.navCtrl.push(WalletGroupColorPage, { keyId: this.keyId });
   }
 
   public reorder(): void {

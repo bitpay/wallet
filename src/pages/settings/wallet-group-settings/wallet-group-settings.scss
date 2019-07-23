@@ -20,4 +20,11 @@ page-wallet-group-settings {
   .item-without-title {
     margin-top: 0;
   }
+
+  .selected-color {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50% !important;
+  }
 }

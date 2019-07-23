@@ -31,12 +31,29 @@ interface WalletGroup {
   name: string;
   needsBackup: boolean;
   order: number;
+  color: string;
 }
 @Injectable()
 export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
+
+  public readonly colorsGroup = [
+    '#EDEEF3',
+    '#DAE7F8',
+    '#F9D1D1',
+    '#DAF8DB',
+    '#FFFFE1',
+    '#FFECD3',
+    '#E4D3F2',
+    '#F8DAF4',
+    '#DAF8F5',
+    '#F5F8DA',
+    '#DADADA',
+    '#EBEDF8',
+    '#CBD3F0'
+  ];
 
   public UPDATE_PERIOD = 15;
   public UPDATE_PERIOD_FAST = 5;
@@ -288,7 +305,8 @@ export class ProfileProvider {
       order,
       isPrivKeyEncrypted,
       canSign,
-      isDeletedSeed;
+      isDeletedSeed,
+      color;
 
     if (keyId) {
       groupBackupInfo = await this.getBackupGroupInfo(keyId, wallet);
@@ -296,12 +314,14 @@ export class ProfileProvider {
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      color = this.configProvider.get().colorFor[keyId] || this.colorsGroup[0];
     } else {
       keyId = 'read-only';
       needsBackup = false;
       isPrivKeyEncrypted = false;
       canSign = false;
       isDeletedSeed = true;
+      color = this.colorsGroup[0];
     }
 
     wallet.needsBackup = needsBackup;
@@ -312,7 +332,8 @@ export class ProfileProvider {
       isPrivKeyEncrypted,
       needsBackup,
       canSign,
-      isDeletedSeed
+      isDeletedSeed,
+      color
     };
 
     let date;
@@ -324,6 +345,18 @@ export class ProfileProvider {
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
     return Promise.resolve(true);
+  }
+
+  public getDefaultColor() {
+    return this.colorsGroup[0];
+  }
+
+  public getColorsGroup() {
+    return this.colorsGroup;
+  }
+
+  public getColorGroup(keyId): string {
+    return this.walletsGroups[keyId].color;
   }
 
   public checkAccountCreation(wallet, keyId: string): boolean {

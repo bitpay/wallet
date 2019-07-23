@@ -13,6 +13,12 @@
 
   <ion-list class="settings-list">
 
+    <button ion-item *ngIf="allowMultiplePrimaryWallets" (click)="openColorSettings()">
+      <span translate>Color</span>
+      <ion-note class="selected-color" [ngStyle]="{'background-color': selectedColor}" item-end>
+      </ion-note>
+    </button>
+
     <ion-item-divider *ngIf="canSign || touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
     <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
       <span translate>Backup</span>

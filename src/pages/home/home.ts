@@ -380,6 +380,10 @@ export class HomePage {
     }
   };
 
+  public getColorGroup(keyId): string {
+    return this.profileProvider.getColorGroup(keyId);
+  }
+
   private checkFeedbackInfo() {
     this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
