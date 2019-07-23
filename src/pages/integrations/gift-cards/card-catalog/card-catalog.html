@@ -20,7 +20,7 @@
 
     <search-bar [scrollArea]="wideHeaderPage?.scrollArea" (search)="onSearch($event.target.value)"
       placeholder="Search Gift Cards"></search-bar>
-    <ion-list class="settings-list" [virtualScroll]="allCards" [approxItemHeight]="'87px'" [virtualTrackBy]="trackBy"
+    <ion-list class="bp-list" [virtualScroll]="allCards" [approxItemHeight]="'87px'" [virtualTrackBy]="trackBy"
       [headerFn]="getHeaderFn" [hidden]="searchQuery">
 
       <ion-item-divider *virtualHeader="let header">
@@ -60,8 +60,7 @@
 
     </ion-list>
 
-    <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'87px'"
-      [virtualTrackBy]="trackBy">
+    <ion-list class="bp-list" [virtualScroll]="visibleCards" [approxItemHeight]="'87px'" [virtualTrackBy]="trackBy">
 
       <button ion-item class="card-list-item" *virtualItem="let card" (click)="buyCard(card)">
         <ion-icon item-start>

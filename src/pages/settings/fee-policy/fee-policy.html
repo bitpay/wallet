@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <ion-list radio-group [(ngModel)]="currentFeeLevel" (ionChange)="save()" class="settings-list">
+  <ion-list radio-group [(ngModel)]="currentFeeLevel" (ionChange)="save()" class="settings-list bp-list">
     <ion-item *ngFor="let data of feeOpts | keys">
       <ion-label>{{data.value}}</ion-label>
       <ion-radio [value]="data.key"></ion-radio>

@@ -11,7 +11,7 @@
     </div>
   </label-tip>
 
-  <ion-list class="settings-list">
+  <ion-list class="settings-list bp-list">
 
     <ion-item-divider *ngIf="canSign || touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
     <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
