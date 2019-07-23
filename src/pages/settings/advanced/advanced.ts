@@ -29,11 +29,7 @@ export class AdvancedPage {
   ) {
     this.isCopay = this.appProvider.info.name === 'copay';
     this.profileProvider.getProfileLegacy().then(oldProfile => {
-      if (oldProfile) {
-        this.oldProfileAvailable = true;
-      } else {
-        this.oldProfileAvailable = false;
-      }
+      this.oldProfileAvailable = oldProfile !== undefined;
     });
   }
 
