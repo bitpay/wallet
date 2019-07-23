@@ -43,7 +43,7 @@ export class WalletGroupDeletePage {
   public showDeletePopup(): void {
     const title = this.translate.instant('Warning!');
     const message = this.translate.instant(
-      'Are you sure you want to delete all wallets in group?'
+      'Are you sure you want to delete all wallets using this key?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (res) this.deleteWalletGroup();
@@ -52,6 +52,7 @@ export class WalletGroupDeletePage {
 
   public deleteWalletGroup(): void {
     this.onGoingProcessProvider.set('deletingWallet');
+    this.profileProvider.removeProfileLegacy();
     const opts = {
       keyId: this.keyId
     };
