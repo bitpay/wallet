@@ -228,6 +228,8 @@ export class ImportWalletPage {
     if (wallets && wallets[0]) {
       this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
     }
+    this.allowMultiplePrimaryWallets();
+
     this.events.publish('Local/WalletListChange');
     // using setRoot(TabsPage) as workaround when coming from scanner
     this.app
@@ -236,6 +238,17 @@ export class ImportWalletPage {
       .then(() => {
         this.events.publish('Home/reloadStatus');
       });
+  }
+
+  private allowMultiplePrimaryWallets(): void {
+    let config = this.configProvider.get();
+    const allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
+    if (allowMultiplePrimaryWallets) return;
+
+    let opts = {
+      allowMultiplePrimaryWallets: true
+    };
+    this.configProvider.set(opts);
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
