@@ -90,8 +90,7 @@
           Access denied
         </div>
         <div class="server-message-body" translate>
-          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of
-          payment and we are therefore unable to service you.
+          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.
         </div>
         <div class="server-message-button" (click)="openCountryBannedLink()">
           <span translate>Learn more</span>
@@ -126,15 +125,14 @@
       <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" margin-top>
         <span label-tip-title translate>Needs Backup</span>
         <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
-            recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
-            or stolen.</span>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
         </div>
       </label-tip>
     </div>
 
-    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>Read Only
-      Wallets</div>
+    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>
+      Read Only Wallets
+    </div>
 
     <div *ngFor="let readOnlyWallet of readOnlyWalletsGroup; let i = index" class="wallets-container">
       <ion-list class="sliding-container wallets">

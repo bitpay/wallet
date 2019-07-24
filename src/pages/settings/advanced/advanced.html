@@ -16,8 +16,7 @@
           If enabled, wallets will also try to spend unconfirmed funds.
         </div>
         <div *ngIf="!isCopay" translate>
-          However, unconfirmed funds are not allowed for spending with
-          merchants, BitPay Card loads, or BitPay in-app gift card purchases.
+          However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases.
         </div>
       </div>
     </label-tip>
@@ -32,12 +31,11 @@
     <label-tip class="info" type="info" header="no-header">
       <div label-tip-body>
         <div translate>
-          If enabled, the new wallets may have different keys and will require a
-          new backup.
+          If enabled, the new wallets may have different keys and will require a new backup.
         </div>
       </div>
     </label-tip>
-    <button ion-item *ngIf="oldProfileAvailable" class="with-label no-border" (click)="openWalletRecoveryPage()">
+    <button ion-item *ngIf="oldProfileAvailable" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
       Recover old wallets
     </button>
   </ion-list>
