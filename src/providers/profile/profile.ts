@@ -342,8 +342,8 @@ export class ProfileProvider {
     } else if (
       key.use44forMultisig ||
       key.use0forBCH ||
-      !key.compliantDerivation ||
-      key.BIP45
+      key.BIP45 ||
+      key.compliantDerivation === false
     ) {
       return false;
     } else {
