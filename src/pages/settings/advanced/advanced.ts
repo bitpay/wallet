@@ -31,7 +31,7 @@ export class AdvancedPage {
     this.profileProvider
       .getProfileLegacy()
       .then(oldProfile => {
-        this.oldProfileAvailable = oldProfile !== null;
+        this.oldProfileAvailable = oldProfile ? true : false;
       })
       .catch(err => {
         this.oldProfileAvailable = false;
