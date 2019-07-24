@@ -359,7 +359,6 @@ export class HomePage {
     },100);
     */
 
-    this.allowMultiplePrimaryWallets = this.profileProvider.isMultiplePrimaryEnabled();
     this.wallets = this.profileProvider.getWallets();
     this.readOnlyWalletsGroup = _.filter(this.wallets, wallet => {
       return wallet.keyId == 'read-only';
@@ -373,6 +372,7 @@ export class HomePage {
         'keyId'
       )
     );
+    this.allowMultiplePrimaryWallets = this.profileProvider.isMultiplePrimaryEnabled() || this.walletsGroups.length > 1;
 
     this.profileProvider.setLastKnownBalance();
 

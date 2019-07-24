@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import * as _ from 'lodash';
 
 // providers
 import {
@@ -17,6 +18,7 @@ import { WalletRecoverPage } from './wallet-recover-page/wallet-recover-page';
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
   public allowMultiplePrimaryWallets: boolean;
+  public nrKeys: number;
   public isCopay: boolean;
   public oldProfileAvailable: boolean;
 
@@ -47,6 +49,13 @@ export class AdvancedPage {
     let config = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
+
+    const opts = {
+      showHidden: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    this.nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
+
     this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
   }
 
