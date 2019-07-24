@@ -461,12 +461,12 @@ page-home {
   .sliding-container {
     height: auto;
 
-    .ng-star-inserted:first-child .item.item-block {
+    .wallet-wrapper:first-child .item.item-block {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
 
-    .ng-star-inserted:last-child .item.item-block {
+    .wallet-wrapper:last-child .item.item-block {
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
 
