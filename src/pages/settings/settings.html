@@ -107,7 +107,7 @@
       </div>
 
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
-        {{'Wallets by Keys' | translate}}
+        {{'Wallets (Group by key)' | translate}}
       </ion-item-divider>
 
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
