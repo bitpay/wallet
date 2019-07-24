@@ -321,8 +321,10 @@ page-home {
 
   ion-item-sliding.card-item-sliding {
     padding-bottom: 1rem;
+
     button.item.item-block {
       border-radius: 5px;
+
       .item-inner {
         border: 0;
       }
@@ -442,6 +444,14 @@ page-home {
 
   .wallets-container {
     margin-top: 20px;
+
+    .wallet-wrapper {
+      ion-item-sliding:last-child {
+        padding-bottom: 2rem;
+        margin-bottom: -2rem;
+      }
+    }
+
     .section-header {
       margin-top: 20px;
       margin-bottom: 18px;
@@ -459,6 +469,7 @@ page-home {
     .ng-star-inserted:last-child .item.item-block {
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
+
       .item-inner {
         border: 0;
       }

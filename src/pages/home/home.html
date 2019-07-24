@@ -36,7 +36,8 @@
           </button>
         </div>
       </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData"
+        [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
       </page-clipboard-card>
     </div>
 
@@ -49,7 +50,8 @@
         </ion-row>
       </ion-card-header>
       <ion-card-content class="server-message-content">
-        <div class="server-message-icon" *ngIf="serverMessages[0].category" [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
+        <div class="server-message-icon" *ngIf="serverMessages[0].category"
+          [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
           <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessages[0].category == 'critical'" />
           <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessages[0].category == 'info'" />
         </div>
@@ -63,7 +65,8 @@
         <div class="server-message-body" *ngIf="serverMessages[0].body">
           {{ serverMessages[0].body }}
         </div>
-        <div class="server-message-button" *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
+        <div class="server-message-button" *ngIf="serverMessages[0].link"
+          (click)="openServerMessageLink(serverMessages[0].link)">
           <span *ngIf="serverMessages[0].linkText">{{
             serverMessages[0].linkText
           }}</span>
@@ -103,7 +106,7 @@
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
       <ion-list class="sliding-container wallets">
-        <div *ngFor="let wallet of walletGroup">
+        <div *ngFor="let wallet of walletGroup" class="wallet-wrapper">
           <ion-item-sliding #slidingItem>
             <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
               <wallet-item-content [wallet]="wallet"></wallet-item-content>
@@ -115,7 +118,8 @@
               </button>
             </ion-item-options>
             <ion-item-options side="right">
-              <button class="action action--receive" ion-button (click)="onWalletAction(wallet, 'receive', slidingItem)">
+              <button class="action action--receive" ion-button
+                (click)="onWalletAction(wallet, 'receive', slidingItem)">
                 <div class="action__icon"><img src="assets/img/receive.svg" /></div>
                 <div class="action__text">Receive</div>
               </button>
@@ -126,12 +130,15 @@
       <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" margin-top>
         <span label-tip-title translate>Needs Backup</span>
         <div label-tip-body>
-          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your
+            recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost
+            or stolen.</span>
         </div>
       </label-tip>
     </div>
 
-    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>Read Only Wallets</div>
+    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>Read Only
+      Wallets</div>
 
     <div *ngFor="let readOnlyWallet of readOnlyWalletsGroup; let i = index" class="wallets-container">
       <ion-list class="sliding-container wallets">
@@ -140,13 +147,15 @@
             <wallet-item-content [wallet]="readOnlyWallet"></wallet-item-content>
           </button>
           <ion-item-options side="left">
-            <button class="action action--send" ion-button (click)="onWalletAction(readOnlyWallet, 'send', slidingItem)">
+            <button class="action action--send" ion-button
+              (click)="onWalletAction(readOnlyWallet, 'send', slidingItem)">
               <div class="action__icon"><img src="assets/img/send.svg" /></div>
               <div class="action__text">Send</div>
             </button>
           </ion-item-options>
           <ion-item-options side="right">
-            <button class="action action--receive" ion-button (click)="onWalletAction(readOnlyWallet, 'receive', slidingItem)">
+            <button class="action action--receive" ion-button
+              (click)="onWalletAction(readOnlyWallet, 'receive', slidingItem)">
               <div class="action__icon"><img src="assets/img/receive.svg" /></div>
               <div class="action__text">Receive</div>
             </button>
