@@ -108,7 +108,7 @@
       <ion-list class="sliding-container wallets">
         <div *ngFor="let wallet of walletGroup" class="wallet-wrapper">
           <ion-item-sliding #slidingItem>
-            <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
+            <button [ngStyle]="{'border-color': allowMultiplePrimaryWallets ? '#dae7f8' : '#edeef3'}" ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
               <wallet-item-content [wallet]="wallet"></wallet-item-content>
             </button>
             <ion-item-options side="left">

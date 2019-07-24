@@ -1473,4 +1473,8 @@ export class ProfileProvider {
     });
     return keyIdIndex >= 0;
   }
+
+  public isMultiplePrimaryEnabled(): boolean {
+    return !!this.configProvider.get().allowMultiplePrimaryWallets;
+  }
 }

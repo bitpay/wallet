@@ -67,6 +67,7 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
+  public allowMultiplePrimaryWallets: boolean;
 
   public showRateCard: boolean;
   public showPriceChart: boolean;
@@ -358,6 +359,7 @@ export class HomePage {
     },100);
     */
 
+    this.allowMultiplePrimaryWallets = this.profileProvider.isMultiplePrimaryEnabled();
     this.wallets = this.profileProvider.getWallets();
     this.readOnlyWalletsGroup = _.filter(this.wallets, wallet => {
       return wallet.keyId == 'read-only';
