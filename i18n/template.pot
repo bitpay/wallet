@@ -2595,7 +2595,7 @@ msgstr ""
 msgid "Wallets"
 msgstr ""
 
-msgid "Wallets (Group by key)"
+msgid "Wallets (Grouped by key)"
 msgstr ""
 
 msgid "Wallets using this key"
