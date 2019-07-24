@@ -492,8 +492,8 @@ export class ImportWalletPage {
     this.importForm.controls['derivationPath'].setValue(derivationPath);
   }
 
-  public changeDerivationPathValidators(derivationPathEnabled) {
-    if (derivationPathEnabled) {
+  public changeDerivationPathValidators() {
+    if (this.importForm.value.derivationPathEnabled) {
       this.importForm
         .get('derivationPath')
         .setValidators([Validators.required]);
