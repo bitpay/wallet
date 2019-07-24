@@ -85,7 +85,11 @@ export class CreateWalletPage implements OnInit {
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
     this.derivationPathByDefault =
       this.coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
+        ? this.isShared
+          ? this.derivationPathHelperProvider.defaultMultisigBCH
+          : this.derivationPathHelperProvider.defaultBCH
+        : this.isShared
+        ? this.derivationPathHelperProvider.defaultMultisigBTC
         : this.derivationPathHelperProvider.defaultBTC;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;

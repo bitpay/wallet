@@ -5,10 +5,14 @@ export class DerivationPathHelperProvider {
   public defaultBTC: string;
   public defaultBCH: string;
   public defaultTestnet: string;
+  public defaultMultisigBTC: string;
+  public defaultMultisigBCH: string;
 
   public constructor() {
     this.defaultBTC = "m/44'/0'/0'";
     this.defaultBCH = "m/44'/145'/0'";
+    this.defaultMultisigBTC = "m/48'/0'/0'";
+    this.defaultMultisigBCH = "m/48'/145'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 

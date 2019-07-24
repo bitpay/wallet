@@ -12,6 +12,7 @@ import { TabsPage } from '../../tabs/tabs';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -60,7 +61,8 @@ export class ImportWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -83,6 +85,9 @@ export class ImportWalletPage {
       passphrase: [null],
       file: [null],
       filePassword: [null],
+      derivationPathEnabled: [false],
+      coin: ['btc'],
+      derivationPath: [this.derivationPathHelperProvider.defaultBTC],
       bwsURL: [this.defaults.bws.url]
     });
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
@@ -259,6 +264,32 @@ export class ImportWalletPage {
       });
   }
 
+  private importWithDerivationPath(opts): void {
+    this.onGoingProcessProvider.set('importingWallet');
+    this.profileProvider
+      .importWithDerivationPath(opts)
+      .then(wallet => {
+        this.onGoingProcessProvider.clear();
+        this.finish([].concat(wallet));
+      })
+      .catch(err => {
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
+        } else {
+          const title = this.translate.instant('Error');
+          this.showErrorInfoSheet(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
+  }
+
   private importMnemonic(words: string, opts): void {
     this.onGoingProcessProvider.set('importingWallet');
     this.profileProvider
@@ -335,6 +366,52 @@ export class ImportWalletPage {
     if (this.importForm.value.bwsURL)
       opts.bwsurl = this.importForm.value.bwsURL;
 
+    if (this.importForm.value.derivationPathEnabled) {
+      const derivationPath = this.importForm.value.derivationPath;
+
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
+      );
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
+
+      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
+        we should change the name to 'isMultisig'
+      */
+      opts.n = opts.derivationStrategy == 'BIP48' ? 2 : 1;
+
+      opts.coin = this.importForm.value.coin;
+
+      if (
+        !opts.networkName ||
+        !opts.derivationStrategy ||
+        !Number.isInteger(opts.account)
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
+        return;
+      }
+
+      if (
+        !this.derivationPathHelperProvider.isValidDerivationPathCoin(
+          this.importForm.value.derivationPath,
+          this.importForm.value.coin
+        )
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
+          'Invalid derivation path for selected coin'
+        );
+        this.popupProvider.ionicAlert(title, subtitle);
+        return;
+      }
+    }
+
     opts.passphrase = this.importForm.value.passphrase || null;
 
     const words: string = this.importForm.value.words || null;
@@ -347,7 +424,10 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-      return this.importExtendedPrivateKey(words, opts);
+      opts.extendedPrivateKey = words;
+      return this.importForm.value.derivationPathEnabled
+        ? this.importWithDerivationPath(opts)
+        : this.importExtendedPrivateKey(words, opts);
     } else {
       const wordList = words.trim().split(/[\u3000\s]+/);
 
@@ -360,8 +440,11 @@ export class ImportWalletPage {
         return;
       }
     }
+    opts.mnemonic = words;
 
-    this.importMnemonic(words, opts);
+    this.importForm.value.derivationPathEnabled
+      ? this.importWithDerivationPath(opts)
+      : this.importMnemonic(words, opts);
   }
 
   public fileChangeEvent($event) {
@@ -385,6 +468,28 @@ export class ImportWalletPage {
         this.importBlob(reader, opts);
       }
     };
+  }
+
+  public setDerivationPath(coin: string) {
+    const derivationPath =
+      coin == 'bch'
+        ? this.derivationPathHelperProvider.defaultBCH
+        : this.derivationPathHelperProvider.defaultBTC;
+
+    this.importForm.controls['derivationPath'].setValue(derivationPath);
+  }
+
+  public changeDerivationPathValidators(derivationPathEnabled) {
+    if (derivationPathEnabled) {
+      this.importForm
+        .get('derivationPath')
+        .setValidators([Validators.required]);
+
+      this.setDerivationPath(this.importForm.value.coin);
+    } else {
+      this.importForm.get('derivationPath').clearValidators();
+    }
+    this.importForm.get('derivationPath').updateValueAndValidity();
   }
 
   public openScanner(): void {

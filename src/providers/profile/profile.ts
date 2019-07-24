@@ -1009,6 +1009,41 @@ export class ProfileProvider {
     });
   }
 
+  public importWithDerivationPath(opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet with derivation path');
+      this._importWithDerivationPath(opts).then(data => {
+        // Check if wallet exists
+        data.walletClient.openWallet(err => {
+          if (err) {
+            if (err.message.indexOf('not found') > 0) {
+              err = 'WALLET_DOES_NOT_EXIST';
+            }
+            return reject(err);
+          }
+          this.addAndBindWalletClient(data.walletClient, data.key, {
+            bwsurl: opts.bwsurl
+          })
+            .then(walletClient => {
+              return resolve(walletClient);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        });
+      });
+    });
+  }
+
+  public _importWithDerivationPath(opts): Promise<any> {
+    const showOpts = _.clone(opts);
+    if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
+    if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+
+    this.logger.debug('Importing Wallet:', JSON.stringify(showOpts));
+    return this.seedWallet(opts);
+  }
+
   private seedWallet(opts?): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
@@ -1136,7 +1171,9 @@ export class ProfileProvider {
               err => {
                 const copayerRegistered =
                   err instanceof this.errors.COPAYER_REGISTERED;
-                if (err && !copayerRegistered) {
+                const isSetSeed = opts.mnemonic || opts.extendedPrivateKey;
+
+                if (err && (!copayerRegistered || isSetSeed)) {
                   const msg = this.bwcErrorProvider.msg(
                     err,
                     this.translate.instant('Error creating wallet')
