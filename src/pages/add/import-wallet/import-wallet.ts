@@ -268,11 +268,9 @@ export class ImportWalletPage {
     this.onGoingProcessProvider.set('importingWallet');
     this.profileProvider
       .importWithDerivationPath(opts)
-      .then((wallets: any[]) => {
+      .then(wallet => {
         this.onGoingProcessProvider.clear();
-
-        if (wallets && wallets.length)
-          this.finish(wallets);
+        this.finish([].concat(wallet));
       })
       .catch(err => {
         if (err == 'WALLET_DOES_NOT_EXIST') {
