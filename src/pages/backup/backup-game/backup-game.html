@@ -45,16 +45,16 @@
     <div [hidden]="!mnemonicHasPassphrase || !(mnemonicHasPassphrase && selectComplete)">
       <div class="key-container">
         <div class="password">
-          <div class="password-title" translate>In order to verify your wallet recovery phrase, please type your
-            password.</div>
+          <div class="password-title" translate>
+            In order to verify your wallet recovery phrase, please type your password.
+          </div>
           <ion-item>
             <ion-label stacked translate>Password</ion-label>
             <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false">
             </ion-input>
           </ion-item>
           <div class="password-text">
-            <span class="assertive" translate>This recovery phrase was created with a password. To recover this wallet
-              both the recovery phrase and password are needed.</span>
+            <span class="assertive" translate>This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.</span>
           </div>
         </div>
       </div>
