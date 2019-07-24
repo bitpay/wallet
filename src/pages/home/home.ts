@@ -372,7 +372,9 @@ export class HomePage {
         'keyId'
       )
     );
-    this.allowMultiplePrimaryWallets = this.profileProvider.isMultiplePrimaryEnabled() || this.walletsGroups.length > 1;
+    this.allowMultiplePrimaryWallets =
+      this.profileProvider.isMultiplePrimaryEnabled() ||
+      this.walletsGroups.length > 1;
 
     this.profileProvider.setLastKnownBalance();
 
