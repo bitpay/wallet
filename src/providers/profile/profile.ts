@@ -999,12 +999,24 @@ export class ProfileProvider {
 
   public importWithDerivationPath(opts): Promise<any> {
     this.logger.info('Importing Wallet with derivation path');
-    return this._importWithDerivationPath(opts).then(data => {
-      console.log('============importWithDerivationPath data: ', data);
-      return this.addAndBindWalletClient(data.walletClient, data.key, {
-        bwsurl: opts.bwsurl
+
+    return new Promise((resolve, reject) => {
+      this._importWithDerivationPath(opts).then(data => {
+        //check if wallet exists
+        data.walletClient.openWallet((err) => {
+          if (err) {
+            if ( err.message.indexOf('not found') > 0) {
+              err = 'WALLET_DOES_NOT_EXIST';
+            }
+            return reject(err);
+          }
+
+          resolve(this.addAndBindWalletClient(data.walletClient, data.key, {
+            bwsurl: opts.bwsurl
+          }));
+        });
       });
-    });
+   })
   }
 
   public _importWithDerivationPath(opts): Promise<any> {
