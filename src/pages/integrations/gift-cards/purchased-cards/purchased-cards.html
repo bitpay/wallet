@@ -5,9 +5,9 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <ion-list class="settings-list">
+    <ion-list class="settings-list bp-list">
       <ion-item-divider *ngIf="currentGiftCards && currentGiftCards.length">{{'Current Cards' | translate}}
-        <button clear item-right ion-button class="settings-list__divider-button" (click)="addCard()">
+        <button clear item-right ion-button class="settings-list bp-list__divider-button" (click)="addCard()">
           <ion-icon ios="md-add" md="md-add"></ion-icon>
         </button>
       </ion-item-divider>

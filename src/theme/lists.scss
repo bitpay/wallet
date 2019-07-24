@@ -8,7 +8,7 @@
   }
 }
 
-.settings-list {
+.bp-list {
   &.top-padding {
     margin-top: 40px;
   }
@@ -82,6 +82,14 @@
     }
   }
 
+  ion-item-divider {
+    .reorder-option {
+      padding-right: 8px !important;
+    }
+  }
+}
+
+.bp-list.settings-list {
   ion-item.item,
   button.item {
     padding: 12px 0 12px 22px;
@@ -97,6 +105,7 @@
         padding: 6px 10px;
         border-radius: 4px;
       }
+
       ion-note.note.wallet-warning {
         background: none;
         color: #e56c7b;
@@ -107,12 +116,6 @@
       &:after {
         width: 100%;
       }
-    }
-  }
-
-  ion-item-divider {
-    .reorder-option {
-      padding-right: 8px !important;
     }
   }
 }
