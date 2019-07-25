@@ -65,8 +65,6 @@ export class BackupProvider {
       let b: any = {};
 
       b.credentials = JSON.parse(wallet.toString(opts));
-      if (wallet.canSign)
-        b.key = this.keyProvider.getKey(wallet.credentials.keyId);
       if (opts.addressBook) b.addressBook = opts.addressBook;
       b = JSON.stringify(b);
 
