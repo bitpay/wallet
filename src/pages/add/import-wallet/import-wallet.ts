@@ -182,6 +182,7 @@ export class ImportWalletPage {
   }
 
   private importBlob(str: string, opts): void {
+console.log('[import-wallet.ts.184:str:]',str); // TODO
     let str2: string;
     let err = null;
     try {
@@ -195,6 +196,7 @@ export class ImportWalletPage {
       this.logger.error('Import: could not decrypt file', e);
     }
 
+console.log('[import-wallet.ts.189:str2:]',str2); // TODO
     if (err) {
       const title = this.translate.instant('Error');
       this.popupProvider.ionicAlert(title, err);

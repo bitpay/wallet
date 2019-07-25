@@ -777,28 +777,53 @@ export class ProfileProvider {
       let credentials;
       let key;
       let addressBook;
+      const Key = this.bwcProvider.getKey();
 
       const data = JSON.parse(str);
+console.log('[profile.ts.781:data:]',data); // TODO
 
-      try {
-        // needs to migrate?
-        if (data.xPrivKey && data.xPrivKeyEncrypted) {
-          this.logger.warn(
-            'Found both encrypted and decrypted key. Deleting the encrypted version'
+
+      if (data.credentials)  {
+
+        try {
+          credentials = data.credentials;
+          if (data.key) {
+            key = Key.fromObj(data.key);
+          }
+          addressBook = data.addressBook;
+        } catch (err) {
+          this.logger.error(err);
+          return reject(
+            this.translate.instant('Could not import. Check input file.')
           );
-          delete data.xPrivKeyEncrypted;
-          delete data.mnemonicEncrypted;
         }
-        let migrated = this.bwcProvider.upgradeCredentialsV1(data);
-        credentials = migrated.credentials;
-        key = migrated.key;
-        addressBook = credentials.addressBook ? credentials.addressBook : {};
-      } catch (error) {
-        this.logger.error(error);
-        return reject(
-          this.translate.instant('Could not import. Check input file.')
-        );
-      }
+      } else {
+
+        // old format ? root = credentials.
+        try {
+          // needs to migrate?
+          if (data.xPrivKey && data.xPrivKeyEncrypted) {
+            this.logger.warn(
+              'Found both encrypted and decrypted key. Deleting the encrypted version'
+            );
+            delete data.xPrivKeyEncrypted;
+            delete data.mnemonicEncrypted;
+          }
+
+          console.log('[profile.ts.793]'); // TODO
+          let migrated = this.bwcProvider.upgradeCredentialsV1(data);
+
+          console.log('[profile.ts.796]'); // TODO
+          credentials = migrated.credentials;
+          key = migrated.key;
+          addressBook = credentials.addressBook ? credentials.addressBook : {};
+        } catch (error) {
+          this.logger.error(error);
+          return reject(
+            this.translate.instant('Could not import. Check input file.')
+          );
+        }
+      } 
 
       if (!credentials.n) {
         return reject(
