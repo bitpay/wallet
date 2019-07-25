@@ -780,11 +780,9 @@ export class ProfileProvider {
       const Key = this.bwcProvider.getKey();
 
       const data = JSON.parse(str);
-console.log('[profile.ts.781:data:]',data); // TODO
+      console.log('[profile.ts.781:data:]', data); // TODO
 
-
-      if (data.credentials)  {
-
+      if (data.credentials) {
         try {
           credentials = data.credentials;
           if (data.key) {
@@ -798,7 +796,6 @@ console.log('[profile.ts.781:data:]',data); // TODO
           );
         }
       } else {
-
         // old format ? root = credentials.
         try {
           // needs to migrate?
@@ -823,7 +820,7 @@ console.log('[profile.ts.781:data:]',data); // TODO
             this.translate.instant('Could not import. Check input file.')
           );
         }
-      } 
+      }
 
       if (!credentials.n) {
         return reject(
