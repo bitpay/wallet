@@ -195,8 +195,7 @@ export class WalletSettingsPage {
   }
   public openExportWallet(): void {
     this.navCtrl.push(WalletExportPage, {
-      walletId: this.wallet.credentials.walletId,
-      showNoPrivKeyOpt: false
+      walletId: this.wallet.credentials.walletId
     });
   }
   public openWalletServiceUrl(): void {

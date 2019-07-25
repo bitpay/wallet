@@ -35,9 +35,6 @@ export class WalletExportPage {
   public isCordova: boolean;
   public isSafari: boolean;
   public isIOS: boolean;
-  public exportWalletInfo;
-  public supported: boolean;
-  public showNoPrivKeyOpt: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -69,7 +66,6 @@ export class WalletExportPage {
       },
       { validator: this.matchingPasswords('password', 'confirmPassword') }
     );
-    this.showNoPrivKeyOpt = this.navParams.data.showNoPrivKeyOpt;
   }
 
   ionViewDidLoad() {
@@ -112,22 +108,6 @@ export class WalletExportPage {
           return reject(err);
         });
     });
-  }
-
-  public noSignEnabledChange(): void {
-    if (!this.supported) return;
-
-    this.walletProvider
-      .getEncodedWalletInfo(this.wallet)
-      .then((code: string) => {
-        this.supported = true;
-        this.exportWalletInfo = code;
-      })
-      .catch(err => {
-        this.logger.error(err);
-        this.supported = false;
-        this.exportWalletInfo = null;
-      });
   }
 
   public downloadWalletBackup(): void {
