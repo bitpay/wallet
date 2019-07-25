@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -10,6 +11,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FilterProvider } from '../../providers/filter/filter';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
@@ -54,8 +56,22 @@ export class TxDetailsPage {
     private walletProvider: WalletProvider,
     private translate: TranslateService,
     private filter: FilterProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private platformProvider: PlatformProvider,
+    private statusBar: StatusBar
   ) {}
+
+  ionViewWillEnter() {
+    if (this.platformProvider.isCordova) {
+      this.statusBar.styleDefault();
+    }
+  }
+
+  ionViewWillLeave() {
+    if (this.platformProvider.isCordova) {
+      this.statusBar.styleBlackOpaque();
+    }
+  }
 
   ionViewDidLoad() {
     this.config = this.configProvider.get();
