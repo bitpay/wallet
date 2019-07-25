@@ -25,12 +25,6 @@
               The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
             </div>
           </label-tip>
-          <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
-            <span label-tip-title translate>No Private Key</span>
-            <div label-tip-body translate>
-              The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
-            </div>
-          </label-tip>
           <div *ngIf="canSign">
             <button ion-button class="button-standard button-secondary" (click)="showAdv = !showAdv">
               <span *ngIf="!showAdv">{{'Show advanced options' | translate}}</span>
