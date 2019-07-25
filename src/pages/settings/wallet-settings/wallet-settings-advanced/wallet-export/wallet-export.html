@@ -19,7 +19,7 @@
           <ion-item *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
             <span ion-text color="warning" translate>Passwords do not match</span>
           </ion-item>
-          <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
+          <label-tip class="no-arrowhead warning-message" *ngIf="!canSign" type="warn">
             <span label-tip-title translate>No Private Key</span>
             <div label-tip-body translate>
               The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
@@ -36,7 +36,7 @@
             <ion-checkbox formControlName="noSignEnabled"></ion-checkbox>
           </ion-item>
 
-          <label-tip *ngIf="exportWalletForm.value.noSignEnabled" type="warn">
+          <label-tip *ngIf="exportWalletForm.value.noSignEnabled" class="warning-message" type="warn">
             <span label-tip-title translate>Funds Will Not Be Accessible</span>
             <div label-tip-body translate>
               Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.

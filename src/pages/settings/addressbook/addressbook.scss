@@ -33,20 +33,25 @@ page-addressbook {
       max-width: 300px;
     }
   }
-  .contact {
-    ion-label {
-      display: flex;
-      align-items: center;
-      gravatar {
-        margin-right: 1.5rem;
+  .bp-list.settings-list {
+    button.item {
+      padding: 0 0 0 22px;
+      .item-inner {
+        margin-left: 0px;
+        .input-wrapper > ion-label {
+          margin: 0px;
+        }
       }
     }
-    .contact-info {
-      overflow: hidden;
-      .item-title {
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
+  }
+
+  .sortContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    height: 22px;
   }
 }
