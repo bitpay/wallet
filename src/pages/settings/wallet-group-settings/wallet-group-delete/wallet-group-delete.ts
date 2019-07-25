@@ -54,7 +54,8 @@ export class WalletGroupDeletePage {
     this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider.removeProfileLegacy();
     const opts = {
-      keyId: this.keyId
+      keyId: this.keyId,
+      showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.profileProvider
