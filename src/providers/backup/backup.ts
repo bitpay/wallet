@@ -64,7 +64,7 @@ export class BackupProvider {
       opts = opts ? opts : {};
       let b: any = {};
 
-      b.credentials = JSON.parse(wallet.toString(opts));
+      b = JSON.parse(wallet.toString(opts));
       if (opts.addressBook) b.addressBook = opts.addressBook;
       b = JSON.stringify(b);
 
