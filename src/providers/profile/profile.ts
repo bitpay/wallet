@@ -780,8 +780,6 @@ export class ProfileProvider {
       const Key = this.bwcProvider.getKey();
 
       const data = JSON.parse(str);
-      console.log('[profile.ts.781:data:]', data); // TODO
-
       if (data.credentials) {
         try {
           credentials = data.credentials;
@@ -807,10 +805,7 @@ export class ProfileProvider {
             delete data.mnemonicEncrypted;
           }
 
-          console.log('[profile.ts.793]'); // TODO
           let migrated = this.bwcProvider.upgradeCredentialsV1(data);
-
-          console.log('[profile.ts.796]'); // TODO
           credentials = migrated.credentials;
           key = migrated.key;
           addressBook = credentials.addressBook ? credentials.addressBook : {};
