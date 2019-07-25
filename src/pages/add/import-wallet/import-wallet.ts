@@ -209,7 +209,7 @@ export class ImportWalletPage {
       .importFile(str2, opts)
       .then((wallet: any[]) => {
         this.onGoingProcessProvider.clear();
-        this.finish([].concat(wallet));
+        if (wallet) this.finish([].concat(wallet));
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -283,7 +283,7 @@ export class ImportWalletPage {
       .importWithDerivationPath(opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
-        this.finish([].concat(wallet));
+        if (wallet) this.finish([].concat(wallet));
       })
       .catch(err => {
         if (err == 'WALLET_DOES_NOT_EXIST') {

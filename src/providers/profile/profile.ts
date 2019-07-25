@@ -766,6 +766,10 @@ export class ProfileProvider {
         this.onGoingProcessProvider.resume();
         return this.addAndBindWalletClient(data.walletClient, data.key, {
           bwsurl: opts.bwsurl
+        }).then(walletClient => {
+          return this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
+            return Promise.resolve(walletClient);
+          });
         });
       });
     });
@@ -1050,7 +1054,9 @@ export class ProfileProvider {
             bwsurl: opts.bwsurl
           })
             .then(walletClient => {
-              return resolve(walletClient);
+              this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
+                return resolve(walletClient);
+              });
             })
             .catch(err => {
               return reject(err);
