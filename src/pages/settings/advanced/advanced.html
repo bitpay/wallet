@@ -22,13 +22,13 @@
     </label-tip>
   </ion-list>
   <ion-list class="settings-list bp-list">
-    <ion-item class="with-label no-border">
+    <ion-item class="with-label no-border" *ngIf="nrKeys==1">
       <ion-label>{{
         'Support Wallets with Different Keys' | translate
       }}</ion-label>
       <ion-toggle [(ngModel)]="allowMultiplePrimaryWallets" (ionChange)="allowMultiplePrimaryWalletsChange()"></ion-toggle>
     </ion-item>
-    <label-tip class="info" type="info" header="no-header">
+    <label-tip class="info" type="info" header="no-header"  *ngIf="nrKeys==1">
       <div label-tip-body>
         <div translate>
           If enabled, the new wallets may have different keys and will require a new backup.

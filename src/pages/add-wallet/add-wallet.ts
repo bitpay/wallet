@@ -28,7 +28,6 @@ export class AddWalletPage {
     private configProvider: ConfigProvider
   ) {
     const config = this.configProvider.get();
-    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
 
     const opts = {
       canAddNewAccount: true,
@@ -36,6 +35,14 @@ export class AddWalletPage {
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+
+    const opts2 = {
+      showHidden: true
+    };
+    const wallets2 = this.profileProvider.getWallets(opts2);
+    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
+    this.allowMultiplePrimaryWallets =
+      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   ionViewDidLoad() {

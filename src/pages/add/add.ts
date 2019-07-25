@@ -25,7 +25,14 @@ export class AddPage {
     private profileProvider: ProfileProvider
   ) {
     const config = this.configProvider.get();
-    this.allowMultiplePrimaryWallets = config.allowMultiplePrimaryWallets;
+    const opts2 = {
+      showHidden: true
+    };
+
+    const wallets2 = this.profileProvider.getWallets(opts2);
+    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
+    this.allowMultiplePrimaryWallets =
+      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   ionViewDidLoad() {
