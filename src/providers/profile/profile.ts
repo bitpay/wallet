@@ -102,6 +102,7 @@ export class ProfileProvider {
     timestamp?: string,
     migrating?: boolean
   ): void {
+    if (!keyId) return;
     this.persistenceProvider.setBackupGroupFlag(keyId, timestamp);
     this.logger.debug('Backup flag stored');
     if (!migrating) this.walletsGroups[keyId].needsBackup = false;
