@@ -114,8 +114,11 @@ export class AltCurrencyPage {
 
     this.configProvider.set(opts);
     this.saveLastUsed(newAltCurrency);
+    const opts2 = {
+      showHidden: true
+    };
     this.walletProvider.updateRemotePreferences(
-      this.profileProvider.getWallets()
+      this.profileProvider.getWallets(opts2)
     );
     this.navCtrl.pop();
   }

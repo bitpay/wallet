@@ -96,7 +96,10 @@ export class PushNotificationsProvider {
       return;
     }
 
-    const wallets = this.profileProvider.getWallets();
+    const opts = {
+      showHidden: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
     _.forEach(wallets, walletClient => {
       this._subscribe(walletClient);
     });
@@ -110,7 +113,10 @@ export class PushNotificationsProvider {
       return;
     }
 
-    const wallets = this.profileProvider.getWallets();
+    const opts = {
+      showHidden: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
     _.forEach(wallets, walletClient => {
       this._unsubscribe(walletClient);
     });

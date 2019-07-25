@@ -32,7 +32,10 @@ export class EmailNotificationsProvider {
     });
 
     setTimeout(() => {
-      let wallets = this.profileProvider.getWallets();
+      const opts = {
+        showHidden: true
+      };
+      let wallets = this.profileProvider.getWallets(opts);
       this.walletProvider.updateRemotePreferences(wallets);
     }, 1000);
   }
