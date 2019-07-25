@@ -65,8 +65,23 @@ export class BackupProvider {
       let b: any = {};
 
       b.credentials = JSON.parse(wallet.toString(opts));
-      if (wallet.canSign)
-        b.key = this.keyProvider.getKey(wallet.credentials.keyId);
+      if (b.credentials.keyId && opts.noSign) {
+        delete b.credentials.keyId;
+      }
+      if (wallet.canSign && !opts.noSign) {
+        const k = this.keyProvider.getKey(wallet.credentials.keyId);
+        if (opts.password) {
+          const k1 = this.keyProvider.get(
+            wallet.credentials.keyId,
+            opts.password
+          );
+          k.mnemonic = k1.mnemonic;
+          k.xPrivKey = k1.xPrivKey;
+          delete k.xPrivKeyEncrypted;
+          delete k.mnemonicEncrypted;
+        }
+        b.key = k;
+      }
       if (opts.addressBook) b.addressBook = opts.addressBook;
       b = JSON.stringify(b);
 
