@@ -657,7 +657,7 @@ page-shapeshift,
 }
 
 .icon-plus {
-  mask-image: url(../assets/img/icon-plus.svg);
+  -webkit-mask-box-image: url(../assets/img/icon-plus.svg);
   height: 18px;
   width: 18px;
   background-color: #cdd1d8;
