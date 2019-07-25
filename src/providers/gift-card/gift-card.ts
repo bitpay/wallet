@@ -181,9 +181,12 @@ export class GiftCardProvider extends InvoiceProvider {
     giftCardsToUpdate: GiftCard[],
     opts: GiftCardSaveParams = {}
   ) {
-    const oldActiveGiftCards: GiftCardMap =
+    let oldActiveGiftCards: GiftCardMap =
       (await this.persistenceProvider.getActiveGiftCards(this.getNetwork())) ||
       {};
+    if (typeof oldActiveGiftCards !== 'object') {
+      oldActiveGiftCards = {};
+    }
     const newMap = giftCardsToUpdate.reduce(
       (updatedMap, c) =>
         this.getNewSaveableGiftCardMap(updatedMap, c, {
