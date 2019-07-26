@@ -134,6 +134,7 @@ export class TransferToPage {
           getAddress: () => Promise.resolve(k)
         });
       });
+      contactsList = _.orderBy(contactsList, 'name');
       this.contactsList = contactsList.filter(c =>
         this.filterIrrelevantRecipients(c)
       );
