@@ -123,39 +123,29 @@ export class TransferToPage {
       if (!this.hasContacts) return;
 
       let contactsList = [];
-      const promises = [];
       _.each(ab, (v, k: string) => {
-        promises.push(
-          this.addressBookProvider.getAddressOrder(k).then(value => {
-            contactsList.push({
-              name: _.isObject(v) ? v.name : v,
-              address: k,
-              order: value,
-              network: this.addressProvider.getNetwork(k),
-              email: _.isObject(v) ? v.email : null,
-              recipientType: 'contact',
-              coin: this.addressProvider.getCoin(k),
-              getAddress: () => Promise.resolve(k)
-            });
-            return Promise.resolve();
-          })
-        );
+        contactsList.push({
+          name: _.isObject(v) ? v.name : v,
+          address: k,
+          network: this.addressProvider.getNetwork(k),
+          email: _.isObject(v) ? v.email : null,
+          recipientType: 'contact',
+          coin: this.addressProvider.getCoin(k),
+          getAddress: () => Promise.resolve(k)
+        });
       });
-
-      Promise.all(promises).then(() => {
-        this.contactsList = contactsList.filter(c =>
-          this.filterIrrelevantRecipients(c)
-        );
-        let shortContactsList = _.clone(
-          this.contactsList.slice(
-            0,
-            (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
-          )
-        );
-        this.filteredContactsList = _.clone(shortContactsList);
-        this.contactsShowMore =
-          this.contactsList.length > shortContactsList.length;
-      });
+      this.contactsList = contactsList.filter(c =>
+        this.filterIrrelevantRecipients(c)
+      );
+      let shortContactsList = _.clone(
+        this.contactsList.slice(
+          0,
+          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+        )
+      );
+      this.filteredContactsList = _.clone(shortContactsList);
+      this.contactsShowMore =
+        this.contactsList.length > shortContactsList.length;
     });
   }
 

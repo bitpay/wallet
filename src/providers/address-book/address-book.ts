@@ -69,18 +69,6 @@ export class AddressBookProvider {
     });
   }
 
-  public setAddressOrder(address: string, index: number): Promise<any> {
-    return this.persistenceProvider.setAddressOrder(address, index);
-  }
-
-  public getAddressOrder(address): Promise<any> {
-    return this.persistenceProvider.getAddressOrder(address);
-  }
-
-  public removeAddressOrder(address: string) {
-    this.persistenceProvider.removeAddressOrder(address);
-  }
-
   public add(entry): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.addressProvider.getNetwork(entry.address);
