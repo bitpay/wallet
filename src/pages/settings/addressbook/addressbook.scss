@@ -33,25 +33,4 @@ page-addressbook {
       max-width: 300px;
     }
   }
-  .bp-list.settings-list {
-    button.item {
-      padding: 0 0 0 22px;
-      .item-inner {
-        margin-left: 0px;
-        .input-wrapper > ion-label {
-          margin: 0px;
-        }
-      }
-    }
-  }
-
-  .sortContainer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: row;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    height: 22px;
-  }
 }
