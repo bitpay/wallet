@@ -813,7 +813,7 @@ export class ProfileProvider {
           let migrated = this.bwcProvider.upgradeCredentialsV1(data);
           credentials = migrated.credentials;
           key = migrated.key;
-          addressBook = credentials.addressBook ? credentials.addressBook : {};
+          addressBook = data.addressBook ? data.addressBook : {};
         } catch (error) {
           this.logger.error(error);
           return reject(
