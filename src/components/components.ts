@@ -1,5 +1,4 @@
 import { WalletItemContent } from './../pages/home/wallets/wallet-item-content.component';
-import { AddressItemContent } from './../pages/settings/addressbook/address-item-content.component';
 import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
@@ -17,7 +16,6 @@ export const COMPONENTS = [
   EXPANDABLE_HEADER_COMPONENTS,
   LabelTip,
   WalletItemContent,
-  AddressItemContent,
   ClipboardCardPage,
   SearchBarComponent,
   PriceCard,
