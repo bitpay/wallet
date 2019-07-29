@@ -63,9 +63,9 @@ export class WalletSettingsPage {
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
     this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
-    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
-      this.touchIdAvailable = isAvailable;
-    });
+
+    this.checkBiometricIdAvailable();
+
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor
       ? this.config.touchIdFor[this.wallet.credentials.walletId]
@@ -80,6 +80,12 @@ export class WalletSettingsPage {
     }
     this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
       this.showDuplicateWallet = res === 'enabled' ? true : false;
+    });
+  }
+
+  private checkBiometricIdAvailable() {
+    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
+      this.touchIdAvailable = isAvailable;
     });
   }
 
@@ -167,6 +173,7 @@ export class WalletSettingsPage {
       })
       .catch(err => {
         this.logger.error('Error with fingerprint:', err);
+        this.checkBiometricIdAvailable();
         this.touchIdEnabled = this.touchIdPrevValue;
       });
   }

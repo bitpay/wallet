@@ -63,7 +63,7 @@ export class LockPage {
           disabled: needsBackup
         },
         {
-          label: this.translate.instant('Fingerprint'),
+          label: this.translate.instant('Biometric'),
           method: 'fingerprint',
           enabled:
             this.lockOptions.method &&
