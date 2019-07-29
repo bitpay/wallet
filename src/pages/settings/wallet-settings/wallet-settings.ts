@@ -63,7 +63,7 @@ export class WalletSettingsPage {
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
     this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
-    
+
     this.checkBiometricIdAvailable();
 
     this.config = this.configProvider.get();
