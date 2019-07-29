@@ -59,8 +59,8 @@
         <ion-label>
           {{wallet.name}}
         </ion-label>
-        <ion-note item-end>
-          {{ wallet.hidden ? ('Hidden'|translate) : ('Enabled'|translate) }}
+        <ion-note *ngIf="wallet.hidden" item-end>
+          {{'Hidden'|translate}}
         </ion-note>
       </button>
     </ion-list>
