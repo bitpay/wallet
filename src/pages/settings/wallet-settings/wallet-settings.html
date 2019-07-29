@@ -12,7 +12,7 @@
         {{wallet && wallet.name}}
       </ion-note>
     </button>
-    <ion-item>
+    <ion-item class="with-label no-border">
       <ion-label>Hide Wallet</ion-label>
       <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
     </ion-item>
