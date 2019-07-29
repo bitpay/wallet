@@ -45,7 +45,7 @@ export class TouchIdProvider {
           return resolve(true);
         },
         () => {
-          this.logger.warn('Fingerprint is not available');
+          this.logger.warn('(iOS) Biometric ID is not available');
           return resolve(false);
         }
       );
@@ -59,13 +59,13 @@ export class TouchIdProvider {
         .then(res => {
           if (res.isAvailable) return resolve(true);
           else {
-            this.logger.warn('Fingerprint is not available');
+            this.logger.warn('Biometric ID is not available');
             return resolve(false);
           }
         })
         .catch(() => {
           this.logger.warn(
-            'Touch ID (Android) is not available for this device'
+            '(Android) Biometric ID is not available for this device'
           );
           return resolve(false);
         });
@@ -74,7 +74,10 @@ export class TouchIdProvider {
 
   private verifyIOSFingerprint(): Promise<any> {
     return this.touchId
-      .verifyFingerprint('Scan your fingerprint please')
+      .verifyFingerprint('Request Biometric Authentication')
+      .then(() => {
+        this.logger.debug('Successfully authenticated');
+      })
       .catch(err => {
         if (err && (err.code == -2 || err.code == -128))
           err.message = TouchIdErrors.fingerprintCancelled;
@@ -87,7 +90,7 @@ export class TouchIdProvider {
       .encrypt({ clientId: this.app.info.nameCase })
       .then(result => {
         if (result.withFingerprint) {
-          this.logger.debug('Successfully authenticated with fingerprint.');
+          this.logger.debug('Successfully authenticated');
         } else if (result.withBackup) {
           this.logger.debug('Successfully authenticated with backup password!');
         } else this.logger.warn("Didn't authenticate!");
@@ -95,10 +98,10 @@ export class TouchIdProvider {
       .catch(error => {
         const err = new Error(error);
         if (error === TouchIdErrors.fingerprintCancelled) {
-          this.logger.debug('Fingerprint authentication cancelled');
+          this.logger.debug('(Android) Biometric ID authentication cancelled');
           err.message = TouchIdErrors.fingerprintCancelled;
         } else {
-          this.logger.warn('Could not get Fingerprint Authenticated', error);
+          this.logger.warn('Could not get Biometric ID Authenticated', error);
         }
         throw err;
       });

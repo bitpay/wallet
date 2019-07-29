@@ -1611,6 +1611,8 @@ export class WalletProvider {
     return promise.then(() => {
       this.configProvider.set(opts);
       return Promise.resolve();
+    }).catch(e => {
+      return Promise.reject(e);
     });
   }
 
