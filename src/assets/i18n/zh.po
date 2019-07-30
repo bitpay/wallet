@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-07-24 17:23\n"
+"PO-Revision-Date: 2019-07-30 17:55\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -256,6 +256,9 @@ msgstr ""
 
 msgid "Below Minimum Amount"
 msgstr "En dessous du montant minimal"
+
+msgid "Biometric"
+msgstr ""
 
 msgid "BitPay Card URI"
 msgstr "URI thẻ bitPay"
@@ -692,9 +695,6 @@ msgstr "启用推式通知"
 msgid "Enable the camera to get started."
 msgstr "使该摄像机开始。"
 
-msgid "Enabled"
-msgstr ""
-
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "如果此设备被盗或被恶意软件破坏，加密可以保护您的资金。"
 
@@ -785,7 +785,7 @@ msgstr "已过期"
 msgid "Expires"
 msgstr "到期"
 
-msgid "Export Wallet Metadata"
+msgid "Export Wallet"
 msgstr ""
 
 msgid "Export to file"
@@ -847,9 +847,6 @@ msgstr "正在获取支付信息..."
 
 msgid "File/Text"
 msgstr "文件/文本"
-
-msgid "Fingerprint"
-msgstr "指纹"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
@@ -1688,6 +1685,9 @@ msgstr "报告问题"
 msgid "Report issue"
 msgstr "举报问题"
 
+msgid "Request Biometric Authentication"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr "请求加密密码"
 
@@ -2042,9 +2042,6 @@ msgstr "支付已被创建者移除"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "警告：此钱包的私钥不可用。导出允许检查钱包余额、交易历史记录，并从出口中创建支付提议。但是，不允许批准(签署) 提案，因此资金将无法从出口中获得。"
 
-msgid "The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
-
 msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
 msgstr "{maxAmount{currency}}"
 
@@ -2072,7 +2069,7 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "在应用程序缓存的交易历史记录和每个新传入事务。此功能清洁，这点和再次从服务器进行同步"
 
-msgid "The wallet won't be removed from this device. You can enable/hidden whenever you need it."
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-07-24 18:25\n"
+"PO-Revision-Date: 2019-07-30 18:13\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible doble gasto)"
@@ -256,6 +256,9 @@ msgstr "Antes de reclamar las direcciones de sus billeteras, se recomienda prime
 
 msgid "Below Minimum Amount"
 msgstr "Monto inferior al mínimo"
+
+msgid "Biometric"
+msgstr "Biométrico"
 
 msgid "BitPay Card URI"
 msgstr "URI de la BitPay Card"
@@ -609,7 +612,7 @@ msgid "Deposit Min"
 msgstr "Depósito mínimo"
 
 msgid "Derivation Path"
-msgstr "Ruta de derivación"
+msgstr "Camino de derivación"
 
 msgid "Derivation path"
 msgstr "Camino de derivación"
@@ -691,9 +694,6 @@ msgstr "Habilitar notificaciones push"
 
 msgid "Enable the camera to get started."
 msgstr "Habilitar la cámara para empezar."
-
-msgid "Enabled"
-msgstr "Habilitado"
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "El cifrado puede proteger sus fondos si este dispositivo es robado o comprometido por software malintencionado."
@@ -785,8 +785,8 @@ msgstr "Expirada"
 msgid "Expires"
 msgstr "Expira"
 
-msgid "Export Wallet Metadata"
-msgstr "Exportar metadatos de la billetera"
+msgid "Export Wallet"
+msgstr "Exportar billetera"
 
 msgid "Export to file"
 msgstr "Exportar a archivo"
@@ -847,9 +847,6 @@ msgstr "Obteniendo información del pago..."
 
 msgid "File/Text"
 msgstr "Archivo/Texto"
-
-msgid "Fingerprint"
-msgstr "Huella digital"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr "¿Encontró algo mal? Por favor repórtelo como un error. Si necesita ayuda inmediata con un problema, por favor contáctese con nuestro centro de ayuda."
@@ -1688,6 +1685,9 @@ msgstr "Reportar un problema"
 msgid "Report issue"
 msgstr "Reportar problema"
 
+msgid "Request Biometric Authentication"
+msgstr "Solicitar autenticación biométrica"
+
 msgid "Request Encrypt Password"
 msgstr "Solicitar contraseña de cifrado"
 
@@ -1941,7 +1941,7 @@ msgid "Specify Recovery Phrase"
 msgstr "Especificar frase de recuperación"
 
 msgid "Specify derivation path"
-msgstr "Especificar ruta de derivación"
+msgstr "Especificar camino de derivación"
 
 msgid "Spend proposal is not accepted"
 msgstr "La propuesta de gasto no se ha aceptado"
@@ -2042,9 +2042,6 @@ msgstr "El pago fue eliminado por el creador"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "La clave privada de esta billetera no está disponible. Podrás consultar el balance de la billetera, el historial de transacciones y crear propuestas de pago desde el archivo generado. Sin embargo, no podrás aprobar (firmar) propuestas de pago, por lo que los fondos no son accesibles desde este archivo."
 
-msgid "The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr "La clave privada de esta billetera no estará disponible en el archivo generado. Podrás consultar el balance de la billetera, el historial de transacciones y crear propuestas de pago. Sin embargo, no podrás aprobar (firmar) propuestas de pago, por lo que los fondos no serán accesibles al exportar."
-
 msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
 msgstr "El importe de la compra está limitado a {maxAmount} {currency} por día. Por favor modifique el importe."
 
@@ -2072,8 +2069,8 @@ msgstr "La transacción de {{walletName}} que estabas esperando se ha confirmado
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "El historial de transacciones y toda nueva transacción son cacheadas en la aplicación. Esta característica limpia y sincroniza nuevamente desde el servidor"
 
-msgid "The wallet won't be removed from this device. You can enable/hidden whenever you need it."
-msgstr "La billetera no se eliminará de este dispositivo. Puede activar/ocultar siempre que lo necesite."
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
+msgstr "La billetera no se eliminará de este dispositivo. Puede ocultarla siempre que lo necesite."
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr "La billetera que está utilizando no coincide con la red y/o la moneda de la dirección proporcionada"
@@ -2350,7 +2347,7 @@ msgid "Wallet Invitation"
 msgstr "Invitación para unirse a la billetera"
 
 msgid "Wallet Key Settings"
-msgstr "Preferencias de la llave de la billetera"
+msgstr "Preferencias de la llave"
 
 msgid "Wallet Name"
 msgstr "Nombre de la billetera"

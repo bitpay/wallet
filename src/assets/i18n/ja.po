@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-07-24 17:23\n"
+"PO-Revision-Date: 2019-07-30 17:55\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -256,6 +256,9 @@ msgid "Before retrieving your wallets addresses, it's recommended that you first
 msgstr ""
 
 msgid "Below Minimum Amount"
+msgstr ""
+
+msgid "Biometric"
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -693,9 +696,6 @@ msgstr "プッシュ通知を有効化"
 msgid "Enable the camera to get started."
 msgstr "始めるためにカメラを有効にして下さい。"
 
-msgid "Enabled"
-msgstr ""
-
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr ""
 
@@ -786,7 +786,7 @@ msgstr "期限切れ"
 msgid "Expires"
 msgstr "有効期限："
 
-msgid "Export Wallet Metadata"
+msgid "Export Wallet"
 msgstr ""
 
 msgid "Export to file"
@@ -847,9 +847,6 @@ msgid "Fetching payment information..."
 msgstr ""
 
 msgid "File/Text"
-msgstr ""
-
-msgid "Fingerprint"
 msgstr ""
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
@@ -1689,6 +1686,9 @@ msgstr ""
 msgid "Report issue"
 msgstr ""
 
+msgid "Request Biometric Authentication"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr ""
 
@@ -2045,9 +2045,6 @@ msgstr "送金の提案が作成者により削除されました"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
-msgid "The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
-
 msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
 msgstr ""
 
@@ -2075,7 +2072,7 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
-msgid "The wallet won't be removed from this device. You can enable/hidden whenever you need it."
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
