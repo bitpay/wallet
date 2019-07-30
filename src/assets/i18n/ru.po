@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2019-07-24 17:23\n"
+"PO-Revision-Date: 2019-07-30 17:55\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -255,6 +255,9 @@ msgid "Before retrieving your wallets addresses, it's recommended that you first
 msgstr ""
 
 msgid "Below Minimum Amount"
+msgstr ""
+
+msgid "Biometric"
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -692,9 +695,6 @@ msgstr "Включить push-уведомления"
 msgid "Enable the camera to get started."
 msgstr "Чтобы начать, включите камеру."
 
-msgid "Enabled"
-msgstr ""
-
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "Шифрование может защитить ваши средства, если это устройство будет украдено или скомпрометировано вредоносным программным обеспечением."
 
@@ -785,7 +785,7 @@ msgstr "Истекла"
 msgid "Expires"
 msgstr "истёк"
 
-msgid "Export Wallet Metadata"
+msgid "Export Wallet"
 msgstr ""
 
 msgid "Export to file"
@@ -847,9 +847,6 @@ msgstr "Получение информации о платеже..."
 
 msgid "File/Text"
 msgstr "Файл/Текст"
-
-msgid "Fingerprint"
-msgstr "Отпечаток пальца"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
@@ -1688,6 +1685,9 @@ msgstr ""
 msgid "Report issue"
 msgstr ""
 
+msgid "Request Biometric Authentication"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr "Запросить зашифр. пароль"
 
@@ -2042,9 +2042,6 @@ msgstr "Платёж был удалён его создателем"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
-msgid "The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
-
 msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
 msgstr ""
 
@@ -2072,7 +2069,7 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
-msgid "The wallet won't be removed from this device. You can enable/hidden whenever you need it."
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"

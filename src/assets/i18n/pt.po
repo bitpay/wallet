@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-07-24 17:23\n"
+"PO-Revision-Date: 2019-07-30 17:55\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -69,7 +69,7 @@ msgid "Account"
 msgstr "Conta"
 
 msgid "Activation Fee"
-msgstr ""
+msgstr "Taxa de Ativação"
 
 msgid "Activity"
 msgstr "Atividade"
@@ -81,7 +81,7 @@ msgid "Add BitPay Account?"
 msgstr "Adicionar conta BitPay?"
 
 msgid "Add Card"
-msgstr ""
+msgstr "Adicionar Cartão"
 
 msgid "Add Contact"
 msgstr "Adicionar contacto"
@@ -256,6 +256,9 @@ msgstr ""
 
 msgid "Below Minimum Amount"
 msgstr "Valor Abaixo do Mínimo"
+
+msgid "Biometric"
+msgstr ""
 
 msgid "BitPay Card URI"
 msgstr "URI do Cartão BitPay"
@@ -692,9 +695,6 @@ msgstr "Ativar notificações push"
 msgid "Enable the camera to get started."
 msgstr "Ative a câmera para começar."
 
-msgid "Enabled"
-msgstr ""
-
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "A criptografia pode proteger seus fundos se este dispositivo é roubado ou compromissado por software malicioso."
 
@@ -785,7 +785,7 @@ msgstr "Expirado"
 msgid "Expires"
 msgstr "﻿Expira"
 
-msgid "Export Wallet Metadata"
+msgid "Export Wallet"
 msgstr ""
 
 msgid "Export to file"
@@ -847,9 +847,6 @@ msgstr "Buscando informações de pagamento..."
 
 msgid "File/Text"
 msgstr "Arquivo/Texto"
-
-msgid "Fingerprint"
-msgstr "Impressão digital"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
@@ -1688,6 +1685,9 @@ msgstr "Reportar um problema"
 msgid "Report issue"
 msgstr "Reportar problema"
 
+msgid "Request Biometric Authentication"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr "Solicitar Senha Criptografada"
 
@@ -2042,9 +2042,6 @@ msgstr "O pagamento foi removido pelo criador"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "A chave privada desta carteira não está disponível. A exportação permite verificar o saldo da carteira, histórico de transações e criar propostas de gastos a partir da exportação. No entanto, não permite aprovar (assinar) propostas, então os fundos não serão acessíveis a partir da exportação."
 
-msgid "The private key of this wallet will not be included in the generated file. The export allows to check the wallet balance, transaction history, and create spend proposals. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
-
 msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
 msgstr "O valor da compra é limitado a {maxAmount} {currency} por dia. Por favor, modifique sua quantidade."
 
@@ -2072,7 +2069,7 @@ msgstr "A transação de {{walletName}} que você estava esperando foi confirmad
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "O histórico de transações e todas as novas transações recebidas são armazenados em cache no app. Este recurso limpa o cache e sincroniza novamente a partir do servidor"
 
-msgid "The wallet won't be removed from this device. You can enable/hidden whenever you need it."
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
@@ -2331,7 +2328,7 @@ msgid "WARNING: Key derivation is not working on this device/wallet. Actions can
 msgstr "Aviso: Derivação de chave não está funcionando neste dispositivo/carteira. Ações não podem ser executadas nesta carteira."
 
 msgid "Waiting"
-msgstr ""
+msgstr "Aguardando"
 
 msgid "Waiting for authorized copayers to join"
 msgstr ""

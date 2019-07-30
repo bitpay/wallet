@@ -114,7 +114,6 @@ msgstr "Add"
 msgid "Add BitPay Account?"
 msgstr "Add BitPay Account?"
 
-#| msgid "Archived Cards"
 msgid "Add Card"
 msgstr "Add Card"
 
@@ -239,7 +238,6 @@ msgstr "Archived Cards"
 msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "Are you sure you want to cancel and delete this wallet?"
 
-#| msgid "Are you sure you want to delete this wallet?"
 msgid "Are you sure you want to delete all wallets using this key?"
 msgstr "Are you sure you want to delete all wallets using this key?"
 
@@ -305,10 +303,6 @@ msgstr ""
 "Because you are sending the maximum amount contained in this wallet, the "
 "{coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 
-#| msgid ""
-#| "Before retrieving your wallet address, it's recommended that you first "
-#| "write down your recovery phrase and store it securely so that your wallet "
-#| "can be recovered in the case your device was lost or stolen."
 msgid ""
 "Before duplicating your wallet, it's recommended that you first write down "
 "your recovery phrase and store it securely so that your wallet can be "
@@ -327,10 +321,6 @@ msgstr ""
 "down your recovery phrase and store it securely so that your wallet can be "
 "recovered in the case your device was lost or stolen."
 
-#| msgid ""
-#| "Before retrieving your wallet address, it's recommended that you first "
-#| "write down your recovery phrase and store it securely so that your wallet "
-#| "can be recovered in the case your device was lost or stolen."
 msgid ""
 "Before retrieving your wallets addresses, it's recommended that you first "
 "write down your recovery phrase and store it securely so that your wallets "
@@ -342,6 +332,9 @@ msgstr ""
 
 msgid "Below Minimum Amount"
 msgstr "Below Minimum Amount"
+
+msgid "Biometric"
+msgstr "Biometric"
 
 msgid "BitPay Card URI"
 msgstr "BitPay Card URI"
@@ -577,7 +570,6 @@ msgstr "Copy this text as it is to a safe place (notepad or email)"
 msgid "Copy to clipboard"
 msgstr "Copy to clipboard"
 
-#| msgid "Could not access the wallet at the server. Please check:"
 msgid "Could not access the wallet at the server"
 msgstr "Could not access the wallet at the server"
 
@@ -656,7 +648,6 @@ msgstr "Could not update wallet"
 msgid "Create"
 msgstr "Create"
 
-#| msgid "Create a new wallet"
 msgid "Create a new key"
 msgstr "Create a new key"
 
@@ -696,7 +687,6 @@ msgstr "Delete Payment Proposal"
 msgid "Delete it and create a new one"
 msgstr "Delete it and create a new one"
 
-#| msgid "Delete"
 msgid "Delete key"
 msgstr "Delete key"
 
@@ -715,7 +705,6 @@ msgstr "Deposit Max"
 msgid "Deposit Min"
 msgstr "Deposit Min"
 
-#| msgid "Derivation path"
 msgid "Derivation Path"
 msgstr "Derivation Path"
 
@@ -762,7 +751,6 @@ msgstr "Download"
 msgid "Download logs"
 msgstr "Download logs"
 
-#| msgid "Duplicating wallet..."
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -814,10 +802,6 @@ msgstr "Enable push notifications"
 
 msgid "Enable the camera to get started."
 msgstr "Enable the camera to get started."
-
-#| msgid "Disabled"
-msgid "Enabled"
-msgstr "Enabled"
 
 msgid ""
 "Encryption can protect your funds if this device is stolen or compromised by "
@@ -914,8 +898,8 @@ msgid "Expires"
 msgstr "Expires"
 
 #| msgid "Export wallet"
-msgid "Export Wallet Metadata"
-msgstr "Export Wallet Metadata"
+msgid "Export Wallet"
+msgstr "Export Wallet"
 
 msgid "Export to file"
 msgstr "Export to file"
@@ -976,9 +960,6 @@ msgstr "Fetching payment information..."
 
 msgid "File/Text"
 msgstr "File/Text"
-
-msgid "Fingerprint"
-msgstr "Fingerprint"
 
 msgid ""
 "Found something broken? Please report it as a bug. If you need immediate "
@@ -1092,7 +1073,6 @@ msgstr "Having problems with a ShapeShift?"
 msgid "Help & support"
 msgstr "Help & support"
 
-#| msgid "Help and support information is available at the website."
 msgid "Help and support information is available at the website"
 msgstr "Help and support information is available at the website"
 
@@ -1501,7 +1481,6 @@ msgstr "No Private Key"
 msgid "No contacts yet"
 msgstr "No contacts yet"
 
-#| msgid "Not enough funds"
 msgid "No enough confirmed funds"
 msgstr "No enough confirmed funds"
 
@@ -1538,7 +1517,6 @@ msgstr "No wallets available to use ShapeShift"
 msgid "No wallets with funds"
 msgstr "No wallets with funds"
 
-#| msgid "Join wallet"
 msgid "Non BIP44 wallet"
 msgstr "Non BIP44 wallet"
 
@@ -1592,7 +1570,6 @@ msgstr "Notify me if confirmed"
 msgid "Notify me when transactions are confirmed"
 msgstr "Notify me when transactions are confirmed"
 
-#| msgid "Now it's time for you to create wallets to store your funds into."
 msgid "Now it's time for you to create a wallet to store your funds into."
 msgstr "Now it's time for you to create a wallet to store your funds into."
 
@@ -1724,7 +1701,6 @@ msgstr "Pending"
 msgid "Pending Proposals"
 msgstr "Pending Proposals"
 
-#| msgid "Permanently delete this wallet."
 msgid "Permanently delete all wallets using this key."
 msgstr "Permanently delete all wallets using this key."
 
@@ -1840,11 +1816,9 @@ msgstr "Rate"
 msgid "Rate on the {storeName}"
 msgstr "Rate on the {storeName}"
 
-#| msgid "Create a Wallet"
 msgid "Read Only Wallets"
 msgstr "Read Only Wallets"
 
-#| msgid "Do not include private key"
 msgid "Read Only wallets don't include the private key."
 msgstr "Read Only wallets don't include the private key."
 
@@ -1854,7 +1828,6 @@ msgstr "Read more in our Wiki"
 msgid "Read more in our support page"
 msgstr "Read more in our support page"
 
-#| msgid "Create personal wallet"
 msgid "Read only wallet"
 msgstr "Read only wallet"
 
@@ -1935,6 +1908,9 @@ msgstr "Report an issue"
 
 msgid "Report issue"
 msgstr "Report issue"
+
+msgid "Request Biometric Authentication"
+msgstr "Request Biometric Authentication"
 
 msgid "Request Encrypt Password"
 msgstr "Request Encrypt Password"
@@ -2188,7 +2164,6 @@ msgstr "Something goes wrong..."
 msgid "Specify Recovery Phrase"
 msgstr "Specify Recovery Phrase"
 
-#| msgid "The derivation path"
 msgid "Specify derivation path"
 msgstr "Specify derivation path"
 
@@ -2210,7 +2185,6 @@ msgstr "Status"
 msgid "Super Economy"
 msgstr "Super Economy"
 
-#| msgid "No wallets with funds"
 msgid "Support Wallets with Different Keys"
 msgstr "Support Wallets with Different Keys"
 
@@ -2334,22 +2308,6 @@ msgstr ""
 "export. However, does not allow to approve (sign) proposals, so funds will "
 "not be accessible from the export."
 
-#| msgid ""
-#| "The private key of this wallet is not available. The export allows to "
-#| "check the wallet balance, transaction history, and create spend proposals "
-#| "from the export. However, does not allow to approve (sign) proposals, so "
-#| "funds will not be accessible from the export."
-msgid ""
-"The private key of this wallet will not be included in the generated file. "
-"The export allows to check the wallet balance, transaction history, and "
-"create spend proposals. However, does not allow to approve (sign) proposals, "
-"so funds will not be accessible from the export."
-msgstr ""
-"The private key of this wallet will not be included in the generated file. "
-"The export allows to check the wallet balance, transaction history, and "
-"create spend proposals. However, does not allow to approve (sign) proposals, "
-"so funds will not be accessible from the export."
-
 msgid ""
 "The purchase amount is limited to {maxAmount} {currency} per day. Please "
 "modify your amount."
@@ -2405,12 +2363,15 @@ msgstr ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. This feature clean this up and synchronizes again from the server"
 
+#| msgid ""
+#| "The wallet won't be removed from this device. You can enable/hidden "
+#| "whenever you need it."
 msgid ""
-"The wallet won't be removed from this device. You can enable/hidden whenever "
-"you need it."
+"The wallet won't be removed from this device. You can hide it whenever you "
+"need it."
 msgstr ""
-"The wallet won't be removed from this device. You can enable/hidden whenever "
-"you need it."
+"The wallet won't be removed from this device. You can hide it whenever you "
+"need it."
 
 msgid ""
 "The wallet you are using does not match the network and/or the currency of "
@@ -2738,11 +2699,9 @@ msgstr ""
 "WARNING: Key derivation is not working on this device/wallet. Actions cannot "
 "be performed on this wallet."
 
-#| msgid "Waiting..."
 msgid "Waiting"
 msgstr "Waiting"
 
-#| msgid "Waiting for copayers"
 msgid "Waiting for authorized copayers to join"
 msgstr "Waiting for authorized copayers to join"
 
@@ -2755,11 +2714,9 @@ msgstr "Wallet Information"
 msgid "Wallet Inputs"
 msgstr "Wallet Inputs"
 
-#| msgid "Wallet invitation"
 msgid "Wallet Invitation"
 msgstr "Wallet Invitation"
 
-#| msgid "Wallet already exists"
 msgid "Wallet Key Settings"
 msgstr "Wallet Key Settings"
 
@@ -2772,7 +2729,6 @@ msgstr "Wallet Needs Backup"
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Wallet Recovery Phrase is invalid"
 
-#| msgid "Card Settings"
 msgid "Wallet Settings"
 msgstr "Wallet Settings"
 
@@ -2837,7 +2793,6 @@ msgstr "Wallets"
 msgid "Wallets (Grouped by key)"
 msgstr "Wallets (Grouped by key)"
 
-#| msgid "Wallet is locked"
 msgid "Wallets using this key"
 msgstr "Wallets using this key"
 
@@ -3036,13 +2991,6 @@ msgstr ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
 "stores."
 
-#| msgid ""
-#| "Your extended private keys are all that is needed to access your bitcoin "
-#| "funds. Be sure to protect your private keys and store them only on secure "
-#| "devices. BitPay does not have access to your private keys, so you alone "
-#| "are responsible for your keys. If you share key access with external "
-#| "services, you take responsibility for the risk of theft or breach. Only "
-#| "advanced users should handle extended private keys directly."
 msgid ""
 "Your extended private keys are all that is needed to access your funds. Be "
 "sure to protect your private keys and store them only on secure devices. "
@@ -3161,6 +3109,33 @@ msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~| msgid "Disabled"
+#~ msgid "Enabled"
+#~ msgstr "Enabled"
+
+#~| msgid "Export wallet"
+#~ msgid "Export Wallet Metadata"
+#~ msgstr "Export Wallet Metadata"
+
+#~ msgid "Fingerprint"
+#~ msgstr "Fingerprint"
+
+#~| msgid ""
+#~| "The private key of this wallet is not available. The export allows to "
+#~| "check the wallet balance, transaction history, and create spend "
+#~| "proposals from the export. However, does not allow to approve (sign) "
+#~| "proposals, so funds will not be accessible from the export."
+#~ msgid ""
+#~ "The private key of this wallet will not be included in the generated "
+#~ "file. The export allows to check the wallet balance, transaction history, "
+#~ "and create spend proposals. However, does not allow to approve (sign) "
+#~ "proposals, so funds will not be accessible from the export."
+#~ msgstr ""
+#~ "The private key of this wallet will not be included in the generated "
+#~ "file. The export allows to check the wallet balance, transaction history, "
+#~ "and create spend proposals. However, does not allow to approve (sign) "
+#~ "proposals, so funds will not be accessible from the export."
 
 #~ msgid "Color"
 #~ msgstr "Color"
