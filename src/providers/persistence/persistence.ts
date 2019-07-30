@@ -92,7 +92,7 @@ export class PersistenceProvider {
       : new LocalStorage(this.logger);
   }
 
-  storeProfileLegacy(profileOld): Promise<void> {
+  storeProfileLegacy(profileOld) {
     return this.storage.set(Keys.PROFILE_OLD, profileOld);
   }
 

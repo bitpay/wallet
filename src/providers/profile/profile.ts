@@ -542,16 +542,14 @@ export class ProfileProvider {
     }, delay);
   }
 
-  public storeProfileLegacy(oldProfile): Promise<any> {
-    return this.persistenceProvider
+  public storeProfileLegacy(oldProfile) {
+    this.persistenceProvider
       .storeProfileLegacy(oldProfile)
       .then(() => {
         this.logger.debug('Saved legacy Profile');
-        return Promise.resolve();
       })
       .catch(err => {
         this.logger.error('Could not save legacy Profile', err);
-        return Promise.reject(err);
       });
   }
 
@@ -562,11 +560,11 @@ export class ProfileProvider {
     return this.persistenceProvider
       .storeProfile(this.profile)
       .then(() => {
-        this.logger.debug('Saved modified Profile');
+        this.logger.debug('Saved modified Profile (Dirty)');
         return Promise.resolve();
       })
       .catch(err => {
-        this.logger.error('Could not save Profile(Dirty)', err);
+        this.logger.error('Could not save Profile (Dirty)', err);
         return Promise.reject(err);
       });
   }
@@ -901,7 +899,7 @@ export class ProfileProvider {
         });
 
         return Promise.all(promises).then(() => {
-          this.logger.info(`Bound ${profileLength} wallets`);
+          this.logger.info(`Bound ${profileLength} wallets`);
           return Promise.resolve();
         });
       });
@@ -914,7 +912,8 @@ export class ProfileProvider {
     });
   }
 
-  private async upgradeMultipleCredentials(profile): Promise<any> {
+  private upgradeMultipleCredentials(profile): Promise<any> {
+    const oldProfile = _.clone(profile);
     const migrated = this.bwcProvider.upgradeMultipleCredentialsV1(
       profile.credentials
     );
@@ -924,7 +923,7 @@ export class ProfileProvider {
 
     if (newKeys.length > 0) {
       this.logger.info(`Storing ${newKeys.length} migrated Keys`);
-      await this.storeProfileLegacy(profile);
+      this.storeProfileLegacy(oldProfile);
       if (newKeys.length > 1) this.allowMultiplePrimaryWallets();
       return this.keyProvider.addKeys(newKeys).then(() => {
         profile.credentials = newCrededentials;
@@ -934,7 +933,7 @@ export class ProfileProvider {
     } else {
       if (newCrededentials.length > 0) {
         // Only RO wallets.
-        await this.storeProfileLegacy(profile);
+        this.storeProfileLegacy(oldProfile);
 
         profile.credentials = newCrededentials;
         profile.dirty = true;
