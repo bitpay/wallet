@@ -28,14 +28,14 @@
       }}</ion-label>
       <ion-toggle [(ngModel)]="allowMultiplePrimaryWallets" (ionChange)="allowMultiplePrimaryWalletsChange()"></ion-toggle>
     </ion-item>
-    <label-tip class="info" type="info" header="no-header"  *ngIf="nrKeys==1">
+    <label-tip class="info" type="info" header="no-header" *ngIf="nrKeys==1">
       <div label-tip-body>
         <div translate>
           If enabled, the new wallets may have different keys and will require a new backup.
         </div>
       </div>
     </label-tip>
-    <button ion-item *ngIf="oldProfileAvailable" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
+    <button ion-item *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
       Recover old wallets
     </button>
   </ion-list>
