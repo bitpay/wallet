@@ -21,6 +21,7 @@ export class AdvancedPage {
   public nrKeys: number;
   public isCopay: boolean;
   public oldProfileAvailable: boolean;
+  public wallets;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -34,6 +35,10 @@ export class AdvancedPage {
       .getProfileLegacy()
       .then(oldProfile => {
         this.oldProfileAvailable = oldProfile ? true : false;
+        if (!this.oldProfileAvailable) return;
+        this.wallets = _.filter(oldProfile.credentials, value => {
+          return value && (value.mnemonic || value.mnemonicEncrypted);
+        });
       })
       .catch(err => {
         this.oldProfileAvailable = false;
