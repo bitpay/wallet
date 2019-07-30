@@ -287,6 +287,9 @@ msgstr ""
 msgid "Below Minimum Amount"
 msgstr ""
 
+msgid "Biometric"
+msgstr ""
+
 msgid "BitPay Card URI"
 msgstr ""
 
@@ -738,9 +741,6 @@ msgstr ""
 msgid "Enable the camera to get started."
 msgstr ""
 
-msgid "Enabled"
-msgstr ""
-
 msgid ""
 "Encryption can protect your funds if this device is stolen or compromised "
 "by malicious software."
@@ -833,7 +833,7 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-msgid "Export Wallet Metadata"
+msgid "Export Wallet"
 msgstr ""
 
 msgid "Export to file"
@@ -894,9 +894,6 @@ msgid "Fetching payment information..."
 msgstr ""
 
 msgid "File/Text"
-msgstr ""
-
-msgid "Fingerprint"
 msgstr ""
 
 msgid ""
@@ -1790,6 +1787,9 @@ msgstr ""
 msgid "Report issue"
 msgstr ""
 
+msgid "Request Biometric Authentication"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr ""
 
@@ -2167,13 +2167,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"The private key of this wallet will not be included in the generated file. "
-"The export allows to check the wallet balance, transaction history, and "
-"create spend proposals. However, does not allow to approve (sign) "
-"proposals, so funds will not be accessible from the export."
-msgstr ""
-
-msgid ""
 "The purchase amount is limited to {maxAmount} {currency} per day. Please "
 "modify your amount."
 msgstr ""
@@ -2215,8 +2208,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"The wallet won't be removed from this device. You can enable/hidden "
-"whenever you need it."
+"The wallet won't be removed from this device. You can hide it whenever you "
+"need it."
 msgstr ""
 
 msgid ""
