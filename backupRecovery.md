@@ -2,7 +2,7 @@
 
 ## Description
 
-Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the wallet. The private key never leaves the device, so for accessing a wallet funds it is necesary to have the device or a backup of the wallet.
+Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the wallet. The private key never leaves the device, so for accessing a wallet funds it is necessary to have the device or a backup of the wallet.
 
 ## Definitions
 
@@ -32,7 +32,7 @@ Case 2: Basic recovery is possible using the device where the wallet is installe
 
 Case 3: From both Backup Words and Backup file, basic recovery is possible.
 (Using RP) - Enter the RP at 'Import Wallet'
-If the error "This wallet is not registered at the wallet service" appears: - Go to 'Create Wallet', and enter the RP at 'Advanced Options'. Select a new name for the restored wallet. Total and required number of copayers should be set to 1. - Wallet should be recreated and access to funds should be restored.
+If the error "This wallet is not registered at the wallet service" appears: - Go to 'Create Wallet' and enter the RP at 'Advanced Options'. Select a new name for the restored wallet. Total and required number of copayers should be set to 1. - Wallet should be recreated and access to funds should be restored.
 
     (Using WB)
     - Enter the WB at 'Import Wallet'
@@ -42,18 +42,18 @@ If the error "This wallet is not registered at the wallet service" appears: - Go
 
 Case 1: From both RP and WB, full recovery is possible. - Enter RP or WB at 'Import wallet' in a new device. - Wallet access should be restored.
 
-Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature). - Point to the new server (Settings -> Advanced -> Wallet Service URL). - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet. - Wallet should be recreated and access to funds should be restored. - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Wallet information -> Scan Addresses for Funds)
+Case 2: Basic recovery is possible using the device where the wallet is installed, pointing to the new server (Recreate Wallet feature). - Point to the new server (Settings -> Advanced -> Wallet Service URL). - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet. - Wallet should be recreated and access to funds should be restored. - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Wallet information -> Scan Addresses for Funds)
 
 Case 3: Basic recovery is possible using:
 
     A) RP of all copayers in the wallet
-      - Enter one RP at Create (at the Advanced option section). Note that the wallet configuration (M-of-N and network paramenters) needs to match the parameters that where entered when the wallet was first created. Wallet name and copayer nicknames need to be entered also, but there is no need for them to match the original wallet setup.
+      - Enter one RP at Create (at the Advanced option section). Note that the wallet configuration (M-of-N and network parameters) needs to match the parameters that where entered when the wallet was first created. Wallet name and copayer nicknames need to be entered also, but there is no need for them to match the original wallet setup.
       - Ask other copayers to join the wallet using the given invitation code. All copayers need to enter their RP at Join (at -> Advanced Options -> Wallet Seed).
       - Wallet should be recreated and access to funds should be restored.
 
     B) One WB and a quorum of RP of the other members.
       - Using the WB, import the wallet.
       - Ask other copayers to import the wallet using their RP.
-      - Wallet should be recreated and funds should be accesable
+      - Wallet should be recreated and funds should be accessible
 
-      In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WB is not longer known by other copayers.
+      In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WB is no longer known by other copayers.
