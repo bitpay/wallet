@@ -184,7 +184,7 @@ export class ProposalsPage {
     this.txpsRejected = [];
 
     txps.forEach(txp => {
-      const action = _.find(txp.actions, {
+      const action: any = _.find(txp.actions, {
         copayerId: txp.wallet.copayerId
       });
 
