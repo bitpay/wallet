@@ -15,16 +15,14 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
-import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { Coin, WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-duplicate',
   templateUrl: 'wallet-duplicate.html'
 })
-export class WalletDuplicatePage extends WalletTabsChild {
+export class WalletDuplicatePage {
   comment: any;
   defaults: any;
 
@@ -36,7 +34,6 @@ export class WalletDuplicatePage extends WalletTabsChild {
   constructor(
     private walletProvider: WalletProvider,
     private app: AppProvider,
-    private txFormatProvider: TxFormatProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
@@ -53,7 +50,6 @@ export class WalletDuplicatePage extends WalletTabsChild {
     public walletTabsProvider: WalletTabsProvider,
     public derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.defaults = this.configProvider.getDefaults();
   }
 
@@ -105,23 +101,6 @@ export class WalletDuplicatePage extends WalletTabsChild {
     }
 
     if (!this.availableWallet) return;
-
-    this.walletProvider
-      .getBalance(this.availableWallet, { coin: 'bch' })
-      .then(balance => {
-        this.availableWallet.bchBalance = this.txFormatProvider.formatAmountStr(
-          'bch',
-          balance.availableAmount
-        );
-        this.availableWallet.error = null;
-      })
-      .catch(err => {
-        this.availableWallet.error =
-          err === 'WALLET_NOT_REGISTERED'
-            ? this.translate.instant('Wallet not registered')
-            : this.bwcErrorProvider.msg(err);
-        this.logger.error(err);
-      });
   }
 
   private setErr(err) {
@@ -171,7 +150,7 @@ export class WalletDuplicatePage extends WalletTabsChild {
                   });
                 }
                 this.events.publish('status:updated');
-                this.close();
+                this.navCtrl.popToRoot();
               })
               .catch(err => {
                 this.onGoingProcessProvider.clear();
