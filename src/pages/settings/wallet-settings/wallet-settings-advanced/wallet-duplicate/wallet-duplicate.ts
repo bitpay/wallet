@@ -59,6 +59,7 @@ export class WalletDuplicatePage extends WalletTabsChild {
 
   ionViewWillEnter() {
     const appName = this.app.info.nameCase;
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
       this.wallet.credentials.rootPath
     );
@@ -69,7 +70,6 @@ export class WalletDuplicatePage extends WalletTabsChild {
       { appName }
     );
 
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Filter out already duplicated wallets
     let walletsBCH = this.profileProvider.getWallets({
       coin: 'bch',
