@@ -35,11 +35,12 @@ export class MultipleOutputsPage {
         ? this._tx.coin
         : this.addressProvider.getCoin(outputAddr);
 
-      output.addressToShow = this.walletProvider.getAddressView(
+      const addressToShow = this.walletProvider.getAddressView(
         coin,
         this._tx.network,
         outputAddr
       );
+      output.addressToShow = addressToShow == 'false' ? 'Unparsed address' : addressToShow;
     });
 
     this.contact();
