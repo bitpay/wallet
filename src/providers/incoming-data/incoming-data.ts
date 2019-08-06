@@ -319,7 +319,7 @@ export class IncomingDataProvider {
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
-    let stateParams = { code: data, fromScan: true };
+    let stateParams = { code: data };
     let nextView = {
       name: 'ImportWalletPage',
       params: stateParams
@@ -330,16 +330,16 @@ export class IncomingDataProvider {
   private goToJoinWallet(data: string): void {
     this.logger.debug('Incoming-data (redirect): Code to join to a wallet');
     if (this.isValidJoinCode(data)) {
-      let stateParams = { url: data, fromScan: true };
+      let stateParams = { url: data, isJoin: true };
       let nextView = {
-        name: 'JoinWalletPage',
+        name: 'AddWalletPage',
         params: stateParams
       };
       this.events.publish('IncomingDataRedir', nextView);
     } else if (this.isValidJoinLegacyCode(data)) {
-      let stateParams = { url: data, fromScan: true };
+      let stateParams = { url: data, isJoin: true };
       let nextView = {
-        name: 'JoinWalletPage',
+        name: 'AddWalletPage',
         params: stateParams
       };
       this.events.publish('IncomingDataRedir', nextView);
