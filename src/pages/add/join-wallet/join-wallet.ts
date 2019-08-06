@@ -65,7 +65,7 @@ export class JoinWalletPage {
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
     this.showAdvOpts = false;
-    this.keyId = this.navParams.get('keyId');
+    this.keyId = this.navParams.data.keyId;
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
