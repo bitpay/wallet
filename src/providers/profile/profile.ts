@@ -1200,7 +1200,7 @@ export class ProfileProvider {
               },
               err => {
                 const copayerRegistered =
-                 err instanceof this.errors.COPAYER_REGISTERED;
+                  err instanceof this.errors.COPAYER_REGISTERED;
                 const isSetSeed = opts.mnemonic || opts.extendedPrivateKey;
 
                 if (err && (!copayerRegistered || isSetSeed)) {
