@@ -44,7 +44,6 @@ export class WalletTabsPage {
 
   walletId: string;
 
-  private isElectron: boolean;
   constructor(
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
@@ -52,7 +51,6 @@ export class WalletTabsPage {
     private platformProvider: PlatformProvider,
     private statusBar: StatusBar
   ) {
-    this.isElectron = this.platformProvider.isElectron;
     if (typeof this.navParams.get('selectedTabIndex') !== 'undefined') {
       this.selectedTabIndex = this.navParams.get('selectedTabIndex');
     }
@@ -60,10 +58,6 @@ export class WalletTabsPage {
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
-
-    if (this.isElectron) {
-      this.updateDesktopOnFocus();
-    }
   }
 
   ionViewWillEnter() {
@@ -76,14 +70,6 @@ export class WalletTabsPage {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
-  }
-
-  private updateDesktopOnFocus() {
-    const { remote } = (window as any).require('electron');
-    const win = remote.getCurrentWindow();
-    win.on('focus', () => {
-      this.events.publish('Local/WalletFocus', { walletId: this.walletId });
-    });
   }
 
   ngAfterViewInit() {

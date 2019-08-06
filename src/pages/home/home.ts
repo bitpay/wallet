@@ -110,6 +110,10 @@ export class HomePage {
     this.slideDown = false;
     this.isBlur = false;
     this.isElectron = this.platformProvider.isElectron;
+    // Update Wallet on Focus
+    if (this.isElectron) {
+      this.updateDesktopOnFocus();
+    }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -133,11 +137,6 @@ export class HomePage {
 
     // Update list of wallets, status and TXPs
     this.setWallets(shouldUpdate);
-
-    // Update Wallet on Focus
-    if (this.isElectron) {
-      this.updateDesktopOnFocus();
-    }
 
     this.checkPriceChart();
   }
@@ -287,8 +286,10 @@ export class HomePage {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      this.checkClipboard();
-      this.setWallets();
+      if (this.navCtrl.getActive() && this.navCtrl.getActive().name == 'HomePage') {
+        this.checkClipboard();
+        this.setWallets();
+      }
     });
   }
 
