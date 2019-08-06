@@ -48,7 +48,7 @@
     <button ion-item (click)="openTransactionHistory()">
       <span translate>Transaction History</span>
     </button>
-    <button ion-item (click)="openDuplicateWallet()" *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc' && showDuplicateWallet">
+    <button ion-item (click)="openDuplicateWallet()" *ngIf="showDuplicateWallet">
       <span translate>Duplicate</span>
     </button>
     <ion-item-divider></ion-item-divider>

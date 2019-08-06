@@ -52,6 +52,7 @@ export interface WalletOptions {
   walletPrivKey: any;
   compliantDerivation: any;
   useLegacyCoinType?: boolean;
+  useLegacyPurpose?: boolean;
 }
 
 export interface TransactionProposal {

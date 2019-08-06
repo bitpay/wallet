@@ -116,7 +116,9 @@ export class WalletDuplicatePage {
     );
 
     let opts: any = {
-      name: wallet.name + '[BCH]',
+      useLegacyCoinType: true,
+      useLegacyPurpose: true,
+      name: `${wallet.name} [BCH]`,
       m: wallet.m,
       n: wallet.n,
       myName: wallet.credentials.copayerName,
@@ -124,14 +126,16 @@ export class WalletDuplicatePage {
       coin: Coin.BCH,
       walletPrivKey: wallet.credentials.walletPrivKey,
       compliantDerivation: wallet.credentials.compliantDerivation,
-      bwsurl: this.defaults.bws.url
+      bwsurl: this.defaults.bws.url,
+      derivationStrategy: 'BIP44'
     };
 
     this.walletProvider
       .getKeys(wallet)
       .then(keys => {
+        opts.extendedPrivateKey = keys.xPrivKey;
         this.onGoingProcessProvider.set('duplicatingWallet');
-        this.importOrCreate(wallet, keys, opts)
+        this.importOrCreate(wallet, opts)
           .then(result => {
             let newWallet = result.walletBch;
             let isNew = result.isNew;
@@ -186,7 +190,6 @@ export class WalletDuplicatePage {
 
   private importOrCreate(
     wallet,
-    keys,
     opts
   ): Promise<{
     walletBch: any;
@@ -196,28 +199,18 @@ export class WalletDuplicatePage {
       opts.singleAddress = status.wallet.singleAddress;
       // first try to import
       return this.profileProvider
-        .importExtendedPrivateKey(keys.xPrivKey, opts)
-        .then(newWallet => {
-          let walletBch;
-
-          newWallet.forEach(wallet => {
-            if (wallet.coin === 'bch') {
-              walletBch = wallet;
-            }
-          });
-
-          if (walletBch) {
-            return Promise.resolve({ walletBch });
-          } else {
-            opts.extendedPrivateKey = keys.xPrivKey;
-            opts.useLegacyCoinType = true;
-            const addingNewWallet = false; // Adding new account to key
-            return this.profileProvider
-              .createWallet(addingNewWallet, opts)
-              .then(walletBch => {
-                return Promise.resolve({ walletBch, isNew: true });
-              });
-          }
+        .importWithDerivationPath(opts)
+        .then(walletBch => {
+          return Promise.resolve({ walletBch });
+        })
+        .catch(() => {
+          this.logger.warn('Could not import. Trying to create wallet');
+          const addingNewWallet = false;
+          return this.profileProvider
+            .createWallet(addingNewWallet, opts)
+            .then(walletBch => {
+              return Promise.resolve({ walletBch, isNew: true });
+            });
         });
     });
   }

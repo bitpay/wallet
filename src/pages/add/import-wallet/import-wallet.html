@@ -84,6 +84,11 @@
           <ion-label floating>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
+
+        <ion-item *ngIf="importForm.value.derivationPathEnabled && importForm.value.derivationPath === this.derivationPathHelperProvider.defaultBTC">
+          <ion-label>{{'Shared Wallet' | translate}}</ion-label>
+          <ion-checkbox formControlName="isMultisig"></ion-checkbox>
+        </ion-item>
       </div>
 
       <ion-item>
