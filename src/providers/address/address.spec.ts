@@ -1,7 +1,7 @@
 import { TestUtils } from '../../test';
 import { AddressProvider } from './address';
 
-fdescribe('AddressProvider', () => {
+describe('AddressProvider', () => {
   let addressProvider: AddressProvider;
 
   beforeEach(() => {
