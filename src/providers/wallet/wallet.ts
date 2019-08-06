@@ -1463,7 +1463,8 @@ export class WalletProvider {
                   'The payment was created but could not be completed. Please try again from home screen'
                 );
           this.logger.error('Sign error: ' + msg);
-          if (msg == 'Non-base58 character') msg = msg + '. Please, upgrade your App to latest version.'
+          if (msg == 'Non-base58 character')
+            msg = msg + '. Please, upgrade your App to latest version.';
           this.events.publish('Local/TxAction', {
             walletId: wallet.id,
             until: { totalAmount: expected }

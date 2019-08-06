@@ -113,7 +113,8 @@ describe('AddressProvider', () => {
     it('should return true if use correct coin and network for BTC testnet native segwit address', () => {
       let coin = 'btc';
       let network = 'testnet';
-      let BTCLivenetAddress = 'tb1q9225pawdn2dlwsk3dd8phudsap6vjp7fhqj5wnrpg457qjq0ycvs6pluck';
+      let BTCLivenetAddress =
+        'tb1q9225pawdn2dlwsk3dd8phudsap6vjp7fhqj5wnrpg457qjq0ycvs6pluck';
       let result = addressProvider.checkCoinAndNetworkFromAddr(
         coin,
         network,
@@ -121,7 +122,8 @@ describe('AddressProvider', () => {
       );
       expect(result).toEqual(true);
 
-      BTCLivenetAddress = 'bitcoin:tb1q9225pawdn2dlwsk3dd8phudsap6vjp7fhqj5wnrpg457qjq0ycvs6pluck';
+      BTCLivenetAddress =
+        'bitcoin:tb1q9225pawdn2dlwsk3dd8phudsap6vjp7fhqj5wnrpg457qjq0ycvs6pluck';
       result = addressProvider.checkCoinAndNetworkFromAddr(
         coin,
         network,
@@ -347,7 +349,8 @@ describe('AddressProvider', () => {
       result = addressProvider.extractAddress(address);
       expect(result).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
 
-      address = 'bitcoin:bc1qua4502zjcsunhm4a25qfm9d30ml5k384vhy62r?amount=0.00010000'; // Native segwit
+      address =
+        'bitcoin:bc1qua4502zjcsunhm4a25qfm9d30ml5k384vhy62r?amount=0.00010000'; // Native segwit
       result = addressProvider.extractAddress(address);
       expect(result).toEqual('bc1qua4502zjcsunhm4a25qfm9d30ml5k384vhy62r');
     });
@@ -387,7 +390,8 @@ describe('AddressProvider', () => {
       result = addressProvider.isValid(address);
       expect(result).toEqual(true);
 
-      address = 'bitcoin:bc1qua4502zjcsunhm4a25qfm9d30ml5k384vhy62r?amount=0.00090000'; // BTC livenet uri
+      address =
+        'bitcoin:bc1qua4502zjcsunhm4a25qfm9d30ml5k384vhy62r?amount=0.00090000'; // BTC livenet uri
       result = addressProvider.isValid(address);
       expect(result).toEqual(true);
     });

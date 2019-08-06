@@ -40,7 +40,8 @@ export class MultipleOutputsPage {
         this._tx.network,
         outputAddr
       );
-      output.addressToShow = addressToShow == 'false' ? 'Unparsed address' : addressToShow;
+      output.addressToShow =
+        addressToShow == 'false' ? 'Unparsed address' : addressToShow;
     });
 
     this.contact();
