@@ -58,7 +58,7 @@ export class AddWalletPage {
     } else if (this.navParams.data.isJoin) {
       this.navCtrl.push(JoinWalletPage, {
         keyId,
-        url: this.navParams.data.url ? this.navParams.data.url : null
+        url: this.navParams.data.url
       });
     }
   }

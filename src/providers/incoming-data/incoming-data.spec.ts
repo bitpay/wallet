@@ -9,7 +9,7 @@ import { Logger } from '../logger/logger';
 import { ProfileProvider } from '../profile/profile';
 import { IncomingDataProvider } from './incoming-data';
 
-fdescribe('Provider: Incoming Data Provider', () => {
+describe('Provider: Incoming Data Provider', () => {
   let incomingDataProvider: IncomingDataProvider;
   let bwcProvider: BwcProvider;
   let logger: Logger;
