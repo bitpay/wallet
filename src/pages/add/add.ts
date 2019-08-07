@@ -23,17 +23,7 @@ export class AddPage {
     private logger: Logger,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider
-  ) {
-    const config = this.configProvider.get();
-    const opts2 = {
-      showHidden: true
-    };
-
-    const wallets2 = this.profileProvider.getWallets(opts2);
-    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
-    this.allowMultiplePrimaryWallets =
-      config.allowMultiplePrimaryWallets || nrKeys != 1;
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AddPage');
@@ -44,50 +34,39 @@ export class AddPage {
     isJoin: boolean,
     isCreate: boolean
   ): void {
+    const config = this.configProvider.get();
     const opts = {
+      showHidden: true,
       canAddNewAccount: true
     };
-    const wallets = this.profileProvider.getWallets(opts);
-    const walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
 
-    if (walletsGroups.length === 0) {
+    const wallets = this.profileProvider.getWallets(opts);
+    const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
+    this.allowMultiplePrimaryWallets =
+      config.allowMultiplePrimaryWallets || nrKeys != 1;
+
+    if (nrKeys === 0) {
       this.goToNextPage(isCreate, isJoin, isShared);
-    } else if (
-      (this.allowMultiplePrimaryWallets && walletsGroups.length >= 1) ||
-      (!this.allowMultiplePrimaryWallets && walletsGroups.length > 1)
-    ) {
+    } else if (this.allowMultiplePrimaryWallets) {
       this.navCtrl.push(AddWalletPage, {
         isCreate,
         isJoin,
         isShared
       });
-    } else if (
-      !this.allowMultiplePrimaryWallets &&
-      walletsGroups.length === 1
-    ) {
-      this.goToNextPageWithKeyId(isCreate, isJoin, isShared, walletsGroups[0]);
+    } else if (!this.allowMultiplePrimaryWallets) {
+      this.goToNextPage(isCreate, isJoin, isShared, wallets[0].keyId);
     }
   }
 
-  private goToNextPage(isCreate, isJoin, isShared) {
-    if (isCreate) {
-      this.navCtrl.push(SelectCurrencyPage, {
-        isShared
-      });
-    } else if (isJoin) {
-      this.navCtrl.push(JoinWalletPage);
-    }
-  }
-
-  private goToNextPageWithKeyId(isCreate, isJoin, isShared, walletGroup) {
+  private goToNextPage(isCreate, isJoin, isShared, keyId?) {
     if (isCreate) {
       this.navCtrl.push(SelectCurrencyPage, {
         isShared,
-        keyId: walletGroup[0].credentials.keyId
+        keyId
       });
     } else if (isJoin) {
       this.navCtrl.push(JoinWalletPage, {
-        keyId: walletGroup[0].credentials.keyId
+        keyId
       });
     }
   }

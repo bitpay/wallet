@@ -252,7 +252,7 @@ export class JoinWalletPage {
 
   private join(opts): void {
     this.onGoingProcessProvider.set('joiningWallet');
-    const addingNewWallet = this.keyId ? true : false;
+    const addingNewWallet = this.keyId ? true : false; // Adding new account to key
     this.profileProvider
       .joinWallet(addingNewWallet, opts)
       .then(wallet => {

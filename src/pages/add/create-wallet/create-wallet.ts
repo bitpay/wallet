@@ -266,7 +266,7 @@ export class CreateWalletPage implements OnInit {
 
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    const addingNewWallet = this.keyId ? true : false;
+    const addingNewWallet = this.keyId ? true : false; // Adding new account to key
     this.profileProvider
       .createWallet(addingNewWallet, opts)
       .then(wallet => {
