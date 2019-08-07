@@ -20,6 +20,7 @@ yarn.lock
 cache
 dist/*
 electron/afterPack.js
+electron/build-electron.js
 *-embedded.provisionprofile
 *-entitlements.mas.plist
 

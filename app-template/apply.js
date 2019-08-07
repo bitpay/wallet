@@ -11,6 +11,7 @@ const templates = {
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
   'manifest.ionic-template.json': 'src/',
+  'build-electron-template.js': 'electron/',
   'afterPack-template.js': 'electron/'
 };
 
@@ -57,6 +58,8 @@ Object.keys(templates).forEach(function(k) {
     k = 'manifest.json';
   } else if (k === 'afterPack-template.js') {
     k = 'afterPack.js';
+  } else if (k === 'build-electron-template.js') {
+    k = 'build-electron.js';
   }
 
   if (!fs.existsSync('../' + targetDir)) {
@@ -140,23 +143,6 @@ package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
 package.cordova.plugins['cordova-plugin-customurlscheme-ng'].SECOND_URL_SCHEME =
   config.packageName;
-package.build.appId = config.packageNameIdDesktop;
-package.build.productName = config.userVisibleName;
-package.build.mas.entitlements =
-  './' + config.packageName + '-entitlements.mas.plist';
-package.build.mas.provisioningProfile =
-  './' + config.packageName + '-embedded.provisionprofile';
-package.build.appx.identityName = config.WindowsStoreIdentityName;
-package.build.appx.applicationId = config.WindowsApplicationId;
-package.build.appx.displayName = config.WindowsStoreDisplayName;
-package.build.protocols.schemes = [
-  'bitcoin',
-  'bitcoincash',
-  'bchtest',
-  config.name
-];
-package.build.mac.icon = `resources/${config.name}/mac/app.icns`;
-package.build.win.icon = `resources/${config.name}/windows/icon.ico`;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
 fs.writeFileSync('../package.json', stringifiedNpmStyle);
