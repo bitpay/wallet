@@ -282,7 +282,7 @@ export class BitPayCardProvider {
         if (err) return cb(err);
 
         this.getCards(data => {
-          var card: any = _.find(data, {
+          var card = _.find(data, {
             id: cardId
           });
 
@@ -362,7 +362,7 @@ export class BitPayCardProvider {
         if (err) return cb(err);
 
         this.getCards(data => {
-          var card: any = _.find(data, {
+          var card = _.find(data, {
             id: cardId
           });
 

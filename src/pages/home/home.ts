@@ -146,7 +146,7 @@ export class HomePage {
 
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
-      show: true as any
+      show: true
     }).filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
