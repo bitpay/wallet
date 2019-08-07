@@ -286,7 +286,10 @@ export class HomePage {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      if (this.navCtrl.getActive() && this.navCtrl.getActive().name == 'HomePage') {
+      if (
+        this.navCtrl.getActive() &&
+        this.navCtrl.getActive().name == 'HomePage'
+      ) {
         this.checkClipboard();
         this.setWallets();
       }
