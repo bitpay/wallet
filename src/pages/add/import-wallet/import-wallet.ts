@@ -231,13 +231,12 @@ export class ImportWalletPage {
     }
     this.allowMultiplePrimaryWallets();
 
-    this.events.publish('Local/WalletListChange');
     // using setRoot(TabsPage) as workaround when coming from scanner
     this.app
       .getRootNavs()[0]
       .setRoot(TabsPage)
       .then(() => {
-        this.events.publish('Home/reloadStatus');
+        this.events.publish('Local/WalletListChange');
       });
   }
 
