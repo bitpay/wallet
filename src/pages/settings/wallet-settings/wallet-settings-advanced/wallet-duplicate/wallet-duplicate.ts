@@ -115,7 +115,8 @@ export class WalletDuplicatePage {
       walletPrivKey: wallet.credentials.walletPrivKey,
       compliantDerivation: wallet.credentials.compliantDerivation,
       bwsurl: this.defaults.bws.url,
-      derivationStrategy: 'BIP44'
+      derivationStrategy: wallet.credentials.derivationStrategy,
+      addressType: wallet.credentials.addressType
     };
 
     this.walletProvider

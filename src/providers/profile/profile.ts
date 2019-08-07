@@ -1094,6 +1094,7 @@ export class ProfileProvider {
               coin: opts.coin,
               network,
               account: opts.account || 0,
+              addressType: opts.addressType,
               n: opts.n || 1
             })
           );

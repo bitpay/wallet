@@ -76,15 +76,21 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
-    this.showDuplicateWalletOption();
+    this.showDuplicateWallet = this.getShowDuplicateWalletOption();
   }
 
-  private showDuplicateWalletOption() {
-    if (this.wallet.network != 'livenet' || this.wallet.coin != 'btc') return;
-    this.showDuplicateWallet = !this.profileProvider.checkAccountCreation(
-      this.wallet,
-      this.wallet.credentials.keyId
-    );
+  private getShowDuplicateWalletOption(): boolean {
+    if (this.wallet.network != 'livenet' || this.wallet.coin != 'btc')
+      return false;
+
+    const key = this.keyProvider.getKey(this.wallet.credentials.keyId);
+    if (!key) return false;
+
+    if (this.wallet.n != 1) return false;
+
+    if (this.wallet.credentials.account != 0) return false;
+
+    return true;
   }
 
   private checkBiometricIdAvailable() {
