@@ -185,6 +185,7 @@
     "@types/lodash": "4.14.104",
     "@types/node": "7.0.61",
     "@types/papaparse": "4.1.33",
+    "adm-zip": "0.4.13",
     "codecov": "3.1.0",
     "electron": "3.0.16",
     "electron-builder": "20.40.2",
