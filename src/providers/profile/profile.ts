@@ -1273,11 +1273,23 @@ export class ProfileProvider {
             },
             err => {
               if (err) {
-                const msg = this.bwcErrorProvider.msg(
-                  err,
-                  this.translate.instant('Could not join wallet')
-                );
-                return reject(msg);
+                if (err instanceof this.errors.COPAYER_REGISTERED) {
+                  // try with account + 1
+                  opts.account = opts.account ? opts.account + 1 : 1;
+                  if (opts.account === 20)
+                    return reject(
+                      this.translate.instant(
+                        'You reach the limit of twenty wallets from the same coin and network'
+                      )
+                    );
+                  return resolve(this._joinWallet(opts));
+                } else {
+                  const msg = this.bwcErrorProvider.msg(
+                    err,
+                    this.translate.instant('Could not join wallet')
+                  );
+                  return reject(msg);
+                }
               }
               return resolve(data);
             }
