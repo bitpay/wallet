@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // Providers
-import { AppProvider } from '../../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../../../providers/derivation-path-helper/derivation-path-helper';
@@ -14,7 +13,6 @@ import { OnGoingProcessProvider } from '../../../../../providers/on-going-proces
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
-import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
 import { Coin, WalletProvider } from '../../../../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 
@@ -23,7 +21,6 @@ import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider
   templateUrl: 'wallet-duplicate.html'
 })
 export class WalletDuplicatePage {
-  comment: any;
   defaults: any;
 
   public availableWallet;
@@ -33,7 +30,6 @@ export class WalletDuplicatePage {
 
   constructor(
     private walletProvider: WalletProvider,
-    private app: AppProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
@@ -44,7 +40,6 @@ export class WalletDuplicatePage {
     private events: Events,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
-    private replaceParametersProvider: ReplaceParametersProvider,
     public navCtrl: NavController,
     public profileProvider: ProfileProvider,
     public walletTabsProvider: WalletTabsProvider,
@@ -54,16 +49,9 @@ export class WalletDuplicatePage {
   }
 
   ionViewWillEnter() {
-    const appName = this.app.info.nameCase;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
       this.wallet.credentials.rootPath
-    );
-    this.comment = this.replaceParametersProvider.replace(
-      this.translate.instant(
-        'To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe.'
-      ),
-      { appName }
     );
 
     // Filter out already duplicated wallets
@@ -118,7 +106,7 @@ export class WalletDuplicatePage {
     let opts: any = {
       useLegacyCoinType: true,
       useLegacyPurpose: true,
-      name: `${wallet.name} [BCH]`,
+      name: `${wallet.name} [BCH duplicate]`,
       m: wallet.m,
       n: wallet.n,
       myName: wallet.credentials.copayerName,

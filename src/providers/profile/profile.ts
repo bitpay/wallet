@@ -629,7 +629,7 @@ export class ProfileProvider {
         .length;
       if (countInArray > 0) {
         const msg1 = this.replaceParametersProvider.replace(
-          this.translate.instant('Wallet already in {{nameCase}}'),
+          this.translate.instant('The wallet is already in the app'),
           { nameCase: this.appProvider.info.nameCase }
         );
         const msg2 = this.replaceParametersProvider.replace(

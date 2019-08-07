@@ -6,7 +6,6 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -51,8 +50,7 @@ export class WalletSettingsPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private events: Events,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private events: Events
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -83,15 +81,10 @@ export class WalletSettingsPage {
 
   private showDuplicateWalletOption() {
     if (this.wallet.network != 'livenet' || this.wallet.coin != 'btc') return;
-    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      this.wallet.credentials.rootPath
+    this.showDuplicateWallet = !this.profileProvider.checkAccountCreation(
+      this.wallet,
+      this.wallet.credentials.keyId
     );
-    this.showDuplicateWallet =
-      this.wallet.n > 1
-        ? this.wallet.isComplete() && derivationStrategy === 'BIP44'
-          ? true
-          : false
-        : true;
   }
 
   private checkBiometricIdAvailable() {
