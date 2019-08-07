@@ -211,7 +211,7 @@ export class WalletDuplicatePage {
           } else {
             opts.extendedPrivateKey = keys.xPrivKey;
             opts.useLegacyCoinType = true;
-            const addingNewWallet = false;
+            const addingNewWallet = false; // Adding new account to key
             return this.profileProvider
               .createWallet(addingNewWallet, opts)
               .then(walletBch => {

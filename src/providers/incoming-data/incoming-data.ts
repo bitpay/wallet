@@ -336,33 +336,30 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data (redirect): Code to join to a wallet');
     let nextView, stateParams;
 
-    const opts2 = {
-      showHidden: true
+    const opts = {
+      showHidden: true,
+      canAddNewAccount: true
     };
-    const wallets2 = this.profileProvider.getWallets(opts2);
-    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
+    const wallets = this.profileProvider.getWallets(opts);
+    const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
     const config = this.configProvider.get();
     const allowMultiplePrimaryWallets =
       config.allowMultiplePrimaryWallets || nrKeys != 1;
 
-    const opts = {
-      canAddNewAccount: true
-    };
-    const wallets = this.profileProvider.getWallets(opts);
-    const walletsGroups: any[] = _.values(_.groupBy(wallets, 'keyId'));
-
-    if (
-      (allowMultiplePrimaryWallets && walletsGroups.length >= 1) ||
-      (!allowMultiplePrimaryWallets && walletsGroups.length > 1)
-    ) {
+    if (nrKeys === 0) {
+      stateParams = { url: data };
+      nextView = {
+        name: 'JoinWalletPage',
+        params: stateParams
+      };
+    } else if (allowMultiplePrimaryWallets) {
       stateParams = { url: data, isJoin: true };
       nextView = {
         name: 'AddWalletPage',
         params: stateParams
       };
-    } else if (!allowMultiplePrimaryWallets && walletsGroups.length === 1) {
-      const walletGroup = walletsGroups[0];
-      stateParams = { keyId: walletGroup[0].credentials.keyId, url: data };
+    } else if (!allowMultiplePrimaryWallets) {
+      stateParams = { keyId: wallets[0].credentials.keyId, url: data };
       nextView = {
         name: 'JoinWalletPage',
         params: stateParams
