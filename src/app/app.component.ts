@@ -33,6 +33,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
 import { ImageLoaderConfig } from 'ionic-image-loader';
+import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
@@ -85,6 +86,7 @@ export class CopayApp {
     CopayersPage,
     ImportWalletPage,
     JoinWalletPage,
+    AddWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
     WalletDetailsPage,

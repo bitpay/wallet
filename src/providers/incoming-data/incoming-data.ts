@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
 
 // providers
-import { Network } from '../../providers/persistence/persistence';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
 import { InvoiceProvider } from '../invoice/invoice';
+import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
+import { Network } from '../persistence/persistence';
+import { ProfileProvider } from '../profile/profile';
 import { Coin } from '../wallet/wallet';
 
 export interface RedirParams {
@@ -29,7 +32,9 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private invoiceProvider: InvoiceProvider
+    private invoiceProvider: InvoiceProvider,
+    private profileProvider: ProfileProvider,
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -319,7 +324,7 @@ export class IncomingDataProvider {
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
-    let stateParams = { code: data, fromScan: true };
+    let stateParams = { code: data };
     let nextView = {
       name: 'ImportWalletPage',
       params: stateParams
@@ -329,19 +334,39 @@ export class IncomingDataProvider {
 
   private goToJoinWallet(data: string): void {
     this.logger.debug('Incoming-data (redirect): Code to join to a wallet');
-    if (this.isValidJoinCode(data)) {
-      let stateParams = { url: data, fromScan: true };
-      let nextView = {
+    let nextView, stateParams;
+
+    const opts = {
+      showHidden: true,
+      canAddNewAccount: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
+    const config = this.configProvider.get();
+    const allowMultiplePrimaryWallets =
+      config.allowMultiplePrimaryWallets || nrKeys != 1;
+
+    if (nrKeys === 0) {
+      stateParams = { url: data };
+      nextView = {
         name: 'JoinWalletPage',
         params: stateParams
       };
-      this.events.publish('IncomingDataRedir', nextView);
-    } else if (this.isValidJoinLegacyCode(data)) {
-      let stateParams = { url: data, fromScan: true };
-      let nextView = {
+    } else if (allowMultiplePrimaryWallets) {
+      stateParams = { url: data, isJoin: true };
+      nextView = {
+        name: 'AddWalletPage',
+        params: stateParams
+      };
+    } else if (!allowMultiplePrimaryWallets) {
+      stateParams = { keyId: wallets[0].credentials.keyId, url: data };
+      nextView = {
         name: 'JoinWalletPage',
         params: stateParams
       };
+    }
+
+    if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
       this.events.publish('IncomingDataRedir', nextView);
     } else {
       this.logger.error('Incoming-data: Invalid code to join to a wallet');
