@@ -212,6 +212,25 @@ export class JoinWalletPage {
         derivationPath
       );
 
+      // set opts.useLegacyPurpose
+      if (
+        this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
+        "44'"
+      ) {
+        opts.useLegacyPurpose = true;
+        this.logger.debug('Using 44 for Multisig');
+      }
+
+      // set opts.useLegacyCoinType
+      if (
+        this.coin == 'bch' &&
+        this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
+          "0'"
+      ) {
+        opts.useLegacyCoinType = true;
+        this.logger.debug('Using 0 for BCH creation');
+      }
+
       if (
         !opts.networkName ||
         !opts.derivationStrategy ||

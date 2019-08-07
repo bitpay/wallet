@@ -43,15 +43,7 @@ export class BackupKeyPage {
 
   ionViewDidEnter() {
     if (!this.walletGroup.canSign) {
-      const title = this.translate.instant(
-        'Wallet recovery phrase not available'
-      );
-      let err = this.translate.instant(
-        'You can still export it from "Export Wallet" option.'
-      );
-      this.showErrorInfoSheet(err, title);
-      this.navCtrl.pop();
-      this.logger.warn('no mnemonics');
+      this.showNoRecoveryPhraseError();
       return;
     }
 
@@ -62,9 +54,13 @@ export class BackupKeyPage {
         if (_.isEmpty(keys)) {
           this.logger.warn('Empty keys');
         }
-        this.showSafeguardMessage();
         this.credentialsEncrypted = false;
         this.keys = keys;
+        if (!this.keys || !this.keys.mnemonic) {
+          this.showNoRecoveryPhraseError();
+          return;
+        }
+        this.showSafeguardMessage();
         this.setFlow();
       })
       .catch(err => {
@@ -78,6 +74,18 @@ export class BackupKeyPage {
         }
         this.navCtrl.pop();
       });
+  }
+
+  private showNoRecoveryPhraseError() {
+    const title = this.translate.instant(
+      'Wallet recovery phrase not available'
+    );
+    let err = this.translate.instant(
+      'You can still export it from "Export Wallet" option.'
+    );
+    this.showErrorInfoSheet(err, title);
+    this.navCtrl.pop();
+    this.logger.warn('no mnemonics');
   }
 
   private showErrorInfoSheet(

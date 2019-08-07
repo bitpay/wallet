@@ -88,7 +88,8 @@ export class ImportWalletPage {
       derivationPathEnabled: [false],
       coin: ['btc'],
       derivationPath: [this.derivationPathHelperProvider.defaultBTC],
-      bwsURL: [this.defaults.bws.url]
+      bwsURL: [this.defaults.bws.url],
+      isMultisig: [false]
     });
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
     this.setForm();
@@ -393,11 +394,36 @@ export class ImportWalletPage {
       );
 
       /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
-        we should change the name to 'isMultisig'
+        we should change the name to 'isMultisig'. 
+        isMultisig is used to allow import old multisig wallets with derivation strategy = 'BIP44'
       */
-      opts.n = opts.derivationStrategy == 'BIP48' ? 2 : 1;
+      opts.n = this.importForm.value.isMultisig
+        ? 2
+        : opts.derivationStrategy == 'BIP48'
+        ? 2
+        : 1;
 
       opts.coin = this.importForm.value.coin;
+
+      // set opts.useLegacyPurpose
+      if (
+        this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
+          "44'" &&
+        opts.n > 1
+      ) {
+        opts.useLegacyPurpose = true;
+        this.logger.debug('Using 44 for Multisig');
+      }
+
+      // set opts.useLegacyCoinType
+      if (
+        opts.coin == 'bch' &&
+        this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
+          "0'"
+      ) {
+        opts.useLegacyCoinType = true;
+        this.logger.debug('Using 0 for BCH creation');
+      }
 
       if (
         !opts.networkName ||

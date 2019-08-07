@@ -7,7 +7,9 @@
 <ion-content>
   <div *ngIf="availableWallet">
     <div class="explanation">
-      <span>{{comment}}</span>
+      <span translate>This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins.
+        This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet.
+        The resulting wallet will use the same derivation path as the original BTC wallet.</span>
       <a (click)="openHelpExternalLink()" translate>
         <span translate>Help &amp; support</span>
       </a>

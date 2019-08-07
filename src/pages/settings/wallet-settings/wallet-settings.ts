@@ -8,7 +8,6 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -51,7 +50,6 @@ export class WalletSettingsPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private persistenceProvider: PersistenceProvider,
     private events: Events
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
@@ -78,9 +76,21 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
-    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-      this.showDuplicateWallet = res === 'enabled' ? true : false;
-    });
+    this.showDuplicateWallet = this.getShowDuplicateWalletOption();
+  }
+
+  private getShowDuplicateWalletOption(): boolean {
+    if (this.wallet.network != 'livenet' || this.wallet.coin != 'btc')
+      return false;
+
+    const key = this.keyProvider.getKey(this.wallet.credentials.keyId);
+    if (!key) return false;
+
+    if (this.wallet.n != 1) return false;
+
+    if (this.wallet.credentials.account != 0) return false;
+
+    return true;
   }
 
   private checkBiometricIdAvailable() {

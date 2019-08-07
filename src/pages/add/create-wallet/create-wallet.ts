@@ -216,6 +216,28 @@ export class CreateWalletPage implements OnInit {
         derivationPath
       );
 
+      // set opts.useLegacyPurpose
+      if (
+        this.derivationPathHelperProvider.parsePath(
+          this.createForm.value.derivationPath
+        ).purpose == "44'" &&
+        opts.n > 1
+      ) {
+        opts.useLegacyPurpose = true;
+        this.logger.debug('Using 44 for Multisig');
+      }
+
+      // set opts.useLegacyCoinType
+      if (
+        this.coin == 'bch' &&
+        this.derivationPathHelperProvider.parsePath(
+          this.createForm.value.derivationPath
+        ).coinCode == "0'"
+      ) {
+        opts.useLegacyCoinType = true;
+        this.logger.debug('Using 0 for BCH creation');
+      }
+
       if (
         !opts.networkName ||
         !opts.derivationStrategy ||
@@ -249,16 +271,6 @@ export class CreateWalletPage implements OnInit {
       );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
-    }
-
-    if (
-      this.coin == 'bch' &&
-      this.derivationPathHelperProvider.parsePath(
-        this.createForm.value.derivationPath
-      ).coinCode == "0'"
-    ) {
-      opts.useLegacyCoinType = true;
-      this.logger.debug('Using 0 for BCH creation');
     }
 
     this.create(opts);
