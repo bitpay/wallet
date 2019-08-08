@@ -637,7 +637,7 @@ export class ProfileProvider {
             '{{countInArray}} of your wallets already exist in {{nameCase}}'
           ),
           {
-            countInArray: countInArray,
+            countInArray,
             nameCase: this.appProvider.info.nameCase
           }
         );
