@@ -1392,6 +1392,17 @@ export class ProfileProvider {
   }
 
   public getWallets(opts?) {
+    const wallets = [];
+    opts = opts || {};
+    // workaround to get wallets in the correct order
+    Object.keys(this.walletsGroups).forEach(keyId => {
+      opts.keyId = keyId;
+      wallets.push(this.getWalletsFromGroup(opts));
+    });
+    return _.flatten(wallets);
+  }
+
+  public getWalletsFromGroup(opts) {
     if (opts && !_.isObject(opts)) throw new Error('bad argument');
 
     opts = opts || {};

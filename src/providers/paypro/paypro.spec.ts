@@ -20,6 +20,7 @@ describe('PayProProvider', () => {
   };
 
   const walletFixture = {
+    keyId: 'keyId',
     id: {
       credentials: {
         coin: 'btc',
@@ -33,6 +34,7 @@ describe('PayProProvider', () => {
   };
 
   const walletFixture2 = {
+    keyId: 'keyId',
     id: {
       credentials: {
         coin: 'btc',
@@ -44,6 +46,8 @@ describe('PayProProvider', () => {
       fetchPayPro: (_payProUrl, _cb) => {}
     }
   };
+
+  const walletGroupFixture = {};
 
   beforeEach(() => {
     const testBed = TestUtils.configureProviderTestingModule();
@@ -57,6 +61,7 @@ describe('PayProProvider', () => {
         return cb(null, defaultPayPro);
       };
       profileProvider.wallet = walletFixture;
+      profileProvider.walletsGroups['keyId'] = walletGroupFixture;
       payproProvider.getPayProDetails('uri', 'btc').then(paypro => {
         expect(paypro).toEqual({
           verified: true,
