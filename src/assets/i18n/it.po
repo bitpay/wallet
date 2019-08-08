@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2019-07-30 17:55\n"
+"PO-Revision-Date: 2019-08-08 14:40\n"
 
 msgid "(possible double spend)"
 msgstr "(possibile doppia spesa)"
@@ -652,9 +652,6 @@ msgstr "Download"
 
 msgid "Download logs"
 msgstr "Scaricare i log"
-
-msgid "Duplicate"
-msgstr ""
 
 msgid "Duplicate to BCH"
 msgstr ""
@@ -2069,6 +2066,9 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "La cronologia delle transazioni e ogni nuova transazione in entrata vengono memorizzate nella cache nell'app. Questa funzionalità la ripulisce e sincronizza nuovamente dal server"
 
+msgid "The wallet is already in the app"
+msgstr ""
+
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
@@ -2089,6 +2089,9 @@ msgstr "Questa applicazione non è disponibile per il tuo dispositivo."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Questa richiesta di pagamento in bitcoin è scaduta."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr ""
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "Questo campo è solo per gli utenti che, nelle versioni precedenti (non è più supportato), hanno impostato una password per proteggere la loro frase di recupero. Questo campo non è per la tua password cifrata."
@@ -2140,9 +2143,6 @@ msgstr "Per iniziare, è necessario che tu crei un portafoglio bitcoin e ottener
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Per iniziare, devi inserire un indirizzo valido, un contatto o un portafoglio."
-
-msgid "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."
-msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account BitPay - {{email}}"
@@ -2362,9 +2362,6 @@ msgstr ""
 
 msgid "Wallet already exists"
 msgstr "Il portafoglio esiste già"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr "Portafoglio già in {{nameCase}}"
 
 msgid "Wallet complete"
 msgstr ""
@@ -2601,6 +2598,9 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di BitPay BWS pubblica)."
 
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr ""
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."

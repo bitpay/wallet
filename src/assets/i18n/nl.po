@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2019-07-30 17:55\n"
+"PO-Revision-Date: 2019-08-08 14:40\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -651,9 +651,6 @@ msgid "Download"
 msgstr "Download"
 
 msgid "Download logs"
-msgstr ""
-
-msgid "Duplicate"
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -2069,6 +2066,9 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
+msgid "The wallet is already in the app"
+msgstr ""
+
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
@@ -2089,6 +2089,9 @@ msgstr ""
 
 msgid "This bitcoin payment request has expired."
 msgstr "Dit bitcoin betalingsverzoek is verlopen."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr ""
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
@@ -2139,9 +2142,6 @@ msgid "To get started, you'll need to create a bitcoin wallet and get some bitco
 msgstr "Om aan de slag te gaan zult u een bitcoin portemonnee moeten aanmaken en wat bitcoin moeten verkrijgen."
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
-msgstr ""
-
-msgid "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -2362,9 +2362,6 @@ msgstr ""
 
 msgid "Wallet already exists"
 msgstr "Portemonnee bestaat al"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr ""
 
 msgid "Wallet complete"
 msgstr ""
@@ -2601,6 +2598,9 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr ""
 
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr ""
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."

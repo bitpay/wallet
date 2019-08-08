@@ -751,9 +751,6 @@ msgstr "Download"
 msgid "Download logs"
 msgstr "Download logs"
 
-msgid "Duplicate"
-msgstr "Duplicate"
-
 msgid "Duplicate to BCH"
 msgstr "Duplicate to BCH"
 
@@ -897,7 +894,6 @@ msgstr "Expired"
 msgid "Expires"
 msgstr "Expires"
 
-#| msgid "Export wallet"
 msgid "Export Wallet"
 msgstr "Export Wallet"
 
@@ -2363,9 +2359,10 @@ msgstr ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. This feature clean this up and synchronizes again from the server"
 
-#| msgid ""
-#| "The wallet won't be removed from this device. You can enable/hidden "
-#| "whenever you need it."
+#| msgid "Wallet already in {{nameCase}}"
+msgid "The wallet is already in the app"
+msgstr "The wallet is already in the app"
+
 msgid ""
 "The wallet won't be removed from this device. You can hide it whenever you "
 "need it."
@@ -2402,6 +2399,17 @@ msgstr "This app is not available for your device."
 
 msgid "This bitcoin payment request has expired."
 msgstr "This bitcoin payment request has expired."
+
+msgid ""
+"This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling "
+"access to pre-fork coins. This should only be used if there are unclaimed "
+"funds before the Bitcoin Cash fork day on the wallet. The resulting wallet "
+"will use the same derivation path as the original BTC wallet."
+msgstr ""
+"This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling "
+"access to pre-fork coins. This should only be used if there are unclaimed "
+"funds before the Bitcoin Cash fork day on the wallet. The resulting wallet "
+"will use the same derivation path as the original BTC wallet."
 
 msgid ""
 "This field is only for users who, in previous versions (it's not supported "
@@ -2493,15 +2501,6 @@ msgid ""
 "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr ""
 "To get started, you'll need to enter a valid address, contact or wallet."
-
-msgid ""
-"To recover BCH from your {{appName}} Wallet, you must duplicate your BTC "
-"wallet. We strongly recommend you protect your wallets with a password to "
-"keep your funds safe."
-msgstr ""
-"To recover BCH from your {{appName}} Wallet, you must duplicate your BTC "
-"wallet. We strongly recommend you protect your wallets with a password to "
-"keep your funds safe."
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -2734,9 +2733,6 @@ msgstr "Wallet Settings"
 
 msgid "Wallet already exists"
 msgstr "Wallet already exists"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr "Wallet already in {{nameCase}}"
 
 msgid "Wallet complete"
 msgstr "Wallet complete"
@@ -3095,6 +3091,10 @@ msgid ""
 msgstr ""
 "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 
+#| msgid "Wallet already in {{nameCase}}"
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgstr "{{countInArray}} of your wallets already exist in {{nameCase}}"
+
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 
@@ -3109,6 +3109,18 @@ msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid "Duplicate"
+#~ msgstr "Duplicate"
+
+#~ msgid ""
+#~ "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC "
+#~ "wallet. We strongly recommend you protect your wallets with a password to "
+#~ "keep your funds safe."
+#~ msgstr ""
+#~ "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC "
+#~ "wallet. We strongly recommend you protect your wallets with a password to "
+#~ "keep your funds safe."
 
 #~| msgid "Disabled"
 #~ msgid "Enabled"
