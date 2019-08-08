@@ -87,7 +87,7 @@ export class WalletSettingsPage {
     if (!key) return false;
 
     // only available for OLD multisig wallets. or single sig
-    if (this.wallet.n > 1 && !key.use44forMultisig ) return false;
+    if (this.wallet.n > 1 && !key.use44forMultisig) return false;
 
     // only first account
     if (this.wallet.credentials.account != 0) return false;
