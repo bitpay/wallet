@@ -12,10 +12,10 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-07-30 18:13\n"
+"PO-Revision-Date: 2019-08-08 14:54\n"
 
 msgid "(possible double spend)"
-msgstr "(Posible doble gasto)"
+msgstr "(Posible gasto duplicado)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* Una propuesta de pago puede ser eliminada si 1) Usted es el creador, y ningún otro copayer la ha firmado, o 2) Han transcurrido 10 minutos desde la creación de la propuesta."
@@ -652,9 +652,6 @@ msgstr "Descargar"
 
 msgid "Download logs"
 msgstr "Descargar registros"
-
-msgid "Duplicate"
-msgstr "Duplicar"
 
 msgid "Duplicate to BCH"
 msgstr "Duplicar a BCH"
@@ -2069,6 +2066,9 @@ msgstr "La transacción de {{walletName}} que estabas esperando se ha confirmado
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "El historial de transacciones y toda nueva transacción son cacheadas en la aplicación. Esta característica limpia y sincroniza nuevamente desde el servidor"
 
+msgid "The wallet is already in the app"
+msgstr "La billetera ya esta en la aplicación"
+
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr "La billetera no se eliminará de este dispositivo. Puede ocultarla siempre que lo necesite."
 
@@ -2089,6 +2089,9 @@ msgstr "Esta aplicación no está disponible para su dispositivo."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Esta solicitud de pago ha caducado."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr "Esta característica duplica la billetera Bitcoin en una billetera Bitcoin Cash, permitiendo el acceso a los fondos pre-fork. Esto solo debería utilizarse si hay fondos sin reclamar antes del día en que surgió Bitcoin Cash. La billetera resultante utilizará la misma ruta de derivación que la billetera BTC original."
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "Este campo es solo para usuarios que en versiones anteriores (actualmente sin soporte), establecieron una contraseña para proteger su frase de recuperación. Este campo no es para su contraseña de cifrado."
@@ -2141,9 +2144,6 @@ msgstr "Para empezar, necesitarás crear una billetera y obtener bitcoins."
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Para empezar, necesita ingresar una dirección válida, un contacto o una billetera."
-
-msgid "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."
-msgstr "Para recuperar BCH de su billetera {{appName}}, deberá duplicar su billetera BTC. Le recomendamos que proteja sus billeteras con una contraseña para mantener sus fondos seguros."
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Para {{reason}} primero debes agregar tu cuenta de BitPay - {{email}}"
@@ -2363,9 +2363,6 @@ msgstr "Preferencias de la billetera"
 
 msgid "Wallet already exists"
 msgstr "La billetera ya existe"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr "La billetera ya existe en {{nameCase}}"
 
 msgid "Wallet complete"
 msgstr "Billetera completa"
@@ -2603,6 +2600,9 @@ msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener informa
 
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 msgstr "{{appName}} solo soporta Bitcoin Cash utilizando la nueva versión de direcciones."
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgstr "{{countInArray}} de tus billeteras ya existen en {{nameCase}}"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "Se descontará {{fee}} {{coin}} por comisión de la red bitcoin."

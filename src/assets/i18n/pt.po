@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-07-30 17:55\n"
+"PO-Revision-Date: 2019-08-08 14:41\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -21,7 +21,7 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr "Uma proposta de pagamento pode ser excluída se: 1) você for o criador e nenhum outro assinante tiver assinado, ou 2) 10 minutos se passaram desde que a proposta foi criada."
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "Avaliações de 5 estrelas ajudam-nos a que a Carteira BitPay chegue ás mãos de mais e mais utilizadores, que significa que mais recursos serão incluídos no app!"
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "Um novo copayer acabou de se juntar à sua carteira {{walletName}}."
@@ -141,7 +141,7 @@ msgid "Allow camera access"
 msgstr "Permitir acesso a câmera"
 
 msgid "Already duplicated"
-msgstr ""
+msgstr "Já duplicado"
 
 msgid "Alternative currency"
 msgstr "Moeda Alternativa"
@@ -189,7 +189,7 @@ msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "Tem certeza que deseja cancelar e eliminar esta carteira?"
 
 msgid "Are you sure you want to delete all wallets using this key?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir todas as carteiras que utilizam esta chave?"
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "Tem certeza que deseja excluir este contato?"
@@ -240,25 +240,25 @@ msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr "Certifique-se de armazenar sua frase de recuperação em um lugar seguro e protegido"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr ""
+msgstr "Certifique-se de armazenar sua frase de recuperação em um lugar seguro. Se este app for excluído, seu dinheiro não poderá ser recuperado sem ela."
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr "Como você está enviando o valor máximo desta carteira, a taxa de mineração de {coinName} ({fee} {coin}) será deduzida do total. {msg}"
 
 msgid "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
-msgstr ""
+msgstr "Antes de duplicar sua carteira, é recomendável que você primeiro escreva sua frase de recuperação e armazene-a de forma segura para que sua carteira possa ser recuperada caso seu dispositivo tenha sido perdido ou roubado."
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
 msgstr "Antes de recuperar o seu endereço de carteira, é recomendável que você primeiro escreva sua frase de recuperação e armazene-a de forma segura para que sua carteira possa ser recuperada caso seu dispositivo esteja perdido ou roubado."
 
 msgid "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
-msgstr ""
+msgstr "Antes de recuperar seus endereços de carteiras, é recomendável que você primeiro escreva sua frase de recuperação e armazene-a de forma segura para que suas carteiras possam ser recuperadas caso seu dispositivo tenha sido perdido ou roubado."
 
 msgid "Below Minimum Amount"
 msgstr "Valor Abaixo do Mínimo"
 
 msgid "Biometric"
-msgstr ""
+msgstr "Biométrica"
 
 msgid "BitPay Card URI"
 msgstr "URI do Cartão BitPay"
@@ -297,7 +297,7 @@ msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "As transações Bitcoin incluem uma taxa cobrada pelos mineiros na rede."
 
 msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
-msgstr ""
+msgstr "Bitcore Wallet Service está em manutenção. Por favor, verifique https://status.bitpay.com/."
 
 msgid "Broadcast Payment"
 msgstr "Transmitir Pagamento"
@@ -324,7 +324,7 @@ msgid "By providing your email address, you give explicit consent to BitPay to u
 msgstr "Ao fornecer seu endereço de e-mail, você dá consentimento explícito para BitPay usar seu endereço de e-mail para enviar que e-mail notificações sobre pagamentos."
 
 msgid "By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again."
-msgstr ""
+msgstr "Ao reutilizar uma chave atual, sua nova carteira compartilhará a frase de recuperação, então você não precisa fazer backup novamente."
 
 msgid "Calculating fee..."
 msgstr "Calculando taxa..."
@@ -414,7 +414,7 @@ msgid "Confirming"
 msgstr "A confirmar"
 
 msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
-msgstr ""
+msgstr "Parabéns! Parece que você recebeu dinheiro recentemente. É altamente recomendado que você verifique sua frase de recuperação para que seus fundos possam ser recuperados caso seu telefone esteja perdido ou roubado."
 
 msgid "Connect my BitPay Card"
 msgstr "Conectar meu cartão BitPay"
@@ -477,7 +477,7 @@ msgid "Copy to clipboard"
 msgstr "Copiar para área de transferência"
 
 msgid "Could not access the wallet at the server"
-msgstr ""
+msgstr "Não foi possível acessar a carteira no servidor"
 
 msgid "Could not access wallet"
 msgstr "Impossível aceder à carteira"
@@ -555,7 +555,7 @@ msgid "Create"
 msgstr "Criar"
 
 msgid "Create a new key"
-msgstr ""
+msgstr "Criar uma nova chave"
 
 msgid "Created"
 msgstr "Criado"
@@ -594,7 +594,7 @@ msgid "Delete it and create a new one"
 msgstr "Apagar e criar um novo"
 
 msgid "Delete key"
-msgstr ""
+msgstr "Excluir chave"
 
 msgid "Deleting Wallet..."
 msgstr "A eliminar carteira..."
@@ -612,7 +612,7 @@ msgid "Deposit Min"
 msgstr "Depósito Min"
 
 msgid "Derivation Path"
-msgstr ""
+msgstr "Caminho de derivação"
 
 msgid "Derivation path"
 msgstr "Caminho de derivação"
@@ -653,11 +653,8 @@ msgstr "Download"
 msgid "Download logs"
 msgstr "Baixar logs"
 
-msgid "Duplicate"
-msgstr ""
-
 msgid "Duplicate to BCH"
-msgstr ""
+msgstr "Duplicar para BCH"
 
 msgid "Duplicating wallet..."
 msgstr "Duplicando carteira..."
@@ -666,7 +663,7 @@ msgid "Each bitcoin wallet can generate billions of addresses from your 12-word 
 msgstr "Cada carteira bitcoin pode gerar bilhões de endereços através de sua frase de recuperação de 12 palavras. Um novo endereço é gerado automaticamente e mostrado cada vez que receber um pagamento."
 
 msgid "Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer."
-msgstr ""
+msgstr "Cada copayer tem sua própria frase de recuperação. Para recuperar fundos armazenados em uma Carteira Compartilhada, você precisará da frase de recuperação de cada copayer."
 
 msgid "Economy"
 msgstr "Economia"
@@ -786,7 +783,7 @@ msgid "Expires"
 msgstr "﻿Expira"
 
 msgid "Export Wallet"
-msgstr ""
+msgstr "Exportar Carteira"
 
 msgid "Export to file"
 msgstr "Exportar para arquivo"
@@ -849,7 +846,7 @@ msgid "File/Text"
 msgstr "Arquivo/Texto"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
-msgstr ""
+msgstr "Encontrou algo quebrado? Por favor, reporte-o como um bug. Se você precisa de ajuda imediata com um problema que você está tendo, então, obtenha ajuda contatando nossa equipe de suporte."
 
 msgid "From"
 msgstr "De"
@@ -945,7 +942,7 @@ msgid "Help & support"
 msgstr "Ajuda & Suporte"
 
 msgid "Help and support information is available at the website"
-msgstr ""
+msgstr "Informações de ajuda e suporte estão disponíveis no site"
 
 msgid "Help and support information is available at the website."
 msgstr "Informações de Ajuda e Suporte estão disponíveis no site."
@@ -972,7 +969,7 @@ msgid "How satisfied are you with {{appName}} wallet?"
 msgstr "Quão satisfeito você está com a carteira {{appName}}?"
 
 msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
-msgstr ""
+msgstr "No entanto, fundos não confirmados não são permitidos para gastar com comerciantes, carga do BitPay Card ou compras de vales de presente do BitPay no app."
 
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "Eu concordo com os termos e certifico que sou o beneficiário efetivo dos ativos e do endereço de destino."
@@ -1008,7 +1005,7 @@ msgid "I've used this card"
 msgstr "Eu usei este cartão"
 
 msgid "If enabled, the new wallets may have different keys and will require a new backup."
-msgstr ""
+msgstr "Se ativado, as novas carteiras podem ter chaves diferentes e exigirão um novo backup."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Se habilitado, as carteiras também tentará gastar fundos não confirmados."
@@ -1023,7 +1020,7 @@ msgid "If you need immediate help with a problem you are having, then get help b
 msgstr "Se você precisa de ajuda imediata com um problema que você está tendo, então obtenha ajuda contatando nossa equipe de suporte."
 
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
-msgstr ""
+msgstr "Se você precisa enviar para endereços \"antigos\" (como o que você acabou de colar), e você tem CERTEZA que esses são endereços BCH, você pode \"traduzir\" eles usando a ferramenta Tradutor BCH e colar o endereço correspondente no formato CashAddr para esse endereço \"antigo\"."
 
 msgid "Import"
 msgstr "Importar"
@@ -1038,7 +1035,7 @@ msgid "Importing Wallet..."
 msgstr "A importar a carteira..."
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
-msgstr ""
+msgstr "A fim de verificar a sua frase de recuperação de carteira, por favor, digite sua senha."
 
 msgid "Incomplete"
 msgstr "Incompleto"
@@ -1110,7 +1107,7 @@ msgid "It's a good idea to avoid reusing addresses - this both protects your pri
 msgstr "É uma boa idéia evitar o reuso de endereços - isso protege sua privacidade e mantém seus bitcoins seguros contra ataques hipotéticos de computadores quânticos."
 
 msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
-msgstr ""
+msgstr "É importante que você escreva sua frase de recuperação corretamente. Se algo acontecer à sua carteira, você precisará dela para recuperar seu dinheiro. Por favor, reveja e tente novamente."
 
 msgid "Join"
 msgstr "Juntar-se"
@@ -1281,7 +1278,7 @@ msgid "No contacts yet"
 msgstr "Ainda não existem contactos"
 
 msgid "No enough confirmed funds"
-msgstr ""
+msgstr "Sem fundos confirmados suficientes"
 
 msgid "No entries for this log level"
 msgstr "Não há entradas para este nível de log"
@@ -1317,7 +1314,7 @@ msgid "No wallets with funds"
 msgstr "Não há carteiras com fundos"
 
 msgid "Non BIP44 wallet"
-msgstr ""
+msgstr "Carteira não BIP44"
 
 msgid "Normal"
 msgstr "Normal"
@@ -1362,7 +1359,7 @@ msgid "Notify me when transactions are confirmed"
 msgstr "Notificar-me quando as transações são confirmadas"
 
 msgid "Now it's time for you to create a wallet to store your funds into."
-msgstr ""
+msgstr "Agora é hora de você criar uma carteira para armazenar seus fundos."
 
 msgid "OK"
 msgstr "OK"
@@ -1488,7 +1485,7 @@ msgid "Pending Proposals"
 msgstr "Proposta pendente"
 
 msgid "Permanently delete all wallets using this key."
-msgstr ""
+msgstr "Excluir permanentemente todas as carteiras usando esta chave."
 
 msgid "Personal Wallet"
 msgstr "Carteira Pessoal"
@@ -1599,10 +1596,10 @@ msgid "Rate on the {storeName}"
 msgstr "Avaliar em {storeName}"
 
 msgid "Read Only Wallets"
-msgstr ""
+msgstr "Carteiras Somente Leitura"
 
 msgid "Read Only wallets don't include the private key."
-msgstr ""
+msgstr "Carteiras somente leitura não incluem a chave privada."
 
 msgid "Read more in our Wiki"
 msgstr "Leia mais em nosso Wiki"
@@ -1611,7 +1608,7 @@ msgid "Read more in our support page"
 msgstr "Leia mais em nossa página de suporte"
 
 msgid "Read only wallet"
-msgstr ""
+msgstr "Carteira somente leitura"
 
 msgid "Receipt Email"
 msgstr "E-mail de Recibo"
@@ -1629,7 +1626,7 @@ msgid "Receiving"
 msgstr "A receber"
 
 msgid "Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings."
-msgstr ""
+msgstr "Receber fundos será temporariamente desativado até que você possa verificar se sua frase de recuperação foi armazenada de forma segura. Você sempre pode completar isso mais tarde a partir das suas configurações de carteira."
 
 msgid "Receiving {coinName} address"
 msgstr "Endereço {coinName} de Recebimento"
@@ -1641,7 +1638,7 @@ msgid "Recipient"
 msgstr "Destinatário"
 
 msgid "Recover old wallets"
-msgstr ""
+msgstr "Recuperar carteiras antigas"
 
 msgid "Recover your wallet using your passphrase"
 msgstr "Recuperar sua carteira usando sua frase de recuperação"
@@ -1686,7 +1683,7 @@ msgid "Report issue"
 msgstr "Reportar problema"
 
 msgid "Request Biometric Authentication"
-msgstr ""
+msgstr "Solicitar Autenticação Biométrica"
 
 msgid "Request Encrypt Password"
 msgstr "Solicitar Senha Criptografada"
@@ -1773,7 +1770,7 @@ msgid "Select currency"
 msgstr "Selecionar moeda"
 
 msgid "Select the Key for the New Wallet"
-msgstr ""
+msgstr "Selecione a Chave para a Nova Carteira"
 
 msgid "Selling Bitcoin..."
 msgstr "Vendendo Bitcoin..."
@@ -1884,7 +1881,7 @@ msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr "Compartilhe este QR Code para receber {amount} na sua carteira {name}."
 
 msgid "Share this address with the devices joining this account."
-msgstr ""
+msgstr "Compartilhe esse endereço com os dispositivos que participam dessa conta."
 
 msgid "Share this invitation with your copayers"
 msgstr "Compartilhe este convite com seus copayers"
@@ -1941,7 +1938,7 @@ msgid "Specify Recovery Phrase"
 msgstr "Especifique a Frase de Recuperação"
 
 msgid "Specify derivation path"
-msgstr ""
+msgstr "Especificar o caminho de derivação"
 
 msgid "Spend proposal is not accepted"
 msgstr "A proposta de gasto não é aceita"
@@ -1962,7 +1959,7 @@ msgid "Super Economy"
 msgstr "Super Econômico"
 
 msgid "Support Wallets with Different Keys"
-msgstr ""
+msgstr "Suporte para Carteiras com Chaves Diferentes"
 
 msgid "Sweep"
 msgstr "Limpar"
@@ -2025,7 +2022,7 @@ msgid "The higher the fee, the greater the incentive a miner has to include that
 msgstr "Quanto maior a taxa, maior o incentivo um mineiro tem que incluir essa transação em um bloco. As taxas atuais são determinadas com base na carga da rede e na política selecionada."
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
-msgstr ""
+msgstr "As informações que você está prestes a compartilhar/exportar podem conter dados sensíveis como IDs de carteira, endereços, saldos, etc. Por favor, certifique-se de que você confia na pessoa ou entidade com quem você está compartilhando estas informações."
 
 msgid "The invoice is no longer receiving payments."
 msgstr "A fatura não está mais recebendo pagamentos."
@@ -2069,8 +2066,11 @@ msgstr "A transação de {{walletName}} que você estava esperando foi confirmad
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "O histórico de transações e todas as novas transações recebidas são armazenados em cache no app. Este recurso limpa o cache e sincroniza novamente a partir do servidor"
 
-msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
+msgid "The wallet is already in the app"
 msgstr ""
+
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
+msgstr "A carteira não será removida deste dispositivo. Você pode oculta-la sempre que precisar."
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr "A carteira que você está usando não corresponde à rede e/ou à moeda do endereço fornecido"
@@ -2089,6 +2089,9 @@ msgstr "Este app não está disponível para o seu dispositivo."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Este bitcoin pagamento pedido expirou."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr ""
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "Este campo é apenas para usuários que, em versões anteriores (não é mais suportado), definiram uma senha para proteger sua frase de recuperação. Este campo não é para sua senha de criptografia."
@@ -2115,7 +2118,7 @@ msgid "This payment requires a miner fee of:"
 msgstr "Este pagamento requer uma taxa de mineração de:"
 
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr ""
+msgstr "Esta frase de recuperação foi criada com uma senha. Para recuperar esta carteira, tanto a frase de recuperação como a senha são necessárias."
 
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr "Este valor de transação é muito pequeno em comparação com as atuais taxas de rede Bitcoin. Gastar estes fundos precisará de uma taxa de rede Bitcoin comparável aos próprios fundos."
@@ -2140,9 +2143,6 @@ msgstr "Para começar, você precisa criar uma carteira de bitcoins e obter algu
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Para começar, você precisará digitar um endereço válido, contato ou carteira."
-
-msgid "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."
-msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Para {{reason}}, você primeiro deve adicionar sua conta BitPay - {{email}}"
@@ -2235,7 +2235,7 @@ msgid "Unconfirmed"
 msgstr "Não confirmado"
 
 msgid "Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you."
-msgstr ""
+msgstr "Infelizmente, seu país/região proibiu o uso ou aceitação de criptomoedas como uma forma de pagamento válida e, portanto, não podemos te prestar serviço."
 
 msgid "Unlink account"
 msgstr "Desvincular a conta"
@@ -2331,7 +2331,7 @@ msgid "Waiting"
 msgstr "Aguardando"
 
 msgid "Waiting for authorized copayers to join"
-msgstr ""
+msgstr "Esperando que os copayers autorizados se juntem"
 
 msgid "Wallet Addresses"
 msgstr "Endereços da carteira"
@@ -2343,10 +2343,10 @@ msgid "Wallet Inputs"
 msgstr "Entradas da carteira"
 
 msgid "Wallet Invitation"
-msgstr ""
+msgstr "Convite para Carteira"
 
 msgid "Wallet Key Settings"
-msgstr ""
+msgstr "Configurações da Chave da Carteira"
 
 msgid "Wallet Name"
 msgstr "Nome da carteira"
@@ -2358,13 +2358,10 @@ msgid "Wallet Recovery Phrase is invalid"
 msgstr "Frase de recuperação da carteira é inválida"
 
 msgid "Wallet Settings"
-msgstr ""
+msgstr "Configurações da Carteira"
 
 msgid "Wallet already exists"
 msgstr "A carteira já existe"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr "A carteira já existe no {{nameCase}}"
 
 msgid "Wallet complete"
 msgstr "Carteira completa"
@@ -2415,10 +2412,10 @@ msgid "Wallets"
 msgstr "Carteiras"
 
 msgid "Wallets (Grouped by key)"
-msgstr ""
+msgstr "Carteiras (Agrupadas por chave)"
 
 msgid "Wallets using this key"
-msgstr ""
+msgstr "Carteiras usando esta chave"
 
 msgid "Warning!"
 msgstr "Atenção!"
@@ -2535,7 +2532,7 @@ msgid "You do not have enough confirmed funds to make this payment. Wait for you
 msgstr "Você não tem fundos confirmados suficientes para fazer este pagamento. Aguarde suas transações pendentes para confirmar ou ative \"Utilizar fundos não confirmados\" nas Configurações Avançadas."
 
 msgid "You reach the limit of twenty wallets from the same coin and network"
-msgstr ""
+msgstr "Você atingiu o limite de vinte carteiras da mesma moeda e rede"
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Você não deve definir uma taxa maior do que {{maxFeeRecommended}} satoshis/byte."
@@ -2544,7 +2541,7 @@ msgid "Your BitPay Card is ready. Add funds to your card to start using it at st
 msgstr "Seu Cartão BitPay está pronto. Adicione fundos ao seu cartão para começar a usá-lo nas lojas."
 
 msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr ""
+msgstr "Suas chaves privadas estendidas é tudo o que precisa para acessar seus fundos. Certifique-se de proteger suas chaves privadas e armazená-las somente em dispositivos seguros. BitPay não tem acesso as suas chaves privadas, então você é responsável pelas suas chaves. Se você compartilhar a chave de acesso com serviços externos, responsabilize-se pelo risco de roubo ou violação. Apenas usuários avançados devem lidar com chaves privadas estendidas diretamente."
 
 msgid "Your fee is lower than recommended."
 msgstr "Sua taxa é mais baixa do que a recomendada."
@@ -2553,7 +2550,7 @@ msgid "Your name"
 msgstr "Seu nome"
 
 msgid "Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the order they appear."
-msgstr ""
+msgstr "Sua frase de recuperação é composta por 12 palavras selecionadas aleatoriamente. Por favor, escreva cuidadosamente cada palavra na ordem que elas aparecem."
 
 msgid "Your recovery phrase is verified"
 msgstr "Sua frase de recuperação foi verificada"
@@ -2592,7 +2589,7 @@ msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "Carteiras BCH do {appName} usam o formato CashAddr por padrão"
 
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
-msgstr ""
+msgstr "Cartões-presente {displayName} contêm uma taxa de ativação adicional de {fee} {currency}."
 
 msgid "{displayName} requires you to present a printed gift card at redemption."
 msgstr "{displayName} requer que você apresente um cartão-presente impresso no resgate."
@@ -2602,6 +2599,9 @@ msgstr "{{appName}} depende do Serviço Bitcore Wallet (BWS) para informações 
 
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 msgstr "{{appName}} apenas suporta Bitcoin Cash utilizando a nova versão de endereços."
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} será deduzido para taxas de rede bitcoin."

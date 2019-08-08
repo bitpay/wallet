@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-07-30 17:55\n"
+"PO-Revision-Date: 2019-08-08 14:40\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -21,7 +21,7 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "별 다섯 개는 {{appName}} 앱이 더 많은 사용자를 얻는 데 도움이 될 것이며, 사용자가 늘어날수록 더 많은 리소스가 앱에 투입될 것입니다!"
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "A new copayer just joined your wallet {{walletName}}."
@@ -652,9 +652,6 @@ msgstr "다운로드"
 
 msgid "Download logs"
 msgstr "내려받은 기록 (Download logs)"
-
-msgid "Duplicate"
-msgstr ""
 
 msgid "Duplicate to BCH"
 msgstr ""
@@ -2069,6 +2066,9 @@ msgstr ""
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
+msgid "The wallet is already in the app"
+msgstr ""
+
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr ""
 
@@ -2089,6 +2089,9 @@ msgstr ""
 
 msgid "This bitcoin payment request has expired."
 msgstr "이 비트코인 지불 요청은 만료되었습니다."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr ""
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
@@ -2139,9 +2142,6 @@ msgid "To get started, you'll need to create a bitcoin wallet and get some bitco
 msgstr "시작하시려면, 비트코인 지갑을 생성하셔야 합니다."
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
-msgstr ""
-
-msgid "To recover BCH from your {{appName}} Wallet, you must duplicate your BTC wallet. We strongly recommend you protect your wallets with a password to keep your funds safe."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -2362,9 +2362,6 @@ msgstr ""
 
 msgid "Wallet already exists"
 msgstr "이미 존재하는 지갑입니다"
-
-msgid "Wallet already in {{nameCase}}"
-msgstr ""
 
 msgid "Wallet complete"
 msgstr ""
@@ -2601,6 +2598,9 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr ""
 
 msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr ""
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
