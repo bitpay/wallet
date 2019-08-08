@@ -634,7 +634,7 @@ export class ProfileProvider {
         );
         const msg2 = this.replaceParametersProvider.replace(
           this.translate.instant(
-            `${countInArray} of your wallets already exist in {{nameCase}}`
+            '{{countInArray}} of your wallets already exist in {{nameCase}}'
           ),
           { nameCase: this.appProvider.info.nameCase }
         );
