@@ -636,7 +636,10 @@ export class ProfileProvider {
           this.translate.instant(
             '{{countInArray}} of your wallets already exist in {{nameCase}}'
           ),
-          { nameCase: this.appProvider.info.nameCase }
+          {
+            countInArray: countInArray,
+            nameCase: this.appProvider.info.nameCase
+          }
         );
         const msg = countInArray == 1 ? msg1 : msg2;
         const title = this.translate.instant('Error');
