@@ -1,12 +1,7 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  Platform
-} from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -16,7 +11,6 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
-import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -104,8 +98,7 @@ export class HomePage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private invoiceProvider: InvoiceProvider,
-    private modalCtrl: ModalController
+    private invoiceProvider: InvoiceProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -118,7 +111,6 @@ export class HomePage {
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
       this._didEnter();
-      this.showNewDesignSlides();
     });
   }
 
@@ -196,7 +188,6 @@ export class HomePage {
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkFeedbackInfo();
-      this.showNewDesignSlides();
       this.checkEmailLawCompliance();
     }, 2000);
 
@@ -292,20 +283,6 @@ export class HomePage {
       ) {
         this.checkClipboard();
         this.setWallets();
-      }
-    });
-  }
-
-  private showNewDesignSlides() {
-    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
-    this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
-      if (!value) {
-        this.persistenceProvider.setNewDesignSlidesFlag('completed');
-        const modal = this.modalCtrl.create(NewDesignTourPage, {
-          showBackdrop: false,
-          enableBackdropDismiss: false
-        });
-        modal.present();
       }
     });
   }
