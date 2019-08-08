@@ -151,7 +151,7 @@ export class WalletProvider {
             return;
           }
 
-          const action = _.find(tx.actions, {
+          const action: any = _.find(tx.actions, {
             copayerId: tx.wallet.copayerId
           });
 
@@ -624,7 +624,7 @@ export class WalletProvider {
       let requestLimit = FIRST_LIMIT;
       const walletId = wallet.credentials.walletId;
       WalletProvider.progressFn[walletId] = progressFn || (() => {});
-      let foundLimitTx = [];
+      let foundLimitTx: any = [];
 
       const fixTxsUnit = (txs): void => {
         if (!txs || !txs[0] || !txs[0].amountStr) return;
@@ -718,7 +718,7 @@ export class WalletProvider {
                   // do not sync all history, just looking for a single TX.
                   if (opts.limitTx) {
                     foundLimitTx = _.find(newTxs.concat(txsFromLocal), {
-                      txid: opts.limitTx
+                      txid: opts.limitTx as any
                     });
                     if (!_.isEmpty(foundLimitTx)) {
                       this.logger.debug('Found limitTX: ' + opts.limitTx);
