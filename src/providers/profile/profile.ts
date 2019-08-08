@@ -634,9 +634,12 @@ export class ProfileProvider {
         );
         const msg2 = this.replaceParametersProvider.replace(
           this.translate.instant(
-            `${countInArray} of your wallets already exist in {{nameCase}}`
+            '{{countInArray}} of your wallets already exist in {{nameCase}}'
           ),
-          { nameCase: this.appProvider.info.nameCase }
+          {
+            countInArray,
+            nameCase: this.appProvider.info.nameCase
+          }
         );
         const msg = countInArray == 1 ? msg1 : msg2;
         const title = this.translate.instant('Error');
