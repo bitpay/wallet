@@ -86,8 +86,10 @@ export class WalletSettingsPage {
     const key = this.keyProvider.getKey(this.wallet.credentials.keyId);
     if (!key) return false;
 
-    if (this.wallet.n != 1) return false;
+    // only available for OLD multisig wallets. or single sig
+    if (this.wallet.n > 1 && !key.use44forMultisig ) return false;
 
+    // only first account
     if (this.wallet.credentials.account != 0) return false;
 
     return true;
