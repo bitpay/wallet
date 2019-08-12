@@ -363,8 +363,8 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "Bitcoin Wallets"
 
-msgid "Bitcoin miner fee:"
-msgstr "Bitcoin miner fee:"
+msgid "Miner fee:"
+msgstr "Miner fee:"
 
 msgid "Bitcoin network fee policy"
 msgstr "Bitcoin network fee policy"

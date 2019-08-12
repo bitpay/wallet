@@ -287,8 +287,8 @@ msgstr "비트코인 URI"
 msgid "Bitcoin Wallets"
 msgstr "비트코인 지갑"
 
-msgid "Bitcoin miner fee:"
-msgstr "비트코인 마이너 수수료:"
+msgid "Miner fee:"
+msgstr "마이너 수수료:"
 
 msgid "Bitcoin network fee policy"
 msgstr "비트코인 네트워크 수수료 정책"

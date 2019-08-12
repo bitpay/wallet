@@ -7,6 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 // Providers
 import { FeeProvider } from '../../../providers/fee/fee';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { UTXO_COINS } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-choose-fee-level',
@@ -50,6 +51,7 @@ export class ChooseFeeLevelPage {
     this.cancelText = this.translate.instant('Cancel');
     // From parent controller
     this.network = this.viewCtrl.data.network;
+    this.coin = this.viewCtrl.data.coin;
     this.feeLevel = this.viewCtrl.data.feeLevel;
 
     // IF usingCustomFee
@@ -107,7 +109,11 @@ export class ChooseFeeLevelPage {
     if (value) {
       this.customFeePerKB = null;
       this.feePerSatByte = (value.feePerKb / 1000).toFixed();
-      this.avgConfirmationTime = value.nbBlocks * 10;
+      let avgConfirmationTime = value.nbBlocks * 10;
+      if (!UTXO_COINS[this.coin.toUpperCase()]) {
+        avgConfirmationTime = value.nbBlocks * 0.2;
+      }
+      this.avgConfirmationTime = avgConfirmationTime;
     } else {
       this.avgConfirmationTime = null;
       this.customSatPerByte = Number(this.feePerSatByte);

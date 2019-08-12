@@ -30,6 +30,12 @@ export interface HistoryOptionsI {
 
 export enum Coin {
   BTC = 'btc',
+  BCH = 'bch',
+  ETH = 'eth'
+}
+
+export enum UTXO_COINS {
+  BTC = 'btc',
   BCH = 'bch'
 }
 
@@ -57,6 +63,7 @@ export interface WalletOptions {
 
 export interface TransactionProposal {
   amount: any;
+  from: string;
   toAddress: any;
   outputs: Array<{
     toAddress: any;
@@ -176,8 +183,8 @@ export class WalletProvider {
         if (!balance) return;
 
         const configGet = this.configProvider.get();
+        const coinOpts = this.configProvider.getCoinOpts();
         const config = configGet.wallet;
-
         const cache = wallet.cachedStatus;
 
         // Address with Balance
@@ -204,7 +211,7 @@ export class WalletProvider {
         }
 
         // Selected unit
-        cache.unitToSatoshi = config.settings.unitToSatoshi;
+        cache.unitToSatoshi = coinOpts[wallet.coin].unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         // STR
@@ -1113,6 +1120,9 @@ export class WalletProvider {
         txp,
         password
       );
+      if (!UTXO_COINS[txp.coin.toUpperCase()]) {
+        return resolve(signatures);
+      }
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
@@ -1136,23 +1146,47 @@ export class WalletProvider {
 
       if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-        if (err) {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            this.removeTx(wallet, txp);
-            return reject(err);
-          } else {
+      if (!txp.signatures && !UTXO_COINS[txp.coin.toUpperCase()]) {
+        wallet.removeTxProposal(txp, err => {
+          if (err) {
             return reject(err);
           }
-        }
+          wallet.broadcastRawTx(txp, (err, broadcastedTxp) => {
+            if (err) {
+              if (_.isArrayBuffer(err)) {
+                const enc = new encoding.TextDecoder();
+                err = enc.decode(err);
+                this.removeTx(wallet, txp);
+                return reject(err);
+              } else {
+                return reject(err);
+              }
+            }
+            const { transactionHash } = broadcastedTxp;
+            broadcastedTxp.txid = transactionHash;
+            this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+            return resolve(broadcastedTxp);
+          });
+        });
+      } else {
+        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
+          }
 
-        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-        if (memo) this.logger.info('Memo: ', memo);
+          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+          if (memo) this.logger.info('Memo: ', memo);
 
-        return resolve(broadcastedTxp);
-      });
+          return resolve(broadcastedTxp);
+        });
+      }
     });
   }
 
@@ -1234,9 +1268,6 @@ export class WalletProvider {
 
       // Get current languge
       prefs.language = this.languageProvider.getCurrent();
-
-      // Set OLD wallet in bits to btc
-      prefs.unit = 'btc'; // DEPRECATED
 
       updateRemotePreferencesFor(_.clone(clients), prefs)
         .then(() => {

@@ -213,6 +213,7 @@ export class WalletMock {
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
       amount: 1000,
+      from: 'address1',
       toAddress: 'address1',
       outputs: [
         {
@@ -239,6 +240,10 @@ export class WalletMock {
   pushSignatures(_txp, _signatures, cb) {
     const signedTxp = _txp;
     return cb(null, signedTxp);
+  }
+  broadcastRawTx(_txp, cb) {
+    const broadcastedTxp = _txp;
+    return cb(null, broadcastedTxp);
   }
   broadcastTxProposal(_txp, cb) {
     const broadcastedTxp = _txp;

@@ -48,6 +48,7 @@ export class ShapeshiftConfirmPage {
   private useSendMax: boolean;
   private sendMaxInfo;
   private accessToken: string;
+  private unitToSatoshi: number;
 
   public withdrawalFee: number;
   public currencyIsoCode: string;
@@ -104,6 +105,9 @@ export class ShapeshiftConfirmPage {
     this.network = this.shapeshiftProvider.getNetwork();
     this.fromWallet = this.profileProvider.getWallet(this.fromWalletId);
     this.toWallet = this.profileProvider.getWallet(this.toWalletId);
+    this.unitToSatoshi = this.configProvider.getCoinOpts()[
+      this.fromWallet.coin.toUpperCase()
+    ].unitToSatoshi;
   }
 
   ionViewDidEnter() {
@@ -143,7 +147,7 @@ export class ShapeshiftConfirmPage {
           .then(amountSat => {
             this.onGoingProcessProvider.clear();
             this.depositAmount = Number(
-              (amountSat / this.configWallet.settings.unitToSatoshi).toFixed(8)
+              (amountSat / this.unitToSatoshi).toFixed(8)
             );
             this.createShift();
           })
@@ -227,14 +231,8 @@ export class ShapeshiftConfirmPage {
 
             this.sendMaxInfo = sendMaxInfo;
 
-            let maxSat = parseInt(
-              (max * this.configWallet.settings.unitToSatoshi).toFixed(0),
-              10
-            );
-            let minSat = parseInt(
-              (min * this.configWallet.settings.unitToSatoshi).toFixed(0),
-              10
-            );
+            let maxSat = parseInt((max * this.unitToSatoshi).toFixed(0), 10);
+            let minSat = parseInt((min * this.unitToSatoshi).toFixed(0), 10);
 
             if (sendMaxInfo.amount > maxSat) {
               this.popupProvider
@@ -461,7 +459,7 @@ export class ShapeshiftConfirmPage {
 
   private showSendMaxWarning(): Promise<any> {
     return new Promise(resolve => {
-      let fee = this.sendMaxInfo.fee / 1e8;
+      let fee = this.sendMaxInfo.fee / this.unitToSatoshi;
       let msg = this.replaceParametersProvider.replace(
         this.translate.instant(
           '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
@@ -481,7 +479,8 @@ export class ShapeshiftConfirmPage {
   private verifyExcludedUtxos() {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = this.sendMaxInfo.amountBelowFee / 1e8;
+      let amountBelowFeeStr =
+        this.sendMaxInfo.amountBelowFee / this.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -492,7 +491,8 @@ export class ShapeshiftConfirmPage {
     }
 
     if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = this.sendMaxInfo.amountAboveMaxSize / 1e8;
+      let amountAboveMaxSizeStr =
+        this.sendMaxInfo.amountAboveMaxSize / this.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
@@ -569,16 +569,10 @@ export class ShapeshiftConfirmPage {
 
                 // To Sat
                 const depositSat = Number(
-                  (
-                    this.depositAmount *
-                    this.configWallet.settings.unitToSatoshi
-                  ).toFixed(0)
+                  (this.depositAmount * this.unitToSatoshi).toFixed(0)
                 );
                 const withdrawalAmountSat = Number(
-                  (
-                    shapeData.withdrawalAmount *
-                    this.configWallet.settings.unitToSatoshi
-                  ).toFixed(0)
+                  (shapeData.withdrawalAmount * this.unitToSatoshi).toFixed(0)
                 );
 
                 this.createTx(this.fromWallet, toAddress, depositSat)

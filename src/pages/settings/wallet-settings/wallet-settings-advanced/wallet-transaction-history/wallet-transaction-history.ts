@@ -23,13 +23,13 @@ export class WalletTransactionHistoryPage {
   public isCordova: boolean;
   public err;
   public config;
+  public coinOpts;
   public csvContent;
   public csvFilename;
   public csvHeader: string[];
   public unitToSatoshi: number;
   public unitDecimals: number;
   public satToUnit: number;
-  public satToBtc: number;
 
   private currency: string;
 
@@ -58,10 +58,10 @@ export class WalletTransactionHistoryPage {
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
-    this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings.unitDecimals;
+    this.coinOpts = this.configProvider.getCoinOpts()[this.wallet.coin];
+    this.unitToSatoshi = this.coinOpts.unitToSatoshi;
+    this.unitDecimals = this.coinOpts.unitDecimals;
     this.satToUnit = 1 / this.unitToSatoshi;
-    this.satToBtc = 1 / 100000000;
     this.csvHistory();
   }
 
@@ -127,12 +127,12 @@ export class WalletTransactionHistoryPage {
           }
           _amount =
             (it.action == 'sent' ? '-' : '') +
-            (amount * this.satToBtc).toFixed(8);
+            (amount * this.satToUnit).toFixed(8);
           _note = it.message || '';
           _comment = it.note ? it.note.body : '';
 
           if (it.action == 'moved')
-            _note += ' Moved:' + (it.amount * this.satToBtc).toFixed(8);
+            _note += ' Moved:' + (it.amount * this.satToUnit).toFixed(8);
 
           this.csvContent.push({
             Date: this.formatDate(it.time * 1000),
@@ -147,7 +147,7 @@ export class WalletTransactionHistoryPage {
           });
 
           if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-            const _fee = (it.fees * this.satToBtc).toFixed(8);
+            const _fee = (it.fees * this.satToUnit).toFixed(8);
             this.csvContent.push({
               Date: this.formatDate(it.time * 1000),
               Destination: 'Bitcoin Network Fees',

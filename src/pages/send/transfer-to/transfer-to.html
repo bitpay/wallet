@@ -37,6 +37,32 @@
   </ion-list>
 </div>
 
+<div class="card" *ngIf="walletEthList && walletEthList[0]">
+  <ion-item-divider class="title">
+    <span translate>Transfer to Ethereum Wallet</span>
+  </ion-item-divider>
+
+  <ion-list>
+    <button ion-item class="button-item" *ngFor="
+        let wallet of filteredWallets[0] ? filteredWallets : walletEthList
+      " (click)="close(wallet)" [ngClass]="{
+        'wallet-disabled': !wallet.isComplete || wallet.needsBackup
+      }">
+      <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
+      <span class="item-title">{{ wallet.name }}</span>
+      <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
+        {{ 'Incomplete' | translate }}
+      </ion-note>
+      <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
+        {{ 'Needs Backup' | translate }}
+      </ion-note>
+      <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
+        {{ wallet.m }}-{{ wallet.n }}
+      </ion-note>
+    </button>
+  </ion-list>
+</div>
+
 <div class="card" *ngIf="walletBchList && walletBchList[0]">
   <ion-item-divider class="title">
     <span translate>Transfer to Bitcoin Cash Wallet</span>

@@ -287,8 +287,8 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "Portafogli Bitcoin"
 
-msgid "Bitcoin miner fee:"
-msgstr "Commissione per miner bitcoin:"
+msgid "Miner fee:"
+msgstr "Commissione per miner:"
 
 msgid "Bitcoin network fee policy"
 msgstr "Criterio commissioni del network bitcoin"
