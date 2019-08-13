@@ -39,6 +39,7 @@ const Keys = {
   COINBASE_TXS: network => 'coinbaseTxs-' + network,
   CONFIG: 'config',
   FEEDBACK: 'feedback',
+  SURVEY: 'survey',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: (network: Network) => {
     const suffix = network === Network.livenet ? '' : `-${network}`;
@@ -134,6 +135,14 @@ export class PersistenceProvider {
 
   getFeedbackInfo() {
     return this.storage.get(Keys.FEEDBACK);
+  }
+
+  setSurveyFlag() {
+    return this.storage.set(Keys.SURVEY, true);
+  }
+
+  getSurveyFlag() {
+    return this.storage.get(Keys.SURVEY);
   }
 
   storeFocusedWalletId(walletId: string) {

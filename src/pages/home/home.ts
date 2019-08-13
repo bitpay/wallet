@@ -45,6 +45,8 @@ interface UpdateWalletOptsI {
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+  @ViewChild('showSurvey')
+  showSurvey;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -187,6 +189,7 @@ export class HomePage {
 
     // Required delay to improve performance loading
     setTimeout(() => {
+      this.showSurveyCard();
       this.checkFeedbackInfo();
       this.checkEmailLawCompliance();
     }, 2000);
@@ -365,7 +368,15 @@ export class HomePage {
     }
   };
 
+  private async showSurveyCard() {
+    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
+    this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
   private checkFeedbackInfo() {
+    // Hide feeback card if survey card is shown
+    // TODO remove this condition
+    if (this.showSurvey) return;
     this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
         this.initFeedBackInfo();
