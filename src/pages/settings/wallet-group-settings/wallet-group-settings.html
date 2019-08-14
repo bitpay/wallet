@@ -1,6 +1,7 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Wallet Key Settings' | translate}}</ion-title>
+    <ion-title *ngIf="canSign">{{'Wallet Key Settings' | translate}}</ion-title>
+    <ion-title *ngIf="!canSign">{{'Read Only Wallets' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -43,7 +44,7 @@
       </ion-item>
     </div>
 
-    <ion-item-divider>{{'Wallets using this key' | translate}}
+    <ion-item-divider *ngIf="canSign">{{'Wallets using this key' | translate}}
       <button class="reorder-option" ion-button item-end icon-only clear *ngIf="!showReorder && wallets?.length > 1" (click)="reorder()">
         <img src="assets/img/sort.svg">
       </button>
@@ -75,13 +76,13 @@
       </button>
     </ion-list>
 
-    <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="canSign">{{'Advanced' | translate}}</ion-item-divider>
 
     <button *ngIf="!needsBackup && canSign" ion-item (click)="openWalletGroupExtendedPrivateKey()">
       <span translate>Extended Private Key</span>
     </button>
 
-    <button ion-item (click)="openWalletGroupDelete()">
+    <button *ngIf="canSign" ion-item (click)="openWalletGroupDelete()">
       <span translate>Delete</span>
     </button>
   </ion-list>

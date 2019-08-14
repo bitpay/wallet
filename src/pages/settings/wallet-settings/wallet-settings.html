@@ -51,6 +51,9 @@
     <button ion-item (click)="openDuplicateWallet()" *ngIf="showDuplicateWallet">
       <span translate>Duplicate to BCH</span>
     </button>
+    <button *ngIf="!canSign" ion-item (click)="openWalletGroupDelete()">
+      <span translate>Delete</span>
+    </button>
     <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>

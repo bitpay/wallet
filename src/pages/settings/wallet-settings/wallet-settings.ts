@@ -13,6 +13,7 @@ import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
+import { WalletDeletePage } from './wallet-delete/wallet-delete';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDuplicatePage } from './wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
@@ -231,5 +232,12 @@ export class WalletSettingsPage {
     if (!walletId) return;
     this.profileProvider.toggleHideWalletFlag(walletId);
     this.events.publish('Local/WalletListChange');
+  }
+
+  public openWalletGroupDelete(): void {
+    this.navCtrl.push(WalletDeletePage, {
+      keyId: this.wallet.keyId,
+      walletId: this.wallet.id
+    });
   }
 }

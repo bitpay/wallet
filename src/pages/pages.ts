@@ -85,6 +85,7 @@ import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-grou
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
+import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-delete/wallet-delete';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 import { WalletMnemonicRecoverPage } from './settings/advanced/wallet-recover-page/wallet-mnemonic-recover-page/wallet-mnemonic-recover-page';
@@ -187,6 +188,7 @@ export const PAGES = [
   TxDetailsPage,
   TxpPage,
   WalletSettingsPage,
+  WalletDeletePage,
   WalletNamePage,
   WalletInformationPage,
   WalletAddressesPage,
