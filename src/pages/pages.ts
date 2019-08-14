@@ -52,6 +52,7 @@ import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card'
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
+import { SurveyCardPage } from './includes/survey-card/survey-card';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -181,6 +182,7 @@ export const PAGES = [
   SearchTxModalPage,
   SessionLogPage,
   SendFeedbackPage,
+  SurveyCardPage,
   FinishModalPage,
   TabsPage,
   TxpDetailsPage,

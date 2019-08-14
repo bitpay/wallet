@@ -1,0 +1,12 @@
+<action-card *ngIf="showSurveyCard">
+  <div action-card-header item-end class="icon-right">
+    <button ion-button clear icon-only item-end color="grey" (click)="hideCard()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </div>
+  <div action-card-title>Got a minute?</div>
+  <div action-card-body>Anonymously take a brief 2 minute survey in order to help us improve the experience.</div>
+  <div action-card-button (click)="openSurveyInBrowser()" tappable>
+    <span class="survey-button">Take Survey</span>
+  </div>
+</action-card>
