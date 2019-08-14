@@ -173,7 +173,7 @@ export class BackupGamePage {
       keyId: this.keyId,
       showHidden: true
     };
-    const wallets = this.profileProvider.getWallets(opts);
+    const wallets = this.profileProvider.getWalletsFromGroup(opts);
     wallets.forEach(w => {
       this.profileProvider.setWalletBackup(w.credentials.walletId);
     });
