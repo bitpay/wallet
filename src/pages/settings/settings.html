@@ -115,7 +115,8 @@
           <img src="assets/img/wallet-group.svg" width="24" />
         </ion-icon>
         <ion-label>
-          <div>{{walletsGroup[0].name}}</div>
+          <div *ngIf="walletsGroup[0].canSign">{{walletsGroup[0].name}}</div>
+          <div *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
           <div class="subtitle ellipsis" *ngIf="walletsGroup.length > 1">
             <span *ngFor="let wallet of walletsGroup; let i = index">
               {{wallet.name}}
