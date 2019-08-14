@@ -246,23 +246,6 @@ export class BitPayCardPage {
     );
   }
 
-  public viewOnBlockchain(transactionId: string) {
-    let url = 'https://insight.bitpay.com/tx/' + transactionId;
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
-  }
-
   public topUp(): void {
     this.navCtrl.push(AmountPage, {
       id: this.cardId,
