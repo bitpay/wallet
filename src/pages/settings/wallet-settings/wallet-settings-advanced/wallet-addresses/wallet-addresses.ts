@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -48,7 +53,8 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -165,8 +171,12 @@ export class WalletAddressesPage {
     modal.present();
   }
 
-  public async scan(): Promise<void> {
+  public scan() {
     this.walletProvider.startScan(this.wallet);
-    return this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(() => {
+      setTimeout(() => {
+        this.events.publish('OpenWallet', this.wallet);
+      }, 1000);
+    });
   }
 }

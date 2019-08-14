@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 
@@ -42,7 +42,8 @@ export class WalletTransactionHistoryPage {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private events: Events
   ) {
     this.csvReady = false;
     this.csvContent = [];
@@ -192,10 +193,14 @@ export class WalletTransactionHistoryPage {
     document.body.removeChild(a);
   }
 
-  public async clearTransactionHistory(): Promise<void> {
+  public clearTransactionHistory() {
     this.logger.info('Removing Transaction history ' + this.wallet.id);
     this.walletProvider.clearTxHistory(this.wallet);
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
-    return this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(() => {
+      setTimeout(() => {
+        this.events.publish('OpenWallet', this.wallet);
+      }, 1000);
+    });
   }
 }
