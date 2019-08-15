@@ -72,6 +72,7 @@ export class HomePage {
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
   public isBlur: boolean;
+  public isCordova: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -104,6 +105,7 @@ export class HomePage {
   ) {
     this.slideDown = false;
     this.isBlur = false;
+    this.isCordova = this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
     // Update Wallet on Focus
     if (this.isElectron) {

@@ -5,6 +5,13 @@ page-home {
       background: $feather;
     }
 
+    &.content-md {
+      .margin-helper {
+        width: 100%;
+        padding-bottom: 7.5rem;
+      }
+    }
+
     .scroll-content {
       padding-bottom: 100px;
     }
