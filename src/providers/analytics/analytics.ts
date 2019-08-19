@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FCMNG } from 'fcm-ng';
+import { Firebase } from '@ionic-native/firebase';
 
 @Injectable()
 export class AnalyticsProvider {
-  constructor(private FCMPlugin: FCMNG) {}
+  constructor(private FCMPlugin: Firebase) {}
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
     this.FCMPlugin.logEvent(eventName, eventParams);
   }

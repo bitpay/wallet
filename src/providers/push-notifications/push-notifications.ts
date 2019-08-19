@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FCMNG } from 'fcm-ng';
+import { Firebase } from '@ionic-native/firebase';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
@@ -29,7 +29,7 @@ export class PushNotificationsProvider {
     public logger: Logger,
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
-    private FCMPlugin: FCMNG,
+    private FCMPlugin: Firebase,
     private events: Events
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
@@ -63,7 +63,7 @@ export class PushNotificationsProvider {
 
   public handlePushNotifications(): void {
     if (this.usePushNotifications) {
-      this.FCMPlugin.onNotification().subscribe(async data => {
+      this.FCMPlugin.onNotificationOpen().subscribe(async data => {
         if (!this._token) return;
         this.logger.debug(
           'New Event Push onNotification: ' + JSON.stringify(data)
