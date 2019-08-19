@@ -93,7 +93,7 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-firebase" spec="2.0.5" />
+    <plugin name="cordova-plugin-firebase-ng" spec="3.0.0" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 

@@ -136,7 +136,7 @@
     "cordova-plugin-customurlscheme-ng": "6.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.1",
-    "cordova-plugin-firebase": "2.0.5",
+    "cordova-plugin-firebase-ng": "3.0.0",
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-globalization": "1.0.9",
     "cordova-plugin-inappbrowser": "2.0.2",
@@ -240,7 +240,7 @@
         "ANDROID_HOST": "",
         "ANDROID_PATHPREFIX": ""
       },
-      "cordova-plugin-firebase": {},
+      "cordova-plugin-firebase-ng": {},
       "cordova-plugin-globalization": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-screen-orientation": {},
