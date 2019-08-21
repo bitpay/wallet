@@ -9,13 +9,11 @@ export interface StatusMock {
     lockedConfirmedAmount: number;
     availableAmount: number;
     availableConfirmedAmount: number;
-    byAddress: [
-      {
-        address: string;
-        path: string;
-        amount: number;
-      }
-    ];
+    byAddress: Array<{
+      address: string;
+      path: string;
+      amount: number;
+    }>;
   };
   isValid: boolean;
   pendingTxps: PendingTxpMock[];

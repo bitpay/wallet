@@ -109,7 +109,7 @@ export class SettingsPage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.integrationServices = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return;
+        if (x.name == 'debitcard' && x.linked) return false;
         else return x;
       });
     }, 200);

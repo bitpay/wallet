@@ -62,7 +62,7 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 export class ConfirmCardPurchasePage extends ConfirmPage {
   public currency: string;
   private message: string;
-  private invoiceId: string;
+  public invoiceId: string;
   private configWallet;
   public currencyIsoCode: string;
 
