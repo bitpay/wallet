@@ -161,7 +161,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isCordova && this.cardName) {
+    if (this.platformProvider.isCordova && (this.cardName || this._id || this.toWalletId)) {
       this.statusBar.styleBlackOpaque();
     }
     this.disableHardwareKeyboard = false;
@@ -175,7 +175,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    if (this.platformProvider.isCordova && this.cardName) {
+    if (this.platformProvider.isCordova && (this.cardName || this._id || this.toWalletId)) {
       this.statusBar.styleDefault();
     }
     this._disableHardwareKeyboard();
