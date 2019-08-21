@@ -212,6 +212,8 @@
     </div>
   </div>
 
+  <div *ngIf="isCordova && wallets && wallets[0]" class="margin-helper"></div>
+
   <button *ngIf="wallets && wallets[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
     <ion-avatar item-start> <img src="assets/img/scan.svg" /> </ion-avatar>
     <div translate>Scan</div>
