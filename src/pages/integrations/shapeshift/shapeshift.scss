@@ -1,9 +1,13 @@
 page-shapeshift {
   ion-title .toolbar-title {
     color: white;
+    img {
+      padding-top: 5px;
+    }
   }
   .wide-header__title.toolbar {
     padding-bottom: 10px;
+    padding-top: 15px;
   }
   .wide-header__title {
     color: white;
@@ -31,7 +35,7 @@ page-shapeshift {
     }
   }
   .shift-problems {
-    padding: 10px;
+    padding: 20px;
     text-align: center;
     white-space: normal;
     font-size: 12.5px;

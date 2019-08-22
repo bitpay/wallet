@@ -698,7 +698,7 @@ export class ShapeshiftConfirmPage {
   }
 
   private paymentTimeControl(expires: string): void {
-    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
+    const expirationTime = Math.floor(new Date(expires).getTime());
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);
 
