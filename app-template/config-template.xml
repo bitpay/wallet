@@ -45,8 +45,8 @@
 
     <preference name="UseSwiftLanguageVersion" value="5" />
 
-    <!-- Android Version: Oreo 8.1 (API Level 27) or higher -->
-    <preference name="android-minSdkVersion" value="27" />
+    <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
+    <preference name="android-minSdkVersion" value="23" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
