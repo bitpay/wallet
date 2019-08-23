@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-08-08 14:41\n"
+"PO-Revision-Date: 2019-08-23 12:59\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -193,6 +193,9 @@ msgstr "Tem certeza que deseja excluir todas as carteiras que utilizam esta chav
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "Tem certeza que deseja excluir este contato?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr ""
 
 msgid "Are you sure you want to reject this transaction?"
 msgstr "Tem certeza que deseja cancelar esta transação?"
@@ -589,6 +592,9 @@ msgstr "Eliminar"
 
 msgid "Delete Payment Proposal"
 msgstr "Excluir Proposta de Pagamento"
+
+msgid "Delete Wallet"
+msgstr ""
 
 msgid "Delete it and create a new one"
 msgstr "Apagar e criar um novo"
@@ -1052,9 +1058,6 @@ msgstr "Endereço de rede incorreto"
 msgid "Information"
 msgstr "Informação"
 
-msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
-msgstr "Inspirado por carteiras físicas, a página inicial agora é limpa e mais espaçosa, tal que todos os detalhes importantes são acessíveis e resumidos em uma olhada."
-
 msgid "Insufficient funds"
 msgstr "Fundos insuficientes"
 
@@ -1255,9 +1258,6 @@ msgstr "Erro de rede"
 
 msgid "New copayer"
 msgstr "Novo copayer"
-
-msgid "New look and feel"
-msgstr "Novo visual"
 
 msgid "New payment proposal"
 msgstr "Nova proposta de pagamento"
@@ -1487,6 +1487,9 @@ msgstr "Proposta pendente"
 msgid "Permanently delete all wallets using this key."
 msgstr "Excluir permanentemente todas as carteiras usando esta chave."
 
+msgid "Permanently delete this wallet."
+msgstr ""
+
 msgid "Personal Wallet"
 msgstr "Carteira Pessoal"
 
@@ -1594,6 +1597,9 @@ msgstr "Taxa"
 
 msgid "Rate on the {storeName}"
 msgstr "Avaliar em {storeName}"
+
+msgid "Read Only Wallet"
+msgstr ""
 
 msgid "Read Only Wallets"
 msgstr "Carteiras Somente Leitura"
@@ -1973,9 +1979,6 @@ msgstr "Varrer a carteira de papel"
 msgid "Sweeping Wallet..."
 msgstr "Carteira de varredura..."
 
-msgid "Swipe to Send/Receive"
-msgstr "Deslize para Enviar/Receber"
-
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA AÇÃO NÃO PODE SER REVERTIDA"
 
@@ -2067,7 +2070,7 @@ msgid "The transaction history and every new incoming transaction are cached in 
 msgstr "O histórico de transações e todas as novas transações recebidas são armazenados em cache no app. Este recurso limpa o cache e sincroniza novamente a partir do servidor"
 
 msgid "The wallet is already in the app"
-msgstr ""
+msgstr "A carteira já está no app"
 
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
 msgstr "A carteira não será removida deste dispositivo. Você pode oculta-la sempre que precisar."
@@ -2091,7 +2094,7 @@ msgid "This bitcoin payment request has expired."
 msgstr "Este bitcoin pagamento pedido expirou."
 
 msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
-msgstr ""
+msgstr "Este recurso duplica uma carteira Bitcoin no Bitcoin Cash, permitindo o acesso a moedas pré-fork. Isso só deve ser usado se houver fundos não especificados antes do dia de fork do Bitcoin Cash na carteira. A carteira resultante usará o mesmo caminho de derivação que a carteira BTC original."
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "Este campo é apenas para usuários que, em versões anteriores (não é mais suportado), definiram uma senha para proteger sua frase de recuperação. Este campo não é para sua senha de criptografia."
@@ -2441,9 +2444,6 @@ msgstr "Estamos sempre escutando maneiras de melhorar sua experiência. Há algu
 msgid "Website"
 msgstr "Website"
 
-msgid "What changed?"
-msgstr "O que mudou?"
-
 msgid "What do you call this wallet?"
 msgstr "Como você chama essa carteira?"
 
@@ -2509,9 +2509,6 @@ msgstr "Você pode continuar a ver os seus cartões arquivados aqui, se você pr
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Você pode fazer contribuições inscrevendo-se no nosso site da comunidade de tradução Crowdin. Estamos ansiosos para ouvir de você!"
-
-msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
-msgstr "Agora você pode enviar ou receber um pagamento diretamente da página inicial deslizando sua carteira para a esquerda ou direita."
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Você pode escanear endereços bitcoins, pedidos de pagamento carteiras de papel e muito mais."
@@ -2601,7 +2598,7 @@ msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresse
 msgstr "{{appName}} apenas suporta Bitcoin Cash utilizando a nova versão de endereços."
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
-msgstr ""
+msgstr "{{countInArray}} das suas carteiras já existem em {{nameCase}}"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} será deduzido para taxas de rede bitcoin."

@@ -244,6 +244,10 @@ msgstr "Are you sure you want to delete all wallets using this key?"
 msgid "Are you sure you want to delete this contact?"
 msgstr "Are you sure you want to delete this contact?"
 
+#| msgid "Are you sure you want to delete this contact?"
+msgid "Are you sure you want to delete this wallet?"
+msgstr "Are you sure you want to delete this wallet?"
+
 msgid "Are you sure you want to reject this transaction?"
 msgstr "Are you sure you want to reject this transaction?"
 
@@ -683,6 +687,9 @@ msgstr "Delete"
 
 msgid "Delete Payment Proposal"
 msgstr "Delete Payment Proposal"
+
+msgid "Delete Wallet"
+msgstr "Delete Wallet"
 
 msgid "Delete it and create a new one"
 msgstr "Delete it and create a new one"
@@ -1226,15 +1233,6 @@ msgstr "Incorrect network address"
 msgid "Information"
 msgstr "Information"
 
-msgid ""
-"Inspired by physical wallets, the home view is now clean and more spacious "
-"such that all the important details are accessible and summarized in a "
-"glance."
-msgstr ""
-"Inspired by physical wallets, the home view is now clean and more spacious "
-"such that all the important details are accessible and summarized in a "
-"glance."
-
 msgid "Insufficient funds"
 msgstr "Insufficient funds"
 
@@ -1455,9 +1453,6 @@ msgstr "Network error"
 
 msgid "New copayer"
 msgstr "New copayer"
-
-msgid "New look and feel"
-msgstr "New look and feel"
 
 msgid "New payment proposal"
 msgstr "New payment proposal"
@@ -1700,6 +1695,10 @@ msgstr "Pending Proposals"
 msgid "Permanently delete all wallets using this key."
 msgstr "Permanently delete all wallets using this key."
 
+#| msgid "Permanently delete all wallets using this key."
+msgid "Permanently delete this wallet."
+msgstr "Permanently delete this wallet."
+
 msgid "Personal Wallet"
 msgstr "Personal Wallet"
 
@@ -1811,6 +1810,10 @@ msgstr "Rate"
 
 msgid "Rate on the {storeName}"
 msgstr "Rate on the {storeName}"
+
+#| msgid "Read Only Wallets"
+msgid "Read Only Wallet"
+msgstr "Read Only Wallet"
 
 msgid "Read Only Wallets"
 msgstr "Read Only Wallets"
@@ -2196,9 +2199,6 @@ msgstr "Sweep paper wallet"
 msgid "Sweeping Wallet..."
 msgstr "Sweeping Wallet..."
 
-msgid "Swipe to Send/Receive"
-msgstr "Swipe to Send/Receive"
-
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "THIS ACTION CANNOT BE REVERSED"
 
@@ -2359,7 +2359,6 @@ msgstr ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. This feature clean this up and synchronizes again from the server"
 
-#| msgid "Wallet already in {{nameCase}}"
 msgid "The wallet is already in the app"
 msgstr "The wallet is already in the app"
 
@@ -2836,9 +2835,6 @@ msgstr ""
 msgid "Website"
 msgstr "Website"
 
-msgid "What changed?"
-msgstr "What changed?"
-
 msgid "What do you call this wallet?"
 msgstr "What do you call this wallet?"
 
@@ -2930,13 +2926,6 @@ msgid ""
 msgstr ""
 "You can make contributions by signing up on our Crowdin community "
 "translation website. We’re looking forward to hearing from you!"
-
-msgid ""
-"You can now send or receive a payment directly from the home view by sliding "
-"your wallet to the left or right."
-msgstr ""
-"You can now send or receive a payment directly from the home view by sliding "
-"your wallet to the left or right."
 
 msgid ""
 "You can scan bitcoin addresses, payment requests, paper wallets, and more."
@@ -3091,7 +3080,6 @@ msgid ""
 msgstr ""
 "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 
-#| msgid "Wallet already in {{nameCase}}"
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} of your wallets already exist in {{nameCase}}"
 
@@ -3109,6 +3097,31 @@ msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid ""
+#~ "Inspired by physical wallets, the home view is now clean and more "
+#~ "spacious such that all the important details are accessible and "
+#~ "summarized in a glance."
+#~ msgstr ""
+#~ "Inspired by physical wallets, the home view is now clean and more "
+#~ "spacious such that all the important details are accessible and "
+#~ "summarized in a glance."
+
+#~ msgid "New look and feel"
+#~ msgstr "New look and feel"
+
+#~ msgid "Swipe to Send/Receive"
+#~ msgstr "Swipe to Send/Receive"
+
+#~ msgid "What changed?"
+#~ msgstr "What changed?"
+
+#~ msgid ""
+#~ "You can now send or receive a payment directly from the home view by "
+#~ "sliding your wallet to the left or right."
+#~ msgstr ""
+#~ "You can now send or receive a payment directly from the home view by "
+#~ "sliding your wallet to the left or right."
 
 #~ msgid "Duplicate"
 #~ msgstr "Duplicate"
@@ -3157,9 +3170,6 @@ msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
 #~ msgid "Could not import"
 #~ msgstr "Could not import"
-
-#~ msgid "Delete Wallet"
-#~ msgstr "Delete Wallet"
 
 #~ msgid "Derivation Strategy"
 #~ msgstr "Derivation Strategy"
