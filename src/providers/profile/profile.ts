@@ -212,6 +212,10 @@ export class ProfileProvider {
       return Promise.resolve(false);
     }
 
+    // Workaround to avoid wrong order relatad to async functions
+    if (keyId) this.walletsGroups[keyId] = {};
+    this.wallet[walletId] = {};
+
     // INIT WALLET VIEWMODEL
     wallet.id = walletId;
     wallet.started = true;
