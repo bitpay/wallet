@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2019-08-08 14:40\n"
+"PO-Revision-Date: 2019-08-23 12:58\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -193,6 +193,9 @@ msgstr "Voulez-vous vraiment supprimer tous les portefeuilles utilisant cette cl
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "Souhaitez-vous réellement supprimer ce contact ?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr ""
 
 msgid "Are you sure you want to reject this transaction?"
 msgstr "Êtes-vous certain(e) de vouloir rejeter cette transaction ?"
@@ -589,6 +592,9 @@ msgstr "Supprimer"
 
 msgid "Delete Payment Proposal"
 msgstr "Supprimer la proposition de paiement"
+
+msgid "Delete Wallet"
+msgstr ""
 
 msgid "Delete it and create a new one"
 msgstr "Le supprimer et en créer un nouveau"
@@ -1052,9 +1058,6 @@ msgstr "Adresse réseau invalide"
 msgid "Information"
 msgstr "Information"
 
-msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
-msgstr "Inspirée par les portefeuilles physiques, la vue d'accueil est maintenant épurée et plus spacieuse, de sorte que tous les détails importants sont accessibles et résumés d'un simple coup d'œil."
-
 msgid "Insufficient funds"
 msgstr "Fonds insuffisants"
 
@@ -1255,9 +1258,6 @@ msgstr "Erreur réseau"
 
 msgid "New copayer"
 msgstr "Nouveau Copayer"
-
-msgid "New look and feel"
-msgstr "Nouveau design"
 
 msgid "New payment proposal"
 msgstr "Nouvelle proposition de paiement"
@@ -1487,6 +1487,9 @@ msgstr "Propositions en attente"
 msgid "Permanently delete all wallets using this key."
 msgstr "Supprimer définitivement tous les portefeuilles utilisant cette clé."
 
+msgid "Permanently delete this wallet."
+msgstr ""
+
 msgid "Personal Wallet"
 msgstr "Portefeuille personnel"
 
@@ -1595,8 +1598,11 @@ msgstr "Noter"
 msgid "Rate on the {storeName}"
 msgstr "Évaluer sur le {storeName}"
 
-msgid "Read Only Wallets"
+msgid "Read Only Wallet"
 msgstr ""
+
+msgid "Read Only Wallets"
+msgstr "Portefeuilles en lecture seule"
 
 msgid "Read Only wallets don't include the private key."
 msgstr ""
@@ -1608,7 +1614,7 @@ msgid "Read more in our support page"
 msgstr "En savoir plus sur notre page d'assistance"
 
 msgid "Read only wallet"
-msgstr ""
+msgstr "Portefeuille en lecture seule"
 
 msgid "Receipt Email"
 msgstr "E-mail de reçu"
@@ -1973,9 +1979,6 @@ msgstr "Balayer un portefeuille de papier"
 msgid "Sweeping Wallet..."
 msgstr "Balayage du portefeuille..."
 
-msgid "Swipe to Send/Receive"
-msgstr "Faites glisser pour envoyer et recevoir"
-
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
 
@@ -2067,10 +2070,10 @@ msgid "The transaction history and every new incoming transaction are cached in 
 msgstr "L’historique des transactions et chaque nouvelle transaction entrante sont mis en cache dans l’application. Cette fonctionnalité efface cela et synchronise à nouveau à partir du serveur"
 
 msgid "The wallet is already in the app"
-msgstr ""
+msgstr "Le portefeuille est déjà dans l'application"
 
 msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
-msgstr ""
+msgstr "Le portefeuille ne sera pas supprimé de cet appareil. Vous pouvez le cacher quand vous en avez besoin."
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr "Le portefeuille que vous utilisez ne correspond pas au réseau et/ou à la monnaie de l’adresse fournie"
@@ -2091,7 +2094,7 @@ msgid "This bitcoin payment request has expired."
 msgstr "Cette demande de paiement bitcoin a expiré."
 
 msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
-msgstr ""
+msgstr "Cette fonctionnalité duplique un portefeuille Bitcoin sur la chaîne Bitcoin Cash, permettant l'accès aux pièces pré-fork. Cela ne devrait être utilisé que s'il y a des fonds non réclamés avant le jour du fork Bitcoin Cash sur le portefeuille. Le portefeuille qui en résulte utilisera le même chemin de dérivation que le portefeuille BTC original."
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "Ce champ est réservé aux utilisateurs qui, dans les versions précédentes (cela n'est plus supporté), avaient défini un mot de passe pour protéger leur phrase de récupération. Ce champ n’est pas pour votre code de chiffrement."
@@ -2441,9 +2444,6 @@ msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience.
 msgid "Website"
 msgstr "Site internet"
 
-msgid "What changed?"
-msgstr "Qu'est-ce qui a changé ?"
-
 msgid "What do you call this wallet?"
 msgstr "Comment voulez-vous appeler ce portefeuille ?"
 
@@ -2509,9 +2509,6 @@ msgstr "Vous pouvez continuer d’afficher ici vos cartes archivées si vous ave
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Vous pouvez apporter des contributions en vous inscrivant sur notre site internet de traduction communautaire Crowdin. Nous sommes impatients de vous y voir !"
-
-msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
-msgstr "Vous pouvez maintenant envoyer ou recevoir un paiement directement depuis la vue d'accueil en glissant votre portefeuille à gauche ou à droite."
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Vous pouvez numériser des adresses bitcoin, des demandes de paiement, des portefeuilles de papier et plus."
@@ -2601,7 +2598,7 @@ msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresse
 msgstr "{{appName}} prend uniquement en charge le nouveau type d'adresse de Bitcoin Cash."
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
-msgstr ""
+msgstr "{{countInArray}} de vos portefeuilles existent déjà dans {{nameCase}}"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} seront déduits pour les frais de réseau Bitcoin."

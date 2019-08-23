@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-08-08 14:54\n"
+"PO-Revision-Date: 2019-08-23 13:21\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -193,6 +193,9 @@ msgstr "¿Está seguro que quiere eliminar todas las billeteras que utilizan est
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "¿Está seguro de que desea eliminar este contacto?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr "¿Está seguro de que quiere eliminar esta billetera?"
 
 msgid "Are you sure you want to reject this transaction?"
 msgstr "¿Estás seguro de rechazar esta transacción?"
@@ -589,6 +592,9 @@ msgstr "Eliminar"
 
 msgid "Delete Payment Proposal"
 msgstr "Eliminar propuesta de pago"
+
+msgid "Delete Wallet"
+msgstr "Eliminar Billetera"
 
 msgid "Delete it and create a new one"
 msgstr "Borrar y crear uno nuevo"
@@ -1052,9 +1058,6 @@ msgstr "Dirección de red incorrecta"
 msgid "Information"
 msgstr "Información"
 
-msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
-msgstr "Inspirada por billeteras físicas, la vista Home es ahora limpia y más espaciosa, de tal manera que todos los detalles importantes son accesibles y resumidos en un vistazo."
-
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
 
@@ -1255,9 +1258,6 @@ msgstr "Error de red"
 
 msgid "New copayer"
 msgstr "Nuevo copayer"
-
-msgid "New look and feel"
-msgstr "Nuevo aspecto"
 
 msgid "New payment proposal"
 msgstr "Nueva propuesta de pago"
@@ -1487,6 +1487,9 @@ msgstr "Propuestas de pago pendientes"
 msgid "Permanently delete all wallets using this key."
 msgstr "Borra permanentemente todas las billeteras que utilizan esta llave."
 
+msgid "Permanently delete this wallet."
+msgstr "Eliminar esta billetera de forma permanente."
+
 msgid "Personal Wallet"
 msgstr "Billetera Personal"
 
@@ -1594,6 +1597,9 @@ msgstr "Calificación"
 
 msgid "Rate on the {storeName}"
 msgstr "Calificar en {storeName}"
+
+msgid "Read Only Wallet"
+msgstr "Billetera de Solo Lectura"
 
 msgid "Read Only Wallets"
 msgstr "Billeteras de solo lectura"
@@ -1972,9 +1978,6 @@ msgstr "Importar billetera en papel"
 
 msgid "Sweeping Wallet..."
 msgstr "Leyendo la Billetera..."
-
-msgid "Swipe to Send/Receive"
-msgstr "Desliza para enviar/recibir"
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA ACCIÓN NO SE PUEDE REVERTIR"
@@ -2442,9 +2445,6 @@ msgstr "Siempre estamos abiertos a escuchar propuestas para mejorar su experienc
 msgid "Website"
 msgstr "Sitio Web"
 
-msgid "What changed?"
-msgstr "¿Qué cambió?"
-
 msgid "What do you call this wallet?"
 msgstr "¿Como desea llamar a esta billetera?"
 
@@ -2510,9 +2510,6 @@ msgstr "Usted puede seguir viendo sus tarjetas archivadas aquí si lo necesita."
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias suyas!"
-
-msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
-msgstr "Ahora puede enviar o recibir un pago directamente desde la vista Home deslizando su billetera a la izquierda o a la derecha."
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Puedes escanear direcciones bitcoin, solicitudes de pago, billeteras de papel y más."
