@@ -27,7 +27,7 @@
 <button ion-item detail-none class="clipboard"
   *ngIf="validDataFromClipboard.type !== 'PayPro' && validDataFromClipboard.type !== 'InvoiceUri'">
   <img
-    *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress'"
+    *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress' || validDataFromClipboard.type === 'EthereumAddress'"
     src="assets/img/icon-bitcoin-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
 </button>

@@ -141,9 +141,10 @@ export class HomePage {
     this.checkClipboard();
 
     // Show integrations
-    const integrations = _.filter(this.homeIntegrationsProvider.get(), {
-      show: true as any
-    }).filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+    const integrations = this.homeIntegrationsProvider
+      .get()
+      .filter(i => i.show)
+      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
@@ -156,7 +157,7 @@ export class HomePage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.homeIntegrations = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return;
+        if (x.name == 'debitcard' && x.linked) return false;
         else return x;
       });
     }, 200);
@@ -437,6 +438,7 @@ export class HomePage {
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
+          'EthereumAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {

@@ -13,6 +13,12 @@
         </ion-icon>
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
+      <button *ngIf="!navParam.data.isShared" class="list-button" ion-item (click)="goToCreateWallet('eth')">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/eth.svg" />
+        </ion-icon>
+        <div class="item-title">Ethereum (ETH)</div>
+      </button>
     </ion-list>
   </div>
 </wide-header-page>

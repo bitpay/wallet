@@ -55,7 +55,11 @@ describe('TxFormatProvider', () => {
       };
       configProvider.set(newOpts);
 
-      let formattedAmount = txFormatProvider.formatAmount(12312312, true);
+      let formattedAmount = txFormatProvider.formatAmount(
+        'bit',
+        12312312,
+        true
+      );
       expect(formattedAmount).toEqual('123,123.12');
     });
 
@@ -67,7 +71,10 @@ describe('TxFormatProvider', () => {
       };
       configProvider.set(newOpts);
 
-      let formattedAmount: number = txFormatProvider.formatAmount(12312312);
+      let formattedAmount: number = txFormatProvider.formatAmount(
+        'sat',
+        12312312
+      );
       expect(formattedAmount).toEqual(12312312);
     });
   });
@@ -161,14 +168,14 @@ describe('TxFormatProvider', () => {
 
     it('should return null', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue(undefined);
-      spyOn(rateProvider, 'isBtcAvailable').and.returnValue(true);
+      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
       let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
       expect(result).toBeNull();
     });
 
     it('should return a string with formatted amount in alternative Iso Code setted in wallet', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      spyOn(rateProvider, 'isBtcAvailable').and.returnValue(true);
+      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
       let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
       expect(result).toEqual('1,000,000 ARS');
     });
