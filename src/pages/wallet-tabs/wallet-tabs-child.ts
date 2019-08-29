@@ -8,6 +8,7 @@ import { WalletTabsProvider } from './wallet-tabs.provider';
 export class WalletTabsChild {
   wallets;
   wallet;
+  token?;
 
   constructor(
     public navCtrl: NavController,
@@ -18,6 +19,7 @@ export class WalletTabsChild {
   ngOnInit() {
     this.wallets = this.profileProvider.getWallets();
     this.wallet = this.getParentWallet();
+    this.token = this.getToken();
   }
 
   public close(): Promise<any> {
@@ -31,8 +33,14 @@ export class WalletTabsChild {
 
   public getParentWallet() {
     const tabs = this.getParentTabs();
-    const walletId = tabs && tabs.instance && tabs.instance.walletId;
-    return this.profileProvider.getWallet(walletId);
+    const wallet = tabs && tabs.instance && tabs.instance.wallet;
+    return wallet;
+  }
+
+  private getToken() {
+    const tabs = this.getParentTabs();
+    const token = tabs && tabs.instance && tabs.instance.token;
+    return token;
   }
 
   public isWithinWalletTabs(): boolean {

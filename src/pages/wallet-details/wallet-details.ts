@@ -69,21 +69,21 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   constructor(
     navCtrl: NavController,
-    private navParams: NavParams,
+    public navParams: NavParams,
     profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
-    private addressbookProvider: AddressBookProvider,
-    private events: Events,
+    public walletProvider: WalletProvider,
+    public addressbookProvider: AddressBookProvider,
+    public events: Events,
     public giftCardProvider: GiftCardProvider,
-    private logger: Logger,
-    private timeProvider: TimeProvider,
-    private translate: TranslateService,
-    private modalCtrl: ModalController,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private externalLinkProvider: ExternalLinkProvider,
+    public logger: Logger,
+    public timeProvider: TimeProvider,
+    public translate: TranslateService,
+    public modalCtrl: ModalController,
+    public onGoingProcessProvider: OnGoingProcessProvider,
+    public externalLinkProvider: ExternalLinkProvider,
     walletTabsProvider: WalletTabsProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform
+    public actionSheetProvider: ActionSheetProvider,
+    public platform: Platform
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -131,7 +131,8 @@ export class WalletDetailsPage extends WalletTabsChild {
   ionViewDidEnter() {
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
-      walletId: this.wallet.credentials.walletId
+      walletId: this.wallet.credentials.walletId,
+      tokenAddress: this.token ? this.token.address : ''
     });
   }
 

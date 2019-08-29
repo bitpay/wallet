@@ -290,8 +290,8 @@ msgstr "URI de Bitcoin"
 msgid "Bitcoin Wallets"
 msgstr "Billeteras Bitcoin"
 
-msgid "Bitcoin miner fee:"
-msgstr "Comisión de minero bitcoin:"
+msgid "Miner fee:"
+msgstr "Comisión de minero:"
 
 msgid "Bitcoin network fee policy"
 msgstr "Política de comisión de la red bitcoin"

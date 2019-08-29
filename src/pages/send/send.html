@@ -38,11 +38,11 @@
   </div>
 
   <div *ngIf="!shouldShowZeroState()">
-    <div *ngIf="hasBtcWallets || hasBchWallets">
+    <div *ngIf="hasBtcWallets || hasBchWallets || hasEthWallets">
       <div class="send-header-wrapper">
         <span class="send-heading" translate>Recipient</span>
         <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-          <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-input placeholder="{{'Search or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
           <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
           <ion-icon item-end class="scan-icon" (click)="openScanner()">
             <img src="assets/img/scan-ico.svg">
@@ -50,7 +50,7 @@
         </ion-item>
       </div>
 
-      <div class="card">
+      <div *ngIf="wallet.coin === 'btc' || wallet.coin === 'bch'" class="card">
         <ion-item-divider class="title">
           <span translate>Transfer to Multiple Recipients</span>
         </ion-item-divider>
@@ -67,8 +67,8 @@
       <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" #transferTo></page-transfer-to>
 
     </div>
-    <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
-      <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
+    <div *ngIf="!hasBtcWallets && !hasBchWallets && !hasEthWallets" class="no-wallet-message">
+      <span translate>To get started, you'll need to create a wallet and get some funds.</span>
     </div>
   </div>
 </ion-content>

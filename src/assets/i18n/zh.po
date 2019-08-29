@@ -290,7 +290,7 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "比特币钱包"
 
-msgid "Bitcoin miner fee:"
+msgid "Miner fee:"
 msgstr "比特币矿工费："
 
 msgid "Bitcoin network fee policy"

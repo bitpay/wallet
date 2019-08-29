@@ -19,6 +19,7 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
+  token?: string;
   fromHomeCard?: boolean;
 }
 
@@ -117,6 +118,12 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
     );
+  }
+
+  private isValidEthereumAddress(data: string): boolean {
+    return !!this.bwcProvider
+      .getCore()
+      .Validation.validateAddress('ETH', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -321,6 +328,25 @@ export class IncomingDataProvider {
     }
   }
 
+  private handlePlainEthereumAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Ethereum plain address');
+    const coin = Coin.ETH;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'ethereumAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
@@ -465,6 +491,11 @@ export class IncomingDataProvider {
       this.handlePlainBitcoinCashAddress(data, redirParams);
       return true;
 
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      this.handlePlainEthereumAddress(data, redirParams);
+      return true;
+
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       this.goToCoinbase(data);
@@ -572,6 +603,14 @@ export class IncomingDataProvider {
         data,
         type: 'BitcoinCashAddress',
         title: this.translate.instant('Bitcoin Cash Address')
+      };
+
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      return {
+        data,
+        type: 'EthereumAddress',
+        title: this.translate.instant('Ethereum Address')
       };
 
       // Coinbase

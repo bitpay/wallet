@@ -43,6 +43,8 @@ export class WalletTabsPage {
   selectedTabIndex: number = 1;
 
   walletId: string;
+  wallet;
+  token?;
 
   constructor(
     private navParams: NavParams,
@@ -58,6 +60,8 @@ export class WalletTabsPage {
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
+    this.wallet = this.navParams.get('wallet');
+    this.token = this.navParams.get('token');
   }
 
   ionViewWillEnter() {

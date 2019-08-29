@@ -18,6 +18,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -36,6 +37,7 @@ interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
   alsoUpdateHistory?: boolean;
+  tokenAddress?: string;
 }
 
 @Component({
@@ -88,6 +90,7 @@ export class HomePage {
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
     private events: Events,
+    private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private popupProvider: PopupProvider,
     private appProvider: AppProvider,
@@ -347,6 +350,22 @@ export class HomePage {
     */
 
     this.wallets = this.profileProvider.getWallets();
+    for (const wallet of this.wallets) {
+      for (const token of this.configProvider.get().enabledTokens) {
+        if (wallet.coin === 'eth' && !wallet.token) {
+          const newWallet = Object.create(wallet);
+          Object.assign(newWallet, wallet);
+          newWallet.name = `${token.name}`;
+          newWallet.token = token;
+          newWallet.coin = token.symbol.toLowerCase();
+          this.wallets.push(newWallet);
+        }
+      }
+    }
+    this.readOnlyWalletsGroup = _.filter(this.wallets, wallet => {
+      return wallet.keyId == 'read-only';
+    });
+
     this.walletsGroups = _.values(
       _.groupBy(
         _.filter(this.wallets, wallet => {
@@ -438,6 +457,7 @@ export class HomePage {
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
+          'EthereumAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
@@ -560,13 +580,27 @@ export class HomePage {
       this.logger.error('Error no walletId in update History');
       return;
     }
-    const wallet = this.profileProvider.getWallet(opts.walletId);
+
+    let wallet;
+    if (opts.tokenAddress) {
+      wallet = this.wallets.find(tokenWallet => {
+        return (
+          tokenWallet.token &&
+          tokenWallet.token.address === opts.tokenAddress &&
+          tokenWallet.credentials.walletId === opts.walletId
+        );
+      });
+      wallet.token.address = opts.tokenAddress;
+    } else {
+      wallet = this.profileProvider.getWallet(opts.walletId);
+    }
 
     const progressFn = ((_, newTxs) => {
       let args = {
         walletId: opts.walletId,
         finished: false,
-        progress: newTxs
+        progress: newTxs,
+        tokenAddress: opts.tokenAddress
       };
       this.events.publish('Local/WalletHistoryUpdate', args);
     }).bind(this);
@@ -574,15 +608,18 @@ export class HomePage {
     // Fire a startup event, to allow UI to show the spinner
     this.events.publish('Local/WalletHistoryUpdate', {
       walletId: opts.walletId,
-      finished: false
+      finished: false,
+      tokenAddress: opts.tokenAddress
     });
+
     this.walletProvider
       .fetchTxHistory(wallet, progressFn, opts)
       .then(txHistory => {
         wallet.completeHistory = txHistory;
         this.events.publish('Local/WalletHistoryUpdate', {
           walletId: opts.walletId,
-          finished: true
+          finished: true,
+          tokenAddress: opts.tokenAddress
         });
       })
       .catch(err => {
@@ -591,7 +628,8 @@ export class HomePage {
           this.events.publish('Local/WalletHistoryUpdate', {
             walletId: opts.walletId,
             finished: false,
-            error: err
+            error: err,
+            tokenAddress: opts.tokenAddress
           });
         }
       });
@@ -608,7 +646,8 @@ export class HomePage {
     }
     this.events.publish('Local/WalletUpdate', {
       walletId: opts.walletId,
-      finished: false
+      finished: false,
+      tokenAddress: opts.tokenAddress
     });
 
     this.logger.debug(
@@ -617,8 +656,24 @@ export class HomePage {
         ' alsohistory:' +
         opts.alsoUpdateHistory
     );
-    const wallet = this.profileProvider.getWallet(opts.walletId);
+
+    let wallet;
+    if (opts.tokenAddress) {
+      wallet = this.wallets.find(tokenWallet => {
+        return (
+          tokenWallet.token &&
+          tokenWallet.token.address === opts.tokenAddress &&
+          tokenWallet.credentials.walletId === opts.walletId
+        );
+      });
+    } else {
+      wallet = this.profileProvider.getWallet(opts.walletId);
+    }
     if (!wallet) return;
+
+    if (opts.tokenAddress) {
+      wallet.token.address = opts.tokenAddress;
+    }
 
     this.walletProvider
       .fetchStatus(wallet, opts)
@@ -635,11 +690,16 @@ export class HomePage {
         this.updateTxps();
         this.events.publish('Local/WalletUpdate', {
           walletId: opts.walletId,
-          finished: true
+          finished: true,
+          tokenAddress: opts.tokenAddress
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
+          this.fetchTxHistory({
+            walletId: opts.walletId,
+            force: opts.force,
+            tokenAddress: opts.tokenAddress
+          });
         }
       })
       .catch(err => {
@@ -652,11 +712,16 @@ export class HomePage {
         this.events.publish('Local/WalletUpdate', {
           walletId: opts.walletId,
           finished: true,
-          error: wallet.error
+          error: wallet.error,
+          tokenAddress: opts.tokenAddress
         });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId, force: opts.force });
+          this.fetchTxHistory({
+            walletId: opts.walletId,
+            force: opts.force,
+            tokenAddress: opts.tokenAddress
+          });
         }
       });
   };
@@ -681,8 +746,11 @@ export class HomePage {
 
     this.logger.debug('fetchAllWalletsStatus');
     const pr = wallet => {
+      const statusOpts = wallet.token
+        ? { tokenAddress: wallet.token.address }
+        : {};
       return this.walletProvider
-        .fetchStatus(wallet, {})
+        .fetchStatus(wallet, statusOpts)
         .then(async status => {
           wallet.cachedStatus = status;
           wallet.error = wallet.errorObj = null;
@@ -706,7 +774,8 @@ export class HomePage {
 
           this.events.publish('Local/WalletUpdate', {
             walletId: wallet.id,
-            finished: true
+            finished: true,
+            tokenAddress: wallet.tokenAddress
           });
 
           return Promise.resolve();
@@ -719,7 +788,7 @@ export class HomePage {
 
     const promises = [];
 
-    _.each(this.profileProvider.wallet, wallet => {
+    _.each(this.wallets, wallet => {
       promises.push(pr(wallet));
     });
 

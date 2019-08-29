@@ -19,6 +19,12 @@ import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
 
+export enum CoinName {
+  BTC = 'bitcoin',
+  BCH = 'bitcoin cash',
+  ETH = 'ethereum'
+}
+
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
@@ -27,14 +33,17 @@ export class SendPage extends WalletTabsChild {
   public search: string = '';
   public walletsBtc;
   public walletsBch;
+  public walletsEth;
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
+  public hasEthWallets: boolean;
   public invalidAddress: boolean;
 
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
+    'EthereumAddress',
     'BitcoinUri',
     'BitcoinCashUri'
   ];
@@ -68,8 +77,10 @@ export class SendPage extends WalletTabsChild {
 
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.walletsEth = this.profileProvider.getWallets({ coin: 'eth' });
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
     this.hasBchWallets = !_.isEmpty(this.walletsBch);
+    this.hasEthWallets = !_.isEmpty(this.walletsEth);
   }
 
   ionViewWillLeave() {
@@ -91,7 +102,7 @@ export class SendPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
+    const coinName = CoinName[this.wallet.coin.toUpperCase()];
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
       { coinName }
@@ -104,7 +115,8 @@ export class SendPage extends WalletTabsChild {
     this.scannerOpened = true;
     this.walletTabsProvider.setSendParams({
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin,
+      token: this.token ? this.token.address : ''
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
     this.events.publish('ScanFromWallet');
@@ -148,7 +160,8 @@ export class SendPage extends WalletTabsChild {
   private redir() {
     this.incomingDataProvider.redir(this.search, {
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin,
+      token: this.token ? this.token.address : ''
     });
     this.search = '';
   }

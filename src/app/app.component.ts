@@ -359,7 +359,9 @@ export class CopayApp {
       page,
       {
         ...params,
-        walletId: wallet.credentials.walletId
+        walletId: wallet.credentials.walletId,
+        wallet,
+        token: wallet.token
       },
       {
         cssClass: 'wallet-details-modal'

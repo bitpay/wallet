@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -14,6 +15,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
+  UTXO_COINS,
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -57,6 +59,7 @@ export class CreateWalletPage implements OnInit {
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
+  public UTXO_COINS;
 
   constructor(
     private navCtrl: NavController,
@@ -73,25 +76,26 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private bwcProvider: BwcProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
+    this.UTXO_COINS = UTXO_COINS;
     this.keyId = this.navParams.get('keyId');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault =
-      this.coin == 'bch'
-        ? this.isShared
-          ? this.derivationPathHelperProvider.defaultMultisigBCH
-          : this.derivationPathHelperProvider.defaultBCH
-        : this.isShared
-        ? this.derivationPathHelperProvider.defaultMultisigBTC
-        : this.derivationPathHelperProvider.defaultBTC;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
+    this.derivationPathByDefault = this.isShared
+      ? this.coin === 'bch'
+        ? this.derivationPathHelperProvider.defaultMultisigBCH
+        : this.derivationPathHelperProvider.defaultMultisigBTC
+      : this.bwcProvider.getCore().Deriver.pathFor(this.coin, 'livenet');
+    this.derivationPathForTestnet = this.bwcProvider
+      .getCore()
+      .Deriver.pathFor(this.coin, 'testnet');
     this.showAdvOpts = false;
 
     this.createForm = this.fb.group({
@@ -108,10 +112,9 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
+    this.createLabel = this.translate.instant(
+      `${this.coin.toUpperCase()} Wallet`
+    );
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -134,6 +137,10 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['requiredCopayers'].setValue(
       Math.min(Math.trunc(n / 2 + 1), maxReq)
     );
+  }
+
+  public checkIfUtxoCoin() {
+    return !!this.UTXO_COINS[this.coin.toUpperCase()];
   }
 
   private updateSeedSourceSelect(): void {
@@ -188,7 +195,9 @@ export class CreateWalletPage implements OnInit {
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
       bwsurl: this.createForm.value.bwsURL,
-      singleAddress: this.createForm.value.singleAddress,
+      singleAddress: this.checkIfUtxoCoin()
+        ? this.createForm.value.singleAddress
+        : true,
       coin: this.createForm.value.coin
     };
 

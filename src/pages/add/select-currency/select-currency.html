@@ -13,6 +13,23 @@
         </ion-icon>
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
+      <button *ngIf="!navParam.data.isShared" class="list-button" ion-item (click)="goToCreateWallet('eth')">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/eth.svg" />
+        </ion-icon>
+        <div class="item-title">Ethereum (ETH)</div>
+      </button>
+      <div *ngIf="!navParam.data.isShared">
+        <ion-item *ngFor="let token of tokenList" class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{token.symbol}}.svg" />
+          </ion-icon>
+          <ion-label class="item-title">
+            {{ token.name }} ({{ token.symbol }})
+          </ion-label>
+          <ion-toggle [(ngModel)]="addedToken[token.address]" (ionChange)="toggleToken(token.address)"></ion-toggle>
+        </ion-item>
+    </div>
     </ion-list>
   </div>
 </wide-header-page>
