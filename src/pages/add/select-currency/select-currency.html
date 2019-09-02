@@ -1,5 +1,5 @@
-<wide-header-page title="{{'Select currency' | translate}}">
-  <div page-content>
+<wide-header-page title="{{title}}">
+  <div page-content *ngIf="hasKeyId">
     <ion-list class="settings-list bp-list">
       <button class="list-button" ion-item (click)="goToCreateWallet('btc')">
         <ion-icon item-start>
@@ -14,5 +14,40 @@
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
     </ion-list>
+  </div>
+  <div page-content *ngIf="!hasKeyId">
+    <span class="list-subtitle" translate>Featured Currencies</span>
+    <ion-list class="settings-list bp-list">
+      <ion-item class="list-button">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/btc.svg" />
+        </ion-icon>
+        <ion-label class="item-title">Bitcoin (BTC)</ion-label>
+        <ion-toggle [(ngModel)]="coinsSelected.btc"></ion-toggle>
+      </ion-item>
+      <ion-item class="list-button">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/bch.svg" />
+        </ion-icon>
+        <ion-label class="item-title">Bitcoin Cash (BCH)</ion-label>
+        <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
+      </ion-item>
+    </ion-list>
+    <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch" (click)="createWallet()">
+      {{'Create' | translate}}
+    </button>
+
+    <div class="import-list">
+      <span class="list-subtitle" translate>Import Wallet</span>
+      <ion-list class="settings-list bp-list">
+        <button class="list-button" ion-item (click)="goToImportWallet()">
+          <ion-icon item-start>
+            <img src="assets/img/add-wallet/import.svg" />
+          </ion-icon>
+          <div class="item-title" translate>Import from backup</div>
+          <span class="item-subtitle" translate>Recover your wallet using your passphrase</span>
+        </button>
+      </ion-list>
+    </div>
   </div>
 </wide-header-page>

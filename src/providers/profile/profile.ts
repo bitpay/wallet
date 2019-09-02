@@ -20,6 +20,7 @@ import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
+import { WalletOptions } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -1342,6 +1343,24 @@ export class ProfileProvider {
       this.persistenceProvider.removeAllWalletGroupData(keyId);
       return Promise.resolve();
     });
+  }
+
+  public createDefaultWallet(addingNewWallet: boolean, opts): Promise<any> {
+    const defaults = this.configProvider.getDefaults();
+
+    const defaultOpts: Partial<WalletOptions> = {
+      keyId: opts.keyId,
+      name: opts.coin.toUpperCase(),
+      m: 1,
+      n: 1,
+      myName: null,
+      networkName: 'livenet',
+      bwsurl: defaults.bws.url,
+      singleAddress: false,
+      coin: opts.coin
+    };
+
+    return this.createWallet(addingNewWallet, defaultOpts);
   }
 
   public createWallet(addingNewWallet: boolean, opts): Promise<any> {
