@@ -21,8 +21,8 @@ describe('RateProvider', () => {
     rate: 8427.66,
     fetchedOn: 1559315104699
   };
-  let btcUrl: string = 'https://bitpay.com/api/rates';
-  let bchUrl: string = 'https://bitpay.com/api/rates/bch';
+  let btcUrl: string = 'https://bitpay.com/rates';
+  let bchUrl: string = 'https://bitpay.com/rates/bch';
   let fiatRateUrl: string =
     'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';
 
