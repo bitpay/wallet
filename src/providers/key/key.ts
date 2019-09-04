@@ -29,6 +29,13 @@ export class KeyProvider {
     return this.persistenceProvider.getKeys().then(async keys => {
       this.keys = [];
       keys = keys ? keys : [];
+      if (typeof keys === 'string') {
+        try {
+          keys = JSON.parse(keys);
+        } catch (_) {
+          this.logger.warn('Could not parse');
+        }
+      }
       keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
       return Promise.resolve();
     });
