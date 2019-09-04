@@ -75,7 +75,7 @@ export class RateProvider {
   public getBTC(): Promise<any> {
     return new Promise(resolve => {
       this.http.get(this.rateServiceUrl).subscribe(data => {
-        resolve(data);
+        resolve(data['data']);
       });
     });
   }
@@ -83,7 +83,7 @@ export class RateProvider {
   public getBCH(): Promise<any> {
     return new Promise(resolve => {
       this.http.get(this.bchRateServiceUrl).subscribe(data => {
-        resolve(data);
+        resolve(data['data']);
       });
     });
   }
