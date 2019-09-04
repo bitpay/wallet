@@ -605,25 +605,23 @@ export class ProfileProvider {
     return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
       const promises = [];
-
-      // Will publish once all wallets are binded.
-      opts.skipEvent = true;
-
       data.walletClients.forEach(walletClient => {
-        promises.push(
-          this.addAndBindWalletClient(walletClient, data.key, opts)
-        );
+        promises.push(this.addAndBindWalletClient(walletClient, opts));
       });
-      return Promise.all(promises)
-        .then(walletClients => {
-          this.events.publish('Local/WalletListChange');
-          return this.checkIfAlreadyExist(walletClients).then(() => {
-            return Promise.resolve(_.compact(walletClients));
+      return this.keyProvider.addKey(data.key).then(() => {
+        return Promise.all(promises)
+          .then(walletClients => {
+            return this.storeProfileIfDirty().then(() => {
+              this.events.publish('Local/WalletListChange');
+              return this.checkIfAlreadyExist(walletClients).then(() => {
+                return Promise.resolve(_.compact(walletClients));
+              });
+            });
+          })
+          .catch(() => {
+            return Promise.reject('failed to bind wallets');
           });
-        })
-        .catch(() => {
-          return Promise.reject('failed to bind wallets');
-        });
+      });
     });
   }
 
@@ -662,7 +660,7 @@ export class ProfileProvider {
   }
 
   // Adds and bind a new client to the profile
-  private async addAndBindWalletClient(wallet, key, opts): Promise<any> {
+  private async addAndBindWalletClient(wallet, opts): Promise<any> {
     if (!wallet || !wallet.credentials) {
       return Promise.reject(this.translate.instant('Could not access wallet'));
     }
@@ -673,20 +671,14 @@ export class ProfileProvider {
       return Promise.resolve();
     }
 
-    await this.keyProvider.addKey(key);
-
     const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
     if (!skipKeyValidation) {
       this.logger.debug('Trying to runValidation: ' + walletId);
       this.runValidation(wallet);
     }
 
-    await this.bindWalletClient(wallet);
-
     this.saveBwsUrl(walletId, opts);
-
-    return this.storeProfileIfDirty().then(() => {
-      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
+    return this.bindWalletClient(wallet).then(() => {
       return Promise.resolve(wallet);
     });
   }
@@ -769,11 +761,18 @@ export class ProfileProvider {
       this.onGoingProcessProvider.pause();
       return this.askToEncryptKey(data.key).then(() => {
         this.onGoingProcessProvider.resume();
-        return this.addAndBindWalletClient(data.walletClient, data.key, {
-          bwsurl: opts.bwsurl
-        }).then(walletClient => {
-          return this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
-            return Promise.resolve(walletClient);
+        return this.keyProvider.addKey(data.key).then(() => {
+          return this.addAndBindWalletClient(data.walletClient, {
+            bwsurl: opts.bwsurl
+          }).then(walletClient => {
+            return this.storeProfileIfDirty().then(() => {
+              this.events.publish('Local/WalletListChange');
+              return this.checkIfAlreadyExist([].concat(walletClient)).then(
+                () => {
+                  return Promise.resolve(walletClient);
+                }
+              );
+            });
           });
         });
       });
@@ -1056,17 +1055,22 @@ export class ProfileProvider {
             }
             return reject(err);
           }
-          this.addAndBindWalletClient(data.walletClient, data.key, {
-            bwsurl: opts.bwsurl
-          })
-            .then(walletClient => {
-              this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
-                return resolve(walletClient);
-              });
+          this.keyProvider.addKey(data.key).then(() => {
+            this.addAndBindWalletClient(data.walletClient, {
+              bwsurl: opts.bwsurl
             })
-            .catch(err => {
-              return reject(err);
-            });
+              .then(walletClient => {
+                return this.storeProfileIfDirty().then(() => {
+                  this.events.publish('Local/WalletListChange');
+                  this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
+                    return resolve(walletClient);
+                  });
+                });
+              })
+              .catch(err => {
+                return reject(err);
+              });
+          });
         });
       });
     });
@@ -1352,8 +1356,15 @@ export class ProfileProvider {
         this.onGoingProcessProvider.pause();
         return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
           this.onGoingProcessProvider.resume();
-          return this.addAndBindWalletClient(data.walletClient, data.key, {
-            bwsurl: opts.bwsurl
+          return this.keyProvider.addKey(data.key).then(() => {
+            return this.addAndBindWalletClient(data.walletClient, {
+              bwsurl: opts.bwsurl
+            }).then(walletClient => {
+              return this.storeProfileIfDirty().then(() => {
+                this.events.publish('Local/WalletListChange');
+                return Promise.resolve(walletClient);
+              });
+            });
           });
         });
       });
@@ -1368,8 +1379,15 @@ export class ProfileProvider {
         this.onGoingProcessProvider.pause();
         return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
           this.onGoingProcessProvider.resume();
-          return this.addAndBindWalletClient(data.walletClient, data.key, {
-            bwsurl: opts.bwsurl
+          return this.keyProvider.addKey(data.key).then(() => {
+            return this.addAndBindWalletClient(data.walletClient, {
+              bwsurl: opts.bwsurl
+            }).then(walletClient => {
+              return this.storeProfileIfDirty().then(() => {
+                this.events.publish('Local/WalletListChange');
+                return Promise.resolve(walletClient);
+              });
+            });
           });
         });
       });
