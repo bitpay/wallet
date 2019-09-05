@@ -22,6 +22,30 @@
         <span translate>Share</span> {{ appName }}
       </button>
 
+      <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
+        {{'Keys' | translate}}
+        <span class="note" ion-text color="light-grey" item-end>(Grouped by key)</span>
+      </ion-item-divider>
+
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/settings-icons/icon-key.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          <div *ngIf="walletsGroup[0].canSign">Group {{i+1}}</div>
+          <div *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
+        </ion-label>
+        <ion-note item-end>
+          {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
+        </ion-note>
+      </button>
+      <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
+        <ion-icon class="item-img" item-start>
+          <div class="icon-plus"></div>
+        </ion-icon>
+        <span translate>Add Wallet</span>
+      </button>
+
       <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openNotificationsPage()">
@@ -106,31 +130,6 @@
         </ion-list>
       </div>
 
-      <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
-        {{'Wallets (Grouped by key)' | translate}}
-      </ion-item-divider>
-
-      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-        <ion-icon class="settings-icon" item-start>
-          <img src="assets/img/wallet-group.svg" width="24" />
-        </ion-icon>
-        <ion-label>
-          <div *ngIf="walletsGroup[0].canSign">{{walletsGroup[0].name}}</div>
-          <div *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
-          <div class="subtitle ellipsis" *ngIf="walletsGroup.length > 1">
-            <span *ngFor="let wallet of walletsGroup; let i = index">
-              {{wallet.name}}
-              <span *ngIf="i < walletsGroup.length - 1">-</span>
-            </span>
-          </div>
-        </ion-label>
-      </button>
-      <button ion-item *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
-        <ion-icon class="item-img" item-start>
-          <div class="icon-plus"></div>
-        </ion-icon>
-        <span translate>Add Wallet</span>
-      </button>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
@@ -164,7 +163,6 @@
         </ion-icon>
         <span translate>About</span> {{appName}}
       </button>
-      <ion-item-divider></ion-item-divider>
     </ion-list>
   </div>
 </wide-header-page>
