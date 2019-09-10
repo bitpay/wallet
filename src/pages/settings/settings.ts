@@ -41,6 +41,7 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  public allowMultiplePrimaryWallets: boolean;
   public appName: string;
   public currentLanguageName: string;
   public languages;
@@ -90,7 +91,6 @@ export class SettingsPage {
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
-
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -100,6 +100,9 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
+
+    this.allowMultiplePrimaryWallets =
+      this.config.allowMultiplePrimaryWallets || this.walletsGroups.length != 1;
   }
 
   ionViewDidEnter() {

@@ -93,6 +93,16 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
+  public setWalletGroupName(keyId: string, name: string): void {
+    this.persistenceProvider.setWalletGroupName(keyId, name);
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
+  }
+
+  public async getWalletGroupName(keyId: string) {
+    const name = await this.persistenceProvider.getWalletGroupName(keyId);
+    return name;
+  }
+
   private async getWalletOrder(walletId: string) {
     const order = await this.persistenceProvider.getWalletOrder(walletId);
     return order;
@@ -206,6 +216,7 @@ export class ProfileProvider {
   }
 
   private async bindWalletClient(wallet): Promise<boolean> {
+    let walletsGroups = _.clone(this.walletsGroups);
     const walletId = wallet.credentials.walletId;
     let keyId = wallet.credentials.keyId;
     if (this.wallet[walletId] && this.wallet[walletId].started) {
@@ -292,6 +303,7 @@ export class ProfileProvider {
     let groupBackupInfo,
       needsBackup,
       order,
+      name,
       isPrivKeyEncrypted,
       canSign,
       isDeletedSeed;
@@ -302,9 +314,17 @@ export class ProfileProvider {
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      name = await this.getWalletGroupName(keyId);
+      if (!name) {
+        delete walletsGroups['read-only'];
+        // use wallets name for wallets group name at migration
+        name = `Group ${Object.keys(walletsGroups).length + 1}`;
+        this.setWalletGroupName(keyId, name);
+      }
     } else {
       keyId = 'read-only';
       needsBackup = false;
+      name = 'Read Only Wallets';
       isPrivKeyEncrypted = false;
       canSign = false;
       isDeletedSeed = true;
@@ -312,9 +332,11 @@ export class ProfileProvider {
 
     wallet.needsBackup = needsBackup;
     wallet.keyId = keyId;
+    wallet.walletGroupName = name;
 
     this.walletsGroups[keyId] = {
       order,
+      name,
       isPrivKeyEncrypted,
       needsBackup,
       canSign,

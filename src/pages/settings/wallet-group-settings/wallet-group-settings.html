@@ -13,6 +13,12 @@
   </label-tip>
 
   <ion-list class="settings-list bp-list">
+    <button ion-item (click)="openWalletGroupName()">
+      <div translate float-left>Name</div>
+      <ion-note item-end>
+        {{walletsGroup?.name}}
+      </ion-note>
+    </button>
 
     <ion-item-divider *ngIf="canSign || touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
     <button ion-item *ngIf="canSign" (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
@@ -52,9 +58,9 @@
         {{'Done' | translate}}
       </button>
     </ion-item-divider>
-    <ion-list *ngIf="!showReorder">
+    <ion-list *ngIf="!showReorder" class="settings-list bp-list">
       <button ion-item *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" />
         </ion-icon>
         <ion-label>
@@ -64,10 +70,16 @@
           {{'Hidden'|translate}}
         </ion-note>
       </button>
+      <button ion-item *ngIf="allowMultiplePrimaryWallets" (click)="goToAddPage()">
+        <ion-icon class="item-img settings-icon" item-start>
+          <div class="icon-plus"></div>
+        </ion-icon>
+        <ion-label translate>Add Wallet</ion-label>
+      </button>
     </ion-list>
     <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)" *ngIf="showReorder">
       <button ion-item detail-none *ngFor="let wallet of wallets">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/currencies/{{wallet.coin}}.svg" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" />
         </ion-icon>
         <ion-label>

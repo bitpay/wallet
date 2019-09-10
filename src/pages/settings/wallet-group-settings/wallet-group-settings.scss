@@ -20,4 +20,12 @@ page-wallet-group-settings {
   .item-without-title {
     margin-top: 0;
   }
+
+  .icon-wallet {
+    margin-right: 0px;
+  }
+
+  ion-icon.item-img {
+    min-width: 36px !important;
+  }
 }

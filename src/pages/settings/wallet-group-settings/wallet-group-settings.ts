@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
@@ -13,7 +14,9 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
+import { AddPage } from '../../add/add';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
+import { WalletGroupNamePage } from '../wallet-group-settings/wallet-group-name/wallet-group-name';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
@@ -35,6 +38,7 @@ export class WalletGroupSettingsPage {
   public canSign: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
+  public allowMultiplePrimaryWallets: boolean;
 
   private keyId: string;
 
@@ -48,7 +52,8 @@ export class WalletGroupSettingsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private configProvider: ConfigProvider
   ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
@@ -64,6 +69,16 @@ export class WalletGroupSettingsPage {
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
+
+    const opts = {
+      showHidden: true,
+      canAddNewAccount: true
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
+    const config = this.configProvider.get();
+    this.allowMultiplePrimaryWallets =
+      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   public touchIdChange(): void {
@@ -195,6 +210,16 @@ export class WalletGroupSettingsPage {
     this.wallets.splice(indexes.to, 0, element);
     _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  }
+
+  public goToAddPage() {
+    this.navCtrl.push(AddPage, { keyId: this.keyId });
+  }
+
+  public openWalletGroupName(): void {
+    this.navCtrl.push(WalletGroupNamePage, {
+      keyId: this.keyId
     });
   }
 }
