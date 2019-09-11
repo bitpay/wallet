@@ -216,7 +216,6 @@ export class ProfileProvider {
   }
 
   private async bindWalletClient(wallet): Promise<boolean> {
-    let walletsGroups = _.clone(this.walletsGroups);
     const walletId = wallet.credentials.walletId;
     let keyId = wallet.credentials.keyId;
     if (this.wallet[walletId] && this.wallet[walletId].started) {
@@ -316,9 +315,11 @@ export class ProfileProvider {
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
       name = await this.getWalletGroupName(keyId);
       if (!name) {
+        let walletsGroups = _.cloneDeep(this.walletsGroups);
         delete walletsGroups['read-only'];
+
         // use wallets name for wallets group name at migration
-        name = `Group ${Object.keys(walletsGroups).length + 1}`;
+        name = `Group ${Object.keys(walletsGroups).indexOf(keyId) + 1}`;
         this.setWalletGroupName(keyId, name);
       }
     } else {
