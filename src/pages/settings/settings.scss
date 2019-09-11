@@ -54,4 +54,12 @@ page-settings {
     margin-top: 0;
     height: 73px;
   }
+
+  .bp-list {
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+    }
+  }
 }

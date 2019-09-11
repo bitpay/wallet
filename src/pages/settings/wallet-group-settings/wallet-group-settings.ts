@@ -13,7 +13,9 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
+import { AddPage } from '../../add/add';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
+import { WalletGroupNamePage } from '../wallet-group-settings/wallet-group-name/wallet-group-name';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
@@ -195,6 +197,16 @@ export class WalletGroupSettingsPage {
     this.wallets.splice(indexes.to, 0, element);
     _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  }
+
+  public goToAddPage() {
+    this.navCtrl.push(AddPage, { keyId: this.keyId });
+  }
+
+  public openWalletGroupName(): void {
+    this.navCtrl.push(WalletGroupNamePage, {
+      keyId: this.keyId
     });
   }
 }

@@ -83,6 +83,7 @@ import { SharePage } from '../pages/settings/share/share';
 /* Wallet Group Settings */
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
+import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
@@ -201,6 +202,7 @@ export const PAGES = [
   WalletGroupExtendedPrivateKeyPage,
   WalletGroupDeletePage,
   WalletGroupSettingsPage,
+  WalletGroupNamePage,
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,

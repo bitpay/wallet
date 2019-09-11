@@ -25,7 +25,7 @@ import {
 export class SelectCurrencyPage {
   public title: string;
   public coin: string;
-  public hasKeyId: boolean;
+  public isOnboardingFlow: boolean;
   public coinsSelected;
 
   constructor(
@@ -49,10 +49,11 @@ export class SelectCurrencyPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SelectCurrencyPage');
-    this.hasKeyId = this.navParam.data.keyId ? true : false;
-    this.title = this.hasKeyId
-      ? this.translate.instant('Select currency')
-      : this.translate.instant('Select currencies');
+    this.isOnboardingFlow =
+      this.navCtrl.getPrevious().name === 'HomePage' ? true : false;
+    this.title = this.isOnboardingFlow
+      ? this.translate.instant('Select currencies')
+      : this.translate.instant('Select currency');
   }
 
   public goToCreateWallet(coin: string): void {
