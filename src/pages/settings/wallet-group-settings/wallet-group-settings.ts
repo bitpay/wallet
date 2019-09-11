@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
-import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
@@ -38,7 +37,6 @@ export class WalletGroupSettingsPage {
   public canSign: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
-  public allowMultiplePrimaryWallets: boolean;
 
   private keyId: string;
 
@@ -52,8 +50,7 @@ export class WalletGroupSettingsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private configProvider: ConfigProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
@@ -69,16 +66,6 @@ export class WalletGroupSettingsPage {
     this.canSign = this.walletsGroup.canSign;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
-
-    const opts = {
-      showHidden: true,
-      canAddNewAccount: true
-    };
-    const wallets = this.profileProvider.getWallets(opts);
-    const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
-    const config = this.configProvider.get();
-    this.allowMultiplePrimaryWallets =
-      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   public touchIdChange(): void {

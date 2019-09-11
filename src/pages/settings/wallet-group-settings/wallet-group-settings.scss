@@ -28,4 +28,15 @@ page-wallet-group-settings {
   ion-icon.item-img {
     min-width: 36px !important;
   }
+
+  .bp-list {
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+      &.bp-list-title {
+        padding: 2px 0 2px 16px;
+      }
+    }
+  }
 }

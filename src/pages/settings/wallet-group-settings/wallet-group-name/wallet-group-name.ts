@@ -6,7 +6,6 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // providers
 import { ProfileProvider } from '../../../../providers/profile/profile';
-import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 
 @Component({
   selector: 'page-wallet-group-name',
@@ -14,7 +13,6 @@ import { ReplaceParametersProvider } from '../../../../providers/replace-paramet
 })
 export class WalletGroupNamePage {
   public walletGroup;
-  public walletGroupName: string;
   public walletGroupNameForm: FormGroup;
   public description: string;
 
@@ -24,7 +22,6 @@ export class WalletGroupNamePage {
     private navParams: NavParams,
     private formBuilder: FormBuilder,
     private logger: Logger,
-    private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService
   ) {
     this.walletGroupNameForm = this.formBuilder.group({
@@ -44,11 +41,8 @@ export class WalletGroupNamePage {
       this.navParams.data.keyId
     );
     this.walletGroupNameForm.value.walletGroupName = this.walletGroup.name;
-    this.description = this.replaceParametersProvider.replace(
-      this.translate.instant(
-        'You can change the name displayed on this device below.'
-      ),
-      { walletGroupName: this.walletGroup.Name }
+    this.description = this.translate.instant(
+      'You can change the name displayed on this device below.'
     );
   }
 
