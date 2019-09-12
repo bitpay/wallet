@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
+enum CoinName {
+  BTC = 'Bitcoin',
+  BCH = 'Bitcoin Cash',
+  ETH = 'Ethereum'
+}
+
 @Component({
   selector: 'incoming-data-menu',
   templateUrl: 'incoming-data-menu.html'
@@ -13,6 +19,7 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public coin: string;
   public fromHomeCard: boolean;
   public isCordova: boolean;
+  public coinName = CoinName;
 
   constructor(private platformProvider: PlatformProvider) {
     super();

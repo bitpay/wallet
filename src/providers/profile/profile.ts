@@ -25,6 +25,12 @@ import { WalletOptions } from '../wallet/wallet';
 // models
 import { Profile } from '../../models/profile/profile.model';
 
+enum CoinName {
+  BTC = 'Bitcoin',
+  BCH = 'Bitcoin Cash',
+  ETH = 'Ethereum'
+}
+
 interface WalletGroups {
   WalletGroup?: WalletGroup;
 }
@@ -359,6 +365,7 @@ export class ProfileProvider {
     /* Allow account creation only for wallets:
     wallet n=1 : BIP44 - P2PKH - BTC o BCH only if it is 145'
     wallet n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
+    wallet n=1 : BIP44 - P2SH - ETH only if it is 60'
     key : !use44forMultisig - !use0forBCH - compliantDerivation - !BIP45
     */
 
@@ -397,6 +404,14 @@ export class ProfileProvider {
         wallet.credentials.addressType == 'P2SH' &&
         derivationStrategy == 'BIP48' &&
         (wallet.coin == 'btc' || (wallet.coin == 'bch' && coinCode == "145'"))
+      ) {
+        return true;
+      }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        (wallet.coin == 'eth' && coinCode == "60'")
       ) {
         return true;
       }
@@ -1217,7 +1232,7 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts)
           .then(data => {
-            const coin = opts.coin == 'btc' ? '[BTC]' : '[BCH]';
+            const coin = `[${opts.coin.toUpperCase()}]`;
             const name =
               opts.name ||
               `${this.translate.instant('Personal Wallet')} ${coin}`;
@@ -1377,13 +1392,13 @@ export class ProfileProvider {
 
     const defaultOpts: Partial<WalletOptions> = {
       keyId: opts.keyId,
-      name: opts.coin.toUpperCase(),
+      name: CoinName[opts.coin.toUpperCase()],
       m: 1,
       n: 1,
       myName: null,
       networkName: 'livenet',
       bwsurl: defaults.bws.url,
-      singleAddress: false,
+      singleAddress: opts.singleAddress || false,
       coin: opts.coin
     };
 

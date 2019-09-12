@@ -10,7 +10,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { Coin, WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -60,10 +60,11 @@ export class CustomAmountPage {
       const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (_currency != 'BTC' && _currency != 'BCH') {
+      if (!Coin[_currency]) {
         // Convert to BTC or BCH
         const amountUnit = this.txFormatProvider.satToUnit(
-          parsedAmount.amountSat
+          parsedAmount.amountSat,
+          this.wallet.coin
         );
         var btcParsedAmount = this.txFormatProvider.parseAmount(
           this.wallet.coin,

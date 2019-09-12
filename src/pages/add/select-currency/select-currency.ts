@@ -17,6 +17,7 @@ import {
   PushNotificationsProvider,
   WalletProvider
 } from '../../../providers';
+import { UTXO_COINS } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-select-currency',
@@ -43,7 +44,8 @@ export class SelectCurrencyPage {
   ) {
     this.coinsSelected = {
       btc: true,
-      bch: false
+      bch: true,
+      eth: true
     };
   }
 
@@ -71,7 +73,8 @@ export class SelectCurrencyPage {
   public createWallet(coins: string[]): void {
     coins = _.keys(_.pickBy(this.coinsSelected));
     const opts = {
-      coin: coins[0]
+      coin: coins[0],
+      singleAddress: UTXO_COINS[coins[0].toUpperCase()] ? false : true
     };
     this.onGoingProcessProvider.set('creatingWallet');
     this.createDefaultWallet(false, opts)
@@ -83,7 +86,8 @@ export class SelectCurrencyPage {
           coins.slice(1).forEach(coin => {
             const opts = {
               keyId,
-              coin
+              coin,
+              singleAddress: UTXO_COINS[coin.toUpperCase()] ? false : true
             };
             promises.push(this.createDefaultWallet(true, opts));
           });
