@@ -290,8 +290,8 @@ msgstr "URI Bitcoin"
 msgid "Bitcoin Wallets"
 msgstr "Portefeuilles Bitcoin"
 
-msgid "Bitcoin miner fee:"
-msgstr "Frais miniers Bitcoin :"
+msgid "Miner fee:"
+msgstr "Frais miniers :"
 
 msgid "Bitcoin network fee policy"
 msgstr "Frais de réseau"

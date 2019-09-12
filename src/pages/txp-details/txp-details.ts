@@ -120,7 +120,11 @@ export class TxpDetailsPage {
     this.checkPaypro();
     this.applyButtonText();
 
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.amount = this.decimalPipe.transform(
+      this.tx.amount /
+        this.configProvider.getCoinOpts()[this.wallet.coin].unitToSatoshi,
+      '1.2-6'
+    );
   }
 
   ionViewWillLoad() {
