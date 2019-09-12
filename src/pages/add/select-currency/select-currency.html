@@ -13,6 +13,17 @@
         </ion-icon>
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
+      <button
+        *ngIf="!navParam.data.isShared"
+        class="list-button"
+        ion-item
+        (click)="goToCreateWallet('eth')"
+      >
+        <ion-icon item-start>
+          <img src="assets/img/currencies/eth.svg" />
+        </ion-icon>
+        <div class="item-title">Ethereum (ETH)</div>
+      </button>
     </ion-list>
   </div>
   <div page-content *ngIf="isOnboardingFlow">
@@ -32,9 +43,16 @@
         <ion-label class="item-title">Bitcoin Cash (BCH)</ion-label>
         <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
       </ion-item>
+      <ion-item *ngIf="!navParam.data.isShared" class="list-button">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/eth.svg" />
+        </ion-icon>
+        <ion-label class="item-title">Ethereum (ETH)</ion-label>
+        <ion-toggle [(ngModel)]="coinsSelected.eth"></ion-toggle>
+      </ion-item>
     </ion-list>
     <div class="bottom-absolute">
-      <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch" (click)="createWallet()">
+      <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallet()">
         {{'Create' | translate}}
       </button>
       <button ion-button clear class="button-standard" (click)="goToImportWallet()">

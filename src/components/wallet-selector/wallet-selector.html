@@ -8,7 +8,7 @@
     <ion-col col-4 text-center class="destination-title">{{ title }}</ion-col>
   </ion-row>
   <!--<div *ngFor="let wallet of wallets" (click)="selectWallet(wallet)">{{wallet.name}}</div>-->
-  <div class="no-wallets" *ngIf="(!walletsBtc || !walletsBtc[0]) && (!walletsBch || !walletsBch[0])" translate>
+  <div class="no-wallets" *ngIf="(!walletsBtc || !walletsBtc[0]) && (!walletsBch || !walletsBch[0]) && (!walletsEth || !walletsEth[0])" translate>
     No wallets available
   </div>
   <div *ngIf="walletsBtc && walletsBtc[0]">
@@ -35,6 +35,22 @@
     <ion-list>
       <div>
         <button ion-item detail-none *ngFor="let wallet of walletsBch" (click)="optionClicked(wallet)">
+          <wallet-item-content [wallet]="wallet"></wallet-item-content>
+        </button>
+      </div>
+    </ion-list>
+  </div>
+
+  <div *ngIf="walletsEth && walletsEth[0]">
+    <ion-item-divider>
+      <div class="title">
+        <span translate>Ethereum Wallets</span>
+      </div>
+    </ion-item-divider>
+
+    <ion-list>
+      <div>
+        <button ion-item detail-none *ngFor="let wallet of walletsEth" (click)="optionClicked(wallet)">
           <wallet-item-content [wallet]="wallet"></wallet-item-content>
         </button>
       </div>

@@ -32,6 +32,15 @@ export class PriceCard {
       backgroundColor: 'rgba(47,207,110,1)',
       gradientBackgroundColor: 'rgba(47,207,110, 0.2)',
       name: 'Bitcoin Cash'
+    },
+    {
+      unitCode: 'eth',
+      historicalRates: [],
+      currentPrice: 0,
+      averagePrice: 0,
+      backgroundColor: 'rgba(135,206,250,1)',
+      gradientBackgroundColor: 'rgba(30,144,255, 0.2)',
+      name: 'Ethereum'
     }
   ];
   public fiatCodes = [
