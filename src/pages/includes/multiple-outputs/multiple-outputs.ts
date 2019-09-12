@@ -12,6 +12,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'multiple-outputs.html'
 })
 export class MultipleOutputsPage {
+  public coin: string;
   private _tx;
 
   public contactName: string;
@@ -31,12 +32,12 @@ export class MultipleOutputsPage {
     this._tx = tx;
     this.tx.outputs.forEach(output => {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
-      const coin = this._tx.coin
+      this.coin = this._tx.coin
         ? this._tx.coin
         : this.addressProvider.getCoin(outputAddr);
 
       const addressToShow = this.walletProvider.getAddressView(
-        coin,
+        this.coin,
         this._tx.network,
         outputAddr
       );

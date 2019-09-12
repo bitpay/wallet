@@ -286,7 +286,10 @@ export class ConfirmInvoicePage extends ConfirmPage {
       this.wallet.coin,
       this.coinAmountSat
     );
-    this.coinAmount = this.txFormatProvider.formatAmount(this.coinAmountSat);
+    this.coinAmount = this.txFormatProvider.formatAmount(
+      wallet.coin,
+      this.coinAmountSat
+    );
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
       Number(this.invoiceFeeSat) + Number(this.networkFeeSat)
