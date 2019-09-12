@@ -399,15 +399,15 @@ export class ImportWalletPage {
       opts.n = this.importForm.value.isMultisig
         ? 2
         : opts.derivationStrategy == 'BIP48'
-        ? 2
-        : 1;
+          ? 2
+          : 1;
 
       opts.coin = this.importForm.value.coin;
 
       // set opts.useLegacyPurpose
       if (
         this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
-          "44'" &&
+        "44'" &&
         opts.n > 1
       ) {
         opts.useLegacyPurpose = true;
@@ -418,7 +418,7 @@ export class ImportWalletPage {
       if (
         opts.coin == 'bch' &&
         this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
-          "0'"
+        "0'"
       ) {
         opts.useLegacyCoinType = true;
         this.logger.debug('Using 0 for BCH creation');
@@ -509,11 +509,8 @@ export class ImportWalletPage {
   }
 
   public setDerivationPath(coin: string) {
-    const derivationPath =
-      coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
-
+    const defaultCoin = `default${coin.toUpperCase()}`;
+    const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
   }
 

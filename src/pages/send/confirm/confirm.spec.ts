@@ -14,10 +14,11 @@ describe('ConfirmPage', () => {
       instance = testEnv.instance;
       instance.navParams = {
         data: {
-          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
+          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF',
+          coin: 'btc'
         }
       };
-      instance.tx = { coin: 'BTC' };
+      instance.tx = { coin: 'btc' };
       spyOn(instance.onGoingProcessProvider, 'set');
       fixture.detectChanges();
     })));
@@ -34,6 +35,7 @@ describe('ConfirmPage', () => {
       it('should display an error message if attempting to send to an old bch address', () => {
         instance.navParams.data.toAddress =
           'CUksFGi4uVxpmV8S3JjYMSKJugT8JBvQdu1';
+        instance.navParams.data.coin = 'bch';
         const popupSpy = spyOn(
           instance.popupProvider,
           'ionicConfirm'

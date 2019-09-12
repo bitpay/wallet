@@ -681,6 +681,7 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
+        coin: 'btc',
         amount: 10000
       };
       const pass = 'password';
@@ -697,6 +698,29 @@ describe('Provider: Wallet Provider', () => {
           expect(err).toBeUndefined();
         });
     });
+
+    it('Should return an ethereum txp with signed rawTx', async () => {
+      await keyProvider.load();
+      const wallet: WalletMock = new WalletMock();
+      const txp = {
+        txid: 'txid1',
+        coin: 'eth',
+        amount: 10000
+      };
+      const pass = 'password';
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
+
+      walletProvider
+        .signTx(wallet, txp, pass)
+        .then(signedTxp => {
+          expect(signedTxp).toBeDefined();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
+    });
   });
 
   describe('Function: broadcastTx', () => {
@@ -705,6 +729,7 @@ describe('Provider: Wallet Provider', () => {
       const txp = {
         txid: 'txid1',
         amount: 10000,
+        coin: 'btc',
         status: 'accepted'
       };
 
@@ -712,6 +737,26 @@ describe('Provider: Wallet Provider', () => {
         .broadcastTx(wallet, txp)
         .then(broadcastedTxp => {
           expect(broadcastedTxp.txid).toEqual('txid1');
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
+    });
+
+    it('Should return the broadcasted ethereum txid', () => {
+      const wallet: WalletMock = new WalletMock();
+      const txp = {
+        txid: 'txid1',
+        amount: 10000,
+        coin: 'eth',
+        status: 'accepted'
+      };
+
+      walletProvider
+        .broadcastTx(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp.txid).toEqual('txid1');
+          expect(broadcastedTxp).toEqual(txp);
         })
         .catch(err => {
           expect(err).toBeUndefined();
@@ -962,6 +1007,7 @@ describe('Provider: Wallet Provider', () => {
       await keyProvider.load();
       txp = {
         txid: 'txid1',
+        coin: 'btc',
         status: 'pending'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -980,11 +1026,35 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
+    it('Should prepare, sign and broadcast ethereum txp if the status is pending', async () => {
+      await keyProvider.load();
+      txp = {
+        txid: 'txid1',
+        coin: 'eth',
+        status: 'pending'
+      };
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
+        Promise.resolve('password1')
+      );
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
+      walletProvider
+        .publishAndSign(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp).toBeDefined();
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
+    });
+
     it('Should prepare, publish, sign and broadcast the txp if the status is accepted', async () => {
       await keyProvider.load();
 
       txp = {
         txid: 'txid1',
+        coin: 'btc',
         status: 'accepted'
       };
       spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
@@ -997,6 +1067,30 @@ describe('Provider: Wallet Provider', () => {
         .publishAndSign(wallet, txp)
         .then(broadcastedTxp => {
           expect(broadcastedTxp).toEqual(txp);
+        })
+        .catch(err => {
+          expect(err).toBeUndefined();
+        });
+    });
+
+    it('Should prepare, publish, sign and broadcast ethereum txp if the status is accepted', async () => {
+      await keyProvider.load();
+
+      txp = {
+        txid: 'txid1',
+        coin: 'eth',
+        status: 'accepted'
+      };
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
+        Promise.resolve('password1')
+      );
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
+      walletProvider
+        .publishAndSign(wallet, txp)
+        .then(broadcastedTxp => {
+          expect(broadcastedTxp).toBeDefined();
         })
         .catch(err => {
           expect(err).toBeUndefined();
