@@ -33,21 +33,13 @@
         <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
       </ion-item>
     </ion-list>
-    <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch" (click)="createWallet()">
-      {{'Create' | translate}}
-    </button>
-
-    <div class="import-list">
-      <span class="list-subtitle" translate>Import Wallet</span>
-      <ion-list class="settings-list bp-list">
-        <button class="list-button" ion-item (click)="goToImportWallet()">
-          <ion-icon item-start>
-            <img src="assets/img/add-wallet/import.svg" />
-          </ion-icon>
-          <div class="item-title" translate>Import from backup</div>
-          <span class="item-subtitle" translate>Recover your wallet using your passphrase</span>
-        </button>
-      </ion-list>
+    <div class="bottom-absolute">
+      <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch" (click)="createWallet()">
+        {{'Create' | translate}}
+      </button>
+      <button ion-button clear class="button-standard" (click)="goToImportWallet()">
+        {{ 'Import existing wallet' | translate }}
+      </button>
     </div>
   </div>
 </wide-header-page>
