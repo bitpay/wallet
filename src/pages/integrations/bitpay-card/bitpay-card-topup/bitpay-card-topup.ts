@@ -55,6 +55,8 @@ export class BitPayCardTopUpPage {
   public lastFourDigits;
   public currencySymbol;
   public rate;
+  public paymentExpired: boolean;
+  public remainingTimeStr: string;
 
   private bitcoreCash;
   private createdTx;
@@ -427,6 +429,10 @@ export class BitPayCardTopUpPage {
                 let maxAmountSat = Number((maxAmount * 100000000).toFixed(0));
                 let newAmountSat = maxAmountSat - invoiceFeeSat;
 
+                // Set expiration time for this invoice
+                if (inv.expirationTime)
+                  this.paymentTimeControl(inv.expirationTime);
+
                 if (newAmountSat <= 0) {
                   return reject({
                     message: this.translate.instant(
@@ -490,6 +496,10 @@ export class BitPayCardTopUpPage {
         let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
         let message = this.amountUnitStr + ' to ' + this.lastFourDigits;
+
+        // Set expiration time for this invoice
+        if (dataSrc['expirationTime'])
+          this.paymentTimeControl(dataSrc['expirationTime']);
 
         this.createTx(wallet, invoice, message)
           .then(ctxp => {
@@ -564,6 +574,35 @@ export class BitPayCardTopUpPage {
             );
           });
       });
+  }
+
+  protected paymentTimeControl(expires: string): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
+    this.paymentExpired = false;
+    this.setExpirationTime(expirationTime);
+
+    const countDown = setInterval(() => {
+      this.setExpirationTime(expirationTime, countDown);
+    }, 1000);
+  }
+
+  private setExpirationTime(expirationTime: number, countDown?): void {
+    const now = Math.floor(Date.now() / 1000);
+
+    if (now > expirationTime) {
+      this.paymentExpired = true;
+      this.remainingTimeStr = this.translate.instant('Expired');
+      if (countDown) {
+        /* later */
+        clearInterval(countDown);
+      }
+      return;
+    }
+
+    const totalSecs = expirationTime - now;
+    const m = Math.floor(totalSecs / 60);
+    const s = totalSecs % 60;
+    this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
   public onWalletSelect(wallet): void {
