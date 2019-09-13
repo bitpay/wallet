@@ -55,6 +55,7 @@ export class BitPayCardTopUpPage {
   public lastFourDigits;
   public currencySymbol;
   public rate;
+  private countDown;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
 
@@ -498,8 +499,8 @@ export class BitPayCardTopUpPage {
         let message = this.amountUnitStr + ' to ' + this.lastFourDigits;
 
         // Set expiration time for this invoice
-        if (dataSrc['expirationTime'])
-          this.paymentTimeControl(dataSrc['expirationTime']);
+        if (invoice['expirationTime'])
+          this.paymentTimeControl(invoice['expirationTime']);
 
         this.createTx(wallet, invoice, message)
           .then(ctxp => {
@@ -581,20 +582,19 @@ export class BitPayCardTopUpPage {
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);
 
-    const countDown = setInterval(() => {
-      this.setExpirationTime(expirationTime, countDown);
+    this.countDown = setInterval(() => {
+      this.setExpirationTime(expirationTime);
     }, 1000);
   }
 
-  private setExpirationTime(expirationTime: number, countDown?): void {
+  private setExpirationTime(expirationTime: number): void {
     const now = Math.floor(Date.now() / 1000);
 
     if (now > expirationTime) {
       this.paymentExpired = true;
       this.remainingTimeStr = this.translate.instant('Expired');
-      if (countDown) {
-        /* later */
-        clearInterval(countDown);
+      if (this.countDown) {
+        clearInterval(this.countDown);
       }
       return;
     }
@@ -607,6 +607,10 @@ export class BitPayCardTopUpPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
+
+    if (this.countDown) {
+      clearInterval(this.countDown);
+    }
 
     // Update Rates
     this.updateRates(wallet.coin);
