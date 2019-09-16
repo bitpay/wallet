@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -31,8 +31,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "postinstall": "npm run paypro:header && npm run env:dev && npm run prompt",
-    "paypro:header": "(! grep -q 'BP_PARTNER' ./node_modules/bitcore-wallet-client/lib/paypro.js && sed -i -e \"/'Accept': JSON_PAYMENT_ACK_CONTENT_TYPE/ a\\ \n'BP_PARTNER':'BitPay','BP_PARNER_VERSION':'v6.2.1'\" ./node_modules/bitcore-wallet-client/lib/paypro.js) | echo 'paypro patched.'",
+    "postinstall": "npm run env:dev && npm run prompt",
     "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
     "start": "npm run ionic:serve",
     "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",

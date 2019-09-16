@@ -805,6 +805,9 @@ export class ProfileProvider {
 
   private _importFile(str: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      opts = opts ? opts : {};
+      opts['bp_partner'] = this.appProvider.info.name;
+      opts['bp_partner_version'] = this.appProvider.info.version;
       this.logger.info('Importing Wallet:', opts);
       const client = this.bwcProvider.getClient(null, opts);
       let credentials;
@@ -1015,7 +1018,9 @@ export class ProfileProvider {
     const walletClient = this.bwcProvider.getClient(
       JSON.stringify(credentials),
       {
-        bwsurl: getBWSURL(credentials.walletId)
+        bwsurl: getBWSURL(credentials.walletId),
+        bp_partner: this.appProvider.info.name,
+        bp_partner_version: this.appProvider.info.version
       }
     );
 
@@ -1112,6 +1117,8 @@ export class ProfileProvider {
   private seedWallet(opts?): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
+      opts['bp_partner'] = this.appProvider.info.name;
+      opts['bp_partner_version'] = this.appProvider.info.version;
       const walletClient = this.bwcProvider.getClient(null, opts);
       const network = opts.networkName || 'livenet';
       const Key = this.bwcProvider.getKey();
