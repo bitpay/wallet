@@ -15,6 +15,7 @@ import { Logger } from '../../providers';
 })
 export class AddPage {
   public allowMultiplePrimaryWallets: boolean;
+  public keyId: string;
 
   constructor(
     private navCtrl: NavController,
@@ -24,6 +25,7 @@ export class AddPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AddPage');
+    this.keyId = this.navParams.data.keyId;
   }
 
   public goToAddWalletPage(
@@ -34,11 +36,11 @@ export class AddPage {
     if (isCreate) {
       this.navCtrl.push(SelectCurrencyPage, {
         isShared,
-        keyId: this.navParams.data.keyId
+        keyId: this.keyId
       });
     } else if (isJoin) {
       this.navCtrl.push(JoinWalletPage, {
-        keyId: this.navParams.data.keyId,
+        keyId: this.keyId,
         url: this.navParams.data.url
       });
     }
