@@ -51,7 +51,9 @@ export class BwcProvider {
       baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
       verbose: opts.verbose,
       timeout: 100000,
-      transports: ['polling']
+      transports: ['polling'],
+      bp_partner: opts.bp_partner,
+      bp_partner_version: opts.bp_partner_version
     });
 
     if (walletData) bwc.fromString(walletData);
