@@ -49,8 +49,7 @@ export class SelectCurrencyPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SelectCurrencyPage');
-    this.isOnboardingFlow =
-      this.navCtrl.getPrevious().name === 'HomePage' ? true : false;
+    this.isOnboardingFlow = this.navParam.data.isOnboardingFlow;
     this.title = this.isOnboardingFlow
       ? this.translate.instant('Select currencies')
       : this.translate.instant('Select currency');
