@@ -1,13 +1,5 @@
 page-add-wallet {
-  .subtitle {
-    color: #aaaeb6;
-    font-size: 13px;
-    margin-top: 5px;
-  }
-  .icon-settings {
-    width: 25px;
-    height: 25px;
-    border-radius: $icon-border-radius;
-    padding: 0rem;
+  .settings-icon.item-img {
+    opacity: 0.5;
   }
 }
