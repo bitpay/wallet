@@ -12,6 +12,8 @@ export class CreateNewWalletPage {
   constructor(private navCtrl: NavController) {}
 
   public goToAddWalletPage() {
-    this.navCtrl.push(SelectCurrencyPage);
+    this.navCtrl.push(SelectCurrencyPage, {
+      isOnboardingFlow: true
+    });
   }
 }
