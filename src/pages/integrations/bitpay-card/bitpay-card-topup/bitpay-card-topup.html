@@ -23,9 +23,9 @@
     </ion-item>
 
     <ion-item-group class="info">
-      <button ion-item detail-none (click)="showWallets()">
-        <div translate>From</div>
-        <div class="wallet">
+      <button class="container-from" ion-item detail-none (click)="showWallets()">
+        <span translate>From</span>
+        <div class="wallet" *ngIf="wallet">
           <ion-icon *ngIf="wallet && wallet.coin" item-start>
             <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
           </ion-icon>
@@ -37,11 +37,29 @@
             </button>
           </div>
         </div>
+        <div class="wallet" *ngIf="!wallet">
+          <ion-icon item-start>
+            <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
+          </ion-icon>
+          <div translate>Select a wallet</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
       </button>
+
       <div *ngIf="totalAmountStr">
         <ion-item-divider>
           Details
         </ion-item-divider>
+        <ion-item>
+          <span translate>Expires</span>
+          <ion-note *ngIf="!paymentExpired" item-end><span [innerHTML]="remainingTimeStr"></span></ion-note>
+          <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
+        </ion-item>
         <ion-item>
           <span translate>Funds to be added</span>
           <ion-note item-end>
@@ -82,9 +100,9 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr) || paymentExpired" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)">
+    <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr) || paymentExpired">
       {{'Add funds' | translate}}
     </button>
   </ion-toolbar>
