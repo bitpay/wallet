@@ -16,6 +16,7 @@ import { UTXO_COINS } from '../../../providers/wallet/wallet';
 export class ChooseFeeLevelPage {
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
+  public feeUnit: string;
   public maxFeeRecommended: number;
   public minFeeRecommended: number;
   private minFeeAllowed: number;
@@ -53,6 +54,7 @@ export class ChooseFeeLevelPage {
     this.network = this.viewCtrl.data.network;
     this.coin = this.viewCtrl.data.coin;
     this.feeLevel = this.viewCtrl.data.feeLevel;
+    this.feeUnit = this.checkIfUtxo() ? 'sat/byte' : 'Gwei';
 
     // IF usingCustomFee
     this.customFeePerKB = this.viewCtrl.data.customFeePerKB
@@ -100,6 +102,10 @@ export class ChooseFeeLevelPage {
     });
   }
 
+  private checkIfUtxo(): boolean {
+    return !!UTXO_COINS[this.coin.toUpperCase()];
+  }
+
   public updateFeeRate() {
     let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == this.feeLevel;
@@ -110,7 +116,8 @@ export class ChooseFeeLevelPage {
       this.customFeePerKB = null;
       this.feePerSatByte = (value.feePerKb / 1000).toFixed();
       let avgConfirmationTime = value.nbBlocks * 10;
-      if (!UTXO_COINS[this.coin.toUpperCase()]) {
+      if (!this.checkIfUtxo()) {
+        this.feePerSatByte = (value.feePerKb / 1e9).toFixed();
         avgConfirmationTime = value.nbBlocks * 0.2;
       }
       this.avgConfirmationTime = avgConfirmationTime;
@@ -165,7 +172,9 @@ export class ChooseFeeLevelPage {
 
   public ok(): void {
     this.customFeePerKB = this.customFeePerKB
-      ? (this.customSatPerByte * 1000).toFixed()
+      ? this.checkIfUtxo()
+        ? (this.customSatPerByte * 1000).toFixed()
+        : (this.customSatPerByte * 1e9).toFixed()
       : null;
     this.viewCtrl.dismiss({
       newFeeLevel: this.feeLevel,
