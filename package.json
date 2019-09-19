@@ -126,7 +126,7 @@
     "cordova-android": "8.1.0",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "https://github.com/cmgustavo/cordova-custom-config.git#3a1902fb700dc8c1e9ac9db592aa48d7d900cde0",
-    "cordova-ios": "4.5.5",
+    "cordova-ios": "5.0.1",
     "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "1.7.2",
     "cordova-plugin-advanced-http": "2.0.8",
