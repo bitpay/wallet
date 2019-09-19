@@ -518,7 +518,7 @@ export class ConfirmPage extends WalletTabsChild {
           if (sendMaxInfo) {
             this.logger.debug('Send max info', sendMaxInfo);
 
-            if (sendMaxInfo.amount == 0) {
+            if (sendMaxInfo.amount <= 0) {
               this.showErrorInfoSheet(
                 this.translate.instant('Not enough funds for fee')
               );

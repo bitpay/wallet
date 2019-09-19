@@ -120,6 +120,10 @@ export class IncomingDataProvider {
   }
 
   private isValidEthereumAddress(data: string): boolean {
+    const uri = data.indexOf('ethereum:') > -1 ? true : false;
+    if (uri) {
+      data = this.sanitizeEthereumUri(data);
+    }
     return !!this.bwcProvider
       .getCore()
       .Validation.validateAddress('ETH', 'livenet', data);
@@ -327,12 +331,13 @@ export class IncomingDataProvider {
     }
   }
 
-  private handlePlainEthereumAddress(
-    data: string,
-    redirParams?: RedirParams
-  ): void {
-    this.logger.debug('Incoming-data: Ethereum plain address');
+  private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ethereum address');
     const coin = Coin.ETH;
+    const uri = data.indexOf('ethereum:') > -1 ? true : false;
+    if (uri) {
+      data = this.sanitizeEthereumUri(data);
+    }
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -490,9 +495,9 @@ export class IncomingDataProvider {
       this.handlePlainBitcoinCashAddress(data, redirParams);
       return true;
 
-      // Plain Address (Ethereum)
+      // Address/Uri (Ethereum)
     } else if (this.isValidEthereumAddress(data)) {
-      this.handlePlainEthereumAddress(data, redirParams);
+      this.handleEthereumAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -656,6 +661,20 @@ export class IncomingDataProvider {
     } else {
       return;
     }
+  }
+
+  private sanitizeEthereumUri(data): string {
+    let address = data;
+    const ethereum = /ethereum:/;
+    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
+    const gas = /[\?\&]gas=(\d+([\,\.]\d+)?)/i;
+    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
+    const gasLimit = /[\?\&]gasLimit=(\d+([\,\.]\d+)?)/i;
+    const params = [ethereum, value, gas, gasPrice, gasLimit];
+    for (const key of params) {
+      address = address.replace(key, '');
+    }
+    return address;
   }
 
   private sanitizeUri(data): string {

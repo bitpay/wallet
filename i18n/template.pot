@@ -425,6 +425,9 @@ msgstr ""
 msgid "Coin"
 msgstr ""
 
+msgid "{coinName} Address"
+msgstr ""
+
 msgid "Completed"
 msgstr ""
 
@@ -771,6 +774,9 @@ msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
+msgstr ""
+
+msgid "Enter custom fee in {feeUnit}"
 msgstr ""
 
 msgid "Enter email address"
