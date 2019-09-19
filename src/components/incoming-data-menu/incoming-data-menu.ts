@@ -17,9 +17,9 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public data: string;
   public type: string;
   public coin: string;
+  public coinName: string;
   public fromHomeCard: boolean;
   public isCordova: boolean;
-  public coinName = CoinName;
 
   constructor(private platformProvider: PlatformProvider) {
     super();
@@ -31,6 +31,7 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
     this.data = this.params.data.data;
     this.type = this.params.data.type;
     this.coin = this.params.data.coin;
+    this.coinName = CoinName[this.coin.toUpperCase()];
     this.fromHomeCard = this.params.data.fromHomeCard;
     if (this.type === 'url') {
       this.https = this.data.indexOf('https://') === 0 ? true : false;

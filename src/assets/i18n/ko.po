@@ -389,6 +389,9 @@ msgstr "닫기"
 msgid "Coin"
 msgstr "코인"
 
+msgid "{coinName} Address"
+msgstr "{coinName} 주소"
+
 msgid "Completed"
 msgstr "완료됨"
 
@@ -724,6 +727,9 @@ msgstr "비트코인 주소를 입력해주세요"
 
 msgid "Enter custom fee in sat/byte"
 msgstr "사용자 지정 수수료를 sat/byte단위로 입력해주세요"
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "사용자 지정 수수료를 {feeUnit}단위로 입력해주세요"
 
 msgid "Enter email address"
 msgstr "이메일 주소를 입력해주세요"
