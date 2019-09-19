@@ -389,6 +389,9 @@ msgstr "Sluiten"
 msgid "Coin"
 msgstr "Valuta"
 
+msgid "{coinName} Address"
+msgstr "{coinName} Adres"
+
 msgid "Completed"
 msgstr "Voltooid"
 
@@ -723,6 +726,9 @@ msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
+msgstr ""
+
+msgid "Enter custom fee in {feeUnit}"
 msgstr ""
 
 msgid "Enter email address"
