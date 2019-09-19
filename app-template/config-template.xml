@@ -53,7 +53,7 @@
 
     <!-- Supported Platforms -->
     <engine name="android" spec="7.1.4" />
-    <engine name="ios" spec="4.5.5" />
+    <engine name="ios" spec="5.0.1" />
 
     <!-- Plugins -->
     <plugin name="cordova-plugin-advanced-http" spec="2.0.8" />
