@@ -389,6 +389,9 @@ msgstr "Cerrar"
 msgid "Coin"
 msgstr "Moneda"
 
+msgid "{coinName} Address"
+msgstr "Dirección {coinName}"
+
 msgid "Completed"
 msgstr "Terminadas"
 
@@ -724,6 +727,9 @@ msgstr "Ingrese una dirección bitcoin"
 
 msgid "Enter custom fee in sat/byte"
 msgstr "Ingresar comisión en sat/byte"
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "Ingresar comisión en {feeUnit}"
 
 msgid "Enter email address"
 msgstr "Ingrese la dirección de correo electrónico"

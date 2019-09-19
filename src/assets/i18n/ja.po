@@ -390,6 +390,9 @@ msgstr "閉じる"
 msgid "Coin"
 msgstr "別通貨切り替え"
 
+msgid "{coinName} Address"
+msgstr "{coinName} ンアドレス"
+
 msgid "Completed"
 msgstr "完了"
 
@@ -724,6 +727,9 @@ msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
+msgstr ""
+
+msgid "Enter custom fee in {feeUnit}"
 msgstr ""
 
 msgid "Enter email address"
