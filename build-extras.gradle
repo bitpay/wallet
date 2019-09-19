@@ -6,4 +6,4 @@ ext.postBuildExtras =
     compileSdkVersion 28
   }
 }
-ext.cdvMinSdkVersion = 23
+ext.cdvMinSdkVersion = 28
