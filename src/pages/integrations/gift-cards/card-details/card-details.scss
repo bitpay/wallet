@@ -23,14 +23,16 @@ card-details-page {
 
   .card-image {
     img {
+      background: white;
       position: relative;
       z-index: 1;
       max-width: 82%;
       height: auto;
       width: 265px;
+      min-height: 130px;
     }
 
-    + .actions-wrapper {
+    +.actions-wrapper {
       margin-top: 55px;
     }
   }
@@ -116,7 +118,7 @@ card-details-page {
       margin-bottom: 0 !important;
       margin-top: 8px !important;
 
-      & + div.card-info__body {
+      &+div.card-info__body {
         margin-top: 0;
 
         &.long {
