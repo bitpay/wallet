@@ -120,10 +120,6 @@ export class IncomingDataProvider {
   }
 
   private isValidEthereumAddress(data: string): boolean {
-    const uri = data.indexOf('ethereum:') > -1 ? true : false;
-    if (uri) {
-      data = this.sanitizeEthereumUri(data);
-    }
     return !!this.bwcProvider
       .getCore()
       .Validation.validateAddress('ETH', 'livenet', data);
@@ -256,6 +252,28 @@ export class IncomingDataProvider {
     else this.goSend(address, amount, message, coin);
   }
 
+  private handleEthereumUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ethereum URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.ETH;
+    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
+    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
+    const parsedAmount = value.exec(data)[1];
+    const requiredFeeParam = gasPrice.exec(data)[1];
+    const address = this.bwcProvider
+      .getCore()
+      .Validation.get('ETH')
+      .sanitizeEthereumUri(data);
+    const message = '';
+    const amount = parsedAmount || amountFromRedirParams;
+    if (amount) {
+      this.goSend(address, amount, message, coin, requiredFeeParam);
+    } else {
+      this.handleEthereumAddress(address);
+    }
+  }
+
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
     const coin = Coin.BCH;
@@ -334,10 +352,6 @@ export class IncomingDataProvider {
   private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Ethereum address');
     const coin = Coin.ETH;
-    const uri = data.indexOf('ethereum:') > -1 ? true : false;
-    if (uri) {
-      data = this.sanitizeEthereumUri(data);
-    }
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -497,7 +511,11 @@ export class IncomingDataProvider {
 
       // Address/Uri (Ethereum)
     } else if (this.isValidEthereumAddress(data)) {
-      this.handleEthereumAddress(data, redirParams);
+      if (data.indexOf('ethereum:') > -1) {
+        this.handleEthereumUri(data, redirParams);
+      } else {
+        this.handleEthereumAddress(data, redirParams);
+      }
       return true;
 
       // Coinbase
@@ -663,20 +681,6 @@ export class IncomingDataProvider {
     }
   }
 
-  private sanitizeEthereumUri(data): string {
-    let address = data;
-    const ethereum = /ethereum:/;
-    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
-    const gas = /[\?\&]gas=(\d+([\,\.]\d+)?)/i;
-    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
-    const gasLimit = /[\?\&]gasLimit=(\d+([\,\.]\d+)?)/i;
-    const params = [ethereum, value, gas, gasPrice, gasLimit];
-    for (const key of params) {
-      address = address.replace(key, '');
-    }
-    return address;
-  }
-
   private sanitizeUri(data): string {
     // Fixes when a region uses comma to separate decimals
     let regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -724,14 +728,16 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: Coin
+    coin: Coin,
+    requiredFeeRate?: string
   ): void {
     if (amount) {
       let stateParams = {
         amount,
         toAddress: addr,
         description: message,
-        coin
+        coin,
+        requiredFeeRate
       };
       let nextView = {
         name: 'ConfirmPage',
