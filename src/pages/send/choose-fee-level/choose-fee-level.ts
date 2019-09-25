@@ -14,8 +14,10 @@ import { UTXO_COINS } from '../../../providers/wallet/wallet';
   templateUrl: 'choose-fee-level.html'
 })
 export class ChooseFeeLevelPage {
+  private blockTime: number;
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
+  private feeUnitAmount: number;
   public feeUnit: string;
   public maxFeeRecommended: number;
   public minFeeRecommended: number;
@@ -54,7 +56,7 @@ export class ChooseFeeLevelPage {
     this.network = this.viewCtrl.data.network;
     this.coin = this.viewCtrl.data.coin;
     this.feeLevel = this.viewCtrl.data.feeLevel;
-    this.feeUnit = this.checkIfUtxo() ? 'sat/byte' : 'Gwei';
+    this.setFeeUnits();
 
     // IF usingCustomFee
     this.customFeePerKB = this.viewCtrl.data.customFeePerKB
@@ -102,8 +104,20 @@ export class ChooseFeeLevelPage {
     });
   }
 
-  private checkIfUtxo(): boolean {
-    return !!UTXO_COINS[this.coin.toUpperCase()];
+  private setFeeUnits() {
+    const COIN = this.coin.toUpperCase();
+    switch (COIN) {
+      case UTXO_COINS[COIN]:
+        this.feeUnit = 'sat/byte';
+        this.feeUnitAmount = 1000;
+        this.blockTime = 10;
+        break;
+      default:
+        this.feeUnit = 'Gwei';
+        this.feeUnitAmount = 1e9;
+        this.blockTime = 0.2;
+        break;
+    }
   }
 
   public updateFeeRate() {
@@ -114,17 +128,17 @@ export class ChooseFeeLevelPage {
     // If no custom fee
     if (value) {
       this.customFeePerKB = null;
-      this.feePerSatByte = (value.feePerKb / 1000).toFixed();
-      let avgConfirmationTime = value.nbBlocks * 10;
-      if (!this.checkIfUtxo()) {
-        this.feePerSatByte = (value.feePerKb / 1e9).toFixed();
-        avgConfirmationTime = value.nbBlocks * 0.2;
-      }
+      this.feePerSatByte = (value.feePerKb / this.feeUnitAmount).toFixed();
+      let avgConfirmationTime = value.nbBlocks * this.blockTime;
       this.avgConfirmationTime = avgConfirmationTime;
     } else {
       this.avgConfirmationTime = null;
-      this.customSatPerByte = Number(this.feePerSatByte);
-      this.customFeePerKB = (+this.feePerSatByte * 1000).toFixed();
+      this.customSatPerByte = this.customFeePerKB
+        ? Number(this.customFeePerKB) / this.feeUnitAmount
+        : Number(this.feePerSatByte);
+      this.customFeePerKB = (
+        +this.feePerSatByte * this.feeUnitAmount
+      ).toFixed();
     }
 
     // Warnings
@@ -151,14 +165,16 @@ export class ChooseFeeLevelPage {
     let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == 'superEconomy';
     });
-    return parseInt((value.feePerKb / 1000).toFixed(), 10);
+
+    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
     let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == 'urgent';
     });
-    return parseInt((value.feePerKb / 1000).toFixed(), 10);
+
+    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
   }
 
   public checkFees(feePerSatByte: string): void {
@@ -172,9 +188,7 @@ export class ChooseFeeLevelPage {
 
   public ok(): void {
     this.customFeePerKB = this.customFeePerKB
-      ? this.checkIfUtxo()
-        ? (this.customSatPerByte * 1000).toFixed()
-        : (this.customSatPerByte * 1e9).toFixed()
+      ? (this.customSatPerByte * this.feeUnitAmount).toFixed()
       : null;
     this.viewCtrl.dismiss({
       newFeeLevel: this.feeLevel,
