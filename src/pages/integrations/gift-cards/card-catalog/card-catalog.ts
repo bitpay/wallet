@@ -117,7 +117,7 @@ export class CardCatalogPage extends WideHeaderPage {
 }
 
 export function isCardInSearchResults(c: CardConfig, search: string = '') {
-  const cardName = c.name.toLowerCase();
+  const cardName = (c.displayName || c.name).toLowerCase();
   const query = search.toLowerCase();
   const matchableText = [cardName, stripPunctuation(cardName)];
   return search && matchableText.some(text => text.indexOf(query) > -1);
