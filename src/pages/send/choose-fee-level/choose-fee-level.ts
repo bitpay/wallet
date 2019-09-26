@@ -106,7 +106,7 @@ export class ChooseFeeLevelPage {
 
   private setFeeUnits() {
     const COIN = this.coin.toUpperCase();
-    switch (COIN) {
+    switch (this.coin) {
       case UTXO_COINS[COIN]:
         this.feeUnit = 'sat/byte';
         this.feeUnitAmount = 1000;
