@@ -551,6 +551,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public finish(skipActivationFeeAlert: boolean = false): void {
+    if (!this.allowSend) return;
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
