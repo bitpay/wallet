@@ -602,50 +602,22 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       if (!tx.sendMax) return resolve();
 
-      if (!UTXO_COINS[wallet.coin.toUpperCase()]) {
-        this.onGoingProcessProvider.set('retrievingGasLimit');
-        const { coin, network } = wallet;
-        const gasOpts = {
-          coin,
-          network,
-          to: tx.toAddress,
-          gasPrice: tx.feeRate
-        };
-        this.walletProvider
-          .getEstimateGas(wallet, gasOpts)
-          .then(gasLimit => {
-            this.onGoingProcessProvider.clear();
-            const gas = gasLimit * tx.feeRate;
-            const amount = this.navParams.data.amount - gas;
-            const sendMaxInfo = {
-              gas,
-              amount
-            };
-            return resolve(sendMaxInfo);
-          })
-          .catch(err => {
-            this.onGoingProcessProvider.clear();
-            this.logger.warn('Error getting gas limit', err);
-            return reject(err);
-          });
-      } else {
-        this.onGoingProcessProvider.set('retrievingInputs');
-        this.walletProvider
-          .getSendMaxInfo(wallet, {
-            feePerKb: tx.feeRate,
-            excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
-            returnInputs: true
-          })
-          .then(res => {
-            this.onGoingProcessProvider.clear();
-            return resolve(res);
-          })
-          .catch(err => {
-            this.onGoingProcessProvider.clear();
-            this.logger.warn('Error getting send max info', err);
-            return reject(err);
-          });
-      }
+      this.onGoingProcessProvider.set('retrievingInputs');
+      this.walletProvider
+        .getSendMaxInfo(wallet, {
+          feePerKb: tx.feeRate,
+          excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
+          returnInputs: true
+        })
+        .then(res => {
+          this.onGoingProcessProvider.clear();
+          return resolve(res);
+        })
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          this.logger.warn('Error getting send max info', err);
+          return reject(err);
+        });
     });
   }
 
