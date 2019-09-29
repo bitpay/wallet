@@ -1120,9 +1120,6 @@ export class WalletProvider {
         txp,
         password
       );
-      if (!UTXO_COINS[txp.coin.toUpperCase()]) {
-        return resolve(signatures);
-      }
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
@@ -1146,49 +1143,23 @@ export class WalletProvider {
 
       if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      if (!txp.signatures && !UTXO_COINS[txp.coin.toUpperCase()]) {
-        wallet.removeTxProposal(txp, err => {
-          if (err) {
+
+      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+        if (err) {
+          if (_.isArrayBuffer(err)) {
+            const enc = new encoding.TextDecoder();
+            err = enc.decode(err);
+            this.removeTx(wallet, txp);
+            return reject(err);
+          } else {
             return reject(err);
           }
-          wallet.broadcastRawTx(txp, (err, broadcastedTxp) => {
-            if (err) {
-              if (_.isArrayBuffer(err)) {
-                const enc = new encoding.TextDecoder();
-                err = enc.decode(err);
-                this.removeTx(wallet, txp);
-                return reject(err);
-              } else {
-                return reject(err);
-              }
-            }
-            const { transactionHash } = broadcastedTxp;
-            broadcastedTxp.txid = transactionHash
-              ? transactionHash
-              : broadcastedTxp.txid;
-            this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-            return resolve(broadcastedTxp);
-          });
-        });
-      } else {
-        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-          if (err) {
-            if (_.isArrayBuffer(err)) {
-              const enc = new encoding.TextDecoder();
-              err = enc.decode(err);
-              this.removeTx(wallet, txp);
-              return reject(err);
-            } else {
-              return reject(err);
-            }
-          }
+        }
 
-          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-          if (memo) this.logger.info('Memo: ', memo);
-
-          return resolve(broadcastedTxp);
-        });
-      }
+        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+        if (memo) this.logger.info('Memo: ', memo);
+        return resolve(broadcastedTxp);
+      });
     });
   }
 
