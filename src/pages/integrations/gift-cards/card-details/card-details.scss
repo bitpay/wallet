@@ -23,11 +23,14 @@ card-details-page {
 
   .card-image {
     img {
+      background: white;
       position: relative;
       z-index: 1;
       max-width: 82%;
       height: auto;
       width: 265px;
+      min-height: 130px;
+      min-width: 210px;
     }
 
     + .actions-wrapper {
