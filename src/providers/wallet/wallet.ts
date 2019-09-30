@@ -1143,7 +1143,6 @@ export class WalletProvider {
 
       if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-
       wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
         if (err) {
           if (_.isArrayBuffer(err)) {
