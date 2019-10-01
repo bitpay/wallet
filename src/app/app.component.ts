@@ -417,10 +417,11 @@ export class CopayApp {
     const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
     if (lastUrl && lastUrl !== '') {
       delete (window as any).handleOpenURL_LastURL;
+      // Important delay to have all views loaded before process URL
       setTimeout(() => {
         this.logger.info('App was opened by custom url scheme');
         this.handleOpenUrl(lastUrl);
-      }, 0);
+      }, 2000);
     }
   }
 
