@@ -12,7 +12,6 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { Coin } from '../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
@@ -207,8 +206,7 @@ export class SendPage extends WalletTabsChild {
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
       if (parsedData && parsedData.type == 'PayPro') {
-        const coin: string =
-          this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+        const coin = this.incomingDataProvider.getCoinFromUri(parsedData.data);
         this.incomingDataProvider
           .getPayProDetails(this.search)
           .then(payProDetails => {

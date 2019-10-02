@@ -10,7 +10,11 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { Coin, WalletProvider } from '../../../providers/wallet/wallet';
+import {
+  Coin,
+  UTXO_COINS,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -91,8 +95,15 @@ export class CustomAmountPage {
         );
       }
 
-      this.qrAddress =
-        (protoAddr ? protoAddr : this.address) + '?amount=' + this.amountCoin;
+      if (UTXO_COINS[this.wallet.coin.toUpperCase()]) {
+        this.qrAddress =
+          (protoAddr ? protoAddr : this.address) + '?amount=' + this.amountCoin;
+      } else {
+        this.qrAddress =
+          (protoAddr ? protoAddr : this.address) +
+          '?value=' +
+          parsedAmount.amountSat;
+      }
     });
   }
 

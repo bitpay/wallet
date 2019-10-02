@@ -31,7 +31,7 @@
     alt="Coin"
     src="assets/img/icon-btc-small.svg" />
   <img
-    *ngIf="validDataFromClipboard.type === 'EthereumAddress'"
+    *ngIf="validDataFromClipboard.type === 'EthereumAddress' || validDataFromClipboard.type === 'EthereumUri'"
     alt="Coin"
     src="assets/img/icon-eth-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
