@@ -84,11 +84,12 @@
     <plugin name="cordova-plugin-vibration" spec="3.1.0" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
     <plugin name="cordova-custom-config" spec="https://github.com/cmgustavo/cordova-custom-config.git#3a1902fb700dc8c1e9ac9db592aa48d7d900cde0" />
-    <plugin name="cordova-plugin-customurlscheme-ng" spec="6.0.0">
+    <plugin name="cordova-plugin-customurlscheme-ng" spec="7.0.0">
       <variable name="URL_SCHEME" value="bitcoin" />
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
       <variable name="FOURTH_URL_SCHEME" value="bchtest" />
+      <variable name="FIFTH_URL_SCHEME" value="ethereum" />
       <variable name="ANDROID_SCHEME" value="" />
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />

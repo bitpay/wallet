@@ -132,7 +132,7 @@
     "cordova-plugin-advanced-http": "2.0.8",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-customurlscheme-ng": "6.0.0",
+    "cordova-plugin-customurlscheme-ng": "7.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-fcm-ng": "5.0.1",
@@ -236,6 +236,7 @@
         "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
+        "FIFTH_URL_SCHEME": "ethereum",
         "ANDROID_SCHEME": "",
         "ANDROID_HOST": "",
         "ANDROID_PATHPREFIX": ""
