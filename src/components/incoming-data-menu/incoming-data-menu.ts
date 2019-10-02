@@ -5,7 +5,10 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 enum CoinName {
   BTC = 'Bitcoin',
   BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
+  ETH = 'Ethereum',
+  USDC = 'USD Coin',
+  PAX = 'Paxos Standard',
+  GUSD = 'Gemini Dollar'
 }
 
 @Component({

@@ -70,8 +70,17 @@ export class WalletAddressesPage {
         doNotVerify: true
       })
       .then(allAddresses => {
+        const { token } = this.wallet.credentials;
+        let balanceOpts = {};
+
+        if (token) {
+          balanceOpts = {
+            tokenAddress: token.address
+          };
+        }
+
         this.walletProvider
-          .getBalance(this.wallet, {})
+          .getBalance(this.wallet, balanceOpts)
           .then(resp => {
             this.withBalance = resp.byAddress;
 

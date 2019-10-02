@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { AddressProvider } from '../../../providers/address/address';
+import { AddressProvider, ERC20 } from '../../../providers/address/address';
 import { Logger } from '../../../providers/logger/logger';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -180,7 +180,9 @@ export class TransferToPage {
     network: string;
   }): boolean {
     return this._wallet
-      ? this._wallet.coin === recipient.coin &&
+      ? ERC20[this._wallet.coin.toUpperCase()]
+        ? 'eth' === recipient.coin && this._wallet.network === recipient.network
+        : this._wallet.coin === recipient.coin &&
           this._wallet.network === recipient.network
       : true;
   }

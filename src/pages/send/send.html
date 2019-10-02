@@ -50,7 +50,7 @@
         </ion-item>
       </div>
 
-      <div *ngIf="wallet.coin !== 'eth'" class="card">
+      <div *ngIf="wallet.coin === 'btc' || wallet.coin === 'bch'" class="card">
         <ion-item-divider class="title">
           <span translate>Transfer to Multiple Recipients</span>
         </ion-item-divider>

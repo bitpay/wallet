@@ -20,6 +20,7 @@ import { CoinName } from '../send';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { ERC20 } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -201,7 +202,10 @@ export class ConfirmPage extends WalletTabsChild {
     this.tx = {
       toAddress: this.navParams.data.toAddress,
       sendMax: this.navParams.data.useSendMax ? true : false,
-      amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
+      amount:
+        this.navParams.data.useSendMax && !this.checkIfToken()
+          ? 0
+          : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       payProUrl: this.navParams.data.payProUrl,
@@ -216,7 +220,8 @@ export class ConfirmPage extends WalletTabsChild {
         ? this.navParams.data.network
         : networkName,
       coin: this.navParams.data.coin,
-      txp: {}
+      txp: {},
+      tokenAddress: this.navParams.data.tokenAddress
     };
     this.tx.origToAddress = this.tx.toAddress;
 
@@ -268,6 +273,12 @@ export class ConfirmPage extends WalletTabsChild {
     this.amount = this.decimalPipe.transform(
       this.tx.amount / this.coinOpts[this.coin].unitToSatoshi,
       '1.2-6'
+    );
+  }
+
+  public checkIfToken() {
+    return !!(
+      ERC20[this.coin.toUpperCase()] && this.navParams.data.tokenAddress
     );
   }
 
@@ -477,7 +488,7 @@ export class ConfirmPage extends WalletTabsChild {
           }
 
           // call getSendMaxInfo if was selected from amount view
-          if (tx.sendMax) {
+          if (tx.sendMax && !this.checkIfToken()) {
             this.useSendMax(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -746,6 +757,17 @@ export class ConfirmPage extends WalletTabsChild {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null
         };
+      }
+
+      if (tx.tokenAddress) {
+        txp.tokenAddress = tx.tokenAddress;
+        txp.data = this.bwcProvider
+          .getCore()
+          .Transactions.get({ chain: 'ERC20' })
+          .encodeData({
+            recipients: [{ address: tx.toAddress, amount: tx.amount }],
+            tokenAddress: tx.tokenAddress
+          });
       }
 
       this.walletProvider

@@ -7,6 +7,15 @@ import { RateProvider } from '../rate/rate';
 
 import * as _ from 'lodash';
 
+enum Coin {
+  BTC = 'btc',
+  BCH = 'bch',
+  ETH = 'eth',
+  USDC = 'usdc',
+  PAX = 'pax',
+  GUSD = 'gusd'
+}
+
 @Injectable()
 export class TxFormatProvider {
   private bitcoreCash;
@@ -169,12 +178,7 @@ export class TxFormatProvider {
     let amountSat;
 
     // If fiat currency
-    if (
-      currency != 'BCH' &&
-      currency != 'BTC' &&
-      currency != 'ETH' &&
-      currency != 'sat'
-    ) {
+    if (!Coin[currency] && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -183,13 +187,11 @@ export class TxFormatProvider {
     } else if (currency == 'sat') {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
-      // convert sat to BTC or BCH
       amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
-      // convert unit to BTC or BCH
       amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     }

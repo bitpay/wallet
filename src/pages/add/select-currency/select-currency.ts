@@ -6,9 +6,11 @@ import * as _ from 'lodash';
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
+import { TokenMap } from './token-map';
 
 // providers
 import {
+  ActionSheetProvider,
   BwcErrorProvider,
   Logger,
   OnGoingProcessProvider,
@@ -24,12 +26,18 @@ import { UTXO_COINS } from '../../../providers/wallet/wallet';
   templateUrl: 'select-currency.html'
 })
 export class SelectCurrencyPage {
+  public wallets;
+  public walletsEth;
   public title: string;
   public coin: string;
   public isOnboardingFlow: boolean;
   public coinsSelected;
+  public tokensSelected;
+  public tokenList;
+  private tokenMap = TokenMap;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private logger: Logger,
     private navParam: NavParams,
@@ -47,11 +55,21 @@ export class SelectCurrencyPage {
       bch: true,
       eth: true
     };
+    this.tokensSelected = {
+      usdc: false,
+      pax: false,
+      gusd: false
+    };
+    this.tokenList = Object.keys(this.tokenMap).map(
+      token => this.tokenMap[token]
+    );
+    this.setWallets();
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SelectCurrencyPage');
-    this.isOnboardingFlow = this.navParam.data.isOnboardingFlow;
+    this.isOnboardingFlow =
+      this.navCtrl.getPrevious().name === 'HomePage' ? true : false;
     this.title = this.isOnboardingFlow
       ? this.translate.instant('Select currencies')
       : this.translate.instant('Select currency');
@@ -69,8 +87,63 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage);
   }
 
+  public setWallets(): void {
+    this.wallets = this.navParam.data.keyId
+      ? this.profileProvider.getWalletsFromGroup({
+        keyId: this.navParam.data.keyId
+      })
+      : [];
+    this.walletsEth = this.wallets.filter(wallet => wallet.coin == 'eth');
+  }
+
+  public showWalletSelector(token) {
+    const tokenWalletIds = this.wallets
+      .filter(wallet => wallet.coin === token.symbol.toLowerCase())
+      .map(wallet => wallet.id);
+    const availableWallets = this.wallets.filter(
+      wallet =>
+        !tokenWalletIds.includes(`${wallet.id}-${token.address}`) &&
+        wallet.coin === 'eth'
+    );
+    // 1 ETH wallet only
+    if (availableWallets.length === 1) {
+      this.addTokenWallet(availableWallets[0], token);
+    } else {
+      const walletSelector = this.actionSheetProvider.createInfoSheet(
+        'addTokenWallet',
+        {
+          wallets: availableWallets
+        }
+      );
+      walletSelector.present();
+      walletSelector.onDidDismiss(wallet => {
+        if (!_.isEmpty(wallet)) this.addTokenWallet(wallet, token);
+      });
+    }
+  }
+
+  private async addTokenWallet(wallet, token) {
+    const { name, symbol } = token;
+    const { credentials } = _.cloneDeep(wallet);
+    credentials.walletName = name;
+    credentials.coin = symbol.toLowerCase();
+    credentials.token = token;
+    await this.profileProvider.loadAndBindProfile(credentials);
+    this.endProcess(wallet);
+  }
+
+  private createTokenWallet(wallet, selectedTokens) {
+    const addTokens = this.tokenList.filter(token =>
+      selectedTokens.includes(token.symbol.toLowerCase())
+    );
+    for (const token of addTokens) {
+      this.addTokenWallet(wallet, token);
+    }
+  }
+
   public createWallet(coins: string[]): void {
     coins = _.keys(_.pickBy(this.coinsSelected));
+    const selectedTokens = _.keys(_.pickBy(this.tokensSelected));
     const opts = {
       coin: coins[0],
       singleAddress: UTXO_COINS[coins[0].toUpperCase()] ? false : true
@@ -78,6 +151,9 @@ export class SelectCurrencyPage {
     this.onGoingProcessProvider.set('creatingWallet');
     this.createDefaultWallet(false, opts)
       .then(wallet => {
+        if (wallet.coin === 'eth' && selectedTokens) {
+          this.createTokenWallet(wallet, selectedTokens);
+        }
         if (coins.length === 1) this.endProcess(wallet);
         else {
           const promises = [];
@@ -93,6 +169,9 @@ export class SelectCurrencyPage {
           Promise.all(promises)
             .then(wallets =>
               wallets.forEach(wallet => {
+                if (wallet.coin === 'eth' && selectedTokens) {
+                  this.createTokenWallet(wallet, selectedTokens);
+                }
                 this.endProcess(wallet);
               })
             )

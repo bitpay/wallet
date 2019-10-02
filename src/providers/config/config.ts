@@ -8,6 +8,9 @@ export interface CoinOpts {
   btc: Partial<Config['wallet']['settings']>;
   bch: Partial<Config['wallet']['settings']>;
   eth: Partial<Config['wallet']['settings']>;
+  usdc: Partial<Config['wallet']['settings']>;
+  pax: Partial<Config['wallet']['settings']>;
+  gusd: Partial<Config['wallet']['settings']>;
 }
 
 export interface Config {
@@ -136,6 +139,24 @@ export class ConfigProvider {
         unitToSatoshi: 1e18,
         unitDecimals: 18,
         unitCode: 'eth'
+      },
+      usdc: {
+        unitName: 'USDC',
+        unitToSatoshi: 1e6,
+        unitDecimals: 6,
+        unitCode: 'USDC'
+      },
+      pax: {
+        unitName: 'PAX',
+        unitToSatoshi: 1e18,
+        unitDecimals: 18,
+        unitCode: 'Pax'
+      },
+      gusd: {
+        unitName: 'GUSD',
+        unitToSatoshi: 1e2,
+        unitDecimals: 2,
+        unitCode: 'GUSD'
       }
     };
     this.configDefault = {

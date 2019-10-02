@@ -9,12 +9,18 @@ export interface RatesObj {
   btc: {};
   bch: {};
   eth: {};
+  usdc: {};
+  pax: {};
+  gusd: {};
 }
 
 export interface RatesAvailable {
   btc: boolean;
   bch: boolean;
   eth: boolean;
+  usdc: boolean;
+  pax: boolean;
+  gusd: boolean;
 }
 
 @Injectable()
@@ -27,7 +33,10 @@ export class RateProvider {
   private rateServiceUrl = {
     btc: env.ratesAPI.btc,
     bch: env.ratesAPI.bch,
-    eth: env.ratesAPI.eth
+    eth: env.ratesAPI.eth,
+    usdc: env.ratesAPI.usdc,
+    pax: env.ratesAPI.pax,
+    gusd: env.ratesAPI.gusd
   };
   private fiatRateAPIUrl = 'https://bws.bitpay.com/bws/api/v1/fiatrates';
 
@@ -40,18 +49,33 @@ export class RateProvider {
     this.rates = {
       btc: {},
       bch: {},
-      eth: {}
+      eth: {},
+      usdc: {
+        USD: 1
+      },
+      pax: {
+        USD: 1
+      },
+      gusd: {
+        USD: 1
+      }
     };
     this.alternatives = [];
     this.coinOpts = this.configProvider.getCoinOpts();
     this.ratesAvailable = {
       btc: false,
       bch: false,
-      eth: false
+      eth: false,
+      usdc: false,
+      pax: false,
+      gusd: false
     };
     this.updateRates('btc');
     this.updateRates('bch');
     this.updateRates('eth');
+    this.updateRates('usdc');
+    this.updateRates('pax');
+    this.updateRates('gusd');
   }
 
   public updateRates(chain: string): Promise<any> {

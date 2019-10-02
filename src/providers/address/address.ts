@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
 
+export enum ERC20 {
+  USDC = 'usdc',
+  PAX = 'pax',
+  GUSD = 'gusd'
+}
+
 @Injectable()
 export class AddressProvider {
   private bitcore;
@@ -87,6 +93,9 @@ export class AddressProvider {
     network: string,
     str: string
   ): boolean {
+    if (ERC20[coin.toUpperCase()]) {
+      coin = 'eth';
+    }
     if (this.isValid(str)) {
       const address = this.extractAddress(str);
       return this.getCoin(address) == coin &&

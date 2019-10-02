@@ -119,6 +119,24 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'addTokenWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
+      <span sheet-title-text translate>Select Ethereum Wallet</span>
+      <span *ngIf="params.wallets && params.wallets[0]" sheet-text>Which Ethereum wallet would you like this token to use for gas?</span>
+      <span *ngIf="!params.wallets[0]" sheet-text>No Ethereum Wallets Available</span>
+      <span sheet-text>
+        <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets[0]">
+          <ion-list>
+            <div>
+              <button ion-item class="list-button" *ngFor="let wallet of params.wallets" (click)="optionClicked(wallet)">
+                <wallet-item-content [wallet]="wallet"></wallet-item-content>
+              </button>
+            </div>
+          </ion-list>
+        </div>
+      </span>
+      <span sheet-button-text translate>Go Back</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
       <span *ngIf="!params.error" sheet-title-text class="truncate">
         <span translate>Copied</span>: {{params.invoiceUrl}}

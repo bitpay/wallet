@@ -28,7 +28,10 @@ import { Profile } from '../../models/profile/profile.model';
 enum CoinName {
   BTC = 'Bitcoin',
   BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
+  ETH = 'Ethereum',
+  USDC = 'USD Coin',
+  PAX = 'Paxos Standard',
+  GUSD = 'Gemini Dollar'
 }
 
 interface WalletGroups {
@@ -1023,6 +1026,8 @@ export class ProfileProvider {
       );
     }
 
+    const { token } = credentials;
+
     // Create the client
     const getBWSURL = (walletId: string) => {
       const config = this.configProvider.get();
@@ -1045,6 +1050,13 @@ export class ProfileProvider {
       this.runValidation(walletClient, 500);
     }
 
+    if (token) {
+      walletClient.credentials.token = token;
+      walletClient.credentials.walletId = `${credentials.walletId}-${
+        token.address
+      }`;
+    }
+
     return this.bindWalletClient(walletClient);
   }
 
@@ -1060,7 +1072,7 @@ export class ProfileProvider {
     });
   }
 
-  public loadAndBindProfile(): Promise<any> {
+  public loadAndBindProfile(credentials?): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getProfile()
@@ -1070,6 +1082,23 @@ export class ProfileProvider {
           }
 
           this.profile = Profile.fromObj(profile);
+
+          if (credentials && credentials.token) {
+            const tokenWallet = this.profile.credentials.find(
+              oldCredentials =>
+                oldCredentials.coin == credentials.token.symbol.toLowerCase() &&
+                oldCredentials.walletId == credentials.walletId
+            );
+            if (!tokenWallet) {
+              this.logger.info(`Adding Token ${credentials.token.symbol}`);
+              this.profile.credentials.push(credentials);
+              this.profile.dirty = true;
+              this.storeProfileIfDirty();
+            } else {
+              return resolve();
+            }
+          }
+
           // Deprecated: storageService.tryToMigrate
           this.logger.info('Profile loaded');
 

@@ -1,5 +1,6 @@
 <wide-header-page title="{{title}}">
   <div page-content *ngIf="!isOnboardingFlow">
+    <span class="list-subtitle" translate>Featured Currencies</span>
     <ion-list class="settings-list bp-list">
       <button class="list-button" ion-item (click)="goToCreateWallet('btc')">
         <ion-icon item-start>
@@ -13,17 +14,27 @@
         </ion-icon>
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
-      <button
-        *ngIf="!navParam.data.isShared"
-        class="list-button"
-        ion-item
-        (click)="goToCreateWallet('eth')"
-      >
-        <ion-icon item-start>
-          <img src="assets/img/currencies/eth.svg" />
-        </ion-icon>
-        <div class="item-title">Ethereum (ETH)</div>
-      </button>
+      <div *ngIf="!navParam.data.isShared">
+        <button class="list-button" ion-item (click)="goToCreateWallet('eth')">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/eth.svg" />
+          </ion-icon>
+          <div class="item-title">Ethereum (ETH)</div>
+        </button>
+        <span class="list-subtitle" translate>Tokens</span>
+        <button
+          *ngFor="let token of tokenList"
+          class="list-button"
+          [disabled]="!wallets || !walletsEth[0]"
+          ion-item
+          (click)="showWalletSelector(token)"
+        >
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+          </ion-icon>
+          <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
+        </button>
+      </div>
     </ion-list>
   </div>
   <div page-content *ngIf="isOnboardingFlow">
@@ -43,13 +54,25 @@
         <ion-label class="item-title">Bitcoin Cash (BCH)</ion-label>
         <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="!navParam.data.isShared" class="list-button">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/eth.svg" />
-        </ion-icon>
-        <ion-label class="item-title">Ethereum (ETH)</ion-label>
-        <ion-toggle [(ngModel)]="coinsSelected.eth"></ion-toggle>
-      </ion-item>
+      <div *ngIf="!navParam.data.isShared">
+        <ion-item class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/eth.svg" />
+          </ion-icon>
+          <ion-label class="item-title">Ethereum (ETH)</ion-label>
+          <ion-toggle [(ngModel)]="coinsSelected.eth"></ion-toggle>
+        </ion-item>
+        <span class="list-subtitle" translate>Tokens</span>
+        <ion-item *ngFor="let token of tokenList" class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+          </ion-icon>
+          <ion-label class="item-title">
+            {{ token.name }} ({{ token.symbol }})
+          </ion-label>
+          <ion-toggle [(ngModel)]="tokensSelected[token.symbol.toLowerCase()]" [disabled]="!coinsSelected.eth"></ion-toggle>
+        </ion-item>
+      </div>
     </ion-list>
     <div class="bottom-absolute">
       <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallet()">

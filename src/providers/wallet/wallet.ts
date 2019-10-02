@@ -31,7 +31,10 @@ export interface HistoryOptionsI {
 export enum Coin {
   BTC = 'btc',
   BCH = 'bch',
-  ETH = 'eth'
+  ETH = 'eth',
+  USDC = 'usdc',
+  PAX = 'pax',
+  GUSD = 'gusd'
 }
 
 export enum UTXO_COINS {
@@ -84,6 +87,8 @@ export interface TransactionProposal {
   feePerKb: number;
   feeLevel: string;
   dryRun: boolean;
+  data?: string;
+  tokenAddress?: string;
 }
 
 @Injectable()
@@ -362,7 +367,15 @@ export class WalletProvider {
           }
 
           tries = tries || 0;
-          wallet.getStatus({}, (err, status) => {
+          let statusOpts = {};
+          const { token } = wallet.credentials;
+          if (token) {
+            statusOpts = {
+              tokenAddress: token.address
+            };
+          }
+
+          wallet.getStatus(statusOpts, (err, status) => {
             if (err) {
               if (err instanceof this.errors.NOT_AUTHORIZED) {
                 return reject('WALLET_NOT_REGISTERED');
@@ -475,8 +488,17 @@ export class WalletProvider {
 
   public getAddress(wallet, forceNew: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
+      let walletId = wallet.id;
+
+      if (wallet.credentials.token) {
+        walletId = wallet.id.replace(
+          `-${wallet.credentials.token.address}`,
+          ''
+        );
+      }
+
       this.persistenceProvider
-        .getLastAddress(wallet.id)
+        .getLastAddress(walletId)
         .then((addr: string) => {
           if (addr) {
             // prevent to show legacy address
@@ -495,7 +517,7 @@ export class WalletProvider {
           this.createAddress(wallet)
             .then(_addr => {
               this.persistenceProvider
-                .storeLastAddress(wallet.id, _addr)
+                .storeLastAddress(walletId, _addr)
                 .then(() => {
                   return resolve(_addr);
                 })
@@ -596,26 +618,29 @@ export class WalletProvider {
         shouldContinue: res.length >= limit
       };
 
-      wallet.getTxHistory(
-        {
-          skip,
-          limit
-        },
-        (err: Error, txsFromServer) => {
-          if (err) return reject(err);
+      const txOpts = {
+        skip,
+        limit
+      };
 
-          if (_.isEmpty(txsFromServer)) return resolve(result);
+      if (wallet && wallet.credentials.token) {
+        txOpts['tokenAddress'] = wallet.credentials.token.address;
+      }
 
-          res = _.takeWhile(txsFromServer, tx => {
-            return tx.txid != endingTxid;
-          });
+      wallet.getTxHistory(txOpts, (err: Error, txsFromServer) => {
+        if (err) return reject(err);
 
-          result.res = res;
-          result.shouldContinue = res.length >= limit;
+        if (_.isEmpty(txsFromServer)) return resolve(result);
 
-          return resolve(result);
-        }
-      );
+        res = _.takeWhile(txsFromServer, tx => {
+          return tx.txid != endingTxid;
+        });
+
+        result.res = res;
+        result.shouldContinue = res.length >= limit;
+
+        return resolve(result);
+      });
     });
   }
 
@@ -630,6 +655,7 @@ export class WalletProvider {
       const LIMIT = 100;
       let requestLimit = FIRST_LIMIT;
       const walletId = wallet.credentials.walletId;
+
       WalletProvider.progressFn[walletId] = progressFn || (() => {});
       let foundLimitTx: any = [];
 
@@ -1681,10 +1707,10 @@ export class WalletProvider {
   public getProtocolHandler(coin: string, network?: string): string {
     if (coin == 'bch') {
       return network == 'testnet' ? 'bchtest' : 'bitcoincash';
-    } else if (coin == 'eth') {
-      return 'ethereum';
-    } else {
+    } else if (coin == 'btc') {
       return 'bitcoin';
+    } else {
+      return 'ethereum';
     }
   }
 

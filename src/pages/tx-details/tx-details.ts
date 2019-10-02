@@ -7,6 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { ERC20 } from '../../providers/address/address';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FilterProvider } from '../../providers/filter/filter';
@@ -87,7 +88,9 @@ export class TxDetailsPage {
       : true;
 
     let defaults = this.configProvider.getDefaults();
-    this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
+    this.blockexplorerUrl = this.checkIfToken()
+      ? defaults.blockExplorerUrl['eth']
+      : defaults.blockExplorerUrl[this.wallet.coin];
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then(res => {
       this.txNotification = {
@@ -104,6 +107,10 @@ export class TxDetailsPage {
 
   ionViewWillUnload() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+  }
+
+  checkIfToken() {
+    return !!ERC20[this.wallet.coin.toUpperCase()];
   }
 
   private bwsEventHandler: any = (_, type: string, n) => {

@@ -253,6 +253,30 @@ export class AmountPage extends WalletTabsChild {
       });
     }
 
+    if (parentWalletCoin === 'usdc' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'USD Coin',
+        id: 'usdc',
+        shortName: 'USDC'
+      });
+    }
+
+    if (parentWalletCoin === 'pax' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Paxos Standard',
+        id: 'pax',
+        shortName: 'PAX'
+      });
+    }
+
+    if (parentWalletCoin === 'gusd' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Gemini Dollar',
+        id: 'gusd',
+        shortName: 'GUSD'
+      });
+    }
+
     this.unitIndex = 0;
 
     if (this.navParams.data.coin) {
@@ -575,7 +599,11 @@ export class AmountPage extends WalletTabsChild {
         coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
-        cardName: this.cardName
+        cardName: this.cardName,
+        tokenAddress:
+          this.wallet && this.wallet.credentials.token
+            ? this.wallet.credentials.token.address
+            : ''
       };
     } else {
       let amount = _amount;
@@ -591,7 +619,11 @@ export class AmountPage extends WalletTabsChild {
         color: this.color,
         coin,
         useSendMax: this.useSendMax,
-        description: this.description
+        description: this.description,
+        tokenAddress:
+          this.wallet && this.wallet.credentials.token
+            ? this.wallet.credentials.token.address
+            : ''
       };
 
       if (unit.isFiat) {

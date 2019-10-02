@@ -22,7 +22,10 @@ import { MultiSendPage } from './multi-send/multi-send';
 export enum CoinName {
   BTC = 'Bitcoin',
   BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
+  ETH = 'Ethereum',
+  USDC = 'USD Coin',
+  PAX = 'Paxos Standard',
+  GUSD = 'Gemini Dollar'
 }
 
 @Component({
@@ -115,7 +118,10 @@ export class SendPage extends WalletTabsChild {
     this.scannerOpened = true;
     this.walletTabsProvider.setSendParams({
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin,
+      token: this.wallet.credentials.token
+        ? this.wallet.credentials.token.address
+        : ''
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
     this.events.publish('ScanFromWallet');
@@ -159,7 +165,10 @@ export class SendPage extends WalletTabsChild {
   private redir() {
     this.incomingDataProvider.redir(this.search, {
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin,
+      token: this.wallet.credentials.token
+        ? this.wallet.credentials.token.address
+        : ''
     });
     this.search = '';
   }

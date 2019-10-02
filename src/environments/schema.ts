@@ -9,6 +9,9 @@ export interface EnvironmentSchema {
     btc: string;
     bch: string;
     eth: string;
+    usdc: string;
+    pax: string;
+    gusd: string;
   };
   activateScanner: boolean;
 }

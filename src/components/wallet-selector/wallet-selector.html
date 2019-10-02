@@ -56,5 +56,51 @@
       </div>
     </ion-list>
   </div>
+
+  <div *ngIf="walletsUsdc && walletsUsdc[0]">
+      <ion-item-divider>
+        <div class="title">
+          <span translate>USD Coin Wallets</span>
+        </div>
+      </ion-item-divider>
+  
+      <ion-list>
+        <button ion-item detail-none *ngFor="let wallet of walletsUsdc" (click)="optionClicked(wallet)">
+          <wallet-item-content [wallet]="wallet"></wallet-item-content>
+        </button>
+      </ion-list>
+    </div>
+  
+    <div *ngIf="walletsPax && walletsPax[0]">
+      <ion-item-divider>
+        <div class="title">
+          <span translate>Paxos Standard Wallets</span>
+        </div>
+      </ion-item-divider>
+  
+      <ion-list>
+        <div>
+          <button ion-item detail-none *ngFor="let wallet of walletsPax" (click)="optionClicked(wallet)">
+            <wallet-item-content [wallet]="wallet"></wallet-item-content>
+          </button>
+        </div>
+      </ion-list>
+    </div>
+  
+    <div *ngIf="walletsGusd && walletsGusd[0]">
+      <ion-item-divider>
+        <div class="title">
+          <span translate>Gemini Dollar Wallets</span>
+        </div>
+      </ion-item-divider>
+  
+      <ion-list>
+        <div>
+          <button ion-item detail-none *ngFor="let wallet of walletsGusd" (click)="optionClicked(wallet)">
+            <wallet-item-content [wallet]="wallet"></wallet-item-content>
+          </button>
+        </div>
+      </ion-list>
+    </div>
   <ion-item-divider></ion-item-divider>
 </action-sheet>

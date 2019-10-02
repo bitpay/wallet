@@ -19,6 +19,7 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
+  token?: string;
   fromHomeCard?: boolean;
 }
 
