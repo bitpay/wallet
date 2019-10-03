@@ -23,7 +23,7 @@
 </ion-list>
 <action-card *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
   <div action-card-body>
-    <img class="gift-card-brands" src="assets/img/gift-cards/gift-cards.png">
+    <img class="gift-card-brands" src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png">
     <div class="discount-wrapper">
       <div *ngIf="discountedCard" class="gift-card-featured-discount"
         (click)="$event.stopPropagation(); buyCard(discountedCard.name, 'Home Buy Gift Cards Discount Label')" tappable

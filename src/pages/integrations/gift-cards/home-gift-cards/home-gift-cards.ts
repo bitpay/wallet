@@ -58,6 +58,7 @@ export class HomeGiftCards implements OnInit {
   public appName: string;
   public discountedCard: CardConfig;
   public hideDiscount: boolean = false;
+  public primaryCatalogCurrency: string = 'usd';
   public disableArchiveAnimation: boolean = true; // Removes flicker on iOS when returning to home tab
 
   @Input('scrollArea')
@@ -85,6 +86,9 @@ export class HomeGiftCards implements OnInit {
 
   async getDiscountedCard(): Promise<CardConfig> {
     const availableCards = await this.giftCardProvider.getAvailableCards();
+    this.primaryCatalogCurrency = availableCards[0]
+      ? availableCards[1].currency.toLowerCase()
+      : 'usd';
     return availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
   }
 
