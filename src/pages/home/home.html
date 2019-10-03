@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
+    <ion-buttons left class="add-button" *ngIf="wallets && wallets[0]">
+      <button ion-button clear (click)="addWallet()" class="add">
+        <img src="assets/img/add-wallet/add-wallet.svg" />
+      </button>
+    </ion-buttons>
     <ion-title>
       <img class="home-logo" src="assets/img/app/logo.svg" />
     </ion-title>
