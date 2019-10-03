@@ -43,6 +43,7 @@ export class SendPage extends WalletTabsChild {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
+    'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri'
   ];
