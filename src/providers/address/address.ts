@@ -110,7 +110,7 @@ export class AddressProvider {
 
   public extractAddress(str: string): string {
     const extractedAddress = str
-      .replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '')
+      .replace(/^(bitcoincash:|bchtest:|bitcoin:|ethereum:)/i, '')
       .replace(/\?.*/, '');
     return extractedAddress;
   }
@@ -139,6 +139,8 @@ export class AddressProvider {
         if (AddressCash.isValid(uriAddress, 'livenet')) return true;
         if (AddressCash.isValid(uriAddress, 'testnet')) return true;
       }
+    } else if (/^ethereum:/i.test(str)) {
+      if (AddressEth.validateUri('ETH', str)) return true;
     }
 
     // Regular Address: try Bitcoin and Bitcoin Cash
