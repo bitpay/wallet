@@ -78,16 +78,12 @@ export class HomeGiftCards implements OnInit {
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
     await this.initGiftCards();
-    this.discountedCard = await this.getDiscountedCard();
+    const availableCards = await this.giftCardProvider.getAvailableCards();
+    this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
+    this.discountedCard = availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
     this.hideDiscount = await this.persistenceProvider.getHideGiftCardDiscountItem();
     await timer(3000).toPromise();
     this.giftCardProvider.preloadImages();
-  }
-
-  async getDiscountedCard(): Promise<CardConfig> {
-    const availableCards = await this.giftCardProvider.getAvailableCards();
-    this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
-    return availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
   }
 
   public buyGiftCards() {
