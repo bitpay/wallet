@@ -87,7 +87,7 @@ export class HomeGiftCards implements OnInit {
   async getDiscountedCard(): Promise<CardConfig> {
     const availableCards = await this.giftCardProvider.getAvailableCards();
     this.primaryCatalogCurrency = availableCards[0]
-      ? availableCards[1].currency.toLowerCase()
+      ? availableCards[0].currency.toLowerCase()
       : 'usd';
     return availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
   }
