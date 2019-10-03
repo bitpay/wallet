@@ -80,7 +80,9 @@ export class HomeGiftCards implements OnInit {
     await this.initGiftCards();
     const availableCards = await this.giftCardProvider.getAvailableCards();
     this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
-    this.discountedCard = availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
+    this.discountedCard = availableCards.find(cardConfig =>
+      hasVisibleDiscount(cardConfig)
+    );
     this.hideDiscount = await this.persistenceProvider.getHideGiftCardDiscountItem();
     await timer(3000).toPromise();
     this.giftCardProvider.preloadImages();
