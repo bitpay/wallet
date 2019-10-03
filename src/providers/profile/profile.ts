@@ -326,7 +326,6 @@ export class ProfileProvider {
 
         // use wallets name for wallets group name at migration
         name = `Key ${Object.keys(walletsGroups).indexOf(keyId) + 1}`;
-        this.setWalletGroupName(keyId, name);
       }
     } else {
       keyId = 'read-only';
