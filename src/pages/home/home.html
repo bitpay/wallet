@@ -102,7 +102,17 @@
     <div class="section-header" *ngIf="walletsGroups && walletsGroups.length > 0" translate>Wallets</div>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <ion-list class="sliding-container wallets">
+      <div class="section-header" *ngIf="walletGroup[0].canSign">
+        {{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}
+        <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
+          <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
+          <span class="collapse-btn">
+            <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
+            <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
+          </span>
+        </div>
+      </div>
+      <ion-list class="sliding-container wallets" [ngClass]="{'collapsed': isCollapsed(walletGroup[0].keyId)}">
         <div *ngFor="let wallet of walletGroup" class="wallet-wrapper">
           <ion-item-sliding #slidingItem>
             <button [ngStyle]="{'border-color': allowMultiplePrimaryWallets ? '#dae7f8' : '#edeef3'}" ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
