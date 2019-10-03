@@ -86,9 +86,7 @@ export class HomeGiftCards implements OnInit {
 
   async getDiscountedCard(): Promise<CardConfig> {
     const availableCards = await this.giftCardProvider.getAvailableCards();
-    this.primaryCatalogCurrency = availableCards[0]
-      ? availableCards[0].currency.toLowerCase()
-      : 'usd';
+    this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
     return availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
   }
 
@@ -221,6 +219,15 @@ export class HomeGiftCards implements OnInit {
       )
       .sort((a, b) => sortByDisplayName(a[0], b[0]));
   }
+}
+
+export function getPrimaryCatalogCurrency(availableCards: CardConfig[]) {
+  const homeLogoCollageSupportedCurrencies = ['usd', 'gbp'];
+  const firstBrandCurrency =
+    availableCards[0] && availableCards[0].currency.toLowerCase();
+  return homeLogoCollageSupportedCurrencies.indexOf(firstBrandCurrency) > -1
+    ? firstBrandCurrency
+    : 'usd';
 }
 
 export const HOME_GIFT_CARD_COMPONENTS = [HomeGiftCards, GiftCardItem];
