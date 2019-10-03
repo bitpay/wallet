@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
+import { AddPage } from '../add/add';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
@@ -840,5 +841,12 @@ export class HomePage {
 
   public isCollapsed(keyId: string): boolean {
     return this.collapsedGroups[keyId] ? true : false;
+  }
+  
+  public addWallet(): void {
+    // TODO
+    this.navCtrl.push(AddPage, {
+      isOnboardingFlow: true
+    });
   }
 }
