@@ -843,7 +843,7 @@ export class HomePage {
   public isCollapsed(keyId: string): boolean {
     return this.collapsedGroups[keyId] ? true : false;
   }
-  
+
   public addWallet(): void {
     let keyId;
     const compatibleKeyWallets = _.values(
