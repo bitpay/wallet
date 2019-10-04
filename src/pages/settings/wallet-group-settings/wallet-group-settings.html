@@ -16,8 +16,8 @@
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
         <expandable-header-primary>
           <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-          <span *ngIf="!canSign">{{'Read Only Key' | translate}}</span>
-          <div class="subtitle" *ngIf="wallets">
+          <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
+          <div class="subtitle" *ngIf="wallets && canSign">
             This key contains {{wallets.length}} wallets.
           </div>
         </expandable-header-primary>
@@ -27,7 +27,7 @@
   <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
     <span label-tip-title translate>No Private Key</span>
     <div label-tip-body translate>
-      A Read Only Key doesn't include the private key.
+      Read Only wallets don't include the private key.
     </div>
   </label-tip>
 
