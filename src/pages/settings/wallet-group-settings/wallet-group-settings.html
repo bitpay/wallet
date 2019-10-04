@@ -3,7 +3,7 @@
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-        <span *ngIf="!canSign">{{'Read Only Key' | translate}}</span>
+        <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
       </div>
     </ion-title>
     <ng-content select="[right]"></ng-content>
