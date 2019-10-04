@@ -6,7 +6,6 @@ import { JoinWalletPage } from '../add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../add/select-currency/select-currency';
 
 // providers
-import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -18,31 +17,19 @@ import * as _ from 'lodash';
 })
 export class AddWalletPage {
   public walletsGroups;
-  public allowMultiplePrimaryWallets: boolean;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private navParams: NavParams,
-    private configProvider: ConfigProvider
+    private navParams: NavParams
   ) {
-    const config = this.configProvider.get();
-
     const opts = {
       canAddNewAccount: true,
       showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
-
-    const opts2 = {
-      showHidden: true
-    };
-    const wallets2 = this.profileProvider.getWallets(opts2);
-    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
-    this.allowMultiplePrimaryWallets =
-      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   ionViewDidLoad() {
