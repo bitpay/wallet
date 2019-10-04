@@ -325,16 +325,8 @@ export class ProfileProvider {
         delete walletsGroups['read-only'];
 
         // use wallets name for wallets group name at migration
-        name = `Key ${Object.keys(walletsGroups).indexOf(keyId) + 1}`;
+        name = `Group ${Object.keys(walletsGroups).indexOf(keyId) + 1}`;
         this.setWalletGroupName(keyId, name);
-      } else if (name.match(/^Group \d+/)) {
-        const newName = name.replace('Group', 'Key');
-        this.logger.debug(
-          'Renaming wallets group from ' + name + ' to ' + newName
-        );
-        setTimeout(() => {
-          this.setWalletGroupName(keyId, newName);
-        }, 100);
       }
     } else {
       keyId = 'read-only';

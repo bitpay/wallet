@@ -490,8 +490,7 @@ page-home {
   .collapsed {
     height: 2px;
     border-bottom: 1px #eae9e9 solid;
-    margin-left: 2.6rem;
-    margin-right: 2.6rem;
+    margin: 0 2.6rem 2rem 2.6rem;
 
     .item-wrapper {
       height: 0;
@@ -569,7 +568,6 @@ page-home {
 
     &.wallets {
       button.item.item-block {
-        border-left: 8px solid;
         div.item-inner {
           display: flex;
           align-items: center;
