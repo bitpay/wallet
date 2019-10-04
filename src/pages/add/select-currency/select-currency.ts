@@ -26,8 +26,9 @@ import { UTXO_COINS } from '../../../providers/wallet/wallet';
 export class SelectCurrencyPage {
   public title: string;
   public coin: string;
-  public isOnboardingFlow: boolean;
   public coinsSelected;
+  public isOnboardingFlow: boolean;
+  public isZeroState: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -52,7 +53,8 @@ export class SelectCurrencyPage {
   ionViewDidLoad() {
     this.logger.info('Loaded: SelectCurrencyPage');
     this.isOnboardingFlow = this.navParam.data.isOnboardingFlow;
-    this.title = this.isOnboardingFlow
+    this.isZeroState = this.navParam.data.isZeroState;
+    this.title = this.isZeroState
       ? this.translate.instant('Select currencies')
       : this.translate.instant('Select currency');
   }

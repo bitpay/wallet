@@ -2,4 +2,7 @@ page-add-wallet {
   .settings-icon.item-img {
     opacity: 0.5;
   }
+  .button-default {
+    color: color($colors, dark);
+  }
 }
