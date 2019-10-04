@@ -66,7 +66,7 @@ const Keys = {
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  WALLET_GROUP_NAME: keyId => `Key-${keyId}`
+  WALLET_GROUP_NAME: keyId => `Group-${keyId}`
 };
 
 interface Storage {

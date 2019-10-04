@@ -1,29 +1,10 @@
-<ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="headerColor">
-    <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-        <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
-      </div>
-    </ion-title>
-    <ng-content select="[right]"></ng-content>
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="canSign">{{'Wallet Key Settings' | translate}}</ion-title>
+    <ion-title *ngIf="!canSign">{{'Read Only Wallets' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
-  <div class="wrapper">
-    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
-        <expandable-header-primary>
-          <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-          <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
-          <div class="subtitle" *ngIf="wallets && canSign">
-            This key contains {{wallets.length}} wallets.
-          </div>
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
-
+<ion-content>
   <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
     <span label-tip-title translate>No Private Key</span>
     <div label-tip-body translate>
@@ -33,13 +14,13 @@
 
   <ion-list class="settings-list bp-list">
     <button ion-item (click)="openWalletGroupName()">
-      <div translate float-left>Key Name</div>
+      <div translate float-left>Name</div>
       <ion-note item-end>
         {{walletsGroup?.name}}
       </ion-note>
     </button>
 
-    <ion-item-divider class="bp-list-title" *ngIf="canSign">{{'Wallets' | translate}}
+    <ion-item-divider class="bp-list-title" *ngIf="canSign">{{'Wallets using this key' | translate}}
       <button class="reorder-option" ion-button item-end icon-only clear *ngIf="!showReorder && wallets?.length > 1" (click)="reorder()">
         <img src="assets/img/sort.svg">
       </button>
@@ -63,7 +44,7 @@
         <ion-icon class="item-img settings-icon" item-start>
           <div class="icon-plus"></div>
         </ion-icon>
-        <ion-label translate>Create a new wallet</ion-label>
+        <ion-label translate>Add Wallet</ion-label>
       </button>
     </ion-list>
     <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)" *ngIf="showReorder">
@@ -118,5 +99,4 @@
       <span translate>Delete</span>
     </button>
   </ion-list>
-  </div>
 </ion-content>
