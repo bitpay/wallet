@@ -63,7 +63,6 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
-  public allowMultiplePrimaryWallets: boolean;
 
   public showRateCard: boolean;
   public showPriceChart: boolean;
@@ -73,6 +72,7 @@ export class HomePage {
   public accessDenied: boolean;
   public isBlur: boolean;
   public isCordova: boolean;
+  public collapsedGroups;
 
   private isElectron: boolean;
   private zone;
@@ -107,6 +107,7 @@ export class HomePage {
     this.isBlur = false;
     this.isCordova = this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
+    this.collapsedGroups = {};
     // Update Wallet on Focus
     if (this.isElectron) {
       this.updateDesktopOnFocus();
@@ -359,10 +360,6 @@ export class HomePage {
     this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
       keyId: 'read-only'
     });
-
-    this.allowMultiplePrimaryWallets =
-      this.profileProvider.isMultiplePrimaryEnabled() ||
-      this.walletsGroups.length > 1;
 
     this.profileProvider.setLastKnownBalance();
 
@@ -836,5 +833,13 @@ export class HomePage {
 
   public settings(): void {
     this.navCtrl.push(SettingsPage);
+  }
+
+  public collapseGroup(keyId: string) {
+    this.collapsedGroups[keyId] = this.collapsedGroups[keyId] ? false : true;
+  }
+
+  public isCollapsed(keyId: string): boolean {
+    return this.collapsedGroups[keyId] ? true : false;
   }
 }
