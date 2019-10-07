@@ -6,6 +6,7 @@ import { BuyCardPage } from '../buy-card/buy-card';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import {
+  getDisplayNameSortValue,
   GiftCardProvider,
   hasVisibleDiscount
 } from '../../../../providers/gift-card/gift-card';
@@ -46,7 +47,7 @@ export class CardCatalogPage extends WideHeaderPage {
       .getAvailableCards()
       .then(allCards => {
         this.cardConfigMap = allCards
-          .sort((a, b) => (a.featured && !b.featured ? -1 : 1))
+          .sort(sortByFeaturedAndAlphabetically)
           .reduce(
             (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
             {}
@@ -125,4 +126,14 @@ export function isCardInSearchResults(c: CardConfig, search: string = '') {
 
 export function stripPunctuation(text: string) {
   return text.replace(/[^\w\s]|_/g, '');
+}
+
+export function sortByFeaturedAndAlphabetically(a: CardConfig, b: CardConfig) {
+  return getCatalogSortValue(a) > getCatalogSortValue(b) ? 1 : -1;
+}
+
+export function getCatalogSortValue(cardConfig: CardConfig) {
+  return `${cardConfig.featured ? 'a' : 'b'}${getDisplayNameSortValue(
+    cardConfig.displayName
+  )}`;
 }
