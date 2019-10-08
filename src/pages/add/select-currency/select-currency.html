@@ -13,12 +13,7 @@
         </ion-icon>
         <div class="item-title">Bitcoin Cash (BCH)</div>
       </button>
-      <button
-        *ngIf="!navParam.data.isShared"
-        class="list-button"
-        ion-item
-        (click)="goToCreateWallet('eth')"
-      >
+      <button *ngIf="!navParam.data.isShared" class="list-button" ion-item (click)="goToCreateWallet('eth')">
         <ion-icon item-start>
           <img src="assets/img/currencies/eth.svg" />
         </ion-icon>
@@ -26,38 +21,40 @@
       </button>
     </ion-list>
   </div>
-  <div page-content *ngIf="isZeroState">
+  <div page-content *ngIf="isZeroState" class="zero-page">
     <span class="list-subtitle" translate>Featured Currencies</span>
-    <ion-list class="settings-list bp-list">
-      <ion-item class="list-button">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/btc.svg" />
-        </ion-icon>
-        <ion-label class="item-title">Bitcoin (BTC)</ion-label>
-        <ion-toggle [(ngModel)]="coinsSelected.btc"></ion-toggle>
-      </ion-item>
-      <ion-item class="list-button">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/bch.svg" />
-        </ion-icon>
-        <ion-label class="item-title">Bitcoin Cash (BCH)</ion-label>
-        <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
-      </ion-item>
-      <ion-item *ngIf="!navParam.data.isShared" class="list-button">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/eth.svg" />
-        </ion-icon>
-        <ion-label class="item-title">Ethereum (ETH)</ion-label>
-        <ion-toggle [(ngModel)]="coinsSelected.eth"></ion-toggle>
-      </ion-item>
-    </ion-list>
-    <div class="bottom-absolute">
-      <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallet()">
-        {{'Create' | translate}}
-      </button>
-      <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
-        {{ 'Import existing wallet' | translate }}
-      </button>
+    <div class="flex-content">
+      <ion-list class="settings-list bp-list">
+        <ion-item class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/btc.svg" />
+          </ion-icon>
+          <ion-label class="item-title">Bitcoin (BTC)</ion-label>
+          <ion-toggle [(ngModel)]="coinsSelected.btc"></ion-toggle>
+        </ion-item>
+        <ion-item class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/bch.svg" />
+          </ion-icon>
+          <ion-label class="item-title">Bitcoin Cash (BCH)</ion-label>
+          <ion-toggle [(ngModel)]="coinsSelected.bch"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="!navParam.data.isShared" class="list-button">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/eth.svg" />
+          </ion-icon>
+          <ion-label class="item-title">Ethereum (ETH)</ion-label>
+          <ion-toggle [(ngModel)]="coinsSelected.eth"></ion-toggle>
+        </ion-item>
+      </ion-list>
+      <div>
+        <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallet()">
+          {{'Create' | translate}}
+        </button>
+        <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
+          {{ 'Import existing wallet' | translate }}
+        </button>
+      </div>
     </div>
   </div>
 </wide-header-page>
