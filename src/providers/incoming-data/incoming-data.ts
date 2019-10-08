@@ -70,7 +70,7 @@ export class IncomingDataProvider {
   }
 
   private isValidBitPayInvoice(data: string): boolean {
-    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\/\w+/.exec(data);
+    return !!/^https:\/\/(www.)?(test.)?bitpay.com\/i\/\w+/.exec(data);
   }
 
   private isValidBitcoinUri(data: string): boolean {
@@ -197,7 +197,7 @@ export class IncomingDataProvider {
     const testStr: boolean =
       data.indexOf('test.bitpay.com') > -1 ? true : false;
     const invoiceId: string = data.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+      /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
       ''
     );
     this.invoiceProvider.credentials.NETWORK = testStr
