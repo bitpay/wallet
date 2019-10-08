@@ -277,10 +277,7 @@ export class BitPayCardTopUpPage {
   private createTx(wallet, invoice, message: string): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
-      let payProUrl =
-        invoice && invoice.paymentCodes
-          ? invoice.paymentCodes[COIN].BIP73
-          : null;
+      const payProUrl = COIN == 'eth' ? invoice.paymentCodes[COIN].BIP73 : invoice.paymentCodes[COIN].EIP681;
 
       if (!payProUrl) {
         return reject({

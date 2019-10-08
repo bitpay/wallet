@@ -153,8 +153,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-      ? this.buyerProvidedEmail
-      : await this.getEmail();
+        ? this.buyerProvidedEmail
+        : await this.getEmail();
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -206,7 +206,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-    this.initialize(wallet).catch(() => {});
+    this.initialize(wallet).catch(() => { });
   }
 
   ionViewWillLeave() {
@@ -273,7 +273,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-          this.invoiceId
+        this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
@@ -344,8 +344,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
 
   public async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const payProUrl =
-      invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
+    const payProUrl = COIN == 'eth' ? invoice.paymentCodes[COIN].BIP73 : invoice.paymentCodes[COIN].EIP681;
 
     if (!payProUrl) {
       throw {
