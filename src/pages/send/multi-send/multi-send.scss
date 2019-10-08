@@ -16,7 +16,7 @@ page-multi-send {
         padding-left: 1rem;
       }
       .coin-icon {
-        width: 15px;
+        width: 12px;
       }
     }
   }
@@ -63,9 +63,12 @@ page-multi-send {
       font-size: 15px;
       font-weight: 500;
     }
-    .open-modal-icon img {
-      width: 25px;
-      height: 25px;
+    .open-modal-icon {
+      cursor: pointer;
+      img {
+        width: 25px;
+        height: 25px;
+      }
     }
   }
   .search-wrapper {
