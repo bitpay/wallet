@@ -9,6 +9,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
+import { IncomingDataProvider } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
@@ -74,6 +75,7 @@ export class BitPayCardTopUpPage {
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
+    public incomingDataProvider: IncomingDataProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
@@ -277,10 +279,11 @@ export class BitPayCardTopUpPage {
   private createTx(wallet, invoice, message: string): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
-      let payProUrl =
-        invoice && invoice.paymentCodes
+      const paymentCode =
+        COIN !== 'ETH'
           ? invoice.paymentCodes[COIN].BIP73
-          : null;
+          : invoice.paymentCodes[COIN].EIP681;
+      const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
 
       if (!payProUrl) {
         return reject({
