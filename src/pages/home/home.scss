@@ -234,6 +234,17 @@ page-home {
     font-weight: 500;
     margin-bottom: 10px;
     margin-top: 20px;
+    .key-name {
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      box-orient: vertical;
+      -webkit-box-orient: vertical;
+      margin-right: 12px;
+    }
   }
 
   .add-card-button {
@@ -473,6 +484,7 @@ page-home {
   }
 
   .collapse {
+    white-space: nowrap;
     .legacy-tag {
       color: color($colors, light-grey);
       text-transform: uppercase;
