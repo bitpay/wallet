@@ -846,16 +846,24 @@ export class IncomingDataProvider {
       return;
     }
 
+    let requiredFeeRate;
+
+    if (payProDetails.requiredFeeRate) {
+      requiredFeeRate =
+        coin === 'eth'
+          ? payProDetails.requiredFeeRate
+          : Math.ceil(payProDetails.requiredFeeRate * 1024);
+    }
+
     const stateParams = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
+      data: payProDetails.data,
       paypro: payProDetails,
       coin,
       payProUrl: url,
-      requiredFeeRate: payProDetails.requiredFeeRate
-        ? Math.ceil(payProDetails.requiredFeeRate * 1024)
-        : undefined
+      requiredFeeRate
     };
     const nextView = {
       name: 'ConfirmPage',

@@ -333,11 +333,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         service: 'giftcards'
       },
       payProUrl,
-      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
+        ? false
+        : true,
+      data: details.data // eth
     };
 
     if (details.requiredFeeRate) {
-      txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+      const requiredFeeRate =
+        wallet.coin === 'eth'
+          ? details.requiredFeeRate
+          : Math.ceil(details.requiredFeeRate * 1024);
+      txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
       txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';

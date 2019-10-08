@@ -39,6 +39,10 @@ export class BwcProvider {
     return BWC.Key;
   }
 
+  public getPayProV2() {
+    return BWC.PayProV2;
+  }
+
   public upgradeCredentialsV1(x) {
     return BWC.upgradeCredentialsV1(x);
   }
