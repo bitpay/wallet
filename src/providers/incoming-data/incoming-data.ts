@@ -747,7 +747,7 @@ export class IncomingDataProvider {
     return coin;
   }
 
-  private getPayProUrl(data: string): string {
+  public getPayProUrl(data: string): string {
     return decodeURIComponent(
       data.replace(/(bitcoin|bitcoincash|ethereum)?:\?r=/, '')
     );

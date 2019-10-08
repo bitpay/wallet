@@ -15,6 +15,7 @@ import { Logger } from '../../../../providers/logger/logger';
 import { DecimalPipe } from '@angular/common';
 import {
   FeeProvider,
+  IncomingDataProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
 } from '../../../../providers';
@@ -82,6 +83,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     configProvider: ConfigProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
+    public incomingDataProvider: IncomingDataProvider,
     private invoiceProvider: InvoiceProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     externalLinkProvider: ExternalLinkProvider,
@@ -344,8 +346,11 @@ export class ConfirmInvoicePage extends ConfirmPage {
 
   public async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const payProUrl =
-      invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
+    const paymentCode =
+      COIN !== 'ETH'
+        ? invoice.paymentCodes[COIN].BIP73
+        : invoice.paymentCodes[COIN].EIP681;
+    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
 
     if (!payProUrl) {
       throw {
