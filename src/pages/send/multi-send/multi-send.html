@@ -61,9 +61,7 @@
             </div>
 
             <div class="wallet" *ngIf="item.recipientType == 'address'">
-              <ion-icon item-left class="coin-icon">
-                <img src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin"/>
-              </ion-icon>
+              <img class="coin-icon" src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin" />
               <span class="address-divider"></span>
               <span class="ellipsis">{{item.toAddress}}</span>
             </div>
