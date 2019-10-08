@@ -204,6 +204,7 @@ export class ConfirmPage extends WalletTabsChild {
       amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
+      data: this.navParams.data.data, // eth
       payProUrl: this.navParams.data.payProUrl,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
@@ -743,6 +744,7 @@ export class ConfirmPage extends WalletTabsChild {
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
 
+      txp.data = tx.data; // eth
       if (tx.recipientType == 'wallet') {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null

@@ -63,6 +63,7 @@ export interface WalletOptions {
 
 export interface TransactionProposal {
   amount: any;
+  data?: string; // eth
   from: string;
   toAddress: any;
   outputs: Array<{
