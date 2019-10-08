@@ -466,7 +466,7 @@ export class HomePage {
             });
         } else if (this.validDataFromClipboard.type === 'InvoiceUri') {
           const invoiceId: string = data.replace(
-            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+            /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
             ''
           );
           try {
@@ -489,8 +489,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-              ? price / 1e-8
-              : price;
+                ? price / 1e-8
+                : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -611,9 +611,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
