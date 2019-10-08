@@ -211,6 +211,7 @@ export class WalletMock {
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
       amount: 1000,
+      data: 'data',
       from: 'address1',
       toAddress: 'address1',
       outputs: [
