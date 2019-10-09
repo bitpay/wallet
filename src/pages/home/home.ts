@@ -471,40 +471,48 @@ export class HomePage {
             /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
             ''
           );
-          try {
-            const invoice = await this.invoiceProvider.getBitPayInvoice(
-              invoiceId
-            );
-            const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-            const { price, currency, expirationTime, paymentTotals } = invoice;
-            let unitToSatoshi;
-            if (Coin[currency]) {
-              unitToSatoshi = this.configProvider.getCoinOpts()[
-                currency.toLowerCase()
-              ].unitToSatoshi;
-            }
-            this.payProDetailsData = invoice;
-            this.payProDetailsData.verified = true;
-            this.payProDetailsData.isFiat =
-              selectedTransactionCurrency || Coin[currency.toUpperCase()]
-                ? false
-                : true;
-            this.payProDetailsData.host = 'Bitpay';
-            this.payProDetailsData.coin = selectedTransactionCurrency
-              ? Coin[selectedTransactionCurrency]
-              : currency;
-            this.payProDetailsData.amount = selectedTransactionCurrency
-              ? paymentTotals[selectedTransactionCurrency]
-              : Coin[currency]
-              ? price / unitToSatoshi
-              : price;
-            this.clearCountDownInterval();
-            this.paymentTimeControl(expirationTime);
-          } catch (err) {
-            this.payProDetailsData = {};
-            this.payProDetailsData.error = err;
-            this.logger.warn('Error in Fetching Invoice', err);
-          }
+          this.invoiceProvider
+            .getBitPayInvoice(invoiceId)
+            .then(invoice => {
+              if (!invoice) {
+                throw this.translate.instant('No wallets available');
+              }
+              const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+              const {
+                price,
+                currency,
+                expirationTime,
+                paymentTotals
+              } = invoice;
+              let unitToSatoshi;
+              if (Coin[currency]) {
+                unitToSatoshi = this.configProvider.getCoinOpts()[
+                  currency.toLowerCase()
+                ].unitToSatoshi;
+              }
+              this.payProDetailsData = invoice;
+              this.payProDetailsData.verified = true;
+              this.payProDetailsData.isFiat =
+                selectedTransactionCurrency || Coin[currency.toUpperCase()]
+                  ? false
+                  : true;
+              this.payProDetailsData.host = 'Bitpay';
+              this.payProDetailsData.coin = selectedTransactionCurrency
+                ? Coin[selectedTransactionCurrency]
+                : currency;
+              this.payProDetailsData.amount = selectedTransactionCurrency
+                ? paymentTotals[selectedTransactionCurrency]
+                : Coin[currency]
+                ? price / unitToSatoshi
+                : price;
+              this.clearCountDownInterval();
+              this.paymentTimeControl(expirationTime);
+            })
+            .catch(err => {
+              this.payProDetailsData = {};
+              this.payProDetailsData.error = err;
+              this.logger.warn('Error in Fetching Invoice', err);
+            });
         }
         await Observable.timer(50).toPromise();
         this.slideDown = true;
