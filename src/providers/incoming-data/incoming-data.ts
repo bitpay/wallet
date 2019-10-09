@@ -207,7 +207,9 @@ export class IncomingDataProvider {
     const invoice = await this.invoiceProvider
       .getBitPayInvoice(invoiceId)
       .catch(err => {
-        return this.logger.error(err);
+        this.events.publish('incomingDataError', err);
+        this.logger.error(err);
+        return;
       });
     const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
