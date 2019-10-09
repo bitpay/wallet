@@ -21,7 +21,7 @@ builder
       ],
       protocols: {
         name: 'URL protocol schemes',
-        schemes: ['bitcoin', 'bitcoincash', 'bchtest', '*NAME*']
+        schemes: ['bitcoin', 'bitcoincash', 'bchtest', 'ethereum', '*NAME*']
       },
       mac: {
         category: 'public.app-category.finance',
