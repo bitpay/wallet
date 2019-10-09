@@ -204,23 +204,25 @@ export class IncomingDataProvider {
       ? Network.testnet
       : Network.livenet;
     this.invoiceProvider.setCredentials();
-    const invoiceResponse = await this.invoiceProvider
-      .getBitPayInvoiceData(invoiceId)
+    const invoice = await this.invoiceProvider
+      .getBitPayInvoice(invoiceId)
       .catch(err => {
-        throw this.logger.error(err);
+        return this.logger.error(err);
       });
-    const { invoice, org, buyer } = invoiceResponse;
-    const stateParams = {
-      invoiceData: invoice,
-      invoiceId,
-      invoiceName: org.name,
-      email: buyer ? buyer.email : null
-    };
-    let nextView = {
-      name: 'ConfirmInvoicePage',
-      params: stateParams
-    };
-    this.events.publish('IncomingDataRedir', nextView);
+    const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+    if (selectedTransactionCurrency) {
+      this.goToPayPro(data, selectedTransactionCurrency.toLowerCase());
+    } else {
+      const stateParams = {
+        invoiceData: invoice,
+        invoiceId
+      };
+      let nextView = {
+        name: 'ConfirmInvoicePage',
+        params: stateParams
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    }
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
