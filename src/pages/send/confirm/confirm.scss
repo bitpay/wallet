@@ -99,39 +99,35 @@ confirm-card-purchase {
       text-transform: uppercase;
     }
   }
-  @mixin row-flex {
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-  }
+
   .container-to,
   .container-from {
     .wallet,
     .payment-proposal-to {
-      @include row-flex;
-      .icon-bitcoin {
-        margin-right: 0.8rem;
-        width: 25px;
-        height: 25px;
-        padding: 2px 7px;
-        border: 1px solid color($colors, grey);
-        border-radius: $icon-border-radius;
-      }
-      .address-coppied {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      .multiple-length {
         display: flex;
-        align-items: center;
-        width: 100%;
-        border-radius: 3px;
-        background-color: rgb(248, 248, 248);
-        .text-address {
-          flex: 0 0 47px;
-          white-space: nowrap;
-          display: block;
-          img {
-            margin: 12px 0 12px 12px;
-            vertical-align: middle;
-          }
+      }
+      .coin-img {
+        &-btc,
+        &-bch {
+          width: 12px;
         }
+        &-eth {
+          width: 20px;
+        }
+      }
+      .text-address {
+        display: flex;
+        width: 25px;
+        justify-content: space-between;
+      }
+      .address-with-divider {
+        border-left: 1px solid rgb(227, 227, 227);
+        margin-left: 1rem;
+        padding-left: 1rem;
       }
     }
     &.not-clickable {
