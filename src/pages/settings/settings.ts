@@ -17,6 +17,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AddPage } from '../add/add';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -71,7 +72,8 @@ export class SettingsPage {
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private touchid: TouchIdProvider
+    private touchid: TouchIdProvider,
+    private iab: InAppBrowser
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -151,6 +153,10 @@ export class SettingsPage {
     if (!lockMethod || lockMethod == 'disabled') this.navCtrl.push(LockPage);
     if (lockMethod == 'pin') this.openPinModal('lockSetUp');
     if (lockMethod == 'fingerprint') this.checkFingerprint();
+  }
+
+  public openMerchantDirectorySite() {
+    this.iab.create(`https://bitpay.com/directory`, `_system`);
   }
 
   public openAddressBookPage(): void {
