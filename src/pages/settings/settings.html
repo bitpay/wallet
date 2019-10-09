@@ -27,8 +27,11 @@
       </ion-item-divider>
 
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon *ngIf="walletsGroup[0].canSign" class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-key.svg" width="22">
+        </ion-icon>
+        <ion-icon *ngIf="!walletsGroup[0].canSign" item-start>
+          <img src="assets/img/settings-icons/icon-read-only.svg" width="26">
         </ion-icon>
         <ion-label>
           <div *ngIf="walletsGroup[0].canSign">{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</div>
