@@ -19,6 +19,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -102,7 +103,8 @@ export class HomePage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private invoiceProvider: InvoiceProvider
+    private invoiceProvider: InvoiceProvider,
+    private configProvider: ConfigProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -470,26 +472,31 @@ export class HomePage {
             ''
           );
           try {
-            const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
+            const invoice = await this.invoiceProvider.getBitPayInvoice(
               invoiceId
             );
-            const { invoice, org } = invoiceData;
             const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
             const { price, currency, expirationTime, paymentTotals } = invoice;
+            let unitToSatoshi;
+            if (Coin[currency]) {
+              unitToSatoshi = this.configProvider.getCoinOpts()[
+                currency.toLowerCase()
+              ].unitToSatoshi;
+            }
             this.payProDetailsData = invoice;
             this.payProDetailsData.verified = true;
             this.payProDetailsData.isFiat =
               selectedTransactionCurrency || Coin[currency.toUpperCase()]
                 ? false
                 : true;
-            this.payProDetailsData.host = org.name;
+            this.payProDetailsData.host = 'Bitpay';
             this.payProDetailsData.coin = selectedTransactionCurrency
               ? Coin[selectedTransactionCurrency]
               : currency;
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-              ? price / 1e-8
+              ? price / unitToSatoshi
               : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
