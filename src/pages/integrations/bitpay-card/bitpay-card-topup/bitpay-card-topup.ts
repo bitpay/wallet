@@ -25,6 +25,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
+  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -113,10 +114,7 @@ export class BitPayCardTopUpPage {
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount;
 
-    let coin;
-    if (this.currency == 'BTC') coin = 'btc';
-    else if (this.currency == 'BCH') coin = 'bch';
-    else coin = null;
+    let coin = Coin[this.currency] ? Coin[this.currency] : null;
 
     this.bitPayCardProvider.get(
       {
@@ -342,13 +340,22 @@ export class BitPayCardTopUpPage {
             .getAddress(this.wallet, false)
             .then(address => {
               txp.from = address;
-              return this.walletProvider.createTx(wallet, txp);
+              this.walletProvider
+                .createTx(wallet, txp)
+                .then(ctxp => {
+                  return resolve(ctxp);
+                })
+                .catch(err => {
+                  return reject({
+                    title: this.translate.instant(
+                      'Could not create transaction'
+                    ),
+                    message: this.bwcErrorProvider.msg(err)
+                  });
+                });
             })
             .catch(err => {
-              return reject({
-                title: this.translate.instant('Could not create transaction'),
-                message: this.bwcErrorProvider.msg(err)
-              });
+              return reject(err);
             });
         });
     });
@@ -413,7 +420,13 @@ export class BitPayCardTopUpPage {
               });
             }
 
-            let maxAmount = Number((maxValues.amount / 100000000).toFixed(8));
+            const {
+              unitDecimals,
+              unitToSatoshi
+            } = this.configProvider.getCoinOpts()[this.wallet.coin];
+            let maxAmount = Number(
+              (maxValues.amount / unitToSatoshi).toFixed(unitDecimals)
+            );
 
             // Round to 6 digits
             maxAmount = this.toFixedTrunc(maxAmount, 6);
@@ -436,7 +449,9 @@ export class BitPayCardTopUpPage {
                 inv['minerFees'][COIN]['totalFee'] =
                   inv.minerFees[COIN].totalFee || 0;
                 let invoiceFeeSat = inv.minerFees[COIN].totalFee;
-                let maxAmountSat = Number((maxAmount * 100000000).toFixed(0));
+                let maxAmountSat = Number(
+                  (maxAmount * unitToSatoshi).toFixed(0)
+                );
                 let newAmountSat = maxAmountSat - invoiceFeeSat;
 
                 // Set expiration time for this invoice
