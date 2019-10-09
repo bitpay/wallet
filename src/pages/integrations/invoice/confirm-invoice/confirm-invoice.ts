@@ -191,7 +191,13 @@ export class ConfirmInvoicePage extends ConfirmPage {
       coin: 'bch',
       minAmount: this.invoiceData.paymentTotals['BCH']
     });
-    this.wallets = [...walletsBtc, ...walletsBch];
+    const walletsEth = this.profileProvider.getWallets({
+      onlyComplete: true,
+      network: this.network,
+      coin: 'eth',
+      minAmount: this.invoiceData.paymentTotals['ETH']
+    });
+    this.wallets = [...walletsBtc, ...walletsBch, ...walletsEth];
     this.invoiceUrl = `${BITPAY_API_URL}/invoice/${this.invoiceId}`;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
