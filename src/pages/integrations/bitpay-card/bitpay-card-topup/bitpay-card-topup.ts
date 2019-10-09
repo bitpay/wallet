@@ -338,10 +338,11 @@ export class BitPayCardTopUpPage {
             txp.outputs[0].toAddress = txp.toAddress;
           }
 
-          this.walletProvider
-            .createTx(wallet, txp)
-            .then(ctxp => {
-              return resolve(ctxp);
+          return this.walletProvider
+            .getAddress(this.wallet, false)
+            .then(address => {
+              txp.from = address;
+              return this.walletProvider.createTx(wallet, txp);
             })
             .catch(err => {
               return reject({

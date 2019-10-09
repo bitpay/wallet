@@ -362,12 +362,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
-    return this.walletProvider.createTx(wallet, txp).catch(err => {
-      throw {
-        title: this.translate.instant('Could not create transaction'),
-        message: this.bwcErrorProvider.msg(err)
-      };
-    });
+    return this.walletProvider
+      .getAddress(this.wallet, false)
+      .then(address => {
+        txp.from = address;
+        return this.walletProvider.createTx(wallet, txp);
+      })
+      .catch(err => {
+        throw {
+          title: this.translate.instant('Could not create transaction'),
+          message: this.bwcErrorProvider.msg(err)
+        };
+      });
   }
 
   private async redeemGiftCard(initialCard: GiftCard) {
