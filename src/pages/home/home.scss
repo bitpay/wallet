@@ -46,7 +46,7 @@ page-home {
     button.add {
       img {
         margin-left: 7px;
-        padding-bottom: 10px;
+        padding-bottom: 5px;
       }
     }
 
@@ -229,7 +229,7 @@ page-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: black;
+    color: #606163;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -488,12 +488,12 @@ page-home {
     .legacy-tag {
       color: color($colors, light-grey);
       text-transform: uppercase;
-      font-size: 14px;
+      font-size: 12px;
     }
     .collapse-btn {
       cursor: pointer;
       background: #edeff4;
-      padding: 0.4rem;
+      padding: 0.2rem;
       border-radius: 50px;
       margin-top: 0px;
       margin-left: 8px;
