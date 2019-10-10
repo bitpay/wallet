@@ -7,6 +7,9 @@ page-eth-live-card {
     }
     .eth-live-img {
       margin-bottom: 2rem;
+      img {
+        margin-right: -22px;
+      }
     }
     .action-card__content {
       padding-left: 20px;
