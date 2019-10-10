@@ -48,12 +48,12 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
-import { EthLiveCardPage } from './includes/eth-live-card/eth-live-card';
+import { EthLiveCardPage } from '../pages/includes/eth-live-card/eth-live-card';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
+import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
-import { SurveyCardPage } from './includes/survey-card/survey-card';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
