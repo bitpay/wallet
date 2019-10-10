@@ -49,6 +49,8 @@ export class HomePage {
   showCard;
   @ViewChild('showSurvey')
   showSurvey;
+  @ViewChild('showEthLiveCard')
+  showEthLiveCard;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -197,6 +199,7 @@ export class HomePage {
     // Required delay to improve performance loading
     setTimeout(() => {
       this.showSurveyCard();
+      this.showEthLive();
       this.checkFeedbackInfo();
       this.checkEmailLawCompliance();
     }, 2000);
@@ -375,6 +378,19 @@ export class HomePage {
   private async showSurveyCard() {
     const hideSurvey = await this.persistenceProvider.getSurveyFlag();
     this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
+  private async showEthLive() {
+    const hideEthLiveCard = await this.persistenceProvider.getEthLiveCardFlag();
+    if (!hideEthLiveCard) {
+      let hasNoLegacy = false;
+      this.walletsGroups.forEach((walletsGroup: any[]) => {
+        if (walletsGroup[0].canAddNewAccount) {
+          hasNoLegacy = true;
+        }
+      });
+      this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
+    }
   }
 
   private checkFeedbackInfo() {
