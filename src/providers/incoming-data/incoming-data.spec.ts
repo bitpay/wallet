@@ -180,7 +180,7 @@ describe('Provider: Incoming Data Provider', () => {
       });
     });
     it('Should parse valid BitPay Invoice Url', () => {
-      let data = ['https://bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
+      let data = ['https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm'];
       data.forEach(element => {
         expect(incomingDataProvider.redir(element)).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
@@ -249,6 +249,7 @@ describe('Provider: Incoming Data Provider', () => {
       data.forEach(element => {
         let parsed = bwcProvider.getBitcoreCash().URI(element);
         let addr = parsed.address ? parsed.address.toString() : '';
+
         // keep address in original format
         if (parsed.address && element.indexOf(addr) < 0) {
           addr = parsed.address.toCashAddress();
@@ -260,7 +261,8 @@ describe('Provider: Incoming Data Provider', () => {
           amount,
           toAddress: addr,
           description: null,
-          coin: 'bch'
+          coin: 'bch',
+          requiredFeeRate: undefined
         };
         let nextView = {
           name: 'ConfirmPage',
@@ -296,7 +298,8 @@ describe('Provider: Incoming Data Provider', () => {
             amount,
             toAddress: addr,
             description: message,
-            coin: 'btc'
+            coin: 'btc',
+            requiredFeeRate: undefined
           };
           let nextView = {
             name: 'ConfirmPage',
