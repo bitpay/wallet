@@ -111,7 +111,7 @@
         <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
         <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
           <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
-          <span class="collapse-btn">
+          <span class="collapse-btn" *ngIf="walletsGroups.length > 1">
             <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
             <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
           </span>
