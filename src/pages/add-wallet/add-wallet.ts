@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // pages
+import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { JoinWalletPage } from '../add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../add/select-currency/select-currency';
 
@@ -17,13 +19,20 @@ import * as _ from 'lodash';
 })
 export class AddWalletPage {
   public walletsGroups;
+  public fromEthCard: boolean;
+  public title: string;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private translate: TranslateService
   ) {
+    this.fromEthCard = this.navParams.data.fromEthCard;
+    this.title = this.fromEthCard
+      ? this.translate.instant('Select Key to add ETH Wallet to')
+      : this.translate.instant('Select Key');
     const opts = {
       canAddNewAccount: true,
       showHidden: true
@@ -38,10 +47,18 @@ export class AddWalletPage {
 
   public goToAddPage(keyId): void {
     if (this.navParams.data.isCreate) {
-      this.navCtrl.push(SelectCurrencyPage, {
-        isShared: this.navParams.data.isShared,
-        keyId
-      });
+      if (this.fromEthCard) {
+        this.navCtrl.push(CreateWalletPage, {
+          isShared: false,
+          coin: 'eth',
+          keyId
+        });
+      } else {
+        this.navCtrl.push(SelectCurrencyPage, {
+          isShared: this.navParams.data.isShared,
+          keyId
+        });
+      }
     } else if (this.navParams.data.isJoin) {
       this.navCtrl.push(JoinWalletPage, {
         keyId,
