@@ -260,6 +260,12 @@ export class ProfileProvider {
         this.showDesktopNotifications(n, wallet);
       }
 
+      if (
+        (n.data.network && n.data.network != wallet.network) ||
+        (n.data.coin && n.data.coin != wallet.coin)
+      )
+        return;
+
       // TODO many NewBlocks notifications...if many blocks
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
