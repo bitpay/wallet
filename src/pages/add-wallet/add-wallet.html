@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Select Key' | translate}}">
+<wide-header-page title="{{ title }}">
   <div page-content>
     <ion-list class="settings-list bp-list">
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="goToAddPage(walletsGroup[0].keyId)">

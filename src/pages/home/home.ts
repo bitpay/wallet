@@ -7,7 +7,9 @@ import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
+import { AddWalletPage } from '../add-wallet/add-wallet';
 import { AddPage } from '../add/add';
+import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
@@ -874,7 +876,7 @@ export class HomePage {
     return this.collapsedGroups[keyId] ? true : false;
   }
 
-  public addWallet(): void {
+  public addWallet(fromEthCard?: boolean): void {
     let keyId;
     const compatibleKeyWallets = _.values(
       _.groupBy(
@@ -888,13 +890,27 @@ export class HomePage {
       )
     );
 
-    this.navCtrl.push(AddPage, {
-      // Select currency to add to the same key (1 single seed compatible key)
-      keyId: compatibleKeyWallets.length == 1 ? keyId : null,
-      // Creates new key (same flow as onboarding)
-      isZeroState: compatibleKeyWallets.length == 0 ? true : false,
-      // Select currency and Key or creates a new Key
-      isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
-    });
+    if (fromEthCard && compatibleKeyWallets.length == 1) {
+      this.navCtrl.push(CreateWalletPage, {
+        isShared: false,
+        coin: 'eth',
+        keyId
+      });
+    } else if (fromEthCard && compatibleKeyWallets.length > 1) {
+      this.navCtrl.push(AddWalletPage, {
+        isCreate: true,
+        isMultipleSeed: true,
+        fromEthCard
+      });
+    } else {
+      this.navCtrl.push(AddPage, {
+        // Select currency to add to the same key (1 single seed compatible key)
+        keyId: compatibleKeyWallets.length == 1 ? keyId : null,
+        // Creates new key (same flow as onboarding)
+        isZeroState: compatibleKeyWallets.length == 0 ? true : false,
+        // Select currency and Key or creates a new Key
+        isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
+      });
+    }
   }
 }
