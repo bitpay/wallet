@@ -17,8 +17,8 @@
         <expandable-header-primary>
           <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
           <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
-          <div class="subtitle-container">
-            <div class="subtitle" *ngIf="wallets && canSign">
+          <div class="subtitle-container" *ngIf="wallets && canSign">
+            <div class="subtitle">
               This key contains {{wallets.length}} wallets.
             </div>
             <div class="onboarding-modal" (click)="showWalletGroupOnboardingSlides()">
