@@ -130,7 +130,7 @@ export class SendPage extends WalletTabsChild {
       addrData = this.addressProvider.getCoinAndNetwork(data);
       isValid =
         this.wallet.coin == addrData.coin &&
-        (addrData.network == 'any' || addrData.coin == this.wallet.network);
+        (addrData.network == 'any' || addrData.network == this.wallet.network);
     }
 
     if (isValid) {
