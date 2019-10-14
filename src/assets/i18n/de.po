@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2019-08-23 12:58\n"
+"PO-Revision-Date: 2019-10-14 19:36\n"
 
 msgid "(possible double spend)"
 msgstr "(mögliche Doppelausgabe)"
@@ -215,12 +215,6 @@ msgstr "Durchschnittliche Bestätigungzeit"
 msgid "Awaiting payment to confirm"
 msgstr "Warte auf Zahlungsbestätigung"
 
-msgid "BCH Wallet"
-msgstr ""
-
-msgid "BTC Wallet"
-msgstr ""
-
 msgid "Back up all your wallets before using this function"
 msgstr ""
 
@@ -235,9 +229,6 @@ msgstr "Sicherung der Wallet"
 
 msgid "Bad wallet invitation"
 msgstr "Ungültige Einladung"
-
-msgid "Basic Wallet"
-msgstr ""
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr ""
@@ -290,9 +281,6 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Bitcoin-Wallet"
 
-msgid "Miner fee:"
-msgstr "Miner Gebühr:"
-
 msgid "Bitcoin network fee policy"
 msgstr "Bitcoin-Netzwerk Gebührenübersicht"
 
@@ -324,9 +312,6 @@ msgid "Buying Gift Card..."
 msgstr "Geschenkkarte kaufen..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr ""
-
-msgid "By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again."
 msgstr ""
 
 msgid "Calculating fee..."
@@ -388,9 +373,6 @@ msgstr "Schließen"
 
 msgid "Coin"
 msgstr "Coin"
-
-msgid "{coinName} Address"
-msgstr "{coinName} Adresse"
 
 msgid "Completed"
 msgstr "Fertig"
@@ -471,6 +453,9 @@ msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copied: {claimCode}"
+msgstr ""
+
+msgid "Copy"
 msgstr ""
 
 msgid "Copy Code"
@@ -560,7 +545,10 @@ msgstr "Wallet konnte nicht aktualisiert werden"
 msgid "Create"
 msgstr ""
 
-msgid "Create a new key"
+msgid "Create New Key"
+msgstr ""
+
+msgid "Create a new wallet"
 msgstr ""
 
 msgid "Created"
@@ -650,6 +638,9 @@ msgstr ""
 msgid "Do you want to verify your account now?"
 msgstr ""
 
+msgid "Don't see your Key?"
+msgstr ""
+
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von Crowdin, denn wir würden deine Sprache gerne hinzufügen."
 
@@ -719,17 +710,11 @@ msgstr "Geben Sie ein Passwort ein um die Geldbörsenschlüssel zu verschlüssel
 msgid "Enter a transaction memo"
 msgstr "Transaktionsnotiz eingeben"
 
-msgid "Enter an email address"
-msgstr ""
-
 msgid "Enter bitcoin address"
 msgstr "Bitcoin-Adresse eingeben"
 
-msgid "Enter custom fee in sat/byte"
-msgstr "Fügen Sie eine maßgeschneiderte Gebühr in sat/Byte ein"
-
 msgid "Enter custom fee in {feeUnit}"
-msgstr "Fügen Sie eine maßgeschneiderte Gebühr in {feeUnit} ein"
+msgstr ""
 
 msgid "Enter email address"
 msgstr "E-Mail Adresse eingeben"
@@ -785,6 +770,15 @@ msgstr "Fehler beim Leeren der Wallet:"
 msgid "Error updating Debit Cards"
 msgstr "Fehler beim Aktualisieren der Debitkarten"
 
+msgid "Ethereum Address"
+msgstr ""
+
+msgid "Ethereum URI"
+msgstr ""
+
+msgid "Ethereum Wallets"
+msgstr ""
+
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Tageslimit von $500 pro Benutzer überschritten"
 
@@ -822,6 +816,9 @@ msgid "Failed to export"
 msgstr "Fehler beim Exportieren"
 
 msgid "Featured Brands"
+msgstr ""
+
+msgid "Featured Currencies"
 msgstr ""
 
 msgid "Fee"
@@ -1022,9 +1019,6 @@ msgstr ""
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Wenn aktiviert wird versucht, unbestätigte Transaktionen beim Senden zu verwenden."
 
-msgid "If there is an issue with this payment, or a refund needs to be made, we will contact you at this address."
-msgstr ""
-
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr "Wenn Sie Gelder auf einer Webseite lagern, dann sollten Sie diese in ein sicheres Wallet transferieren... Zum Beispiel in dieses!"
 
@@ -1041,6 +1035,9 @@ msgid "Import Wallet"
 msgstr ""
 
 msgid "Import Words"
+msgstr ""
+
+msgid "Import existing wallet"
 msgstr ""
 
 msgid "Importing Wallet..."
@@ -1127,8 +1124,17 @@ msgstr ""
 msgid "Joining Wallet..."
 msgstr "Teilnahme am Wallet einrichten..."
 
+msgid "Key Name"
+msgstr ""
+
+msgid "Key Settings"
+msgstr ""
+
 msgid "Key already associated with an existing wallet"
 msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
+
+msgid "Keys"
+msgstr ""
 
 msgid "Language"
 msgstr "Sprache"
@@ -1143,6 +1149,12 @@ msgid "Learn more"
 msgstr "Erfahre mehr"
 
 msgid "Learn more about testnet blockchain"
+msgstr ""
+
+msgid "Legacy"
+msgstr ""
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
 msgstr ""
 
 msgid "Linked"
@@ -1198,6 +1210,9 @@ msgstr "Hinweis zur Miner-Gebühr"
 
 msgid "Miner fee"
 msgstr "Miner-Gebühr"
+
+msgid "Miner fee:"
+msgstr ""
 
 msgid "Minimum amount required is {{min}}"
 msgstr ""
@@ -1363,9 +1378,6 @@ msgstr "Benachrichtige mich, wenn es bestätigt wurde"
 
 msgid "Notify me when transactions are confirmed"
 msgstr "Benachrichtige mich, wenn die Transaktion bestätigt wurde"
-
-msgid "Now it's time for you to create a wallet to store your funds into."
-msgstr ""
 
 msgid "OK"
 msgstr "OK"
@@ -1664,9 +1676,6 @@ msgstr "Wallet wiederherstellen..."
 msgid "Redeem Now"
 msgstr "Jetzt einlösen"
 
-msgid "Refund Email"
-msgstr ""
-
 msgid "Reject Payment Proposal"
 msgstr ""
 
@@ -1724,6 +1733,9 @@ msgstr ""
 msgid "Requires multiple devices (most secure)"
 msgstr ""
 
+msgid "Retrieving gas limit..."
+msgstr ""
+
 msgid "Retrieving inputs information..."
 msgstr "Konto-Informationen werden abgerufen..."
 
@@ -1763,8 +1775,8 @@ msgstr ""
 msgid "Search a contact"
 msgstr "Kontakte durchsuchen"
 
-msgid "Search or enter bitcoin address"
-msgstr "Bitcoin-Adresse suchen oder eingeben"
+msgid "Search or enter address"
+msgstr ""
 
 msgid "Search your currency"
 msgstr "Suchen Sie Ihre Währung"
@@ -1775,13 +1787,19 @@ msgstr "Sicherheit"
 msgid "See transaction"
 msgstr "Transaktionen durchsuchen"
 
+msgid "Select Key"
+msgstr ""
+
+msgid "Select Key to add ETH Wallet to"
+msgstr ""
+
 msgid "Select a wallet"
 msgstr "Wallet wählen"
 
-msgid "Select currency"
+msgid "Select currencies"
 msgstr ""
 
-msgid "Select the Key for the New Wallet"
+msgid "Select currency"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -1925,6 +1943,9 @@ msgstr "Signaturen wurden vom Server abgelehnt"
 msgid "Signing transaction..."
 msgstr "Transaktion wird signiert..."
 
+msgid "Simple Wallet"
+msgstr ""
+
 msgid "Single address"
 msgstr "SingleShare Adresse"
 
@@ -2031,12 +2052,6 @@ msgid "The higher the fee, the greater the incentive a miner has to include that
 msgstr "Je höher die Gebühr, desto größer ist der Anreiz das ein \"Miner\" die Transaktion in einem \"Block\" inkludiert. Aktuelle Gebühren werden anhand der Netzauslastung und der ausgewählten Richtlinie bestimmt."
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
-msgstr ""
-
-msgid "The invoice is no longer receiving payments."
-msgstr ""
-
-msgid "The key on the response is not trusted for transactions on the 'test' network"
 msgstr ""
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -2147,8 +2162,8 @@ msgstr "Zeitachse"
 msgid "To"
 msgstr "An"
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Um loszulegen müssen Sie eine Bitcoin-Wallet erstellen und einige Bitcoins erhalten."
+msgid "To get started, you'll need to create a wallet and get some funds."
+msgstr ""
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Zum fortfahren bitte eine gültige Adresse eingeben oder einen Kontakt oder Wallet auswählen."
@@ -2218,6 +2233,9 @@ msgstr "Übertragung zur Bitcoin Wallet"
 
 msgid "Transfer to Contact"
 msgstr "Transfer zum Kontakt"
+
+msgid "Transfer to Ethereum Wallet"
+msgstr ""
 
 msgid "Transfer to Multiple Recipients"
 msgstr "An mehrere Empfänger senden"
@@ -2342,6 +2360,9 @@ msgstr ""
 msgid "Waiting for authorized copayers to join"
 msgstr ""
 
+msgid "Wallet Address"
+msgstr ""
+
 msgid "Wallet Addresses"
 msgstr "Wallet-Adressen"
 
@@ -2352,9 +2373,6 @@ msgid "Wallet Inputs"
 msgstr "Wallet Eingänge"
 
 msgid "Wallet Invitation"
-msgstr ""
-
-msgid "Wallet Key Settings"
 msgstr ""
 
 msgid "Wallet Name"
@@ -2420,12 +2438,6 @@ msgstr "Wallet-Dienst nicht gefunden"
 msgid "Wallets"
 msgstr ""
 
-msgid "Wallets (Grouped by key)"
-msgstr ""
-
-msgid "Wallets using this key"
-msgstr ""
-
 msgid "Warning!"
 msgstr "Warnung!"
 
@@ -2449,6 +2461,9 @@ msgstr ""
 
 msgid "Website"
 msgstr "Website"
+
+msgid "What do you call this key?"
+msgstr ""
 
 msgid "What do you call this wallet?"
 msgstr "Wie möchten Sie diese Wallet benennen?"
@@ -2510,6 +2525,9 @@ msgstr ""
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr ""
 
+msgid "You can change the name displayed on this device below."
+msgstr ""
+
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr ""
 
@@ -2537,8 +2555,8 @@ msgstr ""
 msgid "You reach the limit of twenty wallets from the same coin and network"
 msgstr ""
 
-msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr "Du solltest keine Gebür über {{maxFeeRecommended}} satoshis/byte setzen."
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
 msgstr ""
@@ -2589,6 +2607,9 @@ msgid "preparing..."
 msgstr "in Arbeit..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} Address"
 msgstr ""
 
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
