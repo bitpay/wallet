@@ -187,7 +187,7 @@
     "adm-zip": "0.4.13",
     "codecov": "3.1.0",
     "electron": "3.0.16",
-    "electron-builder": "20.40.2",
+    "electron-builder": "21.2.0",
     "fs-extra": "5.0.0",
     "ionic": "4.10.4",
     "ionic-mocks": "1.2.1",
