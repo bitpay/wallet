@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
@@ -16,6 +16,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { AddPage } from '../../add/add';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { WalletGroupNamePage } from '../wallet-group-settings/wallet-group-name/wallet-group-name';
+import { WalletGroupOnboardingPage } from '../wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
@@ -50,7 +51,8 @@ export class WalletGroupSettingsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private modalCtrl: ModalController
   ) {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
     this.keyId = this.navParams.data.keyId;
@@ -208,5 +210,13 @@ export class WalletGroupSettingsPage {
     this.navCtrl.push(WalletGroupNamePage, {
       keyId: this.keyId
     });
+  }
+
+  public showWalletGroupOnboardingSlides() {
+    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, {
+      showBackdrop: false,
+      enableBackdropDismiss: false
+    });
+    modal.present();
   }
 }
