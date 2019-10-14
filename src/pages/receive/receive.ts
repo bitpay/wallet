@@ -13,7 +13,6 @@ import { AmountPage } from '../send/amount/amount';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -53,7 +52,6 @@ export class ReceivePage extends WalletTabsChild {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    private addressProvider: AddressProvider,
     walletTabsProvider: WalletTabsProvider,
     private platform: Platform
   ) {
@@ -100,7 +98,7 @@ export class ReceivePage extends WalletTabsChild {
       color: this.wallet.color,
       coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
-      network: this.addressProvider.getNetwork(this.address)
+      network: this.wallet.network
     });
   }
 

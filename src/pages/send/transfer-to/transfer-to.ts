@@ -134,13 +134,14 @@ export class TransferToPage {
 
       let contactsList = [];
       _.each(ab, (v, k: string) => {
+        const addrData = this.addressProvider.getCoinAndNetwork(k);
         contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
-          network: this.addressProvider.getNetwork(k),
+          network: addrData.network,
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
-          coin: this.addressProvider.getCoin(k),
+          coin: addrData.coin,
           getAddress: () => Promise.resolve(k)
         });
       });
@@ -181,7 +182,8 @@ export class TransferToPage {
   }): boolean {
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
-          this._wallet.network === recipient.network
+          (recipient.network == 'any' ||
+            this._wallet.network === recipient.network)
       : true;
   }
 
