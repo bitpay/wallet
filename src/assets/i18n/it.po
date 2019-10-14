@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2019-08-23 12:58\n"
+"PO-Revision-Date: 2019-10-14 19:36\n"
 
 msgid "(possible double spend)"
 msgstr "(possibile doppia spesa)"
@@ -215,12 +215,6 @@ msgstr "Tempo previsto per la conferma"
 msgid "Awaiting payment to confirm"
 msgstr "In attesa del pagamento per confermare"
 
-msgid "BCH Wallet"
-msgstr ""
-
-msgid "BTC Wallet"
-msgstr ""
-
 msgid "Back up all your wallets before using this function"
 msgstr "Esegui il backup di tutti i tuoi portafogli prima di utilizzare questa funzione"
 
@@ -235,9 +229,6 @@ msgstr "Backup portafoglio"
 
 msgid "Bad wallet invitation"
 msgstr "Invito al wallet non corretto"
-
-msgid "Basic Wallet"
-msgstr ""
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr ""
@@ -290,9 +281,6 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "Portafogli Bitcoin"
 
-msgid "Miner fee:"
-msgstr "Commissione per miner:"
-
 msgid "Bitcoin network fee policy"
 msgstr "Criterio commissioni del network bitcoin"
 
@@ -325,9 +313,6 @@ msgstr "Acquisizione carta regalo..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Fornendo il tuo indirizzo email, darai il consenso esplicito a BitPay di utilizzare il tuo indirizzo email per inviarti notifiche via email relative ai pagamenti."
-
-msgid "By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again."
-msgstr ""
 
 msgid "Calculating fee..."
 msgstr "Calcolo commissione..."
@@ -388,9 +373,6 @@ msgstr "Chiudi"
 
 msgid "Coin"
 msgstr "Moneta"
-
-msgid "{coinName} Address"
-msgstr "Indirizzo {coinName}"
 
 msgid "Completed"
 msgstr "Completato"
@@ -472,6 +454,9 @@ msgstr "Indirizzo {coin} copiato"
 
 msgid "Copied: {claimCode}"
 msgstr "Copiato: {claimCode}"
+
+msgid "Copy"
+msgstr ""
 
 msgid "Copy Code"
 msgstr "Copia codice"
@@ -560,7 +545,10 @@ msgstr "Impossibile aggiornare il portafoglio"
 msgid "Create"
 msgstr ""
 
-msgid "Create a new key"
+msgid "Create New Key"
+msgstr ""
+
+msgid "Create a new wallet"
 msgstr ""
 
 msgid "Created"
@@ -650,6 +638,9 @@ msgstr ""
 msgid "Do you want to verify your account now?"
 msgstr "Vuoi verificare il tuo account adesso?"
 
+msgid "Don't see your Key?"
+msgstr ""
+
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Non vedi la tua lingua su Crowdin? Contatta il proprietario su Crowdin! Ci piacerebbe supportare la lingua."
 
@@ -719,17 +710,11 @@ msgstr "Inserisci una password per crittografare il tuo portafoglio"
 msgid "Enter a transaction memo"
 msgstr "Immettere una nota di transazione"
 
-msgid "Enter an email address"
-msgstr ""
-
 msgid "Enter bitcoin address"
 msgstr "Inserisci l'indirizzo bitcoin"
 
-msgid "Enter custom fee in sat/byte"
-msgstr "Inserisci commissione personalizzata in sat/byte"
-
 msgid "Enter custom fee in {feeUnit}"
-msgstr "Inserisci commissione personalizzata in {feeUnit}"
+msgstr ""
 
 msgid "Enter email address"
 msgstr "Inserisci indirizzo email"
@@ -785,6 +770,15 @@ msgstr "Errore nello spazzolamento del portafoglio:"
 msgid "Error updating Debit Cards"
 msgstr "Errore durante l'aggiornamento delle carte di debito"
 
+msgid "Ethereum Address"
+msgstr ""
+
+msgid "Ethereum URI"
+msgstr ""
+
+msgid "Ethereum Wallets"
+msgstr ""
+
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Superato il limite giornaliero di $500 per utente"
 
@@ -822,6 +816,9 @@ msgid "Failed to export"
 msgstr "Esportazione non riuscita"
 
 msgid "Featured Brands"
+msgstr ""
+
+msgid "Featured Currencies"
 msgstr ""
 
 msgid "Fee"
@@ -1022,9 +1019,6 @@ msgstr ""
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Se abilitata, i portafogli cercheranno di spendere fondi anche se non confermati."
 
-msgid "If there is an issue with this payment, or a refund needs to be made, we will contact you at this address."
-msgstr ""
-
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr "Se hai fondi memorizzati su un sito web, dovresti trasferirli in un portafoglio sicuro... come questo!"
 
@@ -1042,6 +1036,9 @@ msgstr ""
 
 msgid "Import Words"
 msgstr "Importa parole"
+
+msgid "Import existing wallet"
+msgstr ""
 
 msgid "Importing Wallet..."
 msgstr "Importazione del Portafoglio..."
@@ -1127,8 +1124,17 @@ msgstr ""
 msgid "Joining Wallet..."
 msgstr "Unendo al portafoglio..."
 
+msgid "Key Name"
+msgstr ""
+
+msgid "Key Settings"
+msgstr ""
+
 msgid "Key already associated with an existing wallet"
 msgstr "Chiave già associata ad un portafoglio esistente"
+
+msgid "Keys"
+msgstr ""
 
 msgid "Language"
 msgstr "Lingua"
@@ -1144,6 +1150,12 @@ msgstr "Ulteriori informazioni"
 
 msgid "Learn more about testnet blockchain"
 msgstr "Ulteriori informazioni sulla blockchain testnet"
+
+msgid "Legacy"
+msgstr ""
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr ""
 
 msgid "Linked"
 msgstr "Connesso"
@@ -1198,6 +1210,9 @@ msgstr "Nota tariffa minatore"
 
 msgid "Miner fee"
 msgstr "Commissione per miner"
+
+msgid "Miner fee:"
+msgstr ""
 
 msgid "Minimum amount required is {{min}}"
 msgstr "L'importo minimo richiesto è {{min}}"
@@ -1363,9 +1378,6 @@ msgstr "Notificami se confermato"
 
 msgid "Notify me when transactions are confirmed"
 msgstr "Avvisami quando le transazioni sono confermate"
-
-msgid "Now it's time for you to create a wallet to store your funds into."
-msgstr ""
 
 msgid "OK"
 msgstr "Ok"
@@ -1664,9 +1676,6 @@ msgstr "Ricreando Portafoglio..."
 msgid "Redeem Now"
 msgstr "Riscatta ora"
 
-msgid "Refund Email"
-msgstr ""
-
 msgid "Reject Payment Proposal"
 msgstr "Respingere la proposta di pagamento"
 
@@ -1724,6 +1733,9 @@ msgstr ""
 msgid "Requires multiple devices (most secure)"
 msgstr ""
 
+msgid "Retrieving gas limit..."
+msgstr ""
+
 msgid "Retrieving inputs information..."
 msgstr "Recupero delle informazioni di input..."
 
@@ -1763,8 +1775,8 @@ msgstr "Cerca portafogli o contatti"
 msgid "Search a contact"
 msgstr "Cerca un contatto"
 
-msgid "Search or enter bitcoin address"
-msgstr "Cerca o inserisci indirizzo bitcoin"
+msgid "Search or enter address"
+msgstr ""
 
 msgid "Search your currency"
 msgstr "Cerca la tua valuta"
@@ -1775,13 +1787,19 @@ msgstr "Sicurezza"
 msgid "See transaction"
 msgstr "Vedere la transazione"
 
+msgid "Select Key"
+msgstr ""
+
+msgid "Select Key to add ETH Wallet to"
+msgstr ""
+
 msgid "Select a wallet"
 msgstr "Selezionare un portafoglio"
 
-msgid "Select currency"
+msgid "Select currencies"
 msgstr ""
 
-msgid "Select the Key for the New Wallet"
+msgid "Select currency"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -1925,6 +1943,9 @@ msgstr "Firme rifiutate dal server"
 msgid "Signing transaction..."
 msgstr "Firmando la transazione..."
 
+msgid "Simple Wallet"
+msgstr ""
+
 msgid "Single address"
 msgstr "Singolo indirizzo"
 
@@ -2031,12 +2052,6 @@ msgid "The higher the fee, the greater the incentive a miner has to include that
 msgstr "Più alta la commissione, maggiore sarà l'incentivo di un minatore ad includere tale transazione in un blocco. Le attuali commissioni sono determinate basandosi sul carico di rete e il criterio selezionato."
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
-msgstr ""
-
-msgid "The invoice is no longer receiving payments."
-msgstr ""
-
-msgid "The key on the response is not trusted for transactions on the 'test' network"
 msgstr ""
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -2147,8 +2162,8 @@ msgstr "Cronologia"
 msgid "To"
 msgstr "A"
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Per iniziare, è necessario che tu crei un portafoglio bitcoin e ottenerne qualcuno."
+msgid "To get started, you'll need to create a wallet and get some funds."
+msgstr ""
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Per iniziare, devi inserire un indirizzo valido, un contatto o un portafoglio."
@@ -2218,6 +2233,9 @@ msgstr "Trasferimento a portafoglio Bitcoin"
 
 msgid "Transfer to Contact"
 msgstr "Trasferisci a Contatto"
+
+msgid "Transfer to Ethereum Wallet"
+msgstr ""
 
 msgid "Transfer to Multiple Recipients"
 msgstr "Trasferimento a più destinatari"
@@ -2342,6 +2360,9 @@ msgstr ""
 msgid "Waiting for authorized copayers to join"
 msgstr ""
 
+msgid "Wallet Address"
+msgstr ""
+
 msgid "Wallet Addresses"
 msgstr "Indirizzi del portafoglio"
 
@@ -2352,9 +2373,6 @@ msgid "Wallet Inputs"
 msgstr "Ingressi nel portafoglio"
 
 msgid "Wallet Invitation"
-msgstr ""
-
-msgid "Wallet Key Settings"
 msgstr ""
 
 msgid "Wallet Name"
@@ -2420,12 +2438,6 @@ msgstr "Wallet service non trovato"
 msgid "Wallets"
 msgstr ""
 
-msgid "Wallets (Grouped by key)"
-msgstr ""
-
-msgid "Wallets using this key"
-msgstr ""
-
 msgid "Warning!"
 msgstr "Attenzione!"
 
@@ -2449,6 +2461,9 @@ msgstr "Stiamo sempre ascoltando i modi in cui possiamo migliorare la tua esperi
 
 msgid "Website"
 msgstr "Sito Web"
+
+msgid "What do you call this key?"
+msgstr ""
 
 msgid "What do you call this wallet?"
 msgstr "Come chiameresti questo portafoglio?"
@@ -2510,6 +2525,9 @@ msgstr ""
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr ""
 
+msgid "You can change the name displayed on this device below."
+msgstr ""
+
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr "Puoi continuare a visualizzare le tue carte archiviate qui se hai bisogno di accedervi."
 
@@ -2537,8 +2555,8 @@ msgstr ""
 msgid "You reach the limit of twenty wallets from the same coin and network"
 msgstr ""
 
-msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr "Non è necessario impostare una commissione maggiore di {{maxFeeRecommended}} satoshis/byte."
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
 msgstr ""
@@ -2590,6 +2608,9 @@ msgstr "preparazione..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "I wallet BCH di {appName} utilizzano il formato CashAddr per impostazione predefinita"
+
+msgid "{coinName} Address"
+msgstr ""
 
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
 msgstr ""

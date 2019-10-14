@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-08-23 12:59\n"
+"PO-Revision-Date: 2019-10-14 19:37\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -215,12 +215,6 @@ msgstr "平均确认时间"
 msgid "Awaiting payment to confirm"
 msgstr "等待付款确认"
 
-msgid "BCH Wallet"
-msgstr ""
-
-msgid "BTC Wallet"
-msgstr ""
-
 msgid "Back up all your wallets before using this function"
 msgstr "在使用此功能之前, 请备份所有钱包"
 
@@ -235,9 +229,6 @@ msgstr "备份钱包"
 
 msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
-
-msgid "Basic Wallet"
-msgstr ""
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr ""
@@ -290,9 +281,6 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "比特币钱包"
 
-msgid "Miner fee:"
-msgstr "比特币矿工费："
-
 msgid "Bitcoin network fee policy"
 msgstr "比特币网络手续费政策"
 
@@ -325,9 +313,6 @@ msgstr "正在购买礼品卡..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "通过提供您的电子邮件地址，您已明确同意BitPay使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
-
-msgid "By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again."
-msgstr ""
 
 msgid "Calculating fee..."
 msgstr "费用计算中..."
@@ -388,9 +373,6 @@ msgstr "关闭"
 
 msgid "Coin"
 msgstr "币种"
-
-msgid "{coinName} Address"
-msgstr "{coinName} 地址"
 
 msgid "Completed"
 msgstr "完成"
@@ -472,6 +454,9 @@ msgstr "复制 {coin} 地址"
 
 msgid "Copied: {claimCode}"
 msgstr "复制: {claimCode}"
+
+msgid "Copy"
+msgstr ""
 
 msgid "Copy Code"
 msgstr "复制 %1 位联系人"
@@ -560,7 +545,10 @@ msgstr "无法更新钱包"
 msgid "Create"
 msgstr ""
 
-msgid "Create a new key"
+msgid "Create New Key"
+msgstr ""
+
+msgid "Create a new wallet"
 msgstr ""
 
 msgid "Created"
@@ -650,6 +638,9 @@ msgstr ""
 msgid "Do you want to verify your account now?"
 msgstr "我想要现在确认我的账户 ！"
 
+msgid "Don't see your Key?"
+msgstr ""
+
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
 
@@ -719,17 +710,11 @@ msgstr "请输入密码加密你的钱包。"
 msgid "Enter a transaction memo"
 msgstr "输入交易备忘录"
 
-msgid "Enter an email address"
-msgstr ""
-
 msgid "Enter bitcoin address"
 msgstr "您的比特币地址"
 
-msgid "Enter custom fee in sat/byte"
-msgstr "在sat/byte输入自定义费用"
-
 msgid "Enter custom fee in {feeUnit}"
-msgstr "在{feeUnit}输入自定义费用"
+msgstr ""
 
 msgid "Enter email address"
 msgstr "Enter email address"
@@ -785,6 +770,15 @@ msgstr "错误清扫钱包︰"
 msgid "Error updating Debit Cards"
 msgstr "更新借记卡时出错"
 
+msgid "Ethereum Address"
+msgstr ""
+
+msgid "Ethereum URI"
+msgstr ""
+
+msgid "Ethereum Wallets"
+msgstr ""
+
 msgid "Exceeded daily limit of $500 per user"
 msgstr "超过 500 美元，每个用户的每日限额"
 
@@ -822,6 +816,9 @@ msgid "Failed to export"
 msgstr "导出失败"
 
 msgid "Featured Brands"
+msgstr ""
+
+msgid "Featured Currencies"
 msgstr ""
 
 msgid "Fee"
@@ -1022,9 +1019,6 @@ msgstr ""
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "如果启用，钱包将尝试支出未经验证的资金。"
 
-msgid "If there is an issue with this payment, or a refund needs to be made, we will contact you at this address."
-msgstr ""
-
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
 
@@ -1041,6 +1035,9 @@ msgid "Import Wallet"
 msgstr ""
 
 msgid "Import Words"
+msgstr ""
+
+msgid "Import existing wallet"
 msgstr ""
 
 msgid "Importing Wallet..."
@@ -1127,8 +1124,17 @@ msgstr ""
 msgid "Joining Wallet..."
 msgstr "正在加入钱包..."
 
+msgid "Key Name"
+msgstr ""
+
+msgid "Key Settings"
+msgstr ""
+
 msgid "Key already associated with an existing wallet"
 msgstr "钥已经关联现有的钱包"
+
+msgid "Keys"
+msgstr ""
 
 msgid "Language"
 msgstr "语言"
@@ -1144,6 +1150,12 @@ msgstr "了解更多"
 
 msgid "Learn more about testnet blockchain"
 msgstr "了解更多有关区块链测试网络的信息。"
+
+msgid "Legacy"
+msgstr ""
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr ""
 
 msgid "Linked"
 msgstr "已关联"
@@ -1198,6 +1210,9 @@ msgstr ""
 
 msgid "Miner fee"
 msgstr "矿工费"
+
+msgid "Miner fee:"
+msgstr ""
 
 msgid "Minimum amount required is {{min}}"
 msgstr "所需最小金额是{{min}}"
@@ -1363,9 +1378,6 @@ msgstr "确认完毕时通知我。"
 
 msgid "Notify me when transactions are confirmed"
 msgstr "交易确认完毕时通知我"
-
-msgid "Now it's time for you to create a wallet to store your funds into."
-msgstr ""
 
 msgid "OK"
 msgstr "好的"
@@ -1664,9 +1676,6 @@ msgstr "正在重新创建的钱包..."
 msgid "Redeem Now"
 msgstr "立即兑现"
 
-msgid "Refund Email"
-msgstr ""
-
 msgid "Reject Payment Proposal"
 msgstr "拒绝支付提议"
 
@@ -1724,6 +1733,9 @@ msgstr ""
 msgid "Requires multiple devices (most secure)"
 msgstr ""
 
+msgid "Retrieving gas limit..."
+msgstr ""
+
 msgid "Retrieving inputs information..."
 msgstr "正在获取输入信息..."
 
@@ -1763,8 +1775,8 @@ msgstr "Recherchez des portefeuilles ou des contacts"
 msgid "Search a contact"
 msgstr "查找联系人"
 
-msgid "Search or enter bitcoin address"
-msgstr "搜索或输入比特币地址"
+msgid "Search or enter address"
+msgstr ""
 
 msgid "Search your currency"
 msgstr "搜索您的货币"
@@ -1775,13 +1787,19 @@ msgstr "安全"
 msgid "See transaction"
 msgstr "查看交易"
 
+msgid "Select Key"
+msgstr ""
+
+msgid "Select Key to add ETH Wallet to"
+msgstr ""
+
 msgid "Select a wallet"
 msgstr "选择钱包"
 
-msgid "Select currency"
+msgid "Select currencies"
 msgstr ""
 
-msgid "Select the Key for the New Wallet"
+msgid "Select currency"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -1925,6 +1943,9 @@ msgstr "签名被服务器拒绝"
 msgid "Signing transaction..."
 msgstr "交易签名中。。。"
 
+msgid "Simple Wallet"
+msgstr ""
+
 msgid "Single address"
 msgstr "单个地址"
 
@@ -2031,12 +2052,6 @@ msgid "The higher the fee, the greater the incentive a miner has to include that
 msgstr "越高的费用、 更大的激励矿工有要在一个块中包含该事务。当前的费用是基于网络负载和选定的策略来确定的。"
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
-msgstr ""
-
-msgid "The invoice is no longer receiving payments."
-msgstr ""
-
-msgid "The key on the response is not trusted for transactions on the 'test' network"
 msgstr ""
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -2147,8 +2162,8 @@ msgstr "时间轴"
 msgid "To"
 msgstr "发送到"
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "若要开始，您将需要创建一个比特币的钱包，并获得一些比特币。"
+msgid "To get started, you'll need to create a wallet and get some funds."
+msgstr ""
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr ""
@@ -2218,6 +2233,9 @@ msgstr "转移到比特币钱包"
 
 msgid "Transfer to Contact"
 msgstr "转移到联系人"
+
+msgid "Transfer to Ethereum Wallet"
+msgstr ""
 
 msgid "Transfer to Multiple Recipients"
 msgstr ""
@@ -2342,6 +2360,9 @@ msgstr ""
 msgid "Waiting for authorized copayers to join"
 msgstr ""
 
+msgid "Wallet Address"
+msgstr ""
+
 msgid "Wallet Addresses"
 msgstr "钱包地址"
 
@@ -2352,9 +2373,6 @@ msgid "Wallet Inputs"
 msgstr "钱包总共进账"
 
 msgid "Wallet Invitation"
-msgstr ""
-
-msgid "Wallet Key Settings"
 msgstr ""
 
 msgid "Wallet Name"
@@ -2420,12 +2438,6 @@ msgstr "找不到 Wallet Service"
 msgid "Wallets"
 msgstr ""
 
-msgid "Wallets (Grouped by key)"
-msgstr ""
-
-msgid "Wallets using this key"
-msgstr ""
-
 msgid "Warning!"
 msgstr "警告！​​​​​"
 
@@ -2449,6 +2461,9 @@ msgstr ""
 
 msgid "Website"
 msgstr "网站"
+
+msgid "What do you call this key?"
+msgstr ""
 
 msgid "What do you call this wallet?"
 msgstr "你叫这个钱包是什么？"
@@ -2510,6 +2525,9 @@ msgstr ""
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr ""
 
+msgid "You can change the name displayed on this device below."
+msgstr ""
+
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr ""
 
@@ -2537,8 +2555,8 @@ msgstr ""
 msgid "You reach the limit of twenty wallets from the same coin and network"
 msgstr ""
 
-msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手续费。"
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
 msgstr ""
@@ -2589,6 +2607,9 @@ msgid "preparing..."
 msgstr "准备中..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} Address"
 msgstr ""
 
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
