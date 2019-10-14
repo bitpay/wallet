@@ -15,6 +15,7 @@ import { Logger } from '../../../../providers/logger/logger';
 import { DecimalPipe } from '@angular/common';
 import {
   FeeProvider,
+  IncomingDataProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
 } from '../../../../providers';
@@ -49,17 +50,13 @@ import { ConfirmPage } from '../../../send/confirm/confirm';
 })
 export class ConfirmInvoicePage extends ConfirmPage {
   public invoiceData: any;
-  public invoiceName: string;
   public invoiceId: string;
   public invoiceUrl: string;
-  public email: string;
   public onlyIntegers: boolean;
   public currency: string;
   public invoiceFeeSat: number;
   public coinAmount: number;
   public coinAmountSat: number;
-  public merchantProvidedEmail?: string;
-  public buyerProvidedEmail?: string;
   public currencyIsoCode: string;
   public amountUnitStr: string;
   public totalAmountStr: string;
@@ -73,7 +70,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private networkFeeSat: number;
   private parsedAmount: any;
   private browserUrl: string;
-  private invoicePaid: boolean;
   constructor(
     app: App,
     actionSheetProvider: ActionSheetProvider,
@@ -82,6 +78,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     configProvider: ConfigProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
+    public incomingDataProvider: IncomingDataProvider,
     private invoiceProvider: InvoiceProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     externalLinkProvider: ExternalLinkProvider,
@@ -135,9 +132,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
       statusBar
     );
     this.hideSlideButton = false;
-    this.invoicePaid = false;
     this.usingMerchantFee = true;
-    this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
 
@@ -147,14 +142,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.amount = this.invoiceData.price || 1;
     this.currency = this.invoiceData.currency || 'USD';
     this.onlyIntegers = this.invoiceData.currency === 'JPY';
-    this.merchantProvidedEmail = this.navParams.data.email;
-    let { emailAddress } = this.invoiceData.buyerProvidedInfo;
-    this.buyerProvidedEmail = emailAddress;
-    this.email = this.merchantProvidedEmail
-      ? this.merchantProvidedEmail
-      : this.buyerProvidedEmail
-      ? this.buyerProvidedEmail
-      : await this.getEmail();
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -189,8 +176,14 @@ export class ConfirmInvoicePage extends ConfirmPage {
       coin: 'bch',
       minAmount: this.invoiceData.paymentTotals['BCH']
     });
-    this.wallets = [...walletsBtc, ...walletsBch];
-    this.invoiceUrl = `${BITPAY_API_URL}/invoice/${this.invoiceId}`;
+    const walletsEth = this.profileProvider.getWallets({
+      onlyComplete: true,
+      network: this.network,
+      coin: 'eth',
+      minAmount: this.invoiceData.paymentTotals['ETH']
+    });
+    this.wallets = [...walletsBtc, ...walletsBch, ...walletsEth];
+    this.invoiceUrl = `${BITPAY_API_URL}/i/${this.invoiceId}`;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
       this.wallets = _.filter(this.wallets, (x: any) => {
@@ -207,14 +200,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
     this.initialize(wallet).catch(() => {});
-  }
-
-  ionViewWillLeave() {
-    if (!this.invoicePaid) {
-      this.clipboardProvider.copy(this.invoiceUrl);
-    } else {
-      this.externalLinkProvider.open(this.browserUrl);
-    }
   }
 
   public checkIfCoin() {
@@ -234,15 +219,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
         invoiceUrl: this.browserUrl
       })
       .present();
-  }
-
-  private async getEmail() {
-    const email = await this.invoiceProvider.getUserEmail();
-    if (email) {
-      return Promise.resolve(email);
-    } else {
-      return Promise.resolve('');
-    }
   }
 
   protected async initialize(wallet) {
@@ -272,9 +248,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
-        `Payment request for BitPay invoice ${
-          this.invoiceId
-        } for {{amountUnitStr}} to merchant ${this.invoiceName}`
+        `Payment request for BitPay invoice ${this.invoiceId}`
       ),
       { amountUnitStr: this.amountUnitStr }
     );
@@ -286,7 +260,10 @@ export class ConfirmInvoicePage extends ConfirmPage {
       this.wallet.coin,
       this.coinAmountSat
     );
-    this.coinAmount = this.txFormatProvider.formatAmount(this.coinAmountSat);
+    this.coinAmount = this.txFormatProvider.formatAmount(
+      wallet.coin,
+      this.coinAmountSat
+    );
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
       Number(this.invoiceFeeSat) + Number(this.networkFeeSat)
@@ -335,14 +312,13 @@ export class ConfirmInvoicePage extends ConfirmPage {
     );
   }
 
-  public isValidEmail() {
-    return !!this.invoiceProvider.emailIsValid(this.email);
-  }
-
   public async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const payProUrl =
-      invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
+    const paymentCode =
+      COIN !== 'ETH'
+        ? invoice.paymentCodes[COIN].BIP73
+        : invoice.paymentCodes[COIN].EIP681;
+    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
 
     if (!payProUrl) {
       throw {
@@ -372,11 +348,18 @@ export class ConfirmInvoicePage extends ConfirmPage {
       ],
       message,
       payProUrl,
-      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
+        ? false
+        : true,
+      data: details.data // eth
     };
 
     if (details.requiredFeeRate) {
-      txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+      const requiredFeeRate =
+        wallet.coin === 'eth'
+          ? details.requiredFeeRate
+          : Math.ceil(details.requiredFeeRate * 1024);
+      txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
       txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
@@ -390,45 +373,21 @@ export class ConfirmInvoicePage extends ConfirmPage {
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
-    return this.walletProvider.createTx(wallet, txp).catch(err => {
-      throw {
-        title: this.translate.instant('Could not create transaction'),
-        message: this.bwcErrorProvider.msg(err)
-      };
-    });
-  }
-
-  public throwBuyerInfoError(err) {
-    const title = this.translate.instant('Error');
-    const msg = this.translate.instant(err.error);
-    this.onGoingProcessProvider.clear();
-    this.showErrorInfoSheet(msg, title, false);
-    throw new Error(`${err.error}`);
+    return this.walletProvider
+      .getAddress(this.wallet, false)
+      .then(address => {
+        txp.from = address;
+        return this.walletProvider.createTx(wallet, txp);
+      })
+      .catch(err => {
+        throw {
+          title: this.translate.instant('Could not create transaction'),
+          message: this.bwcErrorProvider.msg(err)
+        };
+      });
   }
 
   public async buyConfirm() {
-    const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
-
-    if (!selectedTransactionCurrency) {
-      await this.invoiceProvider
-        .setBuyerProvidedCurrency(
-          this.wallet.coin.toUpperCase(),
-          this.invoiceId
-        )
-        .catch(err => {
-          this.throwBuyerInfoError(err);
-        });
-    }
-
-    if (!this.buyerProvidedEmail && !this.merchantProvidedEmail) {
-      await this.invoiceProvider
-        .setBuyerProvidedEmail(this.email, this.invoiceId)
-        .catch(err => {
-          this.throwBuyerInfoError(err);
-        });
-    }
-
-    this.invoiceProvider.storeEmail(this.email);
     const ctxp = await this.createTx(
       this.wallet,
       this.invoiceData,
@@ -450,10 +409,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
       this.showErrorInfoSheet(
         this.translate.instant('This invoice payment request has expired.')
       );
-      return undefined;
+      return;
     }
     this.hideSlideButton = true;
-    this.invoicePaid = true;
     return this.publishAndSign(ctxp, this.wallet).catch(async err =>
       this.handlePurchaseError(err)
     );
@@ -478,22 +436,5 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private resetValues() {
     this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.tx = this.message = this.invoiceId = null;
-  }
-
-  public openPrivacyPolicy() {
-    const url = 'https://bitpay.com/about/privacy';
-    const optIn = true;
-    const title = null;
-    const message = this.translate.instant('View Privacy Policy');
-    const okText = this.translate.instant('Open');
-    const cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
   }
 }

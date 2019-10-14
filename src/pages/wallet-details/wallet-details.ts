@@ -20,7 +20,7 @@ import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { UTXO_COINS, WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
@@ -318,7 +318,11 @@ export class WalletDetailsPage extends WalletTabsChild {
       let status = this.wallet.cachedStatus;
       this.setPendingTxps(status.pendingTxps);
       this.showBalanceButton = status.totalBalanceSat != status.spendableAmount;
-      this.analyzeUtxos();
+
+      if (UTXO_COINS[this.wallet.coin.toUpperCase()]) {
+        this.analyzeUtxos();
+      }
+
       this.updateStatusError = null;
       this.walletNotRegistered = false;
     } else {

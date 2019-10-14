@@ -3,7 +3,7 @@
   <div class="wallet">
     <div class="address-coppied">
       <div class="text-address">
-        <img *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard')" src="assets/img/icon-bitcoin-small.svg" width="12">
+        <img class="coin-img-{{coin}}" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard')" src="assets/img/icon-{{coin}}-small.svg" alt="Coin">
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
         <span class="address-divider"></span>
       </div>

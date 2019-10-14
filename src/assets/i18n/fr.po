@@ -290,8 +290,8 @@ msgstr "URI Bitcoin"
 msgid "Bitcoin Wallets"
 msgstr "Portefeuilles Bitcoin"
 
-msgid "Bitcoin miner fee:"
-msgstr "Frais miniers Bitcoin :"
+msgid "Miner fee:"
+msgstr "Frais miniers :"
 
 msgid "Bitcoin network fee policy"
 msgstr "Frais de réseau"
@@ -388,6 +388,9 @@ msgstr "Fermer"
 
 msgid "Coin"
 msgstr "Crypto-monnaie"
+
+msgid "{coinName} Address"
+msgstr "Adresse {coinName}"
 
 msgid "Completed"
 msgstr "Terminé"
@@ -724,6 +727,9 @@ msgstr "Entrez une adresse Bitcoin"
 
 msgid "Enter custom fee in sat/byte"
 msgstr "Saisissez des frais personnalisés en sat/byte"
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "Saisissez des frais personnalisés en {feeUnit}"
 
 msgid "Enter email address"
 msgstr "Entrez votre adresse e-mail"

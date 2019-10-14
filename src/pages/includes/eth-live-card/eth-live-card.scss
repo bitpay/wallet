@@ -1,0 +1,25 @@
+page-eth-live-card {
+  action-card {
+    padding: 0 !important;
+    .icon-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .eth-live-img {
+      margin-bottom: 2rem;
+      img {
+        margin-right: -12px;
+      }
+    }
+    .action-card__content {
+      padding-left: 20px;
+      padding-right: 20px;
+      .action-card__title {
+        margin: 0 !important;
+      }
+      .eth-live-btn {
+        color: #4f6ef7;
+      }
+    }
+  }
+}

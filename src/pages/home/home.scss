@@ -43,6 +43,13 @@ page-home {
       }
     }
 
+    button.add {
+      img {
+        margin-left: 7px;
+        padding-bottom: 5px;
+      }
+    }
+
     .toolbar-content {
       ion-title {
         &.title-ios {
@@ -222,11 +229,22 @@ page-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: black;
+    color: #606163;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 10px;
     margin-top: 20px;
+    .key-name {
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      box-orient: vertical;
+      -webkit-box-orient: vertical;
+      margin-right: 12px;
+    }
   }
 
   .add-card-button {
@@ -465,6 +483,43 @@ page-home {
     }
   }
 
+  .collapse {
+    white-space: nowrap;
+    .legacy-tag {
+      color: color($colors, light-grey);
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .collapse-btn {
+      cursor: pointer;
+      background: #edeff4;
+      padding: 0.2rem;
+      border-radius: 50px;
+      margin-top: 0px;
+      margin-left: 8px;
+      ion-icon {
+        color: color($colors, light-grey);
+        width: 18px;
+        text-align: center;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+
+  .collapsed {
+    height: 2px;
+    border-bottom: 1px #eae9e9 solid;
+    margin: 0 2.6rem 2rem 2.6rem;
+
+    .item-wrapper {
+      height: 0;
+      padding: 0;
+    }
+    .wallet-wrapper ion-item-sliding:last-child {
+      padding-bottom: 0;
+    }
+  }
+
   .sliding-container {
     height: auto;
 
@@ -532,7 +587,6 @@ page-home {
 
     &.wallets {
       button.item.item-block {
-        border-left: 8px solid;
         div.item-inner {
           display: flex;
           align-items: center;

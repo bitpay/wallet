@@ -265,6 +265,8 @@ export class SettingsPage {
   }
 
   public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+    this.navCtrl.push(AddPage, {
+      isZeroState: true
+    });
   }
 }

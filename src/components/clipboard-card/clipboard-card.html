@@ -28,6 +28,11 @@
   *ngIf="validDataFromClipboard.type !== 'PayPro' && validDataFromClipboard.type !== 'InvoiceUri'">
   <img
     *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress'"
-    src="assets/img/icon-bitcoin-small.svg" />
+    alt="Coin"
+    src="assets/img/icon-btc-small.svg" />
+  <img
+    *ngIf="validDataFromClipboard.type === 'EthereumAddress' || validDataFromClipboard.type === 'EthereumUri'"
+    alt="Coin"
+    src="assets/img/icon-eth-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
 </button>

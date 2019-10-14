@@ -68,17 +68,8 @@ page-txp-details {
   .container-from,
   .container-txp-info {
     .wallet,
-    .payment-proposal-to,
     .txp-info {
       @include row-flex;
-      .icon-bitcoin {
-        margin-right: 0.8rem;
-        width: 25px;
-        height: 25px;
-        padding: 2px 7px;
-        border: 1px solid color($colors, grey);
-        border-radius: $icon-border-radius;
-      }
       .comment {
         color: color($colors, light-grey);
       }

@@ -8,10 +8,12 @@ export class AddressProvider {
   private bitcore;
   private bitcoreCash;
   private Bitcore;
+  private core;
 
   constructor(private bwcProvider: BwcProvider) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+    this.core = this.bwcProvider.getCore();
     this.Bitcore = {
       btc: {
         lib: this.bitcore,
@@ -20,6 +22,10 @@ export class AddressProvider {
       bch: {
         lib: this.bitcoreCash,
         translateTo: 'btc'
+      },
+      eth: {
+        lib: this.core,
+        translateTo: 'eth'
       }
     };
   }
@@ -34,7 +40,20 @@ export class AddressProvider {
         new this.Bitcore['bch'].lib.Address(address);
         return 'bch';
       } catch (e) {
-        return null;
+        try {
+          const isValidEthAddress = this.core.Validation.validateAddress(
+            'ETH',
+            'livenet',
+            address
+          );
+          if (isValidEthAddress) {
+            return 'eth';
+          } else {
+            return null;
+          }
+        } catch (e) {
+          return null;
+        }
       }
     }
   }
@@ -43,12 +62,22 @@ export class AddressProvider {
     const address = this.extractAddress(str);
     let network;
     try {
-      network = this.bwcProvider.getBitcore().Address(address).network.name;
+      network = this.bitcore.Address(address).network.name;
     } catch (e) {
       try {
-        network = this.bwcProvider.getBitcoreCash().Address(address).network
-          .name;
-      } catch (e) {}
+        network = this.bitcoreCash.Address(address).network.name;
+      } catch (e) {
+        try {
+          const isValidEthAddress = this.core.Validation.validateAddress(
+            'ETH',
+            'livenet',
+            address
+          );
+          if (isValidEthAddress) {
+            network = 'livenet';
+          }
+        } catch (e) {}
+      }
     }
     return network;
   }
@@ -81,7 +110,7 @@ export class AddressProvider {
 
   public extractAddress(str: string): string {
     const extractedAddress = str
-      .replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '')
+      .replace(/^(bitcoincash:|bchtest:|bitcoin:|ethereum:)/i, '')
       .replace(/\?.*/, '');
     return extractedAddress;
   }
@@ -92,6 +121,7 @@ export class AddressProvider {
     const Address = this.bitcore.Address;
     const URICash = this.bitcoreCash.URI;
     const AddressCash = this.bitcoreCash.Address;
+    const AddressEth = this.core.Validation;
 
     // Bip21 uri
     let uri, uriAddress;
@@ -109,6 +139,8 @@ export class AddressProvider {
         if (AddressCash.isValid(uriAddress, 'livenet')) return true;
         if (AddressCash.isValid(uriAddress, 'testnet')) return true;
       }
+    } else if (/^ethereum:/i.test(str)) {
+      if (AddressEth.validateUri('ETH', str)) return true;
     }
 
     // Regular Address: try Bitcoin and Bitcoin Cash
@@ -116,6 +148,7 @@ export class AddressProvider {
     if (Address.isValid(str, 'testnet')) return true;
     if (AddressCash.isValid(str, 'livenet')) return true;
     if (AddressCash.isValid(str, 'testnet')) return true;
+    if (AddressEth.validateAddress('ETH', 'livenet', str)) return true;
 
     return false;
   }

@@ -290,7 +290,7 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Portfele Bitcoin"
 
-msgid "Bitcoin miner fee:"
+msgid "Miner fee:"
 msgstr ""
 
 msgid "Bitcoin network fee policy"
@@ -388,6 +388,9 @@ msgstr "Zamknij"
 
 msgid "Coin"
 msgstr "Moneta"
+
+msgid "{coinName} Address"
+msgstr "Adres {coinName}"
 
 msgid "Completed"
 msgstr "Zakończono"
@@ -724,6 +727,9 @@ msgstr ""
 
 msgid "Enter custom fee in sat/byte"
 msgstr "Wprowadź standardową opłatę w sat/byte"
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "Wprowadź standardową opłatę w {feeUnit}"
 
 msgid "Enter email address"
 msgstr ""

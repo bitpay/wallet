@@ -21,7 +21,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>{{ 'Bitcoin Address' | translate }}</ion-label>
+      <ion-label stacked>{{ 'Wallet Address' | translate }}</ion-label>
       <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
 
       <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
