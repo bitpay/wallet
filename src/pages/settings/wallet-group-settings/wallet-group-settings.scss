@@ -16,11 +16,20 @@ page-wallet-group-settings {
       padding-bottom: 20px;
       padding-left: 20px;
 
-      .subtitle {
-        font-size: 16px;
-        padding: 0;
-        margin-top: 10px;
-        font-weight: 100;
+      .subtitle-container {
+        display: flex;
+        justify-content: space-between;
+        .subtitle {
+          font-size: 16px;
+          padding: 0;
+          margin-top: 10px;
+          font-weight: 100;
+        }
+        .onboarding-modal {
+          cursor: pointer;
+          color: color($colors, light-grey);
+          margin-right: 2rem;
+        }
       }
     }
 

@@ -17,8 +17,13 @@
         <expandable-header-primary>
           <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
           <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
-          <div class="subtitle" *ngIf="wallets && canSign">
-            This key contains {{wallets.length}} wallets.
+          <div class="subtitle-container" *ngIf="wallets && canSign">
+            <div class="subtitle">
+              This key contains {{wallets.length}} wallets.
+            </div>
+            <div class="onboarding-modal" (click)="showWalletGroupOnboardingSlides()">
+              <ion-icon name="md-help-circle"></ion-icon>
+            </div>
           </div>
         </expandable-header-primary>
       </ion-toolbar>
