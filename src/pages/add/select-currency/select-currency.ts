@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
+import { WalletGroupOnboardingPage } from '../../settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 
 // providers
@@ -12,6 +18,7 @@ import {
   BwcErrorProvider,
   Logger,
   OnGoingProcessProvider,
+  PersistenceProvider,
   PopupProvider,
   ProfileProvider,
   PushNotificationsProvider,
@@ -24,6 +31,8 @@ import { UTXO_COINS } from '../../../providers/wallet/wallet';
   templateUrl: 'select-currency.html'
 })
 export class SelectCurrencyPage {
+  private showKeyOnboarding: boolean;
+
   public title: string;
   public coin: string;
   public coinsSelected;
@@ -41,13 +50,16 @@ export class SelectCurrencyPage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private events: Events,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private modalCtrl: ModalController,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.coinsSelected = {
       btc: true,
       bch: true,
       eth: true
     };
+    this.shouldShowKeyOnboarding();
   }
 
   ionViewDidLoad() {
@@ -59,11 +71,40 @@ export class SelectCurrencyPage {
       : this.translate.instant('Select currency');
   }
 
+  private shouldShowKeyOnboarding() {
+    this.persistenceProvider.getKeyOnboardingFlag().then(value => {
+      if (!value) {
+        this.showKeyOnboarding = true;
+        const wallets = this.profileProvider.getWallets();
+        const walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+        walletsGroups.forEach((walletsGroup: any) => {
+          if (walletsGroup[0].canAddNewAccount) this.showKeyOnboarding = false;
+        });
+      } else {
+        this.showKeyOnboarding = false;
+      }
+    });
+  }
+
+  private showKeyOnboardingSlides(coins: string[]) {
+    this.logger.debug('Showing key onboarding');
+    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+      showBackdrop: false,
+      enableBackdropDismiss: false
+    });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this._createWallet(coins);
+    });
+    this.persistenceProvider.setKeyOnboardingFlag();
+  }
+
   public goToCreateWallet(coin: string): void {
     this.navCtrl.push(CreateWalletPage, {
       isShared: this.navParam.data.isShared,
       coin,
-      keyId: this.navParam.data.keyId
+      keyId: this.navParam.data.keyId,
+      showKeyOnboarding: this.showKeyOnboarding
     });
   }
 
@@ -72,6 +113,14 @@ export class SelectCurrencyPage {
   }
 
   public createWallet(coins: string[]): void {
+    if (this.showKeyOnboarding) {
+      this.showKeyOnboardingSlides(coins);
+      return;
+    }
+    this._createWallet(coins);
+  }
+
+  private _createWallet(coins: string[]): void {
     coins = _.keys(_.pickBy(this.coinsSelected));
     const opts = {
       coin: coins[0],

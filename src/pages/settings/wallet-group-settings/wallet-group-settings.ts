@@ -212,10 +212,10 @@ export class WalletGroupSettingsPage {
     });
   }
 
-  public showWalletGroupOnboardingSlides() {
-    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, {
-      showBackdrop: false,
-      enableBackdropDismiss: false
+  public showKeyOnboardingSlides() {
+    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
     modal.present();
   }
