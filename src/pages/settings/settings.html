@@ -4,20 +4,10 @@
       <div class="merchant-directory-container">
         <div class="merchant-directory-body">
           <h4>Learn where you can spend your crypto today.</h4>
-          <a
-            (click)="openMerchantDirectorySite()"
-            class="merchant-directory-link"
-            href=""
-            >View Directory</a
-          >
+          <a (click)="openMerchantDirectorySite()" class="merchant-directory-link" href="">View Directory</a>
         </div>
         <div class="gumball">
-          <img
-            src="assets/img/gumball-3.svg"
-            class="gumball-image"
-            width="150"
-            height="150"
-          />
+          <img src="assets/img/gumball-3.svg" class="gumball-image" width="150" height="150" />
         </div>
       </div>
     </div>
@@ -25,20 +15,14 @@
     <ion-list class="settings-list bp-list">
       <button ion-item (click)="openAddressBookPage()">
         <ion-icon class="item-img settings-icon" item-start>
-          <img
-            src="assets/img/settings-icons/icon-address-book.svg"
-            width="22"
-          />
+          <img src="assets/img/settings-icons/icon-address-book.svg" width="22" />
         </ion-icon>
         <span translate>Address book</span>
       </button>
 
       <button ion-item (click)="openHelpExternalLink()">
         <ion-icon class="item-img settings-icon" item-start>
-          <img
-            src="assets/img/settings-icons/icon-help-support.svg"
-            width="22"
-          />
+          <img src="assets/img/settings-icons/icon-help-support.svg" width="22" />
         </ion-icon>
         <span translate>Help &amp; support</span>
       </button>
@@ -54,11 +38,7 @@
         {{ 'Keys' | translate }}
       </ion-item-divider>
 
-      <button
-        ion-item
-        *ngFor="let walletsGroup of walletsGroups; let i = index"
-        (click)="openWalletGroupSettings(walletsGroup[0].keyId)"
-      >
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-key.svg" width="22" />
         </ion-icon>
@@ -71,16 +51,10 @@
           </div>
         </ion-label>
         <ion-note item-end>
-          {{ walletsGroup.length }} Wallet<span *ngIf="walletsGroup.length > 1"
-            >s</span
-          >
+          {{ walletsGroup.length }} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
         </ion-note>
       </button>
-      <button
-        ion-item
-        *ngIf="walletsGroups && walletsGroups[0] && allowMultiplePrimaryWallets"
-        (click)="goToAddView()"
-      >
+      <button ion-item *ngIf="walletsGroups && walletsGroups[0] && allowMultiplePrimaryWallets" (click)="goToAddView()">
         <ion-icon class="item-img" item-start>
           <div class="icon-plus"></div>
         </ion-icon>
@@ -91,10 +65,7 @@
 
       <button ion-item (click)="openNotificationsPage()">
         <ion-icon class="item-img settings-icon" item-start>
-          <img
-            src="assets/img/settings-icons/icon-notifications.svg"
-            width="22"
-          />
+          <img src="assets/img/settings-icons/icon-notifications.svg" width="22" />
         </ion-icon>
         <span translate>Notifications</span>
       </button>
@@ -145,11 +116,7 @@
       <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
         <ion-item-divider> BitPay Visa <sup>&reg;</sup> Card </ion-item-divider>
         <ion-list>
-          <button
-            ion-item
-            *ngFor="let card of bitpayCardItems"
-            (click)="openCardSettings(card.id)"
-          >
+          <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
             <ion-icon class="item-img" item-start>
               <img src="assets/img/icon-card.svg" class="icon-card" />
             </ion-icon>
@@ -183,11 +150,7 @@
         {{ 'Integrations' | translate }}
       </ion-item-divider>
 
-      <button
-        ion-item
-        *ngFor="let integration of (integrationServices | orderBy: ['title'])"
-        (click)="openSettingIntegration(integration.name)"
-      >
+      <button ion-item *ngFor="let integration of (integrationServices | orderBy: ['title'])" (click)="openSettingIntegration(integration.name)">
         <ion-icon class="item-img" item-start>
           <img src="{{integration.icon}}" class="icon-settings" />
         </ion-icon>
