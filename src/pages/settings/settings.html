@@ -31,11 +31,11 @@
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-heart.svg" width="22" />
         </ion-icon>
-        <span translate>Share</span> {{ appName }}
+        <span translate>Share</span> {{appName}}
       </button>
 
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
-        {{ 'Keys' | translate }}
+        {{'Keys' | translate}}
       </ion-item-divider>
 
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
@@ -47,7 +47,7 @@
         </ion-icon>
         <ion-label>
           <div *ngIf="walletsGroup[0].canSign">
-            {{ profileProvider.getWalletGroup(walletsGroup[0].keyId).name }}
+            {{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}
           </div>
           <div *ngIf="!walletsGroup[0].canSign" translate>
             Read Only Wallets
@@ -61,7 +61,7 @@
         Create New Key
       </button>
 
-      <ion-item-divider>{{ 'Preferences' | translate }}</ion-item-divider>
+      <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openNotificationsPage()">
         <ion-icon class="item-img settings-icon" item-start>
@@ -76,7 +76,7 @@
         </ion-icon>
         <ion-label> <span translate>Language</span> </ion-label>
         <ion-note *ngIf="currentLanguageName" item-end>
-          {{ currentLanguageName }}
+          {{currentLanguageName}}
         </ion-note>
       </button>
 
@@ -84,9 +84,9 @@
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-currency.svg" width="22" />
         </ion-icon>
-        <ion-label> {{ 'Alternative currency' | translate }} </ion-label>
+        <ion-label> {{'Alternative currency' | translate}} </ion-label>
         <ion-note *ngIf="selectedAlternative" item-end>
-          {{ selectedAlternative.name }}
+          {{selectedAlternative.name}}
         </ion-note>
       </button>
 
@@ -94,7 +94,7 @@
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-network.svg" width="22" />
         </ion-icon>
-        <ion-label> {{ 'Bitcoin network fee policy' | translate }} </ion-label>
+        <ion-label> {{'Bitcoin network fee policy' | translate}} </ion-label>
       </button>
 
       <button ion-item *ngIf="isCordova" (click)="openLockPage()">
@@ -103,13 +103,13 @@
         </ion-icon>
         <ion-label> {{ 'Lock' | translate }} </ion-label>
         <ion-note *ngIf="lockMethod === 'disabled'" item-end>
-          {{ 'Disabled' | translate }}
+          {{'Disabled' | translate}}
         </ion-note>
         <ion-note *ngIf="lockMethod === 'pin'" item-end>
-          {{ 'PIN' | translate }}
+          {{'PIN' | translate}}
         </ion-note>
         <ion-note *ngIf="lockMethod === 'fingerprint'" item-end>
-          {{ 'Biometric' | translate }}
+          {{'Biometric' | translate}}
         </ion-note>
       </button>
 
@@ -124,17 +124,8 @@
               BitPay Visa&reg; Card ({{ card.lastFourDigits }})
             </div>
             <div class="item-subtitle">
-              {{
-                card.balance
-                  ? (card.balance | currency: card.currencySymbol:2)
-                  : ('Add funds to
-                get started' | translate)
-              }}
-              {{
-                card.updatedOn
-                  ? ' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)
-                  : ''
-              }}
+              {{card.balance ? (card.balance | currency: card.currencySymbol:2) : ('Add funds to get started' | translate}}
+              {{card.updatedOn ? ' &middot; ' + (card.updatedOn * 1000 | amTimeAgo) : ''}}
             </div>
           </button>
           <button ion-item (click)="addBitpayCard()">
@@ -147,7 +138,7 @@
       </div>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
-        {{ 'Integrations' | translate }}
+        {{'Integrations' | translate}}
       </ion-item-divider>
 
       <button ion-item *ngFor="let integration of (integrationServices | orderBy: ['title'])" (click)="openSettingIntegration(integration.name)">
@@ -158,12 +149,12 @@
         <ion-note item-end *ngIf="integration.linked">
           <span *ngIf="integration.linked" translate>Linked</span>
           <span *ngIf="!integration.linked">
-            {{ integration.show ? ('On' | translate) : ('Off' | translate) }}
+            {{integration.show ? ('On' | translate) : ('Off' | translate)}}
           </span>
         </ion-note>
       </button>
 
-      <ion-item-divider>{{ 'More' | translate }}</ion-item-divider>
+      <ion-item-divider>{{'More' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openAdvancedPage()">
         <ion-icon class="item-img settings-icon" item-start>
@@ -176,7 +167,7 @@
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-info.svg" width="22" />
         </ion-icon>
-        <span translate>About</span> {{ appName }}
+        <span translate>About</span> {{appName}}
       </button>
     </ion-list>
   </div>
