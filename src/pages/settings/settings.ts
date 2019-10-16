@@ -156,7 +156,10 @@ export class SettingsPage {
   }
 
   public openMerchantDirectorySite() {
-    this.iab.create(`https://bitpay.com/directory`, `_system`);
+    this.iab.create(
+      `https://bitpay.com/directory/?hideGiftCards=true`,
+      `_system`
+    );
   }
 
   public openAddressBookPage(): void {

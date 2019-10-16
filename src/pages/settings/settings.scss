@@ -40,6 +40,51 @@ page-settings {
     opacity: 0.5;
   }
 
+  .merchant-directory-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+
+  .merchant-directory-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    top: 0px;
+    margin-left: 22px;
+  }
+
+  .merchant-directory-message {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .no-padding {
+    padding: 0px !important;
+  }
+
+  .merchant-directory-link {
+    cursor: pointer;
+  }
+
+  .hairline {
+    border-top: 0.125px solid #f4f5fb;
+    border-bottom: 0.125px solid #f4f5fb;
+  }
+
+  .gumball-image {
+    margin-top: 0px;
+    margin-right: -1px;
+  }
+
+  .gumball {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
   .add-card-button {
     @include center;
     background: #f4f5fb;
@@ -53,6 +98,14 @@ page-settings {
     margin: 15px auto;
     margin-top: 0;
     height: 73px;
+  }
+
+  .generic-list {
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 0px 0px 0px 0px;
+      background: #f8f8f9;
+    }
   }
 
   .bp-list {
