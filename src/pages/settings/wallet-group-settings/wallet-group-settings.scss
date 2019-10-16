@@ -1,4 +1,59 @@
 page-wallet-group-settings {
+  .wide-header {
+    .toolbar-background {
+      background: white;
+    }
+
+    ion-title .toolbar-title {
+      font-weight: 400;
+    }
+
+    &__title {
+      color: black;
+      font-size: 25px;
+      font-weight: 500;
+      padding-top: 30px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+
+      .subtitle-container {
+        display: flex;
+        justify-content: space-between;
+        .subtitle {
+          font-size: 16px;
+          padding: 0;
+          margin-top: 10px;
+          font-weight: 100;
+        }
+        .onboarding-modal {
+          cursor: pointer;
+          color: color($colors, light-grey);
+          margin-right: 2rem;
+        }
+      }
+    }
+
+    ion-navbar {
+      .ios & {
+        padding-top: 3rem; // Fix iOS 10.3
+        padding-top: calc(6px + env(safe-area-inset-top));
+
+        ion-title {
+          padding-top: 3rem; // Fix iOS 10.3
+          padding-top: env(safe-area-inset-top);
+        }
+      }
+    }
+
+    &.cordova {
+      ion-navbar {
+        .ios & {
+          padding-bottom: 7px;
+        }
+      }
+    }
+  }
+
   .item-text {
     font-size: 12.5px;
   }

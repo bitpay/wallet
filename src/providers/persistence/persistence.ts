@@ -40,6 +40,7 @@ const Keys = {
   CONFIG: 'config',
   FEEDBACK: 'feedback',
   SURVEY: 'survey',
+  ETH_LIVE_CARD: 'ethLiveCard',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: (network: Network) => {
     const suffix = network === Network.livenet ? '' : `-${network}`;
@@ -66,7 +67,7 @@ const Keys = {
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  WALLET_GROUP_NAME: keyId => `Group-${keyId}`
+  WALLET_GROUP_NAME: keyId => `Key-${keyId}`
 };
 
 interface Storage {
@@ -144,6 +145,14 @@ export class PersistenceProvider {
 
   getSurveyFlag() {
     return this.storage.get(Keys.SURVEY);
+  }
+
+  setEthLiveCardFlag() {
+    return this.storage.set(Keys.ETH_LIVE_CARD, true);
+  }
+
+  getEthLiveCardFlag() {
+    return this.storage.get(Keys.ETH_LIVE_CARD);
   }
 
   storeFocusedWalletId(walletId: string) {

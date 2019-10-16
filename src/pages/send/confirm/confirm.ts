@@ -16,6 +16,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { FinishModalPage } from '../../finish/finish';
 import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
+import { CoinName } from '../send';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -23,7 +24,7 @@ import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
-import { ConfigProvider } from '../../../providers/config/config';
+import { CoinOpts, ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { KeyProvider } from '../../../providers/key/key';
@@ -35,8 +36,8 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
-  Coin,
   TransactionProposal,
+  UTXO_COINS,
   WalletProvider
 } from '../../../providers/wallet/wallet';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
@@ -80,6 +81,7 @@ export class ConfirmPage extends WalletTabsChild {
   // Config Related values
   public config;
   public configFeeLevel: string;
+  public coinOpts: CoinOpts;
 
   // Platform info
   public isCordova: boolean;
@@ -120,11 +122,15 @@ export class ConfirmPage extends WalletTabsChild {
     protected statusBar: StatusBar
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
-    this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+    this.bitcore = {
+      btc: this.bwcProvider.getBitcore(),
+      bch: this.bitcoreCash
+    };
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
+    this.coinOpts = this.configProvider.getCoinOpts();
     this.configFeeLevel = this.config.wallet.settings.feeLevel
       ? this.config.wallet.settings.feeLevel
       : 'normal';
@@ -153,18 +159,22 @@ export class ConfirmPage extends WalletTabsChild {
     }
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
-    const B =
-      this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
+    this.coin = this.navParams.data.coin;
+    const B = this.bitcore[this.coin];
     let networkName;
     let amount;
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
-      this.coin = this.navParams.data.coin;
     } else {
       amount = this.navParams.data.amount;
       try {
-        networkName = new B.Address(this.navParams.data.toAddress).network.name;
+        if (B) {
+          networkName = new B.Address(this.navParams.data.toAddress).network
+            .name;
+        } else {
+          networkName = this.navParams.data.network || 'livenet';
+        }
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
           this.translate.instant(
@@ -194,6 +204,7 @@ export class ConfirmPage extends WalletTabsChild {
       amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
+      data: this.navParams.data.data, // eth
       payProUrl: this.navParams.data.payProUrl,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
@@ -255,7 +266,10 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.amount = this.decimalPipe.transform(
+      this.tx.amount / this.coinOpts[this.coin].unitToSatoshi,
+      '1.2-6'
+    );
   }
 
   private afterWalletSelectorSet() {
@@ -424,7 +438,8 @@ export class ConfirmPage extends WalletTabsChild {
 
       const maxAllowedMerchantFee = {
         btc: 'urgent',
-        bch: 'normal'
+        bch: 'normal',
+        eth: 'urgent'
       };
 
       this.onGoingProcessProvider.set('calculatingFee');
@@ -505,7 +520,7 @@ export class ConfirmPage extends WalletTabsChild {
           if (sendMaxInfo) {
             this.logger.debug('Send max info', sendMaxInfo);
 
-            if (sendMaxInfo.amount == 0) {
+            if (sendMaxInfo.amount <= 0) {
               this.showErrorInfoSheet(
                 this.translate.instant('Not enough funds for fee')
               );
@@ -613,14 +628,18 @@ export class ConfirmPage extends WalletTabsChild {
 
     const warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
-    const coinName =
-      this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
+    const coinName = CoinName[this.wallet.coin.toUpperCase()];
+
+    const { unitToSatoshi } = this.coinOpts[this.tx.coin];
+
+    const fee =
+      sendMaxInfo.fee / unitToSatoshi || sendMaxInfo.gas / unitToSatoshi;
 
     const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
       'miner-fee-notice',
       {
         coinName,
-        fee: sendMaxInfo.fee / 1e8,
+        fee,
         coin: this.tx.coin.toUpperCase(),
         msg: !_.isEmpty(warningMsg) ? warningMsg : ''
       }
@@ -631,7 +650,8 @@ export class ConfirmPage extends WalletTabsChild {
   private verifyExcludedUtxos(_, sendMaxInfo) {
     const warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      const amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
+      const amountBelowFeeStr =
+        sendMaxInfo.amountBelowFee / this.coinOpts[this.tx.coin].unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -642,7 +662,9 @@ export class ConfirmPage extends WalletTabsChild {
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      const amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
+      const amountAboveMaxSizeStr =
+        sendMaxInfo.amountAboveMaxSize /
+        this.coinOpts[this.tx.coin].unitToSatoshi;
       const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
@@ -663,8 +685,10 @@ export class ConfirmPage extends WalletTabsChild {
         );
         return reject(msg);
       }
-
-      if (tx.amount > Number.MAX_SAFE_INTEGER) {
+      if (
+        UTXO_COINS[tx.coin.toUpperCase()] &&
+        tx.amount > Number.MAX_SAFE_INTEGER
+      ) {
         const msg = this.translate.instant('Amount too big');
         return reject(msg);
       }
@@ -720,6 +744,7 @@ export class ConfirmPage extends WalletTabsChild {
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
 
+      txp.data = tx.data; // eth
       if (tx.recipientType == 'wallet') {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null
@@ -727,9 +752,17 @@ export class ConfirmPage extends WalletTabsChild {
       }
 
       this.walletProvider
-        .createTx(wallet, txp)
-        .then(ctxp => {
-          return resolve(ctxp);
+        .getAddress(this.wallet, false)
+        .then(address => {
+          txp.from = address;
+          this.walletProvider
+            .createTx(wallet, txp)
+            .then(ctxp => {
+              return resolve(ctxp);
+            })
+            .catch(err => {
+              return reject(err);
+            });
         })
         .catch(err => {
           return reject(err);
@@ -834,9 +867,10 @@ export class ConfirmPage extends WalletTabsChild {
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
-
-        const amount = (this.tx.amount / 1e8).toFixed(8);
         const unit = txp.coin.toUpperCase();
+        const amount = (
+          this.tx.amount / this.coinOpts[txp.coin].unitToSatoshi
+        ).toFixed(8);
         const name = wallet.name;
         const message = this.replaceParametersProvider.replace(
           this.translate.instant(

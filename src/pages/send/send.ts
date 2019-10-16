@@ -12,12 +12,17 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { Coin } from '../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
+
+export enum CoinName {
+  BTC = 'Bitcoin',
+  BCH = 'Bitcoin Cash',
+  ETH = 'Ethereum'
+}
 
 @Component({
   selector: 'page-send',
@@ -27,14 +32,18 @@ export class SendPage extends WalletTabsChild {
   public search: string = '';
   public walletsBtc;
   public walletsBch;
+  public walletsEth;
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
+  public hasEthWallets: boolean;
   public invalidAddress: boolean;
 
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
+    'EthereumAddress',
+    'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri'
   ];
@@ -68,8 +77,10 @@ export class SendPage extends WalletTabsChild {
 
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.walletsEth = this.profileProvider.getWallets({ coin: 'eth' });
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
     this.hasBchWallets = !_.isEmpty(this.walletsBch);
+    this.hasEthWallets = !_.isEmpty(this.walletsEth);
   }
 
   ionViewWillLeave() {
@@ -91,7 +102,7 @@ export class SendPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
+    const coinName = CoinName[this.wallet.coin.toUpperCase()];
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
       { coinName }
@@ -196,8 +207,7 @@ export class SendPage extends WalletTabsChild {
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
       if (parsedData && parsedData.type == 'PayPro') {
-        const coin: string =
-          this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+        const coin = this.incomingDataProvider.getCoinFromUri(parsedData.data);
         this.incomingDataProvider
           .getPayProDetails(this.search)
           .then(payProDetails => {
@@ -215,6 +225,8 @@ export class SendPage extends WalletTabsChild {
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
+      } else if (parsedData && parsedData.type == 'InvoiceUri') {
+        this.incomingDataProvider.redir(this.search);
       } else if (parsedData && parsedData.type == 'BitPayCard') {
         this.close();
         this.incomingDataProvider.redir(this.search);

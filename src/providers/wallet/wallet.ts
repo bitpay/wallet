@@ -30,6 +30,12 @@ export interface HistoryOptionsI {
 
 export enum Coin {
   BTC = 'btc',
+  BCH = 'bch',
+  ETH = 'eth'
+}
+
+export enum UTXO_COINS {
+  BTC = 'btc',
   BCH = 'bch'
 }
 
@@ -57,6 +63,8 @@ export interface WalletOptions {
 
 export interface TransactionProposal {
   amount: any;
+  data?: string; // eth
+  from: string;
   toAddress: any;
   outputs: Array<{
     toAddress: any;
@@ -176,8 +184,8 @@ export class WalletProvider {
         if (!balance) return;
 
         const configGet = this.configProvider.get();
+        const coinOpts = this.configProvider.getCoinOpts();
         const config = configGet.wallet;
-
         const cache = wallet.cachedStatus;
 
         // Address with Balance
@@ -204,7 +212,7 @@ export class WalletProvider {
         }
 
         // Selected unit
-        cache.unitToSatoshi = config.settings.unitToSatoshi;
+        cache.unitToSatoshi = coinOpts[wallet.coin].unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         // STR
@@ -1150,7 +1158,6 @@ export class WalletProvider {
 
         this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
         if (memo) this.logger.info('Memo: ', memo);
-
         return resolve(broadcastedTxp);
       });
     });
@@ -1662,9 +1669,21 @@ export class WalletProvider {
     });
   }
 
+  public getEstimateGas(wallet, opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      opts = opts || {};
+      wallet.getEstimateGas(opts, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
+  }
+
   public getProtocolHandler(coin: string, network?: string): string {
     if (coin == 'bch') {
       return network == 'testnet' ? 'bchtest' : 'bitcoincash';
+    } else if (coin == 'eth') {
+      return 'ethereum';
     } else {
       return 'bitcoin';
     }

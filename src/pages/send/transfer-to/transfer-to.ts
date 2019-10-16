@@ -34,13 +34,16 @@ export class TransferToPage {
   public search: string = '';
   public walletsBtc;
   public walletsBch;
+  public walletsEth;
   public walletBchList: FlatWallet[];
   public walletBtcList: FlatWallet[];
+  public walletEthList: FlatWallet[];
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
+  public hasEthWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
@@ -65,8 +68,10 @@ export class TransferToPage {
   ) {
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.walletsEth = this.profileProvider.getWallets({ coin: 'eth' });
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
     this.hasBchWallets = !_.isEmpty(this.walletsBch);
+    this.hasEthWallets = !_.isEmpty(this.walletsEth);
   }
 
   @Input()
@@ -77,6 +82,7 @@ export class TransferToPage {
 
     this.walletBchList = this.getBchWalletsList();
     this.walletBtcList = this.getBtcWalletsList();
+    this.walletEthList = this.getEthWalletsList();
     this.updateContactsList();
   }
 
@@ -109,6 +115,10 @@ export class TransferToPage {
 
   private getBtcWalletsList(): FlatWallet[] {
     return this.hasBtcWallets ? this.getRelevantWallets(this.walletsBtc) : [];
+  }
+
+  private getEthWalletsList(): FlatWallet[] {
+    return this.hasEthWallets ? this.getRelevantWallets(this.walletsEth) : [];
   }
 
   private getRelevantWallets(rawWallets): FlatWallet[] {
@@ -204,6 +214,11 @@ export class TransferToPage {
     }
     if (this.hasBtcWallets && this._wallet.coin === 'btc') {
       this.filteredWallets = this.walletBtcList.filter(wallet => {
+        return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
+      });
+    }
+    if (this.hasEthWallets && this._wallet.coin === 'eth') {
+      this.filteredWallets = this.walletEthList.filter(wallet => {
         return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
       });
     }

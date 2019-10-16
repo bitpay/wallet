@@ -19,6 +19,10 @@ export class BwcProvider {
     return BWC.BitcoreCash;
   }
 
+  public getCore() {
+    return BWC.Core;
+  }
+
   public getErrors() {
     return BWC.errors;
   }
@@ -33,6 +37,10 @@ export class BwcProvider {
 
   public getKey() {
     return BWC.Key;
+  }
+
+  public getPayProV2() {
+    return BWC.PayProV2;
   }
 
   public upgradeCredentialsV1(x) {

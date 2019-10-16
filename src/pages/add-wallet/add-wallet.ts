@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // pages
+import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { JoinWalletPage } from '../add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../add/select-currency/select-currency';
 
 // providers
-import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -18,31 +19,26 @@ import * as _ from 'lodash';
 })
 export class AddWalletPage {
   public walletsGroups;
-  public allowMultiplePrimaryWallets: boolean;
+  public fromEthCard: boolean;
+  public title: string;
 
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private navParams: NavParams,
-    private configProvider: ConfigProvider
+    private translate: TranslateService
   ) {
-    const config = this.configProvider.get();
-
+    this.fromEthCard = this.navParams.data.fromEthCard;
+    this.title = this.fromEthCard
+      ? this.translate.instant('Select Key to add ETH Wallet to')
+      : this.translate.instant('Select Key');
     const opts = {
       canAddNewAccount: true,
       showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
-
-    const opts2 = {
-      showHidden: true
-    };
-    const wallets2 = this.profileProvider.getWallets(opts2);
-    const nrKeys = _.values(_.groupBy(wallets2, 'keyId')).length;
-    this.allowMultiplePrimaryWallets =
-      config.allowMultiplePrimaryWallets || nrKeys != 1;
   }
 
   ionViewDidLoad() {
@@ -51,10 +47,18 @@ export class AddWalletPage {
 
   public goToAddPage(keyId): void {
     if (this.navParams.data.isCreate) {
-      this.navCtrl.push(SelectCurrencyPage, {
-        isShared: this.navParams.data.isShared,
-        keyId
-      });
+      if (this.fromEthCard) {
+        this.navCtrl.push(CreateWalletPage, {
+          isShared: false,
+          coin: 'eth',
+          keyId
+        });
+      } else {
+        this.navCtrl.push(SelectCurrencyPage, {
+          isShared: this.navParams.data.isShared,
+          keyId
+        });
+      }
     } else if (this.navParams.data.isJoin) {
       this.navCtrl.push(JoinWalletPage, {
         keyId,

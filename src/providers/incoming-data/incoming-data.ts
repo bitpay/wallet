@@ -66,11 +66,11 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest)?:\?r=[\w+]/.exec(data);
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum)?:\?r=[\w+]/.exec(data);
   }
 
   private isValidBitPayInvoice(data: string): boolean {
-    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\/\w+/.exec(data);
+    return !!/^https:\/\/(www.)?(test.)?bitpay.com\/i\/\w+/.exec(data);
   }
 
   private isValidBitcoinUri(data: string): boolean {
@@ -81,6 +81,11 @@ export class IncomingDataProvider {
   private isValidBitcoinCashUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
+  }
+
+  private isValidEthereumUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getCore().Validation.validateUri('ETH', data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -117,6 +122,12 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
     );
+  }
+
+  private isValidEthereumAddress(data: string): boolean {
+    return !!this.bwcProvider
+      .getCore()
+      .Validation.validateAddress('ETH', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -176,10 +187,9 @@ export class IncomingDataProvider {
     this.logger.debug(
       'Incoming-data: Payment Protocol with non-backwards-compatible request'
     );
-    let coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-    data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-
-    this.goToPayPro(data, coin);
+    const coin = this.getCoinFromUri(data);
+    const url = this.getPayProUrl(data);
+    this.goToPayPro(url, coin);
   }
 
   private async handleBitPayInvoice(data: string) {
@@ -187,30 +197,34 @@ export class IncomingDataProvider {
     const testStr: boolean =
       data.indexOf('test.bitpay.com') > -1 ? true : false;
     const invoiceId: string = data.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+      /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
       ''
     );
     this.invoiceProvider.credentials.NETWORK = testStr
       ? Network.testnet
       : Network.livenet;
     this.invoiceProvider.setCredentials();
-    const invoiceResponse = await this.invoiceProvider
-      .getBitPayInvoiceData(invoiceId)
+    const invoice = await this.invoiceProvider
+      .getBitPayInvoice(invoiceId)
       .catch(err => {
-        throw this.logger.error(err);
+        this.events.publish('incomingDataError', err);
+        this.logger.error(err);
+        return;
       });
-    const { invoice, org, buyer } = invoiceResponse;
-    const stateParams = {
-      invoiceData: invoice,
-      invoiceId,
-      invoiceName: org.name,
-      email: buyer ? buyer.email : null
-    };
-    let nextView = {
-      name: 'ConfirmInvoicePage',
-      params: stateParams
-    };
-    this.events.publish('IncomingDataRedir', nextView);
+    const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+    if (selectedTransactionCurrency) {
+      this.goToPayPro(data, selectedTransactionCurrency.toLowerCase());
+    } else {
+      const stateParams = {
+        invoiceData: invoice,
+        invoiceId
+      };
+      let nextView = {
+        name: 'ConfirmInvoicePage',
+        params: stateParams
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    }
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
@@ -244,6 +258,31 @@ export class IncomingDataProvider {
 
     if (parsed.r) this.goToPayPro(data, coin);
     else this.goSend(address, amount, message, coin);
+  }
+
+  private handleEthereumUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ethereum URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.ETH;
+    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
+    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
+    let parsedAmount;
+    let requiredFeeParam;
+    if (value.exec(data)) {
+      parsedAmount = value.exec(data)[1];
+    }
+    if (gasPrice.exec(data)) {
+      requiredFeeParam = gasPrice.exec(data)[1];
+    }
+    const address = this.sanitizeEthereumUri(data);
+    const message = '';
+    const amount = parsedAmount || amountFromRedirParams;
+    if (amount) {
+      this.goSend(address, amount, message, coin, requiredFeeParam);
+    } else {
+      this.handleEthereumAddress(address);
+    }
   }
 
   private handleBitcoinCashUriLegacyAddress(data: string): void {
@@ -312,6 +351,22 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'bitcoinAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ethereum address');
+    const coin = Coin.ETH;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'ethereumAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -445,6 +500,11 @@ export class IncomingDataProvider {
       this.handleBitcoinCashUri(data, redirParams);
       return true;
 
+      // Ethereum URI
+    } else if (this.isValidEthereumUri(data)) {
+      this.handleEthereumUri(data, redirParams);
+      return true;
+
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       this.handleBitcoinCashUriLegacyAddress(data);
@@ -463,6 +523,11 @@ export class IncomingDataProvider {
       // Plain Address (Bitcoin Cash)
     } else if (this.isValidBitcoinCashAddress(data)) {
       this.handlePlainBitcoinCashAddress(data, redirParams);
+      return true;
+
+      // Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      this.handleEthereumAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -542,6 +607,14 @@ export class IncomingDataProvider {
         title: this.translate.instant('Bitcoin Cash URI')
       };
 
+      // Ethereum URI
+    } else if (this.isValidEthereumUri(data)) {
+      return {
+        data,
+        type: 'EthereumUri',
+        title: this.translate.instant('Ethereum URI')
+      };
+
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       return {
@@ -572,6 +645,14 @@ export class IncomingDataProvider {
         data,
         type: 'BitcoinCashAddress',
         title: this.translate.instant('Bitcoin Cash Address')
+      };
+
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      return {
+        data,
+        type: 'EthereumAddress',
+        title: this.translate.instant('Ethereum Address')
       };
 
       // Coinbase
@@ -620,6 +701,20 @@ export class IncomingDataProvider {
     }
   }
 
+  private sanitizeEthereumUri(data): string {
+    let address = data;
+    const ethereum = /ethereum:/;
+    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
+    const gas = /[\?\&]gas=(\d+([\,\.]\d+)?)/i;
+    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
+    const gasLimit = /[\?\&]gasLimit=(\d+([\,\.]\d+)?)/i;
+    const params = [ethereum, value, gas, gasPrice, gasLimit];
+    for (const key of params) {
+      address = address.replace(key, '');
+    }
+    return address;
+  }
+
   private sanitizeUri(data): string {
     // Fixes when a region uses comma to separate decimals
     let regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -634,6 +729,32 @@ export class IncomingDataProvider {
     newUri.replace('://', ':');
 
     return newUri;
+  }
+
+  public getCoinFromUri(data: string): Coin {
+    let coin = Coin.BTC;
+    const protocol = data.split(':')[0];
+    switch (protocol) {
+      case 'bitcoin':
+        coin = Coin.BTC;
+        break;
+      case 'bitcoincash':
+        coin = Coin.BCH;
+        break;
+      case 'ethereum':
+        coin = Coin.ETH;
+        break;
+      default:
+        coin = Coin.BTC;
+        break;
+    }
+    return coin;
+  }
+
+  public getPayProUrl(data: string): string {
+    return decodeURIComponent(
+      data.replace(/(bitcoin|bitcoincash|ethereum)?:\?r=/, '')
+    );
   }
 
   private getParameterByName(name: string, url: string): string {
@@ -667,14 +788,16 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: Coin
+    coin: Coin,
+    requiredFeeRate?: string
   ): void {
     if (amount) {
       let stateParams = {
         amount,
         toAddress: addr,
         description: message,
-        coin
+        coin,
+        requiredFeeRate
       };
       let nextView = {
         name: 'ConfirmPage',
@@ -727,16 +850,24 @@ export class IncomingDataProvider {
       return;
     }
 
+    let requiredFeeRate;
+
+    if (payProDetails.requiredFeeRate) {
+      requiredFeeRate =
+        coin === 'eth'
+          ? payProDetails.requiredFeeRate
+          : Math.ceil(payProDetails.requiredFeeRate * 1024);
+    }
+
     const stateParams = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
+      data: payProDetails.data,
       paypro: payProDetails,
       coin,
       payProUrl: url,
-      requiredFeeRate: payProDetails.requiredFeeRate
-        ? Math.ceil(payProDetails.requiredFeeRate * 1024)
-        : undefined
+      requiredFeeRate
     };
     const nextView = {
       name: 'ConfirmPage',
@@ -746,10 +877,9 @@ export class IncomingDataProvider {
   }
 
   public getPayProDetails(data: string): Promise<any> {
-    let coin: string = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-    data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-
+    const coin = this.getCoinFromUri(data);
+    const url = this.getPayProUrl(data);
     let disableLoader = true;
-    return this.payproProvider.getPayProDetails(data, coin, disableLoader);
+    return this.payproProvider.getPayProDetails(url, coin, disableLoader);
   }
 }

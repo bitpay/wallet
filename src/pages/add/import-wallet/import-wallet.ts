@@ -509,11 +509,8 @@ export class ImportWalletPage {
   }
 
   public setDerivationPath(coin: string) {
-    const derivationPath =
-      coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
-
+    const defaultCoin = `default${coin.toUpperCase()}`;
+    const derivationPath = this.derivationPathHelperProvider[defaultCoin];
     this.importForm.controls['derivationPath'].setValue(derivationPath);
   }
 

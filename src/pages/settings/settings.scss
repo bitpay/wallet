@@ -115,4 +115,11 @@ page-settings {
       background: #f8f8f9;
     }
   }
+
+  .create-button {
+    background: white;
+    color: color($colors, primary);
+    margin-left: -12px;
+    text-align: center;
+  }
 }

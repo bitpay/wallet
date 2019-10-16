@@ -7,6 +7,9 @@ import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
+import { AddWalletPage } from '../add-wallet/add-wallet';
+import { AddPage } from '../add/add';
+import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
@@ -18,6 +21,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -47,6 +51,8 @@ export class HomePage {
   showCard;
   @ViewChild('showSurvey')
   showSurvey;
+  @ViewChild('showEthLiveCard')
+  showEthLiveCard;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -63,7 +69,6 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
-  public allowMultiplePrimaryWallets: boolean;
 
   public showRateCard: boolean;
   public showPriceChart: boolean;
@@ -73,6 +78,7 @@ export class HomePage {
   public accessDenied: boolean;
   public isBlur: boolean;
   public isCordova: boolean;
+  public collapsedGroups;
 
   private isElectron: boolean;
   private zone;
@@ -101,12 +107,14 @@ export class HomePage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private invoiceProvider: InvoiceProvider
+    private invoiceProvider: InvoiceProvider,
+    private configProvider: ConfigProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
     this.isCordova = this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
+    this.collapsedGroups = {};
     // Update Wallet on Focus
     if (this.isElectron) {
       this.updateDesktopOnFocus();
@@ -193,6 +201,7 @@ export class HomePage {
     // Required delay to improve performance loading
     setTimeout(() => {
       this.showSurveyCard();
+      this.showEthLive();
       this.checkFeedbackInfo();
       this.checkEmailLawCompliance();
     }, 2000);
@@ -360,10 +369,6 @@ export class HomePage {
       keyId: 'read-only'
     });
 
-    this.allowMultiplePrimaryWallets =
-      this.profileProvider.isMultiplePrimaryEnabled() ||
-      this.walletsGroups.length > 1;
-
     this.profileProvider.setLastKnownBalance();
 
     // Avoid heavy tasks that can slow down the unlocking experience
@@ -375,6 +380,19 @@ export class HomePage {
   private async showSurveyCard() {
     const hideSurvey = await this.persistenceProvider.getSurveyFlag();
     this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
+  private async showEthLive() {
+    const hideEthLiveCard = await this.persistenceProvider.getEthLiveCardFlag();
+    if (!hideEthLiveCard) {
+      let hasNoLegacy = false;
+      this.walletsGroups.forEach((walletsGroup: any[]) => {
+        if (walletsGroup[0].canAddNewAccount) {
+          hasNoLegacy = true;
+        }
+      });
+      this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
+    }
   }
 
   private checkFeedbackInfo() {
@@ -438,6 +456,7 @@ export class HomePage {
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
+          'EthereumAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
@@ -445,8 +464,7 @@ export class HomePage {
           return;
         }
         if (this.validDataFromClipboard.type === 'PayPro') {
-          const coin: string =
-            data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+          const coin = this.incomingDataProvider.getCoinFromUri(data);
           this.incomingDataProvider
             .getPayProDetails(data)
             .then(payProDetails => {
@@ -468,38 +486,51 @@ export class HomePage {
             });
         } else if (this.validDataFromClipboard.type === 'InvoiceUri') {
           const invoiceId: string = data.replace(
-            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+            /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
             ''
           );
-          try {
-            const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
-              invoiceId
-            );
-            const { invoice, org } = invoiceData;
-            const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-            const { price, currency, expirationTime, paymentTotals } = invoice;
-            this.payProDetailsData = invoice;
-            this.payProDetailsData.verified = true;
-            this.payProDetailsData.isFiat =
-              selectedTransactionCurrency || Coin[currency.toUpperCase()]
-                ? false
-                : true;
-            this.payProDetailsData.host = org.name;
-            this.payProDetailsData.coin = selectedTransactionCurrency
-              ? Coin[selectedTransactionCurrency]
-              : currency;
-            this.payProDetailsData.amount = selectedTransactionCurrency
-              ? paymentTotals[selectedTransactionCurrency]
-              : Coin[currency]
-              ? price / 1e-8
-              : price;
-            this.clearCountDownInterval();
-            this.paymentTimeControl(expirationTime);
-          } catch (err) {
-            this.payProDetailsData = {};
-            this.payProDetailsData.error = err;
-            this.logger.warn('Error in Fetching Invoice', err);
-          }
+          this.invoiceProvider
+            .getBitPayInvoice(invoiceId)
+            .then(invoice => {
+              if (!invoice) {
+                throw this.translate.instant('No wallets available');
+              }
+              const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+              const {
+                price,
+                currency,
+                expirationTime,
+                paymentTotals
+              } = invoice;
+              let unitToSatoshi;
+              if (Coin[currency]) {
+                unitToSatoshi = this.configProvider.getCoinOpts()[
+                  currency.toLowerCase()
+                ].unitToSatoshi;
+              }
+              this.payProDetailsData = invoice;
+              this.payProDetailsData.verified = true;
+              this.payProDetailsData.isFiat =
+                selectedTransactionCurrency || Coin[currency.toUpperCase()]
+                  ? false
+                  : true;
+              this.payProDetailsData.host = 'Bitpay';
+              this.payProDetailsData.coin = selectedTransactionCurrency
+                ? Coin[selectedTransactionCurrency]
+                : currency;
+              this.payProDetailsData.amount = selectedTransactionCurrency
+                ? paymentTotals[selectedTransactionCurrency]
+                : Coin[currency]
+                ? price / unitToSatoshi
+                : price;
+              this.clearCountDownInterval();
+              this.paymentTimeControl(expirationTime);
+            })
+            .catch(err => {
+              this.payProDetailsData = {};
+              this.payProDetailsData.error = err;
+              this.logger.warn('Error in Fetching Invoice', err);
+            });
         }
         await Observable.timer(50).toPromise();
         this.slideDown = true;
@@ -835,5 +866,51 @@ export class HomePage {
 
   public settings(): void {
     this.navCtrl.push(SettingsPage);
+  }
+
+  public collapseGroup(keyId: string) {
+    this.collapsedGroups[keyId] = this.collapsedGroups[keyId] ? false : true;
+  }
+
+  public isCollapsed(keyId: string): boolean {
+    return this.collapsedGroups[keyId] ? true : false;
+  }
+
+  public addWallet(fromEthCard?: boolean): void {
+    let keyId;
+    const compatibleKeyWallets = _.values(
+      _.groupBy(
+        _.filter(this.wallets, wallet => {
+          if (wallet.canAddNewAccount && wallet.keyId != 'read-only') {
+            keyId = wallet.keyId;
+            return true;
+          } else return false;
+        }),
+        'keyId'
+      )
+    );
+
+    if (fromEthCard && compatibleKeyWallets.length == 1) {
+      this.navCtrl.push(CreateWalletPage, {
+        isShared: false,
+        coin: 'eth',
+        keyId
+      });
+    } else if (fromEthCard && compatibleKeyWallets.length > 1) {
+      this.navCtrl.push(AddWalletPage, {
+        isCreate: true,
+        isMultipleSeed: true,
+        fromEthCard
+      });
+    } else {
+      this.navCtrl.push(AddPage, {
+        // Select currency to add to the same key (1 single seed compatible key)
+        keyId: compatibleKeyWallets.length == 1 ? keyId : null,
+        // Creates new key (same flow as onboarding)
+        isZeroState: compatibleKeyWallets.length == 0 ? true : false,
+        // Select currency and Key or creates a new Key
+        isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
+      });
+    }
   }
 }

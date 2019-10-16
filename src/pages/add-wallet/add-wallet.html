@@ -1,12 +1,5 @@
-<wide-header-page title="{{'Add Wallet' | translate}}">
+<wide-header-page title="{{ title }}">
   <div page-content>
-    <label-tip *ngIf="walletsGroups && walletsGroups[0]" type="info" class="no-arrowhead" type="info" margin-top>
-      <span label-tip-title translate>Select the Key for the New Wallet</span>
-      <div label-tip-body>
-        <span translate>By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again.</span>
-      </div>
-    </label-tip>
-
     <ion-list class="settings-list bp-list">
       <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="goToAddPage(walletsGroup[0].keyId)">
         <ion-icon class="item-img settings-icon" item-start>
@@ -20,14 +13,20 @@
           {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
         </ion-note>
       </button>
-
-      <button ion-item (click)="goToAddPage()" *ngIf="allowMultiplePrimaryWallets">
-        <ion-icon class="item-img" item-start>
-          <div class="icon-plus"></div>
-        </ion-icon>
-        <span translate>Generate a new key</span>
-      </button>
-
     </ion-list>
+
+    <label-tip *ngIf="walletsGroups && walletsGroups[0]" type="info" type="info">
+      <span label-tip-title translate>Don't see your Key?</span>
+      <div label-tip-body>
+        <span translate>
+          Legacy wallets created before 9/15 can't support additional wallets being added.
+        </span>
+      </div>
+    </label-tip>
+
+    <button ion-button class="button-standard" color="light" (click)="goToAddPage()">
+      <span translate>Create New Key</span>
+    </button>
+
   </div>
 </wide-header-page>

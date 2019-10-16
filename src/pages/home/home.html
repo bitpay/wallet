@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar class="home-header" [ngClass]="{blur: isBlur}">
+    <ion-buttons left class="add-button" *ngIf="wallets && wallets[0]">
+      <button ion-button clear (click)="addWallet()" class="add">
+        <img src="assets/img/add-wallet/add-wallet.svg" />
+      </button>
+    </ion-buttons>
     <ion-title>
       <img class="home-logo" src="assets/img/app/logo.svg" />
     </ion-title>
@@ -74,6 +79,7 @@
 
     <page-feedback-card #showCard></page-feedback-card>
     <page-survey-card #showSurvey></page-survey-card>
+    <page-eth-live-card #showEthLiveCard (addEthClicked)="addWallet(true)"></page-eth-live-card>
 
     <div *ngIf="showPriceChart && wallets && wallets[0]">
       <div class="section-header" translate>Price Chart</div>
@@ -99,13 +105,22 @@
       </ion-card-content>
     </ion-card>
 
-    <div class="section-header" *ngIf="walletsGroups && walletsGroups.length > 0" translate>Wallets</div>
-
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <ion-list class="sliding-container wallets">
+      <div class="section-header" *ngIf="walletGroup[0].canSign">
+        <span class="key-name" *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}</span>
+        <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
+        <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
+          <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
+          <span class="collapse-btn" *ngIf="walletsGroups.length > 1">
+            <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
+            <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
+          </span>
+        </div>
+      </div>
+      <ion-list class="sliding-container wallets" [ngClass]="{'collapsed': isCollapsed(walletGroup[0].keyId)}">
         <div *ngFor="let wallet of walletGroup" class="wallet-wrapper">
           <ion-item-sliding #slidingItem>
-            <button [ngStyle]="{'border-color': allowMultiplePrimaryWallets ? '#dae7f8' : '#edeef3'}" ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
+            <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
               <wallet-item-content [wallet]="wallet"></wallet-item-content>
             </button>
             <ion-item-options side="left">
@@ -139,7 +154,7 @@
       <ion-list class="sliding-container wallets">
         <div class="wallet-wrapper">
           <ion-item-sliding #slidingItem>
-            <button [ngStyle]="{'border-color': allowMultiplePrimaryWallets ? '#dae7f8' : '#edeef3'}" ion-item detail-none (click)="onWalletAction(readOnlyWallet, 'view', slidingItem)">
+            <button ion-item detail-none (click)="onWalletAction(readOnlyWallet, 'view', slidingItem)">
               <wallet-item-content [wallet]="readOnlyWallet"></wallet-item-content>
             </button>
             <ion-item-options side="left">

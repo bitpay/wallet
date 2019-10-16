@@ -20,6 +20,7 @@ import { DecimalPipe } from '@angular/common';
 import {
   EmailNotificationsProvider,
   FeeProvider,
+  IncomingDataProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
 } from '../../../../providers';
@@ -88,6 +89,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
+    public incomingDataProvider: IncomingDataProvider,
     keyProvider: KeyProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
@@ -298,8 +300,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const payProUrl =
-      invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
+    const paymentCode =
+      COIN !== 'ETH'
+        ? invoice.paymentCodes[COIN].BIP73
+        : invoice.paymentCodes[COIN].EIP681;
+    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
 
     if (!payProUrl) {
       throw {
@@ -333,11 +338,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         service: 'giftcards'
       },
       payProUrl,
-      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
+        ? false
+        : true,
+      data: details.data // eth
     };
 
     if (details.requiredFeeRate) {
-      txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+      const requiredFeeRate =
+        wallet.coin === 'eth'
+          ? details.requiredFeeRate
+          : Math.ceil(details.requiredFeeRate * 1024);
+      txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
       txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
@@ -350,12 +362,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
-    return this.walletProvider.createTx(wallet, txp).catch(err => {
-      throw {
-        title: this.translate.instant('Could not create transaction'),
-        message: this.bwcErrorProvider.msg(err)
-      };
-    });
+    return this.walletProvider
+      .getAddress(this.wallet, false)
+      .then(address => {
+        txp.from = address;
+        return this.walletProvider.createTx(wallet, txp);
+      })
+      .catch(err => {
+        throw {
+          title: this.translate.instant('Could not create transaction'),
+          message: this.bwcErrorProvider.msg(err)
+        };
+      });
   }
 
   private async redeemGiftCard(initialCard: GiftCard) {

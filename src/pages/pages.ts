@@ -48,11 +48,12 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
+import { EthLiveCardPage } from '../pages/includes/eth-live-card/eth-live-card';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
+import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
-import { SurveyCardPage } from './includes/survey-card/survey-card';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -84,6 +85,7 @@ import { SharePage } from '../pages/settings/share/share';
 import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
+import { WalletGroupOnboardingPage } from '../pages/settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
@@ -143,6 +145,7 @@ export const PAGES = [
   CoinbaseTxDetailsPage,
   ConfirmInvoicePage,
   CopayersPage,
+  EthLiveCardPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,
@@ -203,6 +206,7 @@ export const PAGES = [
   WalletGroupDeletePage,
   WalletGroupSettingsPage,
   WalletGroupNamePage,
+  WalletGroupOnboardingPage,
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,

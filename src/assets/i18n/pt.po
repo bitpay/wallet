@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-08-23 12:59\n"
+"PO-Revision-Date: 2019-10-14 19:37\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -215,12 +215,6 @@ msgstr "Tempo de confirmação (em média)"
 msgid "Awaiting payment to confirm"
 msgstr "Aguardando pagamento para confirmar"
 
-msgid "BCH Wallet"
-msgstr "Carteira BCH"
-
-msgid "BTC Wallet"
-msgstr "Carteira BTC"
-
 msgid "Back up all your wallets before using this function"
 msgstr "Faça backup de todas as suas carteiras antes de usar esta função"
 
@@ -235,9 +229,6 @@ msgstr "Criar cópia da carteira"
 
 msgid "Bad wallet invitation"
 msgstr "Convite para carteira inválido"
-
-msgid "Basic Wallet"
-msgstr "Carteira Básica"
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr "Certifique-se de armazenar sua frase de recuperação em um lugar seguro e protegido"
@@ -290,9 +281,6 @@ msgstr "URI do Bitcoin"
 msgid "Bitcoin Wallets"
 msgstr "Carteiras Bitcoin"
 
-msgid "Bitcoin miner fee:"
-msgstr "Taxa de mineração de Bitcoin:"
-
 msgid "Bitcoin network fee policy"
 msgstr "Política de taxa de rede Bitcoin"
 
@@ -325,9 +313,6 @@ msgstr "Comprando Cartão-Presente..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Ao fornecer seu endereço de e-mail, você dá consentimento explícito para BitPay usar seu endereço de e-mail para enviar que e-mail notificações sobre pagamentos."
-
-msgid "By reusing a current key, your new wallet will share the recovery phrase, so you don't need to backup it again."
-msgstr "Ao reutilizar uma chave atual, sua nova carteira compartilhará a frase de recuperação, então você não precisa fazer backup novamente."
 
 msgid "Calculating fee..."
 msgstr "Calculando taxa..."
@@ -470,6 +455,9 @@ msgstr "Endereço {coin} copiado"
 msgid "Copied: {claimCode}"
 msgstr "Copiado: {claimCode}"
 
+msgid "Copy"
+msgstr ""
+
 msgid "Copy Code"
 msgstr "Copiar Código"
 
@@ -557,8 +545,11 @@ msgstr "Não foi possível atualizar a carteira"
 msgid "Create"
 msgstr "Criar"
 
-msgid "Create a new key"
-msgstr "Criar uma nova chave"
+msgid "Create New Key"
+msgstr ""
+
+msgid "Create a new wallet"
+msgstr ""
 
 msgid "Created"
 msgstr "Criado"
@@ -647,6 +638,9 @@ msgstr "Fazer isto depois?"
 msgid "Do you want to verify your account now?"
 msgstr "Deseja verificar a sua conta agora?"
 
+msgid "Don't see your Key?"
+msgstr ""
+
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Não vê o seu idioma no Crowdin? Contacte o Dono no Crowdin! Nós adoraríamos suportar a sua linguagem."
 
@@ -716,14 +710,11 @@ msgstr "Digite a senha para criptografar sua carteira"
 msgid "Enter a transaction memo"
 msgstr "Digite uma nota de transação"
 
-msgid "Enter an email address"
-msgstr "Digite um endereço de e-mail"
-
 msgid "Enter bitcoin address"
 msgstr "Digite um endereço bitcoin"
 
-msgid "Enter custom fee in sat/byte"
-msgstr "Digite a taxa personalizada em sat/byte"
+msgid "Enter custom fee in {feeUnit}"
+msgstr ""
 
 msgid "Enter email address"
 msgstr "Digite o endereço de e-mail"
@@ -779,6 +770,15 @@ msgstr "Erro na varredura da carteira:"
 msgid "Error updating Debit Cards"
 msgstr "Erro na atualização dos Cartões de Débito"
 
+msgid "Ethereum Address"
+msgstr ""
+
+msgid "Ethereum URI"
+msgstr ""
+
+msgid "Ethereum Wallets"
+msgstr ""
+
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Excedido limite diário de $500 por usuário"
 
@@ -817,6 +817,9 @@ msgstr "Falha ao exportar"
 
 msgid "Featured Brands"
 msgstr "Marcas Destacadas"
+
+msgid "Featured Currencies"
+msgstr ""
 
 msgid "Fee"
 msgstr "Taxa"
@@ -1016,9 +1019,6 @@ msgstr "Se ativado, as novas carteiras podem ter chaves diferentes e exigirão u
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Se habilitado, as carteiras também tentará gastar fundos não confirmados."
 
-msgid "If there is an issue with this payment, or a refund needs to be made, we will contact you at this address."
-msgstr "Se houver um problema com este pagamento, ou um reembolso precise ser feito, entraremos em contato com você neste endereço."
-
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr "Se você tem fundos armazenados em um site, então você deveria movê-los para uma carteira segura... como esta!"
 
@@ -1036,6 +1036,9 @@ msgstr "Importar Carteira"
 
 msgid "Import Words"
 msgstr "Importar Palavras"
+
+msgid "Import existing wallet"
+msgstr ""
 
 msgid "Importing Wallet..."
 msgstr "A importar a carteira..."
@@ -1121,8 +1124,17 @@ msgstr "Junte-se a Carteira Compartilhada"
 msgid "Joining Wallet..."
 msgstr "Associando-se a Carteira…"
 
+msgid "Key Name"
+msgstr ""
+
+msgid "Key Settings"
+msgstr ""
+
 msgid "Key already associated with an existing wallet"
 msgstr "Chave já associada com uma carteira existente"
+
+msgid "Keys"
+msgstr ""
 
 msgid "Language"
 msgstr "Idioma"
@@ -1138,6 +1150,12 @@ msgstr "Saiba mais"
 
 msgid "Learn more about testnet blockchain"
 msgstr "Saiba mais sobre testnet blockchain"
+
+msgid "Legacy"
+msgstr ""
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr ""
 
 msgid "Linked"
 msgstr "Vinculado"
@@ -1192,6 +1210,9 @@ msgstr "Aviso de Taxa de Mineração"
 
 msgid "Miner fee"
 msgstr "Taxa de mineração"
+
+msgid "Miner fee:"
+msgstr ""
 
 msgid "Minimum amount required is {{min}}"
 msgstr "Montante mínimo necessário é {{min}}"
@@ -1357,9 +1378,6 @@ msgstr "Me informe se confirmado"
 
 msgid "Notify me when transactions are confirmed"
 msgstr "Notificar-me quando as transações são confirmadas"
-
-msgid "Now it's time for you to create a wallet to store your funds into."
-msgstr "Agora é hora de você criar uma carteira para armazenar seus fundos."
 
 msgid "OK"
 msgstr "OK"
@@ -1658,9 +1676,6 @@ msgstr "Recriando Carteira…"
 msgid "Redeem Now"
 msgstr "Resgatar Agora"
 
-msgid "Refund Email"
-msgstr "E-mail de Reembolso"
-
 msgid "Reject Payment Proposal"
 msgstr "Rejeitar Proposta de Pagamento"
 
@@ -1718,6 +1733,9 @@ msgstr "Requer convite para participar"
 msgid "Requires multiple devices (most secure)"
 msgstr "Requer múltiplos dispositivos (mais seguro)"
 
+msgid "Retrieving gas limit..."
+msgstr ""
+
 msgid "Retrieving inputs information..."
 msgstr "Recuperando informações de entradas..."
 
@@ -1757,8 +1775,8 @@ msgstr "Pesquisar Carteiras ou Contatos"
 msgid "Search a contact"
 msgstr "Buscar contato"
 
-msgid "Search or enter bitcoin address"
-msgstr "Procure ou digite o endereço bitcoin"
+msgid "Search or enter address"
+msgstr ""
 
 msgid "Search your currency"
 msgstr "Procure a sua moeda"
@@ -1769,14 +1787,20 @@ msgstr "Segurança"
 msgid "See transaction"
 msgstr "Ver transação"
 
+msgid "Select Key"
+msgstr ""
+
+msgid "Select Key to add ETH Wallet to"
+msgstr ""
+
 msgid "Select a wallet"
 msgstr "Selecione uma carteira"
 
+msgid "Select currencies"
+msgstr ""
+
 msgid "Select currency"
 msgstr "Selecionar moeda"
-
-msgid "Select the Key for the New Wallet"
-msgstr "Selecione a Chave para a Nova Carteira"
 
 msgid "Selling Bitcoin..."
 msgstr "Vendendo Bitcoin..."
@@ -1919,6 +1943,9 @@ msgstr "Assinaturas rejeitadas pelo servidor"
 msgid "Signing transaction..."
 msgstr "Assinando transação..."
 
+msgid "Simple Wallet"
+msgstr ""
+
 msgid "Single address"
 msgstr "Endereço único"
 
@@ -2026,12 +2053,6 @@ msgstr "Quanto maior a taxa, maior o incentivo um mineiro tem que incluir essa t
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "As informações que você está prestes a compartilhar/exportar podem conter dados sensíveis como IDs de carteira, endereços, saldos, etc. Por favor, certifique-se de que você confia na pessoa ou entidade com quem você está compartilhando estas informações."
-
-msgid "The invoice is no longer receiving payments."
-msgstr "A fatura não está mais recebendo pagamentos."
-
-msgid "The key on the response is not trusted for transactions on the 'test' network"
-msgstr "A chave na resposta não é confiável para transações na rede 'teste'"
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "O pagamento foi criado mas não pode ser completado. Por favor, tente novamente a partir da tela inicial."
@@ -2141,8 +2162,8 @@ msgstr "Cronograma"
 msgid "To"
 msgstr "Para"
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Para começar, você precisa criar uma carteira de bitcoins e obter alguns bitcoins."
+msgid "To get started, you'll need to create a wallet and get some funds."
+msgstr ""
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr "Para começar, você precisará digitar um endereço válido, contato ou carteira."
@@ -2212,6 +2233,9 @@ msgstr "Transferir para Carteira Bitcoin"
 
 msgid "Transfer to Contact"
 msgstr "Transferir para um Contato"
+
+msgid "Transfer to Ethereum Wallet"
+msgstr ""
 
 msgid "Transfer to Multiple Recipients"
 msgstr "Transferir para Múltiplos Destinatários"
@@ -2336,6 +2360,9 @@ msgstr "Aguardando"
 msgid "Waiting for authorized copayers to join"
 msgstr "Esperando que os copayers autorizados se juntem"
 
+msgid "Wallet Address"
+msgstr ""
+
 msgid "Wallet Addresses"
 msgstr "Endereços da carteira"
 
@@ -2347,9 +2374,6 @@ msgstr "Entradas da carteira"
 
 msgid "Wallet Invitation"
 msgstr "Convite para Carteira"
-
-msgid "Wallet Key Settings"
-msgstr "Configurações da Chave da Carteira"
 
 msgid "Wallet Name"
 msgstr "Nome da carteira"
@@ -2414,12 +2438,6 @@ msgstr "Serviço de carteira não encontrado"
 msgid "Wallets"
 msgstr "Carteiras"
 
-msgid "Wallets (Grouped by key)"
-msgstr "Carteiras (Agrupadas por chave)"
-
-msgid "Wallets using this key"
-msgstr "Carteiras usando esta chave"
-
 msgid "Warning!"
 msgstr "Atenção!"
 
@@ -2443,6 +2461,9 @@ msgstr "Estamos sempre escutando maneiras de melhorar sua experiência. Há algu
 
 msgid "Website"
 msgstr "Website"
+
+msgid "What do you call this key?"
+msgstr ""
 
 msgid "What do you call this wallet?"
 msgstr "Como você chama essa carteira?"
@@ -2504,6 +2525,9 @@ msgstr "Você está tentando enviar mais fundos do que você tem disponível. Ce
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "Você está tentando enviar mais fundos do que você tem disponível. Certifique-se de que você não tem fundos bloqueados por propostas de transação pendentes. Você também pode tentar com um valor inferior ou enviar o máximo."
 
+msgid "You can change the name displayed on this device below."
+msgstr ""
+
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr "Você pode continuar a ver os seus cartões arquivados aqui, se você precisar acessá-los."
 
@@ -2531,8 +2555,8 @@ msgstr "Você não tem fundos confirmados suficientes para fazer este pagamento.
 msgid "You reach the limit of twenty wallets from the same coin and network"
 msgstr "Você atingiu o limite de vinte carteiras da mesma moeda e rede"
 
-msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr "Você não deve definir uma taxa maior do que {{maxFeeRecommended}} satoshis/byte."
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
 msgstr "Seu Cartão BitPay está pronto. Adicione fundos ao seu cartão para começar a usá-lo nas lojas."
@@ -2584,6 +2608,9 @@ msgstr "a preparar..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "Carteiras BCH do {appName} usam o formato CashAddr por padrão"
+
+msgid "{coinName} Address"
+msgstr ""
 
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
 msgstr "Cartões-presente {displayName} contêm uma taxa de ativação adicional de {fee} {currency}."
