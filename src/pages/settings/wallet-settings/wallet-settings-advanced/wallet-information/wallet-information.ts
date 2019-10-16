@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { Logger } from '../../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { UTXO_COINS } from '../../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-wallet-information',
@@ -63,5 +64,9 @@ export class WalletInformationPage {
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
     this.canSign = this.wallet.canSign;
+  }
+
+  public checkIfUtxoCoin() {
+    return !!UTXO_COINS[this.wallet.coin.toUpperCase()];
   }
 }
