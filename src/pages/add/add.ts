@@ -43,6 +43,7 @@ export class AddPage {
         this.navCtrl.push(AddWalletPage, {
           isCreate,
           isMultipleSeed: true,
+          isShared,
           url: this.navParams.data.url
         });
       } else {
