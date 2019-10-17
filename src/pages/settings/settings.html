@@ -1,17 +1,5 @@
 <wide-header-page title="{{'Settings' | translate}}">
   <div page-content>
-    <div *ngIf="appName === 'BitPay'" class="no-padding hairline" no-padding detail-none>
-      <div class="merchant-directory-container">
-        <div class="merchant-directory-body">
-          <h4>Learn where you can spend your crypto today.</h4>
-          <div (click)="openMerchantDirectorySite()" class="merchant-directory-link" href="">View Directory</div>
-        </div>
-        <div class="gumball">
-          <img src="assets/img/gumball-3.svg" class="gumball-image" width="150" height="150" />
-        </div>
-      </div>
-    </div>
-    <div class="hairline"></div>
     <ion-list class="settings-list bp-list">
       <button ion-item (click)="openAddressBookPage()">
         <ion-icon class="item-img settings-icon" item-start>

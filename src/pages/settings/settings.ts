@@ -71,8 +71,7 @@ export class SettingsPage {
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private touchid: TouchIdProvider,
-    private externalLinkProvder: ExternalLinkProvider
+    private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -152,12 +151,6 @@ export class SettingsPage {
     if (!lockMethod || lockMethod == 'disabled') this.navCtrl.push(LockPage);
     if (lockMethod == 'pin') this.openPinModal('lockSetUp');
     if (lockMethod == 'fingerprint') this.checkFingerprint();
-  }
-
-  public openMerchantDirectorySite() {
-    this.externalLinkProvder.open(
-      `https://bitpay.com/directory/?hideGiftCards=true`
-    );
   }
 
   public openAddressBookPage(): void {
