@@ -1,6 +1,6 @@
 <wide-header-page title="{{'Settings' | translate}}">
   <div page-content>
-    <div class="no-padding hairline" no-padding detail-none>
+    <div *ngIf="appName === 'BitPay'" class="no-padding hairline" no-padding detail-none>
       <div class="merchant-directory-container">
         <div class="merchant-directory-body">
           <h4>Learn where you can spend your crypto today.</h4>

@@ -8,8 +8,7 @@
       "rxjs",
       "@angular",
       "ts-md5/dist/md5",
-      "ionic-angular/gestures/gesture",
-      "@ionic-native/in-app-browser"
+      "ionic-angular/gestures/gesture"
     ],
 
     // "no-any": true,
