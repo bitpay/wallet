@@ -123,7 +123,7 @@
     "buffer-compare": "1.1.1",
     "chart.js": "2.8.0",
     "cordova": "8.1.2",
-    "cordova-android": "7.1.4",
+    "cordova-android": "8.1.0",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "https://github.com/cmgustavo/cordova-custom-config.git#3a1902fb700dc8c1e9ac9db592aa48d7d900cde0",
     "cordova-ios": "5.0.1",
