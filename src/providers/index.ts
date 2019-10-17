@@ -14,7 +14,6 @@ export { Toast } from '@ionic-native/toast';
 export { TouchID } from '@ionic-native/touch-id';
 export { Vibration } from '@ionic-native/vibration';
 export { UserAgent } from '@ionic-native/user-agent';
-export { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 /* Providers */
 export { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
