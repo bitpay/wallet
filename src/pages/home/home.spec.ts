@@ -21,6 +21,12 @@ describe('HomePage', () => {
       instance.showCard = {
         setShowRateCard: () => {}
       };
+      instance.showSurvey = {
+        setShowSurveyCard: () => {}
+      };
+      instance.showEthLiveCard = {
+        setShowEthLiveCard: () => {}
+      };
       fixture.detectChanges();
     })));
   afterEach(() => {

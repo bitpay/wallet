@@ -18,6 +18,7 @@ describe('ConfirmPage', () => {
           coin: 'btc'
         }
       };
+      instance.coin = 'btc';
       instance.tx = { coin: 'btc' };
       spyOn(instance.onGoingProcessProvider, 'set');
       fixture.detectChanges();
@@ -43,11 +44,18 @@ describe('ConfirmPage', () => {
         instance.ionViewWillEnter();
         expect(popupSpy).toHaveBeenCalled();
       });
-      it('should show instantiate the wallet selector with relevant wallets', () => {
+      it('should instantiate the wallet selector with relevant wallets', () => {
         const setWalletSelectorSpy = spyOn(
           instance,
           'setWalletSelector'
         ).and.returnValue(Promise.resolve());
+        spyOn(
+          instance.actionSheetProvider,
+          'createWalletSelector'
+        ).and.returnValue({
+          present() {},
+          onDidDismiss() {}
+        });
         instance.wallets = [{}, {}];
         instance.ionViewWillEnter();
         expect(setWalletSelectorSpy).toHaveBeenCalled();
@@ -80,28 +88,14 @@ describe('ConfirmPage', () => {
     });
     describe('onFeeModalDismiss', () => {
       it('should set usingCustomFee to true if newFeeLevel is custom', () => {
+        spyOn(instance, 'updateTx').and.returnValue(Promise.resolve());
         instance.onFeeModalDismiss({ newFeeLevel: 'custom' });
         expect(instance.usingCustomFee).toBe(true);
       });
     });
-    describe('setWallet', () => {
-      it('should not break', () => {
-        instance.tx = { paypro: { expires: 1000 } };
-        const wallet = {
-          coin: 'BTC',
-          credentials: {
-            m: 1
-          },
-          isPrivKeyEncrypted: () => {
-            return false;
-          }
-        };
-        instance.setWallet(wallet);
-      });
-    });
     describe('confirmTx', () => {
       it('should display a confirm popup', () => {
-        const txp = { coin: 'BTC' };
+        const txp = { coin: 'btc' };
         const wallet = {};
         spyOn(instance.txFormatProvider, 'formatToUSD').and.returnValue(
           Promise.resolve('100.50')
@@ -111,7 +105,7 @@ describe('ConfirmPage', () => {
     });
     describe('approve', () => {
       const tx = {};
-      const txp = { coin: 'BTC' };
+      const txp = { coin: 'btc' };
       const wallet = {};
       it('should clear the ongoing process loader if user declines', async () => {
         spyOn(instance, 'getTxp').and.returnValue(Promise.resolve(txp));

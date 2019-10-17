@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
+import * as _ from 'lodash';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
@@ -10,7 +15,9 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
@@ -20,7 +27,8 @@ import {
   WalletProvider
 } from '../../../providers/wallet/wallet';
 
-import * as _ from 'lodash';
+// Pages
+import { WalletGroupOnboardingPage } from '../../settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
 
 @Component({
   selector: 'page-create-wallet',
@@ -48,6 +56,7 @@ export class CreateWalletPage implements OnInit {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private keyId: string;
+  private showKeyOnboarding: boolean;
 
   public copayers: number[];
   public signatures: number[];
@@ -77,7 +86,9 @@ export class CreateWalletPage implements OnInit {
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private modalCtrl: ModalController,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -115,6 +126,7 @@ export class CreateWalletPage implements OnInit {
     this.createLabel = this.translate.instant(
       `${this.coin.toUpperCase()} Wallet`
     );
+    this.showKeyOnboarding = this.navParams.data.showKeyOnboarding;
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -282,7 +294,24 @@ export class CreateWalletPage implements OnInit {
       return;
     }
 
-    this.create(opts);
+    if (this.showKeyOnboarding) {
+      this.showKeyOnboardingSlides(opts);
+    } else {
+      this.create(opts);
+    }
+  }
+
+  private showKeyOnboardingSlides(opts) {
+    this.logger.debug('Showing key onboarding');
+    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+      showBackdrop: false,
+      enableBackdropDismiss: false
+    });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.create(opts);
+    });
+    this.persistenceProvider.setKeyOnboardingFlag();
   }
 
   private create(opts): void {

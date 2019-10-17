@@ -56,6 +56,7 @@ const Keys = {
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,
+  KEY_ONBOARDING: 'keyOnboarding',
   KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
@@ -153,6 +154,14 @@ export class PersistenceProvider {
 
   getEthLiveCardFlag() {
     return this.storage.get(Keys.ETH_LIVE_CARD);
+  }
+
+  setKeyOnboardingFlag() {
+    return this.storage.set(Keys.KEY_ONBOARDING, true);
+  }
+
+  getKeyOnboardingFlag() {
+    return this.storage.get(Keys.KEY_ONBOARDING);
   }
 
   storeFocusedWalletId(walletId: string) {
