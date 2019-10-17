@@ -64,7 +64,9 @@ page-settings {
   }
 
   .merchant-directory-link {
+    color: color($colors, info);
     cursor: pointer;
+    font-size: 16px;
   }
 
   .hairline {
