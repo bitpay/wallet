@@ -155,6 +155,10 @@ export class WalletDetailsPage extends WalletTabsChild {
     );
   }
 
+  public checkIfUtxoCoin() {
+    return !!UTXO_COINS[this.wallet.coin.toUpperCase()];
+  }
+
   private clearHistoryCache() {
     this.history = [];
     this.currentPage = 0;
