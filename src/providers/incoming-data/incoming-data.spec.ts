@@ -4,7 +4,6 @@ import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
-import { ConfigProvider } from '../config/config';
 import { Logger } from '../logger/logger';
 import { ProfileProvider } from '../profile/profile';
 import { IncomingDataProvider } from './incoming-data';
@@ -17,7 +16,6 @@ describe('Provider: Incoming Data Provider', () => {
   let loggerSpy;
   let eventsSpy;
   let actionSheetSpy;
-  let configProvider;
   let profileProvider;
 
   class AppProviderMock {
@@ -63,12 +61,6 @@ describe('Provider: Incoming Data Provider', () => {
         }
       }
     ]);
-
-    configProvider = testBed.get(ConfigProvider);
-
-    spyOn(configProvider, 'get').and.returnValue({
-      allowMultiplePrimaryWallets: true
-    });
   });
 
   describe('Function: SCANNER Redir', () => {

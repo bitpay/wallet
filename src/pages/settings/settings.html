@@ -53,8 +53,8 @@
           {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
         </ion-note>
       </button>
-      <button ion-item class="create-button" *ngIf="walletsGroups && walletsGroups[0] && allowMultiplePrimaryWallets" (click)="goToAddView()" translate>
-        Create New Key
+      <button ion-item class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
+        Create or Import a Key
       </button>
 
       <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
