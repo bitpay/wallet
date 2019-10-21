@@ -229,9 +229,9 @@ page-home {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #606163;
-    font-size: 16px;
-    font-weight: 500;
+    color: #a8a8a8;
+    font-size: 14px;
+    font-weight: 400;
     margin-bottom: 10px;
     margin-top: 20px;
     .key-name {
@@ -492,7 +492,7 @@ page-home {
     }
     .collapse-btn {
       cursor: pointer;
-      background: #edeff4;
+      background: #f6f6f7;
       padding: 0.2rem;
       border-radius: 50px;
       margin-top: 0px;
