@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
-import { ConfigProvider } from '../config/config';
 import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
@@ -33,8 +32,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private invoiceProvider: InvoiceProvider,
-    private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider
+    private profileProvider: ProfileProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -397,9 +395,6 @@ export class IncomingDataProvider {
     };
     const wallets = this.profileProvider.getWallets(opts);
     const nrKeys = _.values(_.groupBy(wallets, 'keyId')).length;
-    const config = this.configProvider.get();
-    const allowMultiplePrimaryWallets =
-      config.allowMultiplePrimaryWallets || nrKeys != 1;
 
     if (nrKeys === 0) {
       stateParams = { url: data };
@@ -407,13 +402,13 @@ export class IncomingDataProvider {
         name: 'JoinWalletPage',
         params: stateParams
       };
-    } else if (allowMultiplePrimaryWallets) {
+    } else if (nrKeys != 1) {
       stateParams = { url: data, isJoin: true };
       nextView = {
         name: 'AddWalletPage',
         params: stateParams
       };
-    } else if (!allowMultiplePrimaryWallets) {
+    } else if (nrKeys === 1) {
       stateParams = { keyId: wallets[0].credentials.keyId, url: data };
       nextView = {
         name: 'JoinWalletPage',

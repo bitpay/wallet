@@ -15,7 +15,6 @@ import { Logger } from '../../providers';
   templateUrl: 'add.html'
 })
 export class AddPage {
-  public allowMultiplePrimaryWallets: boolean;
   public keyId: string;
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;

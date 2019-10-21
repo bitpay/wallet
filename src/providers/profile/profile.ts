@@ -977,7 +977,6 @@ export class ProfileProvider {
     if (newKeys.length > 0) {
       this.logger.info(`Storing ${newKeys.length} migrated Keys`);
       this.storeProfileLegacy(oldProfile);
-      if (newKeys.length > 1) this.allowMultiplePrimaryWallets();
       return this.keyProvider.addKeys(newKeys).then(() => {
         profile.credentials = newCrededentials;
         profile.dirty = true;
@@ -994,13 +993,6 @@ export class ProfileProvider {
       }
       return Promise.resolve();
     }
-  }
-
-  public allowMultiplePrimaryWallets(): void {
-    let opts = {
-      allowMultiplePrimaryWallets: true
-    };
-    this.configProvider.set(opts);
   }
 
   public isDisclaimerAccepted(): Promise<any> {
@@ -1620,9 +1612,5 @@ export class ProfileProvider {
       }
     });
     return keyIdIndex >= 0;
-  }
-
-  public isMultiplePrimaryEnabled(): boolean {
-    return !!this.configProvider.get().allowMultiplePrimaryWallets;
   }
 }
