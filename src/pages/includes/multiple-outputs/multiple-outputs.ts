@@ -34,7 +34,7 @@ export class MultipleOutputsPage {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
       this.coin = this._tx.coin
         ? this._tx.coin
-        : this.addressProvider.getCoin(outputAddr);
+        : this.addressProvider.getCoinAndNetwork(outputAddr).coin;
 
       const addressToShow = this.walletProvider.getAddressView(
         this.coin,

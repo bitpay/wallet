@@ -31,8 +31,9 @@ export class AddressbookViewPage {
     private translate: TranslateService
   ) {
     this.address = this.navParams.data.contact.address;
-    this.coin = this.addressProvider.getCoin(this.address);
-    this.network = this.addressProvider.getNetwork(this.address);
+    const addrData = this.addressProvider.getCoinAndNetwork(this.address);
+    this.coin = addrData.coin;
+    this.network = addrData.network;
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
   }
