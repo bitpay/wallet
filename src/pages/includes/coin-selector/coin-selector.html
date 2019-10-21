@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Coin Selector' | translate}}</ion-title>
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="selectedCoin()" ion-button>
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="description" *ngIf="description">{{ description }}</div>
+  <ion-list class="settings-list bp-list">
+    <button class="list-button" ion-item (click)="selectedCoin('btc')">
+      <ion-icon item-start>
+        <img src="assets/img/currencies/btc.svg" />
+      </ion-icon>
+      <div class="item-title">Bitcoin (BTC)</div>
+    </button>
+    <button class="list-button" ion-item (click)="selectedCoin('bch')">
+      <ion-icon item-start>
+        <img src="assets/img/currencies/bch.svg" />
+      </ion-icon>
+      <div class="item-title">Bitcoin Cash (BCH)</div>
+    </button>
+    <button class="list-button" ion-item (click)="selectedCoin('eth')">
+      <ion-icon item-start>
+        <img src="assets/img/currencies/eth.svg" />
+      </ion-icon>
+      <div class="item-title">Ethereum (ETH)</div>
+    </button>
+  </ion-list>
+</ion-content>
