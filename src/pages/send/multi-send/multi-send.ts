@@ -273,7 +273,6 @@ export class MultiSendPage extends WalletTabsChild {
       this.invalidAddress = false;
       return true;
     } else {
-      network;
       this.invalidAddress = true;
       const network = addrData.network;
 
