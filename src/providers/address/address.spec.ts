@@ -9,7 +9,7 @@ describe('AddressProvider', () => {
     addressProvider = testBed.get(AddressProvider);
   });
 
-  fdescribe('getCoinAndNetwork', () => {
+  describe('getCoinAndNetwork', () => {
     const testVectors: any[] = [
       // Bech32
       ['bc1q9225pawdj2dlwsk3dd8phudsap6vjp7fg3nwdl', 'btc', 'livenet'],

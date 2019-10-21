@@ -105,9 +105,9 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should handle Join Wallet', () => {
       let data =
         'copay:RTpopkn5KBnkxuT7x4ummDKx3Lu1LvbntddBC4ssDgaqP7DkojT8ccxaFQEXY4f3huFyMewhHZLbtc';
-      let stateParams = { url: data, isJoin: true };
+      let stateParams = { keyId: 'keyId1', url: data };
       let nextView = {
-        name: 'AddWalletPage',
+        name: 'JoinWalletPage',
         params: stateParams
       };
 
@@ -122,9 +122,9 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should handle Old Join Wallet', () => {
       let data =
         'RTpopkn5KBnkxuT7x4ummDKx3Lu1LvbntddBC4ssDgaqP7DkojT8ccxaFQEXY4f3huFyMewhHZLbtc';
-      let stateParams = { url: data, isJoin: true };
+      let stateParams = { keyId: 'keyId1', url: data };
       let nextView = {
-        name: 'AddWalletPage',
+        name: 'JoinWalletPage',
         params: stateParams
       };
 
