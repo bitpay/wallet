@@ -55,18 +55,12 @@
     </button>
 
     <div *ngIf="showAdvOpts" padding-bottom>
+      <ion-item>
+        <ion-label floating>Wallet Service URL</ion-label>
+        <ion-input type="text" formControlName="bwsURL"></ion-input>
+      </ion-item>
+
       <div *ngIf="selectedTab == 'words'">
-        <ion-item class="with-label">
-          <ion-label floating>{{'Password' | translate}}</ion-label>
-          <ion-input type="password" formControlName="passphrase"></ion-input>
-        </ion-item>
-
-        <label-tip type="info" header="no-header">
-          <div label-tip-body translate>
-            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
-          </div>
-        </label-tip>
-
         <ion-item>
           <ion-label>{{'Specify derivation path' | translate}}</ion-label>
           <ion-toggle formControlName="derivationPathEnabled" (ionChange)="changeDerivationPathValidators();"></ion-toggle>
@@ -90,12 +84,18 @@
           <ion-label>{{'Shared Wallet' | translate}}</ion-label>
           <ion-checkbox formControlName="isMultisig"></ion-checkbox>
         </ion-item>
-      </div>
 
-      <ion-item>
-        <ion-label floating>Wallet Service URL</ion-label>
-        <ion-input type="text" formControlName="bwsURL"></ion-input>
-      </ion-item>
+        <ion-item class="with-label">
+          <ion-label floating>{{'Password' | translate}}</ion-label>
+          <ion-input type="password" formControlName="passphrase"></ion-input>
+        </ion-item>
+
+        <label-tip type="info" header="no-header">
+          <div label-tip-body translate>
+            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
+          </div>
+        </label-tip>
+      </div>
 
     </div>
   </form>

@@ -64,6 +64,15 @@
       <span sheet-second-button-text translate>Send Max</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'import-no-wallet-warning'" type="warning">
+      <span sheet-title-text translate>We couldn't find your wallet!</span>
+      <span sheet-text>
+        {{ 'There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds.' | translate }}
+      </span>
+      <span sheet-button-text translate>Go Back</span>
+      <span sheet-second-button-text translate>Continue Anyway</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'default-error'" type="danger">
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.msg}}</span>
@@ -130,15 +139,13 @@
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
       <span sheet-button-text translate>GOT IT</span>
-      <span sheet-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)"
-        style="float: right;" item-end>OPEN IN BROWSER
+      <span sheet-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)" style="float: right;" item-end>OPEN IN BROWSER
       </span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'archive-all-gift-cards'" type="warning">
       <span sheet-title-text>{{'Archive All {brand} Gift Cards?' | translate: params }}</span>
-      <span
-        sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
+      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
@@ -189,8 +196,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
-      <span
-        sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
+      <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
       <span sheet-text translate>
         If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can "translate" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that "old" address.
       </span>

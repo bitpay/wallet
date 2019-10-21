@@ -1,0 +1,25 @@
+page-coin-selector {
+  background-color: white;
+  .description {
+    font-size: 16px;
+    padding: 2rem 3rem 0rem 3rem;
+  }
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    ion-icon.item-icon {
+      margin-left: 3px;
+
+      img {
+        height: 40px;
+      }
+    }
+
+    .item-title {
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}

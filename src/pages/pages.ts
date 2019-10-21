@@ -47,6 +47,7 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
+import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
 import { EthLiveCardPage } from '../pages/includes/eth-live-card/eth-live-card';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
@@ -215,5 +216,6 @@ export const PAGES = [
   WalletBalancePage,
   WideHeaderPage,
   CardItemPage,
+  CoinSelectorPage,
   SlideToAcceptPage
 ];

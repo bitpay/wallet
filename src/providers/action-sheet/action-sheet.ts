@@ -27,6 +27,7 @@ export type InfoSheetType =
   | 'gift-cards-unavailable'
   | 'hide-gift-card-discount-item'
   | 'insufficient-funds'
+  | 'import-no-wallet-warning'
   | 'above-maximum-gift-card-amount'
   | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
