@@ -1,33 +1,39 @@
 import { Component } from '@angular/core';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../providers/currency/currency';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
 @Component({
   selector: 'wallet-selector',
   templateUrl: 'wallet-selector.html'
 })
 export class WalletSelectorComponent extends ActionSheetParent {
-  public wallets;
-  public walletsBtc;
-  public walletsBch;
-  public walletsEth;
+  public wallets = {} as CoinsMap<any>;
+  public availableCoins: Coin[];
   public title: string;
   public selectedWalletId: string;
-
-  constructor() {
+  constructor(private currencyProvider: CurrencyProvider) {
     super();
+    this.availableCoins = this.currencyProvider.getAvailableCoins();
   }
 
   ngOnInit() {
-    this.wallets = this.params.wallets;
     this.title = this.params.title;
     this.selectedWalletId = this.params.selectedWalletId;
     this.separateWallets();
   }
 
+  public getCoinName(coin: Coin) {
+    return this.currencyProvider.getCoinName(coin);
+  }
+
   private separateWallets(): void {
-    this.walletsBtc = this.wallets.filter(wallet => wallet.coin === 'btc');
-    this.walletsBch = this.wallets.filter(wallet => wallet.coin === 'bch');
-    this.walletsEth = this.wallets.filter(wallet => wallet.coin === 'eth');
+    const wallets = this.params.wallets;
+    for (const coin of this.availableCoins) {
+      this.wallets[coin] = wallets.filter(wallet => wallet.coin === coin);
+    }
   }
 
   public optionClicked(option): void {

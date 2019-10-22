@@ -7,54 +7,26 @@
     </ion-col>
     <ion-col col-4 text-center class="destination-title">{{ title }}</ion-col>
   </ion-row>
-  <!--<div *ngFor="let wallet of wallets" (click)="selectWallet(wallet)">{{wallet.name}}</div>-->
-  <div class="no-wallets" *ngIf="(!walletsBtc || !walletsBtc[0]) && (!walletsBch || !walletsBch[0]) && (!walletsEth || !walletsEth[0])" translate>
-    No wallets available
-  </div>
-  <div *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-item-divider>
-      <div class="title">
-        <span translate>Bitcoin Wallets</span>
-      </div>
-    </ion-item-divider>
+  <div *ngFor="let coin of availableCoins">
+    <div class="no-wallets" *ngIf="(!wallets[coin] && !wallets[coin][0])" translate>
+      No wallets available
+    </div>
 
-    <ion-list>
-      <button ion-item detail-none *ngFor="let wallet of walletsBtc" (click)="optionClicked(wallet)">
-        <wallet-item-content [wallet]="wallet"></wallet-item-content>
-      </button>
-    </ion-list>
-  </div>
+    <div *ngIf="wallets && wallets[coin][0]">
+      <ion-item-divider>
+        <div class="title">
+          <span translate>{{ getCoinName(coin) }} Wallets</span>
+        </div>
+      </ion-item-divider>
 
-  <div *ngIf="walletsBch && walletsBch[0]">
-    <ion-item-divider>
-      <div class="title">
-        <span translate>Bitcoin Cash Wallets</span>
-      </div>
-    </ion-item-divider>
-
-    <ion-list>
-      <div>
-        <button ion-item detail-none *ngFor="let wallet of walletsBch" (click)="optionClicked(wallet)">
-          <wallet-item-content [wallet]="wallet"></wallet-item-content>
-        </button>
-      </div>
-    </ion-list>
-  </div>
-
-  <div *ngIf="walletsEth && walletsEth[0]">
-    <ion-item-divider>
-      <div class="title">
-        <span translate>Ethereum Wallets</span>
-      </div>
-    </ion-item-divider>
-
-    <ion-list>
-      <div>
-        <button ion-item detail-none *ngFor="let wallet of walletsEth" (click)="optionClicked(wallet)">
-          <wallet-item-content [wallet]="wallet"></wallet-item-content>
-        </button>
-      </div>
-    </ion-list>
+      <ion-list>
+        <div>
+          <button ion-item detail-none *ngFor="let wallet of wallets[coin]" (click)="optionClicked(wallet)">
+            <wallet-item-content [wallet]="wallet"></wallet-item-content>
+          </button>
+        </div>
+      </ion-list>
+    </div>
   </div>
   <ion-item-divider></ion-item-divider>
 </action-sheet>

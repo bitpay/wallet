@@ -37,7 +37,7 @@
         {{network}}
       </ion-note>
     </ion-item>
-    <ion-item *ngIf="wallet && checkIfUtxoCoin()">
+    <ion-item *ngIf="wallet && isUtxoCoin()">
       <span translate>Address Type</span>
       <ion-note item-end>
         {{addressType}}

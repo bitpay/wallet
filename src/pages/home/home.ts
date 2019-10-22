@@ -21,7 +21,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { ConfigProvider } from '../../providers/config/config';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -33,7 +33,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { Coin, WalletProvider } from '../../providers/wallet/wallet';
+import { WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
 interface UpdateWalletOptsI {
@@ -108,7 +108,7 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
     private invoiceProvider: InvoiceProvider,
-    private configProvider: ConfigProvider
+    private currencyProvider: CurrencyProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -504,9 +504,9 @@ export class HomePage {
               } = invoice;
               let unitToSatoshi;
               if (Coin[currency]) {
-                unitToSatoshi = this.configProvider.getCoinOpts()[
+                unitToSatoshi = this.currencyProvider.getPrecision(
                   currency.toLowerCase()
-                ].unitToSatoshi;
+                ).unitToSatoshi;
               }
               this.payProDetailsData = invoice;
               this.payProDetailsData.verified = true;

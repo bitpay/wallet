@@ -8,6 +8,11 @@ import { Observable } from 'rxjs/Observable';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -18,26 +23,15 @@ import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
 
-export enum CoinName {
-  BTC = 'Bitcoin',
-  BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
-}
-
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
 })
 export class SendPage extends WalletTabsChild {
   public search: string = '';
-  public walletsBtc;
-  public walletsBch;
-  public walletsEth;
-  public hasBtcWallets: boolean;
-  public hasBchWallets: boolean;
-  public hasEthWallets: boolean;
+  public wallets = {} as CoinsMap<any>;
+  public hasWallets = {} as CoinsMap<boolean>;
   public invalidAddress: boolean;
-
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -49,6 +43,7 @@ export class SendPage extends WalletTabsChild {
   ];
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     navCtrl: NavController,
     private navParams: NavParams,
     profileProvider: ProfileProvider,
@@ -74,13 +69,10 @@ export class SendPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.walletsEth = this.profileProvider.getWallets({ coin: 'eth' });
-    this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
-    this.hasBchWallets = !_.isEmpty(this.walletsBch);
-    this.hasEthWallets = !_.isEmpty(this.walletsEth);
+    for (const coin of this.currencyProvider.getAvailableCoins()) {
+      this.wallets[coin] = this.profileProvider.getWallets({ coin });
+      this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
+    }
   }
 
   ionViewWillLeave() {
@@ -102,7 +94,7 @@ export class SendPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = CoinName[this.wallet.coin.toUpperCase()];
+    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
       { coinName }
@@ -121,11 +113,17 @@ export class SendPage extends WalletTabsChild {
     this.events.publish('ScanFromWallet');
   }
 
+  public isMultiSend(coin: Coin) {
+    return this.currencyProvider.isMultiSend(coin);
+  }
+
   private checkCoinAndNetwork(data, isPayPro?): boolean {
     let isValid, addrData;
     if (isPayPro) {
       isValid =
-        data.coin == this.wallet.coin && data.network == this.wallet.network;
+        data.coin ==
+          this.currencyProvider.getChain(this.wallet.coin).toLowerCase() &&
+        data.network == this.wallet.network;
     } else {
       addrData = this.addressProvider.getCoinAndNetwork(data);
       isValid =

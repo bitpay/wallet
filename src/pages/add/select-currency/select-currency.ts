@@ -24,7 +24,11 @@ import {
   PushNotificationsProvider,
   WalletProvider
 } from '../../../providers';
-import { UTXO_COINS } from '../../../providers/wallet/wallet';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../../providers/currency/currency';
 
 @Component({
   selector: 'page-select-currency',
@@ -34,12 +38,14 @@ export class SelectCurrencyPage {
   private showKeyOnboarding: boolean;
 
   public title: string;
-  public coin: string;
-  public coinsSelected;
+  public coin: Coin;
+  public coinsSelected = {} as CoinsMap<boolean>;
+  public availableChains: string[];
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private logger: Logger,
     private navParam: NavParams,
@@ -54,11 +60,12 @@ export class SelectCurrencyPage {
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.coinsSelected = {
-      btc: true,
-      bch: true,
-      eth: true
-    };
+    this.availableChains = this.navParam.data.isShared
+      ? this.currencyProvider.getMultiSigCoins()
+      : this.currencyProvider.getAvailableChains();
+    for (const coin of this.availableChains) {
+      this.coinsSelected[coin] = true;
+    }
     this.shouldShowKeyOnboarding();
   }
 
@@ -86,7 +93,7 @@ export class SelectCurrencyPage {
     });
   }
 
-  private showKeyOnboardingSlides(coins: string[]) {
+  private showKeyOnboardingSlides(coins: Coin[]) {
     this.logger.debug('Showing key onboarding');
     const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
       showBackdrop: false,
@@ -108,11 +115,15 @@ export class SelectCurrencyPage {
     });
   }
 
+  public getCoinName(coin: Coin): string {
+    return this.currencyProvider.getCoinName(coin);
+  }
+
   public goToImportWallet(): void {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  public createWallet(coins: string[]): void {
+  public createWallet(coins: Coin[]): void {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(coins);
       return;
@@ -120,11 +131,11 @@ export class SelectCurrencyPage {
     this._createWallet(coins);
   }
 
-  private _createWallet(coins: string[]): void {
-    coins = _.keys(_.pickBy(this.coinsSelected));
+  private _createWallet(coins: Coin[]): void {
+    coins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
     const opts = {
       coin: coins[0],
-      singleAddress: UTXO_COINS[coins[0].toUpperCase()] ? false : true
+      singleAddress: this.currencyProvider.isSingleAddress(coins[0])
     };
     this.onGoingProcessProvider.set('creatingWallet');
     this.createDefaultWallet(false, opts)
@@ -137,7 +148,7 @@ export class SelectCurrencyPage {
             const opts = {
               keyId,
               coin,
-              singleAddress: UTXO_COINS[coin.toUpperCase()] ? false : true
+              singleAddress: this.currencyProvider.isSingleAddress(coin)
             };
             promises.push(this.createDefaultWallet(true, opts));
           });

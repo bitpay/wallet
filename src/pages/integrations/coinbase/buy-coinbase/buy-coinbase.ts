@@ -6,6 +6,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
+import { Coin } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -28,7 +29,7 @@ export class BuyCoinbasePage {
 
   private amount: string;
   private currency: string;
-  private coin: string;
+  private coin: Coin;
   private wallets;
 
   public paymentMethods;

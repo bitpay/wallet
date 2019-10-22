@@ -9,6 +9,7 @@ import { AddressProvider } from '../address/address';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
@@ -26,17 +27,6 @@ export interface HistoryOptionsI {
   lowAmount?: number;
   force?: boolean;
   retry?: boolean; // TODO: not used
-}
-
-export enum Coin {
-  BTC = 'btc',
-  BCH = 'bch',
-  ETH = 'eth'
-}
-
-export enum UTXO_COINS {
-  BTC = 'btc',
-  BCH = 'bch'
 }
 
 export interface WalletOptions {
@@ -113,6 +103,7 @@ export class WalletProvider {
     private bwcProvider: BwcProvider,
     private txFormatProvider: TxFormatProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
@@ -184,7 +175,6 @@ export class WalletProvider {
         if (!balance) return;
 
         const configGet = this.configProvider.get();
-        const coinOpts = this.configProvider.getCoinOpts();
         const config = configGet.wallet;
         const cache = wallet.cachedStatus;
 
@@ -212,7 +202,9 @@ export class WalletProvider {
         }
 
         // Selected unit
-        cache.unitToSatoshi = coinOpts[wallet.coin].unitToSatoshi;
+        cache.unitToSatoshi = this.currencyProvider.getPrecision(
+          wallet.coin
+        ).unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         // STR
@@ -454,21 +446,13 @@ export class WalletProvider {
     });
   }
 
-  public getAddressView(
-    coin: string,
-    network: string,
-    address: string
-  ): string {
+  public getAddressView(coin: Coin, network: string, address: string): string {
     if (coin != 'bch') return address;
     const protoAddr = this.getProtoAddress(coin, network, address);
     return protoAddr;
   }
 
-  public getProtoAddress(
-    coin: string,
-    network: string,
-    address: string
-  ): string {
+  public getProtoAddress(coin: Coin, network: string, address: string): string {
     const proto: string = this.getProtocolHandler(coin, network);
     const protoAddr: string = proto + ':' + address;
     return protoAddr;
@@ -1679,14 +1663,8 @@ export class WalletProvider {
     });
   }
 
-  public getProtocolHandler(coin: string, network?: string): string {
-    if (coin == 'bch') {
-      return network == 'testnet' ? 'bchtest' : 'bitcoincash';
-    } else if (coin == 'eth') {
-      return 'ethereum';
-    } else {
-      return 'bitcoin';
-    }
+  public getProtocolHandler(coin: Coin, network: string = 'livenet'): string {
+    return this.currencyProvider.getProtocolPrefix(coin, network);
   }
 
   public copyCopayers(wallet: any, newWallet: any): Promise<any> {

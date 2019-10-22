@@ -10,11 +10,11 @@ import {
 import * as _ from 'lodash';
 
 // Providers
+import { CurrencyProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcProvider } from '../../../providers/bwc/bwc';
-import { CoinOpts, ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
@@ -47,7 +47,6 @@ export class MultiSendPage extends WalletTabsChild {
   public invalidAddress: boolean;
   public isDisabledContinue: boolean;
 
-  private coinOpts: CoinOpts;
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -60,7 +59,7 @@ export class MultiSendPage extends WalletTabsChild {
     navCtrl: NavController,
     private navParams: NavParams,
     profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
@@ -77,7 +76,6 @@ export class MultiSendPage extends WalletTabsChild {
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.isDisabledContinue = true;
-    this.coinOpts = this.configProvider.getCoinOpts();
   }
 
   ionViewDidLoad() {
@@ -145,7 +143,8 @@ export class MultiSendPage extends WalletTabsChild {
       item.fiatAmount = data.fiatAmount;
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.decimalPipe.transform(
-        data.amount / this.coinOpts[this.wallet.coin].unitToSatoshi,
+        data.amount /
+          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
         '1.2-6'
       );
       this.multiRecipients[index] = item;
@@ -156,7 +155,8 @@ export class MultiSendPage extends WalletTabsChild {
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
       ? this.decimalPipe.transform(
-          +recipient.amount / this.coinOpts[this.wallet.coin].unitToSatoshi,
+          +recipient.amount /
+            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
           '1.2-6'
         )
       : null;
@@ -266,7 +266,8 @@ export class MultiSendPage extends WalletTabsChild {
   private checkCoinAndNetwork(data): boolean {
     const addrData = this.addressProvider.getCoinAndNetwork(data);
     const isValid =
-      this.wallet.coin == addrData.coin &&
+      this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+        addrData.coin &&
       (addrData.network == 'any' || addrData.network == this.wallet.network);
 
     if (isValid) {

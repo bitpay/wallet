@@ -11,6 +11,7 @@ import { TabsPage } from '../tabs/tabs';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Coin, CoinsMap } from '../../providers/currency/currency';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -28,7 +29,7 @@ export class PaperWalletPage {
   slideButton;
 
   public selectedWallet;
-  public wallet = {};
+  public wallet = {} as CoinsMap<any>;
   public walletName: string;
   public M: number;
   public N: number;
@@ -36,7 +37,7 @@ export class PaperWalletPage {
   public network: string;
   public wallets;
   // All coins for which we have a usable wallet to sweep to
-  public coins: string[];
+  public coins: Coin[];
   public scannedKey: string;
   public isPkEncrypted: boolean;
   public passphrase: string;
@@ -87,14 +88,11 @@ export class PaperWalletPage {
       _.map(this.wallets, (wallet: Partial<WalletOptions>) => wallet.coin)
     );
 
-    this.wallet = {
-      btc: _.filter(this.wallets, w => {
-        return w.coin == 'btc';
-      })[0],
-      bch: _.filter(this.wallets, w => {
-        return w.coin == 'bch';
-      })[0]
-    };
+    for (const coin of this.coins) {
+      this.wallet[coin] = _.filter(this.wallets, w => {
+        return w.coin == coin;
+      })[0];
+    }
   }
 
   ionViewWillLeave() {

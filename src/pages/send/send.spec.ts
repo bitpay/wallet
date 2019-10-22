@@ -6,8 +6,7 @@ import {
   tick
 } from '@angular/core/testing';
 import { Events } from 'ionic-angular';
-
-import { Coin } from '../../providers/wallet/wallet';
+import { Coin } from '../../providers/currency/currency';
 import { TestUtils } from '../../test';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';

@@ -14,6 +14,9 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../../finish/finish';
+import { ConfirmPage } from '../../../send/confirm/confirm';
+import { CardDetailsPage } from '../../gift-cards/card-details/card-details';
+import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 // Provider
 import { DecimalPipe } from '@angular/common';
@@ -30,6 +33,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
@@ -52,9 +56,6 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
-import { ConfirmPage } from '../../../send/confirm/confirm';
-import { CardDetailsPage } from '../../gift-cards/card-details/card-details';
-import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 @Component({
   selector: 'confirm-card-purchase-page',
@@ -86,6 +87,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
+    currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
@@ -119,6 +121,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       bwcErrorProvider,
       bwcProvider,
       configProvider,
+      currencyProvider,
       decimalPipe,
       externalLinkProvider,
       feeProvider,
@@ -300,11 +303,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const paymentCode =
-      COIN !== 'ETH'
-        ? invoice.paymentCodes[COIN].BIP73
-        : invoice.paymentCodes[COIN].EIP681;
-    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
+    const paymentCode = this.currencyProvider.getPaymentCode(wallet.coin);
+    const protocolUrl = invoice.paymentCodes[COIN][paymentCode];
+    const payProUrl = this.incomingDataProvider.getPayProUrl(protocolUrl);
 
     if (!payProUrl) {
       throw {
