@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { Globalization } from '@ionic-native/globalization';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { ConfigProvider } from '../config/config';
@@ -14,6 +15,8 @@ import * as moment from 'moment';
 
 @Injectable()
 export class BitPayCardProvider {
+  public countryCode: string;
+
   constructor(
     private logger: Logger,
     private bitPayProvider: BitPayProvider,
@@ -21,7 +24,8 @@ export class BitPayCardProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private globalization: Globalization
   ) {
     this.logger.debug('BitPayCardProvider initialized');
   }
@@ -491,13 +495,24 @@ export class BitPayCardProvider {
   }
 
   public register() {
+    this.globalization
+      .getLocaleName()
+      .then(res => {
+        this.countryCode = res.value.split('-')[1];
+      })
+      .catch(err => {
+        this.logger.debug('Error getting country code', err);
+      });
+
     this.isActive(isActive => {
       this.homeIntegrationsProvider.register({
         name: 'debitcard',
         title: 'BitPay Visa® Card',
         icon: 'assets/img/bitpay-card/icon-bitpay.svg',
         page: 'BitPayCardIntroPage',
-        show: !!this.configProvider.get().showIntegration['debitcard'],
+        show:
+          !!this.configProvider.get().showIntegration['debitcard'] &&
+          this.countryCode === 'US',
         linked: !!isActive
       });
     });

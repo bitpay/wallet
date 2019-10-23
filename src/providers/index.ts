@@ -46,6 +46,7 @@ export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';
 export { FilterProvider } from '../providers/filter/filter';
 export { GiftCardProvider } from '../providers/gift-card/gift-card';
+export { Globalization } from '@ionic-native/globalization';
 export {
   HomeIntegrationsProvider
 } from '../providers/home-integrations/home-integrations';
