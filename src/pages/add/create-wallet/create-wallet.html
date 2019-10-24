@@ -59,7 +59,7 @@
         <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
 
-      <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="checkIfUtxoCoin() && createForm.value.selectedSeed == 'new'">
+      <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
         <ion-label>Testnet</ion-label>
         <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
       </ion-item>
