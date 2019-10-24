@@ -183,4 +183,9 @@ export class PushNotificationsProvider {
 
     return wallet;
   }
+
+  public clearAllNotifications(): void {
+    if (!this._token) return;
+    this.FCMPlugin.clearAllNotifications();
+  }
 }
