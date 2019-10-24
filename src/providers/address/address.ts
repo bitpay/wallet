@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
 
+export interface CoinNetwork {
+  coin: string;
+  network: string;
+}
 @Injectable()
 export class AddressProvider {
   private bitcore;
@@ -20,9 +24,11 @@ export class AddressProvider {
     return extractedAddress;
   }
 
-  public getCoinAndNetwork(str: string): any {
+  public getCoinAndNetwork(
+    str: string,
+    network: string = 'livenet'
+  ): CoinNetwork {
     const address = this.extractAddress(str);
-    let network = null;
     try {
       network = this.bitcore.Address(address).network.name;
       return { coin: 'btc', network };
@@ -34,11 +40,11 @@ export class AddressProvider {
         try {
           const isValidEthAddress = this.core.Validation.validateAddress(
             'ETH',
-            'livenet',
+            network,
             address
           );
           if (isValidEthAddress) {
-            return { coin: 'eth', network: 'any' };
+            return { coin: 'eth', network };
           } else {
             return null;
           }
@@ -48,8 +54,6 @@ export class AddressProvider {
       }
     }
   }
-  //  public checkCoinAndNetworkFromAddr(
-  //  public checkCoinAndNetworkFromPayPro(
 
   public isValid(str: string): boolean {
     // Check if the input is a valid uri or address

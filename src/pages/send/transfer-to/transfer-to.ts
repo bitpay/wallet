@@ -182,8 +182,7 @@ export class TransferToPage {
   }): boolean {
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
-          (recipient.network == 'any' ||
-            this._wallet.network === recipient.network)
+          this._wallet.network === recipient.network
       : true;
   }
 

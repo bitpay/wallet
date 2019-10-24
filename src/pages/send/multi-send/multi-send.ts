@@ -267,8 +267,7 @@ export class MultiSendPage extends WalletTabsChild {
     const addrData = this.addressProvider.getCoinAndNetwork(data);
     const isValid =
       this.wallet.coin == addrData.coin &&
-      (addrData.network == 'any' || addrData.network == this.wallet.network);
-
+      addrData.network == this.wallet.network;
     if (isValid) {
       this.invalidAddress = false;
       return true;
