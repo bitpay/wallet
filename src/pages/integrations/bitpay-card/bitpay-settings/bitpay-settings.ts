@@ -46,12 +46,6 @@ export class BitPaySettingsPage {
         name: this.serviceName
       });
 
-      // this.bitPayCardProvider
-      //   .getBitpayCardBannerStatus()
-      //   .then(isBannerHidden => {
-      //     this.showAtHome = isBannerHidden;
-      //     //!!this.service[0].show;
-      //   });
       this.showAtHome = !!this.service[0].show;
     }
   }

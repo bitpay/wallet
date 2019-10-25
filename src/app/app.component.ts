@@ -32,6 +32,7 @@ import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
+import { Globalization } from '@ionic-native/globalization';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
@@ -119,7 +120,8 @@ export class CopayApp {
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private globalization: Globalization
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -334,8 +336,25 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.appProvider.info._enabledExtensions.debitcard)
-      this.bitPayCardProvider.register();
+    if (this.appProvider.info._enabledExtensions.debitcard) {
+      this.globalization
+        .getLocaleName()
+        .then(res => {
+          this.bitPayCardProvider.setBitpayCardBannerStatus(
+            !!this.configProvider.get().showIntegration['debitcard'] &&
+              res.value.split('-')[1] !== 'US'
+          );
+          this.bitPayCardProvider.register();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // this.bitPayCardProvider.setBitpayBannerStatus(
+      //   !!this.configProvider.get().showIntegration['debitcard'] &&
+      //     this.countryCode !== 'US'
+      // );
+      // this.bitPayCardProvider.register();
+    }
   }
 
   private incomingDataRedirEvent(): void {
