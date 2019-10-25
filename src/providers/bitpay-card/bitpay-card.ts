@@ -494,28 +494,43 @@ export class BitPayCardProvider {
     });
   }
 
-  public register() {
-    this.globalization
-      .getLocaleName()
-      .then(res => {
-        this.countryCode = res.value.split('-')[1];
-      })
-      .catch(err => {
-        this.logger.debug('Error getting country code', err);
-      });
+  setBitpayCardBannerStatus(isBannerHidden) {
+    this.persistenceProvider.setBitPayCardBanner(isBannerHidden);
+  }
 
-    this.isActive(isActive => {
-      this.homeIntegrationsProvider.register({
-        name: 'debitcard',
-        title: 'BitPay Visa® Card',
-        icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-        page: 'BitPayCardIntroPage',
-        show:
-          !!this.configProvider.get().showIntegration['debitcard'] &&
-          this.countryCode === 'US',
-        linked: !!isActive
+  getBitpayCardBannerStatus() {
+    return this.persistenceProvider.getBitPayCardBannerStatus();
+  }
+
+  public register() {
+    this.persistenceProvider
+      .getBitPayCardBannerStatus()
+      .then(isBannerHidden => {
+        this.logger.info(isBannerHidden);
+        this.globalization
+          .getLocaleName()
+          .then(res => {
+            this.countryCode = res.value.split('-')[1];
+            this.isActive(isActive => {
+              this.homeIntegrationsProvider.register({
+                name: 'debitcard',
+                title: 'BitPay Visa® Card',
+                icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+                page: 'BitPayCardIntroPage',
+                show:
+                  isBannerHidden === undefined || isBannerHidden === null
+                    ? !!this.configProvider.get().showIntegration[
+                        'debitcard'
+                      ] && this.countryCode !== 'US'
+                    : isBannerHidden,
+                linked: !!isActive
+              });
+            });
+          })
+          .catch(err => {
+            this.logger.debug('Error getting country code', err);
+          });
       });
-    });
   }
 }
 

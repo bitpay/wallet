@@ -53,6 +53,7 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HIDE_BITPAY_CARD_BANNER: 'hideBitPayCardInner',
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,
@@ -102,6 +103,14 @@ export class PersistenceProvider {
 
   getProfileLegacy(): Promise<void> {
     return this.storage.get(Keys.PROFILE_OLD);
+  }
+
+  setBitPayCardBanner(isBannerHidden) {
+    return this.storage.set(Keys.HIDE_BITPAY_CARD_BANNER, isBannerHidden);
+  }
+
+  getBitPayCardBannerStatus(): Promise<any> {
+    return this.storage.get(Keys.HIDE_BITPAY_CARD_BANNER);
   }
 
   removeProfileLegacy(): Promise<void> {

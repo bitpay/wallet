@@ -45,6 +45,13 @@ export class BitPaySettingsPage {
       this.service = _.filter(this.homeIntegrationsProvider.get(), {
         name: this.serviceName
       });
+
+      // this.bitPayCardProvider
+      //   .getBitpayCardBannerStatus()
+      //   .then(isBannerHidden => {
+      //     this.showAtHome = isBannerHidden;
+      //     //!!this.service[0].show;
+      //   });
       this.showAtHome = !!this.service[0].show;
     }
   }
