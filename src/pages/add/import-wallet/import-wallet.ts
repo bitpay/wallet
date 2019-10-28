@@ -189,12 +189,11 @@ export class ImportWalletPage {
       return undefined;
     }
     if (info.type == '1' && info.hasPassphrase) {
-      const title = this.translate.instant('Error');
+      const title = this.translate.instant('Warning');
       const subtitle = this.translate.instant(
         'Password required. Make sure to enter your password in advanced options'
       );
       this.popupProvider.ionicAlert(title, subtitle);
-      return undefined;
     }
     return info;
   }

@@ -96,7 +96,7 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="5.0.1" />
+    <plugin name="cordova-plugin-fcm-ng" spec="4.2.0" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 

@@ -206,10 +206,16 @@ export class CopayApp {
       this.onResumeSubscription = this.platform.resume.subscribe(() => {
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
+
+        // Clear all notifications
+        this.pushNotificationsProvider.clearAllNotifications();
       });
 
       // Check PIN or Fingerprint
       this.openLockModal();
+
+      // Clear all notifications
+      this.pushNotificationsProvider.clearAllNotifications();
     }
 
     this.registerIntegrations();

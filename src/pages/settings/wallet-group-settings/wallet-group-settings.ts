@@ -21,6 +21,7 @@ import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
 import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
+import { WalletGroupQrExportPage } from './wallet-group-qr-export/wallet-group-qr-export';
 
 @Component({
   selector: 'page-wallet-group-settings',
@@ -36,6 +37,7 @@ export class WalletGroupSettingsPage {
   public walletsGroup;
   public wallets;
   public canSign: boolean;
+  public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
 
@@ -66,6 +68,7 @@ export class WalletGroupSettingsPage {
       showHidden: true
     });
     this.canSign = this.walletsGroup.canSign;
+    this.isDeletedSeed = this.walletsGroup.isDeletedSeed;
     this.needsBackup = this.walletsGroup.needsBackup;
     this.encryptEnabled = this.walletsGroup.isPrivKeyEncrypted;
   }
@@ -157,6 +160,12 @@ export class WalletGroupSettingsPage {
 
   public openWalletGroupDelete(): void {
     this.navCtrl.push(WalletGroupDeletePage, {
+      keyId: this.keyId
+    });
+  }
+
+  public openQrExport(): void {
+    this.navCtrl.push(WalletGroupQrExportPage, {
       keyId: this.keyId
     });
   }
