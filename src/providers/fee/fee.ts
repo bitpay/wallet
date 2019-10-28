@@ -107,7 +107,7 @@ export class FeeProvider {
             return reject(this.translate.instant('Could not get dynamic fee'));
           }
           walletClient.getFeeLevels(
-            'btc',
+            coin,
             'testnet',
             (errTestnet, levelsTestnet) => {
               if (errTestnet) {
