@@ -279,7 +279,7 @@ export class IncomingDataProvider {
     if (amount) {
       this.goSend(address, amount, message, coin, requiredFeeParam);
     } else {
-      this.handleEthereumAddress(address);
+      this.handleEthereumAddress(address, redirParams);
     }
   }
 
