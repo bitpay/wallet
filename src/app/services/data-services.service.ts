@@ -20,13 +20,13 @@ export class DataServicesService {
           return cb('No data');
         }
 
-        const info = this.transform(data);
+        const info = this.transform(data, opts.coin);
         console.log('### INFO: ', info);
         return cb(null, info);
       });
   }
 
-  transform(data) {
+  transform(data, coin) {
     const parseDate = d3.time.format('%Y%m%d').parse;
     const result = {};
 
@@ -41,7 +41,7 @@ export class DataServicesService {
       if (!result[d.day]) {
         result[d.day] = {};
       }
-      result[d.day].txAmount = d.amount / 1e8;
+      result[d.day].txAmount = coin === 'eth' ? d.amount / 1e18 : d.amount / 1e8;
     });
 
     _.each(data.txProposals.nbByDay, (d) => {
