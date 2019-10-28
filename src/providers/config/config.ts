@@ -83,6 +83,14 @@ export interface Config {
     enabled: boolean;
   };
 
+  productsUpdates: {
+    enabled: boolean;
+  };
+
+  offersAndPromotions: {
+    enabled: boolean;
+  };
+
   emailNotifications: {
     enabled: boolean;
     email: string;
@@ -213,6 +221,14 @@ export class ConfigProvider {
       desktopNotificationsEnabled: true,
 
       confirmedTxsNotifications: {
+        enabled: true
+      },
+
+      productsUpdates: {
+        enabled: true
+      },
+
+      offersAndPromotions: {
         enabled: true
       },
 
