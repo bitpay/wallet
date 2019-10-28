@@ -20,6 +20,7 @@ import { CoinName } from '../send';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -50,8 +51,6 @@ import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 export class ConfirmPage extends WalletTabsChild {
   @ViewChild('slideButton')
   slideButton;
-
-  private bitcore;
   protected bitcoreCash;
 
   public countDown = null;
@@ -93,6 +92,7 @@ export class ConfirmPage extends WalletTabsChild {
   public isOpenSelector: boolean;
 
   constructor(
+    protected addressProvider: AddressProvider,
     protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
     protected bwcErrorProvider: BwcErrorProvider,
@@ -123,10 +123,6 @@ export class ConfirmPage extends WalletTabsChild {
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
-    this.bitcore = {
-      btc: this.bwcProvider.getBitcore(),
-      bch: this.bitcoreCash
-    };
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
@@ -160,7 +156,6 @@ export class ConfirmPage extends WalletTabsChild {
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     this.coin = this.navParams.data.coin;
-    const B = this.bitcore[this.coin];
     let networkName;
     let amount;
     if (this.fromMultiSend) {
@@ -169,12 +164,10 @@ export class ConfirmPage extends WalletTabsChild {
     } else {
       amount = this.navParams.data.amount;
       try {
-        if (B) {
-          networkName = new B.Address(this.navParams.data.toAddress).network
-            .name;
-        } else {
-          networkName = this.navParams.data.network || 'livenet';
-        }
+        networkName = this.addressProvider.getCoinAndNetwork(
+          this.navParams.data.toAddress,
+          this.navParams.data.network
+        ).network;
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
           this.translate.instant(

@@ -18,6 +18,7 @@ import { FinishModalPage } from '../../../finish/finish';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
+  AddressProvider,
   EmailNotificationsProvider,
   FeeProvider,
   IncomingDataProvider,
@@ -81,6 +82,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public hideSlideButton: boolean;
 
   constructor(
+    addressProvider: AddressProvider,
     app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -114,6 +116,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     statusBar: StatusBar
   ) {
     super(
+      addressProvider,
       app,
       actionSheetProvider,
       bwcErrorProvider,
