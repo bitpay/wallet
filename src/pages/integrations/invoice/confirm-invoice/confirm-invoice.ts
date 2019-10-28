@@ -14,6 +14,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
+  AddressProvider,
   FeeProvider,
   IncomingDataProvider,
   TxConfirmNotificationProvider,
@@ -71,6 +72,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private parsedAmount: any;
   private browserUrl: string;
   constructor(
+    addressProvider: AddressProvider,
     app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -103,6 +105,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     statusBar: StatusBar
   ) {
     super(
+      addressProvider,
       app,
       actionSheetProvider,
       bwcErrorProvider,
