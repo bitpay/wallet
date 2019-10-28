@@ -506,10 +506,14 @@ export class BitPayCardProvider {
     this.persistenceProvider
       .getBitPayCardBannerStatus()
       .then(isBannerHidden => {
-        this.logger.info(isBannerHidden);
+        this.logger.debug('BitPay Banner Hidden value: ', isBannerHidden);
         this.globalization
           .getLocaleName()
           .then(res => {
+            this.logger.debug(
+              'Label message for BitPay Visa Card Banner value',
+              isBannerHidden
+            );
             this.countryCode = res.value.split('-')[1];
             this.isActive(isActive => {
               this.homeIntegrationsProvider.register({
