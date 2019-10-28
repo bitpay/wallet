@@ -350,6 +350,7 @@ export class AmountPage extends WalletTabsChild {
 
   public sendMax(): void {
     this.useSendMax = true;
+    this.allowSend = true;
     if (!this.wallet) {
       return this.finish();
     }
