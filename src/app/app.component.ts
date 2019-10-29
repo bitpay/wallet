@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
   onSubmitNgModel(): void {
     this.opts.from = this.dateFrom.formatted;
     this.opts.to = this.dateTo.formatted;
-    this.fetch();
+    this.fetch(this.coin.toLowerCase());
   }
 
   getStatsFromCoin(coin: string) {
