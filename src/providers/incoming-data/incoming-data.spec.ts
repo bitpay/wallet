@@ -4,7 +4,9 @@ import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
+import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
+import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 import { IncomingDataProvider } from './incoming-data';
 
@@ -17,6 +19,8 @@ describe('Provider: Incoming Data Provider', () => {
   let eventsSpy;
   let actionSheetSpy;
   let profileProvider;
+  let invoiceProvider: InvoiceProvider;
+  let payproProvider: PayproProvider;
 
   class AppProviderMock {
     public info = {};
@@ -42,6 +46,8 @@ describe('Provider: Incoming Data Provider', () => {
     ]);
     incomingDataProvider = testBed.get(IncomingDataProvider);
     bwcProvider = testBed.get(BwcProvider);
+    invoiceProvider = testBed.get(InvoiceProvider);
+    payproProvider = testBed.get(PayproProvider);
     logger = testBed.get(Logger);
     events = testBed.get(Events);
     loggerSpy = spyOn(logger, 'debug');
@@ -140,7 +146,8 @@ describe('Provider: Incoming Data Provider', () => {
       let data = [
         "1|sick arch glare wheat anchor innocent garbage tape raccoon already obey ability|testnet|m/44'/1'/0'|false",
         '2|',
-        '3|'
+        '3|',
+        '1|sick arch glare wheat anchor innocent garbage tape raccoon already obey ability|null|null|false|null'
       ];
       data.forEach(element => {
         let stateParams = { code: element };
@@ -157,10 +164,11 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-    it('Should handle BTC and BCH BitPay Invoices', () => {
+    it('Should handle BitPay Invoices with different coins', () => {
       let data = [
         'bitcoin:?r=https://bitpay.com/i/CtcM753gnZ4Wpr5pmXU6i9',
-        'bitcoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY'
+        'bitcoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY',
+        'ethereum:?r=https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR'
       ];
       data.forEach(element => {
         expect(
@@ -171,15 +179,137 @@ describe('Provider: Incoming Data Provider', () => {
         );
       });
     });
-    it('Should parse valid BitPay Invoice Url', () => {
-      let data = ['https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm'];
+    it('Should parse valid BitPay Invoice Url if selectedtransactionCurrency exists with different coins', fakeAsync(() => {
+      const data = [
+        {
+          invoiceUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
+          coin: 'btc',
+          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
+          invoice: {
+            buyerProvidedInfo: { selectedTransactionCurrency: 'BTC' },
+            currency: 'USD',
+            id: 'BvuSz1Mjfkj4V64xmEQ74f',
+            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
+          }
+        },
+        {
+          invoiceUrl: 'https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY',
+          coin: 'bch',
+          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
+          invoice: {
+            buyerProvidedInfo: { selectedTransactionCurrency: 'BCH' },
+            currency: 'USD',
+            id: 'Rtz1RwWA7kdRRU3Wyo4YDY',
+            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
+          }
+        },
+        {
+          invoiceUrl: 'https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
+          coin: 'eth',
+          expectedInvoiceId: 'VPDDwaG7eaGvFtbyDBq8NR',
+          invoice: {
+            buyerProvidedInfo: { selectedTransactionCurrency: 'ETH' },
+            currency: 'USD',
+            id: 'BvuSz1Mjfkj4V64xmEQ74f',
+            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
+          }
+        }
+      ];
+
+      const details = {
+        amount: 123,
+        requiredFeeRate: 123,
+        toAddress: 'toAddress1',
+        memo: '',
+        data: 'data1'
+      };
+
+      const getPayProDetailsSpy = spyOn(
+        payproProvider,
+        'getPayProDetails'
+      ).and.returnValue(Promise.resolve(details));
+      let getBitPayInvoiceSpy = spyOn(invoiceProvider, 'getBitPayInvoice');
+
       data.forEach(element => {
-        expect(incomingDataProvider.redir(element)).toBe(true);
+        getBitPayInvoiceSpy.and.returnValue(Promise.resolve(element.invoice));
+
+        expect(incomingDataProvider.redir(element.invoiceUrl)).toBe(true);
+        expect(getBitPayInvoiceSpy).toHaveBeenCalledWith(
+          element.expectedInvoiceId
+        );
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
         );
+        tick();
+
+        const stateParams = {
+          amount: details.amount,
+          toAddress: details.toAddress,
+          description: details.memo,
+          data: details.data,
+          paypro: details,
+          coin: element.coin,
+          payProUrl: element.invoiceUrl,
+          requiredFeeRate:
+            element.coin != 'eth'
+              ? details.requiredFeeRate * 1024
+              : details.requiredFeeRate
+        };
+
+        let nextView = {
+          name: 'ConfirmPage',
+          params: stateParams
+        };
+
+        expect(getPayProDetailsSpy).toHaveBeenCalledWith(
+          element.invoiceUrl,
+          element.coin
+        );
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
-    });
+    }));
+    it('Should parse valid BitPay Invoice Url if !selectedtransactionCurrency', fakeAsync(() => {
+      const data = [
+        {
+          invoiceUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
+          coin: 'btc',
+          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
+          invoice: {
+            buyerProvidedInfo: { selectedTransactionCurrency: null },
+            currency: 'USD',
+            id: 'BvuSz1Mjfkj4V64xmEQ74f',
+            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
+          }
+        }
+      ];
+
+      let getBitPayInvoiceSpy = spyOn(invoiceProvider, 'getBitPayInvoice');
+
+      data.forEach(element => {
+        getBitPayInvoiceSpy.and.returnValue(Promise.resolve(element.invoice));
+
+        expect(incomingDataProvider.redir(element.invoiceUrl)).toBe(true);
+        expect(getBitPayInvoiceSpy).toHaveBeenCalledWith(
+          element.expectedInvoiceId
+        );
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Handling bitpay invoice'
+        );
+        tick();
+
+        const stateParams = {
+          invoiceData: element.invoice,
+          invoiceId: element.expectedInvoiceId
+        };
+
+        let nextView = {
+          name: 'ConfirmInvoicePage',
+          params: stateParams
+        };
+
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+    }));
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format plain Address', () => {
       let data = [
         'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
@@ -201,10 +331,30 @@ describe('Provider: Incoming Data Provider', () => {
         });
       });
     });
+    it('Should handle ETH plain Address', () => {
+      let data = ['0xb506c911deE6379e3d4c4d0F4A429a70523960Fd'];
+      data.forEach(element => {
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Ethereum address'
+        );
+
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            data: element,
+            type: 'ethereumAddress',
+            coin: 'eth'
+          }
+        });
+      });
+    });
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI', () => {
       let data = [
         'bitcoincash:CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
-        'bitcoincash:qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w'
+        'bitcoincash:qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
+        'bchtest:pzpaleegjrc0cffrmh3nf43lt3e3gu8awqyxxjuew3'
       ];
 
       data.forEach(element => {
@@ -233,9 +383,71 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
+
+    it('Should handle ETH URI as address if there is no amount', () => {
+      let data = ['ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd'];
+      data.forEach(element => {
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Ethereum address'
+        );
+
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            data: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
+            type: 'ethereumAddress',
+            coin: 'eth'
+          }
+        });
+      });
+    });
+
+    it('Should handle ETH URI with amount (value)', () => {
+      let data = [
+        {
+          uri:
+            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000',
+          stateParams: {
+            amount: '1543000000000000000',
+            toAddress: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
+            description: '',
+            coin: 'eth',
+            requiredFeeRate: undefined
+          },
+          nextpage: 'ConfirmPage'
+        },
+        {
+          uri:
+            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000?gasPrice=0000400000000000000',
+          stateParams: {
+            amount: '1543000000000000000',
+            toAddress: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
+            description: '',
+            coin: 'eth',
+            requiredFeeRate: '0000400000000000000'
+          },
+          nextpage: 'ConfirmPage'
+        }
+      ];
+      data.forEach(element => {
+        let nextView = {
+          name: element.nextpage,
+          params: element.stateParams
+        };
+        expect(
+          incomingDataProvider.redir(element.uri, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Ethereum URI');
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+    });
+
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI with amount', () => {
       let data = [
-        'BITCOINCASH:QZCY06MXSK7HW0RU4KZWTRKXDS6VF8Y34VRM5SF9Z7?amount=1.00000000'
+        'BITCOINCASH:QZCY06MXSK7HW0RU4KZWTRKXDS6VF8Y34VRM5SF9Z7?amount=1.00000000',
+        'bchtest:pzpaleegjrc0cffrmh3nf43lt3e3gu8awqyxxjuew3?amount=12.00000000'
       ];
 
       data.forEach(element => {
@@ -442,6 +654,23 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
+    it('Should handle Shapeshift URI', () => {
+      let data = ['bitpay://shapeshift', 'copay://shapeshift'];
+      data.forEach(element => {
+        let stateParams = { code: null };
+        let nextView = {
+          name: 'ShapeshiftPage',
+          params: stateParams
+        };
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data (redirect): ShapeShift URL'
+        );
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+    });
     it('Should handle BitPay Card URI', () => {
       let data = 'bitpay://bitpay.com?secret=xxxxx&email=xxx@xx.com';
       let stateParams = { secret: 'xxxxx', email: 'xxx@xx.com', otp: null };
@@ -456,6 +685,212 @@ describe('Provider: Incoming Data Provider', () => {
         'Incoming-data (redirect): BitPay Card URL'
       );
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+    });
+  });
+
+  describe('Function: finishIncomingData', () => {
+    it('Should handle if there is data and redirTo is different to AmountPage', () => {
+      const data = {
+        redirTo: 'anyPage',
+        value: 123
+      };
+      const nextView = data;
+      incomingDataProvider.finishIncomingData(data);
+      expect(eventsSpy).toHaveBeenCalledWith(
+        'finishIncomingDataMenuEvent',
+        nextView
+      );
+    });
+    it('Should handle if there is data and redirTo is AmountPage', () => {
+      const data = {
+        redirTo: 'AmountPage',
+        value: 123,
+        coin: 'btc'
+      };
+      const nextView = data;
+      incomingDataProvider.finishIncomingData(data);
+      expect(eventsSpy).toHaveBeenCalledWith(
+        'finishIncomingDataMenuEvent',
+        nextView
+      );
+    });
+  });
+
+  describe('Function: parseData', () => {
+    it('Should return if there is no data', () => {
+      const parsedData = incomingDataProvider.parseData(undefined);
+      expect(parsedData).toBeUndefined();
+    });
+    it('Should return the correct type for each kind of data', () => {
+      const dataArray = [
+        {
+          data: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
+          expectedType: 'InvoiceUri'
+        },
+        {
+          data: 'https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
+          expectedType: 'InvoiceUri'
+        },
+        {
+          data: 'bitcoin:?r=https://bitpay.com/i/CtcM753gnZ4Wpr5pmXU6i9',
+          expectedType: 'PayPro'
+        },
+        {
+          data: 'bitcoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY',
+          expectedType: 'PayPro'
+        },
+        {
+          data: 'ethereum:?r=https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
+          expectedType: 'PayPro'
+        },
+        {
+          data: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+          expectedType: 'BitcoinUri'
+        },
+        {
+          data:
+            'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?message=test%20message',
+          expectedType: 'BitcoinUri'
+        },
+        {
+          data: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000',
+          expectedType: 'BitcoinUri'
+        },
+        {
+          data:
+            'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000&label=Genesis%20Bitcoin%20Address&message=test%20message',
+          expectedType: 'BitcoinUri'
+        },
+        {
+          data: 'bitcoincash:CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data: 'bitcoincash:qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data: 'bchtest:pzpaleegjrc0cffrmh3nf43lt3e3gu8awqyxxjuew3',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data: 'bchtest:mu7ns6LXun5rQiyTJx7yY1QxTzndob4bhJ',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data:
+            'BITCOINCASH:QZCY06MXSK7HW0RU4KZWTRKXDS6VF8Y34VRM5SF9Z7?amount=1.00000000',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data:
+            'bchtest:pzpaleegjrc0cffrmh3nf43lt3e3gu8awqyxxjuew3?amount=12.00000000',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data: 'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
+          expectedType: 'EthereumUri'
+        },
+        {
+          data:
+            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000',
+          expectedType: 'EthereumUri'
+        },
+        {
+          data:
+            'ethereum:0xb506c911deE6379e3d4c4d0F4A429a70523960Fd?value=1543000000000000000?gasPrice=0000400000000000000',
+          expectedType: 'EthereumUri'
+        },
+        {
+          data: 'bitcoincash:1ML5KKKrJEHw3fQqhhajQjHWkh3yKhNZpa',
+          expectedType: 'BitcoinCashUri'
+        },
+        {
+          data: 'http://bitpay.com/',
+          expectedType: 'PlainUrl'
+        },
+        {
+          data: 'https://bitpay.com',
+          expectedType: 'PlainUrl'
+        },
+        {
+          data: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+          expectedType: 'BitcoinAddress'
+        },
+        {
+          data: 'mpXwg4jMtRhuSpVq4xS3HFHmCmWp9NyGKt',
+          expectedType: 'BitcoinAddress'
+        },
+        {
+          data: 'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
+          expectedType: 'BitcoinCashAddress'
+        },
+        {
+          data: 'CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
+          expectedType: 'BitcoinCashAddress'
+        },
+        {
+          data: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
+          expectedType: 'EthereumUri' // TODO: handle plain ETH address
+        },
+        {
+          data: 'bitpay://coinbase',
+          expectedType: 'Coinbase'
+        },
+        {
+          data: 'bitpay://bitpay.com?secret=xxxxx&email=xxx@xx.com',
+          expectedType: 'BitPayCard'
+        },
+        {
+          data:
+            'copay:RTpopkn5KBnkxuT7x4ummDKx3Lu1LvbntddBC4ssDgaqP7DkojT8ccxaFQEXY4f3huFyMewhHZLbtc',
+          expectedType: 'JoinWallet'
+        },
+        {
+          data:
+            'RTpopkn5KBnkxuT7x4ummDKx3Lu1LvbntddBC4ssDgaqP7DkojT8ccxaFQEXY4f3huFyMewhHZLbtc', // Legacy code
+          expectedType: 'JoinWallet'
+        },
+        {
+          data: '6PnSQd4UamkL5LDZrAsmymQrAgj1jywES6frfp5DeFGWni7VouwjxeJ68z', // BIP 38 Encrypt Private Key
+          expectedType: 'PrivateKey'
+        },
+        {
+          data: '5Hwgr3u458GLafKBgxtssHSPqJnYoGrSzgQsPwLFhLNYskDPyyA', // WIF Mainnet Privkey (uncompressed pubkey)
+          expectedType: 'PrivateKey'
+        },
+        {
+          data: 'L1aW4aubDFB7yfras2S1mN3bqg9nwySY8nkoLmJebSLD5BWv3ENZ', // WIF Mainnet Privkey (compressed pubkey)
+          expectedType: 'PrivateKey'
+        },
+        {
+          data:
+            "1|sick arch glare wheat anchor innocent garbage tape raccoon already obey ability|testnet|m/44'/1'/0'|false",
+          expectedType: 'ImportPrivateKey'
+        },
+        {
+          data: '2|',
+          expectedType: 'ImportPrivateKey'
+        },
+        {
+          data: '3|',
+          expectedType: 'ImportPrivateKey'
+        },
+        {
+          data:
+            '1|sick arch glare wheat anchor innocent garbage tape raccoon already obey ability|null|null|false|null',
+          expectedType: 'ImportPrivateKey'
+        }
+      ];
+      dataArray.forEach(element => {
+        const parsedData = incomingDataProvider.parseData(element.data);
+        expect(parsedData.type).toEqual(element.expectedType);
+      });
+    });
+    it('Should return undefined if data to parse is wrong', () => {
+      const data = 'something wrong';
+      const parsedData = incomingDataProvider.parseData(data);
+      expect(parsedData).toBeUndefined();
     });
   });
 });
