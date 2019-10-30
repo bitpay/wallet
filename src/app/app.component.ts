@@ -30,7 +30,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
-import { Globalization } from '@ionic-native/globalization';
+// import { Globalization } from '@ionic-native/globalization';
 
 // pages
 import { ImageLoaderConfig } from 'ionic-image-loader';
@@ -120,8 +120,7 @@ export class CopayApp {
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider,
-    private globalization: Globalization
+    private keyProvider: KeyProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -337,24 +336,28 @@ export class CopayApp {
 
     // BitPay Card
     if (this.appProvider.info._enabledExtensions.debitcard) {
-      this.globalization
-        .getLocaleName()
-        .then(res => {
-          this.bitPayCardProvider.setBitpayCardBannerStatus(
-            !!this.configProvider.get().showIntegration['debitcard'] &&
-              res.value.split('-')[1] !== 'US'
-          );
-          this.bitPayCardProvider.register();
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      // this.bitPayCardProvider.register();
-      // this.bitPayCardProvider.setBitpayBannerStatus(
-      //   !!this.configProvider.get().showIntegration['debitcard'] &&
-      //     this.countryCode !== 'US'
-      // );
-      // this.bitPayCardProvider.register();
+      // this.globalization
+      //   .getLocaleName()
+      //   .then(async res => {
+      //     const showBannerOnLoad =
+      //       !!this.configProvider.get().showIntegration['debitcard'] &&
+      //       res.value.split('-')[1] !== 'US';
+
+      //     const isBannerHidden = await this.bitPayCardProvider.getBitpayCardBannerStatus();
+
+      //     this.logger.info('Show Banner on Load', showBannerOnLoad);
+      //     this.logger.info('Is Banner Hidden', isBannerHidden);
+
+      //     // isBannerHidden === undefined || isBannerHidden === null
+      //     //   ? this.bitPayCardProvider.setBitpayCardBannerStatus(
+      //     //       showBannerOnLoad
+      //     //     )
+      //     //   : this.bitPayCardProvider.setBitpayCardBannerStatus(isBannerHidden);
+      //   })
+      //   .catch(err => {
+      //     this.logger.error(err);
+      //   });
+      this.bitPayCardProvider.register();
     }
   }
 
