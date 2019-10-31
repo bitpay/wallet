@@ -15,8 +15,6 @@ import * as moment from 'moment';
 
 @Injectable()
 export class BitPayCardProvider {
-  public countryCode: string;
-
   constructor(
     private logger: Logger,
     private bitPayProvider: BitPayProvider,
@@ -512,7 +510,7 @@ export class BitPayCardProvider {
       isBannerVisible === undefined || isBannerVisible === null; // Used to checks banner status on very first load.
 
     this.globalization.getLocaleName().then(res => {
-      this.logger.debug('Country Code: ', res.value.split('-')[1]);
+      const countryCode = res.value.split('-')[1];
       this.isActive(isActive => {
         this.homeIntegrationsProvider.register({
           name: 'debitcard',
@@ -520,7 +518,7 @@ export class BitPayCardProvider {
           icon: 'assets/img/bitpay-card/icon-bitpay.svg',
           page: 'BitPayCardIntroPage',
           show: isBannerStatusUndefined
-            ? showIntegration && res.value.split('-')[1] === 'US'
+            ? showIntegration && countryCode === 'US'
             : showIntegration,
           linked: !!isActive
         });

@@ -49,7 +49,7 @@ export class BitPaySettingsPage {
     }
   }
 
-  public async integrationChange(): Promise<void> {
+  public integrationChange(): void {
     let opts = {
       showIntegration: { [this.serviceName]: this.showAtHome }
     };

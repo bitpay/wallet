@@ -30,7 +30,6 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
-// import { Globalization } from '@ionic-native/globalization';
 
 // pages
 import { ImageLoaderConfig } from 'ionic-image-loader';
@@ -335,9 +334,8 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.appProvider.info._enabledExtensions.debitcard) {
+    if (this.appProvider.info._enabledExtensions.debitcard)
       this.bitPayCardProvider.register();
-    }
   }
 
   private incomingDataRedirEvent(): void {
