@@ -53,7 +53,7 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
-  HIDE_BITPAY_CARD_BANNER: 'hideBitPayCardInner',
+  HIDE_BITPAY_CARD_BANNER: 'hideBitPayCardBanner',
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,

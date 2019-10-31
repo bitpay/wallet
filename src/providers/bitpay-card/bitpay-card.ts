@@ -506,8 +506,7 @@ export class BitPayCardProvider {
       'debitcard'
     ];
 
-    const isBannerStatusUndefined =
-      isBannerVisible === undefined || isBannerVisible === null; // Used to checks banner status on very first load.
+    const isBannerStatusUndefined = _.isNil(isBannerVisible); // Used to checks banner status on very first load.
 
     this.globalization.getLocaleName().then(res => {
       const countryCode = res.value.split('-')[1];
