@@ -4,14 +4,14 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
-// import { ConfigProvider } from '../config/config';
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 
+import { Globalization } from '@ionic-native/globalization';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Globalization } from '@ionic-native/globalization';
 
 @Injectable()
 export class BitPayCardProvider {
@@ -23,7 +23,7 @@ export class BitPayCardProvider {
     private appIdentityProvider: AppIdentityProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private persistenceProvider: PersistenceProvider,
-    // private configProvider: ConfigProvider,
+    private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private globalization: Globalization
   ) {
@@ -494,8 +494,8 @@ export class BitPayCardProvider {
     });
   }
 
-  setBitpayCardBannerStatus(isBannerHidden) {
-    this.persistenceProvider.setBitPayCardBanner(isBannerHidden);
+  setBitpayCardBannerStatus(isBannerVisible): Promise<void> {
+    return this.persistenceProvider.setBitPayCardBanner(isBannerVisible);
   }
 
   getBitpayCardBannerStatus() {
@@ -503,92 +503,29 @@ export class BitPayCardProvider {
   }
 
   public async register() {
-    const isBannerHidden = await this.persistenceProvider.getBitPayCardBannerStatus();
-    // this.logger.info(
-    //   'Value for is Banner Hidden at register function',
-    //   isBannerHidden
-    // );
-    // const showIntegration = !!this.configProvider.get().showIntegration[
-    //   'debitcard'
-    // ];
+    const isBannerVisible = await this.persistenceProvider.getBitPayCardBannerStatus();
+    const showIntegration = !!this.configProvider.get().showIntegration[
+      'debitcard'
+    ];
 
-    this.logger.debug(
-      'isBannerHidden value at register in BPCardProvider',
-      isBannerHidden
-    );
-
-    // const isBannerUndefined =
-    //   isBannerHidden === undefined || isBannerHidden === null;
-
-    // this.logger.debug('isBannerUndefined', isBannerUndefined);
-    // this.logger.debug('showIntegration value', showIntegration);
+    const isBannerStatusUndefined =
+      isBannerVisible === undefined || isBannerVisible === null; // Used to checks banner status on very first load.
 
     this.globalization.getLocaleName().then(res => {
-      console.log(res);
+      this.logger.debug('Country Code: ', res.value.split('-')[1]);
       this.isActive(isActive => {
         this.homeIntegrationsProvider.register({
           name: 'debitcard',
           title: 'BitPay Visa® Card',
           icon: 'assets/img/bitpay-card/icon-bitpay.svg',
           page: 'BitPayCardIntroPage',
-          show: !isBannerHidden,
-          // ? showIntegration && res.value.split('-')[1] !== 'US'
-          // : !isBannerHidden,
+          show: isBannerStatusUndefined
+            ? showIntegration && res.value.split('-')[1] === 'US'
+            : showIntegration,
           linked: !!isActive
         });
       });
     });
-
-    // const show = isBannerHidden
-    //   ? false
-    //   : showIntegration || this.countryCode !== 'US';
-
-    // this.isActive(isActive => {
-    //   this.homeIntegrationsProvider.register({
-    //     name: 'debitcard',
-    //     title: 'BitPay Visa® Card',
-    //     icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-    //     page: 'BitPayCardIntroPage',
-    //     show,
-    //     linked: !!isActive
-    //   });
-    // });
-
-    // this.persistenceProvider
-    //   .getBitPayCardBannerStatus()
-    //   .then(isBannerHidden => {
-    //     this.logger.debug('BitPay Banner Hidden value: ', isBannerHidden);
-    //     this.globalization
-    //       .getLocaleName()
-    //       .then(res => {
-    //         this.logger.debug(
-    //           'Label message for BitPay Visa Card Banner value',
-    //           isBannerHidden
-    //         );
-    //         this.countryCode = res.value.split('-')[1];
-    //         this.isActive(isActive => {
-    //           this.homeIntegrationsProvider.register({
-    //             name: 'debitcard',
-    //             title: 'BitPay Visa® Card',
-    //             icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-    //             page: 'BitPayCardIntroPage',
-    //             show:
-    //               isBannerHidden === undefined || isBannerHidden === null
-    //                 ? !!this.configProvider.get().showIntegration[
-    //                     'debitcard'
-    //                   ] && this.countryCode === 'US'
-    //                 : isBannerHidden,
-    //             linked: !!isActive
-    //           });
-    //         });
-    //       })
-    //       .catch(err => {
-    //         this.logger.error(
-    //           'Error with retrieiving Bitpay Card Banner hidden status ',
-    //           err
-    //         );
-    //       });
-    //   });
   }
 }
 

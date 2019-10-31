@@ -105,8 +105,8 @@ export class PersistenceProvider {
     return this.storage.get(Keys.PROFILE_OLD);
   }
 
-  setBitPayCardBanner(isBannerHidden) {
-    return this.storage.set(Keys.HIDE_BITPAY_CARD_BANNER, isBannerHidden);
+  setBitPayCardBanner(isBannerVisible): Promise<void> {
+    return this.storage.set(Keys.HIDE_BITPAY_CARD_BANNER, isBannerVisible);
   }
 
   getBitPayCardBannerStatus(): Promise<any> {

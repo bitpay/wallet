@@ -336,27 +336,6 @@ export class CopayApp {
 
     // BitPay Card
     if (this.appProvider.info._enabledExtensions.debitcard) {
-      // this.globalization
-      //   .getLocaleName()
-      //   .then(async res => {
-      //     const showBannerOnLoad =
-      //       !!this.configProvider.get().showIntegration['debitcard'] &&
-      //       res.value.split('-')[1] !== 'US';
-
-      //     const isBannerHidden = await this.bitPayCardProvider.getBitpayCardBannerStatus();
-
-      //     this.logger.info('Show Banner on Load', showBannerOnLoad);
-      //     this.logger.info('Is Banner Hidden', isBannerHidden);
-
-      //     // isBannerHidden === undefined || isBannerHidden === null
-      //     //   ? this.bitPayCardProvider.setBitpayCardBannerStatus(
-      //     //       showBannerOnLoad
-      //     //     )
-      //     //   : this.bitPayCardProvider.setBitpayCardBannerStatus(isBannerHidden);
-      //   })
-      //   .catch(err => {
-      //     this.logger.error(err);
-      //   });
       this.bitPayCardProvider.register();
     }
   }

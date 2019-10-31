@@ -8,7 +8,6 @@ import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitp
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
-import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -28,7 +27,6 @@ export class BitPaySettingsPage {
     private bitPayCardProvider: BitPayCardProvider,
     private popupProvider: PopupProvider,
     private configProvider: ConfigProvider,
-    private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
@@ -51,7 +49,7 @@ export class BitPaySettingsPage {
     }
   }
 
-  public integrationChange(): void {
+  public async integrationChange(): Promise<void> {
     let opts = {
       showIntegration: { [this.serviceName]: this.showAtHome }
     };
@@ -59,9 +57,8 @@ export class BitPaySettingsPage {
       this.serviceName,
       this.showAtHome
     );
-    this.logger.info('this.showAtHome hello', this.showAtHome);
-    this.bitPayCardProvider.setBitpayCardBannerStatus(this.showAtHome);
     this.configProvider.set(opts);
+    this.bitPayCardProvider.setBitpayCardBannerStatus(this.showAtHome);
   }
 
   public unlinkCard(card) {
