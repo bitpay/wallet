@@ -508,8 +508,11 @@ export class BitPayCardProvider {
 
     const isBannerStatusUndefined = _.isNil(isBannerVisible); // Used to checks banner status on very first load.
 
-    this.globalization.getLocaleName().then(res => {
-      const countryCode = res.value.split('-')[1];
+    let countryCode;
+
+    try {
+      const res = await this.globalization.getLocaleName();
+      countryCode = res.value.split('-')[1];
       this.isActive(isActive => {
         this.homeIntegrationsProvider.register({
           name: 'debitcard',
@@ -522,7 +525,9 @@ export class BitPayCardProvider {
           linked: !!isActive
         });
       });
-    });
+    } catch (error) {
+      this.logger.error('Error retrieving country Code', error);
+    }
   }
 }
 
