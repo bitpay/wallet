@@ -115,8 +115,12 @@ export class PaperWalletPage {
         });
       return;
     }
-    if (!this.isPkEncrypted) this.scanFunds();
-    else {
+    if (!this.isPkEncrypted) {
+      this.onGoingProcessProvider.set('scanning');
+      setTimeout(() => {
+        this.scanFunds();
+      }, 200);
+    } else {
       let message = this.translate.instant(
         'Private key encrypted. Enter password'
       );
