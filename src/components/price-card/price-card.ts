@@ -1,7 +1,13 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { ConfigProvider, Logger, PriceProvider } from '../../providers';
+import {
+  ConfigProvider,
+  CurrencyProvider,
+  Logger,
+  PriceProvider
+} from '../../providers';
+import { Coin } from '../../providers/currency/currency';
 import { PriceChart } from './price-chart/price-chart';
 
 @Component({
@@ -14,35 +20,7 @@ export class PriceCard {
   public lineChart: any;
   public isoCode: string;
   public lastDates = 6;
-  public coins = [
-    {
-      unitCode: 'btc',
-      historicalRates: [],
-      currentPrice: 0,
-      averagePrice: 0,
-      backgroundColor: 'rgba(247,146,26,1)',
-      gradientBackgroundColor: 'rgba(247,146,26, 0.2)',
-      name: 'Bitcoin'
-    },
-    {
-      unitCode: 'bch',
-      historicalRates: [],
-      currentPrice: 0,
-      averagePrice: 0,
-      backgroundColor: 'rgba(47,207,110,1)',
-      gradientBackgroundColor: 'rgba(47,207,110, 0.2)',
-      name: 'Bitcoin Cash'
-    },
-    {
-      unitCode: 'eth',
-      historicalRates: [],
-      currentPrice: 0,
-      averagePrice: 0,
-      backgroundColor: 'rgba(135,206,250,1)',
-      gradientBackgroundColor: 'rgba(30,144,255, 0.2)',
-      name: 'Ethereum'
-    }
-  ];
+  public coins = [];
   public fiatCodes = [
     'USD',
     'INR',
@@ -57,10 +35,28 @@ export class PriceCard {
   ];
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private priceProvider: PriceProvider,
     private configProvider: ConfigProvider,
     private logger: Logger
   ) {
+    const availableChains = this.currencyProvider.getAvailableChains();
+    for (const coin of availableChains) {
+      const {
+        backgroundColor,
+        gradientBackgroundColor
+      } = this.currencyProvider.getTheme(coin as Coin);
+      const card = {
+        unitCode: coin,
+        historicalRates: [],
+        currentPrice: 0,
+        averagePrice: 0,
+        backgroundColor,
+        gradientBackgroundColor,
+        name: this.currencyProvider.getCoinName(coin as Coin)
+      };
+      this.coins.push(card);
+    }
     this.getPrices();
   }
 

@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { ConfigProvider } from '../providers/config/config';
+import { Coin, CurrencyProvider } from '../providers/currency/currency';
 
 @Pipe({
   name: 'satToUnit',
@@ -9,10 +9,10 @@ import { ConfigProvider } from '../providers/config/config';
 export class SatToUnitPipe implements PipeTransform {
   constructor(
     private decimalPipe: DecimalPipe,
-    private configProvider: ConfigProvider
+    private currencyProvider: CurrencyProvider
   ) {}
-  transform(amount: number, coin: string) {
-    const { unitToSatoshi } = this.configProvider.getCoinOpts()[coin];
+  transform(amount: number, coin: Coin) {
+    const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
     return (
       this.decimalPipe.transform(amount / unitToSatoshi, '1.2-6') +
       ' ' +

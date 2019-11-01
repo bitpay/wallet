@@ -7,14 +7,11 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import {
-  Coin,
-  UTXO_COINS,
-  WalletProvider
-} from '../../../providers/wallet/wallet';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -31,6 +28,7 @@ export class CustomAmountPage {
   public altAmountStr: string;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
@@ -95,7 +93,7 @@ export class CustomAmountPage {
         );
       }
 
-      if (UTXO_COINS[this.wallet.coin.toUpperCase()]) {
+      if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
         this.qrAddress =
           (protoAddr ? protoAddr : this.address) + '?amount=' + this.amountCoin;
       } else {

@@ -26,6 +26,10 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
+import {
+  Coin,
+  CurrencyProvider
+} from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { InvoiceProvider } from '../../../../providers/invoice/invoice';
 import { KeyProvider } from '../../../../providers/key/key';
@@ -37,7 +41,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
-  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -78,6 +81,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
+    currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     public incomingDataProvider: IncomingDataProvider,
@@ -111,6 +115,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
       bwcErrorProvider,
       bwcProvider,
       configProvider,
+      currencyProvider,
       decimalPipe,
       externalLinkProvider,
       feeProvider,
@@ -167,25 +172,18 @@ export class ConfirmInvoicePage extends ConfirmPage {
     const { BITPAY_API_URL } = this.invoiceProvider.credentials;
     this.browserUrl = `${BITPAY_API_URL}/invoice?id=${this.invoiceId}`;
     this.network = this.invoiceProvider.getNetwork();
-    const walletsBtc = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      coin: 'btc',
-      minAmount: this.invoiceData.paymentTotals['BTC']
-    });
-    const walletsBch = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      coin: 'bch',
-      minAmount: this.invoiceData.paymentTotals['BCH']
-    });
-    const walletsEth = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      coin: 'eth',
-      minAmount: this.invoiceData.paymentTotals['ETH']
-    });
-    this.wallets = [...walletsBtc, ...walletsBch, ...walletsEth];
+    this.wallets = [];
+    for (const coin of this.currencyProvider.getAvailableCoins()) {
+      const filteredWallets = this.profileProvider.getWallets({
+        onlyComplete: true,
+        network: this.network,
+        coin,
+        minAmount: this.invoiceData.paymentTotals[coin.toUpperCase()]
+      });
+      if (filteredWallets.length > 0) {
+        this.wallets.push(...filteredWallets);
+      }
+    }
     this.invoiceUrl = `${BITPAY_API_URL}/i/${this.invoiceId}`;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
@@ -205,7 +203,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.initialize(wallet).catch(() => {});
   }
 
-  public checkIfCoin() {
+  public isCoin() {
     return !!Coin[this.currency];
   }
 
@@ -317,11 +315,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
 
   public async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const paymentCode =
-      COIN !== 'ETH'
-        ? invoice.paymentCodes[COIN].BIP73
-        : invoice.paymentCodes[COIN].EIP681;
-    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
+    const paymentCode = this.currencyProvider.getPaymentCode(wallet.coin);
+    const protocolUrl = invoice.paymentCodes[COIN][paymentCode];
+    const payProUrl = this.incomingDataProvider.getPayProUrl(protocolUrl);
 
     if (!payProUrl) {
       throw {

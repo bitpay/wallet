@@ -11,6 +11,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { CurrencyProvider } from '../currency/currency';
 import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
@@ -24,12 +25,6 @@ import { WalletOptions } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
-
-enum CoinName {
-  BTC = 'Bitcoin',
-  BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
-}
 
 interface WalletGroups {
   WalletGroup?: WalletGroup;
@@ -52,6 +47,7 @@ export class ProfileProvider {
   private errors = this.bwcProvider.getErrors();
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
@@ -1396,7 +1392,7 @@ export class ProfileProvider {
 
     const defaultOpts: Partial<WalletOptions> = {
       keyId: opts.keyId,
-      name: CoinName[opts.coin.toUpperCase()],
+      name: this.currencyProvider.getCoinName(opts.coin),
       m: 1,
       n: 1,
       myName: null,

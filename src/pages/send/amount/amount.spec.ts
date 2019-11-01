@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestUtils } from '../../../test';
 
+import { Coin } from '../../../providers/currency/currency';
 import { RateProvider } from '../../../providers/rate/rate';
-import { Coin } from '../../../providers/wallet/wallet';
 import { AmountPage } from './amount';
 
 describe('AmountPage', () => {

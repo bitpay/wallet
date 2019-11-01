@@ -31,7 +31,7 @@ describe('TransferToPage', () => {
 
   describe('searchWallets', () => {
     beforeEach(() => {
-      instance.walletBtcList = [
+      instance.walletList.btc = [
         {
           name: 'test1',
           coin: 'btc'
@@ -42,7 +42,7 @@ describe('TransferToPage', () => {
         }
       ];
 
-      instance.walletBchList = [
+      instance.walletList.bch = [
         {
           name: 'test3',
           coin: 'bch'
@@ -52,19 +52,30 @@ describe('TransferToPage', () => {
           coin: 'bch'
         }
       ];
+
+      instance.walletList.eth = [
+        {
+          name: 'test5',
+          coin: 'eth'
+        },
+        {
+          name: 'test6',
+          coin: 'eth'
+        }
+      ];
     });
 
     it('should filter BTC wallets when search by wallet name', () => {
-      instance.hasBtcWallets = true;
+      instance.hasWallets.btc = true;
       instance.wallet.coin = 'btc';
 
       instance.search = 'test';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual(instance.walletBtcList);
+      expect(instance.filteredWallets).toEqual(instance.walletList.btc);
 
       instance.search = 'TEST1';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([instance.walletBtcList[0]]);
+      expect(instance.filteredWallets).toEqual([instance.walletList.btc[0]]);
 
       instance.search = 'test3';
       instance.searchWallets();
@@ -72,16 +83,33 @@ describe('TransferToPage', () => {
     });
 
     it('should filter BCH wallets when search by wallet name', () => {
-      instance.hasBchWallets = true;
+      instance.hasWallets.bch = true;
       instance.wallet.coin = 'bch';
 
       instance.search = 'test';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual(instance.walletBchList);
+      expect(instance.filteredWallets).toEqual(instance.walletList.bch);
 
       instance.search = 'TEST3';
       instance.searchWallets();
-      expect(instance.filteredWallets).toEqual([instance.walletBchList[0]]);
+      expect(instance.filteredWallets).toEqual([instance.walletList.bch[0]]);
+
+      instance.search = 'test1';
+      instance.searchWallets();
+      expect(instance.filteredWallets).toEqual([]);
+    });
+
+    it('should filter ETH wallets when search by wallet name', () => {
+      instance.hasWallets.eth = true;
+      instance.wallet.coin = 'eth';
+
+      instance.search = 'test';
+      instance.searchWallets();
+      expect(instance.filteredWallets).toEqual(instance.walletList.eth);
+
+      instance.search = 'TEST5';
+      instance.searchWallets();
+      expect(instance.filteredWallets).toEqual([instance.walletList.eth[0]]);
 
       instance.search = 'test1';
       instance.searchWallets();
@@ -91,7 +119,7 @@ describe('TransferToPage', () => {
 
   describe('processInput', () => {
     beforeEach(() => {
-      instance.walletBtcList = [
+      instance.walletList.btc = [
         {
           name: 'test1',
           coin: 'btc'
@@ -106,7 +134,7 @@ describe('TransferToPage', () => {
         }
       ];
 
-      instance.walletBchList = [
+      instance.walletList.bch = [
         {
           name: 'test3',
           coin: 'bch'
@@ -114,6 +142,17 @@ describe('TransferToPage', () => {
         {
           name: 'test4',
           coin: 'bch'
+        }
+      ];
+
+      instance.walletList.eth = [
+        {
+          name: 'test5',
+          coin: 'eth'
+        },
+        {
+          name: 'test6',
+          coin: 'eth'
         }
       ];
 
@@ -127,8 +166,18 @@ describe('TransferToPage', () => {
       ];
     });
     it('should filter BTC wallets and Contacts when search something', () => {
-      instance.hasBtcWallets = true;
+      instance.hasWallets.btc = true;
       instance.wallet.coin = 'btc';
+      instance.search = 'test';
+      instance.processInput();
+      expect(instance.filteredWallets.length).toEqual(2);
+      expect(instance.filteredContactsList.length).toEqual(1);
+      expect(instance.invalidAddress).toBeFalsy();
+    });
+
+    it('should filter ETH wallets and Contacts when search something', () => {
+      instance.hasWallets.eth = true;
+      instance.wallet.coin = 'eth';
       instance.search = 'test';
       instance.processInput();
       expect(instance.filteredWallets.length).toEqual(2);

@@ -3,10 +3,9 @@ import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
-import { ConfigProvider } from '../../../../../providers/config/config';
+import { CurrencyProvider } from '../../../../../providers/currency/currency';
 import { Logger } from '../../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { UTXO_COINS } from '../../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-wallet-information',
@@ -33,7 +32,7 @@ export class WalletInformationPage {
 
   constructor(
     private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private logger: Logger
   ) {}
@@ -46,9 +45,9 @@ export class WalletInformationPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
     this.coin = this.wallet.coin.toUpperCase();
-    this.unitToSatoshi = this.configProvider.getCoinOpts()[
+    this.unitToSatoshi = this.currencyProvider.getPrecision(
       this.wallet.coin
-    ].unitToSatoshi;
+    ).unitToSatoshi;
     this.walletId = this.wallet.credentials.walletId;
     this.N = this.wallet.credentials.n;
     this.M = this.wallet.credentials.m;
@@ -66,7 +65,7 @@ export class WalletInformationPage {
     this.canSign = this.wallet.canSign;
   }
 
-  public checkIfUtxoCoin() {
-    return !!UTXO_COINS[this.wallet.coin.toUpperCase()];
+  public isUtxoCoin(): boolean {
+    return this.currencyProvider.isUtxoCoin(this.wallet.coin);
   }
 }

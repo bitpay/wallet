@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
@@ -22,7 +23,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
-  UTXO_COINS,
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -63,14 +63,14 @@ export class CreateWalletPage implements OnInit {
   public showAdvOpts: boolean;
   public seedOptions;
   public isShared: boolean;
-  public coin: string;
+  public coin: Coin;
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
-  public UTXO_COINS;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
     private fb: FormBuilder,
@@ -94,7 +94,6 @@ export class CreateWalletPage implements OnInit {
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
-    this.UTXO_COINS = UTXO_COINS;
     this.keyId = this.navParams.get('keyId');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
@@ -108,9 +107,9 @@ export class CreateWalletPage implements OnInit {
       .getCore()
       .Deriver.pathFor(this.coin, 'testnet');
     this.showAdvOpts = false;
-
+    const walletName = this.currencyProvider.getCoinName(this.coin);
     this.createForm = this.fb.group({
-      walletName: [null, Validators.required],
+      walletName: [walletName, Validators.required],
       myName: [null],
       totalCopayers: [1],
       requiredCopayers: [1],
@@ -151,8 +150,8 @@ export class CreateWalletPage implements OnInit {
     );
   }
 
-  public checkIfUtxoCoin() {
-    return !!this.UTXO_COINS[this.coin.toUpperCase()];
+  public isSingleAddress() {
+    return this.currencyProvider.isSingleAddress(this.coin);
   }
 
   private updateSeedSourceSelect(): void {
@@ -207,9 +206,11 @@ export class CreateWalletPage implements OnInit {
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
       bwsurl: this.createForm.value.bwsURL,
-      singleAddress: this.checkIfUtxoCoin()
-        ? this.createForm.value.singleAddress
-        : true,
+      singleAddress: this.currencyProvider.isSingleAddress(
+        this.createForm.value.coin
+      )
+        ? true
+        : this.createForm.value.singleAddress,
       coin: this.createForm.value.coin
     };
 

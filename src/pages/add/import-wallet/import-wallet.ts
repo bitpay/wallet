@@ -19,6 +19,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -27,8 +28,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
-  Coin,
-  UTXO_COINS,
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -41,7 +40,7 @@ export class ImportWalletPage {
   private reader: FileReader;
   private defaults;
   private processedInfo;
-
+  public availableCoins: string[];
   public importForm: FormGroup;
   public prettyFileName: string;
   public formFile;
@@ -54,7 +53,6 @@ export class ImportWalletPage {
   public okText: string;
   public cancelText: string;
   public showAdvOpts: boolean;
-  public UTXO_COINS;
 
   constructor(
     private app: App,
@@ -64,6 +62,7 @@ export class ImportWalletPage {
     private bwcProvider: BwcProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
@@ -86,7 +85,7 @@ export class ImportWalletPage {
     this.isIOS = this.platformProvider.isIOS;
     this.selectedTab = 'words';
     this.showAdvOpts = false;
-    this.UTXO_COINS = UTXO_COINS;
+    this.availableCoins = this.currencyProvider.getAvailableChains();
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
@@ -123,6 +122,10 @@ export class ImportWalletPage {
     this.processedInfo = this.processWalletInfo(data.value);
     this.setForm();
   };
+
+  public getCoinName(coin: Coin) {
+    return this.currencyProvider.getCoinName(coin);
+  }
 
   public selectTab(tab: string): void {
     this.selectedTab = tab;
@@ -337,20 +340,16 @@ export class ImportWalletPage {
     return;
   }
 
-  public checkIfUtxoCoin(coin: string) {
-    return !!this.UTXO_COINS[coin.toUpperCase()];
-  }
-
-  public setOptsAndCreate(coin: string): void {
+  public setOptsAndCreate(coin: Coin): void {
     const opts: Partial<WalletOptions> = {
       keyId: undefined,
-      name: coin.toUpperCase() + ' ' + 'Wallet',
+      name: this.currencyProvider.getCoinName(coin),
       m: 1,
       n: 1,
       myName: null,
       networkName: 'livenet',
       bwsurl: this.importForm.value.bwsURL,
-      singleAddress: this.checkIfUtxoCoin(coin) ? false : true,
+      singleAddress: this.currencyProvider.isSingleAddress(coin),
       coin: Coin[coin.toUpperCase()]
     };
 

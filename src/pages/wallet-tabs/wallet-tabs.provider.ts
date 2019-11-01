@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Tabs } from 'ionic-angular';
-import { Coin } from '../../providers/wallet/wallet';
+import { Coin } from '../../providers/currency/currency';
 
 export interface SendParams {
   amount: string;

@@ -43,7 +43,6 @@ export class OnGoingProcessProvider {
       recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
       removeTx: this.translate.instant('Deleting payment proposal...'),
-      retrievingGasLimit: this.translate.instant('Retrieving gas limit...'),
       retrievingInputs: this.translate.instant(
         'Retrieving inputs information...'
       ),

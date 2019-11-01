@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -20,7 +21,7 @@ import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
-import { UTXO_COINS, WalletProvider } from '../../providers/wallet/wallet';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
@@ -68,6 +69,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   public supportedCards: Promise<CardConfigMap>;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     navCtrl: NavController,
     private navParams: NavParams,
     profileProvider: ProfileProvider,
@@ -155,8 +157,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     );
   }
 
-  public checkIfUtxoCoin() {
-    return !!UTXO_COINS[this.wallet.coin.toUpperCase()];
+  public isUtxoCoin(): boolean {
+    return this.currencyProvider.isUtxoCoin(this.wallet.coin);
   }
 
   private clearHistoryCache() {
@@ -323,7 +325,7 @@ export class WalletDetailsPage extends WalletTabsChild {
       this.setPendingTxps(status.pendingTxps);
       this.showBalanceButton = status.totalBalanceSat != status.spendableAmount;
 
-      if (UTXO_COINS[this.wallet.coin.toUpperCase()]) {
+      if (this.isUtxoCoin()) {
         this.analyzeUtxos();
       }
 

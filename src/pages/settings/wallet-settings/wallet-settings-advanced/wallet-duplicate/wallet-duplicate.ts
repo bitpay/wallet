@@ -7,15 +7,15 @@ import { Logger } from '../../../../../providers/logger/logger';
 // Providers
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { Coin } from '../../../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
-import { Coin, WalletProvider } from '../../../../../providers/wallet/wallet';
+import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
-
 @Component({
   selector: 'page-wallet-duplicate',
   templateUrl: 'wallet-duplicate.html'

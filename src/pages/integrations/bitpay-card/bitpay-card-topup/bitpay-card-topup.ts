@@ -16,6 +16,10 @@ import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
+import {
+  Coin,
+  CurrencyProvider
+} from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -25,7 +29,6 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
-  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -75,6 +78,7 @@ export class BitPayCardTopUpPage {
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
     public incomingDataProvider: IncomingDataProvider,
     private logger: Logger,
@@ -277,11 +281,9 @@ export class BitPayCardTopUpPage {
   private createTx(wallet, invoice, message: string): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
-      const paymentCode =
-        COIN !== 'ETH'
-          ? invoice.paymentCodes[COIN].BIP73
-          : invoice.paymentCodes[COIN].EIP681;
-      const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
+      const paymentCode = this.currencyProvider.getPaymentCode(wallet.coin);
+      const protocolUrl = invoice.paymentCodes[COIN][paymentCode];
+      const payProUrl = this.incomingDataProvider.getPayProUrl(protocolUrl);
 
       if (!payProUrl) {
         return reject({
@@ -423,7 +425,7 @@ export class BitPayCardTopUpPage {
             const {
               unitDecimals,
               unitToSatoshi
-            } = this.configProvider.getCoinOpts()[this.wallet.coin];
+            } = this.currencyProvider.getPrecision(this.wallet.coin);
             let maxAmount = Number(
               (maxValues.amount / unitToSatoshi).toFixed(unitDecimals)
             );

@@ -2,6 +2,7 @@ import { TestUtils } from '../../test';
 
 // Providers
 import { ConfigProvider } from '../config/config';
+import { Coin } from '../currency/currency';
 import { FilterProvider } from '../filter/filter';
 import { PersistenceProvider } from '../persistence/persistence';
 import { RateProvider } from '../rate/rate';
@@ -209,12 +210,12 @@ describe('TxFormatProvider', () => {
 
     it('should return same tx if tx.action is invalid', () => {
       tx.action = 'invalid';
-      expect(txFormatProvider.processTx('btc', tx)).toEqual(tx);
+      expect(txFormatProvider.processTx(Coin.BTC, tx)).toEqual(tx);
     });
 
     it('should return tx with defined values if tx.action is received', () => {
       tx.action = 'received';
-      let result = txFormatProvider.processTx('btc', tx);
+      let result = txFormatProvider.processTx(Coin.BTC, tx);
 
       expect(tx.toAddress).toBeDefined();
       expect(tx.toAddress).toEqual('mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb');
@@ -227,7 +228,7 @@ describe('TxFormatProvider', () => {
     it('should return tx.toAddress in CashAddress format if coin is BCH', () => {
       tx.action = 'received';
       tx.outputs[0].toAddress = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx);
+      txFormatProvider.processTx(Coin.BCH, tx);
       expect(tx.toAddress).toEqual(
         'qz0ys7q7utlsd7fmcsecxtpp9y8j8xhxtsy35kmzka'
       );
@@ -236,7 +237,7 @@ describe('TxFormatProvider', () => {
     it('should return tx.addressTo in CashAddress format if coin is BCH', () => {
       tx.action = 'received';
       tx.addressTo = 'CWtp9bmTjiwBp89SvnZRbshkEkTY9TRZnt';
-      txFormatProvider.processTx('bch', tx);
+      txFormatProvider.processTx(Coin.BCH, tx);
       expect(tx.addressTo.toString()).toEqual(
         'qz0ys7q7utlsd7fmcsecxtpp9y8j8xhxtsy35kmzka'
       );
@@ -244,7 +245,7 @@ describe('TxFormatProvider', () => {
 
     it('should return same tx.amount if only has one output', () => {
       tx.action = 'sent';
-      txFormatProvider.processTx('btc', tx);
+      txFormatProvider.processTx(Coin.BTC, tx);
       expect(tx.hasMultiplesOutputs).toBeFalsy();
       expect(tx.amount).toEqual(447100);
     });
@@ -263,7 +264,7 @@ describe('TxFormatProvider', () => {
           toAddress: 'mxMUZvgFR8D3LRscz5GbXERPXNSp1ww8Bb'
         }
       ];
-      txFormatProvider.processTx('btc', tx);
+      txFormatProvider.processTx(Coin.BTC, tx);
       expect(tx.hasMultiplesOutputs).toBeTruthy();
       expect(tx.amount).toEqual(1094200);
     });
@@ -284,7 +285,12 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount parsed correctly if the currency is BTC', () => {
-      let result = txFormatProvider.parseAmount('btc', 0.012235, 'BTC', false);
+      let result = txFormatProvider.parseAmount(
+        Coin.BTC,
+        0.012235,
+        'BTC',
+        false
+      );
       expect(result).toEqual({
         amount: '0.01223500',
         currency: 'BTC',
@@ -298,7 +304,7 @@ describe('TxFormatProvider', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
-      let result = txFormatProvider.parseAmount('btc', 1505, 'USD', false);
+      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'USD', false);
       expect(result).toEqual({
         amount: 1505,
         currency: 'USD',
@@ -325,7 +331,7 @@ describe('TxFormatProvider', () => {
 
       let onlyIntegers = true;
       let result = txFormatProvider.parseAmount(
-        'btc',
+        Coin.BTC,
         1505,
         'JPY',
         onlyIntegers
@@ -342,7 +348,7 @@ describe('TxFormatProvider', () => {
     it('should return amount parsed correctly if the currency is sat', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
 
-      let result = txFormatProvider.parseAmount('btc', 1505, 'sat', false);
+      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'sat', false);
       expect(result).toEqual({
         amount: '0.00001505',
         currency: 'BTC',
@@ -369,7 +375,7 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount in unit format', () => {
-      let result = txFormatProvider.satToUnit(12312312, 'btc');
+      let result = txFormatProvider.satToUnit(12312312, Coin.BTC);
       expect(result).toEqual(0.12312312);
     });
   });

@@ -4,6 +4,7 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 
@@ -20,6 +21,7 @@ export class ShapeshiftDetailsPage {
 
   constructor(
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
     private shapeshiftProvider: ShapeshiftProvider,
@@ -55,15 +57,21 @@ export class ShapeshiftDetailsPage {
 
   public openTransaction(id: string) {
     var url;
-    if (this.ssData.outgoingType.toUpperCase() == 'BTC') {
-      url =
-        'https://' + this.defaults.blockExplorerUrl.btc + 'mainnet/tx/' + id;
-    } else if (this.ssData.outgoingType.toUpperCase() == 'BCH') {
-      url =
-        'https://' + this.defaults.blockExplorerUrl.bch + 'mainnet/tx/' + id;
+    const chains = this.currencyProvider.getAvailableChains();
+    for (const chain of chains) {
+      if (this.ssData.outgoingType == chain) {
+        url =
+          'https://' +
+          this.defaults.blockExplorerUrl[chain] +
+          'mainnet/tx/' +
+          id;
+      }
+    }
+
+    if (url) {
+      this.externalLinkProvider.open(url);
     } else {
       return;
     }
-    this.externalLinkProvider.open(url);
   }
 }
