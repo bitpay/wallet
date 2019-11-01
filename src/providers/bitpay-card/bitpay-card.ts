@@ -12,6 +12,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { Globalization } from '@ionic-native/globalization';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 @Injectable()
 export class BitPayCardProvider {
@@ -23,7 +24,8 @@ export class BitPayCardProvider {
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private globalization: Globalization
+    private globalization: Globalization,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.debug('BitPayCardProvider initialized');
   }
@@ -522,7 +524,8 @@ export class BitPayCardProvider {
         icon: 'assets/img/bitpay-card/icon-bitpay.svg',
         page: 'BitPayCardIntroPage',
         show: isBannerStatusUndefined
-          ? showIntegration && countryCode === 'US'
+          ? showIntegration &&
+            (countryCode === 'US' || !this.platformProvider.isCordova)
           : showIntegration,
         linked: !!isActive
       });
