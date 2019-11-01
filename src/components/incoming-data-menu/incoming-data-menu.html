@@ -23,7 +23,7 @@
   </ion-list>
 
   <ion-list *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress'">
-    <ion-item-divider>{{'{coinName} Address' | translate: { coinName: coinName } }}</ion-item-divider>
+    <ion-item-divider *ngIf="coinName">{{'{coinName} Address' | translate: { coinName: coinName } }}</ion-item-divider>
     <ion-item>
       {{data}}
       <ion-icon item-start>
