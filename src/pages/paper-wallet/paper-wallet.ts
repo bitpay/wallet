@@ -81,7 +81,7 @@ export class PaperWalletPage {
     });
 
     this.wallets = _.filter(_.clone(this.wallets), wallet => {
-      return !wallet.needsBackup;
+      return !wallet.needsBackup && wallet.coin !== 'eth';
     });
 
     this.coins = _.uniq(
