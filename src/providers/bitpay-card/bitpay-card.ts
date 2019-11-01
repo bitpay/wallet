@@ -506,28 +506,27 @@ export class BitPayCardProvider {
       'debitcard'
     ];
 
-    const isBannerStatusUndefined = _.isNil(isBannerVisible); // Used to checks banner status on very first load.
-
+    let isBannerStatusUndefined = _.isNil(isBannerVisible);
     let countryCode;
 
     try {
       const res = await this.globalization.getLocaleName();
       countryCode = res.value.split('-')[1];
-      this.isActive(isActive => {
-        this.homeIntegrationsProvider.register({
-          name: 'debitcard',
-          title: 'BitPay Visa® Card',
-          icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-          page: 'BitPayCardIntroPage',
-          show: isBannerStatusUndefined
-            ? showIntegration && countryCode === 'US'
-            : showIntegration,
-          linked: !!isActive
-        });
-      });
     } catch (error) {
       this.logger.error('Error retrieving country Code', error);
     }
+    this.isActive(isActive => {
+      this.homeIntegrationsProvider.register({
+        name: 'debitcard',
+        title: 'BitPay Visa® Card',
+        icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+        page: 'BitPayCardIntroPage',
+        show: isBannerStatusUndefined
+          ? showIntegration && countryCode === 'US'
+          : showIntegration,
+        linked: !!isActive
+      });
+    });
   }
 }
 
