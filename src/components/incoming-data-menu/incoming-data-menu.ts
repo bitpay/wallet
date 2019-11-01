@@ -14,9 +14,7 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public fromHomeCard: boolean;
   public isCordova: boolean;
 
-  constructor(
-    private platformProvider: PlatformProvider
-  ) {
+  constructor(private platformProvider: PlatformProvider) {
     super();
     this.isCordova = this.platformProvider.isCordova;
   }
