@@ -513,7 +513,7 @@ export class BitPayCardProvider {
       const res = await this.globalization.getLocaleName();
       countryCode = res.value.split('-')[1];
     } catch (error) {
-      this.logger.error('Error retrieving country Code', error);
+      this.logger.warn('Error retrieving country Code', error);
     }
     this.isActive(isActive => {
       this.homeIntegrationsProvider.register({
