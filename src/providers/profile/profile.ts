@@ -27,12 +27,14 @@ import { WalletOptions } from '../wallet/wallet';
 import { Profile } from '../../models/profile/profile.model';
 
 interface WalletGroups {
-  WalletGroup?: WalletGroup;
-}
-interface WalletGroup {
-  name: string;
-  needsBackup: boolean;
-  order: number;
+  [keyId: string]: {
+    name?: string;
+    needsBackup?: boolean;
+    order?: number;
+    isPrivKeyEncrypted?: boolean;
+    canSign?: boolean;
+    isDeletedSeed?: boolean;
+  };
 }
 @Injectable()
 export class ProfileProvider {
@@ -932,7 +934,7 @@ export class ProfileProvider {
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
-  public bindProfile(profile): Promise<any> {
+  private bindProfile(profile): Promise<any> {
     const bindWallets = (): Promise<any> => {
       const profileLength = profile.credentials.length;
 
@@ -1113,7 +1115,7 @@ export class ProfileProvider {
     });
   }
 
-  public _importWithDerivationPath(opts): Promise<any> {
+  private _importWithDerivationPath(opts): Promise<any> {
     const showOpts = _.clone(opts);
     if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
     if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
