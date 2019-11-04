@@ -12,6 +12,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
@@ -57,6 +58,7 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
+  public hiddenFeaturesEnabled: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -72,7 +74,8 @@ export class SettingsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
-    private externalLinkProvder: ExternalLinkProvider
+    private externalLinkProvder: ExternalLinkProvider,
+    private persistanceProvider: PersistenceProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -83,6 +86,9 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
+
+    this.persistanceProvider.getHiddenFeaturesFlag().then( (res) => this.hiddenFeaturesEnabled = res === 'enabled');
+
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
