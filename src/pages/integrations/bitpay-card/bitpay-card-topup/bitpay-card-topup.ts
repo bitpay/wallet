@@ -359,6 +359,9 @@ export class BitPayCardTopUpPage {
             .catch(err => {
               return reject(err);
             });
+        })
+        .catch(err => {
+          return reject(err);
         });
     });
   }
