@@ -28,6 +28,7 @@ import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
+import { BitPayIdPage } from './bitpay-id/bitpay-id';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
@@ -272,4 +273,9 @@ export class SettingsPage {
       isZeroState: true
     });
   }
+
+  public openBitPayIdPage(): void {
+    this.navCtrl.push(BitPayIdPage, { network: 'test' });
+  }
+
 }

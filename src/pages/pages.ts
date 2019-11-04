@@ -77,6 +77,7 @@ import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
+import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
@@ -138,6 +139,7 @@ export const PAGES = [
   BitPayCardPage,
   BitPaySettingsPage,
   BitPayCardTopUpPage,
+  BitPayIdPage,
   BuyCoinbasePage,
   CardCatalogPage,
   ChooseFeeLevelPage,
