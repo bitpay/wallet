@@ -21,12 +21,6 @@
       </span>
     </ion-item-divider>
 
-    <div *ngIf="usePushNotifications && pushNotifications">
-      <ion-item>
-        <ion-label>{{ 'Notify me when transactions are confirmed' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
-      </ion-item>
-    </div>
 
     <div *ngIf="isElectron">
       <ion-item>
@@ -59,6 +53,26 @@
         </button>
       </div>
     </form>
+
+    <ion-item-divider *ngIf="usePushNotifications && pushNotifications">
+      {{'Notifications Preferences' | translate}}
+    </ion-item-divider>
+
+    <div *ngIf="usePushNotifications && pushNotifications">
+      <ion-item>
+        <ion-label>{{ 'Confirmed transactions' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'Product updates' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="productsUpdates" (ionChange)="productsUpdatesChange()"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'Offers & promotions' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="offersAndPromotions" (ionChange)="offersAndPromotionsChange()"></ion-toggle>
+      </ion-item>
+    </div>
+
   </ion-list>
 
 </ion-content>

@@ -41,7 +41,8 @@ export class PushNotificationsProvider {
   public init(): void {
     if (!this.usePushNotifications || this._token) return;
     this.configProvider.load().then(() => {
-      if (!this.configProvider.get().pushNotificationsEnabled) return;
+      const config = this.configProvider.get();
+      if (!config.pushNotificationsEnabled) return;
 
       this.logger.debug('Starting push notification registration...');
 
@@ -56,7 +57,12 @@ export class PushNotificationsProvider {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
         this.enable();
+        // enabling topics
         this.handlePushNotifications();
+        if (config.offersAndPromotions.enabled)
+          this.subscribeToTopic('offersandpromotions');
+        if (config.productsUpdates.enabled)
+          this.subscribeToTopic('productsupdates');
       });
     });
   }
@@ -113,6 +119,10 @@ export class PushNotificationsProvider {
       return;
     }
 
+    // disabling topics
+    this.unsubscribeFromTopic('offersandpromotions');
+    this.unsubscribeFromTopic('productsupdates');
+
     const opts = {
       showHidden: true
     };
@@ -126,6 +136,14 @@ export class PushNotificationsProvider {
   public unsubscribe(walletClient): void {
     if (!this._token) return;
     this._unsubscribe(walletClient);
+  }
+
+  public subscribeToTopic(topic: string): void {
+    this.FCMPlugin.subscribeToTopic(topic);
+  }
+
+  public unsubscribeFromTopic(topic: string): void {
+    this.FCMPlugin.unsubscribeFromTopic(topic);
   }
 
   private _subscribe(walletClient): void {
