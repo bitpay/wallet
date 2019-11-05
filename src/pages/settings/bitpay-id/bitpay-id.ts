@@ -8,13 +8,9 @@ import { Logger } from '../../../providers';
   templateUrl: 'bitpay-id.html'
 })
 export class BitPayIdPage {
-
-  constructor(
-    private logger: Logger
-  ) {}
+  constructor(private logger: Logger) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: BitPayID page');
   }
-
 }

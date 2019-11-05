@@ -86,8 +86,9 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-
-    this.persistanceProvider.getHiddenFeaturesFlag().then( (res) => this.hiddenFeaturesEnabled = res === 'enabled');
+    this.persistanceProvider
+      .getHiddenFeaturesFlag()
+      .then(res => (this.hiddenFeaturesEnabled = res === 'enabled'));
 
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
@@ -283,5 +284,4 @@ export class SettingsPage {
   public openBitPayIdPage(): void {
     this.navCtrl.push(BitPayIdPage, { network: 'test' });
   }
-
 }
