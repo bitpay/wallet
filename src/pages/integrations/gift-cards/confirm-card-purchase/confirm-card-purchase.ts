@@ -185,22 +185,30 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return;
     }
     this.showWallets(); // Show wallet selector
-    this.logGiftCardPurchaseStarted();
+    this.logGiftCardPurchaseEvent(false); //
   }
 
-  public logGiftCardPurchaseStarted() {
+  public logGiftCardPurchaseEvent(isSlideConfirmFinished: boolean) {
     this.logger.info(
       'Gift Cards Purchase Info:',
       this.cardConfig.name,
       this.amount,
-      this.currency
+      this.network
     );
 
-    this.giftCardProvider.logEvent('giftcards_purchase_start', {
-      brand: this.cardConfig.name,
-      amount: this.amount,
-      transactionCurrency: this.currency
-    });
+    if (!isSlideConfirmFinished) {
+      this.giftCardProvider.logEvent('giftcards_purchase_start', {
+        brand: this.cardConfig.name,
+        amount: this.amount,
+        transactionCurrency: this.network
+      });
+    } else {
+      this.giftCardProvider.logEvent('giftcards_purchase_finish', {
+        brand: this.cardConfig.name,
+        amount: this.amount,
+        transactionCurrency: this.network
+      });
+    }
   }
 
   public cancel() {
@@ -558,7 +566,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       status: 'UNREDEEMED'
     });
     return this.publishAndSign(this.wallet, this.tx)
-      .then(() => this.redeemGiftCard(this.tx.giftData))
+      .then(() => {
+        this.redeemGiftCard(this.tx.giftData);
+        this.logGiftCardPurchaseEvent(true);
+      })
       .catch(async err => this.handlePurchaseError(err));
   }
 
