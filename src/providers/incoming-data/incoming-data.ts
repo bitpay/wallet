@@ -57,6 +57,12 @@ export class IncomingDataProvider {
         value,
         coin
       });
+    } else if (redirTo === 'PaperWalletPage') {
+      const nextView = {
+        name: 'PaperWalletPage',
+        params: { privateKey: value }
+      };
+      this.events.publish('IncomingDataRedir', nextView);
     } else {
       this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
     }
