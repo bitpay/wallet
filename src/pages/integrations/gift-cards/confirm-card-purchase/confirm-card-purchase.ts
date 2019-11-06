@@ -185,6 +185,22 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return;
     }
     this.showWallets(); // Show wallet selector
+    this.logGiftCardPurchaseStarted();
+  }
+
+  public logGiftCardPurchaseStarted() {
+    this.logger.info(
+      'Gift Cards Purchase Info:',
+      this.cardConfig.name,
+      this.amount,
+      this.currency
+    );
+
+    this.giftCardProvider.logEvent('giftcards_purchase_start', {
+      brand: this.cardConfig.name,
+      amount: this.amount,
+      transactionCurrency: this.currency
+    });
   }
 
   public cancel() {

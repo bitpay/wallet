@@ -43,6 +43,7 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 
   ionViewWillEnter() {
+    this.logGiftCardCatalogHomeView();
     this.giftCardProvider
       .getAvailableCards()
       .then(allCards => {
@@ -91,10 +92,22 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 
   buyCard(cardConfig: CardConfig) {
+    this.logGiftCardBrandView(cardConfig);
+
     this.navCtrl.push(BuyCardPage, { cardConfig });
     if (this.hasPercentageDiscount(cardConfig)) {
       this.logDiscountClick(cardConfig);
     }
+  }
+
+  logGiftCardCatalogHomeView() {
+    this.giftCardProvider.logEvent('giftcards_view_home', {});
+  }
+
+  logGiftCardBrandView(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent('giftcards_view_brand', {
+      brand: cardConfig.name
+    });
   }
 
   logDiscountClick(cardConfig: CardConfig) {

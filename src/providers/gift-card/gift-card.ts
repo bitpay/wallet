@@ -542,7 +542,10 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
-    if (this.getNetwork() !== Network.livenet) return;
+    if (this.getNetwork() !== Network.livenet) {
+      this.logger.info('not livenet');
+      return;
+    }
     this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
