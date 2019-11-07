@@ -120,6 +120,11 @@ export class BitPayCardTopUpPage {
 
     let coin = Coin[this.currency] ? Coin[this.currency] : null;
 
+    this.bitPayCardProvider.logEvent('legacycard_topup_amount', {
+      usdAmount: this.amount,
+      transactionCurrency: 'USD'
+    });
+
     this.bitPayCardProvider.get(
       {
         cardId: this.cardId,
@@ -497,6 +502,19 @@ export class BitPayCardTopUpPage {
     }
   }
 
+  logLegacyCardTopUpEvent(wallet, isConfirm) {
+    let eventObject = {
+      usdAmount: this.amount,
+      transactionCurrency: wallet.coin.toUpperCase()
+    };
+    !isConfirm
+      ? this.bitPayCardProvider.logEvent('legacycard_topup_amount', eventObject)
+      : this.bitPayCardProvider.logEvent(
+          'legacycard_topup_finish',
+          eventObject
+        );
+  }
+
   private initializeTopUp(wallet, parsedAmount): void {
     let COIN = wallet.coin.toUpperCase();
     this.amountUnitStr = parsedAmount.amountUnitStr;
@@ -506,6 +524,9 @@ export class BitPayCardTopUpPage {
       buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
     };
     this.onGoingProcessProvider.set('loadingTxInfo');
+
+    this.logLegacyCardTopUpEvent(wallet, false);
+
     this.createInvoice(dataSrc)
       .then(invoice => {
         // Check if BTC or BCH is enabled in this account
@@ -589,6 +610,7 @@ export class BitPayCardTopUpPage {
         this.onGoingProcessProvider.set('topup');
         this.publishAndSign(this.wallet, this.createdTx)
           .then(() => {
+            this.logLegacyCardTopUpEvent(this.wallet, true);
             this.onGoingProcessProvider.clear();
             this.openFinishModal();
           })

@@ -91,6 +91,10 @@ export class BitPayCardPage {
     }
   }
 
+  logLegacyCardTopupStartEvent() {
+    this.bitPayCardProvider.logEvent('legacycard_topup_start', {});
+  }
+
   private setDateRange(preset: string) {
     let startDate;
     let endDate;
@@ -248,6 +252,7 @@ export class BitPayCardPage {
   }
 
   public topUp(): void {
+    this.logLegacyCardTopupStartEvent();
     this.navCtrl.push(AmountPage, {
       id: this.cardId,
       nextPage: 'BitPayCardTopUpPage',
