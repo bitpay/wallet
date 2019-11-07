@@ -11,6 +11,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { AnalyticsProvider } from '../analytics/analytics';
 
 @Injectable()
 export class BitPayCardProvider {
@@ -21,7 +22,8 @@ export class BitPayCardProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.logger.debug('BitPayCardProvider initialized');
   }
@@ -100,6 +102,10 @@ export class BitPayCardProvider {
       type: txn.type,
       runningBalance
     });
+  }
+
+  logEvent(eventName: string, eventParams: { [key: string]: any }) {
+    this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
   public _processTransactions(invoices, history) {
