@@ -108,6 +108,15 @@ export class CardCatalogPage extends WideHeaderPage {
     this.giftCardProvider.logEvent('giftcards_view_brand', {
       brand: cardConfig.name
     });
+
+    this.giftCardProvider.logEvent('view_item', {
+      items: [
+        {
+          brand: this.cardConfigMap.name,
+          category: 'giftCards'
+        }
+      ]
+    });
   }
 
   logDiscountClick(cardConfig: CardConfig) {
