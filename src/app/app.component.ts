@@ -15,7 +15,11 @@ import { Observable, Subscription } from 'rxjs';
 
 // providers
 import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
-import { GiftCardProvider } from '../providers';
+import {
+  GiftCardProvider,
+  InAppBrowserProvider,
+  PersistenceProvider
+} from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
@@ -119,7 +123,9 @@ export class CopayApp {
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -217,6 +223,19 @@ export class CopayApp {
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
     }
+
+    // hiding this behind feature flag
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
+      if (res === 'enabled') {
+        // preloading the view
+        this.iab.createIABInstance(
+          'bitpayId',
+          // using this as an example
+          'https://bitpay.com',
+          `sessionStorage.setItem('context', 'wallet')`
+        );
+      }
+    });
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();

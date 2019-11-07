@@ -22,5 +22,6 @@
   "atom": {
     "rewriteTsconfig": false
   },
+  "files": ["./node_modules/cordova-plugin-inappbrowser/types/index.d.ts"],
   "types": ["lodash", "node", "chrome"]
 }

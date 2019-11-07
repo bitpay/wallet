@@ -7,7 +7,7 @@ const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappb
 
 fs.readFile(file, 'utf8', (err, data) => {
   if (err) throw err;
-  const result = data.replace(/STATUSBAR_HEIGHT/g, '0');
+  const result = data.replace(/STATUS_BAR_HEIGHT 20.0/g, 'STATUS_BAR_HEIGHT 0');
   fs.writeFile(file, result, 'utf8', err => {
     if (err) throw err;
     console.log('successfully patched iab');

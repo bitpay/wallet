@@ -18,6 +18,8 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import { InAppBrowserProvider } from '../../providers';
 import { AddPage } from '../add/add';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -29,7 +31,7 @@ import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitPayIdPage } from './bitpay-id/bitpay-id';
+// import { BitPayIdPage } from './bitpay-id/bitpay-id';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
@@ -59,6 +61,7 @@ export class SettingsPage {
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
   public hiddenFeaturesEnabled: boolean;
+  private bitpayIdRef: InAppBrowserRef;
 
   constructor(
     private navCtrl: NavController,
@@ -75,7 +78,8 @@ export class SettingsPage {
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
     private externalLinkProvder: ExternalLinkProvider,
-    private persistanceProvider: PersistenceProvider
+    private persistanceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -89,6 +93,8 @@ export class SettingsPage {
     this.persistanceProvider
       .getHiddenFeaturesFlag()
       .then(res => (this.hiddenFeaturesEnabled = res === 'enabled'));
+
+    this.bitpayIdRef = this.iab.refs.bitpayId;
 
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
@@ -111,6 +117,16 @@ export class SettingsPage {
   }
 
   ionViewDidEnter() {
+    if (this.bitpayIdRef) {
+      // subscribing to iab 'message' events
+      this.bitpayIdRef.events$.subscribe((event: any) => {
+        switch (event.data.message) {
+          case 'close':
+            this.bitpayIdRef.hide();
+        }
+      });
+    }
+
     // Show integrations
     const integrations = this.homeIntegrationsProvider.get();
 
@@ -129,6 +145,10 @@ export class SettingsPage {
         : false;
       this.bitpayCardItems = cards;
     });
+  }
+
+  public openBitPayIdPage(): void {
+    this.bitpayIdRef.show();
   }
 
   public openAltCurrencyPage(): void {
@@ -279,9 +299,5 @@ export class SettingsPage {
     this.navCtrl.push(AddPage, {
       isZeroState: true
     });
-  }
-
-  public openBitPayIdPage(): void {
-    this.navCtrl.push(BitPayIdPage, { network: 'test' });
   }
 }

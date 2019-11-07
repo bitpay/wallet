@@ -6,6 +6,10 @@
     "module": "commonjs",
     "types": ["jasmine", "node", "chrome"]
   },
-  "files": ["test.ts", "polyfills.ts"],
+  "files": [
+    "test.ts",
+    "polyfills.ts",
+    "../node_modules/cordova-plugin-inappbrowser/types/index.d.ts"
+  ],
   "include": ["**/*.spec.ts", "**/*.d.ts"]
 }
