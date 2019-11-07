@@ -133,6 +133,20 @@ export class CardDetailsPage {
     await this.giftCardProvider.unarchiveCard(this.card);
   }
 
+  logRedeemCardEvent(isManuallyClaimed) {
+    if (!isManuallyClaimed) {
+      this.giftCardProvider.logEvent('giftcards_redeem', {
+        brand: this.cardConfig.name,
+        usdAmount: this.card.amount
+      });
+    } else {
+      this.giftCardProvider.logEvent('giftcards_mark_used', {
+        brand: this.cardConfig.name,
+        usdAmount: this.card.amount
+      });
+    }
+  }
+
   hasPin() {
     const legacyCards: string[] = [
       'Amazon.com',
@@ -156,7 +170,14 @@ export class CardDetailsPage {
   ) {
     const sheet = this.actionSheetProvider.createInfoSheet(sheetName);
     sheet.present();
-    sheet.onDidDismiss(confirm => confirm && onDidDismiss(confirm));
+    sheet.onDidDismiss(confirm => {
+      if (confirm) {
+        const isManuallyClaimed = true;
+        this.logRedeemCardEvent(isManuallyClaimed);
+        onDidDismiss(confirm);
+      } else {
+      }
+    });
   }
 
   openExternalLink(url: string): void {
@@ -166,7 +187,7 @@ export class CardDetailsPage {
   redeem() {
     const redeemUrl = `${this.cardConfig.redeemUrl}${this.card.claimCode}`;
     this.cardConfig.redeemUrl
-      ? this.externalLinkProvider.open(redeemUrl)
+      ? this.redeemWithUrl(redeemUrl)
       : this.claimManually();
   }
 
@@ -174,6 +195,12 @@ export class CardDetailsPage {
     this.cardConfig.printRequired
       ? this.print()
       : this.copyCode(this.card.claimCode);
+  }
+
+  redeemWithUrl(redeemUrl: string) {
+    const isManuallyClaimed = false;
+    this.logRedeemCardEvent(isManuallyClaimed);
+    this.externalLinkProvider.open(redeemUrl);
   }
 
   print() {
