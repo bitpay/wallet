@@ -139,7 +139,10 @@ export class CoinbasePage {
       const win = new BrowserWindow({
         alwaysOnTop: true,
         center: true,
-        webPreferences: { nodeIntegration: false }
+        webPreferences: {
+          contextIsolation: false,
+          nodeIntegration: false
+        }
       });
       win.once('ready-to-show', () => {
         win.show();
