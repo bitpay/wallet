@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { IMyDpOptions} from 'mydatepicker';
+import { IMyDpOptions } from 'mydatepicker';
 
 import { DataServicesService } from './services/data-services.service';
 import * as moment from 'moment';
@@ -38,8 +38,8 @@ export class AppComponent implements OnInit {
     this.dataSet = [];
     this.config = {};
     this.opts = {};
-    this.opts.network = 'livenet';
-    this.opts.url = 'https://bws.bitpay.com/bws/api';
+    this.opts.network = 'testnet';
+    this.opts.url = 'http://localhost:3232/bws/api';
     this.opts.from = defaultDateFrom;
     this.opts.to = defaultDateTo;
     this.totals = {};
@@ -93,6 +93,13 @@ export class AppComponent implements OnInit {
     this.config.graph = 'amount';
     this.config.interval = val;
     this.config.chart = '#chart-amount';
+    this.dataService.show(this.dataSet, this.config);
+  }
+
+  USDAmountInterval(val) {
+    this.config.graph = 'usd-amount';
+    this.config.interval = val;
+    this.config.chart = '#chart-usd-amount';
     this.dataService.show(this.dataSet, this.config);
   }
 }
