@@ -1404,47 +1404,54 @@ export class ProfileProvider {
 
   public createDefaultWallet(coins): Promise<any> {
     return new Promise((resolve, reject) => {
-
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
-      this._createWallet(defaultOpts).then(data => {
-        const key = data.key;
-        const firstWalletClient = data.walletClient;
+      this._createWallet(defaultOpts)
+        .then(data => {
+          const key = data.key;
+          const firstWalletClient = data.walletClient;
 
-        // Encrypt wallet
-        this.onGoingProcessProvider.pause();
-        this.askToEncryptKey(key).then((password) => {
-          this.onGoingProcessProvider.resume();
-          this.keyProvider.addKey(key).then(() => {
-
-            const promises = [];
-            coins.slice(1).forEach(coin => {
-              const secondOpts = this.getDefaultWalletOpts(coin);
-              secondOpts['keyId'] = key.id; // Add Key
-              if (password) secondOpts['password'] = password;
-              promises.push(this._createWallet(secondOpts));
-            });
-            Promise.all(promises)
-              .then(wallets => {
-                wallets.unshift({walletClient: firstWalletClient, key});
-                const bindWalletClients = [];
-                wallets.forEach(w => {
-                  bindWalletClients.push(this.addAndBindWalletClient(w.walletClient, { bwsurl: defaultOpts.bwsurl }));
-                });
-                Promise.all(bindWalletClients).then((walletClients) => {
-                  return resolve(walletClients);
-                }).catch(e => {
+          // Encrypt wallet
+          this.onGoingProcessProvider.pause();
+          this.askToEncryptKey(key).then(password => {
+            this.onGoingProcessProvider.resume();
+            this.keyProvider.addKey(key).then(() => {
+              const promises = [];
+              coins.slice(1).forEach(coin => {
+                const secondOpts = this.getDefaultWalletOpts(coin);
+                secondOpts['keyId'] = key.id; // Add Key
+                if (password) secondOpts['password'] = password;
+                promises.push(this._createWallet(secondOpts));
+              });
+              Promise.all(promises)
+                .then(wallets => {
+                  wallets.unshift({ walletClient: firstWalletClient, key });
+                  const bindWalletClients = [];
+                  wallets.forEach(w => {
+                    bindWalletClients.push(
+                      this.addAndBindWalletClient(w.walletClient, {
+                        bwsurl: defaultOpts.bwsurl
+                      })
+                    );
+                  });
+                  Promise.all(bindWalletClients)
+                    .then(walletClients => {
+                      return resolve(walletClients);
+                    })
+                    .catch(e => {
+                      reject(e);
+                    });
+                })
+                .catch(e => {
+                  // Remove key
+                  this.keyProvider.removeKey(key.id);
                   reject(e);
                 });
-              }).catch(e => {
-                // Remove key
-                this.keyProvider.removeKey(key.id);
-                reject(e);
-              });
+            });
           });
+        })
+        .catch(e => {
+          reject(e);
         });
-      }).catch(e => {
-        reject(e);
-      });
     });
   }
 

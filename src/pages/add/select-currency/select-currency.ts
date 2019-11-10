@@ -135,13 +135,16 @@ export class SelectCurrencyPage {
     coins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
 
     this.onGoingProcessProvider.set('creatingWallet');
-    this.profileProvider.createDefaultWallet(coins).then(wallets => {
-      this.walletProvider.updateRemotePreferences(wallets);
-      this.pushNotificationsProvider.updateSubscription(wallets);
-      this.endProcess();
-    }).catch(e => {
-      this.showError(e);
-    });
+    this.profileProvider
+      .createDefaultWallet(coins)
+      .then(wallets => {
+        this.walletProvider.updateRemotePreferences(wallets);
+        this.pushNotificationsProvider.updateSubscription(wallets);
+        this.endProcess();
+      })
+      .catch(e => {
+        this.showError(e);
+      });
   }
 
   private showError(err) {

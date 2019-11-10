@@ -194,11 +194,9 @@ export class WalletDuplicatePage {
         })
         .catch(() => {
           this.logger.warn('Could not import. Trying to create wallet');
-          return this.profileProvider
-            .createWallet(opts)
-            .then(walletBch => {
-              return Promise.resolve({ walletBch, isNew: true });
-            });
+          return this.profileProvider.createWallet(opts).then(walletBch => {
+            return Promise.resolve({ walletBch, isNew: true });
+          });
         });
     });
   }
