@@ -170,7 +170,7 @@ export class KeyProvider {
             } catch (error) {
               return Promise.reject(error);
             }
-            return Promise.resolve();
+            return Promise.resolve(password);
           }
         });
       }

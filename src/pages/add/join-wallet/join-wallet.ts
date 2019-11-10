@@ -271,9 +271,9 @@ export class JoinWalletPage {
 
   private join(opts): void {
     this.onGoingProcessProvider.set('joiningWallet');
-    const addingNewWallet = this.keyId ? true : false; // Adding new account to key
+    opts['keyId'] = this.keyId;
     this.profileProvider
-      .joinWallet(addingNewWallet, opts)
+      .joinWallet(opts)
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();

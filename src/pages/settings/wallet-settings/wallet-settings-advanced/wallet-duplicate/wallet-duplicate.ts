@@ -194,9 +194,8 @@ export class WalletDuplicatePage {
         })
         .catch(() => {
           this.logger.warn('Could not import. Trying to create wallet');
-          const addingNewWallet = false;
           return this.profileProvider
-            .createWallet(addingNewWallet, opts)
+            .createWallet(opts)
             .then(walletBch => {
               return Promise.resolve({ walletBch, isNew: true });
             });
