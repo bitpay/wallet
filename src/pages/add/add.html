@@ -1,11 +1,11 @@
-<wide-header-page title="{{'Add Wallet' | translate}}">
+<wide-header-page title="{{isZeroState ? 'Create Key' : 'Add Wallet'  | translate}}">
   <div page-content>
     <ion-list class="settings-list bp-list">
       <button class="list-button" ion-item (click)="goToAddWalletPage(false, false, true)">
         <ion-icon item-start>
           <img src="assets/img/add-wallet/wallet.svg" />
         </ion-icon>
-        <div class="item-title" translate>Simple Wallet</div>
+        <div class="item-title" translate>{{isZeroState ? 'New Key' : 'Simple Wallet'}}</div>
         <span class="item-subtitle" translate>Quick and easy setup</span>
       </button>
       <button class="list-button" ion-item (click)="goToAddWalletPage(true, false, true)">
@@ -22,7 +22,7 @@
         <div class="item-title" translate>Join Shared Wallet</div>
         <span class="item-subtitle" translate>Requires invitation to join</span>
       </button>
-      <button class="list-button" ion-item (click)="goToImportWallet()">
+      <button class="list-button" ion-item (click)="goToImportWallet()" *ngIf="!isZeroState">
         <ion-icon item-start>
           <img src="assets/img/add-wallet/import.svg" />
         </ion-icon>

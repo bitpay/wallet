@@ -40,7 +40,8 @@ export type InfoSheetType =
   | 'sensitive-info'
   | 'in-app-notification'
   | 'request-feature'
-  | 'report-issue';
+  | 'report-issue'
+  | 'new-key';
 
 export type OptionsSheetType =
   | 'address-options'

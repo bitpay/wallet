@@ -284,5 +284,14 @@
       <span sheet-button-text translate>Get help</span>
       <span sheet-second-button-text translate>Report issue</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'new-key'" type="warning">
+      <span sheet-title-text translate>Store this key separately</span>
+      <span sheet-text translate>
+        This is a new 12-word key that manages its own set of wallets. It is unrelated to any 12 word key you may have previously created. Store and manage it accordingly.
+      </span>
+      <span sheet-button-text translate>Learn More</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

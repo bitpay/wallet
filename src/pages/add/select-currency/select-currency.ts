@@ -137,6 +137,9 @@ export class SelectCurrencyPage {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(coins);
       return;
+    } else if (this.isZeroState) {
+      this.showInfoSheet(coins);
+      return;
     }
     this._createWallet(coins);
   }
@@ -244,5 +247,17 @@ export class SelectCurrencyPage {
       for (const token of this.availableTokens) {
         this.tokensSelected[token.symbol] = false;
       }
+  }
+
+  private showInfoSheet(coins: Coin[]) {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('new-key');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        this.showKeyOnboardingSlides(coins);
+        return;
+      }
+      this._createWallet(coins);
+    });
   }
 }
