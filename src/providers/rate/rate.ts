@@ -23,7 +23,7 @@ export class RateProvider {
     this.alternatives = [];
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.rateServiceUrl[coin] = env.ratesAPI[coin];
-      this.rates[coin] = {};
+      this.rates[coin] = { USD: 1 };
       this.ratesAvailable[coin] = false;
       this.updateRates(coin);
     }

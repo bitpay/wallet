@@ -16,6 +16,7 @@ import {
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
+import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
@@ -46,6 +47,7 @@ export class SendPage extends WalletTabsChild {
     private currencyProvider: CurrencyProvider,
     navCtrl: NavController,
     private navParams: NavParams,
+    private payproProvider: PayproProvider,
     profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
@@ -121,14 +123,16 @@ export class SendPage extends WalletTabsChild {
     let isValid, addrData;
     if (isPayPro) {
       isValid =
-        data.coin ==
-          this.currencyProvider.getChain(this.wallet.coin).toLowerCase() &&
+        data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
         data.network == this.wallet.network;
     } else {
-      addrData = this.addressProvider.getCoinAndNetwork(data);
+      addrData = this.addressProvider.getCoinAndNetwork(
+        data,
+        this.wallet.network
+      );
       isValid =
-        this.wallet.coin == addrData.coin &&
-        addrData.network == this.wallet.network;
+        this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+          addrData.coin && addrData.network == this.wallet.network;
     }
 
     if (isValid) {
@@ -199,27 +203,38 @@ export class SendPage extends WalletTabsChild {
     const hasContacts = await this.checkIfContact();
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
-      if (parsedData && parsedData.type == 'PayPro') {
-        const coin = this.incomingDataProvider.getCoinFromUri(parsedData.data);
-        this.incomingDataProvider
-          .getPayProDetails(this.search)
-          .then(payProDetails => {
-            payProDetails.coin = coin;
-            const isValid = this.checkCoinAndNetwork(payProDetails, true);
-            if (isValid) this.redir();
-          })
-          .catch(err => {
-            this.invalidAddress = true;
-            this.logger.warn(err);
-          });
+      if (
+        (parsedData && parsedData.type == 'PayPro') ||
+        (parsedData && parsedData.type == 'InvoiceUri')
+      ) {
+        try {
+          const invoiceUrl = this.incomingDataProvider.getPayProUrl(
+            this.search
+          );
+          const payproOptions = await this.payproProvider.getPayProOptions(
+            invoiceUrl
+          );
+          const selected = payproOptions.paymentOptions.filter(
+            option => option.selected
+          );
+          if (selected.length > 0) {
+            const isValid = this.checkCoinAndNetwork(selected[0], true);
+            if (isValid) {
+              this.incomingDataProvider.redir(this.search);
+            }
+          } else {
+            this.incomingDataProvider.redir(this.search);
+          }
+        } catch (err) {
+          this.invalidAddress = true;
+          this.logger.warn(err);
+        }
       } else if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
-      } else if (parsedData && parsedData.type == 'InvoiceUri') {
-        this.incomingDataProvider.redir(this.search);
       } else if (parsedData && parsedData.type == 'BitPayCard') {
         this.close();
         this.incomingDataProvider.redir(this.search);

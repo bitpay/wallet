@@ -1,0 +1,25 @@
+select-invoice-page {
+  .list-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    ion-icon.item-icon {
+      margin-left: 3px;
+
+      img {
+        height: 40px;
+      }
+    }
+
+    .item-title {
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
+      padding-bottom: 10px;
+    }
+
+    .alternative {
+      font-weight: 100;
+    }
+  }
+}

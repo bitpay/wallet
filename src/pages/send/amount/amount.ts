@@ -568,6 +568,9 @@ export class AmountPage extends WalletTabsChild {
 
       if (this.wallet) {
         data.network = this.wallet.network;
+        if (this.wallet.credentials.token) {
+          data.tokenAddress = this.wallet.credentials.token.address;
+        }
       }
     } else {
       let amount = _amount;
@@ -588,6 +591,9 @@ export class AmountPage extends WalletTabsChild {
 
       if (this.wallet) {
         data.network = this.wallet.network;
+        if (this.wallet.credentials.token) {
+          data.tokenAddress = this.wallet.credentials.token.address;
+        }
       }
 
       if (unit.isFiat) {

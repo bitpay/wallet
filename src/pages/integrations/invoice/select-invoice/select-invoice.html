@@ -1,0 +1,15 @@
+<wide-header-page title="Select Currency">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <div *ngFor="let option of paymentOptions">
+        <button class="list-button" ion-item (click)="goToPayPro(option.currency)">
+          <ion-icon item-start>
+            <img src="assets/img/currencies/{{option.currency.toLowerCase()}}.svg" />
+          </ion-icon>
+          <div class="item-title">{{ getCoinName(option.currency.toLowerCase()) }}</div>
+          <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}} ~ {{option.estimatedAmount | satToFiat: option.currency.toLowerCase()}}</span>
+        </button>
+     </div>
+    </ion-list>
+  </div>
+</wide-header-page>

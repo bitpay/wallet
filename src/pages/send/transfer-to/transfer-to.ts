@@ -207,7 +207,7 @@ export class TransferToPage {
 
   public searchWallets(): void {
     for (const coin of this.availableCoins) {
-      if (this.hasWallets[coin] && this._wallet.coin == coin) {
+      if (this.hasWallets[coin] && this._wallet.coin === coin) {
         this.filteredWallets = this.walletList[coin].filter(wallet => {
           return _.includes(
             wallet.name.toLowerCase(),
