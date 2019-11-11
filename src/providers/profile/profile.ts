@@ -1417,10 +1417,11 @@ export class ProfileProvider {
             this.keyProvider.addKey(key).then(() => {
               const promises = [];
               coins.slice(1).forEach(coin => {
-                const secondOpts = this.getDefaultWalletOpts(coin);
-                secondOpts['keyId'] = key.id; // Add Key
-                if (password) secondOpts['password'] = password;
-                promises.push(this._createWallet(secondOpts));
+                const newOpts: any = {};
+                Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+                newOpts['keyId'] = key.id; // Add Key
+                if (password) newOpts['password'] = password;
+                promises.push(this._createWallet(newOpts));
               });
               Promise.all(promises)
                 .then(wallets => {
