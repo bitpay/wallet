@@ -110,6 +110,7 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
+    this.logLegacyCardAddToCardEvent();
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -503,16 +504,34 @@ export class BitPayCardTopUpPage {
   }
 
   logLegacyCardTopUpEvent(wallet, isConfirm) {
-    let eventObject = {
+    const legacyCardTopUpEventInfo = {
       usdAmount: this.amount,
       transactionCurrency: wallet.coin.toUpperCase()
     };
+
     !isConfirm
-      ? this.bitPayCardProvider.logEvent('legacycard_topup_amount', eventObject)
+      ? this.bitPayCardProvider.logEvent(
+          'legacycard_topup_amount',
+          legacyCardTopUpEventInfo
+        )
       : this.bitPayCardProvider.logEvent(
           'legacycard_topup_finish',
-          eventObject
+          legacyCardTopUpEventInfo
         );
+  }
+
+  logLegacyCardPurchaseEvent() {
+    this.bitPayCardProvider.logEvent('purchase', {
+      value: this.amount,
+      items: [
+        {
+          name: 'legacyCard',
+          category: 'debitCard',
+          quantity: 1,
+          price: ''
+        }
+      ]
+    });
   }
 
   private initializeTopUp(wallet, parsedAmount): void {
@@ -586,6 +605,17 @@ export class BitPayCardTopUpPage {
       });
   }
 
+  logLegacyCardAddToCardEvent() {
+    this.bitPayCardProvider.logEvent('add_to_cart', {
+      items: [
+        {
+          name: 'legacyCard',
+          category: 'debitCard'
+        }
+      ]
+    });
+  }
+
   public topUpConfirm(): void {
     if (!this.createdTx) {
       this.showError(
@@ -611,6 +641,7 @@ export class BitPayCardTopUpPage {
         this.publishAndSign(this.wallet, this.createdTx)
           .then(() => {
             this.logLegacyCardTopUpEvent(this.wallet, true);
+            this.logLegacyCardPurchaseEvent();
             this.onGoingProcessProvider.clear();
             this.openFinishModal();
           })
@@ -653,8 +684,17 @@ export class BitPayCardTopUpPage {
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
+  logLegacyCardSetCheckoutOption(wallet) {
+    this.bitPayCardProvider.logEvent('set_checkout_option', {
+      checkout_option: wallet.coin,
+      checkout_step: 1
+    });
+  }
+
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
+
+    this.logLegacyCardSetCheckoutOption(wallet);
 
     if (this.countDown) {
       clearInterval(this.countDown);
