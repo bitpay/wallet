@@ -4,7 +4,6 @@ import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
-import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -19,7 +18,6 @@ describe('Provider: Incoming Data Provider', () => {
   let eventsSpy;
   let actionSheetSpy;
   let profileProvider;
-  let invoiceProvider: InvoiceProvider;
   let payproProvider: PayproProvider;
 
   class AppProviderMock {
@@ -46,7 +44,6 @@ describe('Provider: Incoming Data Provider', () => {
     ]);
     incomingDataProvider = testBed.get(IncomingDataProvider);
     bwcProvider = testBed.get(BwcProvider);
-    invoiceProvider = testBed.get(InvoiceProvider);
     payproProvider = testBed.get(PayproProvider);
     logger = testBed.get(Logger);
     events = testBed.get(Events);
@@ -182,60 +179,103 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should parse valid BitPay Invoice Url if selectedtransactionCurrency exists with different coins', fakeAsync(() => {
       const data = [
         {
-          invoiceUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-          coin: 'btc',
-          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
-          invoice: {
-            buyerProvidedInfo: { selectedTransactionCurrency: 'BTC' },
-            currency: 'USD',
-            id: 'BvuSz1Mjfkj4V64xmEQ74f',
-            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
-          }
-        },
-        {
-          invoiceUrl: 'https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY',
-          coin: 'bch',
-          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
-          invoice: {
-            buyerProvidedInfo: { selectedTransactionCurrency: 'BCH' },
-            currency: 'USD',
-            id: 'Rtz1RwWA7kdRRU3Wyo4YDY',
-            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
-          }
-        },
-        {
-          invoiceUrl: 'https://test.bitpay.com/i/VPDDwaG7eaGvFtbyDBq8NR',
-          coin: 'eth',
-          expectedInvoiceId: 'VPDDwaG7eaGvFtbyDBq8NR',
-          invoice: {
-            buyerProvidedInfo: { selectedTransactionCurrency: 'ETH' },
-            currency: 'USD',
-            id: 'BvuSz1Mjfkj4V64xmEQ74f',
-            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
-          }
+          expires: '2019-11-05T16:29:31.754Z',
+          memo:
+            'Payment request for BitPay invoice FQLHDgV8YWoy4vT8n4pKQe for merchant Johnco',
+          payProUrl: 'https://test.bitpay.com/i/FQLHDgV8YWoy4vT8n4pKQe',
+          paymentOptions: [
+            {
+              chain: 'BTC',
+              currency: 'BTC',
+              decimals: 8,
+              estimatedAmount: 10800,
+              minerFee: 100,
+              network: 'testnet',
+              requiredFeeRate: 1,
+              selected: false
+            },
+            {
+              chain: 'BCH',
+              currency: 'BCH',
+              decimals: 8,
+              estimatedAmount: 339800,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 1,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'ETH',
+              decimals: 18,
+              estimatedAmount: 5255000000000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: true
+            },
+            {
+              chain: 'ETH',
+              currency: 'USDC',
+              decimals: 6,
+              estimatedAmount: 1000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'GUSD',
+              decimals: 2,
+              estimatedAmount: 100,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'PAX',
+              decimals: 18,
+              estimatedAmount: 1000000000000000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            }
+          ],
+          verified: true
         }
       ];
 
-      const details = {
+      const payProDetails = {
         amount: 123,
+        network: 'testnet',
         requiredFeeRate: 123,
-        toAddress: 'toAddress1',
-        memo: '',
-        data: 'data1'
+        instructions: [
+          {
+            toAddress: 'toAddress1',
+            data: 'data1',
+            amount: 123
+          }
+        ],
+        memo: ''
       };
 
       const getPayProDetailsSpy = spyOn(
         payproProvider,
         'getPayProDetails'
-      ).and.returnValue(Promise.resolve(details));
-      let getBitPayInvoiceSpy = spyOn(invoiceProvider, 'getBitPayInvoice');
+      ).and.returnValue(Promise.resolve(payProDetails));
+      let getPayProOptionsSpy = spyOn(payproProvider, 'getPayProOptions');
 
       data.forEach(element => {
-        getBitPayInvoiceSpy.and.returnValue(Promise.resolve(element.invoice));
+        getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
-        expect(incomingDataProvider.redir(element.invoiceUrl)).toBe(true);
-        expect(getBitPayInvoiceSpy).toHaveBeenCalledWith(
-          element.expectedInvoiceId
+        expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
+          element.payProUrl,
+          true
         );
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
@@ -243,17 +283,15 @@ describe('Provider: Incoming Data Provider', () => {
         tick();
 
         const stateParams = {
-          amount: details.amount,
-          toAddress: details.toAddress,
-          description: details.memo,
-          data: details.data,
-          paypro: details,
-          coin: element.coin,
-          payProUrl: element.invoiceUrl,
-          requiredFeeRate:
-            element.coin != 'eth'
-              ? details.requiredFeeRate * 1024
-              : details.requiredFeeRate
+          amount: element.paymentOptions[2].estimatedAmount,
+          toAddress: payProDetails.instructions[0].toAddress,
+          description: payProDetails.memo,
+          data: payProDetails.instructions[0].data,
+          paypro: payProDetails,
+          coin: element.paymentOptions[2].currency.toLowerCase(),
+          network: payProDetails.network,
+          payProUrl: element.payProUrl,
+          requiredFeeRate: payProDetails.requiredFeeRate
         };
 
         let nextView = {
@@ -262,8 +300,9 @@ describe('Provider: Incoming Data Provider', () => {
         };
 
         expect(getPayProDetailsSpy).toHaveBeenCalledWith(
-          element.invoiceUrl,
-          element.coin
+          element.payProUrl,
+          element.paymentOptions[2].currency.toLowerCase(),
+          true
         );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
@@ -271,26 +310,85 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should parse valid BitPay Invoice Url if !selectedtransactionCurrency', fakeAsync(() => {
       const data = [
         {
-          invoiceUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-          coin: 'btc',
-          expectedInvoiceId: '5GREtmntcTvB9aejVDhVdm',
-          invoice: {
-            buyerProvidedInfo: { selectedTransactionCurrency: null },
-            currency: 'USD',
-            id: 'BvuSz1Mjfkj4V64xmEQ74f',
-            paymentTotals: { BTC: 16000, BCH: 443200, ETH: 5933000000000000 }
-          }
+          expires: '2019-11-05T16:29:31.754Z',
+          memo:
+            'Payment request for BitPay invoice FQLHDgV8YWoy4vT8n4pKQe for merchant Johnco',
+          payProUrl: 'https://test.bitpay.com/i/FQLHDgV8YWoy4vT8n4pKQe',
+          paymentOptions: [
+            {
+              chain: 'BTC',
+              currency: 'BTC',
+              decimals: 8,
+              estimatedAmount: 10800,
+              minerFee: 100,
+              network: 'testnet',
+              requiredFeeRate: 1,
+              selected: false
+            },
+            {
+              chain: 'BCH',
+              currency: 'BCH',
+              decimals: 8,
+              estimatedAmount: 339800,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 1,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'ETH',
+              decimals: 18,
+              estimatedAmount: 5255000000000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'USDC',
+              decimals: 6,
+              estimatedAmount: 1000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'GUSD',
+              decimals: 2,
+              estimatedAmount: 100,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            },
+            {
+              chain: 'ETH',
+              currency: 'PAX',
+              decimals: 18,
+              estimatedAmount: 1000000000000000000,
+              minerFee: 0,
+              network: 'testnet',
+              requiredFeeRate: 4000000000,
+              selected: false
+            }
+          ],
+          verified: true
         }
       ];
 
-      let getBitPayInvoiceSpy = spyOn(invoiceProvider, 'getBitPayInvoice');
+      let getPayProOptionsSpy = spyOn(payproProvider, 'getPayProOptions');
 
       data.forEach(element => {
-        getBitPayInvoiceSpy.and.returnValue(Promise.resolve(element.invoice));
+        getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
-        expect(incomingDataProvider.redir(element.invoiceUrl)).toBe(true);
-        expect(getBitPayInvoiceSpy).toHaveBeenCalledWith(
-          element.expectedInvoiceId
+        expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
+          element.payProUrl,
+          true
         );
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
@@ -298,12 +396,11 @@ describe('Provider: Incoming Data Provider', () => {
         tick();
 
         const stateParams = {
-          invoiceData: element.invoice,
-          invoiceId: element.expectedInvoiceId
+          payProOptions: element
         };
 
         let nextView = {
-          name: 'ConfirmInvoicePage',
+          name: 'SelectInvoicePage',
           params: stateParams
         };
 

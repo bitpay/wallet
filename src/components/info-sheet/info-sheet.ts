@@ -18,9 +18,14 @@ export class InfoSheetComponent extends ActionSheetParent {
       this.dismiss(option);
     });
   }
+
   public openInBrowser(url) {
     this.externalLinkProvider.open(url);
     this.dismiss();
+  }
+
+  public optionClicked(option): void {
+    this.dismiss(option);
   }
 }
 

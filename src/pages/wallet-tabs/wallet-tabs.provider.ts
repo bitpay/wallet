@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Tabs } from 'ionic-angular';
 import { Coin } from '../../providers/currency/currency';
+import { Token } from '../../providers/currency/token';
 
 export interface SendParams {
   amount: string;
   coin: Coin;
+  token?: Token;
 }
 
 @Injectable()

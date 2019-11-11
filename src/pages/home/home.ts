@@ -14,6 +14,7 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SettingsPage } from '../settings/settings';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -21,21 +22,18 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { InvoiceProvider } from '../../providers/invoice/invoice';
 import { Logger } from '../../providers/logger/logger';
+import { PayproProvider } from '../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { SettingsPage } from '../settings/settings';
-
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -99,6 +97,7 @@ export class HomePage {
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private payproProvider: PayproProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
@@ -106,9 +105,7 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar,
-    private invoiceProvider: InvoiceProvider,
-    private currencyProvider: CurrencyProvider
+    private statusBar: StatusBar
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -463,74 +460,35 @@ export class HomePage {
           this.validDataFromClipboard = null;
           return;
         }
-        if (this.validDataFromClipboard.type === 'PayPro') {
-          const coin = this.incomingDataProvider.getCoinFromUri(data);
-          this.incomingDataProvider
-            .getPayProDetails(data)
-            .then(payProDetails => {
-              if (!payProDetails) {
-                throw this.translate.instant('No wallets available');
-              }
-              this.payProDetailsData = payProDetails;
-              this.payProDetailsData.host = new URL(
-                payProDetails.payProUrl
-              ).host;
-              this.payProDetailsData.coin = coin;
-              this.clearCountDownInterval();
-              this.paymentTimeControl(this.payProDetailsData.expires);
-            })
-            .catch(err => {
-              this.payProDetailsData = {};
-              this.payProDetailsData.error = err;
-              this.logger.warn('Error in Payment Protocol', err);
-            });
-        } else if (this.validDataFromClipboard.type === 'InvoiceUri') {
-          const invoiceId: string = data.replace(
-            /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
-            ''
-          );
-          this.invoiceProvider
-            .getBitPayInvoice(invoiceId)
-            .then(invoice => {
-              if (!invoice) {
-                throw this.translate.instant('No wallets available');
-              }
-              const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-              const {
-                price,
-                currency,
-                expirationTime,
-                paymentTotals
-              } = invoice;
-              let unitToSatoshi;
-              if (Coin[currency]) {
-                unitToSatoshi = this.currencyProvider.getPrecision(
-                  currency.toLowerCase()
-                ).unitToSatoshi;
-              }
-              this.payProDetailsData = invoice;
-              this.payProDetailsData.verified = true;
-              this.payProDetailsData.isFiat =
-                selectedTransactionCurrency || Coin[currency.toUpperCase()]
-                  ? false
-                  : true;
-              this.payProDetailsData.host = 'Bitpay';
-              this.payProDetailsData.coin = selectedTransactionCurrency
-                ? Coin[selectedTransactionCurrency]
-                : currency;
-              this.payProDetailsData.amount = selectedTransactionCurrency
-                ? paymentTotals[selectedTransactionCurrency]
-                : Coin[currency]
-                ? price / unitToSatoshi
-                : price;
-              this.clearCountDownInterval();
-              this.paymentTimeControl(expirationTime);
-            })
-            .catch(err => {
-              this.payProDetailsData = {};
-              this.payProDetailsData.error = err;
-              this.logger.warn('Error in Fetching Invoice', err);
-            });
+        if (
+          this.validDataFromClipboard.type === 'PayPro' ||
+          this.validDataFromClipboard.type === 'InvoiceUri'
+        ) {
+          try {
+            const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
+            const disableLoader = true;
+            const payproOptions = await this.payproProvider.getPayProOptions(
+              invoiceUrl,
+              disableLoader
+            );
+            const { expires, paymentOptions, payProUrl } = payproOptions;
+            let selected = paymentOptions.filter(option => option.selected);
+            if (selected.length === 0) {
+              // No Currency Selected default to BTC
+              selected.push(payproOptions.paymentOptions[0]); // BTC
+            }
+            const [{ currency, estimatedAmount }] = selected;
+            this.payProDetailsData = payproOptions;
+            this.payProDetailsData.coin = currency.toLowerCase();
+            this.payProDetailsData.amount = estimatedAmount;
+            this.payProDetailsData.host = new URL(payProUrl).host;
+            this.clearCountDownInterval();
+            this.paymentTimeControl(expires);
+          } catch (err) {
+            this.payProDetailsData = {};
+            this.payProDetailsData.error = err.message;
+            this.logger.warn('Error in Payment Protocol', err);
+          }
         }
         await Observable.timer(50).toPromise();
         this.slideDown = true;

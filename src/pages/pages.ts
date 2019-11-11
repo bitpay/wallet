@@ -22,7 +22,9 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
+
+// Integrations: Invoice
+import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -145,7 +147,6 @@ export const PAGES = [
   CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
-  ConfirmInvoicePage,
   CopayersPage,
   EthLiveCardPage,
   FeedbackCardPage,
@@ -178,6 +179,7 @@ export const PAGES = [
   SettingsPage,
   SellCoinbasePage,
   SelectCurrencyPage,
+  SelectInvoicePage,
   CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,

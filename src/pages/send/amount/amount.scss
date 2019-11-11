@@ -43,7 +43,8 @@ page-amount {
       @media (max-height: $short-screen) {
         width: 77px;
       }
-      width: 85px;
+      width: 95px;
+      text-align: center;
       background: rgba(0, 0, 0, 0.06);
       padding: 0.75rem 1rem;
       border-radius: 3px;
@@ -96,7 +97,7 @@ page-amount {
       .unit {
         position: absolute;
         top: 2px;
-        right: -35px;
+        right: -45px;
         font-size: 16px;
         color: #4a4a4a;
       }
