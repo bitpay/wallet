@@ -503,12 +503,6 @@ export class BitPayCardProvider {
   }
 
   public async register() {
-    const isBannerVisible = await this.persistenceProvider.getBitPayCardBannerStatus();
-    const showIntegration = !!this.configProvider.get().showIntegration[
-      'debitcard'
-    ];
-
-    let isBannerStatusUndefined = _.isNil(isBannerVisible);
     let countryCode;
 
     try {
@@ -523,10 +517,9 @@ export class BitPayCardProvider {
         title: 'BitPay Visa® Card',
         icon: 'assets/img/bitpay-card/icon-bitpay.svg',
         page: 'BitPayCardIntroPage',
-        show: isBannerStatusUndefined
-          ? showIntegration &&
-            (countryCode === 'US' || !this.platformProvider.isCordova)
-          : showIntegration,
+        show: !this.configProvider.get().isBitpayBannerStatusInitiallyConfigured
+          ? countryCode === 'US' || !this.platformProvider.isCordova
+          : !!this.configProvider.get().showIntegration['debitcard'],
         linked: !!isActive
       });
     });

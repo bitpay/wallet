@@ -51,7 +51,8 @@ export class BitPaySettingsPage {
 
   public integrationChange(): void {
     let opts = {
-      showIntegration: { [this.serviceName]: this.showAtHome }
+      showIntegration: { [this.serviceName]: this.showAtHome },
+      isBitpayBannerStatusInitiallyConfigured: true
     };
     this.homeIntegrationsProvider.updateConfig(
       this.serviceName,

@@ -75,6 +75,8 @@ export interface Config {
     giftcards: boolean;
   };
 
+  isBitpayBannerStatusInitiallyConfigured: boolean;
+
   pushNotificationsEnabled: boolean;
 
   desktopNotificationsEnabled: boolean;
@@ -116,6 +118,7 @@ export class ConfigProvider {
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized');
+
     this.coinOpts = {
       btc: {
         unitName: 'BTC',
@@ -136,6 +139,7 @@ export class ConfigProvider {
         unitCode: 'eth'
       }
     };
+
     this.configDefault = {
       // wallet limits
       limits: {
@@ -207,6 +211,8 @@ export class ConfigProvider {
         shapeshift: true,
         giftcards: true
       },
+
+      isBitpayBannerStatusInitiallyConfigured: false,
 
       pushNotificationsEnabled: true,
 
