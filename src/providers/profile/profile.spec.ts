@@ -810,10 +810,9 @@ describe('Profile Provider', () => {
         coin: 'btc',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
-      const addingNewWallet = true;
 
       profileProvider
-        .createWallet(addingNewWallet, opts)
+        .createWallet(opts)
         .then(walletClient => {
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
@@ -835,10 +834,9 @@ describe('Profile Provider', () => {
         coin: 'btc',
         extendedPrivateKey: 'extendedPrivateKey1'
       };
-      const addingNewWallet = true;
 
       profileProvider
-        .createWallet(addingNewWallet, opts)
+        .createWallet(opts)
         .then(walletClient => {
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
@@ -860,10 +858,9 @@ describe('Profile Provider', () => {
         coin: 'btc',
         extendedPublicKey: 'extendedPublicKey1'
       };
-      const addingNewWallet = true;
 
       profileProvider
-        .createWallet(addingNewWallet, opts)
+        .createWallet(opts)
         .then(walletClient => {
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
@@ -884,14 +881,13 @@ describe('Profile Provider', () => {
         singleAddress: false,
         coin: 'btc'
       };
-      const addingNewWallet = true;
 
       spyOn(popupProvider, 'ionicConfirm').and.returnValue(
         Promise.resolve(true)
       );
 
       profileProvider
-        .createWallet(addingNewWallet, opts)
+        .createWallet(opts)
         .then(walletClient => {
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
@@ -920,10 +916,9 @@ describe('Profile Provider', () => {
         coin: 'btc',
         myName: 'Gabriel M'
       };
-      const addingNewWallet = true;
 
       await profileProvider
-        .joinWallet(addingNewWallet, opts)
+        .joinWallet(opts)
         .then(wallet => {
           expect(wallet).toBeDefined();
         })
@@ -939,7 +934,6 @@ describe('Profile Provider', () => {
         coin: 'btc',
         myName: 'Gabriel M'
       };
-      const addingNewWallet = true;
 
       profileProvider.profile.credentials = [
         {
@@ -948,7 +942,7 @@ describe('Profile Provider', () => {
       ];
 
       await profileProvider
-        .joinWallet(addingNewWallet, opts)
+        .joinWallet(opts)
         .then(wallet => {
           expect(wallet).not.toBeDefined();
         })
@@ -1238,7 +1232,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1257,7 +1251,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1272,7 +1266,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1296,7 +1290,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1313,7 +1307,7 @@ describe('Profile Provider', () => {
       spyOn(txFormatProvider, 'formatAmountStr').and.returnValue('5.00 BTC');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1328,7 +1322,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 
@@ -1343,7 +1337,7 @@ describe('Profile Provider', () => {
       ).and.returnValue('body1');
 
       // Using createWallet just to test showDesktopNotifications private function
-      await profileProvider.createWallet(true, opts).catch(err => {
+      await profileProvider.createWallet(opts).catch(err => {
         expect(err).not.toBeDefined();
       });
 

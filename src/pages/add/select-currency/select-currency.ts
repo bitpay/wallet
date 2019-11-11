@@ -133,39 +133,18 @@ export class SelectCurrencyPage {
 
   private _createWallet(coins: Coin[]): void {
     coins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
-    const opts = {
-      coin: coins[0],
-      singleAddress: this.currencyProvider.isSingleAddress(coins[0])
-    };
-    this.onGoingProcessProvider.set('creatingWallet');
-    this.createDefaultWallet(false, opts)
-      .then(wallet => {
-        if (coins.length === 1) this.endProcess(wallet);
-        else {
-          const promises = [];
-          const keyId = wallet.credentials.keyId;
-          coins.slice(1).forEach(coin => {
-            const opts = {
-              keyId,
-              coin,
-              singleAddress: this.currencyProvider.isSingleAddress(coin)
-            };
-            promises.push(this.createDefaultWallet(true, opts));
-          });
-          Promise.all(promises)
-            .then(wallets =>
-              wallets.forEach(wallet => {
-                this.endProcess(wallet);
-              })
-            )
-            .catch(err => this.showError(err));
-        }
-      })
-      .catch(err => this.showError(err));
-  }
 
-  private createDefaultWallet(addingNewWallet, opts) {
-    return this.profileProvider.createDefaultWallet(addingNewWallet, opts);
+    this.onGoingProcessProvider.set('creatingWallet');
+    this.profileProvider
+      .createDefaultWallet(coins)
+      .then(wallets => {
+        this.walletProvider.updateRemotePreferences(wallets);
+        this.pushNotificationsProvider.updateSubscription(wallets);
+        this.endProcess();
+      })
+      .catch(e => {
+        this.showError(e);
+      });
   }
 
   private showError(err) {
@@ -183,9 +162,7 @@ export class SelectCurrencyPage {
     return;
   }
 
-  private endProcess(wallet) {
-    this.walletProvider.updateRemotePreferences(wallet);
-    this.pushNotificationsProvider.updateSubscription(wallet);
+  private endProcess() {
     this.onGoingProcessProvider.clear();
     this.navCtrl.popToRoot().then(() => {
       this.events.publish('Local/WalletListChange');
