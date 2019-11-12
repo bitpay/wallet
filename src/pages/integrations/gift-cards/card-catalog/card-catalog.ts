@@ -112,7 +112,7 @@ export class CardCatalogPage extends WideHeaderPage {
     this.giftCardProvider.logEvent('view_item', {
       items: [
         {
-          brand: this.cardConfigMap.name,
+          brand: cardConfig.name,
           category: 'giftCards'
         }
       ]

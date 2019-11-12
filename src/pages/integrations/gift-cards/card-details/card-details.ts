@@ -175,7 +175,6 @@ export class CardDetailsPage {
         const isManuallyClaimed = true;
         this.logRedeemCardEvent(isManuallyClaimed);
         onDidDismiss(confirm);
-      } else {
       }
     });
   }

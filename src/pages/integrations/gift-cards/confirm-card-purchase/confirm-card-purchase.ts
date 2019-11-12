@@ -192,13 +192,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     transactionCurrency: string,
     giftData?: any
   ) {
-    this.logger.info(
-      'Gift Cards Purchase Info:',
-      this.cardConfig.name,
-      this.amount,
-      transactionCurrency
-    );
-
     if (!isSlideConfirmFinished) {
       this.giftCardProvider.logEvent('giftcards_purchase_start', {
         brand: this.cardConfig.name,
@@ -578,7 +571,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ctxp.fee
     );
 
-    this.logGiftCardPurchaseEvent(false, COIN, this.tx.giftData);
+    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
   public async buyConfirm() {
@@ -592,7 +585,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
-    this.logger.info(this.tx);
+
     return this.publishAndSign(this.wallet, this.tx)
       .then(() => {
         this.redeemGiftCard(this.tx.giftData);
