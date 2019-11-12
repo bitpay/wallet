@@ -218,11 +218,9 @@ export class SelectCurrencyPage {
     );
     walletSelector.present();
     walletSelector.onDidDismiss(wallet => {
-      if (wallet == 'newWallet') {
-        this.tokensSelected[token.symbol] = true;
-        return this.createWallet([Coin.ETH]);
-      } else if (!_.isEmpty(wallet) && wallet !== 'newWallet') {
-        return this.addTokenWallet(wallet, token);
+      if (!_.isEmpty(wallet)) {
+        this.addTokenWallet(wallet, token);
+        this.endProcess();
       }
     });
   }
