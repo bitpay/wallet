@@ -49,6 +49,7 @@
     "test:lint": "tslint --project . --format codeFrame && tslint '{test,electron,src}/**/*.ts' --format codeFrame && prettier '{*,**/*}.{js,ts,md,json,scss}' --list-different",
     "fix:tslint": "tslint --fix --project . && tslint --fix '{test,electron,src}/**/*.ts'",
     "fix:prettier": "prettier --write '{*,**/*}.{js,ts,md,json,scss}'",
+    "fix": "npm run fix:tslint && npm run fix:prettier",
     "env:prod": "rm -f src/environments/index.ts && cp src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n",
     "env:dev": "rm -f src/environments/index.ts && cp src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",

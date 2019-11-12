@@ -25,6 +25,13 @@
         </div>
       </div>
     </ion-item>
+    <ion-item *ngIf="linkedEthWalletName">
+      <span translate>Linked Ethereum Wallet</span>
+      <ion-note item-end>
+          {{linkedEthWalletName}}
+      </ion-note>
+    </ion-item>
+ 
     <ion-item>
       <span translate>Configuration (m-n)</span>
       <ion-note item-end>

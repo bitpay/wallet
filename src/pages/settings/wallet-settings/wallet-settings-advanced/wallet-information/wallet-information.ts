@@ -29,6 +29,7 @@ export class WalletInformationPage {
   public externalSource: string;
   public canSign: boolean;
   public unitToSatoshi: number;
+  public linkedEthWalletName: string;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -63,6 +64,7 @@ export class WalletInformationPage {
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
     this.canSign = this.wallet.canSign;
+    this.linkedEthWalletName = this.wallet.linkedEthWalletName;
   }
 
   public isUtxoCoin(): boolean {
