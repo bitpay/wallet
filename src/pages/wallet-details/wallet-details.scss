@@ -297,6 +297,19 @@ page-wallet-details {
       font-size: 11px;
     }
 
+    .token {
+      vertical-align: text-top;
+      span {
+        border: 1px solid #ffffff8f;
+        padding: 0 3px 0 3px;
+        border-radius: 3px;
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: -0.2px;
+        white-space: nowrap;
+      }
+    }
+
     .left-buttons {
       flex-grow: 1;
       padding-left: 1.3rem;
