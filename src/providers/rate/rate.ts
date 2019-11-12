@@ -20,7 +20,7 @@ export class RateProvider {
     private logger: Logger
   ) {
     this.logger.debug('RateProvider initialized');
-    this.alternatives = [];
+    this.alternatives = {};
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.rateServiceUrl[coin] = env.ratesAPI[coin];
       this.rates[coin] = { USD: 1 };
@@ -34,12 +34,11 @@ export class RateProvider {
       this.getCoin(chain)
         .then(dataCoin => {
           _.each(dataCoin, currency => {
-            this.rates[chain][currency.code] = currency.rate;
-            this.alternatives.push({
-              name: currency.name,
-              isoCode: currency.code,
-              rate: currency.rate
-            });
+            if (currency && currency.code && currency.rate) {
+              this.rates[chain][currency.code] = currency.rate;
+              if (currency.name)
+                this.alternatives[currency.code] = { name: currency.name };
+            }
           });
           this.ratesAvailable[chain] = true;
           resolve();
@@ -63,8 +62,12 @@ export class RateProvider {
     return this.rates[chain][code];
   }
 
-  public getAlternatives() {
-    return this.alternatives;
+  private getAlternatives(): any[] {
+    const alternatives: any[] = [];
+    for (let key in this.alternatives) {
+      alternatives.push({ isoCode: key, name: this.alternatives[key].name });
+    }
+    return alternatives;
   }
 
   public isCoinAvailable(chain: string) {
@@ -93,12 +96,7 @@ export class RateProvider {
   }
 
   public listAlternatives(sort: boolean) {
-    let alternatives = _.map(this.getAlternatives(), (item: any) => {
-      return {
-        name: item.name,
-        isoCode: item.isoCode
-      };
-    });
+    const alternatives = this.getAlternatives();
     if (sort) {
       alternatives.sort((a, b) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
