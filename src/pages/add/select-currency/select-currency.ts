@@ -74,11 +74,9 @@ export class SelectCurrencyPage {
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
     }
-    for (const token of this.availableTokens) {
-      this.tokensSelected[token.symbol] = false;
-    }
     this.shouldShowKeyOnboarding();
     this.setWallets();
+    this.setTokens();
   }
 
   ionViewDidLoad() {
@@ -244,5 +242,12 @@ export class SelectCurrencyPage {
     for (const token of addTokens) {
       this.addTokenWallet(wallet, token);
     }
+  }
+
+  public setTokens(coin?: string): void {
+    if (coin === 'eth' || !coin)
+      for (const token of this.availableTokens) {
+        this.tokensSelected[token.symbol] = false;
+      }
   }
 }
