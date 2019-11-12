@@ -317,9 +317,9 @@ export class CreateWalletPage implements OnInit {
 
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    const addingNewWallet = this.keyId ? true : false; // Adding new account to key
+    opts['keyId'] = this.keyId;
     this.profileProvider
-      .createWallet(addingNewWallet, opts)
+      .createWallet(opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);

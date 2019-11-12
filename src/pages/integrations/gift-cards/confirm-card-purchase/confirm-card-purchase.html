@@ -65,7 +65,7 @@
             {{currencyIsoCode}}
           </ion-note>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="invoiceFee">
           <span>{{'Network cost' | translate}}</span>
           <ion-note item-end>
             <span *ngIf="onlyIntegers">{{invoiceFee | number : '1.0-0'}}</span>
@@ -84,12 +84,12 @@
         <ion-item>
           <span>{{'Total' | translate}}</span>
           <ion-note item-end>
+            <span *ngIf="totalAmountStr">{{totalAmountStr}} ~ </span>
             <span *ngIf="totalAmount">
               <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span>
               <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span>
               {{currencyIsoCode}}
             </span>
-            <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
           </ion-note>
         </ion-item>
       </div>

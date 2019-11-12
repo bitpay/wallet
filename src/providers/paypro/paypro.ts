@@ -17,6 +17,21 @@ export class PayproProvider {
     this.logger.debug('PayproProvider initialized');
   }
 
+  public getPayProOptions(paymentUrl, disableLoader?: boolean): Promise<any> {
+    const bwc = this.bwcProvider.getPayProV2();
+    const options: any = {
+      paymentUrl
+    };
+    if (!disableLoader) {
+      this.onGoingProcessProvider.set('fetchingPayProOptions');
+    }
+
+    return bwc.getPaymentOptions(options).then(payProOptions => {
+      if (!disableLoader) this.onGoingProcessProvider.clear();
+      return payProOptions;
+    });
+  }
+
   public getPayProDetails(
     paymentUrl,
     coin,

@@ -220,7 +220,7 @@ export class HomeGiftCards implements OnInit {
 }
 
 export function getPrimaryCatalogCurrency(availableCards: CardConfig[]) {
-  const homeLogoCollageSupportedCurrencies = ['eur', 'gbp', 'usd'];
+  const homeLogoCollageSupportedCurrencies = ['cad', 'eur', 'gbp', 'usd'];
   const firstBrandCurrency =
     availableCards[0] && availableCards[0].currency.toLowerCase();
   return homeLogoCollageSupportedCurrencies.indexOf(firstBrandCurrency) > -1

@@ -65,6 +65,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   public txps = [];
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
+  public associatedWallet: string;
 
   public supportedCards: Promise<CardConfigMap>;
 

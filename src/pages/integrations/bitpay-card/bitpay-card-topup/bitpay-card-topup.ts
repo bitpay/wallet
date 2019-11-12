@@ -111,6 +111,9 @@ export class BitPayCardTopUpPage {
 
   ionViewWillEnter() {
     this.logLegacyCardAddToCardEvent();
+    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
+      this.navCtrl.remove(this.navCtrl.getPrevious().index);
+    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -301,16 +304,12 @@ export class BitPayCardTopUpPage {
       this.payproProvider
         .getPayProDetails(payProUrl, wallet.coin)
         .then(details => {
+          const { instructions } = details;
           let txp: Partial<TransactionProposal> = {
-            amount: details.amount,
-            toAddress: details.toAddress,
-            outputs: [
-              {
-                toAddress: details.toAddress,
-                amount: details.amount,
-                message
-              }
-            ],
+            coin: wallet.coin,
+            amount: _.sumBy(instructions, 'amount'),
+            toAddress: instructions[0].toAddress,
+            outputs: [],
             message,
             customData: {
               service: 'debitcard'
@@ -318,15 +317,28 @@ export class BitPayCardTopUpPage {
             payProUrl,
             excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
               ? false
-              : true,
-            data: details.data // eth
+              : true
           };
 
+          for (const instruction of instructions) {
+            txp.outputs.push({
+              toAddress: instruction.toAddress,
+              amount: instruction.amount,
+              message: instruction.message,
+              data: instruction.data
+            });
+          }
+
+          if (wallet.credentials.token) {
+            txp.tokenAddress = wallet.credentials.token.address;
+          }
+
           if (details.requiredFeeRate) {
-            const requiredFeeRate =
-              wallet.coin === 'eth'
-                ? details.requiredFeeRate
-                : Math.ceil(details.requiredFeeRate * 1024);
+            const requiredFeeRate = !this.currencyProvider.isUtxoCoin(
+              wallet.coin
+            )
+              ? details.requiredFeeRate
+              : Math.ceil(details.requiredFeeRate * 1024);
             txp.feePerKb = requiredFeeRate;
             this.logger.debug(
               'Using merchant fee rate (for debit card):' + txp.feePerKb
@@ -365,6 +377,9 @@ export class BitPayCardTopUpPage {
             .catch(err => {
               return reject(err);
             });
+        })
+        .catch(err => {
+          return reject(err);
         });
     });
   }

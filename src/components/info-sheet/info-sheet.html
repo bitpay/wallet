@@ -128,6 +128,28 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'addTokenWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
+      <span *ngIf="params.wallets && params.wallets[0]" sheet-title-text translate>Select Ethereum Wallet</span>
+      <span *ngIf="!params.wallets[0]" sheet-title-text translate>Ethereum wallet required</span>
+      <span *ngIf="params.wallets && params.wallets[0]" sheet-text>Which Ethereum wallet would you like this token to use for transaction costs?</span>
+      <span *ngIf="!params.wallets[0]" sheet-text>
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
+        One token wallet, per token type, is allowed per ETH wallet.
+      </span>
+      <span sheet-text>
+        <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets[0]">
+          <ion-list>
+            <div>
+              <button ion-item class="list-button" *ngFor="let wallet of params.wallets; let last = last" [class.border-none]="last" (click)="optionClicked(wallet)">
+                <wallet-item-content [wallet]="wallet"></wallet-item-content>
+              </button>
+            </div>
+          </ion-list>
+        </div>
+      </span>
+      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">GO BACK</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
       <span *ngIf="!params.error" sheet-title-text class="truncate">
         <span translate>Copied</span>: {{params.invoiceUrl}}
