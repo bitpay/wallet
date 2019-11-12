@@ -28,6 +28,10 @@ export class BitPayCardProvider {
     this.logger.debug('BitPayCardProvider initialized');
   }
 
+  logDebitCardLinked() {
+    this.analyticsProvider.setUserProperty('hasLinkedDebitCard', 'true');
+  }
+
   private isActive(cb): void {
     this.getCards(cards => {
       return cb(!_.isEmpty(cards));
@@ -248,6 +252,7 @@ export class BitPayCardProvider {
             cards
           )
           .then(() => {
+            this.logDebitCardLinked();
             this.onGoingProcessProvider.clear();
             return cb(null, cards);
           });
