@@ -74,11 +74,9 @@ export class SelectCurrencyPage {
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
     }
-    for (const token of this.availableTokens) {
-      this.tokensSelected[token.symbol] = false;
-    }
     this.shouldShowKeyOnboarding();
     this.setWallets();
+    this.setTokens();
   }
 
   ionViewDidLoad() {
@@ -153,13 +151,11 @@ export class SelectCurrencyPage {
       .then(wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
-        for (const wallet of wallets) {
-          if (wallet.coin === 'eth' && selectedTokens.length > 0) {
-            this.createTokenWallet(wallet, selectedTokens);
-          } else {
-            return this.endProcess();
-          }
+        const newEthWallet = wallets.find(wallet => wallet.coin === 'eth');
+        if (newEthWallet && selectedTokens.length > 0) {
+          this.createTokenWallet(newEthWallet, selectedTokens);
         }
+        this.endProcess();
       })
       .catch(e => {
         this.showError(e);
@@ -234,7 +230,6 @@ export class SelectCurrencyPage {
     credentials.coin = symbol.toLowerCase();
     credentials.token = token;
     await this.profileProvider.loadAndBindProfile(credentials);
-    this.endProcess();
   }
 
   private createTokenWallet(wallet, selectedTokens) {
@@ -244,5 +239,12 @@ export class SelectCurrencyPage {
     for (const token of addTokens) {
       this.addTokenWallet(wallet, token);
     }
+  }
+
+  public setTokens(coin?: string): void {
+    if (coin === 'eth' || !coin)
+      for (const token of this.availableTokens) {
+        this.tokensSelected[token.symbol] = false;
+      }
   }
 }
