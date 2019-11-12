@@ -1459,7 +1459,10 @@ export class ProfileProvider {
                   });
                   Promise.all(bindWalletClients)
                     .then(walletClients => {
-                      return resolve(walletClients);
+                      this.storeProfileIfDirty().then(() => {
+                        this.events.publish('Local/WalletListChange');
+                        return resolve(walletClients);
+                      });
                     })
                     .catch(e => {
                       reject(e);
