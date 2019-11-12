@@ -494,14 +494,6 @@ export class BitPayCardProvider {
     });
   }
 
-  setBitpayCardBannerStatus(isBannerVisible): Promise<void> {
-    return this.persistenceProvider.setBitPayCardBanner(isBannerVisible);
-  }
-
-  getBitpayCardBannerStatus() {
-    return this.persistenceProvider.getBitPayCardBannerStatus();
-  }
-
   public async register() {
     let countryCode;
 

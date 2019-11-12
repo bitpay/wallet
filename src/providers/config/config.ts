@@ -118,7 +118,6 @@ export class ConfigProvider {
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized');
-
     this.coinOpts = {
       btc: {
         unitName: 'BTC',
@@ -139,7 +138,6 @@ export class ConfigProvider {
         unitCode: 'eth'
       }
     };
-
     this.configDefault = {
       // wallet limits
       limits: {

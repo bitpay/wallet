@@ -59,7 +59,6 @@ export class BitPaySettingsPage {
       this.showAtHome
     );
     this.configProvider.set(opts);
-    this.bitPayCardProvider.setBitpayCardBannerStatus(this.showAtHome);
   }
 
   public unlinkCard(card) {
