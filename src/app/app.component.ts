@@ -38,8 +38,8 @@ export class AppComponent implements OnInit {
     this.dataSet = [];
     this.config = {};
     this.opts = {};
-    this.opts.network = 'testnet';
-    this.opts.url = 'http://localhost:3232/bws/api';
+    this.opts.network = 'livenet';
+    this.opts.url = 'https://bws.bitpay.com/bws/api';
     this.opts.from = defaultDateFrom;
     this.opts.to = defaultDateTo;
     this.totals = {};
