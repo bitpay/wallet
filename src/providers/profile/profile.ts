@@ -85,7 +85,19 @@ export class ProfileProvider {
       (config.aliasFor && config.aliasFor[wallet.id]) ||
       wallet.credentials.walletName;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
-    // });
+
+    // for token wallets
+    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+      wallet.coin,
+      wallet.id
+    );
+
+    if (wallet.linkedEthWallet) {
+      let linked = this.getWallet(wallet.linkedEthWallet);
+      wallet.linkedEthWalletName =
+        (config.aliasFor && config.aliasFor[linked.id]) ||
+        linked.credentials.walletName;
+    }
   }
 
   public setWalletOrder(walletId: string, index: number): void {
