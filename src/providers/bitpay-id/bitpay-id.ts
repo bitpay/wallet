@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, ViewChild } from '@angular/core';
-import { Nav } from 'ionic-angular';
+import { Injectable } from '@angular/core';
+
 import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { Device } from '@ionic-native/device';
 import * as bitauthService from 'bitauth';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models/user/user.model';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { Network, PersistenceProvider } from '../persistence/persistence';
@@ -14,12 +13,9 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class BitPayIdProvider {
-  @ViewChild(Nav) nav: Nav;
   private NETWORK: string;
   private BITPAY_API_URL: string;
   private deviceName = 'unknown device';
-  private userSubject = new BehaviorSubject<User>({});
-  public userObs$: Observable<User>;
 
   constructor(
     private http: HttpClient,
@@ -32,17 +28,16 @@ export class BitPayIdProvider {
     this.logger.debug('BitPayProvider initialized');
 
     this.NETWORK = 'livenet';
-    this.BITPAY_API_URL = 'https://10.10.10.189:8088';
-    // this.NETWORK == 'livenet'
-    //   ? 'https://bitpay.com'
-    //   : 'https://test.bitpay.com';
+    this.BITPAY_API_URL =
+    this.NETWORK == 'livenet'
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
       this.deviceName = this.device.model;
     }
 
-    this.userObs$ = this.userSubject.asObservable();
   }
 
   public getEnvironment() {
@@ -112,7 +107,7 @@ export class BitPayIdProvider {
                   .post(`${url}${token.data}`, json, { headers })
                   .toPromise()
                   .then(
-                    async (user: any) => {
+                    async (user: {data: User}) => {
                       if (user) {
                         this.logger.debug(
                           'BitPayID: retrieved user basic info'
