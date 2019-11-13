@@ -25,15 +25,20 @@ export class InAppBrowserProvider {
     const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
     // script that executes inside of inappbrowser when loaded
     const initIAB = () => {
+
+      ref.insertCSS({code: 'body{padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}' }, null);
       ref.executeScript(
         {
           code: initScript
         },
-        null
+        () => ref.removeEventListener('loadstop', initIAB)
       );
-      ref.removeEventListener('loadstop', initIAB);
+
     };
-    ref.addEventListener('loadstop', initIAB);
+
+    if (initScript) {
+      ref.addEventListener('loadstop', initIAB);
+    }
 
     // add observable to listen for url changes
     ref.events$ = Observable.fromEvent(ref, 'message');
