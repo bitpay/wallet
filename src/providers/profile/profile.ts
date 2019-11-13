@@ -1263,6 +1263,7 @@ export class ProfileProvider {
       const showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+      if (showOpts.password) showOpts.password = '[hidden]';
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
@@ -1469,16 +1470,16 @@ export class ProfileProvider {
                       })
                     );
                   });
-                  Promise.all(bindWalletClients)
-                    .then(walletClients => {
-                      this.storeProfileIfDirty().then(() => {
+                  this.storeProfileIfDirty().then(() => {
+                    Promise.all(bindWalletClients)
+                      .then(walletClients => {
                         this.events.publish('Local/WalletListChange');
                         return resolve(walletClients);
+                      })
+                      .catch(e => {
+                        reject(e);
                       });
-                    })
-                    .catch(e => {
-                      reject(e);
-                    });
+                  });
                 })
                 .catch(e => {
                   // Remove key
