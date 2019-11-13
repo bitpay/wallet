@@ -748,13 +748,8 @@ export class ProfileProvider {
   }
 
   private shouldSkipValidation(walletId: string): boolean {
-    // validation disabled for now
-    return true;
-
-    return (
-      this.profile.isChecked(this.platformProvider.ua, walletId) ||
-      this.platformProvider.isIOS
-    );
+    return true || this.profile.isChecked(this.platformProvider.ua, walletId) ||
+      this.platformProvider.isIOS ; // disabled for now
   }
 
   private setMetaData(wallet, addressBook): Promise<any> {
@@ -1440,58 +1435,52 @@ export class ProfileProvider {
   }
 
   public createDefaultWallet(coins): Promise<any> {
+console.log('[profile.ts.1437:coins:]',coins); // TODO
+
     return new Promise((resolve, reject) => {
+
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
+
       this._createWallet(defaultOpts)
         .then(data => {
           const key = data.key;
-          const firstWalletClient = data.walletClient;
+          const firstWalletData = data;
 
-          // Encrypt wallet
-          this.onGoingProcessProvider.pause();
-          this.askToEncryptKey(key).then(password => {
-            this.onGoingProcessProvider.resume();
-            this.keyProvider.addKey(key).then(() => {
-              const promises = [];
-              coins.slice(1).forEach(coin => {
-                const newOpts: any = {};
-                Object.assign(newOpts, this.getDefaultWalletOpts(coin));
-                newOpts['keyId'] = key.id; // Add Key
-                if (password) newOpts['password'] = password;
-                promises.push(this._createWallet(newOpts));
-              });
-              Promise.all(promises)
-                .then(wallets => {
-                  wallets.unshift({ walletClient: firstWalletClient, key });
-                  const bindWalletClients = [];
-                  wallets.forEach(w => {
-                    bindWalletClients.push(
-                      this.addAndBindWalletClient(w.walletClient, {
-                        bwsurl: defaultOpts.bwsurl
-                      })
-                    );
-                  });
-                  this.storeProfileIfDirty().then(() => {
-                    Promise.all(bindWalletClients)
-                      .then(walletClients => {
-                        this.events.publish('Local/WalletListChange');
-                        return resolve(walletClients);
-                      })
-                      .catch(e => {
-                        reject(e);
-                      });
-                  });
-                })
-                .catch(e => {
-                  // Remove key
-                  this.keyProvider.removeKey(key.id);
-                  reject(e);
-                });
+          this.keyProvider.addKey(key).then(() => {
+            const create2ndWallets = [];
+            coins.slice(1).forEach(coin => {
+              const newOpts: any = {};
+              Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+              newOpts['keyId'] = key.id; // Add Key
+              create2ndWallets.push(this._createWallet(newOpts));
             });
-          });
-        })
-        .catch(e => {
-          reject(e);
+            Promise.all(create2ndWallets)
+              .then(datas => {
+                datas.unshift(firstWalletData);
+                let walletClients = _.map(datas,'walletClient');
+
+console.log('[profile.ts.1465]', firstWalletData.key); // TODO
+console.log('[profile.ts.1464:walletClients:]',walletClients); // TODO
+
+                this.addAndBindWalletClients({
+                  key: firstWalletData.key, 
+                  walletClients,
+                }, {
+                  bwsurl: defaultOpts.bwsurl
+                }).then(()  => {
+                  this.events.publish('Local/WalletListChange');
+                  return resolve(walletClients);
+                })
+                  .catch(e => {
+                    reject(e);
+                  });
+              });
+          })
+            .catch(e => {
+              // Remove key
+              this.keyProvider.removeKey(key.id);
+              reject(e);
+            });
         });
     });
   }
