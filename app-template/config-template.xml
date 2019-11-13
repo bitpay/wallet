@@ -50,6 +50,8 @@
 
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
+    <!-- Android Version: Pie 9.0 (API Level 28) or higher -->
+    <preference name="android-targetSdkVersion" value="28" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
@@ -96,7 +98,7 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="4.2.0" />
+    <plugin name="cordova-plugin-fcm-ng" spec="5.1.0" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 

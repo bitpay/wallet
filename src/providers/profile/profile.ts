@@ -85,7 +85,19 @@ export class ProfileProvider {
       (config.aliasFor && config.aliasFor[wallet.id]) ||
       wallet.credentials.walletName;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
-    // });
+
+    // for token wallets
+    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+      wallet.coin,
+      wallet.id
+    );
+
+    if (wallet.linkedEthWallet) {
+      let linked = this.getWallet(wallet.linkedEthWallet);
+      wallet.linkedEthWalletName =
+        (config.aliasFor && config.aliasFor[linked.id]) ||
+        linked.credentials.walletName;
+    }
   }
 
   public setWalletOrder(walletId: string, index: number): void {
@@ -615,10 +627,9 @@ export class ProfileProvider {
       });
   }
 
-  private askToEncryptKey(key, addingNewWallet?: boolean): Promise<any> {
+  private askToEncryptKey(key): Promise<any> {
     if (!key) return Promise.resolve();
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
-    if (addingNewWallet && !key.isPrivKeyEncrypted()) return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
@@ -716,7 +727,7 @@ export class ProfileProvider {
     const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
     if (!skipKeyValidation) {
       this.logger.debug('Trying to runValidation: ' + walletId);
-      this.runValidation(wallet);
+      await this.runValidation(wallet);
     }
 
     this.saveBwsUrl(walletId, opts);
@@ -1011,7 +1022,7 @@ export class ProfileProvider {
     });
   }
 
-  private bindWallet(credentials): Promise<any> {
+  private async bindWallet(credentials): Promise<any> {
     if (!credentials.walletId || !credentials.m) {
       return Promise.reject(
         new Error('bindWallet should receive credentials JSON')
@@ -1037,7 +1048,15 @@ export class ProfileProvider {
     const skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
     if (!skipKeyValidation) {
       this.logger.debug('Trying to runValidation: ' + credentials.walletId);
-      this.runValidation(walletClient, 500);
+      await this.runValidation(walletClient, 500);
+    }
+
+    const { token } = credentials;
+    if (token) {
+      walletClient.credentials.token = token;
+      walletClient.credentials.walletId = `${credentials.walletId}-${
+        token.address
+      }`;
     }
 
     return this.bindWalletClient(walletClient);
@@ -1055,7 +1074,7 @@ export class ProfileProvider {
     });
   }
 
-  public loadAndBindProfile(): Promise<any> {
+  public loadAndBindProfile(credentials?): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getProfile()
@@ -1065,6 +1084,21 @@ export class ProfileProvider {
           }
 
           this.profile = Profile.fromObj(profile);
+
+          if (credentials && credentials.token) {
+            const tokenWallet = this.profile.credentials.find(
+              oldCredentials =>
+                oldCredentials.coin == credentials.token.symbol.toLowerCase() &&
+                oldCredentials.walletId == credentials.walletId
+            );
+            if (!tokenWallet) {
+              this.logger.info(`Adding Token ${credentials.token.symbol}`);
+              this.profile.credentials.push(credentials);
+              this.profile.dirty = true;
+              this.storeProfileIfDirty();
+            }
+          }
+
           // Deprecated: storageService.tryToMigrate
           this.logger.info('Profile loaded');
 
@@ -1229,6 +1263,7 @@ export class ProfileProvider {
       const showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+      if (showOpts.password) showOpts.password = '[hidden]';
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
@@ -1389,31 +1424,84 @@ export class ProfileProvider {
     });
   }
 
-  public createDefaultWallet(addingNewWallet: boolean, opts): Promise<any> {
+  private getDefaultWalletOpts(coin): Partial<WalletOptions> {
     const defaults = this.configProvider.getDefaults();
-
-    const defaultOpts: Partial<WalletOptions> = {
-      keyId: opts.keyId,
-      name: this.currencyProvider.getCoinName(opts.coin),
+    return {
+      name: this.currencyProvider.getCoinName(coin),
       m: 1,
       n: 1,
       myName: null,
       networkName: 'livenet',
       bwsurl: defaults.bws.url,
-      singleAddress: opts.singleAddress || false,
-      coin: opts.coin
+      singleAddress: this.currencyProvider.isSingleAddress(coin) || false,
+      coin
     };
-
-    return this.createWallet(addingNewWallet, defaultOpts);
   }
 
-  public createWallet(addingNewWallet: boolean, opts): Promise<any> {
+  public createDefaultWallet(coins): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const defaultOpts = this.getDefaultWalletOpts(coins[0]);
+      this._createWallet(defaultOpts)
+        .then(data => {
+          const key = data.key;
+          const firstWalletClient = data.walletClient;
+
+          // Encrypt wallet
+          this.onGoingProcessProvider.pause();
+          this.askToEncryptKey(key).then(password => {
+            this.onGoingProcessProvider.resume();
+            this.keyProvider.addKey(key).then(() => {
+              const promises = [];
+              coins.slice(1).forEach(coin => {
+                const newOpts: any = {};
+                Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+                newOpts['keyId'] = key.id; // Add Key
+                if (password) newOpts['password'] = password;
+                promises.push(this._createWallet(newOpts));
+              });
+              Promise.all(promises)
+                .then(wallets => {
+                  wallets.unshift({ walletClient: firstWalletClient, key });
+                  const bindWalletClients = [];
+                  wallets.forEach(w => {
+                    bindWalletClients.push(
+                      this.addAndBindWalletClient(w.walletClient, {
+                        bwsurl: defaultOpts.bwsurl
+                      })
+                    );
+                  });
+                  this.storeProfileIfDirty().then(() => {
+                    Promise.all(bindWalletClients)
+                      .then(walletClients => {
+                        this.events.publish('Local/WalletListChange');
+                        return resolve(walletClients);
+                      })
+                      .catch(e => {
+                        reject(e);
+                      });
+                  });
+                })
+                .catch(e => {
+                  // Remove key
+                  this.keyProvider.removeKey(key.id);
+                  reject(e);
+                });
+            });
+          });
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  }
+
+  public createWallet(opts) {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._createWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
+        return this.askToEncryptKey(data.key).then(() => {
           this.onGoingProcessProvider.resume();
           return this.keyProvider.addKey(data.key).then(() => {
             return this.addAndBindWalletClient(data.walletClient, {
@@ -1430,13 +1518,13 @@ export class ProfileProvider {
     });
   }
 
-  public joinWallet(addingNewWallet: boolean, opts): Promise<any> {
+  public joinWallet(opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
       return this._joinWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
-        return this.askToEncryptKey(data.key, addingNewWallet).then(() => {
+        return this.askToEncryptKey(data.key).then(() => {
           this.onGoingProcessProvider.resume();
           return this.keyProvider.addKey(data.key).then(() => {
             return this.addAndBindWalletClient(data.walletClient, {

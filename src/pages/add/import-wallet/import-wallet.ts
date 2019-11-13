@@ -434,9 +434,8 @@ export class ImportWalletPage {
   private createSpecifyingwords(opts): void {
     this.logger.debug('Creating from import');
     this.onGoingProcessProvider.set('creatingWallet');
-    const addingNewWallet = false;
     this.profileProvider
-      .createWallet(addingNewWallet, opts)
+      .createWallet(opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         if (wallet) this.finish([].concat(wallet));

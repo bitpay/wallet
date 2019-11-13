@@ -44,7 +44,7 @@ import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
-import { ConfirmInvoicePage } from '../pages/integrations/invoice/confirm-invoice/confirm-invoice';
+import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -93,8 +93,8 @@ export class CopayApp implements OnDestroy {
     AddWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
-    WalletDetailsPage,
-    ConfirmInvoicePage
+    SelectInvoicePage,
+    WalletDetailsPage
   };
 
   constructor(

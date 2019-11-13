@@ -91,7 +91,10 @@ export class PushNotificationsProvider {
       );
       return;
     }
-    this._subscribe(walletClient);
+    if (!_.isArray(walletClient)) walletClient = [walletClient];
+    walletClient.forEach(w => {
+      this._subscribe(w);
+    });
   }
 
   public enable(): void {

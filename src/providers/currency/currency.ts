@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { availableCoins, CoinOpts } from './coin';
+import { Token, TokenOpts } from './token';
 
 export enum Coin {
   BTC = 'btc',
   BCH = 'bch',
-  ETH = 'eth'
+  ETH = 'eth',
+  USDC = 'usdc',
+  GUSD = 'gusd',
+  PAX = 'pax'
 }
 
 export type CoinsMap<T> = { [key in Coin]: T };
@@ -16,9 +20,11 @@ export class CurrencyProvider {
   public ratesApi = {} as CoinsMap<string>;
   public blockExplorerUrls = {} as CoinsMap<string>;
   public availableCoins: Coin[];
+  public availableTokens: Token[];
 
   constructor() {
     this.coinOpts = availableCoins;
+    this.availableTokens = Object.values(TokenOpts);
     this.availableCoins = Object.keys(this.coinOpts) as Coin[];
     for (const opts of Object.values(this.coinOpts)) {
       const { paymentInfo, coin } = opts;
@@ -44,6 +50,11 @@ export class CurrencyProvider {
     return !!this.coinOpts[coin].properties.isERCToken;
   }
 
+  getLinkedEthWallet(coin: Coin, walletId: string): string {
+    if (!this.coinOpts[coin].properties.isERCToken) return null;
+    return walletId.replace(/-0x.*$/, '');
+  }
+
   isMultiSend(coin: Coin): boolean {
     return !!this.coinOpts[coin].properties.hasMultiSend;
   }
@@ -58,6 +69,10 @@ export class CurrencyProvider {
         opts.chain.toLowerCase()
       )
     );
+  }
+
+  getAvailableTokens(): Token[] {
+    return this.availableTokens;
   }
 
   getMultiSigCoins(): Coin[] {

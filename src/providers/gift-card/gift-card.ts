@@ -98,8 +98,7 @@ export class GiftCardProvider extends InvoiceProvider {
       amount: data.amount,
       clientId: data.uuid,
       discounts: data.discounts,
-      email: data.email,
-      transactionCurrency: data.buyerSelectedTransactionCurrency
+      email: data.email
     };
     const url = `${this.getApiPath()}/pay`;
     const headers = new HttpHeaders({

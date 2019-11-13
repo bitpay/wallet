@@ -147,6 +147,9 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
+    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
+      this.navCtrl.remove(this.navCtrl.getPrevious().index);
+    }
     if (this.isCordova) {
       this.statusBar.styleDefault();
     }
@@ -163,7 +166,7 @@ export class ConfirmPage extends WalletTabsChild {
       try {
         networkName = this.addressProvider.getCoinAndNetwork(
           this.navParams.data.toAddress,
-          this.navParams.data.network
+          this.navParams.data.network || 'livenet'
         ).network;
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
@@ -191,7 +194,10 @@ export class ConfirmPage extends WalletTabsChild {
     this.tx = {
       toAddress: this.navParams.data.toAddress,
       sendMax: this.navParams.data.useSendMax ? true : false,
-      amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
+      amount:
+        this.navParams.data.useSendMax && this.isChain()
+          ? 0
+          : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       data: this.navParams.data.data, // eth
@@ -207,7 +213,8 @@ export class ConfirmPage extends WalletTabsChild {
         ? this.navParams.data.network
         : networkName,
       coin: this.navParams.data.coin,
-      txp: {}
+      txp: {},
+      tokenAddress: this.navParams.data.tokenAddress
     };
     this.tx.origToAddress = this.tx.toAddress;
 
@@ -261,6 +268,15 @@ export class ConfirmPage extends WalletTabsChild {
         this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
+  }
+
+  private isChain() {
+    const chain = this.currencyProvider.getAvailableChains();
+    return chain.includes(this.coin);
+  }
+
+  public getChain(coin: Coin): string {
+    return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
   private afterWalletSelectorSet() {
@@ -464,7 +480,7 @@ export class ConfirmPage extends WalletTabsChild {
           }
 
           // call getSendMaxInfo if was selected from amount view
-          if (tx.sendMax) {
+          if (tx.sendMax && this.isChain()) {
             this.useSendMax(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -679,6 +695,8 @@ export class ConfirmPage extends WalletTabsChild {
       }
 
       const txp: Partial<TransactionProposal> = {};
+      // set opts.coin to wallet.coin
+      txp.coin = wallet.coin;
 
       if (this.fromMultiSend) {
         txp.outputs = [];
@@ -698,15 +716,28 @@ export class ConfirmPage extends WalletTabsChild {
           txp.outputs.push({
             toAddress: recipient.toAddress,
             amount: recipient.amount,
-            message: tx.description
+            message: tx.description,
+            data: tx.data
           });
         });
+      } else if (tx.paypro) {
+        txp.outputs = [];
+        const { instructions } = tx.paypro;
+        for (const instruction of instructions) {
+          txp.outputs.push({
+            toAddress: instruction.toAddress,
+            amount: instruction.amount,
+            message: instruction.message,
+            data: instruction.data
+          });
+        }
       } else {
         txp.outputs = [
           {
             toAddress: tx.toAddress,
             amount: tx.amount,
-            message: tx.description
+            message: tx.description,
+            data: tx.data
           }
         ];
       }
@@ -726,14 +757,31 @@ export class ConfirmPage extends WalletTabsChild {
         txp.payProUrl = tx.payProUrl;
         tx.paypro.host = new URL(tx.payProUrl).host;
       }
+
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
 
-      txp.data = tx.data; // eth
       if (tx.recipientType == 'wallet') {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null
         };
+      }
+
+      if (tx.tokenAddress) {
+        txp.tokenAddress = tx.tokenAddress;
+        for (const output of txp.outputs) {
+          if (!output.data) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ERC20' })
+              .encodeData({
+                recipients: [
+                  { address: output.toAddress, amount: output.amount }
+                ],
+                tokenAddress: tx.tokenAddress
+              });
+          }
+        }
       }
 
       this.walletProvider

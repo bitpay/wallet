@@ -4,6 +4,12 @@ info-sheet {
     height: 100%;
     background-color: white;
 
+    .border-none {
+      .item-inner {
+        border-bottom: none !important;
+      }
+    }
+
     .confirm-sheet {
       padding: 25px;
       padding-bottom: 15px;
@@ -67,6 +73,10 @@ info-sheet {
 
         .sheet-btn.red {
           color: #df5264;
+        }
+
+        .sheet-btn.default {
+          color: #464c5e;
         }
 
         .sheet-second-btn {
