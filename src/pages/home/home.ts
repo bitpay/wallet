@@ -18,6 +18,7 @@ import { SettingsPage } from '../settings/settings';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -34,6 +35,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -105,7 +107,8 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -132,6 +135,7 @@ export class HomePage {
   }
 
   private _willEnter(shouldUpdate: boolean = false) {
+    this.analyticsProvider.setScreenName('home');
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }

@@ -7,4 +7,8 @@ export class AnalyticsProvider {
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
     this.FCMPlugin.logEvent(eventName, eventParams);
   }
+
+  setScreenName(screenName: string) {
+    this.FCMPlugin.setScreenName(screenName);
+  }
 }
