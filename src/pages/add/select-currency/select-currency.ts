@@ -111,7 +111,7 @@ export class SelectCurrencyPage {
     });
     modal.present();
     modal.onDidDismiss(() => {
-      this._createWallet(coins);
+      this._createWallets(coins);
     });
     this.persistenceProvider.setKeyOnboardingFlag();
   }
@@ -133,7 +133,7 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  public createWallet(coins: Coin[]): void {
+  public createWallets(coins: Coin[]): void {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(coins);
       return;
@@ -141,16 +141,16 @@ export class SelectCurrencyPage {
       this.showInfoSheet(coins);
       return;
     }
-    this._createWallet(coins);
+    this._createWallets(coins);
   }
 
-  private _createWallet(coins: Coin[]): void {
+  private _createWallets(coins: Coin[]): void {
     const selectedCoins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
     coins = coins || selectedCoins;
     const selectedTokens = _.keys(_.pickBy(this.tokensSelected));
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createDefaultWallet(coins)
+      .createMultipleWallets(coins)
       .then(wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
@@ -198,7 +198,7 @@ export class SelectCurrencyPage {
     this.walletsEth = this.wallets.filter(wallet => wallet.coin == 'eth');
   }
 
-  public showWalletSelector(token) {
+  public showPairedWalletSelector(token) {
     const tokenWalletIds = this.wallets
       .filter(wallet => wallet.coin === token.symbol.toLowerCase())
       .map(wallet => wallet.id);

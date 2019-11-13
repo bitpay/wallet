@@ -1434,7 +1434,7 @@ export class ProfileProvider {
     };
   }
 
-  public createDefaultWallet(coins): Promise<any> {
+  public createMultipleWallets(coins): Promise<any> {
     return new Promise((resolve, reject) => {
 
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
