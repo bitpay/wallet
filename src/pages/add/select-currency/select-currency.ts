@@ -39,8 +39,6 @@ import { Token } from '../../../providers/currency/token';
 export class SelectCurrencyPage {
   private showKeyOnboarding: boolean;
 
-  public wallets;
-  public walletsEth;
   public title: string;
   public coin: Coin;
   public coinsSelected = {} as CoinsMap<boolean>;
@@ -75,7 +73,6 @@ export class SelectCurrencyPage {
       this.coinsSelected[chain] = true;
     }
     this.shouldShowKeyOnboarding();
-    this.setWallets();
     this.setTokens();
   }
 
@@ -187,46 +184,35 @@ export class SelectCurrencyPage {
     });
   }
 
-  // Tokens
-  public setWallets(): void {
-    this.wallets = this.navParam.data.keyId
+  public showPairedWalletSelector(token) {
+
+    const eligibleWallets = this.navParam.data.keyId
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.navParam.data.keyId,
-          network: 'livenet'
+          network: 'livenet',
+          pairFor: token,
         })
       : [];
-    this.walletsEth = this.wallets.filter(wallet => wallet.coin == 'eth');
-  }
-
-  public showPairedWalletSelector(token) {
-    const tokenWalletIds = this.wallets
-      .filter(wallet => wallet.coin === token.symbol.toLowerCase())
-      .map(wallet => wallet.id);
-    const availableWallets = this.wallets.filter(
-      wallet =>
-        !tokenWalletIds.includes(`${wallet.id}-${token.address}`) &&
-        wallet.coin === 'eth'
-    );
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(
       'addTokenWallet',
       {
-        wallets: availableWallets,
+        wallets: eligibleWallets,
         token
       }
     );
     walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      if (!_.isEmpty(wallet)) {
-        this.addTokenWallet(wallet, token);
-        this.endProcess();
+    walletSelector.onDidDismiss(pairedWallet => {
+      if (!_.isEmpty(pairedWallet)) {
+        this.addTokenWallet(pairedWallet, token);
       }
+      this.endProcess();
     });
   }
 
-  private async addTokenWallet(wallet, token) {
+  private async addTokenWallet(pairedWallet, token) {
     const { name, symbol } = token;
-    const { credentials } = _.cloneDeep(wallet);
+    const { credentials } = _.cloneDeep(pairedWallet);
     credentials.walletName = name;
     credentials.coin = symbol.toLowerCase();
     credentials.token = token;

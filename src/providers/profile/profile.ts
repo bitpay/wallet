@@ -1634,6 +1634,20 @@ export class ProfileProvider {
       });
     }
 
+    if (opts.pairFor) {
+      // grab walletIds from current wallet for this token (if any)
+      const tokenWalletIds = ret
+        .filter(wallet => wallet.coin === opts.pairFor.symbol.toLowerCase())
+        .map(wallet => wallet.id);
+
+      ret  = ret.filter(
+        wallet =>
+        !tokenWalletIds.includes(`${wallet.id}-${opts.pairFor.address}`) &&
+        wallet.coin === 'eth'
+      );
+    }
+
+
     return _.sortBy(ret, 'order');
   }
 
