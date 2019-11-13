@@ -29,15 +29,14 @@ export class BitPayIdProvider {
 
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
-    this.NETWORK == 'livenet'
-      ? 'https://bitpay.com'
-      : 'https://test.bitpay.com';
+      this.NETWORK == 'livenet'
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
       this.deviceName = this.device.model;
     }
-
   }
 
   public getEnvironment() {
@@ -107,7 +106,7 @@ export class BitPayIdProvider {
                   .post(`${url}${token.data}`, json, { headers })
                   .toPromise()
                   .then(
-                    async (user: {data: User}) => {
+                    async (user: { data: User }) => {
                       if (user) {
                         this.logger.debug(
                           'BitPayID: retrieved user basic info'

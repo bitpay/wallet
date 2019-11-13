@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Subscription } from 'rxjs';
 // pages
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import { User } from '../../models/user/user.model';
 import {
   ActionSheetProvider,
   BitPayIdProvider,
@@ -47,7 +48,6 @@ import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletGroupSettingsPage } from './wallet-group-settings/wallet-group-settings';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
-import { User } from '../../models/user/user.model';
 
 @Component({
   selector: 'page-settings',
