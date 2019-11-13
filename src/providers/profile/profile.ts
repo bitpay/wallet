@@ -578,10 +578,8 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn(`Key Derivation failed for wallet: ${walletId}`);
-
             this.persistenceProvider.clearLastAddress(walletId);
           }
-
           this.storeProfileIfDirty();
         }
       );
@@ -738,6 +736,9 @@ export class ProfileProvider {
   }
 
   private shouldSkipValidation(walletId: string): boolean {
+    // validation disabled for now
+    return true;
+
     return (
       this.profile.isChecked(this.platformProvider.ua, walletId) ||
       this.platformProvider.isIOS
