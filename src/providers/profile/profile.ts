@@ -736,8 +736,11 @@ export class ProfileProvider {
   }
 
   private shouldSkipValidation(walletId: string): boolean {
-    return true || this.profile.isChecked(this.platformProvider.ua, walletId) ||
-      this.platformProvider.isIOS ; // disabled for now
+    return (
+      true ||
+      this.profile.isChecked(this.platformProvider.ua, walletId) ||
+      this.platformProvider.isIOS
+    ); // disabled for now
   }
 
   private setMetaData(wallet, addressBook): Promise<any> {
@@ -1401,15 +1404,15 @@ export class ProfileProvider {
 
   public createDefaultWallet(coins): Promise<any> {
     return new Promise((resolve, reject) => {
-
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
 
-      this._createWallet(defaultOpts)
-        .then(data => {
-          const key = data.key;
-          const firstWalletData = data;
+      this._createWallet(defaultOpts).then(data => {
+        const key = data.key;
+        const firstWalletData = data;
 
-          this.keyProvider.addKey(key).then(() => {
+        this.keyProvider
+          .addKey(key)
+          .then(() => {
             const create2ndWallets = [];
             coins.slice(1).forEach(coin => {
               const newOpts: any = {};
@@ -1417,31 +1420,34 @@ export class ProfileProvider {
               newOpts['keyId'] = key.id; // Add Key
               create2ndWallets.push(this._createWallet(newOpts));
             });
-            Promise.all(create2ndWallets)
-              .then(datas => {
-                datas.unshift(firstWalletData);
-                let walletClients = _.map(datas,'walletClient');
+            Promise.all(create2ndWallets).then(datas => {
+              datas.unshift(firstWalletData);
+              let walletClients = _.map(datas, 'walletClient');
 
-                this.addAndBindWalletClients({
-                  key: firstWalletData.key, 
-                  walletClients,
-                }, {
+              this.addAndBindWalletClients(
+                {
+                  key: firstWalletData.key,
+                  walletClients
+                },
+                {
                   bwsurl: defaultOpts.bwsurl
-                }).then(()  => {
+                }
+              )
+                .then(() => {
                   this.events.publish('Local/WalletListChange');
                   return resolve(walletClients);
                 })
-                  .catch(e => {
-                    reject(e);
-                  });
-              });
-          })
-            .catch(e => {
-              // Remove key
-              this.keyProvider.removeKey(key.id);
-              reject(e);
+                .catch(e => {
+                  reject(e);
+                });
             });
-        });
+          })
+          .catch(e => {
+            // Remove key
+            this.keyProvider.removeKey(key.id);
+            reject(e);
+          });
+      });
     });
   }
 
