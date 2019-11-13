@@ -578,10 +578,8 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn(`Key Derivation failed for wallet: ${walletId}`);
-
             this.persistenceProvider.clearLastAddress(walletId);
           }
-
           this.storeProfileIfDirty();
         }
       );
@@ -739,9 +737,10 @@ export class ProfileProvider {
 
   private shouldSkipValidation(walletId: string): boolean {
     return (
+      true ||
       this.profile.isChecked(this.platformProvider.ua, walletId) ||
       this.platformProvider.isIOS
-    );
+    ); // disabled for now
   }
 
   private setMetaData(wallet, addressBook): Promise<any> {
@@ -1406,57 +1405,49 @@ export class ProfileProvider {
   public createDefaultWallet(coins): Promise<any> {
     return new Promise((resolve, reject) => {
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
-      this._createWallet(defaultOpts)
-        .then(data => {
-          const key = data.key;
-          const firstWalletClient = data.walletClient;
 
-          // Encrypt wallet
-          this.onGoingProcessProvider.pause();
-          this.askToEncryptKey(key).then(password => {
-            this.onGoingProcessProvider.resume();
-            this.keyProvider.addKey(key).then(() => {
-              const promises = [];
-              coins.slice(1).forEach(coin => {
-                const newOpts: any = {};
-                Object.assign(newOpts, this.getDefaultWalletOpts(coin));
-                newOpts['keyId'] = key.id; // Add Key
-                if (password) newOpts['password'] = password;
-                promises.push(this._createWallet(newOpts));
-              });
-              Promise.all(promises)
-                .then(wallets => {
-                  wallets.unshift({ walletClient: firstWalletClient, key });
-                  const bindWalletClients = [];
-                  wallets.forEach(w => {
-                    bindWalletClients.push(
-                      this.addAndBindWalletClient(w.walletClient, {
-                        bwsurl: defaultOpts.bwsurl
-                      })
-                    );
-                  });
-                  this.storeProfileIfDirty().then(() => {
-                    Promise.all(bindWalletClients)
-                      .then(walletClients => {
-                        this.events.publish('Local/WalletListChange');
-                        return resolve(walletClients);
-                      })
-                      .catch(e => {
-                        reject(e);
-                      });
-                  });
+      this._createWallet(defaultOpts).then(data => {
+        const key = data.key;
+        const firstWalletData = data;
+
+        this.keyProvider
+          .addKey(key)
+          .then(() => {
+            const create2ndWallets = [];
+            coins.slice(1).forEach(coin => {
+              const newOpts: any = {};
+              Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+              newOpts['keyId'] = key.id; // Add Key
+              create2ndWallets.push(this._createWallet(newOpts));
+            });
+            Promise.all(create2ndWallets).then(datas => {
+              datas.unshift(firstWalletData);
+              let walletClients = _.map(datas, 'walletClient');
+
+              this.addAndBindWalletClients(
+                {
+                  key: firstWalletData.key,
+                  walletClients
+                },
+                {
+                  bwsurl: defaultOpts.bwsurl
+                }
+              )
+                .then(() => {
+                  this.events.publish('Local/WalletListChange');
+                  return resolve(walletClients);
                 })
                 .catch(e => {
-                  // Remove key
-                  this.keyProvider.removeKey(key.id);
                   reject(e);
                 });
             });
+          })
+          .catch(e => {
+            // Remove key
+            this.keyProvider.removeKey(key.id);
+            reject(e);
           });
-        })
-        .catch(e => {
-          reject(e);
-        });
+      });
     });
   }
 
