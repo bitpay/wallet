@@ -1,4 +1,4 @@
-import { Component, Renderer, ViewChild } from '@angular/core';
+import { Component, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -68,7 +68,7 @@ import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
   templateUrl: 'app.html',
   providers: [TouchIdProvider]
 })
-export class CopayApp {
+export class CopayApp implements OnDestroy {
   @ViewChild('appNav')
   nav: NavController;
 
@@ -135,6 +135,11 @@ export class CopayApp {
 
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
+    if (this.iab) {
+      Object.keys(this.iab.refs).forEach((ref) => {
+        this.iab.refs[ref].close();
+      });
+    }
   }
 
   initializeApp() {
@@ -224,19 +229,6 @@ export class CopayApp {
       this.pushNotificationsProvider.clearAllNotifications();
     }
 
-    // hiding this behind feature flag
-    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-      if (res === 'enabled') {
-        // preloading the view
-        this.iab.createIABInstance(
-          'bitpayId',
-          // using this as an example
-          'https://bitpay.com',
-          `sessionStorage.setItem('context', 'wallet')`
-        );
-      }
-    });
-
     this.registerIntegrations();
     this.incomingDataRedirEvent();
     this.scanFromWalletEvent();
@@ -270,6 +262,22 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
+
+    // hiding this behind feature flag
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
+      if (res === 'enabled') {
+        // preloading the view
+        setTimeout(() => {
+          this.iab.createIABInstance(
+            'bitpayId',
+            // using this as an example
+            'https://10.10.10.189:4200',
+            `sessionStorage.setItem('context', 'wallet')`
+          );
+        });
+      }
+    });
+
   }
 
   private onProfileLoad(profile) {
