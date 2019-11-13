@@ -136,7 +136,7 @@ export class CopayApp implements OnDestroy {
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
     if (this.iab) {
-      Object.keys(this.iab.refs).forEach((ref) => {
+      Object.keys(this.iab.refs).forEach(ref => {
         this.iab.refs[ref].close();
       });
     }
@@ -277,7 +277,6 @@ export class CopayApp implements OnDestroy {
         });
       }
     });
-
   }
 
   private onProfileLoad(profile) {

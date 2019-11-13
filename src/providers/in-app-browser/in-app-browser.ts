@@ -25,15 +25,19 @@ export class InAppBrowserProvider {
     const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
     // script that executes inside of inappbrowser when loaded
     const initIAB = () => {
-
-      ref.insertCSS({code: 'body{padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}' }, null);
+      ref.insertCSS(
+        {
+          code:
+            'body{padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}'
+        },
+        null
+      );
       ref.executeScript(
         {
           code: initScript
         },
         () => ref.removeEventListener('loadstop', initIAB)
       );
-
     };
 
     if (initScript) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
@@ -6,20 +6,28 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
+import { StatusBar } from '@ionic-native/status-bar';
+import { Subscription } from 'rxjs';
+// pages
+import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import {
+  ActionSheetProvider,
+  BitPayIdProvider,
+  InAppBrowserProvider
+} from '../../providers';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
-
-// pages
-import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
-import { InAppBrowserProvider } from '../../providers';
 import { AddPage } from '../add/add';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -31,7 +39,7 @@ import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-// import { BitPayIdPage } from './bitpay-id/bitpay-id';
+import { BitPayIdPage } from './bitpay-id/bitpay-id';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
@@ -39,6 +47,7 @@ import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletGroupSettingsPage } from './wallet-group-settings/wallet-group-settings';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
+import { User } from '../../models/user/user.model';
 
 @Component({
   selector: 'page-settings',
@@ -61,7 +70,10 @@ export class SettingsPage {
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
   public hiddenFeaturesEnabled: boolean;
+  public bitPayIdUserInfo: any;
   private bitpayIdRef: InAppBrowserRef;
+  private bitpayIdRefSubscription: Subscription;
+  private network = Network[this.bitPayIdProvider.getEnvironment().network];
 
   constructor(
     private navCtrl: NavController,
@@ -79,7 +91,11 @@ export class SettingsPage {
     private touchid: TouchIdProvider,
     private externalLinkProvder: ExternalLinkProvider,
     private persistanceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private iab: InAppBrowserProvider,
+    private bitPayIdProvider: BitPayIdProvider,
+    private changeRef: ChangeDetectorRef,
+    private actionSheetProvider: ActionSheetProvider,
+    private statusBar: StatusBar
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -95,6 +111,53 @@ export class SettingsPage {
       .then(res => (this.hiddenFeaturesEnabled = res === 'enabled'));
 
     this.bitpayIdRef = this.iab.refs.bitpayId;
+
+    if (this.bitpayIdRef) {
+      // check for user info
+      this.persistanceProvider
+        .getBitPayIdUserInfo(this.network)
+        .then((user: User) => {
+          this.bitPayIdUserInfo = user;
+        });
+      // subscribing to iab 'message' events
+      this.bitpayIdRefSubscription = this.bitpayIdRef.events$.subscribe(
+        (event: any) => {
+          switch (event.data.message) {
+            case 'close':
+              this.statusBar.show();
+              this.bitpayIdRef.hide();
+              break;
+
+            case 'pairing':
+              const { secret } = event.data.params;
+              // close the modal
+              this.bitpayIdRef.hide();
+              // restore status bar
+              this.statusBar.show();
+              // generates pairing token and also fetches user basic info and caches both
+              this.bitPayIdProvider.generatePairingToken(
+                secret,
+                (user: User) => {
+                  // success so move to bitpay id page and show action sheet
+                  const infoSheet = this.actionSheetProvider.createInfoSheet(
+                    'in-app-notification',
+                    {
+                      title: 'BitPay ID',
+                      body: 'BitPay ID successfully connected.'
+                    }
+                  );
+                  infoSheet.present();
+                  this.bitPayIdUserInfo = user;
+                  this.navCtrl.push(BitPayIdPage, user);
+                  // TODO having to manually detect changes - need to look into this
+                  this.changeRef.detectChanges();
+                },
+                err => this.logger.debug(err)
+              );
+          }
+        }
+      );
+    }
 
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
@@ -117,16 +180,6 @@ export class SettingsPage {
   }
 
   ionViewDidEnter() {
-    if (this.bitpayIdRef) {
-      // subscribing to iab 'message' events
-      this.bitpayIdRef.events$.subscribe((event: any) => {
-        switch (event.data.message) {
-          case 'close':
-            this.bitpayIdRef.hide();
-        }
-      });
-    }
-
     // Show integrations
     const integrations = this.homeIntegrationsProvider.get();
 
@@ -147,8 +200,19 @@ export class SettingsPage {
     });
   }
 
+  ionViewDidLeave() {
+    if (this.bitpayIdRef) {
+      this.bitpayIdRefSubscription.unsubscribe();
+    }
+  }
+
   public openBitPayIdPage(): void {
-    this.bitpayIdRef.show();
+    if (!this.bitPayIdUserInfo) {
+      this.statusBar.hide();
+    }
+    this.bitPayIdUserInfo
+      ? this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo)
+      : this.bitpayIdRef.show();
   }
 
   public openAltCurrencyPage(): void {

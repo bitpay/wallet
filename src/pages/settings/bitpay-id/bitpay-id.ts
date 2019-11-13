@@ -1,8 +1,14 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 
 // providers
-import { ActionSheetProvider, BitPayProvider, Logger, PopupProvider } from '../../../providers';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
+import {
+  ActionSheetProvider,
+  BitPayIdProvider,
+  Logger,
+  PopupProvider
+} from '../../../providers';
 
 @Component({
   selector: 'bitpay-id',
@@ -14,14 +20,13 @@ export class BitPayIdPage {
   constructor(
     private logger: Logger,
     private navParams: NavParams,
-    private bitpayProvider: BitPayProvider,
+    private bitPayIdProvider: BitPayIdProvider,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-  }
-
+    private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {}
 
   ionViewDidLoad() {
     this.userBasicInfo = this.navParams.data;
@@ -31,22 +36,33 @@ export class BitPayIdPage {
 
   disconnectBitPayID() {
     this.popupProvider
-      .ionicConfirm('Disconnect BitPay ID', 'Are you sure you would like to disconnect your BitPay ID?')
+      .ionicConfirm(
+        this.translate.instant('Disconnect BitPay ID'),
+        this.translate.instant(
+          'Are you sure you would like to disconnect your BitPay ID?'
+        )
+      )
       .then(res => {
         if (res) {
-          this.bitpayProvider.disconnectBitPayID(() => {
-            const infoSheet = this.actionSheetProvider.createInfoSheet('in-app-notification', {
-              title: 'BitPay ID',
-              body: 'BitPay ID successfully disconnected.'
-            });
-            infoSheet.present();
-            this.navCtrl.popToRoot();
-          }, (err) => {
-            this.logger.log(err);
-          });
+          this.bitPayIdProvider.disconnectBitPayID(
+            () => {
+              const infoSheet = this.actionSheetProvider.createInfoSheet(
+                'in-app-notification',
+                {
+                  title: 'BitPay ID',
+                  body: this.translate.instant(
+                    'BitPay ID successfully disconnected.'
+                  )
+                }
+              );
+              infoSheet.present();
+              this.navCtrl.popToRoot();
+            },
+            err => {
+              this.logger.log(err);
+            }
+          );
         }
       });
-
   }
 }
-

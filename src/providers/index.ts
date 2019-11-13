@@ -27,6 +27,7 @@ export {
   BitPayAccountProvider
 } from '../providers/bitpay-account/bitpay-account';
 export { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+export { BitPayIdProvider } from '../providers/bitpay-id/bitpay-id';
 export { BitPayProvider } from '../providers/bitpay/bitpay';
 export { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 export { BwcProvider } from '../providers/bwc/bwc';
