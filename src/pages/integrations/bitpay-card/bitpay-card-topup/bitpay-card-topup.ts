@@ -224,6 +224,7 @@ export class BitPayCardTopUpPage {
       this.walletProvider
         .publishAndSign(wallet, txp)
         .then(txp => {
+          this.logLegacyCardSetCheckoutOption(wallet);
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
@@ -543,7 +544,7 @@ export class BitPayCardTopUpPage {
           name: 'legacyCard',
           category: 'debitCard',
           quantity: 1,
-          price: ''
+          price: this.amount
         }
       ]
     });
@@ -708,8 +709,6 @@ export class BitPayCardTopUpPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-
-    this.logLegacyCardSetCheckoutOption(wallet);
 
     if (this.countDown) {
       clearInterval(this.countDown);
