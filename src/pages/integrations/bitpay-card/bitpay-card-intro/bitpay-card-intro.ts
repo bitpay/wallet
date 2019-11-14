@@ -118,11 +118,10 @@ export class BitPayCardIntroPage {
   }
 
   public connectBitPayCard() {
+    this.bitPayCardProvider.logEvent('legacycard_connect', {});
     if (this.accounts.length == 0) {
-      this.bitPayCardProvider.logEvent('legacycard_connect', {});
       this.startPairBitPayAccount();
     } else {
-      this.bitPayCardProvider.logEvent('legacycard_connect', {});
       this.showAccountSelector();
     }
   }
