@@ -190,6 +190,47 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.showWallets(); // Show wallet selector
   }
 
+  public logGiftCardPurchaseEvent(
+    isSlideConfirmFinished: boolean,
+    transactionCurrency: string,
+    giftData?: any
+  ) {
+    if (!isSlideConfirmFinished) {
+      this.giftCardProvider.logEvent('giftcards_purchase_start', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+      this.giftCardProvider.logEvent('add_to_cart', {
+        brand: this.cardConfig.name,
+        category: 'giftCards'
+      });
+    } else {
+      this.giftCardProvider.logEvent('giftcards_purchase_finish', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+
+      this.giftCardProvider.logEvent('set_checkout_option', {
+        transactionCurrency,
+        checkout_step: 1
+      });
+
+      this.giftCardProvider.logEvent('purchase', {
+        value: giftData.amount,
+        items: [
+          {
+            name: this.cardConfig.name,
+            category: 'giftCards',
+            quantity: 1,
+            price: giftData.amount.toString(10)
+          }
+        ]
+      });
+    }
+  }
+
   public cancel() {
     this.navCtrl.popToRoot();
   }
@@ -463,6 +504,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       buyerSelectedTransactionCurrency: COIN,
       cardName: this.cardConfig.name
     };
+
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     const data = await this.createInvoice(dataSrc).catch(err => {
@@ -536,6 +578,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       invoiceFeeSat,
       ctxp.fee
     );
+
+    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
   public async buyConfirm() {
@@ -549,8 +593,16 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
+
     return this.publishAndSign(this.wallet, this.tx)
-      .then(() => this.redeemGiftCard(this.tx.giftData))
+      .then(() => {
+        this.redeemGiftCard(this.tx.giftData);
+        this.logGiftCardPurchaseEvent(
+          true,
+          this.wallet.coin.toUpperCase(),
+          this.tx.giftData
+        );
+      })
       .catch(async err => this.handlePurchaseError(err));
   }
 
