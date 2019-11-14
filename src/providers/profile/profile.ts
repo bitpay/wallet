@@ -1070,7 +1070,7 @@ export class ProfileProvider {
     });
   }
 
-  public loadAndBindProfile(credentials?): Promise<any> {
+  public loadAndBindProfile(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getProfile()
@@ -1080,20 +1080,6 @@ export class ProfileProvider {
           }
 
           this.profile = Profile.fromObj(profile);
-
-          if (credentials && credentials.token) {
-            const tokenWallet = this.profile.credentials.find(
-              oldCredentials =>
-                oldCredentials.coin == credentials.token.symbol.toLowerCase() &&
-                oldCredentials.walletId == credentials.walletId
-            );
-            if (!tokenWallet) {
-              this.logger.info(`Adding Token ${credentials.token.symbol}`);
-              this.profile.credentials.push(credentials);
-              this.profile.dirty = true;
-              this.storeProfileIfDirty();
-            }
-          }
 
           // Deprecated: storageService.tryToMigrate
           this.logger.info('Profile loaded');
@@ -1159,6 +1145,12 @@ export class ProfileProvider {
       opts = opts ? opts : {};
       opts['bp_partner'] = this.appProvider.info.name;
       opts['bp_partner_version'] = this.appProvider.info.version;
+
+      // Token wallet?
+      if (opts.pairedWallet) {
+        return resolve()
+      }
+
       const walletClient = this.bwcProvider.getClient(null, opts);
       const network = opts.networkName || 'livenet';
       const Key = this.bwcProvider.getKey();
@@ -1434,8 +1426,12 @@ export class ProfileProvider {
     };
   }
 
-  public createMultipleWallets(coins): Promise<any> {
+  public createMultipleWallets(coins: Array<string> , tokens = []): Promise<any> {
     return new Promise((resolve, reject) => {
+
+      if (tokens && tokens.length && coins.indexOf('eth')<=0) {
+        reject('No ethereum wallets for tokens');
+      }
 
       const defaultOpts = this.getDefaultWalletOpts(coins[0]);
 
@@ -1463,6 +1459,15 @@ export class ProfileProvider {
                 }, {
                   bwsurl: defaultOpts.bwsurl
                 }).then(()  => {
+
+                  // Handle tokens
+                  const ethWalletClient = walletClients.find(wallet => wallet.credentials.coin === 'eth');
+                  if (ethWalletClient && tokens.length > 0) {
+                    this.createTokenWallet(newEthWallet, selectedTokens);
+                  }
+
+
+
                   this.events.publish('Local/WalletListChange');
                   return resolve(walletClients);
                 })

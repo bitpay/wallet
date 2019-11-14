@@ -147,14 +147,10 @@ export class SelectCurrencyPage {
     const selectedTokens = _.keys(_.pickBy(this.tokensSelected));
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createMultipleWallets(coins)
+      .createMultipleWallets(coins, selectedTokens)
       .then(wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
-        const newEthWallet = wallets.find(wallet => wallet.coin === 'eth');
-        if (newEthWallet && selectedTokens.length > 0) {
-          this.createTokenWallet(newEthWallet, selectedTokens);
-        }
         this.endProcess();
       })
       .catch(e => {
@@ -209,25 +205,6 @@ export class SelectCurrencyPage {
       this.endProcess();
     });
   }
-
-  private async addTokenWallet(pairedWallet, token) {
-    const { name, symbol } = token;
-    const { credentials } = _.cloneDeep(pairedWallet);
-    credentials.walletName = name;
-    credentials.coin = symbol.toLowerCase();
-    credentials.token = token;
-    await this.profileProvider.loadAndBindProfile(credentials);
-  }
-
-  private createTokenWallet(wallet, selectedTokens) {
-    const addTokens = this.availableTokens.filter(token =>
-      selectedTokens.includes(token.symbol)
-    );
-    for (const token of addTokens) {
-      this.addTokenWallet(wallet, token);
-    }
-  }
-
   public setTokens(coin?: string): void {
     if (coin === 'eth' || !coin)
       for (const token of this.availableTokens) {
