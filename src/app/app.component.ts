@@ -271,7 +271,7 @@ export class CopayApp implements OnDestroy {
           this.iab.createIABInstance(
             'bitpayId',
             // using this as an example
-            'https://10.10.10.189:4200',
+            'https://bitpay.com/id',
             `sessionStorage.setItem('context', 'wallet')`
           );
         });
