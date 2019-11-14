@@ -450,8 +450,7 @@ export class BitPayCardTopUpPage {
 
             this.createInvoice({
               amount: maxAmount,
-              currency: wallet.coin.toUpperCase(),
-              buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
+              currency: wallet.coin.toUpperCase()
             })
               .then(inv => {
                 // Check if BTC or BCH is enabled in this account
@@ -517,8 +516,7 @@ export class BitPayCardTopUpPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
-      currency: parsedAmount.currency,
-      buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
+      currency: parsedAmount.currency
     };
     this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc)

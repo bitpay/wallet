@@ -67,7 +67,7 @@
             <span *ngIf="!amount">...</span>
           </ion-note>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="invoiceFee">
           <span class="item-info">{{'Network cost' | translate}}
             <ion-icon class="item-img" (click)="openExternalLink('networkCost')">
               <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
@@ -90,8 +90,8 @@
         <ion-item>
           <span translate>Total</span>
           <ion-note item-end>
+            <span *ngIf="totalAmountStr">{{totalAmountStr}} ~ </span>
             <span *ngIf="totalAmount">{{totalAmount | number:'1.2-2'}} {{currencyIsoCode}}</span>
-            <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
           </ion-note>
         </ion-item>
       </div>
