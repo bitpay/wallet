@@ -200,9 +200,13 @@ export class SelectCurrencyPage {
     walletSelector.present();
     walletSelector.onDidDismiss(pairedWallet => {
       if (!_.isEmpty(pairedWallet)) {
-        this.addTokenWallet(pairedWallet, token);
+        const tokenWalletClient = this.profileProvider.createTokenWallet(pairedWallet, token);
+        this.profileProvider.addAndBindWalletClient(tokenWalletClient).then( () => {
+          this.endProcess();
+        });
+      } else {
+        this.endProcess();
       }
-      this.endProcess();
     });
   }
   public setTokens(coin?: string): void {
@@ -220,7 +224,7 @@ export class SelectCurrencyPage {
         this.showKeyOnboardingSlides(coins);
         return;
       }
-      this._createWallet(coins);
+      this._createWallets(coins);
     });
   }
 }
