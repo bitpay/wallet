@@ -1445,7 +1445,7 @@ export class ProfileProvider {
 
   public createMultipleWallets(coins: string[], tokens = []): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (tokens && tokens.length && coins.indexOf('eth') <= 0) {
+      if (tokens && tokens.length && coins.indexOf('eth') < 0) {
         reject('No ethereum wallets for tokens');
       }
 
@@ -1472,7 +1472,7 @@ export class ProfileProvider {
               const ethWalletClient = walletClients.find(
                 wallet => wallet.credentials.coin === 'eth'
               );
-              if (!ethWalletClient) reject('no eth wallet');
+              if (!ethWalletClient && !_.isEmpty(tokens)) reject('no eth wallet');
               const tokenClients = tokens.map(token =>
                 this.createTokenWallet(ethWalletClient, token)
               );

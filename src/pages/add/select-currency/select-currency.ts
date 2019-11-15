@@ -207,10 +207,6 @@ export class SelectCurrencyPage {
         })
       : [];
 
-    if (eligibleWallets.length == 1) {
-      return this.createAndBindTokenWallet(eligibleWallets[0], token);
-    }
-
     const walletSelector = this.actionSheetProvider.createInfoSheet(
       'addTokenWallet',
       {
