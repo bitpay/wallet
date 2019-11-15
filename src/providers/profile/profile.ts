@@ -94,9 +94,11 @@ export class ProfileProvider {
 
     if (wallet.linkedEthWallet) {
       let linked = this.getWallet(wallet.linkedEthWallet);
-      wallet.linkedEthWalletName =
-        (config.aliasFor && config.aliasFor[linked.id]) ||
-        linked.credentials.walletName;
+      if (linked) {
+        wallet.linkedEthWalletName =
+          (config.aliasFor && config.aliasFor[linked.id]) ||
+          linked.credentials.walletName;
+      }
     }
   }
 
