@@ -43,6 +43,8 @@ export class SelectCurrencyPage {
   public coin: Coin;
   public coinsSelected = {} as CoinsMap<boolean>;
   public tokensSelected = {} as CoinsMap<boolean>;
+  public tokenDisabled = {} as CoinsMap<boolean>;
+
   public availableChains: string[];
   public availableTokens: Token[];
   public isOnboardingFlow: boolean;
@@ -180,8 +182,18 @@ export class SelectCurrencyPage {
     });
   }
 
-  public showPairedWalletSelector(token) {
+  public createAndBindTokenWallet (pairedWallet, token) {
+    if (!_.isEmpty(pairedWallet)) {
+      const tokenWalletClient = this.profileProvider.createTokenWallet(pairedWallet, token);
+      this.profileProvider.addAndBindWalletClient(tokenWalletClient).then( () => {
+        this.endProcess();
+      });
+    } else {
+      this.endProcess();
+    }
+  }
 
+  public showPairedWalletSelector(token) {
     const eligibleWallets = this.navParam.data.keyId
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.navParam.data.keyId,
@@ -189,6 +201,10 @@ export class SelectCurrencyPage {
           pairFor: token,
         })
       : [];
+
+    if (eligibleWallets.length == 1 ) {
+      return this.createAndBindTokenWallet(eligibleWallets[0], token);
+    }
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(
       'addTokenWallet',
@@ -199,21 +215,27 @@ export class SelectCurrencyPage {
     );
     walletSelector.present();
     walletSelector.onDidDismiss(pairedWallet => {
-      if (!_.isEmpty(pairedWallet)) {
-        const tokenWalletClient = this.profileProvider.createTokenWallet(pairedWallet, token);
-        this.profileProvider.addAndBindWalletClient(tokenWalletClient).then( () => {
-          this.endProcess();
-        });
-      } else {
-        this.endProcess();
-      }
+      return this.createAndBindTokenWallet(pairedWallet, token);
     });
   }
   public setTokens(coin?: string): void {
-    if (coin === 'eth' || !coin)
+    if (coin === 'eth' || !coin) {
+
       for (const token of this.availableTokens) {
-        this.tokensSelected[token.symbol] = false;
+        if (this.isZeroState) {
+          this.tokensSelected[token.symbol] = false;
+        } else {
+
+          let canCreateit = _.isEmpty(this.profileProvider.getWalletsFromGroup({
+            keyId: this.navParam.data.keyId,
+            network: 'livenet',
+            pairFor: token,
+          }));
+          this.tokenDisabled[token.symbol] = canCreateit;
+        }
+
       }
+    }
   }
 
   private showInfoSheet(coins: Coin[]) {

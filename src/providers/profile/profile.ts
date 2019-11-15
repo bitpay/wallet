@@ -1420,10 +1420,13 @@ export class ProfileProvider {
     };
   }
 
-  public createTokenWallet(ethWallet , token: string) {
-    let tokens = this.currencyProvider.getAvailableTokens();
-    let tokenObj = tokens.find(x => x.symbol == token);
-    const tokenCredentials = ethWallet.credentials.getTokenCredentials(tokenObj);
+  public createTokenWallet(ethWallet , token) {
+
+    if (_.isString(token)) {
+      let tokens = this.currencyProvider.getAvailableTokens();
+      token = tokens.find(x => x.symbol == token);
+    }
+    const tokenCredentials = ethWallet.credentials.getTokenCredentials(token);
     const walletClient = this.bwcProvider.getClient(null, {
       baseUrl: ethWallet.baseUrl,
       bp_partner: ethWallet.bp_partner,
