@@ -1465,27 +1465,19 @@ export class ProfileProvider {
 
                 // Handle tokens
                 const ethWalletClient = walletClients.find(wallet => wallet.credentials.coin === 'eth');
-                let tokenCreate  = [];
-                if (ethWalletClient) {
-                  tokenCreate = tokens.map(token => this.createTokenWallet(ethWalletClient, token));
-                }
-                Promise.all(tokenCreate).then( tokenClients => {
-                  walletClients=walletClients.concat(tokenClients);
-                  this.addAndBindWalletClients({
-                    key: firstWalletData.key, 
-                    walletClients,
-                  }).then(()  => {
-                    this.events.publish('Local/WalletListChange');
-                    return resolve(walletClients);
-                  })
-                    .catch(e => {
-                      reject(e);
-                    });
+                if (!ethWalletClient) reject('no eth wallet');
+                const tokenClients = tokens.map(token => this.createTokenWallet(ethWalletClient, token));
+                walletClients = walletClients.concat(tokenClients);
+                this.addAndBindWalletClients({
+                  key: firstWalletData.key, 
+                  walletClients,
+                }).then(()  => {
+                  this.events.publish('Local/WalletListChange');
+                  return resolve(walletClients);
                 })
                   .catch(e => {
                     reject(e);
                   });
-                });
               })
               .catch(e => {
                 // Remove key
@@ -1493,6 +1485,7 @@ export class ProfileProvider {
                 reject(e);
               });
           });
+        });
     });
   }
 
