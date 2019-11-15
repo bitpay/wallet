@@ -567,10 +567,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
 
     // Warn: fee too high
-    this.checkFeeHigh(
-      Number(parsedAmount.amountSat),
-      Number(invoiceFeeSat) + Number(ctxp.fee)
-    );
+    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+      this.checkFeeHigh(
+        Number(parsedAmount.amountSat),
+        Number(invoiceFeeSat) + Number(ctxp.fee)
+      );
+    }
 
     this.setTotalAmount(
       wallet,
