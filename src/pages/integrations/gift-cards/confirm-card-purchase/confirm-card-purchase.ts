@@ -81,6 +81,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public cardConfig: CardConfig;
   public hideSlideButton: boolean;
+  public displayNameIncludesGiftCard: boolean = false;
 
   constructor(
     addressProvider: AddressProvider,
@@ -158,6 +159,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.cardConfig = await this.giftCardProvider.getCardConfig(
       this.navParams.get('cardName')
     );
+    this.displayNameIncludesGiftCard = this.cardConfig.displayName
+      .toLowerCase()
+      .includes('gift card');
     this.onlyIntegers = this.cardConfig.currency === 'JPY';
     this.activationFee = getActivationFee(this.amount, this.cardConfig);
   }

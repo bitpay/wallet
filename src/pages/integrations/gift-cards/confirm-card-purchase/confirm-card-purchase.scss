@@ -33,6 +33,8 @@ confirm-card-purchase-page {
     }
 
     .card-list-item__icon {
+      flex-shrink: 0;
+
       img {
         border: 1px #9ba3ae solid;
         border-radius: 50%;
