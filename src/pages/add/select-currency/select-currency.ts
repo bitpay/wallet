@@ -193,9 +193,7 @@ export class SelectCurrencyPage {
         .then(() => {
           this.endProcess();
         });
-    } else {
-      this.endProcess();
-    }
+    } 
   }
 
   public showPairedWalletSelector(token) {
