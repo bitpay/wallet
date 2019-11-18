@@ -6,10 +6,6 @@
 button.discount-item {
   height: 75px;
 
-  &.activated {
-    background: $feather;
-  }
-
   img-loader {
     flex-shrink: 0;
     margin-left: 2px;

@@ -1,50 +1,46 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Card Settings'|translate}}</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-
-  <ion-list class="settings-list bp-list">
-    <div *ngIf="!bitpayCard">
-      <ion-item>
+<wide-header-page title="{{'Card Settings'|translate}}">
+  <div page-content>
+    <ion-list class="bp-list" [ngClass]="{'top-padding': !bitpayCard}">
+      <ion-item *ngIf="!bitpayCard">
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
       </ion-item>
-    </div>
 
-    <div *ngIf="bitpayCard">
-      <ion-item>
-        <ion-icon item-start>
-          <img width="60" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
-        </ion-icon>
-        <h2>BitPay Visa&reg; Card</h2>
-        <p>{{bitpayCard.email}}</p>
-      </ion-item>
-      <ion-item>
-        Last four digits
-        <ion-note item-end>
-          {{bitpayCard.lastFourDigits}}
-        </ion-note>
-      </ion-item>
 
-      <ion-item class="with-label no-border" (click)="unlinkCard(bitpayCard)">
-        <ion-label>{{'Unlink card' | translate}}</ion-label>
-      </ion-item>
-      <label-tip type="warn" header="no-header">
-        <div label-tip-body>
-          <div translate>Unlink the card will remove it from this device.</div>
-        </div>
-      </label-tip>
+      <div *ngIf="bitpayCard">
+        <ion-item>
+          <ion-icon item-start>
+            <img width="60" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
+          </ion-icon>
+          <h2>BitPay Visa&reg; Card</h2>
+          <p>{{bitpayCard.email}}</p>
+        </ion-item>
+        <ion-item>
+          Last four digits
+          <ion-note item-end>
+            {{bitpayCard.lastFourDigits}}
+          </ion-note>
+        </ion-item>
 
-      <ion-item class="with-label no-border" (click)="unlinkAccount(bitpayCard)">
-        <ion-label>{{'Unlink account' | translate}}</ion-label>
-      </ion-item>
-      <label-tip type="warn" header="no-header">
-        <div label-tip-body>
-          <div translate>Unlink the account will remove it and all associated cards from this device.</div>
-        </div>
-      </label-tip>
-    </div>
-  </ion-list>
-</ion-content>
+        <button ion-item class="with-label no-border" (click)="unlinkCard(bitpayCard)">
+          <ion-label>{{'Unlink card' | translate}}</ion-label>
+        </button>
+        <label-tip type="warn" header="no-header">
+          <div label-tip-body>
+            <div translate>Unlink the card will remove it from this device.</div>
+          </div>
+        </label-tip>
+
+        <button ion-item class="with-label no-border" (click)="unlinkAccount(bitpayCard)">
+          <ion-label>{{'Unlink account' | translate}}</ion-label>
+        </button>
+        <label-tip type="warn" header="no-header">
+          <div label-tip-body>
+            <div translate>Unlink the account will remove it and all associated cards from this device.</div>
+          </div>
+        </label-tip>
+      </div>
+
+    </ion-list>
+  </div>
+</wide-header-page>

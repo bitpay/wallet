@@ -1,5 +1,5 @@
 <ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="headerColor">
+  <ion-navbar>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
@@ -10,10 +10,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+<ion-content #scrollArea>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+      <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
           <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
           <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
@@ -44,11 +44,11 @@
         </ion-note>
       </button>
 
-      <ion-item-divider class="bp-list-title" *ngIf="canSign">{{'Wallets' | translate}}
-        <button class="reorder-option" ion-button item-end icon-only clear *ngIf="!showReorder && wallets?.length > 1" (click)="reorder()">
+      <ion-item-divider *ngIf="canSign">{{'Wallets' | translate}}
+        <button class="reorder-option" ion-button item-end clear *ngIf="!showReorder && wallets?.length > 1" (click)="reorder()">
           <img src="assets/img/sort.svg">
         </button>
-        <button class="reorder-option" ion-button item-end icon-only clear *ngIf="showReorder" (click)="reorder()">
+        <button class="reorder-option" ion-button item-end clear *ngIf="showReorder" (click)="reorder()">
           {{'Done' | translate}}
         </button>
       </ion-item-divider>
@@ -64,11 +64,8 @@
             {{'Hidden'|translate}}
           </ion-note>
         </button>
-        <button ion-item *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()">
-          <ion-icon class="item-img settings-icon" item-start>
-            <div class="icon-plus"></div>
-          </ion-icon>
-          <ion-label translate>Create a new wallet</ion-label>
+        <button ion-item class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()" translate>
+          Create a new wallet
         </button>
       </ion-list>
       <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)" *ngIf="showReorder">
@@ -90,12 +87,12 @@
         </ion-note>
       </button>
 
-      <div *ngIf="canSign">
+      <div *ngIf="canSign && !needsBackup">
         <ion-item class="with-label no-border">
           <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
-          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="needsBackup && !encryptEnabled"></ion-toggle>
+          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()"></ion-toggle>
         </ion-item>
-        <label-tip type="info">
+        <label-tip type="info" *ngIf="!encryptEnabled">
           <span label-tip-title translate>Password Not Recoverable</span>
           <div label-tip-body>
             <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
