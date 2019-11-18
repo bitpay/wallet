@@ -43,7 +43,6 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 
   ionViewWillEnter() {
-    this.logGiftCardCatalogHomeView();
     this.giftCardProvider
       .getAvailableCards()
       .then(allCards => {
@@ -60,6 +59,10 @@ export class CardCatalogPage extends WideHeaderPage {
         this.showError();
         return [] as CardConfig[];
       });
+  }
+
+  ionViewDidEnter() {
+    this.logGiftCardCatalogHomeView();
   }
 
   onSearch(query: string) {
