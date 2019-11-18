@@ -1,3 +1,4 @@
+import { CurrencyProvider } from '../providers/currency/currency';
 import { EnvironmentSchema } from './schema';
 
 /**
@@ -6,11 +7,7 @@ import { EnvironmentSchema } from './schema';
 const env: EnvironmentSchema = {
   name: 'production',
   enableAnimations: true,
-  ratesAPI: {
-    btc: 'https://bitpay.com/api/rates',
-    bch: 'https://bitpay.com/api/rates/bch',
-    eth: 'https://bitpay.com/api/rates/eth'
-  },
+  ratesAPI: new CurrencyProvider().getRatesApi(),
   activateScanner: true
 };
 

@@ -79,6 +79,7 @@ export class BitPayCardPage {
   }
 
   ionViewWillEnter() {
+    this.bitPayCardProvider.logEvent('legacycard_view', {});
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
@@ -88,6 +89,21 @@ export class BitPayCardPage {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
+  }
+
+  logLegacyCardTopupStartEvent() {
+    this.bitPayCardProvider.logEvent('legacycard_topup_start', {});
+  }
+
+  logLegacyCardViewAmountItem() {
+    this.bitPayCardProvider.logEvent('view_item', {
+      items: [
+        {
+          name: 'legacyCard',
+          category: 'debitCard'
+        }
+      ]
+    });
   }
 
   private setDateRange(preset: string) {
@@ -247,6 +263,7 @@ export class BitPayCardPage {
   }
 
   public topUp(): void {
+    this.logLegacyCardTopupStartEvent();
     this.navCtrl.push(AmountPage, {
       id: this.cardId,
       nextPage: 'BitPayCardTopUpPage',

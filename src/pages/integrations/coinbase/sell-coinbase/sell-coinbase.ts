@@ -13,6 +13,7 @@ import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { Coin } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -29,7 +30,7 @@ export class SellCoinbasePage {
   @ViewChild('slideButton')
   slideButton;
 
-  private coin: string;
+  private coin: Coin;
   private amount: string;
   private currency: string;
   private wallets;

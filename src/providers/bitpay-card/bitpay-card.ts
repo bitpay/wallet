@@ -13,6 +13,7 @@ import { Globalization } from '@ionic-native/globalization';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { AnalyticsProvider } from '../analytics/analytics';
 
 @Injectable()
 export class BitPayCardProvider {
@@ -25,9 +26,14 @@ export class BitPayCardProvider {
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private globalization: Globalization,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.logger.debug('BitPayCardProvider initialized');
+  }
+
+  logDebitCardLinked() {
+    this.analyticsProvider.setUserProperty('hasLinkedDebitCard', 'true');
   }
 
   private isActive(cb): void {
@@ -104,6 +110,10 @@ export class BitPayCardProvider {
       type: txn.type,
       runningBalance
     });
+  }
+
+  logEvent(eventName: string, eventParams: { [key: string]: any }) {
+    this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
   public _processTransactions(invoices, history) {
@@ -246,6 +256,7 @@ export class BitPayCardProvider {
             cards
           )
           .then(() => {
+            this.logDebitCardLinked();
             this.onGoingProcessProvider.clear();
             return cb(null, cards);
           });

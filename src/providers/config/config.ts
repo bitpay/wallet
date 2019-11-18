@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
+import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
-
-export interface CoinOpts {
-  btc: Partial<Config['wallet']['settings']>;
-  bch: Partial<Config['wallet']['settings']>;
-  eth: Partial<Config['wallet']['settings']>;
-}
 
 export interface Config {
   limits: {
@@ -85,6 +80,14 @@ export interface Config {
     enabled: boolean;
   };
 
+  productsUpdates: {
+    enabled: boolean;
+  };
+
+  offersAndPromotions: {
+    enabled: boolean;
+  };
+
   emailNotifications: {
     enabled: boolean;
     email: string;
@@ -100,44 +103,22 @@ export interface Config {
     weight: number;
   };
 
-  blockExplorerUrl: {
-    btc: string;
-    bch: string;
-    eth: string;
-  };
+  blockExplorerUrl: CoinsMap<string>;
+
+  allowMultiplePrimaryWallets: boolean;
 }
 
 @Injectable()
 export class ConfigProvider {
   public configCache: Config;
   public readonly configDefault: Config;
-  public coinOpts: CoinOpts;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized');
-    this.coinOpts = {
-      btc: {
-        unitName: 'BTC',
-        unitToSatoshi: 100000000,
-        unitDecimals: 8,
-        unitCode: 'btc'
-      },
-      bch: {
-        unitName: 'BCH',
-        unitToSatoshi: 100000000,
-        unitDecimals: 8,
-        unitCode: 'bch'
-      },
-      eth: {
-        unitName: 'ETH',
-        unitToSatoshi: 1e18,
-        unitDecimals: 18,
-        unitCode: 'eth'
-      }
-    };
     this.configDefault = {
       // wallet limits
       limits: {
@@ -220,6 +201,14 @@ export class ConfigProvider {
         enabled: true
       },
 
+      productsUpdates: {
+        enabled: true
+      },
+
+      offersAndPromotions: {
+        enabled: true
+      },
+
       emailNotifications: {
         enabled: false,
         email: ''
@@ -229,11 +218,9 @@ export class ConfigProvider {
         weight: 3
       },
 
-      blockExplorerUrl: {
-        btc: 'insight.bitcore.io/#/BTC/',
-        bch: 'insight.bitcore.io/#/BCH/',
-        eth: 'insight.bitcore.io/#/ETH/'
-      }
+      blockExplorerUrl: this.currencyProvider.getBlockExplorerUrls(),
+
+      allowMultiplePrimaryWallets: false
     };
   }
 
@@ -284,10 +271,6 @@ export class ConfigProvider {
     this.persistence.storeConfig(this.configCache).then(() => {
       this.logger.info('Config saved');
     });
-  }
-
-  public getCoinOpts(): CoinOpts {
-    return this.coinOpts;
   }
 
   public get(): Config {

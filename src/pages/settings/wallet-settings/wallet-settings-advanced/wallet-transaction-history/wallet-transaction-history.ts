@@ -7,6 +7,7 @@ import * as papa from 'papaparse';
 // Providers
 import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { CurrencyProvider } from '../../../../../providers/currency/currency';
 import { Logger } from '../../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -23,12 +24,9 @@ export class WalletTransactionHistoryPage {
   public isCordova: boolean;
   public err;
   public config;
-  public coinOpts;
   public csvContent;
   public csvFilename;
   public csvHeader: string[];
-  public unitToSatoshi: number;
-  public unitDecimals: number;
   public satToUnit: number;
 
   private currency: string;
@@ -38,6 +36,7 @@ export class WalletTransactionHistoryPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
@@ -59,10 +58,10 @@ export class WalletTransactionHistoryPage {
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
-    this.coinOpts = this.configProvider.getCoinOpts()[this.wallet.coin];
-    this.unitToSatoshi = this.coinOpts.unitToSatoshi;
-    this.unitDecimals = this.coinOpts.unitDecimals;
-    this.satToUnit = 1 / this.unitToSatoshi;
+    const { unitToSatoshi } = this.currencyProvider.getPrecision(
+      this.wallet.coin
+    );
+    this.satToUnit = 1 / unitToSatoshi;
     this.csvHistory();
   }
 

@@ -13,6 +13,10 @@ import { ShapeshiftPage } from '../shapeshift';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
+import {
+  Coin,
+  CurrencyProvider
+} from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -75,6 +79,7 @@ export class ShapeshiftConfirmPage {
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -105,9 +110,9 @@ export class ShapeshiftConfirmPage {
     this.network = this.shapeshiftProvider.getNetwork();
     this.fromWallet = this.profileProvider.getWallet(this.fromWalletId);
     this.toWallet = this.profileProvider.getWallet(this.toWalletId);
-    this.unitToSatoshi = this.configProvider.getCoinOpts()[
+    this.unitToSatoshi = this.currencyProvider.getPrecision(
       this.fromWallet.coin
-    ].unitToSatoshi;
+    ).unitToSatoshi;
   }
 
   ionViewDidEnter() {
@@ -331,7 +336,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private satToFiat(coin: string, sat: number, isoCode: string): Promise<any> {
+  private satToFiat(coin: Coin, sat: number, isoCode: string): Promise<any> {
     return new Promise(resolve => {
       this.txFormatProvider.toFiat(coin, sat, isoCode).then(value => {
         return resolve(value);

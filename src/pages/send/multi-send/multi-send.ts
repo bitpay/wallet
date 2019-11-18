@@ -10,11 +10,11 @@ import {
 import * as _ from 'lodash';
 
 // Providers
+import { CurrencyProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcProvider } from '../../../providers/bwc/bwc';
-import { CoinOpts, ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
@@ -33,6 +33,7 @@ import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
   templateUrl: 'multi-send.html'
 })
 export class MultiSendPage extends WalletTabsChild {
+  public bitcore;
   public parsedData: any;
   public search: string = '';
   public multiRecipients: any = [];
@@ -47,11 +48,12 @@ export class MultiSendPage extends WalletTabsChild {
   public invalidAddress: boolean;
   public isDisabledContinue: boolean;
 
-  private coinOpts: CoinOpts;
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
+    'EthereumAddress',
+    'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri'
   ];
@@ -60,7 +62,7 @@ export class MultiSendPage extends WalletTabsChild {
     navCtrl: NavController,
     private navParams: NavParams,
     profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
@@ -76,8 +78,11 @@ export class MultiSendPage extends WalletTabsChild {
     private bwcProvider: BwcProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
+    this.bitcore = {
+      btc: this.bwcProvider.getBitcore(),
+      bch: this.bwcProvider.getBitcoreCash()
+    };
     this.isDisabledContinue = true;
-    this.coinOpts = this.configProvider.getCoinOpts();
   }
 
   ionViewDidLoad() {
@@ -145,7 +150,8 @@ export class MultiSendPage extends WalletTabsChild {
       item.fiatAmount = data.fiatAmount;
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.decimalPipe.transform(
-        data.amount / this.coinOpts[this.wallet.coin].unitToSatoshi,
+        data.amount /
+          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
         '1.2-6'
       );
       this.multiRecipients[index] = item;
@@ -156,7 +162,8 @@ export class MultiSendPage extends WalletTabsChild {
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
       ? this.decimalPipe.transform(
-          +recipient.amount / this.coinOpts[this.wallet.coin].unitToSatoshi,
+          +recipient.amount /
+            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
           '1.2-6'
         )
       : null;
@@ -183,7 +190,8 @@ export class MultiSendPage extends WalletTabsChild {
     if (
       this.parsedData &&
       (this.parsedData.type === 'BitcoinUri' ||
-        this.parsedData.type === 'BitcoinCashUri')
+        this.parsedData.type === 'BitcoinCashUri' ||
+        this.parsedData.type === 'EthereumUri')
     ) {
       let parsed;
       let toAddress;
@@ -191,24 +199,32 @@ export class MultiSendPage extends WalletTabsChild {
       let recipient;
       let recipientType;
       try {
-        parsed =
-          this.wallet.coin == 'btc'
-            ? this.bwcProvider.getBitcore().URI(this.search)
-            : this.bwcProvider.getBitcoreCash().URI(this.search);
-        toAddress = parsed.address
-          ? parsed.address.toString()
-          : _.clone(this.search);
+        if (this.bitcore[this.wallet.coin]) {
+          parsed = this.bitcore[this.wallet.coin].URI(this.search);
+        }
+        const address = this.incomingDataProvider.extractAddress(this.search);
+        toAddress =
+          parsed && parsed.address
+            ? parsed.address.toString()
+            : _.clone(address);
 
         // keep address in original format
         if (
+          parsed &&
           parsed.address &&
           this.search.indexOf(toAddress) < 0 &&
           this.wallet.coin == 'bch'
         ) {
           toAddress = parsed.address.toCashAddress();
         }
-
-        amount = parsed.amount ? parsed.amount : null;
+        const extractedAmount = /[\?\&]amount|value=(\d+([\,\.]\d+)?)/i.exec(
+          this.search
+        );
+        if (parsed && parsed.amount) {
+          amount = parsed.amount;
+        } else if (extractedAmount) {
+          amount = extractedAmount[1];
+        }
         recipientType = 'address';
         recipient = null;
       } catch (_err) {
@@ -216,13 +232,18 @@ export class MultiSendPage extends WalletTabsChild {
         toAddress = _.clone(this.search);
         recipientType = 'address';
       }
-
-      this.addRecipient({
+      const newRecipient = {
         amount,
         toAddress,
         recipientType,
         recipient
-      });
+      };
+      const index = this.multiRecipients.length;
+      if (!amount) {
+        this.openAmountModal(newRecipient, index);
+      } else {
+        this.addRecipient(newRecipient);
+      }
     } else {
       const newRecipient = {
         toAddress: _.clone(this.search),
@@ -263,11 +284,18 @@ export class MultiSendPage extends WalletTabsChild {
     this.events.publish('ScanFromWallet');
   }
 
+  public getCoinName(coin): string {
+    return this.currencyProvider.getCoinName(coin);
+  }
+
   private checkCoinAndNetwork(data): boolean {
-    const addrData = this.addressProvider.getCoinAndNetwork(data);
+    const addrData = this.addressProvider.getCoinAndNetwork(
+      data,
+      this.wallet.network
+    );
     const isValid =
-      this.wallet.coin == addrData.coin &&
-      (addrData.network == 'any' || addrData.network == this.wallet.network);
+      this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+        addrData.coin && addrData.network == this.wallet.network;
 
     if (isValid) {
       this.invalidAddress = false;

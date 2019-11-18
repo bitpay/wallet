@@ -2,56 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import env from '../../environments';
-import { CoinOpts, ConfigProvider } from '../../providers/config/config';
+import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
-
-export interface RatesObj {
-  btc: {};
-  bch: {};
-  eth: {};
-}
-
-export interface RatesAvailable {
-  btc: boolean;
-  bch: boolean;
-  eth: boolean;
-}
 
 @Injectable()
 export class RateProvider {
-  private rates: RatesObj;
   private alternatives;
-  private ratesAvailable: RatesAvailable;
-  private coinOpts: CoinOpts;
+  private rates = {} as CoinsMap<{}>;
+  private ratesAvailable = {} as CoinsMap<boolean>;
+  private rateServiceUrl = {} as CoinsMap<string>;
 
-  private rateServiceUrl = {
-    btc: env.ratesAPI.btc,
-    bch: env.ratesAPI.bch,
-    eth: env.ratesAPI.eth
-  };
   private fiatRateAPIUrl = 'https://bws.bitpay.com/bws/api/v1/fiatrates';
 
   constructor(
-    private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private http: HttpClient,
     private logger: Logger
   ) {
     this.logger.debug('RateProvider initialized');
-    this.rates = {
-      btc: {},
-      bch: {},
-      eth: {}
-    };
-    this.alternatives = [];
-    this.coinOpts = this.configProvider.getCoinOpts();
-    this.ratesAvailable = {
-      btc: false,
-      bch: false,
-      eth: false
-    };
-    this.updateRates('btc');
-    this.updateRates('bch');
-    this.updateRates('eth');
+    this.alternatives = {};
+    for (const coin of this.currencyProvider.getAvailableCoins()) {
+      this.rateServiceUrl[coin] = env.ratesAPI[coin];
+      this.rates[coin] = { USD: 1 };
+      this.ratesAvailable[coin] = false;
+      this.updateRates(coin);
+    }
   }
 
   public updateRates(chain: string): Promise<any> {
@@ -59,12 +34,11 @@ export class RateProvider {
       this.getCoin(chain)
         .then(dataCoin => {
           _.each(dataCoin, currency => {
-            this.rates[chain][currency.code] = currency.rate;
-            this.alternatives.push({
-              name: currency.name,
-              isoCode: currency.code,
-              rate: currency.rate
-            });
+            if (currency && currency.code && currency.rate) {
+              this.rates[chain][currency.code] = currency.rate;
+              if (currency.name)
+                this.alternatives[currency.code] = { name: currency.name };
+            }
           });
           this.ratesAvailable[chain] = true;
           resolve();
@@ -88,41 +62,41 @@ export class RateProvider {
     return this.rates[chain][code];
   }
 
-  public getAlternatives() {
-    return this.alternatives;
+  private getAlternatives(): any[] {
+    const alternatives: any[] = [];
+    for (let key in this.alternatives) {
+      alternatives.push({ isoCode: key, name: this.alternatives[key].name });
+    }
+    return alternatives;
   }
 
   public isCoinAvailable(chain: string) {
     return this.ratesAvailable[chain];
   }
 
-  public toFiat(satoshis: number, code: string, chain: string): number {
+  public toFiat(satoshis: number, code: string, chain): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
     }
     return (
       satoshis *
-      (1 / this.coinOpts[chain].unitToSatoshi) *
+      (1 / this.currencyProvider.getPrecision(chain).unitToSatoshi) *
       this.getRate(code, chain)
     );
   }
 
-  public fromFiat(amount: number, code: string, chain: string): number {
+  public fromFiat(amount: number, code: string, chain): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
     }
     return (
-      (amount / this.getRate(code, chain)) * this.coinOpts[chain].unitToSatoshi
+      (amount / this.getRate(code, chain)) *
+      this.currencyProvider.getPrecision(chain).unitToSatoshi
     );
   }
 
   public listAlternatives(sort: boolean) {
-    let alternatives = _.map(this.getAlternatives(), (item: any) => {
-      return {
-        name: item.name,
-        isoCode: item.isoCode
-      };
-    });
+    const alternatives = this.getAlternatives();
     if (sort) {
       alternatives.sort((a, b) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;

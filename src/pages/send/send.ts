@@ -8,9 +8,15 @@ import { Observable } from 'rxjs/Observable';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
+import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
@@ -18,26 +24,15 @@ import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
 
-export enum CoinName {
-  BTC = 'Bitcoin',
-  BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
-}
-
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
 })
 export class SendPage extends WalletTabsChild {
   public search: string = '';
-  public walletsBtc;
-  public walletsBch;
-  public walletsEth;
-  public hasBtcWallets: boolean;
-  public hasBchWallets: boolean;
-  public hasEthWallets: boolean;
+  public wallets = {} as CoinsMap<any>;
+  public hasWallets = {} as CoinsMap<boolean>;
   public invalidAddress: boolean;
-
   private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -49,8 +44,10 @@ export class SendPage extends WalletTabsChild {
   ];
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     navCtrl: NavController,
     private navParams: NavParams,
+    private payproProvider: PayproProvider,
     profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
@@ -74,13 +71,10 @@ export class SendPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.walletsEth = this.profileProvider.getWallets({ coin: 'eth' });
-    this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
-    this.hasBchWallets = !_.isEmpty(this.walletsBch);
-    this.hasEthWallets = !_.isEmpty(this.walletsEth);
+    for (const coin of this.currencyProvider.getAvailableCoins()) {
+      this.wallets[coin] = this.profileProvider.getWallets({ coin });
+      this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
+    }
   }
 
   ionViewWillLeave() {
@@ -102,7 +96,7 @@ export class SendPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = CoinName[this.wallet.coin.toUpperCase()];
+    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
       { coinName }
@@ -121,16 +115,24 @@ export class SendPage extends WalletTabsChild {
     this.events.publish('ScanFromWallet');
   }
 
+  public isMultiSend(coin: Coin) {
+    return this.currencyProvider.isMultiSend(coin);
+  }
+
   private checkCoinAndNetwork(data, isPayPro?): boolean {
     let isValid, addrData;
     if (isPayPro) {
       isValid =
-        data.coin == this.wallet.coin && data.network == this.wallet.network;
+        data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
+        data.network == this.wallet.network;
     } else {
-      addrData = this.addressProvider.getCoinAndNetwork(data);
+      addrData = this.addressProvider.getCoinAndNetwork(
+        data,
+        this.wallet.network
+      );
       isValid =
-        this.wallet.coin == addrData.coin &&
-        (addrData.network == 'any' || addrData.network == this.wallet.network);
+        this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
+          addrData.coin && addrData.network == this.wallet.network;
     }
 
     if (isValid) {
@@ -201,29 +203,42 @@ export class SendPage extends WalletTabsChild {
     const hasContacts = await this.checkIfContact();
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
-      if (parsedData && parsedData.type == 'PayPro') {
-        const coin = this.incomingDataProvider.getCoinFromUri(parsedData.data);
-        this.incomingDataProvider
-          .getPayProDetails(this.search)
-          .then(payProDetails => {
-            payProDetails.coin = coin;
-            const isValid = this.checkCoinAndNetwork(payProDetails, true);
-            if (isValid) this.redir();
-          })
-          .catch(err => {
-            this.invalidAddress = true;
-            this.logger.warn(err);
-          });
+      if (
+        (parsedData && parsedData.type == 'PayPro') ||
+        (parsedData && parsedData.type == 'InvoiceUri')
+      ) {
+        try {
+          const invoiceUrl = this.incomingDataProvider.getPayProUrl(
+            this.search
+          );
+          const payproOptions = await this.payproProvider.getPayProOptions(
+            invoiceUrl
+          );
+          const selected = payproOptions.paymentOptions.filter(
+            option => option.selected
+          );
+          if (selected.length > 0) {
+            const isValid = this.checkCoinAndNetwork(selected[0], true);
+            if (isValid) {
+              this.incomingDataProvider.redir(this.search);
+            }
+          } else {
+            this.incomingDataProvider.redir(this.search);
+          }
+        } catch (err) {
+          this.invalidAddress = true;
+          this.logger.warn(err);
+        }
       } else if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
-      } else if (parsedData && parsedData.type == 'InvoiceUri') {
-        this.incomingDataProvider.redir(this.search);
       } else if (parsedData && parsedData.type == 'BitPayCard') {
         this.close();
+        this.incomingDataProvider.redir(this.search);
+      } else if (parsedData && parsedData.type == 'PrivateKey') {
         this.incomingDataProvider.redir(this.search);
       } else {
         this.invalidAddress = true;

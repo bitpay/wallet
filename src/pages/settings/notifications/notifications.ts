@@ -31,6 +31,8 @@ export class NotificationsPage {
   public pushNotifications: boolean;
   public desktopNotifications: boolean;
   public confirmedTxsNotifications: boolean;
+  public productsUpdates: boolean;
+  public offersAndPromotions: boolean;
 
   public emailNotifications: boolean;
 
@@ -76,6 +78,12 @@ export class NotificationsPage {
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
       : false;
+    this.productsUpdates = config.productsUpdates
+      ? config.productsUpdates.enabled
+      : false;
+    this.offersAndPromotions = config.offersAndPromotions
+      ? config.offersAndPromotions.enabled
+      : false;
 
     this.emailForm.setValue({
       email: this.emailProvider.getEmailIfEnabled(config) || ''
@@ -112,6 +120,31 @@ export class NotificationsPage {
       }
     };
     this.configProvider.set(opts);
+  }
+
+  public productsUpdatesChange() {
+    const opts = {
+      productsUpdates: {
+        enabled: this.productsUpdates
+      }
+    };
+    this.configProvider.set(opts);
+    this.updateTopic(this.productsUpdates, 'productsupdates');
+  }
+
+  public offersAndPromotionsChange() {
+    const opts = {
+      offersAndPromotions: {
+        enabled: this.offersAndPromotions
+      }
+    };
+    this.configProvider.set(opts);
+    this.updateTopic(this.offersAndPromotions, 'offersandpromotions');
+  }
+
+  public updateTopic(enabled, topic) {
+    if (enabled) this.pushProvider.subscribeToTopic(topic);
+    else this.pushProvider.unsubscribeFromTopic(topic);
   }
 
   public emailNotificationsChange() {

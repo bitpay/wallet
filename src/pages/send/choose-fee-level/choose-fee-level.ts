@@ -5,10 +5,15 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Providers
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { PopupProvider } from '../../../providers/popup/popup';
-import { UTXO_COINS } from '../../../providers/wallet/wallet';
 
+interface FeeOpts {
+  feeUnit: string;
+  feeUnitAmount: number;
+  blockTime: number;
+}
 @Component({
   selector: 'page-choose-fee-level',
   templateUrl: 'choose-fee-level.html'
@@ -32,7 +37,7 @@ export class ChooseFeeLevelPage {
   public feeOpts;
   public loadingFee: boolean;
   public feeLevels;
-  public coin: string;
+  public coin: Coin;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
   public maxFee: number;
@@ -44,6 +49,7 @@ export class ChooseFeeLevelPage {
   public cancelText: string;
 
   constructor(
+    private currencyProvider: CurrencyProvider,
     private viewCtrl: ViewController,
     private logger: Logger,
     private popupProvider: PopupProvider,
@@ -105,19 +111,14 @@ export class ChooseFeeLevelPage {
   }
 
   private setFeeUnits() {
-    const COIN = this.coin.toUpperCase();
-    switch (this.coin) {
-      case UTXO_COINS[COIN]:
-        this.feeUnit = 'sat/byte';
-        this.feeUnitAmount = 1000;
-        this.blockTime = 10;
-        break;
-      default:
-        this.feeUnit = 'Gwei';
-        this.feeUnitAmount = 1e9;
-        this.blockTime = 0.2;
-        break;
-    }
+    const {
+      feeUnit,
+      feeUnitAmount,
+      blockTime
+    }: FeeOpts = this.currencyProvider.getFeeUnits(this.coin);
+    this.feeUnit = feeUnit;
+    this.feeUnitAmount = feeUnitAmount;
+    this.blockTime = blockTime;
   }
 
   public updateFeeRate() {

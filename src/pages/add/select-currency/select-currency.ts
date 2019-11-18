@@ -15,6 +15,7 @@ import { CreateWalletPage } from '../create-wallet/create-wallet';
 
 // providers
 import {
+  ActionSheetProvider,
   BwcErrorProvider,
   Logger,
   OnGoingProcessProvider,
@@ -24,7 +25,12 @@ import {
   PushNotificationsProvider,
   WalletProvider
 } from '../../../providers';
-import { UTXO_COINS } from '../../../providers/wallet/wallet';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../../providers/currency/currency';
+import { Token } from '../../../providers/currency/token';
 
 @Component({
   selector: 'page-select-currency',
@@ -34,12 +40,19 @@ export class SelectCurrencyPage {
   private showKeyOnboarding: boolean;
 
   public title: string;
-  public coin: string;
-  public coinsSelected;
+  public coin: Coin;
+  public coinsSelected = {} as CoinsMap<boolean>;
+  public tokensSelected = {} as CoinsMap<boolean>;
+  public tokenDisabled = {} as CoinsMap<boolean>;
+
+  public availableChains: string[];
+  public availableTokens: Token[];
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
+    private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private logger: Logger,
     private navParam: NavParams,
@@ -54,12 +67,15 @@ export class SelectCurrencyPage {
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.coinsSelected = {
-      btc: true,
-      bch: true,
-      eth: true
-    };
+    this.availableChains = this.navParam.data.isShared
+      ? this.currencyProvider.getMultiSigCoins()
+      : this.currencyProvider.getAvailableChains();
+    this.availableTokens = this.currencyProvider.getAvailableTokens();
+    for (const chain of this.availableChains) {
+      this.coinsSelected[chain] = true;
+    }
     this.shouldShowKeyOnboarding();
+    this.setTokens();
   }
 
   ionViewDidLoad() {
@@ -86,7 +102,7 @@ export class SelectCurrencyPage {
     });
   }
 
-  private showKeyOnboardingSlides(coins: string[]) {
+  private showKeyOnboardingSlides(coins: Coin[]) {
     this.logger.debug('Showing key onboarding');
     const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
       showBackdrop: false,
@@ -94,7 +110,7 @@ export class SelectCurrencyPage {
     });
     modal.present();
     modal.onDidDismiss(() => {
-      this._createWallet(coins);
+      this._createWallets(coins);
     });
     this.persistenceProvider.setKeyOnboardingFlag();
   }
@@ -108,53 +124,40 @@ export class SelectCurrencyPage {
     });
   }
 
+  public getCoinName(coin: Coin): string {
+    return this.currencyProvider.getCoinName(coin);
+  }
+
   public goToImportWallet(): void {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  public createWallet(coins: string[]): void {
+  public createWallets(coins: Coin[]): void {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(coins);
       return;
+    } else if (this.isZeroState) {
+      this.showInfoSheet(coins);
+      return;
     }
-    this._createWallet(coins);
+    this._createWallets(coins);
   }
 
-  private _createWallet(coins: string[]): void {
-    coins = _.keys(_.pickBy(this.coinsSelected));
-    const opts = {
-      coin: coins[0],
-      singleAddress: UTXO_COINS[coins[0].toUpperCase()] ? false : true
-    };
+  private _createWallets(coins: Coin[]): void {
+    const selectedCoins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
+    coins = coins || selectedCoins;
+    const selectedTokens = _.keys(_.pickBy(this.tokensSelected));
     this.onGoingProcessProvider.set('creatingWallet');
-    this.createDefaultWallet(false, opts)
-      .then(wallet => {
-        if (coins.length === 1) this.endProcess(wallet);
-        else {
-          const promises = [];
-          const keyId = wallet.credentials.keyId;
-          coins.slice(1).forEach(coin => {
-            const opts = {
-              keyId,
-              coin,
-              singleAddress: UTXO_COINS[coin.toUpperCase()] ? false : true
-            };
-            promises.push(this.createDefaultWallet(true, opts));
-          });
-          Promise.all(promises)
-            .then(wallets =>
-              wallets.forEach(wallet => {
-                this.endProcess(wallet);
-              })
-            )
-            .catch(err => this.showError(err));
-        }
+    this.profileProvider
+      .createMultipleWallets(coins, selectedTokens)
+      .then(wallets => {
+        this.walletProvider.updateRemotePreferences(wallets);
+        this.pushNotificationsProvider.updateSubscription(wallets);
+        this.endProcess();
       })
-      .catch(err => this.showError(err));
-  }
-
-  private createDefaultWallet(addingNewWallet, opts) {
-    return this.profileProvider.createDefaultWallet(addingNewWallet, opts);
+      .catch(e => {
+        this.showError(e);
+      });
   }
 
   private showError(err) {
@@ -172,12 +175,76 @@ export class SelectCurrencyPage {
     return;
   }
 
-  private endProcess(wallet) {
-    this.walletProvider.updateRemotePreferences(wallet);
-    this.pushNotificationsProvider.updateSubscription(wallet);
+  private endProcess() {
     this.onGoingProcessProvider.clear();
     this.navCtrl.popToRoot().then(() => {
       this.events.publish('Local/WalletListChange');
+    });
+  }
+
+  public createAndBindTokenWallet(pairedWallet, token) {
+    if (!_.isEmpty(pairedWallet)) {
+      const tokenWalletClient = this.profileProvider.createTokenWallet(
+        pairedWallet,
+        token
+      );
+      this.profileProvider
+        .addAndBindWalletClient(tokenWalletClient)
+        .then(() => {
+          this.endProcess();
+        });
+    }
+  }
+
+  public showPairedWalletSelector(token) {
+    const eligibleWallets = this.navParam.data.keyId
+      ? this.profileProvider.getWalletsFromGroup({
+          keyId: this.navParam.data.keyId,
+          network: 'livenet',
+          pairFor: token
+        })
+      : [];
+
+    const walletSelector = this.actionSheetProvider.createInfoSheet(
+      'addTokenWallet',
+      {
+        wallets: eligibleWallets,
+        token
+      }
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(pairedWallet => {
+      return this.createAndBindTokenWallet(pairedWallet, token);
+    });
+  }
+  public setTokens(coin?: string): void {
+    if (coin === 'eth' || !coin) {
+      for (const token of this.availableTokens) {
+        if (this.isZeroState) {
+          this.tokensSelected[token.symbol] = false;
+        } else {
+          let canCreateit = _.isEmpty(
+            this.profileProvider.getWalletsFromGroup({
+              keyId: this.navParam.data.keyId,
+              network: 'livenet',
+              pairFor: token
+            })
+          );
+          this.tokenDisabled[token.symbol] = canCreateit;
+        }
+      }
+    }
+  }
+
+  private showInfoSheet(coins: Coin[]) {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('new-key');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        this.showKeyOnboardingSlides(coins);
+        return;
+      }
+      this._createWallets(coins);
     });
   }
 }

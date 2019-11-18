@@ -22,7 +22,9 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
+
+// Integrations: Invoice
+import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -87,6 +89,7 @@ import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/w
 import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
 import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
 import { WalletGroupOnboardingPage } from '../pages/settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
+import { WalletGroupQrExportPage } from '../pages/settings/wallet-group-settings/wallet-group-qr-export/wallet-group-qr-export';
 import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
 
 /* Wallet Settings */
@@ -144,7 +147,6 @@ export const PAGES = [
   CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
-  ConfirmInvoicePage,
   CopayersPage,
   EthLiveCardPage,
   FeedbackCardPage,
@@ -177,6 +179,7 @@ export const PAGES = [
   SettingsPage,
   SellCoinbasePage,
   SelectCurrencyPage,
+  SelectInvoicePage,
   CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,
@@ -205,6 +208,7 @@ export const PAGES = [
   WalletDuplicatePage,
   WalletGroupExtendedPrivateKeyPage,
   WalletGroupDeletePage,
+  WalletGroupQrExportPage,
   WalletGroupSettingsPage,
   WalletGroupNamePage,
   WalletGroupOnboardingPage,

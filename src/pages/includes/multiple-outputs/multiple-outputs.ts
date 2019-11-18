@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
+import { Coin } from '../../../providers/currency/currency';
 import { Logger } from '../../../providers/logger/logger';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -12,7 +13,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'multiple-outputs.html'
 })
 export class MultipleOutputsPage {
-  public coin: string;
+  public coin: Coin;
   private _tx;
 
   public contactName: string;
@@ -34,7 +35,8 @@ export class MultipleOutputsPage {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
       this.coin = this._tx.coin
         ? this._tx.coin
-        : this.addressProvider.getCoinAndNetwork(outputAddr).coin;
+        : this.addressProvider.getCoinAndNetwork(outputAddr, this._tx.network)
+            .coin;
 
       const addressToShow = this.walletProvider.getAddressView(
         this.coin,

@@ -12,6 +12,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
+import { Coin } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -19,7 +20,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
-  Coin,
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -271,9 +271,9 @@ export class JoinWalletPage {
 
   private join(opts): void {
     this.onGoingProcessProvider.set('joiningWallet');
-    const addingNewWallet = this.keyId ? true : false; // Adding new account to key
+    opts['keyId'] = this.keyId;
     this.profileProvider
-      .joinWallet(addingNewWallet, opts)
+      .joinWallet(opts)
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();

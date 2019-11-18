@@ -9,6 +9,7 @@ import { DomProvider } from '../../providers/dom/dom';
 export type InfoSheetType =
   | 'activation-fee-included'
   | 'address-copied'
+  | 'addTokenWallet'
   | 'archive-all-gift-cards'
   | 'archive-gift-card'
   | 'appreciate-review'
@@ -39,7 +40,8 @@ export type InfoSheetType =
   | 'sensitive-info'
   | 'in-app-notification'
   | 'request-feature'
-  | 'report-issue';
+  | 'report-issue'
+  | 'new-key';
 
 export type OptionsSheetType =
   | 'address-options'

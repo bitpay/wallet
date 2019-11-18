@@ -33,6 +33,7 @@ export { BwcProvider } from '../providers/bwc/bwc';
 export { ClipboardProvider } from '../providers/clipboard/clipboard';
 export { CoinbaseProvider } from '../providers/coinbase/coinbase';
 export { ConfigProvider } from '../providers/config/config';
+export { CurrencyProvider } from '../providers/currency/currency';
 export {
   DerivationPathHelperProvider
 } from '../providers/derivation-path-helper/derivation-path-helper';

@@ -7,12 +7,10 @@ import * as _ from 'lodash';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
-import { InvoiceProvider } from '../invoice/invoice';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
-import { Network } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
-import { Coin } from '../wallet/wallet';
 
 export interface RedirParams {
   activePage?: any;
@@ -27,11 +25,11 @@ export class IncomingDataProvider {
     private actionSheetProvider: ActionSheetProvider,
     private events: Events,
     private bwcProvider: BwcProvider,
+    private currencyProvider: CurrencyProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private invoiceProvider: InvoiceProvider,
     private profileProvider: ProfileProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
@@ -57,6 +55,12 @@ export class IncomingDataProvider {
         value,
         coin
       });
+    } else if (redirTo === 'PaperWalletPage') {
+      const nextView = {
+        name: 'PaperWalletPage',
+        params: { privateKey: value }
+      };
+      this.events.publish('IncomingDataRedir', nextView);
     } else {
       this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
     }
@@ -185,43 +189,41 @@ export class IncomingDataProvider {
     this.logger.debug(
       'Incoming-data: Payment Protocol with non-backwards-compatible request'
     );
-    const coin = this.getCoinFromUri(data);
     const url = this.getPayProUrl(data);
-    this.goToPayPro(url, coin);
+    this.handleBitPayInvoice(url);
   }
 
-  private async handleBitPayInvoice(data: string) {
+  private async handleBitPayInvoice(invoiceUrl: string) {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
-    const testStr: boolean =
-      data.indexOf('test.bitpay.com') > -1 ? true : false;
-    const invoiceId: string = data.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/i\//,
-      ''
-    );
-    this.invoiceProvider.credentials.NETWORK = testStr
-      ? Network.testnet
-      : Network.livenet;
-    this.invoiceProvider.setCredentials();
-    const invoice = await this.invoiceProvider
-      .getBitPayInvoice(invoiceId)
-      .catch(err => {
-        this.events.publish('incomingDataError', err);
-        this.logger.error(err);
-        return;
-      });
-    const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-    if (selectedTransactionCurrency) {
-      this.goToPayPro(data, selectedTransactionCurrency.toLowerCase());
-    } else {
-      const stateParams = {
-        invoiceData: invoice,
-        invoiceId
-      };
-      let nextView = {
-        name: 'ConfirmInvoicePage',
-        params: stateParams
-      };
-      this.events.publish('IncomingDataRedir', nextView);
+    try {
+      const disableLoader = true;
+      const details = await this.payproProvider.getPayProOptions(
+        invoiceUrl,
+        disableLoader
+      );
+      const selected = details.paymentOptions.filter(option => option.selected);
+      if (selected.length === 1) {
+        // BTC, BCH, ETH Chains
+        const [{ currency }] = selected;
+        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+      } else {
+        // If ERC20
+        if (selected.length > 1) {
+          details.paymentOptions = selected;
+        }
+        // No currencies selected
+        const stateParams = {
+          payProOptions: details
+        };
+        let nextView = {
+          name: 'SelectInvoicePage',
+          params: stateParams
+        };
+        this.events.publish('IncomingDataRedir', nextView);
+      }
+    } catch (err) {
+      this.events.publish('incomingDataError', err);
+      this.logger.error(err);
     }
   }
 
@@ -273,13 +275,13 @@ export class IncomingDataProvider {
     if (gasPrice.exec(data)) {
       requiredFeeParam = gasPrice.exec(data)[1];
     }
-    const address = this.sanitizeEthereumUri(data);
+    const address = this.extractAddress(data);
     const message = '';
     const amount = parsedAmount || amountFromRedirParams;
     if (amount) {
       this.goSend(address, amount, message, coin, requiredFeeParam);
     } else {
-      this.handleEthereumAddress(address);
+      this.handleEthereumAddress(address, redirParams);
     }
   }
 
@@ -696,18 +698,10 @@ export class IncomingDataProvider {
     }
   }
 
-  private sanitizeEthereumUri(data): string {
-    let address = data;
-    const ethereum = /ethereum:/;
-    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
-    const gas = /[\?\&]gas=(\d+([\,\.]\d+)?)/i;
-    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
-    const gasLimit = /[\?\&]gasLimit=(\d+([\,\.]\d+)?)/i;
-    const params = [ethereum, value, gas, gasPrice, gasLimit];
-    for (const key of params) {
-      address = address.replace(key, '');
-    }
-    return address;
+  public extractAddress(data: string): string {
+    const address = data.replace(/^[a-z]+:/i, '').replace(/\?.*/, '');
+    const params = /([\?\&]+[a-z]+=(\d+([\,\.]\d+)?))+/i;
+    return address.replace(params, '');
   }
 
   private sanitizeUri(data): string {
@@ -724,26 +718,6 @@ export class IncomingDataProvider {
     newUri.replace('://', ':');
 
     return newUri;
-  }
-
-  public getCoinFromUri(data: string): Coin {
-    let coin = Coin.BTC;
-    const protocol = data.split(':')[0];
-    switch (protocol) {
-      case 'bitcoin':
-        coin = Coin.BTC;
-        break;
-      case 'bitcoincash':
-        coin = Coin.BCH;
-        break;
-      case 'ethereum':
-        coin = Coin.ETH;
-        break;
-      default:
-        coin = Coin.BTC;
-        break;
-    }
-    return coin;
   }
 
   public getPayProUrl(data: string): string {
@@ -825,9 +799,9 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
-  private goToPayPro(url: string, coin: Coin): void {
+  public goToPayPro(url: string, coin: Coin, disableLoader?: boolean): void {
     this.payproProvider
-      .getPayProDetails(url, coin)
+      .getPayProDetails(url, coin, disableLoader)
       .then(details => {
         this.handlePayPro(details, url, coin);
       })
@@ -837,7 +811,7 @@ export class IncomingDataProvider {
       });
   }
 
-  private handlePayPro(payProDetails, url, coin?: Coin): void {
+  private async handlePayPro(payProDetails, url, coin: Coin): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');
       const error = this.translate.instant('No wallets available');
@@ -848,33 +822,39 @@ export class IncomingDataProvider {
     let requiredFeeRate;
 
     if (payProDetails.requiredFeeRate) {
-      requiredFeeRate =
-        coin === 'eth'
-          ? payProDetails.requiredFeeRate
-          : Math.ceil(payProDetails.requiredFeeRate * 1024);
+      requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
+        ? payProDetails.requiredFeeRate
+        : Math.ceil(payProDetails.requiredFeeRate * 1024);
     }
 
-    const stateParams = {
-      amount: payProDetails.amount,
-      toAddress: payProDetails.toAddress,
-      description: payProDetails.memo,
-      data: payProDetails.data,
-      paypro: payProDetails,
-      coin,
-      payProUrl: url,
-      requiredFeeRate
-    };
-    const nextView = {
-      name: 'ConfirmPage',
-      params: stateParams
-    };
-    this.events.publish('IncomingDataRedir', nextView);
-  }
-
-  public getPayProDetails(data: string): Promise<any> {
-    const coin = this.getCoinFromUri(data);
-    const url = this.getPayProUrl(data);
-    let disableLoader = true;
-    return this.payproProvider.getPayProDetails(url, coin, disableLoader);
+    try {
+      const disableLoader = true;
+      const { paymentOptions } = await this.payproProvider.getPayProOptions(
+        url,
+        disableLoader
+      );
+      const { estimatedAmount } = paymentOptions.find(
+        option => option.currency.toLowerCase() === coin
+      );
+      const stateParams = {
+        amount: estimatedAmount,
+        toAddress: payProDetails.instructions[0].toAddress,
+        description: payProDetails.memo,
+        data: payProDetails.instructions[0].data,
+        paypro: payProDetails,
+        coin,
+        network: payProDetails.network,
+        payProUrl: url,
+        requiredFeeRate
+      };
+      const nextView = {
+        name: 'ConfirmPage',
+        params: stateParams
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    } catch (err) {
+      this.events.publish('incomingDataError', err);
+      this.logger.error(err);
+    }
   }
 }

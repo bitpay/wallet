@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
-enum CoinName {
-  BTC = 'Bitcoin',
-  BCH = 'Bitcoin Cash',
-  ETH = 'Ethereum'
-}
 
 @Component({
   selector: 'incoming-data-menu',
@@ -16,12 +11,15 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public https: boolean;
   public data: string;
   public type: string;
-  public coin: string;
+  public coin: Coin;
   public coinName: string;
   public fromHomeCard: boolean;
   public isCordova: boolean;
 
-  constructor(private platformProvider: PlatformProvider) {
+  constructor(
+    private currencyProvider: CurrencyProvider,
+    private platformProvider: PlatformProvider
+  ) {
     super();
     this.isCordova = this.platformProvider.isCordova;
   }
@@ -31,7 +29,7 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
     this.data = this.params.data.data;
     this.type = this.params.data.type;
     this.coin = this.params.data.coin;
-    this.coinName = CoinName[this.coin.toUpperCase()];
+    this.coinName = this.coin && this.currencyProvider.getCoinName(this.coin);
     this.fromHomeCard = this.params.data.fromHomeCard;
     if (this.type === 'url') {
       this.https = this.data.indexOf('https://') === 0 ? true : false;

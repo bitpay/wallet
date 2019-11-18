@@ -14,10 +14,14 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../../finish/finish';
+import { ConfirmPage } from '../../../send/confirm/confirm';
+import { CardDetailsPage } from '../../gift-cards/card-details/card-details';
+import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
+  AddressProvider,
   EmailNotificationsProvider,
   FeeProvider,
   IncomingDataProvider,
@@ -30,6 +34,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
@@ -52,9 +57,6 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
-import { ConfirmPage } from '../../../send/confirm/confirm';
-import { CardDetailsPage } from '../../gift-cards/card-details/card-details';
-import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 @Component({
   selector: 'confirm-card-purchase-page',
@@ -79,13 +81,16 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public cardConfig: CardConfig;
   public hideSlideButton: boolean;
+  public displayNameIncludesGiftCard: boolean = false;
 
   constructor(
+    addressProvider: AddressProvider,
     app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
+    currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
@@ -114,11 +119,13 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     statusBar: StatusBar
   ) {
     super(
+      addressProvider,
       app,
       actionSheetProvider,
       bwcErrorProvider,
       bwcProvider,
       configProvider,
+      currencyProvider,
       decimalPipe,
       externalLinkProvider,
       feeProvider,
@@ -152,6 +159,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.cardConfig = await this.giftCardProvider.getCardConfig(
       this.navParams.get('cardName')
     );
+    this.displayNameIncludesGiftCard = this.cardConfig.displayName
+      .toLowerCase()
+      .includes('gift card');
     this.onlyIntegers = this.cardConfig.currency === 'JPY';
     this.activationFee = getActivationFee(this.amount, this.cardConfig);
   }
@@ -161,6 +171,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   ionViewWillEnter() {
+    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
+      this.navCtrl.remove(this.navCtrl.getPrevious().index);
+    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -179,6 +192,47 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return;
     }
     this.showWallets(); // Show wallet selector
+  }
+
+  public logGiftCardPurchaseEvent(
+    isSlideConfirmFinished: boolean,
+    transactionCurrency: string,
+    giftData?: any
+  ) {
+    if (!isSlideConfirmFinished) {
+      this.giftCardProvider.logEvent('giftcards_purchase_start', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+      this.giftCardProvider.logEvent('add_to_cart', {
+        brand: this.cardConfig.name,
+        category: 'giftCards'
+      });
+    } else {
+      this.giftCardProvider.logEvent('giftcards_purchase_finish', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+
+      this.giftCardProvider.logEvent('set_checkout_option', {
+        transactionCurrency,
+        checkout_step: 1
+      });
+
+      this.giftCardProvider.logEvent('purchase', {
+        value: giftData.amount,
+        items: [
+          {
+            name: this.cardConfig.name,
+            category: 'giftCards',
+            quantity: 1,
+            price: giftData.amount.toString(10)
+          }
+        ]
+      });
+    }
   }
 
   public cancel() {
@@ -230,7 +284,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
     this.invoiceFee = Number(invoiceFee);
 
-    const networkFee = await this.satToFiat(wallet.coin, networkFeeSat);
+    const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+    const networkFee = await this.satToFiat(chain, networkFeeSat);
     this.networkFee = Number(networkFee);
     this.totalAmount =
       this.amount -
@@ -300,11 +355,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
-    const paymentCode =
-      COIN !== 'ETH'
-        ? invoice.paymentCodes[COIN].BIP73
-        : invoice.paymentCodes[COIN].EIP681;
-    const payProUrl = this.incomingDataProvider.getPayProUrl(paymentCode);
+    const paymentCode = this.currencyProvider.getPaymentCode(wallet.coin);
+    const protocolUrl = invoice.paymentCodes[COIN][paymentCode];
+    const payProUrl = this.incomingDataProvider.getPayProUrl(protocolUrl);
 
     if (!payProUrl) {
       throw {
@@ -321,34 +374,38 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           message: err
         };
       });
-
+    const { instructions } = details;
     const txp: Partial<TransactionProposal> = {
-      amount: details.amount,
-      toAddress: details.toAddress,
-      outputs: [
-        {
-          toAddress: details.toAddress,
-          amount: details.amount,
-          message
-        }
-      ],
+      coin: wallet.coin,
+      amount: _.sumBy(instructions, 'amount'),
+      toAddress: instructions[0].toAddress,
+      outputs: [],
       message,
       customData: {
         giftCardName: this.cardConfig.name,
         service: 'giftcards'
       },
       payProUrl,
-      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
-        ? false
-        : true,
-      data: details.data // eth
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
     };
 
+    for (const instruction of instructions) {
+      txp.outputs.push({
+        toAddress: instruction.toAddress,
+        amount: instruction.amount,
+        message: instruction.message,
+        data: instruction.data
+      });
+    }
+
+    if (wallet.credentials.token) {
+      txp.tokenAddress = wallet.credentials.token.address;
+    }
+
     if (details.requiredFeeRate) {
-      const requiredFeeRate =
-        wallet.coin === 'eth'
-          ? details.requiredFeeRate
-          : Math.ceil(details.requiredFeeRate * 1024);
+      const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
+        ? details.requiredFeeRate
+        : Math.ceil(details.requiredFeeRate * 1024);
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
@@ -451,6 +508,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       buyerSelectedTransactionCurrency: COIN,
       cardName: this.cardConfig.name
     };
+
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     const data = await this.createInvoice(dataSrc).catch(err => {
@@ -509,14 +567,16 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     };
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       wallet.coin,
-      ctxp.amount
+      ctxp.amount || parsedAmount.amountSat
     );
 
     // Warn: fee too high
-    this.checkFeeHigh(
-      Number(parsedAmount.amountSat),
-      Number(invoiceFeeSat) + Number(ctxp.fee)
-    );
+    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+      this.checkFeeHigh(
+        Number(parsedAmount.amountSat),
+        Number(invoiceFeeSat) + Number(ctxp.fee)
+      );
+    }
 
     this.setTotalAmount(
       wallet,
@@ -524,6 +584,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       invoiceFeeSat,
       ctxp.fee
     );
+
+    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
   public async buyConfirm() {
@@ -537,8 +599,16 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
+
     return this.publishAndSign(this.wallet, this.tx)
-      .then(() => this.redeemGiftCard(this.tx.giftData))
+      .then(() => {
+        this.redeemGiftCard(this.tx.giftData);
+        this.logGiftCardPurchaseEvent(
+          true,
+          this.wallet.coin.toUpperCase(),
+          this.tx.giftData
+        );
+      })
       .catch(async err => this.handlePurchaseError(err));
   }
 

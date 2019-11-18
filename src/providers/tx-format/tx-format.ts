@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { FilterProvider } from '../filter/filter';
 import { RateProvider } from '../rate/rate';
 
@@ -18,6 +19,7 @@ export class TxFormatProvider {
     private bwcProvider: BwcProvider,
     private rate: RateProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private filter: FilterProvider,
     private logger: Logger
   ) {
@@ -92,7 +94,7 @@ export class TxFormatProvider {
     return val();
   }
 
-  public processTx(coin: string, tx) {
+  public processTx(coin: Coin, tx) {
     if (!tx || tx.action == 'invalid') return tx;
 
     // New transaction output format. Fill tx.amount and tx.toAmount for
@@ -136,10 +138,11 @@ export class TxFormatProvider {
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
     tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
 
+    const chain = this.currencyProvider.getChain(coin).toLowerCase();
     tx.feeStr = tx.fee
-      ? this.formatAmountStr(coin, tx.fee)
+      ? this.formatAmountStr(chain, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
+      ? this.formatAmountStr(chain, tx.fees)
       : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
@@ -157,26 +160,21 @@ export class TxFormatProvider {
   }
 
   public parseAmount(
-    coin: string,
+    coin: Coin,
     amount,
     currency: string,
     onlyIntegers?: boolean
   ) {
     const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
-    const { unitToSatoshi, unitDecimals } = this.configProvider.getCoinOpts()[
+    const { unitToSatoshi, unitDecimals } = this.currencyProvider.getPrecision(
       coin
-    ];
+    );
     const satToUnit = 1 / unitToSatoshi;
     let amountUnitStr;
     let amountSat;
 
     // If fiat currency
-    if (
-      currency != 'BCH' &&
-      currency != 'BTC' &&
-      currency != 'ETH' &&
-      currency != 'sat'
-    ) {
+    if (!Coin[currency] && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -205,10 +203,10 @@ export class TxFormatProvider {
     };
   }
 
-  public satToUnit(amount, coin): number {
-    let { unitToSatoshi, unitDecimals } = this.configProvider.getCoinOpts()[
+  public satToUnit(amount: number, coin: Coin): number {
+    let { unitToSatoshi, unitDecimals } = this.currencyProvider.getPrecision(
       coin
-    ];
+    );
     let satToUnit = 1 / unitToSatoshi;
     return parseFloat((amount * satToUnit).toFixed(unitDecimals));
   }

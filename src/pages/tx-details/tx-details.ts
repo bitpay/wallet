@@ -8,6 +8,7 @@ import { Logger } from '../../providers/logger/logger';
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { ConfigProvider } from '../../providers/config/config';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FilterProvider } from '../../providers/filter/filter';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -43,6 +44,7 @@ export class TxDetailsPage {
   constructor(
     private addressBookProvider: AddressBookProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -207,14 +209,20 @@ export class TxDetailsPage {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+        const chain = this.currencyProvider
+          .getChain(this.wallet.coin)
+          .toLowerCase();
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-          this.wallet.coin,
+          chain,
           tx.fees
         );
-        this.btx.feeRateStr =
-          ((this.btx.fees / (this.btx.amount + this.btx.fees)) * 100).toFixed(
-            2
-          ) + '%';
+
+        if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+          this.btx.feeRateStr =
+            ((this.btx.fees / (this.btx.amount + this.btx.fees)) * 100).toFixed(
+              2
+            ) + '%';
+        }
 
         if (!this.btx.note) {
           this.txMemo = this.btx.message;
@@ -238,15 +246,17 @@ export class TxDetailsPage {
 
         this.updateFiatRate();
 
-        this.walletProvider
-          .getLowAmount(this.wallet)
-          .then((amount: number) => {
-            this.btx.lowAmount = tx.amount < amount;
-          })
-          .catch(err => {
-            this.logger.warn('Error getting low amounts: ' + err);
-            return;
-          });
+        if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+          this.walletProvider
+            .getLowAmount(this.wallet)
+            .then((amount: number) => {
+              this.btx.lowAmount = tx.amount < amount;
+            })
+            .catch(err => {
+              this.logger.warn('Error getting low amounts: ' + err);
+              return;
+            });
+        }
       })
       .catch(err => {
         if (!opts.hideLoading) this.onGoingProcess.clear();

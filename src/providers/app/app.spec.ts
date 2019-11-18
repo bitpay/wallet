@@ -12,6 +12,7 @@ import {
 } from '@ngx-translate/core';
 import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
@@ -39,6 +40,7 @@ describe('AppProvider', () => {
         AppProvider,
         { provide: Logger, useClass: LoggerMock },
         LanguageProvider,
+        CurrencyProvider,
         ConfigProvider,
         Events,
         PersistenceProvider,
