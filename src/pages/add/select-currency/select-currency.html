@@ -12,7 +12,7 @@
       </div>
       <div *ngIf="!navParam.data.isShared">
         <span class="list-subtitle" translate>Tokens</span>
-        <button *ngFor="let token of availableTokens" class="list-button" [disabled]="!wallets" ion-item (click)="showWalletSelector(token)">
+        <button *ngFor="let token of availableTokens" class="list-button" [disabled]="tokenDisabled[token.symbol]" ion-item (click)="showPairedWalletSelector(token)">
           <ion-icon item-start>
             <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
           </ion-icon>
@@ -48,7 +48,7 @@
         </div>
       </ion-list>
       <div>
-        <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallet()">
+        <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth" (click)="createWallets()">
           {{'Create' | translate}}
         </button>
         <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
