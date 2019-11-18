@@ -109,8 +109,11 @@ export class BitPayCardTopUpPage {
     this.navCtrl.swipeBackEnabled = true;
   }
 
+  ionViewDidEnter() {
+    this.logLegacyCardAddToCartEvent();
+  }
+
   ionViewWillEnter() {
-    this.logLegacyCardAddToCardEvent();
     if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
       this.navCtrl.remove(this.navCtrl.getPrevious().index);
     }
@@ -621,7 +624,7 @@ export class BitPayCardTopUpPage {
       });
   }
 
-  logLegacyCardAddToCardEvent() {
+  logLegacyCardAddToCartEvent() {
     this.bitPayCardProvider.logEvent('add_to_cart', {
       items: [
         {

@@ -79,10 +79,13 @@ export class BitPayCardPage {
   }
 
   ionViewWillEnter() {
-    this.bitPayCardProvider.logEvent('legacycard_view', {});
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
+  }
+
+  ionViewDidEnter() {
+    this.bitPayCardProvider.logEvent('legacycard_view', {});
   }
 
   ionViewWillLeave() {
