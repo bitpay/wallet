@@ -63,21 +63,21 @@ export class BitPayCardPage {
 
     if (!this.cardId) this.navCtrl.pop();
 
-    this.bitPayCardProvider.get(
-      {
+    this.bitPayCardProvider
+      .get({
         cardId: this.cardId
-      }).then(cards => {
+      })
+      .then(cards => {
         if (cards && cards[0]) {
           this.lastFourDigits = cards[0].lastFourDigits;
           this.balance = cards[0].balance;
           this.updatedOn = cards[0].updatedOn;
           this.currency = cards[0].currency;
-          this.setDateTime(cards[0].history); 
+          this.setDateTime(cards[0].history);
           this.setHistory(cards[0].history);
         }
         this.update();
-      }
-    );
+      });
   }
 
   ionViewWillEnter() {
@@ -190,7 +190,7 @@ export class BitPayCardPage {
         this.setGetStarted(history, () => {
           let txs = _.clone(history.txs);
 
-          this.setDateTime(txs); 
+          this.setDateTime(txs);
           this.setHistory(txs);
 
           this.balance = history.currentCardBalance;

@@ -132,13 +132,13 @@ export class BitPayCardTopUpPage {
       transactionCurrency: 'USD'
     });
 
-    this.bitPayCardProvider.get(
-      {
+    this.bitPayCardProvider
+      .get({
         cardId: this.cardId,
         noBalance: true,
         noHistory: true
-      }).then(card => {
-
+      })
+      .then(card => {
         this.bitPayCardProvider.setCurrencySymbol(card[0]);
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
@@ -160,8 +160,7 @@ export class BitPayCardTopUpPage {
         }
 
         this.showWallets(); // Show wallet selector
-      }
-    );
+      });
   }
 
   private updateRates(coin: string) {

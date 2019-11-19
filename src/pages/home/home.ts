@@ -169,7 +169,8 @@ export class HomePage {
 
     // Only BitPay Wallet
     this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-      this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
+      this.showBitPayCard = !!this.appProvider.info._enabledExtensions
+        .debitcard;
       this.bitpayCardItems = cards;
     });
   }

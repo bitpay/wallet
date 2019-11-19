@@ -471,7 +471,7 @@ export class BitPayCardProvider {
 
   public get(opts?): Promise<any> {
     opts = opts || {};
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.getCards(cards => {
         if (_.isEmpty(cards)) {
           this.homeIntegrationsProvider.updateLink('debitcard', null); // Name, linked
@@ -488,30 +488,31 @@ export class BitPayCardProvider {
         const completeBalance = async () => {
           for (let i = 0; i < cards.length; i++) {
             this.setCurrencySymbol(cards[i]);
-            
 
             if (!opts.noBalance) {
               await this.persistenceProvider
-              .getLastKnownBalance(cards[i].eid)
-              .then(balanceCache => {
-                cards[i].balance =
-                  balanceCache && balanceCache.balance
-                    ? Number(balanceCache.balance)
-                    : null;
-                    cards[i].updateOn = balanceCache && balanceCache.updatedOn;
-              });
+                .getLastKnownBalance(cards[i].eid)
+                .then(balanceCache => {
+                  cards[i].balance =
+                    balanceCache && balanceCache.balance
+                      ? Number(balanceCache.balance)
+                      : null;
+                  cards[i].updateOn = balanceCache && balanceCache.updatedOn;
+                });
             }
 
             // async refresh
             if (!opts.noHistory) {
-              await this.persistenceProvider.getLastKnownHistory(cards[i].eid).then(historyCache => {
-                cards[i].history =  historyCache && historyCache.txs
-                cards[i].updateOn = historyCache && historyCache.updatedOn;
-              });
+              await this.persistenceProvider
+                .getLastKnownHistory(cards[i].eid)
+                .then(historyCache => {
+                  cards[i].history = historyCache && historyCache.txs;
+                  cards[i].updateOn = historyCache && historyCache.updatedOn;
+                });
             }
           }
           return resolve(cards);
-        }
+        };
         completeBalance();
       });
     });
