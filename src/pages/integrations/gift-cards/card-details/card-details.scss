@@ -115,6 +115,11 @@ card-details-page {
       filter: invert(3%);
     }
 
+    ngx-qrcode {
+      position: relative;
+      top: 7px;
+    }
+
     ngx-barcode.card-info__body {
       margin-bottom: 0 !important;
       margin-top: 8px !important;

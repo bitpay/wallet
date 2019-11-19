@@ -27,11 +27,13 @@
                 {{card.claimCode}}
               </div>
               <ng-container *ngIf="showBarcode()">
-                <ngx-barcode *ngIf="!card.barcodeImage" class="card-info__body" [bc-value]="card.claimCode"
-                  bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8"
-                  bc-background="#f7f7f7" bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom"
-                  bc-font-size="20"></ngx-barcode>
-                <img *ngIf="card.barcodeImage" class="card-info__body barcode-image" [src]="card.barcodeImage">
+                <ngx-barcode *ngIf="!card.barcodeImage && barcodeFormat !== 'QR'" class="card-info__body"
+                  [bc-value]="barcodeData" [bc-format]="barcodeFormat" bc-display-value="false" bc-element-type="canvas"
+                  bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7" bc-font="Roboto" bc-text-margin="8"
+                  bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
+                <ngx-qrcode *ngIf="!card.barcodeImage && barcodeFormat === 'QR'" hide-toast="true"
+                  [qrc-value]="barcodeData" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+                <img *ngIf="card.barcodeImage" [src]="card.barcodeImage" class="card-info__body barcode-image">
               </ng-container>
               <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="showBarcode()">
                 {{card.claimCode}}
