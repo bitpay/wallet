@@ -18,6 +18,8 @@ import { TimeProvider } from '../../../providers/time/time';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
+const TIMEOUT_FOR_REFRESHER = 1000;
+
 @Component({
   selector: 'page-bitpay-card',
   templateUrl: 'bitpay-card.html'
@@ -63,15 +65,15 @@ export class BitPayCardPage {
 
     this.bitPayCardProvider.get(
       {
-        cardId: this.cardId,
-        noRefresh: true
-      },
-      (_, cards) => {
+        cardId: this.cardId
+      }).then(cards => {
         if (cards && cards[0]) {
           this.lastFourDigits = cards[0].lastFourDigits;
           this.balance = cards[0].balance;
           this.updatedOn = cards[0].updatedOn;
           this.currency = cards[0].currency;
+          this.setDateTime(cards[0].history); 
+          this.setHistory(cards[0].history);
         }
         this.update();
       }
@@ -188,20 +190,8 @@ export class BitPayCardPage {
         this.setGetStarted(history, () => {
           let txs = _.clone(history.txs);
 
-          this.setDateTime(txs);
-
-          this.bitpayCardTransactionHistoryConfirming = this.bitPayCardProvider.filterTransactions(
-            'confirming',
-            txs
-          );
-          this.bitpayCardTransactionHistoryCompleted = this.bitPayCardProvider.filterTransactions(
-            'completed',
-            txs
-          );
-          this.bitpayCardTransactionHistoryPreAuth = this.bitPayCardProvider.filterTransactions(
-            'preAuth',
-            txs
-          );
+          this.setDateTime(txs); 
+          this.setHistory(txs);
 
           this.balance = history.currentCardBalance;
           this.updatedOn = null;
@@ -223,11 +213,29 @@ export class BitPayCardPage {
     );
   }
 
+  private setHistory(txs) {
+    if (!txs) return;
+    this.bitpayCardTransactionHistoryConfirming = this.bitPayCardProvider.filterTransactions(
+      'confirming',
+      txs
+    );
+    this.bitpayCardTransactionHistoryCompleted = this.bitPayCardProvider.filterTransactions(
+      'completed',
+      txs
+    );
+    this.bitpayCardTransactionHistoryPreAuth = this.bitPayCardProvider.filterTransactions(
+      'preAuth',
+      txs
+    );
+  }
+
   private setDateTime(txs) {
+    if (!txs) return;
     let txDate, txDateUtc;
     let newDate;
     for (let i = 0; i < txs.length; i++) {
       txDate = new Date(txs[i].date);
+      if (txDate == 'Invalid Date') return; // iOS
       txDateUtc = new Date(txs[i].date.replace('Z', ''));
       let amTime = this.createdWithinPastDay(txs[i]);
       newDate = amTime
@@ -272,5 +280,12 @@ export class BitPayCardPage {
       nextPage: 'BitPayCardTopUpPage',
       currency: this.currency
     });
+  }
+
+  public doRefresh(refresher): void {
+    this.update();
+    setTimeout(() => {
+      refresher.complete();
+    }, TIMEOUT_FOR_REFRESHER);
   }
 }

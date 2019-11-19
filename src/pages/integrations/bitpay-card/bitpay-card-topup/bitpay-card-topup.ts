@@ -135,13 +135,10 @@ export class BitPayCardTopUpPage {
     this.bitPayCardProvider.get(
       {
         cardId: this.cardId,
-        noRefresh: true
-      },
-      (err, card) => {
-        if (err) {
-          this.showErrorAndBack(null, err);
-          return;
-        }
+        noBalance: true,
+        noHistory: true
+      }).then(card => {
+
         this.bitPayCardProvider.setCurrencySymbol(card[0]);
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
