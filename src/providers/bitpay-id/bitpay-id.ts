@@ -54,7 +54,7 @@ export class BitPayIdProvider {
         return errorCallback(err);
       }
 
-      const json: any = {
+      let json: any = {
         method: 'createToken',
         params: {
           secret,
@@ -70,7 +70,8 @@ export class BitPayIdProvider {
         dataToSign,
         appIdentity.pub,
         signedData,
-        () => {
+
+        async () => {
           json['params'].signature = bitauthService.sign(
             JSON.stringify(json['params']),
             appIdentity.priv
@@ -84,63 +85,46 @@ export class BitPayIdProvider {
             'application/json'
           );
 
-          this.http
-            .post(url, json, { headers })
-            .toPromise()
-            .then(
-              (token: { data: string }) => {
-                this.logger.debug('BitPayID: successfully paired');
-                const json = {
-                  method: 'getBasicInfo',
-                  token: token.data
-                };
+          try {
+            const token: { data?: string } = await this.http
+              // @ts-ignore
+              .post(url, json, { headers })
+              .toPromise();
 
-                dataToSign = `${url}${token.data}${JSON.stringify(json)}`;
+            this.logger.debug('BitPayID: successfully paired');
 
-                signedData = bitauthService.sign(dataToSign, appIdentity.priv);
+            json = {
+              method: 'getBasicInfo',
+              token: token.data
+            };
 
-                headers = headers.append('x-identity', appIdentity.pub);
-                headers = headers.append('x-signature', signedData);
+            dataToSign = `${url}${token.data}${JSON.stringify(json)}`;
 
-                this.http
-                  .post(`${url}${token.data}`, json, { headers })
-                  .toPromise()
-                  .then(
-                    async (user: { data: User }) => {
-                      if (user) {
-                        this.logger.debug(
-                          'BitPayID: retrieved user basic info'
-                        );
+            signedData = bitauthService.sign(dataToSign, appIdentity.priv);
 
-                        const { data } = user;
+            headers = headers.append('x-identity', appIdentity.pub);
+            headers = headers.append('x-signature', signedData);
 
-                        try {
-                          await Promise.all([
-                            this.persistenceProvider.setBitPayIdPairingToken(
-                              network,
-                              token.data
-                            ),
-                            this.persistenceProvider.setBitPayIdUserInfo(
-                              network,
-                              data
-                            )
-                          ]);
+            const user: User = await this.http
+              .post(`${url}${token.data}`, json, { headers })
+              .toPromise();
 
-                          successCallback(data);
-                        } catch (err) {
-                          this.logger.log(err);
-                        }
-                      }
-                    },
-                    err => {
-                      errorCallback(err);
-                    }
-                  );
-              },
-              err => {
-                errorCallback(err);
-              }
-            );
+            if (user) {
+              const { data } = user;
+
+              await Promise.all([
+                this.persistenceProvider.setBitPayIdPairingToken(
+                  network,
+                  token.data
+                ),
+                this.persistenceProvider.setBitPayIdUserInfo(network, data)
+              ]);
+
+              successCallback(data);
+            }
+          } catch (err) {
+            errorCallback(err);
+          }
         },
         err => {
           errorCallback(err);
