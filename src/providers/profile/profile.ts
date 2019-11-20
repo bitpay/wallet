@@ -1474,7 +1474,8 @@ export class ProfileProvider {
               const ethWalletClient = walletClients.find(
                 wallet => wallet.credentials.coin === 'eth'
               );
-              if (!ethWalletClient && !_.isEmpty(tokens)) reject('no eth wallet');
+              if (!ethWalletClient && !_.isEmpty(tokens))
+                reject('no eth wallet');
               const tokenClients = tokens.map(token =>
                 this.createTokenWallet(ethWalletClient, token)
               );
