@@ -36,6 +36,12 @@ interface WalletGroups {
     isDeletedSeed?: boolean;
   };
 }
+
+export interface WalletBindTypeOpts { 
+  bwsurl?: string;
+  store?: boolean;
+};
+
 @Injectable()
 export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
@@ -656,14 +662,17 @@ export class ProfileProvider {
       });
   }
 
-  private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
+  private addAndBindWalletClients(data, opts = { bwsurl: null}  ): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
     return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
       const promises = [];
       data.walletClients.forEach(walletClient => {
-        promises.push(this.addAndBindWalletClient(walletClient, opts));
+        promises.push(this.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          store: false,
+        }));
       });
 
       return this.keyProvider.addKey(data.key).then(() => {
@@ -717,10 +726,11 @@ export class ProfileProvider {
     });
   }
 
+
   // Adds and bind a new client to the profile
-  public async addAndBindWalletClient(
+  private async addAndBindWalletClient(
     wallet,
-    opts = { bwsurl: null }
+    opts: WalletBindTypeOpts = { bwsurl: null, store: true}
   ): Promise<any> {
     if (!wallet || !wallet.credentials) {
       return Promise.reject(this.translate.instant('Could not access wallet'));
@@ -740,7 +750,16 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts.bwsurl);
     return this.bindWalletClient(wallet).then(() => {
-      return Promise.resolve(wallet);
+      if (!opts.store) {
+        this.logger.debug('No storing new walletClient');
+        return Promise.resolve(wallet);
+      } else {
+        this.logger.debug('Storing new walletClient');
+        return this.storeProfileIfDirty().then(() => {
+          this.events.publish('Local/WalletListChange');
+          return Promise.resolve(wallet);
+        });
+      }
     });
   }
 
@@ -827,14 +846,11 @@ export class ProfileProvider {
           return this.addAndBindWalletClient(data.walletClient, {
             bwsurl: opts.bwsurl
           }).then(walletClient => {
-            return this.storeProfileIfDirty().then(() => {
-              this.events.publish('Local/WalletListChange');
-              return this.checkIfAlreadyExist([].concat(walletClient)).then(
-                () => {
-                  return Promise.resolve(walletClient);
-                }
-              );
-            });
+            return this.checkIfAlreadyExist([].concat(walletClient)).then(
+              () => {
+                return Promise.resolve(walletClient);
+              }
+            );
           });
         });
       });
@@ -1119,11 +1135,8 @@ export class ProfileProvider {
               bwsurl: opts.bwsurl
             })
               .then(walletClient => {
-                return this.storeProfileIfDirty().then(() => {
-                  this.events.publish('Local/WalletListChange');
-                  this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
-                    return resolve(walletClient);
-                  });
+                return this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
+                  return resolve(walletClient);
                 });
               })
               .catch(err => {
@@ -1430,7 +1443,7 @@ export class ProfileProvider {
     };
   }
 
-  public createTokenWallet(ethWallet, token) {
+  private _createTokenWallet(ethWallet, token) {
     if (_.isString(token)) {
       let tokens = this.currencyProvider.getAvailableTokens();
       token = tokens.find(x => x.symbol == token);
@@ -1443,6 +1456,15 @@ export class ProfileProvider {
     });
     walletClient.fromObj(tokenCredentials);
     return walletClient;
+  }
+
+
+  public createTokenWallet(ethWallet, token): Promise<any> {
+    const tokenWalletClient = this._createTokenWallet(
+      ethWallet,
+      token
+    );
+    return this.addAndBindWalletClient(tokenWalletClient);
   }
 
   public createMultipleWallets(coins: string[], tokens = []): Promise<any> {
@@ -1477,7 +1499,7 @@ export class ProfileProvider {
               if (!ethWalletClient && !_.isEmpty(tokens))
                 reject('no eth wallet');
               const tokenClients = tokens.map(token =>
-                this.createTokenWallet(ethWalletClient, token)
+                this._createTokenWallet(ethWalletClient, token)
               );
               walletClients = walletClients.concat(tokenClients);
               this.addAndBindWalletClients({
@@ -1514,10 +1536,7 @@ export class ProfileProvider {
             return this.addAndBindWalletClient(data.walletClient, {
               bwsurl: opts.bwsurl
             }).then(walletClient => {
-              return this.storeProfileIfDirty().then(() => {
-                this.events.publish('Local/WalletListChange');
-                return Promise.resolve(walletClient);
-              });
+              return Promise.resolve(walletClient);
             });
           });
         });
@@ -1537,10 +1556,7 @@ export class ProfileProvider {
             return this.addAndBindWalletClient(data.walletClient, {
               bwsurl: opts.bwsurl
             }).then(walletClient => {
-              return this.storeProfileIfDirty().then(() => {
-                this.events.publish('Local/WalletListChange');
-                return Promise.resolve(walletClient);
-              });
+              return Promise.resolve(walletClient);
             });
           });
         });
