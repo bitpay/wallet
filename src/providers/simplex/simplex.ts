@@ -72,65 +72,39 @@ export class SimplexProvider {
     this.httpRequestProvider
       .get(this.credentials.API_URL + '/txStat/' + addr, null, headers)
       .subscribe(
-      data => {
-        this.logger.info('Simplex STATUS: SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        const error = this.parseError(data);
-        this.logger.error('Simplex STATUS ERROR: ' + error);
-        return cb(data.error);
-      }
+        data => {
+          this.logger.info('Simplex STATUS: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          const error = this.parseError(data);
+          this.logger.error('Simplex STATUS ERROR: ' + error);
+          return cb(data.error);
+        }
       );
   }
 
-  public testSimplex(opts): Promise<any> {
+  public getQuote(wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'ApiKey ' + this.credentials.API_KEY
-      };
-
-      this.httpRequestProvider
-        .post(this.credentials.API + '/wallet/merchant/v2/quote', opts, headers)
-        .subscribe(
-        data => {
-          return resolve(data);
-        },
-        err => {
+      wallet
+        .simplexGetQuote(opts)
+        .then(res => {
+          return resolve(res.body);
+        })
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  public paymentRequest(opts): Promise<any> {
+  public paymentRequest(wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'ApiKey ' + this.credentials.API_KEY
-      };
-
-      this.httpRequestProvider
-        .post(this.credentials.API + '/wallet/merchant/v2/payments/partner/data', opts, headers)
-        .subscribe(
-        data => {
-          return resolve(data);
-        },
-        err => {
-          return reject(err);
-        });
-    });
-  }
-
-  public paymentFormSubmission(body: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.httpRequestProvider
-        .post(this.credentials.API + '/payments/new', body)
-        .subscribe(
-        data => {
-          return resolve(data);
-        },
-        err => {
+      wallet
+        .simplexPaymentRequest(opts)
+        .then(res => {
+          return resolve(res.body);
+        })
+        .catch(err => {
           return reject(err);
         });
     });
@@ -157,8 +131,8 @@ export class SimplexProvider {
     const parsedError = err.error.error_description
       ? err.error.error_description
       : err.error.error && err.error.error.message
-        ? err.error.error.message
-        : err.error;
+      ? err.error.error.message
+      : err.error;
     return parsedError;
   }
 }

@@ -114,7 +114,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!wallet || !quoteForm.valid || !cryptoAmount" (click)="continueToSimplex()">
+    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!wallet || !quoteForm.valid || !cryptoAmount || showLoading" (click)="openPopUpConfirmation()">
       {{'Continue to Simplex' | translate}}
     </button>
   </ion-toolbar>

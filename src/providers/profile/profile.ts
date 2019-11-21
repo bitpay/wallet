@@ -1682,8 +1682,15 @@ export class ProfileProvider {
     }
 
     if (opts.coin) {
+      let coins: string[] = [].concat(opts.coin);
       ret = _.filter(ret, x => {
-        return x.credentials.coin == opts.coin;
+        return _.findIndex(coins, coin => x.credentials.coin == coin) >= 0;
+      });
+    }
+
+    if (opts.backedUp) {
+      ret = _.filter(ret, x => {
+        return !x.needsBackup;
       });
     }
 

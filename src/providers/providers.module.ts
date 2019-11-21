@@ -146,4 +146,4 @@ import {
     WalletTabsProvider
   ]
 })
-export class ProvidersModule { }
+export class ProvidersModule {}

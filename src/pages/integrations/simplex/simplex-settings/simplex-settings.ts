@@ -23,7 +23,7 @@ export class SimplexSettingsPage {
     private platform: Platform,
     private statusBar: StatusBar,
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName

@@ -249,9 +249,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-      spendUnconfirmed +
-      ' - lockMethod: ' +
-      lockMethod
+        spendUnconfirmed +
+        ' - lockMethod: ' +
+        lockMethod
     );
   }
 

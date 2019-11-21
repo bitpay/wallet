@@ -40,30 +40,30 @@ page-simplex {
   }
 
   .wallet {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    .multiple-length {
       display: flex;
-      align-items: center;
-      margin-top: 1rem;
-      .multiple-length {
-        display: flex;
+    }
+    .coin-img {
+      &-btc,
+      &-bch {
+        width: 12px;
       }
-      .coin-img {
-        &-btc,
-        &-bch {
-          width: 12px;
-        }
-        &-eth {
-          width: 20px;
-        }
-      }
-      .text-address {
-        display: flex;
-        width: 25px;
-        justify-content: space-between;
-      }
-      .address-with-divider {
-        border-left: 1px solid rgb(227, 227, 227);
-        margin-left: 1rem;
-        padding-left: 1rem;
+      &-eth {
+        width: 20px;
       }
     }
+    .text-address {
+      display: flex;
+      width: 25px;
+      justify-content: space-between;
+    }
+    .address-with-divider {
+      border-left: 1px solid rgb(227, 227, 227);
+      margin-left: 1rem;
+      padding-left: 1rem;
+    }
+  }
 }
