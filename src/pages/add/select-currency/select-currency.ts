@@ -184,15 +184,9 @@ export class SelectCurrencyPage {
 
   public createAndBindTokenWallet(pairedWallet, token) {
     if (!_.isEmpty(pairedWallet)) {
-      const tokenWalletClient = this.profileProvider.createTokenWallet(
-        pairedWallet,
-        token
-      );
-      this.profileProvider
-        .addAndBindWalletClient(tokenWalletClient)
-        .then(() => {
-          this.endProcess();
-        });
+      this.profileProvider.createTokenWallet(pairedWallet, token).then(() => {
+        this.endProcess();
+      });
     }
   }
 
