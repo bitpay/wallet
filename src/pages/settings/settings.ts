@@ -6,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Subscription } from 'rxjs';
 // pages
@@ -17,6 +16,7 @@ import {
   BitPayIdProvider,
   InAppBrowserProvider
 } from '../../providers';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
