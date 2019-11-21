@@ -26,6 +26,8 @@ export class FormatCurrencyPipe implements PipeTransform {
       USD: '$',
       GBP: '£',
       EUR: '€',
+      INR: '₹',
+      PHP: '₱',
       JPY: '¥'
     };
     const symbol = symbolMap[currencyCode.toUpperCase()];

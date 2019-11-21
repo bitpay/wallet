@@ -99,6 +99,10 @@ export class BitPayCardIntroPage {
     });
   }
 
+  ionViewDidEnter() {
+    this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
+  }
+
   ionViewWillLeave() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
@@ -111,11 +115,13 @@ export class BitPayCardIntroPage {
   }
 
   public orderBitPayCard() {
+    this.bitPayCardProvider.logEvent('legacycard_order', {});
     let url = 'https://bitpay.com/visa/get-started';
     this.externalLinkProvider.open(url);
   }
 
   public connectBitPayCard() {
+    this.bitPayCardProvider.logEvent('legacycard_connect', {});
     if (this.accounts.length == 0) {
       this.startPairBitPayAccount();
     } else {

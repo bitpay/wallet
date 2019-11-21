@@ -61,6 +61,10 @@ export class CardCatalogPage extends WideHeaderPage {
       });
   }
 
+  ionViewDidEnter() {
+    this.logGiftCardCatalogHomeView();
+  }
+
   onSearch(query: string) {
     this.searchQuery = query;
     this.updateCardList();
@@ -91,10 +95,31 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 
   buyCard(cardConfig: CardConfig) {
+    this.logGiftCardBrandView(cardConfig);
+
     this.navCtrl.push(BuyCardPage, { cardConfig });
     if (this.hasPercentageDiscount(cardConfig)) {
       this.logDiscountClick(cardConfig);
     }
+  }
+
+  logGiftCardCatalogHomeView() {
+    this.giftCardProvider.logEvent('giftcards_view_home', {});
+  }
+
+  logGiftCardBrandView(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent('giftcards_view_brand', {
+      brand: cardConfig.name
+    });
+
+    this.giftCardProvider.logEvent('view_item', {
+      items: [
+        {
+          brand: cardConfig.name,
+          category: 'giftCards'
+        }
+      ]
+    });
   }
 
   logDiscountClick(cardConfig: CardConfig) {

@@ -12,7 +12,7 @@
     <ion-item class="confirm-header">
       <div class="confirm-header__amount">
         <div class="gift-card-title">
-          {{cardConfig?.displayName}} Gift Card
+          {{cardConfig?.displayName}}<span *ngIf="!displayNameIncludesGiftCard">&nbsp;Gift Card</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amount | formatCurrency:currency}}</div>

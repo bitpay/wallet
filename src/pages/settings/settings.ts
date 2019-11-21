@@ -6,6 +6,7 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Subscription } from 'rxjs';
 // pages
@@ -90,6 +91,7 @@ export class SettingsPage {
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
     private externalLinkProvder: ExternalLinkProvider,
+    private analyticsProvider: AnalyticsProvider,
     private persistanceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider,
     private bitPayIdProvider: BitPayIdProvider,
@@ -294,6 +296,7 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
+    this.analyticsProvider.logEvent('help', {});
     const url =
       this.appName == 'Copay'
         ? 'https://github.com/bitpay/copay/issues'
