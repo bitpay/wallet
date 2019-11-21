@@ -191,7 +191,9 @@ export class SelectCurrencyPage {
       this.profileProvider
         .addAndBindWalletClient(tokenWalletClient)
         .then(() => {
-          this.endProcess();
+          this.profileProvider.storeProfileIfDirty().then(() => {
+            this.endProcess();
+          });
         });
     }
   }
