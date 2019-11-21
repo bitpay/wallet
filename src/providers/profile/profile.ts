@@ -37,10 +37,10 @@ interface WalletGroups {
   };
 }
 
-export interface WalletBindTypeOpts { 
+export interface WalletBindTypeOpts {
   bwsurl?: string;
   store?: boolean;
-};
+}
 
 @Injectable()
 export class ProfileProvider {
@@ -662,17 +662,19 @@ export class ProfileProvider {
       });
   }
 
-  private addAndBindWalletClients(data, opts = { bwsurl: null}  ): Promise<any> {
+  private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
     return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
       const promises = [];
       data.walletClients.forEach(walletClient => {
-        promises.push(this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl,
-          store: false,
-        }));
+        promises.push(
+          this.addAndBindWalletClient(walletClient, {
+            bwsurl: opts.bwsurl,
+            store: false
+          })
+        );
       });
 
       return this.keyProvider.addKey(data.key).then(() => {
@@ -726,11 +728,10 @@ export class ProfileProvider {
     });
   }
 
-
   // Adds and bind a new client to the profile
   private async addAndBindWalletClient(
     wallet,
-    opts: WalletBindTypeOpts = { bwsurl: null, store: true}
+    opts: WalletBindTypeOpts = { bwsurl: null, store: true }
   ): Promise<any> {
     if (!wallet || !wallet.credentials) {
       return Promise.reject(this.translate.instant('Could not access wallet'));
@@ -1135,9 +1136,11 @@ export class ProfileProvider {
               bwsurl: opts.bwsurl
             })
               .then(walletClient => {
-                return this.checkIfAlreadyExist([].concat(walletClient)).then(() => {
-                  return resolve(walletClient);
-                });
+                return this.checkIfAlreadyExist([].concat(walletClient)).then(
+                  () => {
+                    return resolve(walletClient);
+                  }
+                );
               })
               .catch(err => {
                 return reject(err);
@@ -1458,12 +1461,8 @@ export class ProfileProvider {
     return walletClient;
   }
 
-
   public createTokenWallet(ethWallet, token): Promise<any> {
-    const tokenWalletClient = this._createTokenWallet(
-      ethWallet,
-      token
-    );
+    const tokenWalletClient = this._createTokenWallet(ethWallet, token);
     return this.addAndBindWalletClient(tokenWalletClient);
   }
 
