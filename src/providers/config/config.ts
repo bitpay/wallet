@@ -67,6 +67,7 @@ export interface Config {
     amazon: boolean;
     mercadolibre: boolean;
     shapeshift: boolean;
+    simplex: boolean;
     giftcards: boolean;
   };
 
@@ -186,6 +187,7 @@ export class ConfigProvider {
         amazon: true,
         mercadolibre: true,
         shapeshift: true,
+        simplex: true,
         giftcards: true
       },
 
@@ -247,9 +249,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-        spendUnconfirmed +
-        ' - lockMethod: ' +
-        lockMethod
+      spendUnconfirmed +
+      ' - lockMethod: ' +
+      lockMethod
     );
   }
 
@@ -293,6 +295,9 @@ export class ConfigProvider {
     } else {
       if (this.configCache.showIntegration.giftcards !== false) {
         this.configCache.showIntegration.giftcards = this.configDefault.showIntegration.giftcards;
+      }
+      if (this.configCache.showIntegration.simplex !== false) {
+        this.configCache.showIntegration.simplex = this.configDefault.showIntegration.simplex;
       }
     }
     if (!this.configCache.pushNotificationsEnabled) {

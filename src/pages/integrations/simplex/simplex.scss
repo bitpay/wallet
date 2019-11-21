@@ -1,0 +1,69 @@
+page-simplex {
+  ion-title .toolbar-title {
+    color: white;
+    img {
+      padding-top: 5px;
+    }
+  }
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+    padding-top: 15px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
+  }
+  .center-header {
+    margin-top: 10%;
+    padding: 0 20px;
+    text-align: center;
+    p {
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .bottom-position {
+      margin-bottom: 20px;
+    }
+  }
+  .status,
+  .date {
+    font-size: 12.5px;
+  }
+  .form-container {
+    text-align: left;
+    width: 100%;
+  }
+  ion-spinner {
+    * {
+      stroke: #0d172c !important;
+    }
+  }
+
+  .wallet {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      .multiple-length {
+        display: flex;
+      }
+      .coin-img {
+        &-btc,
+        &-bch {
+          width: 12px;
+        }
+        &-eth {
+          width: 20px;
+        }
+      }
+      .text-address {
+        display: flex;
+        width: 25px;
+        justify-content: space-between;
+      }
+      .address-with-divider {
+        border-left: 1px solid rgb(227, 227, 227);
+        margin-left: 1rem;
+        padding-left: 1rem;
+      }
+    }
+}

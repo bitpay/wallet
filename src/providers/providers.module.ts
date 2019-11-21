@@ -57,6 +57,7 @@ import {
   ScanProvider,
   ScreenOrientation,
   ShapeshiftProvider,
+  SimplexProvider,
   SocialSharing,
   SplashScreen,
   StatusBar,
@@ -122,6 +123,7 @@ import {
     RateProvider,
     ReplaceParametersProvider,
     ShapeshiftProvider,
+    SimplexProvider,
     StatusBar,
     SplashScreen,
     ScanProvider,
@@ -144,4 +146,4 @@ import {
     WalletTabsProvider
   ]
 })
-export class ProvidersModule {}
+export class ProvidersModule { }

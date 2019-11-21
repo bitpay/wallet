@@ -29,6 +29,7 @@ import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
@@ -110,6 +111,7 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private shapeshiftProvider: ShapeshiftProvider,
+    private simplexProvider: SimplexProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -166,14 +168,14 @@ export class CopayApp {
 
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash +
-        deviceInfo
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash +
+      deviceInfo
     );
 
     if (this.platform.is('cordova')) {
@@ -182,15 +184,15 @@ export class CopayApp {
       // Set User-Agent
       this.userAgent.set(
         this.appProvider.info.name +
-          ' ' +
-          this.appProvider.info.version +
-          ' (' +
-          this.device.platform +
-          ' ' +
-          this.device.version +
-          ' - ' +
-          this.device.model +
-          ')'
+        ' ' +
+        this.appProvider.info.version +
+        ' (' +
+        this.device.platform +
+        ' ' +
+        this.device.version +
+        ' - ' +
+        this.device.model +
+        ')'
       );
 
       // Set to portrait
@@ -331,6 +333,12 @@ export class CopayApp {
     if (this.appProvider.info._enabledExtensions.shapeshift) {
       this.shapeshiftProvider.setCredentials();
       this.shapeshiftProvider.register();
+    }
+
+    // Simplex
+    if (this.appProvider.info._enabledExtensions.simplex) {
+      this.simplexProvider.setCredentials();
+      this.simplexProvider.register();
     }
 
     // Coinbase
