@@ -10,7 +10,7 @@
       <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
     </ion-item>
-    <label-tip class="info" type="info" header="no-header">
+    <label-tip type="info" header="no-header">
       <div label-tip-body>
         <div translate>
           If enabled, wallets will also try to spend unconfirmed funds.

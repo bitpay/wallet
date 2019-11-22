@@ -72,7 +72,7 @@
           {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
         </ion-note>
       </button>
-      <button ion-item class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
+      <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
         Create or Import a Key
       </button>
 
@@ -151,11 +151,8 @@
                 get started'|translate}} {{card.updatedOn
                 ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
-          <button ion-item (click)="addBitpayCard()">
-            <ion-icon class="item-img" item-start>
-              <div class="icon-plus"></div>
-            </ion-icon>
-            <span translate>Add Card</span>
+          <button ion-item detail-none class="create-button" (click)="addBitpayCard()" translate>
+            Add Card
           </button>
         </ion-list>
       </div>
