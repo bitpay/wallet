@@ -1193,45 +1193,40 @@ export class WalletProvider {
     });
   }
 
+
+  // updates local and remote prefs for 1 wallet
+  public updateRemotePreferencesFor(client, prefs): Promise<any>  {
+    return new Promise((resolve, reject) => {
+      this.logger.debug(
+        'Saving remote preferences',
+        client.credentials.walletName,
+        prefs
+      );
+
+      client.savePreferences(prefs, err => {
+        if (err) {
+          this.popupProvider.ionicAlert(
+            this.bwcErrorProvider.msg(
+              err,
+              this.translate.instant(
+                'Could not save preferences on the server'
+              )
+            )
+          );
+          return reject(err);
+        }
+        client.preferences = _.assign(prefs, client.preferences);
+        return resolve();
+      });
+    });
+  };
+
+
+
   public updateRemotePreferences(clients, prefs?): Promise<any> {
     return new Promise((resolve, reject) => {
       prefs = prefs ? prefs : {};
-
       if (!_.isArray(clients)) clients = [clients];
-
-      const updateRemotePreferencesFor = (clients, prefs): Promise<any> => {
-        return new Promise((resolve, reject) => {
-          const wallet = clients.shift();
-          if (!wallet) return resolve();
-          this.logger.debug(
-            'Saving remote preferences',
-            wallet.credentials.walletName,
-            prefs
-          );
-
-          wallet.savePreferences(prefs, err => {
-            if (err) {
-              this.popupProvider.ionicAlert(
-                this.bwcErrorProvider.msg(
-                  err,
-                  this.translate.instant(
-                    'Could not save preferences on the server'
-                  )
-                )
-              );
-              return reject(err);
-            }
-
-            updateRemotePreferencesFor(clients, prefs)
-              .then(() => {
-                return resolve();
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        });
-      };
 
       // Update this JIC.
       const config = this.configProvider.get();
@@ -1245,20 +1240,14 @@ export class WalletProvider {
       // Set OLD wallet in bits to btc
       prefs.unit = 'btc'; // DEPRECATED
 
-      updateRemotePreferencesFor(_.clone(clients), prefs)
-        .then(() => {
-          this.logger.debug(
-            'Remote preferences saved for' +
-              _.map(clients, (x: any) => {
-                return x.credentials.walletId;
-              }).join(',')
-          );
+      let updates = [];
+      clients.forEach((c) => {
+        updates.push( this.updateRemotePreferencesFor(c, prefs));
+      });
 
-          _.each(clients, c => {
-            c.preferences = _.assign(prefs, c.preferences);
-          });
-          return resolve();
-        })
+      Promise.all(updates).then(() => {
+        return resolve();
+      })
         .catch(err => {
           return reject(err);
         });

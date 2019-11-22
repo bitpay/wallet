@@ -1447,10 +1447,6 @@ export class ProfileProvider {
   }
 
   private _createTokenWallet(ethWallet, token) {
-    if (_.isString(token)) {
-      let tokens = this.currencyProvider.getAvailableTokens();
-      token = tokens.find(x => x.symbol == token);
-    }
     const tokenCredentials = ethWallet.credentials.getTokenCredentials(token);
     const walletClient = this.bwcProvider.getClient(null, {
       baseUrl: ethWallet.baseUrl,
@@ -1462,6 +1458,10 @@ export class ProfileProvider {
   }
 
   public createTokenWallet(ethWallet, token): Promise<any> {
+    if (_.isString(token)) {
+      let tokens = this.currencyProvider.getAvailableTokens();
+      token = tokens.find(x => x.symbol == token);
+    }
     const tokenWalletClient = this._createTokenWallet(ethWallet, token);
     return this.addAndBindWalletClient(tokenWalletClient);
   }
