@@ -360,7 +360,6 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.toString()));
-      this.events.publish('Local/WalletListChange');
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
@@ -1506,7 +1505,6 @@ export class ProfileProvider {
                 walletClients
               })
                 .then(() => {
-                  this.events.publish('Local/WalletListChange');
                   return resolve(walletClients);
                 })
                 .catch(e => {
