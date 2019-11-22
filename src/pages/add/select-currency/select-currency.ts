@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -62,7 +57,6 @@ export class SelectCurrencyPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private events: Events,
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider
@@ -177,9 +171,7 @@ export class SelectCurrencyPage {
 
   private endProcess() {
     this.onGoingProcessProvider.clear();
-    this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/WalletListChange');
-    });
+    this.navCtrl.popToRoot();
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {
