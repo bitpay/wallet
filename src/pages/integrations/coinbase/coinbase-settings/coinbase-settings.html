@@ -19,13 +19,13 @@
       </ion-toolbar>
     </expandable-header>
 
-    <ion-list class="bp-list top-padding">
+    <ion-list class="bp-list">
       <ion-item>
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
     </ion-list>
-    
+
     <ion-spinner *ngIf="loading"></ion-spinner>
 
     <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
