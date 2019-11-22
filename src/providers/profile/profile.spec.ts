@@ -925,7 +925,9 @@ describe('Profile Provider', () => {
         .catch(err => {
           expect(err).not.toBeDefined();
         });
-      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
+      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletUpdate', {
+        walletId: 'id1'
+      });
     });
 
     it('should fails to join wallet if you already joined that wallet', async () => {
