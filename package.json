@@ -1,6 +1,6 @@
 {
-  "name": "bitpay",
-  "description": "Secure Bitcoin Wallet",
+  "name": "copay",
+  "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "8.0.2",
   "keywords": [
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "BitPay",
+  "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://bitpay.com",
+  "homepage": "https://copay.io",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -121,7 +121,7 @@
     "angular2-moment": "1.7.1",
     "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
-    "bitcore-wallet-client": "8.12.0",
+    "bitcore-wallet-client": "8.11.1",
     "buffer-compare": "1.1.1",
     "chart.js": "2.8.0",
     "cordova": "8.1.2",
@@ -232,7 +232,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme-ng": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "bitpay",
+        "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",
