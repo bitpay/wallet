@@ -1194,6 +1194,8 @@ export class WalletProvider {
   // updates local and remote prefs for 1 wallet
   public updateRemotePreferencesFor(client, prefs): Promise<any> {
     return new Promise((resolve, reject) => {
+
+      client.preferences = client.preferences || {};
       if (!_.isEmpty(prefs)) {
         _.assign(client.preferences, prefs);
       }
@@ -1201,7 +1203,7 @@ export class WalletProvider {
       this.logger.debug(
         'Saving remote preferences',
         client.credentials.walletName,
-        JSON.stringify(client.preferences || {})
+        JSON.stringify(client.preferences),
       );
 
       client.savePreferences(client.preferences, err => {
