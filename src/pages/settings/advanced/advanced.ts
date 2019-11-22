@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 // providers
 import {
+  AnalyticsProvider,
   AppProvider,
   ConfigProvider,
   Logger,
@@ -26,7 +27,8 @@ export class AdvancedPage {
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private logger: Logger,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.isCopay = this.appProvider.info.name === 'copay';
     this.profileProvider
@@ -46,6 +48,10 @@ export class AdvancedPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AdvancedPage');
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('settingsAdvanced');
   }
 
   ionViewWillEnter() {

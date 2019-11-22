@@ -138,10 +138,11 @@ export class TxFormatProvider {
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
     tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
 
+    const chain = this.currencyProvider.getChain(coin).toLowerCase();
     tx.feeStr = tx.fee
-      ? this.formatAmountStr(coin, tx.fee)
+      ? this.formatAmountStr(chain, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
+      ? this.formatAmountStr(chain, tx.fees)
       : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];

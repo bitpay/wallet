@@ -13,6 +13,7 @@ import { AmountPage } from '../send/amount/amount';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -53,7 +54,8 @@ export class ReceivePage extends WalletTabsChild {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     walletTabsProvider: WalletTabsProvider,
-    private platform: Platform
+    private platform: Platform,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
@@ -69,6 +71,10 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewWillLeave() {
     this.onResumeSubscription.unsubscribe();
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('walletReceive');
   }
 
   ionViewDidLoad() {

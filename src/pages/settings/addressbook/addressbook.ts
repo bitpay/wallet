@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { Logger } from '../../../providers/logger/logger';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
@@ -22,12 +23,14 @@ export class AddressbookPage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     private logger: Logger,
-    private addressbookProvider: AddressBookProvider
+    private addressbookProvider: AddressBookProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.initAddressbook();
   }
 
   ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('addressBook');
     if (this.cache) this.initAddressbook();
     this.cache = true;
   }

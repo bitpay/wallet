@@ -6,6 +6,7 @@ import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
+import { AnalyticsProvider } from '../../../../providers/analytics/analytics';
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
@@ -32,7 +33,8 @@ export class BitPayCardIntroPage {
     private navCtrl: NavController,
     private externalLinkProvider: ExternalLinkProvider,
     private statusBar: StatusBar,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {}
 
   ionViewWillEnter() {
@@ -99,6 +101,11 @@ export class BitPayCardIntroPage {
     });
   }
 
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('legacyCardSetup');
+    this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
+  }
+
   ionViewWillLeave() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
@@ -111,11 +118,13 @@ export class BitPayCardIntroPage {
   }
 
   public orderBitPayCard() {
+    this.bitPayCardProvider.logEvent('legacycard_order', {});
     let url = 'https://bitpay.com/visa/get-started';
     this.externalLinkProvider.open(url);
   }
 
   public connectBitPayCard() {
+    this.bitPayCardProvider.logEvent('legacycard_connect', {});
     if (this.accounts.length == 0) {
       this.startPairBitPayAccount();
     } else {

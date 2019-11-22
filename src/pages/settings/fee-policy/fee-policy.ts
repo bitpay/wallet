@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { ConfigProvider } from '../../../providers/config/config';
 import { FeeProvider } from '../../../providers/fee/fee';
 
@@ -26,7 +27,8 @@ export class FeePolicyPage {
   constructor(
     private logger: Logger,
     private feeProvider: FeeProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.feeOpts = this.feeProvider.getFeeOpts();
     delete this.feeOpts['custom']; // Remove custom level
@@ -34,6 +36,7 @@ export class FeePolicyPage {
   }
 
   ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('settingsBitcoinNetworkFeePolicy');
     this.error = null;
     return this.feeProvider
       .getFeeLevels(COIN)

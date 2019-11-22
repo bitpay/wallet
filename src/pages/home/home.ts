@@ -135,7 +135,6 @@ export class HomePage {
   }
 
   private _willEnter(shouldUpdate: boolean = false) {
-    this.analyticsProvider.setScreenName('home');
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
@@ -148,6 +147,7 @@ export class HomePage {
 
   private _didEnter() {
     this.checkClipboard();
+    this.analyticsProvider.setScreenName('home');
 
     // Show integrations
     const integrations = this.homeIntegrationsProvider
@@ -172,13 +172,10 @@ export class HomePage {
     }, 200);
 
     // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (_, cards) => {
-      this.zone.run(() => {
-        this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard
-          ? true
-          : false;
-        this.bitpayCardItems = cards;
-      });
+    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
+      this.showBitPayCard = !!this.appProvider.info._enabledExtensions
+        .debitcard;
+      this.bitpayCardItems = cards;
     });
   }
 

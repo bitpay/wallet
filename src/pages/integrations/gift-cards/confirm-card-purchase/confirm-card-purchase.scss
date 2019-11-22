@@ -33,6 +33,8 @@ confirm-card-purchase-page {
     }
 
     .card-list-item__icon {
+      flex-shrink: 0;
+
       img {
         border: 1px #9ba3ae solid;
         border-radius: 50%;
@@ -44,8 +46,7 @@ confirm-card-purchase-page {
   }
 
   .gift-card-title {
-    display: flex;
-    align-items: center;
+    display: block;
     margin-bottom: 1.2rem;
     margin-top: 1.2rem;
     font-size: 18px;

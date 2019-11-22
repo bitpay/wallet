@@ -5,6 +5,7 @@ import { BuyCardPage } from '../buy-card/buy-card';
 
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
+import { AnalyticsProvider } from '../../../../providers/analytics/analytics';
 import {
   getDisplayNameSortValue,
   GiftCardProvider,
@@ -33,13 +34,19 @@ export class CardCatalogPage extends WideHeaderPage {
     public giftCardProvider: GiftCardProvider,
     platormProvider: PlatformProvider,
     private navCtrl: NavController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(platormProvider);
   }
 
   ngOnInit() {
     this.title = 'Gift Cards';
+  }
+
+  ionViewDidEnter() {
+    this.logGiftCardCatalogHomeView();
+    this.analyticsProvider.setScreenName('giftCardsHome');
   }
 
   ionViewWillEnter() {
@@ -59,6 +66,10 @@ export class CardCatalogPage extends WideHeaderPage {
         this.showError();
         return [] as CardConfig[];
       });
+  }
+
+  ionViewDidEnter() {
+    this.logGiftCardCatalogHomeView();
   }
 
   onSearch(query: string) {
@@ -91,10 +102,31 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 
   buyCard(cardConfig: CardConfig) {
+    this.logGiftCardBrandView(cardConfig);
+
     this.navCtrl.push(BuyCardPage, { cardConfig });
     if (this.hasPercentageDiscount(cardConfig)) {
       this.logDiscountClick(cardConfig);
     }
+  }
+
+  logGiftCardCatalogHomeView() {
+    this.giftCardProvider.logEvent('giftcards_view_home', {});
+  }
+
+  logGiftCardBrandView(cardConfig: CardConfig) {
+    this.giftCardProvider.logEvent('giftcards_view_brand', {
+      brand: cardConfig.name
+    });
+
+    this.giftCardProvider.logEvent('view_item', {
+      items: [
+        {
+          brand: cardConfig.name,
+          category: 'giftCards'
+        }
+      ]
+    });
   }
 
   logDiscountClick(cardConfig: CardConfig) {

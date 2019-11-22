@@ -173,6 +173,12 @@ ion-spinner * {
   }
 }
 
+button.item {
+  &.activated {
+    background-color: $feather;
+  }
+}
+
 .button-item {
   ion-label {
     display: flex;
@@ -410,7 +416,7 @@ ion-app,
   &.activated {
     &.button-md,
     &.button-ios {
-      background-color: #e5e5e5;
+      background-color: $feather;
     }
   }
 }
@@ -598,7 +604,6 @@ page-amount,
 page-multi-send,
 page-bitpay-card-intro,
 page-bitpay-card,
-page-shapeshift,
 .wallet-details-header {
   @include toolbar-button-color(white);
 

@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
@@ -86,7 +87,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     private externalLinkProvider: ExternalLinkProvider,
     walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform
+    private platform: Platform,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -132,6 +134,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   // Start by firing a walletFocus event.
   ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('walletHome');
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
       walletId: this.wallet.credentials.walletId

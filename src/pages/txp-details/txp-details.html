@@ -21,8 +21,8 @@
         <div class="amount-label">
           <div class="amount">
             <div>
-              {{amount}}
-              <span class="amount-coin">{{tx.coin | uppercase}}</span>
+              {{tx.amountValueStr}}
+              <span class="amount-coin">{{tx.amountUnitStr | uppercase}}</span>
             </div>
             <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
           </div>

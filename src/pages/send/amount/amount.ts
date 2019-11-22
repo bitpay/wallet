@@ -25,6 +25,7 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
 import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { getActivationFee } from '../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -102,7 +103,8 @@ export class AmountPage extends WalletTabsChild {
     walletTabsProvider: WalletTabsProvider,
     private events: Events,
     private viewCtrl: ViewController,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -180,6 +182,12 @@ export class AmountPage extends WalletTabsChild {
       'Wallet/disableHardwareKeyboard',
       this.walletDisableHardwareKeyboardHandler
     );
+  }
+
+  ionViewDidEnter() {
+    if (this.navParams.data.nextPage === 'BitPayCardTopUpPage') {
+      this.analyticsProvider.setScreenName('legacyCardAddFundsAmount');
+    }
   }
 
   ionViewWillLeave() {

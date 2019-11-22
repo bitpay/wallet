@@ -8,6 +8,7 @@ import { SessionLogPage } from './session-log/session-log';
 
 // providers
 import {
+  AnalyticsProvider,
   AppProvider,
   ExternalLinkProvider,
   Logger,
@@ -31,9 +32,14 @@ export class AboutPage {
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.versionItemTapped = 0;
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('about');
   }
 
   ionViewDidLoad() {

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -72,7 +73,8 @@ export class ScanPage {
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
     private platform: Platform,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -98,6 +100,10 @@ export class ScanPage {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.ionViewWillEnter();
     });
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('scan');
   }
 
   ionViewWillLeave() {

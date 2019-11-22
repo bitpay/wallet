@@ -16,6 +16,7 @@ import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
 // Providers
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -52,6 +53,7 @@ export class ShapeshiftPage {
     protected translate: TranslateService,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
+    private analyticsProvider: AnalyticsProvider,
     private statusBar: StatusBar
   ) {
     this.oauthCodeForm = this.formBuilder.group({
@@ -68,6 +70,10 @@ export class ShapeshiftPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ShapeshiftPage');
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('shapeShiftHome');
   }
 
   ionViewWillEnter() {

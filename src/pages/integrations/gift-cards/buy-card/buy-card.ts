@@ -1,6 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ActionSheetProvider } from '../../../../providers';
+import { ActionSheetProvider, AnalyticsProvider } from '../../../../providers';
 import {
   getActivationFee,
   hasVisibleDiscount
@@ -23,12 +23,17 @@ export class BuyCardPage {
     private actionSheetProvider: ActionSheetProvider,
     private nav: NavController,
     private navParams: NavParams,
-    private zone: NgZone
+    private zone: NgZone,
+    private analyticsProvider: AnalyticsProvider
   ) {}
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
     this.hasPercentageDiscount = hasVisibleDiscount(this.cardConfig);
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('giftCardsBrand');
   }
 
   ionViewWillEnter() {

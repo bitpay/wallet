@@ -7,7 +7,9 @@
     <button ion-item *ngIf="discountedCard" class="discount-item"
       (click)="buyCard(discountedCard.name, 'Home Gift Card List Discount Item')">
       <img-loader class="logo" [src]="discountedCard.icon"></img-loader>
-      <div class="ellipsis">Save {{discountedCard.discounts[0].amount}}% off {{discountedCard.displayName}}</div>
+      <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard"
+          [discount]="discountedCard.discounts[0]">
+        </gift-card-discount-text> off {{discountedCard.displayName}}</div>
     </button>
     <ion-item-options side="right">
       <button ion-button color="danger" (click)="showHideDiscountItemSheet()">
@@ -30,7 +32,9 @@
         scrolled-into-view [scrollArea]="scrollArea"
         (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
         <img [src]="discountedCard.icon">
-        Save {{discountedCard.discounts[0].amount}}% off {{discountedCard.displayName}}
+        <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard"
+            [discount]="discountedCard.discounts[0]">
+          </gift-card-discount-text> off {{discountedCard.displayName}}</div>
       </div>
     </div>
   </div>

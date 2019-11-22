@@ -23,10 +23,13 @@ export class FormatCurrencyPipe implements PipeTransform {
       getPrecisionString(precision)
     );
     const symbolMap = {
-      USD: '$',
-      GBP: '£',
+      BRL: 'R$',
       EUR: '€',
-      JPY: '¥'
+      GBP: '£',
+      INR: '₹',
+      JPY: '¥',
+      PHP: '₱',
+      USD: '$'
     };
     const symbol = symbolMap[currencyCode.toUpperCase()];
     const finalValue = symbol

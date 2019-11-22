@@ -4,6 +4,7 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -46,7 +47,8 @@ export class CoinbasePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private modalCtrl: ModalController,
     private navParams: NavParams,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -57,6 +59,10 @@ export class CoinbasePage {
     this.isElectron = this.platformProvider.isElectron;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('coinbase');
   }
 
   ionViewWillEnter() {

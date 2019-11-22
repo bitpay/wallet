@@ -29,6 +29,7 @@ import {
   WalletTabsProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../../../providers/analytics/analytics';
 import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
@@ -81,6 +82,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public cardConfig: CardConfig;
   public hideSlideButton: boolean;
+  public displayNameIncludesGiftCard: boolean = false;
 
   constructor(
     addressProvider: AddressProvider,
@@ -115,7 +117,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     clipboardProvider: ClipboardProvider,
     events: Events,
     AppProvider: AppProvider,
-    statusBar: StatusBar
+    statusBar: StatusBar,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(
       addressProvider,
@@ -158,12 +161,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.cardConfig = await this.giftCardProvider.getCardConfig(
       this.navParams.get('cardName')
     );
+    this.displayNameIncludesGiftCard = this.cardConfig.displayName
+      .toLowerCase()
+      .includes('gift card');
     this.onlyIntegers = this.cardConfig.currency === 'JPY';
     this.activationFee = getActivationFee(this.amount, this.cardConfig);
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ConfirmCardPurchasePage');
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('giftCardsConfirm');
   }
 
   ionViewWillEnter() {
@@ -188,6 +198,47 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return;
     }
     this.showWallets(); // Show wallet selector
+  }
+
+  public logGiftCardPurchaseEvent(
+    isSlideConfirmFinished: boolean,
+    transactionCurrency: string,
+    giftData?: any
+  ) {
+    if (!isSlideConfirmFinished) {
+      this.giftCardProvider.logEvent('giftcards_purchase_start', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+      this.giftCardProvider.logEvent('add_to_cart', {
+        brand: this.cardConfig.name,
+        category: 'giftCards'
+      });
+    } else {
+      this.giftCardProvider.logEvent('giftcards_purchase_finish', {
+        brand: this.cardConfig.name,
+        usdAmount: this.amount,
+        transactionCurrency
+      });
+
+      this.giftCardProvider.logEvent('set_checkout_option', {
+        transactionCurrency,
+        checkout_step: 1
+      });
+
+      this.giftCardProvider.logEvent('purchase', {
+        value: giftData.amount,
+        items: [
+          {
+            name: this.cardConfig.name,
+            category: 'giftCards',
+            quantity: 1,
+            price: giftData.amount.toString(10)
+          }
+        ]
+      });
+    }
   }
 
   public cancel() {
@@ -463,6 +514,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       buyerSelectedTransactionCurrency: COIN,
       cardName: this.cardConfig.name
     };
+
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     const data = await this.createInvoice(dataSrc).catch(err => {
@@ -525,10 +577,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
 
     // Warn: fee too high
-    this.checkFeeHigh(
-      Number(parsedAmount.amountSat),
-      Number(invoiceFeeSat) + Number(ctxp.fee)
-    );
+    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+      this.checkFeeHigh(
+        Number(parsedAmount.amountSat),
+        Number(invoiceFeeSat) + Number(ctxp.fee)
+      );
+    }
 
     this.setTotalAmount(
       wallet,
@@ -536,6 +590,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       invoiceFeeSat,
       ctxp.fee
     );
+
+    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
   public async buyConfirm() {
@@ -549,8 +605,16 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
+
     return this.publishAndSign(this.wallet, this.tx)
-      .then(() => this.redeemGiftCard(this.tx.giftData))
+      .then(() => {
+        this.redeemGiftCard(this.tx.giftData);
+        this.logGiftCardPurchaseEvent(
+          true,
+          this.wallet.coin.toUpperCase(),
+          this.tx.giftData
+        );
+      })
       .catch(async err => this.handlePurchaseError(err));
   }
 

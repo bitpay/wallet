@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import {
   Coin,
@@ -57,7 +58,8 @@ export class SendPage extends WalletTabsChild {
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private analyticsProvider: AnalyticsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -67,6 +69,10 @@ export class SendPage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SendPage');
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('walletSend');
   }
 
   ionViewWillEnter() {

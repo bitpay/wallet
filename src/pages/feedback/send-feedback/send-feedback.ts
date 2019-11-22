@@ -14,6 +14,7 @@ import {
   ActionSheetProvider,
   InfoSheetType
 } from '../../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -60,7 +61,8 @@ export class SendFeedbackPage {
     private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private device: Device
+    private device: Device,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.feedbackForm = this.formBuilder.group({
       comment: [
@@ -74,6 +76,10 @@ export class SendFeedbackPage {
     this.leavingFeedback = false;
     this.isCordova = this.platformProvider.isCordova;
     this.isAndroid = this.platformProvider.isAndroid;
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('feedback');
   }
 
   ionViewWillEnter() {

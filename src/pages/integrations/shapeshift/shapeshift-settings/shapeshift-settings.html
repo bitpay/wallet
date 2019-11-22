@@ -18,8 +18,8 @@
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
-  
-    <ion-list>
+
+    <ion-list class="bp-list">
       <ion-item [ngClass]="{'with-label': unverifiedAccount}">
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>

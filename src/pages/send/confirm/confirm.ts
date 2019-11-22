@@ -464,7 +464,12 @@ export class ConfirmPage extends WalletTabsChild {
                 tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
-            if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
+            const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
+            if (
+              tx.network != 'testnet' &&
+              tx.feeRate > maxAllowedFee &&
+              isUtxo
+            ) {
               this.onGoingProcessProvider.set('calculatingFee');
               this.showHighFeeSheet();
             }
@@ -573,9 +578,11 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          const per = this.getFeeRate(txp.amount, txp.fee);
-          txp.feeRatePerStr = per.toFixed(2) + '%';
-          txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
+          if (this.currencyProvider.isUtxoCoin(tx.coin)) {
+            const per = this.getFeeRate(txp.amount, txp.fee);
+            txp.feeRatePerStr = per.toFixed(2) + '%';
+            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
+          }
 
           if (txp.feeTooHigh) {
             this.showHighFeeSheet();

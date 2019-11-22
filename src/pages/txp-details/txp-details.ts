@@ -156,12 +156,17 @@ export class TxpDetailsPage {
   };
 
   private displayFeeValues(): void {
+    const chain = this.currencyProvider
+      .getChain(this.wallet.coin)
+      .toLowerCase();
     this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-      this.wallet.coin,
+      chain,
       this.tx.fee
     );
-    this.tx.feeRateStr =
-      ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
+    if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+      this.tx.feeRateStr =
+        ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
+    }
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelStr = feeOpts[this.tx.feeLevel];
   }

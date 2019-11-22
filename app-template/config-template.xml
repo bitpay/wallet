@@ -98,14 +98,19 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="5.1.0" />
+    <plugin name="cordova-plugin-fcm-ng" spec="5.1.1" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
-      <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
+      <config-file target="*-Info.plist" parent="UIUserInterfaceStyle">
+        <string>Light</string>
+      </config-file>
+      <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
+        <true />
+      </config-file>
       <config-file target="*-Info.plist" parent="ITSAppUsesNonExemptEncryption"><false/></config-file>
 
       <config-file platform="ios" target="*-Info.plist" parent="LSApplicationQueriesSchemes">

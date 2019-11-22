@@ -5,6 +5,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
@@ -47,7 +48,8 @@ export class NotificationsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.emailForm = this.formBuilder.group({
       email: [
@@ -63,6 +65,10 @@ export class NotificationsPage {
   ionViewDidLoad() {
     this.logger.info('Loaded: NotificationsPage');
     this.updateConfig();
+  }
+
+  ionViewDidEnter() {
+    this.analyticsProvider.setScreenName('settingsNotifications');
   }
 
   private updateConfig() {

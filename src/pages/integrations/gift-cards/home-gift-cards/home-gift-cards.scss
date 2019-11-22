@@ -6,10 +6,6 @@
 button.discount-item {
   height: 75px;
 
-  &.activated {
-    background: $feather;
-  }
-
   img-loader {
     flex-shrink: 0;
     margin-left: 2px;
@@ -22,6 +18,10 @@ button.discount-item {
       width: $discount-img-dim;
     }
   }
+
+  .input-wrapper {
+    padding-right: 10px;
+  }
 }
 
 .gift-card-featured-discount {
@@ -32,6 +32,7 @@ button.discount-item {
   color: #565d6d;
   padding: 8px 17px;
   text-align: left;
+  max-width: 100%;
 
   img {
     border-radius: 50%;
