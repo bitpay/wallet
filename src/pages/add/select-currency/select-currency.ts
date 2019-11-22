@@ -126,17 +126,6 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  public createWallets(coins: Coin[]): void {
-    if (this.showKeyOnboarding) {
-      this.showKeyOnboardingSlides(coins);
-      return;
-    } else if (this.isZeroState) {
-      this.showInfoSheet(coins);
-      return;
-    }
-    this._createWallets(coins);
-  }
-
   private _createWallets(coins: Coin[]): void {
     const selectedCoins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
     coins = coins || selectedCoins;
@@ -152,6 +141,17 @@ export class SelectCurrencyPage {
       .catch(e => {
         this.showError(e);
       });
+  }
+
+  public createWallets(coins: Coin[]): void {
+    if (this.showKeyOnboarding) {
+      this.showKeyOnboardingSlides(coins);
+      return;
+    } else if (this.isZeroState) {
+      this.showInfoSheet(coins);
+      return;
+    }
+    this._createWallets(coins);
   }
 
   private showError(err) {
@@ -177,6 +177,8 @@ export class SelectCurrencyPage {
   public createAndBindTokenWallet(pairedWallet, token) {
     if (!_.isEmpty(pairedWallet)) {
       this.profileProvider.createTokenWallet(pairedWallet, token).then(() => {
+        // store preferences for the paired eth wallet
+        this.walletProvider.updateRemotePreferences(pairedWallet);
         this.endProcess();
       });
     }

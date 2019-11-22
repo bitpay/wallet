@@ -1315,6 +1315,19 @@ export class ProfileProvider {
                     );
                   return resolve(this._createWallet(opts));
                 } else {
+                  // Set default preferences.
+                  const config = this.configProvider.get();
+
+                  const prefs = {
+                    email: config.emailNotifications.email,
+                    language: this.languageProvider.getCurrent(),
+                    unit: 'btc' // deprecated
+                  };
+
+                  data.walletClient.preferences = _.assign(
+                    prefs,
+                    data.walletClient.preferences
+                  );
                   return resolve(data);
                 }
               }
@@ -1445,22 +1458,35 @@ export class ProfileProvider {
     };
   }
 
-  private _createTokenWallet(ethWallet, token) {
-    if (_.isString(token)) {
-      let tokens = this.currencyProvider.getAvailableTokens();
-      token = tokens.find(x => x.symbol == token);
-    }
-    const tokenCredentials = ethWallet.credentials.getTokenCredentials(token);
+  private _createTokenWallet(ethWallet, tokenObj) {
+    this.logger.debug(
+      `Creating token wallet ${tokenObj.name} for ${ethWallet.id}:`
+    );
+
+    const tokenCredentials = ethWallet.credentials.getTokenCredentials(
+      tokenObj
+    );
     const walletClient = this.bwcProvider.getClient(null, {
       baseUrl: ethWallet.baseUrl,
       bp_partner: ethWallet.bp_partner,
       bp_partner_version: ethWallet.bp_partner_version
     });
     walletClient.fromObj(tokenCredentials);
+
+    // Add the token info to the ethWallet.
+    ethWallet.preferences = ethWallet.preferences || {};
+    ethWallet.preferences.tokenAddresses =
+      ethWallet.preferences.tokenAddresses || [];
+    ethWallet.preferences.tokenAddresses.push(tokenObj.address);
+
     return walletClient;
   }
 
   public createTokenWallet(ethWallet, token): Promise<any> {
+    if (_.isString(token)) {
+      let tokens = this.currencyProvider.getAvailableTokens();
+      token = tokens.find(x => x.symbol == token);
+    }
     const tokenWalletClient = this._createTokenWallet(ethWallet, token);
     return this.addAndBindWalletClient(tokenWalletClient);
   }
@@ -1491,15 +1517,23 @@ export class ProfileProvider {
               let walletClients = _.map(datas, 'walletClient');
 
               // Handle tokens
-              const ethWalletClient = walletClients.find(
-                wallet => wallet.credentials.coin === 'eth'
-              );
-              if (!ethWalletClient && !_.isEmpty(tokens))
-                reject('no eth wallet');
-              const tokenClients = tokens.map(token =>
-                this._createTokenWallet(ethWalletClient, token)
-              );
-              walletClients = walletClients.concat(tokenClients);
+              if (!_.isEmpty(tokens)) {
+                const ethWalletClient = walletClients.find(
+                  wallet => wallet.credentials.coin === 'eth'
+                );
+
+                if (!ethWalletClient) reject('no eth wallet for tokens');
+
+                let tokenObjs = this.currencyProvider.getAvailableTokens();
+
+                const tokenClients = tokens.map(token => {
+                  token = tokenObjs.find(x => x.symbol == token);
+                  return this._createTokenWallet(ethWalletClient, token);
+                });
+
+                walletClients = walletClients.concat(tokenClients);
+              }
+
               this.addAndBindWalletClients({
                 key: firstWalletData.key,
                 walletClients
