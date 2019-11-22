@@ -1193,9 +1193,8 @@ export class WalletProvider {
     });
   }
 
-
   // updates local and remote prefs for 1 wallet
-  public updateRemotePreferencesFor(client, prefs): Promise<any>  {
+  public updateRemotePreferencesFor(client, prefs): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug(
         'Saving remote preferences',
@@ -1208,9 +1207,7 @@ export class WalletProvider {
           this.popupProvider.ionicAlert(
             this.bwcErrorProvider.msg(
               err,
-              this.translate.instant(
-                'Could not save preferences on the server'
-              )
+              this.translate.instant('Could not save preferences on the server')
             )
           );
           return reject(err);
@@ -1219,9 +1216,7 @@ export class WalletProvider {
         return resolve();
       });
     });
-  };
-
-
+  }
 
   public updateRemotePreferences(clients, prefs?): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1241,13 +1236,14 @@ export class WalletProvider {
       prefs.unit = 'btc'; // DEPRECATED
 
       let updates = [];
-      clients.forEach((c) => {
-        updates.push( this.updateRemotePreferencesFor(c, prefs));
+      clients.forEach(c => {
+        updates.push(this.updateRemotePreferencesFor(c, prefs));
       });
 
-      Promise.all(updates).then(() => {
-        return resolve();
-      })
+      Promise.all(updates)
+        .then(() => {
+          return resolve();
+        })
         .catch(err => {
           return reject(err);
         });
