@@ -1316,6 +1316,17 @@ export class ProfileProvider {
                     );
                   return resolve(this._createWallet(opts));
                 } else {
+
+                  // Set default preferences.
+                  const config = this.configProvider.get();
+                  
+                  const prefs = {
+                    email: config.emailNotifications.email,
+                    language: this.languageProvider.getCurrent(),
+                    unit: 'btc', // deprecated
+                  };
+
+                  data.walletClient.preferences = _.assign(prefs, data.walletClient.preferences);
                   return resolve(data);
                 }
               }
@@ -1454,6 +1465,12 @@ export class ProfileProvider {
       bp_partner_version: ethWallet.bp_partner_version
     });
     walletClient.fromObj(tokenCredentials);
+
+    // Add the token info to the ethWallet.
+    ethWallet.preferences = ethWallet.preferences || {};
+    ethWallet.preferences.tokenAddresses = ethWallet.preferences.tokenAddresses || [];
+    ethWallet.preferences.tokenAddresses.push(token.address);
+
     return walletClient;
   }
 

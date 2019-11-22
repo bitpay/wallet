@@ -13,7 +13,6 @@ import { Coin, CurrencyProvider } from '../currency/currency';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
-import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -110,7 +109,6 @@ export class WalletProvider {
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
     private filter: FilterProvider,
-    private languageProvider: LanguageProvider,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider,
@@ -1202,7 +1200,14 @@ export class WalletProvider {
         prefs
       );
 
-      client.savePreferences(prefs, err => {
+console.log('[wallet.ts.1206:prefs:]',prefs); // TODO
+      if (!_.isEmpty(prefs)) {
+        client.preferences = _.assign(prefs, client.preferences);
+      }
+
+console.log('[wallet.ts.1208]', client.preferences); // TODO
+
+      client.savePreferences(client.preferences, err => {
         if (err) {
           this.popupProvider.ionicAlert(
             this.bwcErrorProvider.msg(
@@ -1212,42 +1217,28 @@ export class WalletProvider {
           );
           return reject(err);
         }
-        client.preferences = _.assign(prefs, client.preferences);
         return resolve();
       });
     });
   }
 
+
+
+
   public updateRemotePreferences(clients, prefs?): Promise<any> {
-    return new Promise((resolve, reject) => {
-      prefs = prefs ? prefs : {};
-      if (!_.isArray(clients)) clients = [clients];
+    prefs = prefs ? prefs : {};
+    if (!_.isArray(clients)) clients = [clients];
 
-      // Update this JIC.
-      const config = this.configProvider.get();
+    let updates = [];
+    clients.forEach(c => {
 
-      // Get email from local config
-      prefs.email = config.emailNotifications.email;
+      if (this.currencyProvider.isERCToken(c.credentials.coin))
+        return;
 
-      // Get current languge
-      prefs.language = this.languageProvider.getCurrent();
-
-      // Set OLD wallet in bits to btc
-      prefs.unit = 'btc'; // DEPRECATED
-
-      let updates = [];
-      clients.forEach(c => {
-        updates.push(this.updateRemotePreferencesFor(c, prefs));
-      });
-
-      Promise.all(updates)
-        .then(() => {
-          return resolve();
-        })
-        .catch(err => {
-          return reject(err);
-        });
+      updates.push(this.updateRemotePreferencesFor(c, prefs));
     });
+
+    return Promise.all(updates);
   }
 
   public recreate(wallet): Promise<any> {
