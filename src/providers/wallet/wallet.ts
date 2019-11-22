@@ -1194,18 +1194,15 @@ export class WalletProvider {
   // updates local and remote prefs for 1 wallet
   public updateRemotePreferencesFor(client, prefs): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (!_.isEmpty(prefs)) {
+        _.assign(client.preferences, prefs);
+      }
+
       this.logger.debug(
         'Saving remote preferences',
         client.credentials.walletName,
-        prefs
+        JSON.stringify(client.preferences || {})
       );
-
-console.log('[wallet.ts.1206:prefs:]',prefs); // TODO
-      if (!_.isEmpty(prefs)) {
-        client.preferences = _.assign(prefs, client.preferences);
-      }
-
-console.log('[wallet.ts.1208]', client.preferences); // TODO
 
       client.savePreferences(client.preferences, err => {
         if (err) {
@@ -1222,18 +1219,13 @@ console.log('[wallet.ts.1208]', client.preferences); // TODO
     });
   }
 
-
-
-
   public updateRemotePreferences(clients, prefs?): Promise<any> {
     prefs = prefs ? prefs : {};
     if (!_.isArray(clients)) clients = [clients];
 
     let updates = [];
     clients.forEach(c => {
-
-      if (this.currencyProvider.isERCToken(c.credentials.coin))
-        return;
+      if (this.currencyProvider.isERCToken(c.credentials.coin)) return;
 
       updates.push(this.updateRemotePreferencesFor(c, prefs));
     });
