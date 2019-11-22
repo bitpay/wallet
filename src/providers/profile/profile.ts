@@ -1460,6 +1460,10 @@ export class ProfileProvider {
   }
 
   private _createTokenWallet(ethWallet, tokenObj) {
+    this.logger.debug(
+      `Creating token wallet ${tokenObj.name} for ${ethWallet.id}:`
+    );
+
     const tokenCredentials = ethWallet.credentials.getTokenCredentials(
       tokenObj
     );
@@ -1525,7 +1529,7 @@ export class ProfileProvider {
 
                 const tokenClients = tokens.map(token => {
                   token = tokenObjs.find(x => x.symbol == token);
-                  this._createTokenWallet(ethWalletClient, token);
+                  return this._createTokenWallet(ethWalletClient, token);
                 });
 
                 walletClients = walletClients.concat(tokenClients);
