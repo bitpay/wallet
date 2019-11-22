@@ -32,7 +32,8 @@
         scrolled-into-view [scrollArea]="scrollArea"
         (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
         <img [src]="discountedCard.icon">
-        <div>Save <gift-card-discount-text [cardConfig]="discountedCard" [discount]="discountedCard.discounts[0]">
+        <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard"
+            [discount]="discountedCard.discounts[0]">
           </gift-card-discount-text> off {{discountedCard.displayName}}</div>
       </div>
     </div>
