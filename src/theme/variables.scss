@@ -151,6 +151,10 @@ $button-md-text-transform: none;
   overflow-y: auto;
 }
 
+* ::-webkit-scrollbar {
+  display: none;
+}
+
 // Removes border-bottom
 .md,
 .ios {
