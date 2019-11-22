@@ -64,7 +64,7 @@
             {{'Hidden'|translate}}
           </ion-note>
         </button>
-        <button ion-item class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()" translate>
+        <button ion-item detail-none class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()" translate>
           Create a new wallet
         </button>
       </ion-list>
