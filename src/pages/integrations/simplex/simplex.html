@@ -71,28 +71,28 @@
             </div>
           </label-tip>
         </form>
-
-        <ion-spinner *ngIf="showLoading" icon="crescent"></ion-spinner>
-        <ion-list *ngIf="wallet && cryptoAmount && quoteForm.valid && !showLoading">
-          <ion-item>
-            {{'Approximate amount' | translate}}
-            <ion-note item-end>
-              <span *ngIf="!wallet.coin">...</span>
-              <span *ngIf="wallet.coin">
-                {{ cryptoAmount }} {{ wallet.coin | uppercase }}
-              </span>
-            </ion-note>
-          </ion-item>
-
-          <label-tip type="warn" header="no-header">
-            <div label-tip-body>
-              <div translate>The final amount is based on the exchange rate when the transaction is complete</div>
-            </div>
-          </label-tip>
-        </ion-list>
       </div>
 
-      <form [formGroup]="formSubmission" id="formSubmission" action="https://sandbox.test-simplexcc.com/payments/new" method="post" target="_blank">
+      <ion-spinner *ngIf="showLoading" icon="crescent"></ion-spinner>
+      <ion-list *ngIf="wallet && cryptoAmount && quoteForm.valid && !showLoading">
+        <ion-item>
+          {{'Approximate amount' | translate}}
+          <ion-note item-end>
+            <span *ngIf="!wallet.coin">...</span>
+            <span *ngIf="wallet.coin">
+              {{ cryptoAmount }} {{ wallet.coin | uppercase }}
+            </span>
+          </ion-note>
+        </ion-item>
+
+        <label-tip type="warn" header="no-header">
+          <div label-tip-body>
+            <div translate>The final amount is based on the exchange rate when the transaction is complete</div>
+          </div>
+        </label-tip>
+      </ion-list>
+
+      <form [formGroup]="formSubmission" id="formSubmission" method="post" target="_blank">
         <input type="hidden" name="version" formControlName="version">
         <input type="hidden" name="partner" formControlName="partner">
         <input type="hidden" name="payment_flow_type" formControlName="payment_flow_type">

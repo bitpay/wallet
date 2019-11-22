@@ -6,8 +6,10 @@ import * as _ from 'lodash';
 
 // Proviers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
 import { CurrencyProvider } from '../../../providers/currency/currency';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { SimplexProvider } from '../../../providers/simplex/simplex';
@@ -40,15 +42,15 @@ export class SimplexPage {
 
   private fiatAmountValidatorRegex: RegExp;
   private quoteId: string;
-  private payment_id: string;
-  private order_id: string;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
     private fb: FormBuilder,
     private logger: Logger,
     private navCtrl: NavController,
+    private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private simplexProvider: SimplexProvider,
@@ -98,14 +100,6 @@ export class SimplexPage {
     });
   }
 
-  private createGuid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      var r = (Math.random() * 16) | 0,
-        v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
-
   public fiatAltCurrencyChange() {
     this.logger.debug(
       'fiatAltCurrency changed to: ' + this.quoteForm.value.fiatAltCurrency
@@ -137,8 +131,8 @@ export class SimplexPage {
       requested_currency: this.quoteForm.value.fiatAltCurrency,
       requested_amount: +this.quoteForm.value.fiatAmount,
       end_user_id: '11b111d1-161e-32d9-6bda-8dd2b5c8af17', // TODO: BitPay id / wallet id??
-      client_ip: '1.2.3.4', // TODO client ip ?
-      wallet_id: this.simplexProvider.getPartnerName()
+      client_ip: '1.2.3.4' // TODO client ip ?
+      // wallet_id: this.simplexProvider.getPartnerId()
     };
 
     this.simplexProvider
@@ -157,72 +151,82 @@ export class SimplexPage {
   }
 
   simplexPaymentRequest(address: string): Promise<any> {
-    this.payment_id = this.createGuid();
-    this.order_id = this.createGuid();
-    const opts = {
-      account_details: {
-        app_provider_id: this.simplexProvider.getPartnerName(),
-        app_version_id: '1.3.1',
-        app_end_user_id: '11b111d1-161e-32d9-6bda-8dd2b5c8af17', // TODO: BitPay id / wallet id??
-        app_install_date: '2018-01-03T15:23:12Z',
-        signup_login: {
-          ip: '1.2.3.4',
-          location: '36.848460,-174.763332',
-          uaid:
-            'IBAnKPg1bdxRiT6EDkIgo24Ri8akYQpsITRKIueg+3XjxWqZlmXin7YJtQzuY4K73PWTZOvmuhIHu + ee8m4Cs4WLEqd2SvQS9jW59pMDcYu + Tpl16U / Ss3SrcFKnriEn4VUVKG9QnpAJGYB3JUAPx1y7PbAugNoC8LX0Daqg66E = ',
-          accept_language: 'de,en-US;q=0.7,en;q=0.3',
-          http_accept_language: 'de,en-US;q=0.7,en;q=0.3',
-          user_agent:
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0',
-          cookie_session_id: '7r7rz_VfGC_viXTp5XPh5Bm--rWM6RyU',
-          timestamp: '2018-01-15T09:27:34.431Z'
+    return new Promise((resolve, reject) => {
+      const userAgent = this.platformProvider.getUserAgent();
+      const opts = {
+        account_details: {
+          // app_provider_id: this.simplexProvider.getPartnerId(),
+          app_version_id: this.appProvider.info.version,
+          app_end_user_id: '11b111d1-161e-32d9-6bda-8dd2b5c8af17', // TODO: BitPay id / wallet id??
+          app_install_date: '2018-01-03T15:23:12Z',
+          signup_login: {
+            ip: '1.2.3.4',
+            location: '36.848460,-174.763332',
+            uaid:
+              'IBAnKPg1bdxRiT6EDkIgo24Ri8akYQpsITRKIueg+3XjxWqZlmXin7YJtQzuY4K73PWTZOvmuhIHu + ee8m4Cs4WLEqd2SvQS9jW59pMDcYu + Tpl16U / Ss3SrcFKnriEn4VUVKG9QnpAJGYB3JUAPx1y7PbAugNoC8LX0Daqg66E = ',
+            accept_language: 'de,en-US;q=0.7,en;q=0.3',
+            http_accept_language: 'de,en-US;q=0.7,en;q=0.3',
+            user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
+            cookie_session_id: '7r7rz_VfGC_viXTp5XPh5Bm--rWM6RyU',
+            timestamp: '2018-01-15T09:27:34.431Z' // moment()
+          }
+        },
+        transaction_details: {
+          payment_details: {
+            quote_id: this.quoteId,
+            // payment_id: this.payment_id,
+            // order_id: this.order_id,
+            fiat_total_amount: {
+              currency: this.quoteForm.value.fiatAltCurrency,
+              amount: +this.quoteForm.value.fiatAmount
+            },
+            requested_digital_amount: {
+              currency: this.currencyProvider.getChain(this.wallet.coin),
+              amount: this.cryptoAmount
+            },
+            destination_wallet: {
+              currency: this.currencyProvider.getChain(this.wallet.coin),
+              address,
+              tag: ''
+            },
+            original_http_ref_url: 'https://bitpay.com/'
+          }
         }
-      },
-      transaction_details: {
-        payment_details: {
-          quote_id: this.quoteId,
-          payment_id: this.payment_id,
-          order_id: this.order_id,
-          fiat_total_amount: {
-            currency: this.quoteForm.value.fiatAltCurrency,
-            amount: +this.quoteForm.value.fiatAmount
-          },
-          requested_digital_amount: {
-            currency: this.currencyProvider.getChain(this.wallet.coin),
-            amount: this.cryptoAmount
-          },
-          destination_wallet: {
-            currency: this.currencyProvider.getChain(this.wallet.coin),
-            address,
-            tag: ''
-          },
-          original_http_ref_url: 'https://bitpay.com/'
-        }
-      }
-    };
+      };
 
-    return this.simplexProvider.paymentRequest(this.wallet, opts);
+      this.simplexProvider
+        .paymentRequest(this.wallet, opts)
+        .then(data => {
+          return resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   }
 
-  public simplexPaymentFormSubmission(address: string) {
-    this.formSubmission.controls['version'].setValue('1'); // Version of Simplex’s form to work with. Currently is “1”.
-    this.formSubmission.controls['partner'].setValue(
-      this.simplexProvider.getPartnerName()
+  public simplexPaymentFormSubmission(opts) {
+    document.forms['formSubmission'].setAttribute(
+      'action',
+      opts.api_host + '/payments/new'
     );
+
+    this.formSubmission.controls['version'].setValue('1'); // Version of Simplex’s form to work with. Currently is “1”.
+    this.formSubmission.controls['partner'].setValue(opts.app_provider_id);
     this.formSubmission.controls['payment_flow_type'].setValue('wallet'); // Payment flow type: should be “wallet”
     this.formSubmission.controls['return_url_success'].setValue(
-      'bitpay://simplex?50?fvdfv?FDvdfv?DFv'
+      'bitpay://simplex'
     );
     this.formSubmission.controls['return_url_fail'].setValue(
       'bitpay://simplex'
     );
     this.formSubmission.controls['quote_id'].setValue(this.quoteId);
-    this.formSubmission.controls['payment_id'].setValue(this.payment_id);
+    this.formSubmission.controls['payment_id'].setValue(opts.payment_id);
     this.formSubmission.controls['user_id'].setValue(
       '11b111d1-161e-32d9-6bda-8dd2b5c8af17'
     ); // TODO: BitPay id / wallet id??
     this.formSubmission.controls['destination_wallet[address]'].setValue(
-      address
+      opts.address
     );
     this.formSubmission.controls['destination_wallet[currency]'].setValue(
       this.currencyProvider.getChain(this.wallet.coin)
@@ -262,9 +266,16 @@ export class SimplexPage {
       .getAddress(this.wallet, false)
       .then(address => {
         this.simplexPaymentRequest(address)
-          .then(_data => {
+          .then(data => {
+            const opts = {
+              address,
+              api_host: data.api_host,
+              app_provider_id: data.app_provider_id,
+              order_id: data.order_id,
+              payment_id: data.payment_id
+            };
             try {
-              this.simplexPaymentFormSubmission(address);
+              this.simplexPaymentFormSubmission(opts);
             } catch (err) {
               this.showError(err);
             }

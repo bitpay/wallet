@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { HttpRequestsProvider } from '../http-requests/http-requests';
 import { Logger } from '../logger/logger';
 
 @Injectable()
@@ -14,7 +13,6 @@ export class SimplexProvider {
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private httpRequestProvider: HttpRequestsProvider,
     private logger: Logger,
     private configProvider: ConfigProvider
   ) {
@@ -41,13 +39,13 @@ export class SimplexProvider {
       this.credentials.HOST = simplex.sandbox.host;
       this.credentials.API = simplex.sandbox.api;
       this.credentials.API_KEY = simplex.sandbox.api_key || null;
-      this.credentials.WALLET_ID = simplex.sandbox.wallet_id; // Partner name
+      this.credentials.APP_PROVIDER_ID = simplex.sandbox.appProviderId; // Partner name
     } else {
       this.credentials.REDIRECT_URI = simplex.production.redirect_uri;
       this.credentials.HOST = simplex.production.host;
       this.credentials.API = simplex.production.api;
       this.credentials.API_KEY = simplex.production.api_key || null;
-      this.credentials.WALLET_ID = simplex.production.wallet_id; // Partner name
+      this.credentials.APP_PROVIDER_ID = simplex.production.appProviderId; // Partner name
     }
   }
 
@@ -55,33 +53,12 @@ export class SimplexProvider {
     return this.credentials.NETWORK;
   }
 
-  public getPartnerName(): string {
-    return this.credentials.WALLET_ID;
+  public getPartnerId(): string {
+    return this.credentials.APP_PROVIDER_ID;
   }
 
   public getAPI(): string {
     return this.credentials.API;
-  }
-
-  public getStatus(addr: string, token: string, cb) {
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: 'Bearer ' + token
-    };
-    this.httpRequestProvider
-      .get(this.credentials.API_URL + '/txStat/' + addr, null, headers)
-      .subscribe(
-        data => {
-          this.logger.info('Simplex STATUS: SUCCESS');
-          return cb(null, data);
-        },
-        data => {
-          const error = this.parseError(data);
-          this.logger.error('Simplex STATUS ERROR: ' + error);
-          return cb(data.error);
-        }
-      );
   }
 
   public getQuote(wallet, opts): Promise<any> {
@@ -119,20 +96,7 @@ export class SimplexProvider {
       background:
         'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(60, 63, 69, 1) 100%)',
       page: 'SimplexPage',
-      show: !!this.configProvider.get().showIntegration['simplex'],
-      linked: true
+      show: !!this.configProvider.get().showIntegration['simplex']
     });
-  }
-
-  private parseError(err: any): string {
-    if (!err) return 'Unknow Error';
-    if (!err.error) return err.message ? err.message : 'Unknow Error';
-
-    const parsedError = err.error.error_description
-      ? err.error.error_description
-      : err.error.error && err.error.error.message
-      ? err.error.error.message
-      : err.error;
-    return parsedError;
   }
 }
