@@ -44,6 +44,10 @@
         <span class="total-label">Amount ({{coin}})</span>
         <span class="value">{{totals.totalAmount}}</span>
       </div>
+      <div class="col card">
+        <span class="total-label">Amount (USD)</span>
+        <span class="value">{{totals.totalUSDAmount}}</span>
+      </div>
     </div>
   </div>
 </div>
@@ -84,5 +88,18 @@
     </div>
     <h3 id="amount" class="graphs-label">Amount ({{coin}})</h3>
     <div id="chart-amount" class="chart panel"></div>
+  </div>
+</div>
+<div class="panels">
+  <div class="card">
+    <div class="selector-container">
+      <select class="large-2 left" name="list" (change)="USDAmountInterval($event.target.value)">
+        <option value="perDay" selected>Per day</option>
+        <option value="perWeek">Per week</option>
+        <option value="perMonth">Per month</option>
+      </select>
+    </div>
+    <h3 id="usd-amount" class="graphs-label">Amount (USD)</h3>
+    <div id="chart-usd-amount" class="chart panel"></div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { IMyDpOptions} from 'mydatepicker';
+import { IMyDpOptions } from 'mydatepicker';
 
 import { DataServicesService } from './services/data-services.service';
 import * as moment from 'moment';
@@ -93,6 +93,13 @@ export class AppComponent implements OnInit {
     this.config.graph = 'amount';
     this.config.interval = val;
     this.config.chart = '#chart-amount';
+    this.dataService.show(this.dataSet, this.config);
+  }
+
+  USDAmountInterval(val) {
+    this.config.graph = 'usd-amount';
+    this.config.interval = val;
+    this.config.chart = '#chart-usd-amount';
     this.dataService.show(this.dataSet, this.config);
   }
 }

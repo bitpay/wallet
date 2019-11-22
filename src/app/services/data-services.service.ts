@@ -6,7 +6,7 @@ import * as nv from 'nvd3';
 @Injectable()
 export class DataServicesService {
 
-  constructor() {}
+  constructor() { }
 
   fetch(opts, cb) {
     const url = opts.url + '/v1/stats/?network=' + opts.network + '&coin=' + opts.coin + '&from=' + opts.from + '&to=' + opts.to;
@@ -51,13 +51,22 @@ export class DataServicesService {
       result[d.day].txCount = d.count;
     });
 
+    _.each(data.fiatRates.byDay, (d) => {
+      if (!result[d.day]) {
+        result[d.day] = {};
+      }
+      result[d.day].fiatRate = d.value;
+    });
+
     return _.map(result, (v: any, k: any) => {
       const d = new Date(parseDate(k));
       return {
         date: parseDate(k),
-        amount: v.txAmount,
-        txps: v.txCount,
-        wallets: v.walletCount,
+        amount: v.txAmount || 0,
+        fiatRate: v.fiatRate,
+        USDAmount: v.fiatRate * v.txAmount || 0,
+        txps: v.txCount || 0,
+        wallets: v.walletCount || 0,
         week: d.getFullYear() + '-' + this.getWeek(d),
         month: d.getFullYear() + '-' + d.getMonth()
       };
@@ -86,17 +95,20 @@ export class DataServicesService {
       memo.wallets += (d.wallets || 0);
       memo.txps += (d.txps || 0);
       memo.amount += (d.amount || 0);
+      memo.USDAmount += (d.USDAmount || 0);
       return memo;
     }, {
-        wallets: 0,
-        txps: 0,
-        amount: 0
-      });
+      wallets: 0,
+      txps: 0,
+      amount: 0,
+      USDAmount: 0
+    });
 
     return {
       totalWallets: total.wallets,
       totalTxps: total.txps,
-      totalAmount: total.amount.toFixed(2)
+      totalAmount: total.amount.toFixed(2),
+      totalUSDAmount: total.USDAmount.toFixed(2)
     };
   }
 
@@ -112,6 +124,9 @@ export class DataServicesService {
     } else if (graph === 'amount') {
       opts.yValue = 'amount';
       opts.key = 'Amount sent';
+    } else if (graph === 'usd-amount') {
+      opts.yValue = 'USDAmount';
+      opts.key = 'USD Amount sent';
     }
 
     const byMonth = _.groupBy(data, 'month');
@@ -220,6 +235,11 @@ export class DataServicesService {
       graph: 'amount',
       interval: 'perDay',
       chart: '#chart-amount'
+    });
+    this.show(data, {
+      graph: 'usd-amount',
+      interval: 'perDay',
+      chart: '#chart-usd-amount'
     });
   }
 }
