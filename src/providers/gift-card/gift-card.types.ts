@@ -7,7 +7,7 @@ export enum ClaimCodeType {
 export interface GiftCardDiscount {
   hidden: boolean;
   code: string;
-  type: 'percentage';
+  type: 'flatrate' | 'percentage';
   amount: number;
 }
 
