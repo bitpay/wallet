@@ -419,7 +419,7 @@ export class ProfileProvider {
     wallet n>1 : BIP48 - P2SH - BTC o BCH only if it is 145'
     wallet n=1 : BIP44 - P2SH - ETH only if it is 60'
     key : !use44forMultisig - !use0forBCH - compliantDerivation - !BIP45
-    */
+     */
 
     const key = this.keyProvider.getKey(keyId);
 
@@ -690,26 +690,23 @@ export class ProfileProvider {
   private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
-    return this.askToEncryptKey(data.key).then(() => {
+    return this.askToEncryptKey(data.key).then(async () => {
       this.onGoingProcessProvider.resume();
-      const promises = [];
-      data.walletClients.forEach(walletClient => {
-        promises.push(
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl,
-            store: false
-          })
-        );
-      });
+      const boundWalletClients = [];
+      for (const walletClient of data.walletClients) {
+        const boundClient = await this.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          store: false
+        });
+        boundWalletClients.push(boundClient);
+      }
 
       return this.keyProvider.addKey(data.key).then(() => {
-        return Promise.all(promises)
-          .then(walletClients => {
-            return this.storeProfileIfDirty().then(() => {
-              this.events.publish('Local/WalletListChange');
-              return this.checkIfAlreadyExist(walletClients).then(() => {
-                return Promise.resolve(_.compact(walletClients));
-              });
+        return this.storeProfileIfDirty()
+          .then(() => {
+            this.events.publish('Local/WalletListChange');
+            return this.checkIfAlreadyExist(boundWalletClients).then(() => {
+              return Promise.resolve(_.compact(boundWalletClients));
             });
           })
           .catch(err => {
@@ -1391,9 +1388,9 @@ export class ProfileProvider {
       }
       opts.networkName = walletData.network;
 
-      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
+      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44')
         we should change the name to 'isMultisig'
-      */
+       */
       opts.n = 2;
 
       this.logger.debug('Joining Wallet:', opts);
