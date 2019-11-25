@@ -40,9 +40,7 @@ export class InAppBrowserProvider {
       );
     };
 
-    if (initScript) {
-      ref.addEventListener('loadstop', initIAB);
-    }
+    ref.addEventListener('loadstop', initIAB);
 
     // add observable to listen for url changes
     ref.events$ = Observable.fromEvent(ref, 'message');
