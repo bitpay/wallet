@@ -53,8 +53,9 @@
             </ion-note>
           </div>
         </ion-label>
-        <ion-note item-end class="discount" *ngIf="hasPercentageDiscount(card)">Save
-          {{card.discounts[0].amount}}%</ion-note>
+        <ion-note item-end class="discount" *ngIf="hasPercentageDiscount(card)">Save <gift-card-discount-text
+            [cardConfig]="card" [discount]="card.discounts[0]"></gift-card-discount-text>
+        </ion-note>
 
       </button>
 
@@ -89,7 +90,8 @@
           </div>
         </ion-label>
         <ion-note item-end class="discount" *ngIf="hasPercentageDiscount(card)">Save
-          {{card.discounts[0].amount}}%</ion-note>
+          <gift-card-discount-text [cardConfig]="card" [discount]="card.discounts[0]"></gift-card-discount-text>
+        </ion-note>
       </button>
 
     </ion-list>
