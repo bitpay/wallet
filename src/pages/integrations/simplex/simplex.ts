@@ -93,7 +93,7 @@ export class SimplexPage {
     this.logger.info('Loaded: SimplexPage');
 
     this.wallets = this.profileProvider.getWallets({
-      network: 'livenet', // TODO: change to: this.simplexProvider.getNetwork()
+      network: 'livenet',
       onlyComplete: true,
       coin: ['btc', 'bch', 'eth'],
       backedUp: true
@@ -125,18 +125,16 @@ export class SimplexPage {
 
   private getSimplexQuote(): void {
     this.showLoading = true;
-    const opts = {
+    const data = {
       digital_currency: this.currencyProvider.getChain(this.wallet.coin),
       fiat_currency: this.quoteForm.value.fiatAltCurrency,
       requested_currency: this.quoteForm.value.fiatAltCurrency,
       requested_amount: +this.quoteForm.value.fiatAmount,
-      end_user_id: '11b111d1-161e-32d9-6bda-8dd2b5c8af17', // TODO: BitPay id / wallet id??
-      client_ip: '1.2.3.4' // TODO client ip ?
-      // wallet_id: this.simplexProvider.getPartnerId()
+      end_user_id: this.wallet.id // TODO: BitPay id / wallet id??
     };
 
     this.simplexProvider
-      .getQuote(this.wallet, opts)
+      .getQuote(this.wallet, data)
       .then(data => {
         if (data) {
           this.cryptoAmount = data.digital_money.amount;
@@ -153,29 +151,17 @@ export class SimplexPage {
   simplexPaymentRequest(address: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const userAgent = this.platformProvider.getUserAgent();
-      const opts = {
+      const data = {
         account_details: {
-          // app_provider_id: this.simplexProvider.getPartnerId(),
           app_version_id: this.appProvider.info.version,
-          app_end_user_id: '11b111d1-161e-32d9-6bda-8dd2b5c8af17', // TODO: BitPay id / wallet id??
-          app_install_date: '2018-01-03T15:23:12Z',
+          app_end_user_id: this.wallet.id, // TODO: BitPay id / wallet id??
           signup_login: {
-            ip: '1.2.3.4',
-            location: '36.848460,-174.763332',
-            uaid:
-              'IBAnKPg1bdxRiT6EDkIgo24Ri8akYQpsITRKIueg+3XjxWqZlmXin7YJtQzuY4K73PWTZOvmuhIHu + ee8m4Cs4WLEqd2SvQS9jW59pMDcYu + Tpl16U / Ss3SrcFKnriEn4VUVKG9QnpAJGYB3JUAPx1y7PbAugNoC8LX0Daqg66E = ',
-            accept_language: 'de,en-US;q=0.7,en;q=0.3',
-            http_accept_language: 'de,en-US;q=0.7,en;q=0.3',
-            user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
-            cookie_session_id: '7r7rz_VfGC_viXTp5XPh5Bm--rWM6RyU',
-            timestamp: '2018-01-15T09:27:34.431Z' // moment()
+            user_agent: userAgent // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
           }
         },
         transaction_details: {
           payment_details: {
             quote_id: this.quoteId,
-            // payment_id: this.payment_id,
-            // order_id: this.order_id,
             fiat_total_amount: {
               currency: this.quoteForm.value.fiatAltCurrency,
               amount: +this.quoteForm.value.fiatAmount
@@ -195,7 +181,7 @@ export class SimplexPage {
       };
 
       this.simplexProvider
-        .paymentRequest(this.wallet, opts)
+        .paymentRequest(this.wallet, data)
         .then(data => {
           return resolve(data);
         })
@@ -205,28 +191,26 @@ export class SimplexPage {
     });
   }
 
-  public simplexPaymentFormSubmission(opts) {
+  public simplexPaymentFormSubmission(data) {
     document.forms['formSubmission'].setAttribute(
       'action',
-      opts.api_host + '/payments/new'
+      data.api_host + '/payments/new'
     );
 
     this.formSubmission.controls['version'].setValue('1'); // Version of Simplex’s form to work with. Currently is “1”.
-    this.formSubmission.controls['partner'].setValue(opts.app_provider_id);
+    this.formSubmission.controls['partner'].setValue(data.app_provider_id);
     this.formSubmission.controls['payment_flow_type'].setValue('wallet'); // Payment flow type: should be “wallet”
     this.formSubmission.controls['return_url_success'].setValue(
-      'bitpay://simplex'
+      'bitpay://simplex?success'
     );
     this.formSubmission.controls['return_url_fail'].setValue(
-      'bitpay://simplex'
+      'bitpay://simplex?error'
     );
     this.formSubmission.controls['quote_id'].setValue(this.quoteId);
-    this.formSubmission.controls['payment_id'].setValue(opts.payment_id);
-    this.formSubmission.controls['user_id'].setValue(
-      '11b111d1-161e-32d9-6bda-8dd2b5c8af17'
-    ); // TODO: BitPay id / wallet id??
+    this.formSubmission.controls['payment_id'].setValue(data.payment_id);
+    this.formSubmission.controls['user_id'].setValue(this.wallet.id); // TODO: BitPay id / wallet id??
     this.formSubmission.controls['destination_wallet[address]'].setValue(
-      opts.address
+      data.address
     );
     this.formSubmission.controls['destination_wallet[currency]'].setValue(
       this.currencyProvider.getChain(this.wallet.coin)
@@ -266,16 +250,16 @@ export class SimplexPage {
       .getAddress(this.wallet, false)
       .then(address => {
         this.simplexPaymentRequest(address)
-          .then(data => {
-            const opts = {
+          .then(req => {
+            const data = {
               address,
-              api_host: data.api_host,
-              app_provider_id: data.app_provider_id,
-              order_id: data.order_id,
-              payment_id: data.payment_id
+              api_host: req.api_host,
+              app_provider_id: req.app_provider_id,
+              order_id: req.order_id,
+              payment_id: req.payment_id
             };
             try {
-              this.simplexPaymentFormSubmission(opts);
+              this.simplexPaymentFormSubmission(data);
             } catch (err) {
               this.showError(err);
             }
@@ -321,7 +305,7 @@ export class SimplexPage {
   }
 
   private showError(err?) {
-    console.log(err);
+    // console.log(err);
     this.showLoading = false;
     let msg = this.translate.instant(
       'Could not create payment request. Please, try again later.'
@@ -337,7 +321,7 @@ export class SimplexPage {
 
     this.logger.error('Simplex error: ' + msg);
 
-    const title = this.translate.instant('Simplex error');
+    const title = this.translate.instant('Error');
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
       { msg, title }

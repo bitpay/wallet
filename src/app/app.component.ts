@@ -337,7 +337,6 @@ export class CopayApp {
 
     // Simplex
     if (this.appProvider.info._enabledExtensions.simplex) {
-      this.simplexProvider.setCredentials();
       this.simplexProvider.register();
     }
 
