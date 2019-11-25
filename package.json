@@ -11,6 +11,10 @@
     "multisignature",
     "bitcore"
   ],
+  "engines": {
+    "node": "8.15.0",
+    "npm": "6.4.1"
+  },
   "main": "electron/main.js",
   "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
