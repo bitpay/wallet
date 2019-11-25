@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="97px" height="97px" viewBox="0 0 97 97" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>success</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Onboarding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="0.5.a.2-–-Backup-Complete" transform="translate(-139.000000, -107.000000)" stroke-width="2">
+            <g id="success" transform="translate(140.000000, 108.000000)">
+                <g id="ios-checkmark-outline" transform="translate(27.759740, 29.610390)" fill="#FFFFFF" stroke="#01D1A2">
+                    <path d="M42.5535038,0.422077922 L14.6086986,28.5684082 L4.03982996,17.9995395 L0.0541125541,21.9852569 L12.5934482,34.5245926 C13.15324,35.0843844 13.9145568,35.5322178 14.5863069,35.5322178 C15.258057,35.5322178 15.9969822,35.0843844 16.556774,34.5469843 L46.4944379,4.45257867 L42.5535038,0.422077922 L42.5535038,0.422077922 Z" id="Shape"></path>
+                </g>
+                <path d="M47.5,95 C73.7335256,95 95,73.7335256 95,47.5 C95,21.2664744 73.7335256,0 47.5,0 C21.2664744,0 0,21.2664744 0,47.5 C0,73.7335256 21.2664744,95 47.5,95 Z" id="Oval-1" stroke="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

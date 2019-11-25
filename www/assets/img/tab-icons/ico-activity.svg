@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="17px" viewBox="0 0 24 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Tabs/Scan</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Tabs/Wallet/Receive" transform="translate(-176.000000, -23.000000)" fill="#464D5F">
+            <g id="Icons/Tabs/Activity-" transform="translate(173.000000, 17.000000)">
+                <g id="menu-left" transform="translate(3.000000, 6.766667)">
+                    <path d="M23,8.7 L1,8.7 C0.448,8.7 0,8.2679 0,7.73333333 C0,7.19876667 0.448,6.76666667 1,6.76666667 L23,6.76666667 C23.552,6.76666667 24,7.19876667 24,7.73333333 C24,8.2679 23.552,8.7 23,8.7 Z" id="Shape" fill-rule="nonzero"></path>
+                    <path d="M23,1.93333333 L1,1.93333333 C0.448,1.93333333 0,1.50123333 0,0.966666667 C0,0.4321 0.448,0 1,0 L23,0 C23.552,0 24,0.4321 24,0.966666667 C24,1.50123333 23.552,1.93333333 23,1.93333333 Z" id="Shape" fill-rule="nonzero"></path>
+                    <path d="M17,15.4666667 L6,15.4666667 C5.448,15.4666667 5,15.0345667 5,14.5 C5,13.9654333 5.448,13.5333333 6,13.5333333 L17,13.5333333 C17.552,13.5333333 18,13.9654333 18,14.5 C18,15.0345667 17.552,15.4666667 17,15.4666667 Z" id="Shape" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

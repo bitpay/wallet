@@ -65,7 +65,7 @@ plugins/
 plugins/android.json
 plugins/ios.json
 screenshots/
-www/
+www/build
 $RECYCLE.BIN/
 
 Thumbs.db

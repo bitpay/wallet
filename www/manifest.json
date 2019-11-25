@@ -1,0 +1,18 @@
+{
+  "//-": "Changes to this file will be overwritten.",
+  "//--": "Modify it's template in the app-template directory.",
+
+  "name": "Secure Bitcoin Wallet",
+  "short_name": "BitPay",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "assets/img/app/logo.png",
+      "sizes": "150x65",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#2A3F90",
+  "theme_color": "#2A3F90"
+}

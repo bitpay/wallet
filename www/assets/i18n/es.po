@@ -1,0 +1,2645 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: copay\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: template.pot\n"
+"Project-Id-Version: copay\n"
+"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"PO-Revision-Date: 2019-10-14 19:36\n"
+
+msgid "(possible double spend)"
+msgstr "(Posible gasto duplicado)"
+
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr "* Una propuesta de pago puede ser eliminada si 1) Usted es el creador, y ningún otro copayer la ha firmado, o 2) Han transcurrido 10 minutos desde la creación de la propuesta."
+
+msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr "Una calificación de 5 estrellas nos ayuda a que BitPay Wallet sea más utilizado, mientras más usuarios, más son las razones para seguir comprometidos con esta aplicación!"
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr "Un nuevo copayer ha ingresado a su billetera {{walletName}}."
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr "Una nueva propuesta de pago ha sido creada en su billetera {{walletName}}."
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr "Un pago de {{amountStr}} fue recibido en su billetera {{walletName}}."
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr "Una propuesta de pago en su billetera {{walletName}} ha sido rechazada."
+
+msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "Se excluyeron un total de {{amountAboveMaxSizeStr}} {{coin}}. Se superó el tamaño máximo permitido para una transacción."
+
+msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "Se excluyeron un total de {{amountBelowFeeStr}} {{coin}}. Estos fondos provienen de UTXOs más pequeños que la comisión de red provista."
+
+msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: {{withdrawalFee}} {{toWallet.coin | uppercase}}"
+msgstr "Un total de {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) será intercambiado por {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). Comisión de ShapeShift: {{withdrawalFee}} {{toWallet.coin | uppercase}}"
+
+msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "Se excluyeron un total de {{fee}} {{coin}}. Se superó el tamaño máximo permitido para una transacción."
+
+msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "Se excluyeron un total de {{fee}} {{coin}}. Estos fondos provienen de UTXOs más pequeños que la comisión de red provista."
+
+msgid "About"
+msgstr "Acerca de"
+
+msgid "About {{appName}}"
+msgstr "Acerca de {{appName}}"
+
+msgid "Accept"
+msgstr "Aceptar"
+
+msgid "Accepted"
+msgstr "Aceptada"
+
+msgid "Access denied"
+msgstr "Acceso denegado"
+
+msgid "Account"
+msgstr "Cuenta"
+
+msgid "Activation Fee"
+msgstr "Tarifa de activación"
+
+msgid "Activity"
+msgstr "Actividad"
+
+msgid "Add"
+msgstr "Agregar"
+
+msgid "Add BitPay Account?"
+msgstr "¿Agregar cuenta de BitPay?"
+
+msgid "Add Card"
+msgstr "Agregar tarjeta"
+
+msgid "Add Contact"
+msgstr "Agregar Contacto"
+
+msgid "Add Recipient"
+msgstr "Añadir destinatario"
+
+msgid "Add Wallet"
+msgstr "Agregar billetera"
+
+msgid "Add account"
+msgstr "Agregar cuenta"
+
+msgid "Add as a contact"
+msgstr "Agregar como Contacto"
+
+msgid "Add funds"
+msgstr "Agregar fondos"
+
+msgid "Add this BitPay account ({{email}})?"
+msgstr "¿Agregar esta cuenta BitPay ({{email}})?"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Address Book"
+msgstr "Libreta de Direcciones"
+
+msgid "Address Type"
+msgstr "Tipo de dirección"
+
+msgid "Address book"
+msgstr "Libreta de direcciones"
+
+msgid "Addressbook is empty"
+msgstr "Libreta de direcciones está vacía"
+
+msgid "Addresses"
+msgstr "Direcciones"
+
+msgid "Addresses with balance"
+msgstr "Direcciones con fondos"
+
+msgid "Advanced"
+msgstr "Avanzado"
+
+msgid "All"
+msgstr "Todas"
+
+msgid "All addresses"
+msgstr "Todas las direcciones"
+
+msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgstr "Todo el balance de tu billetera puede que no esté disponible para su uso inmediato."
+
+msgid "Allow camera access"
+msgstr "Permitir el acceso a la cámara"
+
+msgid "Already duplicated"
+msgstr "Ya duplicado"
+
+msgid "Alternative currency"
+msgstr "Moneda alternativa"
+
+msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
+msgstr "Las Gift Cards Amazon.co.jp no expiran nunca y pueden ser canjeadas por millones de artículos en www.amazon.co.jp."
+
+msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
+msgstr "Las Gift Cards Amazon.co.jp no expiran nunca y pueden ser canjeadas por millones de artículos en www.amazon.co.jp."
+
+msgid "Amount"
+msgstr "Importe"
+
+msgid "Amount Too Low To Spend"
+msgstr "Monto muy pequeño para ser gastado"
+
+msgid "Amount below minimum allowed"
+msgstr "Cantidad por debajo del mínimo permitido"
+
+msgid "Amount too big"
+msgstr "Monto demasiado grande"
+
+msgid "Amount:"
+msgstr "Importe:"
+
+msgid "Apply changes"
+msgstr "Aplicar los cambios"
+
+msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgstr "Comisión aproximada de la red Bitcoin para transferir el saldo de esta billetera (con prioridad normal)"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr "¿Archivar todas las Gift Cards de {brand}?"
+
+msgid "Archive Card"
+msgstr "Archivar Tarjeta"
+
+msgid "Archive this Card?"
+msgstr "¿Archivar esta Tarjeta?"
+
+msgid "Archived Cards"
+msgstr "Tarjetas archivadas"
+
+msgid "Are you sure you want to cancel and delete this wallet?"
+msgstr "¿Estás seguro de cancelar y borrar esta billetera?"
+
+msgid "Are you sure you want to delete all wallets using this key?"
+msgstr "¿Está seguro que quiere eliminar todas las billeteras que utilizan esta llave?"
+
+msgid "Are you sure you want to delete this contact?"
+msgstr "¿Está seguro de que desea eliminar este contacto?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr "¿Está seguro de que quiere eliminar esta billetera?"
+
+msgid "Are you sure you want to reject this transaction?"
+msgstr "¿Estás seguro de rechazar esta transacción?"
+
+msgid "Are you sure you want to remove this transaction?"
+msgstr "¿Estás seguro de eliminar esta transacción?"
+
+msgid "Are you sure?"
+msgstr "¿Estás seguro?"
+
+msgid "Available"
+msgstr "Disponible"
+
+msgid "Average confirmation time"
+msgstr "Tiempo promedio de confirmación"
+
+msgid "Awaiting payment to confirm"
+msgstr "Esperando la confirmación del pago"
+
+msgid "Back up all your wallets before using this function"
+msgstr "Respalda todas tus billeteras para utilizar esta función"
+
+msgid "Back up your wallet before using this function"
+msgstr "Respalda tu billetera para utilizar esta función"
+
+msgid "Backup"
+msgstr "Frase de recuperación"
+
+msgid "Backup wallet"
+msgstr "Respaldar"
+
+msgid "Bad wallet invitation"
+msgstr "Invitación incorrecta a la billetera"
+
+msgid "Be sure to store your recovery phrase in a safe and secure place"
+msgstr "Asegúrese de guardar su frase de recuperación en un lugar seguro"
+
+msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
+msgstr "Asegúrese de guardar la frase de recuperación en un lugar seguro. Si se elimina esta aplicación, no se podrá recuperar el dinero sin ella."
+
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
+msgstr "Dado que va a enviar la cantidad máxima contenida en esta billetera, la comisión de la red {coinName} ({fee} {coin}) se deducirá del total. {msg}"
+
+msgid "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr "Antes de duplicar su billetera, se recomienda primero escribir la frase de recuperación y guardarla de forma segura para que su billetera pueda ser recuperada en el caso de que su dispositivo sea robado o extraviado."
+
+msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr "Antes de reclamar la dirección de su billetera, se recomienda que primero anote su frase de recuperación y la guarde en forma segura para que su billetera pueda ser recuperada en caso que su dispositivo sea robado o extraviado."
+
+msgid "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
+msgstr "Antes de reclamar las direcciones de sus billeteras, se recomienda primero escribir la frase de recuperación y guardarla de forma segura para que su billetera pueda ser recuperada en el caso de que su dispositivo sea robado o extraviado."
+
+msgid "Below Minimum Amount"
+msgstr "Monto inferior al mínimo"
+
+msgid "Biometric"
+msgstr "Biométrico"
+
+msgid "BitPay Card URI"
+msgstr "URI de la BitPay Card"
+
+msgid "BitPay does not receive and does not control miner fees."
+msgstr "BitPay no recibe y no controla las comisiones de los mineros."
+
+msgid "Bitcoin Address"
+msgstr "Dirección Bitcoin"
+
+msgid "Bitcoin Cash Address"
+msgstr "Dirección Bitcoin Cash"
+
+msgid "Bitcoin Cash URI"
+msgstr "URI de Bitcoin Cash"
+
+msgid "Bitcoin Cash Wallets"
+msgstr "Billeteras Bitcoin Cash"
+
+msgid "Bitcoin Network Fee Policy"
+msgstr "Política de Comisión de la Red Bitcoin"
+
+msgid "Bitcoin URI"
+msgstr "URI de Bitcoin"
+
+msgid "Bitcoin Wallets"
+msgstr "Billeteras Bitcoin"
+
+msgid "Bitcoin network fee policy"
+msgstr "Política de comisión de la red bitcoin"
+
+msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgstr "Las transacciones de bitcoins incluyen una comisión recogida por los mineros de la red."
+
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+msgstr "Bitcore Wallet Service está en mantenimiento. Por favor, verifique https://status.bitpay.com/."
+
+msgid "Broadcast Payment"
+msgstr "Enviar Pago"
+
+msgid "Broadcasted"
+msgstr "Enviado"
+
+msgid "Broadcasting transaction..."
+msgstr "Finalizando transacción..."
+
+msgid "Buy Gift Card"
+msgstr "Comprar Gift Card"
+
+msgid "Buy Gift Cards"
+msgstr "Comprar Gift Cards"
+
+msgid "Buying Bitcoin..."
+msgstr "Comprando Bitcoins..."
+
+msgid "Buying Gift Card..."
+msgstr "Comprando Gift Card..."
+
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr "Al proporcionar su dirección de correo electrónico, usted da consentimiento explícito a BitPay de usar su dirección de correo electrónico para enviarle notificaciones sobre pagos."
+
+msgid "Calculating fee..."
+msgstr "Calculando comisión..."
+
+msgid "Calculating send max..."
+msgstr "Calculando el envío máximo..."
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Canceling Gift Card..."
+msgstr "Cancelando Gift Card..."
+
+msgid "Cannot join the same wallet more that once"
+msgstr "No puede unirse a la misma billetera más de una vez"
+
+msgid "Card Archived"
+msgstr "Tarjeta Archivada"
+
+msgid "Card Settings"
+msgstr "Ajustes de la Tarjeta"
+
+msgid "Cards"
+msgstr "Tarjetas"
+
+msgid "Change Amount"
+msgstr "Modificar monto"
+
+msgid "Check the transaction on your wallet details"
+msgstr "Revise la transacción en los detalles de la billetera"
+
+msgid "Choose a backup file from your computer"
+msgstr "Selecciona el archivo de respaldo de tu computadora"
+
+msgid "Clear"
+msgstr "Anular"
+
+msgid "Clear cache"
+msgstr "Limpiar cache"
+
+msgid "Click to accept"
+msgstr "Click para aceptar"
+
+msgid "Click to confirm"
+msgstr "Click para confirmar"
+
+msgid "Click to open Terms"
+msgstr "Click para abrir los Términos"
+
+msgid "Click to pay"
+msgstr "Click para pagar"
+
+msgid "Click to send"
+msgstr "Click para enviar"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "Coin"
+msgstr "Moneda"
+
+msgid "Completed"
+msgstr "Terminadas"
+
+msgid "Configuration (m-n)"
+msgstr "Configuración (m-n)"
+
+msgid "Confirm"
+msgstr "Confirmar"
+
+msgid "Confirm & Finish"
+msgstr "Confirmar & Finalizar"
+
+msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
+msgstr "Confirmar el cambio de {{fromCoin}} a {{toCoin}}"
+
+msgid "Confirm your PIN"
+msgstr "Confirma tu PIN"
+
+msgid "Confirm your new encrypt password"
+msgstr "Confirme su nueva contraseña de cifrado"
+
+msgid "Confirmations"
+msgstr "Confirmaciones"
+
+msgid "Confirming"
+msgstr "Confirmando"
+
+msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
+msgstr "¡Felicidades! Parece que recientemente ha recibido dinero. Es altamente recomendable que verifique su frase de recuperación para que sus fondos puedan ser recuperados en caso de que su dispositivo sea robado o extraviado."
+
+msgid "Connect my BitPay Card"
+msgstr "Conectar mi BitPay Card"
+
+msgid "Connect to ShapeShift Account"
+msgstr "Conectarse a la cuenta de ShapeShift"
+
+msgid "Connecting to Coinbase..."
+msgstr "Conectando a Coinbase..."
+
+msgid "Connecting to ShapeShift..."
+msgstr "Conectando a ShapeShift..."
+
+msgid "Connection reset by peer"
+msgstr "Conexión re establecida"
+
+msgid "Contact the ShapeShift support team."
+msgstr "Contactar al equipo de soporte de ShapeShift."
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Continue Backup"
+msgstr "Continuar"
+
+msgid "Contribute translations"
+msgstr "Contribuye en las traducciones"
+
+msgid "Copayer already in this wallet"
+msgstr "Ya se encuentra en esta billetera"
+
+msgid "Copayer already voted on this spend proposal"
+msgstr "Ya votaste en esta propuesta de gasto"
+
+msgid "Copayer data mismatch"
+msgstr "Discrepancia en los datos del Copayer"
+
+msgid "Copied"
+msgstr "Copiado"
+
+msgid "Copied to Clipboard"
+msgstr "Copiado al portapapeles"
+
+msgid "Copied to clipboard"
+msgstr "Copiado al portapapeles"
+
+msgid "Copied {coin} address"
+msgstr "Dirección {coin} copiada"
+
+msgid "Copied: {claimCode}"
+msgstr "Copiado: {claimCode}"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Copy Code"
+msgstr "Copiar código"
+
+msgid "Copy this text as it is to a safe place (notepad or email)"
+msgstr "Copiar el texto como está en un lugar seguro (bloc de notas o correo electrónico)"
+
+msgid "Copy to clipboard"
+msgstr "Copiar al portapapeles"
+
+msgid "Could not access the wallet at the server"
+msgstr "No se pudo acceder a la billetera en el servidor"
+
+msgid "Could not access wallet"
+msgstr "No se pudo acceder a la billetera"
+
+msgid "Could not add message to imported wallet without shared encrypting key"
+msgstr "No se puede agregar mensajes a una billetera importada sin la clave cifrada compartida"
+
+msgid "Could not build transaction"
+msgstr "No se pudo construir la transacción"
+
+msgid "Could not create address"
+msgstr "No se pudo crear la dirección"
+
+msgid "Could not create transaction"
+msgstr "No se pudo crear la transacción"
+
+msgid "Could not create using the specified extended private key"
+msgstr "No se pudo crear la billetera usando la clave privada ingresada"
+
+msgid "Could not create: Invalid wallet recovery phrase"
+msgstr "No se pudo crear: frase de recuperación inválida"
+
+msgid "Could not decrypt file, check your password"
+msgstr "No se pudo descifrar el archivo, verifique su contraseña"
+
+msgid "Could not decrypt wallet"
+msgstr "No se pudo acceder a la billetera"
+
+msgid "Could not delete payment proposal"
+msgstr "No se pudo eliminar la propuesta de pago"
+
+msgid "Could not encrypt wallet"
+msgstr "No se pudo encriptar la billetera"
+
+msgid "Could not get claim code. Please contact BitPay support."
+msgstr "No se pudo obtener el código de reclamo. Por favor contáctese con el soporte de BitPay."
+
+msgid "Could not get dynamic fee"
+msgstr "No se pudo obtener comisión dinámica"
+
+msgid "Could not get dynamic fee for level:"
+msgstr "No se pudo obtener el nivel de comisión dinámico:"
+
+msgid "Could not get fee levels"
+msgstr "No se pudieron obtener los niveles de comisión"
+
+msgid "Could not get the Addressbook"
+msgstr "No se pudo obtener la libreta de direcciones"
+
+msgid "Could not get transactions"
+msgstr "No se pudo obtener las transacciones"
+
+msgid "Could not import. Check input file."
+msgstr "No se pudo importar. Verifique el archivo."
+
+msgid "Could not join wallet"
+msgstr "No se pudo unir a la billetera"
+
+msgid "Could not reject payment"
+msgstr "No se pudo rechazar el pago"
+
+msgid "Could not save preferences on the server"
+msgstr "No se pueden guardar las preferencias en el servidor"
+
+msgid "Could not send transaction"
+msgstr "No se pudo enviar la transacción"
+
+msgid "Could not update transaction history"
+msgstr "No se pudo actualizar el historial de transacciones"
+
+msgid "Could not update wallet"
+msgstr "No se pudo actualizar la billetera"
+
+msgid "Create"
+msgstr "Crear"
+
+msgid "Create New Key"
+msgstr "Crear nueva llave"
+
+msgid "Create a new wallet"
+msgstr "Crear una nueva billetera"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Created by"
+msgstr "Creado por"
+
+msgid "Creating Gift Card..."
+msgstr "Creando Gift Card..."
+
+msgid "Creating Wallet..."
+msgstr "Creando billetera..."
+
+msgid "Creating transaction..."
+msgstr "Creando transacción..."
+
+msgid "Current Cards"
+msgstr "Tarjetas Actuales"
+
+msgid "Current fee rate for this policy"
+msgstr "Comisión actual de esta política"
+
+msgid "Custom"
+msgstr "Personalizado"
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Delete Payment Proposal"
+msgstr "Eliminar propuesta de pago"
+
+msgid "Delete Wallet"
+msgstr "Eliminar Billetera"
+
+msgid "Delete it and create a new one"
+msgstr "Borrar y crear uno nuevo"
+
+msgid "Delete key"
+msgstr "Eliminar llave"
+
+msgid "Deleting Wallet..."
+msgstr "Eliminando billetera..."
+
+msgid "Deleting payment proposal..."
+msgstr "Eliminando propuesta de pago..."
+
+msgid "Deposit"
+msgstr "Depósito"
+
+msgid "Deposit Max"
+msgstr "Depósito máximo"
+
+msgid "Deposit Min"
+msgstr "Depósito mínimo"
+
+msgid "Derivation Path"
+msgstr "Camino de derivación"
+
+msgid "Derivation path"
+msgstr "Camino de derivación"
+
+msgid "Destination wallet needs to be backed up"
+msgstr "La billetera de destino debe ser respaldada"
+
+msgid "Details"
+msgstr "Detalles"
+
+msgid "Disable notifications"
+msgstr "Desactivar notificaciones"
+
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+msgid "Discount"
+msgstr "Descuento"
+
+msgid "Do not include private key"
+msgstr "No incluir la clave privada"
+
+msgid "Do this later?"
+msgstr "¿Hacer esto luego?"
+
+msgid "Do you want to verify your account now?"
+msgstr "¿Desea verificar su cuenta ahora?"
+
+msgid "Don't see your Key?"
+msgstr "¿No ve su llave?"
+
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "¿No ves tu idioma en Crowdin? ¡Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
+
+msgid "Done"
+msgstr "Listo"
+
+msgid "Download"
+msgstr "Descargar"
+
+msgid "Download logs"
+msgstr "Descargar registros"
+
+msgid "Duplicate to BCH"
+msgstr "Duplicar a BCH"
+
+msgid "Duplicating wallet..."
+msgstr "Duplicando billetera..."
+
+msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
+msgstr "Cada billetera puede generar billones de direcciones desde su frase de recuperación de 12 palabras. Se genera una nueva dirección automáticamente cada vez que se recibe un pago."
+
+msgid "Each copayer has their own recovery phrase. To recover funds stored in a Shared Wallet you will need the recovery phrase from each copayer."
+msgstr "Cada copayer tiene su propia frase de recuperación. Para recuperar fondos almacenados en una billetera compartida, necesitará la frase de recuperación de cada copayer."
+
+msgid "Economy"
+msgstr "Económico"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email"
+msgstr "Correo electrónico"
+
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr "Se ha alcanzado el límite de direcciones vacías. No se pueden generar nuevas direcciones."
+
+msgid "Enable camera access in your device settings to get started."
+msgstr "Habilitar el acceso de la cámara en su configuración de dispositivo para empezar."
+
+msgid "Enable desktop notifications"
+msgstr "Habilitar notificaciones de escritorio"
+
+msgid "Enable email notifications"
+msgstr "Habilitar notificaciones de correo electrónico"
+
+msgid "Enable push notifications"
+msgstr "Habilitar notificaciones push"
+
+msgid "Enable the camera to get started."
+msgstr "Habilitar la cámara para empezar."
+
+msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
+msgstr "El cifrado puede proteger sus fondos si este dispositivo es robado o comprometido por software malintencionado."
+
+msgid "Enter Amount"
+msgstr "Ingrese el Monto"
+
+msgid "Enter Two Factor for your BitPay account"
+msgstr "Ingrese la autenticación de dos pasos para su cuenta de BitPay"
+
+msgid "Enter a new encrypt password"
+msgstr "Ingrese una nueva contraseña de cifrado"
+
+msgid "Enter a password to encrypt your wallet"
+msgstr "Ingresar contraseña para cifrar la billetera"
+
+msgid "Enter a transaction memo"
+msgstr "Ingrese una nota de transacción"
+
+msgid "Enter bitcoin address"
+msgstr "Ingrese una dirección bitcoin"
+
+msgid "Enter custom fee in {feeUnit}"
+msgstr "Ingresar comisión en {feeUnit}"
+
+msgid "Enter email address"
+msgstr "Ingrese la dirección de correo electrónico"
+
+msgid "Enter encrypt password"
+msgstr "Ingrese contraseña de cifrado"
+
+msgid "Enter your encrypt password again to confirm"
+msgstr "Ingrese su contraseña de cifrado otra vez para confirmar"
+
+msgid "Entry already exist"
+msgstr "Elemento ya existe"
+
+msgid "Entry does not exist"
+msgstr "Elemento inexistente"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error adding new entry"
+msgstr "Error al agregar nuevo elemento"
+
+msgid "Error connecting to ShapeShift"
+msgstr "Error al conectar con ShapeShift"
+
+msgid "Error creating wallet"
+msgstr "Error al crear billetera"
+
+msgid "Error deleting entry"
+msgstr "Error al eliminar el elemento"
+
+msgid "Error fetching this invoice"
+msgstr "Error al obtener la factura"
+
+msgid "Error getting SendMax information"
+msgstr "Error al obtener información de SendMax"
+
+msgid "Error getting fee rate"
+msgstr "Error al obtener el valor de la comisión"
+
+msgid "Error in Payment Protocol"
+msgstr "Error en el protocolo de pago"
+
+msgid "Error pairing BitPay Account"
+msgstr "Error de sincronización con la cuenta de BitPay"
+
+msgid "Error scanning funds:"
+msgstr "Error al escanear fondos:"
+
+msgid "Error sweeping wallet:"
+msgstr "Error al buscar fondos:"
+
+msgid "Error updating Debit Cards"
+msgstr "Error al actualizar las tarjetas de débito"
+
+msgid "Ethereum Address"
+msgstr "Dirección Ethereum"
+
+msgid "Ethereum URI"
+msgstr "URI de Ethereum"
+
+msgid "Ethereum Wallets"
+msgstr "Billeteras Ethereum"
+
+msgid "Exceeded daily limit of $500 per user"
+msgstr "Se excedió el limite de $500 por usuario"
+
+msgid "Expired"
+msgstr "Expirada"
+
+msgid "Expires"
+msgstr "Expira"
+
+msgid "Export Wallet"
+msgstr "Exportar billetera"
+
+msgid "Export to file"
+msgstr "Exportar a archivo"
+
+msgid "Export wallet"
+msgstr "Exportar billetera"
+
+msgid "Exporting via QR not supported for this wallet"
+msgstr "Exportar vía código QR no es compatible para esta billetera"
+
+msgid "Extended Private Key"
+msgstr "Clave privada extendida"
+
+msgid "Extended Public Keys"
+msgstr "Claves Públicas Extendidas"
+
+msgid "Extracting Wallet information..."
+msgstr "Obteniendo Información de la billetera..."
+
+msgid "Failed"
+msgstr "Falló"
+
+msgid "Failed to export"
+msgstr "Error al exportar"
+
+msgid "Featured Brands"
+msgstr "Marcas Destacadas"
+
+msgid "Featured Currencies"
+msgstr "Monedas destacadas"
+
+msgid "Fee"
+msgstr "Comisión"
+
+msgid "Fee level"
+msgstr "Nivel de comisión"
+
+msgid "Fee level is not defined"
+msgstr "El nivel de comisión no esta definido"
+
+msgid "Fee rate"
+msgstr "Comisión"
+
+msgid "Feedback"
+msgstr "Comentarios"
+
+msgid "Feedback could not be submitted. Please try again later."
+msgstr "No se pudo enviar el comentario. Por favor intente nuevamente."
+
+msgid "Feedback!"
+msgstr "¡Comentarios!"
+
+msgid "Fetching BitPay Account..."
+msgstr "Buscando Cuenta de BitPay..."
+
+msgid "Fetching BitPay Cards..."
+msgstr "Buscando tarjetas BitPay..."
+
+msgid "Fetching payment information..."
+msgstr "Obteniendo información del pago..."
+
+msgid "File/Text"
+msgstr "Archivo/Texto"
+
+msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr "¿Encontró algo mal? Por favor repórtelo como un error. Si necesita ayuda inmediata con un problema, por favor contáctese con nuestro centro de ayuda."
+
+msgid "From"
+msgstr "Desde"
+
+msgid "From BitPay account"
+msgstr "De la cuenta de BitPay"
+
+msgid "Funds Will Not Be Accessible"
+msgstr "Los fondos no serán accesibles"
+
+msgid "Funds are locked by pending spend proposals"
+msgstr "Los fondos están bloqueados por propuestas de gastos pendientes"
+
+msgid "Funds found"
+msgstr "Fondos encontrados"
+
+msgid "Funds to be added"
+msgstr "Fondos a agregar"
+
+msgid "Funds were added to debit card"
+msgstr "Los fondos se agregaron a la tarjeta de débito"
+
+msgid "Funds will be transferred to"
+msgstr "Los fondos serán transferidos a"
+
+msgid "GOT IT"
+msgstr "ENTENDIDO"
+
+msgid "Generate New Address"
+msgstr "Generar Nueva Dirección"
+
+msgid "Generating .csv file..."
+msgstr "Generando archivo .csv..."
+
+msgid "Generating new address..."
+msgstr "Generando una nueva dirección..."
+
+msgid "Get Help"
+msgstr "Obtener ayuda"
+
+msgid "Get Started"
+msgstr "Comenzar"
+
+msgid "Get a BitPay Card"
+msgstr "Obtener BitPay Card"
+
+msgid "Get help"
+msgstr "Obtener ayuda"
+
+msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
+msgstr "Consiga efectivo local dondequiera que vaya, desde cualquier cajero automático compatible con Visa®. Es posible que el banco aplique una comisión."
+
+msgid "Get news and updates from BitPay"
+msgstr "Recibir noticias y actualizaciones de BitPay"
+
+msgid "Get started"
+msgstr "Empezar"
+
+msgid "Get started by adding your first one."
+msgstr "Comienza agregando el primero."
+
+msgid "Getting fee levels..."
+msgstr "Obteniendo niveles de comisión..."
+
+msgid "Gift Card"
+msgstr "Gift Card"
+
+msgid "Gift card canceled"
+msgstr "Gift Card cancelada"
+
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr "Las compras con Gift Cards no están disponibles temporalmente. Por favor inténtelo más tarde."
+
+msgid "Give us feedback"
+msgstr "Déjanos un comentario"
+
+msgid "Go Back"
+msgstr "Volver"
+
+msgid "Go back"
+msgstr "Volver"
+
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr "¿Has canjeado todas tus Gift Cards de {brand}? Las Gift Cards archivadas seguirán siendo accesibles en la configuración."
+
+msgid "Have you redeemed the entire balance of this gift card?"
+msgstr "¿Ha canjeado el saldo total de esta Gift Card?"
+
+msgid "Having problems with a ShapeShift?"
+msgstr "¿Problemas con ShapeShift?"
+
+msgid "Help & support"
+msgstr "Ayuda & Soporte"
+
+msgid "Help and support information is available at the website"
+msgstr "La información de soporte y ayuda están disponibles en el sitio web"
+
+msgid "Help and support information is available at the website."
+msgstr "La ayuda está disponible en el sitio web."
+
+msgid "Hidden"
+msgstr "Oculto"
+
+msgid "Hide"
+msgstr "Ocultar"
+
+msgid "Hide Balance"
+msgstr "Balance Oculto"
+
+msgid "Hide advanced options"
+msgstr "Ocultar opciones avanzadas"
+
+msgid "Hide discount?"
+msgstr "¿Ocultar descuento?"
+
+msgid "Home"
+msgstr "Inicio"
+
+msgid "How satisfied are you with {{appName}} wallet?"
+msgstr "¿Cuán satisfecho está con la billetera {{appName}}?"
+
+msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
+msgstr "Sin embargo, no se permite utilizar fondos sin confirmar en pagos a comerciantes, en cargas de la BitPay Card o en compras de gift cards dentro de la aplicación."
+
+msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
+msgstr "Acepto los Términos y certifico que soy el propio beneficiario de los fondos y la dirección de destino."
+
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "Doy consentimiento explícito a BitPay para usar mi dirección de correo electrónico para enviarme notificaciones de pagos (y, si está seleccionado, noticias acerca de la billetera)."
+
+msgid "I have read, understood, and agree to the Terms of Use"
+msgstr "He leído, entiendo y acepto los Términos de Uso"
+
+msgid "I understand"
+msgstr "Entiendo"
+
+msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase"
+msgstr "Entiendo que si esta aplicación es eliminada, mis fondos pueden recuperarse únicamente con la frase de recuperación"
+
+msgid "I understand that my funds are held securely on this device, not by a company"
+msgstr "Entiendo que mis fondos están protegidos por el dispositivo y no por una empresa"
+
+msgid "I'm disappointed"
+msgstr "Estoy decepcionado"
+
+msgid "I'm satisfied"
+msgstr "Estoy satisfecho"
+
+msgid "I'm sure"
+msgstr "Estoy seguro"
+
+msgid "I'm very happy"
+msgstr "Estoy muy contento"
+
+msgid "I've used this card"
+msgstr "He utilizado esta tarjeta"
+
+msgid "If enabled, the new wallets may have different keys and will require a new backup."
+msgstr "Si está habilitado, las nuevas billeteras pueden tener llaves diferentes y requerirán una nueva copia de seguridad."
+
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr "Si se habilita, los monederos intentarán gastar fondos sin confirmar."
+
+msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+msgstr "Si usted tiene fondos almacenados en un sitio web debería moverlos a una billetera segura... ¡como esta!"
+
+msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr "Si necesita ayuda inmediata con un problema, por favor contáctese con nuestro centro de ayuda."
+
+msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
+msgstr "Si necesita enviar fondos a direcciones antiguas (como la que usted acaba de pegar), y está seguro de que son direcciones BCH, usted puede \"traducir\" las direcciones usando el traductor de BCH y luego pegar la dirección correspondiente en formato CashAddr."
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import Wallet"
+msgstr "Importar billetera"
+
+msgid "Import Words"
+msgstr "Importar palabras"
+
+msgid "Import existing wallet"
+msgstr "Importar billetera existente"
+
+msgid "Importing Wallet..."
+msgstr "Importando billetera..."
+
+msgid "In order to verify your wallet recovery phrase, please type your password."
+msgstr "Para verificar su frase de recuperación de la billetera, por favor escriba su contraseña."
+
+msgid "Incomplete"
+msgstr "Incompleta"
+
+msgid "Incorrect PIN, try again."
+msgstr "PIN Incorrecto. Inténtelo de nuevo."
+
+msgid "Incorrect backup phrase"
+msgstr "Frase de recuperación incorrecta"
+
+msgid "Incorrect network address"
+msgstr "Dirección de red incorrecta"
+
+msgid "Information"
+msgstr "Información"
+
+msgid "Insufficient funds"
+msgstr "Fondos insuficientes"
+
+msgid "Insufficient funds for fee"
+msgstr "Fondos insuficientes para el pago de la comisión"
+
+msgid "Integrations"
+msgstr "Integraciones"
+
+msgid "Invalid"
+msgstr "Inválido"
+
+msgid "Invalid Email"
+msgstr "Correo electrónico no válido"
+
+msgid "Invalid URL"
+msgstr "URL incorrecta"
+
+msgid "Invalid address"
+msgstr "Dirección inválida"
+
+msgid "Invalid data"
+msgstr "Datos no válidos"
+
+msgid "Invalid derivation path"
+msgstr "Camino de derivación no válido"
+
+msgid "Invalid derivation path for selected coin"
+msgstr "Camino de derivación no válido para la moneda seleccionada"
+
+msgid "Invitation Code"
+msgstr "Código de invitación"
+
+msgid "Invoice URL"
+msgstr "URL de la factura"
+
+msgid "Is this correct?"
+msgstr "¿Es correcto?"
+
+msgid "Is this email address correct?"
+msgstr "¿Es correcta esta dirección de correo electrónico?"
+
+msgid "It appears that you do not have any money to send."
+msgstr "Parece que no tienes fondos para enviar."
+
+msgid "It's a ghost town in here"
+msgstr "Esto es un pueblo fantasma"
+
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgstr "Es una buena idea evitar el reuso de las direcciones. Esto protege tu privacidad y mantiene tus fondos seguros contra hipotéticos ataques de ordenadores cuánticos."
+
+msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
+msgstr "Es importante que escriba correctamente la frase de recuperación. Si algo le pasa a su billetera, necesitará de ésta para recuperar el dinero. Revísela e intente nuevamente."
+
+msgid "Join"
+msgstr "Unirse"
+
+msgid "Join Shared Wallet"
+msgstr "Unirse a billetera compartida"
+
+msgid "Joining Wallet..."
+msgstr "Uniéndose a la billetera..."
+
+msgid "Key Name"
+msgstr "Nombre de la llave"
+
+msgid "Key Settings"
+msgstr "Preferencias de la llave"
+
+msgid "Key already associated with an existing wallet"
+msgstr "La clave ya esta asociada a un monedero existente"
+
+msgid "Keys"
+msgstr "Llaves"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Last Month"
+msgstr "Último Mes"
+
+msgid "Learn More"
+msgstr "Leer más"
+
+msgid "Learn more"
+msgstr "Más información"
+
+msgid "Learn more about testnet blockchain"
+msgstr "Aprenda más acerca de la blockchain de testnet"
+
+msgid "Legacy"
+msgstr "Legacy"
+
+msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr ""
+
+msgid "Linked"
+msgstr "Conectado"
+
+msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
+msgstr "Carga dólares en tu BitPay Card con su billetera bitcoin. Compre en cualquier lugar que acepte Visa®"
+
+msgid "Loading addresses..."
+msgstr "Cargando direcciones..."
+
+msgid "Loading transaction info..."
+msgstr "Cargando información de transacción..."
+
+msgid "Lock"
+msgstr "Bloquear"
+
+msgid "Locked"
+msgstr "Bloqueado"
+
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Bloqueo temporal. Por favor espera para crear una nueva propuesta de gasto"
+
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Bloqueo temporal. Por favor espera para eliminar esta propuesta de gasto"
+
+msgid "Log out"
+msgstr "Cerrar Sesión"
+
+msgid "Low Fee"
+msgstr "Comisión baja"
+
+msgid "Low amount inputs"
+msgstr "Entradas de monto bajo"
+
+msgid "Maximum amount allowed is {{max}}"
+msgstr "El monto máximo permitido es {{max}}"
+
+msgid "Me"
+msgstr "Yo"
+
+msgid "Memo"
+msgstr "Nota"
+
+msgid "Merchant Message"
+msgstr "Mensaje del comerciante"
+
+msgid "Miner Fee"
+msgstr "Comisión de la red"
+
+msgid "Miner Fee Notice"
+msgstr "Aviso de pago de la comisión de red"
+
+msgid "Miner fee"
+msgstr "Comisión de minado"
+
+msgid "Miner fee:"
+msgstr "Comisión de minado:"
+
+msgid "Minimum amount required is {{min}}"
+msgstr "El monto mínimo requerido es de {{min}}"
+
+msgid "Missing parameter"
+msgstr "Faltan parámetros"
+
+msgid "Missing private keys to sign"
+msgstr "Faltan las claves privadas para firmar"
+
+msgid "Mmm..."
+msgstr "Mmm..."
+
+msgid "More"
+msgstr "Más"
+
+msgid "More Brands"
+msgstr "Más Marcas"
+
+msgid "Moved"
+msgstr "Movido"
+
+msgid "Moved Funds"
+msgstr "Fondos Movidos"
+
+msgid "Moving"
+msgstr "Moviendo"
+
+msgid "Multiple Recipients"
+msgstr "Multiples Destinatarios"
+
+msgid "Multiple recipients:"
+msgstr "Multiples destinatarios:"
+
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
+msgstr "Nota: Para importar una billetera de un software de terceros debes ir a Añadir billetera > Crear billetera, e ingresar la frase de recuperación."
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Name (at creation)"
+msgstr "Nombre (al crear)"
+
+msgid "Needs Backup"
+msgstr "Necesita respaldar"
+
+msgid "Needs backup"
+msgstr "Necesita respaldar"
+
+msgid "Network"
+msgstr "Red"
+
+msgid "Network Cost"
+msgstr "Costo de la red"
+
+msgid "Network Fee Warning"
+msgstr "Advertencia sobre comisión de la red"
+
+msgid "Network cost"
+msgstr "Costo de la Red"
+
+msgid "Network error"
+msgstr "Error de red"
+
+msgid "New copayer"
+msgstr "Nuevo copayer"
+
+msgid "New payment proposal"
+msgstr "Nueva propuesta de pago"
+
+msgid "New payment received"
+msgstr "Nuevo pago recibido"
+
+msgid "Next"
+msgstr "Siguiente"
+
+msgid "No"
+msgstr "No"
+
+msgid "No Private Key"
+msgstr "Sin clave privada"
+
+msgid "No contacts yet"
+msgstr "Aun no hay contactos"
+
+msgid "No enough confirmed funds"
+msgstr "No hay suficientes fondos confirmados"
+
+msgid "No entries for this log level"
+msgstr "No hay entradas para este nivel de registro"
+
+msgid "No funds found"
+msgstr "No se encontraron fondos"
+
+msgid "No password"
+msgstr "Sin contraseña"
+
+msgid "No private key"
+msgstr "Sin clave privada"
+
+msgid "No signing proposal: No private key"
+msgstr "Propuesta sin firmar: No existe la clave privada"
+
+msgid "No transactions"
+msgstr "Sin transacciones"
+
+msgid "No wallet found"
+msgstr "Se se encontró la billetera"
+
+msgid "No wallets available"
+msgstr "No hay billeteras disponibles"
+
+msgid "No wallets available to receive funds"
+msgstr "No hay billeteras disponibles para recibir fondos"
+
+msgid "No wallets available to use ShapeShift"
+msgstr "No hay billeteras disponibles para usar ShapeShift"
+
+msgid "No wallets with funds"
+msgstr "Sin billeteras con fondos"
+
+msgid "Non BIP44 wallet"
+msgstr "Billetera no BIP44"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Not authorized"
+msgstr "No autorizado"
+
+msgid "Not enough funds"
+msgstr "Fondos insuficientes"
+
+msgid "Not enough funds for fee"
+msgstr "No hay suficientes fondos para la comisión"
+
+msgid "Not enough funds for fee {{shiftFee}}"
+msgstr "No hay suficientes fondos para la comisión {{shiftFee}}"
+
+msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr "No incluir la clave privada permite verificar el saldo de la billetera, historial de transacciones y crear propuestas de pago. Sin embargo, no permite aprobar (firmar) propuestas, por lo tanto, los fondos no serán accesibles al exportar."
+
+msgid "Not right now"
+msgstr "Ahora no"
+
+msgid "Not set"
+msgstr "No configurado"
+
+msgid "Not valid bitcoin address"
+msgstr "Dirección bitcoin inválida"
+
+msgid "Note"
+msgstr "Nota"
+
+msgid "Notifications"
+msgstr "Notificaciones"
+
+msgid "Notifications by email"
+msgstr "Notificaciones por correo electrónico"
+
+msgid "Notify me if confirmed"
+msgstr "Notificarme si se confirma"
+
+msgid "Notify me when transactions are confirmed"
+msgstr "Notificarme cuando se confirmen las transacciones"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "OPEN IN BROWSER"
+msgstr "ABRIR EN NAVEGADOR"
+
+msgid "Off"
+msgstr "Desactivado"
+
+msgid "Ok"
+msgstr "Correcto"
+
+msgid "On"
+msgstr "Activado"
+
+msgid "Only redeemable on Mercado Livre (Brazil)"
+msgstr "Solo canjeable en Mercado Livre (Brasil)"
+
+msgid "Only redeemable on www.amazon.co.jp (Japan website)"
+msgstr "Solo canjeable en www.amazon.co.jp (sitio web de Japón)"
+
+msgid "Only redeemable on www.amazon.com (USA website)"
+msgstr "Sólo canjeable en www.amazon.com (sitio web de Estados Unidos)"
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Open Crowdin"
+msgstr "Abrir Crowdin"
+
+msgid "Open GitHub"
+msgstr "Abrir GitHub"
+
+msgid "Open GitHub Project"
+msgstr "Abrir Proyecto en GitHub"
+
+msgid "Open Insight"
+msgstr "Abrir Insight"
+
+msgid "Open Translation Community"
+msgstr "Abrir Comunidad de Traducciones"
+
+msgid "Open settings"
+msgstr "Abrir configuración"
+
+msgid "Open website"
+msgstr "Abrir página web"
+
+msgid "Order the BitPay Card"
+msgstr "Solicitar la BitPay Card"
+
+msgid "Ouch!"
+msgstr "¡Ups!"
+
+msgid "PIN"
+msgstr "PIN"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Password Not Recoverable"
+msgstr "Contraseña no recuperable"
+
+msgid "Password mismatch"
+msgstr "La contraseña no coincide"
+
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr "Se requiere contraseña. Asegúrese de introducirla en opciones avanzadas"
+
+msgid "Passwords do not match"
+msgstr "Las contraseñas no coinciden"
+
+msgid "Paste the backup plain text code"
+msgstr "Pegar el código de respaldo en texto plano"
+
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
+msgstr "Pegue este código en {cardConfig.website}. Esta Gift Card no se puede recuperar si pierde el código de promoción."
+
+msgid "Pay 0% fees to turn bitcoin into dollars."
+msgstr "Paga 0% de comisión para transformar tus bitcoin en dólares."
+
+msgid "Payment Accepted"
+msgstr "Pago Aceptado"
+
+msgid "Payment Expires:"
+msgstr "Pago expira:"
+
+msgid "Payment Proposal"
+msgstr "Propuesta de pago"
+
+msgid "Payment Published"
+msgstr "Pago Publicado"
+
+msgid "Payment Rejected"
+msgstr "Pago Rechazado"
+
+msgid "Payment Request"
+msgstr "Solicitud de Pago"
+
+msgid "Payment Request info"
+msgstr "Información sobre solicitud de pago"
+
+msgid "Payment Sent"
+msgstr "Pago Enviado"
+
+msgid "Payment URL"
+msgstr "URL de pago"
+
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "Pago aceptado, pero aún no fue enviado"
+
+msgid "Payment proposal rejected"
+msgstr "Propuesta de pago rechazada"
+
+msgid "Payment request"
+msgstr "Solicitud de pago"
+
+msgid "Pending"
+msgstr "Pendiente"
+
+msgid "Pending Proposals"
+msgstr "Propuestas de pago pendientes"
+
+msgid "Permanently delete all wallets using this key."
+msgstr "Borra permanentemente todas las billeteras que utilizan esta llave."
+
+msgid "Permanently delete this wallet."
+msgstr "Eliminar esta billetera de forma permanente."
+
+msgid "Personal Wallet"
+msgstr "Billetera Personal"
+
+msgid "Plain URL"
+msgstr "URL simple"
+
+msgid "Please complete your account verification on ShapeShift website."
+msgstr "Por favor complete la verificación de la cuenta en el sitio web de ShapeShift."
+
+msgid "Please connect a camera to get started."
+msgstr "Por favor, conecta una cámara para empezar."
+
+msgid "Please enter the recovery phrase"
+msgstr "Por favor ingresa la frase de recuperación"
+
+msgid "Please enter the wallet recovery phrase"
+msgstr "Por favor ingresa la frase de recuperación de la billetera"
+
+msgid "Please enter your PIN"
+msgstr "Por favor ingresa tu PIN"
+
+msgid "Please review"
+msgstr "Por favor revise"
+
+msgid "Please upgrade the app to perform this action"
+msgstr "Por favor actualiza la aplicación para realizar esta acción"
+
+msgid "Please wait..."
+msgstr "Espera por favor..."
+
+msgid "Please, enter the amount"
+msgstr "Por favor, ingrese el monto"
+
+msgid "Please, select your backup file"
+msgstr "Por favor, selecciona el archivo de copia de seguridad"
+
+msgid "Pre-Auth Holds"
+msgstr "Pre-Auth Holds"
+
+msgid "Preferences"
+msgstr "Preferencias"
+
+msgid "Preparing addresses..."
+msgstr "Preparando direcciones..."
+
+msgid "Preparing backup..."
+msgstr "Preparando copia de seguridad..."
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Price Chart"
+msgstr "Gráfico de Precios"
+
+msgid "Print"
+msgstr "Imprimir"
+
+msgid "Print Card"
+msgstr "Imprimir Tarjeta"
+
+msgid "Printed Gift Card Required"
+msgstr "Requiere Imprimir la Gift Card"
+
+msgid "Priority"
+msgstr "Prioritario"
+
+msgid "Privacy Policy"
+msgstr "Política de privacidad"
+
+msgid "Privacy Policy update"
+msgstr "Actualización de la Política de Privacidad"
+
+msgid "Private Key"
+msgstr "Clave privada"
+
+msgid "Private key encrypted. Enter password"
+msgstr "La clave privada está encriptada. Escriba la contraseña"
+
+msgid "Private key is encrypted, cannot sign"
+msgstr "La clave privada está encriptada, no puedes firmar"
+
+msgid "Proposal Created"
+msgstr "Propuesta Creada"
+
+msgid "Proposal created"
+msgstr "Propuesta creada"
+
+msgid "Purchase Limit Reached"
+msgstr "Límite de compra alcanzado"
+
+msgid "Purchased Brands"
+msgstr "Marcas adquiridas"
+
+msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
+msgstr "Notificaciones push para {{appName}} están deshabilitadas. Habilitarla en la configuración de la aplicación."
+
+msgid "Quick and easy setup"
+msgstr "Instalación rápida y fácil"
+
+msgid "Random"
+msgstr "Aleatorio"
+
+msgid "Rate"
+msgstr "Calificación"
+
+msgid "Rate on the {storeName}"
+msgstr "Calificar en {storeName}"
+
+msgid "Read Only Wallet"
+msgstr "Billetera de Solo Lectura"
+
+msgid "Read Only Wallets"
+msgstr "Billeteras de solo lectura"
+
+msgid "Read Only wallets don't include the private key."
+msgstr "Las billeteras de solo lectura no incluyen clave privada."
+
+msgid "Read more in our Wiki"
+msgstr "Lee más en nuestra Wiki"
+
+msgid "Read more in our support page"
+msgstr "Leer más en nuestra página de soporte"
+
+msgid "Read only wallet"
+msgstr "Billetera solo lectura"
+
+msgid "Receipt Email"
+msgstr "Correo electrónico de facturación"
+
+msgid "Receive"
+msgstr "Recibir"
+
+msgid "Received"
+msgstr "Recibido"
+
+msgid "Received Funds"
+msgstr "Fondos Recibidos"
+
+msgid "Receiving"
+msgstr "Recibiendo"
+
+msgid "Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings."
+msgstr "Recibir fondos estará temporalmente deshabilitado hasta que pueda verificar que su frase de recuperación se ha guardado de forma segura. Siempre podrá completarlo desde la configuración de su billetera."
+
+msgid "Receiving {coinName} address"
+msgstr "Dirección {coinName} de recepción"
+
+msgid "Recent"
+msgstr "Recientes"
+
+msgid "Recipient"
+msgstr "Destinatario"
+
+msgid "Recover old wallets"
+msgstr "Recuperar billeteras antiguas"
+
+msgid "Recover your wallet using your passphrase"
+msgstr "Recuperar su billetera usando su frase de recuperación"
+
+msgid "Recovery Phrase"
+msgstr "Frase de recuperación"
+
+msgid "Recreating Wallet..."
+msgstr "Recreando billetera..."
+
+msgid "Redeem Now"
+msgstr "Canjear Ahora"
+
+msgid "Reject Payment Proposal"
+msgstr "Rechazar propuesta de pago"
+
+msgid "Rejected"
+msgstr "Rechazado"
+
+msgid "Rejecting payment proposal..."
+msgstr "Rechazando propuesta de pago..."
+
+msgid "Release information"
+msgstr "Información de la versión"
+
+msgid "Remove"
+msgstr "Remover"
+
+msgid "Repeat the password"
+msgstr "Repetir la contraseña"
+
+msgid "Report an Issue"
+msgstr "Reportar un problema"
+
+msgid "Report an issue"
+msgstr "Reportar un problema"
+
+msgid "Report issue"
+msgstr "Reportar problema"
+
+msgid "Request Biometric Authentication"
+msgstr "Solicitar autenticación biométrica"
+
+msgid "Request Encrypt Password"
+msgstr "Solicitar contraseña de cifrado"
+
+msgid "Request Fingerprint"
+msgstr "Solicitar Huella Digital"
+
+msgid "Request Specific Amount"
+msgstr "Solicitar Importe Específico"
+
+msgid "Request a Feature"
+msgstr "Sugiera una funcionalidad"
+
+msgid "Request a new feature"
+msgstr "Sugiera una nueva funcionalidad"
+
+msgid "Request feature"
+msgstr "Sugerir funcionalidad"
+
+msgid "Required number of signatures"
+msgstr "Número requerido de firmas"
+
+msgid "Requires invitation to join"
+msgstr "Requiere invitación para unirse"
+
+msgid "Requires multiple devices (most secure)"
+msgstr "Requiere múltiples dispositivos (más seguro)"
+
+msgid "Retrieving gas limit..."
+msgstr "Obteniendo gas limit..."
+
+msgid "Retrieving inputs information..."
+msgstr "Recuperando información de las entradas..."
+
+msgid "Retry camera"
+msgstr "Reintentar cámara"
+
+msgid "START OVER"
+msgstr "COMENZAR DE NUEVO"
+
+msgid "Safeguard your recovery phrase"
+msgstr "Protege tu frase de recuperación"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Scan"
+msgstr "Escanear"
+
+msgid "Scan QR Codes"
+msgstr "Escanear Código QR"
+
+msgid "Scan addresses for funds"
+msgstr "Busca direcciones con fondos"
+
+msgid "Scan again"
+msgstr "Escanear de nuevo"
+
+msgid "Scanning Wallet funds..."
+msgstr "Buscando fondos en la billetera..."
+
+msgid "Search Transactions"
+msgstr "Buscar Transacciones"
+
+msgid "Search Wallets or Contacts"
+msgstr "Buscar billeteras o contactos"
+
+msgid "Search a contact"
+msgstr "Buscar un contacto"
+
+msgid "Search or enter address"
+msgstr "Buscar o introducir dirección"
+
+msgid "Search your currency"
+msgstr "Busca tu moneda"
+
+msgid "Security"
+msgstr "Seguridad"
+
+msgid "See transaction"
+msgstr "Ver transacción"
+
+msgid "Select Key"
+msgstr "Seleccionar llave"
+
+msgid "Select Key to add ETH Wallet to"
+msgstr "Seleccionar la llave a la cual agregar la billetera ETH"
+
+msgid "Select a wallet"
+msgstr "Seleccionar una billetera"
+
+msgid "Select currencies"
+msgstr "Seleccionar monedas"
+
+msgid "Select currency"
+msgstr "Seleccionar moneda"
+
+msgid "Selling Bitcoin..."
+msgstr "Vendiendo Bitcoins..."
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Send Max"
+msgstr "Envío Máximo"
+
+msgid "Send Money"
+msgstr "Enviar dinero"
+
+msgid "Send addresses by email"
+msgstr "Enviar las direcciones por email"
+
+msgid "Send by email"
+msgstr "Enviar por correo electrónico"
+
+msgid "Send feedback"
+msgstr "Enviar comentarios"
+
+msgid "Send from"
+msgstr "Enviar desde"
+
+msgid "Send payment to this address"
+msgstr "Enviar pago a esta dirección"
+
+msgid "Sending"
+msgstr "Enviando"
+
+msgid "Sending 2FA code..."
+msgstr "Enviando código 2FA..."
+
+msgid "Sending From"
+msgstr "Enviando desde"
+
+msgid "Sending feedback..."
+msgstr "Enviando comentario..."
+
+msgid "Sending maximum amount"
+msgstr "Enviando cantidad máxima"
+
+msgid "Sending transaction..."
+msgstr "Enviando transacción..."
+
+msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
+msgstr "Enviando {{amount}} {{unit}} desde tu billetera {{name}}"
+
+msgid "Sensitive Data"
+msgstr "Información Sensible"
+
+msgid "Sent"
+msgstr "Enviado"
+
+msgid "Sent Funds"
+msgstr "Fondos Enviados"
+
+msgid "Sent to {walletName}"
+msgstr "Enviado a {walletName}"
+
+msgid "Server response could not be verified"
+msgstr "La respuesta del servidor no se ha podido verificar"
+
+msgid "Services"
+msgstr "Servicios"
+
+msgid "Session Log"
+msgstr "Registro de Sesión"
+
+msgid "Session Logs. Be careful, this could contain sensitive private data"
+msgstr "Registros de sesión. Sea cuidadoso, esto podría contener datos privados sensibles"
+
+msgid "Session log"
+msgstr "Registro de sesión"
+
+msgid "Set up a password"
+msgstr "Configurar una contraseña"
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "ShapeShift is not available at this moment. Please, try again later."
+msgstr "ShapeShift no esta disponible en este momento. Por favor, inténtelo más tarde."
+
+msgid "ShapeShift max limit reached"
+msgstr "ShapeShift alcanzó el límite máximo"
+
+msgid "ShapeShift requires a minimum value of {{min}}"
+msgstr "ShapeShift requiere un valor mínimo de {{min}}"
+
+msgid "Share"
+msgstr "Compartir"
+
+msgid "Share Address"
+msgstr "Compartir Dirección"
+
+msgid "Share Claim Code"
+msgstr "Compartir Código"
+
+msgid "Share logs"
+msgstr "Compartir registros"
+
+msgid "Share the love by inviting your friends."
+msgstr "Comparte la pasión invitando a tus amigos."
+
+msgid "Share this QR code to receive {amount} in your wallet {name}."
+msgstr "Comparte este código QR para recibir {amount} en su billetera {name}."
+
+msgid "Share this address with the devices joining this account."
+msgstr "Compartir esta dirección con los dispositivos que se unan a esta cuenta."
+
+msgid "Share this invitation with your copayers"
+msgstr "Compartir esta invitación con sus copayers"
+
+msgid "Share {{appName}}"
+msgstr "Compartir {{appName}}"
+
+msgid "Shared Wallet"
+msgstr "Billetera compartida"
+
+msgid "Show advanced options"
+msgstr "Mostrar opciones avanzadas"
+
+msgid "Show all"
+msgstr "Mostrar todo"
+
+msgid "Show in Home"
+msgstr "Mostrar en Inicio"
+
+msgid "Sign Up for ShapeShift"
+msgstr "Registrarse en ShapeShift"
+
+msgid "Sign selected proposals"
+msgstr "Firmar transacciones seleccionadas"
+
+msgid "Signatures rejected by server"
+msgstr "Firmas rechazadas por el servidor"
+
+msgid "Signing transaction..."
+msgstr "Firmando transacción..."
+
+msgid "Simple Wallet"
+msgstr "Billetera simple"
+
+msgid "Single address"
+msgstr "Única dirección"
+
+msgid "Skip"
+msgstr "Omitir"
+
+msgid "Slide to accept"
+msgstr "Deslizar para aceptar"
+
+msgid "Slide to confirm"
+msgstr "Deslizar para confirmar"
+
+msgid "Slide to pay"
+msgstr "Deslizar para pagar"
+
+msgid "Slide to send"
+msgstr "Deslizar para enviar"
+
+msgid "Something goes wrong..."
+msgstr "Algo va mal..."
+
+msgid "Specify Recovery Phrase"
+msgstr "Especificar frase de recuperación"
+
+msgid "Specify derivation path"
+msgstr "Especificar camino de derivación"
+
+msgid "Spend proposal is not accepted"
+msgstr "La propuesta de gasto no se ha aceptado"
+
+msgid "Spend proposal not found"
+msgstr "La propuesta de gasto no se ha encontrado"
+
+msgid "Spendable balance"
+msgstr "Balance disponible"
+
+msgid "Spending this balance will need significant Bitcoin network fees"
+msgstr "Gastar este balance requiere de significativas comisiones"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Super Economy"
+msgstr "Súper Económico"
+
+msgid "Support Wallets with Different Keys"
+msgstr "Soporte para billeteras con llaves diferentes"
+
+msgid "Sweep"
+msgstr "Importar"
+
+msgid "Sweep Completed"
+msgstr "Sweep Completado"
+
+msgid "Sweep paper wallet"
+msgstr "Importar billetera en papel"
+
+msgid "Sweeping Wallet..."
+msgstr "Leyendo la Billetera..."
+
+msgid "THIS ACTION CANNOT BE REVERSED"
+msgstr "ESTA ACCIÓN NO SE PUEDE REVERTIR"
+
+msgid "Tap and hold to show"
+msgstr "Tocar y mantener para mostrar"
+
+msgid "Tap each word in the correct order."
+msgstr "Escoje cada palabra en el orden correcto."
+
+msgid "Tap to recreate"
+msgstr "Toca para recrear"
+
+msgid "Temporarily Unavailable"
+msgstr "Temporalmente no disponible"
+
+msgid "Terms of Use"
+msgstr "Términos de Uso"
+
+msgid "Testnet Wallet"
+msgstr "Billetera Testnet"
+
+msgid "Text"
+msgstr "Texto"
+
+msgid "Thanks!"
+msgstr "¡Gracias!"
+
+msgid "The Safest, Fastest Asset Exchange on Earth"
+msgstr "La Casa de Cambio más segura y rápida de la tierra"
+
+msgid "The amount of bitcoin immediately spendable from this wallet."
+msgstr "Total de bitcoins disponibles en esta billetera para su uso inmediato."
+
+msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgstr "La cantidad de bitcoins almacenados en esta billetera que se utilizan como \"inputs\" en la transacción pendiente. Esa cantidad se determina en base a los \"unspent transaction outputs\" asociados con la billetera, estos pueden que sean mayor al monto enviado en la transacción en cuestión."
+
+msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
+msgstr "La cantidad de bitcoins almacenados en esta billetera que poseen menos de 1 confirmación en \"Blockchain\"."
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr "La billetera de destino no está respaldada. Por favor, complete el proceso de respaldo antes de continuar."
+
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr "Mientras más grande la comisión, mayor incentivo tiene el minero para agregar tu transacción a un bloque. Las comisiones están determinadas en base al tráfico y política de la red elegida."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr "La información que está por compartir/exportar podría contener datos sensibles tales como IDs de billetera, direcciones, saldos, etcétera. Por favor asegúrese de que confía en la persona o entidad con quien compartirá esta información."
+
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr "El pago fue creado pero no se pudo completar. Por favor intenta nuevamente desde la pantalla de inicio"
+
+msgid "The payment was removed by creator"
+msgstr "El pago fue eliminado por el creador"
+
+msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr "La clave privada de esta billetera no está disponible. Podrás consultar el balance de la billetera, el historial de transacciones y crear propuestas de pago desde el archivo generado. Sin embargo, no podrás aprobar (firmar) propuestas de pago, por lo que los fondos no son accesibles desde este archivo."
+
+msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
+msgstr "El importe de la compra está limitado a {maxAmount} {currency} por día. Por favor modifique el importe."
+
+msgid "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
+msgstr "El importe de la compra debe ser al menos {minAmount} {currency}. Por favor modifique el importe."
+
+msgid "The request could not be understood by the server"
+msgstr "La solicitud no pudo ser comprendida por el servidor"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr "La característica de dirección única obligará a la billetera a usar solo una dirección en lugar de generar nuevas direcciones."
+
+msgid "The spend proposal is not pending"
+msgstr "La propuesta de gasto no esta pendiente"
+
+msgid "The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr "Testnet es una cadena de bloques alternativa de Bitcoin utilizada para pruebas. Las monedas testnet trabajan en una red separada y distinta de los bitcoins reales y no tienen ningún valor. Esto permite a los desarrolladores o usuarios en general experimentar sin tener que usar bitcoins reales."
+
+msgid "The total amount of bitcoin stored in this wallet."
+msgstr "El total de bitcoins almacenados en esta billetera."
+
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr "La transacción de {{walletName}} que estabas esperando se ha confirmado."
+
+msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
+msgstr "El historial de transacciones y toda nueva transacción son cacheadas en la aplicación. Esta característica limpia y sincroniza nuevamente desde el servidor"
+
+msgid "The wallet is already in the app"
+msgstr "La billetera ya esta en la aplicación"
+
+msgid "The wallet won't be removed from this device. You can hide it whenever you need it."
+msgstr "La billetera no se eliminará de este dispositivo. Puede ocultarla siempre que lo necesite."
+
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr "La billetera que está utilizando no coincide con la red y/o la moneda de la dirección proporcionada"
+
+msgid "There is an error in the form"
+msgstr "Hay un error en el formulario"
+
+msgid "There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again"
+msgstr "Hubo un problema al intentar firmar {{txpsFailed}} de sus transacciones. Por favor, inténtelo de nuevo"
+
+msgid "There's obviously something we're doing wrong. How could we improve your experience?"
+msgstr "Obviamente hay algo que estamos haciendo mal. ¿Cómo podríamos mejorar su experiencia?"
+
+msgid "This app is not available for your device."
+msgstr "Esta aplicación no está disponible para su dispositivo."
+
+msgid "This bitcoin payment request has expired."
+msgstr "Esta solicitud de pago ha caducado."
+
+msgid "This feature duplicates a Bitcoin wallet on the Bitcoin Cash chain, enabling access to pre-fork coins. This should only be used if there are unclaimed funds before the Bitcoin Cash fork day on the wallet. The resulting wallet will use the same derivation path as the original BTC wallet."
+msgstr "Esta característica duplica la billetera Bitcoin en una billetera Bitcoin Cash, permitiendo el acceso a los fondos pre-fork. Esto solo debería utilizarse si hay fondos sin reclamar antes del día en que surgió Bitcoin Cash. La billetera resultante utilizará la misma ruta de derivación que la billetera BTC original."
+
+msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+msgstr "Este campo es solo para usuarios que en versiones anteriores (actualmente sin soporte), establecieron una contraseña para proteger su frase de recuperación. Este campo no es para su contraseña de cifrado."
+
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr "Este campo sólo acepta direcciones soportados por la billetera {appName}"
+
+msgid "This information is available at the website."
+msgstr "Esta información está disponible en el sitio web."
+
+msgid "This invoice does not accept unconfirmed inputs."
+msgstr "Esta factura no acepta entradas sin confirmar."
+
+msgid "This invoice is not longer accepting payments"
+msgstr "Esta factura ya no acepta pagos"
+
+msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
+msgstr "Esta contraseña no puede ser recuperada. Si se extravía, los fondos solo pueden ser recuperados utilizando la frase de recuperación de 12 palabras."
+
+msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
+msgstr "Esta contraseña es solo para este dispositivo, y no puede ser recuperada. Para evitar la pérdida de fondos, respalde su contraseña en un papel."
+
+msgid "This payment requires a miner fee of:"
+msgstr "Comisión de minero requerida para este pago:"
+
+msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
+msgstr "Esta frase de recuperación fue creada con una contraseña. Para recuperar esta billetera, la frase de recuperación y la contraseña son necesarias."
+
+msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgstr "Esta transacción es muy pequeña comparada a la comisión actual de la red.\n"
+"Para gastar esta cantidad necesitarás un costo de comisión comparable a los fondos en sí mismos."
+
+msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+msgstr "Esta transacción podría tomar mucho tiempo en confirmarse o podría ser denegada por la baja comisión establecida por el remitente."
+
+msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
+msgstr "Esta transacción requiere una alta tasa de red porque la cantidad de envío es demasiado pequeña o la red está experimentando congestión."
+
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
+msgstr "Esta billetera no está registrada en el servidor de Bitcore Wallet Service (BWS). Debes re-crearla con la información local disponible."
+
+msgid "Timeline"
+msgstr "Línea de tiempo"
+
+msgid "To"
+msgstr "Para"
+
+msgid "To get started, you'll need to create a wallet and get some funds."
+msgstr "Para empezar, necesitarás crear una billetera y obtener fondos."
+
+msgid "To get started, you'll need to enter a valid address, contact or wallet."
+msgstr "Para empezar, necesita ingresar una dirección válida, un contacto o una billetera."
+
+msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgstr "Para {{reason}} primero debes agregar tu cuenta de BitPay - {{email}}"
+
+msgid "Top up in progress..."
+msgstr "Recarda en progreso..."
+
+msgid "Top-up with this cryptocurrency is not enabled"
+msgstr "La recarga con esta crypto moneda no está habilitada"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Total Locked Balance"
+msgstr "Balance Total Bloqueado"
+
+msgid "Total number of copayers"
+msgstr "Número total de copayers"
+
+msgid "Total wallet inputs"
+msgstr "Total de entradas de la billetera"
+
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr "Intercambia entre activos de la blockchain. Protección por diseño."
+
+msgid "Transaction"
+msgstr "Transacción"
+
+msgid "Transaction History"
+msgstr "Historial de Transacciones"
+
+msgid "Transaction ID"
+msgstr "ID de Transacción"
+
+msgid "Transaction already broadcasted"
+msgstr "La transacción ya fue enviada"
+
+msgid "Transaction confirmed"
+msgstr "Transacción confirmada"
+
+msgid "Transaction has not been created"
+msgstr "La transacción no ha sido creada"
+
+msgid "Transaction initiated"
+msgstr "Transacción iniciada"
+
+msgid "Transaction not available at this time"
+msgstr "La transacción no esta disponible en este momento"
+
+msgid "Transactions"
+msgstr "Transacciones"
+
+msgid "Transactions without fee are not supported."
+msgstr "Las transacciones sin comisión no están soportadas."
+
+msgid "Transfer to"
+msgstr "Transferir a"
+
+msgid "Transfer to Bitcoin Cash Wallet"
+msgstr "Transferir a Billetera Bitcoin Cash"
+
+msgid "Transfer to Bitcoin Wallet"
+msgstr "Transferir a Billetera Bitcoin"
+
+msgid "Transfer to Contact"
+msgstr "Transferir a Contacto"
+
+msgid "Transfer to Ethereum Wallet"
+msgstr "Transferir a billetera Ethereum"
+
+msgid "Transfer to Multiple Recipients"
+msgstr "Trasferir a Múltiples Destinatarios"
+
+msgid "Translate address"
+msgstr "Traducir dirección"
+
+msgid "Try again"
+msgstr "Vuelva a intentarlo"
+
+msgid "Try again in {{expires}}"
+msgstr "Intenta de nuevo en {{expires}}"
+
+msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
+msgstr "Convierta Bitcoin en Dólares, use en cualquier lugar que acepte Visa®."
+
+msgid "Type the recovery phrase (usually 12 words)"
+msgstr "Escribe la frase de recuperación (normalmente 12 palabras)"
+
+msgid "Unarchive Card"
+msgstr "Desarchivar tarjeta"
+
+msgid "Unconfirmed"
+msgstr "Sin confirmar"
+
+msgid "Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you."
+msgstr "Desafortunadamente, su país/región ha prohibido el uso o aceptación de criptomonedas como una forma válida de pago y por lo tanto no podemos ofrecerle servicio."
+
+msgid "Unlink account"
+msgstr "Desvincular cuenta"
+
+msgid "Unlink card"
+msgstr "Desvincular tarjeta"
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr "Desvincular la cuenta eliminará la cuenta y todas las tarjetas asociadas, de este dispositivo."
+
+msgid "Unlink the card will remove it from this device."
+msgstr "Desvincular la tarjeta la eliminará del dispositivo."
+
+msgid "Unlock App"
+msgstr "Desbloquear Aplicación"
+
+msgid "Unsent transactions"
+msgstr "Transacciones no enviadas"
+
+msgid "Unused addresses"
+msgstr "Direcciones sin utilizar"
+
+msgid "Unverified Account"
+msgstr "Cuenta no verificada"
+
+msgid "Updating Gift Card..."
+msgstr "Actualizando Gift Card..."
+
+msgid "Updating Gift Cards..."
+msgstr "Actualizando Gift Cards..."
+
+msgid "Updating transaction history. Please stand by."
+msgstr "Actualizando el historial de transacciones. Por favor aguarda un momento."
+
+msgid "Urgent"
+msgstr "Urgente"
+
+msgid "Use Unconfirmed Funds"
+msgstr "Utilizar los fondos sin confirmar"
+
+msgid "Use default url"
+msgstr "Utilizar URL por defecto"
+
+msgid "Validating recovery phrase..."
+msgstr "Validando la frase de recuperación..."
+
+msgid "Verify Account"
+msgstr "Verificar Cuenta"
+
+msgid "Verify Your Phrase"
+msgstr "Verifica tu frase de recuperación"
+
+msgid "Version"
+msgstr "Versión"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "View Confirmation Status"
+msgstr "Ver Estado de Confirmación"
+
+msgid "View Invoice"
+msgstr "Ver Factura"
+
+msgid "View Privacy Policy"
+msgstr "Ver política de privacidad"
+
+msgid "View Redemption Code"
+msgstr "Ver código de canje"
+
+msgid "View Transaction on Insight"
+msgstr "Ver Transacción en Insight"
+
+msgid "View Wallet Terms of Use"
+msgstr "Ver los términos de uso de la billetera"
+
+msgid "View all addresses"
+msgstr "Ver todas las direcciones"
+
+msgid "View complete Terms of Use"
+msgstr "Ver Términos de Uso"
+
+msgid "View on blockchain"
+msgstr "Ver en blockchain"
+
+msgid "Visit ShapeShift.io"
+msgstr "Ir a ShapeShift.io"
+
+msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
+msgstr "ADVERTENCIA: Derivación de la clave no funciona en este dispositivo/billetera. Acciones no pueden realizarse en esta billetera."
+
+msgid "Waiting"
+msgstr "Esperando"
+
+msgid "Waiting for authorized copayers to join"
+msgstr "Esperando a que los copayers autorizados se unan"
+
+msgid "Wallet Address"
+msgstr "Dirección de la billetera"
+
+msgid "Wallet Addresses"
+msgstr "Direcciones de la Billetera"
+
+msgid "Wallet Information"
+msgstr "Información de la Billetera"
+
+msgid "Wallet Inputs"
+msgstr "Entradas de la billetera"
+
+msgid "Wallet Invitation"
+msgstr "Invitación para unirse a la billetera"
+
+msgid "Wallet Name"
+msgstr "Nombre de la billetera"
+
+msgid "Wallet Needs Backup"
+msgstr "La billetera necesita respaldarse"
+
+msgid "Wallet Recovery Phrase is invalid"
+msgstr "La frase de recuperación no es válida"
+
+msgid "Wallet Settings"
+msgstr "Preferencias de la billetera"
+
+msgid "Wallet already exists"
+msgstr "La billetera ya existe"
+
+msgid "Wallet complete"
+msgstr "Billetera completa"
+
+msgid "Wallet incomplete and broken"
+msgstr "Billetera incompleta y rota"
+
+msgid "Wallet invitation"
+msgstr "Invitación a la Billetera"
+
+msgid "Wallet is full"
+msgstr "La billetera está completa"
+
+msgid "Wallet is locked"
+msgstr "Billetera bloqueada"
+
+msgid "Wallet is not complete"
+msgstr "La billetera no esta completa"
+
+msgid "Wallet key"
+msgstr "Llave de la Billetera"
+
+msgid "Wallet name"
+msgstr "Nombre de la billetera"
+
+msgid "Wallet needs backup"
+msgstr "La billetera necesita respaldarse"
+
+msgid "Wallet not found"
+msgstr "Billetera no encontrada"
+
+msgid "Wallet not registered"
+msgstr "Billetera no registrada"
+
+msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
+msgstr "La billetera no esta registrado en Wallet Service. Para volver a crear, utilice \"Crear billetera\", \"Opciones avanzadas\" e ingrese la frase de recuperación"
+
+msgid "Wallet recovery phrase"
+msgstr "Frase de recuperación de la Billetera"
+
+msgid "Wallet recovery phrase not available"
+msgstr "Frase de recuperación de la billetera no disponible"
+
+msgid "Wallet service not found"
+msgstr "Wallet Service no encontrado"
+
+msgid "Wallets"
+msgstr "Billeteras"
+
+msgid "Warning!"
+msgstr "¡Advertencia!"
+
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Advertencia: esta operación tiene entradas sin confirmar"
+
+msgid "We appreciate your review"
+msgstr "Apreciamos tu opinión"
+
+msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
+msgstr "¡Siempre estamos buscando aportes de traducción! Puedes ayudar a que esta aplicación esté disponible en tu idioma nativo uniéndote a nuestra comunidad en Crowdin."
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
+msgstr "Siempre estamos abiertos a escuchar propuestas para mejorar su experiencia. Siéntanse libre de dejarnos una calificación en su tienda de aplicaciones o sugiera una nueva funcionalidad."
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
+msgstr "Siempre estamos abiertos a escuchar propuestas para mejorar su experiencia. Siéntanse libre de dejarnos una calificación en su tienda de aplicaciones o sugiera una nueva funcionalidad. También, déjanos saber si tu experiencia ha tenido alguna complicación técnica."
+
+msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
+msgstr "Siempre estamos abiertos a escuchar propuestas para mejorar su experiencia. ¿Hay alguna manera en la que podríamos mejorar su experiencia?"
+
+msgid "Website"
+msgstr "Sitio Web"
+
+msgid "What do you call this key?"
+msgstr "¿Cómo desea llamar a esta llave?"
+
+msgid "What do you call this wallet?"
+msgstr "¿Como desea llamar a esta billetera?"
+
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr "Cuando fué creada esta billetera, se llamaba \"{{walletName}}\". Abajo puede cambiar el nombre que se mostrará en este dispositivo."
+
+msgid "Where would you like to receive email notifications about payments?"
+msgstr "¿A donde le gustaría recibir notificaciones por email sobre sus transacciones?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr "¿Dónde quiere recibir sus recibos de compras de las Gift Cards de Amazon?"
+
+msgid "Why does this require authentication?"
+msgstr "¿Por qué se requiere autenticación?"
+
+msgid "Why is my transaction unconfirmed?"
+msgstr "¿Por qué está sin confirmar mi transacción?"
+
+msgid "Why?"
+msgstr "¿Por qué?"
+
+msgid "Withdraw"
+msgstr "Retirar"
+
+msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr "Sin cifrado, un ladrón u otra aplicación de este dispositivo puede acceder a sus fondos."
+
+msgid "Would you like to hide this gift card discount?"
+msgstr "¿Quieres ocultar este descuento de la tarjeta de regalo?"
+
+msgid "Would you like to protect this wallet with a password?"
+msgstr "¿Quieres proteger esta billetera con una contraseña?"
+
+msgid "Write Down Recovery Phrase"
+msgstr "Respalda tu frase de recuperación"
+
+msgid "Write a Review"
+msgstr "Escriba una opinión"
+
+msgid "Write down each word."
+msgstr "Escriba cada una de las palabras."
+
+msgid "Wrong number of recovery words:"
+msgstr "Número incorrecto de palabras:"
+
+msgid "Wrong password"
+msgstr "Contraseña incorrecta"
+
+msgid "YES"
+msgstr "SÍ"
+
+msgid "Yes"
+msgstr "Si"
+
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
+msgstr "Estás intentando enviar más fondos de lo que tienes disponible. Asegúrate de que no tienes fondos bloqueados por transacciones pendientes."
+
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
+msgstr "Estás intentando enviar más fondos de lo que tienes disponible. Asegúrate de que no tienes fondos bloqueados por transacciones pendientes. También puedes intentar con una cantidad menor o un envío máximo."
+
+msgid "You can change the name displayed on this device below."
+msgstr "Puede cambiar el nombre mostrado en este dispositivo a continuación."
+
+msgid "You can continue to view your archived cards here if you need to access them."
+msgstr "Usted puede seguir viendo sus tarjetas archivadas aquí si lo necesita."
+
+msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias suyas!"
+
+msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgstr "Puedes escanear direcciones bitcoin, solicitudes de pago, billeteras de papel y más."
+
+msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
+msgstr "Puede ver las últimas novedades y contribuir a nuestra aplicación de código abierto visitando nuestro proyecto en GitHub."
+
+msgid "You can still export it from \"Export Wallet\" option."
+msgstr "Todavía puede exportar desde \"Exportar Billetera\"."
+
+msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
+msgstr "Puede utilizar sus Gift Cards de Mercado Livre en su cuenta de Mercado Pago para gastos diarios como servicios públicos y los boletos de metro."
+
+msgid "You could sign the transaction later in your wallet details"
+msgstr "Podría firmar la transacción más tarde en los detalles de la Billetera"
+
+msgid "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
+msgstr "No tienes suficientes fondos confirmados para realizar este pago. Espera a que tus transacciones pendientes se confirmen o active \"Utilizar los fondos sin confirmar\" en ajustes avanzados."
+
+msgid "You reach the limit of twenty wallets from the same coin and network"
+msgstr "Alcanzaste el limite de veinte billeteras de la misma moneda y red"
+
+msgid "You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}."
+msgstr "No debería elegir una comisión superior a {{maxFeeRecommended}} {{feeUnit}}."
+
+msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
+msgstr "Tu BitPay Card ya está lista. Agrega fondos para comenzar a utilizarla en las tiendas."
+
+msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "Sus claves privadas extendidas son todo lo que necesita para acceder a sus fondos. Asegúrese de proteger sus claves privadas y almacenarlas en dispositivos seguros. BitPay no tiene acceso a sus claves privadas, por lo que usted es responsable de sus claves. Si comparte el acceso a claves con servicios externos, usted asume la responsabilidad por el riesgo de robo o violación. Solo los usuarios avanzados deberían manipular directamente las claves privadas extendidas."
+
+msgid "Your fee is lower than recommended."
+msgstr "Tu comisión es inferior a la recomendada."
+
+msgid "Your name"
+msgstr "Nombre"
+
+msgid "Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the order they appear."
+msgstr "Tu frase de recuperación está compuesta por 12 palabras seleccionadas aleatoriamente. Por favor, escribe cuidadosamente cada palabra en el orden que aparecen."
+
+msgid "Your recovery phrase is verified"
+msgstr "Tu frase de recuperación está verificada"
+
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
+msgstr "Tu dirección de billetera es similar a una cuenta bancaria. Puedes agregar fondos a tu billetera retirando los fondos que puedas tener almacenados en un exchange y enviándolos a tu dirección de billetera. O bien, a otros usuarios {coinName} puede enviarle dinero escaneando el código QR."
+
+msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr "La clave de la billetera será cifrada. La contraseña de cifrado no se puede recuperar. Asegúrese de anotarla."
+
+msgid "Your wallet {{walletName}} is complete."
+msgstr "Su billetera {{walletName}} está completa."
+
+msgid "Your {walletType} wallet is backed up!"
+msgstr "¡Su billetera {walletType} ha sido respaldada!"
+
+msgid "[Balance Hidden]"
+msgstr "[Balance Oculto]"
+
+msgid "[Scanning Funds]"
+msgstr "[Buscando Fondos]"
+
+msgid "add your BitPay Visa card(s)"
+msgstr "agregar sus tarjetas BitPay Visa"
+
+msgid "me"
+msgstr "yo"
+
+msgid "of total amount"
+msgstr "del monto total"
+
+msgid "preparing..."
+msgstr "preparando..."
+
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr "Las billeteras {appName} utilizan el formato CashAddr por defecto"
+
+msgid "{coinName} Address"
+msgstr "Dirección {coinName}"
+
+msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
+msgstr "Las tarjetas de regalo de {displayName} contienen una tarifa adicional de activación de {fee} {currency}."
+
+msgid "{displayName} requires you to present a printed gift card at redemption."
+msgstr "{displayName} requiere presentar la Gift Card impresa para realizar el canje."
+
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitpay.com (instancia BWS pública de BitPay)."
+
+msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr "{{appName}} solo soporta Bitcoin Cash utilizando la nueva versión de direcciones."
+
+msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgstr "{{countInArray}} de tus billeteras ya existen en {{nameCase}}"
+
+msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgstr "Se descontará {{fee}} {{coin}} por comisión de la red bitcoin."
+
+msgid "{{txpsSuccess}} proposal signed"
+msgstr "{{txpsSuccess}} propuesta firmada"
+
+msgid "{{txpsSuccess}} proposals signed"
+msgstr "{{txpsSuccess}} propuestas firmadas"
+
+msgid "{{updatingTxHistoryProgress}} transactions downloaded"
+msgstr "{{updatingTxHistoryProgress}} transacciones descargadas"
+
+msgid "{{wallet.m}}-of-{{wallet.n}}"
+msgstr "{{wallet.m}}-de-{{wallet.n}}"
+

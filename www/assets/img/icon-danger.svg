@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="27px" viewBox="0 0 28 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Small (20px)/Danger (color)</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Overlay/Dialog-(Error)" transform="translate(-21.000000, -26.000000)">
+            <g id="Header" transform="translate(22.000000, 26.000000)">
+                <g id="Icons/Small-(20px)/Error-(color)">
+                    <g id="Group" transform="translate(0.000000, 1.350000)">
+                        <polygon id="Shape" stroke="#DF5163" stroke-width="1.5" stroke-linecap="square" points="0 24.3 12.825 0 25.65 24.3"></polygon>
+                        <path d="M12.825,8.775 L12.825,16.875" id="Shape" stroke="#DF5163" stroke-width="1.5" stroke-linecap="square"></path>
+                        <circle id="Oval" stroke="#DF5163" stroke-width="1.5" stroke-linecap="square" cx="12.825" cy="20.925" r="1"></circle>
+                        <circle id="Oval" fill="#DF5163" fill-rule="nonzero" cx="12.4875" cy="20.5875" r="1"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

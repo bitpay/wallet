@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="142px" height="88px" viewBox="0 0 142 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Ghost - Straight Face</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Send" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Send---Initial-(No-funds)" transform="translate(-119.000000, -163.000000)">
+            <g id="Ghost---Straight-Face" transform="translate(119.000000, 163.000000)">
+                <path d="M142,71.5979797 C142,49.7286194 110.212217,32 71,32 C31.7877828,32 0,49.7286194 0,71.5979797 C0,93.4673401 142,93.4673401 142,71.5979797 Z" id="Oval-2" fill="#E7E7E7" opacity="0.378571429"></path>
+                <g id="ghost" transform="translate(44.000000, 0.000000)" fill-rule="nonzero">
+                    <path d="M46.0610653,72 L36.4247017,66.3421657 L27.5592472,72 L17.3447017,66.3421657 L8.09379261,72 C7.11730295,72 0,65.6971035 0,64.8999447 L0,21.6333149 C0,9.70470507 11.887052,0 26.5,0 C41.112948,0 53,9.70470507 53,21.6333149 L53,64.8999447 C53,65.4313839 50.6870218,67.798069 46.0610653,72 Z" id="Shape" fill="#E7E7E7"></path>
+                    <path d="M36.6970046,47.1428571 L15.4481567,47.1428571 C14.469417,47.1428571 13.6774194,46.1844214 13.6774194,45 C13.6774194,43.8155786 14.469417,42.8571429 15.4481567,42.8571429 L36.6970046,42.8571429 C37.6757443,42.8571429 38.4677419,43.8155786 38.4677419,45 C38.4677419,46.1844214 37.675762,47.1428571 36.6970046,47.1428571 Z" id="Shape" fill="#444444"></path>
+                    <ellipse id="Oval" fill="#444444" cx="13.6774194" cy="26.5714286" rx="5.12903226" ry="5.14285714"></ellipse>
+                    <ellipse id="Oval" fill="#444444" cx="37.6129032" cy="26.5714286" rx="5.12903226" ry="5.14285714"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
