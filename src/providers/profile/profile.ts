@@ -79,6 +79,37 @@ export class ProfileProvider {
     }, 10000);
   }
 
+  private trySetName(wallet: any, i: number = 0): any {
+    const config = this.configProvider.get();
+
+    if (i > 5) {
+      // just put the Id is the prev fails
+      wallet.linkedEthWalletName = wallet.linkedEthWallet;
+      return;
+    }
+
+    let linked = this.getWallet(wallet.linkedEthWallet);
+    if (linked && linked.credentials) {
+      this.logger.debug(
+        'Setting linkedEthWalletName:' + wallet.linkedEthWallet
+      );
+
+      wallet.linkedEthWalletName =
+        (config.aliasFor && config.aliasFor[linked.id]) ||
+        linked.credentials.walletName;
+
+      return;
+    } else {
+      this.logger.debug(
+        'Waiting to set name for linkedEthWalletName:' + wallet.linkedEthWallet
+      );
+
+      return window.setTimeout(() => {
+        this.trySetName(wallet, i + 1);
+      }, 2000);
+    }
+  }
+
   private updateWalletFromConfig(wallet): void {
     const config = this.configProvider.get();
     const defaults = this.configProvider.getDefaults();
@@ -99,12 +130,7 @@ export class ProfileProvider {
     );
 
     if (wallet.linkedEthWallet) {
-      let linked = this.getWallet(wallet.linkedEthWallet);
-      if (linked) {
-        wallet.linkedEthWalletName =
-          (config.aliasFor && config.aliasFor[linked.id]) ||
-          linked.credentials.walletName;
-      }
+      this.trySetName(wallet);
     }
   }
 
