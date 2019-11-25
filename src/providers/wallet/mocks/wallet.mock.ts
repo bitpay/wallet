@@ -123,6 +123,7 @@ export class WalletMock {
     walletName: string;
     network?: string;
     publicKeyRing?: any[];
+    coin: string;
   };
   coin: string;
   id: string;
@@ -144,7 +145,8 @@ export class WalletMock {
       scanStatus: null,
       walletId: 'walletid1',
       walletName: 'Test wallet',
-      keyId: 'keyId1'
+      keyId: 'keyId1',
+      coin: 'btc'
     };
     this.coin = 'btc';
     this.id = 'walletid1';
