@@ -1189,7 +1189,8 @@ describe('Profile Provider', () => {
 
       spyOn(configProvider, 'get').and.returnValue({
         bwsFor: 'id1',
-        desktopNotificationsEnabled: true
+        desktopNotificationsEnabled: true,
+        emailNotifications: { email: 'test@test.com' }
       });
 
       spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue({
