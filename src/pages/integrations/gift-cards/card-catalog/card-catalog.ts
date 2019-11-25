@@ -68,10 +68,6 @@ export class CardCatalogPage extends WideHeaderPage {
       });
   }
 
-  ionViewDidEnter() {
-    this.logGiftCardCatalogHomeView();
-  }
-
   onSearch(query: string) {
     this.searchQuery = query;
     this.updateCardList();
