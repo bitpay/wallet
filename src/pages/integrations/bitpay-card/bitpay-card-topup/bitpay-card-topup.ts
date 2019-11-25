@@ -244,13 +244,14 @@ export class BitPayCardTopUpPage {
     invoiceFeeSat: number,
     networkFeeSat: number
   ) {
-    this.satToFiat(wallet.coin, amountSat).then((a: string) => {
+    const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+    this.satToFiat(chain, amountSat).then((a: string) => {
       this.amount = Number(a);
 
-      this.satToFiat(wallet.coin, invoiceFeeSat).then((i: string) => {
+      this.satToFiat(chain, invoiceFeeSat).then((i: string) => {
         this.invoiceFee = Number(i);
 
-        this.satToFiat(wallet.coin, networkFeeSat).then((n: string) => {
+        this.satToFiat(chain, networkFeeSat).then((n: string) => {
           this.networkFee = Number(n);
           this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
         });
@@ -590,7 +591,7 @@ export class BitPayCardTopUpPage {
 
             this.totalAmountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
-              ctxp.amount
+              ctxp.amount || parsedAmount.amountSat
             );
 
             if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
