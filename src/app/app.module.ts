@@ -1,16 +1,16 @@
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IonicImageLoader } from 'ionic-image-loader';
-import { MarkdownModule } from 'ngx-markdown';
-
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   Config,
   IonicApp,
   IonicErrorHandler,
   IonicModule
 } from 'ionic-angular';
+import { IonicImageLoader } from 'ionic-image-loader';
+import { MarkdownModule } from 'ngx-markdown';
 
 /* Modules */
 import {
