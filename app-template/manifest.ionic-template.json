@@ -8,6 +8,11 @@
       "src": "assets/img/app/logo.png",
       "sizes": "150x65",
       "type": "image/png"
+    },
+    {
+      "src": "assets/img/app/logo.png",
+      "sizes": "192x80",
+      "type": "image/png"
     }
   ],
   "background_color": "*THEMECOLOR*",
