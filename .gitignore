@@ -25,7 +25,7 @@ electron/build-electron.js
 *-entitlements.mas.plist
 
 # Windows AppX Assets
-/build
+build
 
 ## Ionic App
 /config.xml
@@ -65,6 +65,7 @@ plugins/
 plugins/android.json
 plugins/ios.json
 screenshots/
+www/
 $RECYCLE.BIN/
 
 Thumbs.db

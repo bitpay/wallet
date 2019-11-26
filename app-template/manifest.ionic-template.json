@@ -10,8 +10,13 @@
       "type": "image/png"
     },
     {
+      "src": "assets/img/app/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
       "src": "assets/img/app/logo.png",
-      "sizes": "192x80",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],

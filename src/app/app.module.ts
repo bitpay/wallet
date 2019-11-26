@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import {
   Config,
@@ -59,6 +60,11 @@ import { COMPONENTS } from '../components/components';
 /* Providers */
 import { LanguageLoader } from '../providers/language-loader/language-loader';
 import { ProvidersModule } from '../providers/providers.module';
+
+/* Enable Service Workers for Production */
+ServiceWorkerModule.register('../ngsw-worker.js', {
+  enabled: env.name === 'production'
+});
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
