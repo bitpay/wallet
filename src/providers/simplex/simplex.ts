@@ -48,6 +48,21 @@ export class SimplexProvider {
     });
   }
 
+  public getEvents(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let data: any = {};
+      data.env = this.env;
+      wallet
+        .simplexGetEvents(data)
+        .then(res => {
+          return resolve(res.body);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'simplex',

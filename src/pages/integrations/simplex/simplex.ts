@@ -123,6 +123,15 @@ export class SimplexPage {
     }
   );
 
+  public getEvents(): void {
+    this.simplexProvider
+      .getEvents(this.wallet)
+      .then(_data => {})
+      .catch(err => {
+        this.showError(err);
+      });
+  }
+
   private getSimplexQuote(): void {
     this.showLoading = true;
     const data = {

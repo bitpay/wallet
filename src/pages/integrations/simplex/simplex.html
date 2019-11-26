@@ -63,11 +63,12 @@
             <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="fiatAltCurrency" (ionChange)="fiatAltCurrencyChange()">
               <ion-option [value]="USD">USD</ion-option>
               <ion-option [value]="EUR">EUR</ion-option>
+              <!-- <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option> TODO: uncomment this-->
             </ion-select>
           </ion-item>
           <label-tip type="warn" header="no-header" *ngIf="quoteForm.controls.fiatAmount.hasError('pattern')">
             <div label-tip-body>
-              <div translate>The amount must be between 50 and 20000</div>
+              <div translate>The {{ quoteForm.value.fiatAltCurrency }} amount must be between 50 and 20000</div>
             </div>
           </label-tip>
         </form>
