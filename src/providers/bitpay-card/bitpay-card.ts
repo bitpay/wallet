@@ -326,6 +326,11 @@ export class BitPayCardProvider {
                   history = data.data || {};
                   history['txs'] = this._processTransactions(invoices, history);
 
+                  this.persistenceProvider.setLastKnownHistory(
+                    cardId,
+                    history.txs
+                  );
+
                   this.persistenceProvider.setLastKnownBalance(
                     cardId,
                     history.currentCardBalance
@@ -468,40 +473,52 @@ export class BitPayCardProvider {
     );
   }
 
-  public get(opts, cb) {
-    this.getCards(cards => {
-      if (_.isEmpty(cards)) {
-        this.homeIntegrationsProvider.updateLink('debitcard', null); // Name, linked
-        return cb();
-      }
-      this.homeIntegrationsProvider.updateLink('debitcard', true); // Name, linked
-
-      if (opts.cardId) {
-        cards = _.filter(cards, x => {
-          return opts.cardId == x.eid;
-        });
-      }
-
-      // Async, no problem
-      _.each(cards, x => {
-        this.setCurrencySymbol(x);
-        this.persistenceProvider
-          .getLastKnownBalance(x.eid)
-          .then(balanceCache => {
-            x.balance =
-              balanceCache && balanceCache.balance
-                ? Number(balanceCache.balance)
-                : null;
-            x.updateOn = balanceCache && balanceCache.updatedOn;
-          });
-
-        // async refresh
-        if (!opts.noRefresh) {
-          this.updateHistory(x.id, {}, () => {});
+  public get(opts?): Promise<any> {
+    opts = opts || {};
+    return new Promise(resolve => {
+      this.getCards(cards => {
+        if (_.isEmpty(cards)) {
+          this.homeIntegrationsProvider.updateLink('debitcard', null); // Name, linked
+          return resolve();
         }
-      });
+        this.homeIntegrationsProvider.updateLink('debitcard', true); // Name, linked
 
-      return cb(null, cards);
+        if (opts.cardId) {
+          cards = _.filter(cards, card => {
+            return opts.cardId == card.eid;
+          });
+        }
+
+        const completeBalance = async () => {
+          for (let i = 0; i < cards.length; i++) {
+            this.setCurrencySymbol(cards[i]);
+
+            if (!opts.noBalance) {
+              await this.persistenceProvider
+                .getLastKnownBalance(cards[i].eid)
+                .then(balanceCache => {
+                  cards[i].balance =
+                    balanceCache && balanceCache.balance
+                      ? Number(balanceCache.balance)
+                      : null;
+                  cards[i].updateOn = balanceCache && balanceCache.updatedOn;
+                });
+            }
+
+            // async refresh
+            if (!opts.noHistory) {
+              await this.persistenceProvider
+                .getLastKnownHistory(cards[i].eid)
+                .then(historyCache => {
+                  cards[i].history = historyCache && historyCache.txs;
+                  cards[i].updateOn = historyCache && historyCache.updatedOn;
+                });
+            }
+          }
+          return resolve(cards);
+        };
+        completeBalance();
+      });
     });
   }
 

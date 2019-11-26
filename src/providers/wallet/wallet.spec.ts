@@ -811,7 +811,7 @@ describe('Provider: Wallet Provider', () => {
           email: 'mail@mail.com'
         }
       };
-      configProvider.set(newOpts);
+      spyOn(configProvider, 'get').and.returnValue(newOpts);
     });
 
     it('Should update remote preferences with no errors', () => {

@@ -109,8 +109,11 @@ export class BitPayCardTopUpPage {
     this.navCtrl.swipeBackEnabled = true;
   }
 
+  ionViewDidEnter() {
+    this.logLegacyCardAddToCartEvent();
+  }
+
   ionViewWillEnter() {
-    this.logLegacyCardAddToCardEvent();
     if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
       this.navCtrl.remove(this.navCtrl.getPrevious().index);
     }
@@ -129,16 +132,13 @@ export class BitPayCardTopUpPage {
       transactionCurrency: 'USD'
     });
 
-    this.bitPayCardProvider.get(
-      {
+    this.bitPayCardProvider
+      .get({
         cardId: this.cardId,
-        noRefresh: true
-      },
-      (err, card) => {
-        if (err) {
-          this.showErrorAndBack(null, err);
-          return;
-        }
+        noBalance: true,
+        noHistory: true
+      })
+      .then(card => {
         this.bitPayCardProvider.setCurrencySymbol(card[0]);
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
@@ -160,8 +160,7 @@ export class BitPayCardTopUpPage {
         }
 
         this.showWallets(); // Show wallet selector
-      }
-    );
+      });
   }
 
   private updateRates(coin: string) {
@@ -245,13 +244,14 @@ export class BitPayCardTopUpPage {
     invoiceFeeSat: number,
     networkFeeSat: number
   ) {
-    this.satToFiat(wallet.coin, amountSat).then((a: string) => {
+    const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+    this.satToFiat(chain, amountSat).then((a: string) => {
       this.amount = Number(a);
 
-      this.satToFiat(wallet.coin, invoiceFeeSat).then((i: string) => {
+      this.satToFiat(chain, invoiceFeeSat).then((i: string) => {
         this.invoiceFee = Number(i);
 
-        this.satToFiat(wallet.coin, networkFeeSat).then((n: string) => {
+        this.satToFiat(chain, networkFeeSat).then((n: string) => {
           this.networkFee = Number(n);
           this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
         });
@@ -591,7 +591,7 @@ export class BitPayCardTopUpPage {
 
             this.totalAmountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
-              ctxp.amount
+              ctxp.amount || parsedAmount.amountSat
             );
 
             if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
@@ -621,7 +621,7 @@ export class BitPayCardTopUpPage {
       });
   }
 
-  logLegacyCardAddToCardEvent() {
+  logLegacyCardAddToCartEvent() {
     this.bitPayCardProvider.logEvent('add_to_cart', {
       items: [
         {

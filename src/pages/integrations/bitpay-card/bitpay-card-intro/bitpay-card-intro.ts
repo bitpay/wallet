@@ -36,7 +36,6 @@ export class BitPayCardIntroPage {
   ) {}
 
   ionViewWillEnter() {
-    this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
@@ -98,6 +97,10 @@ export class BitPayCardIntroPage {
       }
       this.accounts = accounts;
     });
+  }
+
+  ionViewDidEnter() {
+    this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
   }
 
   ionViewWillLeave() {

@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -62,7 +57,6 @@ export class SelectCurrencyPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private events: Events,
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider
@@ -132,17 +126,6 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  public createWallets(coins: Coin[]): void {
-    if (this.showKeyOnboarding) {
-      this.showKeyOnboardingSlides(coins);
-      return;
-    } else if (this.isZeroState) {
-      this.showInfoSheet(coins);
-      return;
-    }
-    this._createWallets(coins);
-  }
-
   private _createWallets(coins: Coin[]): void {
     const selectedCoins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
     coins = coins || selectedCoins;
@@ -158,6 +141,17 @@ export class SelectCurrencyPage {
       .catch(e => {
         this.showError(e);
       });
+  }
+
+  public createWallets(coins: Coin[]): void {
+    if (this.showKeyOnboarding) {
+      this.showKeyOnboardingSlides(coins);
+      return;
+    } else if (this.isZeroState) {
+      this.showInfoSheet(coins);
+      return;
+    }
+    this._createWallets(coins);
   }
 
   private showError(err) {
@@ -177,22 +171,16 @@ export class SelectCurrencyPage {
 
   private endProcess() {
     this.onGoingProcessProvider.clear();
-    this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/WalletListChange');
-    });
+    this.navCtrl.popToRoot();
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {
     if (!_.isEmpty(pairedWallet)) {
-      const tokenWalletClient = this.profileProvider.createTokenWallet(
-        pairedWallet,
-        token
-      );
-      this.profileProvider
-        .addAndBindWalletClient(tokenWalletClient)
-        .then(() => {
-          this.endProcess();
-        });
+      this.profileProvider.createTokenWallet(pairedWallet, token).then(() => {
+        // store preferences for the paired eth wallet
+        this.walletProvider.updateRemotePreferences(pairedWallet);
+        this.endProcess();
+      });
     }
   }
 

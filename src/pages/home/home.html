@@ -191,12 +191,12 @@
             <img src="assets/img/app/logo-negative.svg" />
             <ion-note class="ellipsis" item-end>
               <div class="funds ellipsis">
-                {{
-                  card.balance
-                    ? card.currencySymbol + (card.balance | number: '1.2-2')
-                    : ('Add
-                  funds to get started' | translate)
-                }}
+                <span *ngIf="card.balance">
+                  {{ card.currencySymbol + (card.balance | number: '1.2-2') }}
+                </span>
+                <span *ngIf="!card.balance">
+                  {{ 'Add funds to get started' | translate }}
+                </span>
               </div>
               <div class="number ellipsis">
                 Card ({{ card.lastFourDigits }})
