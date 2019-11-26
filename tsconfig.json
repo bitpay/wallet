@@ -17,7 +17,7 @@
     "baseUrl": "./"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "src/ngsw-worker.ts"],
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false

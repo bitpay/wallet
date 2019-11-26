@@ -61,11 +61,6 @@ import { COMPONENTS } from '../components/components';
 import { LanguageLoader } from '../providers/language-loader/language-loader';
 import { ProvidersModule } from '../providers/providers.module';
 
-/* Enable Service Workers for Production */
-ServiceWorkerModule.register('../ngsw-worker.js', {
-  enabled: env.name === 'production'
-});
-
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
 }
@@ -134,7 +129,11 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
         useClass: LanguageLoader
       }
     }),
-    ZXingScannerModule.forRoot()
+    ZXingScannerModule.forRoot(),
+    /* Enable Service Workers for Production */
+    ServiceWorkerModule.register('../ngsw-worker.ts', {
+      enabled: env.name === 'production'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
