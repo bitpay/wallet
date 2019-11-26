@@ -44,7 +44,6 @@
     "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
-    "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve --nolivereload",
     "watch": "ng test --browsers=Chrome",
