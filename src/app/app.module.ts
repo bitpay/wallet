@@ -131,7 +131,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     }),
     ZXingScannerModule.forRoot(),
     /* Enable Service Workers for Production */
-    ServiceWorkerModule.register('../ngsw-worker.ts', {
+    ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: env.name === 'production'
     })
   ],

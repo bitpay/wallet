@@ -1,1 +1,1 @@
-web: build:desktop-release && npm start
+web: npm run ionic:build && node heroku.js
