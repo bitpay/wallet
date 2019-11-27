@@ -1,1 +1,1 @@
-web: npm run ionic:build && node heroku.js
+web: node heroku.js

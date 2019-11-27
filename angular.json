@@ -18,7 +18,9 @@
             "polyfills": "polyfills.ts",
             "assets": ["assets", "favicon.ico"],
             "styles": [],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "prod": {
