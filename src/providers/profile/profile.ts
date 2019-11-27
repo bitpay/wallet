@@ -1155,7 +1155,8 @@ export class ProfileProvider {
           }
           this.keyProvider.addKey(data.key).then(() => {
             this.addAndBindWalletClient(data.walletClient, {
-              bwsurl: opts.bwsurl
+              bwsurl: opts.bwsurl,
+              store: true
             })
               .then(walletClient => {
                 return this.checkIfAlreadyExist([].concat(walletClient)).then(
