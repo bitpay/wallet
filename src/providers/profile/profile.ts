@@ -753,12 +753,13 @@ export class ProfileProvider {
   // Adds and bind a new client to the profile
   private async addAndBindWalletClient(
     wallet,
-    opts: WalletBindTypeOpts = { bwsurl: null, store: true }
+    opts?: WalletBindTypeOpts
   ): Promise<any> {
     if (!wallet || !wallet.credentials) {
       return Promise.reject(this.translate.instant('Could not access wallet'));
     }
 
+    const { bwsurl, store = true } = opts;
     const walletId: string = wallet.credentials.walletId;
 
     if (!this.profile.addWallet(JSON.parse(wallet.toString()))) {
@@ -771,9 +772,9 @@ export class ProfileProvider {
       await this.runValidation(wallet);
     }
 
-    this.saveBwsUrl(walletId, opts.bwsurl);
+    this.saveBwsUrl(walletId, bwsurl);
     return this.bindWalletClient(wallet).then(() => {
-      if (!opts.store) {
+      if (!store) {
         this.logger.debug('No storing new walletClient');
         return Promise.resolve(wallet);
       } else {
