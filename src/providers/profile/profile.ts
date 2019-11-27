@@ -1589,7 +1589,8 @@ export class ProfileProvider {
           this.onGoingProcessProvider.resume();
           return this.keyProvider.addKey(data.key).then(() => {
             return this.addAndBindWalletClient(data.walletClient, {
-              bwsurl: opts.bwsurl
+              bwsurl: opts.bwsurl,
+              store: true
             }).then(walletClient => {
               return Promise.resolve(walletClient);
             });
