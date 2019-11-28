@@ -104,7 +104,7 @@ function createWindow() {
     setTimeout(function() {
       loading.hide();
       loading.close();
-    }, 500);
+    }, 1000);
   });
 }
 
