@@ -589,8 +589,7 @@ export class ProfileProvider {
     let id = wallet.id;
     if (n.data && n.data.tokenAddress) {
       id = wallet.id + '-' + n.data.tokenAddress.toLowerCase();
-      this.logger.debug( `event for token wallet: ${id}`);
-
+      this.logger.debug(`event for token wallet: ${id}`);
     }
     this.events.publish('bwsEvent', id, n.type, n);
   }
