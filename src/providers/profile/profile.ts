@@ -753,7 +753,7 @@ export class ProfileProvider {
   // Adds and bind a new client to the profile
   private async addAndBindWalletClient(
     wallet,
-    opts?: WalletBindTypeOpts
+    opts: WalletBindTypeOpts = {}
   ): Promise<any> {
     if (!wallet || !wallet.credentials) {
       return Promise.reject(this.translate.instant('Could not access wallet'));
