@@ -262,7 +262,7 @@ export class HomePage {
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
 
     const wallet = this.profileProvider.getWallet(walletId);
-    if (wallet.copayerId == n.creatorId) {
+    if (wallet || wallet.copayerId == n.creatorId) {
       return;
     }
 
