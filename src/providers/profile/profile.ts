@@ -586,7 +586,12 @@ export class ProfileProvider {
   }
 
   private newBwsEvent(n, wallet): void {
-    this.events.publish('bwsEvent', wallet.id, n.type, n);
+    let id = wallet.id;
+    if (n.data && n.data.tokenAddress) {
+      id = wallet.id + '-' + n.data.tokenAddress.toLowerCase();
+      this.logger.debug(`event for token wallet: ${id}`);
+    }
+    this.events.publish('bwsEvent', id, n.type, n);
   }
 
   public updateCredentials(credentials): void {

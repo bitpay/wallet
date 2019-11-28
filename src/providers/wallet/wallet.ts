@@ -347,8 +347,9 @@ export class WalletProvider {
             // This will update exchange rates
             cacheStatus(wallet.cachedStatus);
 
-            //
-            checkAndUpdateAdddress();
+            if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+              checkAndUpdateAdddress();
+            }
 
             processPendingTxps(wallet.cachedStatus);
             return resolve(wallet.cachedStatus);
