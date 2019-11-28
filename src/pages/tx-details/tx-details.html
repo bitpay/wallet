@@ -8,17 +8,20 @@
   <ion-list *ngIf="btx">
     <ion-item>
       <div class="header-container">
-        <div class="sending-label" *ngIf="btx.confirmations > 0">
+        <div class="sending-label" *ngIf="btx.confirmations > 0 && !(btx.amount === 0 && wallet.coin === 'eth')">
           <span *ngIf="btx.action === 'sent'" translate>Sent</span>
           <span *ngIf="btx.action === 'received'" translate>Received</span>
           <span *ngIf="btx.action === 'moved'" translate>Moved</span>
         </div>
-        <div class="sending-label" *ngIf="btx.confirmations === 0">
+        <div class="sending-label" *ngIf="btx.confirmations === 0 && !(btx.amount === 0 && wallet.coin === 'eth')">
           <span *ngIf="btx.action == 'sent'" translate>Sending</span>
           <span *ngIf="btx.action == 'moved'" translate>Moving</span>
           <span *ngIf="btx.action == 'received'" translate>Receiving</span>
         </div>
-        <div class="amount-label">
+        <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
+          <span>{{'Fee for token transfer' | translate}}</span>
+        </div>
+        <div class="amount-label" *ngIf="!(btx.amount === 0 && wallet.coin === 'eth')">
           <div class="amount">
             <div>
               {{btx.amountValueStr}}
