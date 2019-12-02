@@ -63,6 +63,7 @@ export class BitPayCardTopUpPage {
   private countDown;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
+  public isERCToken: boolean;
 
   private bitcoreCash;
   private createdTx;
@@ -245,18 +246,20 @@ export class BitPayCardTopUpPage {
     networkFeeSat: number
   ) {
     const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
-    this.satToFiat(chain, amountSat).then((a: string) => {
-      this.amount = Number(a);
+    this.satToFiat(this.isERCToken ? wallet.coin : chain, amountSat).then(
+      (a: string) => {
+        this.amount = Number(a);
 
-      this.satToFiat(chain, invoiceFeeSat).then((i: string) => {
-        this.invoiceFee = Number(i);
+        this.satToFiat(chain, invoiceFeeSat).then((i: string) => {
+          this.invoiceFee = Number(i);
 
-        this.satToFiat(chain, networkFeeSat).then((n: string) => {
-          this.networkFee = Number(n);
-          this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
+          this.satToFiat(chain, networkFeeSat).then((n: string) => {
+            this.networkFee = Number(n);
+            this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
+          });
         });
-      });
-    });
+      }
+    );
   }
 
   private isCryptoCurrencySupported(wallet, invoice) {
@@ -709,13 +712,15 @@ export class BitPayCardTopUpPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-
+    this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     if (this.countDown) {
       clearInterval(this.countDown);
     }
 
-    // Update Rates
-    this.updateRates(wallet.coin);
+    if (!this.isERCToken) {
+      // Update Rates
+      this.updateRates(wallet.coin);
+    }
 
     this.onGoingProcessProvider.set('retrievingInputs');
     this.calculateAmount(wallet)
