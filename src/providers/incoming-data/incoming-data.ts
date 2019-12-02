@@ -520,13 +520,14 @@ export class IncomingDataProvider {
   private goToSimplex(data: string): void {
     this.logger.debug('Incoming-data (redirect): Simplex URL');
 
-    let success = this.getParameterByName('success', data);
-    let paymentId = this.getParameterByName('paymentId', data);
-    let quoteId = this.getParameterByName('quoteId', data);
-    let userId = this.getParameterByName('userId', data);
+    const res = data.replace(new RegExp('&amp;', 'g'), '&');
+    const success = this.getParameterByName('success', res);
+    const paymentId = this.getParameterByName('paymentId', res);
+    const quoteId = this.getParameterByName('quoteId', res);
+    const userId = this.getParameterByName('userId', res);
 
-    let stateParams = { success, paymentId, quoteId, userId };
-    let nextView = {
+    const stateParams = { success, paymentId, quoteId, userId };
+    const nextView = {
       name: 'SimplexPage',
       params: stateParams
     };

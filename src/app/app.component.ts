@@ -43,6 +43,7 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -90,6 +91,7 @@ export class CopayApp {
     AddWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
+    SimplexPage,
     SelectInvoicePage,
     WalletDetailsPage
   };

@@ -42,10 +42,9 @@
         <ion-label>
           <div class="ellipsis">{{paymentRequest.fiat_total_amount }} {{ paymentRequest.fiat_total_amount_currency }}</div>
           <div class="status">
-            <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Failed</span>
-            <span class="balanced" *ngIf="paymentRequest.status == 'complete'" translate>Completed</span>
-            <span class="royal" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Pending</span>
-            <span class="calm" *ngIf="paymentRequest.status == 'no_deposits'" translate>Pending</span>
+            <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
+            <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
+            <span class="royal" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Attempted payment request</span>
           </div>
         </ion-label>
         <div item-content text-end>

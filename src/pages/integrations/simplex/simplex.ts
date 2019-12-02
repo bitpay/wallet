@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 
 // Pages
 import { SimplexBuyPage } from './simplex-buy/simplex-buy';
@@ -35,20 +36,32 @@ export class SimplexPage {
 
   private init() {
     this.loading = true;
-    if (this.navParams.data) {
-      console.log('navParams data: ', this.navParams.data);
-    }
     this.simplexProvider
       .getSimplex()
       .then(simplexData => {
         if (simplexData) {
+          if (
+            !_.isEmpty(this.navParams.data) &&
+            this.navParams.data.paymentId &&
+            simplexData[this.navParams.data.paymentId]
+          ) {
+            console.log('navParams data: ', this.navParams.data);
+            simplexData[this.navParams.data.paymentId].status =
+              this.navParams.data.success === 'true' ? 'success' : 'failed';
+            this.simplexProvider
+              .saveSimplex(simplexData[this.navParams.data.paymentId], null)
+              .catch(() => {
+                this.logger.warn('Could not update payment request status');
+              });
+          }
+
           this.paymentRequests = Object.values(simplexData);
+          this.paymentRequests.forEach(paymentRequest => {
+            paymentRequest.crypto_amount = paymentRequest.crypto_amount.toFixed(
+              6
+            );
+          });
         }
-        this.paymentRequests.forEach(paymentRequest => {
-          paymentRequest.crypto_amount = paymentRequest.crypto_amount.toFixed(
-            6
-          );
-        });
         console.log('this.paymentRequests: ', this.paymentRequests);
         this.loading = false;
       })

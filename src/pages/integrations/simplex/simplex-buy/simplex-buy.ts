@@ -406,7 +406,7 @@ export class SimplexBuyPage {
                   this.logger.debug(
                     'Saved Simplex with status: ' + newData.status
                   );
-                  this.navCtrl.pop();
+                  this.navCtrl.popToRoot();
                 })
                 .catch(err => {
                   this.showError(err);

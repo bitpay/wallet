@@ -37,16 +37,6 @@
     </ion-item>
 
     <ion-item>
-      {{'Status' | translate}}
-      <ion-note item-end>
-        <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Failed</span>
-        <span class="balanced" *ngIf="paymentRequest.status == 'complete'" translate>Completed</span>
-        <span class="dark" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Pending</span>
-        <span class="text-gray" *ngIf="paymentRequest.status == 'no_deposits'" translate>Pending</span>
-      </ion-note>
-    </ion-item>
-
-    <ion-item>
       {{'Created' | translate}}
       <ion-note item-end>
         <span *ngIf="!paymentRequest.created_on">...</span>
@@ -55,6 +45,21 @@
         </span>
       </ion-note>
     </ion-item>
+
+    <ion-item>
+      {{'Status' | translate}}
+      <ion-note item-end>
+        <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
+        <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
+        <span class="dark" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Attempted payment request</span>
+      </ion-note>
+    </ion-item>
+
+    <label-tip type="info" header="no-header" *ngIf="paymentRequest.status == 'paymentRequestSent'">
+      <div label-tip-body>
+        <div translate>Receiving crypto can take up to 24 hours. If the payment has impacted your card and you did not receive the funds, contact Simplex support.</div>
+      </div>
+    </label-tip>
 
     <ion-item>
       {{'Deposit address' | translate}}
