@@ -42,6 +42,8 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 
 // Integrations: Simplex
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
+import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
+import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
 import { SimplexSettingsPage } from '../pages/integrations/simplex/simplex-settings/simplex-settings';
 
 // Integrations: BitPayCard
@@ -191,6 +193,8 @@ export const PAGES = [
   ShapeshiftPage,
   ShapeshiftShiftPage,
   SimplexPage,
+  SimplexBuyPage,
+  SimplexDetailsPage,
   SimplexSettingsPage,
   NotificationsPage,
   FeePolicyPage,

@@ -159,6 +159,13 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidSimplexUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://simplex') === 0
+    );
+  }
+
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
@@ -510,6 +517,22 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
+  private goToSimplex(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Simplex URL');
+
+    let success = this.getParameterByName('success', data);
+    let paymentId = this.getParameterByName('paymentId', data);
+    let quoteId = this.getParameterByName('quoteId', data);
+    let userId = this.getParameterByName('userId', data);
+
+    let stateParams = { success, paymentId, quoteId, userId };
+    let nextView = {
+      name: 'SimplexPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
@@ -569,6 +592,11 @@ export class IncomingDataProvider {
       // ShapeShift
     } else if (this.isValidShapeshiftUri(data)) {
       this.goToShapeshift(data);
+      return true;
+
+      // Simplex
+    } else if (this.isValidSimplexUri(data)) {
+      this.goToSimplex(data);
       return true;
 
       // BitPayCard Authentication

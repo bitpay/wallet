@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Simplex'|translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="wrapper">
+    <div class="container">
+
+      <div padding>
+        <div class="wallet" *ngIf="!wallet" (click)="showWallets()">
+          <ion-icon item-start>
+            <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
+          </ion-icon>
+          <div translate>Select a wallet</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+        <ion-list *ngIf="wallet">
+          <div>
+            <div class="title">
+              <span translate>Deposit to</span>
+            </div>
+            <button ion-item detail-none (click)="showWallets()">
+              <wallet-item-content [wallet]="wallet"></wallet-item-content>
+            </button>
+          </div>
+        </ion-list>
+
+        <form [formGroup]="quoteForm" *ngIf="wallet">
+          <ion-label>{{'Amount' | translate}}</ion-label>
+          <ion-item>
+            <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
+            <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+              <ion-option *ngFor="let fiatAltCurrency of supportedFiatAltCurrencies" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+              <!-- <ion-option [value]="USD">USD</ion-option>
+              <ion-option [value]="EUR">EUR</ion-option> -->
+              <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
+            </ion-select>
+          </ion-item>
+          <label-tip type="warn" header="no-header" *ngIf="!quoteForm.controls.amount.valid">
+            <div label-tip-body>
+              <div translate>The {{ quoteForm.value.altCurrency }} amount must be between {{ minFiatAmount }} and {{ maxFiatAmount }}</div>
+            </div>
+          </label-tip>
+        </form>
+      </div>
+
+      <ion-spinner *ngIf="showLoading" icon="crescent"></ion-spinner>
+      <ion-list *ngIf="wallet && cryptoAmount && quoteForm.valid && !showLoading">
+        <ion-item *ngIf="currencyIsFiat()">
+          {{'Approximate amount' | translate}}
+          <ion-note item-end>
+            <span *ngIf="!wallet.coin">...</span>
+            <span *ngIf="wallet.coin">
+              {{ cryptoAmount }} {{ wallet.coin | uppercase }}
+            </span>
+          </ion-note>
+        </ion-item>
+        <div *ngIf="!currencyIsFiat()">
+          <ion-item *ngIf="fiatBaseAmount">
+            {{'Base amount' | translate}}
+            <ion-note item-end>
+              <span>
+                {{ fiatBaseAmount }} {{ fiatCurrency }}
+              </span>
+            </ion-note>
+          </ion-item>
+
+          <ion-item *ngIf="fiatTotalAmount">
+            {{'Total amount' | translate}}
+            <ion-note item-end>
+              <span>
+                {{ fiatTotalAmount }} {{ fiatCurrency }}
+              </span>
+            </ion-note>
+          </ion-item>
+        </div>
+
+        <label-tip type="warn" header="no-header">
+          <div label-tip-body>
+            <div translate>The final amount is based on the exchange rate when the transaction is complete</div>
+          </div>
+        </label-tip>
+      </ion-list>
+
+      <form [formGroup]="formSubmission" id="formSubmission" method="post" target="_blank">
+        <input type="hidden" name="version" formControlName="version">
+        <input type="hidden" name="partner" formControlName="partner">
+        <input type="hidden" name="payment_flow_type" formControlName="payment_flow_type">
+        <input type="hidden" name="return_url_success" formControlName="return_url_success">
+        <input type="hidden" name="return_url_fail" formControlName="return_url_fail">
+        <input type="hidden" name="quote_id" formControlName="quote_id">
+        <input type="hidden" name="payment_id" formControlName="payment_id">
+        <input type="hidden" name="user_id" formControlName="user_id">
+        <input type="hidden" name="destination_wallet[address]" formControlName="destination_wallet[address]">
+        <input type="hidden" name="destination_wallet[currency]" formControlName="destination_wallet[currency]">
+        <input type="hidden" name="fiat_total_amount[amount]" formControlName="fiat_total_amount[amount]">
+        <input type="hidden" name="fiat_total_amount[currency]" formControlName="fiat_total_amount[currency]">
+        <input type="hidden" name="digital_total_amount[amount]" formControlName="digital_total_amount[amount]">
+        <input type="hidden" name="digital_total_amount[currency]" formControlName="digital_total_amount[currency]">
+      </form>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" type="button" [disabled]="!wallet || !quoteForm.valid || !cryptoAmount || showLoading" (click)="openPopUpConfirmation()">
+      {{'Continue to Simplex' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

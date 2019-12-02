@@ -1,18 +1,4 @@
-page-simplex {
-  ion-title .toolbar-title {
-    color: white;
-    img {
-      padding-top: 5px;
-    }
-  }
-  .wide-header__title.toolbar {
-    padding-bottom: 10px;
-    padding-top: 15px;
-  }
-  .wide-header__title {
-    color: white;
-    padding-left: 0;
-  }
+page-simplex-buy {
   .center-header {
     margin-top: 10%;
     padding: 0 20px;
@@ -23,14 +9,6 @@ page-simplex {
     }
     .bottom-position {
       margin-bottom: 20px;
-    }
-  }
-  .buy-crypto-button {
-    font-size: 16px;
-    background: none;
-    ion-icon {
-      vertical-align: text-bottom;
-      margin-left: 3px;
     }
   }
   .status,
