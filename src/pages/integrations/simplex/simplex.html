@@ -48,7 +48,7 @@
           </div>
         </ion-label>
         <div item-content text-end>
-          <div class="text-bold">{{ paymentRequest.crypto_amount }} {{ paymentRequest.coin }}</div>
+          <div class="text-bold">{{ paymentRequest.crypto_amount | number:'1.0-6'}} {{ paymentRequest.coin }}</div>
           <div class="date calm">{{paymentRequest.created_on | amTimeAgo}}</div>
         </div>
       </button>

@@ -3,12 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // Proviers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { Logger } from '../../../../providers/logger/logger';
+import { PersistenceProvider } from '../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -39,6 +41,7 @@ export class SimplexBuyPage {
   public supportedFiatAltCurrencies: string[];
 
   private quoteId: string;
+  private createdOn: string;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -47,6 +50,7 @@ export class SimplexBuyPage {
     private fb: FormBuilder,
     private logger: Logger,
     private navCtrl: NavController,
+    private persistenceProvider: PersistenceProvider,
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
@@ -91,6 +95,13 @@ export class SimplexBuyPage {
       'fiat_total_amount[currency]': [null],
       'digital_total_amount[amount]': [null],
       'digital_total_amount[currency]': [null]
+    });
+
+    this.persistenceProvider.getProfile().then(profile => {
+      this.createdOn =
+        profile && profile.createdOn
+          ? moment(profile.createdOn).format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+          : moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     });
   }
 
@@ -259,9 +270,11 @@ export class SimplexBuyPage {
       const data = {
         account_details: {
           app_version_id: this.appProvider.info.version,
+          app_install_date: this.createdOn,
           app_end_user_id: this.wallet.id, // TODO: BitPay id / wallet id??
           signup_login: {
-            user_agent: userAgent // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
+            user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
+            timestamp: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
           }
         },
         transaction_details: {

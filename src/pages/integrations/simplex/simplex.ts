@@ -24,7 +24,7 @@ export class SimplexPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private simplexProvider: SimplexProvider
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SimplexPage');
@@ -55,12 +55,9 @@ export class SimplexPage {
               });
           }
 
-          this.paymentRequests = Object.values(simplexData);
-          this.paymentRequests.forEach(paymentRequest => {
-            paymentRequest.crypto_amount = paymentRequest.crypto_amount.toFixed(
-              6
-            );
-          });
+          const paymentRequests: any = {};
+          Object.assign(paymentRequests, simplexData);
+          this.paymentRequests = Object.values(paymentRequests);
         }
         console.log('this.paymentRequests: ', this.paymentRequests);
         this.loading = false;
