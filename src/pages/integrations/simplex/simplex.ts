@@ -24,7 +24,7 @@ export class SimplexPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private simplexProvider: SimplexProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SimplexPage');

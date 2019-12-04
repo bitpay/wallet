@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 
 // Providers
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { SimplexProvider } from '../../../../providers/simplex/simplex';
 
@@ -15,6 +16,7 @@ export class SimplexDetailsPage {
   public paymentRequest;
 
   constructor(
+    private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
@@ -49,6 +51,10 @@ export class SimplexDetailsPage {
             });
         }
       });
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 
   public close() {

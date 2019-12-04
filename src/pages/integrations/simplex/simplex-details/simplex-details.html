@@ -55,9 +55,15 @@
       </ion-note>
     </ion-item>
 
-    <label-tip type="info" header="no-header" *ngIf="paymentRequest.status == 'paymentRequestSent'">
+    <label-tip type="info" header="no-header" *ngIf="paymentRequest.status == 'paymentRequestSent' || paymentRequest.status == 'success'">
       <div label-tip-body>
-        <div translate>Receiving crypto can take up to 1 hour. If the payment has impacted your card and you did not receive the funds, contact Simplex support.</div>
+        <span translate>Receiving crypto can take up to 1 hour.</span>
+        <br>
+        <span translate>Having problems with Simplex?</span>
+        <br>
+        <a (click)="openExternalLink('https://www.simplex.com/support/')" translate>
+          Contact the Simplex support team.
+        </a>
       </div>
     </label-tip>
 
