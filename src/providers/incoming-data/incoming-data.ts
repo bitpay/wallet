@@ -210,10 +210,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
       const disableLoader = true;
-      const details = await this.payproProvider.getPayProOptions(
-        invoiceUrl,
-        disableLoader
-      );
+      const details = await this.payproProvider.getPayProOptions(invoiceUrl);
       const selected = details.paymentOptions.filter(option => option.selected);
       if (selected.length === 1) {
         // BTC, BCH, ETH Chains

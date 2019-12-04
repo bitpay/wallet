@@ -276,10 +276,7 @@ describe('Provider: Incoming Data Provider', () => {
         getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
         expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
-        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
-          element.payProUrl,
-          true
-        );
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(element.payProUrl);
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
         );
@@ -389,10 +386,7 @@ describe('Provider: Incoming Data Provider', () => {
         getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
         expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
-        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
-          element.payProUrl,
-          true
-        );
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(element.payProUrl);
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
         );
