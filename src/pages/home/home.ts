@@ -262,9 +262,8 @@ export class HomePage {
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
 
     const wallet = this.profileProvider.getWallet(walletId);
-    if (wallet.copayerId == n.creatorId) {
-      return;
-    }
+    if (!wallet) return;
+    if (wallet.copayerId == n.creatorId) return;
 
     this.logger.info(`BWS Event: ${type}: `, n);
 

@@ -24,6 +24,7 @@ export class FormatCurrencyPipe implements PipeTransform {
     );
     const symbolMap = {
       BRL: 'R$',
+      CAD: 'C$',
       EUR: '€',
       GBP: '£',
       INR: '₹',
