@@ -1,4 +1,4 @@
-Manage your bitcoin finances in one app with the secure, open source BitPay Wallet. Get up and running fast with bitcoin security, store and send funds, buy gift cards from over 90 major brands , and turn bitcoin into dollars with the BitPay Visa Card.
+Manage your finances in one app with the secure, open source BitPay Wallet. Get up and running fast with bitcoin security, store and send funds, buy gift cards from over 90 major brands , and turn bitcoin into dollars with the BitPay Visa Card.
 
 With the BitPay Wallet, your private keys and your money remain in your control at all times. And you're using code that's 100% open source for community testing and audits.
 
@@ -6,6 +6,7 @@ We built the following features into this version of the BitPay app for a bitcoi
 
 Real time gift card purchasing from major brands including Amazon.com
 Support Bitcoin, Bitcoin Cash and Ethereum
+Support for ERC-20 stablecoin tokens, including USD Coin (USDC), Paxos Standard (PAX) and Gemini Dollar (GUSD)
 Multiple bitcoin wallet creation and management in-app
 Integration for loading, managing, and spending the BitPay Visa Card.
 Integration for buying and selling bitcoin.
