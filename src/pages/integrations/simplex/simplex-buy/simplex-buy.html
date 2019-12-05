@@ -88,6 +88,12 @@
           </div>
         </label-tip>
       </ion-list>
+      <div class="terms">
+        <span translate>This service is provided by a third party, and you are subject to their: </span>
+        <a (click)="openExternalLink('https://www.simplex.com/terms-of-use/')" translate>
+          Terms of use
+        </a>
+      </div>
 
       <form [formGroup]="formSubmission" id="formSubmission" method="post" target="_blank">
         <input type="hidden" name="version" formControlName="version">

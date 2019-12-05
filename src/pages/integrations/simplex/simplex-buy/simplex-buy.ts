@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { Logger } from '../../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -47,6 +48,7 @@ export class SimplexBuyPage {
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
+    private externalLinkProvider: ExternalLinkProvider,
     private fb: FormBuilder,
     private logger: Logger,
     private navCtrl: NavController,
@@ -435,6 +437,10 @@ export class SimplexBuyPage {
       .catch(err => {
         return this.showError(err);
       });
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 
   private showError(err?) {

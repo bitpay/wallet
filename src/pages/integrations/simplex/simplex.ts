@@ -7,6 +7,7 @@ import { SimplexBuyPage } from './simplex-buy/simplex-buy';
 import { SimplexDetailsPage } from './simplex-details/simplex-details';
 
 // Proviers
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { SimplexProvider } from '../../../providers/simplex/simplex';
 
@@ -20,6 +21,7 @@ export class SimplexPage {
 
   constructor(
     private logger: Logger,
+    private externalLinkProvider: ExternalLinkProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -83,6 +85,10 @@ export class SimplexPage {
     modal.onDidDismiss(() => {
       this.init();
     });
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 
   // public getEvents(): void {

@@ -52,4 +52,11 @@ page-simplex-buy {
       padding-left: 1rem;
     }
   }
+  .terms {
+    padding: 0 3rem 0 3rem;
+    color: color($colors, light-grey);
+    a {
+      cursor: pointer;
+    }
+  }
 }
