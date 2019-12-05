@@ -16,7 +16,7 @@
       <ion-label>Hide Wallet</ion-label>
       <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
     </ion-item>
-    <label-tip class="info" type="info" header="no-header">
+    <label-tip class="info" type="info" header="no-header" *ngIf="!wallet?.hidden">
       <div label-tip-body translate>
         The wallet won't be removed from this device. You can hide it whenever you need it.
       </div>
