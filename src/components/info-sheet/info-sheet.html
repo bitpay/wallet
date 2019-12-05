@@ -154,7 +154,7 @@
 
       <span sheet-button-text translate *ngIf="params.wallets.length==1"  (click)="optionClicked(params.wallets[0])" style="float: right;" item-end>OK</span>
 
-      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">GO BACK</span>
+      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">Go Back</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
