@@ -136,8 +136,7 @@
       <span *ngIf="params.wallets && params.wallets.length > 1" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
 
       <span *ngIf="!params.wallets[0]" sheet-text translate>
-        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
-        Only one {{ params.token.name }} wallet is allowed per ETH wallet.
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
 
       <span sheet-text>

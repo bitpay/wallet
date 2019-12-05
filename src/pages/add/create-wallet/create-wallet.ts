@@ -68,7 +68,6 @@ export class CreateWalletPage implements OnInit {
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
-  public createLabel: string;
 
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -124,9 +123,6 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel = this.translate.instant(
-      `${this.coin.toUpperCase()} Wallet`
-    );
     this.showKeyOnboarding = this.navParams.data.showKeyOnboarding;
 
     this.setTotalCopayers(this.tc);

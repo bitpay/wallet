@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ createLabel }}</ion-title>
+    <ion-title>{{ '{coinLabel} wallet' | translate: {coinLabel: coin.toUpperCase()} }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
         <span translate>Create</span>
