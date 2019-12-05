@@ -266,7 +266,7 @@ export class CopayApp {
         this.handleDeepLinks();
       }
 
-      if (this.isElectronPlatform()) {
+      if (this.platformProvider.isElectron) {
         this.handleDeepLinksElectron();
       }
     } else {
@@ -459,18 +459,6 @@ export class CopayApp {
     } else {
       this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
-    }
-  }
-
-  private isElectronPlatform(): boolean {
-    const userAgent =
-      navigator && navigator.userAgent
-        ? navigator.userAgent.toLowerCase()
-        : null;
-    if (userAgent && userAgent.indexOf(' electron/') > -1) {
-      return true;
-    } else {
-      return false;
     }
   }
 
