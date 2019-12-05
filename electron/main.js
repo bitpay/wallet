@@ -11,12 +11,37 @@ console.log('Desktop: ' + appConfig.nameCase + ' v' + appConfig.version);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let win, loading;
 
 // Deep linked url
 let deeplinkingUrl;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
+
+function showLoading(callback) {
+  loading = new BrowserWindow({
+    show: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    width: 500,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  loading.once('show', callback);
+  loading.loadURL(
+    url.format({
+      pathname: path.join(__dirname, './loading.html'),
+      protocol: 'file:',
+      slashes: true
+    })
+  );
+
+  loading.show();
+}
 
 function createWindow() {
   // Create the browser window.
@@ -32,6 +57,11 @@ function createWindow() {
     }
   });
 
+  // Open the DevTools.
+  if (isDevMode) {
+    win.webContents.openDevTools();
+  }
+
   // and load the index.html of the app.
   win.loadURL(
     url.format({
@@ -41,10 +71,6 @@ function createWindow() {
     })
   );
 
-  // Open the DevTools.
-  if (isDevMode) {
-    win.webContents.openDevTools();
-  }
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -71,8 +97,14 @@ function createWindow() {
     }
   });
 
-  win.once('ready-to-show', () => {
+  win.webContents.once('dom-ready', () => {
+    win.setMenu(null);
     win.show();
+
+    setTimeout(function() {
+      loading.hide();
+      loading.close();
+    }, 1000);
   });
 }
 
@@ -176,7 +208,7 @@ if (process.platform !== 'darwin') {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow();
+  showLoading(createWindow);
   createMenu();
 });
 
