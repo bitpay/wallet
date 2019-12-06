@@ -443,11 +443,12 @@ export class ProfileProvider {
         wallet.credentials.rootPath
       ).coinCode;
 
+      const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
         wallet.n == 1 &&
         wallet.credentials.addressType == 'P2PKH' &&
         derivationStrategy == 'BIP44' &&
-        (wallet.coin == 'btc' || (wallet.coin == 'bch' && coinCode == "145'"))
+        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
       ) {
         return true;
       }
@@ -455,7 +456,7 @@ export class ProfileProvider {
         wallet.n > 1 &&
         wallet.credentials.addressType == 'P2SH' &&
         derivationStrategy == 'BIP48' &&
-        (wallet.coin == 'btc' || (wallet.coin == 'bch' && coinCode == "145'"))
+        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
       ) {
         return true;
       }
@@ -463,7 +464,7 @@ export class ProfileProvider {
         wallet.n == 1 &&
         wallet.credentials.addressType == 'P2PKH' &&
         derivationStrategy == 'BIP44' &&
-        (wallet.coin == 'eth' && coinCode == "60'")
+        (chain == 'eth' && coinCode == "60'")
       ) {
         return true;
       }
@@ -695,18 +696,17 @@ export class ProfileProvider {
   private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
-    return this.askToEncryptKey(data.key).then(async () => {
+    return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
-      const boundWalletClients = [];
-      for (const walletClient of data.walletClients) {
-        const boundClient = await this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl,
-          store: false
-        });
-        boundWalletClients.push(boundClient);
-      }
-
-      return this.keyProvider.addKey(data.key).then(() => {
+      return this.keyProvider.addKey(data.key).then(async () => {
+        const boundWalletClients = [];
+        for (const walletClient of data.walletClients) {
+          const boundClient = await this.addAndBindWalletClient(walletClient, {
+            bwsurl: opts.bwsurl,
+            store: false
+          });
+          boundWalletClients.push(boundClient);
+        }
         return this.storeProfileIfDirty()
           .then(() => {
             this.events.publish('Local/WalletListChange');
