@@ -33,7 +33,7 @@ export class BwcErrorProvider {
         break;
       case 'INVOICE_EXPIRED':
         body = this.translate.instant(
-          'This invoice is not longer accepting payments'
+          'This invoice is no longer accepting payments'
         );
         break;
       case 'UNABLE_TO_PARSE_PAYMENT':
