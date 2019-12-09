@@ -26,7 +26,13 @@
     <access origin="https://sandbox.test-simplexcc.com" />
 >>>>>>> form ref and navigation permissions
     <allow-navigation href="gap://ready" />
-    <allow-navigation href="https://*/*" />
+    <allow-navigation href="bitpay://*" />
+    <allow-navigation href="https://*.test-simplexcc.com/*" />
+    <allow-navigation href="https://*.simplexcc.com/*" />
+    <allow-navigation href="https://*.amazonaws.com/*" />
+    <allow-navigation href="https://*.googleapis.com/*" />
+    <allow-navigation href="https://*.gstatic.com/*" />
+    <allow-navigation href="https://*.newrelic.com/*" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>

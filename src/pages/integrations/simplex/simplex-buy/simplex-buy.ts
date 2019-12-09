@@ -43,6 +43,7 @@ export class SimplexBuyPage {
 
   private quoteId: string;
   private createdOn: string;
+  private isCordova: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -74,6 +75,7 @@ export class SimplexBuyPage {
     this.showLoading = false;
     this.minFiatAmount = 50;
     this.maxFiatAmount = 20000;
+    this.isCordova = this.platformProvider.isCordova;
 
     this.quoteForm = this.fb.group({
       amount: [
@@ -284,7 +286,7 @@ export class SimplexBuyPage {
     return this.simplexProvider.paymentRequest(this.wallet, data);
   }
 
-  public simplexPaymentFormSubmission(data) {
+  private simplexPaymentFormSubmissionCordova(data) {
     const fiat_total_amount_currency = this.currencyIsFiat()
       ? this.quoteForm.value.altCurrency
       : 'USD';
@@ -292,7 +294,7 @@ export class SimplexBuyPage {
       ? this.quoteForm.value.altCurrency
       : 'USD';
 
-    var pageContent =
+    let pageContent =
       '<html><head></head><body><form id="theForm" action=' +
       data.api_host +
       '/payments/new' +
@@ -307,7 +309,7 @@ export class SimplexBuyPage {
       'wallet' +
       '">' +
       '<input type="hidden" name="return_url_success" value="' +
-      'copay://simplex?success=true&paymentId=' +
+      'bitpay://simplex?success=true&paymentId=' +
       data.payment_id +
       '&quoteId=' +
       this.quoteId +
@@ -315,7 +317,7 @@ export class SimplexBuyPage {
       this.wallet.id +
       '">' +
       '<input type="hidden" name="return_url_fail" value="' +
-      'copay://simplex?success=false&paymentId=' +
+      'bitpay://simplex?success=false&paymentId=' +
       data.payment_id +
       '&quoteId=' +
       this.quoteId +
@@ -351,21 +353,84 @@ export class SimplexBuyPage {
       '">' +
       '</form><script type="text/javascript">setTimeout(() => {document.getElementById("theForm").submit();}, 200);</script></body></html>';
 
-    console.log(pageContent);
+    let pageContentUrl = 'data:text/html;base64,' + btoa(pageContent);
 
-    var pageContentUrl = 'data:text/html;base64,' + btoa(pageContent);
+    this.logger.info('Trying to open through the browser window');
 
-    console.log(pageContentUrl);
-    this.logger.info(
-      '%%%%%%%%%%%%%%%%%%%%%%% Trying to open through TheWindow!'
+    const browser = this.inAppBrowser.create(
+      pageContentUrl,
+      '_blank',
+      'location=yes,scrollbars=yes'
     );
 
-    const browser = this.inAppBrowser.create(pageContentUrl, '_system');
-
     browser.on('loadstop').subscribe(event => {
-      this.logger.info('************ loadstop event: ', event);
-      // browser.insertCSS({ code: "body{color: red;" });
+      if (
+        event.url &&
+        (event.url.indexOf('bitpay://simplex?success=true') > -1 ||
+          event.url.indexOf('bitpay://simplex?success=false') > -1)
+      ) {
+        this.logger.info('web view loadstop event url: ', event.url);
+        browser.close();
+      } else {
+        this.logger.info('web view loadstop event: ', event);
+      }
     });
+  }
+
+  private simplexPaymentFormSubmission(data) {
+    let form = document.createElement('form');
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', data.api_host + '/payments/new');
+    form.setAttribute('target', '_blank');
+
+    let params = {
+      version: '1',
+      partner: data.app_provider_id,
+      payment_flow_type: 'wallet',
+      return_url_success:
+        'bitpay://simplex?success=true&paymentId=' +
+        data.payment_id +
+        '&quoteId=' +
+        this.quoteId +
+        '&userId=' +
+        this.wallet.id,
+      return_url_fail:
+        'bitpay://simplex?success=false&paymentId=' +
+        data.payment_id +
+        '&quoteId=' +
+        this.quoteId +
+        '&userId=' +
+        this.wallet.id,
+      quote_id: this.quoteId,
+      payment_id: data.payment_id,
+      user_id: this.wallet.id,
+      'destination_wallet[address]': data.address,
+      'destination_wallet[currency]': this.currencyProvider.getChain(
+        this.wallet.coin
+      ),
+      'fiat_total_amount[amount]': this.fiatTotalAmount,
+      'fiat_total_amount[currency]': this.currencyIsFiat()
+        ? this.quoteForm.value.altCurrency
+        : 'USD',
+      'digital_total_amount[amount]': this.cryptoAmount,
+      'digital_total_amount[currency]': this.currencyProvider.getChain(
+        this.wallet.coin
+      )
+    };
+
+    for (let i in params) {
+      if (params.hasOwnProperty(i)) {
+        let input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', i);
+        input.setAttribute('value', params[i]);
+        form.appendChild(input);
+      }
+    }
+
+    document.body.appendChild(form);
+    this.logger.info('Action url: ', data.api_host + '/payments/new');
+    form.submit();
   }
 
   public openPopUpConfirmation(): void {
@@ -401,7 +466,11 @@ export class SimplexBuyPage {
               payment_id: req.payment_id
             };
             try {
-              this.simplexPaymentFormSubmission(data);
+              if (this.isCordova) {
+                this.simplexPaymentFormSubmissionCordova(data);
+              } else {
+                this.simplexPaymentFormSubmission(data);
+              }
 
               let newData = {
                 address,
@@ -423,7 +492,9 @@ export class SimplexBuyPage {
                   this.logger.debug(
                     'Saved Simplex with status: ' + newData.status
                   );
-                  this.navCtrl.popToRoot();
+                  setTimeout(() => {
+                    this.navCtrl.popToRoot();
+                  }, 3500);
                 })
                 .catch(err => {
                   this.showError(err);
