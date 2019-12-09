@@ -64,10 +64,10 @@ export class CreateWalletPage implements OnInit {
   public seedOptions;
   public isShared: boolean;
   public coin: Coin;
+  public coinName: string;
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
-  public createLabel: string;
 
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -94,6 +94,7 @@ export class CreateWalletPage implements OnInit {
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
+    this.coinName = this.currencyProvider.getCoinName(this.coin);
     this.keyId = this.navParams.get('keyId');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
@@ -122,9 +123,6 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel = this.translate.instant(
-      `${this.coin.toUpperCase()} Wallet`
-    );
     this.showKeyOnboarding = this.navParams.data.showKeyOnboarding;
 
     this.setTotalCopayers(this.tc);

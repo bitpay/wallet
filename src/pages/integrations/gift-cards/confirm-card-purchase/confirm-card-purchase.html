@@ -84,7 +84,7 @@
         <ion-item>
           <span>{{'Total' | translate}}</span>
           <ion-note item-end>
-            <span *ngIf="totalAmountStr">{{totalAmountStr}} ~ </span>
+            <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
             <span *ngIf="totalAmount">
               <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span>
               <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span>

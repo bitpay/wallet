@@ -79,6 +79,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public amountUnitStr: string;
   public network: string;
   public onlyIntegers: boolean;
+  public isERCToken: boolean;
 
   public cardConfig: CardConfig;
   public hideSlideButton: boolean;
@@ -640,6 +641,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
+    this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     this.initialize(wallet).catch(() => {});
   }
 

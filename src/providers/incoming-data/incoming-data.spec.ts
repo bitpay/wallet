@@ -4,6 +4,7 @@ import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -12,6 +13,7 @@ import { IncomingDataProvider } from './incoming-data';
 describe('Provider: Incoming Data Provider', () => {
   let incomingDataProvider: IncomingDataProvider;
   let bwcProvider: BwcProvider;
+  let currencyProvider: CurrencyProvider;
   let logger: Logger;
   let events: Events;
   let loggerSpy;
@@ -45,6 +47,7 @@ describe('Provider: Incoming Data Provider', () => {
     incomingDataProvider = testBed.get(IncomingDataProvider);
     bwcProvider = testBed.get(BwcProvider);
     payproProvider = testBed.get(PayproProvider);
+    currencyProvider = testBed.get(CurrencyProvider);
     logger = testBed.get(Logger);
     events = testBed.get(Events);
     loggerSpy = spyOn(logger, 'debug');
@@ -273,10 +276,7 @@ describe('Provider: Incoming Data Provider', () => {
         getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
         expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
-        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
-          element.payProUrl,
-          true
-        );
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(element.payProUrl);
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
         );
@@ -386,10 +386,7 @@ describe('Provider: Incoming Data Provider', () => {
         getPayProOptionsSpy.and.returnValue(Promise.resolve(element));
 
         expect(incomingDataProvider.redir(element.payProUrl)).toBe(true);
-        expect(getPayProOptionsSpy).toHaveBeenCalledWith(
-          element.payProUrl,
-          true
-        );
+        expect(getPayProOptionsSpy).toHaveBeenCalledWith(element.payProUrl);
         expect(loggerSpy).toHaveBeenCalledWith(
           'Incoming-data: Handling bitpay invoice'
         );
@@ -693,6 +690,79 @@ describe('Provider: Incoming Data Provider', () => {
       tick();
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     }));
+    it('Should handle any type of address/coin using BitPay URI', fakeAsync(() => {
+      const extractAddress = (data: string) => {
+        const address = data.replace(/^[a-z]+:/i, '').replace(/\?.*/, '');
+        const params = /([\?\&]+[a-z]+=(\d+([\,\.]\d+)?))+/i;
+        return address.replace(params, '');
+      };
+
+      const data = [
+        'bitpay:mrNYDWy8ZgmgXVKDb4MM71LmfZWBwGztUK?coin=btc&amount=0.0002&message=asd',
+        'bitpay:1HZJoc4ZKMvyAYcYCU1vbmwm3KzZq34EmU?coin=btc&amount=0.0002&message=asd',
+        'bitpay:0xDF5C0dd7656bB976aD7285a3Fb80C0F6B9604576?coin=eth&amount=0.0002&message=asd',
+        'bitpay:bchtest:qp2gujqu2dsp6zs4kp0pevm2yl8ydx723q2kvfn7tc?coin=bch&amount=0.0002&message=asd',
+        'bitpay:bitcoincash:qpcc9qe5ja73k7ekkqrnjfp9tya0r3d5tvpm2yfa0d?coin=bch&amount=0.0002&message=asd'
+      ];
+      data.forEach(element => {
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: BitPay URI');
+        const address = extractAddress(element);
+        let params: URLSearchParams = new URLSearchParams(
+          element.replace(`bitpay:${address}`, '')
+        );
+        const message = params.get('message');
+        const coin: Coin = Coin[params.get('coin').toUpperCase()];
+        const { unitToSatoshi } = currencyProvider.getPrecision(coin);
+        const amount = parseInt(
+          (Number(params.get('amount')) * unitToSatoshi).toFixed(0),
+          10
+        ).toString();
+        const requiredFeeRate = params.get('gasPrice');
+        const stateParams = {
+          amount,
+          toAddress: address,
+          description: message,
+          coin,
+          requiredFeeRate
+        };
+        const nextView = {
+          name: 'ConfirmPage',
+          params: stateParams
+        };
+        tick();
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+    }));
+    it('Should not handle BitPay URI if address or coin is missing (ScanPage)', fakeAsync(() => {
+      const data = [
+        'bitpay:?coin=btc&amount=0.0002&message=asd',
+        'bitpay:1HZJoc4ZKMvyAYcYCU1vbmwm3KzZq34EmU?amount=0.0002&message=asd',
+        'bitpay:0xDF5C0dd7656bB976aD7285a3Fb80C0F6B9604576?amount=0.0002&message=asd',
+        'bitpay:bchtest:qp2gujqu2dsp6zs4kp0pevm2yl8ydx723q2kvfn7tc?amount=0.0002&message=asd',
+        'bitpay:?coin=bch&amount=0.0002&message=asd'
+      ];
+      data.forEach(element => {
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Plain text');
+      });
+    }));
+    it('Should not handle BitPay URI if address or coin is missing (SendPage)', fakeAsync(() => {
+      const data = [
+        'bitpay:?coin=btc&amount=0.0002&message=asd',
+        'bitpay:1HZJoc4ZKMvyAYcYCU1vbmwm3KzZq34EmU?amount=0.0002&message=asd',
+        'bitpay:?coin=eth&amount=0.0002&message=asd',
+        'bitpay:bchtest:qp2gujqu2dsp6zs4kp0pevm2yl8ydx723q2kvfn7tc?amount=0.0002&message=asd',
+        'bitpay:?coin=bch&amount=0.0002&message=asd'
+      ];
+      data.forEach(element => {
+        expect(incomingDataProvider.redir(element)).toBe(false);
+      });
+    }));
     it('Should handle Bitcoin Livenet and Testnet Plain Address', () => {
       let data = [
         '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Bitcoin Address
@@ -903,6 +973,31 @@ describe('Provider: Incoming Data Provider', () => {
           expectedType: 'BitcoinCashUri'
         },
         {
+          data:
+            'bitpay:mrNYDWy8ZgmgXVKDb4MM71LmfZWBwGztUK?coin=btc&amount=0.0002&message=message',
+          expectedType: 'BitPayUri'
+        },
+        {
+          data:
+            'bitpay:1HZJoc4ZKMvyAYcYCU1vbmwm3KzZq34EmU?coin=btc&amount=0.0002&message=asd',
+          expectedType: 'BitPayUri'
+        },
+        {
+          data:
+            'bitpay:0xDF5C0dd7656bB976aD7285a3Fb80C0F6B9604576?coin=eth&amount=1543000000000000000?gasPrice=0000400000000000000',
+          expectedType: 'BitPayUri'
+        },
+        {
+          data:
+            'bitpay:bchtest:qp2gujqu2dsp6zs4kp0pevm2yl8ydx723q2kvfn7tc?coin=bch&amount=0.0002&message=asd',
+          expectedType: 'BitPayUri'
+        },
+        {
+          data:
+            'bitpay:bitcoincash:qpcc9qe5ja73k7ekkqrnjfp9tya0r3d5tvpm2yfa0d?coin=bch&amount=0.0002&message=asd',
+          expectedType: 'BitPayUri'
+        },
+        {
           data: 'http://bitpay.com/',
           expectedType: 'PlainUrl'
         },
@@ -981,6 +1076,7 @@ describe('Provider: Incoming Data Provider', () => {
       ];
       dataArray.forEach(element => {
         const parsedData = incomingDataProvider.parseData(element.data);
+        expect(parsedData).toBeDefined();
         expect(parsedData.type).toEqual(element.expectedType);
       });
     });

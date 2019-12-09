@@ -14,7 +14,7 @@
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
         <div class="alternative" *ngIf="wallet">
-          <span *ngIf="rate">
+          <span *ngIf="rate && !isERCToken">
             @ {{rate | number:'1.2-2'}} {{currencyIsoCode}} per {{wallet.coin.toUpperCase()}}
           </span>
           <span *ngIf="!rate">...</span>
@@ -90,7 +90,7 @@
         <ion-item>
           <span translate>Total</span>
           <ion-note item-end>
-            <span *ngIf="totalAmountStr">{{totalAmountStr}} ~ </span>
+            <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
             <span *ngIf="totalAmount">{{totalAmount | number:'1.2-2'}} {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>

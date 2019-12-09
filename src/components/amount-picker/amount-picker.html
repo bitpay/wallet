@@ -14,7 +14,7 @@
 </div>
 <div class="amount-picker__values" *ngIf="supportedAmounts && supportedAmounts.length > 1">
   <div>Purchase Amounts:</div>
-  <div><span
+  <div><span class="amount-picker__values__value"
       *ngFor="let amount of supportedAmounts; let last = last">{{amount | formatCurrency:currency:'minimal'}}<span
         *ngIf="!last">,</span>
     </span></div>

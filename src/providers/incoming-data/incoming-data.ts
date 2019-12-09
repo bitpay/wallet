@@ -75,6 +75,19 @@ export class IncomingDataProvider {
     return !!/^https:\/\/(www.)?(test.)?bitpay.com\/i\/\w+/.exec(data);
   }
 
+  private isValidBitPayUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    if (!(data && data.indexOf('bitpay:') === 0)) return false;
+    const address = this.extractAddress(data);
+    if (!address) return false;
+    let params: URLSearchParams = new URLSearchParams(
+      data.replace(`bitpay:${address}`, '')
+    );
+    const coin = params.get('coin');
+    if (!coin) return false;
+    return true;
+  }
+
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcore().URI.isValid(data);
@@ -197,10 +210,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
       const disableLoader = true;
-      const details = await this.payproProvider.getPayProOptions(
-        invoiceUrl,
-        disableLoader
-      );
+      const details = await this.payproProvider.getPayProOptions(invoiceUrl);
       const selected = details.paymentOptions.filter(option => option.selected);
       if (selected.length === 1) {
         // BTC, BCH, ETH Chains
@@ -224,6 +234,30 @@ export class IncomingDataProvider {
     } catch (err) {
       this.events.publish('incomingDataError', err);
       this.logger.error(err);
+    }
+  }
+
+  private handleBitPayUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: BitPay URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const address = this.extractAddress(data);
+    let params: URLSearchParams = new URLSearchParams(
+      data.replace(`bitpay:${address}`, '')
+    );
+    let amount = params.get('amount') || amountFromRedirParams;
+    const coin: Coin = Coin[params.get('coin').toUpperCase()];
+    const message = params.get('message');
+    const requiredFeeParam = params.get('gasPrice');
+    if (amount) {
+      const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
+      amount = parseInt(
+        (Number(amount) * unitToSatoshi).toFixed(0),
+        10
+      ).toString();
+      this.goSend(address, amount, message, coin, requiredFeeParam);
+    } else {
+      this.goToAmountPage(address, coin);
     }
   }
 
@@ -542,6 +576,11 @@ export class IncomingDataProvider {
       this.goToBitPayCard(data);
       return true;
 
+      // BitPay URI
+    } else if (this.isValidBitPayUri(data)) {
+      this.handleBitPayUri(data);
+      return true;
+
       // Join
     } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
       this.goToJoinWallet(data);
@@ -588,7 +627,7 @@ export class IncomingDataProvider {
         title: this.translate.instant('Payment URL')
       };
 
-      // Bitcoin  URI
+      // Bitcoin URI
     } else if (this.isValidBitcoinUri(data)) {
       return {
         data,
@@ -665,7 +704,15 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitPayCard',
-        title: this.translate.instant('BitPay Card URI')
+        title: 'BitPay Card URI'
+      };
+
+      // BitPay  URI
+    } else if (this.isValidBitPayUri(data)) {
+      return {
+        data,
+        type: 'BitPayUri',
+        title: 'BitPay URI'
       };
 
       // Join
