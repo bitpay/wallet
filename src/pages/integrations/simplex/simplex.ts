@@ -29,6 +29,7 @@ export class SimplexPage {
   ) {}
 
   ionViewDidLoad() {
+    this.paymentRequests = [];
     this.logger.info('Loaded: SimplexPage');
   }
 

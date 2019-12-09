@@ -106,6 +106,7 @@
     "@ionic-native/core": "4.14.0",
     "@ionic-native/device": "4.14.0",
     "@ionic-native/file": "4.14.0",
+    "@ionic-native/in-app-browser": "4.20.0",
     "@ionic-native/launch-review": "4.14.0",
     "@ionic-native/qr-scanner": "4.14.0",
     "@ionic-native/screen-orientation": "4.14.0",

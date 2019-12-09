@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -49,6 +50,7 @@ export class SimplexBuyPage {
     private currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private fb: FormBuilder,
+    private inAppBrowser: InAppBrowser,
     private logger: Logger,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider,
@@ -283,59 +285,87 @@ export class SimplexBuyPage {
   }
 
   public simplexPaymentFormSubmission(data) {
-    let form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', data.api_host + '/payments/new');
-    form.setAttribute('target', '_blank');
+    const fiat_total_amount_currency = this.currencyIsFiat()
+      ? this.quoteForm.value.altCurrency
+      : 'USD';
+    const digital_total_amount_currency = this.currencyIsFiat()
+      ? this.quoteForm.value.altCurrency
+      : 'USD';
 
-    let params = {
-      version: '1',
-      partner: data.app_provider_id,
-      payment_flow_type: 'wallet',
-      return_url_success:
-        'bitpay://simplex?success=true&paymentId=' +
-        data.payment_id +
-        '&quoteId=' +
-        this.quoteId +
-        '&userId=' +
-        this.wallet.id,
-      return_url_fail:
-        'bitpay://simplex?success=false&paymentId=' +
-        data.payment_id +
-        '&quoteId=' +
-        this.quoteId +
-        '&userId=' +
-        this.wallet.id,
-      quote_id: this.quoteId,
-      payment_id: data.payment_id,
-      user_id: this.wallet.id,
-      'destination_wallet[address]': data.address,
-      'destination_wallet[currency]': this.currencyProvider.getChain(
-        this.wallet.coin
-      ),
-      'fiat_total_amount[amount]': this.fiatTotalAmount,
-      'fiat_total_amount[currency]': this.currencyIsFiat()
-        ? this.quoteForm.value.altCurrency
-        : 'USD',
-      'digital_total_amount[amount]': this.cryptoAmount,
-      'digital_total_amount[currency]': this.currencyProvider.getChain(
-        this.wallet.coin
-      )
-    };
+    var pageContent =
+      '<html><head></head><body><form id="theForm" action=' +
+      data.api_host +
+      '/payments/new' +
+      ' method="post">' +
+      '<input type="hidden" name="version" value="' +
+      '1' +
+      '">' +
+      '<input type="hidden" name="partner" value="' +
+      data.app_provider_id +
+      '">' +
+      '<input type="hidden" name="payment_flow_type" value="' +
+      'wallet' +
+      '">' +
+      '<input type="hidden" name="return_url_success" value="' +
+      'copay://simplex?success=true&paymentId=' +
+      data.payment_id +
+      '&quoteId=' +
+      this.quoteId +
+      '&userId=' +
+      this.wallet.id +
+      '">' +
+      '<input type="hidden" name="return_url_fail" value="' +
+      'copay://simplex?success=false&paymentId=' +
+      data.payment_id +
+      '&quoteId=' +
+      this.quoteId +
+      '&userId=' +
+      this.wallet.id +
+      '">' +
+      '<input type="hidden" name="quote_id" value="' +
+      this.quoteId +
+      '">' +
+      '<input type="hidden" name="payment_id" value="' +
+      data.payment_id +
+      '">' +
+      '<input type="hidden" name="user_id" value="' +
+      this.wallet.id +
+      '">' +
+      '<input type="hidden" name="destination_wallet[address]" value="' +
+      data.address +
+      '">' +
+      '<input type="hidden" name="destination_wallet[currency]" value="' +
+      this.currencyProvider.getChain(this.wallet.coin) +
+      '">' +
+      '<input type="hidden" name="fiat_total_amount[amount]" value="' +
+      this.fiatTotalAmount +
+      '">' +
+      '<input type="hidden" name="fiat_total_amount[currency]" value="' +
+      fiat_total_amount_currency +
+      '">' +
+      '<input type="hidden" name="digital_total_amount[amount]" value="' +
+      this.cryptoAmount +
+      '">' +
+      '<input type="hidden" name="digital_total_amount[currency]" value="' +
+      digital_total_amount_currency +
+      '">' +
+      '</form><script type="text/javascript">setTimeout(() => {document.getElementById("theForm").submit();}, 200);</script></body></html>';
 
-    for (let i in params) {
-      if (params.hasOwnProperty(i)) {
-        let input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', i);
-        input.setAttribute('value', params[i]);
-        form.appendChild(input);
-      }
-    }
+    console.log(pageContent);
 
-    document.body.appendChild(form);
-    this.logger.info('Simplex action url: ', data.api_host + '/payments/new');
-    form.submit();
+    var pageContentUrl = 'data:text/html;base64,' + btoa(pageContent);
+
+    console.log(pageContentUrl);
+    this.logger.info(
+      '%%%%%%%%%%%%%%%%%%%%%%% Trying to open through TheWindow!'
+    );
+
+    const browser = this.inAppBrowser.create(pageContentUrl, '_system');
+
+    browser.on('loadstop').subscribe(event => {
+      this.logger.info('************ loadstop event: ', event);
+      // browser.insertCSS({ code: "body{color: red;" });
+    });
   }
 
   public openPopUpConfirmation(): void {
