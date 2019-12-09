@@ -19,8 +19,14 @@
     <access origin="https://shapeshift.io" />
     <access origin="https://api.coinbase.com" />
     <access origin="https://coinbase.com" />
+<<<<<<< HEAD
     <access origin="https://www.coinbase.com" />
+=======
+    <access origin="https://backend-wallet-api.simplexcc.com" />
+    <access origin="https://sandbox.test-simplexcc.com" />
+>>>>>>> form ref and navigation permissions
     <allow-navigation href="gap://ready" />
+    <allow-navigation href="https://*/*" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>

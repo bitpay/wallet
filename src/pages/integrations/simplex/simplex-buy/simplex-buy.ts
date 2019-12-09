@@ -28,7 +28,6 @@ export class SimplexBuyPage {
   public wallet;
   public wallets: any[];
   public quoteForm: FormGroup;
-  public formSubmission: FormGroup;
   public cryptoAmount: number;
   public fiatBaseAmount: number;
   public fiatTotalAmount: number;
@@ -82,22 +81,6 @@ export class SimplexBuyPage {
       altCurrency: ['USD', [Validators.required]]
     });
 
-    this.formSubmission = this.fb.group({
-      version: [null],
-      partner: [null],
-      payment_flow_type: [null],
-      return_url_success: [null],
-      return_url_fail: [null],
-      quote_id: [null],
-      payment_id: [null],
-      user_id: [null],
-      'destination_wallet[address]': [null],
-      'destination_wallet[currency]': [null],
-      'fiat_total_amount[amount]': [null],
-      'fiat_total_amount[currency]': [null],
-      'digital_total_amount[amount]': [null],
-      'digital_total_amount[currency]': [null]
-    });
 
     this.persistenceProvider.getProfile().then(profile => {
       this.createdOn =
@@ -227,7 +210,7 @@ export class SimplexBuyPage {
   public getEvents(): void {
     this.simplexProvider
       .getEvents(this.wallet)
-      .then(_data => {})
+      .then(_data => { })
       .catch(err => {
         this.showError(err);
       });
@@ -316,53 +299,51 @@ export class SimplexBuyPage {
   }
 
   public simplexPaymentFormSubmission(data) {
-    document.forms['formSubmission'].setAttribute(
-      'action',
-      data.api_host + '/payments/new'
-    );
+    let form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", data.api_host + '/payments/new');
+    form.setAttribute("target", "_blank");
 
-    this.formSubmission.controls['version'].setValue('1'); // Version of Simplex’s form to work with. Currently is “1”.
-    this.formSubmission.controls['partner'].setValue(data.app_provider_id);
-    this.formSubmission.controls['payment_flow_type'].setValue('wallet'); // Payment flow type: should be “wallet”
-    this.formSubmission.controls['return_url_success'].setValue(
-      'bitpay://simplex?success=true&paymentId=' +
+    let params = {
+      'version': '1',
+      'partner': data.app_provider_id,
+      'payment_flow_type': 'wallet',
+      'return_url_success': 'bitpay://simplex?success=true&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
-        this.wallet.id
-    );
-    this.formSubmission.controls['return_url_fail'].setValue(
-      'bitpay://simplex?success=false&paymentId=' +
+        this.wallet.id,
+      'return_url_fail': 'bitpay://simplex?success=false&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
-        this.wallet.id
-    );
-    this.formSubmission.controls['quote_id'].setValue(this.quoteId);
-    this.formSubmission.controls['payment_id'].setValue(data.payment_id);
-    this.formSubmission.controls['user_id'].setValue(this.wallet.id); // TODO: BitPay id / wallet id??
-    this.formSubmission.controls['destination_wallet[address]'].setValue(
-      data.address
-    );
-    this.formSubmission.controls['destination_wallet[currency]'].setValue(
-      this.currencyProvider.getChain(this.wallet.coin)
-    );
-    this.formSubmission.controls['fiat_total_amount[amount]'].setValue(
-      this.fiatTotalAmount
-    );
-    this.formSubmission.controls['fiat_total_amount[currency]'].setValue(
-      this.currencyIsFiat() ? this.quoteForm.value.altCurrency : 'USD'
-    );
-    this.formSubmission.controls['digital_total_amount[amount]'].setValue(
-      this.cryptoAmount
-    );
-    this.formSubmission.controls['digital_total_amount[currency]'].setValue(
-      this.currencyProvider.getChain(this.wallet.coin)
-    );
+        this.wallet.id,
+      'quote_id': this.quoteId,
+      'payment_id': data.payment_id,
+      'user_id': this.wallet.id,
+      'destination_wallet[address]': data.address,
+      'destination_wallet[currency]': this.currencyProvider.getChain(this.wallet.coin),
+      'fiat_total_amount[amount]': this.fiatTotalAmount,
+      'fiat_total_amount[currency]': this.currencyIsFiat() ? this.quoteForm.value.altCurrency : 'USD',
+      'digital_total_amount[amount]': this.cryptoAmount,
+      'digital_total_amount[currency]': this.currencyProvider.getChain(this.wallet.coin),
+    };
 
-    document.forms['formSubmission'].submit();
+    for (let i in params) {
+      if (params.hasOwnProperty(i)) {
+        let input = document.createElement('input');
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", i);
+        input.setAttribute("value", params[i]);
+        form.appendChild(input);
+      }
+    }
+
+    document.body.appendChild(form);
+    this.logger.info("Simplex action url: ", data.api_host + '/payments/new');
+    form.submit();
   }
 
   public openPopUpConfirmation(): void {

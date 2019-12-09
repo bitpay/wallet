@@ -14,7 +14,7 @@
 <ion-content no-bounce>
   <div class="header-modal" *ngIf="paymentRequest">
     <div class="title-modal" translate>
-      Crypto purchase
+      Attempted payment request
     </div>
 
     <div class="subtitle-modal">
@@ -46,12 +46,11 @@
       </ion-note>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="paymentRequest.status == 'success' || paymentRequest.status == 'failed'">
       {{'Status' | translate}}
       <ion-note item-end>
         <span class="assertive" *ngIf="paymentRequest.status == 'failed'" translate>Payment request rejected</span>
         <span class="balanced" *ngIf="paymentRequest.status == 'success'" translate>Payment request approved</span>
-        <span class="dark" *ngIf="paymentRequest.status == 'paymentRequestSent'" translate>Attempted payment request</span>
       </ion-note>
     </ion-item>
 

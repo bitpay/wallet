@@ -38,8 +38,6 @@
             <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
             <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
               <ion-option *ngFor="let fiatAltCurrency of supportedFiatAltCurrencies" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
-              <!-- <ion-option [value]="USD">USD</ion-option>
-              <ion-option [value]="EUR">EUR</ion-option> -->
               <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
             </ion-select>
           </ion-item>
@@ -95,22 +93,6 @@
         </a>
       </div>
 
-      <form [formGroup]="formSubmission" id="formSubmission" method="post" target="_blank">
-        <input type="hidden" name="version" formControlName="version">
-        <input type="hidden" name="partner" formControlName="partner">
-        <input type="hidden" name="payment_flow_type" formControlName="payment_flow_type">
-        <input type="hidden" name="return_url_success" formControlName="return_url_success">
-        <input type="hidden" name="return_url_fail" formControlName="return_url_fail">
-        <input type="hidden" name="quote_id" formControlName="quote_id">
-        <input type="hidden" name="payment_id" formControlName="payment_id">
-        <input type="hidden" name="user_id" formControlName="user_id">
-        <input type="hidden" name="destination_wallet[address]" formControlName="destination_wallet[address]">
-        <input type="hidden" name="destination_wallet[currency]" formControlName="destination_wallet[currency]">
-        <input type="hidden" name="fiat_total_amount[amount]" formControlName="fiat_total_amount[amount]">
-        <input type="hidden" name="fiat_total_amount[currency]" formControlName="fiat_total_amount[currency]">
-        <input type="hidden" name="digital_total_amount[amount]" formControlName="digital_total_amount[amount]">
-        <input type="hidden" name="digital_total_amount[currency]" formControlName="digital_total_amount[currency]">
-      </form>
     </div>
   </div>
 </ion-content>
