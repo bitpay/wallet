@@ -81,7 +81,6 @@ export class SimplexBuyPage {
       altCurrency: ['USD', [Validators.required]]
     });
 
-
     this.persistenceProvider.getProfile().then(profile => {
       this.createdOn =
         profile && profile.createdOn
@@ -152,7 +151,6 @@ export class SimplexBuyPage {
     this.logger.debug(
       'altCurrency changed to: ' + this.quoteForm.value.altCurrency
     );
-    console.log('--------- altCurrencyChange ejecutado');
 
     if (this.currencyIsFiat()) {
       this.quoteForm.controls['amount'].setValue(undefined);
@@ -210,7 +208,7 @@ export class SimplexBuyPage {
   public getEvents(): void {
     this.simplexProvider
       .getEvents(this.wallet)
-      .then(_data => { })
+      .then(_data => {})
       .catch(err => {
         this.showError(err);
       });
@@ -228,13 +226,10 @@ export class SimplexBuyPage {
       end_user_id: this.wallet.id // TODO: BitPay id / wallet id??
     };
 
-    console.log('--------- getSimplexQuote: ', data);
-
     this.simplexProvider
       .getQuote(this.wallet, data)
       .then(data => {
         if (data) {
-          console.log('------------------ getQuote data: ', data);
           this.cryptoAmount = data.digital_money.amount;
           this.fiatBaseAmount = data.fiat_money.base_amount;
           this.fiatTotalAmount = data.fiat_money.total_amount;
@@ -285,8 +280,6 @@ export class SimplexBuyPage {
         }
       };
 
-      console.log('paymentRequest data: ', data);
-
       this.simplexProvider
         .paymentRequest(this.wallet, data)
         .then(data => {
@@ -299,50 +292,58 @@ export class SimplexBuyPage {
   }
 
   public simplexPaymentFormSubmission(data) {
-    let form = document.createElement("form");
-    form.setAttribute("method", "post");
-    form.setAttribute("action", data.api_host + '/payments/new');
-    form.setAttribute("target", "_blank");
+    let form = document.createElement('form');
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', data.api_host + '/payments/new');
+    form.setAttribute('target', '_blank');
 
     let params = {
-      'version': '1',
-      'partner': data.app_provider_id,
-      'payment_flow_type': 'wallet',
-      'return_url_success': 'bitpay://simplex?success=true&paymentId=' +
+      version: '1',
+      partner: data.app_provider_id,
+      payment_flow_type: 'wallet',
+      return_url_success:
+        'bitpay://simplex?success=true&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
         this.wallet.id,
-      'return_url_fail': 'bitpay://simplex?success=false&paymentId=' +
+      return_url_fail:
+        'bitpay://simplex?success=false&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
         this.wallet.id,
-      'quote_id': this.quoteId,
-      'payment_id': data.payment_id,
-      'user_id': this.wallet.id,
+      quote_id: this.quoteId,
+      payment_id: data.payment_id,
+      user_id: this.wallet.id,
       'destination_wallet[address]': data.address,
-      'destination_wallet[currency]': this.currencyProvider.getChain(this.wallet.coin),
+      'destination_wallet[currency]': this.currencyProvider.getChain(
+        this.wallet.coin
+      ),
       'fiat_total_amount[amount]': this.fiatTotalAmount,
-      'fiat_total_amount[currency]': this.currencyIsFiat() ? this.quoteForm.value.altCurrency : 'USD',
+      'fiat_total_amount[currency]': this.currencyIsFiat()
+        ? this.quoteForm.value.altCurrency
+        : 'USD',
       'digital_total_amount[amount]': this.cryptoAmount,
-      'digital_total_amount[currency]': this.currencyProvider.getChain(this.wallet.coin),
+      'digital_total_amount[currency]': this.currencyProvider.getChain(
+        this.wallet.coin
+      )
     };
 
     for (let i in params) {
       if (params.hasOwnProperty(i)) {
         let input = document.createElement('input');
-        input.setAttribute("type", "hidden");
-        input.setAttribute("name", i);
-        input.setAttribute("value", params[i]);
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', i);
+        input.setAttribute('value', params[i]);
         form.appendChild(input);
       }
     }
 
     document.body.appendChild(form);
-    this.logger.info("Simplex action url: ", data.api_host + '/payments/new');
+    this.logger.info('Simplex action url: ', data.api_host + '/payments/new');
     form.submit();
   }
 
@@ -366,7 +367,6 @@ export class SimplexBuyPage {
       .then(address => {
         this.simplexPaymentRequest(address)
           .then(req => {
-            console.log('------------simplexPaymentRequest req: ', req);
             if (req && req.error && !_.isEmpty(req.error)) {
               this.showError(req.error);
               return;
@@ -425,7 +425,6 @@ export class SimplexBuyPage {
   }
 
   private showError(err?) {
-    // console.log(err);
     this.showLoading = false;
     let msg = this.translate.instant(
       'Could not create payment request. Please, try again later.'

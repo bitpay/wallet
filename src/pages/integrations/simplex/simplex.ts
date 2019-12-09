@@ -47,7 +47,6 @@ export class SimplexPage {
             this.navParams.data.paymentId &&
             simplexData[this.navParams.data.paymentId]
           ) {
-            console.log('navParams data: ', this.navParams.data);
             simplexData[this.navParams.data.paymentId].status =
               this.navParams.data.success === 'true' ? 'success' : 'failed';
             this.simplexProvider
@@ -61,7 +60,6 @@ export class SimplexPage {
           Object.assign(paymentRequests, simplexData);
           this.paymentRequests = Object.values(paymentRequests);
         }
-        console.log('this.paymentRequests: ', this.paymentRequests);
         this.loading = false;
       })
       .catch(err => {
@@ -75,7 +73,6 @@ export class SimplexPage {
   }
 
   public openSimplexModal(paymentRequestData) {
-    console.log('Opening modal...', paymentRequestData);
     const modal = this.modalCtrl.create(SimplexDetailsPage, {
       paymentRequestData
     });
