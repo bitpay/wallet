@@ -245,50 +245,41 @@ export class SimplexBuyPage {
   }
 
   simplexPaymentRequest(address: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const userAgent = this.platformProvider.getUserAgent();
-      const data = {
-        account_details: {
-          app_version_id: this.appProvider.info.version,
-          app_install_date: this.createdOn,
-          app_end_user_id: this.wallet.id, // TODO: BitPay id / wallet id??
-          signup_login: {
-            user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
-            timestamp: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-          }
-        },
-        transaction_details: {
-          payment_details: {
-            quote_id: this.quoteId,
-            fiat_total_amount: {
-              currency: this.currencyIsFiat()
-                ? this.quoteForm.value.altCurrency
-                : 'USD',
-              amount: this.fiatTotalAmount
-            },
-            requested_digital_amount: {
-              currency: this.currencyProvider.getChain(this.wallet.coin),
-              amount: this.cryptoAmount
-            },
-            destination_wallet: {
-              currency: this.currencyProvider.getChain(this.wallet.coin),
-              address,
-              tag: ''
-            },
-            original_http_ref_url: 'https://bitpay.com/'
-          }
+    const userAgent = this.platformProvider.getUserAgent();
+    const data = {
+      account_details: {
+        app_version_id: this.appProvider.info.version,
+        app_install_date: this.createdOn,
+        app_end_user_id: this.wallet.id, // TODO: BitPay id / wallet id??
+        signup_login: {
+          user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
+          timestamp: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
         }
-      };
+      },
+      transaction_details: {
+        payment_details: {
+          quote_id: this.quoteId,
+          fiat_total_amount: {
+            currency: this.currencyIsFiat()
+              ? this.quoteForm.value.altCurrency
+              : 'USD',
+            amount: this.fiatTotalAmount
+          },
+          requested_digital_amount: {
+            currency: this.currencyProvider.getChain(this.wallet.coin),
+            amount: this.cryptoAmount
+          },
+          destination_wallet: {
+            currency: this.currencyProvider.getChain(this.wallet.coin),
+            address,
+            tag: ''
+          },
+          original_http_ref_url: 'https://bitpay.com/'
+        }
+      }
+    };
 
-      this.simplexProvider
-        .paymentRequest(this.wallet, data)
-        .then(data => {
-          return resolve(data);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
+    return this.simplexProvider.paymentRequest(this.wallet, data);
   }
 
   public simplexPaymentFormSubmission(data) {

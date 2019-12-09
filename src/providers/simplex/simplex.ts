@@ -24,45 +24,24 @@ export class SimplexProvider {
   }
 
   public getQuote(wallet, data): Promise<any> {
-    return new Promise((resolve, reject) => {
-      data.env = this.env;
-      wallet
-        .simplexGetQuote(data)
-        .then(res => {
-          return resolve(res.body);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+    data.env = this.env;
+    return wallet.simplexGetQuote(data).then(res => {
+      return Promise.resolve(res.body);
     });
   }
 
   public paymentRequest(wallet, data): Promise<any> {
-    return new Promise((resolve, reject) => {
-      data.env = this.env;
-      wallet
-        .simplexPaymentRequest(data)
-        .then(res => {
-          return resolve(res.body);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+    data.env = this.env;
+    return wallet.simplexPaymentRequest(data).then(res => {
+      return Promise.resolve(res.body);
     });
   }
 
   public getEvents(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let data: any = {};
-      data.env = this.env;
-      wallet
-        .simplexGetEvents(data)
-        .then(res => {
-          return resolve(res.body);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+    let data: any = {};
+    data.env = this.env;
+    return wallet.simplexGetEvents(data).then(res => {
+      return Promise.resolve(res.body);
     });
   }
 
@@ -80,48 +59,32 @@ export class SimplexProvider {
   }
 
   public saveSimplex(data, opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const env = this.env;
-      this.persistenceProvider
-        .getSimplex(env)
-        .then(oldData => {
-          if (_.isString(oldData)) {
-            oldData = JSON.parse(oldData);
-          }
-          if (_.isString(data)) {
-            data = JSON.parse(data);
-          }
-          let inv = oldData ? oldData : {};
-          inv[data.payment_id] = data;
-          if (opts && (opts.error || opts.status)) {
-            inv[data.payment_id] = _.assign(inv[data.payment_id], opts);
-          }
-          if (opts && opts.remove) {
-            delete inv[data.payment_id];
-          }
+    const env = this.env;
+    return this.persistenceProvider.getSimplex(env).then(oldData => {
+      if (_.isString(oldData)) {
+        oldData = JSON.parse(oldData);
+      }
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      let inv = oldData ? oldData : {};
+      inv[data.payment_id] = data;
+      if (opts && (opts.error || opts.status)) {
+        inv[data.payment_id] = _.assign(inv[data.payment_id], opts);
+      }
+      if (opts && opts.remove) {
+        delete inv[data.payment_id];
+      }
 
-          inv = JSON.stringify(inv);
+      inv = JSON.stringify(inv);
 
-          this.persistenceProvider.setSimplex(env, inv);
-          return resolve();
-        })
-        .catch(err => {
-          return reject(err);
-        });
+      this.persistenceProvider.setSimplex(env, inv);
+      return Promise.resolve();
     });
   }
 
   public getSimplex(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const env = this.env;
-      this.persistenceProvider
-        .getSimplex(env)
-        .then(simplexData => {
-          return resolve(simplexData);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
+    const env = this.env;
+    return this.persistenceProvider.getSimplex(env);
   }
 }
