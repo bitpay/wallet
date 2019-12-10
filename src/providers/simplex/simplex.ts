@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 // providers
+import env from '../../environments';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
@@ -9,7 +10,6 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class SimplexProvider {
-  private possibleEnvironments: string[];
   private env: string;
 
   constructor(
@@ -19,8 +19,7 @@ export class SimplexProvider {
     private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('SimplexProvider Provider initialized');
-    this.possibleEnvironments = ['sandbox', 'production'];
-    this.env = this.possibleEnvironments[0];
+    this.env = env.name == 'development' ? 'sandbox' : 'production';
   }
 
   public getQuote(wallet, data): Promise<any> {
