@@ -8,9 +8,13 @@ import { HomeIntegrationsProvider } from '../home-integrations/home-integrations
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
+const PASSTHROUGH_URI_DEV = 'cmgustavo.github.io/website/simplex/';
+const PASSTHROUGH_URI_PROD = 'bws.bitpay.com/simplex/';
+
 @Injectable()
 export class SimplexProvider {
   private env: string;
+  public passthrough_uri: string;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -20,6 +24,8 @@ export class SimplexProvider {
   ) {
     this.logger.debug('SimplexProvider Provider initialized');
     this.env = env.name == 'development' ? 'sandbox' : 'production';
+    this.passthrough_uri =
+      env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;
   }
 
   public getQuote(wallet, data): Promise<any> {

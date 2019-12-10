@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -43,7 +42,6 @@ export class SimplexBuyPage {
 
   private quoteId: string;
   private createdOn: string;
-  private isCordova: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -51,7 +49,6 @@ export class SimplexBuyPage {
     private currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private fb: FormBuilder,
-    private inAppBrowser: InAppBrowser,
     private logger: Logger,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider,
@@ -63,20 +60,6 @@ export class SimplexBuyPage {
     private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
-    this.wallets = this.profileProvider.getWallets({
-      network: 'livenet',
-      onlyComplete: true,
-      coin: ['btc', 'bch', 'eth'],
-      backedUp: true
-    });
-    this.supportedFiatAltCurrencies = ['USD', 'EUR'];
-    this.okText = this.translate.instant('Select');
-    this.cancelText = this.translate.instant('Cancel');
-    this.showLoading = false;
-    this.minFiatAmount = 50;
-    this.maxFiatAmount = 20000;
-    this.isCordova = this.platformProvider.isCordova;
-
     this.quoteForm = this.fb.group({
       amount: [
         120,
@@ -95,6 +78,22 @@ export class SimplexBuyPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SimplexBuyPage');
+  }
+
+  ionViewDidEnter() {
+    this.wallets = this.profileProvider.getWallets({
+      network: 'livenet',
+      onlyComplete: true,
+      coin: ['btc'],
+      backedUp: true
+    });
+    this.supportedFiatAltCurrencies = ['USD', 'EUR'];
+    this.okText = this.translate.instant('Select');
+    this.cancelText = this.translate.instant('Cancel');
+    this.showLoading = false;
+    this.minFiatAmount = 50;
+    this.maxFiatAmount = 20000;
+
     this.showWallets();
   }
 
@@ -278,7 +277,8 @@ export class SimplexBuyPage {
             address,
             tag: ''
           },
-          original_http_ref_url: 'https://bitpay.com/'
+          original_http_ref_url:
+            'https://' + this.simplexProvider.passthrough_uri
         }
       }
     };
@@ -286,116 +286,22 @@ export class SimplexBuyPage {
     return this.simplexProvider.paymentRequest(this.wallet, data);
   }
 
-  private simplexPaymentFormSubmissionCordova(data) {
-    const fiat_total_amount_currency = this.currencyIsFiat()
-      ? this.quoteForm.value.altCurrency
-      : 'USD';
-    const digital_total_amount_currency = this.currencyIsFiat()
-      ? this.quoteForm.value.altCurrency
-      : 'USD';
-
-    let pageContent =
-      '<html><head></head><body><form id="theForm" action=' +
-      data.api_host +
-      '/payments/new' +
-      ' method="post">' +
-      '<input type="hidden" name="version" value="' +
-      '1' +
-      '">' +
-      '<input type="hidden" name="partner" value="' +
-      data.app_provider_id +
-      '">' +
-      '<input type="hidden" name="payment_flow_type" value="' +
-      'wallet' +
-      '">' +
-      '<input type="hidden" name="return_url_success" value="' +
-      'bitpay://simplex?success=true&paymentId=' +
-      data.payment_id +
-      '&quoteId=' +
-      this.quoteId +
-      '&userId=' +
-      this.wallet.id +
-      '">' +
-      '<input type="hidden" name="return_url_fail" value="' +
-      'bitpay://simplex?success=false&paymentId=' +
-      data.payment_id +
-      '&quoteId=' +
-      this.quoteId +
-      '&userId=' +
-      this.wallet.id +
-      '">' +
-      '<input type="hidden" name="quote_id" value="' +
-      this.quoteId +
-      '">' +
-      '<input type="hidden" name="payment_id" value="' +
-      data.payment_id +
-      '">' +
-      '<input type="hidden" name="user_id" value="' +
-      this.wallet.id +
-      '">' +
-      '<input type="hidden" name="destination_wallet[address]" value="' +
-      data.address +
-      '">' +
-      '<input type="hidden" name="destination_wallet[currency]" value="' +
-      this.currencyProvider.getChain(this.wallet.coin) +
-      '">' +
-      '<input type="hidden" name="fiat_total_amount[amount]" value="' +
-      this.fiatTotalAmount +
-      '">' +
-      '<input type="hidden" name="fiat_total_amount[currency]" value="' +
-      fiat_total_amount_currency +
-      '">' +
-      '<input type="hidden" name="digital_total_amount[amount]" value="' +
-      this.cryptoAmount +
-      '">' +
-      '<input type="hidden" name="digital_total_amount[currency]" value="' +
-      digital_total_amount_currency +
-      '">' +
-      '</form><script type="text/javascript">setTimeout(() => {document.getElementById("theForm").submit();}, 200);</script></body></html>';
-
-    let pageContentUrl = 'data:text/html;base64,' + btoa(pageContent);
-
-    this.logger.info('Trying to open through the browser window');
-
-    const browser = this.inAppBrowser.create(
-      pageContentUrl,
-      '_blank',
-      'location=yes,scrollbars=yes'
-    );
-
-    browser.on('loadstop').subscribe(event => {
-      if (
-        event.url &&
-        (event.url.indexOf('bitpay://simplex?success=true') > -1 ||
-          event.url.indexOf('bitpay://simplex?success=false') > -1)
-      ) {
-        this.logger.info('web view loadstop event url: ', event.url);
-        browser.close();
-      } else {
-        this.logger.info('web view loadstop event: ', event);
-      }
-    });
-  }
-
-  private simplexPaymentFormSubmission(data) {
-    let form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', data.api_host + '/payments/new');
-    form.setAttribute('target', '_blank');
-
-    let params = {
+  public simplexPaymentFormSubmission(data) {
+    const dataSrc = {
       version: '1',
       partner: data.app_provider_id,
       payment_flow_type: 'wallet',
       return_url_success:
-        'bitpay://simplex?success=true&paymentId=' +
+        this.simplexProvider.passthrough_uri +
+        'end.html?success=true&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
         this.wallet.id,
       return_url_fail:
-        'bitpay://simplex?success=false&paymentId=' +
+        this.simplexProvider.passthrough_uri +
+        'end.html?success=false&paymentId=' +
         data.payment_id +
         '&quoteId=' +
         this.quoteId +
@@ -418,19 +324,22 @@ export class SimplexBuyPage {
       )
     };
 
-    for (let i in params) {
-      if (params.hasOwnProperty(i)) {
-        let input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', i);
-        input.setAttribute('value', params[i]);
-        form.appendChild(input);
+    var str = '';
+    for (var key in dataSrc) {
+      if (str != '') {
+        str += '&';
       }
+      str += key + '=' + encodeURIComponent(dataSrc[key]);
     }
 
-    document.body.appendChild(form);
-    this.logger.info('Action url: ', data.api_host + '/payments/new');
-    form.submit();
+    const url =
+      'https://' +
+      this.simplexProvider.passthrough_uri +
+      '?api_host=' +
+      data.api_host +
+      '/payments/new/&' +
+      str;
+    this.openExternalLink(url);
   }
 
   public openPopUpConfirmation(): void {
@@ -458,50 +367,40 @@ export class SimplexBuyPage {
               return;
             }
 
-            let data: any = {
+            const remoteData: any = {
               address,
               api_host: req.api_host,
               app_provider_id: req.app_provider_id,
               order_id: req.order_id,
               payment_id: req.payment_id
             };
-            try {
-              if (this.isCordova) {
-                this.simplexPaymentFormSubmissionCordova(data);
-              } else {
-                this.simplexPaymentFormSubmission(data);
-              }
 
-              let newData = {
-                address,
-                created_on: Date.now(),
-                crypto_amount: this.cryptoAmount,
-                coin: this.currencyProvider.getChain(this.wallet.coin),
-                fiat_total_amount: this.fiatTotalAmount,
-                fiat_total_amount_currency: this.currencyIsFiat()
-                  ? this.quoteForm.value.altCurrency
-                  : 'USD',
-                order_id: req.order_id,
-                payment_id: req.payment_id,
-                status: 'paymentRequestSent',
-                user_id: this.wallet.id
-              };
-              this.simplexProvider
-                .saveSimplex(newData, null)
-                .then(() => {
-                  this.logger.debug(
-                    'Saved Simplex with status: ' + newData.status
-                  );
-                  setTimeout(() => {
-                    this.navCtrl.popToRoot();
-                  }, 3500);
-                })
-                .catch(err => {
-                  this.showError(err);
-                });
-            } catch (err) {
-              this.showError(err);
-            }
+            let newData = {
+              address,
+              created_on: Date.now(),
+              crypto_amount: this.cryptoAmount,
+              coin: this.currencyProvider.getChain(this.wallet.coin),
+              fiat_total_amount: this.fiatTotalAmount,
+              fiat_total_amount_currency: this.currencyIsFiat()
+                ? this.quoteForm.value.altCurrency
+                : 'USD',
+              order_id: req.order_id,
+              payment_id: req.payment_id,
+              status: 'paymentRequestSent',
+              user_id: this.wallet.id
+            };
+            this.simplexProvider
+              .saveSimplex(newData, null)
+              .then(() => {
+                this.logger.debug(
+                  'Saved Simplex with status: ' + newData.status
+                );
+                this.simplexPaymentFormSubmission(remoteData);
+                this.navCtrl.pop();
+              })
+              .catch(err => {
+                this.showError(err);
+              });
           })
           .catch(err => {
             this.showError(err);
