@@ -237,7 +237,7 @@ export class SimplexBuyPage {
     this.simplexProvider
       .getQuote(this.wallet, data)
       .then(data => {
-        if (data) {
+        if (data && data.quote_id) {
           this.cryptoAmount = data.digital_money.amount;
           this.fiatBaseAmount = data.fiat_money.base_amount;
           this.fiatTotalAmount = data.fiat_money.total_amount;
@@ -245,6 +245,11 @@ export class SimplexBuyPage {
           this.quoteId = data.quote_id;
           this.validUntil = data.valid_until;
           this.showLoading = false;
+        } else {
+          const err = this.translate.instant(
+            "Can't get rates at this moment. Please try again later"
+          );
+          this.showError(err);
         }
       })
       .catch(err => {
