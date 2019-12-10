@@ -77,7 +77,7 @@ describe('BwcErrorProvider: Bwc Error Provider', () => {
 
       err = new Error('INVOICE_EXPIRED');
       expect(bwcErrorProvider.msg(err)).toEqual(
-        'This invoice is not longer accepting payments'
+        'This invoice is no longer accepting payments'
       );
 
       err = new Error('INVALID_BACKUP');

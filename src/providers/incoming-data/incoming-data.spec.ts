@@ -1023,7 +1023,7 @@ describe('Provider: Incoming Data Provider', () => {
         },
         {
           data: '0xb506c911deE6379e3d4c4d0F4A429a70523960Fd',
-          expectedType: 'EthereumUri' // TODO: handle plain ETH address
+          expectedType: 'EthereumAddress'
         },
         {
           data: 'bitpay://coinbase',
