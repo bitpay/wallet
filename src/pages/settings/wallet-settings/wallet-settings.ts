@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -29,6 +30,7 @@ import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-
 export class WalletSettingsPage {
   public showDuplicateWallet: boolean;
   public wallet;
+  public isERCToken: boolean;
   public canSign: boolean;
   public needsBackup: boolean;
   public hiddenBalance: boolean;
@@ -45,6 +47,7 @@ export class WalletSettingsPage {
     private walletProvider: WalletProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
@@ -55,6 +58,7 @@ export class WalletSettingsPage {
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
   }
 
   ionViewWillEnter() {

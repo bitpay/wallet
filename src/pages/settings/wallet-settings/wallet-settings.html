@@ -6,12 +6,20 @@
 
 <ion-content>
   <ion-list class="settings-list bp-list">
-    <button ion-item (click)="openWalletName()">
+    <button ion-item *ngIf="!isERCToken; else disabledClick" (click)="openWalletName()">
       <div translate float-left>Name</div>
       <ion-note item-end>
         {{wallet && wallet.name}}
       </ion-note>
     </button>
+    <ng-template #disabledClick>
+      <ion-item>
+        <div translate float-left>Name</div>
+        <ion-note item-end>
+          {{wallet && wallet.name}}
+        </ion-note>
+      </ion-item>
+    </ng-template>
     <ion-item class="with-label no-border">
       <ion-label>{{'Hide Wallet' | translate }}</ion-label>
       <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
