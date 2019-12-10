@@ -585,6 +585,9 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
+msgid "Create Key"
+msgstr ""
+
 msgid "Create New Key"
 msgstr ""
 
@@ -1129,8 +1132,8 @@ msgstr ""
 
 msgid ""
 "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
-"Please create an ETH wallet first.\n"
-"        Only one {{ params.token.name }} wallet is allowed per ETH wallet."
+"Please create an ETH wallet first. Only one {{ params.token.name }} wallet "
+"is allowed per ETH wallet."
 msgstr ""
 
 msgid ""
@@ -2188,6 +2191,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"The amount on the transaction does not match the amount requested. This "
+"payment will not be accepted"
+msgstr ""
+
+msgid ""
 "The destination wallet is not backed up. Please, complete the backup "
 "process before continue."
 msgstr ""
@@ -2202,6 +2210,9 @@ msgid ""
 "The information you are about to share/export may contain sensitive data "
 "such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
 "person or entity with whom you are sharing this information."
+msgstr ""
+
+msgid "The invoice is no available"
 msgstr ""
 
 msgid ""
@@ -2260,6 +2271,11 @@ msgid ""
 "The transaction history and every new incoming transaction are cached in "
 "the app. Clearing the cache cleans up the transaction history and "
 "synchronizes again from the server."
+msgstr ""
+
+msgid ""
+"The transaction you sent does not have any output to the address on the "
+"invoice"
 msgstr ""
 
 msgid "The wallet is already in the app"
@@ -2325,6 +2341,9 @@ msgid "This invoice does not accept unconfirmed inputs."
 msgstr ""
 
 msgid "This invoice is not longer accepting payments"
+msgstr ""
+
+msgid "This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead"
 msgstr ""
 
 msgid ""
@@ -2429,6 +2448,9 @@ msgid "Transaction already broadcasted"
 msgstr ""
 
 msgid "Transaction confirmed"
+msgstr ""
+
+msgid "Transaction fee is below the current minimum threshold"
 msgstr ""
 
 msgid "Transaction has not been created"
@@ -2681,7 +2703,22 @@ msgid ""
 "joining our community on Crowdin."
 msgstr ""
 
+msgid ""
+"We could not find one or more inputs for your transaction on the "
+"blockchain. Make sure you're not trying to use unconfirmed change"
+msgstr ""
+
 msgid "We couldn't find your wallet!"
+msgstr ""
+
+msgid ""
+"We were unable to parse the transaction you sent. Please try again or "
+"contact your wallet provider"
+msgstr ""
+
+msgid ""
+"We were unable to parse your payment. Please try again or contact your "
+"wallet provider"
 msgstr ""
 
 msgid ""
@@ -2864,6 +2901,16 @@ msgid ""
 msgstr ""
 
 msgid "Your recovery phrase is verified"
+msgstr ""
+
+msgid ""
+"Your request did not include a transaction. Please try again or contact "
+"your wallet provider"
+msgstr ""
+
+msgid ""
+"Your transaction was an in an invalid format, it must be a hexadecimal "
+"string. Contact your wallet provider"
 msgstr ""
 
 msgid ""
