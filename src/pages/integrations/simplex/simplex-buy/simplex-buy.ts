@@ -316,7 +316,9 @@ export class SimplexBuyPage {
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
-        this.wallet.id,
+        this.wallet.id +
+        '&returnApp=' +
+        this.appProvider.info.name,
       return_url_fail:
         this.simplexProvider.passthrough_uri +
         'end.html?success=false&paymentId=' +
@@ -324,7 +326,9 @@ export class SimplexBuyPage {
         '&quoteId=' +
         this.quoteId +
         '&userId=' +
-        this.wallet.id,
+        this.wallet.id +
+        '&returnApp=' +
+        this.appProvider.info.name,
       quote_id: this.quoteId,
       payment_id: data.payment_id,
       user_id: this.wallet.id,
@@ -351,7 +355,6 @@ export class SimplexBuyPage {
     }
 
     const url =
-      'https://' +
       this.simplexProvider.passthrough_uri +
       '?api_host=' +
       data.api_host +

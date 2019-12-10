@@ -8,8 +8,8 @@ import { HomeIntegrationsProvider } from '../home-integrations/home-integrations
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
-const PASSTHROUGH_URI_DEV = 'cmgustavo.github.io/website/simplex/';
-const PASSTHROUGH_URI_PROD = 'bws.bitpay.com/simplex/';
+const PASSTHROUGH_URI_DEV = 'https://cmgustavo.github.io/website/simplex/';
+const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/simplex/';
 
 @Injectable()
 export class SimplexProvider {
