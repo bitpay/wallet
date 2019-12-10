@@ -992,6 +992,9 @@ msgstr ""
 msgid "Gift Card"
 msgstr ""
 
+msgid "Gift Card Settings"
+msgstr ""
+
 msgid "Gift card canceled"
 msgstr ""
 
@@ -1034,6 +1037,9 @@ msgid "Hide"
 msgstr ""
 
 msgid "Hide Balance"
+msgstr ""
+
+msgid "Hide Wallet"
 msgstr ""
 
 msgid "Hide advanced options"
@@ -1254,6 +1260,9 @@ msgid "Learn more"
 msgstr ""
 
 msgid "Learn more about testnet blockchain"
+msgstr ""
+
+msgid "Learn where you can spend your crypto today."
 msgstr ""
 
 msgid "Legacy"
@@ -2340,7 +2349,7 @@ msgstr ""
 msgid "This invoice does not accept unconfirmed inputs."
 msgstr ""
 
-msgid "This invoice is not longer accepting payments"
+msgid "This invoice is no longer accepting payments"
 msgstr ""
 
 msgid "This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead"
@@ -2350,6 +2359,9 @@ msgid ""
 "This is a new 12-word key that manages its own set of wallets. It is "
 "unrelated to any 12 word key you may have previously created. Store and "
 "manage it accordingly."
+msgstr ""
+
+msgid "This key contains {{wallets.length}} wallets."
 msgstr ""
 
 msgid ""
@@ -2565,6 +2577,9 @@ msgid "View"
 msgstr ""
 
 msgid "View Confirmation Status"
+msgstr ""
+
+msgid "View Directory"
 msgstr ""
 
 msgid "View Invoice"
@@ -2927,8 +2942,8 @@ msgstr ""
 
 msgid ""
 "Your wallet master key is a phrase composed of 12 randomly selected words. "
-"If you were to ever lose or damage your device, you can restore access to "
-"your wallet as long as you have your 12 word master key."
+"If you ever lose or damage your device, you can re-gain access to your "
+"wallet as long as you have your 12 word master key."
 msgstr ""
 
 msgid "Your wallet {{walletName}} is complete."
@@ -3001,4 +3016,10 @@ msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
+msgstr ""
+
+msgid "{{walletsGroup.length}} Wallet"
+msgstr ""
+
+msgid "{{walletsGroup.length}} Wallets"
 msgstr ""
