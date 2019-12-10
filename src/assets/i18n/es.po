@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-12-10 14:35\n"
+"PO-Revision-Date: 2019-12-10 14:57\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -141,7 +141,7 @@ msgid "All addresses"
 msgstr "Todas las direcciones"
 
 msgid "All of your {{ coinName }} wallet balance may not be available for immediate spending."
-msgstr "Todos los fondos de tu billetera {{ coinName }} puede no estar disponible para su uso inmediato."
+msgstr "Los fondos de tu billetera {{ coinName }} pueden no estar disponibles para su uso inmediato."
 
 msgid "Allow camera access"
 msgstr "Permitir el acceso a la cámara"
