@@ -1,5 +1,5 @@
 <ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="headerColor">
+  <ion-navbar>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <img width="140" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
@@ -9,16 +9,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+<ion-content #scrollArea>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+      <ion-toolbar class="wide-header__title" *ngIf="paymentRequests && paymentRequests.length > 0">
         <expandable-header-primary>
           <img margin-left width="155" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
         </expandable-header-primary>
         <ion-buttons end>
-          <button class="buy-crypto-button" *ngIf="paymentRequests && paymentRequests.length > 0" clear (click)="continueToSimplexBuyPage()">
-            Buy Crypto
+          <button class="buy-crypto-button" clear (click)="continueToSimplexBuyPage()">
+            {{'Buy Crypto' | translate}}
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </ion-buttons>
@@ -27,10 +27,12 @@
 
     <div class="container" *ngIf="(!paymentRequests || paymentRequests.length == 0) && !loading">
       <div class="center-header">
-        <div>
-          <h4 translate>Enabling Payments. Defeating Fraud.</h4>
-          <p translate>Purchase crypto with your debit/credit card via our partner Simplex.</p>
-        </div>
+        <img width="180" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
+        <h4 translate>Enabling Payments. Defeating Fraud.</h4>
+        <p translate>Purchase crypto with your debit/credit card via our partner Simplex.</p>
+        <button ion-button class="button-standard" (click)="continueToSimplexBuyPage()">
+          {{'Buy Crypto' | translate}}
+        </button>
       </div>
     </div>
 
@@ -56,13 +58,9 @@
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="paymentRequests && paymentRequests.length > 0">
   <ion-toolbar>
-    <button *ngIf="(!paymentRequests || paymentRequests.length == 0) && !loading" ion-button full class="button-footer" type="button" (click)="continueToSimplexBuyPage()">
-      {{'Buy Crypto' | translate}}
-    </button>
-
-    <div *ngIf="paymentRequests && paymentRequests.length > 0" class="simplex-problems">
+    <div class="simplex-problems">
       <span translate>Having problems with Simplex?</span>
       <br>
       <a (click)="openExternalLink('https://www.simplex.com/support/')" translate>

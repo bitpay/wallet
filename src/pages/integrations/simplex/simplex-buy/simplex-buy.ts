@@ -94,7 +94,25 @@ export class SimplexBuyPage {
     this.minFiatAmount = 50;
     this.maxFiatAmount = 20000;
 
-    this.showWallets();
+    if (_.isEmpty(this.wallets)) {
+      this.showErrorAndBack(
+        null,
+        this.translate.instant('No wallets with funds')
+      );
+      return;
+    }
+
+    if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
+    else this.showWallets();
+  }
+
+  private showErrorAndBack(title: string, msg): void {
+    title = title ? title : this.translate.instant('Error');
+    this.logger.error(msg);
+    msg = msg && msg.errors ? msg.errors[0].message : msg;
+    this.popupProvider.ionicAlert(title, msg).then(() => {
+      this.navCtrl.pop();
+    });
   }
 
   public showWallets(): void {
