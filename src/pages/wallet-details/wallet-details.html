@@ -98,7 +98,7 @@
             <span>{{'Linked to wallet: {linkedEthWalletName}' | translate : {linkedEthWalletName: wallet.linkedEthWalletName} }}</span>
           </span>
           <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
-            <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
+            <span>{{wallet.m}}-{{wallet.n}}</span>
           </span>
         </div>
 

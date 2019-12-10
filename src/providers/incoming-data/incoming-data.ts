@@ -72,7 +72,7 @@ export class IncomingDataProvider {
   }
 
   private isValidBitPayInvoice(data: string): boolean {
-    return !!/^https:\/\/(www.)?(test.)?bitpay.com\/i\/\w+/.exec(data);
+    return !!/^https:\/\/(www.)?(test.|staging.)?bitpay.com\/i\/\w+/.exec(data);
   }
 
   private isValidBitPayUri(data: string): boolean {
@@ -704,7 +704,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitPayCard',
-        title: this.translate.instant('BitPay Card URI')
+        title: 'BitPay Card URI'
       };
 
       // BitPay  URI
@@ -712,7 +712,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitPayUri',
-        title: this.translate.instant('BitPay URI')
+        title: 'BitPay URI'
       };
 
       // Join

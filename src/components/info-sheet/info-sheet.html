@@ -136,8 +136,7 @@
       <span *ngIf="params.wallets && params.wallets.length > 1" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
 
       <span *ngIf="!params.wallets[0]" sheet-text translate>
-        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
-        Only one {{ params.token.name }} wallet is allowed per ETH wallet.
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
 
       <span sheet-text>
@@ -154,7 +153,7 @@
 
       <span sheet-button-text translate *ngIf="params.wallets.length==1"  (click)="optionClicked(params.wallets[0])" style="float: right;" item-end>OK</span>
 
-      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">GO BACK</span>
+      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">Go Back</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">

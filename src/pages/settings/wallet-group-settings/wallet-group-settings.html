@@ -18,7 +18,7 @@
           <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
           <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
           <div class="subtitle-container" *ngIf="wallets && canSign">
-            <div class="subtitle">
+            <div class="subtitle" translate>
               This key contains {{wallets.length}} wallets.
             </div>
             <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">

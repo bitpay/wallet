@@ -18,15 +18,62 @@ export class BwcErrorProvider {
     prefix = prefix || '';
 
     switch (name) {
+      case 'INPUT_NOT_FOUND':
+        body = this.translate.instant(
+          "We could not find one or more inputs for your transaction on the blockchain. Make sure you're not trying to use unconfirmed change"
+        );
+        break;
       case 'UNCONFIRMED_INPUTS_NOT_ACCEPTED':
         body = this.translate.instant(
           'This invoice does not accept unconfirmed inputs.'
         );
         break;
-
+      case 'INVOICE_NOT_AVAILABLE':
+        body = this.translate.instant('The invoice is no available');
+        break;
       case 'INVOICE_EXPIRED':
         body = this.translate.instant(
-          'This invoice is not longer accepting payments'
+          'This invoice is no longer accepting payments'
+        );
+        break;
+      case 'UNABLE_TO_PARSE_PAYMENT':
+        body = this.translate.instant(
+          'We were unable to parse your payment. Please try again or contact your wallet provider'
+        );
+        break;
+      case 'NO_TRASACTION':
+        body = this.translate.instant(
+          'Your request did not include a transaction. Please try again or contact your wallet provider'
+        );
+        break;
+      case 'INVALID_TX_FORMAT':
+        body = this.translate.instant(
+          'Your transaction was an in an invalid format, it must be a hexadecimal string. Contact your wallet provider'
+        );
+        break;
+      case 'UNABLE_TO_PARSE_TX':
+        body = this.translate.instant(
+          'We were unable to parse the transaction you sent. Please try again or contact your wallet provider'
+        );
+        break;
+      case 'WRONG_ADDRESS':
+        body = this.translate.instant(
+          'The transaction you sent does not have any output to the address on the invoice'
+        );
+        break;
+      case 'WRONG_AMOUNT':
+        body = this.translate.instant(
+          'The amount on the transaction does not match the amount requested. This payment will not be accepted'
+        );
+        break;
+      case 'NOT_ENOUGH_FEE':
+        body = this.translate.instant(
+          'Transaction fee is below the current minimum threshold'
+        );
+        break;
+      case 'BTC_NOT_BCH':
+        body = this.translate.instant(
+          'This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead'
         );
         break;
 
