@@ -334,7 +334,7 @@ export class ImportWalletPage {
       });
     } else {
       const title = this.translate.instant('Error');
-      this.showErrorInfoSheet(title, err);
+      this.showErrorInfoSheet(title, this.bwcErrorProvider.msg(err));
     }
     this.onGoingProcessProvider.clear();
     return;

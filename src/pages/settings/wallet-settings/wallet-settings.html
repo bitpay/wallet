@@ -13,7 +13,7 @@
       </ion-note>
     </button>
     <ion-item class="with-label no-border">
-      <ion-label>Hide Wallet</ion-label>
+      <ion-label>{{'Hide Wallet' | translate }}</ion-label>
       <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
     </ion-item>
     <label-tip class="info" type="info" header="no-header" *ngIf="!wallet?.hidden">
