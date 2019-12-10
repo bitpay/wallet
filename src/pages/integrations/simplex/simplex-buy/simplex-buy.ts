@@ -92,10 +92,10 @@ export class SimplexBuyPage {
       this.showError(
         this.translate.instant('You do not have wallets able to receive funds')
       );
+    } else {
+      if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
+      else this.showWallets();
     }
-
-    if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
-    else this.showWallets();
   }
 
   ionViewDidLoad() {
