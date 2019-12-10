@@ -74,17 +74,11 @@ export class SimplexBuyPage {
           ? moment(profile.createdOn).format('YYYY-MM-DDTHH:mm:ss.SSSZ')
           : moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     });
-  }
 
-  ionViewDidLoad() {
-    this.logger.info('Loaded: SimplexBuyPage');
-  }
-
-  ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets({
       network: 'livenet',
       onlyComplete: true,
-      coin: ['btc'],
+      coin: ['btc', 'bch', 'eth'],
       backedUp: true
     });
     this.supportedFiatAltCurrencies = ['USD', 'EUR'];
@@ -95,24 +89,17 @@ export class SimplexBuyPage {
     this.maxFiatAmount = 20000;
 
     if (_.isEmpty(this.wallets)) {
-      this.showErrorAndBack(
-        null,
-        this.translate.instant('No wallets with funds')
+      this.showError(
+        this.translate.instant('You do not have wallets able to receive funds')
       );
-      return;
     }
 
     if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
     else this.showWallets();
   }
 
-  private showErrorAndBack(title: string, msg): void {
-    title = title ? title : this.translate.instant('Error');
-    this.logger.error(msg);
-    msg = msg && msg.errors ? msg.errors[0].message : msg;
-    this.popupProvider.ionicAlert(title, msg).then(() => {
-      this.navCtrl.pop();
-    });
+  ionViewDidLoad() {
+    this.logger.info('Loaded: SimplexBuyPage');
   }
 
   public showWallets(): void {
@@ -346,8 +333,8 @@ export class SimplexBuyPage {
       )
     };
 
-    var str = '';
-    for (var key in dataSrc) {
+    let str = '';
+    for (let key in dataSrc) {
       if (str != '') {
         str += '&';
       }
@@ -417,7 +404,7 @@ export class SimplexBuyPage {
                   'Saved Simplex with status: ' + newData.status
                 );
                 this.simplexPaymentFormSubmission(remoteData);
-                this.navCtrl.pop();
+                this.navCtrl.popToRoot();
               })
               .catch(err => {
                 this.showError(err);
