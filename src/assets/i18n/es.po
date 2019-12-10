@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-12-10 14:57\n"
+"PO-Revision-Date: 2019-12-10 17:48\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -195,7 +195,7 @@ msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "¿Estás seguro de cancelar y borrar esta billetera?"
 
 msgid "Are you sure you want to delete all wallets using this key?"
-msgstr "¿Está seguro que quiere eliminar todas las billeteras que utilizan esta llave?"
+msgstr "¿Está seguro que quiere eliminar todas las billeteras que utilizan esta clave?"
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "¿Está seguro de que desea eliminar este contacto?"
@@ -546,10 +546,10 @@ msgid "Create"
 msgstr "Crear"
 
 msgid "Create Key"
-msgstr "Crear Clave"
+msgstr "Crear clave"
 
 msgid "Create New Key"
-msgstr "Crear nueva llave"
+msgstr "Crear nueva clave"
 
 msgid "Create a new wallet"
 msgstr "Crear una nueva billetera"
@@ -597,7 +597,7 @@ msgid "Delete it and create a new one"
 msgstr "Borrar y crear uno nuevo"
 
 msgid "Delete key"
-msgstr "Eliminar llave"
+msgstr "Eliminar clave"
 
 msgid "Deleting Wallet..."
 msgstr "Eliminando billetera..."
@@ -648,7 +648,7 @@ msgid "Don't lose your key!"
 msgstr "¡No pierdas tu clave!"
 
 msgid "Don't see your Key?"
-msgstr "¿No ve su llave?"
+msgstr "¿No ve su clave?"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "¿No ves tu idioma en Crowdin? ¡Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
@@ -816,7 +816,7 @@ msgid "Extended Private Key"
 msgstr "Clave privada extendida"
 
 msgid "Extended Public Keys"
-msgstr "Claves Públicas Extendidas"
+msgstr "Claves públicas extendidas"
 
 msgid "Extracting Wallet information..."
 msgstr "Obteniendo Información de la billetera..."
@@ -1149,16 +1149,16 @@ msgid "Joining Wallet..."
 msgstr "Uniéndose a la billetera..."
 
 msgid "Key Name"
-msgstr "Nombre de la llave"
+msgstr "Nombre de la clave"
 
 msgid "Key Settings"
-msgstr "Preferencias de la llave"
+msgstr "Preferencias de la clave"
 
 msgid "Key already associated with an existing wallet"
 msgstr "La clave ya esta asociada a un monedero existente"
 
 msgid "Keys"
-msgstr "Llaves"
+msgstr "Claves"
 
 msgid "Language"
 msgstr "Idioma"
@@ -1308,7 +1308,7 @@ msgid "Network error"
 msgstr "Error de red"
 
 msgid "New Key"
-msgstr "Nueva Clave"
+msgstr "Nueva clave"
 
 msgid "New copayer"
 msgstr "Nuevo copayer"
@@ -1539,7 +1539,7 @@ msgid "Pending Proposals"
 msgstr "Propuestas de pago pendientes"
 
 msgid "Permanently delete all wallets using this key."
-msgstr "Borra permanentemente todas las billeteras que utilizan esta llave."
+msgstr "Borra permanentemente todas las billeteras que utilizan esta clave."
 
 msgid "Permanently delete this wallet."
 msgstr "Eliminar esta billetera de forma permanente."
@@ -1827,10 +1827,10 @@ msgid "See transaction"
 msgstr "Ver transacción"
 
 msgid "Select Key"
-msgstr "Seleccionar llave"
+msgstr "Seleccionar clave"
 
 msgid "Select Key to add ETH Wallet to"
-msgstr "Seleccionar la llave a la cual agregar la billetera ETH"
+msgstr "Seleccionar la clave a la cual agregar la billetera ETH"
 
 msgid "Select a Ethereum Wallet for Transaction Costs"
 msgstr "Seleccione una billetera Ethereum para los Costos de Transacción"
@@ -2482,7 +2482,7 @@ msgid "Wallet is not complete"
 msgstr "La billetera no esta completa"
 
 msgid "Wallet key"
-msgstr "Llave de la Billetera"
+msgstr "Clave de la billetera"
 
 msgid "Wallet name"
 msgstr "Nombre de la billetera"
@@ -2551,7 +2551,7 @@ msgid "Website"
 msgstr "Sitio Web"
 
 msgid "What do you call this key?"
-msgstr "¿Cómo desea llamar a esta llave?"
+msgstr "¿Cómo desea llamar a esta clave?"
 
 msgid "What do you call this wallet?"
 msgstr "¿Como desea llamar a esta billetera?"
