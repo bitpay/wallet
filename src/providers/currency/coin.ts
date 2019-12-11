@@ -147,6 +147,41 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
     }
   },
+  xrp: {
+    name: 'Ripple',
+    chain: 'XRP',
+    coin: 'xrp',
+    unitInfo: {
+      unitName: 'XRP',
+      unitToSatoshi: 1e6,
+      unitDecimals: 6,
+      unitCode: 'xrp'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'RIP681',
+      protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
+      ratesApi: 'https://bitpay.com/api/rates/xrp',
+      blockExplorerUrls: 'xrpscan.com/'
+    },
+    feeInfo: {
+      feeUnit: 'drops',
+      feeUnitAmount: 1e6,
+      blockTime: 0.05,
+      maxMerchantFee: 'normal'
+    },
+    theme: {
+      backgroundColor: 'rgba(35,41,47,1)',
+      gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
+    }
+  },
   pax: {
     name: 'Paxos Standard',
     chain: 'ETH',

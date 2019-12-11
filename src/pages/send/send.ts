@@ -39,6 +39,8 @@ export class SendPage extends WalletTabsChild {
     'BitcoinCashAddress',
     'EthereumAddress',
     'EthereumUri',
+    'RippleAddress',
+    'RippleUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'BitPayUri'
@@ -213,7 +215,8 @@ export class SendPage extends WalletTabsChild {
             this.search
           );
           const payproOptions = await this.payproProvider.getPayProOptions(
-            invoiceUrl
+            invoiceUrl,
+            true
           );
           const selected = payproOptions.paymentOptions.filter(
             option => option.selected

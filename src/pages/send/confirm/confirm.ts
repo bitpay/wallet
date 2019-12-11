@@ -199,8 +199,10 @@ export class ConfirmPage extends WalletTabsChild {
           ? 0
           : parseInt(amount, 10),
       description: this.navParams.data.description,
+      destinationTag: this.navParams.data.destinationTag, // xrp
       paypro: this.navParams.data.paypro,
       data: this.navParams.data.data, // eth
+      invoiceID: this.navParams.data.invoiceID, // xrp
       payProUrl: this.navParams.data.payProUrl,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
@@ -791,6 +793,11 @@ export class ConfirmPage extends WalletTabsChild {
         }
       }
 
+      if (wallet.coin === 'xrp') {
+        txp.invoiceID = tx.invoiceID;
+        txp.destinationTag = tx.destinationTag;
+      }
+
       this.walletProvider
         .getAddress(this.wallet, false)
         .then(address => {
@@ -1020,7 +1027,7 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   public chooseFeeLevel(): void {
-    if (this.tx.coin == 'bch') return;
+    if (this.tx.coin === 'bch' || this.tx.coin === 'xrp') return;
     if (this.usingMerchantFee) return; // TODO: should we allow override?
 
     const txObject = {

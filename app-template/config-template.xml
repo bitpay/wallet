@@ -95,6 +95,7 @@
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
       <variable name="FOURTH_URL_SCHEME" value="bchtest" />
       <variable name="FIFTH_URL_SCHEME" value="ethereum" />
+      <variable name="SIXTH_URL_SCHEME" value="ripple" />
       <variable name="ANDROID_SCHEME" value="" />
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />

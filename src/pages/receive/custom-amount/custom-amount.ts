@@ -93,7 +93,10 @@ export class CustomAmountPage {
         );
       }
 
-      if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+      if (
+        this.currencyProvider.isUtxoCoin(this.wallet.coin) ||
+        this.wallet.coin === 'xrp'
+      ) {
         this.qrAddress =
           (protoAddr ? protoAddr : this.address) + '?amount=' + this.amountCoin;
       } else {
