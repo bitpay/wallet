@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -47,8 +47,6 @@ import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
   templateUrl: 'confirm.html'
 })
 export class ConfirmPage extends WalletTabsChild {
-  @ViewChild('slideButton')
-  slideButton;
   protected bitcoreCash;
 
   public countDown = null;
@@ -66,7 +64,6 @@ export class ConfirmPage extends WalletTabsChild {
   public successText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
-  public hideSlideButton: boolean;
   public amount;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
@@ -128,7 +125,6 @@ export class ConfirmPage extends WalletTabsChild {
       ? this.config.wallet.settings.feeLevel
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
-    this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
@@ -246,16 +242,6 @@ export class ConfirmPage extends WalletTabsChild {
       .catch(err => {
         this.showErrorInfoSheet(err, null, true);
       });
-
-    if (this.isCordova) {
-      window.addEventListener('keyboardWillShow', () => {
-        this.hideSlideButton = true;
-      });
-
-      window.addEventListener('keyboardWillHide', () => {
-        this.hideSlideButton = false;
-      });
-    }
   }
 
   ionViewDidLoad() {
@@ -382,21 +368,15 @@ export class ConfirmPage extends WalletTabsChild {
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
-      this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to pay')
-        : this.translate.instant('Click to pay');
+      this.buttonText = this.translate.instant('Pay');
     } else if (isMultisig) {
-      this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to accept')
-        : this.translate.instant('Click to accept');
+      this.buttonText = this.translate.instant('Accept');
       this.successText =
         this.wallet.credentials.n == 1
           ? this.translate.instant('Payment Sent')
           : this.translate.instant('Proposal created');
     } else {
-      this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to send')
-        : this.translate.instant('Click to send');
+      this.buttonText = this.translate.instant('Send');
       this.successText = this.translate.instant('Payment Sent');
     }
   }
@@ -834,12 +814,10 @@ export class ConfirmPage extends WalletTabsChild {
   ): void {
     if (!error) return;
     this.logger.warn('ERROR:', error);
-    if (this.isCordova) this.slideButton.isConfirmed(false);
     if (
       (error as Error).message === 'FINGERPRINT_CANCELLED' ||
       (error as Error).message === 'PASSWORD_CANCELLED'
     ) {
-      this.hideSlideButton = false;
       return;
     }
     const infoSheetTitle = title ? title : this.translate.instant('Error');
@@ -850,7 +828,6 @@ export class ConfirmPage extends WalletTabsChild {
     );
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => {
-      this.hideSlideButton = false;
       if (exit) {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
@@ -872,7 +849,6 @@ export class ConfirmPage extends WalletTabsChild {
   public approve(tx, wallet): Promise<void> {
     if (!tx || !wallet) return undefined;
 
-    this.hideSlideButton = true;
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
@@ -885,10 +861,6 @@ export class ConfirmPage extends WalletTabsChild {
       .then(txp => {
         return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
-            if (this.isCordova) {
-              this.slideButton.isConfirmed(false);
-              this.hideSlideButton = false;
-            }
             this.onGoingProcessProvider.clear();
             return;
           }
@@ -950,7 +922,6 @@ export class ConfirmPage extends WalletTabsChild {
         return this.openFinishModal();
       })
       .catch(err => {
-        if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
         if (txp.payProUrl) {

@@ -2,6 +2,13 @@ wide-header-page,
 card-catalog-page {
   @include fix-ios-bg-scroll();
 
+  ion-content {
+    .fixed-content,
+    .scroll-content {
+      padding-bottom: calc(env(safe-area-inset-bottom));
+    }
+  }
+
   expandable-header-primary {
     line-height: 1.2;
   }
@@ -50,9 +57,18 @@ card-catalog-page,
 page-add,
 page-add-wallet,
 page-settings,
+page-proposals,
+page-wallet-group-settings,
 purchased-cards-page {
   @include fix-ios-bg-scroll($top-color: white);
   @include toolbar-button-color();
+
+  ion-content {
+    .fixed-content,
+    .scroll-content {
+      padding-bottom: calc(env(safe-area-inset-bottom));
+    }
+  }
 
   ion-title .toolbar-title {
     color: black;

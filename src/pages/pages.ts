@@ -14,7 +14,6 @@ import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-emai
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
-import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
@@ -220,6 +219,5 @@ export const PAGES = [
   WalletBalancePage,
   WideHeaderPage,
   CardItemPage,
-  CoinSelectorPage,
-  SlideToAcceptPage
+  CoinSelectorPage
 ];

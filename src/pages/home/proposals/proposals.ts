@@ -36,9 +36,7 @@ export class ProposalsPage {
   public txpsRejected: any[];
   public txpsToSign: any[];
   public walletIdSelectedToSign: string;
-  public isCordova: boolean;
   public buttonText: string;
-  public hideSlideButton: boolean;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -65,7 +63,6 @@ export class ProposalsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
     this.walletId = this.navParams.data.walletId;
-    this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign selected proposals');
 
     this.allTxps = [];
@@ -324,8 +321,6 @@ export class ProposalsPage {
       txp.checked = true;
       this.txpsToSign.push(txp);
     }
-    if (this.isCordova)
-      this.hideSlideButton = this.txpsToSign[0] ? false : true;
   }
 
   private resetMultiSignValues(): void {
@@ -364,8 +359,6 @@ export class ProposalsPage {
         this.txpsToSign.push(txp);
         txp.checked = true;
       });
-
-      if (this.isCordova) this.hideSlideButton = false;
     });
   }
 }

@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Notifications' | translate}}" [ngClass]="{'no-margin-bottom': !txpsToSign[0], 'small-margin': !isCordova && txpsToSign[0]}">
+<wide-header-page title="{{'Notifications' | translate}}">
   <div page-content>
     <div *ngIf="allTxps && allTxps[0]">
       <div class="txps-status" *ngFor="let txpsByStatus of allTxps">
@@ -32,10 +32,11 @@
       </div>
     </div>
   </div>
+  <div footer-content>
+    <ion-footer class="button-footer" *ngIf="txpsToSign[0]">
+      <ion-toolbar transparent>
+        <button ion-button clear block color="light" class="button-footer" (click)="sign()">{{buttonText}}</button>
+      </ion-toolbar>
+    </ion-footer>
+  </div>
 </wide-header-page>
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova && txpsToSign[0]" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova && txpsToSign[0]">
-    <button ion-button full class="button-footer" (click)="sign()">{{buttonText}}</button>
-  </ion-toolbar>
-</ion-footer>

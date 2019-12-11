@@ -32,10 +32,9 @@
     </button>
   </div>
 </ion-content>
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova">
-    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0">
+<ion-footer class="button-footer">
+  <ion-toolbar transparent>
+    <button ion-button clear block color="light" (click)="sweepWallet()" [disabled]="balances.length == 0">
       {{'Sweep' | translate}}
     </button>
   </ion-toolbar>

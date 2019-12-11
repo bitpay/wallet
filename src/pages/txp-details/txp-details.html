@@ -169,10 +169,8 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}">
-  </page-slide-to-accept>
-  <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && !isCordova">
-    <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
+<ion-footer class="button-footer" *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired)">
+  <ion-toolbar transparent>
+    <button ion-button clear block color="light" (click)="onConfirm()">{{buttonText}}</button>
   </ion-toolbar>
 </ion-footer>

@@ -3,6 +3,7 @@
   height: 100%;
   background-color: white;
   cursor: pointer;
+  padding-bottom: calc(env(safe-area-inset-bottom));
 
   .option {
     border-bottom: 1px solid rgb(237, 237, 237);

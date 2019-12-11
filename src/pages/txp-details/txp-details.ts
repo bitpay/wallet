@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -17,7 +17,6 @@ import { CurrencyProvider } from '../../providers/currency/currency';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
@@ -33,9 +32,6 @@ import * as _ from 'lodash';
   templateUrl: 'txp-details.html'
 })
 export class TxpDetailsPage {
-  @ViewChild('slideButton')
-  slideButton;
-
   public wallet;
   public tx;
   public copayers;
@@ -52,14 +48,12 @@ export class TxpDetailsPage {
   public loading: boolean;
   public showMultiplesOutputs: boolean;
   public amount: string;
-  public isCordova: boolean;
   public hideSlideButton: boolean;
 
   private countDown;
 
   constructor(
     private navParams: NavParams,
-    private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
     private events: Events,
     private logger: Logger,
@@ -88,7 +82,6 @@ export class TxpDetailsPage {
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
-    this.isCordova = this.platformProvider.isCordova;
     this.copayers = this.wallet.cachedStatus.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
@@ -179,14 +172,10 @@ export class TxpDetailsPage {
       this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to send')
-        : this.translate.instant('Click to send');
+      this.buttonText = this.translate.instant('Send');
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to accept')
-        : this.translate.instant('Click to accept');
+      this.buttonText = this.translate.instant('Accept');
       this.successText = this.translate.instant('Payment Accepted');
     }
   }
@@ -271,7 +260,6 @@ export class TxpDetailsPage {
     this.loading = false;
     if (!error) return;
     this.logger.warn('ERROR:', error);
-    if (this.isCordova) this.slideButton.isConfirmed(false);
     if (
       (error as Error).message === 'FINGERPRINT_CANCELLED' ||
       (error as Error).message === 'PASSWORD_CANCELLED'

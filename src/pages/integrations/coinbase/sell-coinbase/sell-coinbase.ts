@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
@@ -16,7 +16,6 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { Coin } from '../../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
@@ -27,9 +26,6 @@ import { WalletProvider } from '../../../../providers/wallet/wallet';
   templateUrl: 'sell-coinbase.html'
 })
 export class SellCoinbasePage {
-  @ViewChild('slideButton')
-  slideButton;
-
   private coin: Coin;
   private amount: string;
   private currency: string;
@@ -47,10 +43,6 @@ export class SellCoinbasePage {
   public isFiat: boolean;
   public priceSensitivity;
   public isOpenSelector: boolean;
-  public hideSlideButton: boolean;
-
-  // Platform info
-  public isCordova: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -67,8 +59,7 @@ export class SellCoinbasePage {
     private walletProvider: WalletProvider,
     private txFormatProvider: TxFormatProvider,
     private profileProvider: ProfileProvider,
-    private modalCtrl: ModalController,
-    private platformProvider: PlatformProvider
+    private modalCtrl: ModalController
   ) {
     this.isFiat = true;
     this.coin = this.navParams.data.coin; // BTC
@@ -77,8 +68,6 @@ export class SellCoinbasePage {
     this.priceSensitivity = this.coinbaseProvider.priceSensitivity;
     this.selectedPriceSensitivity = this.coinbaseProvider.selectedPriceSensitivity;
     this.network = this.coinbaseProvider.getNetwork();
-    this.isCordova = this.platformProvider.isCordova;
-    this.hideSlideButton = false;
   }
 
   ionViewDidLoad() {
@@ -108,8 +97,6 @@ export class SellCoinbasePage {
   }
 
   private showErrorAndBack(err): void {
-    this.hideSlideButton = false;
-    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -118,8 +105,6 @@ export class SellCoinbasePage {
   }
 
   private showError(err): void {
-    this.hideSlideButton = false;
-    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
@@ -361,11 +346,9 @@ export class SellCoinbasePage {
       .ionicConfirm(null, message, okText, cancelText)
       .then(ok => {
         if (!ok) {
-          if (this.isCordova) this.slideButton.isConfirmed(false);
           return;
         }
 
-        this.hideSlideButton = true;
         this.onGoingProcessProvider.set('sellingBitcoin');
         this.coinbaseProvider.init((err, res) => {
           if (err) {

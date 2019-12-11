@@ -28,9 +28,9 @@
     </ion-item>
   </ion-list>
 </ion-content>
-<ion-footer>
-  <ion-toolbar *ngIf="isCordova && allAddresses[0]">
-    <button ion-button full class="button-footer" (click)="sendByEmail()">
+<ion-footer class="button-footer" *ngIf="isCordova && allAddresses[0]">
+  <ion-toolbar transparent>
+    <button ion-button clear block color="light" (click)="sendByEmail()">
       <span translate>Send addresses by email</span>
     </button>
   </ion-toolbar>

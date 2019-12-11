@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}" no-bounce>
+<ion-content no-bounce>
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">
@@ -176,10 +176,8 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
-  </page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired">{{buttonText}}</button>
+<ion-footer class="button-footer">
+  <ion-toolbar transparent>
+    <button ion-button clear block color="light" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired">{{buttonText}}</button>
   </ion-toolbar>
 </ion-footer>

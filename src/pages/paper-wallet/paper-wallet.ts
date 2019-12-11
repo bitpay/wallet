@@ -15,7 +15,6 @@ import { Coin, CoinsMap } from '../../providers/currency/currency';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletOptions, WalletProvider } from '../../providers/wallet/wallet';
@@ -48,7 +47,6 @@ export class PaperWalletPage {
   private bitcore;
 
   // Platform info
-  public isCordova: boolean;
 
   constructor(
     private app: App,
@@ -64,11 +62,9 @@ export class PaperWalletPage {
     private profileProvider: ProfileProvider,
     private modalCtrl: ModalController,
     private translate: TranslateService,
-    private platformProvider: PlatformProvider,
     private bwcErrorProvider: BwcErrorProvider
   ) {
     this.bitcore = this.bwcProvider.getBitcore();
-    this.isCordova = this.platformProvider.isCordova;
     this.isOpenSelector = false;
     this.scannedKey = this.navParams.data.privateKey;
     this.isPkEncrypted = this.scannedKey
