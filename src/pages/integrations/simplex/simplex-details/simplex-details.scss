@@ -23,4 +23,7 @@ page-simplex-details {
       }
     }
   }
+  .no-border .item-inner {
+    border-bottom: none !important;
+  }
 }

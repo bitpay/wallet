@@ -409,7 +409,9 @@ export class SimplexBuyPage {
                   'Saved Simplex with status: ' + newData.status
                 );
                 this.simplexPaymentFormSubmission(remoteData);
-                this.navCtrl.popToRoot();
+                setTimeout(() => {
+                  this.navCtrl.popToRoot();
+                }, 2500);
               })
               .catch(err => {
                 this.showError(err);

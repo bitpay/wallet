@@ -1103,6 +1103,27 @@ describe('Profile Provider', () => {
       expect(wallets).toEqual([profileProvider.wallet.id3]);
     });
 
+    it('should get all the wallets that match the array of coins', () => {
+      const opts = {
+        coin: ['btc', 'bch'],
+        network: 'livenet'
+      };
+      const wallets = profileProvider.getWallets(opts);
+      expect(wallets).toEqual([
+        profileProvider.wallet.id1,
+        profileProvider.wallet.id2
+      ]);
+    });
+
+    it('should get all the backed up wallets', () => {
+      walletMock['id3'].needsBackup = true;
+      const opts = {
+        backedUp: true
+      };
+      const wallets = profileProvider.getWallets(opts);
+      expect(wallets).toEqual([profileProvider.wallet.id1]);
+    });
+
     it('should not return any wallet when there is no wallets validating provided opts', () => {
       const opts = {
         coin: 'bch',
