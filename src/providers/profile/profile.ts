@@ -408,6 +408,10 @@ export class ProfileProvider {
       if (opts.walletId && opts.walletId == wallet.id) {
         this.logger.debug('Updating wallet from config ' + wallet.id);
         this.updateWalletFromConfig(wallet);
+      } else if (opts.walletId && opts.walletId.includes(wallet.id)) {
+        const tokenWallet = this.getWallet(opts.walletId);
+        this.logger.debug('Updating token wallet from config ' + opts.walletId);
+        this.updateWalletFromConfig(tokenWallet);
       }
     });
     return Promise.resolve(true);
