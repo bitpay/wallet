@@ -6,26 +6,26 @@ import { TestUtils } from '../../test';
 
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { HomePage } from './home';
+import { WalletsPage } from './wallets';
 
-describe('HomePage', () => {
-  let fixture: ComponentFixture<HomePage>;
+describe('WalletsPage', () => {
+  let fixture: ComponentFixture<WalletsPage>;
   let instance;
   let testBed: typeof TestBed;
 
   beforeEach(async(() =>
-    TestUtils.configurePageTestingModule([HomePage]).then(testEnv => {
+    TestUtils.configurePageTestingModule([WalletsPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
       testBed = testEnv.testBed;
       instance.showCard = {
-        setShowRateCard: () => {}
+        setShowRateCard: () => { }
       };
       instance.showSurvey = {
-        setShowSurveyCard: () => {}
+        setShowSurveyCard: () => { }
       };
       instance.showEthLiveCard = {
-        setShowEthLiveCard: () => {}
+        setShowEthLiveCard: () => { }
       };
       fixture.detectChanges();
     })));

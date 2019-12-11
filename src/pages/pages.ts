@@ -65,14 +65,16 @@ import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
+import { CardsPage } from '../pages/cards/cards';
 import { HomePage } from '../pages/home/home';
 import { ReceivePage } from '../pages/receive/receive';
 import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
+import { WalletsPage } from '../pages/wallets/wallets';
 
 /* Home */
-import { ProposalsPage } from '../pages/home/proposals/proposals';
+import { ProposalsNotificationsPage } from '../pages/wallets/proposals-notifications/proposals-notifications';
 
 /* Settings */
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
@@ -172,13 +174,15 @@ export const PAGES = [
   GravatarPage,
   FingerprintModalPage,
   HomePage,
+  CardsPage,
+  WalletsPage,
   LanguagePage,
   LockPage,
   MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
-  ProposalsPage,
+  ProposalsNotificationsPage,
   ReceivePage,
   ScanPage,
   SendPage,

@@ -1,4 +1,3 @@
-import { WalletItemContent } from './../pages/home/wallets/wallet-item-content.component';
 import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
@@ -9,6 +8,7 @@ import { LabelTip } from './label-tip/label-tip';
 import { PriceCard } from './price-card/price-card';
 import { PriceChart } from './price-card/price-chart/price-chart';
 import { SearchBarComponent } from './search-bar/search-bar';
+import { WalletItemContent } from './wallet-item-content/wallet-item-content';
 
 export const COMPONENTS = [
   ActionCardComponent,

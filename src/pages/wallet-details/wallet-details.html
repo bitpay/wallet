@@ -126,7 +126,7 @@
           <ion-item-divider class="tx-history-header tx-history-header--large">
             <span *ngIf="requiresMultipleSignatures" translate>Pending Proposals</span>
             <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
-            <button ion-button clear icon-only class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsPage()">
+            <button ion-button clear icon-only class="txps-badge" *ngIf="txps.length > 0" (click)="openProposalsNotificationsPage()">
               <ion-badge>{{txps.length}}</ion-badge>
             </button>
           </ion-item-divider>

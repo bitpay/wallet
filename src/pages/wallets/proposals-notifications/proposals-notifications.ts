@@ -25,13 +25,13 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { FinishModalPage } from '../../finish/finish';
 
 @Component({
-  selector: 'page-proposals',
-  templateUrl: 'proposals.html'
+  selector: 'page-proposals-notifications',
+  templateUrl: 'proposals-notifications.html'
 })
-export class ProposalsPage {
+
+export class ProposalsNotificationsPage {
   @ViewChild('slideButton')
   slideButton;
-
   public addressbook;
   public allTxps: any[];
   public txpsPending: any[];

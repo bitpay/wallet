@@ -25,9 +25,9 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-import { ProposalsPage } from '../../pages/home/proposals/proposals';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
@@ -209,8 +209,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     });
   }
 
-  public openProposalsPage(): void {
-    this.navCtrl.push(ProposalsPage, { walletId: this.wallet.id });
+  public openProposalsNotificationsPage(): void {
+    this.navCtrl.push(ProposalsNotificationsPage, { walletId: this.wallet.id });
   }
 
   private updateAll = _.debounce(

@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+import { CardsPage } from '../cards/cards';
 import { HomePage } from '../home/home';
-import { ScanPage } from '../scan/scan';
-
+import { SettingsPage } from '../settings/settings';
+import { WalletsPage } from '../wallets/wallets';
 @Component({
   templateUrl: 'tabs.html'
 })
@@ -10,5 +11,7 @@ export class TabsPage {
   tabs;
 
   homeRoot = HomePage;
-  scanRoot = ScanPage;
+  walletsRoot = WalletsPage;
+  cardsRoot = CardsPage;
+  SettingsRoot = SettingsPage;
 }

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'wallet-item-content',
-  templateUrl: 'wallet-item-content.component.html'
+  templateUrl: 'wallet-item-content.html'
 })
 export class WalletItemContent {
   @Input()
