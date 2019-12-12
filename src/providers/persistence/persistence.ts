@@ -32,6 +32,7 @@ const Keys = {
   BACKUP: walletId => 'backup-' + walletId,
   BACKUP_WALLET_GROUP: keyId => 'walletGroupBackup-' + keyId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
+  HISTORY_CACHE: cardId => 'historyCache-' + cardId,
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
   CLEAN_AND_SCAN_ADDRESSES: 'CleanAndScanAddresses',
   COINBASE_REFRESH_TOKEN: network => 'coinbaseRefreshToken-' + network,
@@ -348,6 +349,18 @@ export class PersistenceProvider {
 
   removeTxHistory(walletId: string) {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
+  }
+
+  setLastKnownHistory(id: string, txs: string) {
+    let updatedOn = Math.floor(Date.now() / 1000);
+    return this.storage.set(Keys.HISTORY_CACHE(id), {
+      updatedOn,
+      txs
+    });
+  }
+
+  getLastKnownHistory(id: string) {
+    return this.storage.get(Keys.HISTORY_CACHE(id));
   }
 
   setLastKnownBalance(id: string, balance: string) {

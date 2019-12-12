@@ -98,7 +98,7 @@
             <span>{{'Linked to wallet: {linkedEthWalletName}' | translate : {linkedEthWalletName: wallet.linkedEthWalletName} }}</span>
           </span>
           <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
-            <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
+            <span>{{wallet.m}}-{{wallet.n}}</span>
           </span>
         </div>
 
@@ -206,7 +206,7 @@
                   </div>
                 </ion-icon>
 
-                <div class="action" *ngIf="tx.confirmations <= 0">
+                <div class="action" *ngIf="tx.confirmations <= 0 && !(tx.amount === 0 && wallet.coin === 'eth')">
                   <span *ngIf="(tx.action == 'sent') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Sending'
                     | translate}}</span>
                   <span *ngIf="(tx.action == 'moved') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Moving'
@@ -225,7 +225,7 @@
                   </span>
                 </div>
 
-                <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
+                <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent' && !(tx.amount === 0 && wallet.coin === 'eth')">
                   <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)" translate>Sent</span>
                   <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent'
                     | translate}}</span>
@@ -237,6 +237,10 @@
                   <span *ngIf="!tx.message && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
                     {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
                   </span>
+                </div>
+
+                <div class="action" *ngIf="tx.amount === 0 && wallet.coin === 'eth'">
+                  <span>{{'Fee for token transfer' | translate}}</span>
                 </div>
 
                 <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
@@ -252,8 +256,9 @@
 
                 <ion-note item-end text-end>
                   <div class="amount">
-                    <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount |
+                    <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid' && !(tx.amount === 0 && wallet.coin === 'eth')">{{tx.amount |
                       satToUnit: wallet.coin}}</span>
+                    <span *ngIf="tx.amount === 0 && wallet.coin === 'eth'">{{tx.fees | satToUnit: wallet.coin}}</span>
                     <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
                   </div>
                   <div class="date">

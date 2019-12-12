@@ -10,7 +10,9 @@
       <div>
         <img-loader class="card-image" src="{{cardConfig?.cardImage}}">
           <div class="discount" *ngIf="hasPercentageDiscount">
-            Save {{cardConfig.discounts[0].amount}}%</div>
+            Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]">
+            </gift-card-discount-text>
+          </div>
         </img-loader>
       </div>
       <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency"

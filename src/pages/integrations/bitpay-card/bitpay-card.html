@@ -1,26 +1,30 @@
 <ion-header no-border>
   <ion-navbar class="app-color">
-    <ion-title>BitPay Visa
-      <sup>&reg;</sup> Card ({{lastFourDigits}})</ion-title>
+    <ion-title>
+      BitPay Visa <sup>&reg;</sup> Card ({{lastFourDigits}})
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <div class="balance-card">
-    <div class="balance-header">
-      <div (tap)="update()" class="balance-str" *ngIf="balance">
-        {{balance | number:'1.2-2' }} {{currency}}
-      </div>
-      <button ion-button color="primary" (click)="topUp()" *ngIf="balance" no-low-fee>
-        <span translate>Add funds</span> &rarr;
-      </button>
-
-      <div class="card-info">
-        <ion-spinner *ngIf="!balance || loadingHistory"></ion-spinner>
-      </div>
-
-    </div>
-  </div>
+<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="'#14245E'">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#14245E'}" pullMin="90" pullMax="180">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="wrapper wrapper--feather">
+    <expandable-header class="balance-card" [scrollArea]="scrollArea">
+      <expandable-header-primary class="balance-header">
+        <div class="balance-str" *ngIf="balance">
+          {{balance | number:'1.2-2' }} {{currency}}
+        </div>
+        <button class="add-funds-button" ion-button color="light" clear (click)="topUp()" *ngIf="balance" no-low-fee>
+          <span translate>Add funds</span>
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+        <div class="card-info">
+          <ion-spinner *ngIf="!balance || loadingHistory"></ion-spinner>
+        </div>
+      </expandable-header-primary>
+    </expandable-header>
 
   <div *ngIf="getStarted" class="initial-message">
     <h1 translate>Get started</h1>
@@ -74,4 +78,5 @@
       </div>
     </ion-list>
   </ion-list>
+  </div>
 </ion-content>

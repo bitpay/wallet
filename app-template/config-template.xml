@@ -19,6 +19,7 @@
     <access origin="https://shapeshift.io" />
     <access origin="https://api.coinbase.com" />
     <access origin="https://coinbase.com" />
+    <access origin="https://www.coinbase.com" />
     <allow-navigation href="gap://ready" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
@@ -105,7 +106,12 @@
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
-      <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
+      <config-file target="*-Info.plist" parent="UIUserInterfaceStyle">
+        <string>Light</string>
+      </config-file>
+      <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
+        <true />
+      </config-file>
       <config-file target="*-Info.plist" parent="ITSAppUsesNonExemptEncryption"><false/></config-file>
 
       <config-file platform="ios" target="*-Info.plist" parent="LSApplicationQueriesSchemes">

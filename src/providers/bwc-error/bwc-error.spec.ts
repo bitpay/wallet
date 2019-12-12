@@ -27,9 +27,57 @@ describe('BwcErrorProvider: Bwc Error Provider', () => {
         'This invoice does not accept unconfirmed inputs.'
       );
 
+      err = new Error('INPUT_NOT_FOUND');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        "We could not find one or more inputs for your transaction on the blockchain. Make sure you're not trying to use unconfirmed change"
+      );
+
+      err = new Error('INVOICE_NOT_AVAILABLE');
+      expect(bwcErrorProvider.msg(err)).toEqual('The invoice is no available');
+
+      err = new Error('UNABLE_TO_PARSE_PAYMENT');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'We were unable to parse your payment. Please try again or contact your wallet provider'
+      );
+
+      err = new Error('NO_TRASACTION');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Your request did not include a transaction. Please try again or contact your wallet provider'
+      );
+
+      err = new Error('INVALID_TX_FORMAT');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Your transaction was an in an invalid format, it must be a hexadecimal string. Contact your wallet provider'
+      );
+
+      err = new Error('UNABLE_TO_PARSE_TX');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'We were unable to parse the transaction you sent. Please try again or contact your wallet provider'
+      );
+
+      err = new Error('WRONG_ADDRESS');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'The transaction you sent does not have any output to the address on the invoice'
+      );
+
+      err = new Error('WRONG_AMOUNT');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'The amount on the transaction does not match the amount requested. This payment will not be accepted'
+      );
+
+      err = new Error('NOT_ENOUGH_FEE');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Transaction fee is below the current minimum threshold'
+      );
+
+      err = new Error('BTC_NOT_BCH');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead'
+      );
+
       err = new Error('INVOICE_EXPIRED');
       expect(bwcErrorProvider.msg(err)).toEqual(
-        'This invoice is not longer accepting payments'
+        'This invoice is no longer accepting payments'
       );
 
       err = new Error('INVALID_BACKUP');

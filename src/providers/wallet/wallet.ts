@@ -13,7 +13,6 @@ import { Coin, CurrencyProvider } from '../currency/currency';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
-import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -110,7 +109,6 @@ export class WalletProvider {
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
     private filter: FilterProvider,
-    private languageProvider: LanguageProvider,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider,
@@ -349,8 +347,9 @@ export class WalletProvider {
             // This will update exchange rates
             cacheStatus(wallet.cachedStatus);
 
-            //
-            checkAndUpdateAdddress();
+            if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+              checkAndUpdateAdddress();
+            }
 
             processPendingTxps(wallet.cachedStatus);
             return resolve(wallet.cachedStatus);
@@ -1193,76 +1192,47 @@ export class WalletProvider {
     });
   }
 
-  public updateRemotePreferences(clients, prefs?): Promise<any> {
+  // updates local and remote prefs for 1 wallet
+  public updateRemotePreferencesFor(client, prefs): Promise<any> {
     return new Promise((resolve, reject) => {
-      prefs = prefs ? prefs : {};
+      client.preferences = client.preferences || {};
+      if (!_.isEmpty(prefs)) {
+        _.assign(client.preferences, prefs);
+      }
 
-      if (!_.isArray(clients)) clients = [clients];
+      this.logger.debug(
+        'Saving remote preferences',
+        client.credentials.walletName,
+        JSON.stringify(client.preferences)
+      );
 
-      const updateRemotePreferencesFor = (clients, prefs): Promise<any> => {
-        return new Promise((resolve, reject) => {
-          const wallet = clients.shift();
-          if (!wallet) return resolve();
-          this.logger.debug(
-            'Saving remote preferences',
-            wallet.credentials.walletName,
-            prefs
+      client.savePreferences(client.preferences, err => {
+        if (err) {
+          this.popupProvider.ionicAlert(
+            this.bwcErrorProvider.msg(
+              err,
+              this.translate.instant('Could not save preferences on the server')
+            )
           );
-
-          wallet.savePreferences(prefs, err => {
-            if (err) {
-              this.popupProvider.ionicAlert(
-                this.bwcErrorProvider.msg(
-                  err,
-                  this.translate.instant(
-                    'Could not save preferences on the server'
-                  )
-                )
-              );
-              return reject(err);
-            }
-
-            updateRemotePreferencesFor(clients, prefs)
-              .then(() => {
-                return resolve();
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        });
-      };
-
-      // Update this JIC.
-      const config = this.configProvider.get();
-
-      // Get email from local config
-      prefs.email = config.emailNotifications.email;
-
-      // Get current languge
-      prefs.language = this.languageProvider.getCurrent();
-
-      // Set OLD wallet in bits to btc
-      prefs.unit = 'btc'; // DEPRECATED
-
-      updateRemotePreferencesFor(_.clone(clients), prefs)
-        .then(() => {
-          this.logger.debug(
-            'Remote preferences saved for' +
-              _.map(clients, (x: any) => {
-                return x.credentials.walletId;
-              }).join(',')
-          );
-
-          _.each(clients, c => {
-            c.preferences = _.assign(prefs, c.preferences);
-          });
-          return resolve();
-        })
-        .catch(err => {
           return reject(err);
-        });
+        }
+        return resolve();
+      });
     });
+  }
+
+  public updateRemotePreferences(clients, prefs?): Promise<any> {
+    prefs = prefs ? prefs : {};
+    if (!_.isArray(clients)) clients = [clients];
+
+    let updates = [];
+    clients.forEach(c => {
+      if (this.currencyProvider.isERCToken(c.credentials.coin)) return;
+
+      updates.push(this.updateRemotePreferencesFor(c, prefs));
+    });
+
+    return Promise.all(updates);
   }
 
   public recreate(wallet): Promise<any> {

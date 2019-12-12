@@ -4,11 +4,10 @@ label-tip {
   padding: 20px;
   position: relative;
 
-  width: calc(100% - 50px);
-  left: 25px;
+  width: 90%;
   border-radius: 15px;
 
-  margin-bottom: 20px;
+  margin: 20px auto !important;
 
   &:before {
     $arrow-height: 18px;

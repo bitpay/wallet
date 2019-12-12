@@ -168,13 +168,10 @@ export class HomePage {
     }, 200);
 
     // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (_, cards) => {
-      this.zone.run(() => {
-        this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard
-          ? true
-          : false;
-        this.bitpayCardItems = cards;
-      });
+    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
+      this.showBitPayCard = !!this.appProvider.info._enabledExtensions
+        .debitcard;
+      this.bitpayCardItems = cards;
     });
   }
 
@@ -265,9 +262,8 @@ export class HomePage {
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
 
     const wallet = this.profileProvider.getWallet(walletId);
-    if (wallet.copayerId == n.creatorId) {
-      return;
-    }
+    if (!wallet) return;
+    if (wallet.copayerId == n.creatorId) return;
 
     this.logger.info(`BWS Event: ${type}: `, n);
 

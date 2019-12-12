@@ -22,8 +22,8 @@
     <div *ngIf="appName === 'BitPay'" class="no-padding hairline" no-padding detail-none>
       <div class="merchant-directory-container">
         <div class="merchant-directory-body">
-          <h4>Learn where you can spend your crypto today.</h4>
-          <div (click)="openMerchantDirectorySite()" class="merchant-directory-link" href="">View Directory</div>
+          <h4 translate>Learn where you can spend your crypto today.</h4>
+          <div (click)="openMerchantDirectorySite()" class="merchant-directory-link" href="" translate>View Directory</div>
         </div>
         <div class="gumball">
           <img src="assets/img/gumball-3.svg" class="gumball-image" width="150" height="150" />
@@ -68,11 +68,14 @@
           <div *ngIf="walletsGroup[0].canSign">{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</div>
           <div *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
         </ion-label>
-        <ion-note item-end>
-          {{walletsGroup.length}} Wallet<span *ngIf="walletsGroup.length > 1">s</span>
+        <ion-note *ngIf="walletsGroup.length == 1" item-end>
+          <span translate>{{walletsGroup.length}} Wallet</span>
+        </ion-note>
+        <ion-note *ngIf="walletsGroup.length > 1" item-end>
+          <span translate>{{walletsGroup.length}} Wallets</span>
         </ion-note>
       </button>
-      <button ion-item class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
+      <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()" translate>
         Create or Import a Key
       </button>
 
@@ -151,11 +154,8 @@
                 get started'|translate}} {{card.updatedOn
                 ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
-          <button ion-item (click)="addBitpayCard()">
-            <ion-icon class="item-img" item-start>
-              <div class="icon-plus"></div>
-            </ion-icon>
-            <span translate>Add Card</span>
+          <button ion-item detail-none class="create-button" (click)="addBitpayCard()" translate>
+            Add Card
           </button>
         </ion-list>
       </div>

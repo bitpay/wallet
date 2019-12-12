@@ -537,12 +537,6 @@ page-home {
       }
     }
 
-    button.item {
-      &.activated {
-        background-color: $feather;
-      }
-    }
-
     .item-inner {
       text-align: right;
       margin: 0 2px 0 0;

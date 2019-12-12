@@ -1,5 +1,5 @@
 <ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="headerColor">
+  <ion-navbar>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <img src="assets/img/coinbase/coinbase-logo.png" width="70">
@@ -9,23 +9,23 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+<ion-content #scrollArea>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+      <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
           <img margin-left src="assets/img/coinbase/coinbase-logo.png" width="150">
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
 
-    <ion-list>
+    <ion-list class="bp-list">
       <ion-item>
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
     </ion-list>
-    
+
     <ion-spinner *ngIf="loading"></ion-spinner>
 
     <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
