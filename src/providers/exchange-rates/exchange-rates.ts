@@ -12,7 +12,7 @@ export interface ApiPrice {
 }
 
 @Injectable()
-export class PriceProvider {
+export class ExchangeRatesProvider {
   private bwsURL: string;
   private lastDates = 6;
   private historicalDates: any[];
@@ -22,12 +22,12 @@ export class PriceProvider {
     private logger: Logger,
     private configProvider: ConfigProvider
   ) {
-    this.logger.debug('PriceProvider initialized');
+    this.logger.debug('ExchangeRatesProvider initialized');
     const defaults = this.configProvider.getDefaults();
     this.bwsURL = defaults.bws.url;
   }
 
-  public getHistoricalBitcoinPrice(isoCode, coin?): Observable<ApiPrice[]> {
+  public getHistoricalRates(isoCode, coin?): Observable<ApiPrice[]> {
     let observableBatch = [];
     this.historicalDates = [];
     this.setDates();
@@ -43,7 +43,7 @@ export class PriceProvider {
     return Observable.forkJoin(observableBatch);
   }
 
-  public getCurrentBitcoinPrice(isoCode, coin?): Observable<ApiPrice> {
+  public getCurrentRate(isoCode, coin?): Observable<ApiPrice> {
     return this.httpClient.get<ApiPrice>(
       `${this.bwsURL}/v1/fiatrates/${isoCode}?coin=${coin}`
     );

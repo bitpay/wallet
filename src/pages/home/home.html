@@ -3,4 +3,12 @@
     <ion-title>{{'Home' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content></ion-content>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div>
+    <div class="section-header" translate>Exchange Rates</div>
+    <exchange-rates #exchangeRates></exchange-rates>
+  </div>
+</ion-content>

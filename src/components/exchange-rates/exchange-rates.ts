@@ -1,22 +1,19 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {
   ConfigProvider,
   CurrencyProvider,
-  Logger,
-  PriceProvider
+  ExchangeRatesProvider,
+  Logger
 } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
-import { PriceChart } from './price-chart/price-chart';
 
 @Component({
-  selector: 'price-card',
-  templateUrl: 'price-card.html'
+  selector: 'exchange-rates',
+  templateUrl: 'exchange-rates.html'
 })
-export class PriceCard {
-  @ViewChildren('canvas') canvases: QueryList<PriceChart>;
-
+export class ExchangeRates {
   public lineChart: any;
   public isoCode: string;
   public lastDates = 6;
@@ -36,7 +33,7 @@ export class PriceCard {
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    private priceProvider: PriceProvider,
+    private exchangeRatesProvider: ExchangeRatesProvider,
     private configProvider: ConfigProvider,
     private logger: Logger
   ) {
@@ -63,16 +60,16 @@ export class PriceCard {
   public getPrices() {
     this.setIsoCode();
     _.forEach(this.coins, (coin, index) => {
-      this.priceProvider
-        .getHistoricalBitcoinPrice(this.isoCode, coin.unitCode)
+      this.exchangeRatesProvider
+        .getHistoricalRates(this.isoCode, coin.unitCode)
         .subscribe(
-          response => {
-            this.coins[index].historicalRates = response.reverse();
-            this.updateValues(index);
-          },
-          err => {
-            this.logger.error('Error getting rates:', err);
-          }
+        response => {
+          this.coins[index].historicalRates = response.reverse();
+          this.updateValues(index);
+        },
+        err => {
+          this.logger.error('Error getting rates:', err);
+        }
         );
     });
   }
@@ -86,18 +83,18 @@ export class PriceCard {
       return;
     }
     _.forEach(this.coins, (coin, i) => {
-      this.priceProvider
-        .getCurrentBitcoinPrice(this.isoCode, coin.unitCode)
+      this.exchangeRatesProvider
+        .getCurrentRate(this.isoCode, coin.unitCode)
         .subscribe(
-          response => {
-            this.coins[i].historicalRates[
-              this.coins[i].historicalRates.length - 1
-            ] = response;
-            this.updateValues(i);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-          }
+        response => {
+          this.coins[i].historicalRates[
+            this.coins[i].historicalRates.length - 1
+          ] = response;
+          this.updateValues(i);
+        },
+        err => {
+          this.logger.error('Error getting current rate:', err);
+        }
         );
     });
   }
@@ -110,18 +107,12 @@ export class PriceCard {
       ((this.coins[i].currentPrice - this.coins[i].historicalRates[0].rate) *
         100) /
       this.coins[i].historicalRates[0].rate;
-    this.drawCanvas(i);
   }
 
-  private drawCanvas(index) {
-    this.canvases.toArray().forEach((canvas, i) => {
-      if (index == i) canvas.drawCanvas(this.coins[i]);
-    });
-  }
 
   public updateCharts() {
     this.isoCode ===
-    this.configProvider.get().wallet.settings.alternativeIsoCode
+      this.configProvider.get().wallet.settings.alternativeIsoCode
       ? this.updateCurrentPrice()
       : this.getPrices();
   }

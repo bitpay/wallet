@@ -65,6 +65,23 @@ ion-label {
   -webkit-box-orient: vertical;
 }
 
+// Header
+// --------------------------------------------------
+ion-header, .toolbar{
+  height: 80px;
+  .toolbar.toolbar-md .title-md .toolbar-title-md, ion-title.title.title-ios {
+    padding: 0px 50px 0px 17px;
+    font-weight: 600;
+}
+  
+  ion-title .toolbar-title.toolbar-title-md, .toolbar-title.toolbar-title-ios{
+    text-align: left;
+    line-height: 34px;
+    font-size: 25px;
+    font-weight: 600;
+  }
+}
+
 // Buttons
 // --------------------------------------------------
 .bottom-absolute {
@@ -497,11 +514,14 @@ ion-alert .alert-message {
 }
 
 .section-header {
-  color: rgba(0, 0, 0, 0.3);
-  font-weight: 600;
-  margin: 0 auto;
-  margin-bottom: -7px;
-  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #434D5A;
+  font-size: 17px;
+  font-weight: 500;
+  opacity: 50%;
+  margin: 20px 0px 10px 24px;
 }
 
 button.modal-close-button {

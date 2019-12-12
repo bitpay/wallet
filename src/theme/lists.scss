@@ -12,6 +12,9 @@
   &.top-padding {
     margin-top: 40px;
   }
+  ion-item {
+    padding-left: 31px;
+  }
 
   ion-item-divider {
     margin-top: 25px;
@@ -43,6 +46,14 @@
     }
   }
 
+  ion-icon.item-img.icon.icon-md.item-icon{
+    width: 60px;
+    margin: 9px 0px 9px 0;
+    img{
+      width: 35px;
+    }
+  }
+
   .item {
     border: 0;
 
@@ -59,6 +70,7 @@
         border: none;
         padding-top: 4px;
         padding-bottom: 4px;
+        margin-left: 0px;
       }
 
       &.item-ios {
@@ -86,6 +98,31 @@
     .reorder-option {
       padding-right: 8px !important;
     }
+  }
+
+  .main-label{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 30px;
+    height: 30px;
+    color: black;
+  }
+
+  .secondary-label{
+    font-size: 14px;
+    color: #565D6D;
+    opacity: 50%;
+    font-weight: 400;
+    line-height: 8px;
+    height: 16px;
+  }
+
+  .main-note{
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: end;
   }
 }
 
