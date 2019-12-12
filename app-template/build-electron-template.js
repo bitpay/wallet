@@ -28,6 +28,7 @@ builder
         icon: 'resources/*NAME*/mac/app.icns',
         artifactName: '*USERVISIBLENAME*.pkg',
         darkModeSupport: false,
+        identity: 'BitPay, Inc. (884JRH5R93)',
         extendInfo: {
           NSCameraUsageDescription:
             'Scan a Bitcoin Address directly to your Wallet and send funds to it'
