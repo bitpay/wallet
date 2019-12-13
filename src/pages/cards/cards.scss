@@ -1,0 +1,149 @@
+page-cards {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #a8a8a8;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    .key-name {
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      box-orient: vertical;
+      -webkit-box-orient: vertical;
+      margin-right: 12px;
+    }
+  }
+
+  ion-item-sliding.card-item-sliding {
+    padding-bottom: 1rem;
+
+    button.item.item-block {
+      border-radius: 5px;
+
+      .item-inner {
+        border: 0;
+      }
+    }
+  }
+
+  .bitpay-card {
+    .card-item {
+      button {
+        background: linear-gradient(45deg, #202036 -25%, #1a3b8b);
+
+        .item-inner .input-wrapper {
+          padding-left: 5px;
+          margin-right: 5px;
+          min-width: 7.5rem;
+        }
+
+        ion-label img {
+          width: 7.5rem;
+        }
+
+        ion-note {
+          text-align: right;
+          color: white;
+          line-height: 22px;
+
+          .funds {
+            font-size: 16px;
+          }
+
+          .number {
+            opacity: 0.5;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  ion-item-sliding.item-wrapper {
+    $gift-card-item-side-padding: 4%;
+    $gift-card-item-height: 59px;
+
+    background: none;
+    padding-left: $gift-card-item-side-padding;
+    padding-right: $gift-card-item-side-padding;
+
+    ion-item-options {
+      border-bottom: 0;
+      margin-top: 1px;
+      height: $gift-card-item-height + 16px;
+
+      &[side*='right'] {
+        padding-right: $gift-card-item-side-padding;
+      }
+
+      &[side*='left'] {
+        padding-left: $gift-card-item-side-padding;
+      }
+
+      button.button {
+        border-radius: 5px;
+        font-weight: 400;
+        min-width: 73px;
+        padding: 15px;
+
+        .archive {
+          &__icon {
+            font-size: 20px;
+            margin-top: -1px;
+          }
+
+          &__text {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    button.item.item-block {
+      font-size: 16px;
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
+
+      .item-inner {
+        height: $gift-card-item-height + 16px;
+
+        ion-label {
+          &.label-ios,
+          &.label-md {
+            display: flex;
+            height: $gift-card-item-height;
+            align-items: center;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Styles for gift cards and Bitpay cards
+  .sliding-container {
+    border-radius: 5px;
+    display: block;
+  }
+
+  .add-card-button {
+    @include center;
+    background: #f4f5fb;
+    color: #5f7bf7;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    width: 92%;
+    margin: 15px auto;
+    margin-top: 0;
+    height: 73px;
+  }
+}

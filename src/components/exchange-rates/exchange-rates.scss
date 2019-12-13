@@ -1,23 +1,23 @@
 exchange-rates {
-  .average-container{
+  .average-container {
     text-align: center;
-    height: 21px;	
-    width: 57px;	
-    border-radius: 7px;	
+    height: 21px;
+    width: 57px;
+    border-radius: 7px;
     float: right;
-    &.negative-avg{
-      color:#CF2F32;
-      background-color: rgba(207, 47, 60, 0.1)
+    &.negative-avg {
+      color: #cf2f32;
+      background-color: rgba(207, 47, 60, 0.1);
     }
-    &.possitive-avg{
-      color: #2FCFA4;
+    &.possitive-avg {
+      color: #2fcfa4;
       background-color: rgba(47, 207, 164, 0.1);
     }
     .average {
       font-size: 14px;
       line-height: 19px;
       height: 21px;
-      font-weight: 500;	
+      font-weight: 500;
     }
   }
 }

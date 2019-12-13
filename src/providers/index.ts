@@ -66,7 +66,9 @@ export { PayproProvider } from '../providers/paypro/paypro';
 export { PersistenceProvider } from '../providers/persistence/persistence';
 export { PlatformProvider } from '../providers/platform/platform';
 export { PopupProvider } from '../providers/popup/popup';
-export { ExchangeRatesProvider } from '../providers/exchange-rates/exchange-rates';
+export {
+  ExchangeRatesProvider
+} from '../providers/exchange-rates/exchange-rates';
 export { ProfileProvider } from '../providers/profile/profile';
 export {
   PushNotificationsProvider

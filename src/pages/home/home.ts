@@ -2,17 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { PersistenceProvider } from '../../providers';
 
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-
 export class HomePage {
   private showPriceChart: boolean;
   @ViewChild('priceCard')
   priceCard;
-  constructor(private persistenceProvider: PersistenceProvider) { }
+  constructor(private persistenceProvider: PersistenceProvider) {}
 
   ionViewWillEnter() {
     this.checkPriceChart();
@@ -22,14 +20,9 @@ export class HomePage {
     if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
-  private debounceRefreshHomePage = _.debounce(
-    async () => {
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
+  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
+    leading: true
+  });
 
   private checkPriceChart() {
     this.persistenceProvider.getHiddenFeaturesFlag().then(res => {

@@ -10,8 +10,6 @@ import { Observable, Subscription } from 'rxjs';
 import { AddWalletPage } from '../add-wallet/add-wallet';
 import { AddPage } from '../add/add';
 import { CreateWalletPage } from '../add/create-wallet/create-wallet';
-import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SettingsPage } from '../settings/settings';
@@ -19,7 +17,6 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 
 // Providers
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
@@ -59,8 +56,6 @@ export class WalletsPage {
   public txpsN: number;
   public serverMessages: any[];
   public homeIntegrations;
-  public bitpayCardItems;
-  public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
   public validDataFromClipboard;
   public payProDetailsData;
@@ -71,8 +66,6 @@ export class WalletsPage {
   public showRateCard: boolean;
   public showPriceChart: boolean;
   public hideHomeIntegrations: boolean;
-  public showGiftCards: boolean;
-  public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
   public isBlur: boolean;
   public isCordova: boolean;
@@ -100,7 +93,6 @@ export class WalletsPage {
     private payproProvider: PayproProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
@@ -151,14 +143,6 @@ export class WalletsPage {
       .filter(i => i.show)
       .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
 
-    this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
-      'giftcards'
-    );
-
-    this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
-      'debitcard'
-    );
-
     // Hide BitPay if linked
     setTimeout(() => {
       this.homeIntegrations = _.remove(_.clone(integrations), x => {
@@ -166,13 +150,6 @@ export class WalletsPage {
         else return x;
       });
     }, 200);
-
-    // Only BitPay Wallet
-    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-      this.showBitPayCard = !!this.appProvider.info._enabledExtensions
-        .debitcard;
-      this.bitpayCardItems = cards;
-    });
   }
 
   private walletFocusHandler = opts => {
@@ -598,9 +575,9 @@ export class WalletsPage {
 
     this.logger.debug(
       'fetching status for: ' +
-      opts.walletId +
-      ' alsohistory:' +
-      opts.alsoUpdateHistory
+        opts.walletId +
+        ' alsohistory:' +
+        opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
@@ -754,7 +731,7 @@ export class WalletsPage {
       return;
     }
 
-    if (
+    /* if ( TODO
       serverMessage.id === 'bcard-atm' &&
       (!this.showBitPayCard ||
         !this.bitpayCardItems ||
@@ -762,7 +739,7 @@ export class WalletsPage {
     ) {
       this.removeServerMessage(serverMessage.id);
       return;
-    }
+    } */
 
     this.persistenceProvider
       .getServerMessageDismissed(serverMessage.id)
@@ -795,15 +772,10 @@ export class WalletsPage {
 
   public goTo(page: string): void {
     const pageMap = {
-      BitPayCardIntroPage,
       CoinbasePage,
       ShapeshiftPage
     };
     this.navCtrl.push(pageMap[page]);
-  }
-
-  public goToCard(cardId): void {
-    this.navCtrl.push(BitPayCardPage, { id: cardId });
   }
 
   public doRefresh(refresher): void {

@@ -19,13 +19,13 @@ describe('WalletsPage', () => {
       instance = testEnv.instance;
       testBed = testEnv.testBed;
       instance.showCard = {
-        setShowRateCard: () => { }
+        setShowRateCard: () => {}
       };
       instance.showSurvey = {
-        setShowSurveyCard: () => { }
+        setShowSurveyCard: () => {}
       };
       instance.showEthLiveCard = {
-        setShowEthLiveCard: () => { }
+        setShowEthLiveCard: () => {}
       };
       fixture.detectChanges();
     })));

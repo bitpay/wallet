@@ -67,14 +67,17 @@ ion-label {
 
 // Header
 // --------------------------------------------------
-ion-header, .toolbar{
+ion-header,
+.toolbar {
   height: 80px;
-  .toolbar.toolbar-md .title-md .toolbar-title-md, ion-title.title.title-ios {
+  .toolbar.toolbar-md .title-md .toolbar-title-md,
+  ion-title.title.title-ios {
     padding: 0px 50px 0px 17px;
     font-weight: 600;
-}
-  
-  ion-title .toolbar-title.toolbar-title-md, .toolbar-title.toolbar-title-ios{
+  }
+
+  ion-title .toolbar-title.toolbar-title-md,
+  .toolbar-title.toolbar-title-ios {
     text-align: left;
     line-height: 34px;
     font-size: 25px;
@@ -517,7 +520,7 @@ ion-alert .alert-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #434D5A;
+  color: #434d5a;
   font-size: 17px;
   font-weight: 500;
   opacity: 50%;
