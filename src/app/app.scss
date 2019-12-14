@@ -48,8 +48,10 @@ ion-label {
 .bottom-absolute {
   width: 100%;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
+  bottom: calc(env(safe-area-inset-bottom));
   padding: 15px 15px calc(5vw + 1vh) 15px;
+  padding: 15px 15px -webkit-calc(5vw + 1vh) 15px;
 
   .button {
     margin: 1.2rem auto;

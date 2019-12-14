@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Notifications' | translate}}" [ngClass]="{'no-margin-bottom': !txpsToSign[0], 'small-margin': !isCordova && txpsToSign[0]}">
+<wide-header-page title="{{'Notifications' | translate}}">
   <div page-content>
     <div *ngIf="allTxps && allTxps[0]">
       <div class="txps-status" *ngFor="let txpsByStatus of allTxps">

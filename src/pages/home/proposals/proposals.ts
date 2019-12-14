@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -29,6 +29,9 @@ import { FinishModalPage } from '../../finish/finish';
   templateUrl: 'proposals.html'
 })
 export class ProposalsPage {
+  @ViewChild('slideButton')
+  slideButton;
+
   public addressbook;
   public allTxps: any[];
   public txpsPending: any[];

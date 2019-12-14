@@ -4,9 +4,11 @@ page-slide-to-accept {
   }
   position: fixed;
   bottom: 0;
-  height: 90px;
+  bottom: calc(env(safe-area-inset-bottom));
   width: 100%;
-  background: $color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @keyframes bounce {
     0%,
@@ -18,40 +20,38 @@ page-slide-to-accept {
     }
 
     40% {
-      -webkit-transform: translateX(-10px);
-      transform: translateX(-10px);
+      -webkit-transform: translateX(10px);
+      transform: translateX(10px);
     }
 
     80% {
-      -webkit-transform: translateX(-5px);
-      transform: translateX(-5px);
+      -webkit-transform: translateX(5px);
+      transform: translateX(5px);
     }
   }
 
   .animation {
-    animation: bounce 300ms;
+    animation: bounce 400ms;
   }
 
   .button-slider {
-    z-index: 100 !important;
+    z-index: 10;
     width: 120%;
     border-bottom-right-radius: 45px;
     border-top-right-radius: 45px;
-    margin-left: -105%;
-    background-color: $slider-bg-color !important;
-    height: 90px;
-    -webkit-box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
-    box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
-
-    //   -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
-    // transition: width 1s;
+    margin-left: -119%;
+    background: $slider-bg-button !important;
+    height: 100%;
   }
 
   @mixin center-vertically {
+    border-radius: 38px;
     display: flex;
     align-items: center;
-    height: 100%;
-    position: absolute;
+    justify-content: center;
+    height: 77px;
+    margin: 25px auto;
+    width: 300px;
   }
 
   .slide {
@@ -59,24 +59,31 @@ page-slide-to-accept {
       @include center-vertically;
       overflow: hidden;
       position: relative;
-      bottom: 0;
-      height: 90px;
-      width: 100%;
-      background: $color-primary;
+      background: $slider-bg-color;
+      z-index: 11;
       // &:hover, &:active, &:focus {
       //   .button-slider {
       //     animation: bounce 1s;
       //   }
       // }
+
+      .enter {
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        border-radius: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $slider-bg-button;
+        height: 100%;
+      }
     }
     &__slider {
       @include center-vertically;
-      height: 100%;
-      width: 100%;
       background: $slider-bg-color;
       -webkit-transform: translateX(100);
       transform: translateX(100);
-      margin-left: -100%;
+      margin-left: -92%;
       z-index: 200;
 
       &::before {
@@ -108,37 +115,31 @@ page-slide-to-accept {
       }
     }
     &__bitcoin {
-      @include center-vertically;
-      right: 20px;
       z-index: 10;
+      position: absolute;
+      right: 25px;
+      top: 20px;
 
       > img {
-        -webkit-transform: rotateZ(-5deg);
-        transform: rotateZ(-5deg);
+        height: 36px;
       }
     }
     &__button-text {
-      @include center-vertically;
-
-      justify-content: center;
-      top: 0;
-      left: 0;
-      width: 100%;
       color: color($colors, blank);
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 500;
       letter-spacing: 0.03rem;
       z-index: 1;
-
-      .justify {
-        width: 50%;
-        text-align: center;
-      }
+      width: 50%;
+      text-overflow: ellipsis;
+      display: inline-block;
+      clear: both;
+      overflow: hidden;
+      text-align: center;
     }
 
     &__status-text {
-      @include center-vertically;
-      justify-content: center;
+      border-radius: 38px;
       color: color($colors, blank);
       z-index: 4;
       width: 100%;
@@ -154,6 +155,7 @@ page-slide-to-accept {
 
       &.enter {
         transition: transform 2500ms ease, opacity 2500ms ease;
+        -webkit-transition: -webkit-transform 2500ms ease, opacity 2500ms ease;
         -webkit-transform: translateY(0);
         transform: translateY(100);
         opacity: 1;
@@ -170,8 +172,11 @@ page-slide-to-accept {
     }
 
     &__arrow {
-      @include center-vertically;
+      position: absolute;
       right: 20px;
+      top: 32px;
+      opacity: 0.6;
+      z-index: 1;
     }
   }
 

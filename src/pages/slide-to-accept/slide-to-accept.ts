@@ -41,12 +41,19 @@ export class SlideToAcceptPage implements AfterViewInit {
   @ViewChild('slideButtonContainer')
   private containerElement: ElementRef;
 
+  @ViewChild('slideText', { read: ElementRef })
+  private textElement: ElementRef;
+  @ViewChild('slideArrow', { read: ElementRef })
+  private arrowElement: ElementRef;
+
   private isPressed: boolean = false;
   private clickPosition;
   private xMax: number;
   private delta: number = 8;
   private htmlButtonElem;
   private htmlContainerElem;
+  private htmlTextElem;
+  private htmlArrowElem;
   private containerWidth: number;
   private origin;
   private done: boolean = false;
@@ -61,12 +68,17 @@ export class SlideToAcceptPage implements AfterViewInit {
     public renderer: Renderer
   ) {
     this.animation = false;
+    setTimeout(() => {
+      this.toggleAnimation();
+    }, 200);
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.htmlButtonElem = this.buttonElement.nativeElement;
       this.htmlContainerElem = this.containerElement.nativeElement;
+      this.htmlTextElem = this.textElement.nativeElement;
+      this.htmlArrowElem = this.arrowElement.nativeElement;
       let buttonConstraints = this.htmlButtonElem.getBoundingClientRect();
       this.origin = {
         left: buttonConstraints.left,
@@ -97,12 +109,16 @@ export class SlideToAcceptPage implements AfterViewInit {
         transform: 'translateX(' + xDisplacement + 'px)',
         '-webkit-transform': 'translateX(' + xDisplacement + 'px)'
       };
+      let opacityCss = (xDisplacement > 0
+        ? 1 - xDisplacement / 200
+        : 1
+      ).toFixed(2);
       // Move the element while the drag position is less than xMax
       // -delta/2 is a necessary adjustment
       if (
         xDisplacement >= 0 &&
         xDisplacement <
-          this.containerWidth - (this.origin.width * 15) / 100 + 30 &&
+          this.containerWidth - (this.origin.width * 30) / 100 + 30 &&
         this.isPressed
       ) {
         // Set element styles
@@ -115,6 +131,12 @@ export class SlideToAcceptPage implements AfterViewInit {
           this.htmlButtonElem,
           '-webkit-transform',
           posCss['-webkit-transform']
+        );
+        this.renderer.setElementStyle(this.htmlTextElem, 'opacity', opacityCss);
+        this.renderer.setElementStyle(
+          this.htmlArrowElem,
+          'opacity',
+          opacityCss
         );
       }
 
@@ -144,6 +166,8 @@ export class SlideToAcceptPage implements AfterViewInit {
         '-webkit-transform',
         posCss['-webkit-transform']
       );
+      this.renderer.setElementStyle(this.htmlTextElem, 'opacity', '1');
+      this.renderer.setElementStyle(this.htmlArrowElem, 'opacity', '1');
       this.ngAfterViewInit();
     } else if (this.slideButtonDone && !this.isDisabled) {
       this.isConfirm = true;

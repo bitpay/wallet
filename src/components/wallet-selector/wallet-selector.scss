@@ -1,4 +1,5 @@
 wallet-selector {
+  padding-bottom: calc(env(safe-area-inset-bottom));
   .error {
     color: color($colors, danger);
   }
