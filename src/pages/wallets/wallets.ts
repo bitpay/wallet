@@ -404,17 +404,6 @@ export class WalletsPage {
     if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
-  public onWalletAction(wallet, action, slidingItem) {
-    const tabMap = {
-      receive: 0,
-      view: 1,
-      send: 2
-    };
-    const selectedTabIndex = tabMap[action];
-    this.goToWalletDetails(wallet, { selectedTabIndex });
-    slidingItem.close();
-  }
-
   public checkClipboard() {
     return this.clipboardProvider
       .getData()

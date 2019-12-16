@@ -12,7 +12,7 @@
         <span *ngIf="isoCode === 'USD'">$</span>{{ coin.currentPrice| number:'1.2-2' }}
         <span class="unit" *ngIf="isoCode !== 'USD'">{{ isoCode }}</span>
       </div>
-      <div class="average-container" [ngClass]="coin.averagePrice > 0 ? 'positive-avg' : 'negative-avg'">
+      <div class="average-container" [ngClass]="coin.averagePrice > 0 ? 'possitive-avg' : 'negative-avg'">
         <span class="average"><span *ngIf="coin.averagePrice > 0">+</span>{{ coin.averagePrice | number:'1.2-2' }}%</span>
       </div>
     </ion-note>

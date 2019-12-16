@@ -1,28 +1,36 @@
-<img class="icon-wallet" [ngClass]="{ testnet: wallet.network === 'testnet' }"
-  src="assets/img/currencies/{{wallet.coin}}.svg" />
-<div class="wallet-item-content__left ellipsis">
-  <div class="wallet-item-content__name ellipsis">{{ wallet.name }}</div>
-  <div class="wallet-item-content__credentials">
-    <span>{{ wallet.coin.toUpperCase() }} <span
-        *ngIf="wallet.credentials.n > 1">({{ wallet.credentials.m }}/{{ wallet.credentials.n }})</span></span>
-    <span *ngIf="!wallet.isComplete()"> - {{ 'Incomplete' | translate }}</span>
-  </div>
-</div>
-<div class="wallet-item-content__right">
-  <div *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
-    <div class="wallet-item-content__amount">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
-    <div class="wallet-item-content__fiat" *ngIf="wallet.cachedStatus">
-      {{ wallet?.cachedStatus.availableBalanceAlternative }}
-      {{ wallet?.cachedStatus.alternativeIsoCode }}
+<ion-item>
+  <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet.coin == 'btc',
+  'background_bch': wallet.coin == 'bch',
+  'background_eth': wallet.coin == 'eth',
+  'background_xrp': wallet.coin == 'xrp',
+  'testnet': wallet.network === 'testnet' }" item-start>
+    <img class="" src="assets/img/currencies/{{wallet.coin}}.svg" />
+  </ion-icon>
+  <ion-label>
+    <div class="main-label">{{ wallet.name }}</div>
+    <div *ngIf="wallet.credentials.n > 1 || !wallet.isComplete()" class="secondary-label">
+      <span *ngIf="wallet.credentials.n > 1">({{ wallet.credentials.m }}/{{ wallet.credentials.n }})</span>
+      <span *ngIf="!wallet.isComplete()"> - {{ 'Incomplete' | translate }}</span>
     </div>
-  </div>
-  <div *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
-    <div class="wallet-item-content__amount">0</div>
-    <div class="wallet-item-content__fiat" *ngIf="wallet.cachedStatus">
-      0 {{ wallet?.cachedStatus.alternativeIsoCode }}
+  </ion-label>
+  <ion-note item-end>
+    <div>
+      <div *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+        <div class="main-note">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
+        <div class="secondary-note" *ngIf="wallet.cachedStatus">
+          {{ wallet?.cachedStatus.availableBalanceAlternative }}
+          {{ wallet?.cachedStatus.alternativeIsoCode }}
+        </div>
+      </div>
     </div>
-  </div>
-  <div *ngIf="wallet.balanceHidden">
-    [<span translate>Hidden</span>]
-  </div>
-</div>
+    <div *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+      <div class="main-note">0</div>
+      <div class="secondary-note" *ngIf="wallet.cachedStatus">
+        0 {{ wallet?.cachedStatus.alternativeIsoCode }}
+      </div>
+    </div>
+    <div *ngIf="wallet.balanceHidden">
+      [<span translate>Hidden</span>]
+    </div>
+  </ion-note>
+</ion-item>

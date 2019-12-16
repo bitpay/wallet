@@ -217,6 +217,24 @@ ion-spinner * {
   }
 }
 
+.btc-background{
+  background-color: #F7931A;
+}
+
+.bch-background{
+  background-color: #2FCF6E;
+  
+}
+
+.eth-background{
+  background-color: #6B71D6;
+  
+}
+
+.xrp-background{
+  background-color: #000000;
+}
+
 button.item {
   &.activated {
     background-color: $feather;
@@ -520,12 +538,12 @@ ion-alert .alert-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #434d5a;
-  font-size: 17px;
+  color: #434D5A;
+  font-size: 16px;
   font-weight: 500;
   opacity: 50%;
-  margin: 20px 0px 10px 24px;
-}
+  margin: 20px 0px 10px 20px;
+  }
 
 button.modal-close-button {
   font-size: 16px;

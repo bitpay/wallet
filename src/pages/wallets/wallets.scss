@@ -1,10 +1,5 @@
 page-wallets {
   ion-content {
-    &.content-ios,
-    &.content-md {
-      background: $feather;
-    }
-
     &.content-md {
       .margin-helper {
         width: 100%;
@@ -225,29 +220,22 @@ page-wallets {
     margin-top: 2.6rem;
   }
 
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #a8a8a8;
-    font-size: 14px;
-    font-weight: 400;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    .key-name {
-      white-space: normal;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      line-clamp: 2;
-      -webkit-line-clamp: 2;
-      box-orient: vertical;
-      -webkit-box-orient: vertical;
-      margin-right: 12px;
-    }
+  .add-card-button {
+    @include center;
+    background: #f4f5fb;
+    color: #5f7bf7;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    width: 92%;
+    margin: 15px auto;
+    margin-top: 0;
+    height: 73px;
   }
 
-  // Styles for integrations
+  // Styles for gift cards and Bitpay cards
   .sliding-container {
     border-radius: 5px;
     display: block;
@@ -445,8 +433,7 @@ page-wallets {
       background: #f6f6f7;
       padding: 0.2rem;
       border-radius: 50px;
-      margin-top: 0px;
-      margin-left: 8px;
+      margin: 0px 12px 0px 8px;
       ion-icon {
         color: color($colors, light-grey);
         width: 18px;
@@ -457,17 +444,7 @@ page-wallets {
   }
 
   .collapsed {
-    height: 2px;
-    border-bottom: 1px #eae9e9 solid;
-    margin: 0 2.6rem 2rem 2.6rem;
-
-    .item-wrapper {
-      height: 0;
-      padding: 0;
-    }
-    .wallet-wrapper ion-item-sliding:last-child {
-      padding-bottom: 0;
-    }
+    display: none;
   }
 
   .sliding-container {
