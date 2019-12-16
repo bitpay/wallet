@@ -239,12 +239,12 @@ export class ConfirmPage extends WalletTabsChild {
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
 
-    this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount)
+    this.setWalletSelector(this.tx.coin, this.tx.network)
       .then(() => {
         this.afterWalletSelectorSet();
       })
       .catch(err => {
-        this.showErrorInfoSheet(err, null, true);
+        this.showErrorInfoSheet(err.msg, err.title, true);
       });
 
     if (this.isCordova) {
@@ -294,11 +294,7 @@ export class ConfirmPage extends WalletTabsChild {
     }
   }
 
-  private setWalletSelector(
-    coin: string,
-    network: string,
-    minAmount: number
-  ): Promise<any> {
+  private setWalletSelector(coin: string, network: string): Promise<any> {
     const parentWallet = this.getParentWallet();
     if (
       parentWallet &&
@@ -306,19 +302,22 @@ export class ConfirmPage extends WalletTabsChild {
     ) {
       return Promise.resolve();
     }
-    return new Promise(resolve => {
-      // no min amount? (sendMax) => look for no empty wallets
-      minAmount = minAmount ? minAmount : 1;
 
-      this.wallets = this.profileProvider.getWallets({
-        onlyComplete: true,
-        hasFunds: true,
-        network,
-        coin
-      });
-
-      return resolve();
+    this.wallets = this.profileProvider.getWallets({
+      onlyComplete: true,
+      hasFunds: true,
+      network,
+      coin
     });
+
+    if (_.isEmpty(this.wallets)) {
+      const msg = this.translate.instant(
+        'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+      );
+      const title = this.translate.instant('No wallets available');
+      return Promise.reject({ msg, title });
+    }
+    return Promise.resolve();
   }
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
@@ -337,6 +336,7 @@ export class ConfirmPage extends WalletTabsChild {
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
 
+    const exit = this.wallets.length === 1 ? true : false;
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
@@ -349,7 +349,7 @@ export class ConfirmPage extends WalletTabsChild {
                 'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
               ),
               this.translate.instant('No enough confirmed funds'),
-              true
+              exit
             );
           } else if (previousView === 'AmountPage') {
             // Do not allow user to change or use max amount if previous view is not Amount
@@ -360,7 +360,7 @@ export class ConfirmPage extends WalletTabsChild {
                 'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
               ),
               this.translate.instant('Insufficient funds'),
-              true
+              exit
             );
           }
           break;

@@ -347,10 +347,13 @@ export class CopayApp {
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
       this.closeScannerFromWithinWallet();
-      this.getSelectedTabNav().push(
-        this.pageMap[nextView.name],
-        nextView.params
-      );
+      // wait for wallets status
+      setTimeout(() => {
+        this.getSelectedTabNav().push(
+          this.pageMap[nextView.name],
+          nextView.params
+        );
+      }, 300);
     });
   }
 
