@@ -96,8 +96,7 @@ export class ShapeshiftShiftPage {
   }
 
   public openTerms() {
-    let url =
-      'https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf';
+    let url = 'https://shapeshift.com/terms-of-service';
     this.externalLinkProvider.open(url);
   }
 
