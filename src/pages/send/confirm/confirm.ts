@@ -335,8 +335,11 @@ export class ConfirmPage extends WalletTabsChild {
     this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
-
-    const exit = this.wallets.length === 1 ? true : false;
+    const parentWallet = this.getParentWallet();
+    const exit =
+      parentWallet || (this.wallets && this.wallets.length === 1)
+        ? true
+        : false;
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
