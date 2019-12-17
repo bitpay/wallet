@@ -18,7 +18,6 @@ export class CardsPage {
 
   constructor(
     private appProvider: AppProvider,
-
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider

@@ -203,8 +203,6 @@ export class HomeGiftCards implements OnInit {
     const activeBrands = this.groupCardsByBrand(activeCards);
     this.updatePendingGiftCards(activeBrands);
     this.activeBrands = activeBrands;
-    this.activeBrands.push(activeBrands[0]);
-    console.log(this.activeBrands);
   }
 
   private groupCardsByBrand(cards: GiftCard[]): GiftCard[][] {
