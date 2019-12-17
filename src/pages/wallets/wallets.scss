@@ -220,28 +220,6 @@ page-wallets {
     margin-top: 2.6rem;
   }
 
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #a8a8a8;
-    font-size: 14px;
-    font-weight: 400;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    .key-name {
-      white-space: normal;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      line-clamp: 2;
-      -webkit-line-clamp: 2;
-      box-orient: vertical;
-      -webkit-box-orient: vertical;
-      margin-right: 12px;
-    }
-  }
-
   // Styles for integrations
   .sliding-container {
     border-radius: 5px;
