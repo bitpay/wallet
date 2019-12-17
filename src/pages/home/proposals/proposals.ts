@@ -41,7 +41,6 @@ export class ProposalsPage {
   public walletIdSelectedToSign: string;
   public isCordova: boolean;
   public buttonText: string;
-  public hideSlideButton: boolean;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -327,8 +326,6 @@ export class ProposalsPage {
       txp.checked = true;
       this.txpsToSign.push(txp);
     }
-    if (this.isCordova)
-      this.hideSlideButton = this.txpsToSign[0] ? false : true;
   }
 
   private resetMultiSignValues(): void {
@@ -367,8 +364,6 @@ export class ProposalsPage {
         this.txpsToSign.push(txp);
         txp.checked = true;
       });
-
-      if (this.isCordova) this.hideSlideButton = false;
     });
   }
 }

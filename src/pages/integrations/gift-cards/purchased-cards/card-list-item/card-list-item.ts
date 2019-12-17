@@ -28,10 +28,7 @@ import {
           }}</ion-note>
         </div>
         <div *ngIf="(type === 'catalog' || type === 'settings') && cardConfig">
-          <div
-            class="card-list-item__label ellipsis"
-            [ngClass]="{ 'no-margin-bottom': type === 'settings' }"
-          >
+          <div class="card-list-item__label ellipsis">
             {{ cardConfig.displayName }}
           </div>
           <ion-note

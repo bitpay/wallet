@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
   <ion-list>
     <ion-item>
       <div class="bitpay-title">

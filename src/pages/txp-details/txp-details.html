@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce [ngClass]="{'margin-bottom':(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired)}">
+<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">

@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
   <h4 class="title" *ngIf="balances && balances.length > 0">
     <span translate>Funds found</span>:
     <div *ngFor="let b of balances">

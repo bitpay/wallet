@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}" no-bounce>
+<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
   <ion-list *ngIf="sellRequestInfo">
     <ion-item>
       <div class="selling-label">

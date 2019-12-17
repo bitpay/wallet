@@ -70,7 +70,7 @@ export class SlideToAcceptPage implements AfterViewInit {
     this.animation = false;
     setTimeout(() => {
       this.toggleAnimation();
-    }, 200);
+    }, 1200);
   }
 
   ngAfterViewInit() {

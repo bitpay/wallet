@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
   <ion-list>
     <ion-item class="header-label">
       <div class="sending-label">

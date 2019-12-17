@@ -2,10 +2,6 @@ wide-header-page,
 card-catalog-page {
   @include fix-ios-bg-scroll();
 
-  .scroll-content .wrapper {
-    padding-bottom: 56px;
-  }
-
   expandable-header-primary {
     line-height: 1.2;
   }
@@ -58,10 +54,6 @@ page-wallet-group-settings,
 purchased-cards-page {
   @include fix-ios-bg-scroll($top-color: white);
   @include toolbar-button-color();
-
-  .scroll-content .wrapper {
-    padding-bottom: 56px;
-  }
 
   ion-title .toolbar-title {
     color: black;
