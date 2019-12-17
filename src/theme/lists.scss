@@ -46,28 +46,28 @@
     }
   }
 
-  ion-icon.item-img.icon.icon-md.item-icon{
+  ion-icon.item-img.icon.icon-md.item-icon {
     margin: 9px 15px 9px 0;
     justify-content: center;
     padding: 7px;
-    img{
+    img {
       width: 35px;
     }
-    &.rectangle{
+    &.rectangle {
       border-radius: 12px;
       justify-content: center;
     }
-    &.background{
-      &_btc{
-        background-color: #F7931A;
+    &.background {
+      &_btc {
+        background-color: #f7931a;
       }
-      &_bch{
-        background-color: #2FCF6E;
+      &_bch {
+        background-color: #2fcf6e;
       }
-      &_eth{
-        background-color: #6B71D6;
+      &_eth {
+        background-color: #6b71d6;
       }
-      &_xrp{
+      &_xrp {
         background-color: #000000;
       }
     }
@@ -128,8 +128,8 @@
     line-height: 24px;
     text-align: end;
   }
-  .secondary-note{
-    color: #565D6D;
+  .secondary-note {
+    color: #565d6d;
     font-weight: 400;
     font-size: 14px;
     line-height: 25px;
