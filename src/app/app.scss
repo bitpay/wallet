@@ -21,6 +21,7 @@ body {
 }
 
 // all content without menu
+ion-content.adds-safe-area,
 .hide-tabbar ion-content {
   .fixed-content,
   .scroll-content {

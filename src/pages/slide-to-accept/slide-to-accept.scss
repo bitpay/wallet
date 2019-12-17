@@ -2,9 +2,12 @@ page-slide-to-accept {
   &[ng-reflect-disabled='true'] {
     opacity: 0.4;
   }
+  background: linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 1), rgba(255,255,255, 1));
+  background: -webkit-linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 1), rgba(255,255,255, 1));
   position: fixed;
   bottom: 0;
-  bottom: calc(env(safe-area-inset-bottom));
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
   width: 100%;
   display: flex;
   align-items: center;
@@ -57,6 +60,7 @@ page-slide-to-accept {
   .slide {
     &__listener {
       @include center-vertically;
+      box-shadow: 0px 4px 16px rgba(0,0,0,0.28);
       overflow: hidden;
       position: relative;
       background: $slider-bg-color;
@@ -80,6 +84,7 @@ page-slide-to-accept {
     }
     &__slider {
       @include center-vertically;
+      box-shadow: 0px 4px 16px rgba(0,0,0,0.28);
       background: $slider-bg-color;
       -webkit-transform: translateX(100);
       transform: translateX(100);
