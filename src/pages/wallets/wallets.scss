@@ -220,22 +220,29 @@ page-wallets {
     margin-top: 2.6rem;
   }
 
-  .add-card-button {
-    @include center;
-    background: #f4f5fb;
-    color: #5f7bf7;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    width: 92%;
-    margin: 15px auto;
-    margin-top: 0;
-    height: 73px;
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #a8a8a8;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    .key-name {
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      box-orient: vertical;
+      -webkit-box-orient: vertical;
+      margin-right: 12px;
+    }
   }
 
-  // Styles for gift cards and Bitpay cards
+  // Styles for integrations
   .sliding-container {
     border-radius: 5px;
     display: block;

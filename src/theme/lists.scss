@@ -46,11 +46,10 @@
     }
   }
 
-  ion-icon.item-img.icon.icon-md.item-icon{
-    margin: 9px 15px 9px 0;
-    justify-content: center;
-    padding: 7px;
-    img{
+  ion-icon.item-img.icon.icon-md.item-icon {
+    width: 60px;
+    margin: 9px 0px 9px 0;
+    img {
       width: 35px;
     }
     &.rectangle{

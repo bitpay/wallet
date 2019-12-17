@@ -1,14 +1,9 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
-  <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
-    [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
-  <ion-item-sliding class="card-item-sliding" #slidingItem
-    *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view [scrollArea]="scrollArea"
-    (viewEnter)="onPromoScrollIntoView('Home Gift Card List Discount Item')" [@archiveAnimation]>
-    <button ion-item *ngIf="discountedCard" class="discount-item"
-      (click)="buyCard(discountedCard.name, 'Home Gift Card List Discount Item')">
+  <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+  <ion-item-sliding class="card-item-sliding" #slidingItem *ngIf="activeBrands?.length && !hideDiscount && discountedCard" scrolled-into-view [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView('Home Gift Card List Discount Item')" [@archiveAnimation]>
+    <button ion-item *ngIf="discountedCard" class="discount-item" (click)="buyCard(discountedCard.name, 'Home Gift Card List Discount Item')">
       <img-loader class="logo" [src]="discountedCard.icon"></img-loader>
-      <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard"
-          [discount]="discountedCard.discounts[0]">
+      <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard" [discount]="discountedCard.discounts[0]">
         </gift-card-discount-text> off {{discountedCard.displayName}}</div>
     </button>
     <ion-item-options side="right">
@@ -20,20 +15,19 @@
       </button>
     </ion-item-options>
   </ion-item-sliding>
-  <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-card-button" (click)="buyGiftCards()" tappable
-    translate>Buy Gift Card</div>
+  <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-card-button" (click)="buyGiftCards()" tappable>
+    <img src="assets/img/icon-plus.svg">
+    <span translate>Buy Gift Card</span>
+  </div>
+
 </ion-list>
 <action-card *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
   <div action-card-body>
     <img class="gift-card-brands" src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png">
     <div class="discount-wrapper">
-      <div *ngIf="discountedCard" class="gift-card-featured-discount"
-        (click)="$event.stopPropagation(); buyCard(discountedCard.name, 'Home Buy Gift Cards Discount Label')" tappable
-        scrolled-into-view [scrollArea]="scrollArea"
-        (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
+      <div *ngIf="discountedCard" class="gift-card-featured-discount" (click)="$event.stopPropagation(); buyCard(discountedCard.name, 'Home Buy Gift Cards Discount Label')" tappable scrolled-into-view [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
         <img [src]="discountedCard.icon">
-        <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard"
-            [discount]="discountedCard.discounts[0]">
+        <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard" [discount]="discountedCard.discounts[0]">
           </gift-card-discount-text> off {{discountedCard.displayName}}</div>
       </div>
     </div>
