@@ -71,10 +71,9 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    this.fromWallets = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      hasFunds: true
+    const allWallets = _.concat(this.walletsBtc, this.walletsBch);
+    this.fromWallets = allWallets.filter(w => {
+      return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
     });
 
     if (_.isEmpty(this.fromWallets)) {
