@@ -260,12 +260,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
-    if (wallet.isPrivKeyEncrypted) {
-      this.hideSlideButton = true;
-    }
 
     await this.walletProvider.publishAndSign(wallet, txp);
-    this.hideSlideButton = false;
     return this.onGoingProcessProvider.clear();
   }
 
@@ -596,6 +592,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
       return;
     }
+    this.hideSlideButton = true;
     await this.giftCardProvider.saveGiftCard({
       ...this.tx.giftData,
       status: 'UNREDEEMED'
@@ -615,6 +612,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public async handlePurchaseError(err) {
     this.onGoingProcessProvider.clear();
+    this.hideSlideButton = false;
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
