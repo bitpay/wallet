@@ -678,7 +678,7 @@ export class ProfileProvider {
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
 
     // do not request encryption if wallets were already created without it
-    const wallets = this.getWallets({ keyId: key.id });
+    const wallets = this.getWalletsFromGroup({ keyId: key.id });
     if (!key.isPrivKeyEncrypted() && wallets && wallets.length)
       return Promise.resolve();
 
