@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -29,6 +29,9 @@ import { FinishModalPage } from '../../finish/finish';
   templateUrl: 'proposals.html'
 })
 export class ProposalsPage {
+  @ViewChild('slideButton')
+  slideButton;
+
   public addressbook;
   public allTxps: any[];
   public txpsPending: any[];
@@ -38,7 +41,6 @@ export class ProposalsPage {
   public walletIdSelectedToSign: string;
   public isCordova: boolean;
   public buttonText: string;
-  public hideSlideButton: boolean;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -324,8 +326,6 @@ export class ProposalsPage {
       txp.checked = true;
       this.txpsToSign.push(txp);
     }
-    if (this.isCordova)
-      this.hideSlideButton = this.txpsToSign[0] ? false : true;
   }
 
   private resetMultiSignValues(): void {
@@ -364,8 +364,6 @@ export class ProposalsPage {
         this.txpsToSign.push(txp);
         txp.checked = true;
       });
-
-      if (this.isCordova) this.hideSlideButton = false;
     });
   }
 }

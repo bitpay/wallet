@@ -20,4 +20,13 @@ $onboarding-welcome-bg: url(../assets/img/onboarding-welcome-bg.svg);
 $onboarding-comment-color: rgba(255, 255, 255, 0.5);
 $onboarding-primary-color: #fff;
 $onboarding-gradient-top-color: #2a3f90;
-$slider-bg-color: #5063b9;
+$slider-bg-color: linear-gradient(
+  90deg,
+  rgba(79, 110, 247, 1) 0%,
+  rgba(69, 98, 226, 1) 100%
+);
+$slider-bg-button: linear-gradient(
+  180deg,
+  rgba(50, 83, 181, 1) 0%,
+  rgba(42, 66, 154, 1) 100%
+);

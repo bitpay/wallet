@@ -102,6 +102,8 @@ export class ShapeshiftConfirmPage {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
 
+    this.hideSlideButton = false;
+
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
     this.fromWalletId = this.navParams.data.id;

@@ -888,10 +888,8 @@ export class ConfirmPage extends WalletTabsChild {
       .then(txp => {
         return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
-            if (this.isCordova) {
-              this.slideButton.isConfirmed(false);
-              this.hideSlideButton = false;
-            }
+            if (this.isCordova) this.slideButton.isConfirmed(false);
+            this.hideSlideButton = false;
             this.onGoingProcessProvider.clear();
             return;
           }

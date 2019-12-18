@@ -19,7 +19,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="fullscreen-tab" [ngClass]="{blur: isBlur}" #scrollArea>
+<ion-content class="fullscreen-tab add-padding-bottom" [ngClass]="{blur: isBlur}" #scrollArea>
   <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
