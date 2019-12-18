@@ -674,7 +674,13 @@ export class ProfileProvider {
 
   private askToEncryptKey(key): Promise<any> {
     if (!key) return Promise.resolve();
+    // if the key is already encrypted, keep it that way for new wallets
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
+
+    // do not request encryption if wallets were already created without it
+    const wallets = this.getWallets({ keyId: key.id });
+    if (!key.isPrivKeyEncrypted() && wallets && wallets.length)
+      return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
