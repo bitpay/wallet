@@ -66,16 +66,19 @@
     </ion-item>
   </ion-list>
 
-  <div *ngIf="fromWallets.length > 0 && toWallets.length > 0" class="agree-to-terms">
-    <ion-item>
-      <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
-    </ion-item>
-    <div class="terms">
-      <p>
-        <span translate>I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address.</span>
-        <a (click)="openTerms()" translate>Click to open Terms</a>.
-      </p>
-    </div>
+  <div *ngIf="fromWallets.length > 0 && toWallets.length > 0">
+    <ion-list margin-bottom>
+      <ion-item-divider></ion-item-divider>
+      <ion-item>
+        <ion-label>
+          <span translate>I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address.</span>
+        </ion-label>
+        <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
+      </ion-item>
+      <button ion-item class="button-link" (click)="openTerms()" translate>
+        Terms of Service
+      </button>
+    </ion-list>
   </div>
 
 </ion-content>
