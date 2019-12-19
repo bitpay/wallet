@@ -15,10 +15,9 @@ const templates = {
   'afterPack-template.js': 'electron/'
 };
 
-if(process.env.NODE_ENV==="dev") {
-  templates['index-dev-template.html'] = 'src/'
+if (process.env.NODE_ENV === 'dev') {
+  templates['index-dev-template.html'] = 'src/';
 }
-
 
 const jsonHeader = `{
   "//-": "Changes to this file will be overwritten.",
@@ -53,12 +52,12 @@ Object.keys(templates).forEach(function(k) {
     process.exit(1);
   }
 
-  switch(k) {
-    case 'config-template.xml':  {
+  switch (k) {
+    case 'config-template.xml': {
       k = 'config.xml';
       break;
     }
-    case 'index-dev-template.html': 
+    case 'index-dev-template.html':
     case 'index-template.html': {
       k = 'index.html';
       break;
@@ -70,17 +69,16 @@ Object.keys(templates).forEach(function(k) {
     case 'manifest.ionic-template.json': {
       k = 'manifest.json';
       break;
-    } 
+    }
     case 'afterPack-template.js': {
       k = 'afterPack.js';
       break;
-    } 
+    }
     case 'build-electron-template.js': {
       k = 'build-electron.js';
       break;
     }
   }
-
 
   if (!fs.existsSync('../' + targetDir)) {
     fs.mkdirSync('../' + targetDir);
