@@ -1,10 +1,5 @@
-<ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar class="app-color" [hideBackButton]="useAsModal">
-    <ion-buttons left *ngIf="useAsModal">
-      <button class="modal-close-button" (click)="closeModal()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
+<ion-header [ngClass]="{'wallet-details-header': wallet}" *ngIf="!useAsModal">
+  <ion-navbar class="app-color">
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet && !requestingAmount" class="app-color">
@@ -18,10 +13,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="adds-safe-area" no-bounce>
+<ion-content class="add-bottom-safe-area" no-bounce>
 
-  <div class="amount-wrapper">
-
+  <div class="amount-wrapper" [ngClass]="{'add-top-safe-area': useAsModal}">
     <div class="amount-header-margin">
       <div class="amount-header">
         <div style="flex: 1">
@@ -31,6 +25,7 @@
           </div>
         </div>
         <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
+        <span *ngIf="useAsModal" class="cancel-button" [ngClass]="{'hide': expression && allowSend}" (click)="closeModal()">Cancel</span>
       </div>
     </div>
 

@@ -21,7 +21,7 @@ body {
 }
 
 // all content without menu
-ion-content.adds-safe-area,
+ion-content.add-bottom-safe-area,
 .hide-tabbar ion-content {
   .fixed-content,
   .scroll-content {
@@ -627,8 +627,8 @@ ion-item.with-label.item {
 page-wallet-details,
 page-receive,
 page-send,
-page-amount,
 page-multi-send,
+page-transfer-to-modal,
 page-bitpay-card-intro,
 page-bitpay-card,
 .wallet-details-header {
