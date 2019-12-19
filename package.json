@@ -77,6 +77,7 @@
     "sign:android": "rm -f platforms/android/app/build/outputs/apk/release/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/app/build/outputs/apk/release/android-release-signed.apk platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk  copay_play && $ANDROID_HOME/build-tools/28.0.3/zipalign -v 4 platforms/android/app/build/outputs/apk/release/android-release-signed.apk platforms/android/app/build/outputs/apk/release/android-release-signed-aligned.apk",
     "apply:copay": "cd app-template && node apply.js copay",
     "apply:bitpay": "cd app-template && node apply.js bitpay",
+    "apply:bitpay-dev": "cd app-template && NODE_ENV=dev node apply.js bitpay",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
     "sign:copay-desktop": "npm run sign:copay-linux && npm run sign:copay-windows && npm run sign:copay-macos",
     "sign:copay-macos": "gpg -u 1112CFA1 --output dist/Copay.dmg.sig --detach-sig dist/Copay.dmg",
