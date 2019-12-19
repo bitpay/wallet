@@ -73,7 +73,7 @@ export class HomeGiftCards implements OnInit {
     private giftCardProvider: GiftCardProvider,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
@@ -208,12 +208,12 @@ export class HomeGiftCards implements OnInit {
   private groupCardsByBrand(cards: GiftCard[]): GiftCard[][] {
     return cards
       .reduce(
-      (brands, c) => {
-        const brandCards = brands.find(b => b[0].name === c.name);
-        brandCards ? brandCards.push(c) : brands.push([c]);
-        return brands;
-      },
-      [] as GiftCard[][]
+        (brands, c) => {
+          const brandCards = brands.find(b => b[0].name === c.name);
+          brandCards ? brandCards.push(c) : brands.push([c]);
+          return brands;
+        },
+        [] as GiftCard[][]
       )
       .sort((a, b) => sortByDisplayName(a[0], b[0]));
   }

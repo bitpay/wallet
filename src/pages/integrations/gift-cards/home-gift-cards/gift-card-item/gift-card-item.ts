@@ -49,7 +49,7 @@ export class GiftCardItem {
   constructor(
     private giftCardProvider: GiftCardProvider,
     private renderer: Renderer
-  ) { }
+  ) {}
 
   async ngAfterViewInit() {
     this.cardName && this.setBrandStyling();

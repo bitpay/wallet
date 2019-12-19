@@ -13,5 +13,5 @@ export class TabsPage {
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
   cardsRoot = CardsPage;
-  SettingsRoot = SettingsPage;
+  settingsRoot = SettingsPage;
 }

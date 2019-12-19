@@ -12,6 +12,7 @@ import { AddPage } from '../add/add';
 import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
@@ -31,6 +32,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -776,7 +778,7 @@ export class WalletsPage {
   }
 
   public scan(): void {
-    this.navCtrl.parent.select(1);
+    this.navCtrl.push(ScanPage);
   }
 
   public settings(): void {

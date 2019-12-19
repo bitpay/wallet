@@ -45,8 +45,7 @@ export class HomeIntegrationsProvider {
     const service = this.services.find(i => i.name === serviceName);
     if (service && service.name === 'debitcard') {
       return service && service.show && !service.linked;
-    }
-    else return service && service.show;
+    } else return service && service.show;
   }
 
   public get(): Array<{ name: string; show: boolean; linked: boolean }> {

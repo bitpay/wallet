@@ -24,14 +24,16 @@ export class BitPayCardHome implements OnInit {
     private navCtrl: NavController,
     private bitPayCardProvider: BitPayCardProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
     this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
       'debitcard'
     );
-    this.bitpayCardItems = await this.bitPayCardProvider.get({ noHistory: true });
+    this.bitpayCardItems = await this.bitPayCardProvider.get({
+      noHistory: true
+    });
   }
 
   public goToBitPayCardIntroPage() {

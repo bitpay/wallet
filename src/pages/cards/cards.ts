@@ -21,15 +21,16 @@ export class CardsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider
-  ) { }
+  ) {}
 
   async ionViewDidEnter() {
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
     );
-    this.showBitPayCard = !!this.appProvider.info._enabledExtensions
-      .debitcard
-    this.bitpayCardItems = await this.bitPayCardProvider.get({ noHistory: true })
+    this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
+    this.bitpayCardItems = await this.bitPayCardProvider.get({
+      noHistory: true
+    });
     this.activeCards = await this.giftCardProvider.getActiveCards();
   }
 }

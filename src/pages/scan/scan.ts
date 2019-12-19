@@ -392,8 +392,10 @@ export class ScanPage {
   }
 
   public close() {
-    this.walletTabsProvider.getTabNav()
-      ? this.events.publish('ExitScan')
-      : this.navCtrl.parent.select(0);
+    this.navCtrl.pop();
+    // TODO needs check
+    // this.walletTabsProvider.getTabNav()
+    //   ? this.events.publish('ExitScan')
+    //   : this.navCtrl.parent.select(0);
   }
 }

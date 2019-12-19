@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="bp-header">
   <ion-navbar>
     <ion-title>{{'Wallets' | translate}}</ion-title>
   </ion-navbar>
@@ -86,9 +86,14 @@
     </ion-card>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header bottom-line" *ngIf="walletGroup[0].canSign">
-        <span *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}</span>
-        <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
+      <div class="section-header" *ngIf="walletGroup[0].canSign">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-key.svg" width="15">
+        </ion-icon>
+        <ion-label class="key-name">
+          <span *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}</span>
+          <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
+        </ion-label>
         <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
           <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
           <span class="collapse-btn" *ngIf="walletsGroups.length > 1">
