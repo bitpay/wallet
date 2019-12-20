@@ -34,8 +34,8 @@
   </div>
 </wide-header-page>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova && txpsToSign[0]" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova && txpsToSign[0]">
-    <button ion-button full class="button-footer" (click)="sign()">{{buttonText}}</button>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!txpsToSign[0]" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button full class="button-footer" [disabled]="!txpsToSign[0]" (click)="sign()">{{buttonText}}</button>
   </ion-toolbar>
 </ion-footer>

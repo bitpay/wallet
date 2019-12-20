@@ -1,4 +1,4 @@
-<div #slideButtonContainer class="slide__listener">
+<div #slideButtonContainer class="slide__listener" [ngClass]="{'show': !isDisabled}">
   <button class="button-slider" [ngClass]="{'animation': animation}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled" *ngIf="!isConfirm">
     <div class="slide__bitcoin" [ngStyle]="bitcoinStyle">
       <img src="assets/img/b-logo.svg">
