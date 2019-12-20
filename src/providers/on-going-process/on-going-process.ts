@@ -36,6 +36,9 @@ export class OnGoingProcessProvider {
         'Extracting Wallet information...'
       ),
       fetchingPayPro: this.translate.instant('Fetching payment information...'),
+      fetchingPayProOptions: this.translate.instant(
+        'Fetching payment information...'
+      ),
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
       importingWallet: this.translate.instant('Importing Wallet...'),
