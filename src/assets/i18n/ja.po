@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: ja\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-12-10 14:30\n"
+"PO-Revision-Date: 2019-12-20 19:12\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -355,9 +353,6 @@ msgid "Click to accept"
 msgstr "クリックして承諾"
 
 msgid "Click to confirm"
-msgstr ""
-
-msgid "Click to open Terms"
 msgstr ""
 
 msgid "Click to pay"
@@ -1833,11 +1828,11 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "ウォレットを選択"
+
+msgid "Select an Ethereum Wallet"
+msgstr ""
 
 msgid "Select currencies"
 msgstr ""
@@ -2066,6 +2061,9 @@ msgstr ""
 msgid "Temporarily Unavailable"
 msgstr ""
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "利用規約"
 
@@ -2213,9 +2211,6 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr ""
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
 
@@ -2266,9 +2261,6 @@ msgstr ""
 
 msgid "Transaction"
 msgstr "取引"
-
-msgid "Transaction Costs"
-msgstr ""
 
 msgid "Transaction History"
 msgstr "取引履歴"

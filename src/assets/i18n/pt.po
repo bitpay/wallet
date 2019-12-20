@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: pt-BR\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-12-10 14:30\n"
+"PO-Revision-Date: 2019-12-20 19:12\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -355,9 +353,6 @@ msgstr "Clique para aceitar"
 
 msgid "Click to confirm"
 msgstr "Clique para confirmar"
-
-msgid "Click to open Terms"
-msgstr "Clique para abrir os Termos"
 
 msgid "Click to pay"
 msgstr "Clique para pagar"
@@ -1832,11 +1827,11 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "Selecione uma carteira"
+
+msgid "Select an Ethereum Wallet"
+msgstr ""
 
 msgid "Select currencies"
 msgstr ""
@@ -2063,6 +2058,9 @@ msgstr "Toque para recriar"
 msgid "Temporarily Unavailable"
 msgstr "Temporariamente Indisponível"
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "Termos de uso"
 
@@ -2210,9 +2208,6 @@ msgstr "Este pagamento requer uma taxa de mineração de:"
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "Esta frase de recuperação foi criada com uma senha. Para recuperar esta carteira, tanto a frase de recuperação como a senha são necessárias."
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr ""
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr "Este valor de transação é muito pequeno em comparação com as atuais taxas de rede Bitcoin. Gastar estes fundos precisará de uma taxa de rede Bitcoin comparável aos próprios fundos."
 
@@ -2263,9 +2258,6 @@ msgstr "Trocar qualquer moeda principal do blockchain por qualquer outra. Prote�
 
 msgid "Transaction"
 msgstr "Transação"
-
-msgid "Transaction Costs"
-msgstr ""
 
 msgid "Transaction History"
 msgstr "Histórico de Transações"
