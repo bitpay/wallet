@@ -5,6 +5,11 @@
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-buttons right>
+      <button *ngIf="wallet?.isComplete() && !wallet?.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
+        <ion-icon class="horizontal-lg" name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

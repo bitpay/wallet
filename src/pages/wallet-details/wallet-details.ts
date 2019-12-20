@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -20,6 +21,7 @@ import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -31,6 +33,7 @@ import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
+import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
@@ -67,6 +70,7 @@ export class WalletDetailsPage {
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
   public associatedWallet: string;
+  public showShareButton: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
 
@@ -87,9 +91,12 @@ export class WalletDetailsPage {
     private actionSheetProvider: ActionSheetProvider,
     private platform: Platform,
     private profileProvider: ProfileProvider,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platformProvider: PlatformProvider,
+    private socialSharing: SocialSharing
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.showShareButton = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
@@ -512,5 +519,45 @@ export class WalletDetailsPage {
       walletId: this.wallet.credentials.walletId
     });
     modal.present();
+  }
+
+  public showMoreOptions(): void {
+    const showShare =
+      this.showShareButton &&
+      this.wallet &&
+      this.wallet.isComplete() &&
+      !this.wallet.needsBackup;
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'address-options',
+      { showShare }
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'request-amount') this.requestSpecificAmount();
+      if (option == 'share-address') this.shareAddress();
+    });
+  }
+
+  public requestSpecificAmount(): void {
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      this.navCtrl.push(AmountPage, {
+        toAddress: addr,
+        id: this.wallet.credentials.walletId,
+        recipientType: 'wallet',
+        name: this.wallet.name,
+        color: this.wallet.color,
+        coin: this.wallet.coin,
+        nextPage: 'CustomAmountPage',
+        network: this.wallet.network
+      });
+    });
+  }
+
+  public shareAddress(): void {
+    if (!this.showShareButton) return;
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      this.socialSharing.share(addr);
+    });
   }
 }
