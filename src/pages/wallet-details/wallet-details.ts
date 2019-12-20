@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
@@ -28,7 +29,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-import { ReceivePage } from '../../pages/receive/receive';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
@@ -93,7 +93,8 @@ export class WalletDetailsPage {
     private profileProvider: ProfileProvider,
     private viewCtrl: ViewController,
     private platformProvider: PlatformProvider,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.showShareButton = this.platformProvider.isCordova;
@@ -508,10 +509,15 @@ export class WalletDetailsPage {
   }
 
   public goToReceivePage() {
-    const modal = this.modalCtrl.create(ReceivePage, {
-      walletId: this.wallet.credentials.walletId
-    });
-    modal.present();
+    const params = {
+      wallet: this.wallet
+    }
+    const receive = this.actionSheetProvider.createWalletReceive(params);
+    receive.present();
+    receive.onDidDismiss(data => {
+      if (data === 'goToBackup') this.goToBackup();
+      else if (data) this.showErrorInfoSheet(data);
+    })
   }
 
   public goToSendPage() {
@@ -560,4 +566,19 @@ export class WalletDetailsPage {
       this.socialSharing.share(addr);
     });
   }
+  public showErrorInfoSheet(error: Error | string): void {
+    const infoSheetTitle = this.translate.instant('Error');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
+  }
+
+  public goToBackup(): void {
+    this.navCtrl.push(BackupKeyPage, {
+      keyId: this.wallet.credentials.keyId
+    });
+  }
+
 }

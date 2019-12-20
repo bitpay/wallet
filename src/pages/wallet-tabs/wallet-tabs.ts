@@ -3,7 +3,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Events, NavParams } from 'ionic-angular';
 
 // Pages
-import { ReceivePage } from '../receive/receive';
 import { SendPage } from '../send/send';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 
@@ -36,7 +35,6 @@ export class WalletTabsPage {
   @ViewChild('tabs')
   walletTabs: any;
 
-  receiveRoot = ReceivePage;
   activityRoot = WalletDetailsPage;
   sendRoot = SendPage;
 

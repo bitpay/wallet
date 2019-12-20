@@ -1,0 +1,182 @@
+wallet-receive {
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  .action-sheet{
+    border-radius: 10px 10px 0px 0px;
+  }
+  .error {
+    color: color($colors, danger);
+  }
+  .wallet-button {
+    background: none;
+  }
+  .title {
+    font-weight: 500;
+    > img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .no-wallets {
+    text-align: center;
+    padding: 20px;
+    color: color($colors, danger);
+  }
+  .back-button {
+    background-color: $background-color;
+    display: inline-block;
+    width: 100%;
+    ion-icon {
+      padding: 1.5rem 20px 1.5rem 20px;
+      cursor: pointer;
+    }
+  }
+  .addr-header{
+    margin-top: 10px;
+    .addr-title {	
+      height: 30px;
+      width: 86px;
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 30px;
+      margin-left: 25px;
+    }
+    .addr-buttons{
+      margin-right: 25px;
+    }
+
+    .addr-update{
+      height: 37px;
+      width: 38px;
+      background-color: #EDF0FE;
+      border-radius: 50%;
+      .spin-backwards {
+        animation: spin-backwards 0.5s ease-out 1;
+      }
+      @keyframes spin-backwards {
+        from {
+          transform: rotate(210deg);
+        }
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+      .loading-dots {
+        display: inline-block;
+      }
+      .fade-in-out {
+        opacity: 0.1;
+      }
+      .qr-code-bounce {
+        animation: bounce-down 0.5s linear;
+      }
+      @keyframes bounce-down {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(15%);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      $spinner-height: 18px;
+      .spin-icon {
+        height: $spinner-height;
+      }
+      .spinner {
+        float: right;
+        padding-bottom: 0px;
+        border: 1px solid #d0d5ef;
+        border-top: 1px solid #5b7cea;
+        border-radius: 50%;
+        width: $spinner-height;
+        height: $spinner-height;
+        margin: 2px;
+      }
+      .spin-fast {
+        animation: spin-fast 0.3s linear infinite;
+      }
+      @keyframes spin-fast {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+  .line {
+    box-sizing: border-box;
+    height: 2px;
+    border: 1px solid #979797;
+    opacity: 0.23;
+    margin:0px 25px 0px 25px;
+  }
+  .addr-content{
+    margin: 17px 25px 0px 25px;
+    .addr-container {
+      text-align: center;
+      font-size: 15px;
+      .text-address {
+        background-color: #f8f8f8;
+        color: color($colors, light-grey);
+        padding: 1.3rem 1rem;
+        border-radius: 6px;
+        position: relative;
+        .address-text {
+          width: 100%;
+          vertical-align: middle;
+          display: inline-block;
+          opacity: 1;
+          transition: opacity 500ms ease;
+          padding-left: 30px;
+          .address-placeholder {
+            font-size: 14px;
+            @media (max-height: 530px) {
+              font-size: 11.5px;
+            }
+          }
+        }
+        .copy-to-clip {
+          position: absolute;
+          left: 10px;
+          margin-top: 2px;
+        }
+      }
+    }
+    .qr-container {
+      height: 100%;
+      position: relative;
+      .card {
+        z-index: 1;
+        position: relative;
+      }
+      .lines-background {
+        background: url(../assets/img/curved-lines-background.png) center center
+          no-repeat #ececec;
+        opacity: 0.1;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+      .qr-card {
+        @media (max-height: 560px) {
+          width: 60%;
+        }
+      }
+      .prompt-user {
+        .title-icon {
+          position: relative;
+        }
+      }
+    }
+  }
+  .close-btn{
+    margin-bottom: 20px;
+  }
+}

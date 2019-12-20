@@ -555,7 +555,6 @@ button.modal-close-button {
 .qr-container {
   flex-grow: 1;
   @include center;
-  background: linear-gradient(#ececec, white);
 
   .qr-placeholder {
     display: flex;
@@ -564,8 +563,6 @@ button.modal-close-button {
   }
 
   .qr-card {
-    border: 1px solid rgb(207, 207, 207);
-    border-radius: 7px;
     transform: translateY(0);
     margin: 0;
     padding-bottom: 0;

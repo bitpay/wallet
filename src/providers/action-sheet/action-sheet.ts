@@ -3,6 +3,7 @@ import { ActionSheetParent } from '../../components/action-sheet/action-sheet-pa
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
+import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { DomProvider } from '../../providers/dom/dom';
 
@@ -53,9 +54,13 @@ export interface WalletSelectorParams {
   selectedWalletId: string;
   title: string;
 }
+
+export interface WalletReceiveParams {
+  wallet: any;
+}
 @Injectable()
 export class ActionSheetProvider {
-  constructor(private domProvider: DomProvider) {}
+  constructor(private domProvider: DomProvider) { }
 
   public createOptionsSheet(
     type: OptionsSheetType,
@@ -91,8 +96,18 @@ export class ActionSheetProvider {
     ).instance;
   }
 
+  public createWalletReceive(
+    params: WalletReceiveParams
+  ): WalletReceiveComponent {
+    return this.setupSheet<WalletReceiveComponent>(
+      WalletReceiveComponent,
+      null,
+      params
+    ).instance;
+  }
+
   private setupSheet<T extends ActionSheetParent>(
-    componentType: { new (...args): T },
+    componentType: { new(...args): T },
     sheetType?: string,
     params?
   ): ComponentRef<T> {
