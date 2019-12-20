@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
   <ion-list class="bp-list">
     <ion-item class="confirm-header">
       <div class="confirm-header__amount">
@@ -102,8 +102,7 @@
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)"
-    buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()"
-    [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}">
+    buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
   </page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm

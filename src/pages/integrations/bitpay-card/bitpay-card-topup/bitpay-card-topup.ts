@@ -70,7 +70,6 @@ export class BitPayCardTopUpPage {
   private configWallet;
 
   public isOpenSelector: boolean;
-  public hideSlideButton: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -99,7 +98,6 @@ export class BitPayCardTopUpPage {
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
-    this.hideSlideButton = false;
   }
 
   ionViewDidLoad() {
@@ -181,7 +179,6 @@ export class BitPayCardTopUpPage {
   }
 
   private showErrorAndBack(title: string, msg) {
-    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -193,7 +190,6 @@ export class BitPayCardTopUpPage {
 
   private showError(title: string, msg): Promise<any> {
     return new Promise(resolve => {
-      this.hideSlideButton = false;
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
@@ -655,7 +651,6 @@ export class BitPayCardTopUpPage {
           return;
         }
 
-        this.hideSlideButton = true;
         this.onGoingProcessProvider.set('topup');
         this.publishAndSign(this.wallet, this.createdTx)
           .then(() => {

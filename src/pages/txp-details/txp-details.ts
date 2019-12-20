@@ -53,7 +53,6 @@ export class TxpDetailsPage {
   public showMultiplesOutputs: boolean;
   public amount: string;
   public isCordova: boolean;
-  public hideSlideButton: boolean;
 
   private countDown;
 
@@ -94,7 +93,6 @@ export class TxpDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign;
     this.color = this.wallet.color;
-    this.hideSlideButton = false;
 
     // To test multiple outputs...
 
@@ -276,7 +274,6 @@ export class TxpDetailsPage {
       (error as Error).message === 'FINGERPRINT_CANCELLED' ||
       (error as Error).message === 'PASSWORD_CANCELLED'
     ) {
-      this.hideSlideButton = false;
       return;
     }
 
@@ -287,14 +284,11 @@ export class TxpDetailsPage {
       { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
     );
     errorInfoSheet.present();
-    errorInfoSheet.onDidDismiss(() => {
-      this.hideSlideButton = false;
-    });
+    errorInfoSheet.onDidDismiss(() => {});
   }
 
   public sign(): void {
     this.loading = true;
-    this.hideSlideButton = true;
     this.walletProvider
       .publishAndSign(this.wallet, this.tx)
       .then(() => {
@@ -433,7 +427,6 @@ export class TxpDetailsPage {
 
   public close(): void {
     this.loading = false;
-    this.hideSlideButton = false;
     this.viewCtrl.dismiss();
   }
 

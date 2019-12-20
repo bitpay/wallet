@@ -71,7 +71,6 @@ export class ShapeshiftConfirmPage {
   public totalAmountStr: string;
   public txSent;
   public network: string;
-  public hideSlideButton: boolean;
   public remainingTimeStr: string;
   public paymentExpired: boolean;
 
@@ -101,8 +100,6 @@ export class ShapeshiftConfirmPage {
     this.isCordova = this.platformProvider.isCordova;
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
-
-    this.hideSlideButton = false;
 
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
@@ -307,7 +304,6 @@ export class ShapeshiftConfirmPage {
   }
 
   private showErrorAndBack(title: string, msg) {
-    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -455,7 +451,6 @@ export class ShapeshiftConfirmPage {
           return resolve(ctxp);
         })
         .catch(err => {
-          this.hideSlideButton = false;
           return reject({
             title: this.translate.instant('Could not create transaction'),
             message: this.bwcErrorProvider.msg(err)
@@ -647,7 +642,6 @@ export class ShapeshiftConfirmPage {
       );
       return;
     }
-    this.hideSlideButton = true;
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
     let title = this.replaceParametersProvider.replace(
@@ -660,7 +654,6 @@ export class ShapeshiftConfirmPage {
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then(ok => {
       if (!ok) {
         if (this.isCordova) this.slideButton.isConfirmed(false);
-        this.hideSlideButton = false;
         return;
       }
 

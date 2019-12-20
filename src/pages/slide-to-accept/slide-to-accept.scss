@@ -38,13 +38,16 @@ page-slide-to-accept {
     }
 
     80% {
-      -webkit-transform: translateX(5px);
-      transform: translateX(5px);
+      -webkit-transform: translateX(-5px);
+      transform: translateX(-5px);
     }
   }
 
   .animation {
-    animation: bounce 400ms;
+    -webkit-animation-duration: 400ms;
+    animation-duration: 400ms;
+    -webkit-animation-name: bounce;
+    animation-name: bounce;
   }
 
   .button-slider {
@@ -80,6 +83,17 @@ page-slide-to-accept {
       //     animation: bounce 1s;
       //   }
       // }
+
+      ///// Animation ///////
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      &.show {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+      ///////////////////////
 
       .enter {
         transform: translate(-50%, -50%);

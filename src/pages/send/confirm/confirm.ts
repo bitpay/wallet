@@ -842,7 +842,6 @@ export class ConfirmPage extends WalletTabsChild {
       (error as Error).message === 'FINGERPRINT_CANCELLED' ||
       (error as Error).message === 'PASSWORD_CANCELLED'
     ) {
-      this.hideSlideButton = false;
       return;
     }
     const infoSheetTitle = title ? title : this.translate.instant('Error');
@@ -853,7 +852,6 @@ export class ConfirmPage extends WalletTabsChild {
     );
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => {
-      this.hideSlideButton = false;
       if (exit) {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
@@ -875,7 +873,6 @@ export class ConfirmPage extends WalletTabsChild {
   public approve(tx, wallet): Promise<void> {
     if (!tx || !wallet) return undefined;
 
-    this.hideSlideButton = true;
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
@@ -889,7 +886,6 @@ export class ConfirmPage extends WalletTabsChild {
         return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
-            this.hideSlideButton = false;
             this.onGoingProcessProvider.clear();
             return;
           }

@@ -81,7 +81,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public isERCToken: boolean;
 
   public cardConfig: CardConfig;
-  public hideSlideButton: boolean;
   public displayNameIncludesGiftCard: boolean = false;
 
   constructor(
@@ -150,7 +149,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       keyProvider,
       statusBar
     );
-    this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
   }
 
@@ -494,7 +492,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
 
     const email = await this.promptEmail();
-    this.hideSlideButton = false;
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: parsedAmount.amount,
@@ -592,7 +589,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
       return;
     }
-    this.hideSlideButton = true;
     await this.giftCardProvider.saveGiftCard({
       ...this.tx.giftData,
       status: 'UNREDEEMED'
@@ -612,7 +608,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public async handlePurchaseError(err) {
     this.onGoingProcessProvider.clear();
-    this.hideSlideButton = false;
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
