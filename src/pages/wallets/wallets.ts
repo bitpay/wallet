@@ -1,7 +1,12 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -9,11 +14,13 @@ import { Observable, Subscription } from 'rxjs';
 // Pages
 import { AddWalletPage } from '../add-wallet/add-wallet';
 import { AddPage } from '../add/add';
+import { CopayersPage } from '../add/copayers/copayers';
 import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
 // Providers
@@ -99,7 +106,8 @@ export class WalletsPage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private modalCtrl: ModalController
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -754,7 +762,18 @@ export class WalletsPage {
   }
 
   public goToWalletDetails(wallet, params): void {
-    this.events.publish('OpenWallet', wallet, params);
+    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
+    const walletModal = this.modalCtrl.create(
+      page,
+      {
+        ...params,
+        walletId: wallet.credentials.walletId
+      },
+      {
+        cssClass: 'wallet-details-modal'
+      }
+    );
+    walletModal.present();
   }
 
   public openProposalsNotificationsPage(): void {

@@ -5,7 +5,8 @@ import {
   ModalController,
   NavController,
   NavParams,
-  Platform
+  Platform,
+  ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -25,11 +26,11 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
+import { ReceivePage } from '../../pages/receive/receive';
+import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
-import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
@@ -41,7 +42,7 @@ const TIMEOUT_FOR_REFRESHER = 1000;
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
 })
-export class WalletDetailsPage extends WalletTabsChild {
+export class WalletDetailsPage {
   private currentPage: number = 0;
   private showBackupNeededMsg: boolean = true;
   private onResumeSubscription: Subscription;
@@ -71,9 +72,8 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    navCtrl: NavController,
     private navParams: NavParams,
-    profileProvider: ProfileProvider,
+    private navCtrl: NavController,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
@@ -84,15 +84,16 @@ export class WalletDetailsPage extends WalletTabsChild {
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform
+    private platform: Platform,
+    private profileProvider: ProfileProvider,
+    private viewCtrl: ViewController
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
   ionViewDidLoad() {
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
@@ -493,5 +494,23 @@ export class WalletDetailsPage extends WalletTabsChild {
     setTimeout(() => {
       refresher.complete();
     }, TIMEOUT_FOR_REFRESHER);
+  }
+
+  public close() {
+    this.viewCtrl.dismiss();
+  }
+
+  public goToReceivePage() {
+    const modal = this.modalCtrl.create(ReceivePage, {
+      walletId: this.wallet.credentials.walletId
+    });
+    modal.present();
+  }
+
+  public goToSendPage() {
+    const modal = this.modalCtrl.create(SendPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+    modal.present();
   }
 }

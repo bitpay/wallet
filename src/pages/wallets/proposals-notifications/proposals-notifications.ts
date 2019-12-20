@@ -28,7 +28,6 @@ import { FinishModalPage } from '../../finish/finish';
   selector: 'page-proposals-notifications',
   templateUrl: 'proposals-notifications.html'
 })
-
 export class ProposalsNotificationsPage {
   @ViewChild('slideButton')
   slideButton;

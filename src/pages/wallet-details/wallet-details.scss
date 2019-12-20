@@ -42,19 +42,33 @@ page-wallet-details {
   .balance-header {
     position: relative;
     margin-top: 15px;
-    margin-left: 5rem;
-    height: 17rem;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    height: 30rem;
     color: color($colors, light);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-around;
+  }
+
+  .balance-container {
+    margin-left: 1rem;
+  }
+
+  .wallet-name {
+    font-size: 23px;
+    font-weight: 600;
+
+    @media (max-width: 350px) {
+      font-size: 28px;
+    }
   }
 
   .balance-str {
     cursor: pointer;
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 38px;
+    font-weight: 500;
 
     @media (max-width: 350px) {
       font-size: 28px;
@@ -63,9 +77,10 @@ page-wallet-details {
 
   .balance-alt-str {
     padding-top: 10px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
-    opacity: 0.7;
+    opacity: 0.5;
+    line-height: 24px;
   }
 
   .balance-hidden {
@@ -102,6 +117,17 @@ page-wallet-details {
     ion-icon {
       vertical-align: text-bottom;
       margin-right: 5px;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    .button-standard {
+      width: 45%;
+      background-color: rgba(255, 255, 255, 0.09);
+      margin: 0;
     }
   }
 
@@ -205,6 +231,9 @@ page-wallet-details {
     }
 
     .amount {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 24px;
       color: color($colors, dark);
 
       .received {
@@ -215,6 +244,9 @@ page-wallet-details {
     .date {
       font-size: 14px;
       margin-top: 8px;
+      opacity: 0.4;
+      font-weight: 300;
+      color: #434d5a;
     }
 
     .proposal-container {
