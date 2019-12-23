@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2019-12-20 19:12\n"
+"PO-Revision-Date: 2019-12-23 13:27\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -1171,7 +1171,7 @@ msgid "Learn more about testnet blockchain"
 msgstr "En savoir plus sur la blockchain testnet"
 
 msgid "Learn where you can spend your crypto today."
-msgstr ""
+msgstr "Trouvez où dépenser vos cryptos dès aujourd'hui."
 
 msgid "Legacy"
 msgstr "Obsolète"
@@ -1831,7 +1831,7 @@ msgid "Select a wallet"
 msgstr "Sélectionner un portefeuille"
 
 msgid "Select an Ethereum Wallet"
-msgstr ""
+msgstr "Choisissez un portefeuille Ethereum"
 
 msgid "Select currencies"
 msgstr "Sélectionner des devises"
@@ -2059,7 +2059,7 @@ msgid "Temporarily Unavailable"
 msgstr "Temporairement indisponible"
 
 msgid "Terms of Service"
-msgstr ""
+msgstr "Conditions d'utilisation"
 
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
