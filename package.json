@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -191,7 +191,7 @@
     "adm-zip": "0.4.13",
     "codecov": "3.1.0",
     "core-js": "2.6.10",
-    "electron": "5.0.12",
+    "electron": "5.0.13",
     "electron-builder": "21.2.0",
     "fs-extra": "5.0.0",
     "ionic": "4.10.4",
