@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-12-10 17:48\n"
+"PO-Revision-Date: 2019-12-20 19:23\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -355,9 +353,6 @@ msgstr "Click para aceptar"
 
 msgid "Click to confirm"
 msgstr "Click para confirmar"
-
-msgid "Click to open Terms"
-msgstr "Click para abrir los Términos"
 
 msgid "Click to pay"
 msgstr "Click para pagar"
@@ -1832,11 +1827,11 @@ msgstr "Seleccionar clave"
 msgid "Select Key to add ETH Wallet to"
 msgstr "Seleccionar la clave a la cual agregar la billetera ETH"
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr "Seleccione una billetera Ethereum para los Costos de Transacción"
-
 msgid "Select a wallet"
 msgstr "Seleccionar una billetera"
+
+msgid "Select an Ethereum Wallet"
+msgstr "Seleccione una Billetera Ethereum"
 
 msgid "Select currencies"
 msgstr "Seleccionar monedas"
@@ -2063,6 +2058,9 @@ msgstr "Toca para recrear"
 msgid "Temporarily Unavailable"
 msgstr "Temporalmente no disponible"
 
+msgid "Terms of Service"
+msgstr "Términos del Servicio"
+
 msgid "Terms of Use"
 msgstr "Términos de Uso"
 
@@ -2210,9 +2208,6 @@ msgstr "Comisión de minero requerida para este pago:"
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "Esta frase de recuperación fue creada con una contraseña. Para recuperar esta billetera, la frase de recuperación y la contraseña son necesarias."
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr "Este token usará su billetera {{ params.wallets[0].walletName}} (ETH) para cubrir los costos de transacción"
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr "Esta transacción es muy pequeña comparada a la comisión actual de la red.\n"
 "Para gastar esta cantidad necesitarás un costo de comisión comparable a los fondos en sí mismos."
@@ -2264,9 +2259,6 @@ msgstr "Intercambia entre activos de la blockchain. Protección por diseño."
 
 msgid "Transaction"
 msgstr "Transacción"
-
-msgid "Transaction Costs"
-msgstr "Costos de Transacción"
 
 msgid "Transaction History"
 msgstr "Historial de Transacciones"
