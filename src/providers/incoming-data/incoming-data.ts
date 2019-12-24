@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
+import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -30,7 +31,8 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private iab: InAppBrowserProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -596,7 +598,20 @@ export class IncomingDataProvider {
       this.goToImportByPrivateKey(data);
       return true;
 
-      // Anything else
+      // card email verification -> from the iab when creating an account an intent is sent with email verification payload. This passes it back to the iab.
+    } else if (data.includes('payload=')) {
+      const payload = 'payload ' + data.split('=')[1];
+      this.iab.refs.card.executeScript(
+        {
+          code: `window.postMessage('${payload}', '*')`
+        },
+        () => {
+          this.logger.log(`email verification attempt ${data}`);
+        }
+      );
+      return true;
+
+      // Anything els
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {
         this.logger.debug('Incoming-data: Plain text');

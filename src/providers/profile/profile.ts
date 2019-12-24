@@ -1504,6 +1504,8 @@ export class ProfileProvider {
       bp_partner: ethWallet.bp_partner,
       bp_partner_version: ethWallet.bp_partner_version
     });
+
+    // @ts-ignore
     walletClient.fromObj(tokenCredentials);
 
     // Add the token info to the ethWallet.

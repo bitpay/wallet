@@ -55,6 +55,7 @@ export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
 export {
   InAppBrowserProvider
 } from '../providers/in-app-browser/in-app-browser';
+export { IABCardProvider } from '../providers/in-app-browser/card';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export { InvoiceProvider } from '../providers/invoice/invoice';
 export { KeyProvider } from '../providers/key/key';

@@ -7,13 +7,13 @@ import * as _ from 'lodash';
 
 // providers
 import { StatusBar } from '@ionic-native/status-bar';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 // pages
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import {
-  ActionSheetProvider,
   BitPayIdProvider,
+  IABCardProvider,
   InAppBrowserProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
@@ -72,9 +72,10 @@ export class SettingsPage {
   public walletsGroups: any[];
   public hiddenFeaturesEnabled: boolean;
   public bitPayIdUserInfo: any;
-  private bitpayIdRef: InAppBrowserRef;
-  private bitpayIdRefSubscription: Subscription;
+  private cardIAB_Ref: InAppBrowserRef;
+  private cardIAB_RefSubscription: Subscription;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
+  private user$: Observable<User>;
 
   constructor(
     private navCtrl: NavController,
@@ -96,11 +97,12 @@ export class SettingsPage {
     private iab: InAppBrowserProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
-    private actionSheetProvider: ActionSheetProvider,
+    private iabCardProvider: IABCardProvider,
     private statusBar: StatusBar
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
+    this.user$ = this.iabCardProvider.user$;
   }
 
   ionViewDidLoad() {
@@ -112,53 +114,22 @@ export class SettingsPage {
       .getHiddenFeaturesFlag()
       .then(res => (this.hiddenFeaturesEnabled = res === 'enabled'));
 
-    this.bitpayIdRef = this.iab.refs.bitpayId;
+    this.cardIAB_Ref = this.iab.refs.card;
 
-    if (this.bitpayIdRef) {
+    if (this.cardIAB_Ref) {
       // check for user info
       this.persistanceProvider
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
         });
-      // subscribing to iab 'message' events
-      this.bitpayIdRefSubscription = this.bitpayIdRef.events$.subscribe(
-        (event: any) => {
-          switch (event.data.message) {
-            case 'close':
-              this.statusBar.show();
-              this.bitpayIdRef.hide();
-              break;
 
-            case 'pairing':
-              const { secret } = event.data.params;
-              // close the modal
-              this.bitpayIdRef.hide();
-              // restore status bar
-              this.statusBar.show();
-              // generates pairing token and also fetches user basic info and caches both
-              this.bitPayIdProvider.generatePairingToken(
-                secret,
-                (user: User) => {
-                  // success so move to bitpay id page and show action sheet
-                  const infoSheet = this.actionSheetProvider.createInfoSheet(
-                    'in-app-notification',
-                    {
-                      title: 'BitPay ID',
-                      body: 'BitPay ID successfully connected.'
-                    }
-                  );
-                  infoSheet.present();
-                  this.bitPayIdUserInfo = user;
-                  this.navCtrl.push(BitPayIdPage, user);
-                  // TODO having to manually detect changes - need to look into this
-                  this.changeRef.detectChanges();
-                },
-                err => this.logger.debug(err)
-              );
-          }
+      this.user$.subscribe(user => {
+        if (user) {
+          this.bitPayIdUserInfo = user;
+          this.changeRef.detectChanges();
         }
-      );
+      });
     }
 
     this.currentLanguageName = this.language.getName(
@@ -201,8 +172,8 @@ export class SettingsPage {
   }
 
   ionViewDidLeave() {
-    if (this.bitpayIdRef) {
-      this.bitpayIdRefSubscription.unsubscribe();
+    if (this.cardIAB_Ref) {
+      this.cardIAB_RefSubscription.unsubscribe();
     }
   }
 
@@ -212,7 +183,7 @@ export class SettingsPage {
     }
     this.bitPayIdUserInfo
       ? this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo)
-      : this.bitpayIdRef.show();
+      : this.cardIAB_Ref.show();
   }
 
   public openAltCurrencyPage(): void {

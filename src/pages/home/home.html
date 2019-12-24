@@ -174,42 +174,54 @@
       </ion-list>
     </div>
 
-    <div class="section-header" *ngIf="
+
+
+
+    <ng-container *ngIf="showCardHomeAlt else existingCardFlow">
+      <bitpay-card-home-alt></bitpay-card-home-alt>
+    </ng-container>
+
+    <ng-template #existingCardFlow>
+
+      <div class="section-header" *ngIf="
       (showBitPayCard && ((bitpayCardItems && bitpayCardItems[0]) || showBitpayCardGetStarted) || showGiftCards) && wallets && wallets[0]
     " translate>Cards</div>
 
-    <ion-list class="bitpay-card" *ngIf="
+      <ion-list class="bitpay-card" *ngIf="
         showBitPayCard &&
         bitpayCardItems &&
         bitpayCardItems[0] &&
         wallets &&
         wallets[0]
       ">
-      <div *ngFor="let card of bitpayCardItems" class="card-item sliding-container">
-        <ion-item-sliding class="card-item-sliding">
-          <button ion-item (click)="goToCard(card.id)">
-            <img src="assets/img/app/logo-negative.svg" />
-            <ion-note class="ellipsis" item-end>
-              <div class="funds ellipsis">
+        <div *ngFor="let card of bitpayCardItems" class="card-item sliding-container">
+          <ion-item-sliding class="card-item-sliding">
+            <button ion-item (click)="goToCard(card.id)">
+              <img src="assets/img/app/logo-negative.svg" />
+              <ion-note class="ellipsis" item-end>
+                <div class="funds ellipsis">
                 <span *ngIf="card.balance">
                   {{ card.currencySymbol + (card.balance | number: '1.2-2') }}
                 </span>
-                <span *ngIf="!card.balance">
+                  <span *ngIf="!card.balance">
                   {{ 'Add funds to get started' | translate }}
                 </span>
-              </div>
-              <div class="number ellipsis">
-                Card ({{ card.lastFourDigits }})
-              </div>
-            </ion-note>
-          </button>
-        </ion-item-sliding>
-      </div>
-    </ion-list>
+                </div>
+                <div class="number ellipsis">
+                  Card ({{ card.lastFourDigits }})
+                </div>
+              </ion-note>
+            </button>
+          </ion-item-sliding>
+        </div>
+      </ion-list>
 
-    <bitpay-card-home *ngIf="
+      <bitpay-card-home *ngIf="
         showBitPayCard && showBitpayCardGetStarted && wallets && wallets[0]
       "></bitpay-card-home>
+
+    </ng-template>
+
 
     <gift-cards *ngIf="showGiftCards && wallets && wallets[0]" [scrollArea]="scrollArea"></gift-cards>
 

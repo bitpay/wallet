@@ -17,6 +17,7 @@ import { Observable, Subscription } from 'rxjs';
 import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
 import {
   GiftCardProvider,
+  IABCardProvider,
   InAppBrowserProvider,
   PersistenceProvider
 } from '../providers';
@@ -71,7 +72,7 @@ import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 export class CopayApp implements OnDestroy {
   @ViewChild('appNav')
   nav: NavController;
-
+  cardIAB_Ref: InAppBrowser;
   public rootPage:
     | typeof AmountPage
     | typeof DisclaimerPage
@@ -125,7 +126,8 @@ export class CopayApp implements OnDestroy {
     private device: Device,
     private keyProvider: KeyProvider,
     private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private iab: InAppBrowserProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -268,12 +270,12 @@ export class CopayApp implements OnDestroy {
       if (res === 'enabled') {
         // preloading the view
         setTimeout(() => {
-          this.iab.createIABInstance(
-            'bitpayId',
-            // using this as an example
-            'https://bitpay.com/id',
-            `sessionStorage.setItem('context', 'wallet')`
-          );
+          this.iab
+            .createIABInstance('card', 'https://bitpay.com/')
+            .then(ref => {
+              this.cardIAB_Ref = ref;
+              this.iabCardProvider.init();
+            });
         });
       }
     });

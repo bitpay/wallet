@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
 
 const IAB_CONFIG =
@@ -10,44 +12,63 @@ const IAB_CONFIG =
 export class InAppBrowserProvider {
   // add new refs here
   refs: {
-    bitpayId?: InAppBrowserRef;
+    card?: InAppBrowserRef;
   } = {};
 
-  constructor(private logger: Logger) {
+  constructor(
+    private logger: Logger,
+    private actionSheetProvider: ActionSheetProvider,
+    private translate: TranslateService
+  ) {
     this.logger.debug('InAppBrowserProvider initialized');
   }
 
   public createIABInstance(
     refName: string,
     url: string,
-    initScript: string
-  ): InAppBrowserRef {
-    const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
-    // script that executes inside of inappbrowser when loaded
-    const initIAB = () => {
-      ref.insertCSS(
-        {
-          code:
-            'body{padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}'
-        },
-        null
-      );
-      ref.executeScript(
-        {
-          code: initScript
-        },
-        () => ref.removeEventListener('loadstop', initIAB)
-      );
-    };
+    initScript?: string
+  ): Promise<InAppBrowserRef> {
+    return new Promise((res, rej) => {
+      try {
+        const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
+        if (initScript) {
+          // script that executes inside of inappbrowser when loaded
+          const initIAB = () => {
+            ref.executeScript(
+              {
+                code: initScript
+              },
+              () => ref.removeEventListener('loadstop', initIAB)
+            );
+          };
+          ref.addEventListener('loadstop', initIAB);
+        }
 
-    ref.addEventListener('loadstop', initIAB);
+        ref.addEventListener('loaderror', () => {
+          this.logger.debug(`InAppBrowserProvider -> ${refName} load error`);
+          ref.error = true;
+          ref.show = () => {
+            this.actionSheetProvider
+              .createInfoSheet('default-error', {
+                msg: this.translate.instant(
+                  'Uh oh something went wrong! Please try again later.'
+                ),
+                title: this.translate.instant('Error')
+              })
+              .present();
+          };
+        });
 
-    // add observable to listen for url changes
-    ref.events$ = Observable.fromEvent(ref, 'message');
+        // add observable to listen for url changes
+        ref.events$ = Observable.fromEvent(ref, 'message');
 
-    // providing two ways to get ref - caching it here and also returning it
-    this.refs[refName] = ref;
+        // providing two ways to get ref - caching it here and also returning it
+        this.refs[refName] = ref;
 
-    return ref;
+        res(ref);
+      } catch (err) {
+        rej();
+      }
+    });
   }
 }

@@ -34,6 +34,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -70,6 +71,7 @@ export class HomePage {
 
   public showRateCard: boolean;
   public showPriceChart: boolean;
+  public showCardHomeAlt: boolean;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
@@ -140,6 +142,10 @@ export class HomePage {
     this.setWallets(shouldUpdate);
 
     this.checkPriceChart();
+
+    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
+      this.showCardHomeAlt = res === 'enabled';
+    });
   }
 
   private _didEnter() {

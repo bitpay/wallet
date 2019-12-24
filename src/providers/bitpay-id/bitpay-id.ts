@@ -73,7 +73,7 @@ export class BitPayIdProvider {
 
         async () => {
           json['params'].signature = bitauthService.sign(
-            JSON.stringify(json['params']),
+            dataToSign,
             appIdentity.priv
           );
           json['params'].pubkey = appIdentity.pub;
