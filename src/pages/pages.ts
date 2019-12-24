@@ -57,7 +57,6 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
-import { EthLiveCardPage } from '../pages/includes/eth-live-card/eth-live-card';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
@@ -155,7 +154,6 @@ export const PAGES = [
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
-  EthLiveCardPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,

@@ -40,7 +40,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private walletProvider: WalletProvider,
     private events: Events,
     private bwcErrorProvider: BwcErrorProvider,
-    private platform: Platform,
+    private platform: Platform
   ) {
     super();
   }
@@ -107,7 +107,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
         if (this.retryCount > 3) {
           this.retryCount = 0;
           this.loading = false;
-          this.dismiss(err)
+          this.dismiss(err);
         } else if (err == 'INVALID_ADDRESS') {
           // Generate new address if the first one is invalid ( fix for concatenated addresses )
           if (!failed) {

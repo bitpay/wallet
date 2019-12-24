@@ -511,13 +511,13 @@ export class WalletDetailsPage {
   public goToReceivePage() {
     const params = {
       wallet: this.wallet
-    }
+    };
     const receive = this.actionSheetProvider.createWalletReceive(params);
     receive.present();
     receive.onDidDismiss(data => {
       if (data === 'goToBackup') this.goToBackup();
       else if (data) this.showErrorInfoSheet(data);
-    })
+    });
   }
 
   public goToSendPage() {
@@ -580,5 +580,4 @@ export class WalletDetailsPage {
       keyId: this.wallet.credentials.keyId
     });
   }
-
 }

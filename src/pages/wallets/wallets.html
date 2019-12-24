@@ -1,6 +1,11 @@
 <ion-header class="bp-header">
   <ion-navbar>
     <ion-title>{{'Wallets' | translate}}</ion-title>
+    <ion-buttons right class="add-button" *ngIf="wallets && wallets[0]">
+      <button ion-button clear (click)="addWallet()" class="add">
+        <img src="assets/img/add-wallet/add-wallet.svg" />
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -64,7 +69,6 @@
 
     <page-feedback-card #showCard></page-feedback-card>
     <page-survey-card #showSurvey></page-survey-card>
-    <page-eth-live-card #showEthLiveCard (addEthClicked)="addWallet(true)"></page-eth-live-card>
 
     <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 

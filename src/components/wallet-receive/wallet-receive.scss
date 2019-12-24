@@ -1,6 +1,6 @@
 wallet-receive {
   padding-bottom: calc(env(safe-area-inset-bottom));
-  .action-sheet{
+  .action-sheet {
     border-radius: 10px 10px 0px 0px;
   }
   .error {
@@ -30,9 +30,9 @@ wallet-receive {
       cursor: pointer;
     }
   }
-  .addr-header{
+  .addr-header {
     margin-top: 10px;
-    .addr-title {	
+    .addr-title {
       height: 30px;
       width: 86px;
       font-size: 23px;
@@ -40,14 +40,14 @@ wallet-receive {
       line-height: 30px;
       margin-left: 25px;
     }
-    .addr-buttons{
+    .addr-buttons {
       margin-right: 25px;
     }
 
-    .addr-update{
+    .addr-update {
       height: 37px;
       width: 38px;
-      background-color: #EDF0FE;
+      background-color: #edf0fe;
       border-radius: 50%;
       .spin-backwards {
         animation: spin-backwards 0.5s ease-out 1;
@@ -112,9 +112,9 @@ wallet-receive {
     height: 2px;
     border: 1px solid #979797;
     opacity: 0.23;
-    margin:0px 25px 0px 25px;
+    margin: 0px 25px 0px 25px;
   }
-  .addr-content{
+  .addr-content {
     margin: 17px 25px 0px 25px;
     .addr-container {
       text-align: center;
@@ -176,7 +176,7 @@ wallet-receive {
       }
     }
   }
-  .close-btn{
+  .close-btn {
     margin-bottom: 20px;
   }
 }
