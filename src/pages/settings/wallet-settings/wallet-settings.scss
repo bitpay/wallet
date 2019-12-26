@@ -1,4 +1,23 @@
 page-wallet-settings {
+  .wide-header {
+    .toolbar-background {
+      background: white;
+    }
+
+    ion-title .toolbar-title {
+      font-weight: 400;
+    }
+
+    &__title {
+      color: black;
+      font-size: 25px;
+      font-weight: 500;
+      padding-top: 30px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+    }
+  }
+
   .assertive {
     color: color($colors, danger);
 

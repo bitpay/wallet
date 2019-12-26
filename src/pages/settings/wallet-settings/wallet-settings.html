@@ -1,58 +1,73 @@
-<ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
-    <ion-title>{{'Wallet Settings' | translate}}</ion-title>
+<ion-header class="wide-header">
+  <ion-navbar>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <span>{{'Wallet Settings' | translate}}</span>
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list class="settings-list bp-list">
-    <button ion-item (click)="openWalletName()">
-      <div translate float-left>Name</div>
-      <ion-note item-end>
-        {{wallet && wallet.name}}
-      </ion-note>
-    </button>
-    <ion-item class="with-label no-border">
-      <ion-label>{{'Hide Wallet' | translate }}</ion-label>
-      <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
-    </ion-item>
-    <label-tip class="info" type="info" header="no-header" *ngIf="!wallet?.hidden">
-      <div label-tip-body translate>
-        The wallet won't be removed from this device. You can hide it whenever you need it.
-      </div>
-    </label-tip>
-    <ion-item>
-      <ion-label>{{'Hide Balance' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
-    </ion-item>
-    <ion-item-divider *ngIf="canSign && touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
-    <div *ngIf="canSign && touchIdAvailable">
-      <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Biometric Authentication'| translate}}</ion-label>
-        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+<ion-content #scrollArea>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary>
+          <span>{{'Wallet Settings' | translate}}</span>
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list class="settings-list bp-list">
+      <button ion-item (click)="openWalletName()">
+        <div translate float-left>Name</div>
+        <ion-note item-end>
+          {{wallet && wallet.name}}
+        </ion-note>
+      </button>
+      <ion-item class="with-label no-border">
+        <ion-label>{{'Hide Wallet' | translate }}</ion-label>
+        <ion-toggle checked="{{wallet?.hidden}}" (ionChange)="hiddenWalletChange(wallet.id)"></ion-toggle>
       </ion-item>
-    </div>
-    <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
-    <button ion-item (click)="openWalletInformation()">
-      <span translate>Information</span>
-    </button>
-    <button ion-item (click)="openWalletAddresses()">
-      <span translate>Addresses</span>
-    </button>
-    <button ion-item (click)="openExportWallet()">
-      <span translate>Export Wallet</span>
-    </button>
-    <button ion-item (click)="openWalletServiceUrl()">
-      <span>Wallet Service URL</span>
-    </button>
-    <button ion-item (click)="openTransactionHistory()">
-      <span translate>Transaction History</span>
-    </button>
-    <button ion-item (click)="openDuplicateWallet()" *ngIf="showDuplicateWallet">
-      <span translate>Duplicate to BCH</span>
-    </button>
-    <button *ngIf="!canSign" ion-item (click)="openWalletGroupDelete()">
-      <span translate>Delete</span>
-    </button>
-  </ion-list>
+      <label-tip class="info" type="info" header="no-header" *ngIf="!wallet?.hidden">
+        <div label-tip-body translate>
+          The wallet won't be removed from this device. You can hide it whenever you need it.
+        </div>
+      </label-tip>
+      <ion-item>
+        <ion-label>{{'Hide Balance' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
+      </ion-item>
+      <ion-item-divider *ngIf="canSign && touchIdAvailable">{{'Security' | translate}}</ion-item-divider>
+      <div *ngIf="canSign && touchIdAvailable">
+        <ion-item>
+          <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Biometric Authentication'| translate}}</ion-label>
+          <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+        </ion-item>
+      </div>
+      <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
+      <button ion-item (click)="openWalletInformation()">
+        <span translate>Information</span>
+      </button>
+      <button ion-item (click)="openWalletAddresses()">
+        <span translate>Addresses</span>
+      </button>
+      <button ion-item (click)="openExportWallet()">
+        <span translate>Export Wallet</span>
+      </button>
+      <button ion-item (click)="openWalletServiceUrl()">
+        <span>Wallet Service URL</span>
+      </button>
+      <button ion-item (click)="openTransactionHistory()">
+        <span translate>Transaction History</span>
+      </button>
+      <button ion-item (click)="openDuplicateWallet()" *ngIf="showDuplicateWallet">
+        <span translate>Duplicate to BCH</span>
+      </button>
+      <button *ngIf="!canSign" ion-item (click)="openWalletGroupDelete()">
+        <span translate>Delete</span>
+      </button>
+    </ion-list>
+  </div>
 </ion-content>
