@@ -7,17 +7,17 @@ page-wallet-group-onboarding {
       background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
       .img-container {
         height: 68vh;
-        @media (max-height: 650px) and (max-width: 768px) {
-          height: 60vh;
-        }
         @media (max-height: 550px) and (max-width: 768px) {
           height: 53vh;
         }
         @media (min-height: 600px) and (min-width: 768px) {
           height: 42vh;
         }
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 60vh;
+        }
         @media (min-height: 768px) and (min-width: 768px) {
-          height: 50vh;
+          height: 38vh;
         }
         img {
           padding: 5rem;
@@ -40,8 +40,7 @@ page-wallet-group-onboarding {
       }
       .slide-info {
         background: white;
-        min-height: 230px;
-        padding-bottom: 20rem;
+        height: 100%;
         .info {
           padding: 2rem;
           .title {
@@ -56,19 +55,8 @@ page-wallet-group-onboarding {
             color: rgb(46, 46, 46);
             font-weight: 300;
             padding-top: 15px;
-            padding-bottom: 30px;
           }
         }
-      }
-    }
-
-    .swiper-pagination {
-      text-align: left;
-      margin-left: 4rem;
-      margin-bottom: 1rem;
-      button.swiper-pagination-bullet {
-        width: 9px;
-        height: 9px;
       }
     }
   }
