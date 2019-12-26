@@ -699,3 +699,8 @@ page-bitpay-card,
   margin: auto;
   transform: translate(0, -10%);
 }
+
+/* Removes rounded border for modals (wallet-details) */
+.wallet-details-modal .modal-wrapper {
+  border-radius: 0px !important;
+}
