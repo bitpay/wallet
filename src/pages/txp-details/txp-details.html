@@ -143,7 +143,7 @@
           <div class="timeline-content">
             <div class="timeline-content-icon">
               <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-              <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+              <div class="line-divider" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
             </div>
             <div class="timeline-content-label">
               <div class="action">{{a.description}}</div>

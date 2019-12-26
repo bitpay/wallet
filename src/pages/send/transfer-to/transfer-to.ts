@@ -39,7 +39,7 @@ export class TransferToPage {
   public search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
-  public walletList = {} as CoinsMap<FlatWallet[]>;
+  public walletList = {} as any;
   public availableCoins: Coin[];
   public contactsList = [];
   public filteredContactsList = [];
@@ -160,18 +160,8 @@ export class TransferToPage {
   }
 
   private flattenWallet(wallet): FlatWallet {
-    return {
-      color: wallet.color,
-      name: wallet.name,
-      recipientType: 'wallet',
-      coin: wallet.coin,
-      network: wallet.network,
-      m: wallet.credentials.m,
-      n: wallet.credentials.n,
-      isComplete: wallet.isComplete(),
-      needsBackup: wallet.needsBackup,
-      getAddress: () => this.walletProvider.getAddress(wallet, false)
-    };
+    wallet.getAddress = () => this.walletProvider.getAddress(wallet, false);
+    return wallet;
   }
 
   private filterIrrelevantRecipients(recipient: {

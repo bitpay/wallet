@@ -36,7 +36,7 @@
     <div class="timeline-item" *ngFor="let copayer of copayers; let i = index">
       <div class="timeline-content">
         <div class="timeline-content-icon">
-          <div class="line" *ngIf="copayers.length < wallet.n">
+          <div class="line-divider" *ngIf="copayers.length < wallet.n">
             <ion-icon name="checkmark" item-end color="success"></ion-icon>
           </div>
         </div>

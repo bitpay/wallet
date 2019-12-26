@@ -35,7 +35,7 @@
         </button>
       </ion-col>
     </ion-row>
-    <div class="line"></div>
+    <div class="line-divider"></div>
     <div class="addr-content">
       <div class="addr-container">
         <div class="text-address ellipsis">
@@ -71,7 +71,7 @@
         <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ address }}" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
     </div>
-    <div class="line"></div>
+    <div class="line-divider"></div>
     <div class="close-btn" text-center>
       <button ion-button clear icon-only color="dark" (click)="dismiss()">
         CLOSE

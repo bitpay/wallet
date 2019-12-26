@@ -69,7 +69,7 @@ ion-label {
 // --------------------------------------------------
 ion-header.bp-header,
 .toolbar {
-  height: 80px;
+  height: 60px;
   .toolbar.toolbar-md .title-md .toolbar-title-md,
   ion-title.title.title-ios {
     padding: 0px 50px 0px 17px;
@@ -83,6 +83,35 @@ ion-header.bp-header,
     font-size: 25px;
     font-weight: 600;
   }
+}
+
+ion-header.bp-header-extended,
+.toolbar {
+  height: 60px;
+  .toolbar.toolbar-md .title-md .toolbar-title-md,
+  ion-title.title.title-ios {
+    padding: 0px 50px 0px 17px;
+    font-weight: 600;
+  }
+
+  ion-title .toolbar-title.toolbar-title-md,
+  .toolbar-title.toolbar-title-ios {
+    text-align: left;
+    line-height: 34px;
+    font-size: 25px;
+    font-weight: 600;
+  }
+  .bp-header-btn {
+    padding-left: 10px;
+  }
+}
+
+.close-container {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: rgba(155, 163, 174, 0.2);
+  color: #d8d8d8;
 }
 
 // Buttons
@@ -543,6 +572,12 @@ ion-alert .alert-message {
   margin: 20px 0px 10px 20px;
 }
 
+.key-name {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 button.modal-close-button {
   font-size: 16px;
   font-weight: 400;
@@ -662,7 +697,6 @@ ion-item.with-label.item {
 
 page-wallet-details,
 page-receive,
-page-send,
 page-multi-send,
 page-transfer-to-modal,
 page-bitpay-card-intro,
@@ -786,4 +820,11 @@ ion-icon {
       50%;
     background-size: contain;
   } //in case of inactive
+}
+.line-divider {
+  box-sizing: border-box;
+  height: 2px;
+  border: 1px solid #979797;
+  opacity: 0.23;
+  margin: 0px 25px 0px 25px;
 }

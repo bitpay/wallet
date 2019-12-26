@@ -1,6 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -21,14 +26,14 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
 
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
 })
-export class SendPage extends WalletTabsChild {
+export class SendPage {
+  public wallet: any;
   public search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
@@ -48,21 +53,22 @@ export class SendPage extends WalletTabsChild {
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    navCtrl: NavController,
+    private navCtrl: NavController,
     private navParams: NavParams,
     private payproProvider: PayproProvider,
-    profileProvider: ProfileProvider,
+    private profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    walletTabsProvider: WalletTabsProvider,
+    private walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private viewCtrl: ViewController
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
+    this.wallet = this.navParams.data.wallet;
   }
 
   @ViewChild('transferTo')
@@ -240,7 +246,7 @@ export class SendPage extends WalletTabsChild {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
       } else if (parsedData && parsedData.type == 'BitPayCard') {
-        this.close();
+        // this.close();
         this.incomingDataProvider.redir(this.search);
       } else if (parsedData && parsedData.type == 'PrivateKey') {
         this.incomingDataProvider.redir(this.search);
@@ -267,12 +273,18 @@ export class SendPage extends WalletTabsChild {
   }
 
   public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage);
+    this.navCtrl.push(MultiSendPage, {
+      wallet: this.wallet
+    });
   }
 
   public closeCam(): void {
     if (this.scannerOpened) this.events.publish('ExitScan');
-    else this.getParentTabs().dismiss();
+    // else this.getParentTabs().dismiss();
     this.scannerOpened = false;
+  }
+
+  public close(): void {
+    this.viewCtrl.dismiss();
   }
 }
