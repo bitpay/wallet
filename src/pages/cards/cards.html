@@ -3,7 +3,7 @@
     <ion-title>{{'Cards' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content ion-content class="fullscreen-tab" #scrollArea>
+<ion-content>
   <div class="section-header" *ngIf="showBitPayCard && bitpayCardItems?.length" translate>Debit Cards</div>
 
   <bitpay-card-home *ngIf="showBitPayCard"></bitpay-card-home>
