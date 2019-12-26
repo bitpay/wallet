@@ -21,7 +21,6 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 
 // Integrations: Invoice
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
@@ -125,7 +124,6 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
-import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
@@ -225,8 +223,6 @@ export const PAGES = [
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
-  WalletTabsChild,
-  WalletTabsPage,
   WalletBalancePage,
   WideHeaderPage,
   CardItemPage,

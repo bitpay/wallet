@@ -23,7 +23,6 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
 import { MultiSendPage } from './multi-send/multi-send';
@@ -61,7 +60,6 @@ export class SendPage {
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
@@ -103,24 +101,15 @@ export class SendPage {
     );
   }
 
-  public async goToReceive() {
-    await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'receiving-bitcoin',
-      { coinName }
-    );
-    await Observable.timer(250).toPromise();
-    infoSheet.present();
-  }
-
   public openScanner(): void {
     this.scannerOpened = true;
-    this.walletTabsProvider.setSendParams({
+    /* this.walletTabsProvider.setSendParams({
       amount: this.navParams.data.amount,
       coin: this.navParams.data.coin
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
+    
+    TODO*/
     this.events.publish('ScanFromWallet');
   }
 

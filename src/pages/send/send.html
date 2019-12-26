@@ -70,7 +70,7 @@
         </ion-list>
       </div>
 
-      <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" #transferTo></page-transfer-to>
+      <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
 
     </div>
     <div *ngIf="!hasWallets[wallet?.coin]" class="no-wallet-message">

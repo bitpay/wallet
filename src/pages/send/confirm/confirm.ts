@@ -15,6 +15,7 @@ import { Logger } from '../../../providers/logger/logger';
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { TabsPage } from '../../tabs/tabs';
+import { WalletsPage } from '../../wallets/wallets';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
@@ -28,7 +29,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
-import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -40,13 +40,11 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
 })
-export class ConfirmPage extends WalletTabsChild {
+export class ConfirmPage {
   @ViewChild('slideButton')
   slideButton;
   protected bitcoreCash;
@@ -87,6 +85,7 @@ export class ConfirmPage extends WalletTabsChild {
   public usingMerchantFee: boolean = false;
 
   public isOpenSelector: boolean;
+  public fromWalletDetails: boolean;
 
   constructor(
     protected addressProvider: AddressProvider,
@@ -101,25 +100,24 @@ export class ConfirmPage extends WalletTabsChild {
     protected feeProvider: FeeProvider,
     protected logger: Logger,
     protected modalCtrl: ModalController,
-    navCtrl: NavController,
+    protected navCtrl: NavController,
     protected navParams: NavParams,
     protected onGoingProcessProvider: OnGoingProcessProvider,
     protected platformProvider: PlatformProvider,
-    profileProvider: ProfileProvider,
+    protected profileProvider: ProfileProvider,
     protected popupProvider: PopupProvider,
     protected replaceParametersProvider: ReplaceParametersProvider,
     protected translate: TranslateService,
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
-    walletTabsProvider: WalletTabsProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
     protected appProvider: AppProvider,
-    protected keyProvider: KeyProvider,
     protected statusBar: StatusBar
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
@@ -291,13 +289,12 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private afterWalletSelectorSet() {
-    const parentWallet = this.getParentWallet();
     if (
-      parentWallet &&
-      this.tx.coin === parentWallet.coin &&
-      this.tx.network === parentWallet.network
+      this.wallet &&
+      this.tx.coin === this.wallet.coin &&
+      this.tx.network === this.wallet.network
     ) {
-      this.setWallet(parentWallet);
+      this.setWallet(this.wallet);
     } else if (this.wallets.length > 1) {
       return this.showWallets();
     } else if (this.wallets.length) {
@@ -306,10 +303,9 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private setWalletSelector(coin: string, network: string): Promise<any> {
-    const parentWallet = this.getParentWallet();
     if (
-      parentWallet &&
-      (parentWallet.network == network && parentWallet.coin == coin)
+      this.wallet &&
+      (this.wallet.network == network && this.wallet.coin == coin)
     ) {
       return Promise.resolve();
     }
@@ -356,11 +352,8 @@ export class ConfirmPage extends WalletTabsChild {
     this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
-    const parentWallet = this.getParentWallet();
     const exit =
-      parentWallet || (this.wallets && this.wallets.length === 1)
-        ? true
-        : false;
+      this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
@@ -846,9 +839,9 @@ export class ConfirmPage extends WalletTabsChild {
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {
       if (option || typeof option === 'undefined') {
-        this.isWithinWalletTabs()
+        this.fromWalletDetails
           ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage); // using setRoot(TabsPage) as workaround when coming from scanner
+          : this.app.getRootNavs()[0].setRoot(WalletsPage); // using setRoot(TabsPage) as workaround when coming from scanner
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -879,7 +872,7 @@ export class ConfirmPage extends WalletTabsChild {
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => {
       if (exit) {
-        this.isWithinWalletTabs()
+        this.fromWalletDetails
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
           ? this.navCtrl.pop()
@@ -1027,10 +1020,8 @@ export class ConfirmPage extends WalletTabsChild {
       'InvoiceUri'
     ]);
 
-    if (this.isWithinWalletTabs()) {
-      this.close().then(() => {
-        this.events.publish('OpenWallet', this.wallet);
-      });
+    if (this.fromWalletDetails) {
+      this.navCtrl.popToRoot();
     } else {
       // using setRoot(TabsPage) as workaround when coming from scanner
       this.app
@@ -1115,5 +1106,9 @@ export class ConfirmPage extends WalletTabsChild {
   private onSelectWalletEvent(wallet): void {
     if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
     this.isOpenSelector = false;
+  }
+
+  public close() {
+    this.navCtrl.popToRoot();
   }
 }

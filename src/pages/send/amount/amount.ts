@@ -34,14 +34,12 @@ import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
-import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 import { ConfirmPage } from '../confirm/confirm';
 @Component({
   selector: 'page-amount',
   templateUrl: 'amount.html'
 })
-export class AmountPage extends WalletTabsChild {
+export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
   public unit: string;
@@ -80,6 +78,8 @@ export class AmountPage extends WalletTabsChild {
   public toWalletId: string;
   private _id: string;
   public requestingAmount: boolean;
+  public wallet;
+  any;
 
   public cardName: string;
   public cardConfig: CardConfig;
@@ -91,21 +91,20 @@ export class AmountPage extends WalletTabsChild {
     private giftCardProvider: GiftCardProvider,
     private currencyProvider: CurrencyProvider,
     private logger: Logger,
-    navCtrl: NavController,
     private navParams: NavParams,
     private electronProvider: ElectronProvider,
     private platformProvider: PlatformProvider,
-    profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    walletTabsProvider: WalletTabsProvider,
     private events: Events,
     private viewCtrl: ViewController,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private profileProvider: ProfileProvider,
+    private navCtrl: NavController
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     this.useAsModal = this.navParams.data.useAsModal;
     this.recipientType = this.navParams.data.recipientType;
@@ -565,13 +564,6 @@ export class AmountPage extends WalletTabsChild {
         toWalletId: this.toWalletId,
         cardName: this.cardName
       };
-
-      if (this.wallet) {
-        data.network = this.wallet.network;
-        if (this.wallet.credentials.token) {
-          data.tokenAddress = this.wallet.credentials.token.address;
-        }
-      }
     } else {
       let amount = _amount;
       amount = unit.isFiat
@@ -589,19 +581,24 @@ export class AmountPage extends WalletTabsChild {
         description: this.description
       };
 
-      if (this.wallet) {
-        data.network = this.wallet.network;
-        if (this.wallet.credentials.token) {
-          data.tokenAddress = this.wallet.credentials.token.address;
-        }
-      }
-
       if (unit.isFiat) {
         data.fiatAmount = _amount;
         data.fiatCode = this.fiatCode;
       }
     }
     this.useSendMax = null;
+
+    if (this.wallet) {
+      data.walletId = this.wallet.credentials.walletId;
+      data.network = this.wallet.network;
+      if (this.wallet.credentials.token) {
+        data.tokenAddress = this.wallet.credentials.token.address;
+      }
+    }
+
+    if (this.navParams.data.fromWalletDetails) {
+      data.fromWalletDetails = true;
+    }
 
     if (this.cardName && !skipActivationFeeAlert) {
       const activationFee = getActivationFee(data.amount, this.cardConfig);

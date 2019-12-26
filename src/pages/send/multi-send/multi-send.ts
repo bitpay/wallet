@@ -19,7 +19,6 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 // Pages
 import { AmountPage } from '../amount/amount';
@@ -65,7 +64,6 @@ export class MultiSendPage {
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
@@ -274,11 +272,12 @@ export class MultiSendPage {
 
   public openScanner(): void {
     this.scannerOpened = true;
-    this.walletTabsProvider.setSendParams({
+    /* this.walletTabsProvider.setSendParams({
       amount: this.navParams.get('amount'),
       coin: this.navParams.get('coin')
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
+    TODO */
     this.events.publish('ScanFromWallet');
   }
 

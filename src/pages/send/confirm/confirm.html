@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
-    <ion-buttons right *ngIf="isWithinWalletTabs()">
+    <ion-buttons right *ngIf="fromWalletDetails">
       <button (click)="close()" ion-button>
         {{'Cancel' | translate}}
       </button>
@@ -44,7 +44,7 @@
         <span class="fee-amount">{{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}</span>
         <div class="fee-details">
           <span>
-              {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
+            {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
           </span>
           <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
             &middot;
@@ -141,14 +141,14 @@
       </ion-item>
     </ion-list>
 
-    <button class="container-from" ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': isWithinWalletTabs()}">
+    <button class="container-from" ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromWalletDetails}">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
           <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
-        <div class="last-item" item-end *ngIf="!isWithinWalletTabs()">
+        <div class="last-item" item-end *ngIf="!fromWalletDetails">
           <button ion-button clear color="grey" icon-only>
             <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
             <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>

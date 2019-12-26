@@ -51,6 +51,7 @@ export class TransferToPage {
   public fiatCode: string;
   public _wallet;
   public _useAsModal: boolean;
+  public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
 
   private CONTACTS_SHOW_LIMIT: number = 10;
@@ -107,6 +108,15 @@ export class TransferToPage {
 
   get useAsModal() {
     return this._useAsModal;
+  }
+
+  @Input()
+  set fromWalletDetails(fromWalletDetails: boolean) {
+    this._fromWalletDetails = fromWalletDetails;
+  }
+
+  get fromWalletDetails() {
+    return this._fromWalletDetails;
   }
 
   public getCoinName(coin: Coin) {
@@ -234,7 +244,8 @@ export class TransferToPage {
           color: item.color,
           coin: item.coin,
           network: item.network,
-          useAsModal: this._useAsModal
+          useAsModal: this._useAsModal,
+          fromWalletDetails: this._fromWalletDetails
         });
       })
       .catch(err => {
