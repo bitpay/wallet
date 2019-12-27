@@ -213,15 +213,6 @@ export class SimplexBuyPage {
     }
   );
 
-  public getEvents(): void {
-    this.simplexProvider
-      .getEvents(this.wallet)
-      .then(_data => {})
-      .catch(err => {
-        this.showError(err);
-      });
-  }
-
   private getSimplexQuote(): void {
     this.showLoading = true;
     const data = {
@@ -346,10 +337,12 @@ export class SimplexBuyPage {
       str += key + '=' + encodeURIComponent(dataSrc[key]);
     }
 
+    const api_host = this.simplexProvider.getCheckoutUrl();
+
     const url =
       this.simplexProvider.passthrough_uri +
       '?api_host=' +
-      data.api_host +
+      api_host +
       '/payments/new/&' +
       str;
     this.openExternalLink(url);

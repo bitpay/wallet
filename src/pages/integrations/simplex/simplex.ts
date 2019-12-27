@@ -88,15 +88,4 @@ export class SimplexPage {
   public openExternalLink(url: string) {
     this.externalLinkProvider.open(url);
   }
-
-  // public getEvents(): void {
-  //   this.simplexProvider
-  //     .getEvents(this.wallet)
-  //     .then(data => {
-  //       console.log(data);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }
 }

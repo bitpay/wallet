@@ -30,24 +30,24 @@ export class SimplexProvider {
 
   public getQuote(wallet, data): Promise<any> {
     data.env = this.env;
-    return wallet.simplexGetQuote(data).then(res => {
-      return Promise.resolve(res.body);
-    });
+    return wallet.simplexGetQuote(data);
   }
 
   public paymentRequest(wallet, data): Promise<any> {
     data.env = this.env;
-    return wallet.simplexPaymentRequest(data).then(res => {
-      return Promise.resolve(res.body);
-    });
+    return wallet.simplexPaymentRequest(data);
+  }
+
+  public getCheckoutUrl(): string {
+    return env.name == 'development'
+      ? 'https://sandbox.test-simplexcc.com'
+      : 'https://checkout.simplexcc.com';
   }
 
   public getEvents(wallet): Promise<any> {
     let data: any = {};
     data.env = this.env;
-    return wallet.simplexGetEvents(data).then(res => {
-      return Promise.resolve(res.body);
-    });
+    return wallet.simplexGetEvents(data);
   }
 
   public register(): void {
