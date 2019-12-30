@@ -9,7 +9,7 @@ import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
 const PASSTHROUGH_URI_DEV = 'https://cmgustavo.github.io/website/simplex/';
-const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/simplex/';
+const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/static/simplex/';
 
 @Injectable()
 export class SimplexProvider {

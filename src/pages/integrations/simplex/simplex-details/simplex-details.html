@@ -56,9 +56,10 @@
 
     <label-tip type="info" header="no-header" *ngIf="paymentRequest.status == 'paymentRequestSent' || paymentRequest.status == 'success'">
       <div label-tip-body>
-        <span translate>Receiving crypto can take up to 1 hour.</span>
+        <span translate>If you have successfully completed the entire payment process, remember that receiving crypto usually take up to 1 hour.</span>
         <br>
-        <a (click)="openExternalLink('https://payment-status.simplex.com/#/')" translate>What is the status of my payment?</a>
+        <br>
+        <a class="pointer" (click)="openExternalLink('https://payment-status.simplex.com/#/')" translate>What is the status of my payment?</a>
       </div>
     </label-tip>
 

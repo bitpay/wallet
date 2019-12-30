@@ -214,6 +214,8 @@ export class SimplexBuyPage {
   );
 
   private getSimplexQuote(): void {
+    this.logger.debug('Simplex getting quote');
+
     this.showLoading = true;
     const data = {
       digital_currency: this.currencyProvider.getChain(this.wallet.coin),
@@ -222,13 +224,14 @@ export class SimplexBuyPage {
         : 'USD',
       requested_currency: this.quoteForm.value.altCurrency,
       requested_amount: +this.quoteForm.value.amount,
-      end_user_id: this.wallet.id // TODO: BitPay id / wallet id??
+      end_user_id: this.wallet.id
     };
 
     this.simplexProvider
       .getQuote(this.wallet, data)
       .then(data => {
         if (data && data.quote_id) {
+          this.logger.debug('Simplex getting quote: SUCCESS');
           this.cryptoAmount = data.digital_money.amount;
           this.fiatBaseAmount = data.fiat_money.base_amount;
           this.fiatTotalAmount = data.fiat_money.total_amount;
@@ -249,12 +252,13 @@ export class SimplexBuyPage {
   }
 
   simplexPaymentRequest(address: string): Promise<any> {
+    this.logger.debug('Simplex creating payment request');
     const userAgent = this.platformProvider.getUserAgent();
     const data = {
       account_details: {
         app_version_id: this.appProvider.info.version,
         app_install_date: this.createdOn,
-        app_end_user_id: this.wallet.id, // TODO: BitPay id / wallet id??
+        app_end_user_id: this.wallet.id,
         signup_login: {
           user_agent: userAgent, // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
           timestamp: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
@@ -345,6 +349,9 @@ export class SimplexBuyPage {
       api_host +
       '/payments/new/&' +
       str;
+
+    this.logger.debug('Simplex ready for payment form submission');
+
     this.openExternalLink(url);
   }
 
@@ -372,6 +379,8 @@ export class SimplexBuyPage {
               this.showError(req.error);
               return;
             }
+
+            this.logger.debug('Simplex creating payment request: SUCCESS');
 
             const remoteData: any = {
               address,
