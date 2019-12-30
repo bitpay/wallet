@@ -356,7 +356,7 @@ export class ScanPage {
         this.lightActive = resp;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
   }
 
@@ -368,7 +368,7 @@ export class ScanPage {
         this.lightActive = false;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
   }
 
