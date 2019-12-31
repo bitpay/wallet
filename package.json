@@ -70,7 +70,7 @@
     "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:ios": "npm run build:ios-release && npm run open:ios",
     "final:android": "npm run build:android-release && npm run sign:android && npm run run:android-release",
-    "final:desktop": "npm run electron:patch && npm run build:desktop-release && npm run build:electron",
+    "final:desktop": "npm run build:desktop-release && npm run build:electron",
     "run:android": "npm run env:dev && ionic cordova run android --device --debug",
     "run:android-release": "npm run env:prod && ionic cordova run android --device --release",
     "log:android": "adb logcat | grep chromium",
