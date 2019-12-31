@@ -4,7 +4,7 @@ const builder = require('electron-builder');
 
 builder
   .build({
-    mac: ['mas', 'dmg'],
+    mac: ['mas'],
     linux: ['snap'],
     win: ['appx'],
     config: {
@@ -27,6 +27,7 @@ builder
         category: 'public.app-category.finance',
         icon: 'resources/*NAME*/mac/app.icns',
         asarUnpack: ['**/*.node'],
+        gatekeeperAssess: false,
         artifactName: '*USERVISIBLENAME*',
         darkModeSupport: false,
         identity: 'BitPay, Inc. (884JRH5R93)',
