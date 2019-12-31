@@ -26,7 +26,6 @@ builder
       mac: {
         category: 'public.app-category.finance',
         icon: 'resources/*NAME*/mac/app.icns',
-        asarUnpack: ['**/*.node'],
         gatekeeperAssess: false,
         artifactName: '*USERVISIBLENAME*',
         darkModeSupport: false,
