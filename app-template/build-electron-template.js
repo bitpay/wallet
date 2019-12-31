@@ -27,6 +27,7 @@ builder
         category: 'public.app-category.finance',
         icon: 'resources/*NAME*/mac/app.icns',
         gatekeeperAssess: false,
+        hardenedRuntime: false,
         artifactName: '*USERVISIBLENAME*',
         darkModeSupport: false,
         identity: 'BitPay, Inc. (884JRH5R93)',
@@ -39,7 +40,6 @@ builder
       mas: {
         artifactName: '*USERVISIBLENAME*.pkg',
         identity: 'BitPay, Inc. (884JRH5R93)',
-        hardenedRuntime: false,
         entitlements: './*PACKAGENAME*-entitlements.mas.plist',
         provisioningProfile: './*PACKAGENAME*-embedded.provisionprofile'
       },
