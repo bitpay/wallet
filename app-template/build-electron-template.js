@@ -4,7 +4,7 @@ const builder = require('electron-builder');
 
 builder
   .build({
-    mac: ['mas', 'dmg'],
+    mac: ['mas'],
     linux: ['snap'],
     win: ['appx'],
     config: {
@@ -26,9 +26,12 @@ builder
       mac: {
         category: 'public.app-category.finance',
         icon: 'resources/*NAME*/mac/app.icns',
+        gatekeeperAssess: false,
+        hardenedRuntime: false,
         artifactName: '*USERVISIBLENAME*',
         darkModeSupport: false,
         identity: 'BitPay, Inc. (884JRH5R93)',
+        provisioningProfile: './*PACKAGENAME*-embedded.provisionprofile',
         extendInfo: {
           NSCameraUsageDescription:
             'Scan a Bitcoin Address directly to your Wallet and send funds to it'
@@ -39,7 +42,7 @@ builder
         artifactName: '*USERVISIBLENAME*.pkg',
         identity: 'BitPay, Inc. (884JRH5R93)',
         entitlements: './*PACKAGENAME*-entitlements.mas.plist',
-        provisioningProfile: './*PACKAGENAME*-embedded.provisionprofile'
+        entitlementsInherit: 'entitlements.mas.inherit.plist'
       },
       dmg: {
         artifactName: '*USERVISIBLENAME*.dmg',
