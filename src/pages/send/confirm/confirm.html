@@ -180,9 +180,9 @@
         <ion-input class="padded-input" type="number" placeholder="{{'Enter a destination tag' | translate}}" [(ngModel)]="tx.destinationTag" name="tx.destinationTag" autocomplete="off" autocorrect="off"></ion-input>
       </ion-item>
 
-      <label-tip *ngIf="!tx.paypro && tx.destinationTag && tx.destinationTag.length > 0" type="info" header="no-header">
+      <label-tip *ngIf="!tx.paypro && !tx.destinationTag" type="info" header="no-header">
         <div label-tip-body translate>
-          A Destination Tag is an optional number that corresponds to your XRP account on an exchange.
+          A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange.
           <br>
         </div>
       </label-tip>
