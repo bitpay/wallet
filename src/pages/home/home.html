@@ -219,7 +219,7 @@
       <div class="section-header" translate>Services</div>
       <div *ngFor="let service of (homeIntegrations | orderBy: ['title'])" class="card-item sliding-container">
         <ion-item-sliding class="card-item-sliding">
-          <button ion-item (click)="goTo(service.page, service.name)" [ngStyle]="{'background': service.background}">
+          <button ion-item (click)="goTo(service.page)" [ngStyle]="{'background': service.background}">
             <img src="{{service.logo}}" width="145" alt="{{ service.title || service.name }}" />
           </button>
         </ion-item-sliding>

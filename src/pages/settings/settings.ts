@@ -24,6 +24,7 @@ import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
+import { SimplexSettingsPage } from '../integrations/simplex/simplex-settings/simplex-settings';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
@@ -186,6 +187,9 @@ export class SettingsPage {
         break;
       case 'shapeshift':
         this.navCtrl.push(ShapeshiftSettingsPage);
+        break;
+      case 'simplex':
+        this.navCtrl.push(SimplexSettingsPage);
         break;
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);

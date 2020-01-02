@@ -59,6 +59,10 @@ export class PlatformProvider {
     return 'unknown';
   }
 
+  public getUserAgent(): string {
+    return window.navigator.userAgent;
+  }
+
   public isElectronPlatform(): boolean {
     const userAgent =
       navigator && navigator.userAgent
