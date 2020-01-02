@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
   <ion-list>
     <ion-item>
       <div class="bitpay-title">
@@ -100,7 +100,7 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr) || paymentExpired" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr) || paymentExpired" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr) || paymentExpired">
       {{'Add funds' | translate}}

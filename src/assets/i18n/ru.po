@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2019-12-10 14:30\n"
+"PO-Revision-Date: 2019-12-20 19:12\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -355,9 +353,6 @@ msgstr "Подтвердить"
 
 msgid "Click to confirm"
 msgstr "Щелкните для подтверждения"
-
-msgid "Click to open Terms"
-msgstr "Щелкните, чтобы открыть Термины"
 
 msgid "Click to pay"
 msgstr "Оплатить"
@@ -1832,11 +1827,11 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "Выберите кошелёк"
+
+msgid "Select an Ethereum Wallet"
+msgstr ""
 
 msgid "Select currencies"
 msgstr ""
@@ -2063,6 +2058,9 @@ msgstr ""
 msgid "Temporarily Unavailable"
 msgstr ""
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "Условия использования"
 
@@ -2210,9 +2208,6 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr ""
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
 
@@ -2263,9 +2258,6 @@ msgstr ""
 
 msgid "Transaction"
 msgstr "Транзакция"
-
-msgid "Transaction Costs"
-msgstr ""
 
 msgid "Transaction History"
 msgstr "История транзакций"

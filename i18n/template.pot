@@ -393,9 +393,6 @@ msgstr ""
 msgid "Click to confirm"
 msgstr ""
 
-msgid "Click to open Terms"
-msgstr ""
-
 msgid "Click to pay"
 msgstr ""
 
@@ -1934,10 +1931,10 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
+msgid "Select a wallet"
 msgstr ""
 
-msgid "Select a wallet"
+msgid "Select an Ethereum Wallet"
 msgstr ""
 
 msgid "Select currencies"
@@ -2165,6 +2162,9 @@ msgstr ""
 msgid "Temporarily Unavailable"
 msgstr ""
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr ""
 
@@ -2383,11 +2383,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for "
-"the transaction costs"
-msgstr ""
-
-msgid ""
 "This transaction amount is too small compared to current Bitcoin network "
 "fees. Spending these funds will need a Bitcoin network fee cost comparable "
 "to the funds itself."
@@ -2445,9 +2440,6 @@ msgid "Trade any leading blockchain asset for any other. Protection by Design."
 msgstr ""
 
 msgid "Transaction"
-msgstr ""
-
-msgid "Transaction Costs"
 msgstr ""
 
 msgid "Transaction History"

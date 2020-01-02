@@ -14,6 +14,7 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../integrations/simplex/simplex';
 import { SettingsPage } from '../settings/settings';
 import { ProposalsPage } from './proposals/proposals';
 
@@ -798,13 +799,18 @@ export class HomePage {
     const pageMap = {
       BitPayCardIntroPage,
       CoinbasePage,
-      ShapeshiftPage
+      ShapeshiftPage,
+      SimplexPage
     };
     this.navCtrl.push(pageMap[page]);
   }
 
   public goToCard(cardId): void {
     this.navCtrl.push(BitPayCardPage, { id: cardId });
+  }
+
+  public goToSimplexPage(): void {
+    this.navCtrl.push(SimplexPage);
   }
 
   public doRefresh(refresher): void {

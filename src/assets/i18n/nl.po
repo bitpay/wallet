@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2019-12-10 14:30\n"
+"PO-Revision-Date: 2019-12-20 19:12\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -355,9 +353,6 @@ msgstr "Klik om te accepteren"
 
 msgid "Click to confirm"
 msgstr "Klik om te bevestigen"
-
-msgid "Click to open Terms"
-msgstr "Klik om de voorwaarden te openen"
 
 msgid "Click to pay"
 msgstr "Klik om te betalen"
@@ -1832,11 +1827,11 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "Selecteer een portemonnee"
+
+msgid "Select an Ethereum Wallet"
+msgstr ""
 
 msgid "Select currencies"
 msgstr ""
@@ -2063,6 +2058,9 @@ msgstr ""
 msgid "Temporarily Unavailable"
 msgstr ""
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "Gebruikersvoorwaarden"
 
@@ -2210,9 +2208,6 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr ""
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
 
@@ -2263,9 +2258,6 @@ msgstr ""
 
 msgid "Transaction"
 msgstr "Transactie"
-
-msgid "Transaction Costs"
-msgstr ""
 
 msgid "Transaction History"
 msgstr "Transactiehistorie"

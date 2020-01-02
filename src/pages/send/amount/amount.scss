@@ -9,7 +9,7 @@ page-amount {
   }
   $short-screen: 570px;
   .amount-wrapper {
-    height: 99%;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -32,6 +32,23 @@ page-amount {
       pointer-events: all;
       transform: translateY(0);
     }
+  }
+  .cancel-button {
+    opacity: 1;
+    color: #060606;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 0.75rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.hide {
+      opacity: 0;
+    }
+  }
+  .add-top-safe-area {
+    padding-top: calc(env(safe-area-inset-top));
+    padding-top: -webkit-calc(env(safe-area-inset-top));
   }
   .amount-header {
     flex: 1;

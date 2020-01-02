@@ -131,18 +131,16 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'addTokenWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
-      <span *ngIf="params.wallets && params.wallets.length>1" sheet-title-text translate>Select a Ethereum Wallet for Transaction Costs</span>
-      <span *ngIf="params.wallets && params.wallets.length == 1" sheet-title-text translate>Transaction Costs</span>
+      <span *ngIf="params.wallets && params.wallets.length > 0" sheet-title-text translate>Select an Ethereum Wallet</span>
       <span *ngIf="!params.wallets[0]" sheet-title-text translate>Ethereum wallet required</span>
-      <span *ngIf="params.wallets && params.wallets.length == 1" sheet-text translate>This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs</span>
-      <span *ngIf="params.wallets && params.wallets.length > 1" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
+      <span *ngIf="params.wallets && params.wallets.length > 0" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
 
       <span *ngIf="!params.wallets[0]" sheet-text translate>
         In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
 
       <span sheet-text>
-        <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets.length > 1">
+        <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets.length > 0">
           <ion-list>
             <div>
               <button ion-item class="list-button" *ngFor="let wallet of params.wallets; let last = last" [class.border-none]="last" (click)="optionClicked(wallet)">
@@ -152,8 +150,6 @@
           </ion-list>
         </div>
       </span>
-
-      <span sheet-button-text translate *ngIf="params.wallets.length==1"  (click)="optionClicked(params.wallets[0])" style="float: right;" item-end>OK</span>
 
       <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">Go Back</span>
     </info-sheet-template>

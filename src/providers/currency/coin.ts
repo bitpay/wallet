@@ -64,7 +64,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
       ratesApi: 'https://bitpay.com/api/rates',
-      blockExplorerUrls: 'insight.bitcore.io/#/BTC/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BTC/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -99,7 +99,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
       ratesApi: 'https://bitpay.com/api/rates/bch',
-      blockExplorerUrls: 'insight.bitcore.io/#/BCH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BCH/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -134,7 +134,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/eth',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -204,7 +204,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/pax',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -239,7 +239,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/usdc',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -274,7 +274,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/gusd',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',

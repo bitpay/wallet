@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: ko\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-12-10 14:30\n"
+"PO-Revision-Date: 2019-12-20 19:12\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -355,9 +353,6 @@ msgstr "클릭하여 승인"
 
 msgid "Click to confirm"
 msgstr "계속하려면 클릭하세요"
-
-msgid "Click to open Terms"
-msgstr "약관을 확인하려면 클릭하세요"
 
 msgid "Click to pay"
 msgstr "클릭하여 지불"
@@ -1832,11 +1827,11 @@ msgstr ""
 msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "지갑 선택"
+
+msgid "Select an Ethereum Wallet"
+msgstr ""
 
 msgid "Select currencies"
 msgstr ""
@@ -2063,6 +2058,9 @@ msgstr ""
 msgid "Temporarily Unavailable"
 msgstr ""
 
+msgid "Terms of Service"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "이용 약관"
 
@@ -2210,9 +2208,6 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr ""
-
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
 
@@ -2263,9 +2258,6 @@ msgstr ""
 
 msgid "Transaction"
 msgstr "거래"
-
-msgid "Transaction Costs"
-msgstr ""
 
 msgid "Transaction History"
 msgstr "거래 기록"

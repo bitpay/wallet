@@ -142,7 +142,6 @@ msgstr "Add as a contact"
 msgid "Add funds"
 msgstr "Add funds"
 
-#| msgid "Funds to be added"
 msgid "Add funds to get started"
 msgstr "Add funds to get started"
 
@@ -179,9 +178,6 @@ msgstr "All"
 msgid "All addresses"
 msgstr "All addresses"
 
-#| msgid ""
-#| "All of your bitcoin wallet balance may not be available for immediate "
-#| "spending."
 msgid ""
 "All of your {{ coinName }} wallet balance may not be available for immediate "
 "spending."
@@ -448,9 +444,6 @@ msgstr "Click to accept"
 msgid "Click to confirm"
 msgstr "Click to confirm"
 
-msgid "Click to open Terms"
-msgstr "Click to open Terms"
-
 msgid "Click to pay"
 msgstr "Click to pay"
 
@@ -490,7 +483,6 @@ msgstr "Confirm your new encrypt password"
 msgid "Confirmations"
 msgstr "Confirmations"
 
-#| msgid "No transactions"
 msgid "Confirmed transactions"
 msgstr "Confirmed transactions"
 
@@ -527,7 +519,6 @@ msgstr "Contact the ShapeShift support team."
 msgid "Continue"
 msgstr "Continue"
 
-#| msgid "Continue"
 msgid "Continue Anyway"
 msgstr "Continue Anyway"
 
@@ -645,7 +636,6 @@ msgstr "Could not update wallet"
 msgid "Create"
 msgstr "Create"
 
-#| msgid "Create New Key"
 msgid "Create Key"
 msgstr "Create Key"
 
@@ -655,7 +645,6 @@ msgstr "Create New Key"
 msgid "Create a new wallet"
 msgstr "Create a new wallet"
 
-#| msgid "Create New Key"
 msgid "Create or Import a Key"
 msgstr "Create or Import a Key"
 
@@ -746,7 +735,6 @@ msgstr "Do this later?"
 msgid "Do you want to verify your account now?"
 msgstr "Do you want to verify your account now?"
 
-#| msgid "Don't see your Key?"
 msgid "Don't lose your key!"
 msgstr "Don't lose your key!"
 
@@ -852,7 +840,6 @@ msgstr "Enter encrypt password"
 msgid "Enter your encrypt password again to confirm"
 msgstr "Enter your encrypt password again to confirm"
 
-#| msgid "{coinName} Address"
 msgid "Enter {coinName} address"
 msgstr "Enter {coinName} address"
 
@@ -907,7 +894,6 @@ msgstr "Ethereum Address"
 msgid "Ethereum URI"
 msgstr "Ethereum URI"
 
-#| msgid "Ethereum Wallets"
 msgid "Ethereum wallet required"
 msgstr "Ethereum wallet required"
 
@@ -920,7 +906,6 @@ msgstr "Expired"
 msgid "Expires"
 msgstr "Expires"
 
-#| msgid "Export"
 msgid "Export Key"
 msgstr "Export Key"
 
@@ -1072,7 +1057,6 @@ msgstr "Getting fee levels..."
 msgid "Gift Card"
 msgstr "Gift Card"
 
-#| msgid "Card Settings"
 msgid "Gift Card Settings"
 msgstr "Gift Card Settings"
 
@@ -1124,7 +1108,6 @@ msgstr "Hide"
 msgid "Hide Balance"
 msgstr "Hide Balance"
 
-#| msgid "Add Wallet"
 msgid "Hide Wallet"
 msgstr "Hide Wallet"
 
@@ -1395,7 +1378,6 @@ msgstr ""
 msgid "Linked"
 msgstr "Linked"
 
-#| msgid "Ethereum Wallets"
 msgid "Linked Ethereum Wallet"
 msgstr "Linked Ethereum Wallet"
 
@@ -1520,7 +1502,6 @@ msgstr "Network cost"
 msgid "Network error"
 msgstr "Network error"
 
-#| msgid "Create New Key"
 msgid "New Key"
 msgstr "New Key"
 
@@ -1625,7 +1606,6 @@ msgstr "Note"
 msgid "Notifications"
 msgstr "Notifications"
 
-#| msgid "Notifications"
 msgid "Notifications Preferences"
 msgstr "Notifications Preferences"
 
@@ -1796,7 +1776,6 @@ msgstr "Please enter your PIN"
 msgid "Please review"
 msgstr "Please review"
 
-#| msgid "Please enter the wallet recovery phrase"
 msgid "Please select the coin of the wallet to import:"
 msgstr "Please select the coin of the wallet to import:"
 
@@ -1857,7 +1836,6 @@ msgstr "Private key encrypted. Enter password"
 msgid "Private key is encrypted, cannot sign"
 msgstr "Private key is encrypted, cannot sign"
 
-#| msgid "Privacy Policy update"
 msgid "Product updates"
 msgstr "Product updates"
 
@@ -2072,11 +2050,12 @@ msgstr "Select Key"
 msgid "Select Key to add ETH Wallet to"
 msgstr "Select Key to add ETH Wallet to"
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr "Select a Ethereum Wallet for Transaction Costs"
-
 msgid "Select a wallet"
 msgstr "Select a wallet"
+
+#| msgid "Linked Ethereum Wallet"
+msgid "Select an Ethereum Wallet"
+msgstr "Select an Ethereum Wallet"
 
 msgid "Select currencies"
 msgstr "Select currencies"
@@ -2303,6 +2282,10 @@ msgstr "Tap to recreate"
 msgid "Temporarily Unavailable"
 msgstr "Temporarily Unavailable"
 
+#| msgid "Terms of Use"
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
 msgid "Terms of Use"
 msgstr "Terms of Use"
 
@@ -2321,16 +2304,9 @@ msgstr "The \"Key\" to your funds"
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr "The Safest, Fastest Asset Exchange on Earth"
 
-#| msgid "The amount of bitcoin immediately spendable from this wallet."
 msgid "The amount of {{ coinName }} immediately spendable from this wallet."
 msgstr "The amount of {{ coinName }} immediately spendable from this wallet."
 
-#| msgid ""
-#| "The amount of bitcoin stored in this wallet that is allocated as inputs "
-#| "to your pending transaction proposals. The amount is determined using "
-#| "unspent transaction outputs associated with this wallet and may be more "
-#| "than the actual amounts associated with your pending transaction "
-#| "proposals."
 msgid ""
 "The amount of {{ coinName }} stored in this wallet that is allocated as "
 "inputs to your pending transaction proposals. The amount is determined using "
@@ -2342,9 +2318,6 @@ msgstr ""
 "unspent transaction outputs associated with this wallet and may be more than "
 "the actual amounts associated with your pending transaction proposals."
 
-#| msgid ""
-#| "The amount of bitcoin stored in this wallet with less than 1 blockchain "
-#| "confirmation."
 msgid ""
 "The amount of {{ coinName }} stored in this wallet with less than 1 "
 "blockchain confirmation."
@@ -2384,7 +2357,6 @@ msgstr ""
 "such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
 "person or entity with whom you are sharing this information."
 
-#| msgid "The invoice is no longer receiving payments."
 msgid "The invoice is no available"
 msgstr "The invoice is no available"
 
@@ -2436,11 +2408,6 @@ msgstr ""
 msgid "The spend proposal is not pending"
 msgstr "The spend proposal is not pending"
 
-#| msgid ""
-#| "The testnet is an alternative Bitcoin block chain, to be used for "
-#| "testing. Testnet coins are separate and distinct from actual bitcoins, "
-#| "and do not have any value. This allows application developers or bitcoin "
-#| "testers to experiment, without having to use real bitcoins."
 msgid ""
 "The testnet is an alternative {{ coinName }} block chain, to be used for "
 "testing. Testnet coins are separate and distinct from actual {{ coinName }}, "
@@ -2454,7 +2421,6 @@ msgstr ""
 "{{ coinName }} testers to experiment, without having to use real "
 "{{ coinName }}."
 
-#| msgid "The total amount of bitcoin stored in this wallet."
 msgid "The total amount of {{ coinName }} stored in this wallet."
 msgstr "The total amount of {{ coinName }} stored in this wallet."
 
@@ -2465,9 +2431,6 @@ msgstr ""
 "The transaction from {{walletName}} that you were waiting for has been "
 "confirmed."
 
-#| msgid ""
-#| "The transaction history and every new incoming transaction are cached in "
-#| "the app. This feature clean this up and synchronizes again from the server"
 msgid ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. Clearing the cache cleans up the transaction history and synchronizes "
@@ -2562,7 +2525,6 @@ msgstr "This information is available at the website."
 msgid "This invoice does not accept unconfirmed inputs."
 msgstr "This invoice does not accept unconfirmed inputs."
 
-#| msgid "This invoice is not longer accepting payments"
 msgid "This invoice is no longer accepting payments"
 msgstr "This invoice is no longer accepting payments"
 
@@ -2606,13 +2568,6 @@ msgid ""
 msgstr ""
 "This recovery phrase was created with a password. To recover this wallet "
 "both the recovery phrase and password are needed."
-
-msgid ""
-"This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for "
-"the transaction costs"
-msgstr ""
-"This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for "
-"the transaction costs"
 
 msgid ""
 "This transaction amount is too small compared to current Bitcoin network "
@@ -2686,10 +2641,6 @@ msgstr ""
 msgid "Transaction"
 msgstr "Transaction"
 
-#| msgid "Transactions"
-msgid "Transaction Costs"
-msgstr "Transaction Costs"
-
 msgid "Transaction History"
 msgstr "Transaction History"
 
@@ -2729,7 +2680,6 @@ msgstr "Transfer to Contact"
 msgid "Transfer to Multiple Recipients"
 msgstr "Transfer to Multiple Recipients"
 
-#| msgid "Transfer to Bitcoin Wallet"
 msgid "Transfer to {{ getCoinName(coin) }} Wallet"
 msgstr "Transfer to {{ getCoinName(coin) }} Wallet"
 
@@ -2950,7 +2900,6 @@ msgstr "Wallet service not found"
 msgid "Wallets"
 msgstr "Wallets"
 
-#| msgid "Warning!"
 msgid "Warning"
 msgstr "Warning"
 
@@ -2979,7 +2928,6 @@ msgstr ""
 "We could not find one or more inputs for your transaction on the blockchain. "
 "Make sure you're not trying to use unconfirmed change"
 
-#| msgid "Could not join wallet"
 msgid "We couldn't find your wallet!"
 msgstr "We couldn't find your wallet!"
 
@@ -3179,13 +3127,6 @@ msgstr ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
 "stores."
 
-#| msgid ""
-#| "Your extended private keys are all that is needed to access your funds. "
-#| "Be sure to protect your private keys and store them only on secure "
-#| "devices. BitPay does not have access to your private keys, so you alone "
-#| "are responsible for your keys. If you share key access with external "
-#| "services, you take responsibility for the risk of theft or breach. Only "
-#| "advanced users should handle extended private keys directly."
 msgid ""
 "Your Key is all that is needed to access your funds. Be sure to protect your "
 "key and store it only on secure devices. BitPay does not have access to your "
@@ -3301,7 +3242,6 @@ msgstr "preparing..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "{appName} BCH wallets use the CashAddr format by default"
 
-#| msgid "Join Shared Wallet"
 msgid "{coinLabel} wallet"
 msgstr "{coinLabel} wallet"
 
@@ -3362,6 +3302,23 @@ msgstr "{{walletsGroup.length}} Wallet"
 
 msgid "{{walletsGroup.length}} Wallets"
 msgstr "{{walletsGroup.length}} Wallets"
+
+#~ msgid "Click to open Terms"
+#~ msgstr "Click to open Terms"
+
+#~ msgid "Select a Ethereum Wallet for Transaction Costs"
+#~ msgstr "Select a Ethereum Wallet for Transaction Costs"
+
+#~ msgid ""
+#~ "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) "
+#~ "for the transaction costs"
+#~ msgstr ""
+#~ "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) "
+#~ "for the transaction costs"
+
+#~| msgid "Transactions"
+#~ msgid "Transaction Costs"
+#~ msgstr "Transaction Costs"
 
 #~ msgid "BitPay Card URI"
 #~ msgstr "BitPay Card URI"

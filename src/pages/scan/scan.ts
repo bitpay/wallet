@@ -2,7 +2,6 @@ import { Component, VERSION, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
-import { Subscription } from 'rxjs';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -58,7 +57,6 @@ export class ScanPage {
   public fromImport: boolean;
   public fromJoin: boolean;
   public fromSend: boolean;
-  private onResumeSubscription: Subscription;
 
   constructor(
     private navCtrl: NavController,
@@ -95,9 +93,6 @@ export class ScanPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ScanPage');
-    this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      this.ionViewWillEnter();
-    });
   }
 
   ionViewWillLeave() {
@@ -168,10 +163,6 @@ export class ScanPage {
         this.scannerServiceInitializedHandler
       );
     }
-  }
-
-  ngOnDestroy() {
-    this.onResumeSubscription.unsubscribe();
   }
 
   private incomingDataErrorHandler: any = err => {
@@ -365,7 +356,7 @@ export class ScanPage {
         this.lightActive = resp;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
   }
 
@@ -377,7 +368,7 @@ export class ScanPage {
         this.lightActive = false;
       })
       .catch(error => {
-        this.logger.warn('scanner error: ' + error);
+        this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
   }
 

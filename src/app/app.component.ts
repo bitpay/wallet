@@ -29,6 +29,7 @@ import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
@@ -42,6 +43,7 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -89,6 +91,7 @@ export class CopayApp {
     AddWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
+    SimplexPage,
     SelectInvoicePage,
     WalletDetailsPage
   };
@@ -110,6 +113,7 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private shapeshiftProvider: ShapeshiftProvider,
+    private simplexProvider: SimplexProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -333,6 +337,11 @@ export class CopayApp {
       this.shapeshiftProvider.register();
     }
 
+    // Simplex
+    if (this.appProvider.info._enabledExtensions.simplex) {
+      this.simplexProvider.register();
+    }
+
     // Coinbase
     if (this.appProvider.info._enabledExtensions.coinbase) {
       this.coinbaseProvider.setCredentials();
@@ -347,10 +356,13 @@ export class CopayApp {
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
       this.closeScannerFromWithinWallet();
-      this.getSelectedTabNav().push(
-        this.pageMap[nextView.name],
-        nextView.params
-      );
+      // wait for wallets status
+      setTimeout(() => {
+        this.getSelectedTabNav().push(
+          this.pageMap[nextView.name],
+          nextView.params
+        );
+      }, 300);
     });
   }
 

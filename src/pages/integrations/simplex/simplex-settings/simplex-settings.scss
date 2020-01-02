@@ -1,0 +1,24 @@
+page-simplex-settings {
+  ion-navbar ion-icon {
+    color: white;
+  }
+  .wide-header__title.toolbar {
+    padding-top: 30px;
+    padding-bottom: 10px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
+  }
+  ion-label,
+  .item-title {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+  }
+}

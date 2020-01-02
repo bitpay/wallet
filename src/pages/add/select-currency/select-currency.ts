@@ -104,9 +104,9 @@ export class SelectCurrencyPage {
     });
     modal.present();
     modal.onDidDismiss(() => {
+      this.persistenceProvider.setKeyOnboardingFlag();
       this._createWallets(coins);
     });
-    this.persistenceProvider.setKeyOnboardingFlag();
   }
 
   public goToCreateWallet(coin: string): void {

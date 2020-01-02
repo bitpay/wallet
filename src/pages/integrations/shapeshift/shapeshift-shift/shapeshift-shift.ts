@@ -71,10 +71,9 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    this.fromWallets = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      hasFunds: true
+    const allWallets = _.concat(this.walletsBtc, this.walletsBch);
+    this.fromWallets = allWallets.filter(w => {
+      return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
     });
 
     if (_.isEmpty(this.fromWallets)) {
@@ -97,8 +96,7 @@ export class ShapeshiftShiftPage {
   }
 
   public openTerms() {
-    let url =
-      'https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf';
+    let url = 'https://shapeshift.com/terms-of-service';
     this.externalLinkProvider.open(url);
   }
 

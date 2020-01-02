@@ -50,12 +50,14 @@ card-catalog-page,
 page-add,
 page-add-wallet,
 page-settings,
+page-wallet-group-settings,
 purchased-cards-page {
   @include fix-ios-bg-scroll($top-color: white);
   @include toolbar-button-color();
 
   ion-title .toolbar-title {
     color: black;
+    font-weight: 400;
   }
 }
 

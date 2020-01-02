@@ -1,0 +1,29 @@
+<ion-header class="wide-header">
+  <ion-navbar [navbar-bg]="headerColor">
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="140" src="assets/img/simplex/logo-simplex-light.png" alt="Simplex">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+        <expandable-header-primary>
+          <img margin-left width="155" src="assets/img/simplex/logo-simplex-light.png" alt="Simplex">
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list>
+      <ion-item>
+        <ion-label>{{'Show in Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
