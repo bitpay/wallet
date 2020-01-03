@@ -29,46 +29,50 @@ export class InAppBrowserProvider {
     initScript?: string
   ): Promise<InAppBrowserRef> {
     return new Promise((res, rej) => {
-      try {
-        const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
+      const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
+      ref.postMessage = window.postMessage;
+      ref.addEventListener('loadstop', () => {
+
         if (initScript) {
           // script that executes inside of inappbrowser when loaded
-          const initIAB = () => {
-            ref.executeScript(
-              {
-                code: initScript
-              },
-              () => ref.removeEventListener('loadstop', initIAB)
-            );
-          };
-          ref.addEventListener('loadstop', initIAB);
+          ref.executeScript(
+            {
+              code: initScript
+            },
+            () => this.logger.debug(`InAppBrowserProvider -> ${refName} executed init script`)
+          );
         }
 
-        ref.addEventListener('loaderror', () => {
-          this.logger.debug(`InAppBrowserProvider -> ${refName} load error`);
-          ref.error = true;
-          ref.show = () => {
-            this.actionSheetProvider
-              .createInfoSheet('default-error', {
-                msg: this.translate.instant(
-                  'Uh oh something went wrong! Please try again later.'
-                ),
-                title: this.translate.instant('Error')
-              })
-              .present();
-          };
-        });
+      });
 
-        // add observable to listen for url changes
-        ref.events$ = Observable.fromEvent(ref, 'message');
+      ref.addEventListener('exit', () => {
+        alert('exit');
+      });
 
-        // providing two ways to get ref - caching it here and also returning it
-        this.refs[refName] = ref;
 
-        res(ref);
-      } catch (err) {
+      ref.addEventListener('loaderror', () => {
+        this.logger.debug(`InAppBrowserProvider -> ${refName} load error`);
+        ref.error = true;
+        ref.show = () => {
+          this.actionSheetProvider
+            .createInfoSheet('default-error', {
+              msg: this.translate.instant(
+                'Uh oh something went wrong! Please try again later.'
+              ),
+              title: this.translate.instant('Error')
+            })
+            .present();
+        };
         rej();
-      }
+      });
+
+      // add observable to listen for url changes
+      ref.events$ = Observable.fromEvent(ref, 'message');
+
+      // providing two ways to get ref - caching it here and also returning it
+      this.refs[refName] = ref;
+
+      res(ref);
     });
   }
 }

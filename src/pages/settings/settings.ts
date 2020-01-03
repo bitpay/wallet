@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 
 // providers
 import { StatusBar } from '@ionic-native/status-bar';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 // pages
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
@@ -73,7 +73,6 @@ export class SettingsPage {
   public hiddenFeaturesEnabled: boolean;
   public bitPayIdUserInfo: any;
   private cardIAB_Ref: InAppBrowserRef;
-  private cardIAB_RefSubscription: Subscription;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
 
@@ -169,12 +168,6 @@ export class SettingsPage {
       this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
       this.bitpayCardItems = cards;
     });
-  }
-
-  ionViewDidLeave() {
-    if (this.cardIAB_Ref) {
-      this.cardIAB_RefSubscription.unsubscribe();
-    }
   }
 
   public openBitPayIdPage(): void {

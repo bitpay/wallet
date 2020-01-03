@@ -599,16 +599,18 @@ export class IncomingDataProvider {
       return true;
 
       // card email verification -> from the iab when creating an account an intent is sent with email verification payload. This passes it back to the iab.
-    } else if (data.includes('payload=')) {
-      const payload = 'payload ' + data.split('=')[1];
+    } else if (data.includes('wallet-card/email-verified')) {
+      this.iab.refs.card.show();
+
       this.iab.refs.card.executeScript(
         {
-          code: `window.postMessage('${payload}', '*')`
+          code: `window.postMessage(${JSON.stringify({message: 'emailVerified'})}, '*')`
         },
         () => {
-          this.logger.log(`email verification attempt ${data}`);
+          this.logger.log(`wallet-card email verified`);
         }
       );
+
       return true;
 
       // Anything els
