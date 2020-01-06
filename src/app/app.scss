@@ -461,7 +461,7 @@ ion-app,
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  min-height: 57px;
+  min-height: 48px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 5px;
@@ -691,7 +691,6 @@ ion-item.with-label.item {
   }
 }
 
-page-wallet-details,
 page-receive,
 page-multi-send,
 page-transfer-to-modal,
@@ -819,8 +818,7 @@ ion-icon {
 }
 .line-divider {
   box-sizing: border-box;
-  height: 2px;
-  border: 1px solid #979797;
+  border: 0.5px solid #979797;
   opacity: 0.23;
-  margin: 0px 25px 0px 25px;
+  margin: 0px 25px;
 }

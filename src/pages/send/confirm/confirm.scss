@@ -1,21 +1,5 @@
 page-confirm,
 confirm-card-purchase {
-  .wallet-details-header {
-    button {
-      font-weight: 100;
-      font-size: 16px;
-    }
-  }
-  .header-container {
-    padding: 20px 0px 20px 0px;
-    .sending-label {
-      display: flex;
-      align-items: center;
-      span {
-        font-size: 1.8rem;
-      }
-    }
-  }
   .amount-label {
     padding-top: 1rem;
     .amount {
@@ -51,10 +35,9 @@ confirm-card-purchase {
       font-weight: 300;
       color: color($colors, light-grey);
     }
-    .fee-amount {
-      font-weight: 400;
-    }
+
     .fee-details {
+      text-align: right;
       margin-top: 3px;
       font-size: 12.5px;
       color: color($colors, light-grey);
@@ -92,41 +75,143 @@ confirm-card-purchase {
     }
   }
 
-  .container-to,
-  .container-from {
-    .wallet,
-    .payment-proposal-to {
-      display: flex;
-      align-items: center;
-      margin-top: 1rem;
+  .payment-proposal-to {
+        height: 39px;
+        max-width: 150px;
+        border-radius: 19.5px;
+        background-color: #F6F7FC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       .multiple-length {
         display: flex;
       }
       .coin-img {
-        &-btc,
-        &-bch {
-          width: 12px;
-        }
-        &-eth {
-          width: 20px;
-        }
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
       }
       .text-address {
         display: flex;
         width: 25px;
         justify-content: space-between;
       }
-      .address-with-divider {
-        border-left: 1px solid rgb(227, 227, 227);
-        margin-left: 1rem;
-        padding-left: 1rem;
-      }
     }
     &.not-clickable {
       pointer-events: none;
     }
-  }
   .last-item {
     margin-left: auto !important;
+  }
+
+  .bp-list{
+    .sub-title {
+      color: #000000;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+    .item {
+      &.item-ios,
+      &.item-md {
+        padding-left: 19px;
+        .item-inner {
+          padding-top: 0px;
+          padding-bottom: 0px;
+        }
+      }
+    }
+  }
+  .summary-item{
+    color: #434D5A;
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: 400;
+  }
+
+  .summary-line {	
+    box-sizing: border-box;	
+    height: 1px;	
+    margin: 0px 19px;
+    border: 0.5px dashed #979797;	
+    opacity: 0.33;
+  }
+
+  .total-label{
+    color: #9BA3AE;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+  .total-amount{
+    color: #000000;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: right;
+  }
+  .fee-amount {
+    color: #000000;
+    font-size: 16px;
+    line-height: 25px;
+    text-align: right;
+    font-weight: 400;
+    text-align: end;
+  }
+  .amount-details{
+    padding-right: 19px;
+  }
+  .background-content{
+    display: flex;
+    padding:0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .note-container{
+    max-width: 100px;
+  }
+
+  .wallet {
+    span{
+      height: 19px;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19px;
+      text-align: right;
+    }
+    ion-icon.item-img.icon.icon-md{
+      margin: 9px 15px 9px 0;
+      justify-content: center;
+      padding: 7px;
+      img {
+        width: 20px;
+      }
+      &.rectangle {
+        border-radius: 7px;
+        justify-content: center;
+      }
+      .coin-img {
+        width: 18px;
+        height: 18px;
+        margin:0px;
+      }
+      &.background {
+        &_btc {
+          background-color: #f7931a;
+        }
+        &_bch {
+          background-color: #2fcf6e;
+        }
+        &_eth {
+          background-color: #6b71d6;
+        }
+        &_xrp {
+          background-color: #000000;
+        }
+      }
+    }
   }
 }
