@@ -97,6 +97,9 @@
           <span class="token" *ngIf="wallet.linkedEthWalletName">
             <span>{{'Linked to wallet: {linkedEthWalletName}' | translate : {linkedEthWalletName: wallet.linkedEthWalletName} }}</span>
           </span>
+          <span class="token" *ngIf="wallet.coin === 'xrp' && history && history[0]">
+            <span translate>Activated</span>
+          </span>
           <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
             <span>{{wallet.m}}-{{wallet.n}}</span>
           </span>
