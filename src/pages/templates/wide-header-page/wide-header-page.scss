@@ -2,6 +2,11 @@ wide-header-page,
 card-catalog-page {
   @include fix-ios-bg-scroll();
 
+  ion-buttons[right] {
+    .button {
+      margin: 24px 18px 0 0px;
+    }
+  }
   expandable-header-primary {
     line-height: 1.2;
   }
@@ -12,6 +17,7 @@ card-catalog-page {
     }
 
     ion-title .toolbar-title {
+      padding-top: 25px !important;
       font-weight: 400;
     }
 
@@ -19,9 +25,15 @@ card-catalog-page {
       color: black;
       font-size: 25px;
       font-weight: 500;
-      padding-top: 30px;
+      padding-top: 33px;
       padding-bottom: 20px;
       padding-left: 20px;
+      .subtitle {
+        font-size: 16px;
+        padding: 0;
+        margin-top: 10px;
+        font-weight: 100;
+      }
     }
 
     ion-navbar {

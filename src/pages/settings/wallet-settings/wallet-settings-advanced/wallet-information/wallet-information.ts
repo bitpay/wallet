@@ -52,7 +52,7 @@ export class WalletInformationPage {
     this.walletId = this.wallet.credentials.walletId;
     this.N = this.wallet.credentials.n;
     this.M = this.wallet.credentials.m;
-    if (this.wallet.cachedStatus) {
+    if (!_.isEmpty(this.wallet.cachedStatus)) {
       this.copayers = this.wallet.cachedStatus.wallet.copayers;
     }
     this.copayerId = this.wallet.credentials.copayerId;

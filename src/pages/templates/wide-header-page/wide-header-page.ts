@@ -9,8 +9,15 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 export class WideHeaderPage {
   @Input()
   headerColor: string;
+
   @Input()
   title: string;
+
+  @Input()
+  subtitle: string;
+
+  @Input()
+  hideBackButton: boolean;
 
   @ViewChild(Content)
   scrollArea: Content;

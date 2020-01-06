@@ -11,8 +11,7 @@
           <ion-icon ios="md-add" md="md-add"></ion-icon>
         </button>
       </ion-item-divider>
-      <card-list-item *ngFor="let card of currentGiftCards" [card]="card" (click)="goToCardDetails(card)"
-        type="purchased"></card-list-item>
+      <card-list-item *ngFor="let card of currentGiftCards" [card]="card" (click)="goToCardDetails(card)" type="purchased"></card-list-item>
       <ion-item-divider></ion-item-divider>
     </ion-list>
   </div>

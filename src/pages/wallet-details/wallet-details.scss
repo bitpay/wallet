@@ -129,6 +129,10 @@ page-wallet-details {
       background-color: rgba(255, 255, 255, 0.09);
       margin: 0;
     }
+    .button-standard.button-md.activated {
+      background-color: rgba(155, 163, 174, 0.2);
+      box-shadow: none;
+    }
   }
 
   .balance-scanning {

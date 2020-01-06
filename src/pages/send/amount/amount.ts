@@ -355,12 +355,7 @@ export class AmountPage {
   }
 
   public isSendMaxButtonShown() {
-    return (
-      !this.expression &&
-      !this.requestingAmount &&
-      this.showSendMax &&
-      !this.useAsModal
-    );
+    return !this.expression && !this.requestingAmount && !this.useAsModal;
   }
 
   public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {

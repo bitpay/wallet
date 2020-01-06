@@ -1,24 +1,5 @@
-<ion-header class="wide-header">
-  <ion-navbar>
-    <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <span>{{'Wallet Settings' | translate}}</span>
-      </div>
-    </ion-title>
-    <ng-content select="[right]"></ng-content>
-  </ion-navbar>
-</ion-header>
-
-<ion-content #scrollArea>
-  <div class="wrapper">
-    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
-        <expandable-header-primary>
-          <span>{{'Wallet Settings' | translate}}</span>
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
-
+<wide-header-page title="{{'Wallet Settings' | translate}}">
+  <div page-content>
     <ion-list class="settings-list bp-list">
       <button ion-item (click)="openWalletName()">
         <div translate float-left>Name</div>
@@ -70,4 +51,4 @@
       </button>
     </ion-list>
   </div>
-</ion-content>
+</wide-header-page>

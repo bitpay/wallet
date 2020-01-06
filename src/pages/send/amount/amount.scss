@@ -1,6 +1,4 @@
 page-amount {
-  @include toolbar-button-color(white);
-
   ion-header ion-navbar ion-title {
     .toolbar-title {
       color: white;
@@ -20,9 +18,7 @@ page-amount {
   }
 
   .amount-header-margin {
-    margin: 2rem;
-    margin-bottom: 0;
-
+    margin: 0 24px 40px 0;
     @media (max-height: $short-screen) {
       margin: 1.5rem;
       margin-bottom: 0;
@@ -63,12 +59,10 @@ page-amount {
   }
 
   .amount-header {
-    flex: 1;
     display: flex;
     width: 100%;
     position: relative;
-    align-items: center;
-
+    justify-content: flex-end;
     .switcher {
       @media (max-height: $short-screen) {
         width: 77px;
@@ -118,7 +112,7 @@ page-amount {
     align-items: center;
     width: 100%;
     flex-grow: 1;
-
+    padding: 39px 39px 100px 39px;
     .expression-container {
       display: flex;
       align-items: center;

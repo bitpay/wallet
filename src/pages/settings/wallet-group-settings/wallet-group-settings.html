@@ -1,34 +1,13 @@
-<ion-header class="wide-header">
-  <ion-navbar>
-    <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-        <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
+<wide-header-page title="{{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}" subtitle="This key contains {{ '{walletslength}' | translate: {walletslength: wallets && wallets.length} }} wallets">
+  <div page-content>
+    <!-- <div class="subtitle-container" *ngIf="wallets && canSign">
+      <div class="subtitle" translate>
+        This key contains {{wallets.length}} wallets.
       </div>
-    </ion-title>
-    <ng-content select="[right]"></ng-content>
-  </ion-navbar>
-</ion-header>
-
-<ion-content #scrollArea>
-  <div class="wrapper">
-    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
-        <expandable-header-primary>
-          <span *ngIf="canSign">{{'Key Settings' | translate}}</span>
-          <span *ngIf="!canSign">{{'Read Only Wallets' | translate}}</span>
-          <div class="subtitle-container" *ngIf="wallets && canSign">
-            <div class="subtitle" translate>
-              This key contains {{wallets.length}} wallets.
-            </div>
-            <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">
-              <ion-icon name="md-help-circle"></ion-icon>
-            </div>
-          </div>
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
-
+      <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">
+        <ion-icon name="md-help-circle"></ion-icon>
+      </div>
+    </div> -->
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
       <div label-tip-body translate>
@@ -125,4 +104,4 @@
       </button>
     </ion-list>
   </div>
-</ion-content>
+</wide-header-page>

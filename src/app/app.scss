@@ -67,51 +67,30 @@ ion-label {
 
 // Header
 // --------------------------------------------------
-ion-header.bp-header,
-.toolbar {
-  height: 60px;
-  .toolbar.toolbar-md .title-md .toolbar-title-md,
-  ion-title.title.title-ios {
-    padding: 0px 50px 0px 17px;
-    font-weight: 600;
-  }
-
+ion-header.bp-header .toolbar {
   ion-title .toolbar-title.toolbar-title-md,
   .toolbar-title.toolbar-title-ios {
     text-align: left;
     line-height: 34px;
     font-size: 25px;
     font-weight: 600;
-  }
-}
-
-ion-header.bp-header-extended,
-.toolbar {
-  height: 60px;
-  .toolbar.toolbar-md .title-md .toolbar-title-md,
-  ion-title.title.title-ios {
-    padding: 0px 50px 0px 17px;
-    font-weight: 600;
-  }
-
-  ion-title .toolbar-title.toolbar-title-md,
-  .toolbar-title.toolbar-title-ios {
-    text-align: left;
-    line-height: 34px;
-    font-size: 25px;
-    font-weight: 600;
-  }
-  .bp-header-btn {
-    padding-left: 10px;
+    padding-left: 17px;
   }
 }
 
 .close-container {
-  height: 35px;
-  width: 35px;
+  margin: 24px 0 0 18px !important;
+  height: 41px;
+  width: 41px;
   border-radius: 50%;
   background-color: rgba(155, 163, 174, 0.2);
   color: #d8d8d8;
+  box-shadow: none;
+}
+
+.close-container.button-md.activated {
+  background-color: rgba(155, 163, 174, 0.2);
+  box-shadow: none;
 }
 
 // Buttons
@@ -187,8 +166,25 @@ ion-spinner * {
   display: block;
 }
 
-.toolbar.toolbar-md .back-button {
-  margin: -7px 0 0 0;
+.toolbar.toolbar-md {
+  .back-button-md {
+    min-width: 41px;
+  }
+  .back-button {
+    margin: 24px 0 0 18px;
+    height: 41px;
+    width: 41px;
+    border-radius: 50%;
+    background-color: rgba(155, 163, 174, 0.2);
+    color: #d8d8d8;
+    box-shadow: none;
+    .back-button-icon-md {
+      padding: 0px 0px 32px 4px;
+      &::before {
+        font-size: 14px;
+      }
+    }
+  }
 }
 
 .tabbar {

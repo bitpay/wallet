@@ -1,4 +1,7 @@
 page-send {
+  .button-default {
+    color: color($colors, dark);
+  }
   .title {
     font-weight: 500;
     img {
@@ -19,14 +22,7 @@ page-send {
     padding: 0 17px;
     background-color: white;
   }
-  .send-heading {
-    font-size: 15px;
-    padding: 0 0 16px 0;
-    border: none;
-    font-weight: 500;
-  }
   .search-wrapper {
-    margin-top: 45px;
     background-color: #f2f2f2;
     display: flex;
     align-items: baseline;

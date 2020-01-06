@@ -1,49 +1,45 @@
-<ion-header no-border>
-  <ion-navbar>
-    <ion-title>{{ name }}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <div class="contact-view-header">
-    <gravatar [name]="name" [height]="80" [width]="80" [email]="email"></gravatar>
+<wide-header-page title="{{ name }}">
+  <div page-content>
+    <div class="contact-view-header">
+      <gravatar [name]="name" [height]="80" [width]="80" [email]="email"></gravatar>
+    </div>
+    <ion-list class="bp-list">
+      <ion-item>
+        {{'Name' | translate}}
+        <ion-note item-end>
+          {{ name }}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="email">
+        {{'Email' | translate}}
+        <ion-note item-end>
+          {{ email }}
+        </ion-note>
+      </ion-item>
+      <ion-item copy-to-clipboard="{{ address }}">
+        {{'Address' | translate}}
+        <div class="comment ellipsis">
+          {{ address }}
+        </div>
+      </ion-item>
+      <ion-item>
+        {{'Coin' | translate}}
+        <ion-note item-end>
+          {{ coin | uppercase }}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        {{'Network' | translate}}
+        <ion-note item-end>
+          {{ network }}
+        </ion-note>
+      </ion-item>
+      <button ion-item class="btn-send" (click)="sendTo()">
+        {{'Send Money' | translate}}
+      </button>
+      <button ion-item class="btn-remove" (click)="remove(address)">
+        {{'Remove' | translate}}
+      </button>
+    </ion-list>
   </div>
-  <ion-list class="bp-list">
-    <ion-item>
-      {{'Name' | translate}}
-      <ion-note item-end>
-        {{ name }}
-      </ion-note>
-    </ion-item>
-    <ion-item *ngIf="email">
-      {{'Email' | translate}}
-      <ion-note item-end>
-        {{ email }}
-      </ion-note>
-    </ion-item>
-    <ion-item copy-to-clipboard="{{ address }}">
-      {{'Address' | translate}}
-      <div class="comment ellipsis">
-        {{ address }}
-      </div>
-    </ion-item>
-    <ion-item>
-      {{'Coin' | translate}}
-      <ion-note item-end>
-        {{ coin | uppercase }}
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      {{'Network' | translate}}
-      <ion-note item-end>
-        {{ network }}
-      </ion-note>
-    </ion-item>
-    <button ion-item class="btn-send" (click)="sendTo()">
-      {{'Send Money' | translate}}
-    </button>
-    <button ion-item class="btn-remove" (click)="remove(address)">
-      {{'Remove' | translate}}
-    </button>
-  </ion-list>
-</ion-content>
+</wide-header-page>

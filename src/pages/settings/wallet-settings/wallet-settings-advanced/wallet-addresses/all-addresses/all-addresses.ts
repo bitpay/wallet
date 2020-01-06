@@ -19,8 +19,8 @@ export class AllAddressesPage {
   public withBalance;
   public coin: string;
   public isCordova: boolean;
+  public allAddresses;
 
-  private allAddresses;
   private walletName: string;
 
   constructor(

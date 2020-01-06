@@ -25,23 +25,21 @@
     </ion-list>
   </div>
   <div footer-content>
-    <ion-footer>
-      <ion-toolbar>
-        <div class="checkbox-list footer-container">
-          <div *ngIf="accepted.first && accepted.second && accepted.third">
-            <ion-item no-lines>
-              <ion-label>
-                {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-              </ion-label>
-              <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
-            </ion-item>
-            <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
-          </div>
-          <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
-            <span translate>Confirm &amp; Finish</span>
-          </button>
+    <ion-toolbar>
+      <div class="checkbox-list footer-container">
+        <div *ngIf="accepted.first && accepted.second && accepted.third">
+          <ion-item no-lines>
+            <ion-label>
+              {{'I have read, understood, and agree to the Terms of Use' | translate}}.
+            </ion-label>
+            <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+          </ion-item>
+          <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
         </div>
-      </ion-toolbar>
-    </ion-footer>
+        <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
+          <span translate>Confirm &amp; Finish</span>
+        </button>
+      </div>
+    </ion-toolbar>
   </div>
 </wide-header-page>

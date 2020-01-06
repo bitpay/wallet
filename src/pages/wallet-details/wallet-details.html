@@ -1,13 +1,13 @@
 <ion-header no-border class="wallet-details-header">
   <ion-navbar class="app-color">
     <ion-buttons left>
-      <button class="modal-close-button" (click)="close()" ion-button>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button *ngIf="wallet?.isComplete() && !wallet?.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
-        <ion-icon class="horizontal-lg" name="more"></ion-icon>
+      <button class="option-button disable-hover" *ngIf="wallet?.isComplete() && !wallet?.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
+        <ion-icon name="ios-more" md="ios-more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -89,10 +89,10 @@
         </div>
 
         <div class="action-buttons">
-          <button class="button-standard" (click)="goToReceivePage()" ion-button>
+          <button class="button-standard disable-hover" (click)="goToReceivePage()" ion-button>
             Receive
           </button>
-          <button class="button-standard" (click)="goToSendPage()" ion-button>
+          <button class="button-standard disable-hover" (click)="goToSendPage()" ion-button>
             Send
           </button>
         </div>
