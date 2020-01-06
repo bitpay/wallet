@@ -11,13 +11,6 @@ page-settings {
     -webkit-box-orient: vertical;
   }
 
-  .icon-settings {
-    width: 25px;
-    height: 25px;
-    border-radius: $icon-border-radius;
-    padding: 0rem;
-  }
-
   .subtitle {
     color: #aaaeb6;
     font-size: 13px;
@@ -34,10 +27,6 @@ page-settings {
     display: flex;
     justify-content: space-between;
     align-content: center;
-  }
-
-  .settings-icon.item-img {
-    opacity: 0.5;
   }
 
   .merchant-directory-container {
@@ -67,11 +56,6 @@ page-settings {
     color: color($colors, info);
     cursor: pointer;
     font-size: 16px;
-  }
-
-  .hairline {
-    border-top: 0.125px solid #f4f5fb;
-    border-bottom: 0.125px solid #f4f5fb;
   }
 
   .gumball-image {
@@ -115,6 +99,24 @@ page-settings {
       margin-top: 0px;
       padding: 12.5px 0px 12.5px 20px;
       background: #f8f8f9;
+    }
+    ion-icon.item-img.icon.icon-md.item-icon {
+      padding: 14.5px;
+      &.icon-settings {
+        opacity: 0.5;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    ion-note.note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
     }
   }
 

@@ -1,25 +1,10 @@
-<ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar class="app-color">
-    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
-        <span translate>Continue</span>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-  <ion-toolbar *ngIf="wallet" class="app-color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
-      <span>{{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
-    </div>
-    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
-      <span class="title" translate>[Balance Hidden]</span>
-    </div>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content no-bounce>
-  <div>
+<wide-header-page title="{{wallet && wallet.name || ('Amount' | translate)}}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" ion-button>
+      <span translate>Continue</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
     <div>
       <div class="send-header-wrapper">
         <div class="send-heading">
@@ -78,4 +63,4 @@
       <span translate>To get started, you'll need to enter a valid address, contact or wallet.</span>
     </div>
   </div>
-</ion-content>
+</wide-header-page>

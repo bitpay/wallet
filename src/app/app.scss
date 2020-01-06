@@ -175,7 +175,7 @@ ion-spinner * {
     height: 41px;
     width: 41px;
     border-radius: 50%;
-    background-color: rgba(155, 163, 174, 0.2);
+    background-color: rgba(155, 163, 174, 0.12);
     color: #d8d8d8;
     box-shadow: none;
     .back-button-icon-md {
@@ -692,7 +692,6 @@ ion-item.with-label.item {
 }
 
 page-receive,
-page-multi-send,
 page-transfer-to-modal,
 page-bitpay-card-intro,
 page-bitpay-card,

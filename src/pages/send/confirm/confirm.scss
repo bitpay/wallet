@@ -76,35 +76,35 @@ confirm-card-purchase {
   }
 
   .payment-proposal-to {
-        height: 39px;
-        max-width: 150px;
-        border-radius: 19.5px;
-        background-color: #F6F7FC;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      .multiple-length {
-        display: flex;
-      }
-      .coin-img {
-        width: 18px;
-        height: 18px;
-        margin-right: 6px;
-      }
-      .text-address {
-        display: flex;
-        width: 25px;
-        justify-content: space-between;
-      }
+    height: 39px;
+    max-width: 150px;
+    border-radius: 19.5px;
+    background-color: #f6f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .multiple-length {
+      display: flex;
     }
-    &.not-clickable {
-      pointer-events: none;
+    .coin-img {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
     }
+    .text-address {
+      display: flex;
+      width: 25px;
+      justify-content: space-between;
+    }
+  }
+  &.not-clickable {
+    pointer-events: none;
+  }
   .last-item {
     margin-left: auto !important;
   }
 
-  .bp-list{
+  .bp-list {
     .sub-title {
       color: #000000;
       font-size: 16px;
@@ -122,28 +122,28 @@ confirm-card-purchase {
       }
     }
   }
-  .summary-item{
-    color: #434D5A;
+  .summary-item {
+    color: #434d5a;
     font-size: 14px;
     line-height: 19px;
     font-weight: 400;
   }
 
-  .summary-line {	
-    box-sizing: border-box;	
-    height: 1px;	
+  .summary-line {
+    box-sizing: border-box;
+    height: 1px;
     margin: 0px 19px;
-    border: 0.5px dashed #979797;	
+    border: 0.5px dashed #979797;
     opacity: 0.33;
   }
 
-  .total-label{
-    color: #9BA3AE;
+  .total-label {
+    color: #9ba3ae;
     font-size: 16px;
     font-weight: 500;
     line-height: 18px;
   }
-  .total-amount{
+  .total-amount {
     color: #000000;
     font-size: 24px;
     font-weight: 500;
@@ -158,23 +158,23 @@ confirm-card-purchase {
     font-weight: 400;
     text-align: end;
   }
-  .amount-details{
+  .amount-details {
     padding-right: 19px;
   }
-  .background-content{
+  .background-content {
     display: flex;
-    padding:0px 10px;
+    padding: 0px 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .note-container{
+  .note-container {
     max-width: 100px;
   }
 
   .wallet {
-    span{
+    span {
       height: 19px;
       color: #000000;
       font-size: 14px;
@@ -182,7 +182,7 @@ confirm-card-purchase {
       line-height: 19px;
       text-align: right;
     }
-    ion-icon.item-img.icon.icon-md{
+    ion-icon.item-img.icon.icon-md {
       margin: 9px 15px 9px 0;
       justify-content: center;
       padding: 7px;
@@ -196,7 +196,7 @@ confirm-card-purchase {
       .coin-img {
         width: 18px;
         height: 18px;
-        margin:0px;
+        margin: 0px;
       }
       &.background {
         &_btc {
