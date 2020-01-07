@@ -1,5 +1,5 @@
 page-confirm,
-confirm-card-purchase {
+confirm-card-purchase-page {
   .amount-label {
     padding-top: 1rem;
     .amount {
@@ -129,6 +129,15 @@ confirm-card-purchase {
     font-weight: 400;
   }
 
+  .summary-item-detail {
+    color: #000000;
+    font-size: 16px;
+    line-height: 25px;
+    text-align: right;
+    font-weight: 400;
+    text-align: end;
+  }
+
   .summary-line {
     box-sizing: border-box;
     height: 1px;
@@ -137,11 +146,10 @@ confirm-card-purchase {
     opacity: 0.33;
   }
 
-  .total-label {
+  .main-label.total-label {
     color: #9ba3ae;
     font-size: 16px;
     font-weight: 500;
-    line-height: 18px;
   }
   .total-amount {
     color: #000000;
@@ -149,14 +157,6 @@ confirm-card-purchase {
     font-weight: 500;
     line-height: 30px;
     text-align: right;
-  }
-  .fee-amount {
-    color: #000000;
-    font-size: 16px;
-    line-height: 25px;
-    text-align: right;
-    font-weight: 400;
-    text-align: end;
   }
   .amount-details {
     padding-right: 19px;
@@ -183,7 +183,7 @@ confirm-card-purchase {
       text-align: right;
     }
     ion-icon.item-img.icon.icon-md {
-      margin: 9px 15px 9px 0;
+      margin: 9px 0px 9px 0;
       justify-content: center;
       padding: 7px;
       img {
@@ -213,5 +213,8 @@ confirm-card-purchase {
         }
       }
     }
+  }
+  .line-divider {
+    margin: 0px 17px;
   }
 }
