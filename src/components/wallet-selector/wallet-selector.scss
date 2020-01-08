@@ -1,4 +1,7 @@
 wallet-selector {
+  .action-sheet{
+    border-radius: 12px 12px 0 0;
+  }
   padding-bottom: calc(env(safe-area-inset-bottom));
   .error {
     color: color($colors, danger);
@@ -18,20 +21,7 @@ wallet-selector {
     padding: 20px;
     color: color($colors, danger);
   }
-  .destination-title {
-    width: 100%;
-    text-align: center;
-    font-weight: 500;
-    margin: 20px 0;
-    text-transform: uppercase;
-  }
-  .back-button {
-    background-color: $background-color;
-    display: inline-block;
-    width: 100%;
-    ion-icon {
-      padding: 1.5rem 20px 1.5rem 20px;
-      cursor: pointer;
-    }
+  .bp-header{
+    margin: 32px 0 20px 3px;
   }
 }
