@@ -68,18 +68,22 @@ ion-label {
 // Header
 // --------------------------------------------------
 ion-header.bp-header .toolbar {
-  ion-title .toolbar-title.toolbar-title-md,
-  .toolbar-title.toolbar-title-ios {
-    text-align: left;
-    line-height: 34px;
-    font-size: 25px;
-    font-weight: 600;
-    padding-left: 17px;
+  ion-title {
+    padding: 0;
+    .toolbar-title.toolbar-title-md,
+    .toolbar-title.toolbar-title-ios {
+      text-align: left;
+      line-height: 34px;
+      font-size: 25px;
+      font-weight: 600;
+      padding-left: 17px;
+    }
   }
 }
 
 .close-container {
-  margin: 24px 0 0 18px !important;
+  margin-left: 13px !important;
+  margin-top: 18px !important;
   height: 41px;
   width: 41px;
   border-radius: 50%;
@@ -166,12 +170,13 @@ ion-spinner * {
   display: block;
 }
 
-.toolbar.toolbar-md {
+.toolbar.toolbar-md,
+.toolbar.toolbar-ios {
   .back-button-md {
     min-width: 41px;
   }
   .back-button {
-    margin: 24px 0 0 18px;
+    margin: 18px 0 0 13px;
     height: 41px;
     width: 41px;
     border-radius: 50%;
@@ -183,6 +188,9 @@ ion-spinner * {
       &::before {
         font-size: 14px;
       }
+    }
+    .back-button-icon-ios {
+      margin: 2px 2px 0px 0px;
     }
   }
 }

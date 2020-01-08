@@ -1,13 +1,13 @@
 wide-header-page,
 card-catalog-page {
   @include fix-ios-bg-scroll();
-
   ion-buttons[right] {
     .button {
       padding: 10px;
       border-radius: 17.5px;
       background-color: rgba(155, 163, 174, 0.12);
-      margin: 24px 18px 0 0px;
+      margin-right: 13px;
+      margin-top: 18px;
     }
   }
   expandable-header-primary {
@@ -28,8 +28,8 @@ card-catalog-page {
       color: black;
       font-size: 25px;
       font-weight: 500;
-      padding-top: 33px;
-      padding-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       padding-left: 20px;
       .subtitle {
         font-size: 16px;

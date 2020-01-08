@@ -1,5 +1,5 @@
 wallet-selector {
-  .action-sheet{
+  .action-sheet {
     border-radius: 12px 12px 0 0;
   }
   padding-bottom: calc(env(safe-area-inset-bottom));
@@ -21,7 +21,7 @@ wallet-selector {
     padding: 20px;
     color: color($colors, danger);
   }
-  .bp-header{
+  .bp-header {
     margin: 32px 0 20px 3px;
   }
 }

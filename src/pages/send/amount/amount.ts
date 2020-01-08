@@ -355,7 +355,7 @@ export class AmountPage {
   }
 
   public isSendMaxButtonShown() {
-    return !this.expression && !this.requestingAmount && !this.useAsModal;
+    return !this.requestingAmount && !this.useAsModal;
   }
 
   public pushDigit(digit: string): void {

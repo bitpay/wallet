@@ -41,9 +41,7 @@ page-wallet-details {
 
   .balance-header {
     position: relative;
-    margin-top: 15px;
-    margin-right: 2rem;
-    margin-left: 2rem;
+    margin: 1rem 2rem 1rem 2rem;
     height: 30rem;
     color: color($colors, light);
     display: flex;
@@ -408,9 +406,7 @@ page-wallet-details {
 
   .top-notification {
     cursor: pointer;
-    position: absolute;
     top: 0;
-    margin: 0 10px 10px 0;
     &.warning {
       color: color($colors, warning);
     }
