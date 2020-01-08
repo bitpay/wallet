@@ -125,7 +125,7 @@ export class SendPage {
       );
       isValid =
         this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-        addrData.coin && addrData.network == this.wallet.network;
+          addrData.coin && addrData.network == this.wallet.network;
     }
 
     if (isValid) {

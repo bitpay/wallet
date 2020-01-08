@@ -146,7 +146,7 @@ export class MultiSendPage {
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.decimalPipe.transform(
         data.amount /
-        this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
+          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
         '1.2-6'
       );
       this.multiRecipients[index] = item;
@@ -157,10 +157,10 @@ export class MultiSendPage {
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
       ? this.decimalPipe.transform(
-        +recipient.amount /
-        this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-        '1.2-6'
-      )
+          +recipient.amount /
+            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
+          '1.2-6'
+        )
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(
@@ -284,7 +284,7 @@ export class MultiSendPage {
     );
     const isValid =
       this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-      addrData.coin && addrData.network == this.wallet.network;
+        addrData.coin && addrData.network == this.wallet.network;
 
     if (isValid) {
       this.invalidAddress = false;

@@ -153,8 +153,8 @@ export class AmountPage {
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
       ? this.currencyProvider.getPrecision(
-        this.availableUnits[this.altUnitIndex].id
-      )
+          this.availableUnits[this.altUnitIndex].id
+        )
       : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -484,9 +484,9 @@ export class AmountPage {
     return parseFloat(
       this.rateProvider
         .toFiat(
-        val * this.unitToSatoshi,
-        this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].id
+          val * this.unitToSatoshi,
+          this.fiatCode,
+          coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -624,9 +624,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-      this.unit +
-      ' alternativeUnit:' +
-      this.alternativeUnit
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
     );
   }
 

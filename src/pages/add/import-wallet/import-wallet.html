@@ -1,6 +1,6 @@
 <wide-header-page title="{{ 'Import Wallet' | translate }}">
   <ion-buttons right>
-    <button clear wide-header-bar-button (click)="setOptsAndCreate()" [disabled]="!importForm.valid" ion-button>
+    <button clear wide-header-bar-button (click)="import()" [disabled]="!importForm.valid" ion-button>
       <span translate>Import</span>
     </button>
   </ion-buttons>
