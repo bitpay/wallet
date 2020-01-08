@@ -21,16 +21,15 @@ import { Logger } from '../../../providers/logger/logger';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
+import { ScanPage } from '../../scan/scan';
 import { AmountPage } from '../amount/amount';
 import { ConfirmPage } from '../confirm/confirm';
 import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
-
 @Component({
   selector: 'page-multi-send',
   templateUrl: 'multi-send.html'
 })
 export class MultiSendPage {
-  public scannerOpened: boolean;
   public wallet: any;
   public bitcore;
   public parsedData: any;
@@ -147,7 +146,7 @@ export class MultiSendPage {
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.decimalPipe.transform(
         data.amount /
-          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
+        this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
         '1.2-6'
       );
       this.multiRecipients[index] = item;
@@ -158,10 +157,10 @@ export class MultiSendPage {
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
       ? this.decimalPipe.transform(
-          +recipient.amount /
-            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-          '1.2-6'
-        )
+        +recipient.amount /
+        this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
+        '1.2-6'
+      )
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(
@@ -271,14 +270,7 @@ export class MultiSendPage {
   }
 
   public openScanner(): void {
-    this.scannerOpened = true;
-    /* this.walletTabsProvider.setSendParams({
-      amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin')
-    });
-    this.walletTabsProvider.setFromPage({ fromSend: true });
-    TODO */
-    this.events.publish('ScanFromWallet');
+    this.navCtrl.push(ScanPage, { fromSend: true });
   }
 
   public getCoinName(coin): string {
@@ -292,7 +284,7 @@ export class MultiSendPage {
     );
     const isValid =
       this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-        addrData.coin && addrData.network == this.wallet.network;
+      addrData.coin && addrData.network == this.wallet.network;
 
     if (isValid) {
       this.invalidAddress = false;
@@ -385,11 +377,5 @@ export class MultiSendPage {
       useSendMax: false,
       recipients: this.multiRecipients
     });
-  }
-
-  public closeCam(): void {
-    // if (this.scannerOpened) this.events.publish('ExitScan');
-    // else this.getParentTabs().dismiss();
-    // this.scannerOpened = false;
   }
 }

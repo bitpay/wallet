@@ -1,7 +1,12 @@
 <wide-header-page title="">
   <ion-buttons right>
-    <button *ngIf="isSendMaxButtonShown()" clear wide-header-bar-button ion-button>
+    <button *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
       <span translate>Send max</span>
+    </button>
+  </ion-buttons>
+  <ion-buttons right>
+    <button [ngClass]="{'hide': expression && allowSend}" *ngIf="useAsModal" (click)="closeModal()" clear wide-header-bar-button ion-button>
+      <span translate>Cancel</span>
     </button>
   </ion-buttons>
   <div page-content>
@@ -28,7 +33,6 @@
             <img class="switcher__icon" src="assets/img/icon-swap.svg">
             <div class="switcher__label">{{unit}}</div>
           </div>
-          <span *ngIf="useAsModal" class="cancel-button" [ngClass]="{'hide': expression && allowSend}" (click)="closeModal()">Cancel</span>
         </div>
       </div>
 

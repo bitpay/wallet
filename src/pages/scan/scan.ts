@@ -119,9 +119,7 @@ export class ScanPage {
     this.fromAddressbook = this.navParams.data.fromAddressbook;
     this.fromImport = this.navParams.data.fromImport;
     this.fromJoin = this.navParams.data.fromJoin;
-    /* this.fromSend =
-      this.walletTabsProvider.getFromPage() &&
-      this.walletTabsProvider.getFromPage().fromSend; */
+    this.fromSend = this.navParams.data.fromSend;
 
     if (!env.activateScanner) {
       // test scanner visibility in E2E mode
@@ -219,7 +217,7 @@ export class ScanPage {
   private initializeBackButtonHandler(): void {
     this.unregisterBackButtonAction = this.platform.registerBackButtonAction(
       () => {
-        this.close();
+        this.closeCam();
       }
     );
   }
@@ -326,7 +324,7 @@ export class ScanPage {
       this.navCtrl.pop();
     } else if (this.fromSend) {
       this.events.publish('Local/AddressScan', { value: contents });
-      this.close();
+      this.closeCam();
     } else {
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
@@ -389,11 +387,8 @@ export class ScanPage {
     }
   }
 
-  public close() {
+  public closeCam() {
+    /* this.events.publish('ExitScan')  TODO ? */
     this.navCtrl.pop();
-    // TODO needs check
-    // this.walletTabsProvider.getTabNav()
-    //   ? this.events.publish('ExitScan')
-    //   : this.navCtrl.parent.select(0);
   }
 }

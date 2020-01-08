@@ -153,8 +153,8 @@ export class AmountPage {
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
       ? this.currencyProvider.getPrecision(
-          this.availableUnits[this.altUnitIndex].id
-        )
+        this.availableUnits[this.altUnitIndex].id
+      )
       : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -209,7 +209,7 @@ export class AmountPage {
     }
 
     if (event.key.match(this.reNr)) {
-      this.pushDigit(event.key, true);
+      this.pushDigit(event.key);
     } else if (event.key.match(this.reOp)) {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
@@ -358,13 +358,10 @@ export class AmountPage {
     return !this.expression && !this.requestingAmount && !this.useAsModal;
   }
 
-  public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
+  public pushDigit(digit: string): void {
     this.useSendMax = false;
     if (digit === 'delete') {
       return this.removeDigit();
-    }
-    if (this.isSendMaxButtonShown() && digit === '0' && !isHardwareKeyboard) {
-      return this.sendMax();
     }
     if (
       this.expression &&
@@ -487,9 +484,9 @@ export class AmountPage {
     return parseFloat(
       this.rateProvider
         .toFiat(
-          val * this.unitToSatoshi,
-          this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
+        val * this.unitToSatoshi,
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -627,9 +624,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 

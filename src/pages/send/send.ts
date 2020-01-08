@@ -25,6 +25,7 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
+import { ScanPage } from '../scan/scan';
 import { MultiSendPage } from './multi-send/multi-send';
 
 @Component({
@@ -37,7 +38,6 @@ export class SendPage {
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public invalidAddress: boolean;
-  private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -102,15 +102,10 @@ export class SendPage {
   }
 
   public openScanner(): void {
-    this.scannerOpened = true;
-    /* this.walletTabsProvider.setSendParams({
-      amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
-    });
-    this.walletTabsProvider.setFromPage({ fromSend: true });
-    
-    TODO*/
-    this.events.publish('ScanFromWallet');
+    this.navCtrl.push(ScanPage, { fromSend: true });
+    /*     this.events.publish('ScanFromWallet');
+    TODO 
+    */
   }
 
   public isMultiSend(coin: Coin) {
@@ -130,7 +125,7 @@ export class SendPage {
       );
       isValid =
         this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-          addrData.coin && addrData.network == this.wallet.network;
+        addrData.coin && addrData.network == this.wallet.network;
     }
 
     if (isValid) {
@@ -154,7 +149,7 @@ export class SendPage {
   private redir() {
     this.incomingDataProvider.redir(this.search, {
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin // TODO ???? what is this for ?
     });
     this.search = '';
   }
@@ -265,12 +260,6 @@ export class SendPage {
     this.navCtrl.push(MultiSendPage, {
       wallet: this.wallet
     });
-  }
-
-  public closeCam(): void {
-    if (this.scannerOpened) this.events.publish('ExitScan');
-    // else this.getParentTabs().dismiss();
-    this.scannerOpened = false;
   }
 
   public close(): void {
