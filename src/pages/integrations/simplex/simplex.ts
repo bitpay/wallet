@@ -42,7 +42,7 @@ export class SimplexPage {
     this.simplexProvider
       .getSimplex()
       .then(simplexData => {
-        if (simplexData) {
+        if (simplexData && !_.isEmpty(simplexData)) {
           if (
             !_.isEmpty(this.navParams.data) &&
             this.navParams.data.paymentId &&
@@ -60,6 +60,8 @@ export class SimplexPage {
           const paymentRequests: any = {};
           Object.assign(paymentRequests, simplexData);
           this.paymentRequests = Object.values(paymentRequests);
+        } else {
+          this.navCtrl.pop();
         }
         this.loading = false;
       })
