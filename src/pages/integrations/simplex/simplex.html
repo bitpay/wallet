@@ -13,7 +13,7 @@
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
-        <div *ngIf="paymentRequests && paymentRequests.length > 0">
+        <div>
           <expandable-header-primary>
             <img margin-left width="130" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
           </expandable-header-primary>
@@ -26,17 +26,6 @@
         </div>
       </ion-toolbar>
     </expandable-header>
-
-    <div class="container" *ngIf="(!paymentRequests || paymentRequests.length == 0) && !loading">
-      <div class="center-header">
-        <img width="130" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
-        <h4 translate>Enabling Payments. Defeating Fraud.</h4>
-        <p translate>Purchase crypto with your debit/credit card via our partner Simplex.</p>
-        <button ion-button class="button-standard" (click)="continueToSimplexBuyPage()">
-          {{'Buy Crypto' | translate}}
-        </button>
-      </div>
-    </div>
 
     <ion-list *ngIf="paymentRequests && paymentRequests.length > 0">
       <ion-item-divider>{{'Payment Requests' | translate}}
