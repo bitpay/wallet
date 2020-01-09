@@ -324,7 +324,7 @@ export class ScanPage {
       this.navCtrl.pop();
     } else if (this.fromSend) {
       this.events.publish('Local/AddressScan', { value: contents });
-      this.closeCam();
+      this.navCtrl.pop();
     } else {
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
@@ -388,7 +388,6 @@ export class ScanPage {
   }
 
   public closeCam() {
-    /* this.events.publish('ExitScan')  TODO ? */
     this.navCtrl.pop();
   }
 }

@@ -25,7 +25,20 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
+import { CopayersPage } from '../add/copayers/copayers';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../add/join-wallet/join-wallet';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { SelectInvoicePage } from '../integrations/invoice/select-invoice/select-invoice';
+import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../integrations/simplex/simplex';
+import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
+import { ConfirmPage } from '../send/confirm/confirm';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { MultiSendPage } from './multi-send/multi-send';
 
 @Component({
@@ -49,6 +62,21 @@ export class SendPage {
     'BitcoinCashUri',
     'BitPayUri'
   ];
+  private pageMap = {
+    AddressbookAddPage,
+    AmountPage,
+    BitPayCardIntroPage,
+    CoinbasePage,
+    ConfirmPage,
+    CopayersPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    PaperWalletPage,
+    ShapeshiftPage,
+    SimplexPage,
+    SelectInvoicePage,
+    WalletDetailsPage
+  };
 
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -67,6 +95,8 @@ export class SendPage {
     private viewCtrl: ViewController
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
 
   @ViewChild('transferTo')
@@ -77,16 +107,20 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
       this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
     }
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
+
+  private SendPageRedirEventHandler: any = nextView => {
+    this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+  };
 
   private updateAddressHandler: any = data => {
     this.search = data.value;
@@ -103,9 +137,6 @@ export class SendPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromSend: true });
-    /*     this.events.publish('ScanFromWallet');
-    TODO 
-    */
   }
 
   public isMultiSend(coin: Coin) {
@@ -148,6 +179,7 @@ export class SendPage {
 
   private redir() {
     this.incomingDataProvider.redir(this.search, {
+      activePage: 'SendPage',
       amount: this.navParams.data.amount,
       coin: this.navParams.data.coin // TODO ???? what is this for ?
     });
@@ -214,10 +246,14 @@ export class SendPage {
           if (selected.length > 0) {
             const isValid = this.checkCoinAndNetwork(selected[0], true);
             if (isValid) {
-              this.incomingDataProvider.redir(this.search);
+              this.incomingDataProvider.redir(this.search, {
+                activePage: 'SendPage'
+              });
             }
           } else {
-            this.incomingDataProvider.redir(this.search);
+            this.incomingDataProvider.redir(this.search, {
+              activePage: 'SendPage'
+            });
           }
         } catch (err) {
           this.invalidAddress = true;
@@ -231,9 +267,13 @@ export class SendPage {
         if (isValid) this.redir();
       } else if (parsedData && parsedData.type == 'BitPayCard') {
         // this.close();
-        this.incomingDataProvider.redir(this.search);
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
       } else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.incomingDataProvider.redir(this.search);
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
       } else {
         this.invalidAddress = true;
       }
