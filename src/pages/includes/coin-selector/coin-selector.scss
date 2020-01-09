@@ -1,5 +1,9 @@
 page-coin-selector {
   background-color: white;
+  .button-default {
+    color: color($colors, dark);
+    box-shadow: none;
+  }
   .description {
     font-size: 16px;
     padding: 2rem 3rem 0rem 3rem;

@@ -1,21 +1,15 @@
-<ion-header class="wallet-details-header">
-  <ion-navbar [hideBackButton]="true" class="app-color">
-    <ion-buttons left>
-      <button class="modal-close-button" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>{{ wallet.name }}</ion-title>
-    <ion-buttons right>
-      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
-        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content no-bounce>
-  <div class="wrapper">
+<wide-header-page title="{{ wallet.name }}" hideBackButton="true">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="shareAddress()" *ngIf="showShareButton" ion-button>
+      <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
     <div *ngIf="wallet" class="receive-content">
       <div class="title-container">
         <span class="title">{{'Payment Request' | translate}}</span>
@@ -47,4 +41,4 @@
       </div>
     </div>
   </div>
-</ion-content>
+</wide-header-page>

@@ -92,9 +92,12 @@ ion-header.bp-header .toolbar {
   box-shadow: none;
 }
 
-.close-container.button-md.activated {
-  background-color: rgba(155, 163, 174, 0.2);
-  box-shadow: none;
+.close-container {
+  &.button-md.activated,
+  &.button-ios.activated {
+    background-color: rgba(155, 163, 174, 0.2);
+    box-shadow: none;
+  }
 }
 
 // Buttons
@@ -699,7 +702,6 @@ ion-item.with-label.item {
   }
 }
 
-page-receive,
 page-transfer-to-modal,
 page-bitpay-card-intro,
 page-bitpay-card,

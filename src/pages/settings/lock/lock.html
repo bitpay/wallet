@@ -1,20 +1,14 @@
-<ion-header>
+<wide-header-page title="{{'Lock'|translate}}">
+  <div page-content>
+    <ion-list radio-group>
+      <ion-item *ngFor="let opt of options">
+        <ion-label>{{opt.label}}</ion-label>
+        <ion-radio (click)="select(opt.method)" value="{{opt.method}}" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>
+      </ion-item>
+    </ion-list>
 
-  <ion-navbar>
-    <ion-title>{{'Lock'|translate}}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content>
-  <ion-list radio-group>
-    <ion-item *ngFor="let opt of options">
-      <ion-label>{{opt.label}}</ion-label>
-      <ion-radio (click)="select(opt.method)" value="{{opt.method}}" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>
-    </ion-item>
-  </ion-list>
-
-  <div *ngIf="needsBackupMsg" class="msg-container" text-wrap>
-    <span class="assertive">{{needsBackupMsg}}</span>
+    <div *ngIf="needsBackupMsg" class="msg-container" text-wrap>
+      <span class="assertive">{{needsBackupMsg}}</span>
+    </div>
   </div>
-</ion-content>
+</wide-header-page>

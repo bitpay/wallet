@@ -53,7 +53,7 @@ export class ChooseFeeLevelPage {
     private viewCtrl: ViewController,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private feeProvider: FeeProvider,
+    public feeProvider: FeeProvider,
     private translate: TranslateService
   ) {
     this.okText = this.translate.instant('Ok');
