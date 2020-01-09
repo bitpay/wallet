@@ -135,8 +135,6 @@ export class WalletsPage {
 
     // Update list of wallets, status and TXPs
     this.setWallets(shouldUpdate);
-
-    this.checkPriceChart();
   }
 
   private _didEnter() {
@@ -719,7 +717,6 @@ export class WalletsPage {
   public doRefresh(refresher): void {
     this.debounceSetWallets();
     setTimeout(() => {
-      this.updateCharts();
       refresher.complete();
     }, 2000);
   }
