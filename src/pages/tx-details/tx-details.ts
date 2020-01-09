@@ -290,13 +290,11 @@ export class TxDetailsPage {
 
   public viewOnBlockchain(): void {
     let btx = this.btx;
+    const network =
+      this.getShortNetworkName() == 'test' ? 'testnet/' : 'mainnet/';
     let url =
       this.wallet.coin !== 'xrp'
-        ? 'https://' +
-          this.blockexplorerUrl +
-          (this.getShortNetworkName() == 'test' ? 'testnet/' : 'mainnet/') +
-          'tx/' +
-          btx.txid
+        ? `https://${this.blockexplorerUrl}${network}tx/${btx.txid}`
         : this.getXRPBlockexplorerUrl() + btx.txid;
     let optIn = true;
     let title = null;
@@ -317,7 +315,7 @@ export class TxDetailsPage {
     let url =
       this.getShortNetworkName() == 'test'
         ? 'https://test.bithomp.com/explorer/'
-        : 'https://' + this.blockexplorerUrl + 'tx/';
+        : `https://${this.blockexplorerUrl}tx/`;
     return url;
   }
 
