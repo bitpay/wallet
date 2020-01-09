@@ -224,8 +224,17 @@ export class ConfirmPage extends WalletTabsChild {
       this.usingMerchantFee = true;
       this.tx.feeRate = +this.navParams.data.requiredFeeRate;
     } else {
-      this.tx.feeLevel =
-        this.tx.coin && this.tx.coin == 'bch' ? 'normal ' : this.configFeeLevel;
+      switch (this.tx.coin) {
+        case 'bch':
+          this.tx.feeLevel = 'normal';
+          break;
+        case 'xrp':
+          this.tx.feeLevel = 'normal';
+          break;
+        default:
+          this.tx.feeLevel = this.configFeeLevel;
+          break;
+      }
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -1013,6 +1022,8 @@ export class ConfirmPage extends WalletTabsChild {
       'PayPro',
       'BitcoinUri',
       'BitcoinCashUri',
+      'EthereumUri',
+      'RippleUri',
       'InvoiceUri'
     ]);
 
