@@ -16,6 +16,7 @@ import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../integrations/simplex/simplex';
 import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
@@ -709,7 +710,8 @@ export class WalletsPage {
   public goTo(page: string): void {
     const pageMap = {
       CoinbasePage,
-      ShapeshiftPage
+      ShapeshiftPage,
+      SimplexPage
     };
     this.navCtrl.push(pageMap[page]);
   }

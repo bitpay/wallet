@@ -1,3 +1,4 @@
+import { ActionCardV4Component } from './action-card-v4/action-card-v4';
 import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
@@ -11,6 +12,7 @@ import { WalletItemContent } from './wallet-item-content/wallet-item-content';
 
 export const COMPONENTS = [
   ActionCardComponent,
+  ActionCardV4Component,
   ACTION_SHEET_COMPONENTS,
   AmountPickerComponent,
   EXPANDABLE_HEADER_COMPONENTS,
