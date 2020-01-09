@@ -291,11 +291,13 @@ export class TxDetailsPage {
   public viewOnBlockchain(): void {
     let btx = this.btx;
     let url =
-      'https://' +
-      this.blockexplorerUrl +
-      (this.getShortNetworkName() == 'test' ? 'testnet/' : 'mainnet/') +
-      'tx/' +
-      btx.txid;
+      this.wallet.coin !== 'xrp'
+        ? 'https://' +
+          this.blockexplorerUrl +
+          (this.getShortNetworkName() == 'test' ? 'testnet/' : 'mainnet/') +
+          'tx/' +
+          btx.txid
+        : this.getXRPBlockexplorerUrl() + btx.txid;
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Transaction on Insight');
@@ -309,6 +311,14 @@ export class TxDetailsPage {
       okText,
       cancelText
     );
+  }
+
+  private getXRPBlockexplorerUrl(): string {
+    let url =
+      this.getShortNetworkName() == 'test'
+        ? 'https://test.bithomp.com/explorer/'
+        : 'https://' + this.blockexplorerUrl + 'tx/';
+    return url;
   }
 
   public getShortNetworkName(): string {
