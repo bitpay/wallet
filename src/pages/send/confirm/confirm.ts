@@ -331,7 +331,17 @@ export class ConfirmPage extends WalletTabsChild {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = wallet.coin == 'bch' ? 'normal' : this.configFeeLevel;
+      switch (wallet.coin) {
+        case 'bch':
+          this.tx.feeLevel = 'normal';
+          break;
+        case 'xrp':
+          this.tx.feeLevel = 'normal';
+          break;
+        default:
+          this.tx.feeLevel = this.configFeeLevel;
+          break;
+      }
     }
 
     this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
