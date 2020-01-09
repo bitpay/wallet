@@ -35,38 +35,6 @@
       </page-clipboard-card>
     </div>
 
-    <ion-card class="server-message" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
-      <ion-card-header class="server-message-header" *ngIf="serverMessages[0].dismissible">
-        <ion-row>
-          <button ion-button clear icon-only color="grey" (click)="dismissServerMessage(serverMessages[0])">
-            <ion-icon name="close"></ion-icon>
-          </button>
-        </ion-row>
-      </ion-card-header>
-      <ion-card-content class="server-message-content">
-        <div class="server-message-icon" *ngIf="serverMessages[0].category" [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
-          <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessages[0].category == 'critical'" />
-          <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessages[0].category == 'info'" />
-        </div>
-        <div class="server-message-title" *ngIf="serverMessages[0].title" [ngClass]="{
-            title: !serverMessages[0].category,
-            'title-info': serverMessages[0].category == 'info',
-            'title-critical': serverMessages[0].category == 'critical'
-          }">
-          {{ serverMessages[0].title }}
-        </div>
-        <div class="server-message-body" *ngIf="serverMessages[0].body">
-          {{ serverMessages[0].body }}
-        </div>
-        <div class="server-message-button" *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
-          <span *ngIf="serverMessages[0].linkText">{{
-            serverMessages[0].linkText
-          }}</span>
-          <span translate *ngIf="!serverMessages[0].linkText">Learn more</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
     <page-feedback-card #showCard></page-feedback-card>
     <page-survey-card #showSurvey></page-survey-card>
 

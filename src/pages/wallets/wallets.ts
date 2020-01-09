@@ -61,17 +61,14 @@ export class WalletsPage {
   public walletsGroups;
   public readOnlyWalletsGroup;
   public txpsN: number;
-  public serverMessages: any[];
   public homeIntegrations;
   public showAnnouncement: boolean = false;
   public validDataFromClipboard;
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
-  public showServerMessage: boolean;
 
   public showRateCard: boolean;
-  public showPriceChart: boolean;
   public hideHomeIntegrations: boolean;
   public accessDenied: boolean;
   public isBlur: boolean;
@@ -401,17 +398,6 @@ export class WalletsPage {
     });
   }
 
-  private checkPriceChart() {
-    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-      this.showPriceChart = res === 'enabled' ? true : false;
-      this.updateCharts();
-    });
-  }
-
-  private updateCharts() {
-    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
-  }
-
   public checkClipboard() {
     return this.clipboardProvider
       .getData()
@@ -572,9 +558,9 @@ export class WalletsPage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
@@ -634,8 +620,6 @@ export class WalletsPage {
   }
 
   private fetchAllWalletsStatus(): void {
-    let foundMessage = false;
-
     if (_.isEmpty(this.wallets)) return;
 
     this.logger.debug('fetchAllWalletsStatus');
@@ -645,18 +629,6 @@ export class WalletsPage {
         .then(async status => {
           wallet.cachedStatus = status;
           wallet.error = wallet.errorObj = null;
-
-          if (!foundMessage && !_.isEmpty(status.serverMessages)) {
-            this.serverMessages = _.orderBy(
-              status.serverMessages,
-              ['priority'],
-              ['asc']
-            );
-            this.serverMessages.forEach(serverMessage => {
-              this.checkServerMessage(serverMessage);
-            });
-            foundMessage = true;
-          }
 
           this.persistenceProvider.setLastKnownBalance(
             wallet.id,
@@ -709,48 +681,6 @@ export class WalletsPage {
         'Error updating status for ' + wallet.id
       )
     );
-  }
-
-  private removeServerMessage(id): void {
-    this.serverMessages = _.filter(this.serverMessages, s => s.id !== id);
-  }
-
-  public dismissServerMessage(serverMessage): void {
-    this.showServerMessage = false;
-    this.logger.debug(`Server message id: ${serverMessage.id} dismissed`);
-    this.persistenceProvider.setServerMessageDismissed(serverMessage.id);
-    this.removeServerMessage(serverMessage.id);
-  }
-
-  public checkServerMessage(serverMessage): void {
-    if (serverMessage.app && serverMessage.app != this.appProvider.info.name) {
-      this.removeServerMessage(serverMessage.id);
-      return;
-    }
-
-    /* if ( TODO
-      serverMessage.id === 'bcard-atm' &&
-      (!this.showBitPayCard ||
-        !this.bitpayCardItems ||
-        !this.bitpayCardItems[0])
-    ) {
-      this.removeServerMessage(serverMessage.id);
-      return;
-    } */
-
-    this.persistenceProvider
-      .getServerMessageDismissed(serverMessage.id)
-      .then((value: string) => {
-        if (value === 'dismissed') {
-          this.removeServerMessage(serverMessage.id);
-          return;
-        }
-        this.showServerMessage = true;
-      });
-  }
-
-  public openServerMessageLink(url): void {
-    this.externalLinkProvider.open(url);
   }
 
   public openCountryBannedLink(): void {

@@ -68,6 +68,7 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
+  ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`
 };
@@ -559,6 +560,18 @@ export class PersistenceProvider {
 
   removeServerMessageDismissed(id) {
     return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
+  }
+
+  setAdvertisementDismissed(name) {
+    return this.storage.set(Keys.ADVERTISEMENT_DISMISSED(name), 'dismissed');
+  }
+
+  getAdvertisementDismissed(name) {
+    return this.storage.get(Keys.ADVERTISEMENT_DISMISSED(name));
+  }
+
+  removeAdvertisementDismissed(name) {
+    return this.storage.remove(Keys.ADVERTISEMENT_DISMISSED(name));
   }
 
   setShapeshift(network: string, gcs) {
