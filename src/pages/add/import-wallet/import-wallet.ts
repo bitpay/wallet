@@ -248,7 +248,7 @@ export class ImportWalletPage {
 
     // using setRoot(TabsPage) as workaround when coming from scanner
     this.app
-      .getRootNavs()[0]
+      .getRootNavs()[1]
       .setRoot(TabsPage)
       .then(() => {
         this.events.publish('Local/WalletListChange');
