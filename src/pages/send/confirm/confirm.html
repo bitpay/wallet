@@ -169,10 +169,25 @@
       </div>
     </button>
 
-    <ion-item>
+    <ion-item *ngIf="wallet && wallet.coin !== 'xrp'; else destinationTag">
       <ion-label stacked>{{'Memo' | translate}}</ion-label>
       <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
     </ion-item>
+
+    <ng-template #destinationTag>
+      <ion-item *ngIf="!tx.paypro">
+        <ion-label stacked>{{'Destination Tag' | translate}}</ion-label>
+        <ion-input class="padded-input" type="number" placeholder="{{'Enter a destination tag' | translate}}" [(ngModel)]="tx.destinationTag" name="tx.destinationTag" autocomplete="off" autocorrect="off"></ion-input>
+      </ion-item>
+
+      <label-tip *ngIf="!tx.paypro && !tx.destinationTag" type="info" header="no-header">
+        <div label-tip-body translate>
+          A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange.
+          <br>
+        </div>
+      </label-tip>
+    </ng-template>
+
   </ion-list>
 </ion-content>
 

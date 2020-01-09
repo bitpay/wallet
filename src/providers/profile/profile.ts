@@ -472,6 +472,14 @@ export class ProfileProvider {
       ) {
         return true;
       }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        (chain == 'xrp' && coinCode == "144'")
+      ) {
+        return true;
+      }
       return false;
     }
   }

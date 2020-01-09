@@ -451,6 +451,7 @@ export class HomePage {
           'BitcoinAddress',
           'BitcoinCashAddress',
           'EthereumAddress',
+          'RippleAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
