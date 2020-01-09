@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 // providers
@@ -20,7 +21,8 @@ export class SimplexProvider {
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private logger: Logger,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private translate: TranslateService
   ) {
     this.logger.debug('SimplexProvider Provider initialized');
     this.env = env.name == 'development' ? 'sandbox' : 'production';
@@ -53,7 +55,7 @@ export class SimplexProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'simplex',
-      title: 'Simplex',
+      title: this.translate.instant('Buy Crypto (Simplex)'),
       icon: 'assets/img/simplex/icon-simplex.png',
       showIcon: true,
       logo: 'assets/img/simplex/logo-simplex-light.png',

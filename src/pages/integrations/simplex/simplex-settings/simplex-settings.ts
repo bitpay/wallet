@@ -17,7 +17,6 @@ export class SimplexSettingsPage {
 
   public showInHome;
   public service;
-  public headerColor: string;
 
   constructor(
     private platform: Platform,
@@ -29,7 +28,6 @@ export class SimplexSettingsPage {
       name: this.serviceName
     });
     this.showInHome = !!this.service[0].show;
-    this.headerColor = 'rgba(60, 63, 69, 1)';
   }
 
   ionViewWillEnter() {
