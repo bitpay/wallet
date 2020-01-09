@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons left>
+      <button *ngIf="navParams.get('showCloseButton')" class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{cardConfig?.displayName}}</ion-title>
     <ion-buttons right>
       <button (click)="showMoreOptions()" ion-button icon-only>
@@ -33,20 +38,20 @@
                   bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
                 <ngx-qrcode *ngIf="!card.barcodeImage && barcodeFormat === 'QR'" hide-toast="true"
                   [qrc-value]="barcodeData" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-                <img *ngIf="card.barcodeImage" [src]="card.barcodeImage" class="card-info__body barcode-image">
+                <img *ngIf="card.barcodeImage" [src]="card.barcodeImage" class="card-info__body barcode-image" />
               </ng-container>
               <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="showBarcode()">
                 {{card.claimCode}}
               </div>
-              <div class="card-info__date" *ngIf="!hasPin()">Created {{card.date | amTimeAgo}}</div>
+              <div class="card-info__date" *ngIf="!hasPin()">
+                Created {{card.date | amTimeAgo}}
+              </div>
             </div>
             <div *ngIf="hasPin()">
               <div class="separator"></div>
               <div (click)="copyCode(card.pin)" [copy-to-clipboard]="card.pin" [hide-toast]="true" tappable>
                 <div class="card-info__title">Pin</div>
-                <div class="card-info__body pin">
-                  {{card.pin}}
-                </div>
+                <div class="card-info__body pin">{{card.pin}}</div>
               </div>
             </div>
           </div>
@@ -66,9 +71,11 @@
         </div>
       </div>
 
-      <div class="card-info__date card-info__date--outside-card-info" *ngIf="hasPin() || showClaimLinkUI()">Created
-        {{card.date |
-        amTimeAgo}}</div>
+      <div #confetti class="confetti-root"></div>
+
+      <div class="card-info__date card-info__date--outside-card-info" *ngIf="hasPin() || showClaimLinkUI()">
+        Created {{card.date | amTimeAgo}}
+      </div>
 
       <div class="actions-wrapper" [@preventInitialChildAnimations]>
         <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived && (card.claimCode || card.claimLink)"
@@ -83,7 +90,8 @@
             <ng-container *ngIf="cardConfig.printRequired">{{'Print' | translate}}</ng-container>
           </button>
           <button ion-button *ngIf="showClaimLinkUI()" class="button-standard" (click)="viewRedemptionCode()">
-            {{ cardConfig.redeemButtonText || 'View Redemption Code' | translate}}
+            {{ cardConfig.redeemButtonText || 'View Redemption Code' |
+            translate}}
           </button>
           <button ion-button class="button-standard button-secondary" (click)="openArchiveSheet()">
             {{"I've used this card" | translate}}
@@ -91,8 +99,8 @@
         </div>
       </div>
     </div>
-    <card-terms [cardName]="card.name"></card-terms>
 
+    <card-terms [cardName]="card.name"></card-terms>
   </div>
 </ion-content>
 

@@ -2,6 +2,11 @@ card-details-page {
   $background-color: white;
   @include fix-ios-bg-scroll($background-color);
 
+  .confetti-root {
+    display: flex;
+    justify-content: center;
+  }
+
   .wrapper {
     padding: 0 $gift-card-page-padding;
 

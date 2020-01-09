@@ -651,6 +651,22 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async finish(card: GiftCard) {
+    card.status === 'SUCCESS'
+      ? await this.showCard(card)
+      : await this.showStatusModalAndPrepCard(card);
+  }
+
+  async showCard(card: GiftCard) {
+    const modal = this.modalCtrl.create(CardDetailsPage, {
+      card,
+      showConfetti: card.status === 'SUCCESS',
+      showCloseButton: true
+    });
+    await modal.present();
+    await this.resetNav(card);
+  }
+
+  async showStatusModalAndPrepCard(card: GiftCard) {
     let finishComment: string;
     let cssClass: string;
     if (card.status == 'FAILURE') {
@@ -663,20 +679,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       finishComment = this.translate.instant('Your purchase is pending.');
       cssClass = 'warning';
     }
-    if (card.status == 'SUCCESS') {
-      finishComment = this.translate.instant(
-        'Gift card generated and ready to use.'
-      );
-    }
+
     let finishText = '';
     let modal = this.modalCtrl.create(
       FinishModalPage,
       { finishText, finishComment, cssClass },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
-
     await modal.present();
+    await this.resetNav(card);
+    await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
+  }
 
+  async resetNav(card: GiftCard) {
     await this.navCtrl.popToRoot({ animate: false });
     await this.navCtrl.parent.select(0);
 
@@ -688,7 +703,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         { animate: false }
       );
     }
-    await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
   }
 
   async getNumActiveCards(): Promise<number> {
