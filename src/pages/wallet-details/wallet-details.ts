@@ -326,6 +326,13 @@ export class WalletDetailsPage extends WalletTabsChild {
       this.setPendingTxps(status.pendingTxps);
       this.showBalanceButton = status.totalBalanceSat != status.spendableAmount;
 
+      const minXrpBalance = 20000000; // 20 XRP * 1e6
+      if (this.wallet.coin === 'xrp') {
+        this.showBalanceButton =
+          status.totalBalanceSat &&
+          status.totalBalanceSat != status.spendableAmount + minXrpBalance;
+      }
+
       if (this.isUtxoCoin()) {
         this.analyzeUtxos();
       }
