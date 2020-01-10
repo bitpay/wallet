@@ -1,6 +1,7 @@
 page-confirm,
 confirm-card-purchase-page,
-page-txp-details {
+page-txp-details,
+page-tx-details {
   .amount-label {
     padding-top: 1rem;
     .amount {
@@ -217,5 +218,15 @@ page-txp-details {
   }
   .line-divider {
     margin: 0px 17px;
+  }
+  .background-button-content {
+    height: 47px;
+    background-color: #EDF0FE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 200px;
+    border-radius: 21px;
+    margin: 25px auto;
   }
 }
