@@ -57,7 +57,7 @@ export class HomePage {
     private walletProvider: WalletProvider,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController
-  ) { }
+  ) {}
 
   ionViewWillEnter() {
     this.checkPriceChart();
@@ -69,7 +69,7 @@ export class HomePage {
     if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => { }, 5000, {
+  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
     leading: true
   });
 
@@ -156,7 +156,7 @@ export class HomePage {
             foundMessage = true;
           }
         })
-        .catch(() => { });
+        .catch(() => {});
     });
   }
 
