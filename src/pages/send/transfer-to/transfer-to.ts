@@ -235,7 +235,9 @@ export class TransferToPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
+
         this.navCtrl.push(AmountPage, {
+          walletId: this.navParams.data.wallet.id,
           recipientType: item.recipientType,
           amount: parseInt(this.navParams.data.amount, 10),
           toAddress: addr,
