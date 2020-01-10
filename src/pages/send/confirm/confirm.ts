@@ -775,7 +775,7 @@ export class ConfirmPage extends WalletTabsChild {
 
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;
-        txp.fee = tx.sendMaxInfo.fee;
+        txp.feePerKb = tx.sendMaxInfo.feePerKb;
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
