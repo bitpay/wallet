@@ -1,4 +1,8 @@
 page-txp-details {
+
+  .note-container{
+    max-width: 200px;
+  }
   $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
@@ -16,9 +20,9 @@ page-txp-details {
     padding-top: 1rem;
     .amount {
       display: flex;
-      font-size: 3.5rem;
+      font-size: 34px;
+      font-weight: 500;
       justify-content: space-between;
-      font-size: 3.5rem;
       img.sending-img {
         width: auto;
         height: 40px;
