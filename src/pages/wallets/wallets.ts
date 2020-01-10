@@ -17,6 +17,7 @@ import { CopayersPage } from '../add/copayers/copayers';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../integrations/simplex/simplex';
+import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
 import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
@@ -37,6 +38,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { SimplexProvider } from '../../providers/simplex/simplex';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 interface UpdateWalletOptsI {
@@ -103,7 +105,8 @@ export class WalletsPage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private simplexProvider: SimplexProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -710,10 +713,19 @@ export class WalletsPage {
   public goTo(page: string): void {
     const pageMap = {
       CoinbasePage,
-      ShapeshiftPage,
-      SimplexPage
+      ShapeshiftPage
     };
-    this.navCtrl.push(pageMap[page]);
+    if (page === 'SimplexPage') {
+      this.simplexProvider.getSimplex().then(simplexData => {
+        if (simplexData && !_.isEmpty(simplexData)) {
+          this.navCtrl.push(SimplexPage);
+        } else {
+          this.navCtrl.push(SimplexBuyPage);
+        }
+      });
+    } else {
+      this.navCtrl.push(pageMap[page]);
+    }
   }
 
   public doRefresh(refresher): void {

@@ -71,21 +71,6 @@ page-settings {
     align-items: flex-start;
   }
 
-  .add-card-button {
-    @include center;
-    background: #f4f5fb;
-    color: #5f7bf7;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    width: 92%;
-    margin: 15px auto;
-    margin-top: 0;
-    height: 73px;
-  }
-
   .generic-list {
     ion-item-divider {
       margin-top: 0px;

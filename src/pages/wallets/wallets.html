@@ -104,12 +104,14 @@
     homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
   ">
       <div class="section-header" translate>Services</div>
-      <div *ngFor="let service of (homeIntegrations | orderBy: ['title'])" class="card-item sliding-container">
-        <ion-item-sliding class="card-item-sliding">
+      <div *ngFor="let service of (homeIntegrations | orderBy: ['name'])" class="card-item sliding-container">
+        <ion-item-sliding class="card-item-sliding" *ngIf="service.name != 'simplex'">
           <button ion-item (click)="goTo(service.page)" [ngStyle]="{'background': service.background}">
-            <img src="{{service.logo}}" width="145" alt="{{ service.title || service.name }}" />
+            <img *ngIf="service.showIcon && service.icon" style="margin-right: 8px; width: 32px" src="{{service.icon}}" alt="{{ service.icon }}" />
+            <img src="{{service.logo}}" [width]="service.logoWidth ? service.logoWidth : '145'" alt="{{ service.title || service.name }}" />
           </button>
         </ion-item-sliding>
+        <div *ngIf="service.name === 'simplex'" class="buy-crypto-button" (click)="goTo(service.page)" tappable translate>Buy Crypto</div>
       </div>
     </div>
   </div>
