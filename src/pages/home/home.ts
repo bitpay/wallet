@@ -55,7 +55,7 @@ export class HomePage {
   public totalBalanceAlternative: string;
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
-
+  public balanceHidden: boolean = true;
   private lastWeekRatesArray;
   private zone;
   private fiatCodes = [
@@ -89,6 +89,7 @@ export class HomePage {
 
   ionViewWillEnter() {
     this.checkPriceChart();
+    this.isBalanceHidden();
     this.fetchStatus();
     this.fetchAdvertisements();
   }
@@ -327,5 +328,23 @@ export class HomePage {
 
   public goTo(page) {
     this.navCtrl.push(page);
+  }
+
+  private isBalanceHidden() {
+    this.profileProvider
+      .getHideTotalBalanceFlag()
+      .then(isHidden => {
+        this.zone.run(() => {
+          this.balanceHidden = isHidden;
+        });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  public toggleHideBalanceFlag(): void {
+    this.balanceHidden = !this.balanceHidden;
+    this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
   }
 }

@@ -58,6 +58,7 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
+  public balanceHidden: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -88,6 +89,8 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
+
+    this.setBalanceHiddenFlag();
 
     const opts = {
       showHidden: true
@@ -276,5 +279,20 @@ export class SettingsPage {
     this.navCtrl.push(AddPage, {
       isZeroState: true
     });
+  }
+
+  private setBalanceHiddenFlag() {
+    this.profileProvider
+      .getHideTotalBalanceFlag()
+      .then(isHidden => {
+        this.balanceHidden = isHidden;
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  public toggleHideBalanceFlag(): void {
+    this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
   }
 }

@@ -47,11 +47,19 @@
     </div>
   </div>
 
-  <div class="total-amount-container">
+  <div class="total-amount-container" (longPress)="toggleHideBalanceFlag()">
     <div class="total-amount-title" translate>Total cash value</div>
-    <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
-    <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-      0.00 {{totalBalanceAlternativeIsoCode}}<ion-spinner></ion-spinner>
+    <div *ngIf="!balanceHidden">
+      <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
+      <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
+        0.00 {{totalBalanceAlternativeIsoCode}}<ion-spinner></ion-spinner>
+      </div>
+    </div>
+    <div class="balance-hidden" *ngIf="balanceHidden">
+      <span class="title" translate>[Balance Hidden]</span>
+      <div class="subtitle" translate>
+        Tap and hold to show
+      </div>
     </div>
     <div *ngIf="averagePrice" class="average-container" [ngClass]="averagePrice > 0 ? 'possitive-avg' : 'negative-avg'">
       <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>

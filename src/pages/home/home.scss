@@ -41,6 +41,19 @@ page-home {
       }
     }
   }
+  .balance-hidden {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .title {
+      cursor: pointer;
+      font-size: 32px;
+      font-weight: 500;
+    }
+    .subtitle {
+      padding-top: 10px;
+      font-size: 15px;
+    }
+  }
   .message {
     &-background {
       width: 80%;
