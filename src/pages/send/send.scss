@@ -1,5 +1,5 @@
 page-send {
-  .button-default {
+  .close-container.button-default {
     color: color($colors, dark);
   }
   .title {
@@ -8,6 +8,9 @@ page-send {
       vertical-align: sub;
       margin-right: 5px;
     }
+  }
+  .prompt-user-fullscreen-container {
+    height: 82vh;
   }
   .no-wallet-message {
     height: 100%;

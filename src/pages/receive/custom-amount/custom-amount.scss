@@ -1,5 +1,5 @@
 page-custom-amount {
-  .button-default {
+  .close-container.button-default {
     color: color($colors, dark);
     box-shadow: none;
   }
@@ -14,7 +14,7 @@ page-custom-amount {
   }
 
   .qr-container {
-    height: 100%;
+    height: 70vh;
     position: relative;
     .lines-background {
       background: url(../assets/img/curved-lines-background.png) center center
@@ -29,6 +29,7 @@ page-custom-amount {
     }
     .qr-card {
       max-height: 425px;
+      cursor: pointer;
       @media (max-height: 530px) {
         width: 60%;
       }

@@ -6,27 +6,29 @@
   </ion-buttons>
   <div page-content>
     <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
-      <div class="prompt-user">
-        <div class="title-icon larger-icon">
-          <img src="assets/img/ghost-straight-face.svg" />
+      <div>
+        <div class="prompt-user">
+          <div class="title-icon larger-icon">
+            <img src="assets/img/ghost-straight-face.svg" />
+          </div>
+          <div class="title-info">
+            <span translate>Mmm...</span>
+          </div>
+          <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
+            <span translate>It appears that you do not have any money to send.</span>
+          </div>
         </div>
-        <div class="title-info">
-          <span translate>Mmm...</span>
-        </div>
-        <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
-          <span translate>It appears that you do not have any money to send.</span>
-        </div>
+
+        <ng-template #minXrp>
+          <div class="subtitle-info">
+            <p translate>You need a minimum of 20 XRP to send funds.</p>
+          </div>
+        </ng-template>
+
+        <button ion-button class="button-standard" (click)="goToReceive()">
+          {{'Add funds' | translate}}
+        </button>
       </div>
-
-      <ng-template #minXrp>
-        <div class="subtitle-info">
-          <p translate>You need a minimum of 20 XRP to send funds.</p>
-        </div>
-      </ng-template>
-
-      <button ion-button class="button-standard" (click)="goToReceive()">
-        {{'Add funds' | translate}}
-      </button>
     </div>
 
     <div *ngIf="!shouldShowZeroState()">

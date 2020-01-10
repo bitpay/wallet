@@ -11,10 +11,10 @@ page-amount {
   .wide-header__title {
     display: none;
   }
-  $short-screen: 570px;
+  $short-screen: 630px;
 
   .amount-wrapper {
-    height: 100%;
+    height: 87vh;
     display: flex;
     flex-direction: column;
   }
@@ -112,6 +112,7 @@ page-amount {
     flex-grow: 1;
     padding: 39px;
     @media (max-height: $short-screen) {
+      padding-top: 20px;
       padding-bottom: 10px;
     }
     .expression-container {

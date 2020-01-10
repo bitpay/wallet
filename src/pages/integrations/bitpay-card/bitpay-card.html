@@ -6,8 +6,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="'#14245E'">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#14245E'}" pullMin="90" pullMax="180">
+<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper wrapper--feather">
@@ -26,57 +26,57 @@
       </expandable-header-primary>
     </expandable-header>
 
-  <div *ngIf="getStarted" class="initial-message">
-    <h1 translate>Get started</h1>
-    <div translate>
-      Your BitPay Card is ready. Add funds to your card to start using it at stores.
+    <div *ngIf="getStarted" class="initial-message">
+      <h1 translate>Get started</h1>
+      <div translate>
+        Your BitPay Card is ready. Add funds to your card to start using it at stores.
+      </div>
     </div>
-  </div>
 
-  <ion-list *ngIf="!getStarted">
-    <ion-item-divider>
-      <ion-label>
-        <span translate>Activity</span>
-      </ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" padding-horizontal [(ngModel)]="dateRange.value" (ionChange)="update()">
-        <ion-option value="last30Days" selected translate>Recent</ion-option>
-        <ion-option value="lastMonth" translate>Last Month</ion-option>
-        <ion-option value="all" translate>All</ion-option>
-      </ion-select>
-    </ion-item-divider>
+    <ion-list *ngIf="!getStarted">
+      <ion-item-divider>
+        <ion-label>
+          <span translate>Activity</span>
+        </ion-label>
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" padding-horizontal [(ngModel)]="dateRange.value" (ionChange)="update()">
+          <ion-option value="last30Days" selected translate>Recent</ion-option>
+          <ion-option value="lastMonth" translate>Last Month</ion-option>
+          <ion-option value="all" translate>All</ion-option>
+        </ion-select>
+      </ion-item-divider>
 
-    <ion-item-divider *ngIf="bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0]">
-      <ion-icon item-end (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/115003014526-Why-do-you-require-one-blockchain-confirmation-for-BitPay-Card-loads-')">
-        <img src="assets/img/icon-help-support.svg" />
-      </ion-icon>
-      <span translate>Confirming</span>
-    </ion-item-divider>
-    <ion-list>
-      <div *ngFor="let card of bitpayCardTransactionHistoryConfirming">
-        <page-card-item [card]="card" [currency]="currency"></page-card-item>
-      </div>
+      <ion-item-divider *ngIf="bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0]">
+        <ion-icon item-end (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/115003014526-Why-do-you-require-one-blockchain-confirmation-for-BitPay-Card-loads-')">
+          <img src="assets/img/icon-help-support.svg" />
+        </ion-icon>
+        <span translate>Confirming</span>
+      </ion-item-divider>
+      <ion-list>
+        <div *ngFor="let card of bitpayCardTransactionHistoryConfirming">
+          <page-card-item [card]="card" [currency]="currency"></page-card-item>
+        </div>
+      </ion-list>
+
+      <ion-item-divider *ngIf="bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]">
+        <ion-icon item-end (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/115003003563-Why-was-I-overcharged-on-my-BitPay-Card-account-Why-is-there-a-hold-on-my-account-')">
+          <img src="assets/img/icon-help-support.svg" />
+        </ion-icon>
+        <span translate>Pre-Auth Holds</span>
+      </ion-item-divider>
+      <ion-list>
+        <div *ngFor="let card of bitpayCardTransactionHistoryPreAuth">
+          <page-card-item [card]="card" [currency]="currency"></page-card-item>
+        </div>
+      </ion-list>
+
+      <ion-item-divider *ngIf="(bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]) || (bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0])">
+        <span translate>Completed</span>
+      </ion-item-divider>
+      <ion-list>
+        <div *ngFor="let card of bitpayCardTransactionHistoryCompleted">
+          <page-card-item [card]="card" [currency]="currency"></page-card-item>
+        </div>
+      </ion-list>
     </ion-list>
-
-    <ion-item-divider *ngIf="bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]">
-      <ion-icon item-end (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/115003003563-Why-was-I-overcharged-on-my-BitPay-Card-account-Why-is-there-a-hold-on-my-account-')">
-        <img src="assets/img/icon-help-support.svg" />
-      </ion-icon>
-      <span translate>Pre-Auth Holds</span>
-    </ion-item-divider>
-    <ion-list>
-      <div *ngFor="let card of bitpayCardTransactionHistoryPreAuth">
-        <page-card-item [card]="card" [currency]="currency"></page-card-item>
-      </div>
-    </ion-list>
-
-    <ion-item-divider *ngIf="(bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]) || (bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0])">
-      <span translate>Completed</span>
-    </ion-item-divider>
-    <ion-list>
-      <div *ngFor="let card of bitpayCardTransactionHistoryCompleted">
-        <page-card-item [card]="card" [currency]="currency"></page-card-item>
-      </div>
-    </ion-list>
-  </ion-list>
   </div>
 </ion-content>

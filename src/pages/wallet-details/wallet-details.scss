@@ -29,13 +29,18 @@ page-wallet-details {
     }
   }
 
+  .option-button {
+    font-size: 24px;
+    opacity: 0.6;
+  }
+
   .search-icon {
     font-size: 2.5rem;
   }
 
   .balance-card {
     // background: color($colors, primary);
-    background: linear-gradient(180deg, #14245e -0%, #22378c);
+    background: linear-gradient(180deg, #0c204e -0%, #1c4386);
     overflow: hidden;
   }
 
