@@ -8,6 +8,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <div class="total-amount-container">
+    <div class="total-amount-title" translate>Total cash value</div>
+    <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
+    <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
+      0.00 {{totalBalanceAlternativeIsoCode}}<ion-spinner></ion-spinner>
+    </div>
+    <div *ngIf="averagePrice" class="average-container" [ngClass]="averagePrice > 0 ? 'possitive-avg' : 'negative-avg'">
+      <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
+    </div>
+  </div>
   <div class="message-background" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
     <div class="message-header" *ngIf="serverMessages[0].dismissible">
       <ion-row justify-content-end>

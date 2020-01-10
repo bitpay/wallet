@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import {
@@ -9,6 +9,10 @@ import {
   ProfileProvider,
   WalletProvider
 } from '../../providers';
+import { ConfigProvider } from '../../providers/config/config';
+import { CurrencyProvider } from '../../providers/currency/currency';
+import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
+import { RateProvider } from '../../providers/rate/rate';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 
@@ -48,6 +52,24 @@ export class HomePage {
       dismissible: true
     }
   ];
+  public totalBalanceAlternative: string;
+  public totalBalanceAlternativeIsoCode: string;
+  public averagePrice: number;
+
+  private lastWeekRatesArray;
+  private zone;
+  private fiatCodes = [
+    'USD',
+    'INR',
+    'GBP',
+    'EUR',
+    'CAD',
+    'COP',
+    'NGN',
+    'BRL',
+    'ARS',
+    'AUD'
+  ];
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -56,12 +78,18 @@ export class HomePage {
     private externalLinkProvider: ExternalLinkProvider,
     private walletProvider: WalletProvider,
     private profileProvider: ProfileProvider,
-    private navCtrl: NavController
-  ) {}
+    private navCtrl: NavController,
+    private configProvider: ConfigProvider,
+    private exchangeRatesProvider: ExchangeRatesProvider,
+    private currencyProvider: CurrencyProvider,
+    private rateProvider: RateProvider
+  ) {
+    this.zone = new NgZone({ enableLongStackTrace: false });
+  }
 
   ionViewWillEnter() {
     this.checkPriceChart();
-    this.fetchServerMessages();
+    this.fetchStatus();
     this.fetchAdvertisements();
   }
 
@@ -69,7 +97,7 @@ export class HomePage {
     if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
+  private debounceRefreshHomePage = _.debounce(async () => { }, 5000, {
     leading: true
   });
 
@@ -83,7 +111,7 @@ export class HomePage {
   public doRefresh(refresher): void {
     this.debounceRefreshHomePage();
     setTimeout(() => {
-      this.fetchServerMessages();
+      this.fetchStatus();
       this.fetchAdvertisements();
       this.updateCharts();
       refresher.complete();
@@ -132,16 +160,17 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private fetchServerMessages(): void {
+  private async fetchStatus() {
     let foundMessage = false;
 
     this.wallets = this.profileProvider.getWallets();
-
+    this.setIsoCode();
+    this.lastWeekRatesArray = await this.getLastWeekRates();
     if (_.isEmpty(this.wallets)) return;
 
-    this.logger.debug('fetchServerMessages');
-    this.wallets.forEach(wallet => {
-      this.walletProvider
+    this.logger.debug('fetchStatus');
+    const pr = wallet => {
+      return this.walletProvider
         .fetchStatus(wallet, {})
         .then(async status => {
           if (!foundMessage && !_.isEmpty(status.serverMessages)) {
@@ -155,9 +184,109 @@ export class HomePage {
             });
             foundMessage = true;
           }
+
+          let walletTotalBalanceAlternative = 0;
+          let walletTotalBalanceAlternativeLastWeek = 0;
+          if (status.wallet.network === 'livenet') {
+            walletTotalBalanceAlternativeLastWeek = parseFloat(
+              this.getWalletTotalBalanceAlternativeLastWeek(
+                status.totalBalanceSat,
+                status.wallet.coin
+              )
+            );
+            walletTotalBalanceAlternative = parseFloat(
+              status.totalBalanceAlternative.replace(/,/g, '')
+            );
+          }
+          return Promise.resolve({
+            walletTotalBalanceAlternative,
+            walletTotalBalanceAlternativeLastWeek
+          });
         })
-        .catch(() => {});
+        .catch(() => {
+          return Promise.resolve();
+        });
+    };
+
+    const promises = [];
+
+    _.each(this.profileProvider.wallet, wallet => {
+      promises.push(pr(wallet));
     });
+
+    Promise.all(promises).then(balanceAlternativeArray => {
+      this.zone.run(() => {
+        this.totalBalanceAlternative = _.sumBy(
+          balanceAlternativeArray,
+          b => b.walletTotalBalanceAlternative
+        ).toFixed(2);
+        const totalBalanceAlternativeLastMonth = _.sumBy(
+          balanceAlternativeArray,
+          b => b.walletTotalBalanceAlternativeLastWeek
+        ).toFixed(2);
+        const difference =
+          parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
+          parseFloat(totalBalanceAlternativeLastMonth.replace(/,/g, ''));
+        this.averagePrice =
+          (difference * 100) /
+          parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
+      });
+    });
+  }
+  private getWalletTotalBalanceAlternativeLastWeek(
+    totalBalanceSat: number,
+    coin: string
+  ): string {
+    return this.rateProvider
+      .toFiat(
+      totalBalanceSat,
+      this.totalBalanceAlternativeIsoCode,
+      coin,
+      this.lastWeekRatesArray[coin]
+      )
+      .toFixed(2);
+  }
+
+  private getLastWeekRates(): Promise<any> {
+    const availableChains = this.currencyProvider.getAvailableChains();
+    const getHistoricalRate = unitCode => {
+      return new Promise(resolve => {
+        this.exchangeRatesProvider
+          .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
+          .subscribe(
+          response => {
+            return resolve({ rate: response.reverse()[0], unitCode });
+          },
+          err => {
+            this.logger.error('Error getting current rate:', err);
+            return resolve();
+          }
+          );
+      });
+    };
+
+    const promises = [];
+    _.forEach(availableChains, unitCode => {
+      promises.push(getHistoricalRate(unitCode));
+    });
+    return Promise.all(promises).then(lastWeekRates => {
+      let ratesByCoin = {};
+      lastWeekRates.forEach(lastWeekRate => {
+        ratesByCoin[lastWeekRate.unitCode] = lastWeekRate.rate.rate;
+      });
+      return Promise.resolve(ratesByCoin);
+    });
+  }
+
+  private setIsoCode() {
+    const alternativeIsoCode = this.configProvider.get().wallet.settings
+      .alternativeIsoCode;
+    this.totalBalanceAlternativeIsoCode = _.includes(
+      this.fiatCodes,
+      alternativeIsoCode
+    )
+      ? alternativeIsoCode
+      : 'USD';
   }
 
   private fetchAdvertisements(): void {

@@ -2,6 +2,45 @@ page-home {
   ion-slides {
     max-height: 280px;
   }
+  .total-amount-container {
+    margin: 20px 0px 10px 20px;
+    .total-amount-title {
+      color: #99a3af;
+      line-height: 22px;
+      font-size: 15px;
+    }
+    .total-amount-value {
+      font-size: 38px;
+      line-height: 56px;
+      font-weight: 500;
+      ion-spinner {
+        margin-left: 15px;
+        * {
+          stroke: color($colors, primary);
+        }
+      }
+    }
+    .average-container {
+      text-align: center;
+      height: 21px;
+      width: 80px;
+      border-radius: 7px;
+      &.negative-avg {
+        color: #cf2f32;
+        background-color: rgba(207, 47, 60, 0.1);
+      }
+      &.possitive-avg {
+        color: #2fcfa4;
+        background-color: rgba(47, 207, 164, 0.1);
+      }
+      .average {
+        font-size: 14px;
+        line-height: 19px;
+        height: 21px;
+        font-weight: 500;
+      }
+    }
+  }
   .message {
     &-background {
       width: 80%;
