@@ -97,7 +97,7 @@ export class HomePage {
     if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => { }, 5000, {
+  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
     leading: true
   });
 
@@ -191,7 +191,7 @@ export class HomePage {
             walletTotalBalanceAlternativeLastWeek = parseFloat(
               this.getWalletTotalBalanceAlternativeLastWeek(
                 status.totalBalanceSat,
-                status.wallet.coin
+                wallet.coin
               )
             );
             walletTotalBalanceAlternative = parseFloat(
@@ -217,11 +217,11 @@ export class HomePage {
     Promise.all(promises).then(balanceAlternativeArray => {
       this.zone.run(() => {
         this.totalBalanceAlternative = _.sumBy(
-          balanceAlternativeArray,
+          _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternative
         ).toFixed(2);
         const totalBalanceAlternativeLastMonth = _.sumBy(
-          balanceAlternativeArray,
+          _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternativeLastWeek
         ).toFixed(2);
         const difference =
@@ -239,10 +239,10 @@ export class HomePage {
   ): string {
     return this.rateProvider
       .toFiat(
-      totalBalanceSat,
-      this.totalBalanceAlternativeIsoCode,
-      coin,
-      this.lastWeekRatesArray[coin]
+        totalBalanceSat,
+        this.totalBalanceAlternativeIsoCode,
+        coin,
+        this.lastWeekRatesArray[coin]
       )
       .toFixed(2);
   }
@@ -254,13 +254,13 @@ export class HomePage {
         this.exchangeRatesProvider
           .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
           .subscribe(
-          response => {
-            return resolve({ rate: response.reverse()[0], unitCode });
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-            return resolve();
-          }
+            response => {
+              return resolve({ rate: response.reverse()[0], unitCode });
+            },
+            err => {
+              this.logger.error('Error getting current rate:', err);
+              return resolve();
+            }
           );
       });
     };
