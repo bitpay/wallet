@@ -184,34 +184,37 @@ page-tx-details {
       line-height: 19px;
       text-align: right;
     }
-    ion-icon.item-img.icon.icon-md {
-      margin: 9px 0px 9px 0;
-      justify-content: center;
-      padding: 7px;
-      img {
-        width: 20px;
-      }
-      &.rectangle {
-        border-radius: 7px;
+    ion-icon.item-img.icon {
+      &.icon-md,
+      &.icon-ios {
+        margin: 9px 0px 9px 0;
         justify-content: center;
-      }
-      .coin-img {
-        width: 18px;
-        height: 18px;
-        margin: 0px;
-      }
-      &.background {
-        &_btc {
-          background-color: #f7931a;
+        padding: 7px;
+        img {
+          width: 20px;
         }
-        &_bch {
-          background-color: #2fcf6e;
+        &.rectangle {
+          border-radius: 7px;
+          justify-content: center;
         }
-        &_eth {
-          background-color: #6b71d6;
+        .coin-img {
+          width: 18px;
+          height: 18px;
+          margin: 0px;
         }
-        &_xrp {
-          background-color: #000000;
+        &.background {
+          &_btc {
+            background-color: #f7931a;
+          }
+          &_bch {
+            background-color: #2fcf6e;
+          }
+          &_eth {
+            background-color: #6b71d6;
+          }
+          &_xrp {
+            background-color: #000000;
+          }
         }
       }
     }
