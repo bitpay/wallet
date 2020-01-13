@@ -78,13 +78,6 @@ export class MultiSendPage {
     };
     this.isDisabledContinue = true;
     this.wallet = this.navParams.data.wallet;
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: MultiSendPage');
-  }
-
-  ionViewWillEnter() {
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('addRecipient', newRecipient => {
       this.addRecipient(newRecipient);
@@ -92,7 +85,11 @@ export class MultiSendPage {
     });
   }
 
-  ionViewWillLeave() {
+  ionViewDidLoad() {
+    this.logger.info('Loaded: MultiSendPage');
+  }
+
+  ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('addRecipient');
   }

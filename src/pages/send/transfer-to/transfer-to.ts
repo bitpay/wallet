@@ -39,7 +39,7 @@ export class TransferToPage {
   public search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
-  public walletList = {} as any;
+  public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
   public contactsList = [];
   public filteredContactsList = [];
@@ -80,9 +80,8 @@ export class TransferToPage {
     this._wallet = this.navParams.data.wallet
       ? this.navParams.data.wallet
       : wallet;
-
     for (const coin of this.availableCoins) {
-      this.walletList[coin] = this.getWalletsList(coin);
+      this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }
     this.updateContactsList();
   }
@@ -170,8 +169,18 @@ export class TransferToPage {
   }
 
   private flattenWallet(wallet): FlatWallet {
-    wallet.getAddress = () => this.walletProvider.getAddress(wallet, false);
-    return wallet;
+    return {
+      color: wallet.color,
+      name: wallet.name,
+      recipientType: 'wallet',
+      coin: wallet.coin,
+      network: wallet.network,
+      m: wallet.credentials.m,
+      n: wallet.credentials.n,
+      isComplete: () => wallet.isComplete(),
+      needsBackup: wallet.needsBackup,
+      getAddress: () => this.walletProvider.getAddress(wallet, false)
+    };
   }
 
   private filterIrrelevantRecipients(recipient: {
