@@ -353,7 +353,7 @@ export class HomePage {
       this.advertisements,
       adv => adv.name !== name
     );
-    this.slides.slideTo(0, 500);
+    if (this.slides) this.slides.slideTo(0, 500);
   }
 
   public goToServices() {
