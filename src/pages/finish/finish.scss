@@ -42,6 +42,8 @@ page-finish {
     }
     .footer {
       padding: 2rem;
+      padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+      padding-bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
       margin: 0 1.75rem;
       border-top: 0.1rem solid rgba(255, 255, 255, 0.45);
       position: absolute;

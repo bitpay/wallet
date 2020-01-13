@@ -64,7 +64,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
       ratesApi: 'https://bitpay.com/api/rates',
-      blockExplorerUrls: 'insight.bitcore.io/#/BTC/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BTC/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -99,7 +99,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
       ratesApi: 'https://bitpay.com/api/rates/bch',
-      blockExplorerUrls: 'insight.bitcore.io/#/BCH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BCH/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -134,7 +134,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/eth',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -145,6 +145,41 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(135,206,250,1)',
       gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
+    }
+  },
+  xrp: {
+    name: 'Ripple',
+    chain: 'XRP',
+    coin: 'xrp',
+    unitInfo: {
+      unitName: 'XRP',
+      unitToSatoshi: 1e6,
+      unitDecimals: 6,
+      unitCode: 'xrp'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'RIP681',
+      protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
+      ratesApi: 'https://bitpay.com/api/rates/xrp',
+      blockExplorerUrls: 'xrpscan.com/'
+    },
+    feeInfo: {
+      feeUnit: 'drops',
+      feeUnitAmount: 1e6,
+      blockTime: 0.05,
+      maxMerchantFee: 'normal'
+    },
+    theme: {
+      backgroundColor: 'rgba(35,41,47,1)',
+      gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
     }
   },
   pax: {
@@ -169,7 +204,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/pax',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -204,7 +239,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/usdc',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -239,7 +274,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/gusd',
-      blockExplorerUrls: 'insight.bitcore.io/#/ETH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
       feeUnit: 'Gwei',

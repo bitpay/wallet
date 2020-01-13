@@ -81,7 +81,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public isERCToken: boolean;
 
   public cardConfig: CardConfig;
-  public hideSlideButton: boolean;
   public displayNameIncludesGiftCard: boolean = false;
 
   constructor(
@@ -150,7 +149,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       keyProvider,
       statusBar
     );
-    this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
   }
 
@@ -260,12 +258,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
-    if (wallet.isPrivKeyEncrypted) {
-      this.hideSlideButton = true;
-    }
 
     await this.walletProvider.publishAndSign(wallet, txp);
-    this.hideSlideButton = false;
     return this.onGoingProcessProvider.clear();
   }
 
@@ -498,7 +492,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
 
     const email = await this.promptEmail();
-    this.hideSlideButton = false;
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: parsedAmount.amount,
@@ -658,6 +651,22 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async finish(card: GiftCard) {
+    card.status === 'SUCCESS'
+      ? await this.showCard(card)
+      : await this.showStatusModalAndPrepCard(card);
+  }
+
+  async showCard(card: GiftCard) {
+    const modal = this.modalCtrl.create(CardDetailsPage, {
+      card,
+      showConfetti: card.status === 'SUCCESS',
+      showCloseButton: true
+    });
+    await modal.present();
+    await this.resetNav(card);
+  }
+
+  async showStatusModalAndPrepCard(card: GiftCard) {
     let finishComment: string;
     let cssClass: string;
     if (card.status == 'FAILURE') {
@@ -670,20 +679,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       finishComment = this.translate.instant('Your purchase is pending.');
       cssClass = 'warning';
     }
-    if (card.status == 'SUCCESS') {
-      finishComment = this.translate.instant(
-        'Gift card generated and ready to use.'
-      );
-    }
+
     let finishText = '';
     let modal = this.modalCtrl.create(
       FinishModalPage,
       { finishText, finishComment, cssClass },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
-
     await modal.present();
+    await this.resetNav(card);
+    await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
+  }
 
+  async resetNav(card: GiftCard) {
     await this.navCtrl.popToRoot({ animate: false });
     await this.navCtrl.parent.select(0);
 
@@ -695,7 +703,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         { animate: false }
       );
     }
-    await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
   }
 
   async getNumActiveCards(): Promise<number> {

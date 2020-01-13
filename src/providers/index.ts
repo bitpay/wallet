@@ -33,6 +33,7 @@ export { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 export { BwcProvider } from '../providers/bwc/bwc';
 export { ClipboardProvider } from '../providers/clipboard/clipboard';
 export { CoinbaseProvider } from '../providers/coinbase/coinbase';
+export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
 export { CurrencyProvider } from '../providers/currency/currency';
 export {
@@ -81,6 +82,7 @@ export {
 } from '../providers/replace-parameters/replace-parameters';
 export { ScanProvider } from '../providers/scan/scan';
 export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+export { SimplexProvider } from '../providers/simplex/simplex';
 export { TimeProvider } from '../providers/time/time';
 export { TouchIdProvider } from '../providers/touchid/touchid';
 export {

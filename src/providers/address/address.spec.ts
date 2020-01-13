@@ -67,14 +67,21 @@ describe('AddressProvider', () => {
         'bch',
         'testnet'
       ],
-      // ETH Address / URI
+      // ETH Address & URI
       ['0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'livenet'],
-      ['etherum:0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'livenet']
+      ['etherum:0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'livenet'],
+      /// XRP Address & URI
+      ['rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'livenet'],
+      ['ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'livenet']
     ];
 
-    const ethTestVectors: any[] = [
+    const testnetVectors: any[] = [
+      // ETH
       ['0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'testnet'],
-      ['etherum:0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'testnet']
+      ['etherum:0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'testnet'],
+      // XRP
+      ['rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'testnet'],
+      ['ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'testnet']
     ];
 
     testVectors.forEach(v => {
@@ -85,7 +92,7 @@ describe('AddressProvider', () => {
       });
     });
 
-    ethTestVectors.forEach(v => {
+    testnetVectors.forEach(v => {
       it('address ' + v[0] + ' should be ' + v[1] + ' / ' + v[2], () => {
         let addrData = addressProvider.getCoinAndNetwork(v[0], 'testnet');
         expect(addrData.coin).toEqual(v[1]);
@@ -152,6 +159,20 @@ describe('AddressProvider', () => {
       result = addressProvider.extractAddress(address);
       expect(result).toEqual('0x32ed5be73f5c395621287f5cbe1da96caf3c5dec');
     });
+
+    it('should return the correct extracted address for XRP', () => {
+      let address = 'rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF'; // XRP livenet
+      let result = addressProvider.extractAddress(address);
+      expect(result).toEqual('rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF');
+
+      address = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF'; // XRP livenet with prefix
+      result = addressProvider.extractAddress(address);
+      expect(result).toEqual('rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF');
+
+      address = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=12'; // XRP livenet uri
+      result = addressProvider.extractAddress(address);
+      expect(result).toEqual('rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF');
+    });
   });
 
   describe('isValid', () => {
@@ -195,6 +216,20 @@ describe('AddressProvider', () => {
 
       address =
         'ethereum:0x32ed5be73f5c395621287f5cbe1da96caf3c5dec?value=1234567890'; // ETH livenet uri
+      result = addressProvider.isValid(address);
+      expect(result).toEqual(true);
+    });
+
+    it('should return true for addresses of XRP livenet', () => {
+      let address = 'rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF'; // XRP livenet
+      let result = addressProvider.isValid(address);
+      expect(result).toEqual(true);
+
+      address = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF'; // XRP livenet with prefix
+      result = addressProvider.isValid(address);
+      expect(result).toEqual(true);
+
+      address = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=12'; // XRP livenet uri
       result = addressProvider.isValid(address);
       expect(result).toEqual(true);
     });
@@ -254,7 +289,11 @@ describe('AddressProvider', () => {
       expect(result).toEqual(false);
 
       address =
-        'ethereum:0x32ed5be73f5c395621287f5cbe1da96caf3c5dec?value=invalid';
+        'ethereum:0x32ed5be73f5c395621287f5cbe1da96caf3c5?value=invalid';
+      result = addressProvider.isValid(address);
+      expect(result).toEqual(false);
+
+      address = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7H?value=invalid';
       result = addressProvider.isValid(address);
       expect(result).toEqual(false);
     });

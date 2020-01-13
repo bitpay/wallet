@@ -70,7 +70,9 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum)?:\?r=[\w+]/.exec(data);
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple)?:\?r=[\w+]/.exec(
+      data
+    );
   }
 
   private isValidBitPayInvoice(data: string): boolean {
@@ -103,6 +105,11 @@ export class IncomingDataProvider {
   private isValidEthereumUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getCore().Validation.validateUri('ETH', data);
+  }
+
+  private isValidRippleUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getCore().Validation.validateUri('XRP', data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -147,6 +154,12 @@ export class IncomingDataProvider {
       .Validation.validateAddress('ETH', 'livenet', data);
   }
 
+  private isValidRippleAddress(data: string): boolean {
+    return !!this.bwcProvider
+      .getCore()
+      .Validation.validateAddress('XRP', 'livenet', data);
+  }
+
   private isValidCoinbaseUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(
@@ -158,6 +171,13 @@ export class IncomingDataProvider {
     data = this.sanitizeUri(data);
     return !!(
       data && data.indexOf(this.appProvider.info.name + '://shapeshift') === 0
+    );
+  }
+
+  private isValidSimplexUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://simplex') === 0
     );
   }
 
@@ -321,6 +341,42 @@ export class IncomingDataProvider {
     }
   }
 
+  private handleRippleUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ripple URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.XRP;
+    const amountParam = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+    const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
+    let parsedAmount;
+    let destinationTag;
+    let requiredFeeRate;
+    if (amountParam.exec(data)) {
+      const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
+      parsedAmount = (
+        Number(amountParam.exec(data)[1]) * unitToSatoshi
+      ).toString();
+    }
+    if (tagParam.exec(data)) {
+      destinationTag = tagParam.exec(data)[1];
+    }
+    const address = this.extractAddress(data);
+    const message = '';
+    const amount = parsedAmount || amountFromRedirParams;
+    if (amount) {
+      this.goSend(
+        address,
+        amount,
+        message,
+        coin,
+        requiredFeeRate,
+        destinationTag
+      );
+    } else {
+      this.handleRippleAddress(address, redirParams);
+    }
+  }
+
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
     const coin = Coin.BCH;
@@ -403,6 +459,22 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'ethereumAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handleRippleAddress(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Ripple address');
+    const coin = Coin.XRP;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'rippleAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -512,6 +584,23 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
+  private goToSimplex(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Simplex URL');
+
+    const res = data.replace(new RegExp('&amp;', 'g'), '&');
+    const success = this.getParameterByName('success', res);
+    const paymentId = this.getParameterByName('paymentId', res);
+    const quoteId = this.getParameterByName('quoteId', res);
+    const userId = this.getParameterByName('userId', res);
+
+    const stateParams = { success, paymentId, quoteId, userId };
+    const nextView = {
+      name: 'SimplexPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
@@ -536,6 +625,11 @@ export class IncomingDataProvider {
       // Ethereum URI
     } else if (this.isValidEthereumUri(data)) {
       this.handleEthereumUri(data, redirParams);
+      return true;
+
+      // Ripple URI
+    } else if (this.isValidRippleUri(data)) {
+      this.handleRippleUri(data, redirParams);
       return true;
 
       // Bitcoin Cash URI using Bitcoin Core legacy address
@@ -563,6 +657,11 @@ export class IncomingDataProvider {
       this.handleEthereumAddress(data, redirParams);
       return true;
 
+      // Address (Ripple)
+    } else if (this.isValidRippleAddress(data)) {
+      this.handleRippleAddress(data, redirParams);
+      return true;
+
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       this.goToCoinbase(data);
@@ -571,6 +670,11 @@ export class IncomingDataProvider {
       // ShapeShift
     } else if (this.isValidShapeshiftUri(data)) {
       this.goToShapeshift(data);
+      return true;
+
+      // Simplex
+    } else if (this.isValidSimplexUri(data)) {
+      this.goToSimplex(data);
       return true;
 
       // BitPayCard Authentication
@@ -668,6 +772,14 @@ export class IncomingDataProvider {
         title: this.translate.instant('Ethereum URI')
       };
 
+      // Ripple URI
+    } else if (this.isValidRippleUri(data)) {
+      return {
+        data,
+        type: 'RippleUri',
+        title: this.translate.instant('Ripple URI')
+      };
+
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       return {
@@ -706,6 +818,14 @@ export class IncomingDataProvider {
         data,
         type: 'EthereumAddress',
         title: this.translate.instant('Ethereum Address')
+      };
+
+      // Plain Address (Ripple)
+    } else if (this.isValidRippleAddress(data)) {
+      return {
+        data,
+        type: 'RippleAddress',
+        title: this.translate.instant('Ripple Address')
       };
 
       // Coinbase
@@ -786,7 +906,7 @@ export class IncomingDataProvider {
 
   public getPayProUrl(data: string): string {
     return decodeURIComponent(
-      data.replace(/(bitcoin|bitcoincash|ethereum)?:\?r=/, '')
+      data.replace(/(bitcoin|bitcoincash|ethereum|ripple)?:\?r=/, '')
     );
   }
 
@@ -822,7 +942,8 @@ export class IncomingDataProvider {
     amount: string,
     message: string,
     coin: Coin,
-    requiredFeeRate?: string
+    requiredFeeRate?: string,
+    destinationTag?: string
   ): void {
     if (amount) {
       let stateParams = {
@@ -830,7 +951,8 @@ export class IncomingDataProvider {
         toAddress: addr,
         description: message,
         coin,
-        requiredFeeRate
+        requiredFeeRate,
+        destinationTag
       };
       let nextView = {
         name: 'ConfirmPage',
@@ -883,6 +1005,7 @@ export class IncomingDataProvider {
       return;
     }
 
+    let invoiceID;
     let requiredFeeRate;
 
     if (payProDetails.requiredFeeRate) {
@@ -900,11 +1023,17 @@ export class IncomingDataProvider {
       const { estimatedAmount } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );
+      const instructions = payProDetails.instructions[0];
+      const { outputs, toAddress, data } = instructions;
+      if (coin === 'xrp' && outputs) {
+        invoiceID = outputs[0].invoiceID;
+      }
       const stateParams = {
         amount: estimatedAmount,
-        toAddress: payProDetails.instructions[0].toAddress,
+        toAddress,
         description: payProDetails.memo,
-        data: payProDetails.instructions[0].data,
+        data,
+        invoiceID,
         paypro: payProDetails,
         coin,
         network: payProDetails.network,

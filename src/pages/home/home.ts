@@ -14,6 +14,8 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../integrations/simplex/simplex';
+import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
 import { SettingsPage } from '../settings/settings';
 import { ProposalsPage } from './proposals/proposals';
 
@@ -33,6 +35,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { SimplexProvider } from '../../providers/simplex/simplex';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 interface UpdateWalletOptsI {
@@ -107,7 +110,8 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private simplexProvider: SimplexProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -456,6 +460,7 @@ export class HomePage {
           'BitcoinAddress',
           'BitcoinCashAddress',
           'EthereumAddress',
+          'RippleAddress',
           'PlainUrl'
         ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
@@ -805,11 +810,25 @@ export class HomePage {
       CoinbasePage,
       ShapeshiftPage
     };
-    this.navCtrl.push(pageMap[page]);
+    if (page === 'SimplexPage') {
+      this.simplexProvider.getSimplex().then(simplexData => {
+        if (simplexData && !_.isEmpty(simplexData)) {
+          this.navCtrl.push(SimplexPage);
+        } else {
+          this.navCtrl.push(SimplexBuyPage);
+        }
+      });
+    } else {
+      this.navCtrl.push(pageMap[page]);
+    }
   }
 
   public goToCard(cardId): void {
     this.navCtrl.push(BitPayCardPage, { id: cardId });
+  }
+
+  public goToSimplexPage(): void {
+    this.navCtrl.push(SimplexPage);
   }
 
   public doRefresh(refresher): void {

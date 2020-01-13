@@ -5,7 +5,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { take } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import {
   ActionSheetProvider,
   InfoSheetType
 } from '../../../../providers/action-sheet/action-sheet';
+import { ConfettiProvider } from '../../../../providers/confetti/confetti';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import {
@@ -51,12 +52,15 @@ export class CardDetailsPage {
   @ViewChild(PrintableCardComponent)
   printableCard: PrintableCardComponent;
 
+  @ViewChild('confetti') confetti: ElementRef;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private confettiProvider: ConfettiProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
-    private navParams: NavParams,
+    public navParams: NavParams,
     private events: Events,
     private socialSharing: SocialSharing,
     private platformProvider: PlatformProvider
@@ -72,6 +76,8 @@ export class CardDetailsPage {
 
   ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.navParams.get('showConfetti') &&
+      this.confettiProvider.confetti(this.confetti.nativeElement);
   }
 
   ionViewWillLeave() {
@@ -257,6 +263,9 @@ export class CardDetailsPage {
           return setTimeout(() => this.print(), 200);
       }
     });
+  }
+  close() {
+    this.nav.pop();
   }
 }
 

@@ -4,15 +4,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2019-12-10 14:29\n"
+"PO-Revision-Date: 2019-12-23 13:27\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -355,9 +353,6 @@ msgstr "Cliquez pour accepter"
 
 msgid "Click to confirm"
 msgstr "Cliquez pour confirmer"
-
-msgid "Click to open Terms"
-msgstr "Cliquez pour ouvrir les conditions"
 
 msgid "Click to pay"
 msgstr "Cliquez pour payer"
@@ -939,7 +934,7 @@ msgid "Gift Card"
 msgstr "Carte-cadeau"
 
 msgid "Gift Card Settings"
-msgstr ""
+msgstr "Paramètres des cartes-cadeaux"
 
 msgid "Gift card canceled"
 msgstr "Carte-cadeau annulée"
@@ -984,7 +979,7 @@ msgid "Hide Balance"
 msgstr "Masquer le solde"
 
 msgid "Hide Wallet"
-msgstr ""
+msgstr "Masquer le portefeuille"
 
 msgid "Hide advanced options"
 msgstr "Masquer les options avancées"
@@ -1176,7 +1171,7 @@ msgid "Learn more about testnet blockchain"
 msgstr "En savoir plus sur la blockchain testnet"
 
 msgid "Learn where you can spend your crypto today."
-msgstr ""
+msgstr "Trouvez où dépenser vos cryptos dès aujourd'hui."
 
 msgid "Legacy"
 msgstr "Obsolète"
@@ -1832,11 +1827,11 @@ msgstr "Sélectionner la clé"
 msgid "Select Key to add ETH Wallet to"
 msgstr "Sélectionnez la clé à ajouter au portefeuille ETH"
 
-msgid "Select a Ethereum Wallet for Transaction Costs"
-msgstr "Sélectionnez un portefeuille Ethereum pour les coûts de transaction"
-
 msgid "Select a wallet"
 msgstr "Sélectionner un portefeuille"
+
+msgid "Select an Ethereum Wallet"
+msgstr "Choisissez un portefeuille Ethereum"
 
 msgid "Select currencies"
 msgstr "Sélectionner des devises"
@@ -2063,6 +2058,9 @@ msgstr "Appuyez pour recréer"
 msgid "Temporarily Unavailable"
 msgstr "Temporairement indisponible"
 
+msgid "Terms of Service"
+msgstr "Conditions d'utilisation"
+
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
 
@@ -2187,7 +2185,7 @@ msgid "This invoice does not accept unconfirmed inputs."
 msgstr "Cette facture n'accepte pas les entrées non confirmées."
 
 msgid "This invoice is no longer accepting payments"
-msgstr ""
+msgstr "Cette facture n'accepte plus les paiements."
 
 msgid "This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead"
 msgstr "Cette facture est facturée en BTC, pas en BCH. Veuillez essayer avec un portefeuille BTC à la place."
@@ -2196,7 +2194,7 @@ msgid "This is a new 12-word key that manages its own set of wallets. It is unre
 msgstr "Il s'agit d'une nouvelle clé de 12 mots qui gère ses propres portefeuilles. Elle n'est pas liée à une clé de 12 mots que vous avez peut-être créée précédemment. Conservez-la et gérez-la en conséquence."
 
 msgid "This key contains {{wallets.length}} wallets."
-msgstr ""
+msgstr "Cette clé contient {{wallets.length}} portefeuilles."
 
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
 msgstr "Ce code ne peut pas être récupéré. S'il est perdu, les fonds ne peuvent être récupérés qu'en réimportant votre phrase de récupération de 12 mots."
@@ -2209,9 +2207,6 @@ msgstr "Ce paiement nécessite des frais miniers de :"
 
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "Cette phrase de récupération a été créée avec un mot de passe. Pour récupérer ce portefeuille, la phrase de récupération et le mot de passe sont requis."
-
-msgid "This token will use your wallet {{ params.wallets[0].walletName}} (ETH) for the transaction costs"
-msgstr "Ce jeton utilisera votre portefeuille {{ params.wallets[0].walletName}} (ETH) pour les frais de transaction"
 
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr "Ce montant de transaction est trop faible par rapport aux actuels frais de réseau Bitcoin. La dépense de ces fonds demandera des frais de réseau Bitcoin comparables aux fonds eux-mêmes."
@@ -2263,9 +2258,6 @@ msgstr "Échangez n'importe quel actif blockchain contre un autre. Protection pa
 
 msgid "Transaction"
 msgstr "Transaction"
-
-msgid "Transaction Costs"
-msgstr "Coûts de transaction"
 
 msgid "Transaction History"
 msgstr "Historique des transactions"
@@ -2394,7 +2386,7 @@ msgid "View Confirmation Status"
 msgstr "Afficher l’état de confirmation"
 
 msgid "View Directory"
-msgstr ""
+msgstr "Voir le répertoire"
 
 msgid "View Invoice"
 msgstr "Afficher la facture"
@@ -2688,7 +2680,7 @@ msgid "Your wallet key will be encrypted. The encrypt password cannot be recover
 msgstr "La clé de votre portefeuille sera chiffrée. Le code de chiffrement ne peut pas être récupéré. N'oubliez pas de l'écrire."
 
 msgid "Your wallet master key is a phrase composed of 12 randomly selected words. If you ever lose or damage your device, you can re-gain access to your wallet as long as you have your 12 word master key."
-msgstr ""
+msgstr "La clé maîtresse de votre portefeuille est une phrase composée de 12 mots choisis au hasard. Si vous perdez ou endommagez votre appareil, vous pourrez restaurer l'accès à votre portefeuille tant que vous avez votre clé maîtresse de 12 mots."
 
 msgid "Your wallet {{walletName}} is complete."
 msgstr "Votre portefeuille {{walletName}} est terminé."
@@ -2757,8 +2749,8 @@ msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-sur-{{wallet.n}}"
 
 msgid "{{walletsGroup.length}} Wallet"
-msgstr ""
+msgstr "{{walletsGroup.length}} portefeuille"
 
 msgid "{{walletsGroup.length}} Wallets"
-msgstr ""
+msgstr "{{walletsGroup.length}} portefeuilles"
 

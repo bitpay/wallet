@@ -40,6 +40,12 @@ import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshi
 import { ShapeshiftSettingsPage } from '../pages/integrations/shapeshift/shapeshift-settings/shapeshift-settings';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
+// Integrations: Simplex
+import { SimplexPage } from '../pages/integrations/simplex/simplex';
+import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
+import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
+import { SimplexSettingsPage } from '../pages/integrations/simplex/simplex-settings/simplex-settings';
+
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
 import { BitPayCardHomeAlt } from '../pages/integrations/bitpay-card/bitpay-card-home-alt/bitpay-card-home-alt';
@@ -191,6 +197,10 @@ export const PAGES = [
   ShapeshiftSettingsPage,
   ShapeshiftPage,
   ShapeshiftShiftPage,
+  SimplexPage,
+  SimplexBuyPage,
+  SimplexDetailsPage,
+  SimplexSettingsPage,
   NotificationsPage,
   FeePolicyPage,
   SearchTxModalPage,

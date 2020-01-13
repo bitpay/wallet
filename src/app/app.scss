@@ -20,6 +20,28 @@ body {
   line-height: 22px;
 }
 
+// all content without menu
+ion-content.add-bottom-safe-area,
+.hide-tabbar ion-content {
+  .fixed-content,
+  .scroll-content {
+    padding-bottom: 0;
+    padding-bottom: calc(env(safe-area-inset-bottom));
+    padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
+  }
+}
+
+// expandable views
+ion-content.add-padding-bottom,
+.add-padding-bottom ion-content {
+  .fixed-content,
+  .scroll-content {
+    padding-bottom: 120px;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+    padding-bottom: -webkit-calc(120px + env(safe-area-inset-bottom));
+  }
+}
+
 // Alert position
 // --------------------------------------------------
 ion-alert.alert-top {
@@ -48,8 +70,10 @@ ion-label {
 .bottom-absolute {
   width: 100%;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
+  bottom: calc(env(safe-area-inset-bottom));
   padding: 15px 15px calc(5vw + 1vh) 15px;
+  padding: 15px 15px -webkit-calc(5vw + 1vh) 15px;
 
   .button {
     margin: 1.2rem auto;
@@ -561,15 +585,18 @@ ion-item.with-label.item {
 }
 
 .slide-confirm-down {
-  transform: translate(0px, 90px);
+  transform: translate(0px, 200px);
+  -webkit-transform: translate(0px, 200px);
 }
 
 .slide-confirm-slow {
-  transition: transform 0.7s;
+  transition: transform 0.6s;
+  -webkit-transition: -webkit-transform 0.6s;
 }
 
 .slide-confirm-fast {
-  transition: transform 0.3s;
+  transition: transform 0.2s;
+  -webkit-transition: -webkit-transform 0.2s;
 }
 
 .reorder-done {
@@ -600,8 +627,8 @@ ion-item.with-label.item {
 page-wallet-details,
 page-receive,
 page-send,
-page-amount,
 page-multi-send,
+page-transfer-to-modal,
 page-bitpay-card-intro,
 page-bitpay-card,
 .wallet-details-header {
@@ -671,4 +698,9 @@ page-bitpay-card,
   mask-size: 2rem;
   margin: auto;
   transform: translate(0, -10%);
+}
+
+/* Removes rounded border for modals (wallet-details) */
+.wallet-details-modal .modal-wrapper {
+  border-radius: 0px !important;
 }

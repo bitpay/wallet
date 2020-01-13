@@ -23,4 +23,13 @@ $onboarding-comment-color: rgba(255, 255, 255, 0.5);
 $onboarding-primary-color: $color-primary;
 $onboarding-gradient-top-color: #192c3a;
 
-$slider-bg-color: #069074;
+$slider-bg-color: linear-gradient(
+  90deg,
+  rgba(6, 144, 116, 1) 0%,
+  rgba(5, 111, 89, 1) 100%
+);
+$slider-bg-button: linear-gradient(
+  180deg,
+  rgba(10, 139, 113, 1) 0%,
+  rgba(11, 96, 79, 1) 100%
+);

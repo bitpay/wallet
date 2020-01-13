@@ -1,16 +1,13 @@
-<ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar class="app-color" [hideBackButton]="useAsModal">
-    <ion-buttons left *ngIf="useAsModal">
-      <button class="modal-close-button" (click)="closeModal()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
+<ion-header [ngClass]="{'wallet-details-header': wallet}" *ngIf="!useAsModal">
+  <ion-navbar class="app-color">
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet && !requestingAmount" class="app-color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus"
+      class="wallet-details-header__balance">
       <span>{{wallet.cachedStatus && wallet.cachedStatus.spendableBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount"
+        ios="ios-timer-outline" md="md-timer"></ion-icon>
     </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
       <span class="title" translate>[Balance Hidden]</span>
@@ -18,10 +15,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content class="add-bottom-safe-area" no-bounce>
 
-  <div class="amount-wrapper">
-
+  <div class="amount-wrapper" [ngClass]="{'add-top-safe-area': useAsModal}">
     <div class="amount-header-margin">
       <div class="amount-header">
         <div style="flex: 1">
@@ -30,14 +26,17 @@
             <div class="switcher__label">{{unit}}</div>
           </div>
         </div>
-        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
+        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg"
+          (click)="finish()" tappable>
+        <span *ngIf="useAsModal" class="cancel-button" [ngClass]="{'hide': expression && allowSend}"
+          (click)="closeModal()">Cancel</span>
       </div>
     </div>
 
     <div class="amount-content">
       <div class="expression-container">
         <span class="expression">
-          {{expression ? expression : (onlyIntegers || isCoin(unit)) ? '0' : '0.00'}}
+          {{expression ? expression : (onlyIntegers || isCoin(unit) || cardName) ? '0' : '0.00'}}
         </span>
         <span class="unit" [hidden]="globalResult">{{unit}}</span>
       </div>
@@ -49,7 +48,8 @@
       </div>
     </div>
 
-    <pin-pad (keystroke)="pushDigit($event)" type="amount" [showSendMax]="isSendMaxButtonShown()" [integersOnly]="onlyIntegers"></pin-pad>
+    <pin-pad (keystroke)="pushDigit($event)" type="amount" [showSendMax]="isSendMaxButtonShown()"
+      [integersOnly]="onlyIntegers"></pin-pad>
 
   </div>
 

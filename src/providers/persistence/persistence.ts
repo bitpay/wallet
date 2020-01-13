@@ -587,6 +587,18 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
+  setSimplex(env: string, paymentRequests) {
+    return this.storage.set('simplex-' + env, paymentRequests);
+  }
+
+  getSimplex(env: string) {
+    return this.storage.get('simplex-' + env);
+  }
+
+  removeSimplex(env: string) {
+    return this.storage.remove('simplex-' + env);
+  }
+
   setWalletOrder(walletId: string, order: number) {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   }

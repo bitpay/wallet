@@ -472,6 +472,14 @@ export class ProfileProvider {
       ) {
         return true;
       }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        (chain == 'xrp' && coinCode == "144'")
+      ) {
+        return true;
+      }
       return false;
     }
   }
@@ -674,7 +682,13 @@ export class ProfileProvider {
 
   private askToEncryptKey(key): Promise<any> {
     if (!key) return Promise.resolve();
+    // if the key is already encrypted, keep it that way for new wallets
     if (key.isPrivKeyEncrypted()) return Promise.resolve();
+
+    // do not request encryption if wallets were already created without it
+    const wallets = this.getWalletsFromGroup({ keyId: key.id });
+    if (!key.isPrivKeyEncrypted() && wallets && wallets.length)
+      return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
@@ -1678,8 +1692,15 @@ export class ProfileProvider {
     }
 
     if (opts.coin) {
+      let coins: string[] = [].concat(opts.coin);
       ret = _.filter(ret, x => {
-        return x.credentials.coin == opts.coin;
+        return _.findIndex(coins, coin => x.credentials.coin == coin) >= 0;
+      });
+    }
+
+    if (opts.backedUp) {
+      ret = _.filter(ret, x => {
+        return !x.needsBackup;
       });
     }
 

@@ -3,6 +3,7 @@ info-sheet {
     width: 100%;
     height: 100%;
     background-color: white;
+    padding-bottom: calc(env(safe-area-inset-bottom));
 
     .border-none {
       .item-inner {
@@ -12,7 +13,6 @@ info-sheet {
 
     .confirm-sheet {
       padding: 25px;
-      padding-bottom: 15px;
 
       .sheet-title {
         align-items: center;

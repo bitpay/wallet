@@ -1,0 +1,29 @@
+<ion-header class="wide-header">
+  <ion-navbar>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        <img width="130" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
+      </div>
+    </ion-title>
+    <ng-content select="[right]"></ng-content>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #scrollArea>
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+      <ion-toolbar class="wide-header__title">
+        <expandable-header-primary>
+          <img margin-left width="130" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+
+    <ion-list>
+      <ion-item>
+        <ion-label>{{'Show "Buy Crypto" in Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

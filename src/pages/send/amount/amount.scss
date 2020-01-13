@@ -1,67 +1,102 @@
 page-amount {
+  @include toolbar-button-color(white);
+
   ion-header ion-navbar ion-title {
     .toolbar-title {
       color: white;
     }
   }
+
   ion-content.content {
     background: white;
   }
+
   $short-screen: 570px;
+
   .amount-wrapper {
-    height: 99%;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
+
   .amount-header-margin {
     margin: 2rem;
     margin-bottom: 0;
+
     @media (max-height: $short-screen) {
       margin: 1.5rem;
       margin-bottom: 0;
       margin-top: 1rem;
     }
   }
+
   .next-button {
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 200ms ease, transform 200ms ease;
     pointer-events: none;
+
     &.show {
       opacity: 1;
       pointer-events: all;
       transform: translateY(0);
     }
   }
+
+  .cancel-button {
+    opacity: 1;
+    color: #060606;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 0.75rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.hide {
+      opacity: 0;
+    }
+  }
+
+  .add-top-safe-area {
+    padding-top: calc(env(safe-area-inset-top));
+    padding-top: -webkit-calc(env(safe-area-inset-top));
+  }
+
   .amount-header {
     flex: 1;
     display: flex;
     width: 100%;
     position: relative;
     align-items: center;
+
     .switcher {
       @media (max-height: $short-screen) {
         width: 77px;
       }
+
       width: 95px;
       text-align: center;
       background: rgba(0, 0, 0, 0.06);
       padding: 0.75rem 1rem;
       border-radius: 3px;
       cursor: pointer;
+
       &__icon {
         margin-right: 10px;
         margin-top: 4px;
         float: left;
       }
+
       &__label {
         color: #060606;
         font-size: 18px;
+
         @media (max-height: $short-screen) {
           font-size: 14px;
         }
       }
     }
+
     &__label {
       flex-grow: 1;
       text-align: center;
@@ -69,11 +104,13 @@ page-amount {
       width: 100%;
       font-size: 16px;
       pointer-events: none;
+
       @media (max-height: $short-screen) {
         font-size: 15px;
       }
     }
   }
+
   .amount-content {
     display: flex;
     flex-direction: column;
@@ -81,19 +118,23 @@ page-amount {
     align-items: center;
     width: 100%;
     flex-grow: 1;
+
     .expression-container {
       display: flex;
       align-items: center;
       position: relative;
+
       .expression {
         font-size: 50px;
         font-weight: 500;
         line-height: 50px;
+
         @media (max-height: $short-screen) {
           font-size: 40px;
           line-height: 40px;
         }
       }
+
       .unit {
         position: absolute;
         top: 2px;
@@ -102,23 +143,28 @@ page-amount {
         color: #4a4a4a;
       }
     }
+
     .amount {
       color: #a5a4a4;
     }
+
     .result {
       margin-top: 20px;
       font-size: 15px;
       color: #4a4a4a;
+
       @media (max-height: $short-screen) {
         font-size: 14px;
         margin-top: 15px;
       }
     }
   }
+
   pin-pad {
     .row {
       ion-col.col {
         min-height: 60px;
+
         @media (max-height: $short-screen) {
           min-height: 50px;
         }
