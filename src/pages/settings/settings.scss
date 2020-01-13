@@ -1,4 +1,5 @@
-page-settings {
+page-settings,
+page-about {
   ion-label,
   .item-title {
     white-space: normal;
@@ -92,6 +93,7 @@ page-settings {
       &.icon-md.item-icon,
       &.icon-ios.item-icon {
         padding: 14.5px;
+        font-size: 20px;
         &.icon-settings {
           opacity: 0.5;
         }
