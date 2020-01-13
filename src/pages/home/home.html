@@ -48,7 +48,7 @@
   </div>
 
   <div class="total-amount-container" (longPress)="toggleHideBalanceFlag()">
-    <div class="total-amount-title" translate>Total cash value</div>
+    <div class="section-header" translate>Total cash value</div>
     <div *ngIf="!balanceHidden">
       <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
       <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
@@ -65,6 +65,27 @@
       <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
     </div>
   </div>
+
+  <ion-list class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
+    <ion-item *ngIf="showServicesOption" (click)="goToServices()">
+      <ion-label>
+        <div class="services-list-label">Services</div>
+      </ion-label>
+      <ion-note item-end>
+        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showServicesOption"></div>
+    <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
+      <ion-label>
+        <div class="services-list-label">Buy Crypto</div>
+      </ion-label>
+      <ion-note item-end>
+        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
+  </ion-list>
 
   <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true">
     <ion-slide *ngFor="let advertisement of advertisements">

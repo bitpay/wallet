@@ -1,17 +1,22 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
+import { IntegrationsPage } from '../../pages/integrations/integrations';
+import { SimplexPage } from '../../pages/integrations/simplex/simplex';
+import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import {
   AppProvider,
   ExternalLinkProvider,
   Logger,
   PersistenceProvider,
   ProfileProvider,
+  SimplexProvider,
   WalletProvider
 } from '../../providers';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { RateProvider } from '../../providers/rate/rate';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
@@ -21,6 +26,8 @@ import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-ca
   templateUrl: 'home.html'
 })
 export class HomePage {
+  showBuyCryptoOption: boolean;
+  showServicesOption: any;
   private showPriceChart: boolean;
   @ViewChild('priceCard')
   priceCard;
@@ -56,6 +63,7 @@ export class HomePage {
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
   public balanceHidden: boolean = true;
+  public homeIntegrations;
   private lastWeekRatesArray;
   private zone;
   private fiatCodes = [
@@ -82,7 +90,9 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private exchangeRatesProvider: ExchangeRatesProvider,
     private currencyProvider: CurrencyProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private simplexProvider: SimplexProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
@@ -92,6 +102,26 @@ export class HomePage {
     this.isBalanceHidden();
     this.fetchStatus();
     this.fetchAdvertisements();
+    // Show integrations
+    const integrations = this.homeIntegrationsProvider
+      .get()
+      .filter(i => i.show)
+      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+
+    // Hide BitPay if linked
+    setTimeout(() => {
+      this.showServicesOption = false;
+      this.homeIntegrations = _.remove(_.clone(integrations), x => {
+        this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
+        if (x.name == 'debitcard' && x.linked) return false;
+        else {
+          if (x.name != 'simplex') {
+            this.showServicesOption = true;
+          }
+          return x;
+        }
+      });
+    }, 200);
   }
 
   private updateCharts() {
@@ -326,8 +356,20 @@ export class HomePage {
     this.slides.slideTo(0, 500);
   }
 
-  public goTo(page) {
-    this.navCtrl.push(page);
+  public goToServices() {
+    this.navCtrl.push(IntegrationsPage, {
+      homeIntegrations: this.homeIntegrations
+    });
+  }
+
+  public goToBuyCrypto() {
+    this.simplexProvider.getSimplex().then(simplexData => {
+      if (simplexData && !_.isEmpty(simplexData)) {
+        this.navCtrl.push(SimplexPage);
+      } else {
+        this.navCtrl.push(SimplexBuyPage);
+      }
+    });
   }
 
   private isBalanceHidden() {

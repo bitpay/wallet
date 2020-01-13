@@ -4,10 +4,8 @@ page-home {
   }
   .total-amount-container {
     margin: 20px 0px 10px 20px;
-    .total-amount-title {
-      color: #99a3af;
-      line-height: 22px;
-      font-size: 15px;
+    .section-header {
+      margin-left: 0px;
     }
     .total-amount-value {
       font-size: 38px;
@@ -131,6 +129,18 @@ page-home {
         width: 60px;
         height: 60px;
       }
+    }
+  }
+
+  .services-list {
+    &-label {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 25px;
+      margin-left: 6px;
+    }
+    &-arrow {
+      margin-right: 10px;
     }
   }
 }
