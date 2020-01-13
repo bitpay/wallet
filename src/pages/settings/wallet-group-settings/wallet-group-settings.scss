@@ -12,25 +12,7 @@ page-wallet-group-settings {
       color: black;
       font-size: 25px;
       font-weight: 500;
-      padding-top: 30px;
-      padding-bottom: 20px;
-      padding-left: 20px;
-
-      .subtitle-container {
-        display: flex;
-        justify-content: space-between;
-        .subtitle {
-          font-size: 16px;
-          padding: 0;
-          margin-top: 10px;
-          font-weight: 100;
-        }
-        .onboarding-modal {
-          cursor: pointer;
-          color: color($colors, light-grey);
-          margin-right: 2rem;
-        }
-      }
+      padding: 30px 0 20px 20px;
     }
 
     ion-navbar {
@@ -51,6 +33,24 @@ page-wallet-group-settings {
           padding-bottom: 7px;
         }
       }
+    }
+  }
+
+  .subtitle-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    .subtitle {
+      font-size: 16px;
+      padding: 0;
+      margin-top: 10px;
+      font-weight: 100;
+    }
+    .onboarding-modal {
+      font-size: 25px;
+      cursor: pointer;
+      color: color($colors, light-grey);
+      margin-right: 2rem;
     }
   }
 

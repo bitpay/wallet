@@ -1,10 +1,14 @@
-<wide-header-page title="{{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}" subtitle="This key contains {{ '{walletslength}' | translate: {walletslength: wallets && wallets.length} }} wallets">
+<wide-header-page title="{{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}">
   <div page-content>
-    <!--
+    <div class="subtitle-container" *ngIf="wallets && canSign">
+      <div class="subtitle" translate>
+        This key contains {{wallets.length}} wallets.
+      </div>
       <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">
         <ion-icon name="md-help-circle"></ion-icon>
       </div>
-    </div> -->
+    </div>
+
     <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
       <span label-tip-title translate>No Private Key</span>
       <div label-tip-body translate>

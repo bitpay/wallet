@@ -14,9 +14,6 @@ export class WideHeaderPage {
   title: string;
 
   @Input()
-  subtitle: string;
-
-  @Input()
   hideBackButton: boolean;
 
   @ViewChild(Content)
