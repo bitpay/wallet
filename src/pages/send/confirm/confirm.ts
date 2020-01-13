@@ -841,7 +841,15 @@ export class ConfirmPage {
       if (option || typeof option === 'undefined') {
         this.fromWalletDetails
           ? this.navCtrl.pop()
-          : this.app.getRootNavs()[1].setRoot(WalletsPage); // using setRoot(TabsPage) as workaround when coming from scanner
+          : this.app
+              .getRootNavs()[0]
+              .setRoot(WalletsPage)
+              .then(() =>
+                this.app
+                  .getRootNav()
+                  .getActiveChildNav()
+                  .select(1)
+              ); // using setRoot(TabsPage) as workaround when coming from scanner
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -876,7 +884,15 @@ export class ConfirmPage {
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
           ? this.navCtrl.pop()
-          : this.app.getRootNavs()[1].setRoot(TabsPage); // using setRoot(TabsPage) as workaround when coming from scanner
+          : this.app
+              .getRootNavs()[0]
+              .setRoot(TabsPage)
+              .then(() =>
+                this.app
+                  .getRootNav()
+                  .getActiveChildNav()
+                  .select(1)
+              ); // using setRoot(TabsPage) as workaround when coming from scanner
       }
     });
   }
@@ -1025,9 +1041,13 @@ export class ConfirmPage {
     } else {
       // using setRoot(TabsPage) as workaround when coming from scanner
       this.app
-        .getRootNavs()[1]
+        .getRootNavs()[0]
         .setRoot(TabsPage)
         .then(() => {
+          this.app
+            .getRootNav()
+            .getActiveChildNav()
+            .select(1);
           setTimeout(() => {
             this.events.publish('OpenWallet', this.wallet);
           }, 1000);

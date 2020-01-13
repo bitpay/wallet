@@ -281,11 +281,14 @@ export class JoinWalletPage {
         this.pushNotificationsProvider.updateSubscription(wallet);
         // using setRoot(TabsPage) as workaround when coming from scanner
         this.app
-          .getRootNavs()[1]
+          .getRootNavs()[0]
           .setRoot(TabsPage)
           .then(() => {
+            this.app
+              .getRootNav()
+              .getActiveChildNav()
+              .select(1);
             this.events.publish('Local/WalletListChange');
-
             setTimeout(() => {
               this.events.publish('OpenWallet', wallet);
             }, 1000);
