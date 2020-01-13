@@ -83,21 +83,24 @@ ion-header.bp-header .toolbar {
 
 .close-container {
   margin-left: 13px !important;
-  margin-top: 18px !important;
   height: 41px;
   width: 41px;
   border-radius: 50%;
   background-color: rgba(155, 163, 174, 0.2);
   color: #d8d8d8;
   box-shadow: none;
-}
 
-.close-container {
   &.button-md.activated,
   &.button-ios.activated {
     background-color: rgba(155, 163, 174, 0.2);
     box-shadow: none;
   }
+}
+
+.option-button {
+  margin-right: 13px !important;
+  height: 41px;
+  width: 41px;
 }
 
 // Buttons
@@ -179,7 +182,7 @@ ion-spinner * {
     min-width: 41px;
   }
   .back-button {
-    margin: 18px 0 0 13px;
+    margin-left: 13px;
     height: 41px;
     width: 41px;
     border-radius: 50%;
