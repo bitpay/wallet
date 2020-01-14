@@ -25,7 +25,7 @@
     <div class="line-divider"></div>
     <ion-list no-lines class="bp-list">
       <div *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletList[coin]">
-        <wallet-item-content [wallet]="wallet" (click)="close(wallet)" [ngClass]="{'wallet-disabled': !wallet.isComplete() || wallet.needsBackup}"></wallet-item-content>
+        <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
       </div>
     </ion-list>
   </div>

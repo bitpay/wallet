@@ -1,4 +1,4 @@
-<ion-item>
+<ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup}">
   <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet?.coin == 'btc',
   'background_bch': wallet?.coin == 'bch',
   'background_eth': wallet?.coin == 'eth',
@@ -8,9 +8,11 @@
   </ion-icon>
   <ion-label>
     <div class="main-label">{{ wallet?.name }}</div>
-    <div *ngIf="wallet?.credentials?.n > 1 || !wallet?.isComplete()" class="secondary-label">
+    <div class="secondary-label">
       <span *ngIf="wallet?.credentials?.n > 1">({{ wallet?.credentials?.m }}/{{ wallet?.credentials?.n }})</span>
-      <span *ngIf="!wallet?.isComplete()"> - {{ 'Incomplete' | translate }}</span>
+      <span *ngIf="!wallet?.credentials?.n && wallet?.n > 1">({{ wallet?.m }}/{{ wallet?.n }})</span>
+      <span *ngIf="!wallet?.isComplete()"> - <span class="wallet-warning">{{ 'Incomplete' | translate }}</span></span>
+      <span class="wallet-warning backup-msg" *ngIf="wallet?.isComplete() && wallet?.needsBackup"> {{'Needs Backup' | translate}}</span>
     </div>
   </ion-label>
   <ion-note item-end>

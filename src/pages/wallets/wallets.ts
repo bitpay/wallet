@@ -14,6 +14,7 @@ import { Observable, Subscription } from 'rxjs';
 // Pages
 import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
+import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../integrations/simplex/simplex';
@@ -772,6 +773,12 @@ export class WalletsPage {
       isZeroState: compatibleKeyWallets.length == 0 ? true : false,
       // Select currency and Key or creates a new Key
       isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
+    });
+  }
+
+  public openBackupPage(keyId) {
+    this.navCtrl.push(BackupKeyPage, {
+      keyId
     });
   }
 }

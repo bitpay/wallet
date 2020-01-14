@@ -4,4 +4,10 @@ wallet-item-content {
       border-bottom: 0px !important;
     }
   }
+  .wallet-warning {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
 }

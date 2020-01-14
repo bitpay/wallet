@@ -83,6 +83,8 @@
         <span label-tip-title translate>Needs Backup</span>
         <div label-tip-body>
           <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+          <br>
+          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0].keyId)" translate>Backup now</a>
         </div>
       </label-tip>
     </div>
