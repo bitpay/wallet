@@ -5,6 +5,9 @@ card-details-page {
   .confetti-root {
     display: flex;
     justify-content: center;
+    position: relative;
+    transform: translateY(200px);
+    z-index: 1000;
   }
 
   .wrapper {
