@@ -162,7 +162,7 @@
             <div class="timeline-content-icon">
               <div class="rejected" *ngIf="a.type === 'reject'">!</div>
               <img src="assets/img/icon-broadcasted.svg" *ngIf="a.type === 'broadcasted'">
-              <div class="line-divider" *ngIf="a.type !== 'reject' && a.type !== 'broadcasted'">{{actionList.length - i}}</div>
+              <div class="line" *ngIf="a.type !== 'reject' && a.type !== 'broadcasted'">{{actionList.length - i}}</div>
             </div>
             <div class="timeline-content-label">
               <div class="action">{{a.description}}</div>

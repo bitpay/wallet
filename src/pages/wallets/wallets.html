@@ -1,7 +1,10 @@
 <ion-header class="bp-header">
   <ion-navbar>
     <ion-title>{{'Wallets' | translate}}</ion-title>
-    <ion-buttons right class="add-button" *ngIf="wallets && wallets[0]">
+    <ion-buttons right class="settings-button" *ngIf="wallets && wallets[0]">
+      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
+        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
+      </button>
       <button ion-button clear (click)="addWallet()" class="add">
         <img src="assets/img/add-wallet/add-wallet.svg" />
       </button>

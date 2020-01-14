@@ -21,48 +21,28 @@ page-integrations {
     filter: blur(12px);
   }
 
-  .home-header {
-    .notifications-badge {
-      border-radius: 9px;
-      font-size: 15px;
-      padding: 3px 7px;
-      padding-top: 4px;
-      font-weight: 600;
-      margin-right: 5px;
-    }
-
+  .bp-header {
     .settings-button {
       margin-right: 1rem;
 
-      img {
-        opacity: 0.6;
+      .notifications-badge {
+        border-radius: 9px;
+        font-size: 15px;
+        padding: 3px 7px;
+        padding-top: 4px;
+        font-weight: 600;
+        margin-right: 5px;
       }
-    }
 
-    button.add {
-      img {
-        margin-left: 7px;
-        padding-bottom: 5px;
-      }
-    }
-
-    .toolbar-content {
-      ion-title {
-        &.title-ios {
-          padding: 0 50px 1px;
+      button.add {
+        margin-top: -4px;
+        img {
+          margin-left: 7px;
+          padding-bottom: 5px;
+          width: 28px;
+          opacity: 0.6;
         }
       }
-    }
-
-    .fix-margin {
-      max-width: 70%;
-      margin-right: 4rem;
-    }
-
-    .home-logo {
-      height: 24px;
-      position: relative;
-      top: 3px;
     }
   }
 
