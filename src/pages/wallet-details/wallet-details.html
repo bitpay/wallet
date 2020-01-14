@@ -148,7 +148,10 @@
 
         <div class="prompt-user activity-fix white-card" *ngIf="shouldShowZeroState()">
           <div class="title-icon larger-icon">
-            <img src="assets/img/ghost-tongue-out.svg" />
+            <img *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTongue" width="42" src="assets/img/icon-warning-circled.svg" />
+            <ng-template #ghostTongue>
+              <img src="assets/img/ghost-tongue-out.svg">
+            </ng-template>
           </div>
           <div class="title-info">
             <span translate *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTown">XRP Minimum Balance</span>
