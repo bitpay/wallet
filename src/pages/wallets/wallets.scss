@@ -438,14 +438,4 @@ page-integrations {
       left: calc(4% + 5px);
     }
   }
-
-  .bp-list {
-    .secondary-label {
-      .wallet-warning {
-        &.backup-msg {
-          display: none;
-        }
-      }
-    }
-  }
 }
