@@ -28,20 +28,8 @@ page-tx-details {
     }
   }
   .item-fee {
-    line-height: 20px;
-    .fee-title {
-      margin-bottom: 5px;
-      color: color($colors, grey);
-    }
     .fee-loading {
       font-weight: 300;
-      color: color($colors, light-grey);
-    }
-
-    .fee-details {
-      text-align: right;
-      margin-top: 3px;
-      font-size: 12.5px;
       color: color($colors, light-grey);
     }
     &.warn {
@@ -50,11 +38,8 @@ page-tx-details {
         color: color($colors, error);
       }
     }
-    ion-note {
-      font-weight: 100;
-    }
     &.btn-opacity {
-      opacity: 1;
+      background-color: #fbfbfb;
     }
   }
   .item-gravatar {
@@ -78,6 +63,7 @@ page-tx-details {
   }
 
   .payment-proposal-to {
+    padding: 10px;
     height: 39px;
     max-width: 150px;
     border-radius: 19.5px;

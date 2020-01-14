@@ -109,7 +109,7 @@
 
       <div class="line-divider"></div>
 
-      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" (click)="chooseFeeLevel()" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}" [disabled]="usingMerchantFee">
+      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
         <ion-label>
           <div class="summary-item">
             <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
@@ -204,7 +204,6 @@
           {{tx.amount | satToFiat: tx.coin}}
         </div>
         <div class="secondary-note">
-          <span translate *ngIf="!tx.sendMax">Sending</span>
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
         </div>
       </div>

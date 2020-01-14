@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Native
@@ -38,7 +38,6 @@ export class CustomAmountPage {
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private navCtrl: NavController,
     private statusBar: StatusBar
   ) {
     const walletId = this.navParams.data.id;
@@ -143,9 +142,5 @@ export class CustomAmountPage {
       }
     );
     infoSheet.present();
-  }
-
-  public close(): void {
-    this.navCtrl.popToRoot();
   }
 }

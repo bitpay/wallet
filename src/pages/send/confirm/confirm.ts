@@ -1057,7 +1057,7 @@ export class ConfirmPage {
 
   public chooseFeeLevel(): void {
     if (this.tx.coin === 'bch' || this.tx.coin === 'xrp') return;
-    if (this.usingMerchantFee) return; // TODO: should we allow override?
+    if (this.usingMerchantFee) return;
 
     const txObject = {
       network: this.tx.network,

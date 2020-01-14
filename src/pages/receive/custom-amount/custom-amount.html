@@ -1,9 +1,4 @@
-<wide-header-page title="{{ wallet.name }}" hideBackButton="true">
-  <ion-buttons left>
-    <button class="close-container disable-hover" (click)="close()" ion-button>
-      <ion-icon ios="md-close" md="md-close"></ion-icon>
-    </button>
-  </ion-buttons>
+<wide-header-page title="{{ wallet.name }}">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="shareAddress()" *ngIf="showShareButton" ion-button>
       <ion-icon ios="ios-share-outline" md="md-share" class="pointer"></ion-icon>
