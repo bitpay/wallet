@@ -110,10 +110,15 @@
       </ion-label>
     </button>
 
-    <ion-item>
-      <ion-label>{{'Hide Balance' | translate}}</ion-label>
+    <button ion-item>
+      <ion-icon class="item-img icon-settings" name="md-eye-off" item-start></ion-icon>
+      <ion-label>
+        <div class="main-label">
+          {{'Hide total cash value' | translate}}
+        </div>
+      </ion-label>
       <ion-toggle [(ngModel)]="balanceHidden" (ionChange)="toggleHideBalanceFlag()"></ion-toggle>
-    </ion-item>
+    </button>
 
     <button ion-item *ngIf="isCordova" (click)="openLockPage()">
       <ion-icon class="item-img icon-settings" item-start>
