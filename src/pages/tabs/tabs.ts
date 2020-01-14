@@ -8,7 +8,7 @@ import { WalletsPage } from '../wallets/wallets';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  appName: boolean;
+  appName: string;
   @ViewChild('tabs')
   tabs;
 

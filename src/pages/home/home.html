@@ -29,10 +29,6 @@
           {{ serverMessages[0].title }}
         </div>
       </ion-row>
-      <!-- <div class="message-icon" *ngIf="serverMessages[0].category" [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
-        <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessages[0].category == 'critical'" />
-        <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessages[0].category == 'info'" />
-      </div> -->
       <div class="message-body" *ngIf="serverMessages[0].body">
         {{ serverMessages[0].body }}
       </div>
@@ -52,7 +48,10 @@
     <div *ngIf="!balanceHidden">
       <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
       <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-        0.00 {{totalBalanceAlternativeIsoCode}}<ion-spinner></ion-spinner>
+        0.00 {{totalBalanceAlternativeIsoCode}}
+        <span *ngIf="fetchingStatus">
+          <ion-spinner></ion-spinner>
+        </span>
       </div>
     </div>
     <div class="balance-hidden" *ngIf="balanceHidden">

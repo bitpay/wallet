@@ -64,6 +64,8 @@ export class HomePage {
   public averagePrice: number;
   public balanceHidden: boolean = true;
   public homeIntegrations;
+  public fetchingStatus: boolean;
+
   private lastWeekRatesArray;
   private zone;
   private fiatCodes = [
@@ -194,11 +196,14 @@ export class HomePage {
   private async fetchStatus() {
     let foundMessage = false;
 
+    this.fetchingStatus = true;
     this.wallets = this.profileProvider.getWallets();
     this.setIsoCode();
     this.lastWeekRatesArray = await this.getLastWeekRates();
-    if (_.isEmpty(this.wallets)) return;
-
+    if (_.isEmpty(this.wallets)) {
+      this.fetchingStatus = false;
+      return;
+    }
     this.logger.debug('fetchStatus');
     const pr = wallet => {
       return this.walletProvider
@@ -261,6 +266,7 @@ export class HomePage {
         this.averagePrice =
           (difference * 100) /
           parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
+        this.fetchingStatus = false;
       });
     });
   }
@@ -354,6 +360,10 @@ export class HomePage {
       adv => adv.name !== name
     );
     if (this.slides) this.slides.slideTo(0, 500);
+  }
+
+  public goTo(page) {
+    this.navCtrl.push(page);
   }
 
   public goToServices() {
