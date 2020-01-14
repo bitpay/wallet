@@ -602,7 +602,8 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    this.activePage = redirParams.activePage;
+    if (redirParams && redirParams.activePage)
+      this.activePage = redirParams.activePage;
 
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
