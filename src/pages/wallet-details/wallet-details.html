@@ -33,22 +33,11 @@
 
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && !walletNotRegistered && (wallet.cachedStatus || wallet.lastKnownBalance)">
-            <div *ngIf="wallet.coin !== 'xrp'; else xrpBalance">
-              <div class="balance-str">
-                {{ wallet.cachedStatus ? wallet.cachedStatus.totalBalanceStr  : wallet.lastKnownBalance }} </div>
-              <div class="balance-alt-str" *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative">
-                {{wallet.cachedStatus.totalBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
-              </div>
+            <div class="balance-str">
+              {{ wallet.cachedStatus ? wallet.cachedStatus.totalBalanceStr  : wallet.lastKnownBalance }} <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg"></div>
+            <div class="balance-alt-str" *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative">
+              {{wallet.cachedStatus.totalBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
             </div>
-            <ng-template #xrpBalance>
-              <div (click)="openBalanceDetails()">
-                <div class="balance-str">
-                  {{ wallet.cachedStatus ? wallet.cachedStatus.availableBalanceStr  : wallet.lastKnownBalance }} </div>
-                <div class="balance-alt-str" *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative">
-                  {{wallet.cachedStatus.availableBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
-                </div>
-              </div>
-            </ng-template>
             <div class="balance-alt-str" *ngIf="!wallet.scanning && !wallet.cachedStatus && wallet.lastKnownBalanceUpdatedOn">
               {{ wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo }}
             </div>
@@ -162,14 +151,14 @@
             <img src="assets/img/ghost-tongue-out.svg" />
           </div>
           <div class="title-info">
-            <span translate *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTown">20 XRP required to activate</span>
+            <span translate *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTown">XRP Minimum Balance</span>
             <ng-template #ghostTown>
               <span translate>It's a ghost town in here</span>
             </ng-template>
           </div>
           <div class="subtitle-info">
             <span translate *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else noFunds">
-              The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet.
+              The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet.
             </span>
             <ng-template #noFunds>
               <span translate>
