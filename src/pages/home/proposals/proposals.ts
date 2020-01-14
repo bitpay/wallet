@@ -200,7 +200,7 @@ export class ProposalsPage {
       } else if (action && action.type == 'reject') {
         txp.statusForUs = 'rejected';
         this.txpsRejected.push(txp);
-      } else {
+      } else if (txp.wallet && txp.wallet.canSign != false) {
         txp.statusForUs = 'pending';
         this.txpsPending.push(txp);
       }
