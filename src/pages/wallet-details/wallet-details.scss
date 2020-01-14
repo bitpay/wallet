@@ -139,9 +139,10 @@ page-wallet-details {
   }
 
   .balance-scanning {
-    width: 100vw;
-    margin-left: -5rem;
+    display: flex;
+    justify-content: center;
     text-align: center;
+    width: 100%;
 
     .title {
       font-size: 20px;

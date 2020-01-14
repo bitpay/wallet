@@ -1,6 +1,6 @@
 page-share {
   .share-image-container {
-    height: 60%;
+    height: 55vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +28,7 @@ page-share {
     padding: 50px 10px 30px;
     text-align: center;
     background-color: color($colors, blank);
-    min-height: 200px;
+    min-height: 180px;
     position: absolute;
     bottom: 0rem;
     width: 100%;
