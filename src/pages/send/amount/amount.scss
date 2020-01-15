@@ -55,19 +55,20 @@ page-amount {
 
       width: 95px;
       text-align: center;
-      background: rgba(0, 0, 0, 0.06);
-      padding: 0.75rem 1rem;
-      border-radius: 3px;
+      background: rgba(79, 110, 247, 0.1);
+      padding: 0.75rem 0.5rem 0.75rem 1.5rem;
+      border-radius: 25px;
       cursor: pointer;
 
       &__icon {
-        margin-right: 10px;
+        margin-right: 2px;
         margin-top: 4px;
         float: left;
+        color: #4f6ef7;
       }
 
       &__label {
-        color: #060606;
+        color: #4f6ef7;
         font-size: 18px;
 
         @media (max-height: $short-screen) {
