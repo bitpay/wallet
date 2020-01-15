@@ -13,6 +13,7 @@ import { Coin, CurrencyProvider } from '../currency/currency';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
+import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -118,6 +119,7 @@ export class WalletProvider {
     private feeProvider: FeeProvider,
     private translate: TranslateService,
     private addressProvider: AddressProvider,
+    private languageProvider: LanguageProvider,
     private keyProvider: KeyProvider
   ) {
     this.logger.debug('WalletProvider initialized');
@@ -1223,9 +1225,16 @@ export class WalletProvider {
     });
   }
 
-  public updateRemotePreferences(clients, prefs?): Promise<any> {
-    prefs = prefs ? prefs : {};
+  public updateRemotePreferences(clients): Promise<any> {
     if (!_.isArray(clients)) clients = [clients];
+
+    // Set current preferences
+    const config = this.configProvider.get();
+    const prefs = {
+      email: config.emailNotifications.email,
+      language: this.languageProvider.getCurrent(),
+      unit: 'btc' // deprecated
+    };
 
     let updates = [];
     clients.forEach(c => {
