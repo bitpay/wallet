@@ -25,19 +25,6 @@ page-amount {
     }
   }
 
-  .next-button {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 200ms ease, transform 200ms ease;
-    pointer-events: none;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateY(0);
-    }
-  }
-
   .cancel-button {
     opacity: 1;
     color: #060606;

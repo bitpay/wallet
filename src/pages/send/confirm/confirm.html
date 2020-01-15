@@ -25,7 +25,7 @@
         <ion-note item-end>
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
             <div class="background-content" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
-              <img class="coin-img" *ngIf="!tx.paypro" src="assets/img/currencies/{{tx.coin}}.svg" alt="Coin" />
+              <img class="coin-img" *ngIf="!tx.paypro" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
               <span class="ellipsis" *ngIf="!tx.name">{{tx.origToAddress}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>

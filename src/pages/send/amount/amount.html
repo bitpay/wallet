@@ -38,7 +38,7 @@
 
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
 
-      <button ion-button class="button-standard button-primary" [ngClass]="{'show': expression && allowSend}" (click)="finish()">
+      <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
         <span>{{'Continue' | translate}}</span>
       </button>
 
