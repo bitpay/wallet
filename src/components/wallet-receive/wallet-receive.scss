@@ -1,8 +1,5 @@
 wallet-receive {
   padding-bottom: calc(env(safe-area-inset-bottom));
-  .action-sheet {
-    border-radius: 10px 10px 0px 0px;
-  }
   .error {
     color: color($colors, danger);
   }

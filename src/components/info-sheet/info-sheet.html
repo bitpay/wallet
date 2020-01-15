@@ -144,10 +144,8 @@
       <span sheet-text>
         <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets.length > 0">
           <ion-list>
-            <div>
-              <button ion-item class="list-button" *ngFor="let wallet of params.wallets; let last = last" [class.border-none]="last" (click)="optionClicked(wallet)">
-                <wallet-item-content [wallet]="wallet"></wallet-item-content>
-              </button>
+            <div *ngFor="let wallet of params.wallets">
+              <wallet-item-content [wallet]="wallet" (click)="optionClicked(wallet)"></wallet-item-content>
             </div>
           </ion-list>
         </div>
