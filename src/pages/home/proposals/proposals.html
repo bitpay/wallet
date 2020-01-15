@@ -9,7 +9,7 @@
               <img [ngClass]="{ testnet: txpsByWallet.txps[0].wallet.network === 'testnet' }" src="assets/img/currencies/{{txpsByWallet.txps[0].wallet.coin}}.svg" class="icon-wallet" />
               <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
             </div>
-            <div *ngIf="txpsByStatus.type == 'pending'">
+            <div *ngIf="txpsByStatus.type == 'pending' && txpsByWallet.canSign">
               <div *ngIf="txpsByWallet.multipleSignAvailable && !walletIdSelectedToSign" class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
                 <ion-icon name="ios-list-outline"></ion-icon>
               </div>

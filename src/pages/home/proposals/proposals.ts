@@ -200,7 +200,7 @@ export class ProposalsPage {
       } else if (action && action.type == 'reject') {
         txp.statusForUs = 'rejected';
         this.txpsRejected.push(txp);
-      } else if (txp.wallet && txp.wallet.canSign != false) {
+      } else {
         txp.statusForUs = 'pending';
         this.txpsPending.push(txp);
       }
@@ -226,6 +226,7 @@ export class ProposalsPage {
       const txpToBeSigned = this.getTxpToBeSigned(txpsPerWallet[1]);
       txpsByWallet.push({
         walletId: txpsPerWallet[0],
+        canSign: txpsPerWallet[1][0].wallet.canSign || false,
         txps: txpsPerWallet[1],
         multipleSignAvailable: txpToBeSigned > 1
       });
