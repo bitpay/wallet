@@ -224,15 +224,28 @@ export class HomePage {
           let walletTotalBalanceAlternative = 0;
           let walletTotalBalanceAlternativeLastWeek = 0;
           if (status.wallet.network === 'livenet') {
+            const balance =
+              status.wallet.coin === 'xrp'
+                ? status.availableBalanceSat
+                : status.totalBalanceSat;
             walletTotalBalanceAlternativeLastWeek = parseFloat(
               this.getWalletTotalBalanceAlternativeLastWeek(
-                status.totalBalanceSat,
+                balance,
                 wallet.coin
               )
             );
-            walletTotalBalanceAlternative = parseFloat(
-              status.totalBalanceAlternative.replace(/,/g, '')
-            );
+            if (status.wallet.coin === 'xrp') {
+              walletTotalBalanceAlternative = parseFloat(
+                this.getWalletTotalBalanceAlternative(
+                  status.availableBalanceSat,
+                  'xrp'
+                )
+              );
+            } else {
+              walletTotalBalanceAlternative = parseFloat(
+                status.totalBalanceAlternative.replace(/,/g, '')
+              );
+            }
           }
           return Promise.resolve({
             walletTotalBalanceAlternative,
@@ -271,16 +284,25 @@ export class HomePage {
     });
   }
   private getWalletTotalBalanceAlternativeLastWeek(
-    totalBalanceSat: number,
+    balanceSat: number,
     coin: string
   ): string {
     return this.rateProvider
       .toFiat(
-        totalBalanceSat,
+        balanceSat,
         this.totalBalanceAlternativeIsoCode,
         coin,
         this.lastWeekRatesArray[coin]
       )
+      .toFixed(2);
+  }
+
+  private getWalletTotalBalanceAlternative(
+    balanceSat: number,
+    coin: string
+  ): string {
+    return this.rateProvider
+      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin)
       .toFixed(2);
   }
 

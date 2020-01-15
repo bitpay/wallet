@@ -574,10 +574,12 @@ export class WalletsPage {
         wallet.cachedStatus = status;
         wallet.error = wallet.errorObj = null;
 
-        this.persistenceProvider.setLastKnownBalance(
-          wallet.id,
-          wallet.cachedStatus.availableBalanceStr
-        );
+        const balance =
+          wallet.coin === 'xrp'
+            ? wallet.cachedStatus.availableBalanceStr
+            : wallet.cachedStatus.totalBalanceStr;
+
+        this.persistenceProvider.setLastKnownBalance(wallet.id, balance);
 
         // Update txps
         this.updateTxps();
@@ -633,10 +635,12 @@ export class WalletsPage {
           wallet.cachedStatus = status;
           wallet.error = wallet.errorObj = null;
 
-          this.persistenceProvider.setLastKnownBalance(
-            wallet.id,
-            wallet.cachedStatus.availableBalanceStr
-          );
+          const balance =
+            wallet.coin === 'xrp'
+              ? wallet.cachedStatus.availableBalanceStr
+              : wallet.cachedStatus.totalBalanceStr;
+
+          this.persistenceProvider.setLastKnownBalance(wallet.id, balance);
 
           this.events.publish('Local/WalletUpdate', {
             walletId: wallet.id,
