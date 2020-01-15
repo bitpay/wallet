@@ -2,6 +2,9 @@ page-confirm,
 confirm-card-purchase-page,
 page-txp-details,
 page-tx-details {
+  .add-padding-bottom {
+    height: 90vh;
+  }
   .amount-label {
     padding-top: 1rem;
     .amount {
