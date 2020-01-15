@@ -226,6 +226,7 @@ export class ProposalsPage {
       const txpToBeSigned = this.getTxpToBeSigned(txpsPerWallet[1]);
       txpsByWallet.push({
         walletId: txpsPerWallet[0],
+        canSign: txpsPerWallet[1][0].wallet.canSign || false,
         txps: txpsPerWallet[1],
         multipleSignAvailable: txpToBeSigned > 1
       });
