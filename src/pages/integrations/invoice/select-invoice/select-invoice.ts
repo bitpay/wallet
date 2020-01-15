@@ -34,6 +34,10 @@ export class SelectInvoicePage {
 
   public goToPayPro(currency): void {
     const coin = currency.toLowerCase();
+    if(this.navParams.data.walletCardRedir) {
+      this.payProUrl += '?redir=wc';
+    }
+
     this.incomingDataProvider.goToPayPro(this.payProUrl, coin);
   }
 }

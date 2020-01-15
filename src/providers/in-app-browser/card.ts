@@ -62,7 +62,8 @@ export class IABCardProvider {
             );
 
             const stateParams = {
-              payProOptions: details
+              payProOptions: details,
+              walletCardRedir: true
             };
 
             let nextView = {
