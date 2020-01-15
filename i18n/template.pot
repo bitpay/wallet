@@ -13,9 +13,17 @@ msgid ""
 "created."
 msgstr ""
 
+msgid "20 XRP required to activate"
+msgstr ""
+
 msgid ""
 "5-star ratings help us get BitPay Wallet into more hands, and more users "
 "means more resources can be committed to the app!"
+msgstr ""
+
+msgid ""
+"A Destination Tag is an optional number that corresponds to an invoice or a "
+"XRP account on an exchange."
 msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
@@ -81,6 +89,9 @@ msgid "Access denied"
 msgstr ""
 
 msgid "Account"
+msgstr ""
+
+msgid "Activated"
 msgstr ""
 
 msgid "Activation Fee"
@@ -199,6 +210,9 @@ msgid ""
 "priority)"
 msgstr ""
 
+msgid "Approximate amount"
+msgstr ""
+
 msgid "Archive All {brand} Gift Cards?"
 msgstr ""
 
@@ -232,6 +246,9 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
+msgid "Attempted payment request"
+msgstr ""
+
 msgid "Available"
 msgstr ""
 
@@ -254,6 +271,9 @@ msgid "Backup wallet"
 msgstr ""
 
 msgid "Bad wallet invitation"
+msgstr ""
+
+msgid "Base amount"
 msgstr ""
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
@@ -331,6 +351,12 @@ msgstr ""
 msgid "Broadcasting transaction..."
 msgstr ""
 
+msgid "Buy Crypto"
+msgstr ""
+
+msgid "Buy Crypto (Simplex)"
+msgstr ""
+
 msgid "Buy Gift Card"
 msgstr ""
 
@@ -354,6 +380,12 @@ msgstr ""
 msgid "Calculating send max..."
 msgstr ""
 
+msgid "Camera access denied"
+msgstr ""
+
+msgid "Can't get rates at this moment. Please try again later"
+msgstr ""
+
 msgid "Cancel"
 msgstr ""
 
@@ -373,6 +405,9 @@ msgid "Cards"
 msgstr ""
 
 msgid "Change Amount"
+msgstr ""
+
+msgid "Check the app camera permissions under your phone settings"
 msgstr ""
 
 msgid "Check the transaction on your wallet details"
@@ -462,6 +497,9 @@ msgstr ""
 msgid "Contact the ShapeShift support team."
 msgstr ""
 
+msgid "Contact the Simplex support team."
+msgstr ""
+
 msgid "Continue"
 msgstr ""
 
@@ -469,6 +507,9 @@ msgid "Continue Anyway"
 msgstr ""
 
 msgid "Continue Backup"
+msgstr ""
+
+msgid "Continue to Simplex"
 msgstr ""
 
 msgid "Contribute translations"
@@ -517,6 +558,9 @@ msgid "Could not build transaction"
 msgstr ""
 
 msgid "Could not create address"
+msgstr ""
+
+msgid "Could not create payment request. Please, try again later."
 msgstr ""
 
 msgid "Could not create transaction"
@@ -651,10 +695,19 @@ msgstr ""
 msgid "Deposit Min"
 msgstr ""
 
+msgid "Deposit address"
+msgstr ""
+
+msgid "Deposit to"
+msgstr ""
+
 msgid "Derivation Path"
 msgstr ""
 
 msgid "Derivation path"
+msgstr ""
+
+msgid "Destination Tag"
 msgstr ""
 
 msgid "Destination wallet needs to be backed up"
@@ -754,6 +807,9 @@ msgid "Enter Amount"
 msgstr ""
 
 msgid "Enter Two Factor for your BitPay account"
+msgstr ""
+
+msgid "Enter a destination tag"
 msgstr ""
 
 msgid "Enter a new encrypt password"
@@ -912,6 +968,9 @@ msgstr ""
 msgid "Fetching payment information..."
 msgstr ""
 
+msgid "Fiat amount"
+msgstr ""
+
 msgid "File/Text"
 msgstr ""
 
@@ -1015,6 +1074,9 @@ msgstr ""
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
+msgid "Having problems with Simplex?"
+msgstr ""
+
 msgid "Having problems with a ShapeShift?"
 msgstr ""
 
@@ -1107,6 +1169,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"If you have successfully completed the entire payment process, remember "
+"that receiving crypto usually take up to 1 hour."
+msgstr ""
+
+msgid ""
 "If you need immediate help with a problem you are having, then get help by "
 "contacting our support team."
 msgstr ""
@@ -1137,6 +1204,11 @@ msgid ""
 "In order to create a token wallet, an Ethereum (ETH) wallet is required. "
 "Please create an ETH wallet first. Only one {{ params.token.name }} wallet "
 "is allowed per ETH wallet."
+msgstr ""
+
+msgid ""
+"In order to finish the payment process you will be redirected to Simplex "
+"page"
 msgstr ""
 
 msgid ""
@@ -1555,6 +1627,9 @@ msgstr ""
 msgid "Open website"
 msgstr ""
 
+msgid "Order ID"
+msgstr ""
+
 msgid "Order the BitPay Card"
 msgstr ""
 
@@ -1596,6 +1671,9 @@ msgstr ""
 msgid "Payment Expires:"
 msgstr ""
 
+msgid "Payment ID"
+msgstr ""
+
 msgid "Payment Proposal"
 msgstr ""
 
@@ -1611,6 +1689,9 @@ msgstr ""
 msgid "Payment Request info"
 msgstr ""
 
+msgid "Payment Requests"
+msgstr ""
+
 msgid "Payment Sent"
 msgstr ""
 
@@ -1624,6 +1705,12 @@ msgid "Payment proposal rejected"
 msgstr ""
 
 msgid "Payment request"
+msgstr ""
+
+msgid "Payment request approved"
+msgstr ""
+
+msgid "Payment request rejected"
 msgstr ""
 
 msgid "Pending"
@@ -1832,6 +1919,9 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+msgid "Removing Payment Request Data"
+msgstr ""
+
 msgid "Repeat the password"
 msgstr ""
 
@@ -1880,6 +1970,12 @@ msgstr ""
 msgid "Retry camera"
 msgstr ""
 
+msgid "Ripple Address"
+msgstr ""
+
+msgid "Ripple URI"
+msgstr ""
+
 msgid "START OVER"
 msgstr ""
 
@@ -1925,6 +2021,9 @@ msgstr ""
 msgid "See transaction"
 msgstr ""
 
+msgid "Select"
+msgstr ""
+
 msgid "Select Key"
 msgstr ""
 
@@ -1941,6 +2040,9 @@ msgid "Select currencies"
 msgstr ""
 
 msgid "Select currency"
+msgstr ""
+
+msgid "Select wallet to deposit to"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -2063,6 +2165,9 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
+msgid "Show \"Buy Crypto\" in Home"
+msgstr ""
+
 msgid "Show advanced options"
 msgstr ""
 
@@ -2168,6 +2273,9 @@ msgstr ""
 msgid "Terms of Use"
 msgstr ""
 
+msgid "Terms of use"
+msgstr ""
+
 msgid "Testnet Wallet"
 msgstr ""
 
@@ -2181,6 +2289,12 @@ msgid "The \"Key\" to your funds"
 msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
+msgstr ""
+
+msgid ""
+"The XRP ledger requires that all wallets maintain a minimum balance of 20 "
+"XRP. This non-refundable 20 XRP will remain permanently locked in your "
+"wallet."
 msgstr ""
 
 msgid "The amount of {{ coinName }} immediately spendable from this wallet."
@@ -2205,8 +2319,18 @@ msgid ""
 msgstr ""
 
 msgid ""
+"The data of this payment request will be deleted. Make sure you don't need "
+"it"
+msgstr ""
+
+msgid ""
 "The destination wallet is not backed up. Please, complete the backup "
 "process before continue."
+msgstr ""
+
+msgid ""
+"The final amount is based on the exchange rate when the transaction is "
+"complete"
 msgstr ""
 
 msgid ""
@@ -2301,6 +2425,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"The {{ quoteForm.value.altCurrency }} amount must be between {{ "
+"minFiatAmount }} and {{ maxFiatAmount }}"
+msgstr ""
+
+msgid ""
 "There are no records of your wallet on our servers. If you are importing a "
 "BIP44 compatible wallet from a 3rd party you can continue to recreate it. "
 "If you wallet is not BIP44 compatible, you will not be able to access its "
@@ -2382,6 +2511,9 @@ msgid ""
 "both the recovery phrase and password are needed."
 msgstr ""
 
+msgid "This service is provided by a third party, and you are subject to their:"
+msgstr ""
+
 msgid ""
 "This transaction amount is too small compared to current Bitcoin network "
 "fees. Spending these funds will need a Bitcoin network fee cost comparable "
@@ -2428,6 +2560,9 @@ msgid "Total"
 msgstr ""
 
 msgid "Total Locked Balance"
+msgstr ""
+
+msgid "Total amount"
 msgstr ""
 
 msgid "Total number of copayers"
@@ -2753,6 +2888,9 @@ msgstr ""
 msgid "What do you call this wallet?"
 msgstr ""
 
+msgid "What is the status of my payment?"
+msgstr ""
+
 msgid ""
 "When this wallet was created, it was called \"{{walletName}}\". You can "
 "change the name displayed on this device below."
@@ -2863,6 +3001,12 @@ msgid ""
 "You do not have enough confirmed funds to make this payment. Wait for your "
 "pending transactions to confirm or enable \"Use unconfirmed funds\" in "
 "Advanced Settings."
+msgstr ""
+
+msgid "You do not have wallets able to receive funds"
+msgstr ""
+
+msgid "You need a minimum of 20 XRP to send funds."
 msgstr ""
 
 msgid "You reach the limit of twenty wallets from the same coin and network"

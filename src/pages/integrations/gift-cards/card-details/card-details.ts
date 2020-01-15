@@ -76,8 +76,11 @@ export class CardDetailsPage {
 
   ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    this.navParams.get('showConfetti') &&
-      this.confettiProvider.confetti(this.confetti.nativeElement);
+    this.navParams.get('showConfetti') && this.showConfetti();
+  }
+
+  showConfetti() {
+    this.confettiProvider.confetti(this.confetti.nativeElement);
   }
 
   ionViewWillLeave() {

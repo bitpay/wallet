@@ -385,7 +385,7 @@ export class TxDetailsPage {
             settings.alternativeIsoCode +
             ' @ ' +
             this.filter.formatFiatAmount(fiat.rate) +
-            ' USD per ' +
+            ` ${settings.alternativeIsoCode} per ` +
             this.wallet.coin.toUpperCase();
         } else {
           this.btx.fiatRateStr = this.btx.alternativeAmountStr;

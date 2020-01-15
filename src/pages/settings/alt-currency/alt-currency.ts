@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
+// native
+import { SplashScreen } from '@ionic-native/splash-screen';
+
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { ProfileProvider } from '../../../providers/profile/profile';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 
@@ -32,9 +34,9 @@ export class AltCurrencyPage {
     private logger: Logger,
     private navCtrl: NavController,
     private rate: RateProvider,
-    private profileProvider: ProfileProvider,
-    private persistenceProvider: PersistenceProvider,
-    private walletProvider: WalletProvider
+    private splashScreen: SplashScreen,
+    private platformProvider: PlatformProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.completeAlternativeList = [];
     this.altCurrencyList = [];
@@ -44,6 +46,24 @@ export class AltCurrencyPage {
       },
       {
         isoCode: 'BTC'
+      },
+      {
+        isoCode: 'BCH'
+      },
+      {
+        isoCode: 'ETH'
+      },
+      {
+        isoCode: 'XRP'
+      },
+      {
+        isoCode: 'USDC'
+      },
+      {
+        isoCode: 'GUSD'
+      },
+      {
+        isoCode: 'PAX'
       }
     ];
   }
@@ -114,13 +134,14 @@ export class AltCurrencyPage {
 
     this.configProvider.set(opts);
     this.saveLastUsed(newAltCurrency);
-    const opts2 = {
-      showHidden: true
-    };
-    this.walletProvider.updateRemotePreferences(
-      this.profileProvider.getWallets(opts2)
-    );
-    this.navCtrl.pop();
+    this.navCtrl.popToRoot().then(() => {
+      this.reload();
+    });
+  }
+
+  private reload(): void {
+    window.location.reload();
+    if (this.platformProvider.isCordova) this.splashScreen.show();
   }
 
   private saveLastUsed(newAltCurrency): void {
