@@ -1,4 +1,5 @@
-wallet-receive {
+wallet-receive,
+page-choose-fee-level {
   padding-bottom: calc(env(safe-area-inset-bottom));
   .error {
     color: color($colors, danger);

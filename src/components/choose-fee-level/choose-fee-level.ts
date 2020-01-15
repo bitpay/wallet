@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ViewController } from 'ionic-angular';
+import { Slides } from 'ionic-angular';
+// import { ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
-
-// Providers
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
-import { FeeProvider } from '../../../providers/fee/fee';
-import { PopupProvider } from '../../../providers/popup/popup';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { FeeProvider } from '../../providers/fee/fee';
+import { Logger } from '../../providers/logger/logger';
+import { PopupProvider } from '../../providers/popup/popup';
+// import { PopupProvider } from '../../providers/popup/popup';
+import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 interface FeeOpts {
   feeUnit: string;
@@ -18,7 +20,9 @@ interface FeeOpts {
   selector: 'page-choose-fee-level',
   templateUrl: 'choose-fee-level.html'
 })
-export class ChooseFeeLevelPage {
+export class ChooseFeeLevelComponent extends ActionSheetParent {
+  @ViewChild('feeSlides')
+  feeSlides: Slides;
   private blockTime: number;
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
@@ -33,8 +37,7 @@ export class ChooseFeeLevelPage {
   public feeLevel: string;
   public customFeePerKB: string;
   public feePerSatByte: string;
-  public selectedFee: string;
-  public feeOpts;
+  public feeOpts = [];
   public loadingFee: boolean;
   public feeLevels;
   public coin: Coin;
@@ -50,26 +53,30 @@ export class ChooseFeeLevelPage {
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    private viewCtrl: ViewController,
     private logger: Logger,
     private popupProvider: PopupProvider,
     public feeProvider: FeeProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
+    super();
+  }
+
+  ngOnInit() {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     // From parent controller
-    this.network = this.viewCtrl.data.network;
-    this.coin = this.viewCtrl.data.coin;
-    this.feeLevel = this.viewCtrl.data.feeLevel;
+    this.network = this.params.network;
+    this.coin = this.params.coin;
+    this.feeLevel = this.params.feeLevel;
     this.setFeeUnits();
 
     // IF usingCustomFee
-    this.customFeePerKB = this.viewCtrl.data.customFeePerKB
-      ? this.viewCtrl.data.customFeePerKB
+    this.customFeePerKB = this.params.customFeePerKB
+      ? this.params.customFeePerKB
       : null;
-    this.feePerSatByte = this.viewCtrl.data.feePerSatByte
-      ? this.viewCtrl.data.feePerSatByte
+    this.feePerSatByte = this.params.feePerSatByte
+      ? this.params.feePerSatByte
       : null;
 
     if (_.isEmpty(this.feeLevel))
@@ -77,9 +84,7 @@ export class ChooseFeeLevelPage {
         null,
         this.translate.instant('Fee level is not defined')
       );
-    this.selectedFee = this.feeLevel;
 
-    this.feeOpts = Object.keys(this.feeProvider.getFeeOpts());
     this.loadingFee = true;
     this.feeProvider
       .getFeeLevels(this.coin)
@@ -93,21 +98,13 @@ export class ChooseFeeLevelPage {
           return;
         }
         this.feeLevels = levels;
-        this.updateFeeRate();
+        this.setFeeRates();
       })
       .catch(err => {
         this.loadingFee = false;
         this.showErrorAndClose(null, err);
         return;
       });
-  }
-
-  private showErrorAndClose(title: string, msg: string): void {
-    title = title ? title : this.translate.instant('Error');
-    this.logger.error(msg);
-    this.popupProvider.ionicAlert(title, msg).then(() => {
-      this.viewCtrl.dismiss();
-    });
   }
 
   private setFeeUnits() {
@@ -121,30 +118,49 @@ export class ChooseFeeLevelPage {
     this.blockTime = blockTime;
   }
 
-  public updateFeeRate() {
-    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
-      return feeLevel.level == this.feeLevel;
+  public setFeeRates() {
+    this.feeLevels.levels[this.network].forEach((feeLevel, i) => {
+      this.feeOpts[i] = feeLevel;
+      this.feeOpts[i].feePerSatByte = (
+        feeLevel.feePerKb / this.feeUnitAmount
+      ).toFixed();
+      let avgConfirmationTime = feeLevel.nbBlocks * this.blockTime;
+      this.feeOpts[i].avgConfirmationTime = avgConfirmationTime;
+
+      this.feePerSatByte = (
+        this.feeOpts[i].feePerKb / this.feeUnitAmount
+      ).toFixed();
     });
 
-    // If no custom fee
-    if (value) {
-      this.customFeePerKB = null;
-      this.feePerSatByte = (value.feePerKb / this.feeUnitAmount).toFixed();
-      let avgConfirmationTime = value.nbBlocks * this.blockTime;
-      this.avgConfirmationTime = avgConfirmationTime;
-    } else {
-      this.avgConfirmationTime = null;
-      this.customSatPerByte = this.customFeePerKB
-        ? Number(this.customFeePerKB) / this.feeUnitAmount
-        : Number(this.feePerSatByte);
-      this.customFeePerKB = (
-        +this.feePerSatByte * this.feeUnitAmount
-      ).toFixed();
-    }
+    setTimeout(() => {
+      const index = this.feeOpts
+        .map(feeOpt => feeOpt.level)
+        .indexOf(this.feeLevel);
+      index == -1
+        ? this.feeSlides.slideTo(this.feeSlides.length(), 200)
+        : this.feeSlides.slideTo(index, 200);
+    }, 300);
 
     // Warnings
     this.setFeesRecommended();
     this.checkFees(this.feePerSatByte);
+  }
+
+  public setCustomFee() {
+    this.avgConfirmationTime = null;
+    this.customSatPerByte = this.customFeePerKB
+      ? Number(this.customFeePerKB) / this.feeUnitAmount
+      : Number(this.feePerSatByte);
+    this.customFeePerKB = (+this.feePerSatByte * this.feeUnitAmount).toFixed();
+    this.feeLevel = 'custom';
+    this.changeSelectedFee();
+  }
+  private showErrorAndClose(title?: string, msg?: string): void {
+    title = title ? title : this.translate.instant('Error');
+    this.logger.error(msg);
+    this.popupProvider.ionicAlert(title, msg).then(() => {
+      this.dismiss();
+    });
   }
 
   public setFeesRecommended(): void {
@@ -187,25 +203,19 @@ export class ChooseFeeLevelPage {
       fee < this.maxFeeAllowed && fee > this.maxFeeRecommended ? true : false;
   }
 
-  public ok(): void {
+  public changeSelectedFee(): void {
+    this.logger.debug('New fee level: ' + this.feeLevel);
     this.customFeePerKB = this.customFeePerKB
       ? (this.customSatPerByte * this.feeUnitAmount).toFixed()
       : null;
-    this.viewCtrl.dismiss({
+
+    this.dismiss({
       newFeeLevel: this.feeLevel,
       customFeePerKB: this.customFeePerKB
     });
   }
 
-  public cancel(): void {
-    this.viewCtrl.dismiss();
-  }
-
-  public changeSelectedFee(newFeeLevelValue: string): void {
-    if (this.feeLevel != newFeeLevelValue) {
-      this.logger.debug('New fee level: ' + newFeeLevelValue);
-      this.feeLevel = newFeeLevelValue;
-      this.updateFeeRate();
-    }
+  public openExternalLink(url: string): void {
+    this.externalLinkProvider.open(url);
   }
 }

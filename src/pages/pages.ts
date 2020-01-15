@@ -116,7 +116,6 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
-import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
@@ -147,7 +146,6 @@ export const PAGES = [
   BitPayCardTopUpPage,
   BuyCoinbasePage,
   CardCatalogPage,
-  ChooseFeeLevelPage,
   CreateWalletPage,
   CreateNewWalletPage,
   CoinbasePage,

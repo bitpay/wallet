@@ -16,7 +16,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { FinishModalPage } from '../../finish/finish';
 import { TabsPage } from '../../tabs/tabs';
 import { WalletsPage } from '../../wallets/wallets';
-import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -1061,21 +1060,18 @@ export class ConfirmPage {
 
     const txObject = {
       network: this.tx.network,
+      coin: this.tx.coin,
       feeLevel: this.tx.feeLevel,
       noSave: true,
-      coin: this.tx.coin,
       customFeePerKB: this.usingCustomFee ? this.tx.feeRate : undefined,
       feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined
     };
 
-    const myModal = this.modalCtrl.create(ChooseFeeLevelPage, txObject, {
-      showBackdrop: true,
-      enableBackdropDismiss: false
-    });
-
-    myModal.present();
-
-    myModal.onDidDismiss(data => {
+    const chooseFeeLevelAction = this.actionSheetProvider.createChooseFeeLevel(
+      txObject
+    );
+    chooseFeeLevelAction.present();
+    chooseFeeLevelAction.onDidDismiss(data => {
       this.onFeeModalDismiss(data);
     });
   }
