@@ -139,6 +139,48 @@
     text-align: end;
     opacity: 50%;
   }
+
+  .summary-item {
+    color: #434d5a;
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+  }
+
+  .summary-item-detail {
+    color: #000000;
+    font-size: 16px;
+    line-height: 25px;
+    text-align: right;
+    font-weight: 400;
+    text-align: end;
+  }
+
+  .summary-line {
+    box-sizing: border-box;
+    height: 1px;
+    margin: 0px 19px;
+    border: 0.5px dashed #979797;
+    opacity: 0.33;
+  }
+
+  .main-label.total-label {
+    color: #9ba3ae;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .total-amount {
+    color: #000000;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: right;
+  }
+  .amount-details {
+    padding-right: 19px;
+  }
 }
 
 .bp-list.settings-list {

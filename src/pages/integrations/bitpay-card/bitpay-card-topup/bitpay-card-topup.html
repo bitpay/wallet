@@ -5,42 +5,56 @@
 </ion-header>
 
 <ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
-  <ion-list>
-    <ion-item>
-      <div class="bitpay-title">
-        <img src="assets/img/bitpay-card/bitpay-card-visa.svg">
-        <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
+  <ion-item>
+    <div class="bitpay-title">
+      <img src="assets/img/bitpay-card/bitpay-card-visa.svg">
+      <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
+    </div>
+    <div class="amount-label">
+      <div class="amount">{{amountUnitStr}}</div>
+      <div class="alternative" *ngIf="wallet">
+        <span *ngIf="rate && !isERCToken">
+          @ {{rate | number:'1.2-2'}} {{currencyIsoCode}} per {{wallet.coin.toUpperCase()}}
+        </span>
+        <span *ngIf="!rate && !isERCToken">...</span>
       </div>
-      <div class="amount-label">
-        <div class="amount">{{amountUnitStr}}</div>
-        <div class="alternative" *ngIf="wallet">
-          <span *ngIf="rate && !isERCToken">
-            @ {{rate | number:'1.2-2'}} {{currencyIsoCode}} per {{wallet.coin.toUpperCase()}}
-          </span>
-          <span *ngIf="!rate">...</span>
-        </div>
-      </div>
+    </div>
+  </ion-item>
+
+  <div class="line-divider"></div>
+
+  <ion-list class="bp-list">
+
+    <ion-item class="sub-title">
+      <ion-label>
+        <div class="main-label" translate>SUMMARY</div>
+      </ion-label>
     </ion-item>
 
-    <ion-item-group class="info">
-      <button class="container-from" ion-item detail-none (click)="showWallets()">
-        <span translate>From</span>
-        <div class="wallet" *ngIf="wallet">
-          <ion-icon *ngIf="wallet && wallet.coin" item-start>
-            <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
-          </ion-icon>
-          <div>{{wallet ? wallet.name : '...'}}</div>
-          <div class="last-item" item-end>
-            <button ion-button clear color="grey" icon-only>
-              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-            </button>
-          </div>
+    <button ion-item detail-none (click)="showWallets()">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Sending from</span>
         </div>
-        <div class="wallet" *ngIf="!wallet">
-          <ion-icon item-start>
-            <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
-          </ion-icon>
+      </ion-label>
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet" *ngIf="wallet">
+          <ion-col>
+            <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet?.coin == 'btc',
+            'background_bch': wallet?.coin == 'bch',
+            'background_eth': wallet?.coin == 'eth',
+            'background_xrp': wallet?.coin == 'xrp',
+            'testnet': wallet?.network === 'testnet' }" item-start>
+              <img src="assets/img/currencies/{{wallet?.coin}}.svg" />
+            </ion-icon>
+          </ion-col>
+
+          <ion-col>
+            <span class="note-container ellipsis">{{wallet.name}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row align-items-center class="wallet" *ngIf="!wallet">
           <div translate>Select a wallet</div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
@@ -48,54 +62,86 @@
               <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
             </button>
           </div>
-        </div>
-      </button>
+        </ion-row>
+      </ion-note>
+    </button>
 
-      <div *ngIf="totalAmountStr">
-        <ion-item-divider>
-          Details
-        </ion-item-divider>
-        <ion-item>
+    <div class="line-divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
           <span translate>Expires</span>
-          <ion-note *ngIf="!paymentExpired" item-end><span [innerHTML]="remainingTimeStr"></span></ion-note>
-          <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
-        </ion-item>
-        <ion-item>
+        </div>
+      </ion-label>
+      <ion-note *ngIf="!paymentExpired" item-end><span [innerHTML]="remainingTimeStr"></span></ion-note>
+      <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
+    </ion-item>
+
+    <div class="line-divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
           <span translate>Funds to be added</span>
-          <ion-note item-end>
-            <span *ngIf="amount">{{amount | number:'1.2-2'}} {{currencyIsoCode}}</span>
-            <span *ngIf="!amount">...</span>
-          </ion-note>
-        </ion-item>
-        <ion-item *ngIf="invoiceFee">
-          <span class="item-info">{{'Network cost' | translate}}
-            <ion-icon class="item-img" (click)="openExternalLink('networkCost')">
-              <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
-            </ion-icon>
-          </span>
-          <ion-note item-end>
-            <span>{{invoiceFee | number:'1.2-2'}} {{currencyIsoCode}}</span>
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span class="item-info">{{'Miner fee' | translate}}
-            <ion-icon class="item-img" (click)="openExternalLink('minerFee')">
-              <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
-            </ion-icon>
-          </span>
-          <ion-note item-end>
-            <span>{{networkFee | number:'1.2-2'}} {{currencyIsoCode}}</span>
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span translate>Total</span>
-          <ion-note item-end>
-            <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
-            <span *ngIf="totalAmount">{{totalAmount | number:'1.2-2'}} {{currencyIsoCode}}</span>
-          </ion-note>
-        </ion-item>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <span *ngIf="amount">{{amount | number:'1.2-2'}} {{currencyIsoCode}}</span>
+        <span *ngIf="!amount">...</span>
+      </ion-note>
+    </ion-item>
+
+    <div *ngIf="invoiceFee" class="line-divider"></div>
+
+    <ion-item *ngIf="invoiceFee">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Network cost</span>
+          <ion-icon class="item-img info" (click)="openExternalLink('networkCost')">
+            <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
+          </ion-icon>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <span>{{invoiceFee | number:'1.2-2'}} {{currencyIsoCode}}</span>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Miner fee</span>
+          <ion-icon class="item-img info" (click)="openExternalLink('minerFee')">
+            <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
+          </ion-icon>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <span>{{networkFee | number:'1.2-2'}} {{currencyIsoCode}}</span>
+      </ion-note>
+    </ion-item>
+
+    <div class="summary-line"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="main-label total-label">TOTAL</div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="total-amount">
+          <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
+          <span *ngIf="totalAmount && isERCToken">{{totalAmount | number:'1.2-2'}} {{currencyIsoCode}} </span>
+        </div>
+      </ion-note>
+    </ion-item>
+    <div *ngIf="totalAmount && !isERCToken" class="amount-details">
+      <div class="secondary-note">
+        {{totalAmount | number:'1.2-2'}} {{currencyIsoCode}}
       </div>
-    </ion-item-group>
+    </div>
   </ion-list>
 </ion-content>
 
