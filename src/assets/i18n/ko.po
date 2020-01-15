@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-12-20 19:12\n"
+"PO-Revision-Date: 2020-01-14 18:46\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -18,8 +18,14 @@ msgstr "(이중 지출 가능)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 
+msgid "20 XRP required to activate"
+msgstr ""
+
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr "별 다섯 개는 {{appName}} 앱이 더 많은 사용자를 얻는 데 도움이 될 것이며, 사용자가 늘어날수록 더 많은 리소스가 앱에 투입될 것입니다!"
+msgstr "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+
+msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
+msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "A new copayer just joined your wallet {{walletName}}."
@@ -68,6 +74,9 @@ msgstr "접근이 거부되었습니다."
 
 msgid "Account"
 msgstr "계좌"
+
+msgid "Activated"
+msgstr ""
 
 msgid "Activation Fee"
 msgstr "Activation Fee"
@@ -177,6 +186,9 @@ msgstr "변경사항 적용"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "지갑 잔액을 이체하기 위한 대략적인 비트코인 네트워크 수수료 (보통 우선 순위)"
 
+msgid "Approximate amount"
+msgstr ""
+
 msgid "Archive All {brand} Gift Cards?"
 msgstr "모든{brand} 기프트 카드를 보관하시겠습니까?"
 
@@ -210,6 +222,9 @@ msgstr "정말로 이 거래를 제거하시겠습니까?"
 msgid "Are you sure?"
 msgstr "정말 확실합니까?"
 
+msgid "Attempted payment request"
+msgstr ""
+
 msgid "Available"
 msgstr "이용 가능"
 
@@ -233,6 +248,9 @@ msgstr "지갑 백업"
 
 msgid "Bad wallet invitation"
 msgstr "나쁜 지갑 초청"
+
+msgid "Base amount"
+msgstr ""
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr "당신의 복구 문구를 안전하고 보안된 장소에 보관하세요"
@@ -294,6 +312,12 @@ msgstr "전파 완료"
 msgid "Broadcasting transaction..."
 msgstr "트랜잭션 전송중..."
 
+msgid "Buy Crypto"
+msgstr ""
+
+msgid "Buy Crypto (Simplex)"
+msgstr ""
+
 msgid "Buy Gift Card"
 msgstr "기프트 카드 구입하기"
 
@@ -315,6 +339,12 @@ msgstr "수수료 계산중..."
 msgid "Calculating send max..."
 msgstr "전송 최대 계산중..."
 
+msgid "Camera access denied"
+msgstr ""
+
+msgid "Can't get rates at this moment. Please try again later"
+msgstr ""
+
 msgid "Cancel"
 msgstr "취소"
 
@@ -335,6 +365,9 @@ msgstr "카드"
 
 msgid "Change Amount"
 msgstr "금액 변경"
+
+msgid "Check the app camera permissions under your phone settings"
+msgstr ""
 
 msgid "Check the transaction on your wallet details"
 msgstr "지갑의 트랜잭션 세부사항을 확인하세요"
@@ -420,6 +453,9 @@ msgstr "피어에 의한 연결 재설정"
 msgid "Contact the ShapeShift support team."
 msgstr "ShapeShift 지원 팀에 문의하기"
 
+msgid "Contact the Simplex support team."
+msgstr ""
+
 msgid "Continue"
 msgstr "계속"
 
@@ -428,6 +464,9 @@ msgstr ""
 
 msgid "Continue Backup"
 msgstr "백업 계속"
+
+msgid "Continue to Simplex"
+msgstr ""
 
 msgid "Contribute translations"
 msgstr "번역 기여하기"
@@ -476,6 +515,9 @@ msgstr "거래를 할 수 없습니다"
 
 msgid "Could not create address"
 msgstr "주소를 생성할 수 없습니다"
+
+msgid "Could not create payment request. Please, try again later."
+msgstr ""
 
 msgid "Could not create transaction"
 msgstr "거래를 생성할 수 없습니다"
@@ -609,11 +651,20 @@ msgstr "Deposit Max"
 msgid "Deposit Min"
 msgstr "Deposit Min"
 
+msgid "Deposit address"
+msgstr ""
+
+msgid "Deposit to"
+msgstr ""
+
 msgid "Derivation Path"
 msgstr "Derivation Path"
 
 msgid "Derivation path"
 msgstr "Derivation path"
+
+msgid "Destination Tag"
+msgstr ""
 
 msgid "Destination wallet needs to be backed up"
 msgstr "Destination wallet needs to be backed up"
@@ -704,6 +755,9 @@ msgstr "금액 입력"
 
 msgid "Enter Two Factor for your BitPay account"
 msgstr "귀하의 BitPay 계좌에 대한 이중 인증 입력"
+
+msgid "Enter a destination tag"
+msgstr ""
 
 msgid "Enter a new encrypt password"
 msgstr "Enter a new encrypt password"
@@ -861,6 +915,9 @@ msgstr "BitPay 카드를 가져오는 중..."
 msgid "Fetching payment information..."
 msgstr "지불 정보를 가져오는 중..."
 
+msgid "Fiat amount"
+msgstr ""
+
 msgid "File/Text"
 msgstr ""
 
@@ -957,6 +1014,9 @@ msgstr "{brand} 의 기프트 카드로 모두 교환하시겠습니까? 보관�
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "이 기프트 카드의 잔액은 전액 상환하셨습니까?"
 
+msgid "Having problems with Simplex?"
+msgstr ""
+
 msgid "Having problems with a ShapeShift?"
 msgstr "ShapeShift에 문제가 있으십니까?"
 
@@ -1035,6 +1095,9 @@ msgstr ""
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
 
+msgid "If you have successfully completed the entire payment process, remember that receiving crypto usually take up to 1 hour."
+msgstr ""
+
 msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
@@ -1057,6 +1120,9 @@ msgid "Importing Wallet..."
 msgstr "지갑 가져오는 중..."
 
 msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
+msgstr ""
+
+msgid "In order to finish the payment process you will be redirected to Simplex page"
 msgstr ""
 
 msgid "In order to protect your funds from being accessible to hackers and theives, the Master Key to your wallet must be kept somewhere safe and remain a secret."
@@ -1458,6 +1524,9 @@ msgstr ""
 msgid "Open website"
 msgstr "웹사이트 열기"
 
+msgid "Order ID"
+msgstr ""
+
 msgid "Order the BitPay Card"
 msgstr ""
 
@@ -1497,6 +1566,9 @@ msgstr "지불 허용됨"
 msgid "Payment Expires:"
 msgstr "지불 만료:"
 
+msgid "Payment ID"
+msgstr ""
+
 msgid "Payment Proposal"
 msgstr "지불 제안"
 
@@ -1510,6 +1582,9 @@ msgid "Payment Request"
 msgstr ""
 
 msgid "Payment Request info"
+msgstr ""
+
+msgid "Payment Requests"
 msgstr ""
 
 msgid "Payment Sent"
@@ -1526,6 +1601,12 @@ msgstr ""
 
 msgid "Payment request"
 msgstr "지불 요청"
+
+msgid "Payment request approved"
+msgstr ""
+
+msgid "Payment request rejected"
+msgstr ""
 
 msgid "Pending"
 msgstr "보류 중"
@@ -1728,6 +1809,9 @@ msgstr "정보 공개"
 msgid "Remove"
 msgstr "제거"
 
+msgid "Removing Payment Request Data"
+msgstr ""
+
 msgid "Repeat the password"
 msgstr "비밀번호 반복"
 
@@ -1776,6 +1860,12 @@ msgstr ""
 msgid "Retry camera"
 msgstr ""
 
+msgid "Ripple Address"
+msgstr ""
+
+msgid "Ripple URI"
+msgstr ""
+
 msgid "START OVER"
 msgstr ""
 
@@ -1821,6 +1911,9 @@ msgstr "보안"
 msgid "See transaction"
 msgstr ""
 
+msgid "Select"
+msgstr ""
+
 msgid "Select Key"
 msgstr ""
 
@@ -1837,6 +1930,9 @@ msgid "Select currencies"
 msgstr ""
 
 msgid "Select currency"
+msgstr ""
+
+msgid "Select wallet to deposit to"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -1959,6 +2055,9 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
+msgid "Show \"Buy Crypto\" in Home"
+msgstr ""
+
 msgid "Show advanced options"
 msgstr "고급 옵션 표시"
 
@@ -2064,6 +2163,9 @@ msgstr ""
 msgid "Terms of Use"
 msgstr "이용 약관"
 
+msgid "Terms of use"
+msgstr ""
+
 msgid "Testnet Wallet"
 msgstr ""
 
@@ -2079,6 +2181,9 @@ msgstr ""
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
+msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
+msgstr ""
+
 msgid "The amount of {{ coinName }} immediately spendable from this wallet."
 msgstr ""
 
@@ -2091,7 +2196,13 @@ msgstr ""
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr ""
 
+msgid "The data of this payment request will be deleted. Make sure you don't need it"
+msgstr ""
+
 msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
+
+msgid "The final amount is based on the exchange rate when the transaction is complete"
 msgstr ""
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
@@ -2151,6 +2262,9 @@ msgstr ""
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr ""
 
+msgid "The {{ quoteForm.value.altCurrency }} amount must be between {{ minFiatAmount }} and {{ maxFiatAmount }}"
+msgstr ""
+
 msgid "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
 msgstr ""
 
@@ -2208,6 +2322,9 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
+msgid "This service is provided by a third party, and you are subject to their:"
+msgstr ""
+
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
 
@@ -2246,6 +2363,9 @@ msgstr "합계"
 
 msgid "Total Locked Balance"
 msgstr "차단된 잔액 합계"
+
+msgid "Total amount"
+msgstr ""
 
 msgid "Total number of copayers"
 msgstr ""
@@ -2547,6 +2667,9 @@ msgstr ""
 msgid "What do you call this wallet?"
 msgstr "이 지갑을 뭐라고 부르시겠습니까?"
 
+msgid "What is the status of my payment?"
+msgstr ""
+
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
@@ -2635,6 +2758,12 @@ msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
 msgid "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
+msgstr ""
+
+msgid "You do not have wallets able to receive funds"
+msgstr ""
+
+msgid "You need a minimum of 20 XRP to send funds."
 msgstr ""
 
 msgid "You reach the limit of twenty wallets from the same coin and network"
