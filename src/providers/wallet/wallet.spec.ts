@@ -816,10 +816,9 @@ describe('Provider: Wallet Provider', () => {
 
     it('Should update remote preferences with no errors', () => {
       const clients: WalletMock = new WalletMock();
-      const prefs = {};
 
       walletProvider
-        .updateRemotePreferences(clients, prefs)
+        .updateRemotePreferences(clients)
         .then(() => {
           expect().nothing();
         })
