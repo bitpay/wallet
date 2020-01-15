@@ -37,6 +37,17 @@ export class IncomingDataProvider {
     this.logger.debug('IncomingDataProvider initialized');
   }
 
+  public sendMessageToCardIAB(message) {
+    this.iab.refs.card.executeScript(
+      {
+        code: `window.postMessage(${JSON.stringify({message})}, '*')`
+      },
+      () => {
+        this.logger.log(`wallet-card ${message}`);
+      }
+    );
+  }
+
   public showMenu(data): void {
     const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
     dataMenu.present();
@@ -703,17 +714,29 @@ export class IncomingDataProvider {
       return true;
 
       // card email verification -> from the iab when creating an account an intent is sent with email verification payload. This passes it back to the iab.
-    } else if (data.includes('wallet-card/email-verified')) {
-      this.iab.refs.card.show();
+    } else if (data.includes('wallet-card')) {
 
-      this.iab.refs.card.executeScript(
-        {
-          code: `window.postMessage(${JSON.stringify({message: 'emailVerified'})}, '*')`
-        },
-        () => {
-          this.logger.log(`wallet-card email verified`);
-        }
-      );
+      const event = data.split('wallet-card/')[1];
+      /*
+      *
+      * handler for wallet-card events
+      *
+      * leaving this as a switch in case events become complex and require wallet side and iab actions
+      *
+      * */
+      switch(event) {
+
+        case 'email-verified':
+          this.iab.refs.card.show();
+          this.sendMessageToCardIAB('email-verified');
+          break;
+
+        case 'get-started':
+          this.iab.refs.card.show();
+          this.sendMessageToCardIAB('get-started');
+          break;
+
+      }
 
       return true;
 
