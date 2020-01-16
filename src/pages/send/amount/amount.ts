@@ -66,6 +66,7 @@ export class AmountPage {
 
   public showSendMax: boolean;
   public allowSend: boolean;
+  public useSmallFontSize: boolean;
   public recipientType: string;
   public toAddress: string;
   public network: string;
@@ -124,6 +125,7 @@ export class AmountPage {
     this.showSendMax = false;
     this.useSendMax = false;
     this.allowSend = false;
+    this.useSmallFontSize = false;
 
     this.availableUnits = [];
     this.expression = '';
@@ -360,6 +362,10 @@ export class AmountPage {
     return !this.requestingAmount && !this.useAsModal;
   }
 
+  public resizeFont(): void {
+    this.useSmallFontSize = this.expression && this.expression.length >= 10;
+  }
+
   public pushDigit(digit: string): void {
     this.useSendMax = false;
     if (digit === 'delete') {
@@ -374,6 +380,7 @@ export class AmountPage {
       this.expression = (this.expression + digit).replace('..', '.');
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.resizeFont();
     });
   }
 
@@ -382,6 +389,7 @@ export class AmountPage {
       this.expression = this.expression.slice(0, -1);
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.resizeFont();
     });
   }
 
@@ -409,6 +417,10 @@ export class AmountPage {
   private isExpression(val: string): boolean {
     const regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
     return regex.test(val);
+  }
+
+  public isNumber(expression): boolean {
+    return _.isNumber(expression) ? true : false;
   }
 
   private processAmount(): void {
