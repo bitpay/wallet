@@ -87,6 +87,7 @@ export class ScanPage {
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
     this.isCordova = this.platformProvider.isCordova;
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
 
   ionViewDidLoad() {
@@ -94,6 +95,7 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
+    this.tabBarElement.style.display = 'flex';
     this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
     this.events.unsubscribe(
       'finishIncomingDataMenuEvent',
@@ -115,6 +117,7 @@ export class ScanPage {
   }
 
   ionViewWillEnter() {
+    this.tabBarElement.style.display = 'none';
     this.initializeBackButtonHandler();
     this.fromAddressbook = this.navParams.data.fromAddressbook;
     this.fromImport = this.navParams.data.fromImport;
