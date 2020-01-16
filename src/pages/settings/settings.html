@@ -5,17 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="appName === 'BitPay'" class="no-padding" no-padding detail-none>
-    <div class="merchant-directory-container">
-      <div class="merchant-directory-body">
-        <h4 translate>Learn where you can spend your crypto today.</h4>
-        <div (click)="openMerchantDirectorySite()" class="merchant-directory-link" href="" translate>View Directory</div>
-      </div>
-      <div class="gumball">
-        <img src="assets/img/gumball-3.svg" class="gumball-image" width="150" height="150" />
-      </div>
-    </div>
-  </div>
+  <ion-item></ion-item>
   <ion-list class="bp-list">
     <button ion-item (click)="openAddressBookPage()">
       <ion-icon class="item-img icon-settings" item-start>

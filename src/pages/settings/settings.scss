@@ -30,48 +30,6 @@ page-about {
     align-content: center;
   }
 
-  .merchant-directory-container {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-  }
-
-  .merchant-directory-body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    top: 0px;
-    margin-left: 22px;
-  }
-
-  .merchant-directory-message {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .no-padding {
-    padding: 0px !important;
-  }
-
-  .merchant-directory-link {
-    color: color($colors, info);
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .gumball-image {
-    margin-top: 0px;
-    margin-right: -1px;
-  }
-
-  .gumball {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    justify-content: flex-end;
-    align-items: flex-start;
-  }
-
   .generic-list {
     ion-item-divider {
       margin-top: 0px;

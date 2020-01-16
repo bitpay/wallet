@@ -27,7 +27,8 @@ import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-ca
 })
 export class HomePage {
   showBuyCryptoOption: boolean;
-  showServicesOption: any;
+  showServicesOption: boolean;
+  showShopOption: boolean;
   private showPriceChart: boolean;
   @ViewChild('priceCard')
   priceCard;
@@ -113,6 +114,7 @@ export class HomePage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.showServicesOption = false;
+      this.showShopOption = true;
       this.homeIntegrations = _.remove(_.clone(integrations), x => {
         this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
         if (x.name == 'debitcard' && x.linked) return false;
@@ -386,6 +388,12 @@ export class HomePage {
 
   public goTo(page) {
     this.navCtrl.push(page);
+  }
+
+  public goToShop() {
+    this.externalLinkProvider.open(
+      `https://bitpay.com/directory/?hideGiftCards=true`
+    );
   }
 
   public goToServices() {

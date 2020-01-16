@@ -66,6 +66,15 @@
   </div>
 
   <ion-list class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
+    <ion-item *ngIf="showShopOption" (click)="goToShop()">
+      <ion-label>
+        <div class="services-list-label">Shop</div>
+      </ion-label>
+      <ion-note item-end>
+        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showShopOption"></div>
     <ion-item *ngIf="showServicesOption" (click)="goToServices()">
       <ion-label>
         <div class="services-list-label">Services</div>
