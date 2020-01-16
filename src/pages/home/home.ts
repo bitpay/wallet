@@ -50,6 +50,16 @@ export class HomePage {
       imgSrc: 'assets/img/bitpay-card-solid.svg'
     },
     {
+      name: 'merchant-directory',
+      title: 'Discover Merchant Directory',
+      body: 'Learn where you can spend your crypto today.',
+      app: 'bitpay',
+      linkText: 'View Directory',
+      link: 'https://bitpay.com/directory/?hideGiftCards=true',
+      imgSrc: 'assets/img/gumball-3.svg',
+      dismissible: true
+    },
+    {
       name: 'amazon-gift-cards',
       title: 'Shop at Amazon',
       body: 'Leverage your crypto with an amazon.com gift card.',
@@ -387,13 +397,15 @@ export class HomePage {
   }
 
   public goTo(page) {
-    this.navCtrl.push(page);
+    if (page.indexOf('https://') === 0) {
+      this.externalLinkProvider.open(page);
+    } else {
+      this.navCtrl.push(page);
+    }
   }
 
   public goToShop() {
-    this.externalLinkProvider.open(
-      `https://bitpay.com/directory/?hideGiftCards=true`
-    );
+    this.navCtrl.push(CardCatalogPage);
   }
 
   public goToServices() {
