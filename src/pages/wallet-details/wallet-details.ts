@@ -40,7 +40,11 @@ import { WalletBalancePage } from './wallet-balance/wallet-balance';
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
-
+interface UpdateWalletOptsI {
+  walletId: string;
+  force?: boolean;
+  alsoUpdateHistory?: boolean;
+}
 @Component({
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
@@ -107,6 +111,11 @@ export class WalletDetailsPage {
       this.clearHistoryCache();
     } else {
       if (this.wallet.completeHistory) this.showHistory();
+      else
+        this.fetchTxHistory({
+          walletId: this.wallet.credentials.walletId,
+          force: true
+        });
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -165,6 +174,47 @@ export class WalletDetailsPage {
       !this.updateStatusError &&
       !this.updateTxHistoryError
     );
+  }
+
+  private fetchTxHistory(opts: UpdateWalletOptsI) {
+    if (!opts.walletId) {
+      this.logger.error('Error no walletId in update History');
+      return;
+    }
+
+    const progressFn = ((_, newTxs) => {
+      let args = {
+        walletId: opts.walletId,
+        finished: false,
+        progress: newTxs
+      };
+      this.events.publish('Local/WalletHistoryUpdate', args);
+    }).bind(this);
+
+    // Fire a startup event, to allow UI to show the spinner
+    this.events.publish('Local/WalletHistoryUpdate', {
+      walletId: opts.walletId,
+      finished: false
+    });
+    this.walletProvider
+      .fetchTxHistory(this.wallet, progressFn, opts)
+      .then(txHistory => {
+        this.wallet.completeHistory = txHistory;
+        this.events.publish('Local/WalletHistoryUpdate', {
+          walletId: opts.walletId,
+          finished: true
+        });
+      })
+      .catch(err => {
+        if (err != 'HISTORY_IN_PROGRESS') {
+          this.logger.warn('WalletHistoryUpdate ERROR', err);
+          this.events.publish('Local/WalletHistoryUpdate', {
+            walletId: opts.walletId,
+            finished: false,
+            error: err
+          });
+        }
+      });
   }
 
   public isUtxoCoin(): boolean {

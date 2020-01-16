@@ -19,6 +19,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { AmountPage } from '../amount/amount';
 
 export interface FlatWallet {
+  walletId: string;
   color: string;
   name: string;
   recipientType: 'wallet';
@@ -170,6 +171,7 @@ export class TransferToPage {
 
   private flattenWallet(wallet): FlatWallet {
     return {
+      walletId: wallet.credentials.walletId,
       color: wallet.color,
       name: wallet.name,
       recipientType: 'wallet',
