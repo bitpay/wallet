@@ -19,7 +19,7 @@
 
     <div class="subtitle-modal">
       <img class="icon-service" src="assets/img/simplex/icon-simplex.png" alt="Simplex" width="40">
-      {{ paymentRequest.crypto_amount }}
+      {{ paymentRequest.crypto_amount | number:'1.0-6'}}
       <span class="amount-unit">{{ paymentRequest.coin }}</span>
     </div>
   </div>
