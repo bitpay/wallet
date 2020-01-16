@@ -71,6 +71,7 @@ export class AmountPage {
   public network: string;
   public name: string;
   public email: string;
+  public destinationTag?: string;
   public color: string;
   public useSendMax: boolean;
   public useAsModal: boolean;
@@ -112,6 +113,7 @@ export class AmountPage {
     this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
+    this.destinationTag = this.navParams.data.destinationTag;
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
     this.description = this.navParams.data.description;
@@ -586,6 +588,10 @@ export class AmountPage {
       if (this.wallet.credentials.token) {
         data.tokenAddress = this.wallet.credentials.token.address;
       }
+    }
+
+    if (this.destinationTag) {
+      data.destinationTag = this.destinationTag;
     }
 
     if (this.navParams.data.fromWalletDetails) {

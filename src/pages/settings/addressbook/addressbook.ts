@@ -43,7 +43,8 @@ export class AddressbookPage {
           contacts.push({
             name: _.isObject(contact) ? contact.name : contact,
             address: k,
-            email: _.isObject(contact) ? contact.email : null
+            email: _.isObject(contact) ? contact.email : null,
+            tag: _.isObject(contact) ? contact.tag : null
           });
         });
         this.addressbook = _.clone(contacts);

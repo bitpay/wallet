@@ -22,6 +22,12 @@
           {{ address }}
         </div>
       </ion-item>
+      <ion-item *ngIf="coin === 'xrp' && tag" copy-to-clipboard="{{ tag }}">
+        {{'Destination Tag' | translate}}
+        <div class="comment ellipsis">
+          {{ tag }}
+        </div>
+      </ion-item>
       <ion-item>
         {{'Coin' | translate}}
         <ion-note item-end>
