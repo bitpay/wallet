@@ -23,6 +23,15 @@ export class InAppBrowserProvider {
     this.logger.debug('InAppBrowserProvider initialized');
   }
 
+  public sendMessageToIAB(ref: InAppBrowserRef, message: object, cb?: (...args: any[]) => void) {
+    ref.executeScript(
+      {
+        code: `window.postMessage(${JSON.stringify({...message})}, '*')`
+      },
+      cb
+    );
+  }
+
   public createIABInstance(
     refName: string,
     url: string,

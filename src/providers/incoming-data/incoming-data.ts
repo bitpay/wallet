@@ -37,16 +37,6 @@ export class IncomingDataProvider {
     this.logger.debug('IncomingDataProvider initialized');
   }
 
-  public sendMessageToCardIAB(message) {
-    this.iab.refs.card.executeScript(
-      {
-        code: `window.postMessage(${JSON.stringify({message})}, '*')`
-      },
-      () => {
-        this.logger.log(`wallet-card ${message}`);
-      }
-    );
-  }
 
   public showMenu(data): void {
     const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
@@ -728,14 +718,17 @@ export class IncomingDataProvider {
 
         case 'email-verified':
           this.iab.refs.card.show();
-          this.sendMessageToCardIAB('email-verified');
+          this.iab.sendMessageToIAB(this.iab.refs.card, {message: 'email-verified'});
           break;
 
         case 'get-started':
           this.iab.refs.card.show();
-          this.sendMessageToCardIAB('get-started');
+          this.iab.sendMessageToIAB(this.iab.refs.card, {message: 'get-started'});
           break;
 
+        case 'retry':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, {message: 'retry'});
       }
 
       return true;

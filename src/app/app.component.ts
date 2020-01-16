@@ -59,6 +59,7 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
+import { Network } from '../providers/persistence/persistence';
 
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
@@ -75,6 +76,7 @@ export class CopayApp implements OnDestroy {
   @ViewChild('appNav')
   nav: NavController;
   cardIAB_Ref: InAppBrowser;
+  NETWORK = 'livenet';
   public rootPage:
     | typeof AmountPage
     | typeof DisclaimerPage
@@ -178,7 +180,7 @@ export class CopayApp implements OnDestroy {
       });
   }
 
-  private onAppLoad(readySource) {
+  private async onAppLoad(readySource) {
     const deviceInfo = this.platformProvider.getDeviceInfo();
 
     this.logger.info(
@@ -270,19 +272,28 @@ export class CopayApp implements OnDestroy {
       });
 
     // hiding this behind feature flag
-    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-      if (res === 'enabled') {
-        // preloading the view
-        setTimeout(() => {
-          this.iab
-            .createIABInstance('card', 'https://bitpay.com/')
-            .then(ref => {
-              this.cardIAB_Ref = ref;
-              this.iabCardProvider.init();
-            });
-        });
+    const res = await this.persistenceProvider.getHiddenFeaturesFlag();
+
+    if (res === 'enabled') {
+
+      let token;
+      try {
+        token = await this.persistenceProvider.getBitPayIdPairingToken(
+          Network[this.NETWORK]
+        );
+      } catch(err) {
+        this.logger.log(err);
       }
-    });
+      // preloading the view
+      setTimeout(() => {
+        this.iab
+          .createIABInstance('card', 'https://<url>/wallet-card',  `sessionStorage.setItem('isPaired', ${!!token})`)
+          .then(ref => {
+            this.cardIAB_Ref = ref;
+            this.iabCardProvider.init();
+          });
+      });
+    }
   }
 
   private onProfileLoad(profile) {
