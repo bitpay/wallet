@@ -119,6 +119,7 @@ export class SendPage {
   }
 
   private SendPageRedirEventHandler: any = nextView => {
+    nextView.params.fromWalletDetails = true;
     this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
   };
 
