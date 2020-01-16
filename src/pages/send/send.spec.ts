@@ -42,10 +42,8 @@ describe('SendPage', () => {
           instance.profileProvider,
           'getWallets'
         );
-        const subscribeSpy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
 
-        expect(subscribeSpy).toHaveBeenCalledTimes(1);
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'btc' });
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
       });
@@ -53,7 +51,7 @@ describe('SendPage', () => {
     describe('ionViewWillLeave', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ionViewWillLeave();
+        instance.ngOnDestroy();
         expect(spy).toHaveBeenCalledWith(
           'Local/AddressScan',
           instance.updateAddressHandler
@@ -84,6 +82,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG',
           {
+            activePage: 'SendPage',
             amount: 11111111,
             coin: 'btc'
           }
@@ -123,7 +122,10 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e'
+          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
+          {
+            activePage: 'SendPage'
+          }
         );
       }));
 
@@ -270,6 +272,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT',
           {
+            activePage: 'SendPage',
             amount: 11111111,
             coin: 'btc'
           }
@@ -309,7 +312,10 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ'
+          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
+          {
+            activePage: 'SendPage'
+          }
         );
       }));
 
@@ -455,6 +461,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7',
           {
+            activePage: 'SendPage',
             amount: 11111111,
             coin: 'bch'
           }
@@ -494,7 +501,10 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ'
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          {
+            activePage: 'SendPage'
+          }
         );
       }));
 
@@ -641,6 +651,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
           {
+            activePage: 'SendPage',
             amount: 11111111,
             coin: 'bch'
           }
@@ -680,7 +691,10 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ'
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          {
+            activePage: 'SendPage'
+          }
         );
       }));
 
