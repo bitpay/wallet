@@ -48,7 +48,12 @@ export class HomeIntegrationsProvider {
     } else return service && service.show;
   }
 
-  public get(): Array<{ name: string; show: boolean; linked: boolean }> {
+  public get(): Array<{
+    name: string;
+    show: boolean;
+    linked: boolean;
+    type: string;
+  }> {
     return _.orderBy(this.services, ['name'], ['asc']);
   }
 

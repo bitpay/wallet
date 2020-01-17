@@ -526,7 +526,8 @@ export class BitPayCardProvider {
         icon: 'assets/img/bitpay-card/icon-bitpay.svg',
         page: 'BitPayCardIntroPage',
         show: !!this.configProvider.get().showIntegration['debitcard'],
-        linked: !!isActive
+        linked: !!isActive,
+        type: 'card'
       });
     });
   }

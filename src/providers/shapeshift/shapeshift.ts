@@ -244,7 +244,8 @@ export class ShapeshiftProvider {
           'linear-gradient(to bottom,rgba(13,23,44,1) 0,rgba(16,29,58,1) 100%)',
         page: 'ShapeshiftPage',
         show: !!this.configProvider.get().showIntegration['shapeshift'],
-        linked: isActive
+        linked: isActive,
+        type: 'exchange'
       });
     });
   }

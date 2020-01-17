@@ -51,6 +51,7 @@ export class SettingsPage {
   public isCordova: boolean;
   public lockMethod: string;
   public integrationServices = [];
+  public cardServices = [];
   public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
   public encryptEnabled: boolean;
@@ -114,7 +115,12 @@ export class SettingsPage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.integrationServices = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return false;
+        if (x.type == 'card') return false;
+        else return x;
+      });
+      this.cardServices = _.remove(_.clone(integrations), x => {
+        if ((x.name == 'debitcard' && x.linked) || x.type == 'exchange')
+          return false;
         else return x;
       });
     }, 200);
