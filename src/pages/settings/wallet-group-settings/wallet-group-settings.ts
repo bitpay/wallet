@@ -40,6 +40,7 @@ export class WalletGroupSettingsPage {
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
+  public reorderHeight: string;
 
   private keyId: string;
 
@@ -67,6 +68,7 @@ export class WalletGroupSettingsPage {
       keyId: this.keyId,
       showHidden: true
     });
+    this.reorderHeight = (91 * this.wallets.length).toString() + 'px';
     this.canSign = this.walletsGroup.canSign;
     this.isDeletedSeed = this.walletsGroup.isDeletedSeed;
     this.needsBackup = this.walletsGroup.needsBackup;
