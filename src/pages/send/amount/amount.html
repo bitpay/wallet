@@ -9,9 +9,8 @@
       <span translate>Cancel</span>
     </button>
   </ion-buttons>
-  <div page-content>
-    <div class="amount-wrapper">
-
+  <div class="amount-wrapper" page-content>
+    <div class="container">
       <div class="amount-content">
         <div class="expression-container">
           <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
@@ -47,7 +46,6 @@
       <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
         <span>{{'Continue' | translate}}</span>
       </button>
-
     </div>
   </div>
 </wide-header-page>

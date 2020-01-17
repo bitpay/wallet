@@ -8,16 +8,25 @@ page-amount {
   ion-content.content {
     background: white;
   }
+
+  .scroll-content {
+    .wrapper {
+      div[page-content] {
+        top: 0 !important;
+      }
+    }
+  }
+  .amount-wrapper {
+    display: flex;
+    align-items: center;
+    .container {
+      width: 100%;
+    }
+  }
   .wide-header__title {
     display: none;
   }
   $short-screen: 630px;
-
-  .amount-wrapper {
-    height: 87vh;
-    display: flex;
-    flex-direction: column;
-  }
   .amount-switcher-margin {
     margin: 0 24px 40px 0;
     @media (max-height: $short-screen) {
