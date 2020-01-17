@@ -86,7 +86,7 @@
           <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
           <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()"></ion-toggle>
         </ion-item>
-        <label-tip type="info" *ngIf="!encryptEnabled">
+        <label-tip type="info">
           <span label-tip-title translate>Password Not Recoverable</span>
           <div label-tip-body>
             <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
