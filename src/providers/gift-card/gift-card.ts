@@ -561,7 +561,8 @@ export class GiftCardProvider extends InvoiceProvider {
       name: 'giftcards',
       title: 'Gift Cards',
       icon: 'assets/img/gift-cards/gift-cards-icon.svg',
-      show: !!this.configProvider.get().showIntegration['giftcards']
+      show: !!this.configProvider.get().showIntegration['giftcards'],
+      type: 'card'
     });
   }
 }

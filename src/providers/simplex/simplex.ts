@@ -63,7 +63,8 @@ export class SimplexProvider {
       background:
         'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(45, 47, 51, 1) 100%)',
       page: 'SimplexPage',
-      show: !!this.configProvider.get().showIntegration['simplex']
+      show: !!this.configProvider.get().showIntegration['simplex'],
+      type: 'exchange'
     });
   }
 
