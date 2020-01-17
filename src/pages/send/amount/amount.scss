@@ -107,11 +107,16 @@ page-amount {
       display: flex;
       align-items: center;
       position: relative;
+      width: 94%;
+      justify-content: center;
 
       .expression {
         font-size: 50px;
         font-weight: 500;
         line-height: 50px;
+        &.small-font {
+          font-size: 30px;
+        }
 
         @media (max-height: $short-screen) {
           font-size: 40px;
@@ -121,11 +126,14 @@ page-amount {
       }
 
       .unit {
-        position: absolute;
-        top: 2px;
-        right: -45px;
-        font-size: 16px;
         color: #4a4a4a;
+        font-size: 16px;
+        margin: -20px -40px 0 10px;
+
+        &.small-font {
+          font-size: 14px;
+          margin: -10px -40px 0 10px;
+        }
       }
     }
 
