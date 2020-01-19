@@ -152,6 +152,20 @@
       </ion-note>
     </button>
 
+
+    <ng-container *ngIf="hiddenFeaturesEnabled">
+      <ion-item-divider>
+        {{'BitPay Account' | translate}}
+      </ion-item-divider>
+
+      <button ion-item (click)="openBitPayIdPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
+        </ion-icon>
+        <span>{{bitPayIdUserInfo ? 'Manage my BitPay ID' : 'Connect my BitPay ID' | translate }}</span>
+      </button>
+    </ng-container>
+
     <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
       {{'Exchanges' | translate}}
     </ion-item-divider>
