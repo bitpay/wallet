@@ -11,8 +11,11 @@ import { ExternalLinkProvider } from '../../../../providers/external-link/extern
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
+import {
+  InAppBrowserProvider,
+  PersistenceProvider
+} from '../../../../providers';
 import { BitPayCardPage } from '../bitpay-card';
-import { InAppBrowserProvider, PersistenceProvider } from '../../../../providers';
 
 @Component({
   selector: 'page-bitpay-card-intro',
@@ -105,7 +108,6 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard() {
-
     const res = await this.persistenceProvider.getHiddenFeaturesFlag();
 
     if (res === 'enabled') {

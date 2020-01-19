@@ -19,7 +19,8 @@ import {
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
-  PersistenceProvider } from '../providers';
+  PersistenceProvider
+} from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
@@ -28,6 +29,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
+import { Network } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -35,9 +37,6 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
-import { Network } from '../providers/persistence/persistence';
-
-
 
 // Pages
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
@@ -293,8 +292,6 @@ export class CopayApp {
           });
       });
     }
-
-
   }
 
   private onProfileLoad(profile) {
