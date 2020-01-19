@@ -15,7 +15,11 @@ import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Observable, Subscription } from 'rxjs';
 
 // Providers
-import { GiftCardProvider } from '../providers';
+import {
+  GiftCardProvider,
+  IABCardProvider,
+  InAppBrowserProvider,
+  PersistenceProvider } from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
@@ -31,6 +35,9 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
+import { Network } from '../providers/persistence/persistence';
+
+
 
 // Pages
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
@@ -66,7 +73,8 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 export class CopayApp {
   @ViewChild('appNav')
   nav: NavController;
-
+  cardIAB_Ref: InAppBrowser;
+  NETWORK = 'livenet';
   public rootPage:
     | typeof AmountPage
     | typeof DisclaimerPage
@@ -119,7 +127,10 @@ export class CopayApp {
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -129,6 +140,11 @@ export class CopayApp {
 
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
+    if (this.iab) {
+      Object.keys(this.iab.refs).forEach(ref => {
+        this.iab.refs[ref].close();
+      });
+    }
   }
 
   initializeApp() {
@@ -161,7 +177,7 @@ export class CopayApp {
       });
   }
 
-  private onAppLoad(readySource) {
+  private async onAppLoad(readySource) {
     const deviceInfo = this.platformProvider.getDeviceInfo();
 
     this.logger.info(
@@ -250,6 +266,35 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
+
+    // hiding this behind feature flag
+    const res = await this.persistenceProvider.getHiddenFeaturesFlag();
+
+    if (res === 'enabled') {
+      let token;
+      try {
+        token = await this.persistenceProvider.getBitPayIdPairingToken(
+          Network[this.NETWORK]
+        );
+      } catch (err) {
+        this.logger.log(err);
+      }
+      // preloading the view
+      setTimeout(() => {
+        this.iab
+          .createIABInstance(
+            'card',
+            'https://<url>/wallet-card',
+            `sessionStorage.setItem('isPaired', ${!!token})`
+          )
+          .then(ref => {
+            this.cardIAB_Ref = ref;
+            this.iabCardProvider.init();
+          });
+      });
+    }
+
+
   }
 
   private onProfileLoad(profile) {
