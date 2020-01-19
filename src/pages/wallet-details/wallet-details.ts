@@ -14,6 +14,8 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
+import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import { InAppBrowserProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -51,6 +53,7 @@ interface UpdateWalletOptsI {
   templateUrl: 'wallet-details.html'
 })
 export class WalletDetailsPage {
+  private cardIAB_Ref: InAppBrowserRef;
   private currentPage: number = 0;
   private showBackupNeededMsg: boolean = true;
   private onResumeSubscription: Subscription;
@@ -83,6 +86,7 @@ export class WalletDetailsPage {
     private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
+    private iab: InAppBrowserProvider,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
@@ -104,10 +108,28 @@ export class WalletDetailsPage {
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.showShareButton = this.platformProvider.isCordova;
+    this.cardIAB_Ref = this.iab.refs.card;
   }
 
   ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    const redir = this.navParams.get('redir');
+    if (redir && redir === 'wc') {
+      setTimeout(() => {
+        this.cardIAB_Ref.executeScript(
+          {
+            code: `window.postMessage(${JSON.stringify({
+              message: 'paymentBroadcasted'
+            })}, '*')`
+          },
+          () => {
+            this.logger.log('card IAB -> payment broadcasting opening IAB');
+          }
+        );
+        this.cardIAB_Ref.show();
+      }, 1000);
+    }
+
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();

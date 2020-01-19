@@ -970,7 +970,11 @@ export class ConfirmPage {
             txid: txp.txid
           });
         }
-        return this.openFinishModal();
+        let redir;
+        if (txp.payProUrl && txp.payProUrl.includes('redir=wc')) {
+          redir = 'wc';
+        }
+        return this.openFinishModal(false, { redir });
       })
       .catch(err => {
         if (this.isCordova) this.slideButton.isConfirmed(false);
@@ -1000,7 +1004,7 @@ export class ConfirmPage {
       });
   }
 
-  protected async openFinishModal(onlyPublish?: boolean) {
+  protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
     let params: { finishText: string; finishComment?: string } = {
       finishText: this.successText
     };
@@ -1040,7 +1044,7 @@ export class ConfirmPage {
             .getActiveChildNav()
             .select(1);
           setTimeout(() => {
-            this.events.publish('OpenWallet', this.wallet);
+            this.events.publish('OpenWallet', this.wallet, redir);
           }, 1000);
         });
     }
