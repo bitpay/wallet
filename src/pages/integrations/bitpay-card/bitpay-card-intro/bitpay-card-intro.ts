@@ -12,6 +12,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
 import { BitPayCardPage } from '../bitpay-card';
+import { InAppBrowserProvider, PersistenceProvider } from '../../../../providers';
 
 @Component({
   selector: 'page-bitpay-card-intro',
@@ -28,7 +29,9 @@ export class BitPayCardIntroPage {
     private popupProvider: PopupProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private navCtrl: NavController,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider
   ) {}
 
   ionViewWillEnter() {
@@ -101,10 +104,17 @@ export class BitPayCardIntroPage {
     this.externalLinkProvider.open(url);
   }
 
-  public orderBitPayCard() {
-    this.bitPayCardProvider.logEvent('legacycard_order', {});
-    let url = 'https://bitpay.com/visa/get-started';
-    this.externalLinkProvider.open(url);
+  public async orderBitPayCard() {
+
+    const res = await this.persistenceProvider.getHiddenFeaturesFlag();
+
+    if (res === 'enabled') {
+      this.iab.refs.card.show();
+    } else {
+      this.bitPayCardProvider.logEvent('legacycard_order', {});
+      let url = 'https://bitpay.com/visa/get-started';
+      this.externalLinkProvider.open(url);
+    }
   }
 
   public connectBitPayCard() {
