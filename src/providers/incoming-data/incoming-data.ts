@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
+import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -32,7 +33,8 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private iab: InAppBrowserProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -704,7 +706,36 @@ export class IncomingDataProvider {
     } else if (this.isValidImportPrivateKey(data)) {
       this.goToImportByPrivateKey(data);
       return true;
+    } else if (data.includes('wallet-card')) {
+      const event = data.split('wallet-card/')[1];
+      /*
+       *
+       * handler for wallet-card events
+       *
+       * leaving this as a switch in case events become complex and require wallet side and iab actions
+       *
+       * */
+      switch (event) {
+        case 'email-verified':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, {
+            message: 'email-verified'
+          });
+          break;
 
+        case 'get-started':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, {
+            message: 'get-started'
+          });
+          break;
+
+        case 'retry':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, { message: 'retry' });
+      }
+
+      return true;
       // Anything else
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {

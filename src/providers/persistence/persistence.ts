@@ -705,7 +705,6 @@ export class PersistenceProvider {
   removeBitPayIdUserInfo(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_USER_INFO(network));
   }
-
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {
