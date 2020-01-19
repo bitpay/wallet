@@ -37,7 +37,7 @@
     "start": "npm run ionic:serve",
     "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",
     "prepare:copay": "npm run clean && npm run apply:copay && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
-    "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm",
+    "prepare:bitpay": "npm run clean && npm run apply:bitpay  && ionic cordova platform add ios; ionic cordova platform add android && npm run fix:fcm && npm run fix:iab",
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
