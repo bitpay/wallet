@@ -7,6 +7,7 @@ import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export class ShortenedAddressPipe implements PipeTransform {
   constructor(private incomingDataProvider: IncomingDataProvider) {}
   transform(address: string) {
+    if (!address || address === '') return '...';
     const addr = this.incomingDataProvider.extractAddress(address);
     if (addr && addr.length > 4) {
       const first4Numbers = addr.substr(0, 4);

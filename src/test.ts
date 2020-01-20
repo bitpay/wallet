@@ -77,6 +77,7 @@ import { KeysPipe } from './pipes/keys';
 import { OrderByPipe } from './pipes/order-by';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
+import { ShortenedAddressPipe } from './pipes/shortened-address';
 
 import { DomProvider, Logger } from './providers';
 import { ProvidersModule } from './providers/providers.module';
@@ -230,6 +231,7 @@ export class TestUtils {
         OrderByPipe,
         SatToFiatPipe,
         SatToUnitPipe,
+        ShortenedAddressPipe,
         InfoSheetComponent,
         ActionSheetComponent
       ],
@@ -243,6 +245,7 @@ export class TestUtils {
         OrderByPipe,
         SatToFiatPipe,
         SatToUnitPipe,
+        ShortenedAddressPipe,
         GestureController,
         PlatformProvider,
         ...providers
