@@ -88,16 +88,13 @@ page-home {
       }
     }
 
-    .title {
-      font-weight: 700;
-      font-size: 18px;
-
+    &-title {
       &-info {
         color: color($colors, info);
       }
 
       &-critical {
-        color: color($colors, warning);
+        color: color($colors, danger);
       }
     }
 

@@ -109,13 +109,6 @@ export class ExchangeRates {
       this.coins[i].historicalRates[0].rate;
   }
 
-  public updateCharts() {
-    this.isoCode ===
-    this.configProvider.get().wallet.settings.alternativeIsoCode
-      ? this.updateCurrentPrice()
-      : this.getPrices();
-  }
-
   private setIsoCode() {
     const alternativeIsoCode = this.configProvider.get().wallet.settings
       .alternativeIsoCode;
