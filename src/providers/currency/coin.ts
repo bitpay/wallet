@@ -166,7 +166,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       singleAddress: true
     },
     paymentInfo: {
-      paymentCode: 'RIP681',
+      paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
       ratesApi: 'https://bitpay.com/api/rates/xrp',
       blockExplorerUrls: 'xrpscan.com/'
