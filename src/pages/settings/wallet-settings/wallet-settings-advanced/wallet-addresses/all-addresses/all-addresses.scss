@@ -1,4 +1,10 @@
 page-all-addresses {
+  .close-container.button-default {
+    color: color($colors, dark);
+  }
+  .address-container {
+    padding-bottom: 15px;
+  }
   .item {
     cursor: pointer;
     .info {

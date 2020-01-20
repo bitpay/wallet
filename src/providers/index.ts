@@ -34,7 +34,7 @@ export { ClipboardProvider } from '../providers/clipboard/clipboard';
 export { CoinbaseProvider } from '../providers/coinbase/coinbase';
 export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
-export { CurrencyProvider } from '../providers/currency/currency';
+export { CurrencyProvider, Coin } from '../providers/currency/currency';
 export {
   DerivationPathHelperProvider
 } from '../providers/derivation-path-helper/derivation-path-helper';
@@ -66,7 +66,9 @@ export { PayproProvider } from '../providers/paypro/paypro';
 export { PersistenceProvider } from '../providers/persistence/persistence';
 export { PlatformProvider } from '../providers/platform/platform';
 export { PopupProvider } from '../providers/popup/popup';
-export { PriceProvider } from '../providers/price/price';
+export {
+  ExchangeRatesProvider
+} from '../providers/exchange-rates/exchange-rates';
 export { ProfileProvider } from '../providers/profile/profile';
 export {
   PushNotificationsProvider
@@ -85,4 +87,3 @@ export {
 } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
-export { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';

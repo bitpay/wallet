@@ -10,6 +10,7 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { IntegrationsPage } from '../pages/integrations/integrations';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -21,7 +22,6 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 
 // Integrations: Invoice
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
@@ -57,7 +57,6 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
-import { EthLiveCardPage } from '../pages/includes/eth-live-card/eth-live-card';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
@@ -65,14 +64,15 @@ import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
+import { CardsPage } from '../pages/cards/cards';
 import { HomePage } from '../pages/home/home';
-import { ReceivePage } from '../pages/receive/receive';
 import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
+import { WalletsPage } from '../pages/wallets/wallets';
 
 /* Home */
-import { ProposalsPage } from '../pages/home/proposals/proposals';
+import { ProposalsNotificationsPage } from '../pages/wallets/proposals-notifications/proposals-notifications';
 
 /* Settings */
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
@@ -116,7 +116,6 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
-import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
@@ -125,7 +124,6 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
-import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
@@ -148,16 +146,15 @@ export const PAGES = [
   BitPayCardTopUpPage,
   BuyCoinbasePage,
   CardCatalogPage,
-  ChooseFeeLevelPage,
   CreateWalletPage,
   CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
-  EthLiveCardPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,
+  IntegrationsPage,
   JoinWalletPage,
   BackupGamePage,
   BackupKeyPage,
@@ -172,14 +169,15 @@ export const PAGES = [
   GravatarPage,
   FingerprintModalPage,
   HomePage,
+  CardsPage,
+  WalletsPage,
   LanguagePage,
   LockPage,
   MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
-  ProposalsPage,
-  ReceivePage,
+  ProposalsNotificationsPage,
   ScanPage,
   SendPage,
   SettingsPage,
@@ -225,8 +223,6 @@ export const PAGES = [
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
-  WalletTabsChild,
-  WalletTabsPage,
   WalletBalancePage,
   WideHeaderPage,
   CardItemPage,

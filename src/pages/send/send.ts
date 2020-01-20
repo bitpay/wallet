@@ -1,6 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,22 +23,34 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { CopayersPage } from '../add/copayers/copayers';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../add/join-wallet/join-wallet';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { SelectInvoicePage } from '../integrations/invoice/select-invoice/select-invoice';
+import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { SimplexPage } from '../integrations/simplex/simplex';
+import { PaperWalletPage } from '../paper-wallet/paper-wallet';
+import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
+import { ConfirmPage } from '../send/confirm/confirm';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { MultiSendPage } from './multi-send/multi-send';
 
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
 })
-export class SendPage extends WalletTabsChild {
+export class SendPage {
+  public wallet: any;
   public search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public invalidAddress: boolean;
-  private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -45,24 +62,41 @@ export class SendPage extends WalletTabsChild {
     'BitcoinCashUri',
     'BitPayUri'
   ];
+  private pageMap = {
+    AddressbookAddPage,
+    AmountPage,
+    BitPayCardIntroPage,
+    CoinbasePage,
+    ConfirmPage,
+    CopayersPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    PaperWalletPage,
+    ShapeshiftPage,
+    SimplexPage,
+    SelectInvoicePage,
+    WalletDetailsPage
+  };
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    navCtrl: NavController,
+    private navCtrl: NavController,
     private navParams: NavParams,
     private payproProvider: PayproProvider,
-    profileProvider: ProfileProvider,
+    private profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private viewCtrl: ViewController
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
+    this.wallet = this.navParams.data.wallet;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
 
   @ViewChild('transferTo')
@@ -73,16 +107,22 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
       this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
     }
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
+
+  private SendPageRedirEventHandler: any = nextView => {
+    nextView.params.fromWalletDetails = true;
+    nextView.params.walletId = this.wallet.credentials.walletId;
+    this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+  };
 
   private updateAddressHandler: any = data => {
     this.search = data.value;
@@ -97,25 +137,8 @@ export class SendPage extends WalletTabsChild {
     );
   }
 
-  public async goToReceive() {
-    await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'receiving-bitcoin',
-      { coinName }
-    );
-    await Observable.timer(250).toPromise();
-    infoSheet.present();
-  }
-
   public openScanner(): void {
-    this.scannerOpened = true;
-    this.walletTabsProvider.setSendParams({
-      amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
-    });
-    this.walletTabsProvider.setFromPage({ fromSend: true });
-    this.events.publish('ScanFromWallet');
+    this.navCtrl.push(ScanPage, { fromSend: true });
   }
 
   public isMultiSend(coin: Coin) {
@@ -158,8 +181,9 @@ export class SendPage extends WalletTabsChild {
 
   private redir() {
     this.incomingDataProvider.redir(this.search, {
+      activePage: 'SendPage',
       amount: this.navParams.data.amount,
-      coin: this.navParams.data.coin
+      coin: this.navParams.data.coin // TODO ???? what is this for ?
     });
     this.search = '';
   }
@@ -224,10 +248,14 @@ export class SendPage extends WalletTabsChild {
           if (selected.length > 0) {
             const isValid = this.checkCoinAndNetwork(selected[0], true);
             if (isValid) {
-              this.incomingDataProvider.redir(this.search);
+              this.incomingDataProvider.redir(this.search, {
+                activePage: 'SendPage'
+              });
             }
           } else {
-            this.incomingDataProvider.redir(this.search);
+            this.incomingDataProvider.redir(this.search, {
+              activePage: 'SendPage'
+            });
           }
         } catch (err) {
           this.invalidAddress = true;
@@ -240,10 +268,14 @@ export class SendPage extends WalletTabsChild {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
       } else if (parsedData && parsedData.type == 'BitPayCard') {
-        this.close();
-        this.incomingDataProvider.redir(this.search);
+        // this.close();
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
       } else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.incomingDataProvider.redir(this.search);
+        this.incomingDataProvider.redir(this.search, {
+          activePage: 'SendPage'
+        });
       } else {
         this.invalidAddress = true;
       }
@@ -267,12 +299,12 @@ export class SendPage extends WalletTabsChild {
   }
 
   public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage);
+    this.navCtrl.push(MultiSendPage, {
+      wallet: this.wallet
+    });
   }
 
-  public closeCam(): void {
-    if (this.scannerOpened) this.events.publish('ExitScan');
-    else this.getParentTabs().dismiss();
-    this.scannerOpened = false;
+  public close(): void {
+    this.viewCtrl.dismiss();
   }
 }

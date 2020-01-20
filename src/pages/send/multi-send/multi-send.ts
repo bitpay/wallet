@@ -18,21 +18,19 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
+import { ScanPage } from '../../scan/scan';
 import { AmountPage } from '../amount/amount';
 import { ConfirmPage } from '../confirm/confirm';
 import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
-
 @Component({
   selector: 'page-multi-send',
   templateUrl: 'multi-send.html'
 })
-export class MultiSendPage extends WalletTabsChild {
+export class MultiSendPage {
+  public wallet: any;
   public bitcore;
   public parsedData: any;
   public search: string = '';
@@ -48,7 +46,6 @@ export class MultiSendPage extends WalletTabsChild {
   public invalidAddress: boolean;
   public isDisabledContinue: boolean;
 
-  private scannerOpened: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -59,15 +56,13 @@ export class MultiSendPage extends WalletTabsChild {
   ];
 
   constructor(
-    navCtrl: NavController,
+    private navCtrl: NavController,
     private navParams: NavParams,
-    profileProvider: ProfileProvider,
     private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
@@ -77,19 +72,12 @@ export class MultiSendPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private bwcProvider: BwcProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash()
     };
     this.isDisabledContinue = true;
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: MultiSendPage');
-  }
-
-  ionViewWillEnter() {
+    this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('addRecipient', newRecipient => {
       this.addRecipient(newRecipient);
@@ -97,7 +85,11 @@ export class MultiSendPage extends WalletTabsChild {
     });
   }
 
-  ionViewWillLeave() {
+  ionViewDidLoad() {
+    this.logger.info('Loaded: MultiSendPage');
+  }
+
+  ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('addRecipient');
   }
@@ -275,13 +267,7 @@ export class MultiSendPage extends WalletTabsChild {
   }
 
   public openScanner(): void {
-    this.scannerOpened = true;
-    this.walletTabsProvider.setSendParams({
-      amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin')
-    });
-    this.walletTabsProvider.setFromPage({ fromSend: true });
-    this.events.publish('ScanFromWallet');
+    this.navCtrl.push(ScanPage, { fromSend: true });
   }
 
   public getCoinName(coin): string {
@@ -388,11 +374,5 @@ export class MultiSendPage extends WalletTabsChild {
       useSendMax: false,
       recipients: this.multiRecipients
     });
-  }
-
-  public closeCam(): void {
-    if (this.scannerOpened) this.events.publish('ExitScan');
-    else this.getParentTabs().dismiss();
-    this.scannerOpened = false;
   }
 }

@@ -1,4 +1,7 @@
 page-tx-details {
+  .note-container {
+    max-width: 200px;
+  }
   $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
@@ -24,9 +27,9 @@ page-tx-details {
       }
       .amount {
         display: flex;
-        font-size: 3.5rem;
+        font-size: 34px;
+        font-weight: 500;
         justify-content: space-between;
-        font-size: 3.5rem;
         .amount-coin {
           font-size: 1.5rem;
           margin-top: 0.35rem;

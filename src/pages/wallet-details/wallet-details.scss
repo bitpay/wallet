@@ -29,32 +29,49 @@ page-wallet-details {
     }
   }
 
+  .option-button {
+    font-size: 24px;
+    opacity: 0.6;
+  }
+
   .search-icon {
     font-size: 2.5rem;
   }
 
   .balance-card {
     // background: color($colors, primary);
-    background: linear-gradient(180deg, #14245e -0%, #22378c);
+    background: linear-gradient(180deg, #0c204e -0%, #1c4386);
     overflow: hidden;
   }
 
   .balance-header {
     position: relative;
-    margin-top: 15px;
-    margin-left: 5rem;
-    height: 17rem;
+    margin: 1rem 2rem 1rem 2rem;
+    height: 30rem;
     color: color($colors, light);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-around;
+  }
+
+  .balance-container {
+    margin-left: 1rem;
+  }
+
+  .wallet-name {
+    font-size: 23px;
+    font-weight: 600;
+
+    @media (max-width: 350px) {
+      font-size: 28px;
+    }
   }
 
   .balance-str {
     cursor: pointer;
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 38px;
+    font-weight: 500;
 
     @media (max-width: 350px) {
       font-size: 28px;
@@ -63,9 +80,10 @@ page-wallet-details {
 
   .balance-alt-str {
     padding-top: 10px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
-    opacity: 0.7;
+    opacity: 0.5;
+    line-height: 24px;
   }
 
   .balance-hidden {
@@ -105,10 +123,26 @@ page-wallet-details {
     }
   }
 
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    .button-standard {
+      width: 45%;
+      background-color: rgba(255, 255, 255, 0.09);
+      margin: 0;
+    }
+    .button-standard.button-md.activated {
+      background-color: rgba(155, 163, 174, 0.2);
+      box-shadow: none;
+    }
+  }
+
   .balance-scanning {
-    width: 100vw;
-    margin-left: -5rem;
+    display: flex;
+    justify-content: center;
     text-align: center;
+    width: 100%;
 
     .title {
       font-size: 20px;
@@ -205,6 +239,9 @@ page-wallet-details {
     }
 
     .amount {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 24px;
       color: color($colors, dark);
 
       .received {
@@ -215,6 +252,9 @@ page-wallet-details {
     .date {
       font-size: 14px;
       margin-top: 8px;
+      opacity: 0.4;
+      font-weight: 300;
+      color: #434d5a;
     }
 
     .proposal-container {
@@ -372,9 +412,7 @@ page-wallet-details {
 
   .top-notification {
     cursor: pointer;
-    position: absolute;
     top: 0;
-    margin: 0 10px 10px 0;
     &.warning {
       color: color($colors, warning);
     }

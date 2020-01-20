@@ -1,43 +1,43 @@
-<ion-header>
+<wide-header-page title="{{'Add Contact'|translate}}">
+  <div page-content>
 
-  <ion-navbar>
-    <ion-title>{{ 'Add Contact' | translate }}</ion-title>
-  </ion-navbar>
+    <form [formGroup]="addressBookAdd">
+      <ion-item>
+        <ion-label stacked>{{ 'Name' | translate }}</ion-label>
+        <ion-input formControlName="name" type="text"></ion-input>
+      </ion-item>
 
-</ion-header>
+      <ion-item>
+        <ion-label stacked>{{ 'Email' | translate }}</ion-label>
+        <ion-input formControlName="email" type="email"></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-label stacked>{{ 'Wallet Address' | translate }}</ion-label>
+        <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
 
-<ion-content>
+        <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+        <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
 
-  <form [formGroup]="addressBookAdd">
-    <ion-item>
-      <ion-label stacked>{{ 'Name' | translate }}</ion-label>
-      <ion-input formControlName="name" type="text"></ion-input>
-    </ion-item>
+        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      </ion-item>
 
-    <ion-item>
-      <ion-label stacked>{{ 'Email' | translate }}</ion-label>
-      <ion-input formControlName="email" type="email"></ion-input>
-    </ion-item>
+      <ion-item *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
+        <ion-label stacked>{{ 'Destination Tag' | translate }}</ion-label>
+        <ion-input formControlName="tag" type="number"></ion-input>
+        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      </ion-item>
 
-    <ion-item>
-      <ion-label stacked>{{ 'Wallet Address' | translate }}</ion-label>
-      <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
+      <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
+        <div label-tip-body>
+          <span>{{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}</span>
+        </div>
+      </label-tip>
+    </form>
 
-      <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-      <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
+    <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid">
+      {{'Save' | translate}}
+    </button>
 
-      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
-    </ion-item>
-    <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
-      <div label-tip-body>
-        <span>{{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}</span>
-      </div>
-    </label-tip>
-  </form>
-
-  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid">
-    {{'Save' | translate}}
-  </button>
-
-</ion-content>
+  </div>
+</wide-header-page>

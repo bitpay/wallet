@@ -1,20 +1,9 @@
 page-confirm,
-confirm-card-purchase {
-  .wallet-details-header {
-    button {
-      font-weight: 100;
-      font-size: 16px;
-    }
-  }
-  .header-container {
-    padding: 20px 0px 20px 0px;
-    .sending-label {
-      display: flex;
-      align-items: center;
-      span {
-        font-size: 1.8rem;
-      }
-    }
+confirm-card-purchase-page,
+page-txp-details,
+page-tx-details {
+  .add-padding-bottom {
+    height: 90vh;
   }
   .amount-label {
     padding-top: 1rem;
@@ -42,21 +31,8 @@ confirm-card-purchase {
     }
   }
   .item-fee {
-    line-height: 20px;
-    .fee-title {
-      margin-bottom: 5px;
-      color: color($colors, grey);
-    }
     .fee-loading {
       font-weight: 300;
-      color: color($colors, light-grey);
-    }
-    .fee-amount {
-      font-weight: 400;
-    }
-    .fee-details {
-      margin-top: 3px;
-      font-size: 12.5px;
       color: color($colors, light-grey);
     }
     &.warn {
@@ -65,11 +41,8 @@ confirm-card-purchase {
         color: color($colors, error);
       }
     }
-    ion-note {
-      font-weight: 100;
-    }
     &.btn-opacity {
-      opacity: 1;
+      background-color: #fbfbfb;
     }
   }
   .item-gravatar {
@@ -92,41 +65,121 @@ confirm-card-purchase {
     }
   }
 
-  .container-to,
-  .container-from {
-    .wallet,
-    .payment-proposal-to {
+  .payment-proposal-to {
+    padding: 10px;
+    height: 39px;
+    max-width: 150px;
+    border-radius: 19.5px;
+    background-color: #f6f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .multiple-length {
       display: flex;
-      align-items: center;
-      margin-top: 1rem;
-      .multiple-length {
-        display: flex;
-      }
-      .coin-img {
-        &-btc,
-        &-bch {
-          width: 12px;
-        }
-        &-eth {
-          width: 20px;
-        }
-      }
-      .text-address {
-        display: flex;
-        width: 25px;
-        justify-content: space-between;
-      }
-      .address-with-divider {
-        border-left: 1px solid rgb(227, 227, 227);
-        margin-left: 1rem;
-        padding-left: 1rem;
-      }
     }
-    &.not-clickable {
-      pointer-events: none;
+    .coin-img {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
     }
+    .text-address {
+      display: flex;
+      width: 25px;
+      justify-content: space-between;
+    }
+  }
+  &.not-clickable {
+    pointer-events: none;
   }
   .last-item {
     margin-left: auto !important;
+  }
+
+  .bp-list {
+    .sub-title {
+      color: #000000;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+    .item {
+      &.item-ios,
+      &.item-md {
+        padding-left: 19px;
+        .item-inner {
+          padding-top: 0px;
+          padding-bottom: 0px;
+        }
+      }
+    }
+  }
+  .background-content {
+    display: flex;
+    padding: 0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .note-container {
+    max-width: 100px;
+  }
+
+  .wallet {
+    span {
+      height: 19px;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19px;
+      text-align: right;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md,
+      &.icon-ios {
+        margin: 9px 0px 9px 0;
+        justify-content: center;
+        padding: 7px;
+        img {
+          width: 20px;
+        }
+        &.rectangle {
+          border-radius: 7px;
+          justify-content: center;
+        }
+        .coin-img {
+          width: 18px;
+          height: 18px;
+          margin: 0px;
+        }
+        &.background {
+          &_btc {
+            background-color: #f7931a;
+          }
+          &_bch {
+            background-color: #2fcf6e;
+          }
+          &_eth {
+            background-color: #6b71d6;
+          }
+          &_xrp {
+            background-color: #000000;
+          }
+        }
+      }
+    }
+  }
+  .line-divider {
+    margin: 0px 17px;
+  }
+  .background-button-content {
+    height: 47px;
+    background-color: #edf0fe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 200px;
+    border-radius: 21px;
+    margin: 25px auto;
   }
 }

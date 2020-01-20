@@ -11,10 +11,10 @@ import {
   NavController,
   Platform
 } from 'ionic-angular';
+import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Observable, Subscription } from 'rxjs';
 
-// providers
-import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
+// Providers
 import { GiftCardProvider } from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
@@ -32,8 +32,7 @@ import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
-// pages
-import { ImageLoaderConfig } from 'ionic-image-loader';
+// Pages
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -53,8 +52,6 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
 // to track the passed Url
@@ -119,7 +116,6 @@ export class CopayApp {
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
@@ -224,7 +220,6 @@ export class CopayApp {
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
-    this.scanFromWalletEvent();
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
@@ -358,10 +353,8 @@ export class CopayApp {
       this.closeScannerFromWithinWallet();
       // wait for wallets status
       setTimeout(() => {
-        this.getSelectedTabNav().push(
-          this.pageMap[nextView.name],
-          nextView.params
-        );
+        const globalNav = this.getGlobalTabs().getSelected();
+        globalNav.push(this.pageMap[nextView.name], nextView.params);
       }, 300);
     });
   }
@@ -371,7 +364,7 @@ export class CopayApp {
     if (this.isWalletModalOpen) {
       this.walletModal.dismiss();
     }
-    const page = wallet.isComplete() ? WalletTabsPage : CopayersPage;
+    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
     this.isWalletModalOpen = true;
     this.walletModal = this.modalCtrl.create(
       page,
@@ -389,22 +382,11 @@ export class CopayApp {
     });
   }
 
-  private scanFromWalletEvent(): void {
-    this.events.subscribe('ScanFromWallet', async () => {
-      await this.getGlobalTabs().select(1);
-      await this.toggleScannerVisibilityFromWithinWallet(true, 300);
-    });
-    this.events.subscribe('ExitScan', async () => {
-      this.closeScannerFromWithinWallet();
-    });
-  }
-
   private async closeScannerFromWithinWallet() {
     if (!this.getWalletDetailsModal()) {
       return;
     }
     await this.toggleScannerVisibilityFromWithinWallet(false, 300);
-    await this.getGlobalTabs().select(0);
   }
 
   private toggleScannerVisibilityFromWithinWallet(
@@ -472,12 +454,6 @@ export class CopayApp {
       this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
     }
-  }
-
-  private getSelectedTabNav() {
-    const globalNav = this.getGlobalTabs().getSelected();
-    const walletTabs = this.walletTabsProvider.getTabNav();
-    return (walletTabs && walletTabs.getSelected()) || globalNav;
   }
 
   private getGlobalTabs() {

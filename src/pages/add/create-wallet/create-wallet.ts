@@ -366,4 +366,20 @@ export class CreateWalletPage implements OnInit {
       cancelText
     );
   }
+
+  public set(type: string, number: number) {
+    switch (type) {
+      case 'requiredCopayers':
+        if (this.signatures.includes(number)) {
+          this.createForm.controls['requiredCopayers'].setValue(number);
+        }
+        break;
+
+      case 'totalCopayers':
+        if (this.copayers.includes(number)) {
+          this.createForm.controls['totalCopayers'].setValue(number);
+        }
+        break;
+    }
+  }
 }

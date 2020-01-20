@@ -1,78 +1,72 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Notifications' | translate}}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
-  <ion-list class="settings-list bp-list">
-    <div *ngIf="usePushNotifications">
-      <ion-item>
-        <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="pushNotifications" (ionChange)="pushNotificationsChange()"></ion-toggle>
-      </ion-item>
-    </div>
-
-    <ion-item-divider *ngIf="!usePushNotifications && isIOSApp">
-      <span translate>
-        Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
-      </span>
-    </ion-item-divider>
-
-
-    <div *ngIf="isElectron">
-      <ion-item>
-        <ion-label>{{ 'Enable desktop notifications' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="desktopNotifications" (ionChange)="desktopNotificationChange()"></ion-toggle>
-      </ion-item>
-    </div>
-
-    <ion-item [ngClass]="{'with-label': emailNotifications}" class="no-border">
-      <ion-label>{{ 'Enable email notifications' | translate }}</ion-label>
-      <ion-toggle [(ngModel)]="emailNotifications" (ionChange)="emailNotificationsChange()"></ion-toggle>
-    </ion-item>
-
-    <label-tip *ngIf="emailNotifications" type="info" header="no-header">
-      <div label-tip-body translate>
-        By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.
-        <br>
-        <a (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+<wide-header-page title="{{'Notifications' | translate}}">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <div *ngIf="usePushNotifications">
+        <ion-item>
+          <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="pushNotifications" (ionChange)="pushNotificationsChange()"></ion-toggle>
+        </ion-item>
       </div>
-    </label-tip>
 
-    <form *ngIf="emailNotifications" [formGroup]="emailForm">
-      <ion-item>
-        <ion-label stacked>{{ 'Email' | translate }}</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
-      </ion-item>
-      <div text-center>
-        <button ion-button class="button-standard" (click)="saveEmail()" [disabled]="emailForm.invalid">
-          {{'Save' | translate}}
-        </button>
+      <ion-item-divider *ngIf="!usePushNotifications && isIOSApp">
+        <span translate>
+          Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
+        </span>
+      </ion-item-divider>
+
+
+      <div *ngIf="isElectron">
+        <ion-item>
+          <ion-label>{{ 'Enable desktop notifications' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="desktopNotifications" (ionChange)="desktopNotificationChange()"></ion-toggle>
+        </ion-item>
       </div>
-    </form>
 
-    <ion-item-divider *ngIf="usePushNotifications && pushNotifications">
-      {{'Notifications Preferences' | translate}}
-    </ion-item-divider>
-
-    <div *ngIf="usePushNotifications && pushNotifications">
-      <ion-item>
-        <ion-label>{{ 'Confirmed transactions' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
+      <ion-item [ngClass]="{'with-label': emailNotifications}" class="no-border">
+        <ion-label>{{ 'Enable email notifications' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="emailNotifications" (ionChange)="emailNotificationsChange()"></ion-toggle>
       </ion-item>
-      <ion-item>
-        <ion-label>{{ 'Product updates' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="productsUpdates" (ionChange)="productsUpdatesChange()"></ion-toggle>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{ 'Offers & promotions' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="offersAndPromotions" (ionChange)="offersAndPromotionsChange()"></ion-toggle>
-      </ion-item>
-    </div>
 
-  </ion-list>
+      <label-tip *ngIf="emailNotifications" type="info" header="no-header">
+        <div label-tip-body translate>
+          By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.
+          <br>
+          <a (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+        </div>
+      </label-tip>
 
-</ion-content>
+      <form *ngIf="emailNotifications" [formGroup]="emailForm">
+        <ion-item>
+          <ion-label stacked>{{ 'Email' | translate }}</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+        <div text-center>
+          <button ion-button class="button-standard" (click)="saveEmail()" [disabled]="emailForm.invalid">
+            {{'Save' | translate}}
+          </button>
+        </div>
+      </form>
+
+      <ion-item-divider *ngIf="usePushNotifications && pushNotifications">
+        {{'Notifications Preferences' | translate}}
+      </ion-item-divider>
+
+      <div *ngIf="usePushNotifications && pushNotifications">
+        <ion-item>
+          <ion-label>{{ 'Confirmed transactions' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'Product updates' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="productsUpdates" (ionChange)="productsUpdatesChange()"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'Offers & promotions' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="offersAndPromotions" (ionChange)="offersAndPromotionsChange()"></ion-toggle>
+        </ion-item>
+      </div>
+
+    </ion-list>
+
+  </div>
+</wide-header-page>

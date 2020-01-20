@@ -1,0 +1,81 @@
+<action-sheet>
+  <div class="prompt-user-fullscreen-container" *ngIf="wallet && wallet?.isComplete() && wallet?.needsBackup">
+    <div class="prompt-user">
+      <div class="title-icon">
+        <img src="assets/img/single-folded-content.svg" />
+      </div>
+      <div class="title-info">
+        <span translate>Needs Backup</span>
+      </div>
+      <div class="subtitle-info">
+        <span translate>Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
+      </div>
+      <button ion-button class="button-standard" (click)="dismiss('goToBackup')">
+        {{'Write Down Recovery Phrase' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && (!newAddressError || address)">
+    <ion-row class="addr-header" align-items-center>
+      <ion-col text-left>
+        <span class="addr-title">
+          Address
+        </span>
+      </ion-col>
+      <ion-col class="addr-buttons" text-right>
+        <button ion-button clear icon-only color="grey">
+          Legacy
+        </button>
+        <button *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" ion-button clear icon-only color="primary" class="addr-update" (click)="setAddress(true)">
+          <span ion-text color="primary" translate>
+            <img *ngIf="!loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
+            <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
+          </span>
+        </button>
+      </ion-col>
+    </ion-row>
+    <div class="line-divider"></div>
+    <div class="addr-content">
+      <div class="addr-container">
+        <div class="text-address ellipsis">
+          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
+            <span class="address-placeholder" translate>Generating new address...</span>
+          </div>
+          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
+            <span copy-to-clipboard="{{ address }}">{{ address }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup">
+      <div class="lines-background"></div>
+      <div class="prompt-user-fullscreen-container" *ngIf="newAddressError && !address">
+        <div class="prompt-user">
+          <div class="title-icon larger-icon">
+            <img src="assets/img/ghost-straight-face.svg" />
+          </div>
+          <div class="title-info">
+            <span translate>Something goes wrong...</span>
+          </div>
+          <button ion-button class="button-standard" (click)="setAddress(true)">
+            {{'Generate New Address' | translate}}
+          </button>
+        </div>
+      </div>
+      <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
+        <div>...</div>
+      </div>
+      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="address">
+        <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ address }}" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
+    </div>
+    <div class="line-divider"></div>
+    <div class="close-btn" text-center>
+      <button ion-button clear icon-only color="dark" (click)="dismiss()">
+        CLOSE
+      </button>
+    </div>
+  </div>
+</action-sheet>

@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  App,
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
 import { WalletGroupOnboardingPage } from '../../settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
+import { TabsPage } from '../../tabs/tabs';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 
 // providers
@@ -46,6 +53,8 @@ export class SelectCurrencyPage {
   public isZeroState: boolean;
 
   constructor(
+    private app: App,
+    private events: Events,
     private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
@@ -171,7 +180,17 @@ export class SelectCurrencyPage {
 
   private endProcess() {
     this.onGoingProcessProvider.clear();
-    this.navCtrl.popToRoot();
+    // using setRoot(TabsPage) as workaround when coming from settings
+    this.app
+      .getRootNavs()[0]
+      .setRoot(TabsPage)
+      .then(() => {
+        this.app
+          .getRootNav()
+          .getActiveChildNav()
+          .select(1);
+        this.events.publish('Local/WalletListChange');
+      });
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {

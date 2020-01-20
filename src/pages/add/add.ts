@@ -64,4 +64,8 @@ export class AddPage {
   public goToImportWallet(): void {
     this.navCtrl.push(ImportWalletPage);
   }
+
+  public goBack(): void {
+    this.navCtrl.pop();
+  }
 }

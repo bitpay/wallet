@@ -56,6 +56,7 @@ const Keys = {
   },
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
+  HIDE_TOTAL_BALANCE: 'hideTotalBalance',
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,
   KEY_ONBOARDING: 'keyOnboarding',
   KEYS: 'keys',
@@ -68,6 +69,7 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
+  ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`
 };
@@ -240,6 +242,14 @@ export class PersistenceProvider {
 
   getHideBalanceFlag(walletId: string) {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
+  }
+
+  setHideTotalBalanceFlag(val) {
+    return this.storage.set(Keys.HIDE_TOTAL_BALANCE, val);
+  }
+
+  getHideTotalBalanceFlag() {
+    return this.storage.get(Keys.HIDE_TOTAL_BALANCE);
   }
 
   setHideWalletFlag(walletId: string, val) {
@@ -559,6 +569,18 @@ export class PersistenceProvider {
 
   removeServerMessageDismissed(id) {
     return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
+  }
+
+  setAdvertisementDismissed(name) {
+    return this.storage.set(Keys.ADVERTISEMENT_DISMISSED(name), 'dismissed');
+  }
+
+  getAdvertisementDismissed(name) {
+    return this.storage.get(Keys.ADVERTISEMENT_DISMISSED(name));
+  }
+
+  removeAdvertisementDismissed(name) {
+    return this.storage.remove(Keys.ADVERTISEMENT_DISMISSED(name));
   }
 
   setShapeshift(network: string, gcs) {

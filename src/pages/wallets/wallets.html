@@ -1,0 +1,116 @@
+<ion-header class="bp-header">
+  <ion-navbar>
+    <ion-title>{{'Wallets' | translate}}</ion-title>
+    <ion-buttons right class="settings-button" *ngIf="wallets && wallets[0]">
+      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
+        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
+      </button>
+      <button ion-button clear (click)="addWallet()" class="add">
+        <img src="assets/img/add-wallet/add-wallet.svg" />
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="fullscreen-tab" [ngClass]="{blur: isBlur}" #scrollArea>
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div [ngClass]="{
+      'content-animation': slideDown,
+      'initial-margin': validDataFromClipboard
+    }">
+
+    <div class="card clipboard-card" *ngIf="validDataFromClipboard">
+      <ion-item-divider>
+        <div class="title" item-start>
+          <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
+          <span>{{ 'Copied' | translate }} {{ validDataFromClipboard?.title }}</span>
+        </div>
+        <div item-end>
+          <button ion-button clear icon-only color="grey" (click)="hideClipboardCard()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </div>
+      </ion-item-divider>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
+      </page-clipboard-card>
+    </div>
+
+    <page-feedback-card #showCard></page-feedback-card>
+    <page-survey-card #showSurvey></page-survey-card>
+
+    <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
+
+    <ion-card class="server-message" *ngIf="accessDenied">
+      <ion-card-content class="server-message-content">
+        <div class="server-message-icon">
+          <img src="assets/img/icon-warning-circled.svg" />
+        </div>
+        <div class="server-message-title title-critical" translate>
+          Access denied
+        </div>
+        <div class="server-message-body" translate>
+          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.
+        </div>
+        <div class="server-message-button" (click)="openCountryBannedLink()">
+          <span translate>Learn more</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
+      <div class="section-header" *ngIf="walletGroup[0].canSign">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-key.svg" width="15">
+        </ion-icon>
+        <ion-label class="key-name">
+          <span *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}</span>
+          <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
+        </ion-label>
+        <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
+          <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
+          <span class="collapse-btn" *ngIf="walletsGroups.length > 1">
+            <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
+            <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
+          </span>
+        </div>
+      </div>
+      <ion-list no-lines class="bp-list" [ngClass]="{'collapsed': isCollapsed(walletGroup[0].keyId)}">
+        <div *ngFor="let wallet of walletGroup">
+          <wallet-item-content [wallet]="wallet" (click)="goToWalletDetails(wallet, 'view')"></wallet-item-content>
+        </div>
+      </ion-list>
+      <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" header="no-header" margin-top>
+        <div label-tip-body>
+          <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
+          <br>
+          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0].keyId)" translate>Backup now</a>
+        </div>
+      </label-tip>
+    </div>
+
+    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0" translate>
+      Read Only Wallets
+    </div>
+
+    <div *ngFor="let readOnlyWallet of readOnlyWalletsGroup; let i = index" class="wallets-container">
+      <ion-list class="sliding-container wallets">
+        <div class="wallet-wrapper">
+          <button ion-item detail-none (click)="goToWalletDetails(readOnlyWallet, 'view')">
+            <wallet-item-content [wallet]="readOnlyWallet"></wallet-item-content>
+          </button>
+        </div>
+      </ion-list>
+    </div>
+  </div>
+
+  <div *ngIf="isCordova && wallets && wallets[0]" class="margin-helper"></div>
+
+  <button *ngIf="wallets && wallets[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
+    <ion-avatar item-start> <img src="assets/img/scan.svg" /> </ion-avatar>
+    <div translate>Scan</div>
+  </button>
+
+</ion-content>

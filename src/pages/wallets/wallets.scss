@@ -1,0 +1,441 @@
+page-wallets,
+page-integrations {
+  ion-content {
+    &.content-md {
+      .margin-helper {
+        width: 100%;
+        padding-bottom: 7.5rem;
+      }
+    }
+
+    .scroll-content {
+      padding-bottom: 100px;
+    }
+  }
+
+  .toolbar-background {
+    background: none;
+  }
+
+  .blur {
+    filter: blur(12px);
+  }
+
+  .bp-header {
+    .settings-button {
+      margin-right: 1rem;
+
+      .notifications-badge {
+        border-radius: 9px;
+        font-size: 15px;
+        padding: 3px 7px;
+        padding-top: 4px;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      button.add {
+        margin-top: -4px;
+        img {
+          margin-left: 7px;
+          padding-bottom: 5px;
+          width: 28px;
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+
+  .toolbar-title-ios {
+    text-align: center;
+  }
+
+  .wallets-list {
+    margin-top: 12px;
+  }
+
+  .title {
+    font-weight: 500;
+
+    > img {
+      margin-right: 7px;
+    }
+  }
+
+  .error {
+    color: color($colors, danger);
+  }
+
+  page-wallet-activity,
+  page-txp {
+    @media (max-width: 350px) {
+      .item-title {
+        font-size: 13px;
+      }
+
+      ion-note .date {
+        font-size: 11.5px;
+      }
+    }
+  }
+
+  page-txp:first-child,
+  page-wallet-activity:first-child {
+    & .item-ios {
+      border-top: 0.55px solid #f4f4f4;
+    }
+  }
+
+  page-txp:last-child,
+  page-wallet-activity:last-child {
+    border: 0;
+
+    & .item-inner {
+      border: 0 !important;
+    }
+  }
+
+  .clipboard-card {
+    z-index: 0;
+  }
+
+  .initial-margin {
+    margin-top: -140px;
+  }
+
+  .content-animation {
+    z-index: 5;
+    margin-top: 0px;
+    -webkit-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -moz-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -o-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    animation-name: bounce-card;
+    animation-duration: 0.4s;
+    animation-delay: 0.5s;
+  }
+
+  ion-refresher {
+    height: 120px;
+
+    &-content {
+      margin-top: -25px;
+    }
+  }
+
+  .no-header {
+    margin-top: 2.6rem;
+  }
+
+  // Styles for integrations
+  .sliding-container {
+    border-radius: 5px;
+    display: block;
+  }
+  .wallets ion-item-sliding.item-wrapper {
+    button.item.item-block .item-inner {
+      align-items: start;
+    }
+  }
+
+  .wallets ion-item-sliding.reorder-active {
+    box-shadow: none;
+
+    button.item.item-block {
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
+      transform: scale3d(1.05, 1.05, 1.05);
+      transition: box-shadow 300ms ease, transform 300ms ease;
+    }
+  }
+
+  ion-item-sliding.item-wrapper {
+    $gift-card-item-side-padding: 4%;
+    $gift-card-item-height: 59px;
+
+    background: none;
+    padding-left: $gift-card-item-side-padding;
+    padding-right: $gift-card-item-side-padding;
+
+    ion-item-options {
+      border-bottom: 0;
+      margin-top: 1px;
+      height: $gift-card-item-height + 16px;
+
+      &[side*='right'] {
+        padding-right: $gift-card-item-side-padding;
+      }
+
+      &[side*='left'] {
+        padding-left: $gift-card-item-side-padding;
+      }
+
+      button.button {
+        border-radius: 5px;
+        font-weight: 400;
+        min-width: 73px;
+        padding: 15px;
+
+        .archive {
+          &__icon {
+            font-size: 20px;
+            margin-top: -1px;
+          }
+
+          &__text {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    button.item.item-block {
+      font-size: 16px;
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
+
+      .item-inner {
+        height: $gift-card-item-height + 16px;
+
+        ion-label {
+          &.label-ios,
+          &.label-md {
+            display: flex;
+            height: $gift-card-item-height;
+            align-items: center;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  ion-item-sliding.card-item-sliding {
+    padding-bottom: 1rem;
+
+    button.item.item-block {
+      border-radius: 5px;
+
+      .item-inner {
+        border: 0;
+      }
+    }
+  }
+
+  .buy-crypto-button {
+    @include center;
+    background: #f4f5fb;
+    color: #5f7bf7;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    width: 92%;
+    margin: 15px auto;
+    margin-top: 0;
+    height: 73px;
+  }
+
+  .scan-button {
+    position: absolute;
+    z-index: 9;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 27px 22px 26px 19px;
+    border-radius: 30px;
+    box-shadow: 0 7px 31px 0 rgba(0, 0, 0, 0.17);
+    color: white;
+    font-weight: 500;
+
+    ion-avatar {
+      margin-top: -3px;
+      margin-right: 10px;
+    }
+  }
+
+  ion-fab {
+    ion-icon.icon {
+      font-size: 0;
+    }
+
+    width: 100px;
+    border-radius: 30px;
+
+    button {
+      padding: 0px 50px 0px 55px;
+      border-radius: 30px;
+
+      .fab-text {
+        margin-left: 5px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
+  }
+
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    ion-fab[right] {
+      right: env(safe-area-inset-bottom);
+    }
+
+    ion-fab[bottom] {
+      bottom: env(safe-area-inset-bottom);
+    }
+  }
+
+  @keyframes bounce-card {
+    0% {
+      transform: translateY(0);
+    }
+
+    10% {
+      transform: translateY(0);
+    }
+
+    30% {
+      transform: translateY(40px);
+    }
+
+    50% {
+      transform: translateY(0);
+    }
+
+    57% {
+      transform: translateY(5px);
+    }
+
+    64% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .wallets-container {
+    margin-top: 20px;
+
+    .wallet-wrapper {
+      ion-item-sliding:last-child {
+        padding-bottom: 2rem;
+        margin-bottom: -2rem;
+      }
+    }
+
+    .section-header {
+      margin-top: 20px;
+      margin-bottom: 18px;
+    }
+  }
+
+  .collapse {
+    white-space: nowrap;
+    .legacy-tag {
+      color: color($colors, light-grey);
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .collapse-btn {
+      cursor: pointer;
+      background: #f6f6f7;
+      padding: 0.2rem;
+      border-radius: 50px;
+      margin: 0px 12px 0px 8px;
+      ion-icon {
+        color: color($colors, light-grey);
+        width: 18px;
+        text-align: center;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+
+  .collapsed {
+    display: none;
+  }
+
+  .sliding-container {
+    height: auto;
+
+    .wallet-wrapper:first-child .item.item-block {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .wallet-wrapper:last-child .item.item-block {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      .item-inner {
+        border: 0;
+      }
+    }
+
+    .item-inner {
+      text-align: right;
+      margin: 0 2px 0 0;
+    }
+
+    .action {
+      &.button.button-default {
+        padding: 0;
+      }
+
+      &--receive {
+        background-color: #edf7f9;
+
+        &.activated,
+        &:hover:not(.disable-hover) {
+          background-color: #e8f4f7;
+        }
+      }
+
+      &--send {
+        background-color: #eff1fe;
+
+        &.activated,
+        &:hover:not(.disable-hover) {
+          background-color: #e9ebf9;
+        }
+      }
+
+      &__icon {
+        img {
+          height: 35px;
+        }
+      }
+
+      &__text {
+        color: #434d59;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 3px;
+      }
+    }
+
+    &.wallets {
+      button.item.item-block {
+        div.item-inner {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    ion-reorder {
+      flex-basis: 60px;
+      margin-left: 3px;
+
+      ion-icon {
+        margin-bottom: 2px;
+      }
+    }
+
+    label-tip {
+      margin-top: 12px;
+      width: calc(92% - 10px);
+      left: calc(4% + 5px);
+    }
+  }
+}

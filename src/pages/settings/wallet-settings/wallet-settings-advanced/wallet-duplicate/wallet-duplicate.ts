@@ -15,7 +15,6 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 @Component({
   selector: 'page-wallet-duplicate',
   templateUrl: 'wallet-duplicate.html'
@@ -42,7 +41,6 @@ export class WalletDuplicatePage {
     private configProvider: ConfigProvider,
     public navCtrl: NavController,
     public profileProvider: ProfileProvider,
-    public walletTabsProvider: WalletTabsProvider,
     public derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
     this.defaults = this.configProvider.getDefaults();

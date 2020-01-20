@@ -355,8 +355,15 @@ export class PaperWalletPage {
     modal.present();
     modal.onDidDismiss(() => {
       // using setRoot(TabsPage) as workaround when coming from scanner
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-      this.navCtrl.popToRoot();
+      this.app
+        .getRootNavs()[0]
+        .setRoot(TabsPage)
+        .then(() => {
+          this.app
+            .getRootNav()
+            .getActiveChildNav()
+            .select(1);
+        });
     });
   }
 }

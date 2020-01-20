@@ -1,113 +1,109 @@
-<ion-header>
-  <ion-navbar [hideBackButton]="fromCard">
-    <ion-title>{{'Feedback'|translate}}</ion-title>
-    <ion-buttons left *ngIf="fromCard" (click)="goHome()">
-      <button ion-button clear>
-        <ion-icon class="close-btn" name="close"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-  <div class="msg-to-user">
-    <ion-row>
-      <ion-col>
-        <div class="feedback-title">
-          <span>{{reaction}}</span>
-        </div>
-      </ion-col>
-      <ion-col class="rating">
-        <img *ngIf="1 == score" src="assets/img/disappointed-face.svg" />
-        <img *ngIf="2 == score" src="assets/img/satisfied-face.svg" />
-        <img *ngIf="3 == score || !score" src="assets/img/happy-face.svg" />
-      </ion-col>
-    </ion-row>
-    <div class="feedback-msg">{{comment}}</div>
-  </div>
-
-  <!--
-    TODO: reactivate feedback / create server to receive feedback
-    <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
-    <ion-row>
-      <div class="feedback-icon">
-        <img src="assets/img/ico-chat.svg" />
-      </div>
-      <ion-col>
-        <div class="user-feedback-title">
-          <span translate>Leave Feedback</span>
-        </div>
-      </ion-col>
-      <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
-      <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
-    </ion-row>
-  </div>
-  <div class="feedback-form-card" *ngIf="leavingFeedback">
-    <form class="feedback-form" [formGroup]="feedbackForm">
-      <ion-item>
-        <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
-      </ion-item>
-    </form>
-    <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
-      {{'Send' | translate}}
+<wide-header-page title="{{'Send Feedback' | translate}}" [hideBackButton]="fromCard">
+  <ion-buttons left>
+    <button *ngIf="fromCard" (click)="goHome()" clear wide-header-bar-button ion-button>
+      <ion-icon class="close-btn" name="close"></ion-icon>
     </button>
-  </div> -->
-  <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
-    <ion-row>
-      <div class="feedback-icon">
-        <img src="assets/img/icon-star-review.svg" />
-      </div>
-      <ion-col>
-        <div class="user-feedback-title">
-          <span translate>Write a Review</span>
-        </div>
-      </ion-col>
-      <div class="feedback-action-icon arrow arrow-right"></div>
-    </ion-row>
-  </div>
-  <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request/create')">
-    <ion-row>
-      <div class="feedback-icon">
-        <img src="assets/img/ico-chat.svg" />
-      </div>
-      <ion-col>
-        <div class="user-feedback-title">
-          <span translate>Request a Feature</span>
-        </div>
-      </ion-col>
-      <div class="feedback-action-icon">
-        <img src="assets/img/ico-link.svg" />
-      </div>
-    </ion-row>
-  </div>
-  <div *ngIf="score != 3" class="user-feedback-card" (click)="showInfoSheet('report-issue','https://bitpay.com/request-help/wizard?category=wallet')">
-    <ion-row>
-      <div class="feedback-icon">
-        <img src="assets/img/ico-bug.svg" />
-      </div>
-      <ion-col>
-        <div class="user-feedback-title">
-          <span translate>Report an Issue</span>
-        </div>
-      </ion-col>
-      <div class="feedback-action-icon">
-        <img src="assets/img/ico-link.svg" />
-      </div>
-    </ion-row>
-  </div>
-  <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp/create')">
-    <ion-row>
-      <div class="feedback-icon">
-        <img src="assets/img/icon-question-help.svg" />
-      </div>
-      <ion-col>
-        <div class="user-feedback-title">
-          <span translate>Get Help</span>
-        </div>
-      </ion-col>
-      <div class="feedback-action-icon">
-        <img src="assets/img/ico-link.svg" />
-      </div>
-    </ion-row>
-  </div>
+  </ion-buttons>
+  <div page-content>
+    <div class="msg-to-user">
+      <ion-row>
+        <ion-col>
+          <div class="feedback-title">
+            <span>{{reaction}}</span>
+          </div>
+        </ion-col>
+        <ion-col class="rating">
+          <img *ngIf="1 == score" src="assets/img/disappointed-face.svg" />
+          <img *ngIf="2 == score" src="assets/img/satisfied-face.svg" />
+          <img *ngIf="3 == score || !score" src="assets/img/happy-face.svg" />
+        </ion-col>
+      </ion-row>
+      <div class="feedback-msg">{{comment}}</div>
+    </div>
 
-</ion-content>
+    <!--
+      TODO: reactivate feedback / create server to receive feedback
+      <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/ico-chat.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Leave Feedback</span>
+          </div>
+        </ion-col>
+        <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
+        <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
+      </ion-row>
+    </div>
+    <div class="feedback-form-card" *ngIf="leavingFeedback">
+      <form class="feedback-form" [formGroup]="feedbackForm">
+        <ion-item>
+          <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
+        </ion-item>
+      </form>
+      <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
+        {{'Send' | translate}}
+      </button>
+    </div> -->
+    <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/icon-star-review.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Write a Review</span>
+          </div>
+        </ion-col>
+        <div class="feedback-action-icon arrow arrow-right"></div>
+      </ion-row>
+    </div>
+    <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request/create')">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/ico-chat.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Request a Feature</span>
+          </div>
+        </ion-col>
+        <div class="feedback-action-icon">
+          <img src="assets/img/ico-link.svg" />
+        </div>
+      </ion-row>
+    </div>
+    <div *ngIf="score != 3" class="user-feedback-card" (click)="showInfoSheet('report-issue','https://bitpay.com/request-help/wizard?category=wallet')">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/ico-bug.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Report an Issue</span>
+          </div>
+        </ion-col>
+        <div class="feedback-action-icon">
+          <img src="assets/img/ico-link.svg" />
+        </div>
+      </ion-row>
+    </div>
+    <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp/create')">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/icon-question-help.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Get Help</span>
+          </div>
+        </ion-col>
+        <div class="feedback-action-icon">
+          <img src="assets/img/ico-link.svg" />
+        </div>
+      </ion-row>
+    </div>
+  </div>
+</wide-header-page>

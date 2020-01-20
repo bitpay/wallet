@@ -1,6 +1,4 @@
 page-amount {
-  @include toolbar-button-color(white);
-
   ion-header ion-navbar ion-title {
     .toolbar-title {
       color: white;
@@ -11,35 +9,28 @@ page-amount {
     background: white;
   }
 
-  $short-screen: 570px;
-
-  .amount-wrapper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .amount-header-margin {
-    margin: 2rem;
-    margin-bottom: 0;
-
-    @media (max-height: $short-screen) {
-      margin: 1.5rem;
-      margin-bottom: 0;
-      margin-top: 1rem;
+  .scroll-content {
+    .wrapper {
+      div[page-content] {
+        top: 0 !important;
+      }
     }
   }
-
-  .next-button {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 200ms ease, transform 200ms ease;
-    pointer-events: none;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateY(0);
+  .amount-wrapper {
+    display: flex;
+    align-items: center;
+    .container {
+      width: 100%;
+    }
+  }
+  .wide-header__title {
+    display: none;
+  }
+  $short-screen: 630px;
+  .amount-switcher-margin {
+    margin: 0 24px 40px 0;
+    @media (max-height: $short-screen) {
+      margin: 1rem;
     }
   }
 
@@ -61,14 +52,11 @@ page-amount {
     padding-top: calc(env(safe-area-inset-top));
     padding-top: -webkit-calc(env(safe-area-inset-top));
   }
-
-  .amount-header {
-    flex: 1;
+  .amount-switcher {
     display: flex;
     width: 100%;
     position: relative;
-    align-items: center;
-
+    justify-content: flex-end;
     .switcher {
       @media (max-height: $short-screen) {
         width: 77px;
@@ -76,19 +64,20 @@ page-amount {
 
       width: 95px;
       text-align: center;
-      background: rgba(0, 0, 0, 0.06);
-      padding: 0.75rem 1rem;
-      border-radius: 3px;
+      background: rgba(79, 110, 247, 0.1);
+      padding: 0.75rem 0.5rem 0.75rem 1.5rem;
+      border-radius: 25px;
       cursor: pointer;
 
       &__icon {
-        margin-right: 10px;
+        margin-right: 2px;
         margin-top: 4px;
         float: left;
+        color: #4f6ef7;
       }
 
       &__label {
-        color: #060606;
+        color: #4f6ef7;
         font-size: 18px;
 
         @media (max-height: $short-screen) {
@@ -118,29 +107,42 @@ page-amount {
     align-items: center;
     width: 100%;
     flex-grow: 1;
-
+    padding: 39px;
+    @media (max-height: $short-screen) {
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
     .expression-container {
       display: flex;
       align-items: center;
       position: relative;
+      width: 94%;
+      justify-content: center;
 
       .expression {
         font-size: 50px;
         font-weight: 500;
         line-height: 50px;
+        &.small-font {
+          font-size: 30px;
+        }
 
         @media (max-height: $short-screen) {
           font-size: 40px;
           line-height: 40px;
+          padding: 0px;
         }
       }
 
       .unit {
-        position: absolute;
-        top: 2px;
-        right: -45px;
-        font-size: 16px;
         color: #4a4a4a;
+        font-size: 16px;
+        margin: -20px -40px 0 10px;
+
+        &.small-font {
+          font-size: 14px;
+          margin: -10px -40px 0 10px;
+        }
       }
     }
 
@@ -156,18 +158,6 @@ page-amount {
       @media (max-height: $short-screen) {
         font-size: 14px;
         margin-top: 15px;
-      }
-    }
-  }
-
-  pin-pad {
-    .row {
-      ion-col.col {
-        min-height: 60px;
-
-        @media (max-height: $short-screen) {
-          min-height: 50px;
-        }
       }
     }
   }

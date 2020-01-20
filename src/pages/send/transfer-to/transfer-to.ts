@@ -19,6 +19,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { AmountPage } from '../amount/amount';
 
 export interface FlatWallet {
+  walletId: string;
   color: string;
   name: string;
   recipientType: 'wallet';
@@ -51,6 +52,7 @@ export class TransferToPage {
   public fiatCode: string;
   public _wallet;
   public _useAsModal: boolean;
+  public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
 
   private CONTACTS_SHOW_LIMIT: number = 10;
@@ -79,9 +81,8 @@ export class TransferToPage {
     this._wallet = this.navParams.data.wallet
       ? this.navParams.data.wallet
       : wallet;
-
     for (const coin of this.availableCoins) {
-      this.walletList[coin] = this.getWalletsList(coin);
+      this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }
     this.updateContactsList();
   }
@@ -107,6 +108,15 @@ export class TransferToPage {
 
   get useAsModal() {
     return this._useAsModal;
+  }
+
+  @Input()
+  set fromWalletDetails(fromWalletDetails: boolean) {
+    this._fromWalletDetails = fromWalletDetails;
+  }
+
+  get fromWalletDetails() {
+    return this._fromWalletDetails;
   }
 
   public getCoinName(coin: Coin) {
@@ -161,6 +171,7 @@ export class TransferToPage {
 
   private flattenWallet(wallet): FlatWallet {
     return {
+      walletId: wallet.credentials.walletId,
       color: wallet.color,
       name: wallet.name,
       recipientType: 'wallet',
@@ -168,7 +179,7 @@ export class TransferToPage {
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,
-      isComplete: wallet.isComplete(),
+      isComplete: () => wallet.isComplete(),
       needsBackup: wallet.needsBackup,
       getAddress: () => this.walletProvider.getAddress(wallet, false)
     };
@@ -235,7 +246,9 @@ export class TransferToPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
+
         this.navCtrl.push(AmountPage, {
+          walletId: this.navParams.data.wallet.id,
           recipientType: item.recipientType,
           amount: parseInt(this.navParams.data.amount, 10),
           toAddress: addr,
@@ -244,7 +257,8 @@ export class TransferToPage {
           color: item.color,
           coin: item.coin,
           network: item.network,
-          useAsModal: this._useAsModal
+          useAsModal: this._useAsModal,
+          fromWalletDetails: this._fromWalletDetails
         });
       })
       .catch(err => {

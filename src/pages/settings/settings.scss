@@ -1,9 +1,5 @@
-page-settings {
-  .wide-header__title {
-    font-size: 25px;
-    font-weight: 500;
-    padding: 30px 10px 10px 20px;
-  }
+page-settings,
+page-about {
   ion-label,
   .item-title {
     white-space: normal;
@@ -14,13 +10,6 @@ page-settings {
     -webkit-line-clamp: 2;
     box-orient: vertical;
     -webkit-box-orient: vertical;
-  }
-
-  .icon-settings {
-    width: 25px;
-    height: 25px;
-    border-radius: $icon-border-radius;
-    padding: 0rem;
   }
 
   .subtitle {
@@ -41,72 +30,6 @@ page-settings {
     align-content: center;
   }
 
-  .settings-icon.item-img {
-    opacity: 0.5;
-  }
-
-  .merchant-directory-container {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-  }
-
-  .merchant-directory-body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    top: 0px;
-    margin-left: 22px;
-  }
-
-  .merchant-directory-message {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .no-padding {
-    padding: 0px !important;
-  }
-
-  .merchant-directory-link {
-    color: color($colors, info);
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  .hairline {
-    border-top: 0.125px solid #f4f5fb;
-    border-bottom: 0.125px solid #f4f5fb;
-  }
-
-  .gumball-image {
-    margin-top: 0px;
-    margin-right: -1px;
-  }
-
-  .gumball {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    justify-content: flex-end;
-    align-items: flex-start;
-  }
-
-  .add-card-button {
-    @include center;
-    background: #f4f5fb;
-    color: #5f7bf7;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    width: 92%;
-    margin: 15px auto;
-    margin-top: 0;
-    height: 73px;
-  }
-
   .generic-list {
     ion-item-divider {
       margin-top: 0px;
@@ -116,10 +39,35 @@ page-settings {
   }
 
   .bp-list {
+    .main-label {
+      font-weight: 400;
+    }
     ion-item-divider {
       margin-top: 0px;
       padding: 12.5px 0px 12.5px 20px;
       background: #f8f8f9;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        padding: 14.5px;
+        font-size: 20px;
+        &.icon-settings {
+          opacity: 0.5;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    ion-note.note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
     }
   }
 
@@ -128,5 +76,10 @@ page-settings {
     color: color($colors, primary);
     margin-left: -12px;
     text-align: center;
+  }
+
+  .ion-md-eye-off:before {
+    width: 20px;
+    opacity: 0.55;
   }
 }

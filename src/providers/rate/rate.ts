@@ -80,15 +80,17 @@ export class RateProvider {
     satoshis: number,
     code: string,
     chain,
-    opts?: { rates? }
+    opts?: { customRate?: number; rates? }
   ): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
     }
+    const customRate = opts && opts.customRate;
+    const rate = customRate || this.getRate(code, chain, opts);
     return (
       satoshis *
       (1 / this.currencyProvider.getPrecision(chain).unitToSatoshi) *
-      this.getRate(code, chain, opts)
+      rate
     );
   }
 

@@ -1,7 +1,10 @@
 page-scan {
-  color: #fff;
-  background: transparent none;
-
+  .bar-button-default-md {
+    color: #d8d8d8 !important;
+  }
+  .scroll-content {
+    margin-top: 0px !important;
+  }
   & > ion-content.content {
     background: transparent none;
   }
@@ -90,6 +93,7 @@ page-scan {
         max-width: 400px;
         margin-bottom: 8em;
         max-height: 50%;
+        opacity: 70%;
       }
     }
 
@@ -175,5 +179,15 @@ page-scan {
 
   .icon-wallet {
     background: transparent;
+  }
+  .ea-container {
+    height: 35px;
+    border-radius: 17.5px;
+    background-color: rgba(155, 163, 174, 0.2);
+    .ea-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: color($colors, light);
+    }
   }
 }

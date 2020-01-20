@@ -1,37 +1,33 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{'All addresses' | translate}}</ion-title>
-    <ion-buttons left>
-      <button class="modal-close-button" ion-button (click)="dismiss()">
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-list class="settings-list bp-list">
-    <ion-item-divider *ngIf="withBalance && withBalance[0]">{{'Addresses with balance' | translate}}</ion-item-divider>
-    <ion-item *ngFor="let w of withBalance" copy-to-clipboard="{{w.address}}">
-      <div>{{w.address}}</div>
-      <p class="info">
-        {{w.amount | satToUnit: coin}}
-      </p>
-    </ion-item>
-
-    <ion-item-divider *ngIf="noBalance && noBalance[0]">{{'Unused addresses' | translate}}</ion-item-divider>
-    <ion-item *ngFor="let u of noBalance" copy-to-clipboard="{{u.address}}">
-      <div>{{u.address}}</div>
-      <ion-note>
-        {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
-      </ion-note>
-    </ion-item>
-  </ion-list>
-</ion-content>
-<ion-footer>
-  <ion-toolbar *ngIf="isCordova && allAddresses[0]">
-    <button ion-button full class="button-footer" (click)="sendByEmail()">
-      <span translate>Send addresses by email</span>
+<wide-header-page title="{{'All addresses' | translate}}">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="dismiss()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
     </button>
-  </ion-toolbar>
-</ion-footer>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <ion-item-divider *ngIf="withBalance && withBalance[0]">{{'Addresses with balance' | translate}}</ion-item-divider>
+      <ion-item *ngFor="let w of withBalance" copy-to-clipboard="{{w.address}}">
+        <div class="address-container">{{w.address}}</div>
+        <p class="info">
+          {{w.amount | satToUnit: coin}}
+        </p>
+      </ion-item>
+
+      <ion-item-divider *ngIf="noBalance && noBalance[0]">{{'Unused addresses' | translate}}</ion-item-divider>
+      <ion-item *ngFor="let u of noBalance" copy-to-clipboard="{{u.address}}">
+        <div class="address-container">{{u.address}}</div>
+        <p>
+          {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+        </p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div footer-content>
+    <ion-toolbar *ngIf="isCordova && allAddresses[0]">
+      <button ion-button full class="button-footer" (click)="sendByEmail()">
+        <span translate>Send addresses by email</span>
+      </button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

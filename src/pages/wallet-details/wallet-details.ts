@@ -1,17 +1,20 @@
 import { Component, NgZone } from '@angular/core';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   ModalController,
   NavController,
   NavParams,
-  Platform
+  Platform,
+  ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
@@ -19,29 +22,34 @@ import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-import { ProposalsPage } from '../../pages/home/proposals/proposals';
+import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
-import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
+import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
+import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
-
+interface UpdateWalletOptsI {
+  walletId: string;
+  force?: boolean;
+  alsoUpdateHistory?: boolean;
+}
 @Component({
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
 })
-export class WalletDetailsPage extends WalletTabsChild {
+export class WalletDetailsPage {
   private currentPage: number = 0;
   private showBackupNeededMsg: boolean = true;
   private onResumeSubscription: Subscription;
@@ -66,14 +74,14 @@ export class WalletDetailsPage extends WalletTabsChild {
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
   public associatedWallet: string;
+  public showShareButton: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
 
   constructor(
     private currencyProvider: CurrencyProvider,
-    navCtrl: NavController,
     private navParams: NavParams,
-    profileProvider: ProfileProvider,
+    private navCtrl: NavController,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
@@ -84,20 +92,30 @@ export class WalletDetailsPage extends WalletTabsChild {
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform
+    private platform: Platform,
+    private profileProvider: ProfileProvider,
+    private viewCtrl: ViewController,
+    private platformProvider: PlatformProvider,
+    private socialSharing: SocialSharing,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.showShareButton = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
     } else {
       if (this.wallet.completeHistory) this.showHistory();
+      else
+        this.fetchTxHistory({
+          walletId: this.wallet.credentials.walletId,
+          force: true
+        });
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -158,6 +176,47 @@ export class WalletDetailsPage extends WalletTabsChild {
     );
   }
 
+  private fetchTxHistory(opts: UpdateWalletOptsI) {
+    if (!opts.walletId) {
+      this.logger.error('Error no walletId in update History');
+      return;
+    }
+
+    const progressFn = ((_, newTxs) => {
+      let args = {
+        walletId: opts.walletId,
+        finished: false,
+        progress: newTxs
+      };
+      this.events.publish('Local/WalletHistoryUpdate', args);
+    }).bind(this);
+
+    // Fire a startup event, to allow UI to show the spinner
+    this.events.publish('Local/WalletHistoryUpdate', {
+      walletId: opts.walletId,
+      finished: false
+    });
+    this.walletProvider
+      .fetchTxHistory(this.wallet, progressFn, opts)
+      .then(txHistory => {
+        this.wallet.completeHistory = txHistory;
+        this.events.publish('Local/WalletHistoryUpdate', {
+          walletId: opts.walletId,
+          finished: true
+        });
+      })
+      .catch(err => {
+        if (err != 'HISTORY_IN_PROGRESS') {
+          this.logger.warn('WalletHistoryUpdate ERROR', err);
+          this.events.publish('Local/WalletHistoryUpdate', {
+            walletId: opts.walletId,
+            finished: false,
+            error: err
+          });
+        }
+      });
+  }
+
   public isUtxoCoin(): boolean {
     return this.currencyProvider.isUtxoCoin(this.wallet.coin);
   }
@@ -209,8 +268,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     });
   }
 
-  public openProposalsPage(): void {
-    this.navCtrl.push(ProposalsPage, { walletId: this.wallet.id });
+  public openProposalsNotificationsPage(): void {
+    this.navCtrl.push(ProposalsNotificationsPage, { walletId: this.wallet.id });
   }
 
   private updateAll = _.debounce(
@@ -493,5 +552,82 @@ export class WalletDetailsPage extends WalletTabsChild {
     setTimeout(() => {
       refresher.complete();
     }, TIMEOUT_FOR_REFRESHER);
+  }
+
+  public close() {
+    this.viewCtrl.dismiss();
+  }
+
+  public goToReceivePage() {
+    const params = {
+      wallet: this.wallet
+    };
+    const receive = this.actionSheetProvider.createWalletReceive(params);
+    receive.present();
+    receive.onDidDismiss(data => {
+      if (data === 'goToBackup') this.goToBackup();
+      else if (data) this.showErrorInfoSheet(data);
+    });
+  }
+
+  public goToSendPage() {
+    const modal = this.modalCtrl.create(SendPage, {
+      wallet: this.wallet
+    });
+    modal.present();
+  }
+
+  public showMoreOptions(): void {
+    const showShare =
+      this.showShareButton &&
+      this.wallet &&
+      this.wallet.isComplete() &&
+      !this.wallet.needsBackup;
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'address-options',
+      { showShare }
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'request-amount') this.requestSpecificAmount();
+      if (option == 'share-address') this.shareAddress();
+    });
+  }
+
+  public requestSpecificAmount(): void {
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      this.navCtrl.push(AmountPage, {
+        toAddress: addr,
+        id: this.wallet.credentials.walletId,
+        recipientType: 'wallet',
+        name: this.wallet.name,
+        color: this.wallet.color,
+        coin: this.wallet.coin,
+        nextPage: 'CustomAmountPage',
+        network: this.wallet.network
+      });
+    });
+  }
+
+  public shareAddress(): void {
+    if (!this.showShareButton) return;
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      this.socialSharing.share(addr);
+    });
+  }
+  public showErrorInfoSheet(error: Error | string): void {
+    const infoSheetTitle = this.translate.instant('Error');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
+  }
+
+  public goToBackup(): void {
+    this.navCtrl.push(BackupKeyPage, {
+      keyId: this.wallet.credentials.keyId
+    });
   }
 }

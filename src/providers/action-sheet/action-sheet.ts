@@ -1,9 +1,12 @@
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
+import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
+import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
+import { Coin } from '../../providers/currency/currency';
 import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
@@ -53,6 +56,19 @@ export interface WalletSelectorParams {
   selectedWalletId: string;
   title: string;
 }
+
+export interface WalletReceiveParams {
+  wallet: any;
+}
+
+export interface ChooseFeeLevelParams {
+  network: string;
+  coin: Coin;
+  feeLevel: string;
+  noSave: boolean;
+  customFeePerKB: string;
+  feePerSatByte: number;
+}
 @Injectable()
 export class ActionSheetProvider {
   constructor(private domProvider: DomProvider) {}
@@ -86,6 +102,26 @@ export class ActionSheetProvider {
   ): WalletSelectorComponent {
     return this.setupSheet<WalletSelectorComponent>(
       WalletSelectorComponent,
+      null,
+      params
+    ).instance;
+  }
+
+  public createWalletReceive(
+    params: WalletReceiveParams
+  ): WalletReceiveComponent {
+    return this.setupSheet<WalletReceiveComponent>(
+      WalletReceiveComponent,
+      null,
+      params
+    ).instance;
+  }
+
+  public createChooseFeeLevel(
+    params: ChooseFeeLevelParams
+  ): ChooseFeeLevelComponent {
+    return this.setupSheet<ChooseFeeLevelComponent>(
+      ChooseFeeLevelComponent,
       null,
       params
     ).instance;

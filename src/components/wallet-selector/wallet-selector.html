@@ -1,29 +1,16 @@
 <action-sheet>
-  <ion-row align-items-center>
-    <ion-col col-4 text-left>
-      <button ion-button clear icon-only color="grey" (click)="dismiss()">
-        <ion-icon name="arrow-round-back"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-4 text-center class="destination-title">{{ title }}</ion-col>
-  </ion-row>
+  <div class="bp-header">
+    <ion-title>{{ title }}</ion-title>
+  </div>
+  <div class="line-divider"></div>
   <div *ngFor="let coin of availableCoins">
     <div class="no-wallets" *ngIf="(!wallets[coin] && !wallets[coin][0])" translate>
       No wallets available
     </div>
-
     <div *ngIf="wallets && wallets[coin][0]">
-      <ion-item-divider>
-        <div class="title">
-          <span translate>{{ getCoinName(coin) }} Wallets</span>
-        </div>
-      </ion-item-divider>
-
-      <ion-list>
-        <div>
-          <button ion-item detail-none *ngFor="let wallet of wallets[coin]" (click)="optionClicked(wallet)">
-            <wallet-item-content [wallet]="wallet"></wallet-item-content>
-          </button>
+      <ion-list no-lines class="bp-list">
+        <div *ngFor="let wallet of wallets[coin]" (click)="optionClicked(wallet)">
+          <wallet-item-content [wallet]="wallet"></wallet-item-content>
         </div>
       </ion-list>
     </div>

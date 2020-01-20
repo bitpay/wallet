@@ -1,111 +1,179 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Confirm' | translate}}</ion-title>
-    <ion-buttons right>
-      <button (click)="cancel()" ion-button>{{'Cancel' | translate}}</button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
+<wide-header-page title="{{'Confirm' | translate}}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="cancel()" ion-button>{{'Cancel' | translate}}</button>
+  </ion-buttons>
 
-<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
-  <ion-list class="bp-list">
-    <ion-item class="confirm-header">
-      <div class="confirm-header__amount">
-        <div class="gift-card-title">
-          {{cardConfig?.displayName}}<span *ngIf="!displayNameIncludesGiftCard">&nbsp;Gift Card</span>
-        </div>
-        <div class="amount-label">
-          <div class="amount">{{amount | formatCurrency:currency}}</div>
-        </div>
-      </div>
-      <img-loader class="card-list-item__icon" [src]="cardConfig?.icon"></img-loader>
-    </ion-item>
-    <ion-item-group class="info">
-      <button ion-item detail-none (click)="showWallets()" class="wallets-list">
-        <div>{{'Sending From' | translate}}</div>
-        <div class="wallet">
-          <ion-icon *ngIf="wallet && wallet.coin" item-start>
-            <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg"
-              class="icon-wallet" />
-          </ion-icon>
-          <div>{{wallet ? wallet.name : '...'}}</div>
-          <div class="last-item" item-end>
-            <button ion-button clear color="grey" icon-only>
-              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-            </button>
+  <div page-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+    <ion-list class="bp-list">
+      <ion-item class="confirm-header">
+        <div class="confirm-header__amount">
+          <div class="gift-card-title">
+            {{cardConfig?.displayName}}<span *ngIf="!displayNameIncludesGiftCard">&nbsp;Gift Card</span>
+          </div>
+          <div class="amount-label">
+            <div class="amount">{{amount | formatCurrency:currency}}</div>
           </div>
         </div>
+        <img-loader class="card-list-item__icon" [src]="cardConfig?.icon"></img-loader>
+      </ion-item>
+
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">SUMMARY</div>
+        </ion-label>
+      </ion-item>
+
+      <button ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromWalletDetails}">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Sending from</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <ion-row align-items-center class="wallet" *ngIf="wallet">
+            <ion-col>
+              <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet.coin == 'btc',
+          'background_bch': wallet.coin == 'bch',
+          'background_eth': wallet.coin == 'eth',
+          'background_xrp': wallet.coin == 'xrp',
+          'testnet': wallet.network === 'testnet' }" item-start>
+                <img src="assets/img/currencies/{{wallet?.coin}}.svg" />
+              </ion-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="note-container ellipsis">{{wallet.name}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="wallet" *ngIf="!wallet">
+            <div translate>Select a wallet</div>
+            <div class="last-item" item-end>
+              <button ion-button clear color="grey" icon-only>
+                <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+                <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+              </button>
+            </div>
+          </ion-row>
+        </ion-note>
       </button>
+
+      <div class="line-divider"></div>
+
       <div *ngIf="totalAmountStr">
-        <ion-item-divider>
-          {{'Details' | translate}}
-        </ion-item-divider>
         <ion-item>
-          <span>{{'Gift Card' | translate}}</span>
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Gift Card</span>
+            </div>
+          </ion-label>
           <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{amount | number : '1.0-0'}}</span>
-            <span *ngIf="!onlyIntegers">{{amount | number : '1.2-2'}}</span>
-            {{currencyIsoCode}}
-          </ion-note>
-        </ion-item>
-        <ion-item *ngIf="activationFee">
-          <span>{{'Activation Fee' | translate}}</span>
-          <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{activationFee | number : '1.0-0'}}</span>
-            <span *ngIf="!onlyIntegers">{{activationFee | number : '1.2-2'}}</span>
-            {{currencyIsoCode}}
-          </ion-note>
-        </ion-item>
-        <ion-item *ngIf="totalDiscount">
-          <span>{{'Discount' | translate}}</span>
-          <ion-note item-end>
-            <span *ngIf="onlyIntegers">-{{totalDiscount | number : '1.0-0'}}</span>
-            <span *ngIf="!onlyIntegers">-{{totalDiscount | number : '1.2-2'}}</span>
-            {{currencyIsoCode}}
-          </ion-note>
-        </ion-item>
-        <ion-item *ngIf="invoiceFee">
-          <span>{{'Network cost' | translate}}</span>
-          <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{invoiceFee | number : '1.0-0'}}</span>
-            <span *ngIf="!onlyIntegers">{{invoiceFee | number : '1.2-2'}}</span>
-            {{currencyIsoCode}}
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span>{{'Miner fee' | translate}}</span>
-          <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{networkFee | number : '1.0-0'}}</span>
-            <span *ngIf="!onlyIntegers">{{networkFee | number : '1.2-2'}}</span>
-            {{currencyIsoCode}}
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span>{{'Total' | translate}}</span>
-          <ion-note item-end>
-            <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
-            <span *ngIf="totalAmount">
-              <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span>
-              <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span>
+            <div class="summary-item-detail">
+              <span *ngIf="onlyIntegers">{{amount | number : '1.0-0'}}</span>
+              <span *ngIf="!onlyIntegers">{{amount | number : '1.2-2'}}</span>
               {{currencyIsoCode}}
-            </span>
+            </div>
+          </ion-note>
+        </ion-item>
+
+        <div class="line-divider"></div>
+
+        <ion-item *ngIf="activationFee">
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Activation Fee</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <div class="summary-item-detail">
+              <span *ngIf="onlyIntegers">{{activationFee | number : '1.0-0'}}</span>
+              <span *ngIf="!onlyIntegers">{{activationFee | number : '1.2-2'}}</span>
+              {{currencyIsoCode}}
+            </div>
+          </ion-note>
+        </ion-item>
+
+        <div *ngIf="activationFee" class="line-divider"></div>
+
+        <ion-item *ngIf="totalDiscount">
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Discount</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <div class="summary-item-detail">
+              <span *ngIf="onlyIntegers">-{{totalDiscount | number : '1.0-0'}}</span>
+              <span *ngIf="!onlyIntegers">-{{totalDiscount | number : '1.2-2'}}</span>
+              {{currencyIsoCode}}
+            </div>
+          </ion-note>
+        </ion-item>
+
+        <div *ngIf="totalDiscount" class="line-divider"></div>
+
+        <ion-item *ngIf="invoiceFee">
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Network cost</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <div class="summary-item-detail">
+              <span *ngIf="onlyIntegers">{{invoiceFee | number : '1.0-0'}}</span>
+              <span *ngIf="!onlyIntegers">{{invoiceFee | number : '1.2-2'}}</span>
+              {{currencyIsoCode}}
+            </div>
+          </ion-note>
+        </ion-item>
+
+        <div *ngIf="invoiceFee" class="line-divider"></div>
+
+        <ion-item>
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Miner fee</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <div class="summary-item-detail">
+              <span *ngIf="onlyIntegers">{{networkFee | number : '1.0-0'}}</span>
+              <span *ngIf="!onlyIntegers">{{networkFee | number : '1.2-2'}}</span>
+              {{currencyIsoCode}}
+            </div>
+          </ion-note>
+        </ion-item>
+
+        <div class="summary-line"></div>
+
+        <ion-item>
+          <ion-label>
+            <div class="main-label total-label">TOTAL</div>
+          </ion-label>
+          <ion-note item-end>
+            <div class="total-amount">
+              <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
+              <span *ngIf="totalAmount">
+                <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span>
+                <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span>
+                {{currencyIsoCode}}
+              </span>
+            </div>
           </ion-note>
         </ion-item>
       </div>
       <ion-item>
         <card-terms *ngIf="cardConfig" [cardName]="cardConfig.name"></card-terms>
       </ion-item>
-    </ion-item-group>
-  </ion-list>
-</ion-content>
+    </ion-list>
+  </div>
 
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)"
-    buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
-  </page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
       purchase' | translate}}</button>
-  </ion-toolbar>
-</ion-footer>
+    </ion-toolbar>
+  </div>
+</wide-header-page>
