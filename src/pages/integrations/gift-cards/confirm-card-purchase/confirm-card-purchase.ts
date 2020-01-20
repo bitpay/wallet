@@ -392,6 +392,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     if (
       instructions &&
+      instructions[0].outputs &&
       instructions[0].outputs[0] &&
       instructions[0].outputs[0].invoiceID
     ) {
