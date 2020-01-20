@@ -23,7 +23,7 @@ import { BitPayCardPage } from '../bitpay-card';
 })
 export class BitPayCardIntroPage {
   public accounts;
-
+  public hiddenFeaturesEnabled: boolean;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -35,7 +35,11 @@ export class BitPayCardIntroPage {
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider
-  ) {}
+  ) {
+    this.persistenceProvider.getHiddenFeaturesFlag().then( (status) => {
+      this.hiddenFeaturesEnabled = status === 'enabled';
+    })
+  }
 
   ionViewWillEnter() {
     if (this.navParams.data.secret) {
@@ -108,9 +112,9 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard() {
-    const res = await this.persistenceProvider.getHiddenFeaturesFlag();
 
-    if (res === 'enabled') {
+
+    if (this.hiddenFeaturesEnabled) {
       this.iab.refs.card.show();
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});

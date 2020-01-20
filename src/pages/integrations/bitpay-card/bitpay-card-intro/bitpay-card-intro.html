@@ -51,13 +51,27 @@
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button class="button-standard" (click)="orderBitPayCard()">
-      {{'Order Now' | translate}}
-    </button>
-    <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
-      {{'I already have a BitPay Card' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>
+<ng-container *ngIf="hiddenFeaturesEnabled else reg">
+  <ion-footer>
+    <ion-toolbar style="margin-bottom: 35px">
+      <button ion-button class="button-standard" (click)="orderBitPayCard()">
+        {{'Order Now' | translate}}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-container>
+
+<ng-template #reg>
+  <ion-footer>
+    <ion-toolbar>
+      <button ion-button class="button-standard" (click)="orderBitPayCard()">
+        {{'Order Now' | translate}}
+      </button>
+      <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
+        {{'I already have a BitPay Card' | translate}}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-template>
+
+
