@@ -406,7 +406,7 @@ export class HomePage {
   }
 
   public goTo(page) {
-    if (page.indexOf('https://') === 0) {
+    if (typeof page === 'string' && page.indexOf('https://') === 0) {
       this.externalLinkProvider.open(page);
     } else {
       this.navCtrl.push(page);
