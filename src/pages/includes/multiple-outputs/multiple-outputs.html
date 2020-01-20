@@ -10,7 +10,7 @@
         <img class="coin-img" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard') || true" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
 
-        <span class="ellipsis" *ngIf="!contactName">{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}</span>
+        <span class="ellipsis" *ngIf="!contactName">{{ (tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address) | shortenedAdrress}}</span>
         <span class="ellipsis" *ngIf="contactName">{{ contactName }}</span>
       </div>
     </div>
