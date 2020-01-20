@@ -64,9 +64,11 @@
         </div>
       </label-tip>
 
+      <div class="line-divider" *ngIf="btx.action === 'sent'"></div>
+
       <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
 
-      <div class="line-divider" *ngIf="btx.action === 'sent'"></div>
+      <div class="line-divider"></div>
 
       <ion-item>
         <ion-label>
@@ -103,12 +105,15 @@
           </div>
         </ion-label>
         <ion-note item-end>
-          <span class="note-container ellipsis summary-item-detail" *ngIf="!btx.confirmations || btx.confirmations == 0" translate>Unconfirmed
-            <span *ngIf="btx.feeRate">(
+          <div class="summary-item-detail" *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
+            Unconfirmed
+          </div>
+          <div class="secondary-note fee-details" translate>
+            <span *ngIf="btx.feeRate">
               <span translate>Fee rate</span>:
-              {{btx.feeRate}})
+              {{btx.feeRate}}
             </span>
-          </span>
+          </div>
           <span class="note-container ellipsis summary-item-detail" *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
             {{btx.confirmations}}
           </span>

@@ -38,9 +38,6 @@
       </page-clipboard-card>
     </div>
 
-    <page-feedback-card #showCard></page-feedback-card>
-    <page-survey-card #showSurvey></page-survey-card>
-
     <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 
     <ion-card class="server-message" *ngIf="accessDenied">
