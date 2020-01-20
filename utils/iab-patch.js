@@ -7,10 +7,13 @@ const fs = require('fs');
 try {
   const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVInAppBrowserNavigationController.m`;
   const content = fs.readFileSync(file, 'utf8');
-  const result = content.replace(/STATUS_BAR_HEIGHT 20.0/g, 'STATUS_BAR_HEIGHT 0');
+  const result = content.replace(
+    /STATUS_BAR_HEIGHT 20.0/g,
+    'STATUS_BAR_HEIGHT 0'
+  );
   fs.writeFileSync(file, result);
   console.log('successfully patched ios status bar height');
-} catch(err) {
+} catch (err) {
   console.error(err);
 }
 
@@ -46,18 +49,23 @@ inAppWebView.setWebChromeClient(new InAppChromeClient(thatWebView) {
 
 try {
   const file = `${__dirname}/../platforms/android/app/src/main/java/org/apache/cordova/inappbrowser/InAppBrowser.java`;
-  let content = fs.readFileSync(file, 'utf8').split('inAppWebView.setWebChromeClient(new InAppChromeClient(thatWebView) {');
+  let content = fs
+    .readFileSync(file, 'utf8')
+    .split(
+      'inAppWebView.setWebChromeClient(new InAppChromeClient(thatWebView) {'
+    );
 
-  if (content[1].includes('public void onPermissionRequest(final PermissionRequest request) {')) {
+  if (
+    content[1].includes(
+      'public void onPermissionRequest(final PermissionRequest request) {'
+    )
+  ) {
     return;
   }
 
   const result = content[0] + override + content[1];
   fs.writeFileSync(file, result);
   console.log('successfully patched inappbrowser.java');
-} catch(err) {
+} catch (err) {
   console.error(err);
 }
-
-
-

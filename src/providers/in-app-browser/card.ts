@@ -26,13 +26,11 @@ export class IABCardProvider {
   constructor(
     private payproProvider: PayproProvider,
     private logger: Logger,
-    // private statusBar: StatusBar,
     private events: Events,
-    // private actionSheetProvider: ActionSheetProvider,
     private bitpayIdProvider: BitPayIdProvider,
     private appIdentityProvider: AppIdentityProvider,
     private persistanceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider // private translate: TranslateService
+    private iab: InAppBrowserProvider
   ) {
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
