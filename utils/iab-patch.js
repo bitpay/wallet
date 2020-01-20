@@ -55,6 +55,18 @@ try {
       'inAppWebView.setWebChromeClient(new InAppChromeClient(thatWebView) {'
     );
 
+  const head = content[0].split('package org.apache.cordova.inappbrowser;');
+
+  if (head[1].includes('import android.webkit.PermissionRequest;')) {
+    return;
+  }
+  content[0] =
+    head[0] +
+    'package org.apache.cordova.inappbrowser;' +
+    '\n' +
+    'import android.webkit.PermissionRequest;' +
+    head[1];
+
   if (
     content[1].includes(
       'public void onPermissionRequest(final PermissionRequest request) {'
