@@ -251,6 +251,10 @@ export class ImportWalletPage {
       .getRootNavs()[0]
       .setRoot(TabsPage)
       .then(() => {
+        this.app
+          .getRootNav()
+          .getActiveChildNav()
+          .select(1);
         this.events.publish('Local/WalletListChange');
       });
   }

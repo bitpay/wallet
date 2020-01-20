@@ -1,0 +1,13 @@
+wallet-item-content {
+  ion-item {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .wallet-warning {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
+}

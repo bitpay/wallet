@@ -1,29 +1,25 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{ 'Advanced' | translate }}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content no-bounce>
-  <ion-list class="settings-list bp-list">
-    <ion-item class="with-label no-border">
-      <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
-      <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
-    </ion-item>
-    <label-tip type="info" header="no-header">
-      <div label-tip-body>
-        <div translate>
-          If enabled, wallets will also try to spend unconfirmed funds.
+<wide-header-page title="{{ 'Advanced' | translate }}">
+  <div page-content>
+    <ion-list class="settings-list bp-list">
+      <ion-item class="with-label no-border">
+        <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
+      </ion-item>
+      <label-tip type="info" header="no-header">
+        <div label-tip-body>
+          <div translate>
+            If enabled, wallets will also try to spend unconfirmed funds.
+          </div>
+          <div *ngIf="!isCopay" translate>
+            However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases.
+          </div>
         </div>
-        <div *ngIf="!isCopay" translate>
-          However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases.
-        </div>
-      </div>
-    </label-tip>
-  </ion-list>
-  <ion-list class="settings-list bp-list">
-    <button ion-item *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
-      Recover old wallets
-    </button>
-  </ion-list>
-</ion-content>
+      </label-tip>
+    </ion-list>
+    <ion-list class="settings-list bp-list">
+      <button ion-item *ngIf="oldProfileAvailable && wallets && wallets[0]" class="with-label no-border" (click)="openWalletRecoveryPage()" translate>
+        Recover old wallets
+      </button>
+    </ion-list>
+  </div>
+</wide-header-page>

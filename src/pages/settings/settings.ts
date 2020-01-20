@@ -51,6 +51,7 @@ export class SettingsPage {
   public isCordova: boolean;
   public lockMethod: string;
   public integrationServices = [];
+  public cardServices = [];
   public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
   public encryptEnabled: boolean;
@@ -58,6 +59,7 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
+  public balanceHidden: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -73,7 +75,6 @@ export class SettingsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
-    private externalLinkProvder: ExternalLinkProvider,
     private analyticsProvider: AnalyticsProvider
   ) {
     this.appName = this.app.info.nameCase;
@@ -88,6 +89,8 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
+
+    this.setBalanceHiddenFlag();
 
     const opts = {
       showHidden: true
@@ -112,7 +115,12 @@ export class SettingsPage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.integrationServices = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return false;
+        if (x.type == 'card') return false;
+        else return x;
+      });
+      this.cardServices = _.remove(_.clone(integrations), x => {
+        if ((x.name == 'debitcard' && x.linked) || x.type == 'exchange')
+          return false;
         else return x;
       });
     }, 200);
@@ -149,12 +157,6 @@ export class SettingsPage {
     if (!lockMethod || lockMethod == 'disabled') this.navCtrl.push(LockPage);
     if (lockMethod == 'pin') this.openPinModal('lockSetUp');
     if (lockMethod == 'fingerprint') this.checkFingerprint();
-  }
-
-  public openMerchantDirectorySite() {
-    this.externalLinkProvder.open(
-      `https://bitpay.com/directory/?hideGiftCards=true`
-    );
   }
 
   public openAddressBookPage(): void {
@@ -276,5 +278,20 @@ export class SettingsPage {
     this.navCtrl.push(AddPage, {
       isZeroState: true
     });
+  }
+
+  private setBalanceHiddenFlag() {
+    this.profileProvider
+      .getHideTotalBalanceFlag()
+      .then(isHidden => {
+        this.balanceHidden = isHidden;
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  public toggleHideBalanceFlag(): void {
+    this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
   }
 }

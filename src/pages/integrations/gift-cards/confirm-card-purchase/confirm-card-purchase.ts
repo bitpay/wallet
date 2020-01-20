@@ -25,8 +25,7 @@ import {
   EmailNotificationsProvider,
   FeeProvider,
   IncomingDataProvider,
-  TxConfirmNotificationProvider,
-  WalletTabsProvider
+  TxConfirmNotificationProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
@@ -45,7 +44,6 @@ import {
   CardConfig,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
-import { KeyProvider } from '../../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -95,7 +93,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
-    keyProvider: KeyProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
@@ -112,10 +109,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     translate: TranslateService,
     private payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
-    walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
-    AppProvider: AppProvider,
+    appProvider: AppProvider,
     statusBar: StatusBar
   ) {
     super(
@@ -142,11 +138,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txConfirmNotificationProvider,
       txFormatProvider,
       walletProvider,
-      walletTabsProvider,
       clipboardProvider,
       events,
-      AppProvider,
-      keyProvider,
+      appProvider,
       statusBar
     );
     this.configWallet = this.configProvider.get().wallet;
@@ -693,7 +687,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   async resetNav(card: GiftCard) {
     await this.navCtrl.popToRoot({ animate: false });
-    await this.navCtrl.parent.select(0);
 
     const numActiveCards = await this.getNumActiveCards();
     if (numActiveCards > 1) {

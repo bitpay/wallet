@@ -1,51 +1,48 @@
-<ion-item class="container-to" (click)="showMultiplesOutputs = !showMultiplesOutputs">
-  <span translate>To</span>
-  <div class="wallet">
-    <div class="address-coppied">
-      <div class="text-address">
-        <img class="coin-img-{{coin}}" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard')" src="assets/img/icon-{{coin}}-small.svg" alt="Coin">
+<ion-item>
+  <ion-label>
+    <div class="summary-item">
+      <span translate>Sending to</span>
+    </div>
+  </ion-label>
+  <ion-note item-end>
+    <div class="payment-proposal-to" *ngIf="!tx.hasMultiplesOutputs">
+      <div class="background-content" copy-to-clipboard="{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}">
+        <img class="coin-img" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard') || true" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
-        <span class="address-divider"></span>
-      </div>
 
-      <div class="ellipsis" *ngIf="!tx.hasMultiplesOutputs" copy-to-clipboard="{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}">
-        <span *ngIf="!contactName">{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}</span>
-        <span *ngIf="contactName">{{ contactName }}</span>
-      </div>
-
-      <div *ngIf="tx.hasMultiplesOutputs">
-        <span>
-          <span translate>Multiple recipients: </span>
-          <span>{{tx.recipientCount}}</span>
-        </span>
+        <span class="ellipsis" *ngIf="!contactName">{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}</span>
+        <span class="ellipsis" *ngIf="contactName">{{ contactName }}</span>
       </div>
     </div>
 
-    <div class="last-item" *ngIf="tx.hasMultiplesOutputs" item-end>
-      <button ion-button clear color="grey" icon-only>
-        <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
-        <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
-      </button>
-    </div>
-  </div>
+    <ion-row align-items-center class="wallet" *ngIf="tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
+      <ion-col>
+        <ion-icon item-start>
+          <img class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" />
+        </ion-icon>
+      </ion-col>
+      <ion-col>
+        <span class="note-container ellipsis" translate>Multiple recipients </span>
+      </ion-col>
+      <ion-col>
+        <span>({{tx.recipientCount}}):</span>
+      </ion-col>
+      <ion-col>
+        <button ion-button clear color="grey" icon-only item-end>
+          <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
+          <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-note>
+
 </ion-item>
 
-<ion-list detail-none *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
+<div *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
   <ion-item *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
-    <div item-left>
-      <h2>
-        <span translate>To</span>:
-      </h2>
-      <h3>
-        <span translate>Amount</span>:
-      </h3>
-      <p class="output-note" *ngIf="output.message">
-        <span translate>Note</span>:
-      </p>
-    </div>
-    <ion-note item-right text-end col-11>
-      <span class="output-note ellipsis">{{output.addressToShow || output.toAddress || output.address}}</span>
-      <span class="output-note ellipsis">{{output.amountStr}}
+    <ion-note class="secondary-note" item-right text-end>
+      <span>{{output.addressToShow || output.toAddress || output.address}}</span>
+      <span>{{output.amountStr}}
         <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
       </span>
       <p class="output-note" *ngIf="output.message">
@@ -53,4 +50,4 @@
       </p>
     </ion-note>
   </ion-item>
-</ion-list>
+</div>

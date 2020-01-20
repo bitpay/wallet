@@ -1,0 +1,112 @@
+page-cards {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .key-name {
+      white-space: normal;
+      overflow: hidden;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      box-orient: vertical;
+      -webkit-box-orient: vertical;
+      margin-right: 12px;
+    }
+  }
+
+  ion-item-sliding.card-item-sliding {
+    padding-bottom: 1rem;
+
+    button.item.item-block {
+      border-radius: 11px;
+
+      .item-inner {
+        border: 0;
+      }
+    }
+  }
+
+  ion-item-sliding.item-wrapper {
+    $gift-card-item-side-padding: 4%;
+    $gift-card-item-height: 59px;
+
+    background: none;
+    padding-left: $gift-card-item-side-padding;
+    padding-right: $gift-card-item-side-padding;
+
+    ion-item-options {
+      border-bottom: 0;
+      margin-top: 1px;
+      height: $gift-card-item-height + 16px;
+
+      &[side*='right'] {
+        padding-right: $gift-card-item-side-padding;
+      }
+
+      &[side*='left'] {
+        padding-left: $gift-card-item-side-padding;
+      }
+
+      button.button {
+        border-radius: 5px;
+        font-weight: 400;
+        min-width: 73px;
+        padding: 15px;
+
+        .archive {
+          &__icon {
+            font-size: 20px;
+            margin-top: -1px;
+          }
+
+          &__text {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    button.item.item-block {
+      font-size: 16px;
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
+
+      .item-inner {
+        height: $gift-card-item-height + 16px;
+
+        ion-label {
+          &.label-ios,
+          &.label-md {
+            display: flex;
+            height: $gift-card-item-height;
+            align-items: center;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Styles for gift cards and Bitpay cards
+  .sliding-container {
+    display: block;
+  }
+
+  .add-card-button {
+    @include center;
+    color: color($colors, grey);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    height: 100px;
+    background: #ffffff;
+    width: 100%;
+    margin-top: -35px;
+    img {
+      border-radius: 12px;
+      padding: 13px;
+      margin-right: 17px;
+    }
+  }
+}

@@ -17,7 +17,6 @@ import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
 import env from '../../environments';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-scan',
@@ -68,7 +67,6 @@ export class ScanPage {
     private logger: Logger,
     public translate: TranslateService,
     private navParams: NavParams,
-    private walletTabsProvider: WalletTabsProvider,
     private platform: Platform,
     private actionSheetProvider: ActionSheetProvider
   ) {
@@ -89,6 +87,7 @@ export class ScanPage {
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
     this.isCordova = this.platformProvider.isCordova;
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
 
   ionViewDidLoad() {
@@ -96,6 +95,7 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
+    this.tabBarElement.style.display = 'flex';
     this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
     this.events.unsubscribe(
       'finishIncomingDataMenuEvent',
@@ -117,13 +117,12 @@ export class ScanPage {
   }
 
   ionViewWillEnter() {
+    this.tabBarElement.style.display = 'none';
     this.initializeBackButtonHandler();
     this.fromAddressbook = this.navParams.data.fromAddressbook;
     this.fromImport = this.navParams.data.fromImport;
     this.fromJoin = this.navParams.data.fromJoin;
-    this.fromSend =
-      this.walletTabsProvider.getFromPage() &&
-      this.walletTabsProvider.getFromPage().fromSend;
+    this.fromSend = this.navParams.data.fromSend;
 
     if (!env.activateScanner) {
       // test scanner visibility in E2E mode
@@ -221,7 +220,7 @@ export class ScanPage {
   private initializeBackButtonHandler(): void {
     this.unregisterBackButtonAction = this.platform.registerBackButtonAction(
       () => {
-        this.close();
+        this.closeCam();
       }
     );
   }
@@ -328,7 +327,7 @@ export class ScanPage {
       this.navCtrl.pop();
     } else if (this.fromSend) {
       this.events.publish('Local/AddressScan', { value: contents });
-      this.close();
+      this.navCtrl.pop();
     } else {
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
@@ -391,9 +390,7 @@ export class ScanPage {
     }
   }
 
-  public close() {
-    this.walletTabsProvider.getTabNav()
-      ? this.events.publish('ExitScan')
-      : this.navCtrl.parent.select(0);
+  public closeCam() {
+    this.navCtrl.pop();
   }
 }

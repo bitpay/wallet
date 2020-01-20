@@ -1,11 +1,10 @@
-<ion-header>
-  <ion-navbar class="navbar-transparent">
-    <ion-buttons left *ngIf="!fromAddressbook && !fromImport && !fromJoin">
-      <button class="modal-close-button" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="closeCam()" ion-button>
+        <ion-icon ios="md-close" md="md-close" color="light"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{'Scan' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -17,7 +16,7 @@
 
       <zxing-scanner #scanner class="test-class" start="true" [device]="selectedDevice" (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
       <div class="guides">
-        <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
+        <img class="svg qr-scan-guides" src="assets/img/scan.png">
       </div>
 
     </div>

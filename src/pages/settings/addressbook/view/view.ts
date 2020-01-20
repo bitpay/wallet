@@ -19,6 +19,7 @@ export class AddressbookViewPage {
   public address: string;
   public coin: string;
   public email: string;
+  public tag?: string;
   public name: string;
   public network: string;
 
@@ -36,6 +37,7 @@ export class AddressbookViewPage {
     this.network = addrData.network;
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
+    this.tag = this.navParams.data.contact.tag;
   }
 
   ionViewDidLoad() {}
@@ -45,6 +47,7 @@ export class AddressbookViewPage {
       toAddress: this.address,
       name: this.name,
       email: this.email,
+      destinationTag: this.tag,
       coin: this.coin,
       recipientType: 'contact',
       network: this.network

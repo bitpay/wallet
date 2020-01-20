@@ -1,6 +1,5 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { TestUtils } from '../../../test';
-import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
 
 // pages
 import { TransferToPage } from './transfer-to';
@@ -17,7 +16,6 @@ describe('TransferToPage', () => {
   };
 
   beforeEach(async(() => {
-    spyOn(WalletTabsChild.prototype, 'getParentWallet').and.returnValue(wallet);
     TestUtils.configurePageTestingModule([TransferToPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;

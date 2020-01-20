@@ -1,7 +1,30 @@
 wide-header-page,
 card-catalog-page {
   @include fix-ios-bg-scroll();
+  .scroll-content {
+    .wrapper {
+      background-color: white;
+      div[page-content] {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
 
+      &--feather {
+        background-color: $feather-dark;
+      }
+    }
+  }
+  ion-buttons[right] {
+    .button {
+      padding: 10px;
+      border-radius: 17.5px;
+      background-color: rgba(155, 163, 174, 0.12);
+      margin-right: 13px;
+    }
+  }
   expandable-header-primary {
     line-height: 1.2;
   }
@@ -19,8 +42,8 @@ card-catalog-page {
       color: black;
       font-size: 25px;
       font-weight: 500;
-      padding-top: 30px;
-      padding-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       padding-left: 20px;
     }
 

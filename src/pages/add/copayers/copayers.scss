@@ -1,9 +1,15 @@
 page-copayers {
+  .close-container.button-default {
+    color: color($colors, dark);
+    box-shadow: none;
+  }
+  .toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .copayers-header {
     width: 100%;
-    height: 28rem;
-    background: linear-gradient(180deg, #14245e -0%, #22378c);
-    color: white;
     &-content {
       padding: 3rem 3rem 3rem 3rem;
       @media (max-width: 370px) {
@@ -24,10 +30,8 @@ page-copayers {
   }
   .qr-container {
     background: none;
-    padding: 30px;
     .qr-card {
       cursor: pointer;
-      margin-top: -11rem;
       padding: 2.5rem;
       border: none;
       width: 100%;
@@ -45,9 +49,7 @@ page-copayers {
 
   .white-card {
     background: white;
-    padding: 0rem 3rem;
-    border-radius: 5px;
-    margin: 0rem 2rem;
+    padding: 3rem;
     .title {
       font-size: 16px;
       font-weight: 500;

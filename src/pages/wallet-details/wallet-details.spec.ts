@@ -49,6 +49,7 @@ describe('WalletDetailsPage', () => {
     });
     describe('ionViewDidEnter', () => {
       it('should publish to wallet focus event', () => {
+        instance.ionViewDidLoad();
         const subscribeSpy = spyOn(instance.events, 'publish');
         instance.ionViewDidEnter();
         expect(subscribeSpy).toHaveBeenCalled();
@@ -84,6 +85,7 @@ describe('WalletDetailsPage', () => {
     });
     describe('showHistory', () => {
       it('should add the next page of transactions to the list', () => {
+        instance.ionViewDidLoad();
         instance.currentPage = 0;
         instance.wallet.completeHistory = new Array(11).map(() => {});
         const spy = spyOn(instance, 'groupHistory');

@@ -52,7 +52,8 @@ export class AddressbookAddPage {
           Validators.required,
           new AddressValidator(this.addressProvider).isValid
         ])
-      ]
+      ],
+      tag: ['']
     });
     if (this.navParams.data.addressbookEntry) {
       this.addressBookAdd.controls['address'].setValue(
@@ -101,5 +102,11 @@ export class AddressbookAddPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromAddressbook: true });
+  }
+
+  public getCoinAndNetwork(): { coin: string; network: string } {
+    return this.addressProvider.getCoinAndNetwork(
+      this.addressBookAdd.value.address
+    );
   }
 }

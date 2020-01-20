@@ -76,14 +76,15 @@ describe('ConfirmPage', () => {
   describe('Methods', () => {
     describe('chooseFeeLevel', () => {
       it('should display a fee modal', () => {
-        const modal = {
-          present: () => {},
-          onDidDismiss: () => {}
-        };
-        const presentSpy = spyOn(modal, 'present');
-        instance.modalCtrl.create = () => modal;
+        const appSheet = spyOn(
+          instance.actionSheetProvider,
+          'createChooseFeeLevel'
+        ).and.returnValue({
+          present() {},
+          onDidDismiss() {}
+        });
         instance.chooseFeeLevel();
-        expect(presentSpy).toHaveBeenCalled();
+        expect(appSheet).toHaveBeenCalled();
       });
     });
     describe('onFeeModalDismiss', () => {

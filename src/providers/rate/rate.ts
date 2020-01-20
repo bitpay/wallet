@@ -74,14 +74,15 @@ export class RateProvider {
     return this.ratesAvailable[chain];
   }
 
-  public toFiat(satoshis: number, code: string, chain): number {
+  public toFiat(satoshis: number, code: string, chain, customRate?): number {
     if (!this.isCoinAvailable(chain)) {
       return null;
     }
+    const rate = customRate || this.getRate(code, chain);
     return (
       satoshis *
       (1 / this.currencyProvider.getPrecision(chain).unitToSatoshi) *
-      this.getRate(code, chain)
+      rate
     );
   }
 

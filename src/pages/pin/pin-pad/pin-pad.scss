@@ -1,6 +1,6 @@
 pin-pad {
   width: 100%;
-
+  $short-screen: 600px;
   .amount-delete {
     margin-right: 10px;
   }
@@ -52,20 +52,23 @@ pin-pad {
     font-size: 32px;
     display: flex;
     justify-content: space-around;
+    @media (max-height: $short-screen) {
+      font-size: 24px;
+    }
 
     .col {
       height: 9vh;
-      min-height: 65px;
+      min-height: 58px;
+      @media (max-height: $short-screen) {
+        height: 7vh;
+        min-height: 38px;
+      }
       cursor: pointer;
 
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-
-      @media (max-height: 500px) {
-        min-height: 60px;
-      }
 
       .letters {
         color: #9b9b9b;

@@ -34,14 +34,12 @@ import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
-import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 import { ConfirmPage } from '../confirm/confirm';
 @Component({
   selector: 'page-amount',
   templateUrl: 'amount.html'
 })
-export class AmountPage extends WalletTabsChild {
+export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
   public unit: string;
@@ -68,11 +66,13 @@ export class AmountPage extends WalletTabsChild {
 
   public showSendMax: boolean;
   public allowSend: boolean;
+  public useSmallFontSize: boolean;
   public recipientType: string;
   public toAddress: string;
   public network: string;
   public name: string;
   public email: string;
+  public destinationTag?: string;
   public color: string;
   public useSendMax: boolean;
   public useAsModal: boolean;
@@ -80,6 +80,8 @@ export class AmountPage extends WalletTabsChild {
   public toWalletId: string;
   private _id: string;
   public requestingAmount: boolean;
+  public wallet;
+  any;
 
   public cardName: string;
   public cardConfig: CardConfig;
@@ -91,21 +93,20 @@ export class AmountPage extends WalletTabsChild {
     private giftCardProvider: GiftCardProvider,
     private currencyProvider: CurrencyProvider,
     private logger: Logger,
-    navCtrl: NavController,
     private navParams: NavParams,
     private electronProvider: ElectronProvider,
     private platformProvider: PlatformProvider,
-    profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    walletTabsProvider: WalletTabsProvider,
     private events: Events,
     private viewCtrl: ViewController,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private profileProvider: ProfileProvider,
+    private navCtrl: NavController
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     this.useAsModal = this.navParams.data.useAsModal;
     this.recipientType = this.navParams.data.recipientType;
@@ -113,6 +114,7 @@ export class AmountPage extends WalletTabsChild {
     this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
+    this.destinationTag = this.navParams.data.destinationTag;
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
     this.description = this.navParams.data.description;
@@ -123,6 +125,7 @@ export class AmountPage extends WalletTabsChild {
     this.showSendMax = false;
     this.useSendMax = false;
     this.allowSend = false;
+    this.useSmallFontSize = false;
 
     this.availableUnits = [];
     this.expression = '';
@@ -210,7 +213,7 @@ export class AmountPage extends WalletTabsChild {
     }
 
     if (event.key.match(this.reNr)) {
-      this.pushDigit(event.key, true);
+      this.pushDigit(event.key);
     } else if (event.key.match(this.reOp)) {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
@@ -356,21 +359,17 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public isSendMaxButtonShown() {
-    return (
-      !this.expression &&
-      !this.requestingAmount &&
-      this.showSendMax &&
-      !this.useAsModal
-    );
+    return !this.requestingAmount && !this.useAsModal;
   }
 
-  public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
+  public resizeFont(): void {
+    this.useSmallFontSize = this.expression && this.expression.length >= 10;
+  }
+
+  public pushDigit(digit: string): void {
     this.useSendMax = false;
     if (digit === 'delete') {
       return this.removeDigit();
-    }
-    if (this.isSendMaxButtonShown() && digit === '0' && !isHardwareKeyboard) {
-      return this.sendMax();
     }
     if (
       this.expression &&
@@ -381,6 +380,7 @@ export class AmountPage extends WalletTabsChild {
       this.expression = (this.expression + digit).replace('..', '.');
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.resizeFont();
     });
   }
 
@@ -389,6 +389,7 @@ export class AmountPage extends WalletTabsChild {
       this.expression = this.expression.slice(0, -1);
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.resizeFont();
     });
   }
 
@@ -416,6 +417,10 @@ export class AmountPage extends WalletTabsChild {
   private isExpression(val: string): boolean {
     const regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
     return regex.test(val);
+  }
+
+  public isNumber(expression): boolean {
+    return _.isNumber(expression) ? true : false;
   }
 
   private processAmount(): void {
@@ -565,13 +570,6 @@ export class AmountPage extends WalletTabsChild {
         toWalletId: this.toWalletId,
         cardName: this.cardName
       };
-
-      if (this.wallet) {
-        data.network = this.wallet.network;
-        if (this.wallet.credentials.token) {
-          data.tokenAddress = this.wallet.credentials.token.address;
-        }
-      }
     } else {
       let amount = _amount;
       amount = unit.isFiat
@@ -589,19 +587,28 @@ export class AmountPage extends WalletTabsChild {
         description: this.description
       };
 
-      if (this.wallet) {
-        data.network = this.wallet.network;
-        if (this.wallet.credentials.token) {
-          data.tokenAddress = this.wallet.credentials.token.address;
-        }
-      }
-
       if (unit.isFiat) {
         data.fiatAmount = _amount;
         data.fiatCode = this.fiatCode;
       }
     }
     this.useSendMax = null;
+
+    if (this.wallet) {
+      data.walletId = this.wallet.credentials.walletId;
+      data.network = this.wallet.network;
+      if (this.wallet.credentials.token) {
+        data.tokenAddress = this.wallet.credentials.token.address;
+      }
+    }
+
+    if (this.destinationTag) {
+      data.destinationTag = this.destinationTag;
+    }
+
+    if (this.navParams.data.fromWalletDetails) {
+      data.fromWalletDetails = true;
+    }
 
     if (this.cardName && !skipActivationFeeAlert) {
       const activationFee = getActivationFee(data.amount, this.cardConfig);

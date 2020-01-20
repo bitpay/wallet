@@ -28,6 +28,7 @@ import {
   DownloadProvider,
   ElectronProvider,
   EmailNotificationsProvider,
+  ExchangeRatesProvider,
   ExternalLinkProvider,
   FCMNG,
   FeedbackProvider,
@@ -49,7 +50,6 @@ import {
   PersistenceProvider,
   PlatformProvider,
   PopupProvider,
-  PriceProvider,
   ProfileProvider,
   PushNotificationsProvider,
   QRScanner,
@@ -70,8 +70,7 @@ import {
   TxFormatProvider,
   UserAgent,
   Vibration,
-  WalletProvider,
-  WalletTabsProvider
+  WalletProvider
 } from './index';
 
 @NgModule({
@@ -117,7 +116,7 @@ import {
     OnGoingProcessProvider,
     PayproProvider,
     PlatformProvider,
-    PriceProvider,
+    ExchangeRatesProvider,
     ProfileProvider,
     PopupProvider,
     QRScanner,
@@ -144,8 +143,7 @@ import {
     EmailNotificationsProvider,
     DecimalPipe,
     PersistenceProvider,
-    File,
-    WalletTabsProvider
+    File
   ]
 })
 export class ProvidersModule {}

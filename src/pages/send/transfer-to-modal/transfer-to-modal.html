@@ -1,16 +1,11 @@
-<ion-header no-border>
-  <ion-navbar class="app-color">
-    <ion-buttons left>
-      <button class="modal-close-button" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>{{'Transfer to' | translate}}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <ion-searchbar placeholder="{{'Search Wallets or Contacts' | translate}}" [(ngModel)]="search"></ion-searchbar>
-
-  <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" (addRecipient)="close($event)"></page-transfer-to>
-</ion-content>
+<wide-header-page title="{{'Send to' | translate}}" hideBackButton="true">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-searchbar placeholder="{{'Search Wallets or Contacts' | translate}}" [(ngModel)]="search"></ion-searchbar>
+    <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="true" (addRecipient)="close($event)"></page-transfer-to>
+  </div>
+</wide-header-page>

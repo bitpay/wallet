@@ -1,38 +1,58 @@
 page-bitpay-card-intro {
-  ion-content {
-    background: url(../assets/img/onboarding-welcome-bg.png),
-      linear-gradient(
-        to bottom,
-        rgba(30, 49, 134, 1) 0%,
-        rgba(17, 27, 73, 1) 100%
-      );
-    background-position: top center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    color: #fff;
-    .bitpayCard {
-      &-illustration {
-        display: flex;
-        justify-content: center;
-        padding: 2rem;
-        &-img {
-          width: 100%;
-          max-width: 400px;
-        }
-      }
-      &-info:before {
-        font-size: 22px;
-        line-height: 22px;
-        margin-top: 6px;
+  ion-header {
+    .info {
+      opacity: 0.22;
+    }
+  }
+
+  .bitpayCard {
+    &-header {
+      background: linear-gradient(180deg, #ffffff 0%, #e2e5f2 100%);
+      border-radius: 0 0 65% 25%;
+      overflow: hidden;
+      text-align: center;
+    }
+    &-img {
+      height: 306px;
+      img {
+        margin-top: 38px;
+        width: 232px;
       }
     }
-    ion-slides {
-      max-height: 140px;
-      padding: 10px;
-      .slider-text {
-        text-align: center;
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.7);
+    &-content {
+      padding: 30px 40px;
+      .title {
+        margin-top: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: -0.2px;
+        line-height: 33px;
+      }
+      p {
+        color: #565d6d;
+        font-size: 16px;
+        line-height: 25px;
+      }
+    }
+    &-item {
+      margin-top: 50px;
+      &-header {
+        display: flex;
+        align-items: center;
+        img {
+          height: 48px;
+          width: 48px;
+        }
+      }
+      &-title {
+        width: 175px;
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 31px;
+        margin-left: 1.5rem;
+      }
+      p {
+        padding-left: 64px;
       }
     }
   }

@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Content } from 'ionic-angular';
+import { Content, Navbar } from 'ionic-angular';
 import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
@@ -9,8 +9,15 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 export class WideHeaderPage {
   @Input()
   headerColor: string;
+
   @Input()
   title: string;
+
+  @Input()
+  hideBackButton: boolean;
+
+  @ViewChild(Navbar)
+  navBar: Navbar;
 
   @ViewChild(Content)
   scrollArea: Content;

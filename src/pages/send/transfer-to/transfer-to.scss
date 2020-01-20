@@ -3,20 +3,9 @@ page-transfer-to {
     display: flex;
     text-align: center;
   }
-  .wallet-warning {
-    color: color($colors, danger);
-    ion-label {
-      white-space: inherit;
-    }
-  }
   .wallet-disabled {
     background-color: #fbfbfb;
-    ion-icon {
-      img {
-        background-color: #d4d4d4 !important;
-      }
-    }
-    .item-title {
+    .main-label {
       color: #d4d4d4;
     }
   }

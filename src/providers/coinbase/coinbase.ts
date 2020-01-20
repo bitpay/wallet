@@ -1326,7 +1326,8 @@ export class CoinbaseProvider {
         location: '33 Countries',
         page: 'CoinbasePage',
         show: !!this.configProvider.get().showIntegration['coinbase'],
-        linked: isActive
+        linked: isActive,
+        type: 'exchange'
       });
     });
   }

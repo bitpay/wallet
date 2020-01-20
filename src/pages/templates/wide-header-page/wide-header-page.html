@@ -1,22 +1,23 @@
 <ion-header class="wide-header" [ngClass]="{cordova: platformProvider.isCordova}">
-  <ion-navbar [navbar-bg]="headerColor">
+  <ion-navbar [navbar-bg]="headerColor" [hideBackButton]="hideBackButton">
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{title}}
       </div>
     </ion-title>
+    <ng-content select="[left]"></ng-content>
     <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+      <expandable-header-primary class="ellipsis">
+        {{title}}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
   <div class="wrapper">
-    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
-        <expandable-header-primary>
-          {{title}}
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
     <ng-content select="[page-content]"></ng-content>
   </div>
 </ion-content>
