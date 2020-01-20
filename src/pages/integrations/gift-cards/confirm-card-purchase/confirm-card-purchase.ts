@@ -387,6 +387,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       });
     }
 
+    if (
+      instructions &&
+      instructions[0].outputs[0] &&
+      instructions[0].outputs[0].invoiceID
+    ) {
+      txp.invoiceID = instructions[0].outputs[0].invoiceID;
+    }
+
     if (wallet.credentials.token) {
       txp.tokenAddress = wallet.credentials.token.address;
     }
