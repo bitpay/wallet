@@ -1,12 +1,14 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import {
   AppProvider,
   ExternalLinkProvider,
+  FeedbackProvider,
   Logger,
   PersistenceProvider,
   ProfileProvider,
@@ -32,7 +34,10 @@ export class HomePage {
   private showPriceChart: boolean;
   @ViewChild('priceCard')
   priceCard;
-
+  @ViewChild('showSurvey')
+  showSurvey;
+  @ViewChild('showCard')
+  showCard;
   @ViewChild(Slides) slides: Slides;
   public serverMessages: any[];
   public showServerMessage: boolean;
@@ -76,6 +81,7 @@ export class HomePage {
   public balanceHidden: boolean = true;
   public homeIntegrations;
   public fetchingStatus: boolean;
+  public showRateCard: boolean;
 
   private lastWeekRatesArray;
   private zone;
@@ -105,12 +111,15 @@ export class HomePage {
     private currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider,
     private simplexProvider: SimplexProvider,
+    private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
   ionViewWillEnter() {
+    this.showSurveyCard();
+    this.checkFeedbackInfo();
     this.checkPriceChart();
     this.isBalanceHidden();
     this.fetchStatus();
@@ -440,5 +449,47 @@ export class HomePage {
   public toggleHideBalanceFlag(): void {
     this.balanceHidden = !this.balanceHidden;
     this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
+  }
+
+  private async showSurveyCard() {
+    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
+    this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
+  private checkFeedbackInfo() {
+    // Hide feeback card if survey card is shown
+    // TODO remove this condition
+    if (this.showSurvey) return;
+    this.persistenceProvider.getFeedbackInfo().then(info => {
+      if (!info) {
+        this.initFeedBackInfo();
+      } else {
+        const feedbackInfo = info;
+        // Check if current version is greater than saved version
+        const currentVersion = this.appProvider.info.version;
+        const savedVersion = feedbackInfo.version;
+        const isVersionUpdated = this.feedbackProvider.isVersionUpdated(
+          currentVersion,
+          savedVersion
+        );
+        if (!isVersionUpdated) {
+          this.initFeedBackInfo();
+          return;
+        }
+        const now = moment().unix();
+        const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
+        this.showRateCard = timeExceeded && !feedbackInfo.sent;
+        this.showCard.setShowRateCard(this.showRateCard);
+      }
+    });
+  }
+
+  private initFeedBackInfo() {
+    this.persistenceProvider.setFeedbackInfo({
+      time: moment().unix(),
+      version: this.appProvider.info.version,
+      sent: false
+    });
+    this.showRateCard = false;
   }
 }

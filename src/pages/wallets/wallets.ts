@@ -8,7 +8,6 @@ import {
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
@@ -30,7 +29,6 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -53,10 +51,6 @@ interface UpdateWalletOptsI {
   templateUrl: 'wallets.html'
 })
 export class WalletsPage {
-  @ViewChild('showCard')
-  showCard;
-  @ViewChild('showSurvey')
-  showSurvey;
   @ViewChild('showEthLiveCard')
   showEthLiveCard;
   @ViewChild('priceCard')
@@ -72,7 +66,6 @@ export class WalletsPage {
   public remainingTimeStr: string;
   public slideDown: boolean;
 
-  public showRateCard: boolean;
   public hideHomeIntegrations: boolean;
   public accessDenied: boolean;
   public isBlur: boolean;
@@ -100,7 +93,6 @@ export class WalletsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private payproProvider: PayproProvider,
     private persistenceProvider: PersistenceProvider,
-    private feedbackProvider: FeedbackProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
@@ -179,9 +171,7 @@ export class WalletsPage {
 
     // Required delay to improve performance loading
     setTimeout(() => {
-      this.showSurveyCard();
       this.showEthLive();
-      this.checkFeedbackInfo();
       this.checkEmailLawCompliance();
     }, 2000);
 
@@ -355,11 +345,6 @@ export class WalletsPage {
     }
   };
 
-  private async showSurveyCard() {
-    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
-    this.showSurvey.setShowSurveyCard(!hideSurvey);
-  }
-
   private async showEthLive() {
     const hideEthLiveCard = await this.persistenceProvider.getEthLiveCardFlag();
     if (!hideEthLiveCard) {
@@ -371,34 +356,6 @@ export class WalletsPage {
       });
       this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
     }
-  }
-
-  private checkFeedbackInfo() {
-    // Hide feeback card if survey card is shown
-    // TODO remove this condition
-    if (this.showSurvey) return;
-    this.persistenceProvider.getFeedbackInfo().then(info => {
-      if (!info) {
-        this.initFeedBackInfo();
-      } else {
-        const feedbackInfo = info;
-        // Check if current version is greater than saved version
-        const currentVersion = this.appProvider.info.version;
-        const savedVersion = feedbackInfo.version;
-        const isVersionUpdated = this.feedbackProvider.isVersionUpdated(
-          currentVersion,
-          savedVersion
-        );
-        if (!isVersionUpdated) {
-          this.initFeedBackInfo();
-          return;
-        }
-        const now = moment().unix();
-        const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
-        this.showRateCard = timeExceeded && !feedbackInfo.sent;
-        this.showCard.setShowRateCard(this.showRateCard);
-      }
-    });
   }
 
   public checkClipboard() {
@@ -492,15 +449,6 @@ export class WalletsPage {
     this.countDown = setInterval(() => {
       setExpirationTime();
     }, 1000);
-  }
-
-  private initFeedBackInfo() {
-    this.persistenceProvider.setFeedbackInfo({
-      time: moment().unix(),
-      version: this.appProvider.info.version,
-      sent: false
-    });
-    this.showRateCard = false;
   }
 
   private fetchTxHistory(opts: UpdateWalletOptsI) {

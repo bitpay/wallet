@@ -43,6 +43,9 @@
     </div>
   </div>
 
+  <page-feedback-card #showCard></page-feedback-card>
+  <page-survey-card #showSurvey></page-survey-card>
+
   <div class="total-amount-container" (longPress)="toggleHideBalanceFlag()">
     <div class="section-header" translate>Total cash value</div>
     <div *ngIf="!balanceHidden">
