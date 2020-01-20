@@ -50,6 +50,7 @@
     "fix:tslint": "tslint --fix --project . && tslint --fix '{test,electron,src}/**/*.ts'",
     "fix:prettier": "prettier --write '{*,**/*}.{js,ts,md,json,scss}'",
     "fix": "npm run fix:tslint && npm run fix:prettier",
+    "fix:iab": "node ./utils/iab-patch.js",
     "env:desktop": "rm -f src/environments/index.ts && cp src/environments/desktop.ts src/environments/index.ts \n\n# Environment set to: desktop\n\n",
     "env:prod": "rm -f src/environments/index.ts && cp src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n",
     "env:dev": "rm -f src/environments/index.ts && cp src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
