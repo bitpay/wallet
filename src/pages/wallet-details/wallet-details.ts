@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -97,6 +98,7 @@ export class WalletDetailsPage {
     private profileProvider: ProfileProvider,
     private viewCtrl: ViewController,
     private platformProvider: PlatformProvider,
+    private statusBar: StatusBar,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider
   ) {
@@ -142,10 +144,19 @@ export class WalletDetailsPage {
   }
 
   ionViewWillEnter() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleLightContent();
+    }
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
+  }
+
+  ionViewWillLeave() {
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
   }
 
   // Start by firing a walletFocus event.
