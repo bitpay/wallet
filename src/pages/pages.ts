@@ -91,12 +91,12 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
-import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
-import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
-import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
-import { WalletGroupOnboardingPage } from '../pages/settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
-import { WalletGroupQrExportPage } from '../pages/settings/wallet-group-settings/wallet-group-qr-export/wallet-group-qr-export';
-import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
+import { ExtendedPrivateKeyPage } from '../pages/settings/key-settings/extended-private-key/extended-private-key';
+import { KeyDeletePage } from '../pages/settings/key-settings/key-delete/key-delete';
+import { KeyNamePage } from '../pages/settings/key-settings/key-name/key-name';
+import { KeyOnboardingPage } from '../pages/settings/key-settings/key-onboarding/key-onboarding';
+import { KeyQrExportPage } from '../pages/settings/key-settings/key-qr-export/key-qr-export';
+import { KeySettingsPage } from '../pages/settings/key-settings/key-settings';
 
 /* Wallet Settings */
 import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-delete/wallet-delete';
@@ -214,12 +214,12 @@ export const PAGES = [
   WalletServiceUrlPage,
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
-  WalletGroupExtendedPrivateKeyPage,
-  WalletGroupDeletePage,
-  WalletGroupQrExportPage,
-  WalletGroupSettingsPage,
-  WalletGroupNamePage,
-  WalletGroupOnboardingPage,
+  ExtendedPrivateKeyPage,
+  KeyDeletePage,
+  KeyQrExportPage,
+  KeySettingsPage,
+  KeyNamePage,
+  KeyOnboardingPage,
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,

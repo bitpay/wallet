@@ -2,10 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { Slides, ViewController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-wallet-group-onboarding',
-  templateUrl: 'wallet-group-onboarding.html'
+  selector: 'page-key-onboarding',
+  templateUrl: 'key-onboarding.html'
 })
-export class WalletGroupOnboardingPage {
+export class KeyOnboardingPage {
   @ViewChild('walletGroupOnboardingSlides')
   walletGroupOnboardingSlides: Slides;
 

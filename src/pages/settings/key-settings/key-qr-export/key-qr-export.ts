@@ -4,19 +4,21 @@ import { NavController, NavParams } from 'ionic-angular';
 
 // providers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { KeyProvider } from '../../../../providers/key/key';
 import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
-  selector: 'page-wallet-group-extended-private-key',
-  templateUrl: 'wallet-group-extended-private-key.html'
+  selector: 'page-key-qr-export',
+  templateUrl: 'key-qr-export.html'
 })
-export class WalletGroupExtendedPrivateKeyPage {
+export class KeyQrExportPage {
   public walletsGroup;
   public keysEncrypted: boolean;
-  public xPrivKey: string;
+  public code: string;
+  public appName: string;
 
   private keyId;
 
@@ -28,17 +30,19 @@ export class WalletGroupExtendedPrivateKeyPage {
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private appProvider: AppProvider
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: WalletExtendedPrivateKeyPage');
+    this.logger.info('Loaded: KeyQrExportPage');
   }
 
   ionViewWillEnter() {
     this.keyId = this.navParams.data.keyId;
     this.walletsGroup = this.profileProvider.getWalletGroup(this.keyId);
     this.keysEncrypted = this.walletsGroup.isPrivKeyEncrypted;
+    this.appName = this.appProvider.info.nameCase;
   }
 
   ionViewDidEnter() {
@@ -46,8 +50,8 @@ export class WalletGroupExtendedPrivateKeyPage {
       .handleEncryptedWallet(this.keyId)
       .then((password: string) => {
         const keys = this.keyProvider.get(this.keyId, password);
-        this.xPrivKey = keys.xPrivKey;
         this.keysEncrypted = false;
+        this.generateQrCode(keys);
       })
       .catch(err => {
         if (err && err.message != 'PASSWORD_CANCELLED') {
@@ -56,6 +60,26 @@ export class WalletGroupExtendedPrivateKeyPage {
         }
         this.navCtrl.pop();
       });
+  }
+
+  public generateQrCode(keys) {
+    if (!keys || !keys.mnemonic) {
+      const err = this.translate.instant(
+        'Exporting via QR not supported for this wallet'
+      );
+      const title = this.translate.instant('Error');
+      this.showErrorInfoSheet(err, title);
+      return;
+    }
+
+    const mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
+      this.keyId
+    );
+    this.code =
+      '1|' + keys.mnemonic + '|null|null|' + mnemonicHasPassphrase + '|null';
+    this.logger.debug(
+      'QR code generated. mnemonicHasPassphrase: ' + mnemonicHasPassphrase
+    );
   }
 
   private showErrorInfoSheet(

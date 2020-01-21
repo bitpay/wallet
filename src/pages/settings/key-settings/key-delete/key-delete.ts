@@ -11,10 +11,10 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../providers/push-notifications/push-notifications';
 
 @Component({
-  selector: 'page-wallet-group-delete',
-  templateUrl: 'wallet-group-delete.html'
+  selector: 'page-key-delete',
+  templateUrl: 'key-delete.html'
 })
-export class WalletGroupDeletePage {
+export class KeyDeletePage {
   public walletsGroup;
 
   private keyId: string;
@@ -32,7 +32,7 @@ export class WalletGroupDeletePage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: WalletGroupDeletePage');
+    this.logger.info('Loaded: KeyDeletePage');
   }
 
   ionViewWillEnter() {
