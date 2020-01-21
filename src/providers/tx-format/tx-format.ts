@@ -54,12 +54,17 @@ export class TxFormatProvider {
     return this.formatAmount(coin, satoshis) + ' ' + coin.toUpperCase();
   }
 
-  public toFiat(coin: string, satoshis: number, code: string): Promise<string> {
+  public toFiat(
+    coin: string,
+    satoshis: number,
+    code: string,
+    opts?: { rates? }
+  ): Promise<string> {
     // TODO not a promise
     return new Promise(resolve => {
       if (isNaN(satoshis)) return resolve();
       var v1;
-      v1 = this.rate.toFiat(satoshis, code, coin);
+      v1 = this.rate.toFiat(satoshis, code, coin, opts);
       if (!v1) return resolve(null);
       return resolve(v1.toFixed(2));
     });
@@ -163,7 +168,7 @@ export class TxFormatProvider {
     coin: Coin,
     amount,
     currency: string,
-    onlyIntegers?: boolean
+    opts?: { onlyIntegers?: boolean; rates? }
   ) {
     const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
     const { unitToSatoshi, unitDecimals } = this.currencyProvider.getPrecision(
@@ -175,11 +180,14 @@ export class TxFormatProvider {
 
     // If fiat currency
     if (!Coin[currency] && currency != 'sat') {
-      let formattedAmount = onlyIntegers
-        ? this.filter.formatFiatAmount(amount.toFixed(0))
-        : this.filter.formatFiatAmount(amount);
+      let formattedAmount =
+        opts && opts.onlyIntegers
+          ? this.filter.formatFiatAmount(amount.toFixed(0))
+          : this.filter.formatFiatAmount(amount);
       amountUnitStr = formattedAmount + ' ' + currency;
-      amountSat = Number(this.rate.fromFiat(amount, currency, coin).toFixed(0));
+      amountSat = Number(
+        this.rate.fromFiat(amount, currency, coin, opts).toFixed(0)
+      );
     } else if (currency == 'sat') {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
