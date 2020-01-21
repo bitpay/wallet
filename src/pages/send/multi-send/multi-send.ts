@@ -365,6 +365,7 @@ export class MultiSendPage {
       totalAmount += recipient.amount;
     });
     this.navCtrl.push(ConfirmPage, {
+      walletId: this.wallet.credentials.walletId,
       fromMultiSend: true,
       totalAmount,
       recipientType: 'multi',
