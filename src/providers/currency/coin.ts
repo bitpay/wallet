@@ -148,7 +148,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     }
   },
   xrp: {
-    name: 'Ripple',
+    name: 'XRP',
     chain: 'XRP',
     coin: 'xrp',
     unitInfo: {
