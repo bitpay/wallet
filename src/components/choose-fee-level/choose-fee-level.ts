@@ -99,6 +99,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
         }
         this.feeLevels = levels;
         this.setFeeRates();
+        if (this.customFeePerKB) this._setCustomFee();
       })
       .catch(err => {
         this.loadingFee = false;
@@ -127,9 +128,10 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
       let avgConfirmationTime = feeLevel.nbBlocks * this.blockTime;
       this.feeOpts[i].avgConfirmationTime = avgConfirmationTime;
 
-      this.feePerSatByte = (
-        this.feeOpts[i].feePerKb / this.feeUnitAmount
-      ).toFixed();
+      if (feeLevel.level == this.feeLevel)
+        this.feePerSatByte = (
+          this.feeOpts[i].feePerKb / this.feeUnitAmount
+        ).toFixed();
     });
 
     setTimeout(() => {
@@ -146,14 +148,15 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
     this.checkFees(this.feePerSatByte);
   }
 
-  public setCustomFee() {
+  public _setCustomFee() {
     this.avgConfirmationTime = null;
-    this.customSatPerByte = this.customFeePerKB
-      ? Number(this.customFeePerKB) / this.feeUnitAmount
-      : Number(this.feePerSatByte);
-    this.customFeePerKB = (+this.feePerSatByte * this.feeUnitAmount).toFixed();
+    this.customSatPerByte = Number(this.customFeePerKB) / this.feeUnitAmount;
+  }
+
+  public setCustomFee() {
     this.changeSelectedFee('custom');
   }
+
   private showErrorAndClose(title?: string, msg?: string): void {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -205,7 +208,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
   public changeSelectedFee(feeLevel): void {
     this.logger.debug('New fee level: ' + feeLevel);
     this.feeLevel = feeLevel;
-    this.customFeePerKB = this.customFeePerKB
+    this.customFeePerKB = this.customSatPerByte
       ? (this.customSatPerByte * this.feeUnitAmount).toFixed()
       : null;
 
