@@ -131,6 +131,27 @@ ion-header.bp-header .toolbar {
   border-top: none !important;
 }
 
+.scroll-content {
+  .wrapper {
+    background-color: white;
+    min-height: 100%;
+    .page-content {
+      background-color: white;
+      div[page-content] {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+
+    &--feather {
+      background-color: $feather-dark;
+    }
+  }
+}
+
 ion-spinner * {
   stroke: color($colors, light);
 }
