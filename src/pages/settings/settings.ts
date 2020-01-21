@@ -31,11 +31,11 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { FeePolicyPage } from './fee-policy/fee-policy';
+import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
-import { WalletGroupSettingsPage } from './wallet-group-settings/wallet-group-settings';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -271,7 +271,7 @@ export class SettingsPage {
   }
 
   public openWalletGroupSettings(keyId: string): void {
-    this.navCtrl.push(WalletGroupSettingsPage, { keyId });
+    this.navCtrl.push(KeySettingsPage, { keyId });
   }
 
   public goToAddView(): void {

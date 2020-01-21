@@ -11,10 +11,10 @@ import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
-  selector: 'page-wallet-group-qr-export',
-  templateUrl: 'wallet-group-qr-export.html'
+  selector: 'page-key-qr-export',
+  templateUrl: 'key-qr-export.html'
 })
-export class WalletGroupQrExportPage {
+export class KeyQrExportPage {
   public walletsGroup;
   public keysEncrypted: boolean;
   public code: string;
@@ -32,10 +32,10 @@ export class WalletGroupQrExportPage {
     private bwcErrorProvider: BwcErrorProvider,
     private keyProvider: KeyProvider,
     private appProvider: AppProvider
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: WalletQrExportPage');
+    this.logger.info('Loaded: KeyQrExportPage');
   }
 
   ionViewWillEnter() {

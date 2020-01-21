@@ -8,10 +8,10 @@ import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
-  selector: 'page-wallet-group-name',
-  templateUrl: 'wallet-group-name.html'
+  selector: 'page-key-name',
+  templateUrl: 'key-name.html'
 })
-export class WalletGroupNamePage {
+export class KeyNamePage {
   public walletGroup;
   public walletGroupNameForm: FormGroup;
   public description: string;
@@ -33,7 +33,7 @@ export class WalletGroupNamePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: WalletGroupNamePage');
+    this.logger.info('Loaded: KeyNamePage');
   }
 
   ionViewWillEnter() {

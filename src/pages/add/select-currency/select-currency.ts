@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
-import { WalletGroupOnboardingPage } from '../../settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
+import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { TabsPage } from '../../tabs/tabs';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 
@@ -107,7 +107,7 @@ export class SelectCurrencyPage {
 
   private showKeyOnboardingSlides(coins: Coin[]) {
     this.logger.debug('Showing key onboarding');
-    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+    const modal = this.modalCtrl.create(KeyOnboardingPage, null, {
       showBackdrop: false,
       enableBackdropDismiss: false
     });
@@ -206,10 +206,10 @@ export class SelectCurrencyPage {
   public showPairedWalletSelector(token) {
     const eligibleWallets = this.navParam.data.keyId
       ? this.profileProvider.getWalletsFromGroup({
-          keyId: this.navParam.data.keyId,
-          network: 'livenet',
-          pairFor: token
-        })
+        keyId: this.navParam.data.keyId,
+        network: 'livenet',
+        pairFor: token
+      })
       : [];
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(

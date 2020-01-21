@@ -28,7 +28,7 @@ import {
 } from '../../../providers/wallet/wallet';
 
 // Pages
-import { WalletGroupOnboardingPage } from '../../settings/wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
+import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 
 @Component({
   selector: 'page-create-wallet',
@@ -302,7 +302,7 @@ export class CreateWalletPage implements OnInit {
 
   private showKeyOnboardingSlides(opts) {
     this.logger.debug('Showing key onboarding');
-    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+    const modal = this.modalCtrl.create(KeyOnboardingPage, null, {
       showBackdrop: false,
       enableBackdropDismiss: false
     });

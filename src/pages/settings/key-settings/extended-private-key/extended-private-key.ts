@@ -10,10 +10,10 @@ import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
-  selector: 'page-wallet-group-extended-private-key',
-  templateUrl: 'wallet-group-extended-private-key.html'
+  selector: 'page-extended-private-key',
+  templateUrl: 'extended-private-key.html'
 })
-export class WalletGroupExtendedPrivateKeyPage {
+export class ExtendedPrivateKeyPage {
   public walletsGroup;
   public keysEncrypted: boolean;
   public xPrivKey: string;
@@ -29,7 +29,7 @@ export class WalletGroupExtendedPrivateKeyPage {
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
     private keyProvider: KeyProvider
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletExtendedPrivateKeyPage');

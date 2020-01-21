@@ -15,19 +15,19 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 // pages
 import { AddPage } from '../../add/add';
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
-import { WalletGroupNamePage } from '../wallet-group-settings/wallet-group-name/wallet-group-name';
-import { WalletGroupOnboardingPage } from '../wallet-group-settings/wallet-group-onboarding/wallet-group-onboarding';
+import { KeyNamePage } from '../key-settings/key-name/key-name';
+import { KeyOnboardingPage } from '../key-settings/key-onboarding/key-onboarding';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
-import { WalletGroupDeletePage } from './wallet-group-delete/wallet-group-delete';
-import { WalletGroupExtendedPrivateKeyPage } from './wallet-group-extended-private-key/wallet-group-extended-private-key';
-import { WalletGroupQrExportPage } from './wallet-group-qr-export/wallet-group-qr-export';
+import { ExtendedPrivateKeyPage } from './extended-private-key/extended-private-key';
+import { KeyDeletePage } from './key-delete/key-delete';
+import { KeyQrExportPage } from './key-qr-export/key-qr-export';
 
 @Component({
-  selector: 'page-wallet-group-settings',
-  templateUrl: 'wallet-group-settings.html'
+  selector: 'page-key-settings',
+  templateUrl: 'key-settings.html'
 })
-export class WalletGroupSettingsPage {
+export class KeySettingsPage {
   public encryptEnabled: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
@@ -57,7 +57,7 @@ export class WalletGroupSettingsPage {
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private modalCtrl: ModalController
   ) {
-    this.logger.info('Loaded:  WalletGroupSettingsPage');
+    this.logger.info('Loaded:  KeySettingsPage');
     this.keyId = this.navParams.data.keyId;
     this.showReorder = false;
   }
@@ -161,19 +161,19 @@ export class WalletGroupSettingsPage {
   }
 
   public openWalletGroupDelete(): void {
-    this.navCtrl.push(WalletGroupDeletePage, {
+    this.navCtrl.push(KeyDeletePage, {
       keyId: this.keyId
     });
   }
 
   public openQrExport(): void {
-    this.navCtrl.push(WalletGroupQrExportPage, {
+    this.navCtrl.push(KeyQrExportPage, {
       keyId: this.keyId
     });
   }
 
   public openWalletGroupExtendedPrivateKey(): void {
-    this.navCtrl.push(WalletGroupExtendedPrivateKeyPage, {
+    this.navCtrl.push(ExtendedPrivateKeyPage, {
       keyId: this.keyId
     });
   }
@@ -218,13 +218,13 @@ export class WalletGroupSettingsPage {
   }
 
   public openWalletGroupName(): void {
-    this.navCtrl.push(WalletGroupNamePage, {
+    this.navCtrl.push(KeyNamePage, {
       keyId: this.keyId
     });
   }
 
   public showKeyOnboardingSlides() {
-    const modal = this.modalCtrl.create(WalletGroupOnboardingPage, null, {
+    const modal = this.modalCtrl.create(KeyOnboardingPage, null, {
       showBackdrop: true,
       enableBackdropDismiss: true
     });
