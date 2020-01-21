@@ -695,27 +695,9 @@ export class WalletsPage {
     return this.collapsedGroups[keyId] ? true : false;
   }
 
-  public addWallet(): void {
-    let keyId;
-    const compatibleKeyWallets = _.values(
-      _.groupBy(
-        _.filter(this.wallets, wallet => {
-          if (wallet.canAddNewAccount && wallet.keyId != 'read-only') {
-            keyId = wallet.keyId;
-            return true;
-          } else return false;
-        }),
-        'keyId'
-      )
-    );
-
+  public addWallet(keyId): void {
     this.navCtrl.push(AddPage, {
-      // Select currency to add to the same key (1 single seed compatible key)
-      keyId: compatibleKeyWallets.length == 1 ? keyId : null,
-      // Creates new key (same flow as onboarding)
-      isZeroState: compatibleKeyWallets.length == 0 ? true : false,
-      // Select currency and Key or creates a new Key
-      isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
+      keyId
     });
   }
 

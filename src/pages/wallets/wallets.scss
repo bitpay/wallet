@@ -335,6 +335,8 @@ page-integrations {
 
   .collapse {
     white-space: nowrap;
+    display: flex;
+    align-items: center;
     .legacy-tag {
       color: color($colors, light-grey);
       text-transform: uppercase;
@@ -344,10 +346,13 @@ page-integrations {
       cursor: pointer;
       background: #f6f6f7;
       border-radius: 50px;
-      margin-left: 8px;
+      height: 25px;
+      width: 25px;
+      margin-left: 15px;
       ion-icon {
-        color: color($colors, light-grey);
         width: 18px;
+        margin-left: 3px;
+        margin-top: 3px;
         text-align: center;
         vertical-align: text-bottom;
       }

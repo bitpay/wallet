@@ -5,9 +5,6 @@
       <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
         <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
       </button>
-      <button ion-button clear (click)="addWallet()" class="add">
-        <img src="assets/img/add-wallet/add-wallet.svg" />
-      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -49,12 +46,17 @@
           <span *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletGroup[0].keyId).name}}</span>
           <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
         </ion-label>
-        <div class="collapse" (click)="collapseGroup(walletGroup[0].keyId)">
-          <span *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</span>
-          <span class="collapse-btn" *ngIf="walletsGroups.length > 1">
+        <div class="collapse">
+          <div *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</div>
+          <div *ngIf="walletGroup[0].canAddNewAccount" (click)="addWallet(walletGroup[0].keyId)">
+            <ion-icon class="item-img">
+              <img src="assets/img/icon-plus.svg" width="15">
+            </ion-icon>
+          </div>
+          <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0].keyId)">
             <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
             <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
-          </span>
+          </div>
         </div>
       </div>
       <ion-list no-lines class="bp-list" [ngClass]="{'collapsed': isCollapsed(walletGroup[0].keyId)}">
