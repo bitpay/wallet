@@ -323,9 +323,13 @@ page-integrations {
       }
     }
 
+    .bp-list ion-item {
+      cursor: pointer;
+    }
+
     .section-header {
-      margin-top: 20px;
-      margin-bottom: 18px;
+      margin-right: 12px;
+      border-bottom: 1px solid #e0e0e0;
     }
   }
 
@@ -339,9 +343,8 @@ page-integrations {
     .collapse-btn {
       cursor: pointer;
       background: #f6f6f7;
-      padding: 0.2rem;
       border-radius: 50px;
-      margin: 0px 12px 0px 8px;
+      margin-left: 8px;
       ion-icon {
         color: color($colors, light-grey);
         width: 18px;
