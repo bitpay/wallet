@@ -11,7 +11,6 @@ import {
   AppProvider,
   ExternalLinkProvider,
   Logger,
-  PersistenceProvider,
   ReplaceParametersProvider
 } from '../../../providers';
 @Component({
@@ -22,7 +21,6 @@ export class AboutPage {
   public version: string;
   public commitHash: string;
   public title: string;
-  public versionItemTapped: number;
 
   constructor(
     private navCtrl: NavController,
@@ -30,11 +28,8 @@ export class AboutPage {
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService,
-    private persistenceProvider: PersistenceProvider
-  ) {
-    this.versionItemTapped = 0;
-  }
+    private translate: TranslateService
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AboutPage');
@@ -110,18 +105,5 @@ export class AboutPage {
 
   public openSendFeedbackPage(): void {
     this.navCtrl.push(SendFeedbackPage);
-  }
-
-  public itemTapped() {
-    this.versionItemTapped++;
-    if (this.versionItemTapped >= 5) {
-      this.versionItemTapped = 0;
-      this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-        res === 'enabled'
-          ? this.persistenceProvider.removeHiddenFeaturesFlag()
-          : this.persistenceProvider.setHiddenFeaturesFlag('enabled');
-        this.navCtrl.popToRoot();
-      });
-    }
   }
 }

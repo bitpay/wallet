@@ -31,13 +31,11 @@ export class HomePage {
   showBuyCryptoOption: boolean;
   showServicesOption: boolean;
   showShopOption: boolean;
-  private showPriceChart: boolean;
-  @ViewChild('priceCard')
-  priceCard;
   @ViewChild('showSurvey')
   showSurvey;
   @ViewChild('showCard')
   showCard;
+
   @ViewChild(Slides) slides: Slides;
   public serverMessages: any[];
   public showServerMessage: boolean;
@@ -82,6 +80,7 @@ export class HomePage {
   public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
+  public accessDenied: boolean;
 
   private lastWeekRatesArray;
   private zone;
@@ -120,7 +119,7 @@ export class HomePage {
   ionViewWillEnter() {
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.checkPriceChart();
+
     this.isBalanceHidden();
     this.fetchStatus();
     this.fetchAdvertisements();
@@ -147,27 +146,15 @@ export class HomePage {
     }, 200);
   }
 
-  private updateCharts() {
-    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
-  }
-
   private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
     leading: true
   });
-
-  private checkPriceChart() {
-    this.persistenceProvider.getHiddenFeaturesFlag().then(res => {
-      this.showPriceChart = res === 'enabled' ? true : false;
-      this.updateCharts();
-    });
-  }
 
   public doRefresh(refresher): void {
     this.debounceRefreshHomePage();
     setTimeout(() => {
       this.fetchStatus();
       this.fetchAdvertisements();
-      this.updateCharts();
       refresher.complete();
     }, 2000);
   }
@@ -188,16 +175,6 @@ export class HomePage {
       this.removeServerMessage(serverMessage.id);
       return;
     }
-
-    /* if ( TODO
-      serverMessage.id === 'bcard-atm' &&
-      (!this.showBitPayCard ||
-        !this.bitpayCardItems ||
-        !this.bitpayCardItems[0])
-    ) {
-      this.removeServerMessage(serverMessage.id);
-      return;
-    } */
 
     this.persistenceProvider
       .getServerMessageDismissed(serverMessage.id)
@@ -273,7 +250,10 @@ export class HomePage {
             walletTotalBalanceAlternativeLastWeek
           });
         })
-        .catch(() => {
+        .catch(err => {
+          if (err.message === '403') {
+            this.accessDenied = true;
+          }
           return Promise.resolve();
         });
     };
@@ -491,5 +471,11 @@ export class HomePage {
       sent: false
     });
     this.showRateCard = false;
+  }
+
+  public openCountryBannedLink(): void {
+    const url =
+      "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
+    this.externalLinkProvider.open(url);
   }
 }

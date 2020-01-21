@@ -28,7 +28,6 @@ import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -86,7 +85,6 @@ export class WalletsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
     private events: Events,
-    private externalLinkProvider: ExternalLinkProvider,
     private popupProvider: PopupProvider,
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
@@ -623,7 +621,6 @@ export class WalletsPage {
     wallet.errorObj = err;
 
     if (err.message === '403') {
-      this.accessDenied = true;
       wallet.error = this.translate.instant('Access denied');
     } else if (err === 'WALLET_NOT_REGISTERED') {
       wallet.error = this.translate.instant('Wallet not registered');
@@ -636,12 +633,6 @@ export class WalletsPage {
         'Error updating status for ' + wallet.id
       )
     );
-  }
-
-  public openCountryBannedLink(): void {
-    const url =
-      "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
-    this.externalLinkProvider.open(url);
   }
 
   public goToWalletDetails(wallet, params): void {
