@@ -359,7 +359,7 @@ export class AmountPage {
   }
 
   public isSendMaxButtonShown() {
-    return !this.requestingAmount && !this.useAsModal;
+    return this.showSendMax && !this.requestingAmount && !this.useAsModal;
   }
 
   public resizeFont(): void {
