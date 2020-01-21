@@ -16,15 +16,15 @@
   </div>
   <div class="fee-container">
     <ion-slides #feeSlides slidesPerView="2" slidesPerView="2" spaceBetween="20" centeredSlides="true" pager="false" radio-group [(ngModel)]="feeLevel">
-      <ion-slide *ngFor="let fee of feeOpts" class="fee-card">
+      <ion-slide *ngFor="let fee of feeOpts" class="fee-card" (click)="changeSelectedFee(fee.level)">
         <ion-grid no-padding>
-          <ion-row>
+          <ion-row class="fee-row">
             <ion-col col-10>
               <div class="fee-speed-name">{{ feeProvider.getFeeOpts()[fee.level] | translate }}</div>
               <div class="fee-speed-satByte">{{fee.feePerSatByte}} {{ feeUnit }}</div>
             </ion-col>
             <ion-col text-right col-2>
-              <ion-radio (ionSelect)="changeSelectedFee()" [value]="fee.level"></ion-radio>
+              <ion-icon *ngIf="fee.level === feeLevel" name="ios-checkmark-circle" class="fee-check success" item-right></ion-icon>
             </ion-col>
           </ion-row>
           <ion-row padding-top margin-top>
@@ -47,7 +47,7 @@
               <div class="fee-speed-name">{{ 'Custom fee' | translate }}</div>
             </ion-col>
             <ion-col text-right col-2>
-              <ion-radio [value]="'custom'"></ion-radio>
+              <ion-icon *ngIf="'custom' === feeLevel" name="ios-checkmark-circle" class="fee-check success" item-right></ion-icon>
             </ion-col>
           </ion-row>
           <ion-item no-margin no-padding>
@@ -61,7 +61,7 @@
             <span *ngIf="showMinWarning" translate>Your fee is lower than recommended.</span>
             <span *ngIf="showMaxWarning" translate>You should not set a fee higher than {{maxFeeRecommended}} {{feeUnit}}.</span>
           </div>
-          <button ion-button clear color="primary" (click)="setCustomFee()" [disabled]="customSatPerByte >= maxFeeAllowed || showError">
+          <button class="apply-button" ion-button clear color="primary" (click)="setCustomFee()" [disabled]="customSatPerByte >= maxFeeAllowed || showError">
             {{'Apply changes' | translate}}
           </button>
         </ion-grid>

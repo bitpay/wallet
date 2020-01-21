@@ -18,6 +18,16 @@ page-choose-fee-level {
   }
 
   .fee {
+    &-check {
+      font-size: 28px;
+      &.success {
+        color: color($colors, success);
+      }
+    }
+    &-row {
+      display: flex;
+      align-items: baseline;
+    }
     &-container {
       .slide-zoom {
         height: 80%;
@@ -53,7 +63,7 @@ page-choose-fee-level {
       border-radius: 9px;
       background-color: #ffffff;
       box-shadow: 0 4px 23px 0 rgba(0, 0, 0, 0.14);
-      button {
+      .apply-button {
         padding-bottom: 10px;
       }
       .line-divider {

@@ -152,8 +152,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
       ? Number(this.customFeePerKB) / this.feeUnitAmount
       : Number(this.feePerSatByte);
     this.customFeePerKB = (+this.feePerSatByte * this.feeUnitAmount).toFixed();
-    this.feeLevel = 'custom';
-    this.changeSelectedFee();
+    this.changeSelectedFee('custom');
   }
   private showErrorAndClose(title?: string, msg?: string): void {
     title = title ? title : this.translate.instant('Error');
@@ -203,8 +202,9 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
       fee < this.maxFeeAllowed && fee > this.maxFeeRecommended ? true : false;
   }
 
-  public changeSelectedFee(): void {
-    this.logger.debug('New fee level: ' + this.feeLevel);
+  public changeSelectedFee(feeLevel): void {
+    this.logger.debug('New fee level: ' + feeLevel);
+    this.feeLevel = feeLevel;
     this.customFeePerKB = this.customFeePerKB
       ? (this.customSatPerByte * this.feeUnitAmount).toFixed()
       : null;
