@@ -4,7 +4,6 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import {
   Events,
   NavController,
@@ -101,7 +100,6 @@ export class AmountPage {
     private changeDetectorRef: ChangeDetectorRef,
     private events: Events,
     private viewCtrl: ViewController,
-    private statusBar: StatusBar,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController
   ) {
@@ -169,12 +167,6 @@ export class AmountPage {
   }
 
   ionViewWillEnter() {
-    if (
-      this.platformProvider.isCordova &&
-      (this.cardName || this._id || this.toWalletId)
-    ) {
-      this.statusBar.styleBlackOpaque();
-    }
     this.disableHardwareKeyboard = false;
     this.expression = '';
     this.useSendMax = false;
@@ -186,12 +178,6 @@ export class AmountPage {
   }
 
   ionViewWillLeave() {
-    if (
-      this.platformProvider.isCordova &&
-      (this.cardName || this._id || this.toWalletId)
-    ) {
-      this.statusBar.styleDefault();
-    }
     this._disableHardwareKeyboard();
   }
 

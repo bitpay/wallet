@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
 import { NavParams, Platform, ViewController } from 'ionic-angular';
 
@@ -9,7 +8,6 @@ import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
   selector: 'page-pin',
@@ -42,10 +40,8 @@ export class PinModalPage {
     private platform: Platform,
     private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
-    private statusBar: StatusBar,
     private vibration: Vibration,
-    private viewCtrl: ViewController,
-    private platformProvider: PlatformProvider
+    private viewCtrl: ViewController
   ) {
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
@@ -64,18 +60,6 @@ export class PinModalPage {
 
     if (this.action === 'checkPin' || this.action === 'lockSetUp') {
       this.checkIfLocked();
-    }
-  }
-
-  ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
-    }
-  }
-
-  ionViewWillLeave() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleLightContent();
     }
   }
 

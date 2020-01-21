@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
-import { Platform } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -19,8 +17,6 @@ export class SimplexSettingsPage {
   public service;
 
   constructor(
-    private platform: Platform,
-    private statusBar: StatusBar,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
@@ -28,18 +24,6 @@ export class SimplexSettingsPage {
       name: this.serviceName
     });
     this.showInHome = !!this.service[0].show;
-  }
-
-  ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleBlackOpaque();
-    }
-  }
-
-  ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleDefault();
-    }
   }
 
   public showInHomeSwitch(): void {

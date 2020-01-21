@@ -19,32 +19,6 @@ describe('PinModalPage', () => {
     fixture.destroy();
   });
 
-  describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
-      it('should set default status bar styling on iOS', () => {
-        instance.platformProvider.isIOS = true;
-        const spy = spyOn(instance.statusBar, 'styleDefault');
-        instance.platform.resume = new Subject();
-        instance.platform.pause = new Subject();
-        instance.ionViewWillEnter();
-        instance.ionViewDidLoad();
-        expect(spy).toHaveBeenCalled();
-      });
-    });
-
-    describe('ionViewWillLeave', () => {
-      it('should style the status bar for light content on iOS', () => {
-        instance.platformProvider.isIOS = true;
-        const spy = spyOn(instance.statusBar, 'styleLightContent');
-        instance.platform.resume = new Subject();
-        instance.platform.pause = new Subject();
-        instance.ionViewWillLeave();
-        instance.ionViewDidLoad();
-        expect(spy).toHaveBeenCalled();
-      });
-    });
-  });
-
   describe('Methods', () => {
     describe('close', () => {
       it('should unregister the back button, and dismiss the modal', () => {

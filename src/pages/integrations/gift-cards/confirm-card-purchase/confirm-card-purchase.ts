@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   App,
@@ -112,8 +111,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     platformProvider: PlatformProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
-    appProvider: AppProvider,
-    statusBar: StatusBar
+    appProvider: AppProvider
   ) {
     super(
       addressProvider,
@@ -141,8 +139,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       clipboardProvider,
       events,
-      appProvider,
-      statusBar
+      appProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }

@@ -115,7 +115,7 @@ export class CustomAmountPage {
 
   ionViewWillEnter() {
     if (this.platformProvider.isIOS) {
-      this.statusBar.styleLightContent();
+      this.statusBar.styleDefault();
     }
   }
 

@@ -1,6 +1,5 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   App,
@@ -112,8 +111,7 @@ export class ConfirmPage {
     protected walletProvider: WalletProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
-    protected appProvider: AppProvider,
-    protected statusBar: StatusBar
+    protected appProvider: AppProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -137,18 +135,12 @@ export class ConfirmPage {
   }
 
   ionViewWillLeave() {
-    if (this.isCordova) {
-      this.statusBar.styleBlackOpaque();
-    }
     this.navCtrl.swipeBackEnabled = true;
   }
 
   ionViewWillEnter() {
     if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
       this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
-    if (this.isCordova) {
-      this.statusBar.styleDefault();
     }
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
