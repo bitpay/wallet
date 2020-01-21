@@ -76,12 +76,8 @@
     </div>
 
     <div *ngFor="let readOnlyWallet of readOnlyWalletsGroup; let i = index" class="wallets-container">
-      <ion-list class="sliding-container wallets">
-        <div class="wallet-wrapper">
-          <button ion-item detail-none (click)="goToWalletDetails(readOnlyWallet, 'view')">
-            <wallet-item-content [wallet]="readOnlyWallet"></wallet-item-content>
-          </button>
-        </div>
+      <ion-list no-lines class="bp-list">
+        <wallet-item-content [wallet]="readOnlyWallet" (click)="goToWalletDetails(readOnlyWallet, 'view')"></wallet-item-content>
       </ion-list>
     </div>
   </div>
