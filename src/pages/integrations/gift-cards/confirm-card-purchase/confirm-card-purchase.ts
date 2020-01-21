@@ -64,6 +64,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public currency: string;
   private message: string;
   public invoiceId: string;
+  public invoiceRates: any;
   private configWallet;
   public currencyIsoCode: string;
 
@@ -258,7 +259,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   private satToFiat(coin: string, sat: number) {
-    return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode);
+    return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode, {
+      rates: this.invoiceRates
+    });
   }
 
   private async setTotalAmount(
@@ -389,6 +392,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     if (
       instructions &&
+      instructions[0].outputs &&
       instructions[0].outputs[0] &&
       instructions[0].outputs[0].invoiceID
     ) {
@@ -484,20 +488,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async initialize(wallet) {
     const COIN = wallet.coin.toUpperCase();
-    const parsedAmount = this.txFormatProvider.parseAmount(
-      wallet.coin,
-      this.amount,
-      this.currency,
-      this.onlyIntegers
-    );
-    this.currencyIsoCode = parsedAmount.currency;
-    this.amountUnitStr = parsedAmount.amountUnitStr;
-
+    this.currencyIsoCode = this.currency;
     const email = await this.promptEmail();
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
-      amount: parsedAmount.amount,
-      currency: parsedAmount.currency,
+      amount: this.amount,
+      currency: this.currency,
       discounts: discount ? [discount.code] : [],
       uuid: wallet.id,
       email,
@@ -511,9 +507,21 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.onGoingProcessProvider.clear();
       throw this.showErrorInfoSheet(err.message, err.title, true);
     });
+
+    this.invoiceRates = lowercaseKeys(data.invoice.exchangeRates);
+
+    const parsedAmount = this.txFormatProvider.parseAmount(
+      wallet.coin,
+      this.amount,
+      this.currency,
+      { onlyIntegers: this.onlyIntegers, rates: this.invoiceRates }
+    );
+    this.amountUnitStr = parsedAmount.amountUnitStr;
+
     const invoice = data.invoice;
     const accessKey = data.accessKey;
     this.totalDiscount = data.totalDiscount || 0;
+    const amountSat = invoice.paymentSubtotals[COIN];
 
     if (!this.isCryptoCurrencySupported(wallet, invoice)) {
       this.onGoingProcessProvider.clear();
@@ -563,23 +571,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     };
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       wallet.coin,
-      ctxp.amount || parsedAmount.amountSat
+      ctxp.amount || amountSat
     );
 
     // Warn: fee too high
     if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
       this.checkFeeHigh(
-        Number(parsedAmount.amountSat),
+        Number(amountSat),
         Number(invoiceFeeSat) + Number(ctxp.fee)
       );
     }
 
-    this.setTotalAmount(
-      wallet,
-      parsedAmount.amountSat,
-      invoiceFeeSat,
-      ctxp.fee
-    );
+    this.setTotalAmount(wallet, amountSat, invoiceFeeSat, ctxp.fee);
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
@@ -713,4 +716,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const currentGiftCards = allGiftCards.filter(c => !c.archived);
     return currentGiftCards.length;
   }
+}
+
+function lowercaseKeys(obj) {
+  return Object.keys(obj).reduce((destination, key) => {
+    destination[key.toLowerCase()] = obj[key];
+    return destination;
+  }, {});
 }

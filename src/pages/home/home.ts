@@ -289,12 +289,9 @@ export class HomePage {
     coin: string
   ): string {
     return this.rateProvider
-      .toFiat(
-        balanceSat,
-        this.totalBalanceAlternativeIsoCode,
-        coin,
-        this.lastWeekRatesArray[coin]
-      )
+      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin, {
+        customRate: this.lastWeekRatesArray[coin]
+      })
       .toFixed(2);
   }
 

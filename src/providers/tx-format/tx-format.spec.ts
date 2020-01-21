@@ -285,12 +285,9 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount parsed correctly if the currency is BTC', () => {
-      let result = txFormatProvider.parseAmount(
-        Coin.BTC,
-        0.012235,
-        'BTC',
-        false
-      );
+      let result = txFormatProvider.parseAmount(Coin.BTC, 0.012235, 'BTC', {
+        onlyIntegers: false
+      });
       expect(result).toEqual({
         amount: '0.01223500',
         currency: 'BTC',
@@ -304,7 +301,9 @@ describe('TxFormatProvider', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
-      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'USD', false);
+      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'USD', {
+        onlyIntegers: false
+      });
       expect(result).toEqual({
         amount: 1505,
         currency: 'USD',
@@ -330,12 +329,9 @@ describe('TxFormatProvider', () => {
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
       let onlyIntegers = true;
-      let result = txFormatProvider.parseAmount(
-        Coin.BTC,
-        1505,
-        'JPY',
+      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'JPY', {
         onlyIntegers
-      );
+      });
       expect(result).toEqual({
         amount: 1505,
         currency: 'JPY',
@@ -348,7 +344,9 @@ describe('TxFormatProvider', () => {
     it('should return amount parsed correctly if the currency is sat', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
 
-      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'sat', false);
+      let result = txFormatProvider.parseAmount(Coin.BTC, 1505, 'sat', {
+        onlyIntegers: false
+      });
       expect(result).toEqual({
         amount: '0.00001505',
         currency: 'BTC',
