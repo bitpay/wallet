@@ -79,7 +79,8 @@
 
     <page-feedback-card #showCard></page-feedback-card>
     <page-survey-card #showSurvey></page-survey-card>
-    <page-eth-live-card #showEthLiveCard (addEthClicked)="addWallet(true)"></page-eth-live-card>
+    <page-eth-live-card #showEthLiveCard (addEthClicked)="addWallet('eth')"></page-eth-live-card>
+    <page-xrp-live-card #showXrpLiveCard (addXrpClicked)="addWallet('xrp')"></page-xrp-live-card>
 
     <div *ngIf="showPriceChart && wallets && wallets[0]">
       <div class="section-header" translate>Price Chart</div>

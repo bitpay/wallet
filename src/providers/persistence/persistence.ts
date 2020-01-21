@@ -42,6 +42,7 @@ const Keys = {
   FEEDBACK: 'feedback',
   SURVEY: 'survey',
   ETH_LIVE_CARD: 'ethLiveCard',
+  XRP_LIVE_CARD: 'xrpLiveCard',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: (network: Network) => {
     const suffix = network === Network.livenet ? '' : `-${network}`;
@@ -155,6 +156,14 @@ export class PersistenceProvider {
 
   getEthLiveCardFlag() {
     return this.storage.get(Keys.ETH_LIVE_CARD);
+  }
+
+  setXrpLiveCardFlag() {
+    return this.storage.set(Keys.XRP_LIVE_CARD, true);
+  }
+
+  getXrpLiveCardFlag() {
+    return this.storage.get(Keys.XRP_LIVE_CARD);
   }
 
   setKeyOnboardingFlag() {

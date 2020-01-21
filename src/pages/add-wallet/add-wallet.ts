@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 })
 export class AddWalletPage {
   public walletsGroups;
-  public fromEthCard: boolean;
+  public addCoin: string;
   public title: string;
 
   constructor(
@@ -29,9 +29,11 @@ export class AddWalletPage {
     private navParams: NavParams,
     private translate: TranslateService
   ) {
-    this.fromEthCard = this.navParams.data.fromEthCard;
-    this.title = this.fromEthCard
-      ? this.translate.instant('Select Key to add ETH Wallet to')
+    this.addCoin = this.navParams.data.addCoin;
+    this.title = this.addCoin
+      ? this.translate.instant('Select Key to add {coin} Wallet to', {
+          coin: this.addCoin.toUpperCase()
+        })
       : this.translate.instant('Select Key');
     const opts = {
       canAddNewAccount: true,
@@ -47,10 +49,10 @@ export class AddWalletPage {
 
   public goToAddPage(keyId): void {
     if (this.navParams.data.isCreate) {
-      if (this.fromEthCard) {
+      if (this.addCoin) {
         this.navCtrl.push(CreateWalletPage, {
           isShared: false,
-          coin: 'eth',
+          coin: this.addCoin,
           keyId
         });
       } else {
