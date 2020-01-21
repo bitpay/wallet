@@ -1,0 +1,17 @@
+<action-card *ngIf="showXrpLiveCard">
+  <div action-card-header>
+    <div class="icon-right">
+      <button ion-button clear icon-only item-end color="grey" (click)="hideCard()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+    <div class="xrp-live-img">
+      <img src="assets/img/xrp-live-icon.svg">
+    </div>
+  </div>
+  <div action-card-title>Start Using XRP Now</div>
+  <div action-card-body>Big news! Now you can use XRP in the BitPay App. Create your first XRP wallet today.</div>
+  <div action-card-button (click)="goToAddWalletFlow()" tappable>
+    <span class="xrp-live-btn">Add XRP Wallet</span>
+  </div>
+</action-card>

@@ -63,6 +63,7 @@ import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
+import { XrpLiveCardPage } from '../pages/includes/xrp-live-card/xrp-live-card';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -231,5 +232,6 @@ export const PAGES = [
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,
-  SlideToAcceptPage
+  SlideToAcceptPage,
+  XrpLiveCardPage
 ];

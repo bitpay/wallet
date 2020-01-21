@@ -54,6 +54,8 @@ export class HomePage {
   showSurvey;
   @ViewChild('showEthLiveCard')
   showEthLiveCard;
+  @ViewChild('showXrpLiveCard')
+  showXrpLiveCard;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -200,6 +202,7 @@ export class HomePage {
     setTimeout(() => {
       this.showSurveyCard();
       this.showEthLive();
+      this.showXrpLive();
       this.checkFeedbackInfo();
       this.checkEmailLawCompliance();
     }, 2000);
@@ -389,6 +392,19 @@ export class HomePage {
         }
       });
       this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
+    }
+  }
+
+  private async showXrpLive() {
+    const hideXrpLiveCard = await this.persistenceProvider.getXrpLiveCardFlag();
+    if (!hideXrpLiveCard) {
+      let hasNoLegacy = false;
+      this.walletsGroups.forEach((walletsGroup: any[]) => {
+        if (walletsGroup[0].canAddNewAccount) {
+          hasNoLegacy = true;
+        }
+      });
+      this.showXrpLiveCard.setShowXrpLiveCard(hasNoLegacy);
     }
   }
 
@@ -849,7 +865,7 @@ export class HomePage {
     return this.collapsedGroups[keyId] ? true : false;
   }
 
-  public addWallet(fromEthCard?: boolean): void {
+  public addWallet(coin?: string): void {
     let keyId;
     const compatibleKeyWallets = _.values(
       _.groupBy(
@@ -863,17 +879,17 @@ export class HomePage {
       )
     );
 
-    if (fromEthCard && compatibleKeyWallets.length == 1) {
+    if (coin && compatibleKeyWallets.length == 1) {
       this.navCtrl.push(CreateWalletPage, {
         isShared: false,
-        coin: 'eth',
+        coin,
         keyId
       });
-    } else if (fromEthCard && compatibleKeyWallets.length > 1) {
+    } else if (coin && compatibleKeyWallets.length > 1) {
       this.navCtrl.push(AddWalletPage, {
         isCreate: true,
         isMultipleSeed: true,
-        fromEthCard
+        addCoin: coin
       });
     } else {
       this.navCtrl.push(AddPage, {
