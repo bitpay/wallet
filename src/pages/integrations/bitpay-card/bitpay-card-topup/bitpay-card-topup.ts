@@ -330,7 +330,10 @@ export class BitPayCardTopUpPage {
           }
 
           if (
+            wallet.coin === 'xrp' &&
             instructions &&
+            instructions[0] &&
+            instructions[0].outputs &&
             instructions[0].outputs[0] &&
             instructions[0].outputs[0].invoiceID
           ) {
