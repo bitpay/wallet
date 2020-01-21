@@ -32,7 +32,7 @@ export class KeyQrExportPage {
     private bwcErrorProvider: BwcErrorProvider,
     private keyProvider: KeyProvider,
     private appProvider: AppProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: KeyQrExportPage');

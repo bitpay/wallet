@@ -29,7 +29,7 @@ export class ExtendedPrivateKeyPage {
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
     private keyProvider: KeyProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletExtendedPrivateKeyPage');

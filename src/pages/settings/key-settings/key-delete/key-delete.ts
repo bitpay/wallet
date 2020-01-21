@@ -29,7 +29,7 @@ export class KeyDeletePage {
     private keyProvider: KeyProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private events: Events
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: KeyDeletePage');

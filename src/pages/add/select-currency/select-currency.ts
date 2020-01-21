@@ -206,10 +206,10 @@ export class SelectCurrencyPage {
   public showPairedWalletSelector(token) {
     const eligibleWallets = this.navParam.data.keyId
       ? this.profileProvider.getWalletsFromGroup({
-        keyId: this.navParam.data.keyId,
-        network: 'livenet',
-        pairFor: token
-      })
+          keyId: this.navParam.data.keyId,
+          network: 'livenet',
+          pairFor: token
+        })
       : [];
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(

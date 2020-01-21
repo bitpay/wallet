@@ -9,7 +9,7 @@ export class KeyOnboardingPage {
   @ViewChild('walletGroupOnboardingSlides')
   walletGroupOnboardingSlides: Slides;
 
-  constructor(private viewCtrl: ViewController) { }
+  constructor(private viewCtrl: ViewController) {}
 
   public nextSlide(): void {
     this.walletGroupOnboardingSlides.slideNext();
