@@ -125,7 +125,8 @@ page-tx-details {
     max-width: 100px;
   }
 
-  .wallet {
+  .wallet,
+  .multi-recip-title {
     span {
       height: 19px;
       color: #000000;
@@ -168,6 +169,10 @@ page-tx-details {
         }
       }
     }
+  }
+  .multi-recip-title {
+    display: flex;
+    align-items: center;
   }
   .line-divider {
     margin: 0px 17px;
