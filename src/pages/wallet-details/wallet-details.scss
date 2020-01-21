@@ -29,8 +29,10 @@ page-wallet-details {
     }
   }
 
-  .wrapper--feather {
-    background-color: $feather-dark;
+  ion-title {
+    .header-wallet-name {
+      text-align: left;
+    }
   }
 
   .option-button {
