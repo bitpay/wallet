@@ -122,9 +122,12 @@
             <div>...</div>
           </div>
           <div class="summary-item-detail">
+            <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
+          </div>
+          <div class="summary-item-detail">
             {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
           </div>
-          <div class="secondary-note fee-details">
+          <div class="secondary-note fee-details" [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
             {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
             <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
               &middot;
