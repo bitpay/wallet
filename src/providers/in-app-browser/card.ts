@@ -35,8 +35,8 @@ export class IABCardProvider {
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'
-        ? 'https://10.10.10.189:8088'
-        : 'https://10.10.10.189:8088';
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
   }
 
   init(): void {
