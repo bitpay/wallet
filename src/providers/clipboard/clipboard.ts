@@ -30,7 +30,13 @@ export class ClipboardProvider {
     } else if (this.isElectron) {
       return this.electronProvider.readFromClipboard();
     } else {
-      return Promise.reject('Not supported for this device');
+      let text;
+      try {
+        text = (navigator as any).clipboard.readText();
+      } catch (error) {
+        return Promise.reject('Not supported for this device');
+      }
+      return text;
     }
   }
 
