@@ -74,25 +74,16 @@
             </ion-col>
           </ion-row>
 
-          <ion-row align-items-center class="wallet" (click)="showMultiplesOutputs = !showMultiplesOutputs" *ngIf="fromMultiSend">
-            <ion-col>
-              <ion-icon item-start>
-                <img class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" />
-              </ion-icon>
-            </ion-col>
-            <ion-col>
-              <span class="note-container ellipsis" translate>Multiple recipients </span>
-            </ion-col>
-            <ion-col>
-              <span>({{recipients?.length}}):</span>
-            </ion-col>
-            <ion-col>
-              <button ion-button clear color="grey" icon-only item-end>
-                <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
-                <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
-              </button>
-            </ion-col>
-          </ion-row>
+          <div class="multi-recip-title" (click)="showMultiplesOutputs = !showMultiplesOutputs" *ngIf="fromMultiSend">
+            <ion-icon item-start>
+              <img class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" />
+            </ion-icon>
+            <span class="ellipsis" translate>{{'Multiple recipients ({recipientsCount})' | translate: { recipientsCount: recipients?.length } }}</span>
+            <button ion-button clear color="grey" icon-only item-end>
+              <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
+              <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
+            </button>
+          </div>
         </ion-note>
       </ion-item>
 
@@ -100,6 +91,7 @@
         <ion-item *ngFor="let recipient of recipients" copy-to-clipboard="{{recipient.toAddress}}">
           <ion-note class="secondary-note" item-right text-end>
             <span>{{recipient.addressToShow || recipient.toAddress || recipient.address}}</span>
+            <br>
             <span>{{recipient.amountToShow}} {{coin | uppercase}}
               <span *ngIf="recipient.altAmountStr">({{recipient.altAmountStr}})</span>
             </span>
