@@ -68,7 +68,7 @@ page-tx-details {
   .payment-proposal-to {
     padding: 10px;
     height: 39px;
-    max-width: 150px;
+    max-width: 200px;
     border-radius: 19.5px;
     background-color: #f6f7fc;
     display: flex;
@@ -86,6 +86,9 @@ page-tx-details {
       display: flex;
       width: 25px;
       justify-content: space-between;
+    }
+    .debit-card {
+      width: 40px;
     }
   }
   &.not-clickable {
@@ -119,6 +122,7 @@ page-tx-details {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    align-items: center;
   }
 
   .note-container {
