@@ -61,7 +61,20 @@ export class AddressProvider {
               return null;
             }
           } catch (e) {
-            return null;
+            try {
+              const isValidLtcAddress = this.core.Validation.validateAddress(
+                'LTC',
+                network,
+                address
+              );
+              if (isValidLtcAddress) {
+                return { coin: 'ltc', network };
+              } else {
+                return null;
+              }
+            } catch (e) {
+              return null;
+            }
           }
         }
       }
@@ -82,6 +95,7 @@ export class AddressProvider {
     if (URICash.isValid(str)) return true;
     if (Validation.validateUri('ETH', str)) return true;
     if (Validation.validateUri('XRP', str)) return true;
+    if (Validation.validateUri('LTC', str)) return true;
 
     // Regular Address: try Bitcoin and Bitcoin Cash
     if (Address.isValid(str, 'livenet')) return true;
@@ -90,6 +104,7 @@ export class AddressProvider {
     if (AddressCash.isValid(str, 'testnet')) return true;
     if (Validation.validateAddress('XRP', 'livenet', str)) return true;
     if (Validation.validateAddress('ETH', 'livenet', str)) return true;
+    if (Validation.validateAddress('LTC', 'livenet', str)) return true;
 
     return false;
   }

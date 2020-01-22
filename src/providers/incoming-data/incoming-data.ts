@@ -70,7 +70,7 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|litecoin)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -110,6 +110,11 @@ export class IncomingDataProvider {
   private isValidRippleUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getCore().Validation.validateUri('XRP', data);
+  }
+
+  private isValidLitecoinUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getCore().Validation.validateUri('LTC', data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -158,6 +163,12 @@ export class IncomingDataProvider {
     return !!this.bwcProvider
       .getCore()
       .Validation.validateAddress('XRP', 'livenet', data);
+  }
+
+  private isValidLitecoinAddress(data: string): boolean {
+    return !!this.bwcProvider
+      .getCore()
+      .Validation.validateAddress('LTC', 'livenet', data);
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -377,6 +388,30 @@ export class IncomingDataProvider {
     }
   }
 
+  private handleLitecoinUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Litecoin URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.LTC;
+    const amountParam = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+    let parsedAmount;
+    let requiredFeeRate;
+    if (amountParam.exec(data)) {
+      const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
+      parsedAmount = (
+        Number(amountParam.exec(data)[1]) * unitToSatoshi
+      ).toString();
+    }
+    const address = this.extractAddress(data);
+    const message = '';
+    const amount = parsedAmount || amountFromRedirParams;
+    if (amount) {
+      this.goSend(address, amount, message, coin, requiredFeeRate);
+    } else {
+      this.handleLitecoinAddress(address, redirParams);
+    }
+  }
+
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
     const coin = Coin.BCH;
@@ -475,6 +510,22 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'rippleAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handleLitecoinAddress(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Litecoin address');
+    const coin = Coin.LTC;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'litecoinAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -635,6 +686,11 @@ export class IncomingDataProvider {
       this.handleRippleUri(data, redirParams);
       return true;
 
+      // Litecoin URI
+    } else if (this.isValidLitecoinUri(data)) {
+      this.handleLitecoinUri(data, redirParams);
+      return true;
+
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       this.handleBitcoinCashUriLegacyAddress(data);
@@ -663,6 +719,11 @@ export class IncomingDataProvider {
       // Address (Ripple)
     } else if (this.isValidRippleAddress(data)) {
       this.handleRippleAddress(data, redirParams);
+      return true;
+
+      // Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      this.handleLitecoinAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -816,6 +877,14 @@ export class IncomingDataProvider {
         title: this.translate.instant('Ripple Address')
       };
 
+      // Plain Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      return {
+        data,
+        type: 'LitecoinAddress',
+        title: this.translate.instant('Litecoin Address')
+      };
+
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       return {
@@ -894,7 +963,7 @@ export class IncomingDataProvider {
 
   public getPayProUrl(data: string): string {
     return decodeURIComponent(
-      data.replace(/(bitcoin|bitcoincash|ethereum|ripple)?:\?r=/, '')
+      data.replace(/(bitcoin|bitcoincash|ethereum|ripple|litecoin)?:\?r=/, '')
     );
   }
 

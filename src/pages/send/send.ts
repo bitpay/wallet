@@ -58,6 +58,8 @@ export class SendPage {
     'EthereumUri',
     'RippleAddress',
     'RippleUri',
+    'LitecoinAddress',
+    'LitecoinUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'BitPayUri'

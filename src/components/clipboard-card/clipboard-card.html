@@ -38,5 +38,9 @@
     *ngIf="validDataFromClipboard.type === 'RippleAddress' || validDataFromClipboard.type === 'RippleUri'"
     alt="Coin"
     src="assets/img/icon-xrp-small.svg" />
+  <img
+    *ngIf="validDataFromClipboard.type === 'LitecoinAddress' || validDataFromClipboard.type === 'LitecoinUri'"
+    alt="Coin"
+    src="assets/img/icon-ltc-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
 </button>
