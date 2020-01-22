@@ -1,6 +1,7 @@
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
 import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
+import { EmailComponent } from '../../components/email-component/email-component';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
@@ -95,6 +96,10 @@ export class ActionSheetProvider {
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
       .instance;
+  }
+
+  public createEmailComponent(): EmailComponent {
+    return this.setupSheet<EmailComponent>(EmailComponent).instance;
   }
 
   public createWalletSelector(

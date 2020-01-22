@@ -1,0 +1,63 @@
+email-component {
+  .padding {
+    padding: 25px;
+  }
+  .padding-bottom {
+    padding-bottom: 25px;
+  }
+  .title {
+    align-items: center;
+    color: black;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex;
+    justify-content: start;
+
+    .truncate {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .sub-title {
+    font-size: 16px;
+    color: rgb(46, 46, 46);
+    font-weight: 300;
+    padding: 25px 0px;
+  }
+  .checkbox-list {
+    padding: 40px 0px 15px 0px;
+    text-align: center;
+    ion-item {
+      line-height: 25px;
+      background: none;
+    }
+    .font-small {
+      font-size: 13px;
+    }
+    .checkbox-icon {
+      border-radius: 50%;
+      border-width: 1px;
+      border-style: solid;
+      border-color: color($colors, secondary);
+      width: 30px;
+      height: 30px;
+      .checkbox-inner {
+        left: 11px;
+        top: 5px;
+        width: 7px;
+        height: 15px;
+      }
+    }
+    .checkbox-checked {
+      border-color: color($colors, success);
+      background-color: color($colors, success);
+      border-width: 0px;
+    }
+    .external-link {
+      cursor: pointer;
+      color: color($colors, secondary);
+    }
+  }
+}
