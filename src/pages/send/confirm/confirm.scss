@@ -88,7 +88,7 @@ page-tx-details {
       justify-content: space-between;
     }
   }
-  &.not-clickable {
+  .not-clickable {
     pointer-events: none;
   }
   .last-item {
