@@ -166,9 +166,11 @@ export class IncomingDataProvider {
   }
 
   private isValidLitecoinAddress(data: string): boolean {
-    return !!this.bwcProvider
-      .getCore()
-      .Validation.validateAddress('LTC', 'livenet', data);
+    const { validateAddress } = this.bwcProvider.getCore().Validation;
+    return !!(
+      validateAddress('LTC', 'mainnet', data) ||
+      validateAddress('LTC', 'testnet', data)
+    );
   }
 
   private isValidCoinbaseUri(data: string): boolean {

@@ -105,6 +105,7 @@ export class AddressProvider {
     if (Validation.validateAddress('XRP', 'livenet', str)) return true;
     if (Validation.validateAddress('ETH', 'livenet', str)) return true;
     if (Validation.validateAddress('LTC', 'livenet', str)) return true;
+    if (Validation.validateAddress('LTC', 'testnet', str)) return true;
 
     return false;
   }

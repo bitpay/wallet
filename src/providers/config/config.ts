@@ -146,7 +146,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://bws.bitpay.com/bws/api'
+        url: 'http://localhost:3232/bws/api'
       },
 
       download: {
@@ -249,9 +249,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-        spendUnconfirmed +
-        ' - lockMethod: ' +
-        lockMethod
+      spendUnconfirmed +
+      ' - lockMethod: ' +
+      lockMethod
     );
   }
 
