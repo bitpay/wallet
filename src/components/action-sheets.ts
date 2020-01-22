@@ -1,5 +1,6 @@
 import { ActionSheetComponent } from './action-sheet/action-sheet';
 import { ChooseFeeLevelComponent } from './choose-fee-level/choose-fee-level';
+import { EmailComponent } from './email-component/email-component';
 import { IncomingDataMenuComponent } from './incoming-data-menu/incoming-data-menu';
 import { INFO_SHEET_COMPONENTS } from './info-sheet/info-sheet';
 import { OptionsSheetComponent } from './options-sheet/options-sheet';
@@ -13,5 +14,6 @@ export const ACTION_SHEET_COMPONENTS = [
   IncomingDataMenuComponent,
   WalletSelectorComponent,
   WalletReceiveComponent,
-  ChooseFeeLevelComponent
+  ChooseFeeLevelComponent,
+  EmailComponent
 ];

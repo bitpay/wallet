@@ -462,17 +462,23 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
     const email = await this.giftCardProvider.getUserEmail();
     if (email) return Promise.resolve(email);
-    const title = this.translate.instant('Enter email address');
-    const message = this.translate.instant(
-      'Where do you want to receive your purchase receipt?'
-    );
-    const opts = { type: 'email', defaultText: '' };
-    const newEmail = await this.popupProvider.ionicPrompt(title, message, opts);
-    if (!this.giftCardProvider.emailIsValid(newEmail)) {
-      this.throwEmailRequiredError();
-    }
-    this.giftCardProvider.storeEmail(newEmail);
-    return newEmail;
+  }
+
+  private setEmail(wallet) {
+    const emailComponent = this.actionSheetProvider.createEmailComponent();
+    emailComponent.present();
+    emailComponent.onDidDismiss(email => {
+      if (email) {
+        if (!this.giftCardProvider.emailIsValid(email)) {
+          this.throwEmailRequiredError();
+        }
+        this.giftCardProvider.storeEmail(email);
+        this.initialize(wallet, email);
+      } else {
+        this.throwEmailRequiredError();
+      }
+      this.isOpenSelector = false;
+    });
   }
 
   private throwEmailRequiredError() {
@@ -485,10 +491,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     throw new Error('email required');
   }
 
-  private async initialize(wallet) {
+  private async initialize(wallet, email) {
     const COIN = wallet.coin.toUpperCase();
     this.currencyIsoCode = this.currency;
-    const email = await this.promptEmail();
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: this.amount,
@@ -630,10 +635,15 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
   }
 
-  public onWalletSelect(wallet): void {
+  public async onWalletSelect(wallet) {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
-    this.initialize(wallet).catch(() => {});
+    const email = await this.promptEmail();
+    if (email) {
+      this.initialize(wallet, email).catch(() => {});
+    } else {
+      this.setEmail(wallet);
+    }
   }
 
   public showWallets(): void {
