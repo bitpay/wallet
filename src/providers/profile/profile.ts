@@ -480,6 +480,14 @@ export class ProfileProvider {
       ) {
         return true;
       }
+      if (
+        wallet.n == 1 &&
+        wallet.credentials.addressType == 'P2PKH' &&
+        derivationStrategy == 'BIP44' &&
+        (chain == 'ltc' && coinCode == "2'")
+      ) {
+        return true;
+      }
       return false;
     }
   }

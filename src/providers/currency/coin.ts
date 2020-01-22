@@ -182,6 +182,41 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
     }
   },
+  ltc: {
+    name: 'Litecoin',
+    chain: 'LTC',
+    coin: 'ltc',
+    unitInfo: {
+      unitName: 'LTC',
+      unitToSatoshi: 1e8,
+      unitDecimals: 8,
+      unitCode: 'ltc'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: true,
+      isUtxo: true,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: false
+    },
+    paymentInfo: {
+      paymentCode: 'BIP73',
+      protocolPrefix: { livenet: 'litecoin', testnet: 'litecoin' },
+      ratesApi: 'https://bitpay.com/api/rates',
+      blockExplorerUrls: 'bitpay.com/insight/#/LTC/'
+    },
+    feeInfo: {
+      feeUnit: 'lit/byte',
+      feeUnitAmount: 1000,
+      blockTime: 10,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      backgroundColor: 'rgba(0,174,255,1)',
+      gradientBackgroundColor: 'rgba(211,211,211, 0.2)'
+    }
+  },
   pax: {
     name: 'Paxos Standard',
     chain: 'ETH',

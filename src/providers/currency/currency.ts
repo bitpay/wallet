@@ -8,6 +8,7 @@ export enum Coin {
   BCH = 'bch',
   ETH = 'eth',
   XRP = 'xrp',
+  LTC = 'ltc',
   USDC = 'usdc',
   GUSD = 'gusd',
   PAX = 'pax'
