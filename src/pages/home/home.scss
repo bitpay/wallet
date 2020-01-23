@@ -1,6 +1,10 @@
 page-home {
   ion-slides {
-    max-height: 280px;
+    max-height: 220px;
+    ion-slide.swiper-slide {
+      justify-content: normal;
+      align-items: normal;
+    }
   }
   .total-amount-container {
     margin: 20px 0px 10px 20px;
@@ -54,10 +58,10 @@ page-home {
   }
   .message {
     &-background {
-      width: 80%;
+      width: 90%;
       border-radius: 12px;
       background-color: #f9f9fb;
-      margin: 0 10%;
+      margin: 0 auto;
       .line-divider {
         margin: 0px 15px;
       }

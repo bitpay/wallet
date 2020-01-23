@@ -89,7 +89,7 @@
     </div>
   </div>
 
-  <ion-list class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
+  <ion-list margin-bottom class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
     <ion-item *ngIf="showShopOption" (click)="goToShop()">
       <ion-label>
         <div class="services-list-label">Shop</div>
@@ -154,7 +154,7 @@
     </ion-slide>
   </ion-slides>
 
-  <div>
+  <div padding-right>
     <div class="section-header" translate>Exchange Rates</div>
     <exchange-rates #exchangeRates></exchange-rates>
   </div>

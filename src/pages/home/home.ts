@@ -54,7 +54,7 @@ export class HomePage {
     },
     {
       name: 'merchant-directory',
-      title: 'Discover Merchant Directory',
+      title: 'Merchant Directory',
       body: 'Learn where you can spend your crypto today.',
       app: 'bitpay',
       linkText: 'View Directory',
