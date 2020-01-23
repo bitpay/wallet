@@ -19,7 +19,6 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
 import { AddPage } from '../add/add';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
@@ -228,10 +227,6 @@ export class SettingsPage {
       okText,
       cancelText
     );
-  }
-
-  public addBitpayCard() {
-    this.navCtrl.push(BitPayCardIntroPage);
   }
 
   private openPinModal(action): void {
