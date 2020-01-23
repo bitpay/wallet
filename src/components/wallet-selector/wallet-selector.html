@@ -2,7 +2,6 @@
   <div class="bp-header">
     <ion-title>{{ title }}</ion-title>
   </div>
-  <div class="line-divider"></div>
   <div *ngIf="walletsByKeys && walletsByKeys[0]; else noWallets">
     <div *ngFor="let walletsByKey of walletsByKeys">
       <ion-list no-lines class="bp-list">
