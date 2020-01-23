@@ -209,6 +209,7 @@ export class TxDetailsPage {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+        this.btx.network = this.wallet.credentials.network;
         this.btx.coin = this.wallet.coin;
         const chain = this.currencyProvider
           .getChain(this.wallet.coin)

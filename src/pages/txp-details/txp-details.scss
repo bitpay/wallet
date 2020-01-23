@@ -15,31 +15,6 @@ page-txp-details {
       }
     }
   }
-  .amount-label {
-    padding-top: 1rem;
-    .amount {
-      display: flex;
-      font-size: 34px;
-      font-weight: 500;
-      justify-content: space-between;
-      img.sending-img {
-        width: auto;
-        height: 40px;
-      }
-      .amount-coin {
-        font-size: 1.5rem;
-        margin-top: 0.35rem;
-        margin-left: 0.8rem;
-      }
-      div {
-        display: flex;
-      }
-    }
-    .alternative {
-      margin-top: 0.5rem;
-      color: color($colors, light-grey);
-    }
-  }
 
   .proposal-deletion {
     background-color: color($colors, blank);
