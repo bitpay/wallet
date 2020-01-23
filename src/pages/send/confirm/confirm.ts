@@ -868,7 +868,7 @@ export class ConfirmPage {
     // Currently the paypro error is the following string: 500 - "{}"
     if (error.toString().includes('500')) {
       msg = this.translate.instant(
-        'Error 500 - There is a temporary problem on the payment processor, please try again later.'
+        'Error 500 - There is a temporary problem, please try again later.'
       );
     }
 
