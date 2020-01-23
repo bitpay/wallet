@@ -3,17 +3,25 @@
     <ion-title>{{ title }}</ion-title>
   </div>
   <div class="line-divider"></div>
-  <div *ngFor="let coin of availableCoins">
-    <div class="no-wallets" *ngIf="(!wallets[coin] && !wallets[coin][0])" translate>
-      No wallets available
-    </div>
-    <div *ngIf="wallets && wallets[coin][0]">
+  <div *ngIf="walletsByKeys && walletsByKeys[0]; else noWallets">
+    <div *ngFor="let walletsByKey of walletsByKeys">
       <ion-list no-lines class="bp-list">
-        <div *ngFor="let wallet of wallets[coin]" (click)="optionClicked(wallet)">
+        <div class="key-divider">
+          <ion-icon>
+            <img src="assets/img/settings-icons/icon-key.svg" width="15">
+          </ion-icon>
+          <span>{{ walletsByKey[0].walletGroupName }}</span>
+        </div>
+        <div *ngFor="let wallet of walletsByKey" (click)="optionClicked(wallet)">
           <wallet-item-content [wallet]="wallet"></wallet-item-content>
         </div>
       </ion-list>
     </div>
   </div>
+  <ng-template #noWallets>
+    <div class="no-wallets">
+      {{'No wallets available' | translate}}
+    </div>
+  </ng-template>
   <ion-item-divider></ion-item-divider>
 </action-sheet>

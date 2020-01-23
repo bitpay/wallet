@@ -1,22 +1,17 @@
 import { Component } from '@angular/core';
-import {
-  Coin,
-  CoinsMap,
-  CurrencyProvider
-} from '../../providers/currency/currency';
+import * as _ from 'lodash';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 @Component({
   selector: 'wallet-selector',
   templateUrl: 'wallet-selector.html'
 })
 export class WalletSelectorComponent extends ActionSheetParent {
-  public wallets = {} as CoinsMap<any>;
-  public availableCoins: Coin[];
+  public walletsByKeys: any[];
   public title: string;
   public selectedWalletId: string;
-  constructor(private currencyProvider: CurrencyProvider) {
+
+  constructor() {
     super();
-    this.availableCoins = this.currencyProvider.getAvailableCoins();
   }
 
   ngOnInit() {
@@ -25,15 +20,9 @@ export class WalletSelectorComponent extends ActionSheetParent {
     this.separateWallets();
   }
 
-  public getCoinName(coin: Coin) {
-    return this.currencyProvider.getCoinName(coin);
-  }
-
   private separateWallets(): void {
     const wallets = this.params.wallets;
-    for (const coin of this.availableCoins) {
-      this.wallets[coin] = wallets.filter(wallet => wallet.coin === coin);
-    }
+    this.walletsByKeys = _.values(_.groupBy(wallets, 'keyId'));
   }
 
   public optionClicked(option): void {
