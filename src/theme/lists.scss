@@ -190,6 +190,9 @@
   .amount-details {
     padding-right: 19px;
   }
+  coin-icon {
+    margin: 0px !important;
+  }
 }
 
 .bp-list.settings-list {
@@ -220,5 +223,8 @@
         width: 100%;
       }
     }
+  }
+  coin-icon {
+    margin: 0px !important;
   }
 }
