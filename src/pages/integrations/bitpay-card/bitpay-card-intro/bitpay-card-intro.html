@@ -51,9 +51,9 @@
   </div>
 </ion-content>
 
-<ng-container *ngIf="hiddenFeaturesEnabled else reg">
+<ng-container *ngIf="cardExperimentEnabled else reg">
   <ion-footer>
-    <ion-toolbar style="margin-bottom: 35px">
+    <ion-toolbar style="margin-bottom: 25px">
       <button ion-button class="button-standard" (click)="orderBitPayCard()">
         {{'Order Now' | translate}}
       </button>

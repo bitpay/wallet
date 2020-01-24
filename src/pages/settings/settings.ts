@@ -74,7 +74,7 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
-  public hiddenFeaturesEnabled: boolean;
+  public cardExperimentEnabled: boolean;
   public bitPayIdUserInfo: any;
   private cardIAB_Ref: InAppBrowserRef;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
@@ -114,8 +114,8 @@ export class SettingsPage {
 
   ionViewWillEnter() {
     this.persistanceProvider
-      .getHiddenFeaturesFlag()
-      .then(res => (this.hiddenFeaturesEnabled = res === 'enabled'));
+      .getCardExperimentFlag()
+      .then(res => (this.cardExperimentEnabled = res === 'enabled'));
 
     this.cardIAB_Ref = this.iab.refs.card;
 

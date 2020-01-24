@@ -670,6 +670,19 @@ export class PersistenceProvider {
     return this.storage.remove('hiddenFeatures');
   }
 
+  setCardExperimentFlag(value: string) {
+    this.logger.debug('card experiment enabled: ', value);
+    return this.storage.set('cardExperimentEnabled', value);
+  }
+
+  getCardExperimentFlag() {
+    return this.storage.get('cardExperimentEnabled');
+  }
+
+  removeCardExperimentFlag() {
+    return this.storage.remove('cardExperimentEnabled');
+  }
+
   setWalletGroupName(keyId: string, name: string) {
     return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
   }

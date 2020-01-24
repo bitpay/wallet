@@ -23,7 +23,7 @@ import { BitPayCardPage } from '../bitpay-card';
 })
 export class BitPayCardIntroPage {
   public accounts;
-  public hiddenFeaturesEnabled: boolean;
+  public cardExperimentEnabled: boolean;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -36,9 +36,9 @@ export class BitPayCardIntroPage {
     private persistenceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider
   ) {
-    this.persistenceProvider.getHiddenFeaturesFlag().then( (status) => {
-      this.hiddenFeaturesEnabled = status === 'enabled';
-    })
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      this.cardExperimentEnabled = status === 'enabled';
+    });
   }
 
   ionViewWillEnter() {
@@ -112,9 +112,7 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard() {
-
-
-    if (this.hiddenFeaturesEnabled) {
+    if (this.cardExperimentEnabled) {
       this.iab.refs.card.show();
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});

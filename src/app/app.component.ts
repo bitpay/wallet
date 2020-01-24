@@ -267,7 +267,7 @@ export class CopayApp {
       });
 
     // hiding this behind feature flag
-    const res = await this.persistenceProvider.getHiddenFeaturesFlag();
+    const res = await this.persistenceProvider.getCardExperimentFlag();
 
     if (res === 'enabled') {
       let token;

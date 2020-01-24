@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
 // Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 @Component({
   selector: 'page-cards',
@@ -15,12 +17,14 @@ export class CardsPage {
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
-
+  public itemTapped = 0;
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private giftCardProvider: GiftCardProvider
+    private giftCardProvider: GiftCardProvider,
+    private persistenceProvider: PersistenceProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {}
 
   async ionViewDidEnter() {
@@ -32,5 +36,27 @@ export class CardsPage {
       noHistory: true
     });
     this.activeCards = await this.giftCardProvider.getActiveCards();
+  }
+
+  public enableCard() {
+    this.itemTapped++;
+
+    if (this.itemTapped >= 8) {
+      this.itemTapped = 0;
+
+      this.persistenceProvider.getCardExperimentFlag().then(res => {
+        res === 'enabled'
+          ? this.persistenceProvider.removeCardExperimentFlag()
+          : this.persistenceProvider.setCardExperimentFlag('enabled');
+
+        this.actionSheetProvider
+          .createInfoSheet('in-app-notification', {
+            title: `Card experiment ${
+              res === 'enabled' ? 'enabled' : 'disabled'
+            }. Restart required.`
+          })
+          .present();
+      });
+    }
   }
 }
