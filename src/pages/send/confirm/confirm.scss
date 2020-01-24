@@ -1,7 +1,8 @@
 page-confirm,
 confirm-card-purchase-page,
 page-txp-details,
-page-tx-details {
+page-tx-details,
+page-bitpay-card-topup {
   .add-padding-bottom {
     height: 90vh;
   }
@@ -156,20 +157,6 @@ page-tx-details {
           width: 18px;
           height: 18px;
           margin: 0px;
-        }
-        &.background {
-          &_btc {
-            background-color: #f7931a;
-          }
-          &_bch {
-            background-color: #2fcf6e;
-          }
-          &_eth {
-            background-color: #6b71d6;
-          }
-          &_xrp {
-            background-color: #000000;
-          }
         }
       }
     }
