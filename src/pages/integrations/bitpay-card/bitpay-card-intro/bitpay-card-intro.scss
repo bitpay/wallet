@@ -1,4 +1,11 @@
 page-bitpay-card-intro {
+  .scroll-content {
+    margin-bottom: 0 !important;
+  }
+  ion-footer {
+    background: white;
+    padding: 20px 0;
+  }
   ion-header {
     .info {
       opacity: 0.22;
