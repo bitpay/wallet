@@ -89,7 +89,9 @@ ion-header.bp-header .toolbar {
   background-color: rgba(155, 163, 174, 0.2);
   color: #d8d8d8;
   box-shadow: none;
-
+  &.button-ios {
+    margin: 0;
+  }
   &.button-md.activated,
   &.button-ios.activated {
     background-color: rgba(155, 163, 174, 0.2);
@@ -135,16 +137,8 @@ ion-header.bp-header .toolbar {
   .wrapper {
     background-color: white;
     min-height: 100%;
-    .page-content {
-      background-color: white;
-      div[page-content] {
-        position: absolute;
-        top: 56px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-    }
+    padding-bottom: calc(env(safe-area-inset-bottom));
+    padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
 
     &--feather {
       background-color: $feather-dark;
@@ -297,6 +291,10 @@ button.item {
 
 .testnet {
   filter: grayscale(100%);
+}
+
+.background_xrp.testnet {
+  filter: opacity(0.5);
 }
 
 .icon-card {

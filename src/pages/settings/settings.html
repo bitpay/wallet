@@ -126,15 +126,12 @@
       <ion-list>
         <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
           <ion-icon class="item-img" item-start>
-            <img src="assets/img/bitpay-card/icon-bitpay.svg" />
+            <img src="assets/img/bitpay-card/bitpay-card-icon-list.svg" />
           </ion-icon>
           <div class="main-label">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
           <div class="item-subtitle">
             {{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
           ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
-        </button>
-        <button ion-item detail-none class="create-button" (click)="addBitpayCard()" translate>
-          Add Card
         </button>
       </ion-list>
     </div>

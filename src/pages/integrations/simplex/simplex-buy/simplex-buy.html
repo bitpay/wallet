@@ -1,40 +1,36 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      <img width="130" src="assets/img/simplex/logo-simplex-dark.png" alt="Simplex">
+      <img width="120" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex">
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
-  <div class="wrapper">
-    <div class="container">
-
-      <div padding>
-        <div class="wallet" *ngIf="!wallet" (click)="showWallets()">
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+        <ion-item class="wallet" *ngIf="!wallet" (click)="showWallets()">
           <ion-icon item-start>
             <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
           </ion-icon>
-          <div translate>Select a wallet</div>
-          <div class="last-item" item-end>
+          <span translate>Select a wallet</span>
+          <ion-note item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
               <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
             </button>
-          </div>
-        </div>
+          </ion-note>
+        </ion-item>
         <ion-list *ngIf="wallet">
-          <div>
-            <div class="title">
-              <span translate>Deposit to</span>
-            </div>
-            <button ion-item detail-none (click)="showWallets()">
-              <wallet-item-content [wallet]="wallet"></wallet-item-content>
-            </button>
-          </div>
+          <ion-item>
+            <ion-label>{{'Deposit to' | translate}}</ion-label>
+          </ion-item>
+          <button ion-item detail-none (click)="showWallets()">
+            <wallet-item-content [wallet]="wallet"></wallet-item-content>
+          </button>
 
           <form [formGroup]="quoteForm">
-            <ion-label>{{'Amount' | translate}}</ion-label>
+            <ion-item>
+              <ion-label>{{'Amount' | translate}}</ion-label>
+            </ion-item>
             <ion-item>
               <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
               <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
@@ -49,7 +45,6 @@
             </label-tip>
           </form>
         </ion-list>
-      </div>
 
       <div class="spinner" *ngIf="showLoading">
         <ion-spinner icon="crescent"></ion-spinner>
@@ -99,8 +94,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
 </ion-content>
 
 <ion-footer>

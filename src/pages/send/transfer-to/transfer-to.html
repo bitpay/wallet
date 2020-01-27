@@ -22,10 +22,17 @@
         <span translate>Transfer to {{ getCoinName(coin) }} Wallet</span>
       </ion-label>
     </div>
-    <div class="line-divider"></div>
     <ion-list no-lines class="bp-list">
-      <div *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletList[coin]">
-        <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
+      <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
+        <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
+          <ion-icon>
+            <img src="assets/img/settings-icons/icon-key.svg" width="15">
+          </ion-icon>
+          <span>{{ walletsByKey[0].walletGroupName }}</span>
+        </div>
+        <div *ngFor="let wallet of walletsByKey">
+          <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
+        </div>
       </div>
     </ion-list>
   </div>

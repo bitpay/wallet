@@ -314,8 +314,6 @@ page-integrations {
   }
 
   .wallets-container {
-    margin-top: 20px;
-
     .wallet-wrapper {
       ion-item-sliding:last-child {
         padding-bottom: 2rem;
@@ -326,11 +324,11 @@ page-integrations {
     .bp-list ion-item {
       cursor: pointer;
     }
+  }
 
-    .section-header {
-      margin-right: 12px;
-      border-bottom: 1px solid #e0e0e0;
-    }
+  .section-header {
+    margin-right: 12px;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   .collapse {

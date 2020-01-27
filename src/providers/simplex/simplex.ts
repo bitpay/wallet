@@ -58,7 +58,7 @@ export class SimplexProvider {
       title: this.translate.instant('Buy Crypto (Simplex)'),
       icon: 'assets/img/simplex/icon-simplex.png',
       showIcon: true,
-      logo: 'assets/img/simplex/logo-simplex-light.png',
+      logo: 'assets/img/simplex/logo-simplex-color.svg',
       logoWidth: '110',
       background:
         'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(45, 47, 51, 1) 100%)',

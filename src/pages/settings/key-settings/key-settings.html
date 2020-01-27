@@ -32,15 +32,9 @@
           {{'Done' | translate}}
         </button>
       </ion-item-divider>
-      <ion-list *ngIf="!showReorder" class="settings-list bp-list">
-        <button ion-item *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
-          <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet?.coin == 'btc',
-            'background_bch': wallet?.coin == 'bch',
-            'background_eth': wallet?.coin == 'eth',
-            'background_xrp': wallet?.coin == 'xrp',
-            'testnet': wallet?.network === 'testnet' }" item-start>
-            <img class="" src="assets/img/currencies/{{wallet?.coin}}.svg" />
-          </ion-icon>
+      <div *ngIf="!showReorder">
+        <button class="wallets-list" ion-item *ngFor="let wallet of wallets" (click)="openWalletSettings(wallet.id)">
+          <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
           <ion-label>
             <div class="main-label">
               {{wallet.name}}
@@ -53,17 +47,11 @@
         <button ion-item detail-none class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()" translate>
           Create a new wallet
         </button>
-      </ion-list>
+      </div>
       <ion-content [ngStyle]="showReorder ? {'height': reorderHeight} : {}">
         <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)">
-          <button ion-item detail-none *ngFor="let wallet of wallets">
-            <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet?.coin == 'btc',
-            'background_bch': wallet?.coin == 'bch',
-            'background_eth': wallet?.coin == 'eth',
-            'background_xrp': wallet?.coin == 'xrp',
-            'testnet': wallet?.network === 'testnet' }" item-start>
-              <img class="" src="assets/img/currencies/{{wallet?.coin}}.svg" />
-            </ion-icon>
+          <button class="wallets-list" ion-item detail-none *ngFor="let wallet of wallets">
+            <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
             <ion-label>
               <div class="main-label">
                 {{wallet.name}}

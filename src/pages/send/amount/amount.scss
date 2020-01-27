@@ -9,16 +9,13 @@ page-amount {
     background: white;
   }
 
-  .scroll-content {
-    .wrapper {
-      div[page-content] {
-        top: 0 !important;
-      }
-    }
-  }
   .amount-wrapper {
     display: flex;
     align-items: center;
+    height: 93vh;
+    @media (max-height: 700px) {
+      height: 87vh;
+    }
     .container {
       width: 100%;
     }

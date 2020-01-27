@@ -3,6 +3,7 @@ import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
 import { ClipboardCardPage } from './clipboard-card/clipboard-card';
+import { CoinIconComponent } from './coin-icon/coin-icon';
 import { ExchangeRates } from './exchange-rates/exchange-rates';
 import { EXPANDABLE_HEADER_COMPONENTS } from './expandable-header/expandable-header';
 import { GiftCardDiscountText } from './gift-card-discount-text/gift-card-discount-text';
@@ -21,5 +22,6 @@ export const COMPONENTS = [
   WalletItemContent,
   ClipboardCardPage,
   SearchBarComponent,
-  ExchangeRates
+  ExchangeRates,
+  CoinIconComponent
 ];

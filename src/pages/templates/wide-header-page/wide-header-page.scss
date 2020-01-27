@@ -57,6 +57,7 @@ card-catalog-page,
 page-add,
 page-add-wallet,
 page-settings,
+page-confirm,
 page-key-settings,
 purchased-cards-page {
   @include fix-ios-bg-scroll($top-color: white);
@@ -65,6 +66,26 @@ purchased-cards-page {
   ion-title .toolbar-title {
     color: black;
     font-weight: 400;
+  }
+
+  ion-navbar {
+    .ios & {
+      padding-top: 3rem; // Fix iOS 10.3
+      padding-top: calc(6px + env(safe-area-inset-top));
+
+      ion-title {
+        padding-top: 3rem; // Fix iOS 10.3
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+  }
+
+  &.cordova {
+    ion-navbar {
+      .ios & {
+        padding-bottom: 7px;
+      }
+    }
   }
 }
 

@@ -28,6 +28,8 @@ export interface FlatWallet {
   m: number;
   n: number;
   needsBackup: boolean;
+  keyId: string;
+  walletGroupName: string;
   isComplete: () => boolean;
   getAddress: () => Promise<string>;
 }
@@ -45,6 +47,8 @@ export class TransferToPage {
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
+  public walletsByKeys = [];
+  public filteredWalletsByKeys = [];
   public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
@@ -84,6 +88,10 @@ export class TransferToPage {
     for (const coin of this.availableCoins) {
       this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }
+    this.walletsByKeys = _.values(
+      _.groupBy(this.walletList[this._wallet.coin], 'keyId')
+    );
+
     this.updateContactsList();
   }
 
@@ -179,6 +187,8 @@ export class TransferToPage {
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,
+      keyId: wallet.keyId,
+      walletGroupName: wallet.walletGroupName,
       isComplete: () => wallet.isComplete(),
       needsBackup: wallet.needsBackup,
       getAddress: () => this.walletProvider.getAddress(wallet, false)
@@ -213,6 +223,7 @@ export class TransferToPage {
     } else {
       this.updateContactsList();
       this.filteredWallets = [];
+      this.filteredWalletsByKeys = [];
     }
   }
 
@@ -225,6 +236,9 @@ export class TransferToPage {
             this.search.toLowerCase()
           );
         });
+        this.filteredWalletsByKeys = _.values(
+          _.groupBy(this.filteredWallets, 'keyId')
+        );
       }
     }
   }
