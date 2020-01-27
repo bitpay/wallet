@@ -1040,19 +1040,9 @@ export class ConfirmPage {
     if (this.fromWalletDetails) {
       this.navCtrl.popToRoot();
     } else {
-      // using setRoot(TabsPage) as workaround when coming from scanner
-      this.app
-        .getRootNavs()[0]
-        .setRoot(TabsPage)
-        .then(() => {
-          this.app
-            .getRootNav()
-            .getActiveChildNav()
-            .select(1);
-          setTimeout(() => {
-            this.events.publish('OpenWallet', this.wallet);
-          }, 1000);
-        });
+      setTimeout(() => {
+        this.events.publish('OpenWallet', this.wallet);
+      }, 1000);
     }
   }
 

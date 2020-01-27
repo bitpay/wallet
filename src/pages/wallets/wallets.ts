@@ -7,7 +7,6 @@ import { Observable, Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
-import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
@@ -15,7 +14,6 @@ import { SimplexPage } from '../integrations/simplex/simplex';
 import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
 import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
-import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
 // Providers
