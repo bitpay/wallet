@@ -629,12 +629,8 @@ export class WalletsPage {
     );
   }
 
-  public goToWalletDetails(wallet, params): void {
-    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
-    this.navCtrl.push(page, {
-      ...params,
-      walletId: wallet.credentials.walletId
-    });
+  public goToWalletDetails(wallet): void {
+    this.events.publish('OpenWallet', wallet);
   }
 
   public openProposalsNotificationsPage(): void {
