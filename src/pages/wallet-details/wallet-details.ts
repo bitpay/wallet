@@ -32,7 +32,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
 import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
@@ -443,10 +443,11 @@ export class WalletDetailsPage {
   }
 
   public goToTxDetails(tx) {
-    this.navCtrl.push(TxDetailsPage, {
+    const txDetailModal = this.modalCtrl.create(TxDetailsModal, {
       walletId: this.wallet.credentials.walletId,
       txid: tx.txid
     });
+    txDetailModal.present();
   }
 
   public openBackupModal(): void {
@@ -532,10 +533,7 @@ export class WalletDetailsPage {
     modal.present();
     modal.onDidDismiss(data => {
       if (!data || !data.txid) return;
-      this.navCtrl.push(TxDetailsPage, {
-        walletId: this.wallet.credentials.walletId,
-        txid: data.txid
-      });
+      this.goToTxDetails(data);
     });
   }
 
