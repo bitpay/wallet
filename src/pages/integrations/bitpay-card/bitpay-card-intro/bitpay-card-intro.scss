@@ -8,15 +8,15 @@ page-bitpay-card-intro {
   .bitpayCard {
     &-header {
       background: linear-gradient(180deg, #ffffff 0%, #e2e5f2 100%);
-      border-radius: 0 0 65% 25%;
+      /*  TODO  border-radius: 0 0 65% 25%;
       overflow: hidden;
-      text-align: center;
+      text-align: center; */
     }
     &-img {
       height: 306px;
       img {
         margin-top: 38px;
-        width: 232px;
+        /* TODO width: 232px; */
       }
     }
     &-content {

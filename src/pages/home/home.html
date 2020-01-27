@@ -133,7 +133,7 @@
           <ion-row align-items-center>
             <ion-col align-self-start col-4>
               <div class="message-img">
-                <img src="{{advertisement.imgSrc}}">
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}">
               </div>
             </ion-col>
             <ion-col col-8>

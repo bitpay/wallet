@@ -50,7 +50,8 @@ export class HomePage {
       linkText: 'Buy Now',
       link: BitPayCardIntroPage,
       dismissible: true,
-      imgSrc: 'assets/img/bitpay-card-solid.svg'
+      /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
+      imgSrc: 'assets/img/bitpay-card/bitpay-card-visa.svg'
     },
     {
       name: 'merchant-directory',
