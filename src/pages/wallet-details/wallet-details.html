@@ -1,10 +1,5 @@
 <ion-header no-border class="wallet-details-header">
   <ion-navbar class="app-color">
-    <ion-buttons left>
-      <button class="close-container disable-hover" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-title>
       <div class="header-wallet-name" [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{wallet?.name}}

@@ -1,12 +1,7 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  Platform
-} from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
@@ -96,7 +91,6 @@ export class WalletsPage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private modalCtrl: ModalController,
     private simplexProvider: SimplexProvider
   ) {
     this.slideDown = false;
@@ -637,17 +631,10 @@ export class WalletsPage {
 
   public goToWalletDetails(wallet, params): void {
     const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
-    const walletModal = this.modalCtrl.create(
-      page,
-      {
-        ...params,
-        walletId: wallet.credentials.walletId
-      },
-      {
-        cssClass: 'wallet-details-modal'
-      }
-    );
-    walletModal.present();
+    this.navCtrl.push(page, {
+      ...params,
+      walletId: wallet.credentials.walletId
+    });
   }
 
   public openProposalsNotificationsPage(): void {

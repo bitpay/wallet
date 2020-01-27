@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -91,8 +86,7 @@ export class SendPage {
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService,
-    private viewCtrl: ViewController
+    private translate: TranslateService
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
@@ -302,9 +296,5 @@ export class SendPage {
     this.navCtrl.push(MultiSendPage, {
       wallet: this.wallet
     });
-  }
-
-  public close(): void {
-    this.viewCtrl.dismiss();
   }
 }

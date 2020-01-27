@@ -582,16 +582,9 @@ export class WalletDetailsPage {
   }
 
   public goToSendPage() {
-    const modal = this.modalCtrl.create(
-      SendPage,
-      {
-        wallet: this.wallet
-      },
-      {
-        cssClass: 'wallet-details-modal'
-      }
-    );
-    modal.present();
+    this.navCtrl.push(SendPage, {
+      wallet: this.wallet
+    });
   }
 
   public showMoreOptions(): void {

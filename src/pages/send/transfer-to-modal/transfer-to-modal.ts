@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-transfer-to-modal',
@@ -9,11 +9,7 @@ export class TransferToModalPage {
   public search: string = '';
   public wallet;
 
-  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
+  constructor(private navParams: NavParams) {
     this.wallet = this.navParams.data.wallet;
-  }
-
-  public close(): void {
-    this.viewCtrl.dismiss();
   }
 }
