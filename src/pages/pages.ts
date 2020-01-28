@@ -20,7 +20,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsModal } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
-import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
+import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Invoice
@@ -223,7 +223,7 @@ export const PAGES = [
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
-  WalletBalancePage,
+  WalletBalanceModal,
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,

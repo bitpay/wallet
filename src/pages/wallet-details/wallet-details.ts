@@ -36,7 +36,7 @@ import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
 import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
-import { WalletBalancePage } from './wallet-balance/wallet-balance';
+import { WalletBalanceModal } from './wallet-balance/wallet-balance';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
@@ -511,9 +511,10 @@ export class WalletDetailsPage {
   }
 
   public openBalanceDetails(): void {
-    this.navCtrl.push(WalletBalancePage, {
+    let walletBalanceModal = this.modalCtrl.create(WalletBalanceModal, {
       status: this.wallet.cachedStatus
     });
+    walletBalanceModal.present();
   }
 
   public back(): void {
