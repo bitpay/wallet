@@ -175,11 +175,6 @@ ion-spinner * {
   align-items: center;
 }
 
-// Prevent the names of the tabs from disappearing
-.tabbar .tab-button .tab-button-text {
-  display: block;
-}
-
 .toolbar.toolbar-md,
 .toolbar.toolbar-ios {
   .back-button-md {
@@ -201,32 +196,6 @@ ion-spinner * {
     }
     .back-button-icon-ios {
       margin: 2px 2px 0px 0px;
-    }
-  }
-}
-
-.tabbar {
-  .tabs-md &,
-  .tabs-ios & {
-    background: white;
-  }
-
-  .tabs-ios & {
-    .tab-button-icon {
-      height: 22px;
-    }
-  }
-
-  justify-content: center;
-  padding-top: 5px;
-  transform: translate3d(0, 0, 0);
-
-  .tab-button {
-    max-width: 15vw;
-    min-width: 80px; // Prevent the names of the tabs from disappearing
-
-    .tab-button-text {
-      display: block;
     }
   }
 }
@@ -556,18 +525,6 @@ ion-alert .alert-message {
   top: $toolbar-ios-height;
 }
 
-.hide-tabbar {
-  .tabbar {
-    display: none !important;
-  }
-
-  .fullscreen-tab {
-    .scroll-content {
-      margin-bottom: 0 !important;
-    }
-  }
-}
-
 .header-extend {
   background: $toolbar-background;
   height: 180px;
@@ -787,6 +744,47 @@ page-bitpay-card,
   border-radius: 0px !important;
 }
 
+.tabbar {
+  .tabs-md &,
+  .tabs-ios & {
+    background: white;
+  }
+
+  .tabs-ios & {
+    .tab-button-icon {
+      height: 22px;
+    }
+  }
+
+  justify-content: center;
+  padding-top: 5px;
+  transform: translate3d(0, 0, 0);
+
+  .tab-button {
+    max-width: 15vw;
+    min-width: 80px; // Prevent the names of the tabs from disappearing
+
+    .tab-button-text {
+      display: block;
+    }
+  }
+}
+
+$home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%
+  50%;
+$home-inactive: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
+$wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
+  50% 50%;
+$wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50%
+  50%;
+$cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50%
+  50%;
+$cards-inactive: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
+$settings-active: url('../assets/img/tab-icons/tab-settings-active.svg')
+  no-repeat 50% 50%;
+$settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat
+  50% 50%;
+
 ion-icon {
   &[class*='tab-'] {
     margin: 0 5px 0 0;
@@ -794,45 +792,42 @@ ion-icon {
     $sz: 20px;
     width: $sz;
     height: $sz;
-  } // custom icons
-  &[class*='home'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%
-      50%;
+  }
+
+  &[class*='tab-home'] {
+    background: $home-inactive;
     background-size: contain;
-  } //in case of active
-  &[class*='home'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $home-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-wallets'] {
+    background: $wallets-inactive;
     background-size: contain;
-  } //in case of inactive
-  &[class*='wallets'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
-      50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $wallets-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-cards'] {
+    background: $cards-inactive;
     background-size: contain;
-  } //in case of active
-  &[class*='wallets'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $cards-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-settings'] {
+    background: $settings-inactive;
     background-size: contain;
-  } //in case of inactive
-  &[class*='cards'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat
-      50% 50%;
-    background-size: contain;
-  } //in case of active
-  &[class*='cards'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
-    background-size: contain;
-  } //in case of inactive
-  &[class*='settings'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-settings-active.svg') no-repeat
-      50% 50%;
-    background-size: contain;
-  } //in case of active
-  &[class*='settings'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-settings.svg') no-repeat 50%
-      50%;
-    background-size: contain;
-  } //in case of inactive
+    .tab-button[aria-selected='true'] & {
+      background: $settings-active;
+      background-size: contain;
+    }
+  }
 }
+
 .line-divider {
   box-sizing: border-box;
   border: 0.5px solid #9ba3ae;
