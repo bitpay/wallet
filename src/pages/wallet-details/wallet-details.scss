@@ -91,10 +91,14 @@ page-wallet-details {
     opacity: 0.5;
     line-height: 24px;
   }
+  .balance-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 
   .balance-hidden {
-    width: 100vw;
-    margin-left: -5rem;
+    width: 100%;
     text-align: center;
 
     .title {
