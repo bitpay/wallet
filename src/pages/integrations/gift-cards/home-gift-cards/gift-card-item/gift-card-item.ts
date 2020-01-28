@@ -1,12 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
   Renderer,
   ViewChild
 } from '@angular/core';
-import { Item, ItemSliding } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { GiftCardProvider } from '../../../../../providers/gift-card/gift-card';
@@ -40,11 +40,8 @@ export class GiftCardItem {
   numCurrencies: number;
   totalBalance: number;
 
-  @ViewChild(Item)
-  item: Item;
-
-  @ViewChild(ItemSliding)
-  slidingItem: ItemSliding;
+  @ViewChild('card')
+  card: ElementRef;
 
   constructor(
     private giftCardProvider: GiftCardProvider,
@@ -67,7 +64,6 @@ export class GiftCardItem {
       cardName: this.cardName,
       action
     });
-    this.slidingItem.close();
   }
 
   shouldShowTotalBalance() {
@@ -80,7 +76,7 @@ export class GiftCardItem {
       this.cardConfig.logoBackgroundColor.indexOf('gradient') > -1;
     const cssProperty = isGradient ? 'background-image' : 'background-color';
     this.renderer.setElementStyle(
-      this.item.getNativeElement(),
+      this.card.nativeElement,
       cssProperty,
       this.cardConfig.logoBackgroundColor
     );
