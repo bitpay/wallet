@@ -78,8 +78,8 @@
 
         <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
           <span label-tip-title translate>Testnet Wallet</span>
-          <div label-tip-body translate>
-            The testnet is an alternative {{ coinName }} block chain, to be used for testing. Testnet coins are separate and distinct from actual {{ coinName }}, and do not have any value. This allows application developers or {{ coinName }} testers to experiment, without having to use real {{ coinName }}.
+          <div label-tip-body>
+            {{ 'The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}' | translate : {coinName: coinName } }} .
           </div>
         </label-tip>
 
