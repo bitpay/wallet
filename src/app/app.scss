@@ -562,6 +562,11 @@ button.modal-close-button {
   }
 }
 
+.close-container.button-default {
+  color: color($colors, dark);
+  box-shadow: none;
+}
+
 .qr-container {
   flex-grow: 1;
   @include center;
