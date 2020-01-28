@@ -771,17 +771,23 @@ page-bitpay-card,
   }
 }
 
-$home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50% 50%;
+$home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%
+  50%;
 $home-inactive: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
-$wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat 50% 50%;
-$wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50% 50%;
-$cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50% 50%;
+$wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
+  50% 50%;
+$wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50%
+  50%;
+$cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50%
+  50%;
 $cards-inactive: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
-$settings-active: url('../assets/img/tab-icons/tab-settings-active.svg') no-repeat 50% 50%;
-$settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat 50% 50%;
+$settings-active: url('../assets/img/tab-icons/tab-settings-active.svg')
+  no-repeat 50% 50%;
+$settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat
+  50% 50%;
 
 ion-icon {
-  &[class*="tab-"] {
+  &[class*='tab-'] {
     margin: 0 5px 0 0;
     vertical-align: middle;
     $sz: 20px;
@@ -789,41 +795,39 @@ ion-icon {
     height: $sz;
   }
 
-  &[class*="tab-home"] {
+  &[class*='tab-home'] {
     background: $home-inactive;
     background-size: contain;
-    .tab-button[aria-selected=true] & {
+    .tab-button[aria-selected='true'] & {
       background: $home-active;
       background-size: contain;
     }
   }
-  &[class*="tab-wallets"] {
+  &[class*='tab-wallets'] {
     background: $wallets-inactive;
     background-size: contain;
-    .tab-button[aria-selected=true] & {
+    .tab-button[aria-selected='true'] & {
       background: $wallets-active;
       background-size: contain;
     }
   }
-  &[class*="tab-cards"] {
+  &[class*='tab-cards'] {
     background: $cards-inactive;
     background-size: contain;
-    .tab-button[aria-selected=true] & {
+    .tab-button[aria-selected='true'] & {
       background: $cards-active;
       background-size: contain;
     }
   }
-  &[class*="tab-settings"] {
+  &[class*='tab-settings'] {
     background: $settings-inactive;
     background-size: contain;
-    .tab-button[aria-selected=true] & {
+    .tab-button[aria-selected='true'] & {
       background: $settings-active;
       background-size: contain;
     }
   }
 }
-
-
 
 .line-divider {
   box-sizing: border-box;
