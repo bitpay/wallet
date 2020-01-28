@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 
@@ -32,7 +32,6 @@ export class WalletTransactionHistoryPage {
   private currency: string;
 
   constructor(
-    private app: App,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -198,10 +197,6 @@ export class WalletTransactionHistoryPage {
     this.walletProvider.clearTxHistory(this.wallet);
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
     this.navCtrl.popToRoot().then(() => {
-      this.app
-        .getRootNav()
-        .getActiveChildNav()
-        .select(1);
       setTimeout(() => {
         this.events.publish('OpenWallet', this.wallet);
       }, 1000);

@@ -1,12 +1,12 @@
-<wide-header-page title="">
-  <ion-buttons right>
-    <button *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
-      <span translate>Send max</span>
+<wide-header-page title="" [hideBackButton]="useAsModal">
+  <ion-buttons left *ngIf="useAsModal">
+    <button class="close-container disable-hover" (click)="closeModal()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
     </button>
   </ion-buttons>
   <ion-buttons right>
-    <button [ngClass]="{'hide': expression && allowSend}" *ngIf="useAsModal" (click)="closeModal()" clear wide-header-bar-button ion-button>
-      <span translate>Cancel</span>
+    <button *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
+      <span translate>Send max</span>
     </button>
   </ion-buttons>
   <div class="amount-wrapper" page-content>

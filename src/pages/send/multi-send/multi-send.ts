@@ -100,18 +100,9 @@ export class MultiSendPage {
   };
 
   public openTransferToModal(): void {
-    let modal = this.modalCtrl.create(
-      TransferToModalPage,
-      {
-        wallet: this.wallet
-      },
-      {
-        showBackdrop: false,
-        enableBackdropDismiss: true,
-        cssClass: 'wallet-details-modal'
-      }
-    );
-    modal.present();
+    this.navCtrl.push(TransferToModalPage, {
+      wallet: this.wallet
+    });
   }
 
   public openAmountModal(item, index): void {

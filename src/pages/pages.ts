@@ -17,10 +17,10 @@ import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
-import { TxDetailsPage } from '../pages/tx-details/tx-details';
+import { TxDetailsModal } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
-import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
+import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Invoice
@@ -203,7 +203,7 @@ export const PAGES = [
   FinishModalPage,
   TabsPage,
   TxpDetailsPage,
-  TxDetailsPage,
+  TxDetailsModal,
   TxpPage,
   WalletSettingsPage,
   WalletDeletePage,
@@ -223,7 +223,7 @@ export const PAGES = [
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
-  WalletBalancePage,
+  WalletBalanceModal,
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,

@@ -1,4 +1,7 @@
 page-tx-details {
+  .close-container.button-default {
+    color: color($colors, dark);
+  }
   .note-container {
     max-width: 200px;
   }

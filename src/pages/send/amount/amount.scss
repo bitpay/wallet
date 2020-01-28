@@ -1,4 +1,7 @@
 page-amount {
+  .close-container.button-default {
+    color: color($colors, dark);
+  }
   ion-header ion-navbar ion-title {
     .toolbar-title {
       color: white;

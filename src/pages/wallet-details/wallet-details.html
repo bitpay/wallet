@@ -1,10 +1,5 @@
 <ion-header no-border class="wallet-details-header">
   <ion-navbar class="app-color">
-    <ion-buttons left>
-      <button class="close-container disable-hover" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-title>
       <div class="header-wallet-name" [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{wallet?.name}}
@@ -44,7 +39,7 @@
           {{wallet?.name}}
         </div>
 
-        <div (longPress)="toggleBalance()">
+        <div class="balance-content" (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet?.balanceHidden && !wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
             <div class="balance-str">
               {{ wallet?.cachedStatus ? wallet?.cachedStatus.totalBalanceStr  : wallet?.lastKnownBalance }} <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg"></div>

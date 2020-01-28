@@ -14,7 +14,6 @@ import { Logger } from '../../../providers/logger/logger';
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { TabsPage } from '../../tabs/tabs';
-import { WalletsPage } from '../../wallets/wallets';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -830,17 +829,7 @@ export class ConfirmPage {
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {
       if (option || typeof option === 'undefined') {
-        this.fromWalletDetails
-          ? this.navCtrl.pop()
-          : this.app
-              .getRootNavs()[0]
-              .setRoot(WalletsPage)
-              .then(() =>
-                this.app
-                  .getRootNav()
-                  .getActiveChildNav()
-                  .select(1)
-              ); // using setRoot(TabsPage) as workaround when coming from scanner
+        this.fromWalletDetails ? this.navCtrl.pop() : this.navCtrl.popToRoot();
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -1037,23 +1026,10 @@ export class ConfirmPage {
       'InvoiceUri'
     ]);
 
-    if (this.fromWalletDetails) {
-      this.navCtrl.popToRoot();
-    } else {
-      // using setRoot(TabsPage) as workaround when coming from scanner
-      this.app
-        .getRootNavs()[0]
-        .setRoot(TabsPage)
-        .then(() => {
-          this.app
-            .getRootNav()
-            .getActiveChildNav()
-            .select(1);
-          setTimeout(() => {
-            this.events.publish('OpenWallet', this.wallet);
-          }, 1000);
-        });
-    }
+    this.navCtrl.popToRoot();
+    setTimeout(() => {
+      this.events.publish('OpenWallet', this.wallet);
+    }, 1000);
   }
 
   public chooseFeeLevel(): void {
