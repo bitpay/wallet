@@ -1,12 +1,18 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
+import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
@@ -90,7 +96,8 @@ export class WalletsPage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private simplexProvider: SimplexProvider
+    private simplexProvider: SimplexProvider,
+    private modalCtrl: ModalController
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -629,9 +636,22 @@ export class WalletsPage {
   }
 
   public goToWalletDetails(wallet): void {
-    this.navCtrl.push(WalletDetailsPage, {
-      walletId: wallet.credentials.walletId
-    });
+    if (wallet.isComplete()) {
+      this.navCtrl.push(WalletDetailsPage, {
+        walletId: wallet.credentials.walletId
+      });
+    } else {
+      const copayerModal = this.modalCtrl.create(
+        CopayersPage,
+        {
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'wallet-details-modal'
+        }
+      );
+      copayerModal.present();
+    }
   }
 
   public openProposalsNotificationsPage(): void {

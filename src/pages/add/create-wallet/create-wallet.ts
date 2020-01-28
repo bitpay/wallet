@@ -28,6 +28,7 @@ import {
 } from '../../../providers/wallet/wallet';
 
 // Pages
+import { CopayersPage } from '../../add/copayers/copayers';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -330,9 +331,22 @@ export class CreateWalletPage implements OnInit {
         this.navCtrl.popToRoot().then(() => {
           this.events.publish('Local/WalletListChange');
           setTimeout(() => {
-            this.navCtrl.push(WalletDetailsPage, {
-              walletId: wallet.credentials.walletId
-            });
+            if (wallet.isComplete()) {
+              this.navCtrl.push(WalletDetailsPage, {
+                walletId: wallet.credentials.walletId
+              });
+            } else {
+              const copayerModal = this.modalCtrl.create(
+                CopayersPage,
+                {
+                  walletId: wallet.credentials.walletId
+                },
+                {
+                  cssClass: 'wallet-details-modal'
+                }
+              );
+              copayerModal.present();
+            }
           }, 1000);
         });
       })

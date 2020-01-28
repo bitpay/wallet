@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 
 // Pages
+import { CopayersPage } from '../../add/copayers/copayers';
 import { ScanPage } from '../../scan/scan';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -58,7 +64,8 @@ export class JoinWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private modalCtrl: ModalController
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -281,9 +288,22 @@ export class JoinWalletPage {
 
         this.events.publish('Local/WalletListChange');
         setTimeout(() => {
-          this.navCtrl.push(WalletDetailsPage, {
-            walletId: wallet.credentials.walletId
-          });
+          if (wallet.isComplete()) {
+            this.navCtrl.push(WalletDetailsPage, {
+              walletId: wallet.credentials.walletId
+            });
+          } else {
+            const copayerModal = this.modalCtrl.create(
+              CopayersPage,
+              {
+                walletId: wallet.credentials.walletId
+              },
+              {
+                cssClass: 'wallet-details-modal'
+              }
+            );
+            copayerModal.present();
+          }
         }, 1000);
       })
       .catch(err => {
