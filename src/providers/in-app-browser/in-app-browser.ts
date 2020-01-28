@@ -5,9 +5,6 @@ import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
 
-const IAB_CONFIG =
-  'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,hidden=yes,clearcache=yes,hidespinner=yes,disallowoverscroll=yes,zoom=no';
-
 @Injectable()
 export class InAppBrowserProvider {
   // add new refs here
@@ -38,11 +35,12 @@ export class InAppBrowserProvider {
 
   public createIABInstance(
     refName: string,
+    config: string,
     url: string,
     initScript?: string
   ): Promise<InAppBrowserRef> {
     return new Promise((res, rej) => {
-      const ref: InAppBrowserRef = window.open(url, '_blank', IAB_CONFIG);
+      const ref: InAppBrowserRef = window.open(url, '_blank', config);
       ref.postMessage = window.postMessage;
       ref.addEventListener('loadstop', () => {
         if (initScript) {

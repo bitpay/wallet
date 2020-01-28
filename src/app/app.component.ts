@@ -39,6 +39,7 @@ import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // Pages
+import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -283,8 +284,10 @@ export class CopayApp {
         this.iab
           .createIABInstance(
             'card',
-            'https://<url>/wallet-card',
-            `sessionStorage.setItem('isPaired', ${!!token})`
+            CARD_IAB_CONFIG,
+            'https://test.bitpay.com/wallet-card?context=bpa',
+            `sessionStorage.setItem('isPaired', ${!!token})`,
+
           )
           .then(ref => {
             this.cardIAB_Ref = ref;
