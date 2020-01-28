@@ -14,6 +14,7 @@ import { SimplexPage } from '../integrations/simplex/simplex';
 import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
 import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
 // Providers
@@ -628,7 +629,9 @@ export class WalletsPage {
   }
 
   public goToWalletDetails(wallet): void {
-    this.events.publish('OpenWallet', wallet);
+    this.navCtrl.push(WalletDetailsPage, {
+      walletId: wallet.credentials.walletId
+    });
   }
 
   public openProposalsNotificationsPage(): void {

@@ -5,6 +5,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -280,7 +281,9 @@ export class JoinWalletPage {
 
         this.events.publish('Local/WalletListChange');
         setTimeout(() => {
-          this.events.publish('OpenWallet', wallet);
+          this.navCtrl.push(WalletDetailsPage, {
+            walletId: wallet.credentials.walletId
+          });
         }, 1000);
       })
       .catch(err => {

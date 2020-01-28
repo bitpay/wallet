@@ -29,6 +29,7 @@ import {
 
 // Pages
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 @Component({
   selector: 'page-create-wallet',
@@ -329,7 +330,9 @@ export class CreateWalletPage implements OnInit {
         this.navCtrl.popToRoot().then(() => {
           this.events.publish('Local/WalletListChange');
           setTimeout(() => {
-            this.events.publish('OpenWallet', wallet);
+            this.navCtrl.push(WalletDetailsPage, {
+              walletId: wallet.credentials.walletId
+            });
           }, 1000);
         });
       })

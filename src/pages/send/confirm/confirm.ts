@@ -14,6 +14,7 @@ import { Logger } from '../../../providers/logger/logger';
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { TabsPage } from '../../tabs/tabs';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -1028,7 +1029,9 @@ export class ConfirmPage {
 
     this.navCtrl.popToRoot();
     setTimeout(() => {
-      this.events.publish('OpenWallet', this.wallet);
+      this.navCtrl.push(WalletDetailsPage, {
+        walletId: this.wallet.credentials.walletId
+      });
     }, 1000);
   }
 
