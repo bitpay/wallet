@@ -6,7 +6,6 @@ page-txp-details {
     max-width: 200px;
   }
   $item-border-color: #efefef;
-  $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
   .header-container {
     padding: 20px 0px 20px 0px;
@@ -54,6 +53,10 @@ page-txp-details {
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
+    padding: 17px 0px;
+    > * {
+      padding-right: 0;
+    }
     &:not(:nth-child(2)) {
       .timeline-content-icon {
         .line::before {
@@ -68,11 +71,6 @@ page-txp-details {
           top: 0;
         }
       }
-    }
-    padding: 17px $item-lateral-padding;
-
-    > * {
-      padding-right: 0;
     }
     .timeline-content {
       display: flex;
