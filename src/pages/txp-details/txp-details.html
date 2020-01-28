@@ -194,8 +194,8 @@
                 <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
               </div>
               <div class="timeline-content-label">
-                <div class="action">{{a.description}}</div>
-                <div class="name">{{a.by}}</div>
+                <div class="action ellipsis">{{a.description}}</div>
+                <div class="name ellipsis">{{a.by}}</div>
               </div>
               <ion-note class="ellipsis">
                 <time>{{ a.time * 1000 | amTimeAgo}}</time>
