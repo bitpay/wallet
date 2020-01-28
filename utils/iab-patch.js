@@ -94,7 +94,7 @@ try {
   if (content.includes('this.inAppBrowser.closeDialog')){
     const result = content.replace(
       /this.inAppBrowser.closeDialog/g,
-      'this.inAppBrowser.hide'
+      'this.hide'
     );
     fs.writeFileSync(file, result);
     console.log('successfully patched InAppBrowserDialog.java');
