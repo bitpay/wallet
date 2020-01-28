@@ -167,6 +167,7 @@
     "ngx-barcode": "0.2.4",
     "ngx-markdown": "1.5.2",
     "ngx-qrcode2": "0.1.0",
+    "ngx-text-overflow-clamp": "0.0.1",
     "papaparse": "4.3.6",
     "rxjs": "5.5.12",
     "text-encoding": "0.6.4",

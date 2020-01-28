@@ -1,41 +1,40 @@
-<div class="bitpay-card">
-  <div *ngFor="let card of bitpayCardItems" class="card-item">
-    <div class="card-container">
-      <div class="card" (click)="goToCard(card.id)">
-        <div class="number ellipsis">
-          Card (...{{ card.lastFourDigits }})
+<div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
+  <div class="card-container">
+    <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
+      <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
+      <span class="ellipsis" item-end>
+        <div class="funds ellipsis">
+          <span *ngIf="card.balance">
+            {{ card.balance | formatCurrency: card?.currency: 'minimal' }}
+          </span>
+          <span *ngIf="!card.balance" class="funds--cta">
+            {{ 'Add funds' | translate }}
+          </span>
         </div>
-        <span class="ellipsis" item-end>
-          <div class="funds ellipsis">
-            <span *ngIf="card.balance">
-              {{ card.currencySymbol + (card.balance | number: '1.2-2') }}
-            </span>
-            <span *ngIf="!card.balance">
-              {{ 'Add funds to get started' | translate }}
-            </span>
-          </div>
-        </span>
-      </div>
+      </span>
     </div>
-  </div>
-  <div *ngIf="bitpayCardItems?.length" class="add-card-button cards" (click)="goToBitPayCardIntroPage()" tappable translate>
-    <img src="assets/img/icon-plus.svg">
-    Add BitPay Card
+    <div class="slit"></div>
   </div>
 </div>
-<action-card-v4 *ngIf="showBitpayCardGetStarted && !bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
+<div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length">
+  <add-button (click)="goToBitPayCardIntroPage()" tappable>
+    <div add-button-text translate>Add BitPay Card</div>
+  </add-button>
+</div>
+<action-card-v4 *ngIf="showBitpayCardGetStarted && !bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()"
+  tappable>
   <div action-card-header>
     <div class="bitpay-card-header">
       <div class="bitpay-card-image">
-        <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg">
+        <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
+        <img src="assets/img/bitpay-card/bitpay-card.png">
       </div>
     </div>
   </div>
-  <div action-card-title translate>Get a BitPay Card</div>
-  <div action-card-body translate>
-    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere that accepts Visa®
+  <div action-card-title translate>Start using your crypto</div>
+  <div action-card-body translate [clamp]="2">
+    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere
+    that accepts Visa®
   </div>
-  <div action-card-button translate>
-    Get Started
-  </div>
+  <div action-card-button translate>Get Started</div>
 </action-card-v4>

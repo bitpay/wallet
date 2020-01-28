@@ -461,23 +461,28 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return Promise.resolve(notificationEmail);
     }
     const email = await this.giftCardProvider.getUserEmail();
-    if (email) return Promise.resolve(email);
+    if (email) {
+      return Promise.resolve(email);
+    }
+    return this.setEmail();
   }
 
-  private setEmail(wallet) {
+  private async setEmail() {
     const emailComponent = this.actionSheetProvider.createEmailComponent();
-    emailComponent.present();
-    emailComponent.onDidDismiss(email => {
-      if (email) {
-        if (!this.giftCardProvider.emailIsValid(email)) {
+    await emailComponent.present();
+    return new Promise(resolve => {
+      emailComponent.onDidDismiss(email => {
+        if (email) {
+          if (!this.giftCardProvider.emailIsValid(email)) {
+            this.throwEmailRequiredError();
+          }
+          this.giftCardProvider.storeEmail(email);
+          resolve(email);
+        } else {
           this.throwEmailRequiredError();
         }
-        this.giftCardProvider.storeEmail(email);
-        this.initialize(wallet, email);
-      } else {
-        this.throwEmailRequiredError();
-      }
-      this.isOpenSelector = false;
+        this.isOpenSelector = false;
+      });
     });
   }
 
@@ -639,11 +644,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     const email = await this.promptEmail();
-    if (email) {
-      this.initialize(wallet, email).catch(() => {});
-    } else {
-      this.setEmail(wallet);
-    }
+    await this.initialize(wallet, email).catch(() => {});
   }
 
   public showWallets(): void {

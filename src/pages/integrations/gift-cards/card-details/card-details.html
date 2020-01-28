@@ -1,12 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons left>
-      <button
-        *ngIf="navParams.get('showCloseButton')"
-        class="modal-close-button"
-        (click)="close()"
-        ion-button
-      >
+      <button *ngIf="navParams.get('showCloseButton')" class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
@@ -26,63 +21,27 @@
   <div class="wrapper">
     <div class="header-extension"></div>
     <div class="main-content">
-      <div class="balance">{{card.amount | formatCurrency:card.currency}}</div>
-      <img-loader
-        class="card-image"
-        src="{{cardConfig?.cardImage}}"
-      ></img-loader>
+      <div class="balance" (click)="showConfetti()">{{card.amount | formatCurrency:card.currency}}</div>
+      <img-loader class="card-image" src="{{cardConfig?.cardImage}}"></img-loader>
       <div #confetti class="confetti-root"></div>
-      <div
-        class="card-info"
-        [ngClass]="{'has-pin': hasPin()}"
-        *ngIf="!showClaimLinkUI()"
-      >
+      <div class="card-info" [ngClass]="{'has-pin': hasPin()}" *ngIf="!showClaimLinkUI()">
         <div *ngIf="card.claimCode">
           <div *ngIf="card.status !== 'Canceled'">
-            <div
-              (click)="copyCode(card.claimCode)"
-              [copy-to-clipboard]="card.claimCode"
-              [hide-toast]="true"
-              tappable
-            >
+            <div (click)="copyCode(card.claimCode)" [copy-to-clipboard]="card.claimCode" [hide-toast]="true" tappable>
               <div class="card-info__title">Claim Code</div>
               <div class="card-info__body" *ngIf="!showBarcode()">
                 {{card.claimCode}}
               </div>
               <ng-container *ngIf="showBarcode()">
-                <ngx-barcode
-                  *ngIf="!card.barcodeImage && barcodeFormat !== 'QR'"
-                  class="card-info__body"
-                  [bc-value]="barcodeData"
-                  [bc-format]="barcodeFormat"
-                  bc-display-value="false"
-                  bc-element-type="canvas"
-                  bc-height="70"
-                  [bc-width]="1.8"
-                  bc-background="#f7f7f7"
-                  bc-font="Roboto"
-                  bc-text-margin="8"
-                  bc-text-position="bottom"
-                  bc-font-size="20"
-                ></ngx-barcode>
-                <ngx-qrcode
-                  *ngIf="!card.barcodeImage && barcodeFormat === 'QR'"
-                  hide-toast="true"
-                  [qrc-value]="barcodeData"
-                  qrc-class="aclass"
-                  qrc-errorCorrectionLevel="M"
-                ></ngx-qrcode>
-                <img
-                  *ngIf="card.barcodeImage"
-                  [src]="card.barcodeImage"
-                  class="card-info__body barcode-image"
-                />
+                <ngx-barcode *ngIf="!card.barcodeImage && barcodeFormat !== 'QR'" class="card-info__body"
+                  [bc-value]="barcodeData" [bc-format]="barcodeFormat" bc-display-value="false" bc-element-type="canvas"
+                  bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7" bc-font="Roboto" bc-text-margin="8"
+                  bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
+                <ngx-qrcode *ngIf="!card.barcodeImage && barcodeFormat === 'QR'" hide-toast="true"
+                  [qrc-value]="barcodeData" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+                <img *ngIf="card.barcodeImage" [src]="card.barcodeImage" class="card-info__body barcode-image" />
               </ng-container>
-              <div
-                class="card-info__body"
-                [ngClass]="{long: card.claimCode.length > 20 }"
-                *ngIf="showBarcode()"
-              >
+              <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="showBarcode()">
                 {{card.claimCode}}
               </div>
               <div class="card-info__date" *ngIf="!hasPin()">
@@ -91,94 +50,49 @@
             </div>
             <div *ngIf="hasPin()">
               <div class="separator"></div>
-              <div
-                (click)="copyCode(card.pin)"
-                [copy-to-clipboard]="card.pin"
-                [hide-toast]="true"
-                tappable
-              >
+              <div (click)="copyCode(card.pin)" [copy-to-clipboard]="card.pin" [hide-toast]="true" tappable>
                 <div class="card-info__title">Pin</div>
                 <div class="card-info__body pin">{{card.pin}}</div>
               </div>
             </div>
           </div>
-          <div
-            *ngIf="card.status == 'Canceled'"
-            class="card-info__body"
-            translate
-          >
+          <div *ngIf="card.status == 'Canceled'" class="card-info__body" translate>
             Gift card canceled
           </div>
         </div>
 
         <div *ngIf="!card.claimCode" class="card-info__status-message">
-          <div
-            *ngIf="card.status === 'PENDING' || card.status === 'invalid' || card.status === 'expired'"
-            class="card-info__body"
-            translate
-          >
+          <div *ngIf="card.status === 'PENDING' || card.status === 'invalid' || card.status === 'expired'"
+            class="card-info__body" translate>
             Awaiting payment to confirm
           </div>
-          <div
-            *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'"
-            class="card-info__body"
-            translate
-          >
+          <div *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" class="card-info__body" translate>
             Could not get claim code. Please contact BitPay support.
           </div>
         </div>
       </div>
 
-      <div
-        class="card-info__date card-info__date--outside-card-info"
-        *ngIf="hasPin() || showClaimLinkUI()"
-      >
+      <div class="card-info__date card-info__date--outside-card-info" *ngIf="hasPin() || showClaimLinkUI()">
         Created {{card.date | amTimeAgo}}
       </div>
 
       <div class="actions-wrapper" [@preventInitialChildAnimations]>
-        <div
-          class="actions"
-          *ngIf="card.status !== 'PENDING' && !card.archived && (card.claimCode || card.claimLink)"
-          [@enterAnimation]
-        >
-          <button
-            ion-button
-            *ngIf="!showClaimLinkUI() && cardConfig?.redeemUrl"
-            class="button-standard"
-            (click)="redeem()"
-          >
+        <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived && (card.claimCode || card.claimLink)"
+          [@enterAnimation]>
+          <button ion-button *ngIf="!showClaimLinkUI() && cardConfig?.redeemUrl" class="button-standard"
+            (click)="redeem()">
             {{'Redeem Now' | translate}}
           </button>
-          <button
-            ion-button
-            *ngIf="!showClaimLinkUI() && !cardConfig?.redeemUrl && cardConfig"
-            class="button-standard"
-            (click)="redeem()"
-            [copy-to-clipboard]="card.claimCode"
-            [hide-toast]="true"
-          >
-            <ng-container *ngIf="!cardConfig.printRequired"
-              >{{'Copy Code' | translate}}</ng-container
-            >
-            <ng-container *ngIf="cardConfig.printRequired"
-              >{{'Print' | translate}}</ng-container
-            >
+          <button ion-button *ngIf="!showClaimLinkUI() && !cardConfig?.redeemUrl && cardConfig" class="button-standard"
+            (click)="redeem()" [copy-to-clipboard]="card.claimCode" [hide-toast]="true">
+            <ng-container *ngIf="!cardConfig.printRequired">{{'Copy Code' | translate}}</ng-container>
+            <ng-container *ngIf="cardConfig.printRequired">{{'Print' | translate}}</ng-container>
           </button>
-          <button
-            ion-button
-            *ngIf="showClaimLinkUI()"
-            class="button-standard"
-            (click)="viewRedemptionCode()"
-          >
+          <button ion-button *ngIf="showClaimLinkUI()" class="button-standard" (click)="viewRedemptionCode()">
             {{ cardConfig.redeemButtonText || 'View Redemption Code' |
             translate}}
           </button>
-          <button
-            ion-button
-            class="button-standard button-secondary"
-            (click)="openArchiveSheet()"
-          >
+          <button ion-button class="button-standard button-secondary" (click)="openArchiveSheet()">
             {{"I've used this card" | translate}}
           </button>
         </div>
@@ -189,8 +103,4 @@
   </div>
 </ion-content>
 
-<printable-card
-  *ngIf="cardConfig"
-  [card]="card"
-  [cardConfig]="cardConfig"
-></printable-card>
+<printable-card *ngIf="cardConfig" [card]="card" [cardConfig]="cardConfig"></printable-card>
