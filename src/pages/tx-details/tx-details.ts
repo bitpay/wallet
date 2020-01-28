@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
@@ -24,7 +29,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
   selector: 'page-tx-details',
   templateUrl: 'tx-details.html'
 })
-export class TxDetailsPage {
+export class TxDetailsModal {
   private txId: string;
   private config;
   private blockexplorerUrl: string;
@@ -60,7 +65,8 @@ export class TxDetailsPage {
     private filter: FilterProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private viewCtrl: ViewController
   ) {}
 
   ionViewWillEnter() {
@@ -393,5 +399,9 @@ export class TxDetailsPage {
           this.btx.fiatRateStr = this.btx.alternativeAmountStr;
         }
       });
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 }

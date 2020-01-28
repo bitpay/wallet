@@ -1,4 +1,7 @@
 page-wallet-balance {
+  .close-container.button-default {
+    color: color($colors, dark);
+  }
   .item-inner {
     border-bottom: none !important;
   }

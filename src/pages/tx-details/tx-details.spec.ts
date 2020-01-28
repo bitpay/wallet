@@ -2,14 +2,14 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 
-import { TxDetailsPage } from './tx-details';
+import { TxDetailsModal } from './tx-details';
 
-describe('TxDetailsPage', () => {
-  let fixture: ComponentFixture<TxDetailsPage>;
-  let instance: TxDetailsPage;
+describe('TxDetailsModal', () => {
+  let fixture: ComponentFixture<TxDetailsModal>;
+  let instance: TxDetailsModal;
 
   beforeEach(async(() =>
-    TestUtils.configurePageTestingModule([TxDetailsPage]).then(testEnv => {
+    TestUtils.configurePageTestingModule([TxDetailsModal]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
       fixture.detectChanges();

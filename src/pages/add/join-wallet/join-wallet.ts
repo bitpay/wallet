@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -43,7 +42,6 @@ export class JoinWalletPage {
   private coin: Coin;
 
   constructor(
-    private app: App,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
@@ -279,20 +277,11 @@ export class JoinWalletPage {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        // using setRoot(TabsPage) as workaround when coming from scanner
-        this.app
-          .getRootNavs()[0]
-          .setRoot(TabsPage)
-          .then(() => {
-            this.app
-              .getRootNav()
-              .getActiveChildNav()
-              .select(1);
-            this.events.publish('Local/WalletListChange');
-            setTimeout(() => {
-              this.events.publish('OpenWallet', wallet);
-            }, 1000);
-          });
+
+        this.events.publish('Local/WalletListChange');
+        setTimeout(() => {
+          this.events.publish('OpenWallet', wallet);
+        }, 1000);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -91,12 +86,9 @@ export class SendPage {
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService,
-    private viewCtrl: ViewController
+    private translate: TranslateService
   ) {
     this.wallet = this.navParams.data.wallet;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
 
   @ViewChild('transferTo')
@@ -107,13 +99,15 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
       this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
     }
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
@@ -302,9 +296,5 @@ export class SendPage {
     this.navCtrl.push(MultiSendPage, {
       wallet: this.wallet
     });
-  }
-
-  public close(): void {
-    this.viewCtrl.dismiss();
   }
 }
