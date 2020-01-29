@@ -1,6 +1,12 @@
 page-bitpay-card {
   $bitpay-card-primary-color: #2a3f90;
 
+  ion-title {
+    .bitpay-card-header {
+      text-align: left;
+    }
+  }
+
   .toolbar-background {
     background: $bitpay-card-primary-color;
   }
