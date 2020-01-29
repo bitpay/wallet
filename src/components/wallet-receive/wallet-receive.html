@@ -19,7 +19,7 @@
   <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && (!newAddressError || address)">
     <ion-row class="addr-header" align-items-center>
       <ion-col text-left>
-        <span class="addr-title">
+        <span class="addr-title" translate>
           Address
         </span>
       </ion-col>
@@ -74,7 +74,7 @@
     <div class="line-divider"></div>
     <div class="close-btn" text-center>
       <button ion-button clear icon-only color="dark" (click)="dismiss()">
-        CLOSE
+        {{ 'CLOSE' | translate }}
       </button>
     </div>
   </div>

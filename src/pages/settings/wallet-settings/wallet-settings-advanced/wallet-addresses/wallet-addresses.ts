@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -16,6 +11,7 @@ import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // pages
+import { WalletDetailsPage } from '../../../../wallet-details/wallet-details';
 import { AllAddressesPage } from './all-addresses/all-addresses';
 
 import * as _ from 'lodash';
@@ -53,8 +49,7 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService,
-    private events: Events
+    private translate: TranslateService
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -176,7 +171,9 @@ export class WalletAddressesPage {
     this.walletProvider.startScan(this.wallet);
     this.navCtrl.popToRoot().then(() => {
       setTimeout(() => {
-        this.events.publish('OpenWallet', this.wallet);
+        this.navCtrl.push(WalletDetailsPage, {
+          walletId: this.wallet.credentials.walletId
+        });
       }, 1000);
     });
   }

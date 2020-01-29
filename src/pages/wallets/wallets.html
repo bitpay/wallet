@@ -47,7 +47,7 @@
           <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
         </ion-label>
         <div class="collapse">
-          <div *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag" translate>Legacy</div>
+          <div *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag">Legacy</div>
           <div *ngIf="walletGroup[0].canAddNewAccount" (click)="addWallet(walletGroup[0].keyId)">
             <ion-icon class="item-img">
               <img src="assets/img/icon-plus.svg" width="15">

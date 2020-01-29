@@ -133,15 +133,18 @@ ion-header.bp-header .toolbar {
   border-top: none !important;
 }
 
-.scroll-content {
-  .wrapper {
-    background-color: white;
-    min-height: 100%;
-    padding-bottom: calc(env(safe-area-inset-bottom));
-    padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
+ion-content {
+  .fixed-content,
+  .scroll-content {
+    .wrapper {
+      background-color: white;
+      min-height: 100%;
+      padding-bottom: calc(env(safe-area-inset-bottom));
+      padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
 
-    &--feather {
-      background-color: $feather-dark;
+      &--feather {
+        background-color: $feather-dark;
+      }
     }
   }
 }
@@ -553,13 +556,9 @@ ion-alert .alert-message {
   font-weight: 500;
 }
 
-button.modal-close-button {
-  font-size: 16px;
-  font-weight: 400;
-
-  ion-icon {
-    font-size: 26px;
-  }
+.close-container.button-default {
+  color: color($colors, dark);
+  box-shadow: none;
 }
 
 .qr-container {
@@ -679,10 +678,6 @@ page-bitpay-card,
     font-weight: 75;
   }
 
-  button.modal-close-button.bar-button {
-    margin-top: -1px;
-    color: white;
-  }
   ion-title {
     &.title-ios {
       padding: 0 70px 1px;
