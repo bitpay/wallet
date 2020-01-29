@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <ion-navbar class="app-color">
+  <ion-navbar>
     <ion-title>
       <div class="bitpay-card-header ellipsis">
         BitPay Visa <sup>&reg;</sup> Card ({{lastFourDigits}})
@@ -8,8 +8,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}" pullMin="90" pullMax="180">
+<ion-content #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper wrapper--feather">
@@ -36,7 +36,7 @@
     </div>
 
     <ion-list *ngIf="!getStarted">
-      <ion-item-divider>
+      <ion-item>
         <ion-label>
           <span translate>Activity</span>
         </ion-label>
@@ -45,7 +45,7 @@
           <ion-option value="lastMonth" translate>Last Month</ion-option>
           <ion-option value="all" translate>All</ion-option>
         </ion-select>
-      </ion-item-divider>
+      </ion-item>
 
       <ion-item-divider *ngIf="bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0]">
         <ion-icon item-end (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/115003014526-Why-do-you-require-one-blockchain-confirmation-for-BitPay-Card-loads-')">
