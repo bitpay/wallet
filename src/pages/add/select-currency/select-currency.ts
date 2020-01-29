@@ -86,8 +86,8 @@ export class SelectCurrencyPage {
     this.isOnboardingFlow = this.navParam.data.isOnboardingFlow;
     this.isZeroState = this.navParam.data.isZeroState;
     this.title = this.isZeroState
-      ? this.translate.instant('Select currencies')
-      : this.translate.instant('Select currency');
+      ? this.translate.instant('Select Currencies')
+      : this.translate.instant('Select Currency');
   }
 
   private shouldShowKeyOnboarding() {

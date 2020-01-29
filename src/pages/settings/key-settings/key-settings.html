@@ -1,8 +1,8 @@
 <wide-header-page title="{{canSign ? ('Key Settings' | translate) : ('Read Only Wallets' | translate) }}">
   <div page-content>
     <div class="subtitle-container" *ngIf="wallets && canSign">
-      <div class="subtitle" translate>
-        This key contains {{wallets.length}} wallets.
+      <div class="subtitle">
+        {{'This key contains {walletsLength} wallets' | translate: { walletsLength: wallets.length } }}.
       </div>
       <div class="onboarding-modal" (click)="showKeyOnboardingSlides()">
         <ion-icon name="md-help-circle"></ion-icon>
@@ -44,8 +44,8 @@
             {{'Hidden'|translate}}
           </ion-note>
         </button>
-        <button ion-item detail-none class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()" translate>
-          Create a new wallet
+        <button ion-item detail-none class="create-button" *ngIf="wallets && wallets[0].canAddNewAccount" (click)="goToAddPage()">
+          {{'Create a new wallet' | translate }}
         </button>
       </div>
       <ion-content [ngStyle]="showReorder ? {'height': reorderHeight} : {}">
