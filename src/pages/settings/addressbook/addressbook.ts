@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AddressProvider } from '../../../providers/address/address';
 import { Logger } from '../../../providers/logger/logger';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
@@ -22,7 +23,8 @@ export class AddressbookPage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     private logger: Logger,
-    private addressbookProvider: AddressBookProvider
+    private addressbookProvider: AddressBookProvider,
+    private addressProvider: AddressProvider
   ) {
     this.initAddressbook();
   }
@@ -40,11 +42,14 @@ export class AddressbookPage {
 
         let contacts: object[] = [];
         _.each(addressBook, (contact, k: string) => {
+          const coinInfo = this.getCoinAndNetwork(k);
           contacts.push({
             name: _.isObject(contact) ? contact.name : contact,
             address: k,
             email: _.isObject(contact) ? contact.email : null,
-            tag: _.isObject(contact) ? contact.tag : null
+            tag: _.isObject(contact) ? contact.tag : null,
+            coin: coinInfo.coin,
+            network: coinInfo.network
           });
         });
         this.addressbook = _.clone(contacts);
@@ -78,5 +83,9 @@ export class AddressbookPage {
       // Reset items back to all of the items
       this.initAddressbook();
     }
+  }
+
+  private getCoinAndNetwork(addr: string): { coin: string; network: string } {
+    return this.addressProvider.getCoinAndNetwork(addr);
   }
 }

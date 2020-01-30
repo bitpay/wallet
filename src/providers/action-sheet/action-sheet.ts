@@ -50,7 +50,8 @@ export type InfoSheetType =
 export type OptionsSheetType =
   | 'address-options'
   | 'gift-card-options'
-  | 'incoming-data';
+  | 'incoming-data'
+  | 'address-book';
 
 export interface WalletSelectorParams {
   wallets: any[];

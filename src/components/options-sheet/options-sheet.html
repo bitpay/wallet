@@ -46,6 +46,20 @@
         <div translate class="option-text">Print Card</div>
       </div>
     </div>
+    <div *ngSwitchCase="'address-book'">
+      <div class="option" (click)="optionClicked('send-to-contact')">
+        <div class="option-icon">
+          <ion-icon name="send"></ion-icon>
+        </div>
+        <div translate class="option-text">Send {{params?.coin}} to contact</div>
+      </div>
+      <div class="option" (click)="optionClicked('delete-contact')">
+        <div class="option-icon">
+          <ion-icon name="trash"></ion-icon>
+        </div>
+        <div translate class="option-text danger">Delete</div>
+      </div>
+    </div>
     <div (click)="dismiss()" class="cancel-btn" translate>Cancel</div>
   </div>
 </action-sheet>
