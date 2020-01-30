@@ -3,9 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // providers
-import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { KeyProvider } from '../../../../providers/key/key';
 import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -27,11 +27,11 @@ export class KeyQrExportPage {
     private logger: Logger,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
     private keyProvider: KeyProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private errorsProvider: ErrorsProvider
   ) {}
 
   ionViewDidLoad() {
@@ -55,8 +55,12 @@ export class KeyQrExportPage {
       })
       .catch(err => {
         if (err && err.message != 'PASSWORD_CANCELLED') {
-          let title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            let title = this.translate.instant('Could not decrypt wallet');
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
+          }
         }
         this.navCtrl.pop();
       });
@@ -88,10 +92,6 @@ export class KeyQrExportPage {
   ): void {
     if (!err) return;
     this.logger.error('Could not get keys:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 }

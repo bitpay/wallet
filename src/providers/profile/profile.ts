@@ -12,6 +12,7 @@ import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { CurrencyProvider } from '../currency/currency';
+import { ErrorsProvider } from '../errors/errors';
 import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
@@ -72,7 +73,8 @@ export class ProfileProvider {
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -759,12 +761,7 @@ export class ProfileProvider {
         );
         const msg = countInArray == 1 ? msg1 : msg2;
         const title = this.translate.instant('Error');
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'default-error',
-          { msg, title }
-        );
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
+        this.errorsProvider.showDefaultError(msg, title, () => {
           return resolve();
         });
       } else {

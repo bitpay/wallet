@@ -33,6 +33,7 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
@@ -90,6 +91,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     configProvider: ConfigProvider,
     currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
+    errorsProvider: ErrorsProvider,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
@@ -122,6 +124,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       configProvider,
       currencyProvider,
       decimalPipe,
+      errorsProvider,
       externalLinkProvider,
       feeProvider,
       logger,

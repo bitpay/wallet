@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -100,7 +101,8 @@ export class WalletDetailsPage {
     private platformProvider: PlatformProvider,
     private statusBar: StatusBar,
     private socialSharing: SocialSharing,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.showShareButton = this.platformProvider.isCordova;
@@ -627,11 +629,10 @@ export class WalletDetailsPage {
   }
   public showErrorInfoSheet(error: Error | string): void {
     const infoSheetTitle = this.translate.instant('Error');
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle
     );
-    errorInfoSheet.present();
   }
 
   public goToBackup(): void {

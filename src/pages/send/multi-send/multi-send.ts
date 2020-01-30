@@ -15,6 +15,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
@@ -70,7 +71,8 @@ export class MultiSendPage {
     private modalCtrl: ModalController,
     private decimalPipe: DecimalPipe,
     private txFormatProvider: TxFormatProvider,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
@@ -297,12 +299,7 @@ export class MultiSendPage {
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.search = '';
     });
   }

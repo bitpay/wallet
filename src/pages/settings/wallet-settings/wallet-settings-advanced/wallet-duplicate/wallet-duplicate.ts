@@ -9,9 +9,9 @@ import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { Coin } from '../../../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../../../providers/derivation-path-helper/derivation-path-helper';
+import { ErrorsProvider } from '../../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
@@ -30,7 +30,6 @@ export class WalletDuplicatePage {
   constructor(
     private walletProvider: WalletProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -41,7 +40,8 @@ export class WalletDuplicatePage {
     private configProvider: ConfigProvider,
     public navCtrl: NavController,
     public profileProvider: ProfileProvider,
-    public derivationPathHelperProvider: DerivationPathHelperProvider
+    public derivationPathHelperProvider: DerivationPathHelperProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.defaults = this.configProvider.getDefaults();
   }
@@ -92,7 +92,10 @@ export class WalletDuplicatePage {
   private setErr(err) {
     const errorMsg = this.bwcErrorProvider.msg(err, 'Could not duplicate');
     this.logger.warn('Duplicate BCH', errorMsg);
-    this.popupProvider.ionicAlert(errorMsg, null, 'OK');
+    this.errorsProvider.showDefaultError(
+      errorMsg,
+      this.translate.instant('Error')
+    );
     return;
   }
 
@@ -159,7 +162,11 @@ export class WalletDuplicatePage {
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
         ) {
-          this.setErr(this.bwcErrorProvider.msg(err));
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            this.setErr(this.bwcErrorProvider.msg(err));
+          }
         }
       });
   }
