@@ -53,7 +53,7 @@ page-wallet-details {
   .balance-header {
     position: relative;
     margin: 1rem 2rem 1rem 2rem;
-    height: 30rem;
+    height: 23rem;
     color: color($colors, light);
     display: flex;
     flex-direction: column;
@@ -122,7 +122,6 @@ page-wallet-details {
   }
 
   .balance-spendable {
-    margin-top: 5px;
     font-size: 13px;
     cursor: pointer;
     opacity: 0.7;
@@ -137,8 +136,11 @@ page-wallet-details {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding: 0 1.4rem 6.5rem 1.4rem;
     .button-standard {
+      height: 50px;
       width: 48%;
+      max-width: none;
       background-color: rgba(255, 255, 255, 0.09);
       margin: 0;
     }
@@ -288,13 +290,18 @@ page-wallet-details {
   }
 
   .wallet-info {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 0.8rem 1.4rem;
     font-weight: 400;
     color: color($colors, light);
-    display: block;
-    display: flex;
-    align-items: center;
-    height: 3rem;
-    padding: 0 0.5rem 7rem 0;
+
+    .left-buttons {
+      opacity: 0.5;
+    }
 
     img {
       float: left;
@@ -360,13 +367,8 @@ page-wallet-details {
       }
     }
 
-    .left-buttons {
-      flex-grow: 1;
-      padding-left: 1.3rem;
-      opacity: 0.5;
-    }
-
     .search-button {
+      cursor: pointer;
       padding: 0 6px 0 0;
     }
 
