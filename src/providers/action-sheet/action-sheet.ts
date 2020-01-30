@@ -7,6 +7,7 @@ import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
+import { WalletTabOptionsComponent } from '../../components/wallet-tab-options/wallet-tab-options';
 import { Coin } from '../../providers/currency/currency';
 import { DomProvider } from '../../providers/dom/dom';
 
@@ -63,7 +64,6 @@ export interface WalletSelectorParams {
 export interface WalletReceiveParams {
   wallet: any;
 }
-
 export interface ChooseFeeLevelParams {
   network: string;
   coin: Coin;
@@ -131,6 +131,14 @@ export class ActionSheetProvider {
       ChooseFeeLevelComponent,
       null,
       params
+    ).instance;
+  }
+
+  public createWalletTabOptions(): WalletTabOptionsComponent {
+    return this.setupSheet<WalletTabOptionsComponent>(
+      WalletTabOptionsComponent,
+      null,
+      null
     ).instance;
   }
 

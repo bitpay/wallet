@@ -6,6 +6,11 @@
         <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
       </button>
     </ion-buttons>
+    <ion-buttons right>
+      <button class="option-button disable-hover" (click)="showMoreOptions()" ion-button icon-only>
+        <ion-icon name="ios-more" md="ios-more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -50,7 +55,7 @@
           <div *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag">Legacy</div>
           <div *ngIf="walletGroup[0].canAddNewAccount" (click)="addWallet(walletGroup[0].keyId)">
             <ion-icon class="item-img">
-              <img src="assets/img/icon-plus.svg" width="15">
+              <img src="assets/img/plus-gray.svg" width="15">
             </ion-icon>
           </div>
           <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0].keyId)">
