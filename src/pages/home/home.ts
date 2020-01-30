@@ -424,11 +424,6 @@ export class HomePage {
       });
   }
 
-  public toggleHideBalanceFlag(): void {
-    this.balanceHidden = !this.balanceHidden;
-    this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
-  }
-
   private async showSurveyCard() {
     const hideSurvey = await this.persistenceProvider.getSurveyFlag();
     this.showSurvey.setShowSurveyCard(!hideSurvey);
