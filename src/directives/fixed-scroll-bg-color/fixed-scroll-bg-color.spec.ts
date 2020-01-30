@@ -45,15 +45,13 @@ describe('FixedScrollBgColor', () => {
       'linear-gradient(blue, blue 50%, rgb(248, 248, 249) 50%, rgb(248, 248, 249) 50%, rgb(248, 248, 249) 50%)';
     expect(fixedContent.style.backgroundImage).toBe(backgroundImage);
     expect(scrollContent.style.backgroundImage).toBe(backgroundImage);
-    expect(wrapperContent.style.background).toBe('#f8f8f9');
-    expect(wrapperContent.style.minHeight).toBe('100%');
+    expect(wrapperContent).toBe(undefined);
   });
   it('should remove background-image if none specified', () => {
     instance.color = null;
     fixture.detectChanges();
     expect(fixedContent.style.backgroundImage).toBe('');
     expect(scrollContent.style.backgroundImage).toBe('');
-    expect(wrapperContent.style.background).toBe('');
-    expect(wrapperContent.style.minHeight).toBe('');
+    expect(wrapperContent).toBe(undefined);
   });
 });

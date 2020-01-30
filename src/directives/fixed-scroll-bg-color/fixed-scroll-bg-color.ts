@@ -43,13 +43,17 @@ export class FixedScrollBgColor {
     if (color) {
       scrollContent.style.setProperty('background-image', linearGradient);
       fixedContent.style.setProperty('background-image', linearGradient);
-      wrapperContent.style.setProperty('background', this.bottomColor);
-      wrapperContent.style.setProperty('min-height', '100%');
+      if (wrapperContent && wrapperContent.style) {
+        wrapperContent.style.setProperty('background', this.bottomColor);
+        wrapperContent.style.setProperty('min-height', '100%');
+      }
     } else {
       scrollContent.style.removeProperty('background-image');
       fixedContent.style.removeProperty('background-image');
-      wrapperContent.style.removeProperty('background');
-      wrapperContent.style.removeProperty('min-height');
+      if (wrapperContent && wrapperContent.style) {
+        wrapperContent.style.removeProperty('background');
+        wrapperContent.style.removeProperty('min-height');
+      }
     }
   }
 }
