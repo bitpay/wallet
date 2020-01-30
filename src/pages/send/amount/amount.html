@@ -5,7 +5,7 @@
     </button>
   </ion-buttons>
   <ion-buttons right>
-    <button *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
+    <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
       <span translate>Send max</span>
     </button>
   </ion-buttons>
@@ -19,7 +19,7 @@
           </span>
           <ng-template #noExpression>
             <span class="expression">
-              {{ (onlyIntegers || isCoin(unit) || cardName) ? '0' : '0.00' }}
+              {{ '0' }}
             </span>
           </ng-template>
           <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
