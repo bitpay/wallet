@@ -40,7 +40,7 @@
 
             <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
-                <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
+                <gravatar [name]="item.recipient.name" [height]="40" [width]="40" [email]="item.recipient.email"></gravatar>
               </ion-icon>
               <span class="name">{{item.recipient.name}}</span>
             </div>

@@ -21,6 +21,10 @@
       font-size: 18px;
       vertical-align: middle;
     }
+
+    .danger {
+      color: color($colors, danger);
+    }
   }
 
   .cancel-btn {

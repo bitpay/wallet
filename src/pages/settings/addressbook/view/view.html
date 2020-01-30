@@ -1,7 +1,13 @@
 <wide-header-page title="{{ name }}">
+  <ion-buttons right>
+    <button wide-header-bar-button clear (click)="showMoreOptions()" ion-button icon-only>
+      <ion-icon name="ios-more" md="ios-more"></ion-icon>
+    </button>
+  </ion-buttons>
   <div page-content>
     <div class="contact-view-header">
       <gravatar [name]="name" [height]="80" [width]="80" [email]="email"></gravatar>
+      <coin-icon [coin]="coin" [network]="network"></coin-icon>
     </div>
     <ion-list class="bp-list">
       <ion-item>
@@ -40,12 +46,6 @@
           {{ network }}
         </ion-note>
       </ion-item>
-      <button ion-item class="btn-send" (click)="sendTo()">
-        {{'Send Money' | translate}}
-      </button>
-      <button ion-item class="btn-remove" (click)="remove(address)">
-        {{'Remove' | translate}}
-      </button>
     </ion-list>
   </div>
 </wide-header-page>

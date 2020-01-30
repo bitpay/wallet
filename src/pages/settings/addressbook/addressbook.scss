@@ -1,6 +1,6 @@
 page-addressbook {
   .zero-state {
-    margin-top: 15%;
+    margin-top: 30%;
     text-align: center;
     &-icon {
       display: inline-block;
@@ -34,13 +34,19 @@ page-addressbook {
       margin-left: 3px;
     }
   }
-  .wide-header__title.toolbar {
-    color: black;
-    padding-left: 20px;
-    font-size: 25px;
-    font-weight: 500;
-  }
-  .wide-header__title {
-    padding-left: 0;
+  ion-icon.item-img.icon {
+    position: absolute;
+    top: 36px;
+    left: 40px;
+    margin: 0;
+    justify-content: center;
+    padding: 2px;
+    img {
+      width: 20px;
+    }
+    &.rectangle {
+      border-radius: 4px;
+      justify-content: center;
+    }
   }
 }

@@ -8,7 +8,7 @@
   <ion-list no-lines class="bp-list">
     <button ion-item *ngFor="let item of filteredContactsList" (click)="close(item)">
       <ion-icon class="item-img" item-start>
-        <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
+        <gravatar [name]="item.name" [width]="40" [height]="40" [email]="item.email"></gravatar>
       </ion-icon>
       <div class="main-label">{{ item.name }}</div>
     </button>
