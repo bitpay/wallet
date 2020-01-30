@@ -63,8 +63,10 @@ page-key-onboarding {
   .next-slide-button {
     z-index: 1;
     position: absolute;
-    bottom: 0.5rem;
-    right: 3rem;
+    bottom: 2rem;
+    bottom: calc(2rem + env(safe-area-inset-bottom));
+    bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
+    right: 0;
     color: color($colors, primary);
     cursor: pointer;
     text-transform: uppercase;
