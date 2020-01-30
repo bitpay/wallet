@@ -28,11 +28,11 @@ page-home {
       height: 21px;
       width: 80px;
       border-radius: 7px;
-      &.negative-avg {
+      .negative-avg {
         color: #cf2f32;
         background-color: rgba(207, 47, 60, 0.1);
       }
-      &.possitive-avg {
+      .possitive-avg {
         color: #2fcfa4;
         background-color: rgba(47, 207, 164, 0.1);
       }

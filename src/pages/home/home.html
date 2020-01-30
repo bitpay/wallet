@@ -104,15 +104,10 @@
       0.00 {{totalBalanceAlternativeIsoCode}}
       <span *ngIf="fetchingStatus"> <ion-spinner></ion-spinner> </span>
     </div>
-    <div
-      *ngIf="averagePrice || averagePrice === 0"
-      class="average-container"
-      [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'"
-    >
-      <span class="average"
-        ><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2'
-        }}%</span
-      >
+    <div class="average-container">
+      <div *ngIf="averagePrice || averagePrice === 0" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
+      </div>
     </div>
   </div>
 
