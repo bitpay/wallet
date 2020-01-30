@@ -3,12 +3,9 @@
     <ion-title>{{'Cards' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <div class="section-header" *ngIf="showBitPayCard && bitpayCardItems?.length" translate>Debit Cards</div>
-
-  <bitpay-card-home *ngIf="showBitPayCard"></bitpay-card-home>
-
-  <div class="section-header" *ngIf="showGiftCards && activeCards?.length" translate>Gift Cards</div>
-
-  <gift-cards *ngIf="showGiftCards" [scrollArea]="scrollArea"></gift-cards>
+<ion-content #scrollArea>
+  <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
+    <bitpay-card-home *ngIf="showBitPayCard && gotCardItems" [bitpayCardItems]="bitpayCardItems"></bitpay-card-home>
+    <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
+  </div>
 </ion-content>

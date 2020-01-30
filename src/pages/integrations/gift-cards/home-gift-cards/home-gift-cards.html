@@ -1,32 +1,29 @@
- <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
-   [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+<div class="section-header" *ngIf="activeCards?.length" translate>
+  Gift Cards
+</div>
 
- <div class="add-button-wrapper--center" *ngIf="activeBrands?.length" [@archiveAnimation]>
-   <add-button (click)="buyGiftCards()" tappable>
-     <div add-button-text translate>Buy Gift Card</div>
-   </add-button>
- </div>
+<gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
+  [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
 
- <action-card-v4 *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
-   <div action-card-header>
-     <div class="home-gift-card-header">
-       <div class="home-gift-card-image">
-         <img src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png">
-       </div>
-     </div>
-     <!-- TODO <div class="discount-wrapper">
-      <div *ngIf="discountedCard" class="gift-card-featured-discount" (click)="$event.stopPropagation(); buyCard(discountedCard.name, 'Home Buy Gift Cards Discount Label')" tappable scrolled-into-view [scrollArea]="scrollArea" (viewEnter)="onPromoScrollIntoView('Home Buy Gift Cards Discount Label')">
-        <img [src]="discountedCard.icon">
-        <div class="ellipsis">Save <gift-card-discount-text [cardConfig]="discountedCard" [discount]="discountedCard.discounts[0]">
-          </gift-card-discount-text> off {{discountedCard.displayName}}</div>
+<div class="add-button-wrapper--center" *ngIf="activeBrands?.length" [@archiveAnimation]>
+  <add-button (click)="buyGiftCards()" tappable>
+    <div add-button-text translate>Buy Gift Card</div>
+  </add-button>
+</div>
+
+<action-card-v4 *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
+  <div action-card-header>
+    <div class="home-gift-card-header">
+      <div class="home-gift-card-image">
+        <img src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png">
       </div>
-    </div> -->
-   </div>
-   <div action-card-title translate>Buy Gift Cards</div>
-   <div action-card-body [clamp]="2">
-     Buy gift cards for major brands using cryptocurrency.
-   </div>
-   <div action-card-button translate>
-     Get Started
-   </div>
- </action-card-v4>
+    </div>
+  </div>
+  <div action-card-title translate>Buy Gift Cards</div>
+  <div action-card-body [clamp]="2">
+    Buy gift cards for major brands using cryptocurrency.
+  </div>
+  <div action-card-button translate>
+    Get Started
+  </div>
+</action-card-v4>

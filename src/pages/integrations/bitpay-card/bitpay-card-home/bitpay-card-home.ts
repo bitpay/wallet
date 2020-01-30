@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Providers
 import { AppProvider } from '../../../../providers';
-import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
-import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
@@ -17,23 +15,15 @@ import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-ca
 export class BitPayCardHome implements OnInit {
   public appName: string;
   public showBitpayCardGetStarted: boolean;
-  public bitpayCardItems: any;
+  @Input() public bitpayCardItems: any;
 
   constructor(
     private appProvider: AppProvider,
-    private navCtrl: NavController,
-    private bitPayCardProvider: BitPayCardProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private navCtrl: NavController
   ) {}
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
-      'debitcard'
-    );
-    this.bitpayCardItems = await this.bitPayCardProvider.get({
-      noHistory: true
-    });
   }
 
   public goToBitPayCardIntroPage() {

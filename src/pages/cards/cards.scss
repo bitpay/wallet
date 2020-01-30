@@ -1,4 +1,9 @@
 page-cards {
+  .gift-cards-first {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
   .section-header {
     display: flex;
     justify-content: space-between;

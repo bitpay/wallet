@@ -266,13 +266,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async setTotalAmount(
     wallet,
-    amountSat: number,
     invoiceFeeSat: number,
     networkFeeSat: number
   ) {
-    const amount = await this.satToFiat(wallet.coin, amountSat);
-    this.amount = Number(amount);
-
     const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
     this.invoiceFee = Number(invoiceFee);
 
@@ -594,7 +590,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
-    this.setTotalAmount(wallet, amountSat, invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(wallet, invoiceFeeSat, ctxp.fee);
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
