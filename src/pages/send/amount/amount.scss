@@ -9,6 +9,10 @@ page-amount {
     background: white;
   }
 
+  .send-max {
+    text-transform: capitalize;
+  }
+
   .amount-wrapper {
     display: flex;
     align-items: center;
@@ -76,6 +80,7 @@ page-amount {
       &__label {
         color: #4f6ef7;
         font-size: 18px;
+        font-weight: bold;
 
         @media (max-height: $short-screen) {
           font-size: 14px;
