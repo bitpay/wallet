@@ -67,22 +67,14 @@
   <page-feedback-card #showCard></page-feedback-card>
   <page-survey-card #showSurvey></page-survey-card>
 
-  <div class="total-amount-container" (longPress)="toggleHideBalanceFlag()">
+  <div *ngIf="!balanceHidden" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
-    <div *ngIf="!balanceHidden">
-      <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
-      <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-        0.00 {{totalBalanceAlternativeIsoCode}}
-        <span *ngIf="fetchingStatus">
-          <ion-spinner></ion-spinner>
-        </span>
-      </div>
-    </div>
-    <div class="balance-hidden" *ngIf="balanceHidden">
-      <span class="title" translate>[Balance Hidden]</span>
-      <div class="subtitle" translate>
-        Tap and hold to show
-      </div>
+    <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
+    <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
+      0.00 {{totalBalanceAlternativeIsoCode}}
+      <span *ngIf="fetchingStatus">
+        <ion-spinner></ion-spinner>
+      </span>
     </div>
     <div *ngIf="averagePrice || averagePrice === 0" class="average-container" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
       <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
