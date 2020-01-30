@@ -11,9 +11,9 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -48,7 +48,6 @@ export class ProposalsNotificationsPage {
 
   constructor(
     private plt: Platform,
-    private actionSheetProvider: ActionSheetProvider,
     private addressBookProvider: AddressBookProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
@@ -61,7 +60,8 @@ export class ProposalsNotificationsPage {
     private walletProvider: WalletProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private errorsProvider: ErrorsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
@@ -289,19 +289,19 @@ export class ProposalsNotificationsPage {
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
         ) {
-          const title = this.translate.instant('Error');
-          const msg = this.bwcErrorProvider.msg(err);
-          this.showErrorInfoSheet(title, msg);
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            const title = this.translate.instant('Error');
+            const msg = this.bwcErrorProvider.msg(err);
+            this.showErrorInfoSheet(title, msg);
+          }
         }
       });
   }
 
   private showErrorInfoSheet(title: string, msg: string): void {
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(msg, title);
   }
 
   private countSuccessAndFailed(arrayData) {

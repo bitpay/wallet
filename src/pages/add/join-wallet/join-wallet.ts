@@ -14,15 +14,14 @@ import { ScanPage } from '../../scan/scan';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
@@ -56,16 +55,15 @@ export class JoinWalletPage {
     private navParams: NavParams,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private logger: Logger,
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider,
     private clipboardProvider: ClipboardProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private errorsProvider: ErrorsProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -133,14 +131,10 @@ export class JoinWalletPage {
       this.joinForm.controls['invitationCode'].setValue(data);
       this.processInvitation(data);
     } else {
-      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'default-error',
-        {
-          msg: this.translate.instant('Invalid data'),
-          title: this.translate.instant('Error')
-        }
+      this.errorsProvider.showDefaultError(
+        this.translate.instant('Invalid data'),
+        this.translate.instant('Error')
       );
-      errorInfoSheet.present();
     }
   }
 
@@ -244,7 +238,7 @@ export class JoinWalletPage {
       ) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
-        this.popupProvider.ionicAlert(title, subtitle);
+        this.errorsProvider.showDefaultError(subtitle, title);
         return;
       }
 
@@ -258,7 +252,7 @@ export class JoinWalletPage {
         const subtitle = this.translate.instant(
           'Invalid derivation path for selected coin'
         );
-        this.popupProvider.ionicAlert(title, subtitle);
+        this.errorsProvider.showDefaultError(subtitle, title);
         return;
       }
     }
@@ -268,7 +262,7 @@ export class JoinWalletPage {
       const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.errorsProvider.showDefaultError(subtitle, title);
       return;
     }
 
@@ -309,7 +303,7 @@ export class JoinWalletPage {
       .catch(err => {
         this.onGoingProcessProvider.clear();
         const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
+        this.errorsProvider.showDefaultError(err, title);
         return;
       });
   }

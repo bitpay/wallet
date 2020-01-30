@@ -43,6 +43,7 @@ export { DownloadProvider } from '../providers/download/download';
 export {
   EmailNotificationsProvider
 } from '../providers/email-notifications/email-notifications';
+export { ErrorsProvider } from '../providers/errors/errors';
 export { ExternalLinkProvider } from '../providers/external-link/external-link';
 export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';

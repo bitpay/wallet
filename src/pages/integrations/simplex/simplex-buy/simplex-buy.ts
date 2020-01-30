@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { Logger } from '../../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../../providers/persistence/persistence';
@@ -47,6 +48,7 @@ export class SimplexBuyPage {
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
+    private errorsProvider: ErrorsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private fb: FormBuilder,
     private logger: Logger,
@@ -449,12 +451,7 @@ export class SimplexBuyPage {
     this.logger.error('Simplex error: ' + msg);
 
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.navCtrl.pop();
     });
   }

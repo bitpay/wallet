@@ -9,11 +9,11 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
-import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { ErrorsProvider } from '../../../../../providers/errors/errors';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -51,9 +51,9 @@ export class WalletExportPage {
     private clipboard: Clipboard,
     private toastCtrl: ToastController,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.password = '';
     this.showAdv = false;
@@ -143,8 +143,13 @@ export class WalletExportPage {
           err &&
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
-        )
-          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
+        ) {
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
+          }
+        }
       });
   }
 
@@ -203,8 +208,13 @@ export class WalletExportPage {
             err &&
             err.message != 'FINGERPRINT_CANCELLED' &&
             err.message != 'PASSWORD_CANCELLED'
-          )
-            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
+          ) {
+            if (err.message == 'WRONG_PASSWORD') {
+              this.errorsProvider.showWrongEncryptPassswordError();
+            } else {
+              this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
+            }
+          }
           return resolve();
         });
     });
@@ -300,10 +310,6 @@ export class WalletExportPage {
     const title = this.translate.instant('Error');
     const msg = err ? err : this.translate.instant('Failed to export');
     this.logger.error(err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(msg, title);
   }
 }

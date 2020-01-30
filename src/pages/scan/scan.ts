@@ -4,7 +4,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -68,7 +68,7 @@ export class ScanPage {
     public translate: TranslateService,
     private navParams: NavParams,
     private platform: Platform,
-    private actionSheetProvider: ActionSheetProvider
+    private errorsProvider: ErrorsProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -203,12 +203,7 @@ export class ScanPage {
 
   private showErrorInfoSheet(error: Error | string, title?: string): void {
     let infoSheetTitle = title ? title : this.translate.instant('Error');
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: error, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
-    errorInfoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(error, infoSheetTitle, () => {
       if (this.isCordova) {
         this.activate();
       } else if (this.isCameraSelected) {

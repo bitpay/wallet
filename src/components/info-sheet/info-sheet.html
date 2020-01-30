@@ -297,5 +297,14 @@
       <span sheet-button-text translate>Learn More</span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
+      <span sheet-title-text translate>Could not decrypt wallet</span>
+      <span sheet-text translate>
+        Wrong password
+      </span>
+      <span sheet-button-text translate>I forgot my password</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

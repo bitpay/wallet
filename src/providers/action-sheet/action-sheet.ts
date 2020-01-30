@@ -45,7 +45,8 @@ export type InfoSheetType =
   | 'in-app-notification'
   | 'request-feature'
   | 'report-issue'
-  | 'new-key';
+  | 'new-key'
+  | 'wrong-encrypt-password';
 
 export type OptionsSheetType =
   | 'address-options'

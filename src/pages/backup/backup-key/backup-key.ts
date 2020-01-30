@@ -9,6 +9,7 @@ import { BackupGamePage } from '../backup-game/backup-game';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -34,7 +35,8 @@ export class BackupKeyPage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.keyId = this.navParams.data.keyId;
     this.walletGroup = this.profileProvider.getWalletGroup(this.keyId);
@@ -70,7 +72,11 @@ export class BackupKeyPage {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           const title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
+          }
         }
         this.navCtrl.pop();
       });
@@ -94,11 +100,7 @@ export class BackupKeyPage {
   ): void {
     if (!err) return;
     this.logger.warn('Could not get keys:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 
   public goToBackupGame(): void {

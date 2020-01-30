@@ -13,6 +13,7 @@ import {
   CoinsMap,
   CurrencyProvider
 } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -86,7 +87,8 @@ export class SendPage {
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private errorsProvider: ErrorsProvider
   ) {
     this.wallet = this.navParams.data.wallet;
   }
@@ -187,12 +189,7 @@ export class SendPage {
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.search = '';
     });
   }
