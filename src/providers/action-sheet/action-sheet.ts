@@ -64,6 +64,11 @@ export interface WalletSelectorParams {
 export interface WalletReceiveParams {
   wallet: any;
 }
+
+export interface WalletTabOptionsParams {
+  walletsGroups: any;
+}
+
 export interface ChooseFeeLevelParams {
   network: string;
   coin: Coin;
@@ -134,11 +139,13 @@ export class ActionSheetProvider {
     ).instance;
   }
 
-  public createWalletTabOptions(): WalletTabOptionsComponent {
+  public createWalletTabOptions(
+    params: WalletTabOptionsParams
+  ): WalletTabOptionsComponent {
     return this.setupSheet<WalletTabOptionsComponent>(
       WalletTabOptionsComponent,
       null,
-      null
+      params
     ).instance;
   }
 

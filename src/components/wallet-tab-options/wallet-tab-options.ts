@@ -6,7 +6,12 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
   templateUrl: 'wallet-tab-options.html'
 })
 export class WalletTabOptionsComponent extends ActionSheetParent {
+  public walletsGroups: any;
+
   constructor() {
     super();
+  }
+  ngOnInit() {
+    this.walletsGroups = this.params.walletsGroups;
   }
 }

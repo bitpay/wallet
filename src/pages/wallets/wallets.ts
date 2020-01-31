@@ -714,13 +714,17 @@ export class WalletsPage {
   }
 
   public showMoreOptions(): void {
-    const walletTabOptionsAction = this.actionSheetProvider.createWalletTabOptions();
+    const walletTabOptionsAction = this.actionSheetProvider.createWalletTabOptions(
+      { walletsGroups: this.walletsGroups }
+    );
     walletTabOptionsAction.present();
     walletTabOptionsAction.onDidDismiss(data => {
-      if (data === 'AddPage')
-        this.navCtrl.push(AddPage, {
-          isZeroState: true
-        });
+      if (data)
+        data.keyId
+          ? this.addWallet(data.keyId)
+          : this.navCtrl.push(AddPage, {
+              isZeroState: true
+            });
     });
   }
 }

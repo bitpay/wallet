@@ -105,8 +105,7 @@
       </ion-icon>
       <ion-label>
         <div class="main-label" *ngIf="walletsGroup[0].canSign">
-          <span *ngIf="walletsGroups.length > 1">{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
-          <span *ngIf="walletsGroups.length == 1" translate>Wallets</span>
+          <span>{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
         </div>
         <div class="main-label" *ngIf="!walletsGroup[0].canSign" translate>Read Only Wallets</div>
       </ion-label>
