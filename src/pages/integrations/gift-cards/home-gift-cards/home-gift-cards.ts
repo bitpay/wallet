@@ -61,6 +61,8 @@ export class HomeGiftCards implements OnInit {
   public primaryCatalogCurrency: string = 'usd';
   public disableArchiveAnimation: boolean = true; // Removes flicker on iOS when returning to home tab
 
+  @Input() activeCards: GiftCard[];
+
   @Input('scrollArea')
   scrollArea: Content;
 
@@ -173,7 +175,7 @@ export class HomeGiftCards implements OnInit {
   }
 
   private async initGiftCards() {
-    this.loadGiftCards();
+    this.loadGiftCards(true);
     this.giftCardProvider.cardUpdates$
       .pipe(debounceTime(300))
       .subscribe(card =>
@@ -197,9 +199,11 @@ export class HomeGiftCards implements OnInit {
     this.giftCardProvider.updatePendingGiftCards(allCards);
   }
 
-  private async loadGiftCards() {
+  private async loadGiftCards(isInitialLoad: boolean = false) {
     this.disableArchiveAnimation = true;
-    const activeCards = await this.giftCardProvider.getActiveCards();
+    const activeCards = isInitialLoad
+      ? this.activeCards
+      : await this.giftCardProvider.getActiveCards();
     const activeBrands = this.groupCardsByBrand(activeCards);
     this.updatePendingGiftCards(activeBrands);
     this.activeBrands = activeBrands;
