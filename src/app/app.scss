@@ -42,6 +42,13 @@ ion-content.add-padding-bottom,
   }
 }
 
+ion-title.bp-title {
+  .toolbar-title.toolbar-title-md,
+  .toolbar-title.toolbar-title-ios {
+    font-weight: 700 !important;
+  }
+}
+
 // Alert position
 // --------------------------------------------------
 ion-alert.alert-top {
@@ -75,7 +82,7 @@ ion-header.bp-header .toolbar {
       text-align: left;
       line-height: 34px;
       font-size: 25px;
-      font-weight: 600;
+      font-weight: 700;
       padding-left: 17px;
     }
   }
@@ -826,6 +833,6 @@ ion-icon {
 .line-divider {
   box-sizing: border-box;
   border: 0.5px solid #9ba3ae;
-  opacity: 0.2;
+  opacity: 0.1;
   margin: 0px 25px;
 }
