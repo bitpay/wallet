@@ -24,9 +24,6 @@
         </span>
       </ion-col>
       <ion-col class="addr-buttons" text-right>
-        <button ion-button clear icon-only color="grey">
-          Legacy
-        </button>
         <button *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" ion-button clear icon-only color="primary" class="addr-update" (click)="setAddress(true)">
           <span ion-text color="primary" translate>
             <img *ngIf="!loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
