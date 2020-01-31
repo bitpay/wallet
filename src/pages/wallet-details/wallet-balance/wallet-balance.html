@@ -7,8 +7,8 @@
   <div page-content>
     <ion-list>
       <label-tip type="warn" header="no-header" class="no-arrowhead">
-        <div label-tip-body translate>
-          All of your {{ coinName }} wallet balance may not be available for immediate spending.
+        <div label-tip-body>
+          {{'All of your {coinName} wallet balance may not be available for immediate spending.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
       <ion-item>
@@ -30,8 +30,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The total amount of {{ coinName }} stored in this wallet.
+        <div label-tip-body>
+          {{'The total amount of {coinName} stored in this wallet.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
@@ -54,8 +54,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The amount of {{ coinName }} immediately spendable from this wallet.
+        <div label-tip-body>
+          {{'The amount of {coinName} immediately spendable from this wallet.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
@@ -78,8 +78,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The amount of {{ coinName }} stored in this wallet with less than 1 blockchain confirmation.
+        <div label-tip-body>
+          {{'The amount of {coinName} stored in this wallet with less than 1 blockchain confirmation.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
@@ -102,8 +102,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The amount of {{ coinName }} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.
+        <div label-tip-body>
+          {{'The amount of {coinName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
