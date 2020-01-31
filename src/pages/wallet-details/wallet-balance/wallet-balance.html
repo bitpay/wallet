@@ -83,15 +83,18 @@
         </div>
       </label-tip>
 
-      <ion-item>
+      <ion-item *ngIf="(coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20) || coinName != 'XRP'">
         <div class="balance-container">
           <div class="title">
             <img src="assets/img/icon-lock.svg" />
             <div translate>Locked</div>
           </div>
           <div class="balance">
-            <span class="locked">
+            <span *ngIf="coinName != 'XRP'" class="locked">
               {{status.lockedBalanceStr}}
+            </span>
+            <span *ngIf="coinName == 'XRP'" class="locked">
+              {{status.lockedBalanceSat * status.satToUnit - 20}}
             </span>
             <div>
               <span class="fiat">
@@ -101,9 +104,33 @@
           </div>
         </div>
       </ion-item>
-      <label-tip type="info" header="no-header">
+      <label-tip type="info" header="no-header" *ngIf="(coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20) || coinName != 'XRP'">
         <div label-tip-body>
           {{'The amount of {coinName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.' | translate: {coinName: coinName} }}
+        </div>
+      </label-tip>
+
+      <ion-item *ngIf="coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20">
+        <div class="balance-container">
+          <div class="title">
+            <img src="assets/img/icon-lock.svg" />
+            <div translate>XRP Locked Balance</div>
+          </div>
+          <div class="balance">
+            <span class="locked">
+              20 XRP
+            </span>
+            <div>
+              <span class="fiat">
+                {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+      <label-tip type="info" header="no-header" *ngIf="coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20">
+        <div label-tip-body translate>
+          The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet.
         </div>
       </label-tip>
 
