@@ -410,7 +410,26 @@ export class BitPayCardTopUpPage {
               excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
               returnInputs: true
             })
-            .then(resp => {
+            .then(async resp => {
+              if (this.currencyProvider.isERCToken(wallet.coin)) {
+                const tokenAddress = wallet.credentials.token.address;
+                try {
+                  const {
+                    availableAmount
+                  } = await this.walletProvider.getBalance(wallet, {
+                    tokenAddress
+                  });
+                  return resolve({
+                    sendMax: true,
+                    amount: availableAmount,
+                    inputs: resp.inputs,
+                    fee: resp.fee,
+                    feePerKb
+                  });
+                } catch (err) {
+                  return reject(err);
+                }
+              }
               return resolve({
                 sendMax: true,
                 amount: resp.amount,
