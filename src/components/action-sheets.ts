@@ -7,7 +7,6 @@ import { MemoComponent } from './memo-component/memo-component';
 import { OptionsSheetComponent } from './options-sheet/options-sheet';
 import { WalletReceiveComponent } from './wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from './wallet-selector/wallet-selector';
-import { WalletTabOptionsComponent } from './wallet-tab-options/wallet-tab-options';
 
 export const ACTION_SHEET_COMPONENTS = [
   ActionSheetComponent,
@@ -18,6 +17,5 @@ export const ACTION_SHEET_COMPONENTS = [
   WalletSelectorComponent,
   WalletReceiveComponent,
   ChooseFeeLevelComponent,
-  EmailComponent,
-  WalletTabOptionsComponent
+  EmailComponent
 ];
