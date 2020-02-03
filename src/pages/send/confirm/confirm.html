@@ -1,11 +1,5 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title class="bp-title">{{ 'Confirm Payment' | translate }}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content [ngClass]="{'add-padding-bottom': !hideSlideButton && isCordova}" no-bounce>
-
+<wide-header-page title="{{'Confirm Payment' | translate}}" [hasSlideButton]="!hideSlideButton && isCordova">
+  <div page-content>
   <ion-list *ngIf="tx" class="bp-list">
     <ion-item class="sub-title">
       <ion-label>
@@ -190,9 +184,9 @@
 
     <div class="line-divider"></div>
 
-    <ion-item *ngIf="wallet && wallet.coin !== 'xrp'; else destinationTag">
+    <ion-item *ngIf="wallet && wallet.coin !== 'xrp'; else destinationTag" (click)="editMemo(tx.description)">
       <ion-label stacked>{{'Memo' | translate}}</ion-label>
-      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description" name="tx.description" autocomplete="off" autocorrect="off" readonly disabled></ion-textarea>
     </ion-item>
 
     <ng-template #destinationTag>
@@ -209,12 +203,13 @@
       </label-tip>
     </ng-template>
   </ion-list>
-</ion-content>
+  </div>
 
-<ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
-  </page-slide-to-accept>
-  <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired">{{buttonText}}</button>
-  </ion-toolbar>
-</ion-footer>
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired">{{buttonText}}</button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

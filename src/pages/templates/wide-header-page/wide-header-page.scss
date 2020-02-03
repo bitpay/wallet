@@ -1,6 +1,5 @@
 wide-header-page,
 card-catalog-page {
-  @include fix-ios-bg-scroll();
   ion-buttons[right] {
     .button {
       padding: 10px;
@@ -60,7 +59,6 @@ page-settings,
 page-confirm,
 page-key-settings,
 purchased-cards-page {
-  @include fix-ios-bg-scroll($top-color: white);
   @include toolbar-button-color();
 
   ion-title .toolbar-title {

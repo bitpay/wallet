@@ -1,8 +1,6 @@
 @import './../gift-cards';
 
 buy-card-page {
-  @include fix-ios-bg-scroll($gift-card-page-background-color);
-
   .amount-box {
     background-image: linear-gradient(-180deg, #ffffff 30%, #ebedf8 100%);
     display: flex;

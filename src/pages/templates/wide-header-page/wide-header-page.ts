@@ -16,6 +16,9 @@ export class WideHeaderPage {
   @Input()
   hideBackButton: boolean;
 
+  @Input()
+  hasSlideButton: boolean;
+
   @ViewChild(Navbar)
   navBar: Navbar;
 

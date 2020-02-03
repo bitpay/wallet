@@ -1,5 +1,5 @@
 <ion-header no-border class="wallet-details-header">
-  <ion-navbar class="app-color">
+  <ion-navbar>
     <ion-title>
       <div class="header-wallet-name" [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{wallet?.name}}
@@ -13,11 +13,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}" pullMin="90" pullMax="180">
+<ion-content #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="wrapper wrapper--feather">
+  <div class="wrapper">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" #expandableHeader>
       <expandable-header-primary class="balance-header">
 

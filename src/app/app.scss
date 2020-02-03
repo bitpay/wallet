@@ -21,8 +21,7 @@ body {
 }
 
 // all content without menu
-ion-content.add-bottom-safe-area,
-.hide-tabbar ion-content {
+ion-content.add-bottom-safe-area {
   .fixed-content,
   .scroll-content {
     padding-bottom: 0;
@@ -135,25 +134,10 @@ ion-header.bp-header .toolbar {
   font-size: 18px;
 }
 
-// Hide border when refresh
-.has-refresher > .scroll-content {
-  border-top: none !important;
-}
-
-ion-content {
-  .fixed-content,
-  .scroll-content {
-    .wrapper {
-      background-color: white;
-      min-height: 100%;
-      padding-bottom: calc(env(safe-area-inset-bottom));
-      padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
-
-      &--feather {
-        background-color: $feather-dark;
-      }
-    }
-  }
+/* Refresh component */
+ion-refresher-content {
+  justify-content: normal;
+  padding-top: 15px;
 }
 
 ion-spinner * {
@@ -670,12 +654,6 @@ ion-item.with-label.item {
   }
 }
 
-.app-color {
-  .toolbar-background {
-    background: #0c204e !important;
-  }
-}
-
 page-bitpay-card,
 .wallet-details-header {
   @include toolbar-button-color(white);
@@ -739,11 +717,6 @@ page-bitpay-card,
   mask-size: 2rem;
   margin: auto;
   transform: translate(0, -10%);
-}
-
-/* Removes rounded border for modals (wallet-details) */
-.wallet-details-modal .modal-wrapper {
-  border-radius: 0px !important;
 }
 
 .tabbar {

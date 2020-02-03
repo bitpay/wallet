@@ -4,6 +4,7 @@ import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choos
 import { EmailComponent } from '../../components/email-component/email-component';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
+import { MemoComponent } from '../../components/memo-component/memo-component';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
@@ -101,6 +102,11 @@ export class ActionSheetProvider {
 
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
+      .instance;
+  }
+
+  public createMemoComponent(memo): MemoComponent {
+    return this.setupSheet<MemoComponent>(MemoComponent, null, { memo })
       .instance;
   }
 
