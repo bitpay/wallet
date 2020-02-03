@@ -155,7 +155,7 @@ export class TxFormatProvider {
     }
 
     if (tx.size && (tx.fee || tx.fees) && tx.amountUnitStr)
-      tx.feeRate = `${((tx.fee || tx.fees) / tx.size).toFixed(0)} sat/bytes`;
+      tx.feeRate = `${((tx.fee || tx.fees) / tx.size).toFixed(0)} sat/byte`;
 
     if (tx.addressTo && coin == 'bch') {
       tx.addressTo = this.toCashAddress(tx.addressTo);

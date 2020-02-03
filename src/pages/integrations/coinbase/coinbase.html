@@ -1,6 +1,6 @@
 <ion-header class="wide-header">
   <ion-navbar>
-    <ion-title>
+    <ion-title class="bp-title">
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <img src="assets/img/coinbase/coinbase-logo.png" width="70">
       </div>
@@ -52,7 +52,7 @@
             <img src="assets/img/sell-bitcoin.svg" alt="sell bitcoin" width="30">
           </ion-icon>
           <ion-label>Sell</ion-label>
-          <ion-note *ngIf="sellPrice"  item-end>
+          <ion-note *ngIf="sellPrice" item-end>
             {{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC
           </ion-note>
         </button>
@@ -60,10 +60,10 @@
         <div *ngIf="pendingTransactions.data && !error">
           <button ion-item (click)="openTxModal(tx)" *ngFor="let tx of pendingTransactions.data | keys">
             <ion-icon item-start>
-                <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
-                <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
-                <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
-                <img src="assets/img/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
+              <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
+              <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
+              <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
+              <img src="assets/img/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
             </ion-icon>
             <span *ngIf="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
             <span *ngIf="tx.type == 'send' && tx.to && tx.status == 'completed'">Bought</span>

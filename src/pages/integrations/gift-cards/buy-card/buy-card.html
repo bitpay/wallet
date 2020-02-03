@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Buy {{cardConfig?.displayName}} Gift Card</ion-title>
+    <ion-title class="bp-title">Buy {{cardConfig?.displayName}} Gift Card</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,9 +15,7 @@
           </div>
         </img-loader>
       </div>
-      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency"
-        [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)"
-        (click)="onAmountClick()"></amount-picker>
+      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency" [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)" (click)="onAmountClick()"></amount-picker>
     </div>
     <div class="buy-box">
       <card-description class="buy-box__terms" [cardConfig]="cardConfig"></card-description>

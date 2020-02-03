@@ -813,7 +813,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'RippleAddress',
-        title: this.translate.instant('Ripple Address')
+        title: this.translate.instant('XRP Address')
       };
 
       // Coinbase
