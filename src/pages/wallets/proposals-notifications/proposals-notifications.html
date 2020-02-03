@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Notifications' | translate}}" [ngClass]="{'add-padding-bottom': txpsToSign[0] }">
+<wide-header-page title="{{'Notifications' | translate}}" [hasSlideButton]="txpsToSign[0]">
   <div page-content>
     <div *ngIf="allTxps && allTxps[0]">
       <div class="txps-status" *ngFor="let txpsByStatus of allTxps">

@@ -397,6 +397,7 @@ export class SimplexBuyPage {
               created_on: Date.now(),
               crypto_amount: this.cryptoAmount,
               coin: this.currencyProvider.getChain(this.wallet.coin),
+              fiat_base_amount: this.fiatBaseAmount,
               fiat_total_amount: this.fiatTotalAmount,
               fiat_total_amount_currency: this.currencyIsFiat()
                 ? this.quoteForm.value.altCurrency

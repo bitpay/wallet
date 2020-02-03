@@ -36,11 +36,18 @@ page-simplex-buy {
       padding-left: 1rem;
     }
   }
+  .total-amount ion-note {
+    text-align: right;
+  }
   .terms {
     padding: 0 3rem 3rem 3rem;
     color: color($colors, light-grey);
     a {
       cursor: pointer;
     }
+  }
+  .simplex-logo {
+    display: flex;
+    margin: 0 auto;
   }
 }

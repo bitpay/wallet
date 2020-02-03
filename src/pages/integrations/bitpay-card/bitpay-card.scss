@@ -1,5 +1,18 @@
 page-bitpay-card {
-  $bitpay-card-primary-color: #2a3f90;
+  $bitpay-card-primary-color: #0c204e;
+
+  ion-refresher {
+    .refresher-pulling ion-icon {
+      color: white;
+    }
+
+    .refresher-refreshing {
+      .spinner-crescent circle,
+      .spinner-ios line {
+        stroke: white;
+      }
+    }
+  }
 
   ion-title {
     .bitpay-card-header {

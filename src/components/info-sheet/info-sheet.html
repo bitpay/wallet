@@ -20,18 +20,6 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
-      <span sheet-title-text>{{'Receiving {coinName} address' | translate: {coinName: params.coinName } }}</span>
-      <span sheet-text *ngIf="params.coinName !== 'Ripple'">
-        {{'Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code.' | translate: {coinName: params.coinName} }}
-      </span>
-      <span sheet-text *ngIf="params.coinName === 'Ripple'">The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet.</span>
-      <span sheet-text *ngIf="params.coinName === 'Ripple'"><strong>
-          <p>Please fund this address with 20 XRP to activate your wallet.</p>
-        </strong></span>
-      <span sheet-button-text translate>GOT IT</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'backup-needed-with-activity'" type="info">
       <span sheet-title-text translate>Needs Backup</span>
       <span sheet-text translate>

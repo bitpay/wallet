@@ -17,14 +17,8 @@ page-integrations {
     background: none;
   }
 
-  .blur {
-    filter: blur(12px);
-  }
-
   .bp-header {
     .settings-button {
-      margin-right: 1rem;
-
       .notifications-badge {
         border-radius: 9px;
         font-size: 15px;
@@ -113,14 +107,6 @@ page-integrations {
     animation-name: bounce-card;
     animation-duration: 0.4s;
     animation-delay: 0.5s;
-  }
-
-  ion-refresher {
-    height: 120px;
-
-    &-content {
-      margin-top: -25px;
-    }
   }
 
   .no-header {
@@ -443,5 +429,10 @@ page-integrations {
       width: calc(92% - 10px);
       left: calc(4% + 5px);
     }
+  }
+
+  .option-button {
+    font-size: 24px;
+    opacity: 0.6;
   }
 }

@@ -73,9 +73,9 @@
 
       <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
 
-      <div class="line-divider"></div>
+      <div class="line-divider" *ngIf="btx.creatorName && isShared"></div>
 
-      <ion-item>
+      <ion-item *ngIf="btx.creatorName && isShared">
         <ion-label>
           <div class="summary-item">
             <span translate>Created by</span>

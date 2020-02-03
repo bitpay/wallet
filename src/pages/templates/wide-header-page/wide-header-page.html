@@ -9,7 +9,7 @@
     <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
+<ion-content #scrollArea [ngClass]="{'add-padding-bottom': hasSlideButton, 'add-bottom-safe-area': !hasSlideButton && platformProvider.isCordova}">
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">

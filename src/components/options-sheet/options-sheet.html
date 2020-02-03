@@ -1,4 +1,4 @@
-<action-sheet>
+<action-sheet fromTop="true">
   <div class="options-container" [ngSwitch]="sheetType">
     <div *ngSwitchCase="'address-options'">
       <div class="option" (click)="optionClicked('request-amount')">
@@ -60,6 +60,5 @@
         <div translate class="option-text danger">Delete</div>
       </div>
     </div>
-    <div (click)="dismiss()" class="cancel-btn" translate>Cancel</div>
   </div>
 </action-sheet>
