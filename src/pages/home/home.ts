@@ -460,7 +460,7 @@ export class HomePage {
         'presentedWithGiftCardDiscount',
         this.giftCardProvider.getDiscountEventParams(
           this.discountedCard,
-          'home-tab-advertisement'
+          'Home Tab Advertisement'
         )
       );
   }
@@ -484,6 +484,15 @@ export class HomePage {
       this.externalLinkProvider.open(page);
     } else {
       this.navCtrl.push(page, params);
+    }
+    if (page === BuyCardPage) {
+      this.giftCardProvider.logEvent(
+        'clickedGiftCardDiscount',
+        this.giftCardProvider.getDiscountEventParams(
+          params.cardConfig,
+          'Home Tab Advertisement'
+        )
+      );
     }
   }
 
