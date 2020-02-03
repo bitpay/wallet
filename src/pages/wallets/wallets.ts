@@ -24,6 +24,7 @@ import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
 // Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
@@ -97,7 +98,8 @@ export class WalletsPage {
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
     private simplexProvider: SimplexProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -708,6 +710,21 @@ export class WalletsPage {
   public openBackupPage(keyId) {
     this.navCtrl.push(BackupKeyPage, {
       keyId
+    });
+  }
+
+  public showMoreOptions(): void {
+    const walletTabOptionsAction = this.actionSheetProvider.createWalletTabOptions(
+      { walletsGroups: this.walletsGroups }
+    );
+    walletTabOptionsAction.present();
+    walletTabOptionsAction.onDidDismiss(data => {
+      if (data)
+        data.keyId
+          ? this.addWallet(data.keyId)
+          : this.navCtrl.push(AddPage, {
+              isZeroState: true
+            });
     });
   }
 }
