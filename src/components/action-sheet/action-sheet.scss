@@ -61,4 +61,8 @@ action-sheet {
       transform: translateY(calc(-100% + 8px));
     }
   }
+  .safe-top-area {
+    padding-top: calc(10px + env(safe-area-inset-top));
+    padding-top: -webkit-calc(10px + env(safe-area-inset-top));
+  }
 }
