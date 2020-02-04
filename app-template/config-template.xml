@@ -97,14 +97,19 @@
       <variable name="FOURTH_URL_SCHEME" value="bchtest" />
       <variable name="FIFTH_URL_SCHEME" value="ethereum" />
       <variable name="SIXTH_URL_SCHEME" value="ripple" />
-      <variable name="ANDROID_SCHEME" value="" />
-      <variable name="ANDROID_HOST" value="" />
-      <variable name="ANDROID_PATHPREFIX" value="" />
+      <variable name="ANDROID_SCHEME" value="https" />
+      <variable name="ANDROID_HOST" value="staging.bitpay.com" />
+      <variable name="ANDROID_PATHPREFIX" value="/i/" />
     </plugin>
     <plugin name="cordova-plugin-fcm-ng" spec="5.1.1" />
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 
+    <universal-links>
+      <host name="staging.bitpay.com" scheme="https" >
+        <path url="/i/" />
+      </host>
+    </universal-links>
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
@@ -150,6 +155,9 @@
     <platform name="android">
       <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
+
+      <!-- To prevent Android from creating multiple app instances when opening a universal link -->
+      <preference name="AndroidLaunchMode" value="singleTask" />
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
           <application android:icon="@mipmap/ic_launcher" android:resource="@drawable/fcm_push_icon" android:roundIcon="@mipmap/ic_launcher_round" />

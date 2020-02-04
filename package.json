@@ -240,9 +240,9 @@
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",
         "SIXTH_URL_SCHEME": "ripple",
-        "ANDROID_SCHEME": "",
-        "ANDROID_HOST": "",
-        "ANDROID_PATHPREFIX": ""
+        "ANDROID_SCHEME": "https",
+        "ANDROID_HOST": "staging.bitpay.com",
+        "ANDROID_PATHPREFIX": "/i/"
       },
       "cordova-plugin-fcm-ng": {},
       "cordova-plugin-globalization": {},
