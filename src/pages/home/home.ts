@@ -69,7 +69,7 @@ export class HomePage {
       link: BitPayCardIntroPage,
       dismissible: true,
       /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
-      imgSrc: 'assets/img/bitpay-card/bitpay-card-visa.svg'
+      imgSrc: 'assets/img/icon-bpcard.svg'
     },
     {
       name: 'merchant-directory',
@@ -78,7 +78,7 @@ export class HomePage {
       app: 'bitpay',
       linkText: 'View Directory',
       link: 'https://bitpay.com/directory/?hideGiftCards=true',
-      imgSrc: 'assets/img/gumball-3.svg',
+      imgSrc: 'assets/img/icon-merch-dir.svg',
       dismissible: true
     },
     {
