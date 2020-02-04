@@ -11,254 +11,245 @@
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
-  <div class="wrapper">
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <expandable-header
-      [scrollArea]="scrollArea"
-      [fadeFactor]="5"
-      [disableFade]="true"
-      #expandableHeader
-    >
-      <ion-toolbar class="wide-header__title">
-        <expandable-header-primary>
-          {{ 'Home' | translate }}
-        </expandable-header-primary>
-      </ion-toolbar>
-    </expandable-header>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <expandable-header
+    [scrollArea]="scrollArea"
+    [fadeFactor]="5"
+    [disableFade]="true"
+    #expandableHeader
+  >
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Home' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
 
-    <div class="message-background" *ngIf="accessDenied">
-      <div class="message-header"></div>
-      <div class="message-content">
-        <ion-row align-items-center>
-          <div class="message-icon">
-            <img src="assets/img/icon-danger.svg" />
-          </div>
-          <div class="message-title message-title-critical">
-            {{ 'Access denied' | translate }}
-          </div>
-        </ion-row>
-        <div class="message-body">
-          Unfortunately, your country/region has banned the use or acceptance of
-          cryptocurrencies as a valid form of payment and we are therefore
-          unable to service you.
+  <div class="message-background" *ngIf="accessDenied">
+    <div class="message-header"></div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-danger.svg" /></div>
+        <div class="message-title message-title-critical">
+          {{ 'Access denied' | translate }}
         </div>
-        <div>
-          <div class="line-divider"></div>
-          <span
-            class="message-button"
-            (click)="openCountryBannedLink()"
-            translate
-            >Learn more</span
-          >
-        </div>
+      </ion-row>
+      <div class="message-body">
+        Unfortunately, your country/region has banned the use or acceptance of
+        cryptocurrencies as a valid form of payment and we are therefore unable
+        to service you.
       </div>
-    </div>
-
-    <div
-      class="message-background"
-      *ngIf="showServerMessage && serverMessages && serverMessages[0]"
-    >
-      <div class="message-header">
-        <ion-row *ngIf="serverMessages[0].dismissible" justify-content-end>
-          <button
-            float-right
-            ion-button
-            clear
-            icon-only
-            color="grey"
-            (click)="dismissServerMessage(serverMessages[0])"
-          >
-            <ion-icon name="close"></ion-icon>
-          </button>
-        </ion-row>
-      </div>
-      <div class="message-content">
-        <ion-row align-items-center>
-          <div class="message-icon">
-            <img
-              *ngIf="
-                !serverMessages[0].category ||
-                serverMessages[0].category === 'info'
-              "
-              src="assets/img/icon-info-blue.svg"
-            />
-            <img
-              *ngIf="serverMessages[0].category === 'critical'"
-              src="assets/img/icon-danger.svg"
-            />
-          </div>
-          <div
-            class="message-title"
-            *ngIf="serverMessages[0].title"
-            [ngClass]="{
-              'message-title-info':
-                !serverMessages[0].category ||
-                serverMessages[0].category == 'info',
-              'message-title-critical': serverMessages[0].category == 'critical'
-            }"
-          >
-            {{ serverMessages[0].title }}
-          </div>
-        </ion-row>
-        <div class="message-body" *ngIf="serverMessages[0].body">
-          {{ serverMessages[0].body }}
-        </div>
-
-        <div
-          *ngIf="serverMessages[0].link"
-          (click)="openServerMessageLink(serverMessages[0].link)"
+      <div>
+        <div class="line-divider"></div>
+        <span class="message-button" (click)="openCountryBannedLink()" translate
+          >Learn more</span
         >
-          <div class="line-divider"></div>
-          <span class="message-button" *ngIf="serverMessages[0].linkText">{{
-            serverMessages[0].linkText
-          }}</span>
-          <span
-            class="message-button"
-            translate
-            *ngIf="!serverMessages[0].linkText"
-            >Learn more</span
-          >
-        </div>
       </div>
     </div>
+  </div>
 
-    <page-feedback-card #showCard></page-feedback-card>
-    <page-survey-card #showSurvey></page-survey-card>
-
-    <div *ngIf="!balanceHidden" class="total-amount-container">
-      <div class="section-header" translate>Total cash value</div>
-      <div class="total-amount-value" *ngIf="totalBalanceAlternative">
-        {{ totalBalanceAlternative }} {{ totalBalanceAlternativeIsoCode }}
-      </div>
-      <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-        0.00 {{ totalBalanceAlternativeIsoCode }}
-        <span *ngIf="fetchingStatus"> <ion-spinner></ion-spinner> </span>
-      </div>
-      <div class="average-container">
-        <div
-          *ngIf="averagePrice || averagePrice === 0"
-          [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'"
+  <div
+    class="message-background"
+    *ngIf="showServerMessage && serverMessages && serverMessages[0]"
+  >
+    <div class="message-header">
+      <ion-row *ngIf="serverMessages[0].dismissible" justify-content-end>
+        <button
+          float-right
+          ion-button
+          clear
+          icon-only
+          color="grey"
+          (click)="dismissServerMessage(serverMessages[0])"
         >
-          <span class="average"
-            ><span *ngIf="averagePrice > 0">+</span
-            >{{ averagePrice | number: '1.2-2' }}%</span
-          >
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-row>
+    </div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon">
+          <img
+            *ngIf="
+              !serverMessages[0].category ||
+              serverMessages[0].category === 'info'
+            "
+            src="assets/img/icon-info-blue.svg"
+          />
+          <img
+            *ngIf="serverMessages[0].category === 'critical'"
+            src="assets/img/icon-danger.svg"
+          />
         </div>
+        <div
+          class="message-title"
+          *ngIf="serverMessages[0].title"
+          [ngClass]="{
+            'message-title-info':
+              !serverMessages[0].category ||
+              serverMessages[0].category == 'info',
+            'message-title-critical': serverMessages[0].category == 'critical'
+          }"
+        >
+          {{ serverMessages[0].title }}
+        </div>
+      </ion-row>
+      <div class="message-body" *ngIf="serverMessages[0].body">
+        {{ serverMessages[0].body }}
+      </div>
+
+      <div
+        *ngIf="serverMessages[0].link"
+        (click)="openServerMessageLink(serverMessages[0].link)"
+      >
+        <div class="line-divider"></div>
+        <span class="message-button" *ngIf="serverMessages[0].linkText">{{
+          serverMessages[0].linkText
+        }}</span>
+        <span
+          class="message-button"
+          translate
+          *ngIf="!serverMessages[0].linkText"
+          >Learn more</span
+        >
       </div>
     </div>
+  </div>
 
-    <ion-list
-      margin-bottom
-      class="bp-list"
-      *ngIf="
-        homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
-      "
-    >
-      <ion-item *ngIf="showShopOption" (click)="goToShop()">
-        <ion-label> <div class="services-list-label">Shop</div> </ion-label>
-        <ion-note item-end>
-          <ion-icon
-            class="services-list-arrow"
-            name="ios-arrow-forward-outline"
-            color="light-grey"
-          ></ion-icon>
-        </ion-note>
-      </ion-item>
-      <div class="line-divider" *ngIf="showShopOption"></div>
-      <ion-item *ngIf="showServicesOption" (click)="goToServices()">
-        <ion-label> <div class="services-list-label">Services</div> </ion-label>
-        <ion-note item-end>
-          <ion-icon
-            class="services-list-arrow"
-            name="ios-arrow-forward-outline"
-            color="light-grey"
-          ></ion-icon>
-        </ion-note>
-      </ion-item>
-      <div class="line-divider" *ngIf="showServicesOption"></div>
-      <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
-        <ion-label>
-          <div class="services-list-label">Buy Crypto</div>
-        </ion-label>
-        <ion-note item-end>
-          <ion-icon
-            class="services-list-arrow"
-            name="ios-arrow-forward-outline"
-            color="light-grey"
-          ></ion-icon>
-        </ion-note>
-      </ion-item>
-      <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
-    </ion-list>
+  <page-feedback-card #showCard></page-feedback-card>
+  <page-survey-card #showSurvey></page-survey-card>
 
-    <ion-slides
-      *ngIf="showAdvertisements && advertisements && advertisements[0]"
-      pager="true"
-    >
-      <ion-slide *ngFor="let advertisement of advertisements">
-        <div class="message-background">
-          <div class="message-header" *ngIf="advertisement.dismissible">
-            <ion-row justify-content-end>
-              <button
-                float-right
-                ion-button
-                clear
-                icon-only
-                color="grey"
-                (click)="dismissAdvertisement(advertisement)"
-              >
-                <ion-icon name="close"></ion-icon>
-              </button>
-            </ion-row>
-          </div>
-          <div class="message-content">
-            <ion-row align-items-center>
-              <ion-col align-self-start col-4>
-                <div class="message-img">
-                  <img
-                    [ngClass]="{
-                      'card-img':
-                        advertisement.imgSrc ===
-                        'assets/img/bitpay-card/bitpay-card-visa.svg'
-                    }"
-                    src="{{advertisement.imgSrc}}"
-                  />
-                </div>
-              </ion-col>
-              <ion-col col-8>
-                <div
-                  class="message-title message-title-adv"
-                  *ngIf="advertisement.title"
-                >
-                  {{ advertisement.title }}
-                </div>
-                <div
-                  class="message-body message-body-adv"
-                  *ngIf="advertisement.body"
-                >
-                  {{ advertisement.body }}
-                </div>
-              </ion-col>
-            </ion-row>
-            <div
-              *ngIf="advertisement.link"
-              (click)="goTo(advertisement.link, advertisement.linkParams)"
+  <div *ngIf="!balanceHidden" class="total-amount-container">
+    <div class="section-header" translate>Total cash value</div>
+    <div class="total-amount-value" *ngIf="totalBalanceAlternative">
+      {{ totalBalanceAlternative }} {{ totalBalanceAlternativeIsoCode }}
+    </div>
+    <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
+      0.00 {{ totalBalanceAlternativeIsoCode }}
+      <span *ngIf="fetchingStatus"> <ion-spinner></ion-spinner> </span>
+    </div>
+    <div class="average-container">
+      <div
+        *ngIf="averagePrice || averagePrice === 0"
+        [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'"
+      >
+        <span class="average"
+          ><span *ngIf="averagePrice > 0">+</span
+          >{{ averagePrice | number: '1.2-2' }}%</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <ion-list
+    margin-bottom
+    class="bp-list"
+    *ngIf="
+      homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
+    "
+  >
+    <ion-item *ngIf="showShopOption" (click)="goToShop()">
+      <ion-label> <div class="services-list-label">Shop</div> </ion-label>
+      <ion-note item-end>
+        <ion-icon
+          class="services-list-arrow"
+          name="ios-arrow-forward-outline"
+          color="light-grey"
+        ></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showShopOption"></div>
+    <ion-item *ngIf="showServicesOption" (click)="goToServices()">
+      <ion-label> <div class="services-list-label">Services</div> </ion-label>
+      <ion-note item-end>
+        <ion-icon
+          class="services-list-arrow"
+          name="ios-arrow-forward-outline"
+          color="light-grey"
+        ></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showServicesOption"></div>
+    <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
+      <ion-label> <div class="services-list-label">Buy Crypto</div> </ion-label>
+      <ion-note item-end>
+        <ion-icon
+          class="services-list-arrow"
+          name="ios-arrow-forward-outline"
+          color="light-grey"
+        ></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
+  </ion-list>
+
+  <ion-slides
+    *ngIf="showAdvertisements && advertisements && advertisements[0]"
+    pager="true"
+  >
+    <ion-slide *ngFor="let advertisement of advertisements">
+      <div class="message-background">
+        <div class="message-header" *ngIf="advertisement.dismissible">
+          <ion-row justify-content-end>
+            <button
+              float-right
+              ion-button
+              clear
+              icon-only
+              color="grey"
+              (click)="dismissAdvertisement(advertisement)"
             >
-              <div class="line-divider"></div>
-              <span class="message-button" *ngIf="advertisement.linkText">{{
-                advertisement.linkText
-              }}</span>
-            </div>
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-row>
+        </div>
+        <div class="message-content">
+          <ion-row align-items-center>
+            <ion-col align-self-start col-4>
+              <div class="message-img">
+                <img
+                  [ngClass]="{
+                    'card-img':
+                      advertisement.imgSrc ===
+                      'assets/img/bitpay-card/bitpay-card-visa.svg'
+                  }"
+                  src="{{advertisement.imgSrc}}"
+                />
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div
+                class="message-title message-title-adv"
+                *ngIf="advertisement.title"
+              >
+                {{ advertisement.title }}
+              </div>
+              <div
+                class="message-body message-body-adv"
+                *ngIf="advertisement.body"
+              >
+                {{ advertisement.body }}
+              </div>
+            </ion-col>
+          </ion-row>
+          <div
+            *ngIf="advertisement.link"
+            (click)="goTo(advertisement.link, advertisement.linkParams)"
+          >
+            <div class="line-divider"></div>
+            <span class="message-button" *ngIf="advertisement.linkText">{{
+              advertisement.linkText
+            }}</span>
           </div>
         </div>
-      </ion-slide>
-    </ion-slides>
+      </div>
+    </ion-slide>
+  </ion-slides>
 
-    <div padding-right>
-      <div class="section-header" translate>Exchange Rates</div>
-      <exchange-rates #exchangeRates></exchange-rates>
-    </div>
+  <div padding-right>
+    <div class="section-header" translate>Exchange Rates</div>
+    <exchange-rates #exchangeRates></exchange-rates>
   </div>
 </ion-content>
