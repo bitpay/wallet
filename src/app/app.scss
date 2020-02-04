@@ -78,13 +78,21 @@ ion-header.bp-header .toolbar {
     padding: 0;
     .toolbar-title.toolbar-title-md,
     .toolbar-title.toolbar-title-ios {
-      text-align: left;
-      line-height: 34px;
-      font-size: 25px;
+      //text-align: left;
+      //line-height: 34px;
+      font-size: 18px;
       font-weight: 700;
-      padding-left: 17px;
+      //padding-left: 17px;
     }
   }
+}
+.wide-header__title {
+  color: black;
+  font-size: 25px;
+  font-weight: 700;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
 }
 
 .close-container {
