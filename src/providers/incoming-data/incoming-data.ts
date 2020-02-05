@@ -240,17 +240,21 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
-      const selected = details.paymentOptions.filter(option => option.selected);
-      if (selected.length === 1) {
-        // BTC, BCH, ETH Chains
-        const [{ currency }] = selected;
+      details.paymentOptions = details.paymentOptions.filter(option => {
+        const fundedWallets = this.profileProvider.getWallets({
+          coin: option.currency.toLowerCase(),
+          network: option.network,
+          minAmount: option.estimatedAmount
+        });
+        return fundedWallets.length > 0;
+      });
+
+      if (details.paymentOptions.length === 1) {
+        // Only one available wallet currency
+        const [{ currency }] = details.paymentOptions;
         this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
       } else {
-        // If ERC20
-        if (selected.length > 1) {
-          details.paymentOptions = selected;
-        }
-        // No currencies selected
+        // Multiple available wallet currencies
         const stateParams = {
           payProOptions: details
         };
@@ -995,7 +999,7 @@ export class IncomingDataProvider {
 
   public goToPayPro(url: string, coin: Coin, disableLoader?: boolean): void {
     this.payproProvider
-      .getPayProDetails(url, coin, disableLoader)
+      .getPayProDetails(url, { coin }, disableLoader)
       .then(details => {
         this.handlePayPro(details, url, coin);
       })
@@ -1023,11 +1027,12 @@ export class IncomingDataProvider {
     }
 
     try {
+      const { memo, network } = payProDetails;
       const disableLoader = true;
-      const { paymentOptions } = await this.payproProvider.getPayProOptions(
-        url,
-        disableLoader
-      );
+      const {
+        paymentOptions,
+        buyerProvidedEmail
+      } = await this.payproProvider.getPayProOptions(url, disableLoader);
       const { estimatedAmount } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );
@@ -1039,12 +1044,13 @@ export class IncomingDataProvider {
       const stateParams = {
         amount: estimatedAmount,
         toAddress,
-        description: payProDetails.memo,
+        description: memo,
         data,
+        email: buyerProvidedEmail,
         invoiceID,
         paypro: payProDetails,
         coin,
-        network: payProDetails.network,
+        network,
         payProUrl: url,
         requiredFeeRate
       };

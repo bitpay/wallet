@@ -1,5 +1,6 @@
 import { TestUtils } from '../../test';
 import { BwcProvider } from '../bwc/bwc';
+import { Coin } from '../currency/currency';
 import { PayproProvider } from './paypro';
 
 describe('PayProProvider', () => {
@@ -11,7 +12,7 @@ describe('PayProProvider', () => {
     verified: true,
     network: 'livenet',
     payProUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-    coin: 'btc',
+    coin: Coin.BTC,
     requiredFeeRate: 134.972,
     amount: 278800,
     toAddress: '1Jzx8hv7Mz8DZH2QoLiWyFBCsCqK1yjwwz',
@@ -38,7 +39,9 @@ describe('PayProProvider', () => {
       });
 
       payproProvider
-        .getPayProDetails('https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm', 'btc')
+        .getPayProDetails('https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm', {
+          coin: Coin.BTC
+        })
         .then(paypro => {
           expect(paypro).toEqual(defaultPayPro);
         })
@@ -54,7 +57,9 @@ describe('PayProProvider', () => {
       });
 
       payproProvider
-        .getPayProDetails('https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm', 'btc')
+        .getPayProDetails('https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm', {
+          coin: Coin.BTC
+        })
         .then(paypro => {
           expect(paypro).toBeUndefined();
         })

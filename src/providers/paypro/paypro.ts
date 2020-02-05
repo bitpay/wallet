@@ -3,7 +3,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../bwc/bwc';
-import { CurrencyProvider } from '../currency/currency';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
@@ -34,15 +34,17 @@ export class PayproProvider {
 
   public getPayProDetails(
     paymentUrl,
-    coin,
+    params: { coin: Coin; buyerProvidedEmail?: string },
     disableLoader?: boolean
   ): Promise<any> {
+    const { coin, buyerProvidedEmail } = params;
     const bwc = this.bwcProvider.getPayProV2();
     const chain = this.currencyProvider.getChain(coin).toUpperCase();
     const options: any = {
       paymentUrl,
       chain,
-      currency: coin.toUpperCase()
+      currency: coin.toUpperCase(),
+      buyerProvidedEmail
     };
     if (!disableLoader) {
       this.onGoingProcessProvider.set('fetchingPayPro');

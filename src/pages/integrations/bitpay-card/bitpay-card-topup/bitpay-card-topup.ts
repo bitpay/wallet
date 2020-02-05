@@ -113,9 +113,6 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -302,7 +299,7 @@ export class BitPayCardTopUpPage {
       }
 
       this.payproProvider
-        .getPayProDetails(payProUrl, wallet.coin)
+        .getPayProDetails(payProUrl, { coin: wallet.coin })
         .then(details => {
           const { instructions } = details;
           let txp: Partial<TransactionProposal> = {

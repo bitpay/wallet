@@ -109,7 +109,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txFormatProvider: TxFormatProvider,
     walletProvider: WalletProvider,
     translate: TranslateService,
-    private payproProvider: PayproProvider,
+    payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
@@ -142,7 +142,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       clipboardProvider,
       events,
-      appProvider
+      appProvider,
+      giftCardProvider,
+      payproProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -164,10 +166,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.logger.info('Loaded: ConfirmCardPurchasePage');
   }
 
-  ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
+  async ionViewWillEnter() {
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -355,7 +354,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     const details = await this.payproProvider
-      .getPayProDetails(payProUrl, wallet.coin)
+      .getPayProDetails(payProUrl, { coin: wallet.coin })
       .catch(err => {
         throw {
           title: this.translate.instant('Error in Payment Protocol'),
@@ -454,7 +453,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.giftCardProvider.logEvent('purchasedGiftCard', params);
   }
 
-  private async promptEmail() {
+  public async getEmail() {
     if (!this.cardConfig.emailRequired) {
       const notificationEmail = this.emailNotificationsProvider.getEmailIfEnabled();
       return Promise.resolve(notificationEmail);
@@ -464,35 +463,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return Promise.resolve(email);
     }
     return this.setEmail();
-  }
-
-  private async setEmail() {
-    const emailComponent = this.actionSheetProvider.createEmailComponent();
-    await emailComponent.present();
-    return new Promise(resolve => {
-      emailComponent.onDidDismiss(email => {
-        if (email) {
-          if (!this.giftCardProvider.emailIsValid(email)) {
-            this.throwEmailRequiredError();
-          }
-          this.giftCardProvider.storeEmail(email);
-          resolve(email);
-        } else {
-          this.throwEmailRequiredError();
-        }
-        this.isOpenSelector = false;
-      });
-    });
-  }
-
-  private throwEmailRequiredError() {
-    const title = this.translate.instant('Error');
-    const msg = this.translate.instant(
-      'An email address is required for this purchase.'
-    );
-    this.onGoingProcessProvider.clear();
-    this.showErrorInfoSheet(msg, title, true);
-    throw new Error('email required');
   }
 
   private async initialize(wallet, email) {
@@ -642,7 +612,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public async onWalletSelect(wallet) {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
-    const email = await this.promptEmail();
+    const email = await this.getEmail();
     await this.initialize(wallet, email).catch(() => {});
   }
 

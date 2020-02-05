@@ -226,7 +226,11 @@ export class TxpDetailsPage {
     if (this.tx.payProUrl) {
       const disableLoader = true;
       this.payproProvider
-        .getPayProDetails(this.tx.payProUrl, this.tx.coin, disableLoader)
+        .getPayProDetails(
+          this.tx.payProUrl,
+          { coin: this.tx.coin },
+          disableLoader
+        )
         .then(payProDetails => {
           this.tx.paypro = payProDetails;
           this.paymentTimeControl(this.tx.paypro.expires);

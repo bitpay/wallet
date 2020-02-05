@@ -302,7 +302,7 @@ describe('Provider: Incoming Data Provider', () => {
 
         expect(getPayProDetailsSpy).toHaveBeenCalledWith(
           element.payProUrl,
-          element.paymentOptions[2].currency.toLowerCase(),
+          { coin: element.paymentOptions[2].currency.toLowerCase() },
           true
         );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);

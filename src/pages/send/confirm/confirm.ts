@@ -28,7 +28,9 @@ import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { InvoiceProvider } from '../../../providers/invoice/invoice';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -113,7 +115,9 @@ export class ConfirmPage {
     protected walletProvider: WalletProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
-    protected appProvider: AppProvider
+    protected appProvider: AppProvider,
+    protected invoiceProvider: InvoiceProvider,
+    protected payproProvider: PayproProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -140,10 +144,7 @@ export class ConfirmPage {
     this.navCtrl.swipeBackEnabled = true;
   }
 
-  ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
+  async ionViewWillEnter() {
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     this.coin = this.navParams.data.coin;
@@ -241,6 +242,22 @@ export class ConfirmPage {
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
 
+    if (this.tx.paypro && this.tx.payProUrl && !this.tx.email) {
+      try {
+        const buyerProvidedEmail = await this.getEmail();
+        await this.payproProvider.getPayProDetails(
+          this.tx.payProUrl,
+          {
+            coin: this.tx.coin,
+            buyerProvidedEmail
+          },
+          true
+        );
+      } catch (err) {
+        return this.showErrorInfoSheet(err.message, err.name, true);
+      }
+    }
+
     this.setWalletSelector(this.tx.coin, this.tx.network)
       .then(() => {
         this.afterWalletSelectorSet();
@@ -270,6 +287,43 @@ export class ConfirmPage {
         this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
+  }
+
+  public async getEmail() {
+    const email = await this.invoiceProvider.getUserEmail();
+    if (email) {
+      return Promise.resolve(email);
+    }
+    return this.setEmail();
+  }
+
+  public async setEmail() {
+    const emailComponent = this.actionSheetProvider.createEmailComponent();
+    await emailComponent.present();
+    return new Promise<string>(resolve => {
+      emailComponent.onDidDismiss(email => {
+        if (email) {
+          if (!this.invoiceProvider.emailIsValid(email)) {
+            this.throwEmailRequiredError();
+          }
+          this.invoiceProvider.storeEmail(email);
+          return resolve(email);
+        } else {
+          this.throwEmailRequiredError();
+        }
+        this.isOpenSelector = false;
+      });
+    });
+  }
+
+  private throwEmailRequiredError() {
+    const title = this.translate.instant('Error');
+    const msg = this.translate.instant(
+      'An email address is required for this purchase.'
+    );
+    this.onGoingProcessProvider.clear();
+    this.showErrorInfoSheet(msg, title, true);
+    throw new Error('email required');
   }
 
   private isChain() {
