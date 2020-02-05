@@ -5,44 +5,61 @@ page-new-design-tour {
     }
     ion-slide {
       background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
+      .page-title {
+        text-align: center;
+        width: 100%;
+        font-weight: 500;
+        position: absolute;
+        color: color($colors, primary);
+        top: 4%;
+      }
       .img-container {
-        height: 68vh;
-        @media (max-height: 550px) and (max-width: 768px) {
-          height: 53vh;
+        height: 65%;
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 60%;
         }
         @media (min-height: 600px) and (min-width: 768px) {
-          height: 42vh;
+          height: 55%;
         }
-        @media (max-height: 650px) and (max-width: 768px) {
-          height: 60vh;
-        }
-        @media (min-height: 768px) and (min-width: 768px) {
-          height: 415px;
+        @media (max-height: 550px) and (max-width: 768px) {
+          height: 50%;
         }
         img {
-          padding: 5rem;
+          padding-top: 6rem;
           @media (max-height: 650px) and (max-width: 768px) {
-            padding: 3rem;
-          }
-          @media (max-height: 550px) and (max-width: 768px) {
-            padding: 2rem;
+            padding-top: 5rem;
           }
           @media (min-height: 600px) and (min-width: 768px) {
-            padding: 2rem;
+            padding-top: 3rem;
           }
-          width: 100%;
+          @media (max-height: 550px) and (max-width: 768px) {
+            padding-top: 4rem;
+          }
+          width: auto;
           height: 100%;
           justify-content: center;
           align-self: center;
           margin: 0 auto;
-          box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.07);
+          &.gif {
+            padding-top: 0;
+            padding-bottom: 6rem;
+            @media (max-height: 650px) and (max-width: 768px) {
+              padding-bottom: 5rem;
+            }
+            @media (min-height: 600px) and (min-width: 768px) {
+              padding-bottom: 3rem;
+            }
+            @media (max-height: 550px) and (max-width: 768px) {
+              padding-bottom: 4rem;
+            }
+          }
         }
       }
       .slide-info {
         background: white;
         height: 100%;
         .info {
-          padding: 2rem;
+          padding: 4rem;
           .title {
             align-items: center;
             color: #060606;

@@ -195,10 +195,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-          discount.amount,
-          discountedCard.currency,
-          'minimal'
-        )}`
+            discount.amount,
+            discountedCard.currency,
+            'minimal'
+          )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -210,7 +210,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-          } gift cards. Limited time offer.`,
+        } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -228,7 +228,7 @@ export class HomePage {
     discountedCard && this.addGiftCardDiscount(discountedCard);
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => { }, 5000, {
+  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
     leading: true
   });
 
@@ -393,13 +393,13 @@ export class HomePage {
         this.exchangeRatesProvider
           .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
           .subscribe(
-          response => {
-            return resolve({ rate: response.reverse()[0], unitCode });
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-            return resolve();
-          }
+            response => {
+              return resolve({ rate: response.reverse()[0], unitCode });
+            },
+            err => {
+              this.logger.error('Error getting current rate:', err);
+              return resolve();
+            }
           );
       });
     };
@@ -598,5 +598,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-    }-gift-card-discount`;
+  }-gift-card-discount`;
 }
