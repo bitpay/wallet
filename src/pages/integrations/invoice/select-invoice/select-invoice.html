@@ -2,7 +2,7 @@
   <div page-content>
     <ion-list class="settings-list bp-list">
       <div *ngFor="let option of paymentOptions">
-        <button class="list-button" ion-item (click)="goToPayPro(option.currency)">
+        <button class="list-button" ion-item (click)="goToPayPro(option.currency)" [disabled]="option.disabled">
           <ion-icon item-start>
             <img src="assets/img/currencies/{{option.currency.toLowerCase()}}.svg" />
           </ion-icon>

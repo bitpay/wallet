@@ -240,18 +240,23 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
-      details.paymentOptions = details.paymentOptions.filter(option => {
+      let availableCurrencies = [];
+      for (const option of details.paymentOptions) {
         const fundedWallets = this.profileProvider.getWallets({
           coin: option.currency.toLowerCase(),
           network: option.network,
           minAmount: option.estimatedAmount
         });
-        return fundedWallets.length > 0;
-      });
+        if (fundedWallets.length === 0) {
+          option.disabled = true;
+        } else {
+          availableCurrencies.push(option);
+        }
+      }
 
-      if (details.paymentOptions.length === 1) {
+      if (availableCurrencies.length === 1) {
         // Only one available wallet currency
-        const [{ currency }] = details.paymentOptions;
+        const [{ currency }] = availableCurrencies;
         this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
       } else {
         // Multiple available wallet currencies
