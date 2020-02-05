@@ -86,6 +86,8 @@ export class SendPage {
     private errorsProvider: ErrorsProvider
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }
 
   @ViewChild('transferTo')
@@ -96,14 +98,12 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
   }

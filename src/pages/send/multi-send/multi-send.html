@@ -20,10 +20,6 @@
             <img src="assets/img/scan-ico.svg">
           </ion-icon>
         </ion-item>
-        <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
-          <button ion-button class="button-add" outline (click)="newRecipient()">{{ 'Add Recipient' | translate}}</button>
-          <button ion-button class="button-cancel" outline (click)="cleanSearch()">{{ 'Cancel' | translate}}</button>
-        </div>
       </div>
 
       <div>

@@ -51,7 +51,7 @@ describe('SendPage', () => {
     describe('ionViewWillLeave', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ionViewWillLeave();
+        instance.ngOnDestroy();
         expect(spy).toHaveBeenCalledWith(
           'Local/AddressScan',
           instance.updateAddressHandler

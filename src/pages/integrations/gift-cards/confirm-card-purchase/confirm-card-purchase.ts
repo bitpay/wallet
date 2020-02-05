@@ -195,7 +195,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (!isSlideConfirmFinished) {
       this.giftCardProvider.logEvent('giftcards_purchase_start', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
       this.giftCardProvider.logEvent('add_to_cart', {
@@ -205,7 +204,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     } else {
       this.giftCardProvider.logEvent('giftcards_purchase_finish', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
 
@@ -220,8 +218,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           {
             name: this.cardConfig.name,
             category: 'giftCards',
-            quantity: 1,
-            price: giftData.amount.toString(10)
+            quantity: 1
           }
         ]
       });
