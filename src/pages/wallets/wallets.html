@@ -34,10 +34,10 @@
 </ion-header>
 
 <ion-content #scrollArea>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="wrapper">
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
     <expandable-header
       [scrollArea]="scrollArea"
       [fadeFactor]="5"
