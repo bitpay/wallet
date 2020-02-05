@@ -80,7 +80,10 @@ export class MultiSendPage {
     };
     this.isDisabledContinue = true;
     this.wallet = this.navParams.data.wallet;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe(
+      'Local/AddressScanMultiSend',
+      this.updateAddressHandler
+    );
     this.events.subscribe('addRecipient', newRecipient => {
       this.addRecipient(newRecipient);
       this.checkGoToConfirmButton();
@@ -92,7 +95,10 @@ export class MultiSendPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe(
+      'Local/AddressScanMultiSend',
+      this.updateAddressHandler
+    );
     this.events.unsubscribe('addRecipient');
   }
 
@@ -260,7 +266,7 @@ export class MultiSendPage {
   }
 
   public openScanner(): void {
-    this.navCtrl.push(ScanPage, { fromSend: true });
+    this.navCtrl.push(ScanPage, { fromMultiSend: true });
   }
 
   public getCoinName(coin): string {
