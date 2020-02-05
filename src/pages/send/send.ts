@@ -289,9 +289,17 @@ export class SendPage {
     );
   }
 
-  public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage, {
-      wallet: this.wallet
+  public showMoreOptions(): void {
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'send-options'
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'multi-send')
+        this.navCtrl.push(MultiSendPage, {
+          wallet: this.wallet
+        });
     });
   }
 }

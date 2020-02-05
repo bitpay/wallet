@@ -1,7 +1,7 @@
 <wide-header-page title="{{'Multiple Recipients' | translate}}">
   <ion-buttons *ngIf="multiRecipients.length != 0" right>
     <button clear wide-header-bar-button (click)="openTransferToModal()" ion-button icon-only>
-      <ion-icon name="person-add"></ion-icon>
+      <span translation>Add</span>
     </button>
   </ion-buttons>
   <div page-content>
@@ -55,7 +55,7 @@
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
       <button clear (click)="openTransferToModal()" ion-button translate>
-        Add an existent contact or wallet
+        Add to an existent contact or wallet
       </button>
     </div>
   </div>
