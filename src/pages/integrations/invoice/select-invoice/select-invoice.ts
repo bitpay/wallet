@@ -19,7 +19,9 @@ export class SelectInvoicePage {
     private logger: Logger,
     private navParams: NavParams
   ) {
-    this.paymentOptions = this.navParams.data.payProOptions.paymentOptions;
+    this.paymentOptions = this.navParams.data.payProOptions.paymentOptions.sort(
+      a => (a.disabled ? 1 : -1)
+    );
     this.payProUrl = this.navParams.data.payProOptions.payProUrl;
   }
 
