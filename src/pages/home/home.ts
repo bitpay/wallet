@@ -65,7 +65,7 @@ export class HomePage {
       title: 'Get a BitPay Card',
       body: 'Leverage your crypto with a reloadable BitPay card.',
       app: 'bitpay',
-      linkText: 'Buy Now',
+      linkText: 'Order now',
       link: BitPayCardIntroPage,
       dismissible: true,
       /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
