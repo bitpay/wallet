@@ -8,11 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
-import {
-  Coin,
-  CoinsMap,
-  CurrencyProvider
-} from '../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -44,8 +40,7 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
-  public wallets = {} as CoinsMap<any>;
-  public hasWallets = {} as CoinsMap<boolean>;
+  public hasWallets: boolean;
   public invalidAddress: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -103,10 +98,9 @@ export class SendPage {
   ionViewWillEnter() {
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
-    for (const coin of this.currencyProvider.getAvailableCoins()) {
-      this.wallets[coin] = this.profileProvider.getWallets({ coin });
-      this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
-    }
+    this.hasWallets = !_.isEmpty(
+      this.profileProvider.getWallets({ coin: this.wallet.coin })
+    );
   }
 
   ionViewWillLeave() {
@@ -145,6 +139,7 @@ export class SendPage {
     let isValid, addrData;
     if (isPayPro) {
       isValid =
+        data &&
         data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
         data.network == this.wallet.network;
     } else {
@@ -234,19 +229,18 @@ export class SendPage {
             true
           );
           const selected = payproOptions.paymentOptions.filter(
-            option => option.selected
+            option =>
+              option.selected &&
+              this.wallet.coin.toUpperCase() === option.currency
           );
           if (selected.length > 0) {
             const isValid = this.checkCoinAndNetwork(selected[0], true);
             if (isValid) {
-              this.incomingDataProvider.redir(this.search, {
-                activePage: 'SendPage'
-              });
+              this.incomingDataProvider.goToPayPro(
+                payproOptions.payProUrl,
+                this.wallet.coin
+              );
             }
-          } else {
-            this.incomingDataProvider.redir(this.search, {
-              activePage: 'SendPage'
-            });
           }
         } catch (err) {
           this.invalidAddress = true;
