@@ -36,23 +36,6 @@ page-multi-send {
     padding: 10px;
     background-color: white;
     box-shadow: 0px 5px 10px 0px #cccccc;
-    .recipient-buttons {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 5px 0 5px;
-      button {
-        border-radius: 5px;
-        box-shadow: none;
-      }
-      .button-add {
-        color: color($colors, success);
-        border-color: color($colors, success);
-      }
-      .button-cancel {
-        color: color($colors, danger);
-        border-color: color($colors, danger);
-      }
-    }
   }
   .send-heading {
     display: flex;
