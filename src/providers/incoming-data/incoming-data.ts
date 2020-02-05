@@ -17,6 +17,7 @@ export interface RedirParams {
   amount?: string;
   coin?: Coin;
   fromHomeCard?: boolean;
+  selected?: any;
 }
 
 @Injectable()
@@ -235,34 +236,40 @@ export class IncomingDataProvider {
     this.handleBitPayInvoice(url);
   }
 
-  private async handleBitPayInvoice(invoiceUrl: string) {
+  private async handleBitPayInvoice(invoiceUrl: string, redirParams?: any) {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
-    try {
-      const disableLoader = true;
-      const details = await this.payproProvider.getPayProOptions(invoiceUrl);
-      const selected = details.paymentOptions.filter(option => option.selected);
-      if (selected.length === 1) {
-        // BTC, BCH, ETH Chains
-        const [{ currency }] = selected;
-        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
-      } else {
-        // If ERC20
-        if (selected.length > 1) {
-          details.paymentOptions = selected;
+    const disableLoader = true;
+    if (redirParams && redirParams.selected) {
+      const [{ currency }] = redirParams.selected;
+      this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+    } else {
+      try {
+        const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+        const selected = details.paymentOptions.filter(
+          option => option.selected
+        );
+        if (selected.length === 1) {
+          // BTC || BCH || ETH Chains
+          const [{ currency }] = selected;
+          this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+        } else {
+          if (selected.length > 1) {
+            details.paymentOptions = selected;
+          }
+          // No currencies selected
+          const stateParams = {
+            payProOptions: details
+          };
+          let nextView = {
+            name: 'SelectInvoicePage',
+            params: stateParams
+          };
+          this.incomingDataRedir(nextView);
         }
-        // No currencies selected
-        const stateParams = {
-          payProOptions: details
-        };
-        let nextView = {
-          name: 'SelectInvoicePage',
-          params: stateParams
-        };
-        this.incomingDataRedir(nextView);
+      } catch (err) {
+        this.events.publish('incomingDataError', err);
+        this.logger.error(err);
       }
-    } catch (err) {
-      this.events.publish('incomingDataError', err);
-      this.logger.error(err);
     }
   }
 
@@ -621,7 +628,7 @@ export class IncomingDataProvider {
 
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
-      this.handleBitPayInvoice(data);
+      this.handleBitPayInvoice(data, redirParams);
       return true;
 
       // Payment Protocol with non-backwards-compatible request

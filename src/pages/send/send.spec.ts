@@ -43,8 +43,6 @@ describe('SendPage', () => {
           'getWallets'
         );
         instance.ionViewWillEnter();
-
-        expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'btc' });
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
       });
     });
@@ -124,7 +122,19 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
           {
-            activePage: 'SendPage'
+            activePage: 'SendPage',
+            selected: [
+              {
+                chain: 'BTC',
+                currency: 'BTC',
+                decimals: 8,
+                estimatedAmount: 10800,
+                minerFee: 100,
+                network: 'livenet',
+                requiredFeeRate: 1,
+                selected: true
+              }
+            ]
           }
         );
       }));
@@ -314,7 +324,19 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
           {
-            activePage: 'SendPage'
+            activePage: 'SendPage',
+            selected: [
+              {
+                chain: 'BTC',
+                currency: 'BTC',
+                decimals: 8,
+                estimatedAmount: 10800,
+                minerFee: 100,
+                network: 'testnet',
+                requiredFeeRate: 1,
+                selected: true
+              }
+            ]
           }
         );
       }));
@@ -503,7 +525,19 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           {
-            activePage: 'SendPage'
+            activePage: 'SendPage',
+            selected: [
+              {
+                chain: 'BCH',
+                currency: 'BCH',
+                decimals: 8,
+                estimatedAmount: 10800,
+                minerFee: 100,
+                network: 'livenet',
+                requiredFeeRate: 1,
+                selected: true
+              }
+            ]
           }
         );
       }));
@@ -693,7 +727,19 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           {
-            activePage: 'SendPage'
+            activePage: 'SendPage',
+            selected: [
+              {
+                chain: 'BCH',
+                currency: 'BCH',
+                decimals: 8,
+                estimatedAmount: 10800,
+                minerFee: 100,
+                network: 'testnet',
+                requiredFeeRate: 1,
+                selected: true
+              }
+            ]
           }
         );
       }));
