@@ -15,6 +15,14 @@ page-wallet-details {
     }
   }
 
+  .option-button {
+    color: #d8d8d8;
+    &.activated,
+    &:hover:not(.disable-hover) {
+      color: #fff;
+    }
+  }
+
   .toolbar-background {
     background: $wallet-details-primary-color;
   }
@@ -23,11 +31,6 @@ page-wallet-details {
     .header-wallet-name {
       text-align: left;
     }
-  }
-
-  .option-button {
-    font-size: 24px;
-    opacity: 0.6;
   }
 
   .search-icon {

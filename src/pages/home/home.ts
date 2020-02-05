@@ -100,6 +100,7 @@ export class HomePage {
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
+  public discountedCard: CardConfig;
 
   private lastWeekRatesArray;
   private zone;
@@ -139,17 +140,16 @@ export class HomePage {
   }
 
   async ngOnInit() {
-    const discountedCard = await this.getDiscountedCard();
-    discountedCard && this.addGiftCardDiscount(discountedCard);
     await this.tabProvider.prefetchCards();
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.showSurveyCard();
     this.checkFeedbackInfo();
 
     this.isBalanceHidden();
     this.fetchStatus();
+    await this.setDiscountedCard();
     this.fetchAdvertisements();
     // Show integrations
     const integrations = this.homeIntegrationsProvider
@@ -174,6 +174,11 @@ export class HomePage {
     }, 200);
   }
 
+  private async setDiscountedCard(): Promise<void> {
+    this.discountedCard = await this.getDiscountedCard();
+    this.discountedCard && this.addGiftCardDiscount(this.discountedCard);
+  }
+
   private async getDiscountedCard(): Promise<CardConfig> {
     const availableCards = await this.giftCardProvider.getAvailableCards();
     const discountedCard = availableCards.find(cardConfig =>
@@ -192,13 +197,13 @@ export class HomePage {
             'minimal'
           )}`
         : `${discount.amount}%`;
-    const discountName = `${discount.code}-${discountedCard.name}-discount`;
+    const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
-      d => d.name === discountName
+      a => a.name === advertisementName
     );
     !alreadyVisible &&
       this.advertisements.unshift({
-        name: `${discount.code}-${discountedCard.name}-discount`,
+        name: advertisementName,
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
@@ -441,6 +446,23 @@ export class HomePage {
         });
       this.logger.debug('fetchAdvertisements');
     });
+    this.logPresentedWithGiftCardDiscountEvent();
+  }
+
+  logPresentedWithGiftCardDiscountEvent() {
+    const giftCardDiscount = this.advertisements.find(a =>
+      a.name.includes('gift-card-discount')
+    );
+    const isCurrentSlide = !this.slides || this.slides.getActiveIndex() === 0;
+    giftCardDiscount &&
+      isCurrentSlide &&
+      this.giftCardProvider.logEvent(
+        'presentedWithGiftCardDiscount',
+        this.giftCardProvider.getDiscountEventParams(
+          this.discountedCard,
+          'Home Tab Advertisement'
+        )
+      );
   }
 
   public dismissAdvertisement(advertisement): void {
@@ -462,6 +484,15 @@ export class HomePage {
       this.externalLinkProvider.open(page);
     } else {
       this.navCtrl.push(page, params);
+    }
+    if (page === BuyCardPage) {
+      this.giftCardProvider.logEvent(
+        'clickedGiftCardDiscount',
+        this.giftCardProvider.getDiscountEventParams(
+          params.cardConfig,
+          'Home Tab Advertisement'
+        )
+      );
     }
   }
 
@@ -545,4 +576,10 @@ export class HomePage {
       "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
   }
+}
+
+function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
+  return `${discountedCard.discounts[0].code}-${
+    discountedCard.name
+  }-gift-card-discount`;
 }
