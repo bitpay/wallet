@@ -1,36 +1,24 @@
-.options-container {
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  padding-bottom: calc(env(safe-area-inset-bottom));
-  cursor: pointer;
-
-  .option {
-    border-bottom: 1px solid rgb(237, 237, 237);
-    display: flex;
-    padding: 22px;
-
-    .option-icon {
-      display: flex;
-      padding-right: 15px;
-    }
-
-    .option-text {
-      display: inline-block;
-      color: black;
-      font-size: 18px;
-      vertical-align: middle;
-    }
-
+options-sheet {
+  .bp-list {
     .danger {
       color: color($colors, danger);
     }
-  }
-
-  .cancel-btn {
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 400;
+    .main-label {
+      font-weight: 400;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        padding: 14.5px;
+        font-size: 20px;
+        &.icon-settings {
+          opacity: 0.5;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
   }
 }

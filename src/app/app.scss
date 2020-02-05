@@ -115,9 +115,16 @@ ion-header.bp-header .toolbar {
 }
 
 .option-button {
-  margin-right: 13px !important;
-  height: 41px;
-  width: 41px;
+  font-size: 24px;
+  opacity: 0.6;
+  border-radius: none;
+  background-color: transparent !important;
+  margin-right: 13px;
+  color: #434d5a;
+  &.activated,
+  &:hover:not(.disable-hover) {
+    color: #434d5a;
+  }
 }
 
 // Buttons
