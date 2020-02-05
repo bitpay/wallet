@@ -26,15 +26,21 @@ email-component {
     font-weight: 300;
     padding: 25px 0px;
   }
+  .padding-left {
+    padding-left: 0;
+  }
   .checkbox-list {
-    padding: 40px 0px 15px 0px;
+    padding: 15px 10px 25px 0px;
     text-align: center;
     ion-item {
+      padding-left: 25px;
       line-height: 25px;
       background: none;
     }
     .font-small {
-      font-size: 13px;
+      font-size: 12px;
+      line-height: 18px;
+      color: #434d5a;
     }
     .checkbox-icon {
       border-radius: 50%;

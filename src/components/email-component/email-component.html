@@ -7,27 +7,26 @@
       <span translate>Please provide your email address to receive payment notifications</span>
     </div>
     <form [formGroup]="emailForm">
-      <ion-item>
+      <ion-item class="padding-left">
         <ion-label floating>{{ 'Email address' | translate }}</ion-label>
         <ion-input mode="md" formControlName="email" type="email"></ion-input>
       </ion-item>
     </form>
-
-    <ion-list class="checkbox-list" no-lines>
-      <ion-item>
-        <ion-label class="ion-text-wrap font-small">
-          {{'By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues.' | translate}}
-          <br>
-          <a class="external-link" href="https://bitpay.com/about/privacy" translate>View Privacy Policy</a>
-        </ion-label>
-        <ion-checkbox [(ngModel)]="checked"></ion-checkbox>
-      </ion-item>
-    </ion-list>
   </div>
+
+  <ion-list class="checkbox-list" no-lines>
+    <ion-item>
+      <ion-label class="ion-text-wrap font-small">
+        {{'By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues.' | translate}}
+        <a class="external-link" href="https://bitpay.com/about/privacy" translate>View Privacy Policy</a>
+      </ion-label>
+      <ion-checkbox [(ngModel)]="checked"></ion-checkbox>
+    </ion-item>
+  </ion-list>
 
   <div class="padding-bottom">
     <button ion-button class="button-standard" [disabled]="emailForm.invalid || !checked" (click)="optionClicked()">
-      {{'Save' | translate}}
+      {{'Continue' | translate}}
     </button>
   </div>
 </action-sheet>
