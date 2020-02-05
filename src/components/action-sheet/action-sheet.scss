@@ -37,8 +37,8 @@ action-sheet {
       border-radius: 0px 0px 10px 10px;
       top: 0;
       transform: translateY(calc(-100% + 8px));
-      padding-top: calc(10px + env(safe-area-inset-top));
-      padding-top: -webkit-calc(10px + env(safe-area-inset-top));
+      padding-top: calc(env(safe-area-inset-top));
+      padding-top: -webkit-calc(env(safe-area-inset-top));
     }
     &-bottom {
       border-radius: 10px 10px 0px 0px;
