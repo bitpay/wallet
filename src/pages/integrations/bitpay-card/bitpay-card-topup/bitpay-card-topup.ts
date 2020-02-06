@@ -113,9 +113,6 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 

@@ -19,7 +19,6 @@ describe('Provider: Incoming Data Provider', () => {
   let loggerSpy;
   let eventsSpy;
   let actionSheetSpy;
-  let profileProvider;
   let payproProvider: PayproProvider;
 
   class AppProviderMock {
@@ -39,10 +38,27 @@ describe('Provider: Incoming Data Provider', () => {
     }
   }
 
+  class ProfileProviderMock {
+    constructor() {}
+    public getWallets() {
+      return [
+        {
+          credentials: {
+            keyId: 'keyId1',
+            coin: 'eth',
+            network: 'testnet',
+            minAmount: 5255000000000000
+          }
+        }
+      ];
+    }
+  }
+
   beforeEach(() => {
     const testBed = TestUtils.configureProviderTestingModule([
       { provide: AppProvider, useClass: AppProviderMock },
-      { provide: PopupProvider, useClass: PopupProviderMock }
+      { provide: PopupProvider, useClass: PopupProviderMock },
+      { provide: ProfileProvider, useClass: ProfileProviderMock }
     ]);
     incomingDataProvider = testBed.get(IncomingDataProvider);
     bwcProvider = testBed.get(BwcProvider);
@@ -59,14 +75,6 @@ describe('Provider: Incoming Data Provider', () => {
       present() {},
       onDidDismiss() {}
     });
-    profileProvider = testBed.get(ProfileProvider);
-    spyOn(profileProvider, 'getWallets').and.returnValue([
-      {
-        credentials: {
-          keyId: 'keyId1'
-        }
-      }
-    ]);
   });
 
   describe('Function: SCANNER Redir', () => {
