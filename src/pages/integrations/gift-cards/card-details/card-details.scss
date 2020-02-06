@@ -1,6 +1,5 @@
 card-details-page {
   $background-color: white;
-  @include fix-ios-bg-scroll($background-color);
 
   .confetti-root {
     display: flex;

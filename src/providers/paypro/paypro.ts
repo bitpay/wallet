@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
 import { CurrencyProvider } from '../currency/currency';
+import { ErrorsProvider } from '../errors/errors';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
@@ -14,22 +14,9 @@ export class PayproProvider {
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private errorsProvider: ErrorsProvider
   ) {
     this.logger.debug('PayproProvider initialized');
-  }
-
-  private showErrorInfoSheet(
-    err: Error | string,
-    infoSheetTitle: string
-  ): void {
-    if (!err) return;
-    this.logger.error('Could not get payment information:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
   }
 
   public getPayProOptions(paymentUrl, disableLoader?: boolean): Promise<any> {
@@ -50,7 +37,10 @@ export class PayproProvider {
       .catch(error => {
         this.logger.debug(error);
         this.onGoingProcessProvider.clear();
-        this.showErrorInfoSheet('Could not fetch payment options', 'Error');
+        this.errorsProvider.showDefaultError(
+          'Could not fetch payment options',
+          'Error'
+        );
       });
   }
 
@@ -79,7 +69,10 @@ export class PayproProvider {
       .catch(error => {
         this.logger.debug(error);
         this.onGoingProcessProvider.clear();
-        this.showErrorInfoSheet('Could not fetch payment details', 'Error');
+        this.errorsProvider.showDefaultError(
+          'Could not fetch payment details',
+          'Error'
+        );
       });
   }
 }

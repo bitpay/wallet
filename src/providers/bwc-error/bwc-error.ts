@@ -134,9 +134,19 @@ export class BwcErrorProvider {
       case 'INSUFFICIENT_FUNDS_FOR_FEE':
         body = this.translate.instant('Insufficient funds for fee');
         break;
+      case 'INSUFFICIENT_ETH_FEE':
+        body = this.translate.instant(
+          'Your linked ETH wallet does not have enough ETH for fee'
+        );
+        break;
       case 'LOCKED_FUNDS':
         body = this.translate.instant(
           'Funds are locked by pending spend proposals'
+        );
+        break;
+      case 'LOCKED_ETH_FEE':
+        body = this.translate.instant(
+          'Your ETH linked wallet funds are locked by pending spend proposals'
         );
         break;
       case 'COPAYER_VOTED':

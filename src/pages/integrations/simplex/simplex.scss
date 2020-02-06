@@ -1,9 +1,6 @@
 page-simplex {
   ion-title .toolbar-title {
     color: white;
-    img {
-      padding-top: 5px;
-    }
   }
   .wide-header__title.toolbar {
     padding-bottom: 10px;
@@ -39,5 +36,9 @@ page-simplex {
     * {
       stroke: #0d172c !important;
     }
+  }
+  .simplex-logo {
+    display: flex;
+    margin: 0 auto;
   }
 }

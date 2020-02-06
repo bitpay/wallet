@@ -1,9 +1,9 @@
-<wide-header-page title="{{'Confirm' | translate}}">
+<wide-header-page title="{{'Confirm' | translate}}" [hasSlideButton]="isCordova">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="cancel()" ion-button>{{'Cancel' | translate}}</button>
   </ion-buttons>
 
-  <div page-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+  <div page-content>
     <ion-list class="bp-list">
       <ion-item class="confirm-header">
         <div class="confirm-header__amount">
@@ -32,13 +32,7 @@
         <ion-note item-end>
           <ion-row align-items-center class="wallet" *ngIf="wallet">
             <ion-col>
-              <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet.coin == 'btc',
-          'background_bch': wallet.coin == 'bch',
-          'background_eth': wallet.coin == 'eth',
-          'background_xrp': wallet.coin == 'xrp',
-          'testnet': wallet.network === 'testnet' }" item-start>
-                <img src="assets/img/currencies/{{wallet?.coin}}.svg" />
-              </ion-icon>
+              <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
             </ion-col>
 
             <ion-col>
@@ -169,7 +163,8 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)"
+      buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
       <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm

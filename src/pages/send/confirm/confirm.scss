@@ -1,10 +1,8 @@
 page-confirm,
 confirm-card-purchase-page,
 page-txp-details,
-page-tx-details {
-  .add-padding-bottom {
-    height: 90vh;
-  }
+page-tx-details,
+page-bitpay-card-topup {
   .amount-label {
     padding-top: 1rem;
     .amount {
@@ -68,7 +66,7 @@ page-tx-details {
   .payment-proposal-to {
     padding: 10px;
     height: 39px;
-    max-width: 150px;
+    max-width: 200px;
     border-radius: 19.5px;
     background-color: #f6f7fc;
     display: flex;
@@ -87,8 +85,11 @@ page-tx-details {
       width: 25px;
       justify-content: space-between;
     }
+    .debit-card {
+      width: 40px;
+    }
   }
-  &.not-clickable {
+  .not-clickable {
     pointer-events: none;
   }
   .last-item {
@@ -119,13 +120,15 @@ page-tx-details {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    align-items: center;
   }
 
   .note-container {
     max-width: 100px;
   }
 
-  .wallet {
+  .wallet,
+  .multi-recip-title {
     span {
       height: 19px;
       color: #000000;
@@ -152,22 +155,12 @@ page-tx-details {
           height: 18px;
           margin: 0px;
         }
-        &.background {
-          &_btc {
-            background-color: #f7931a;
-          }
-          &_bch {
-            background-color: #2fcf6e;
-          }
-          &_eth {
-            background-color: #6b71d6;
-          }
-          &_xrp {
-            background-color: #000000;
-          }
-        }
       }
     }
+  }
+  .multi-recip-title {
+    display: flex;
+    align-items: center;
   }
   .line-divider {
     margin: 0px 17px;

@@ -43,6 +43,7 @@ export { DownloadProvider } from '../providers/download/download';
 export {
   EmailNotificationsProvider
 } from '../providers/email-notifications/email-notifications';
+export { ErrorsProvider } from '../providers/errors/errors';
 export { ExternalLinkProvider } from '../providers/external-link/external-link';
 export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';
@@ -80,6 +81,7 @@ export {
 export { ScanProvider } from '../providers/scan/scan';
 export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 export { SimplexProvider } from '../providers/simplex/simplex';
+export { TabProvider } from '../providers/tab/tab';
 export { TimeProvider } from '../providers/time/time';
 export { TouchIdProvider } from '../providers/touchid/touchid';
 export {

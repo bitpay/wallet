@@ -20,16 +20,4 @@ page-select-currency {
   .list-subtitle {
     padding-left: 20px;
   }
-  .zero-page {
-    height: 75vh;
-    @media (min-height: 700px) {
-      height: 78vh;
-    }
-    .flex-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-    }
-  }
 }

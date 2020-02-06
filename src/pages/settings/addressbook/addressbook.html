@@ -1,7 +1,7 @@
 <wide-header-page title="{{'Address Book'|translate}}">
   <ion-buttons *ngIf="!isEmptyList" right>
     <button clear wide-header-bar-button (click)="addEntry()" ion-button>
-      <span translate>Add</span>
+      <span translate>New contact</span>
     </button>
   </ion-buttons>
   <div page-content>
@@ -13,14 +13,15 @@
       <div class="zero-state-heading" translate>No contacts yet</div>
       <div class="zero-state-description" translate>Get started by adding your first one.</div>
       <button ion-button class="button-standard" (click)="addEntry()">
-        {{'Add Contact' | translate}}
+        {{'New contact' | translate}}
       </button>
     </div>
 
-    <ion-list class="settings-list bp-list">
+    <ion-list margin-top>
       <button ion-item *ngFor="let entry of filteredAddressbook | orderBy : ['name']" (click)="viewEntry(entry)">
         <ion-icon item-start>
-          <gravatar [name]="entry.name" [height]="26" [width]="26" [email]="entry.email"></gravatar>
+          <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email"></gravatar>
+          <coin-icon [coin]="entry.coin" [network]="entry.network"></coin-icon>
         </ion-icon>
         <div class="item-title">{{ entry.name }}</div>
         <div class="item-subtitle">{{ entry.address }}</div>

@@ -10,10 +10,10 @@ import { DecimalPipe } from '../../../node_modules/@angular/common';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
@@ -74,8 +74,8 @@ export class TxpDetailsPage {
     private modalCtrl: ModalController,
     private decimalPipe: DecimalPipe,
     private payproProvider: PayproProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
@@ -277,14 +277,17 @@ export class TxpDetailsPage {
       return;
     }
 
+    if ((error as Error).message === 'WRONG_PASSWORD') {
+      this.errorsProvider.showWrongEncryptPassswordError();
+      return;
+    }
+
     let infoSheetTitle = title ? title : this.translate.instant('Error');
 
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle
     );
-    errorInfoSheet.present();
-    errorInfoSheet.onDidDismiss(() => {});
   }
 
   public sign(): void {

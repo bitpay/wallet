@@ -17,14 +17,8 @@ page-integrations {
     background: none;
   }
 
-  .blur {
-    filter: blur(12px);
-  }
-
   .bp-header {
     .settings-button {
-      margin-right: 1rem;
-
       .notifications-badge {
         border-radius: 9px;
         font-size: 15px;
@@ -113,14 +107,6 @@ page-integrations {
     animation-name: bounce-card;
     animation-duration: 0.4s;
     animation-delay: 0.5s;
-  }
-
-  ion-refresher {
-    height: 120px;
-
-    &-content {
-      margin-top: -25px;
-    }
   }
 
   .no-header {
@@ -314,8 +300,6 @@ page-integrations {
   }
 
   .wallets-container {
-    margin-top: 20px;
-
     .wallet-wrapper {
       ion-item-sliding:last-child {
         padding-bottom: 2rem;
@@ -326,15 +310,17 @@ page-integrations {
     .bp-list ion-item {
       cursor: pointer;
     }
+  }
 
-    .section-header {
-      margin-right: 12px;
-      border-bottom: 1px solid #e0e0e0;
-    }
+  .section-header {
+    margin-right: 12px;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   .collapse {
     white-space: nowrap;
+    display: flex;
+    align-items: center;
     .legacy-tag {
       color: color($colors, light-grey);
       text-transform: uppercase;
@@ -344,10 +330,13 @@ page-integrations {
       cursor: pointer;
       background: #f6f6f7;
       border-radius: 50px;
-      margin-left: 8px;
+      height: 25px;
+      width: 25px;
+      margin-left: 15px;
       ion-icon {
-        color: color($colors, light-grey);
         width: 18px;
+        margin-left: 3px;
+        margin-top: 3px;
         text-align: center;
         vertical-align: text-bottom;
       }

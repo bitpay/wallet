@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -32,11 +33,11 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
 import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
-import { WalletBalancePage } from './wallet-balance/wallet-balance';
+import { WalletBalanceModal } from './wallet-balance/wallet-balance';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
@@ -100,7 +101,8 @@ export class WalletDetailsPage {
     private platformProvider: PlatformProvider,
     private statusBar: StatusBar,
     private socialSharing: SocialSharing,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.showShareButton = this.platformProvider.isCordova;
@@ -443,10 +445,11 @@ export class WalletDetailsPage {
   }
 
   public goToTxDetails(tx) {
-    this.navCtrl.push(TxDetailsPage, {
+    const txDetailModal = this.modalCtrl.create(TxDetailsModal, {
       walletId: this.wallet.credentials.walletId,
       txid: tx.txid
     });
+    txDetailModal.present();
   }
 
   public openBackupModal(): void {
@@ -510,9 +513,10 @@ export class WalletDetailsPage {
   }
 
   public openBalanceDetails(): void {
-    this.navCtrl.push(WalletBalancePage, {
+    let walletBalanceModal = this.modalCtrl.create(WalletBalanceModal, {
       status: this.wallet.cachedStatus
     });
+    walletBalanceModal.present();
   }
 
   public back(): void {
@@ -532,10 +536,7 @@ export class WalletDetailsPage {
     modal.present();
     modal.onDidDismiss(data => {
       if (!data || !data.txid) return;
-      this.navCtrl.push(TxDetailsPage, {
-        walletId: this.wallet.credentials.walletId,
-        txid: data.txid
-      });
+      this.goToTxDetails(data);
     });
   }
 
@@ -582,10 +583,9 @@ export class WalletDetailsPage {
   }
 
   public goToSendPage() {
-    const modal = this.modalCtrl.create(SendPage, {
+    this.navCtrl.push(SendPage, {
       wallet: this.wallet
     });
-    modal.present();
   }
 
   public showMoreOptions(): void {
@@ -629,11 +629,10 @@ export class WalletDetailsPage {
   }
   public showErrorInfoSheet(error: Error | string): void {
     const infoSheetTitle = this.translate.instant('Error');
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle
     );
-    errorInfoSheet.present();
   }
 
   public goToBackup(): void {

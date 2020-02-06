@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 
@@ -12,6 +12,9 @@ import { Logger } from '../../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
+
+// Pages
+import { WalletDetailsPage } from '../../../../wallet-details/wallet-details';
 
 @Component({
   selector: 'page-wallet-transaction-history',
@@ -32,7 +35,6 @@ export class WalletTransactionHistoryPage {
   private currency: string;
 
   constructor(
-    private app: App,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -42,8 +44,7 @@ export class WalletTransactionHistoryPage {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private walletProvider: WalletProvider,
-    private events: Events
+    private walletProvider: WalletProvider
   ) {
     this.csvReady = false;
     this.csvContent = [];
@@ -198,12 +199,10 @@ export class WalletTransactionHistoryPage {
     this.walletProvider.clearTxHistory(this.wallet);
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
     this.navCtrl.popToRoot().then(() => {
-      this.app
-        .getRootNav()
-        .getActiveChildNav()
-        .select(1);
       setTimeout(() => {
-        this.events.publish('OpenWallet', this.wallet);
+        this.navCtrl.push(WalletDetailsPage, {
+          walletId: this.wallet.credentials.walletId
+        });
       }, 1000);
     });
   }

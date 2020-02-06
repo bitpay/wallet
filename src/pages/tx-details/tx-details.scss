@@ -3,7 +3,6 @@ page-tx-details {
     max-width: 200px;
   }
   $item-border-color: #efefef;
-  $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
   .header-container {
     padding: 20px 0px 20px 0px;
@@ -17,31 +16,6 @@ page-tx-details {
       }
       span {
         font-size: 1.8rem;
-      }
-    }
-    .amount-label {
-      padding-top: 1rem;
-      img.sending-img {
-        width: auto;
-        height: 40px;
-      }
-      .amount {
-        display: flex;
-        font-size: 34px;
-        font-weight: 500;
-        justify-content: space-between;
-        .amount-coin {
-          font-size: 1.5rem;
-          margin-top: 0.35rem;
-          margin-left: 0.8rem;
-        }
-        div {
-          display: flex;
-        }
-      }
-      .alternative {
-        margin-top: 0.5rem;
-        color: color($colors, light-grey);
       }
     }
   }
@@ -72,7 +46,7 @@ page-tx-details {
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
-    padding: 17px $item-lateral-padding;
+    padding: 17px 0px;
     > * {
       padding-right: 0;
     }

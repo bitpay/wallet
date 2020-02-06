@@ -1,7 +1,4 @@
 page-send {
-  .close-container.button-default {
-    color: color($colors, dark);
-  }
   .title {
     font-weight: 500;
     img {
@@ -22,15 +19,16 @@ page-send {
     padding: 30px;
   }
   .send-header-wrapper {
-    padding: 0 17px;
+    padding: 1rem;
     background-color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
   }
   .search-wrapper {
-    background-color: #f2f2f2;
+    background-color: #f8f8f8;
     display: flex;
     align-items: baseline;
-    border: 1px solid #f2f2f2;
-    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
     .item-inner {
       align-items: center;
       margin-left: 0rem !important;
@@ -54,5 +52,9 @@ page-send {
   }
   .section-header {
     margin-bottom: 0px;
+  }
+
+  ion-icon.item-img.icon {
+    padding: 0;
   }
 }

@@ -1,14 +1,14 @@
 <div class="wallets-container" *ngIf="filteredContactsList && filteredContactsList[0]">
   <div class="section-header">
     <ion-label class="key-name">
-      <span translate>Transfer to Contact</span>
+      <span translate>Contacts</span>
     </ion-label>
   </div>
   <div class="line-divider"></div>
   <ion-list no-lines class="bp-list">
     <button ion-item *ngFor="let item of filteredContactsList" (click)="close(item)">
       <ion-icon class="item-img" item-start>
-        <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
+        <gravatar [name]="item.name" [width]="40" [height]="40" [email]="item.email"></gravatar>
       </ion-icon>
       <div class="main-label">{{ item.name }}</div>
     </button>
@@ -19,13 +19,20 @@
   <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0]">
     <div class="section-header">
       <ion-label class="key-name">
-        <span translate>Transfer to {{ getCoinName(coin) }} Wallet</span>
+        <span translate>{{ getCoinName(coin) }} Wallets</span>
       </ion-label>
     </div>
-    <div class="line-divider"></div>
     <ion-list no-lines class="bp-list">
-      <div *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletList[coin]">
-        <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
+      <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
+        <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
+          <ion-icon>
+            <img src="assets/img/settings-icons/icon-key.svg" width="15">
+          </ion-icon>
+          <span>{{ walletsByKey[0].walletGroupName }}</span>
+        </div>
+        <div *ngFor="let wallet of walletsByKey">
+          <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
+        </div>
       </div>
     </ion-list>
   </div>

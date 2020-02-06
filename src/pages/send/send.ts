@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,6 +13,7 @@ import {
   CoinsMap,
   CurrencyProvider
 } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -92,7 +88,7 @@ export class SendPage {
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private viewCtrl: ViewController
+    private errorsProvider: ErrorsProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
@@ -193,12 +189,7 @@ export class SendPage {
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.search = '';
     });
   }
@@ -298,13 +289,17 @@ export class SendPage {
     );
   }
 
-  public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage, {
-      wallet: this.wallet
-    });
-  }
+  public showMoreOptions(): void {
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'send-options'
+    );
+    optionsSheet.present();
 
-  public close(): void {
-    this.viewCtrl.dismiss();
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'multi-send')
+        this.navCtrl.push(MultiSendPage, {
+          wallet: this.wallet
+        });
+    });
   }
 }

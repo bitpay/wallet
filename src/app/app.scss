@@ -21,8 +21,7 @@ body {
 }
 
 // all content without menu
-ion-content.add-bottom-safe-area,
-.hide-tabbar ion-content {
+ion-content.add-bottom-safe-area {
   .fixed-content,
   .scroll-content {
     padding-bottom: 0;
@@ -39,6 +38,13 @@ ion-content.add-padding-bottom,
     padding-bottom: 120px;
     padding-bottom: calc(120px + env(safe-area-inset-bottom));
     padding-bottom: -webkit-calc(120px + env(safe-area-inset-bottom));
+  }
+}
+
+ion-title.bp-title {
+  .toolbar-title.toolbar-title-md,
+  .toolbar-title.toolbar-title-ios {
+    font-weight: 700 !important;
   }
 }
 
@@ -75,7 +81,7 @@ ion-header.bp-header .toolbar {
       text-align: left;
       line-height: 34px;
       font-size: 25px;
-      font-weight: 600;
+      font-weight: 700;
       padding-left: 17px;
     }
   }
@@ -89,7 +95,9 @@ ion-header.bp-header .toolbar {
   background-color: rgba(155, 163, 174, 0.2);
   color: #d8d8d8;
   box-shadow: none;
-
+  &.button-ios {
+    margin: 0;
+  }
   &.button-md.activated,
   &.button-ios.activated {
     background-color: rgba(155, 163, 174, 0.2);
@@ -98,9 +106,16 @@ ion-header.bp-header .toolbar {
 }
 
 .option-button {
-  margin-right: 13px !important;
-  height: 41px;
-  width: 41px;
+  font-size: 24px;
+  opacity: 0.6;
+  border-radius: none;
+  background-color: transparent !important;
+  margin-right: 13px;
+  color: #434d5a;
+  &.activated,
+  &:hover:not(.disable-hover) {
+    color: #434d5a;
+  }
 }
 
 // Buttons
@@ -126,30 +141,10 @@ ion-header.bp-header .toolbar {
   font-size: 18px;
 }
 
-// Hide border when refresh
-.has-refresher > .scroll-content {
-  border-top: none !important;
-}
-
-.scroll-content {
-  .wrapper {
-    background-color: white;
-    min-height: 100%;
-    .page-content {
-      background-color: white;
-      div[page-content] {
-        position: absolute;
-        top: 56px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-    }
-
-    &--feather {
-      background-color: $feather-dark;
-    }
-  }
+/* Refresh component */
+ion-refresher-content {
+  justify-content: normal;
+  padding-top: 15px;
 }
 
 ion-spinner * {
@@ -181,11 +176,6 @@ ion-spinner * {
   align-items: center;
 }
 
-// Prevent the names of the tabs from disappearing
-.tabbar .tab-button .tab-button-text {
-  display: block;
-}
-
 .toolbar.toolbar-md,
 .toolbar.toolbar-ios {
   .back-button-md {
@@ -207,32 +197,6 @@ ion-spinner * {
     }
     .back-button-icon-ios {
       margin: 2px 2px 0px 0px;
-    }
-  }
-}
-
-.tabbar {
-  .tabs-md &,
-  .tabs-ios & {
-    background: white;
-  }
-
-  .tabs-ios & {
-    .tab-button-icon {
-      height: 22px;
-    }
-  }
-
-  justify-content: center;
-  padding-top: 5px;
-  transform: translate3d(0, 0, 0);
-
-  .tab-button {
-    max-width: 15vw;
-    min-width: 80px; // Prevent the names of the tabs from disappearing
-
-    .tab-button-text {
-      display: block;
     }
   }
 }
@@ -297,6 +261,10 @@ button.item {
 
 .testnet {
   filter: grayscale(100%);
+}
+
+.background_xrp.testnet {
+  filter: opacity(0.5);
 }
 
 .icon-card {
@@ -485,7 +453,7 @@ ion-app,
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  min-height: 48px;
+  min-height: 60px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 5px;
@@ -558,18 +526,6 @@ ion-alert .alert-message {
   top: $toolbar-ios-height;
 }
 
-.hide-tabbar {
-  .tabbar {
-    display: none !important;
-  }
-
-  .fullscreen-tab {
-    .scroll-content {
-      margin-bottom: 0 !important;
-    }
-  }
-}
-
 .header-extend {
   background: $toolbar-background;
   height: 180px;
@@ -598,13 +554,9 @@ ion-alert .alert-message {
   font-weight: 500;
 }
 
-button.modal-close-button {
-  font-size: 16px;
-  font-weight: 400;
-
-  ion-icon {
-    font-size: 26px;
-  }
+.close-container.button-default {
+  color: color($colors, dark);
+  box-shadow: none;
 }
 
 .qr-container {
@@ -709,13 +661,6 @@ ion-item.with-label.item {
   }
 }
 
-.app-color {
-  .toolbar-background {
-    background: #0c204e !important;
-  }
-}
-
-page-transfer-to-modal,
 page-bitpay-card,
 .wallet-details-header {
   @include toolbar-button-color(white);
@@ -725,10 +670,6 @@ page-bitpay-card,
     font-weight: 75;
   }
 
-  button.modal-close-button.bar-button {
-    margin-top: -1px;
-    color: white;
-  }
   ion-title {
     &.title-ios {
       padding: 0 70px 1px;
@@ -785,10 +726,46 @@ page-bitpay-card,
   transform: translate(0, -10%);
 }
 
-/* Removes rounded border for modals (wallet-details) */
-.wallet-details-modal .modal-wrapper {
-  border-radius: 0px !important;
+.tabbar {
+  .tabs-md &,
+  .tabs-ios & {
+    background: white;
+  }
+
+  .tabs-ios & {
+    .tab-button-icon {
+      height: 22px;
+    }
+  }
+
+  justify-content: center;
+  padding-top: 5px;
+  transform: translate3d(0, 0, 0);
+
+  .tab-button {
+    max-width: 15vw;
+    min-width: 80px; // Prevent the names of the tabs from disappearing
+
+    .tab-button-text {
+      display: block;
+    }
+  }
 }
+
+$home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%
+  50%;
+$home-inactive: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
+$wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
+  50% 50%;
+$wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50%
+  50%;
+$cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50%
+  50%;
+$cards-inactive: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
+$settings-active: url('../assets/img/tab-icons/tab-settings-active.svg')
+  no-repeat 50% 50%;
+$settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat
+  50% 50%;
 
 ion-icon {
   &[class*='tab-'] {
@@ -797,48 +774,45 @@ ion-icon {
     $sz: 20px;
     width: $sz;
     height: $sz;
-  } // custom icons
-  &[class*='home'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%
-      50%;
+  }
+
+  &[class*='tab-home'] {
+    background: $home-inactive;
     background-size: contain;
-  } //in case of active
-  &[class*='home'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-home.svg') no-repeat 50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $home-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-wallets'] {
+    background: $wallets-inactive;
     background-size: contain;
-  } //in case of inactive
-  &[class*='wallets'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
-      50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $wallets-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-cards'] {
+    background: $cards-inactive;
     background-size: contain;
-  } //in case of active
-  &[class*='wallets'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50% 50%;
+    .tab-button[aria-selected='true'] & {
+      background: $cards-active;
+      background-size: contain;
+    }
+  }
+  &[class*='tab-settings'] {
+    background: $settings-inactive;
     background-size: contain;
-  } //in case of inactive
-  &[class*='cards'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat
-      50% 50%;
-    background-size: contain;
-  } //in case of active
-  &[class*='cards'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
-    background-size: contain;
-  } //in case of inactive
-  &[class*='settings'][ng-reflect-is-active='true'] {
-    background: url('../assets/img/tab-icons/tab-settings-active.svg') no-repeat
-      50% 50%;
-    background-size: contain;
-  } //in case of active
-  &[class*='settings'][ng-reflect-is-active='false'] {
-    background: url('../assets/img/tab-icons/tab-settings.svg') no-repeat 50%
-      50%;
-    background-size: contain;
-  } //in case of inactive
+    .tab-button[aria-selected='true'] & {
+      background: $settings-active;
+      background-size: contain;
+    }
+  }
 }
+
 .line-divider {
   box-sizing: border-box;
   border: 0.5px solid #9ba3ae;
-  opacity: 0.2;
+  opacity: 0.1;
   margin: 0px 25px;
 }

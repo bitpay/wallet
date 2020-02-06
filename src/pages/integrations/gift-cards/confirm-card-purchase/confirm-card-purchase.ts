@@ -33,6 +33,7 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
@@ -90,6 +91,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     configProvider: ConfigProvider,
     currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
+    errorsProvider: ErrorsProvider,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
@@ -122,6 +124,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       configProvider,
       currencyProvider,
       decimalPipe,
+      errorsProvider,
       externalLinkProvider,
       feeProvider,
       logger,
@@ -193,7 +196,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (!isSlideConfirmFinished) {
       this.giftCardProvider.logEvent('giftcards_purchase_start', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
       this.giftCardProvider.logEvent('add_to_cart', {
@@ -203,7 +205,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     } else {
       this.giftCardProvider.logEvent('giftcards_purchase_finish', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
 
@@ -218,8 +219,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           {
             name: this.cardConfig.name,
             category: 'giftCards',
-            quantity: 1,
-            price: giftData.amount.toString(10)
+            quantity: 1
           }
         ]
       });
@@ -263,13 +263,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async setTotalAmount(
     wallet,
-    amountSat: number,
     invoiceFeeSat: number,
     networkFeeSat: number
   ) {
-    const amount = await this.satToFiat(wallet.coin, amountSat);
-    this.amount = Number(amount);
-
     const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
     this.invoiceFee = Number(invoiceFee);
 
@@ -388,7 +384,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     if (
+      wallet.coin === 'xrp' &&
       instructions &&
+      instructions[0] &&
       instructions[0].outputs &&
       instructions[0].outputs[0] &&
       instructions[0].outputs[0].invoiceID
@@ -459,18 +457,29 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return Promise.resolve(notificationEmail);
     }
     const email = await this.giftCardProvider.getUserEmail();
-    if (email) return Promise.resolve(email);
-    const title = this.translate.instant('Enter email address');
-    const message = this.translate.instant(
-      'Where do you want to receive your purchase receipt?'
-    );
-    const opts = { type: 'email', defaultText: '' };
-    const newEmail = await this.popupProvider.ionicPrompt(title, message, opts);
-    if (!this.giftCardProvider.emailIsValid(newEmail)) {
-      this.throwEmailRequiredError();
+    if (email) {
+      return Promise.resolve(email);
     }
-    this.giftCardProvider.storeEmail(newEmail);
-    return newEmail;
+    return this.setEmail();
+  }
+
+  private async setEmail() {
+    const emailComponent = this.actionSheetProvider.createEmailComponent();
+    await emailComponent.present();
+    return new Promise(resolve => {
+      emailComponent.onDidDismiss(email => {
+        if (email) {
+          if (!this.giftCardProvider.emailIsValid(email)) {
+            this.throwEmailRequiredError();
+          }
+          this.giftCardProvider.storeEmail(email);
+          resolve(email);
+        } else {
+          this.throwEmailRequiredError();
+        }
+        this.isOpenSelector = false;
+      });
+    });
   }
 
   private throwEmailRequiredError() {
@@ -483,10 +492,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     throw new Error('email required');
   }
 
-  private async initialize(wallet) {
+  private async initialize(wallet, email) {
     const COIN = wallet.coin.toUpperCase();
     this.currencyIsoCode = this.currency;
-    const email = await this.promptEmail();
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: this.amount,
@@ -579,7 +587,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
-    this.setTotalAmount(wallet, amountSat, invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(wallet, invoiceFeeSat, ctxp.fee);
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
@@ -628,10 +636,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
   }
 
-  public onWalletSelect(wallet): void {
+  public async onWalletSelect(wallet) {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
-    this.initialize(wallet).catch(() => {});
+    const email = await this.promptEmail();
+    await this.initialize(wallet, email).catch(() => {});
   }
 
   public showWallets(): void {

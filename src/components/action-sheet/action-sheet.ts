@@ -1,4 +1,4 @@
-import { Component, HostBinding, NgZone } from '@angular/core';
+import { Component, HostBinding, Input, NgZone } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { DomProvider } from '../../providers/dom/dom';
@@ -14,6 +14,7 @@ export class ActionSheetComponent {
   public dismissFunction: (data?: any) => void;
   @HostBinding('class.open')
   public slideIn: boolean = false;
+  @Input() fromTop: boolean;
 
   constructor(
     private domProvider: DomProvider,

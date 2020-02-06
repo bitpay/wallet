@@ -1,31 +1,4 @@
 page-multiple-outputs {
-  .address-coppied {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border-radius: 3px;
-    background-color: rgb(248, 248, 248);
-    .text-address {
-      flex: 0 0 47px;
-      white-space: nowrap;
-      display: block;
-      img {
-        margin: 12px 0 12px 12px;
-        vertical-align: middle;
-      }
-      .coin-img-eth {
-        margin: 12px 0 12px 8px;
-      }
-      .debit-card {
-        width: 30px;
-        margin: 4px -6px 4px 6px;
-      }
-    }
-  }
-  .last-item {
-    margin-left: auto !important;
-    margin-right: 0px !important;
-  }
   .output-note {
     font-size: 12.5px;
     padding-top: 4px;

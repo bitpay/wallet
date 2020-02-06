@@ -9,19 +9,8 @@ page-amount {
     background: white;
   }
 
-  .scroll-content {
-    .wrapper {
-      div[page-content] {
-        top: 0 !important;
-      }
-    }
-  }
-  .amount-wrapper {
-    display: flex;
-    align-items: center;
-    .container {
-      width: 100%;
-    }
+  .send-max {
+    text-transform: capitalize;
   }
   .wide-header__title {
     display: none;
@@ -46,11 +35,6 @@ page-amount {
     &.hide {
       opacity: 0;
     }
-  }
-
-  .add-top-safe-area {
-    padding-top: calc(env(safe-area-inset-top));
-    padding-top: -webkit-calc(env(safe-area-inset-top));
   }
   .amount-switcher {
     display: flex;
@@ -79,6 +63,7 @@ page-amount {
       &__label {
         color: #4f6ef7;
         font-size: 18px;
+        font-weight: bold;
 
         @media (max-height: $short-screen) {
           font-size: 14px;

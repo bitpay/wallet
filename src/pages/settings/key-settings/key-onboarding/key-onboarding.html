@@ -40,10 +40,10 @@
   </ion-slide>
 </ion-slides>
 <div padding>
-  <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 2" translate>
-    Next
+  <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 2">
+    {{ 'Next' | translate }}
   </button>
-  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 2" translate>
-    I understand
+  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 2">
+    {{'I understand' | translate }}
   </button>
 </div>

@@ -24,6 +24,7 @@ import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
 
 // Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
@@ -96,8 +97,9 @@ export class WalletsPage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
+    private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
-    private simplexProvider: SimplexProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -635,19 +637,23 @@ export class WalletsPage {
     );
   }
 
-  public goToWalletDetails(wallet, params): void {
-    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
-    const walletModal = this.modalCtrl.create(
-      page,
-      {
-        ...params,
+  public goToWalletDetails(wallet): void {
+    if (wallet.isComplete()) {
+      this.navCtrl.push(WalletDetailsPage, {
         walletId: wallet.credentials.walletId
-      },
-      {
-        cssClass: 'wallet-details-modal'
-      }
-    );
-    walletModal.present();
+      });
+    } else {
+      const copayerModal = this.modalCtrl.create(
+        CopayersPage,
+        {
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'wallet-details-modal'
+        }
+      );
+      copayerModal.present();
+    }
   }
 
   public openProposalsNotificationsPage(): void {
@@ -695,33 +701,30 @@ export class WalletsPage {
     return this.collapsedGroups[keyId] ? true : false;
   }
 
-  public addWallet(): void {
-    let keyId;
-    const compatibleKeyWallets = _.values(
-      _.groupBy(
-        _.filter(this.wallets, wallet => {
-          if (wallet.canAddNewAccount && wallet.keyId != 'read-only') {
-            keyId = wallet.keyId;
-            return true;
-          } else return false;
-        }),
-        'keyId'
-      )
-    );
-
+  public addWallet(keyId): void {
     this.navCtrl.push(AddPage, {
-      // Select currency to add to the same key (1 single seed compatible key)
-      keyId: compatibleKeyWallets.length == 1 ? keyId : null,
-      // Creates new key (same flow as onboarding)
-      isZeroState: compatibleKeyWallets.length == 0 ? true : false,
-      // Select currency and Key or creates a new Key
-      isMultipleSeed: compatibleKeyWallets.length > 1 ? true : false
+      keyId
     });
   }
 
   public openBackupPage(keyId) {
     this.navCtrl.push(BackupKeyPage, {
       keyId
+    });
+  }
+
+  public showMoreOptions(): void {
+    const walletTabOptionsAction = this.actionSheetProvider.createWalletTabOptions(
+      { walletsGroups: this.walletsGroups }
+    );
+    walletTabOptionsAction.present();
+    walletTabOptionsAction.onDidDismiss(data => {
+      if (data)
+        data.keyId
+          ? this.addWallet(data.keyId)
+          : this.navCtrl.push(AddPage, {
+              isZeroState: true
+            });
     });
   }
 }

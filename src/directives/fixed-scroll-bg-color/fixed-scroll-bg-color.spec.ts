@@ -7,6 +7,7 @@ let fixture: ComponentFixture<TestHostComponent>;
 let instance;
 let scrollContent;
 let fixedContent;
+let wrapperContent;
 
 @Component({
   template: `
@@ -31,6 +32,9 @@ describe('FixedScrollBgColor', () => {
         fixedContent = instance.element.nativeElement.getElementsByClassName(
           'fixed-content'
         )[0];
+        wrapperContent = instance.element.nativeElement.getElementsByClassName(
+          'wrapper'
+        )[0];
       }
     )));
   afterEach(() => {
@@ -41,11 +45,13 @@ describe('FixedScrollBgColor', () => {
       'linear-gradient(blue, blue 50%, rgb(248, 248, 249) 50%, rgb(248, 248, 249) 50%, rgb(248, 248, 249) 50%)';
     expect(fixedContent.style.backgroundImage).toBe(backgroundImage);
     expect(scrollContent.style.backgroundImage).toBe(backgroundImage);
+    expect(wrapperContent).toBe(undefined);
   });
   it('should remove background-image if none specified', () => {
     instance.color = null;
     fixture.detectChanges();
     expect(fixedContent.style.backgroundImage).toBe('');
     expect(scrollContent.style.backgroundImage).toBe('');
+    expect(wrapperContent).toBe(undefined);
   });
 });

@@ -1,11 +1,7 @@
 wide-header-page,
 card-catalog-page {
-  @include fix-ios-bg-scroll();
   ion-buttons[right] {
     .button {
-      padding: 10px;
-      border-radius: 17.5px;
-      background-color: rgba(155, 163, 174, 0.12);
       margin-right: 13px;
     }
   }
@@ -19,13 +15,13 @@ card-catalog-page {
     }
 
     ion-title .toolbar-title {
-      font-weight: 400;
+      font-weight: 700 !important;
     }
 
     &__title {
       color: black;
       font-size: 25px;
-      font-weight: 500;
+      font-weight: 700;
       padding-top: 10px;
       padding-bottom: 10px;
       padding-left: 20px;
@@ -34,7 +30,7 @@ card-catalog-page {
     ion-navbar {
       .ios & {
         padding-top: 3rem; // Fix iOS 10.3
-        padding-top: calc(6px + env(safe-area-inset-top));
+        padding-top: calc(4px + env(safe-area-inset-top));
 
         ion-title {
           padding-top: 3rem; // Fix iOS 10.3
@@ -57,14 +53,34 @@ card-catalog-page,
 page-add,
 page-add-wallet,
 page-settings,
+page-confirm,
 page-key-settings,
 purchased-cards-page {
-  @include fix-ios-bg-scroll($top-color: white);
   @include toolbar-button-color();
 
   ion-title .toolbar-title {
     color: black;
     font-weight: 400;
+  }
+
+  ion-navbar {
+    .ios & {
+      padding-top: 3rem; // Fix iOS 10.3
+      padding-top: calc(4px + env(safe-area-inset-top));
+
+      ion-title {
+        padding-top: 3rem; // Fix iOS 10.3
+        padding-top: env(safe-area-inset-top);
+      }
+    }
+  }
+
+  &.cordova {
+    ion-navbar {
+      .ios & {
+        padding-bottom: 7px;
+      }
+    }
   }
 }
 

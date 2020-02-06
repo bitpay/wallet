@@ -8,49 +8,13 @@ bitpay-card-home {
 
       .bitpay-card-image {
         text-align: center;
-        img {
+        /* TODO img {
           width: 192px;
           height: 305px;
           margin-top: 32px;
           max-width: 30rem;
           box-shadow: 0 2px 32px 0 rgba(0, 0, 0, 0.07);
-        }
-      }
-    }
-  }
-
-  .bitpay-card {
-    .card-item {
-      background: white;
-      &:not(:first-child) {
-        margin-top: -35px;
-      }
-      .card-container {
-        padding-top: 0.1rem;
-        background: linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 1) 0,
-          rgba(100, 100, 100, 0.2) 100%
-        );
-        .card {
-          display: flex;
-          border-radius: 11px;
-          background: linear-gradient(45deg, #202036 -25%, #1a3b8b);
-          justify-content: space-between;
-          align-items: center;
-          color: #ffffff;
-          padding: 1rem 1.5rem 2.5rem 1.5rem;
-          .funds {
-            line-height: 29px;
-            font-weight: bold;
-            font-size: 20px;
-          }
-          .number {
-            font-size: 15px;
-            line-height: 22px;
-            font-weight: 500;
-          }
-        }
+        } */
       }
     }
   }
