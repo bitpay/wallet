@@ -32,7 +32,7 @@ describe('Provider: Wallet Provider', () => {
   class PersistenceProviderMock {
     constructor() {}
     getLastAddress() {
-      return Promise.resolve('storedAddress');
+      return Promise.resolve('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
     }
     storeLastAddress(_, address) {
       return Promise.resolve(address);
@@ -362,7 +362,7 @@ describe('Provider: Wallet Provider', () => {
       walletProvider
         .getAddress(wallet, force)
         .then(address => {
-          expect(address).toEqual('storedAddress');
+          expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
         })
         .catch(err => {
           expect(err).toBeUndefined();
