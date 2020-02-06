@@ -1,7 +1,7 @@
 <div class="wallets-container" *ngIf="filteredContactsList && filteredContactsList[0]">
   <div class="section-header">
     <ion-label class="key-name">
-      <span translate>Transfer to Contact</span>
+      <span translate>Contacts</span>
     </ion-label>
   </div>
   <div class="line-divider"></div>
@@ -19,7 +19,7 @@
   <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0]">
     <div class="section-header">
       <ion-label class="key-name">
-        <span translate>Transfer to {{ getCoinName(coin) }} Wallet</span>
+        <span translate>{{ getCoinName(coin) }} Wallets</span>
       </ion-label>
     </div>
     <ion-list no-lines class="bp-list">

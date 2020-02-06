@@ -32,16 +32,11 @@ page-multi-send {
     text-align: center;
     padding: 30px;
   }
-  .send-header-wrapper {
-    padding: 10px;
-    background-color: white;
-    box-shadow: 0px 5px 10px 0px #cccccc;
-  }
   .send-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 20px 15px;
     span {
       font-size: 15px;
       font-weight: 500;
@@ -54,13 +49,17 @@ page-multi-send {
       }
     }
   }
+  .send-header-wrapper {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
   .search-wrapper {
-    margin-top: 15px;
-    background-color: #f2f2f2;
+    background-color: #f8f8f8;
     display: flex;
     align-items: baseline;
-    border: 1px solid #f2f2f2;
-    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
     .item-inner {
       align-items: center;
       margin-left: 0rem !important;
@@ -69,7 +68,8 @@ page-multi-send {
     }
     .scan-icon {
       margin: 0;
-      padding: 0.6rem 1rem 1rem 1rem;
+      border-left: 1px solid rgba(151, 151, 151, 0.2);
+      padding: 0rem 1rem 0.8rem 1.4rem;
       z-index: 999;
     }
     .backspace-icon {
@@ -80,5 +80,22 @@ page-multi-send {
     border: 1px solid color($colors, error);
     color: color($colors, error);
     background-color: #fff6f7;
+  }
+  .recipient-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px 0 5px;
+    button {
+      border-radius: 5px;
+      box-shadow: none;
+    }
+    .button-add {
+      color: color($colors, primary);
+      border-color: color($colors, primary);
+    }
+    .button-cancel {
+      color: color($colors, danger);
+      border-color: color($colors, danger);
+    }
   }
 }
