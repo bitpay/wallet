@@ -240,6 +240,7 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+      let hasWallets = {};
       let availableCurrencies = [];
       for (const option of details.paymentOptions) {
         const fundedWallets = this.profileProvider.getWallets({
@@ -250,6 +251,7 @@ export class IncomingDataProvider {
         if (fundedWallets.length === 0) {
           option.disabled = true;
         } else {
+          hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
           availableCurrencies.push(option);
         }
       }
@@ -261,7 +263,8 @@ export class IncomingDataProvider {
       } else {
         // Multiple available wallet currencies
         const stateParams = {
-          payProOptions: details
+          payProOptions: details,
+          hasWallets
         };
         let nextView = {
           name: 'SelectInvoicePage',
