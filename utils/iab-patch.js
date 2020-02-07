@@ -7,7 +7,7 @@ const fs = require('fs');
 try {
   const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVInAppBrowserNavigationController.m`;
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('STATUS_BAR_HEIGHT 20.0')){
+  if (content.includes('STATUS_BAR_HEIGHT 20.0')) {
     const result = content.replace(
       /STATUS_BAR_HEIGHT 20.0/g,
       'STATUS_BAR_HEIGHT 0'
@@ -73,16 +73,14 @@ try {
               }
             });
           }
-    `
-    + content[1];
+    ` +
+      content[1];
     fs.writeFileSync(file, result);
     console.log('successfully patched inappbrowser.java');
   }
-
 } catch (err) {
   console.error(err);
 }
-
 
 /*
  * Patches iab close method to just hide and preserve instance
@@ -91,7 +89,7 @@ try {
 try {
   const file = `${__dirname}/../platforms/android/app/src/main/java/org/apache/cordova/inappbrowser/InAppBrowserDialog.java`;
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('this.inAppBrowser.closeDialog')){
+  if (content.includes('this.inAppBrowser.closeDialog')) {
     const result = content.replace(
       /this.inAppBrowser.closeDialog/g,
       'this.hide'
@@ -103,7 +101,6 @@ try {
   console.error(err);
 }
 
-
 /*
  * Android -Adds camera permission request for first time user - added this to enable camera permission before IAB is interacted with
  * */
@@ -112,9 +109,7 @@ try {
   const file = `${__dirname}/../platforms/android/app/src/main/java/com/bitpay/wallet/MainActivity.java`;
   let content = fs
     .readFileSync(file, 'utf8')
-    .split(
-      'super.onCreate(savedInstanceState);'
-    );
+    .split('super.onCreate(savedInstanceState);');
 
   const head = content[0].split('import org.apache.cordova.*;');
 
@@ -128,11 +123,7 @@ try {
       head[1];
   }
 
-  if (
-    !content[1].includes(
-      'ActivityCompat.requestPermissions'
-    )
-  ) {
+  if (!content[1].includes('ActivityCompat.requestPermissions')) {
     const result =
       content[0] +
       `
@@ -140,12 +131,11 @@ try {
       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 3);
       }
-      `
-      + content[1];
+      ` +
+      content[1];
     fs.writeFileSync(file, result);
     console.log('successfully patched MainActivity.java');
   }
-
 } catch (err) {
   console.error(err);
 }

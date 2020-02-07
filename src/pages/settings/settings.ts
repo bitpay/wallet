@@ -185,17 +185,20 @@ export class SettingsPage {
 
   public openBitPayIdPage(): void {
     if (this.bitPayIdUserInfo) {
-      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo)
+      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
-      this.cardIAB_Ref.executeScript({
-        code: `window.postMessage(${JSON.stringify({
-          message: 'pairingOnly'
-        })}, '*')`
-      }, () => {
-        setTimeout(() => {
-          this.cardIAB_Ref.show();
-        }, 500)
-      });
+      this.cardIAB_Ref.executeScript(
+        {
+          code: `window.postMessage(${JSON.stringify({
+            message: 'pairingOnly'
+          })}, '*')`
+        },
+        () => {
+          setTimeout(() => {
+            this.cardIAB_Ref.show();
+          }, 500);
+        }
+      );
     }
   }
 

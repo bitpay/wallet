@@ -41,8 +41,8 @@ export class IABCardProvider {
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'
-      ? 'https://bitpay.com'
-      : 'https://test.bitpay.com';
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
   }
 
   async getCards() {
@@ -56,23 +56,23 @@ export class IABCardProvider {
       this.bitpayProvider.post(
         '/api/v2/' + token,
         json,
-        async (res) => {
+        async res => {
           if (res && res.error) {
             return;
           }
 
           const { data } = res;
 
-
           this.logger.info('BitPay Get Debit Cards: SUCCESS');
           const cards = [];
 
-          data.forEach((card) => {
-
+          data.forEach(card => {
             const { eid, id, lastFourDigits, token } = card;
 
             if (!eid || !id || !lastFourDigits || !token) {
-              this.logger.warn('BAD data from BitPay card' + JSON.stringify(card));
+              this.logger.warn(
+                'BAD data from BitPay card' + JSON.stringify(card)
+              );
               return;
             }
 
@@ -84,22 +84,19 @@ export class IABCardProvider {
             });
           });
           // TODO logic for handling mismatching emails?
-          const user = await this.persistenceProvider.getBitPayIdUserInfo(Network[this.NETWORK]);
+          const user = await this.persistenceProvider.getBitPayIdUserInfo(
+            Network[this.NETWORK]
+          );
 
-          await this.persistenceProvider
-            .setBitpayDebitCards(
-              Network[this.NETWORK],
-              user.email,
-              cards
-            );
+          await this.persistenceProvider.setBitpayDebitCards(
+            Network[this.NETWORK],
+            user.email,
+            cards
+          );
         },
-        () => {
-
-        }
+        () => {}
       );
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   init(): void {
@@ -108,7 +105,6 @@ export class IABCardProvider {
 
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
       switch (event.data.message) {
-
         /*
          *
          * Handles paying for the card. The IAB generates the invoice id and passes it back here. This method then launches the payment experience.
@@ -143,13 +139,12 @@ export class IABCardProvider {
           break;
 
         /*
-        *
-        * Pairing only handler -> pair completed from iab
-        *
-        * */
+         *
+         * Pairing only handler -> pair completed from iab
+         *
+         * */
         case 'pairingOnly':
-          const subscription: Subscription = this.user$.subscribe((user) => {
-
+          const subscription: Subscription = this.user$.subscribe(user => {
             if (Object.entries(user).length === 0) {
               return;
             }
@@ -169,9 +164,7 @@ export class IABCardProvider {
               'in-app-notification',
               {
                 title: 'BitPay ID',
-                body: this.translate.instant(
-                  'BitPay ID successfully paired.'
-                )
+                body: this.translate.instant('BitPay ID successfully paired.')
               }
             );
             infoSheet.present();
@@ -262,21 +255,19 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {
-          }
+          } catch (err) {}
 
           break;
 
         /*
-       *
-       * Fetch cards and update persistence
-       *
-       * */
+         *
+         * Fetch cards and update persistence
+         *
+         * */
 
         case 'addCard':
           this.getCards();
           break;
-
 
         default:
           break;
@@ -284,4 +275,3 @@ export class IABCardProvider {
     });
   }
 }
-

@@ -113,14 +113,16 @@ export class BitPayCardIntroPage {
 
   public async orderBitPayCard() {
     if (this.cardExperimentEnabled) {
-      this.iab.refs.card.executeScript({
-        code: `window.postMessage(${JSON.stringify({
-          message: 'orderCard'
-        })}, '*')`
-      }, () => {
-        this.iab.refs.card.show();
-      });
-
+      this.iab.refs.card.executeScript(
+        {
+          code: `window.postMessage(${JSON.stringify({
+            message: 'orderCard'
+          })}, '*')`
+        },
+        () => {
+          this.iab.refs.card.show();
+        }
+      );
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});
       let url = 'https://bitpay.com/visa/get-started';

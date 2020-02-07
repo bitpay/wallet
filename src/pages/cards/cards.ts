@@ -27,7 +27,7 @@ export class CardsPage {
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
   }
@@ -46,7 +46,6 @@ export class CardsPage {
     this.activeCards = await this.giftCardProvider.getActiveCards();
     this.ready = true;
   }
-
 
   public enableCard() {
     this.longPressed++;

@@ -57,15 +57,17 @@ export class BitPayIdPage {
                   )
                 }
               );
-              this.iab.refs.card.executeScript({
-                code: `window.postMessage(${JSON.stringify({
-                  message: 'bitPayIdDisconnected'
-                })}, '*')`
-              }, () => {
-                infoSheet.present();
-                this.navCtrl.popToRoot();
-              });
-
+              this.iab.refs.card.executeScript(
+                {
+                  code: `window.postMessage(${JSON.stringify({
+                    message: 'bitPayIdDisconnected'
+                  })}, '*')`
+                },
+                () => {
+                  infoSheet.present();
+                  this.navCtrl.popToRoot();
+                }
+              );
             },
             err => {
               this.logger.log(err);

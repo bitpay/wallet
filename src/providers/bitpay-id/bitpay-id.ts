@@ -25,16 +25,15 @@ export class BitPayIdProvider {
     private device: Device,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider,
-
+    private iab: InAppBrowserProvider
   ) {
     this.logger.debug('BitPayProvider initialized');
 
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL = 'https://192.168.1.79:8088';
-      // this.NETWORK == 'livenet'
-      //   ? 'https://bitpay.com'
-      //   : 'https://test.bitpay.com';
+    // this.NETWORK == 'livenet'
+    //   ? 'https://bitpay.com'
+    //   : 'https://test.bitpay.com';
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
@@ -116,7 +115,6 @@ export class BitPayIdProvider {
               const { data } = user;
               const { email, familyName, givenName } = data;
 
-
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
@@ -129,13 +127,10 @@ export class BitPayIdProvider {
                   token: token.data,
                   familyName: familyName || '',
                   givenName: givenName || ''
-                }),
+                })
               ]);
 
-
-
               successCallback(data);
-
             }
           } catch (err) {
             errorCallback(err);
@@ -152,23 +147,28 @@ export class BitPayIdProvider {
     const network = Network[this.getEnvironment().network];
 
     // @ts-ignore
-    const user: any = await this.persistenceProvider.getBitPayIdUserInfo(network);
+    const user: any = await this.persistenceProvider.getBitPayIdUserInfo(
+      network
+    );
     // TODO add in logic to remove all cards
 
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network),
+        this.persistenceProvider.removeBitPayIdUserInfo(network)
         // TODO leave commented for the time being
         // this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
-      this.iab.refs.card.executeScript({
-        code: `window.postMessage(${JSON.stringify({
-          message: 'bitpayIdDisconnected'
-        })}, '*')`
-      }, () => {
-        successCallback();
-      });
+      this.iab.refs.card.executeScript(
+        {
+          code: `window.postMessage(${JSON.stringify({
+            message: 'bitpayIdDisconnected'
+          })}, '*')`
+        },
+        () => {
+          successCallback();
+        }
+      );
     } catch (err) {
       errorCallback(err);
     }

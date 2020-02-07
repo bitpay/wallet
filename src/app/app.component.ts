@@ -286,7 +286,7 @@ export class CopayApp {
             'card',
             CARD_IAB_CONFIG,
             'https://<url>',
-            `sessionStorage.setItem('isPaired', ${!!token})`,
+            `sessionStorage.setItem('isPaired', ${!!token})`
           )
           .then(ref => {
             this.cardIAB_Ref = ref;
