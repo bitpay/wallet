@@ -104,18 +104,6 @@ export class HomePage {
 
   private lastWeekRatesArray;
   private zone;
-  private fiatCodes = [
-    'USD',
-    'INR',
-    'GBP',
-    'EUR',
-    'CAD',
-    'COP',
-    'NGN',
-    'BRL',
-    'ARS',
-    'AUD'
-  ];
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -275,7 +263,7 @@ export class HomePage {
 
     this.fetchingStatus = true;
     this.wallets = this.profileProvider.getWallets();
-    this.setIsoCode();
+    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.lastWeekRatesArray = await this.getLastWeekRates();
     if (_.isEmpty(this.wallets)) {
       this.fetchingStatus = false;
@@ -349,13 +337,13 @@ export class HomePage {
           _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternative
         ).toFixed(2);
-        const totalBalanceAlternativeLastMonth = _.sumBy(
+        const totalBalanceAlternativeLastWeek = _.sumBy(
           _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternativeLastWeek
         ).toFixed(2);
         const difference =
           parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-          parseFloat(totalBalanceAlternativeLastMonth.replace(/,/g, ''));
+          parseFloat(totalBalanceAlternativeLastWeek.replace(/,/g, ''));
         this.averagePrice =
           (difference * 100) /
           parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
@@ -412,17 +400,6 @@ export class HomePage {
       });
       return Promise.resolve(ratesByCoin);
     });
-  }
-
-  private setIsoCode() {
-    const alternativeIsoCode = this.configProvider.get().wallet.settings
-      .alternativeIsoCode;
-    this.totalBalanceAlternativeIsoCode = _.includes(
-      this.fiatCodes,
-      alternativeIsoCode
-    )
-      ? alternativeIsoCode
-      : 'USD';
   }
 
   private async fetchAdvertisements(): Promise<void> {

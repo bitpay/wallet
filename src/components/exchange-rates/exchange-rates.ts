@@ -14,6 +14,7 @@ import { Coin } from '../../providers/currency/currency';
   templateUrl: 'exchange-rates.html'
 })
 export class ExchangeRates {
+  public isIsoCodeSupported: boolean;
   public lineChart: any;
   public isoCode: string;
   public lastDates = 6;
@@ -112,8 +113,7 @@ export class ExchangeRates {
   private setIsoCode() {
     const alternativeIsoCode = this.configProvider.get().wallet.settings
       .alternativeIsoCode;
-    this.isoCode = _.includes(this.fiatCodes, alternativeIsoCode)
-      ? alternativeIsoCode
-      : 'USD';
+    this.isIsoCodeSupported = _.includes(this.fiatCodes, alternativeIsoCode);
+    this.isoCode = this.isIsoCodeSupported ? alternativeIsoCode : 'USD';
   }
 }
