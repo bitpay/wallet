@@ -4,21 +4,10 @@
     </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
-
-    <ng-container *ngIf="cardExperimentEnabled else regular">
-            <div class="fade-in" *ngIf="ready" [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
-                <bitpay-card-home *ngIf="showBitPayCard" [bitpayCardItems]="bitpayCardItems"
-                                  [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
-                <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
-            </div>
-    </ng-container>
-
-    <ng-template #regular>
-        <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
-            <bitpay-card-home *ngIf="showBitPayCard" [bitpayCardItems]="bitpayCardItems"
-                              [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
+    <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
+        <bitpay-card-home *ngIf="showBitPayCard"
+                          [bitpayCardItems]="bitpayCardItems"
+                          [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
         <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
-        </div>
-    </ng-template>
-
+    </div>
 </ion-content>

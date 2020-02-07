@@ -126,7 +126,6 @@ page-cards {
 
     .slit {
       width: 100%;
-      height: 10px;
       box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.26);
       height: 17px;
     }
@@ -137,17 +136,12 @@ page-cards {
 
       .card {
         display: flex;
-        border-radius: 11px;
         background-color: #1a3b8b;
         justify-content: space-between;
         align-items: center;
         color: #ffffff;
-        padding: 1rem 1.5rem 2.5rem 1.5rem;
-
-        padding-bottom: 8px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-
+        padding: 1rem 1.5rem 8px;
+        border-radius: 0 0 11px 11px;
         margin-top: 8px;
         margin-bottom: 0;
 
