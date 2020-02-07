@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import { ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
@@ -28,6 +28,7 @@ import { RateProvider } from '../../providers/rate/rate';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
 
 export interface Advertisement {
   name: string;
@@ -122,7 +123,8 @@ export class HomePage {
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private tabProvider: TabProvider
+    private tabProvider: TabProvider,
+    private modalCtrl: ModalController
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
@@ -132,6 +134,7 @@ export class HomePage {
   }
 
   async ionViewWillEnter() {
+    this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
 
@@ -552,6 +555,20 @@ export class HomePage {
     const url =
       "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
+  }
+
+  private showNewDesignSlides() {
+    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
+    this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
+      if (!value) {
+        this.persistenceProvider.setNewDesignSlidesFlag('completed');
+        const modal = this.modalCtrl.create(NewDesignTourPage, {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        });
+        modal.present();
+      }
+    });
   }
 }
 
