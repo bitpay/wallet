@@ -4,6 +4,7 @@ import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
+import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
@@ -15,7 +16,6 @@ import {
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { BitPayProvider } from '../bitpay/bitpay';
-import { User } from '../../models/user/user.model';
 
 @Injectable()
 export class IABCardProvider {
