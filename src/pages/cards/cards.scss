@@ -15,6 +15,11 @@ page-cards {
     }
   }
 
+  .bp-header {
+    display: flex;
+    align-items: center;
+  }
+
   ion-item-sliding.card-item-sliding {
     padding-bottom: 1rem;
 
@@ -109,4 +114,12 @@ page-cards {
       margin-right: 17px;
     }
   }
+}
+
+.fade-in {
+  animation: fadeInX 400ms;
+}
+@keyframes fadeInX {
+  from { transform: translateX(25px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }

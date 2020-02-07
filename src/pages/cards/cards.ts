@@ -17,24 +17,36 @@ export class CardsPage {
   public showBitPayCard: boolean;
   public activeCards: any;
   public longPressed = 0;
+  public showBitpayCardGetStarted: boolean;
+  public ready: boolean;
+  public cardExperimentEnabled: boolean;
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider
-  ) {}
+  ) {
+    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+      this.cardExperimentEnabled = status === 'enabled';
+    });
+  }
 
-  async ionViewDidEnter() {
+  async ionViewWillEnter() {
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
+    );
+    this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
+      'debitcard'
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
     this.bitpayCardItems = await this.bitPayCardProvider.get({
       noHistory: true
     });
     this.activeCards = await this.giftCardProvider.getActiveCards();
+    this.ready = true;
   }
+
 
   public enableCard() {
     this.longPressed++;

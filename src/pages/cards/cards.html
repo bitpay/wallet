@@ -1,14 +1,31 @@
 <ion-header class="bp-header" (longPress)="enableCard()">
-  <ion-navbar>
-    <ion-title>{{'Cards' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'Cards' | translate}}</ion-title>
+    </ion-navbar>
 </ion-header>
 <ion-content>
-  <div class="section-header" *ngIf="showBitPayCard && bitpayCardItems?.length" translate>Debit Cards</div>
+    <ng-container *ngIf="cardExperimentEnabled else regular">
+        <div class="fade-in" *ngIf="ready">
+            <div class="section-header" *ngIf="showBitPayCard && bitpayCardItems?.length" translate>Debit Cards</div>
 
-  <bitpay-card-home *ngIf="showBitPayCard"></bitpay-card-home>
+            <bitpay-card-home *ngIf="showBitPayCard" [bitpayCardItems]="bitpayCardItems"
+                              [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
 
-  <div class="section-header" *ngIf="showGiftCards && activeCards?.length" translate>Gift Cards</div>
+            <div class="section-header" *ngIf="showGiftCards && activeCards?.length" translate>Gift Cards</div>
 
-  <gift-cards *ngIf="showGiftCards" [scrollArea]="scrollArea"></gift-cards>
+            <gift-cards *ngIf="showGiftCards" [scrollArea]="scrollArea"></gift-cards>
+        </div>
+    </ng-container>
+
+    <ng-template #regular>
+        <div class="section-header" *ngIf="showBitPayCard && bitpayCardItems?.length" translate>Debit Cards</div>
+
+        <bitpay-card-home *ngIf="showBitPayCard" [bitpayCardItems]="bitpayCardItems"
+                          [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
+
+        <div class="section-header" *ngIf="showGiftCards && activeCards?.length" translate>Gift Cards</div>
+
+        <gift-cards *ngIf="showGiftCards" [scrollArea]="scrollArea"></gift-cards>
+    </ng-template>
+
 </ion-content>
