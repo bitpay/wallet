@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
-import { User } from '../../models/user/user.model';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
 import { InAppBrowserProvider } from '../../providers/in-app-browser/in-app-browser';
@@ -13,6 +14,8 @@ import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
+import { BitPayProvider } from '../bitpay/bitpay';
+import { User } from '../../models/user/user.model';
 
 @Injectable()
 export class IABCardProvider {
@@ -20,23 +23,83 @@ export class IABCardProvider {
   private NETWORK: string;
   private BITPAY_API_URL: string;
 
-  private user = new BehaviorSubject({});
+  public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
 
   constructor(
     private payproProvider: PayproProvider,
     private logger: Logger,
     private events: Events,
+    private bitpayProvider: BitPayProvider,
     private bitpayIdProvider: BitPayIdProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private persistanceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private persistenceProvider: PersistenceProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private iab: InAppBrowserProvider,
+    private translate: TranslateService
   ) {
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'
-        ? 'https://bitpay.com'
-        : 'https://test.bitpay.com';
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
+  }
+
+  async getCards() {
+    const json = {
+      method: 'getDebitCards'
+    };
+    try {
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+      this.bitpayProvider.post(
+        '/api/v2/' + token,
+        json,
+        async (res) => {
+          if (res && res.error) {
+            return;
+          }
+
+          const { data } = res;
+
+
+          this.logger.info('BitPay Get Debit Cards: SUCCESS');
+          const cards = [];
+
+          data.forEach((card) => {
+
+            const { eid, id, lastFourDigits, token } = card;
+
+            if (!eid || !id || !lastFourDigits || !token) {
+              this.logger.warn('BAD data from BitPay card' + JSON.stringify(card));
+              return;
+            }
+
+            cards.push({
+              eid,
+              id,
+              lastFourDigits,
+              token
+            });
+          });
+          // TODO logic for handling mismatching emails?
+          const user = await this.persistenceProvider.getBitPayIdUserInfo(Network[this.NETWORK]);
+
+          await this.persistenceProvider
+            .setBitpayDebitCards(
+              Network[this.NETWORK],
+              user.email,
+              cards
+            );
+        },
+        () => {
+
+        }
+      );
+    } catch (err) {
+
+    }
   }
 
   init(): void {
@@ -45,6 +108,7 @@ export class IABCardProvider {
 
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
       switch (event.data.message) {
+
         /*
          *
          * Handles paying for the card. The IAB generates the invoice id and passes it back here. This method then launches the payment experience.
@@ -53,6 +117,7 @@ export class IABCardProvider {
 
         case 'purchaseAttempt':
           const { invoiceId } = event.data.params;
+
           this.logger.debug('Incoming-data: Handling bitpay invoice');
           try {
             const details = await this.payproProvider.getPayProOptions(
@@ -78,6 +143,44 @@ export class IABCardProvider {
           break;
 
         /*
+        *
+        * Pairing only handler -> pair completed from iab
+        *
+        * */
+        case 'pairingOnly':
+          const subscription: Subscription = this.user$.subscribe((user) => {
+
+            if (Object.entries(user).length === 0) {
+              return;
+            }
+
+            this.cardIAB_Ref.hide();
+
+            this.cardIAB_Ref.executeScript(
+              {
+                code: `window.postMessage('${JSON.stringify({
+                  message: 'reset'
+                })}', '*')`
+              },
+              () => this.logger.log(`card -> reset iab state`)
+            );
+
+            const infoSheet = this.actionSheetProvider.createInfoSheet(
+              'in-app-notification',
+              {
+                title: 'BitPay ID',
+                body: this.translate.instant(
+                  'BitPay ID successfully paired.'
+                )
+              }
+            );
+            infoSheet.present();
+            subscription.unsubscribe();
+          });
+
+          break;
+
+        /*
          *
          * Closes the IAB
          *
@@ -100,6 +203,7 @@ export class IABCardProvider {
             secret,
             (user: User) => {
               if (user) {
+                this.getCards();
                 this.user.next(user);
               }
             },
@@ -115,7 +219,7 @@ export class IABCardProvider {
 
         case 'signRequest':
           try {
-            const token = await this.persistanceProvider.getBitPayIdPairingToken(
+            const token = await this.persistenceProvider.getBitPayIdPairingToken(
               Network[this.NETWORK]
             );
 
@@ -158,9 +262,21 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {}
+          } catch (err) {
+          }
 
           break;
+
+        /*
+       *
+       * Fetch cards and update persistence
+       *
+       * */
+
+        case 'addCard':
+          this.getCards();
+          break;
+
 
         default:
           break;
@@ -168,3 +284,4 @@ export class IABCardProvider {
     });
   }
 }
+
