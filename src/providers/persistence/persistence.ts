@@ -655,6 +655,18 @@ export class PersistenceProvider {
     return this.storage.remove('emailLawCompliance');
   }
 
+  setNewDesignSlidesFlag(value: string) {
+    return this.storage.set('newDesignSlides', value);
+  }
+
+  getNewDesignSlidesFlag() {
+    return this.storage.get('newDesignSlides');
+  }
+
+  removeNewDesignSlidesFlag() {
+    return this.storage.remove('newDesignSlides');
+  }
+
   setHiddenFeaturesFlag(value: string) {
     this.logger.debug('Hidden features: ', value);
     return this.storage.set('hiddenFeatures', value);

@@ -283,7 +283,7 @@ export class SimplexBuyPage {
       digital_currency: this.currencyProvider.getChain(this.wallet.coin),
       fiat_currency: this.currencyIsFiat()
         ? this.quoteForm.value.altCurrency
-        : 'USD',
+        : this.altCurrencyInitial,
       requested_currency: this.quoteForm.value.altCurrency,
       requested_amount: +this.quoteForm.value.amount,
       end_user_id: this.wallet.id
@@ -332,7 +332,7 @@ export class SimplexBuyPage {
           fiat_total_amount: {
             currency: this.currencyIsFiat()
               ? this.quoteForm.value.altCurrency
-              : 'USD',
+              : this.altCurrencyInitial,
             amount: this.fiatTotalAmount
           },
           requested_digital_amount: {
@@ -388,7 +388,7 @@ export class SimplexBuyPage {
       'fiat_total_amount[amount]': this.fiatTotalAmount,
       'fiat_total_amount[currency]': this.currencyIsFiat()
         ? this.quoteForm.value.altCurrency
-        : 'USD',
+        : this.altCurrencyInitial,
       'digital_total_amount[amount]': this.cryptoAmount,
       'digital_total_amount[currency]': this.currencyProvider.getChain(
         this.wallet.coin
@@ -461,7 +461,7 @@ export class SimplexBuyPage {
               fiat_total_amount: this.fiatTotalAmount,
               fiat_total_amount_currency: this.currencyIsFiat()
                 ? this.quoteForm.value.altCurrency
-                : 'USD',
+                : this.altCurrencyInitial,
               order_id: req.order_id,
               payment_id: req.payment_id,
               status: 'paymentRequestSent',

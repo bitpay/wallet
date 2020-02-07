@@ -240,19 +240,47 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+
       const selected = details.paymentOptions.filter(option => option.selected);
+
       if (selected.length === 1) {
-        // BTC, BCH, ETH Chains
+        // Confirm Page - selectedTransactionCurrency set to selected
         const [{ currency }] = selected;
-        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+        return this.goToPayPro(
+          invoiceUrl,
+          currency.toLowerCase(),
+          disableLoader
+        );
       } else {
-        // If ERC20
-        if (selected.length > 1) {
-          details.paymentOptions = selected;
+        // Select Invoice Currency - No selectedTransactionCurrency set
+        let hasWallets = {};
+        let availableWallets = [];
+        for (const option of details.paymentOptions) {
+          const fundedWallets = this.profileProvider.getWallets({
+            coin: option.currency.toLowerCase(),
+            network: option.network,
+            minAmount: option.estimatedAmount
+          });
+          if (fundedWallets.length === 0) {
+            option.disabled = true;
+          } else {
+            hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
+            availableWallets.push(option);
+          }
         }
-        // No currencies selected
+        if (availableWallets.length === 1) {
+          // Only one available wallet with balance
+          const [{ currency }] = availableWallets;
+          return this.goToPayPro(
+            invoiceUrl,
+            currency.toLowerCase(),
+            disableLoader
+          );
+        }
+
         const stateParams = {
-          payProOptions: details
+          payProOptions: details,
+          hasWallets
         };
         let nextView = {
           name: 'SelectInvoicePage',
@@ -1023,6 +1051,7 @@ export class IncomingDataProvider {
     }
 
     try {
+      const { memo, network } = payProDetails;
       const disableLoader = true;
       const { paymentOptions } = await this.payproProvider.getPayProOptions(
         url,
@@ -1039,12 +1068,12 @@ export class IncomingDataProvider {
       const stateParams = {
         amount: estimatedAmount,
         toAddress,
-        description: payProDetails.memo,
+        description: memo,
         data,
         invoiceID,
         paypro: payProDetails,
         coin,
-        network: payProDetails.network,
+        network,
         payProUrl: url,
         requiredFeeRate
       };

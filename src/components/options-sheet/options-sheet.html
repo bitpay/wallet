@@ -82,5 +82,14 @@
         </ion-label>
       </button>
     </div>
+
+    <div *ngSwitchCase="'send-options'">
+      <button ion-item (click)="optionClicked('multi-send')">
+        <ion-icon class="item-img icon-settings" name="people" item-start></ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Transfer to Multiple Recipients</span>
+        </ion-label>
+      </button>
+    </div>
   </ion-list>
 </action-sheet>
