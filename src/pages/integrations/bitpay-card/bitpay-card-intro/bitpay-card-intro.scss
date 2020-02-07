@@ -1,16 +1,33 @@
 page-bitpay-card-intro {
   .scroll-content {
     margin-bottom: 0 !important;
-    padding-bottom: 80px;
+    padding-bottom: 140px;
   }
   ion-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ion-toolbar {
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
     background: white;
-    padding: 20px 0;
+    animation: fadein 500ms;
+
+    box-shadow: 0 -5px 40px 0 rgba(0, 0, 0, 0.1);
+    .toolbar-content {
+      padding: 20px 0;
+    }
   }
   ion-header {
     .info {
       opacity: 0.22;
     }
+  }
+
+  @keyframes fadein {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
   }
 
   .bitpayCard {
