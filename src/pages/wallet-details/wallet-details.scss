@@ -310,21 +310,6 @@ page-wallet-details {
       width: 1.8rem;
     }
 
-    .read-only-text {
-      height: 3rem;
-      width: 5rem;
-    }
-
-    .auditable-text {
-      height: 3rem;
-      width: 4rem;
-    }
-
-    .custom-bws {
-      height: 3rem;
-      width: 3rem;
-    }
-
     .encrypted {
       height: 1.6rem;
       width: 1.6rem;
@@ -339,7 +324,7 @@ page-wallet-details {
       font-size: 11px;
     }
 
-    .token {
+    .square-border {
       vertical-align: text-top;
       span {
         border: 1px solid #ffffff8f;
