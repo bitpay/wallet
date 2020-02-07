@@ -246,7 +246,11 @@ export class IncomingDataProvider {
       if (selected.length === 1) {
         // Confirm Page - selectedTransactionCurrency set to selected
         const [{ currency }] = selected;
-        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+        return this.goToPayPro(
+          invoiceUrl,
+          currency.toLowerCase(),
+          disableLoader
+        );
       } else {
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
@@ -267,7 +271,11 @@ export class IncomingDataProvider {
         if (availableWallets.length === 1) {
           // Only one available wallet with balance
           const [{ currency }] = availableWallets;
-          this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+          return this.goToPayPro(
+            invoiceUrl,
+            currency.toLowerCase(),
+            disableLoader
+          );
         }
 
         const stateParams = {

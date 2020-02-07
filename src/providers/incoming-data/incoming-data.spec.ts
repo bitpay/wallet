@@ -402,7 +402,15 @@ describe('Provider: Incoming Data Provider', () => {
         tick();
 
         const stateParams = {
-          payProOptions: element
+          payProOptions: element,
+          hasWallets: {
+            btc: 1,
+            bch: 1,
+            eth: 1,
+            usdc: 1,
+            gusd: 1,
+            pax: 1
+          }
         };
 
         let nextView = {

@@ -28,7 +28,7 @@
     </div>
 
     <div *ngIf="!shouldShowZeroState()">
-      <div *ngIf="hasWallets[wallet?.coin]">
+      <div *ngIf="hasWallets">
         <div class="send-header-wrapper">
           <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
             <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
@@ -42,7 +42,7 @@
         <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
 
       </div>
-      <div *ngIf="!hasWallets[wallet?.coin]" class="no-wallet-message">
+      <div *ngIf="!hasWallets" class="no-wallet-message">
         <span translate>To get started, you'll need to create a wallet and get some funds.</span>
       </div>
     </div>
