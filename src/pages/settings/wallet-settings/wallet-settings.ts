@@ -4,8 +4,8 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -49,9 +49,9 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private events: Events
+    private events: Events,
+    private errorsProvider: ErrorsProvider
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -138,8 +138,12 @@ export class WalletSettingsPage {
         })
         .catch(err => {
           this.encryptEnabled = true;
-          const title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(err, title);
+          if (err === 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            const title = this.translate.instant('Could not decrypt wallet');
+            this.showErrorInfoSheet(err, title);
+          }
         });
     }
   }
@@ -150,11 +154,7 @@ export class WalletSettingsPage {
   ): void {
     if (!err) return;
     this.logger.warn('Could not encrypt/decrypt wallet:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 
   public openSupportEncryptPassword(): void {

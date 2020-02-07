@@ -1,11 +1,5 @@
 <ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup}">
-  <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': wallet?.coin == 'btc',
-  'background_bch': wallet?.coin == 'bch',
-  'background_eth': wallet?.coin == 'eth',
-  'background_xrp': wallet?.coin == 'xrp',
-  'testnet': wallet?.network === 'testnet' }" item-start>
-    <img class="" src="assets/img/currencies/{{wallet?.coin}}.svg" />
-  </ion-icon>
+  <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
   <ion-label>
     <div class="main-label">{{ wallet?.name }}</div>
     <div *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">

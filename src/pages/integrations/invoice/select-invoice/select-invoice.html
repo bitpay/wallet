@@ -1,4 +1,4 @@
-<wide-header-page title="Select Currency">
+<wide-header-page title="{{'Select Currency' | translate}}">
   <div page-content>
     <ion-list class="settings-list bp-list">
       <div *ngFor="let option of paymentOptions">
@@ -9,7 +9,7 @@
           <div class="item-title">{{ getCoinName(option.currency.toLowerCase()) }}</div>
           <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}} ~ {{option.estimatedAmount | satToFiat: option.currency.toLowerCase()}}</span>
         </button>
-     </div>
+      </div>
     </ion-list>
   </div>
 </wide-header-page>

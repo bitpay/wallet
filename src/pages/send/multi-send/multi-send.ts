@@ -15,6 +15,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
@@ -70,7 +71,8 @@ export class MultiSendPage {
     private modalCtrl: ModalController,
     private decimalPipe: DecimalPipe,
     private txFormatProvider: TxFormatProvider,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
@@ -78,7 +80,10 @@ export class MultiSendPage {
     };
     this.isDisabledContinue = true;
     this.wallet = this.navParams.data.wallet;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe(
+      'Local/AddressScanMultiSend',
+      this.updateAddressHandler
+    );
     this.events.subscribe('addRecipient', newRecipient => {
       this.addRecipient(newRecipient);
       this.checkGoToConfirmButton();
@@ -90,7 +95,10 @@ export class MultiSendPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe(
+      'Local/AddressScanMultiSend',
+      this.updateAddressHandler
+    );
     this.events.unsubscribe('addRecipient');
   }
 
@@ -100,18 +108,9 @@ export class MultiSendPage {
   };
 
   public openTransferToModal(): void {
-    let modal = this.modalCtrl.create(
-      TransferToModalPage,
-      {
-        wallet: this.wallet
-      },
-      {
-        showBackdrop: false,
-        enableBackdropDismiss: true,
-        cssClass: 'wallet-details-modal'
-      }
-    );
-    modal.present();
+    this.navCtrl.push(TransferToModalPage, {
+      wallet: this.wallet
+    });
   }
 
   public openAmountModal(item, index): void {
@@ -267,7 +266,7 @@ export class MultiSendPage {
   }
 
   public openScanner(): void {
-    this.navCtrl.push(ScanPage, { fromSend: true });
+    this.navCtrl.push(ScanPage, { fromMultiSend: true });
   }
 
   public getCoinName(coin): string {
@@ -306,12 +305,7 @@ export class MultiSendPage {
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.search = '';
     });
   }
@@ -343,7 +337,10 @@ export class MultiSendPage {
         _.indexOf(this.validDataTypeMap, this.parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
-        if (isValid) this.invalidAddress = false;
+        if (isValid) {
+          this.invalidAddress = false;
+          this.newRecipient();
+        }
       } else {
         this.invalidAddress = true;
       }

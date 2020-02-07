@@ -81,8 +81,8 @@ export class CopayApp {
     | typeof TabsPage
     | typeof OnboardingPage;
   private onResumeSubscription: Subscription;
-  private isWalletModalOpen: boolean;
-  private walletModal: any;
+  private isCopayerModalOpen: boolean;
+  private copayerModal: any;
 
   private pageMap = {
     AddressbookAddPage,
@@ -404,26 +404,33 @@ export class CopayApp {
   }
 
   private openWallet(wallet, params) {
-    // check if modal is already open
-    if (this.isWalletModalOpen) {
-      this.walletModal.dismiss();
-    }
-    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
-    this.isWalletModalOpen = true;
-    this.walletModal = this.modalCtrl.create(
-      page,
-      {
+    if (wallet.isComplete()) {
+      this.getGlobalTabs().select(1);
+      this.nav.push(WalletDetailsPage, {
         ...params,
         walletId: wallet.credentials.walletId
-      },
-      {
-        cssClass: 'wallet-details-modal'
+      });
+    } else {
+      // check if modal is already open
+      if (this.isCopayerModalOpen) {
+        this.copayerModal.dismiss();
       }
-    );
-    this.walletModal.present();
-    this.walletModal.onDidDismiss(() => {
-      this.isWalletModalOpen = false;
-    });
+      this.isCopayerModalOpen = true;
+      this.copayerModal = this.modalCtrl.create(
+        CopayersPage,
+        {
+          ...params,
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'wallet-details-modal'
+        }
+      );
+      this.copayerModal.present();
+      this.copayerModal.onDidDismiss(() => {
+        this.isCopayerModalOpen = false;
+      });
+    }
   }
 
   private async closeScannerFromWithinWallet() {

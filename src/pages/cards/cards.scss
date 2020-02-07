@@ -1,8 +1,15 @@
 page-cards {
+  .gift-cards-first {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
   .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 20px 0px 20px 20px;
+
     .key-name {
       white-space: normal;
       overflow: hidden;
@@ -97,21 +104,82 @@ page-cards {
     display: block;
   }
 
-  .add-card-button {
-    @include center;
-    color: color($colors, grey);
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    height: 100px;
-    background: #ffffff;
-    width: 100%;
-    margin-top: -35px;
-    img {
-      border-radius: 12px;
-      padding: 13px;
-      margin-right: 17px;
+  .card-item {
+    background: white;
+    overflow: hidden;
+
+    &.light {
+      color: black;
+
+      .card {
+        .funds {
+          color: black;
+        }
+
+        box-shadow: 0 1px 12px rgba(0, 0, 0, 0.07);
+      }
+
+      .slit {
+        box-shadow: 0 2px 24px 0 rgba(0, 0, 0, 0.09);
+      }
+    }
+
+    .slit {
+      width: 100%;
+      height: 10px;
+      box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.26);
+      height: 17px;
+    }
+
+    .card-container {
+      overflow: hidden;
+      padding-top: 0.1rem;
+
+      .card {
+        display: flex;
+        border-radius: 11px;
+        background-color: #1a3b8b;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffffff;
+        padding: 1rem 1.5rem 2.5rem 1.5rem;
+
+        padding-bottom: 8px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        margin-top: 8px;
+        margin-bottom: 0;
+
+        .logo {
+          img {
+            max-height: 58px;
+            margin-bottom: -21px;
+            margin-left: -8px;
+            margin-top: -20px;
+          }
+        }
+
+        &.dark {
+          background-color: #0c204e;
+        }
+
+        .funds {
+          line-height: 29px;
+          font-weight: bold;
+          font-size: 20px;
+
+          &--cta {
+            font-size: 16px;
+          }
+        }
+
+        .number {
+          font-size: 15px;
+          line-height: 22px;
+          font-weight: 500;
+        }
+      }
     }
   }
 }

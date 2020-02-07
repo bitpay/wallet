@@ -1,0 +1,32 @@
+add-button {
+  &.add-button {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+
+  .add-button {
+    &__icon {
+      height: 43px;
+      width: 43px;
+      border-radius: 12px;
+      background-color: rgba(0, 0, 0, 0.04);
+      margin-right: 17px;
+      @include center;
+    }
+
+    &__text {
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 30px;
+    }
+  }
+}
+
+.add-button-wrapper {
+  &--center {
+    text-align: center;
+  }
+}

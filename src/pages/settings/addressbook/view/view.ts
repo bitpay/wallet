@@ -8,6 +8,7 @@ import { AmountPage } from '../../../../pages/send/amount/amount';
 // Providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
+import { ActionSheetProvider } from '../../../../providers/index';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -29,7 +30,8 @@ export class AddressbookViewPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.address = this.navParams.data.contact.address;
     const addrData = this.addressProvider.getCoinAndNetwork(this.address);
@@ -42,7 +44,7 @@ export class AddressbookViewPage {
 
   ionViewDidLoad() {}
 
-  public sendTo(): void {
+  private sendTo(): void {
     this.navCtrl.push(AmountPage, {
       toAddress: this.address,
       name: this.name,
@@ -54,7 +56,7 @@ export class AddressbookViewPage {
     });
   }
 
-  public remove(addr: string): void {
+  private remove(): void {
     const title = this.translate.instant('Warning!');
     const message = this.translate.instant(
       'Are you sure you want to delete this contact?'
@@ -62,7 +64,7 @@ export class AddressbookViewPage {
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (!res) return;
       this.addressBookProvider
-        .remove(addr)
+        .remove(this.address)
         .then(() => {
           this.navCtrl.pop();
         })
@@ -70,6 +72,19 @@ export class AddressbookViewPage {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
           return;
         });
+    });
+  }
+
+  public showMoreOptions(): void {
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'address-book',
+      { coin: this.coin.toUpperCase() }
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'send-to-contact') this.sendTo();
+      if (option == 'delete-contact') this.remove();
     });
   }
 }

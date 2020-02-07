@@ -6,6 +6,7 @@ import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
   selector: 'page-cards',
@@ -20,17 +21,21 @@ export class CardsPage {
   public showBitpayCardGetStarted: boolean;
   public ready: boolean;
   public cardExperimentEnabled: boolean;
+  public gotCardItems: boolean = false;
+
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private tabProvider: TabProvider
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
-  }
+  };
+
 
   async ionViewWillEnter() {
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
@@ -40,11 +45,32 @@ export class CardsPage {
       'debitcard'
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
-    this.bitpayCardItems = await this.bitPayCardProvider.get({
+    await this.fetchAllCards();
+    this.ready = true;
+  }
+
+  private async fetchBitpayCardItems() {
+    this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
+    this.gotCardItems = true;
+    const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
       noHistory: true
     });
-    this.activeCards = await this.giftCardProvider.getActiveCards();
-    this.ready = true;
+    this.bitpayCardItems = await updatedBitpayCardItemsPromise;
+    this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+  }
+
+  private async fetchActiveGiftCards() {
+    this.activeCards = await this.tabProvider.activeGiftCardsPromise;
+    const updatedActiveGiftCardsPromise = this.giftCardProvider.getActiveCards();
+    this.activeCards = await updatedActiveGiftCardsPromise;
+    this.tabProvider.activeGiftCardsPromise = updatedActiveGiftCardsPromise;
+  }
+
+  private async fetchAllCards() {
+    return Promise.all([
+      this.fetchBitpayCardItems(),
+      this.fetchActiveGiftCards()
+    ]);
   }
 
   public enableCard() {
@@ -59,7 +85,7 @@ export class CardsPage {
         alert(
           `Card experiment ${
             res === 'enabled' ? 'disabled' : 'enabled'
-          }. Restart required.`
+            }. Restart required.`
         );
         this.longPressed = 0;
       });

@@ -3,9 +3,6 @@ wallet-selector {
   .error {
     color: color($colors, danger);
   }
-  .wallet-button {
-    background: none;
-  }
   .title {
     font-weight: 500;
     > img {
@@ -20,5 +17,16 @@ wallet-selector {
   }
   .bp-header {
     margin: 32px 0 20px 3px;
+  }
+  .key-divider {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    margin: 0 25px;
+    color: color($colors, grey);
+    border-bottom: 1px solid rgba(155, 163, 174, 0.2);
+    span {
+      margin-left: 10px;
+    }
   }
 }

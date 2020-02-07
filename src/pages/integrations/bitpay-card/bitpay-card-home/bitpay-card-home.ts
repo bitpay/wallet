@@ -19,7 +19,7 @@ import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-ca
 export class BitPayCardHome implements OnInit {
   public appName: string;
   @Input() showBitpayCardGetStarted: boolean;
-  @Input() bitpayCardItems: any;
+  @Input() public bitpayCardItems: any;
 
   constructor(
     private appProvider: AppProvider,

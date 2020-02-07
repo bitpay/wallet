@@ -4,8 +4,8 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
@@ -48,14 +48,14 @@ export class KeySettingsPage {
     private profileProvider: ProfileProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private errorsProvider: ErrorsProvider
   ) {
     this.logger.info('Loaded:  KeySettingsPage');
     this.keyId = this.navParams.data.keyId;
@@ -125,8 +125,12 @@ export class KeySettingsPage {
         })
         .catch(err => {
           this.encryptEnabled = true;
-          const title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(err, title);
+          if (err === 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            const title = this.translate.instant('Could not decrypt wallet');
+            this.showErrorInfoSheet(err, title);
+          }
         });
     }
   }
@@ -137,11 +141,7 @@ export class KeySettingsPage {
   ): void {
     if (!err) return;
     this.logger.warn('Could not encrypt/decrypt group wallets:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 
   public openBackupSettings(): void {

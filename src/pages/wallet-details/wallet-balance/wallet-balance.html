@@ -1,9 +1,14 @@
-<wide-header-page title="{{'Spendable balance' | translate}}">
+<wide-header-page title="{{'Spendable balance' | translate}}" hideBackButton="true">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
   <div page-content>
     <ion-list>
       <label-tip type="warn" header="no-header" class="no-arrowhead">
-        <div label-tip-body translate>
-          All of your {{ coinName }} wallet balance may not be available for immediate spending.
+        <div label-tip-body>
+          {{'All of your {coinName} wallet balance may not be available for immediate spending.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
       <ion-item>
@@ -25,8 +30,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The total amount of {{ coinName }} stored in this wallet.
+        <div label-tip-body>
+          {{'The total amount of {coinName} stored in this wallet.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
@@ -49,8 +54,8 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The amount of {{ coinName }} immediately spendable from this wallet.
+        <div label-tip-body>
+          {{'The amount of {coinName} immediately spendable from this wallet.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
@@ -73,20 +78,23 @@
         </div>
       </ion-item>
       <label-tip type="info" header="no-header">
-        <div label-tip-body translate>
-          The amount of {{ coinName }} stored in this wallet with less than 1 blockchain confirmation.
+        <div label-tip-body>
+          {{'The amount of {coinName} stored in this wallet with less than 1 blockchain confirmation.' | translate: {coinName: coinName} }}
         </div>
       </label-tip>
 
-      <ion-item>
+      <ion-item *ngIf="(coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20) || coinName != 'XRP'">
         <div class="balance-container">
           <div class="title">
             <img src="assets/img/icon-lock.svg" />
             <div translate>Locked</div>
           </div>
           <div class="balance">
-            <span class="locked">
+            <span *ngIf="coinName != 'XRP'" class="locked">
               {{status.lockedBalanceStr}}
+            </span>
+            <span *ngIf="coinName == 'XRP'" class="locked">
+              {{status.lockedBalanceSat * status.satToUnit - 20}}
             </span>
             <div>
               <span class="fiat">
@@ -96,9 +104,33 @@
           </div>
         </div>
       </ion-item>
-      <label-tip type="info" header="no-header">
+      <label-tip type="info" header="no-header" *ngIf="(coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20) || coinName != 'XRP'">
+        <div label-tip-body>
+          {{'The amount of {coinName} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.' | translate: {coinName: coinName} }}
+        </div>
+      </label-tip>
+
+      <ion-item *ngIf="coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20">
+        <div class="balance-container">
+          <div class="title">
+            <img src="assets/img/icon-lock.svg" />
+            <div translate>XRP Locked Balance</div>
+          </div>
+          <div class="balance">
+            <span class="locked">
+              20 XRP
+            </span>
+            <div>
+              <span class="fiat">
+                {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+      <label-tip type="info" header="no-header" *ngIf="coinName == 'XRP' && status.lockedBalanceSat * status.satToUnit >= 20">
         <div label-tip-body translate>
-          The amount of {{ coinName }} stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.
+          The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet.
         </div>
       </label-tip>
 

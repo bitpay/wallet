@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavParams, Platform, ViewController } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  Platform,
+  ViewController
+} from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // Native
@@ -17,6 +23,8 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
+// Pages
+import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
 @Component({
   selector: 'page-copayers',
   templateUrl: 'copayers.html'
@@ -49,7 +57,8 @@ export class CopayersPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private navCtrl: NavController
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -119,7 +128,9 @@ export class CopayersPage {
           if (err) this.logger.error(err);
           this.viewCtrl.dismiss().then(() => {
             this.events.publish('Local/WalletListChange');
-            this.events.publish('OpenWallet', this.wallet);
+            this.navCtrl.push(WalletDetailsPage, {
+              walletId: this.wallet.credentials.walletId
+            });
           });
         });
       }

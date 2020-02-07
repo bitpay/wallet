@@ -183,6 +183,13 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidInvoiceUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://invoice') === 0
+    );
+  }
+
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
@@ -603,6 +610,13 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
+  private goToInvoice(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Invoice URL');
+
+    const invoiceUrl = this.getParameterByName('url', data);
+    this.redir(invoiceUrl);
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
@@ -680,6 +694,11 @@ export class IncomingDataProvider {
       // Simplex
     } else if (this.isValidSimplexUri(data)) {
       this.goToSimplex(data);
+      return true;
+
+      // Invoice Intent
+    } else if (this.isValidInvoiceUri(data)) {
+      this.goToInvoice(data);
       return true;
 
       // BitPayCard Authentication
@@ -844,7 +863,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'RippleAddress',
-        title: this.translate.instant('Ripple Address')
+        title: this.translate.instant('XRP Address')
       };
 
       // Coinbase

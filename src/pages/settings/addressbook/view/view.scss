@@ -1,11 +1,10 @@
 page-addressbook-view {
   .contact-view-header {
     position: relative;
-    height: 70px;
-    background-color: $toolbar-background;
-    padding-top: 20px;
-    margin-bottom: 50px;
+    margin: 20px auto;
+    width: 170px;
     text-align: center;
+    padding: 10px;
     .gravatar {
       display: inline-block;
     }
@@ -19,5 +18,20 @@ page-addressbook-view {
   .comment {
     color: color($colors, grey);
     padding-top: 10px;
+  }
+  ion-icon.item-img.icon {
+    position: absolute;
+    right: 45px;
+    bottom: 10px;
+    margin: 0;
+    justify-content: center;
+    padding: 4px;
+    img {
+      width: 22px;
+    }
+    &.rectangle {
+      border-radius: 20px;
+      justify-content: center;
+    }
   }
 }

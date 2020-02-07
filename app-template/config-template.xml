@@ -15,6 +15,7 @@
     <access origin="https://bws.bitpay.com" />
     <access origin="https://bitpay.com" />
     <access origin="https://test.bitpay.com" />
+    <access origin="https://staging.bitpay.com" />
     <access origin="https://auth.shapeshift.io" />
     <access origin="https://shapeshift.io" />
     <access origin="https://api.coinbase.com" />

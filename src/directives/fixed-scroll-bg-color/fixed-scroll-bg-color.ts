@@ -30,6 +30,9 @@ export class FixedScrollBgColor {
     const fixedContent = this.element.nativeElement.getElementsByClassName(
       'fixed-content'
     )[0];
+    const wrapperContent = this.element.nativeElement.getElementsByClassName(
+      'wrapper'
+    )[0];
 
     const linearGradient = `linear-gradient(to bottom, ${this.color}, ${
       this.color
@@ -40,9 +43,17 @@ export class FixedScrollBgColor {
     if (color) {
       scrollContent.style.setProperty('background-image', linearGradient);
       fixedContent.style.setProperty('background-image', linearGradient);
+      if (wrapperContent && wrapperContent.style) {
+        wrapperContent.style.setProperty('background', this.bottomColor);
+        wrapperContent.style.setProperty('min-height', '100%');
+      }
     } else {
       scrollContent.style.removeProperty('background-image');
       fixedContent.style.removeProperty('background-image');
+      if (wrapperContent && wrapperContent.style) {
+        wrapperContent.style.removeProperty('background');
+        wrapperContent.style.removeProperty('min-height');
+      }
     }
   }
 }
