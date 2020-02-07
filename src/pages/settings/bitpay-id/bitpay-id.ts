@@ -9,6 +9,7 @@ import {
   Logger,
   PopupProvider
 } from '../../../providers';
+import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-browser';
 
 @Component({
   selector: 'bitpay-id',
@@ -25,7 +26,8 @@ export class BitPayIdPage {
     private popupProvider: PopupProvider,
     private actionSheetProvider: ActionSheetProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private iab: InAppBrowserProvider
   ) {}
 
   ionViewDidLoad() {
@@ -55,8 +57,15 @@ export class BitPayIdPage {
                   )
                 }
               );
-              infoSheet.present();
-              this.navCtrl.popToRoot();
+              this.iab.refs.card.executeScript({
+                code: `window.postMessage(${JSON.stringify({
+                  message: 'bitPayIdDisconnected'
+                })}, '*')`
+              }, () => {
+                infoSheet.present();
+                this.navCtrl.popToRoot();
+              });
+
             },
             err => {
               this.logger.log(err);

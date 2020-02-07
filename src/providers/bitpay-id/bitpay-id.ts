@@ -8,6 +8,7 @@ import { Device } from '@ionic-native/device';
 import * as bitauthService from 'bitauth';
 import { User } from '../../models/user/user.model';
 import { AppIdentityProvider } from '../app-identity/app-identity';
+import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Network, PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
@@ -23,15 +24,17 @@ export class BitPayIdProvider {
     private logger: Logger,
     private device: Device,
     private platformProvider: PlatformProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider,
+
   ) {
     this.logger.debug('BitPayProvider initialized');
 
     this.NETWORK = 'livenet';
-    this.BITPAY_API_URL =
-      this.NETWORK == 'livenet'
-        ? 'https://bitpay.com'
-        : 'https://test.bitpay.com';
+    this.BITPAY_API_URL = 'https://192.168.1.79:8088';
+      // this.NETWORK == 'livenet'
+      //   ? 'https://bitpay.com'
+      //   : 'https://test.bitpay.com';
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
@@ -111,16 +114,28 @@ export class BitPayIdProvider {
 
             if (user) {
               const { data } = user;
+              const { email, familyName, givenName } = data;
+
 
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
                 ),
-                this.persistenceProvider.setBitPayIdUserInfo(network, data)
+                // TODO remove this
+                this.persistenceProvider.setBitPayIdUserInfo(network, data),
+                this.persistenceProvider.setBitpayAccount(network, {
+                  email,
+                  token: token.data,
+                  familyName: familyName || '',
+                  givenName: givenName || ''
+                }),
               ]);
 
+
+
               successCallback(data);
+
             }
           } catch (err) {
             errorCallback(err);
@@ -135,12 +150,25 @@ export class BitPayIdProvider {
 
   public async disconnectBitPayID(successCallback, errorCallback) {
     const network = Network[this.getEnvironment().network];
+
+    // @ts-ignore
+    const user: any = await this.persistenceProvider.getBitPayIdUserInfo(network);
+    // TODO add in logic to remove all cards
+
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network)
+        this.persistenceProvider.removeBitPayIdUserInfo(network),
+        // TODO leave commented for the time being
+        // this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
-      successCallback();
+      this.iab.refs.card.executeScript({
+        code: `window.postMessage(${JSON.stringify({
+          message: 'bitpayIdDisconnected'
+        })}, '*')`
+      }, () => {
+        successCallback();
+      });
     } catch (err) {
       errorCallback(err);
     }

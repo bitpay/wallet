@@ -6,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
-import { StatusBar } from '@ionic-native/status-bar';
 import { Observable } from 'rxjs';
 // pages
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
@@ -100,8 +99,7 @@ export class SettingsPage {
     private iab: InAppBrowserProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
-    private iabCardProvider: IABCardProvider,
-    private statusBar: StatusBar
+    private iabCardProvider: IABCardProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
@@ -130,6 +128,10 @@ export class SettingsPage {
       this.user$.subscribe(user => {
         if (user) {
           this.bitPayIdUserInfo = user;
+          this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
+            this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
+            this.bitpayCardItems = cards;
+          });
           this.changeRef.detectChanges();
         }
       });
@@ -182,12 +184,19 @@ export class SettingsPage {
   }
 
   public openBitPayIdPage(): void {
-    if (!this.bitPayIdUserInfo) {
-      this.statusBar.hide();
+    if (this.bitPayIdUserInfo) {
+      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo)
+    } else {
+      this.cardIAB_Ref.executeScript({
+        code: `window.postMessage(${JSON.stringify({
+          message: 'pairingOnly'
+        })}, '*')`
+      }, () => {
+        setTimeout(() => {
+          this.cardIAB_Ref.show();
+        }, 500)
+      });
     }
-    this.bitPayIdUserInfo
-      ? this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo)
-      : this.cardIAB_Ref.show();
   }
 
   public openAltCurrencyPage(): void {
