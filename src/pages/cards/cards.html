@@ -5,7 +5,8 @@
 </ion-header>
 <ion-content #scrollArea>
     <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
-        <bitpay-card-home *ngIf="showBitPayCard"
+        <bitpay-card-home *ngIf="showBitPayCard && gotCardItems"
+                          [cardExperimentEnabled]="cardExperimentEnabled"
                           [bitpayCardItems]="bitpayCardItems"
                           [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
         <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>

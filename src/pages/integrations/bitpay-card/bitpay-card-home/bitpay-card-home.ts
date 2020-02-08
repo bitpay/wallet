@@ -5,7 +5,6 @@ import { NavController } from 'ionic-angular';
 import {
   AppProvider,
   InAppBrowserProvider,
-  PersistenceProvider
 } from '../../../../providers';
 
 // Pages
@@ -20,11 +19,11 @@ export class BitPayCardHome implements OnInit {
   public appName: string;
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
+  @Input() cardExperimentEnabled: boolean;
 
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private persistenceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider
   ) {}
 
@@ -37,21 +36,20 @@ export class BitPayCardHome implements OnInit {
   }
 
   public goToCard(cardId): void {
-    this.persistenceProvider.getCardExperimentFlag().then((status: string) => {
-      if (status === 'enabled') {
-        this.iab.refs.card.executeScript(
-          {
-            code: `window.postMessage(${JSON.stringify({
-              message: 'openDashboard'
-            })}, '*')`
-          },
-          () => {
-            this.iab.refs.card.show();
-          }
-        );
-      } else {
-        this.navCtrl.push(BitPayCardPage, { id: cardId });
-      }
-    });
+    if (this.cardExperimentEnabled) {
+      this.iab.refs.card.executeScript(
+        {
+          code: `window.postMessage(${JSON.stringify({
+            message: 'loadDashboard'
+          })}, '*')`
+        },
+        () => {
+          this.iab.refs.card.show();
+        }
+      );
+
+    } else {
+      this.navCtrl.push(BitPayCardPage, { id: cardId });
+    }
   }
 }

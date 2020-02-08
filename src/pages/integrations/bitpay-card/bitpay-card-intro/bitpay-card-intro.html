@@ -9,8 +9,8 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div class="bitpayCard-header">
-    <div class="bitpayCard-img">
+  <div class="bitpayCard-header" [class.bitpayCard-header--new]="cardExperimentEnabled">
+    <div class="bitpayCard-img" [class.bitpayCard-img--new]="cardExperimentEnabled">
 
       <ng-container *ngIf="cardExperimentEnabled else regular">
         <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg" />

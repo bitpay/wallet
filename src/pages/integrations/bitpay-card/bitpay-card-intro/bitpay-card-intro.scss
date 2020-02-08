@@ -42,12 +42,20 @@ page-bitpay-card-intro {
       /*  TODO  border-radius: 0 0 65% 25%;*/
       overflow: hidden;
       text-align: center;
+      &--new {
+        border-radius: 0 0 65% 25%;
+      }
     }
     &-img {
       height: 306px;
       img {
         margin-top: 38px;
         /* TODO width: 232px; */
+      }
+      &--new {
+        img {
+          width: 232px;
+        }
       }
     }
     &-content {
