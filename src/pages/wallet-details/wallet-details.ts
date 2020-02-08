@@ -115,7 +115,8 @@ export class WalletDetailsPage {
 
   ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    const redir = this.navParams.get('redir');
+    const redirectionParam = this.navParams.get('redir');
+    const {redir} = redirectionParam;
     if (redir && redir === 'wc') {
       setTimeout(() => {
         this.cardIAB_Ref.executeScript(
