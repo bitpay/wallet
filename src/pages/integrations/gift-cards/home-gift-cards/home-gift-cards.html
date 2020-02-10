@@ -2,20 +2,9 @@
   Gift Cards
 </div>
 
-<gift-card-item
-  *ngFor="let brandCards of activeBrands"
-  class="sliding-container"
-  [cardName]="brandCards[0].name"
-  [giftCards]="brandCards"
-  (action)="onGiftCardAction($event, brandCards)"
-  [@archiveAnimation]
-></gift-card-item>
+<gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
 
-<div
-  class="add-button-wrapper--center"
-  *ngIf="activeBrands?.length"
-  [@archiveAnimation]
->
+<div class="add-button-wrapper--center" *ngIf="activeBrands?.length" [@archiveAnimation]>
   <add-button (click)="buyGiftCards()" tappable>
     <div add-button-text translate>Buy Gift Card</div>
   </add-button>
@@ -25,9 +14,7 @@
   <div action-card-header>
     <div class="home-gift-card-header">
       <div class="home-gift-card-image">
-        <img
-          src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png"
-        />
+        <img src="assets/img/gift-cards/gift-cards-{{primaryCatalogCurrency}}.png" />
       </div>
     </div>
   </div>
