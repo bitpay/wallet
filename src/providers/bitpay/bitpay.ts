@@ -6,6 +6,7 @@ import { Logger } from '../../providers/logger/logger';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 
 import * as bitauthService from 'bitauth';
+import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class BitPayProvider {
@@ -14,14 +15,18 @@ export class BitPayProvider {
   constructor(
     private http: HttpClient,
     private appIdentityProvider: AppIdentityProvider,
+    private persistenceProvider: PersistenceProvider,
     private logger: Logger
   ) {
     this.logger.debug('BitPayProvider initialized');
-    this.NETWORK = 'livenet';
-    this.BITPAY_API_URL =
-      this.NETWORK == 'livenet'
-        ? 'https://bitpay.com'
-        : 'https://test.bitpay.com';
+
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
+      this.BITPAY_API_URL =
+        this.NETWORK == 'livenet'
+          ? 'https://bitpay.com'
+          : 'https://test.bitpay.com';
+    });
   }
 
   public getEnvironment() {

@@ -38,11 +38,13 @@ export class IABCardProvider {
     private iab: InAppBrowserProvider,
     private translate: TranslateService
   ) {
-    this.NETWORK = 'livenet';
-    this.BITPAY_API_URL =
-      this.NETWORK == 'livenet'
-        ? 'https://bitpay.com'
-        : 'https://test.bitpay.com';
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
+      this.BITPAY_API_URL =
+        this.NETWORK == 'livenet'
+          ? 'https://bitpay.com'
+          : 'https://test.bitpay.com';
+    });
   }
 
   async getCards() {
