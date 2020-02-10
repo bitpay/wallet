@@ -1,10 +1,7 @@
 <ion-header class="bp-header">
   <ion-navbar>
     <ion-title>
-      <div
-        [reveal-at-scroll-pos]="expandableHeader.headerHeight"
-        [scrollArea]="scrollArea"
-      >
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         {{ 'Cards' | translate }}
       </div>
     </ion-title>
@@ -12,32 +9,18 @@
 </ion-header>
 <ion-content #scrollArea>
   <div class="wrapper">
-    <expandable-header
-      [scrollArea]="scrollArea"
-      [fadeFactor]="5"
-      [disableFade]="true"
-      #expandableHeader
-    >
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
           {{ 'Cards' | translate }}
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
-    <div
-      [ngClass]="{
+    <div [ngClass]="{
         'gift-cards-first': !bitpayCardItems?.length && activeCards?.length
-      }"
-    >
-      <bitpay-card-home
-        *ngIf="showBitPayCard && gotCardItems"
-        [bitpayCardItems]="bitpayCardItems"
-      ></bitpay-card-home>
-      <gift-cards
-        *ngIf="showGiftCards && activeCards"
-        [scrollArea]="scrollArea"
-        [activeCards]="activeCards"
-      ></gift-cards>
+      }">
+      <bitpay-card-home *ngIf="showBitPayCard && gotCardItems" [bitpayCardItems]="bitpayCardItems"></bitpay-card-home>
+      <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
     </div>
   </div>
 </ion-content>
