@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  BitPayProvider,
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
@@ -130,7 +131,8 @@ export class CopayApp {
     private keyProvider: KeyProvider,
     private persistenceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private bitpayProvider: BitPayProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -179,6 +181,8 @@ export class CopayApp {
 
   private async onAppLoad(readySource) {
     const deviceInfo = this.platformProvider.getDeviceInfo();
+    const experiment = await this.persistenceProvider.getCardExperimentFlag();
+    this.bitpayProvider.init(experiment);
 
     this.logger.info(
       'Platform ready (' +
@@ -266,11 +270,8 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
-
     // hiding this behind feature flag
-    const res = await this.persistenceProvider.getCardExperimentFlag();
-
-    if (res === 'enabled') {
+    if (experiment === 'enabled') {
       let token;
       try {
         token = await this.persistenceProvider.getBitPayIdPairingToken(

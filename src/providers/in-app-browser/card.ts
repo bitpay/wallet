@@ -20,8 +20,8 @@ import { BitPayProvider } from '../bitpay/bitpay';
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
-  private NETWORK: string;
-  private BITPAY_API_URL: string;
+  private NETWORK = 'testnet';
+  private BITPAY_API_URL = 'https://test.bitpay.com';
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
@@ -37,15 +37,7 @@ export class IABCardProvider {
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
     private translate: TranslateService
-  ) {
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
-      this.BITPAY_API_URL =
-        this.NETWORK == 'livenet'
-          ? 'https://bitpay.com'
-          : 'https://test.bitpay.com';
-    });
-  }
+  ) {}
 
   async getCards() {
     const json = {
