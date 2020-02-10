@@ -2,10 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Providers
-import {
-  AppProvider,
-  InAppBrowserProvider,
-} from '../../../../providers';
+import { AppProvider, InAppBrowserProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
@@ -47,7 +44,6 @@ export class BitPayCardHome implements OnInit {
           this.iab.refs.card.show();
         }
       );
-
     } else {
       this.navCtrl.push(BitPayCardPage, { id: cardId });
     }

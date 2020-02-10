@@ -34,8 +34,7 @@ export class CardsPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
-  };
-
+  }
 
   async ionViewWillEnter() {
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
@@ -85,7 +84,7 @@ export class CardsPage {
         alert(
           `Card experiment ${
             res === 'enabled' ? 'disabled' : 'enabled'
-            }. Restart required.`
+          }. Restart required.`
         );
         this.longPressed = 0;
       });
