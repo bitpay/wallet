@@ -12,18 +12,6 @@ page-amount {
   .send-max {
     text-transform: capitalize;
   }
-
-  .amount-wrapper {
-    display: flex;
-    align-items: center;
-    height: 93vh;
-    @media (max-height: 700px) {
-      height: 87vh;
-    }
-    .container {
-      width: 100%;
-    }
-  }
   .wide-header__title {
     display: none;
   }
@@ -47,11 +35,6 @@ page-amount {
     &.hide {
       opacity: 0;
     }
-  }
-
-  .add-top-safe-area {
-    padding-top: calc(env(safe-area-inset-top));
-    padding-top: -webkit-calc(env(safe-area-inset-top));
   }
   .amount-switcher {
     display: flex;

@@ -1,18 +1,12 @@
-<wide-header-page title="{{wallet && wallet.name || ('Amount' | translate)}}">
-  <ion-buttons right>
-    <button clear wide-header-bar-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" ion-button>
-      <span translate>Continue</span>
+<wide-header-page title="{{'Multiple Recipients' | translate}}">
+  <ion-buttons *ngIf="multiRecipients.length != 0" right>
+    <button clear wide-header-bar-button (click)="openTransferToModal()" ion-button icon-only>
+      <span translation>Add</span>
     </button>
   </ion-buttons>
   <div page-content>
     <div>
       <div class="send-header-wrapper">
-        <div class="send-heading">
-          <span translate>Multiple Recipients</span>
-          <ion-icon item-end class="open-modal-icon" (click)="openTransferToModal()">
-            <img src="assets/img/address-book-add.svg" />
-          </ion-icon>
-        </div>
         <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
           <ion-input placeholder="{{'Enter {coinName} address' | translate: {coinName: getCoinName(wallet?.coin)} }}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
           <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="search = ''"></ion-icon>
@@ -20,10 +14,6 @@
             <img src="assets/img/scan-ico.svg">
           </ion-icon>
         </ion-item>
-        <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
-          <button ion-button class="button-add" outline (click)="newRecipient()">{{ 'Add Recipient' | translate}}</button>
-          <button ion-button class="button-cancel" outline (click)="cleanSearch()">{{ 'Cancel' | translate}}</button>
-        </div>
       </div>
 
       <div>
@@ -40,7 +30,7 @@
 
             <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
-                <gravatar [name]="item.recipient.name" [height]="40" [width]="40" [email]="item.recipient.email"></gravatar>
+                <gravatar [name]="item.recipient.name" [height]="20" [width]="20" [email]="item.recipient.email"></gravatar>
               </ion-icon>
               <span class="name">{{item.recipient.name}}</span>
             </div>
@@ -57,10 +47,16 @@
             <span *ngIf="!item.amountToShow" class="warning">{{'Please, enter the amount' | translate}}</span>
           </ion-list>
         </div>
+        <button ion-button class="button-standard" (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
+          {{'Continue' | translate}}
+        </button>
       </div>
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
-      <span translate>To get started, you'll need to enter a valid address, contact or wallet.</span>
+      <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
+      <button clear (click)="openTransferToModal()" ion-button translate>
+        Add to an existent contact or wallet
+      </button>
     </div>
   </div>
 </wide-header-page>

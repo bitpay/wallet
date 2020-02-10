@@ -8,6 +8,7 @@ import * as moment from 'moment';
 // Proviers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
+import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
@@ -40,6 +41,8 @@ export class SimplexBuyPage {
   public minFiatAmount: number;
   public maxFiatAmount: number;
   public supportedFiatAltCurrencies: string[];
+  public altCurrenciesToShow: string[];
+  public altCurrencyInitial: string;
 
   private quoteId: string;
   private createdOn: string;
@@ -47,6 +50,7 @@ export class SimplexBuyPage {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
+    private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
     private errorsProvider: ErrorsProvider,
     private externalLinkProvider: ExternalLinkProvider,
@@ -62,12 +66,20 @@ export class SimplexBuyPage {
     private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
+    const config = this.configProvider.get();
+    const isoCode = config.wallet.settings.alternativeIsoCode;
+
+    this.altCurrencyInitial =
+      this.simplexProvider.getSupportedFiatAltCurrencies().indexOf(isoCode) > -1
+        ? isoCode
+        : 'USD';
+
     this.quoteForm = this.fb.group({
       amount: [
         120,
         [Validators.required, Validators.min(50), Validators.max(20000)]
       ],
-      altCurrency: ['USD', [Validators.required]]
+      altCurrency: [this.altCurrencyInitial, [Validators.required]]
     });
 
     this.persistenceProvider.getProfile().then(profile => {
@@ -83,7 +95,11 @@ export class SimplexBuyPage {
       coin: ['btc', 'bch', 'eth', 'xrp'],
       backedUp: true
     });
-    this.supportedFiatAltCurrencies = ['USD', 'EUR'];
+    this.altCurrenciesToShow = ['USD', 'EUR'];
+
+    if (this.altCurrenciesToShow.indexOf(this.altCurrencyInitial) < 0)
+      this.altCurrenciesToShow.push(this.altCurrencyInitial);
+
     this.okText = this.translate.instant('Select');
     this.cancelText = this.translate.instant('Cancel');
     this.showLoading = false;
@@ -102,6 +118,24 @@ export class SimplexBuyPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SimplexBuyPage');
+  }
+
+  private calculateFiatRate(
+    amount: number,
+    fiatCurrency: string,
+    cryptoCurrency: string
+  ): number {
+    if (_.includes(['USD', 'EUR'], fiatCurrency)) {
+      return amount;
+    }
+    const rateFromFiat = this.rateProvider.fromFiat(
+      amount,
+      'USD',
+      cryptoCurrency
+    );
+    return +this.rateProvider
+      .toFiat(rateFromFiat, fiatCurrency, cryptoCurrency)
+      .toFixed(2);
   }
 
   public showWallets(): void {
@@ -128,9 +162,7 @@ export class SimplexBuyPage {
 
   public currencyIsFiat(): boolean {
     return (
-      this.supportedFiatAltCurrencies.indexOf(
-        this.quoteForm.value.altCurrency
-      ) > -1
+      this.altCurrenciesToShow.indexOf(this.quoteForm.value.altCurrency) > -1
     );
   }
 
@@ -146,15 +178,29 @@ export class SimplexBuyPage {
 
   private setDefaultValues() {
     this.quoteForm.controls['amount'].setValue(undefined);
-    this.quoteForm.controls['altCurrency'].setValue('USD');
+    this.quoteForm.controls['altCurrency'].setValue(this.altCurrencyInitial);
+    const min = this.calculateFiatRate(
+      50,
+      this.quoteForm.value.altCurrency,
+      this.wallet.coin
+    );
+    const max = this.calculateFiatRate(
+      20000,
+      this.quoteForm.value.altCurrency,
+      this.wallet.coin
+    );
     this.quoteForm.controls['amount'].setValidators([
       Validators.required,
-      Validators.min(50),
-      Validators.max(20000)
+      Validators.min(min),
+      Validators.max(max)
     ]);
-    this.minFiatAmount = 50;
-    this.maxFiatAmount = 20000;
-    this.quoteForm.controls['amount'].setValue(120);
+    this.minFiatAmount = min;
+    this.maxFiatAmount = max;
+    this.quoteForm.controls['amount'].setValue(
+      this.simplexProvider.supportedFiatAltCurrencies[
+        this.quoteForm.value.altCurrency
+      ].defaultValue
+    );
   }
 
   public altCurrencyChange(): void {
@@ -164,14 +210,28 @@ export class SimplexBuyPage {
 
     if (this.currencyIsFiat()) {
       this.quoteForm.controls['amount'].setValue(undefined);
+      const min = this.calculateFiatRate(
+        50,
+        this.quoteForm.value.altCurrency,
+        this.wallet.coin
+      );
+      const max = this.calculateFiatRate(
+        20000,
+        this.quoteForm.value.altCurrency,
+        this.wallet.coin
+      );
       this.quoteForm.controls['amount'].setValidators([
         Validators.required,
-        Validators.min(50),
-        Validators.max(20000)
+        Validators.min(min),
+        Validators.max(max)
       ]);
-      this.minFiatAmount = 50;
-      this.maxFiatAmount = 20000;
-      this.quoteForm.controls['amount'].setValue(120);
+      this.minFiatAmount = min;
+      this.maxFiatAmount = max;
+      this.quoteForm.controls['amount'].setValue(
+        this.simplexProvider.supportedFiatAltCurrencies[
+          this.quoteForm.value.altCurrency
+        ].defaultValue
+      );
     } else {
       this.quoteForm.controls['amount'].setValue(undefined);
 
@@ -223,7 +283,7 @@ export class SimplexBuyPage {
       digital_currency: this.currencyProvider.getChain(this.wallet.coin),
       fiat_currency: this.currencyIsFiat()
         ? this.quoteForm.value.altCurrency
-        : 'USD',
+        : this.altCurrencyInitial,
       requested_currency: this.quoteForm.value.altCurrency,
       requested_amount: +this.quoteForm.value.amount,
       end_user_id: this.wallet.id
@@ -272,7 +332,7 @@ export class SimplexBuyPage {
           fiat_total_amount: {
             currency: this.currencyIsFiat()
               ? this.quoteForm.value.altCurrency
-              : 'USD',
+              : this.altCurrencyInitial,
             amount: this.fiatTotalAmount
           },
           requested_digital_amount: {
@@ -328,7 +388,7 @@ export class SimplexBuyPage {
       'fiat_total_amount[amount]': this.fiatTotalAmount,
       'fiat_total_amount[currency]': this.currencyIsFiat()
         ? this.quoteForm.value.altCurrency
-        : 'USD',
+        : this.altCurrencyInitial,
       'digital_total_amount[amount]': this.cryptoAmount,
       'digital_total_amount[currency]': this.currencyProvider.getChain(
         this.wallet.coin
@@ -401,7 +461,7 @@ export class SimplexBuyPage {
               fiat_total_amount: this.fiatTotalAmount,
               fiat_total_amount_currency: this.currencyIsFiat()
                 ? this.quoteForm.value.altCurrency
-                : 'USD',
+                : this.altCurrencyInitial,
               order_id: req.order_id,
               payment_id: req.payment_id,
               status: 'paymentRequestSent',

@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import { ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
@@ -28,6 +28,7 @@ import { RateProvider } from '../../providers/rate/rate';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
 
 export interface Advertisement {
   name: string;
@@ -104,18 +105,6 @@ export class HomePage {
 
   private lastWeekRatesArray;
   private zone;
-  private fiatCodes = [
-    'USD',
-    'INR',
-    'GBP',
-    'EUR',
-    'CAD',
-    'COP',
-    'NGN',
-    'BRL',
-    'ARS',
-    'AUD'
-  ];
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -134,7 +123,8 @@ export class HomePage {
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private tabProvider: TabProvider
+    private tabProvider: TabProvider,
+    private modalCtrl: ModalController
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
@@ -144,6 +134,7 @@ export class HomePage {
   }
 
   async ionViewWillEnter() {
+    this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
 
@@ -275,7 +266,7 @@ export class HomePage {
 
     this.fetchingStatus = true;
     this.wallets = this.profileProvider.getWallets();
-    this.setIsoCode();
+    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.lastWeekRatesArray = await this.getLastWeekRates();
     if (_.isEmpty(this.wallets)) {
       this.fetchingStatus = false;
@@ -349,13 +340,13 @@ export class HomePage {
           _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternative
         ).toFixed(2);
-        const totalBalanceAlternativeLastMonth = _.sumBy(
+        const totalBalanceAlternativeLastWeek = _.sumBy(
           _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternativeLastWeek
         ).toFixed(2);
         const difference =
           parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-          parseFloat(totalBalanceAlternativeLastMonth.replace(/,/g, ''));
+          parseFloat(totalBalanceAlternativeLastWeek.replace(/,/g, ''));
         this.averagePrice =
           (difference * 100) /
           parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
@@ -414,17 +405,6 @@ export class HomePage {
     });
   }
 
-  private setIsoCode() {
-    const alternativeIsoCode = this.configProvider.get().wallet.settings
-      .alternativeIsoCode;
-    this.totalBalanceAlternativeIsoCode = _.includes(
-      this.fiatCodes,
-      alternativeIsoCode
-    )
-      ? alternativeIsoCode
-      : 'USD';
-  }
-
   private async fetchAdvertisements(): Promise<void> {
     await this.fetchGiftCardDiscount();
     this.advertisements.forEach(advertisement => {
@@ -460,7 +440,7 @@ export class HomePage {
         'presentedWithGiftCardDiscount',
         this.giftCardProvider.getDiscountEventParams(
           this.discountedCard,
-          'home-tab-advertisement'
+          'Home Tab Advertisement'
         )
       );
   }
@@ -484,6 +464,15 @@ export class HomePage {
       this.externalLinkProvider.open(page);
     } else {
       this.navCtrl.push(page, params);
+    }
+    if (page === BuyCardPage) {
+      this.giftCardProvider.logEvent(
+        'clickedGiftCardDiscount',
+        this.giftCardProvider.getDiscountEventParams(
+          params.cardConfig,
+          'Home Tab Advertisement'
+        )
+      );
     }
   }
 
@@ -566,6 +555,20 @@ export class HomePage {
     const url =
       "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
+  }
+
+  private showNewDesignSlides() {
+    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
+    this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
+      if (!value) {
+        this.persistenceProvider.setNewDesignSlidesFlag('completed');
+        const modal = this.modalCtrl.create(NewDesignTourPage, {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        });
+        modal.present();
+      }
+    });
   }
 }
 

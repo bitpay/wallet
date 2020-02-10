@@ -181,6 +181,13 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidInvoiceUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://invoice') === 0
+    );
+  }
+
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
@@ -233,19 +240,47 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+
       const selected = details.paymentOptions.filter(option => option.selected);
+
       if (selected.length === 1) {
-        // BTC, BCH, ETH Chains
+        // Confirm Page - selectedTransactionCurrency set to selected
         const [{ currency }] = selected;
-        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+        return this.goToPayPro(
+          invoiceUrl,
+          currency.toLowerCase(),
+          disableLoader
+        );
       } else {
-        // If ERC20
-        if (selected.length > 1) {
-          details.paymentOptions = selected;
+        // Select Invoice Currency - No selectedTransactionCurrency set
+        let hasWallets = {};
+        let availableWallets = [];
+        for (const option of details.paymentOptions) {
+          const fundedWallets = this.profileProvider.getWallets({
+            coin: option.currency.toLowerCase(),
+            network: option.network,
+            minAmount: option.estimatedAmount
+          });
+          if (fundedWallets.length === 0) {
+            option.disabled = true;
+          } else {
+            hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
+            availableWallets.push(option);
+          }
         }
-        // No currencies selected
+        if (availableWallets.length === 1) {
+          // Only one available wallet with balance
+          const [{ currency }] = availableWallets;
+          return this.goToPayPro(
+            invoiceUrl,
+            currency.toLowerCase(),
+            disableLoader
+          );
+        }
+
         const stateParams = {
-          payProOptions: details
+          payProOptions: details,
+          hasWallets
         };
         let nextView = {
           name: 'SelectInvoicePage',
@@ -601,6 +636,13 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
+  private goToInvoice(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Invoice URL');
+
+    const invoiceUrl = this.getParameterByName('url', data);
+    this.redir(invoiceUrl);
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
@@ -678,6 +720,11 @@ export class IncomingDataProvider {
       // Simplex
     } else if (this.isValidSimplexUri(data)) {
       this.goToSimplex(data);
+      return true;
+
+      // Invoice Intent
+    } else if (this.isValidInvoiceUri(data)) {
+      this.goToInvoice(data);
       return true;
 
       // BitPayCard Authentication
@@ -1004,6 +1051,7 @@ export class IncomingDataProvider {
     }
 
     try {
+      const { memo, network } = payProDetails;
       const disableLoader = true;
       const { paymentOptions } = await this.payproProvider.getPayProOptions(
         url,
@@ -1020,12 +1068,12 @@ export class IncomingDataProvider {
       const stateParams = {
         amount: estimatedAmount,
         toAddress,
-        description: payProDetails.memo,
+        description: memo,
         data,
         invoiceID,
         paypro: payProDetails,
         coin,
-        network: payProDetails.network,
+        network,
         payProUrl: url,
         requiredFeeRate
       };

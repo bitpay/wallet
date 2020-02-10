@@ -16,6 +16,7 @@ const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/static/simplex/';
 export class SimplexProvider {
   private env: string;
   public passthrough_uri: string;
+  public supportedFiatAltCurrencies;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -28,6 +29,30 @@ export class SimplexProvider {
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.passthrough_uri =
       env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;
+    this.supportedFiatAltCurrencies = {
+      AUD: { defaultValue: 120 },
+      CAD: { defaultValue: 120 },
+      CHF: { defaultValue: 120 },
+      CZK: { defaultValue: 1000 },
+      DKK: { defaultValue: 1000 },
+      EUR: { defaultValue: 120 },
+      HUF: { defaultValue: 20000 },
+      ILS: { defaultValue: 1000 },
+      JPY: { defaultValue: 10000 },
+      KRW: { defaultValue: 100000 },
+      NOK: { defaultValue: 10000 },
+      NZD: { defaultValue: 1000 },
+      PLN: { defaultValue: 1000 },
+      RUB: { defaultValue: 10000 },
+      SEK: { defaultValue: 10000 },
+      TRY: { defaultValue: 1000 },
+      USD: { defaultValue: 120 },
+      ZAR: { defaultValue: 10000 }
+    };
+  }
+
+  public getSupportedFiatAltCurrencies(): string[] {
+    return Object.keys(this.supportedFiatAltCurrencies);
   }
 
   public getQuote(wallet, data): Promise<any> {

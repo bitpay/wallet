@@ -11,7 +11,11 @@ import { TabsPage } from '../tabs/tabs';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../providers/bwc/bwc';
-import { Coin, CoinsMap } from '../../providers/currency/currency';
+import {
+  Coin,
+  CoinsMap,
+  CurrencyProvider
+} from '../../providers/currency/currency';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -65,7 +69,8 @@ export class PaperWalletPage {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private platformProvider: PlatformProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private currencyProvider: CurrencyProvider
   ) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.isCordova = this.platformProvider.isCordova;
@@ -81,7 +86,9 @@ export class PaperWalletPage {
     });
 
     this.wallets = _.filter(_.clone(this.wallets), wallet => {
-      return !wallet.needsBackup && wallet.coin !== 'eth';
+      return (
+        !wallet.needsBackup && this.currencyProvider.isUtxoCoin(wallet.coin)
+      );
     });
 
     this.coins = _.uniq(
