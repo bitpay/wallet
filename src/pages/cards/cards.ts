@@ -5,6 +5,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
@@ -16,6 +17,10 @@ export class CardsPage {
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
+  public longPressed = 0;
+  public showBitpayCardGetStarted: boolean;
+  public ready: boolean;
+  public cardExperimentEnabled: boolean;
   public gotCardItems: boolean = false;
 
   constructor(
@@ -23,15 +28,24 @@ export class CardsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
+    private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider
-  ) {}
+  ) {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      this.cardExperimentEnabled = status === 'enabled';
+    });
+  }
 
-  async ionViewDidEnter() {
+  async ionViewWillEnter() {
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
     );
+    this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
+      'debitcard'
+    );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
     await this.fetchAllCards();
+    this.ready = true;
   }
 
   private async fetchBitpayCardItems() {
@@ -56,5 +70,24 @@ export class CardsPage {
       this.fetchBitpayCardItems(),
       this.fetchActiveGiftCards()
     ]);
+  }
+
+  public enableCard() {
+    this.longPressed++;
+
+    if (this.longPressed >= 3) {
+      this.persistenceProvider.getCardExperimentFlag().then(res => {
+        res === 'enabled'
+          ? this.persistenceProvider.removeCardExperimentFlag()
+          : this.persistenceProvider.setCardExperimentFlag('enabled');
+
+        alert(
+          `Card experiment ${
+            res === 'enabled' ? 'disabled' : 'enabled'
+          }. Restart required.`
+        );
+        this.longPressed = 0;
+      });
+    }
   }
 }

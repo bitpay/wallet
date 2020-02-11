@@ -1,11 +1,14 @@
-<ion-header class="bp-header">
-  <ion-navbar>
-    <ion-title>{{'Cards' | translate}}</ion-title>
-  </ion-navbar>
+<ion-header class="bp-header" (longPress)="enableCard()">
+    <ion-navbar>
+        <ion-title>{{'Cards' | translate}}</ion-title>
+    </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
-  <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
-    <bitpay-card-home *ngIf="showBitPayCard && gotCardItems" [bitpayCardItems]="bitpayCardItems"></bitpay-card-home>
-    <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
-  </div>
+    <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
+        <bitpay-card-home *ngIf="showBitPayCard && gotCardItems"
+                          [cardExperimentEnabled]="cardExperimentEnabled"
+                          [bitpayCardItems]="bitpayCardItems"
+                          [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
+        <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
+    </div>
 </ion-content>
