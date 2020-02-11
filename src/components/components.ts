@@ -3,6 +3,7 @@ import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AddButtonComponent } from './add-button/add-button';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
+import { BpQrCodeComponent } from './bp-qr-code-component/bp-qr-code-component';
 import { ClipboardCardPage } from './clipboard-card/clipboard-card';
 import { CoinIconComponent } from './coin-icon/coin-icon';
 import { ExchangeRates } from './exchange-rates/exchange-rates';
@@ -18,6 +19,7 @@ export const COMPONENTS = [
   ACTION_SHEET_COMPONENTS,
   AddButtonComponent,
   AmountPickerComponent,
+  BpQrCodeComponent,
   EXPANDABLE_HEADER_COMPONENTS,
   GiftCardDiscountText,
   LabelTip,

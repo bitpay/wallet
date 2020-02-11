@@ -24,15 +24,12 @@
     <div class="qr-container">
       <div class="lines-background"></div>
       <div class="card qr-card">
-        <img class="copy-icon" copy-to-clipboard="{{ qrAddress }}" src="assets/img/paste-clipboard.svg" width="18" />
-        <div>
-          <div class="qr-card-amount">
-            <span>{{amountUnitStr}}</span>
-            <br>
-            <small>({{altAmountStr}})</small>
-          </div>
-          <ngx-qrcode (click)="showFullInfo()" *ngIf="address" hide-toast="true" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <div class="qr-card-amount">
+          <span>{{amountUnitStr}}</span>
+          <br>
+          <small>({{altAmountStr}})</small>
         </div>
+        <bp-qr-code-component [data]="qrAddress" [coin]="wallet.coin"></bp-qr-code-component>
       </div>
     </div>
   </div>

@@ -18,10 +18,7 @@
       </div>
     </div>
     <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
-      <div class="card qr-card">
-        <img class="copy-icon" copy-to-clipboard="{{ secret }}" src="assets/img/paste-clipboard.svg" width="18" />
-        <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}" qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
-      </div>
+      <bp-qr-code-component (click)="showFullInfo()" [data]="secret" [coin]="wallet.coin"></bp-qr-code-component>
     </div>
 
     <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">

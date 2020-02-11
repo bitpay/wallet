@@ -64,9 +64,7 @@
       <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
         <div>...</div>
       </div>
-      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="address">
-        <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ address }}" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-      </div>
+      <bp-qr-code-component [data]="address" [coin]="wallet.coin"></bp-qr-code-component>
     </div>
     <div class="line-divider"></div>
     <div class="close-btn" text-center>

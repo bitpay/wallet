@@ -24,25 +24,6 @@ page-copayers {
       }
     }
   }
-  .qr-container {
-    background: none;
-    .qr-card {
-      cursor: pointer;
-      padding: 2.5rem;
-      border: none;
-      width: 100%;
-      box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
-      @media (max-width: 350px) {
-        margin-top: -10rem;
-      }
-      .copy-icon {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-      }
-    }
-  }
-
   .white-card {
     background: white;
     padding: 3rem;

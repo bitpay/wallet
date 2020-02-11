@@ -1,0 +1,15 @@
+<bp-qr-code *ngIf="coin === 'btc'" class="card qr-card bp-qr-card" id="qr1" copy-to-clipboard="{{ data }}" contents="{{ data }}" module-color="#434D5A" position-ring-color="#F7931A" position-center-color="#434D5A" mask-x-to-y-ratio="1">
+  <img src="assets/img/currencies/{{ coin }}.svg" slot="icon" />
+</bp-qr-code>
+<bp-qr-code *ngIf="coin === 'bch'" class="card qr-card bp-qr-card" id="qr1" copy-to-clipboard="{{ data }}" contents="{{ data }}" module-color="#434D5A" position-ring-color="#434D5A" position-center-color="#2FCF6E" mask-x-to-y-ratio="1">
+  <img src="assets/img/currencies/{{ coin }}.svg" slot="icon" />
+</bp-qr-code>
+<bp-qr-code *ngIf="coin === 'xrp'" class="card qr-card bp-qr-card" id="qr1" copy-to-clipboard="{{ data }}" contents="{{ data }}" module-color="##4E4E50" position-ring-color="#333333" position-center-color="#9E9E9E" mask-x-to-y-ratio="1">
+  <img style="height: auto; width: 100%;" src="assets/img/currencies/{{ coin }}.svg" slot="icon" />
+</bp-qr-code>
+<bp-qr-code *ngIf="coin === 'eth'" class="card qr-card bp-qr-card" id="qr1" copy-to-clipboard="{{ data }}" contents="{{ data }}" module-color="#434D5A" position-ring-color="#434D5A" position-center-color="#6B71D6" mask-x-to-y-ratio="1">
+  <img src="assets/img/currencies/{{ coin }}.svg" slot="icon" />
+</bp-qr-code>
+<bp-qr-code *ngIf="isERCToken(coin)" class="card qr-card bp-qr-card" id="qr1" copy-to-clipboard="{{ data }}" contents="{{ data }}" module-color="#434D5A" position-ring-color="#6B71D6" position-center-color="#434D5A" mask-x-to-y-ratio="1">
+  <img style="height: auto; width: 100%;" src="assets/img/currencies/{{ coin }}.svg" slot="icon" />
+</bp-qr-code>
