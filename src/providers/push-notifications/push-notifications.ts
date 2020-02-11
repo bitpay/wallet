@@ -77,9 +77,8 @@ export class PushNotificationsProvider {
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
           const walletIdHashed = data.walletId;
-          const tokenAddress = data.tokenAddress;
           if (!walletIdHashed) return;
-          this._openWallet(walletIdHashed, tokenAddress);
+          this._openWallet(walletIdHashed);
         }
       });
     }
@@ -183,8 +182,8 @@ export class PushNotificationsProvider {
     });
   }
 
-  private async _openWallet(walletIdHashed, tokenAddress) {
-    const wallet = this.findWallet(walletIdHashed, tokenAddress);
+  private async _openWallet(walletIdHashed) {
+    const wallet = this.findWallet(walletIdHashed);
 
     if (!wallet) return;
 
@@ -193,23 +192,13 @@ export class PushNotificationsProvider {
     this.events.publish('OpenWallet', wallet);
   }
 
-  private findWallet(walletIdHashed, tokenAddress) {
+  private findWallet(walletIdHashed) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
     const wallets = this.profileProvider.getWallets();
     const wallet = _.find(wallets, w => {
-      if (tokenAddress) {
-        const walletId = w.credentials.walletId;
-        const lastHyphenPosition = walletId.lastIndexOf('-');
-        const walletIdWithoutTokenAddress = walletId.substring(
-          0,
-          lastHyphenPosition
-        );
-        walletIdHash = sjcl.hash.sha256.hash(walletIdWithoutTokenAddress);
-      } else {
-        walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
-      }
+      walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
       return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 
