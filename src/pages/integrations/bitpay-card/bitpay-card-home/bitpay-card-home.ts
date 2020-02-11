@@ -34,7 +34,6 @@ export class BitPayCardHome implements OnInit {
 
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
-
       const message = `loadDashboard?${cardId}`;
       this.iab.refs.card.executeScript(
         {
