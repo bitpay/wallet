@@ -41,7 +41,7 @@ page-new-design-tour {
           align-self: center;
           margin: 0 auto;
           &.gif {
-            padding-top: 0;
+            padding-top: calc(env(safe-area-inset-top));
             padding-bottom: 6rem;
             @media (max-height: 650px) and (max-width: 768px) {
               padding-bottom: 5rem;
