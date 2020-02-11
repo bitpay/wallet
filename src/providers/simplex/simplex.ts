@@ -30,24 +30,24 @@ export class SimplexProvider {
     this.passthrough_uri =
       env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;
     this.supportedFiatAltCurrencies = {
-      AUD: { defaultValue: 120 },
-      CAD: { defaultValue: 120 },
-      CHF: { defaultValue: 120 },
-      CZK: { defaultValue: 1000 },
-      DKK: { defaultValue: 1000 },
-      EUR: { defaultValue: 120 },
-      HUF: { defaultValue: 20000 },
+      AUD: { defaultValue: 300 },
+      CAD: { defaultValue: 300 },
+      CHF: { defaultValue: 200 },
+      CZK: { defaultValue: 5000 },
+      DKK: { defaultValue: 1500 },
+      EUR: { defaultValue: 200 },
+      HUF: { defaultValue: 65000 },
       ILS: { defaultValue: 1000 },
-      JPY: { defaultValue: 10000 },
-      KRW: { defaultValue: 100000 },
-      NOK: { defaultValue: 10000 },
-      NZD: { defaultValue: 1000 },
+      JPY: { defaultValue: 22000 },
+      KRW: { defaultValue: 250000 },
+      NOK: { defaultValue: 2000 },
+      NZD: { defaultValue: 350 },
       PLN: { defaultValue: 1000 },
-      RUB: { defaultValue: 10000 },
-      SEK: { defaultValue: 10000 },
-      TRY: { defaultValue: 1000 },
-      USD: { defaultValue: 120 },
-      ZAR: { defaultValue: 10000 }
+      RUB: { defaultValue: 15000 },
+      SEK: { defaultValue: 2000 },
+      TRY: { defaultValue: 2000 },
+      USD: { defaultValue: 200 },
+      ZAR: { defaultValue: 5000 }
     };
   }
 

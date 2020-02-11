@@ -76,7 +76,7 @@ export class SimplexBuyPage {
 
     this.quoteForm = this.fb.group({
       amount: [
-        120,
+        200,
         [Validators.required, Validators.min(50), Validators.max(20000)]
       ],
       altCurrency: [this.altCurrencyInitial, [Validators.required]]
