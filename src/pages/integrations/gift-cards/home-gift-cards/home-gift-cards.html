@@ -2,7 +2,8 @@
   Gift Cards
 </div>
 
-<gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+<gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name"
+  [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
 
 <div class="add-button-wrapper--center" *ngIf="activeBrands?.length" [@archiveAnimation]>
   <add-button (click)="buyGiftCards()" tappable>
@@ -19,7 +20,7 @@
     </div>
   </div>
   <div action-card-title translate>Buy Gift Cards</div>
-  <div action-card-body>
+  <div action-card-body [clamp]="2">
     Buy gift cards for major brands using cryptocurrency.
   </div>
   <div action-card-button translate>
