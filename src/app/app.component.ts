@@ -181,8 +181,6 @@ export class CopayApp {
 
   private async onAppLoad(readySource) {
     const deviceInfo = this.platformProvider.getDeviceInfo();
-    const experiment = await this.persistenceProvider.getCardExperimentFlag();
-    this.bitpayProvider.init(experiment);
 
     this.logger.info(
       'Platform ready (' +
@@ -237,6 +235,9 @@ export class CopayApp {
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
     }
+
+    const experiment = await this.persistenceProvider.getCardExperimentFlag();
+    this.bitpayProvider.init(experiment);
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
