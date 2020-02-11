@@ -1,0 +1,22 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>
+            {{'BitPay ID' |translate}}
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div class="bitpay-id__container">
+        <img src="assets/img/app/icon-flat.svg" class="bitpay-id__icon" width="40">
+        <div class="col">
+            <div class="row bitpay-id__name">{{userBasicInfo?.givenName}} {{userBasicInfo?.familyName}}</div>
+            <div class="row bitpay-id__email">{{userBasicInfo?.email}}</div>
+        </div>
+    </div>
+    <button ion-button class="button-standard button-secondary bitpay-id__disconnect-button" (click)="disconnectBitPayID()">
+        {{'Disconnect' | translate}}
+    </button>
+</ion-content>

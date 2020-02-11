@@ -94,16 +94,27 @@
         <div class="wallet-info" *ngIf="wallet">
           <div class="left-buttons">
             <img class="testnet" *ngIf="wallet?.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
-            <img class="testnet-text" *ngIf="wallet?.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
+            <span class="square-border" *ngIf="wallet?.network == 'testnet' && wallet?.coin == 'eth'">
+              <span>KOVAN TESTNET</span>
+            </span>
+            <span class="square-border" *ngIf="wallet?.network == 'testnet' && wallet?.coin != 'eth'">
+              <span>TESTNET</span>
+            </span>
             <img class="read-only" *ngIf="!wallet?.canSign" src="assets/img/settings-icons/icon-read-only.svg">
-            <img class="read-only-text" *ngIf="!wallet?.canSign" src="assets/img/icon-text-read-only.svg">
-            <img class="auditable-text" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()" src="assets/img/icon-text-auditable.svg">
-            <img class="custom-bws" *ngIf="wallet?.usingCustomBWS" src="assets/img/icon-bws-white.svg">
+            <span class="square-border" *ngIf="!wallet?.canSign">
+              <span>READ ONLY</span>
+            </span>
+            <span class="square-border" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">
+              <span>AUDITABLE</span>
+            </span>
+            <span class="square-border" *ngIf="wallet?.usingCustomBWS">
+              <span>BWS</span>
+            </span>
             <img class="encrypted" *ngIf="wallet?.isPrivKeyEncrypted" src="assets/img/icon-lock-white.svg">
-            <span class="token" *ngIf="wallet?.linkedEthWalletName">
+            <span class="square-border" *ngIf="wallet?.linkedEthWalletName">
               <span>{{'Linked to wallet: {linkedEthWalletName}' | translate : {linkedEthWalletName: wallet?.linkedEthWalletName} }}</span>
             </span>
-            <span class="token" *ngIf="wallet?.coin === 'xrp' && wallet?.cachedStatus && wallet?.cachedStatus.lockedBalanceSat">
+            <span class="square-border" *ngIf="wallet?.coin === 'xrp' && wallet?.cachedStatus && wallet?.cachedStatus.lockedBalanceSat">
               <span translate>Activated</span>
             </span>
             <span class="wallet-type" *ngIf="wallet?.credentials.n > 1">

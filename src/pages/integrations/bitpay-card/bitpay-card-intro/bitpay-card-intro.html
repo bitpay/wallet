@@ -9,10 +9,16 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div class="bitpayCard-header">
-    <div class="bitpayCard-img">
-      <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg" /> -->
-      <img src="assets/img/bitpay-card/bitpay-card.png" />
+  <div class="bitpayCard-header" [class.bitpayCard-header--new]="cardExperimentEnabled">
+    <div class="bitpayCard-img" [class.bitpayCard-img--new]="cardExperimentEnabled">
+
+      <ng-container *ngIf="cardExperimentEnabled else regular">
+        <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg" />
+      </ng-container>
+      <ng-template #regular>
+        <img src="assets/img/bitpay-card/bitpay-card.png" />
+      </ng-template>
+
     </div>
   </div>
   <div class="bitpayCard-content">
@@ -52,13 +58,27 @@
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button class="button-standard" (click)="orderBitPayCard()">
-      {{'Order Now' | translate}}
-    </button>
-    <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
-      {{'I already have a BitPay Card' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>
+<ng-container *ngIf="cardExperimentEnabled else reg">
+  <ion-footer>
+    <ion-toolbar>
+      <button ion-button class="button-standard" (click)="orderBitPayCard()">
+        {{'Order Now' | translate}}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-container>
+
+<ng-template #reg>
+  <ion-footer>
+    <ion-toolbar>
+      <button ion-button class="button-standard" (click)="orderBitPayCard()">
+        {{'Order Now' | translate}}
+      </button>
+      <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
+        {{'I already have a BitPay Card' | translate}}
+      </button>
+    </ion-toolbar>
+  </ion-footer>
+</ng-template>
+
+

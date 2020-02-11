@@ -71,7 +71,9 @@ const Keys = {
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  WALLET_GROUP_NAME: keyId => `Key-${keyId}`
+  WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
+  BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
+  BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`
 };
 
 interface Storage {
@@ -680,6 +682,19 @@ export class PersistenceProvider {
     return this.storage.remove('hiddenFeatures');
   }
 
+  setCardExperimentFlag(value: string) {
+    this.logger.debug('card experiment enabled: ', value);
+    return this.storage.set('cardExperimentEnabled', value);
+  }
+
+  getCardExperimentFlag() {
+    return this.storage.get('cardExperimentEnabled');
+  }
+
+  removeCardExperimentFlag() {
+    return this.storage.remove('cardExperimentEnabled');
+  }
+
   setWalletGroupName(keyId: string, name: string) {
     return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
   }
@@ -690,6 +705,30 @@ export class PersistenceProvider {
 
   removeWalletGroupName(keyId: string) {
     return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  setBitPayIdPairingToken(network: Network, token: string) {
+    return this.storage.set(Keys.BITPAY_ID_PAIRING_TOKEN(network), token);
+  }
+
+  getBitPayIdPairingToken(network: Network) {
+    return this.storage.get(Keys.BITPAY_ID_PAIRING_TOKEN(network));
+  }
+
+  removeBitPayIdPairingToken(network: Network) {
+    return this.storage.remove(Keys.BITPAY_ID_PAIRING_TOKEN(network));
+  }
+
+  setBitPayIdUserInfo(network: Network, userInfo: any) {
+    return this.storage.set(Keys.BITPAY_ID_USER_INFO(network), userInfo);
+  }
+
+  getBitPayIdUserInfo(network: Network) {
+    return this.storage.get(Keys.BITPAY_ID_USER_INFO(network));
+  }
+
+  removeBitPayIdUserInfo(network: Network) {
+    return this.storage.remove(Keys.BITPAY_ID_USER_INFO(network));
   }
 }
 

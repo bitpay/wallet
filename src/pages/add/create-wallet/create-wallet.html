@@ -72,7 +72,7 @@
         </ion-item>
 
         <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
-          <ion-label>Testnet</ion-label>
+          <ion-label><span *ngIf="coin === 'eth'">Kovan </span>Testnet</ion-label>
           <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
 

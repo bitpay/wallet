@@ -51,16 +51,11 @@
     <div class="message-content">
       <ion-row align-items-center>
         <div class="message-icon">
-          <img *ngIf="
-              !serverMessages[0].category ||
-              serverMessages[0].category === 'info'
-            " src="assets/img/icon-info-blue.svg" />
+          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'" src="assets/img/icon-info-blue.svg" />
           <img *ngIf="serverMessages[0].category === 'critical'" src="assets/img/icon-danger.svg" />
         </div>
         <div class="message-title" *ngIf="serverMessages[0].title" [ngClass]="{
-            'message-title-info':
-              !serverMessages[0].category ||
-              serverMessages[0].category == 'info',
+            'message-title-info': !serverMessages[0].category || serverMessages[0].category == 'info',
             'message-title-critical': serverMessages[0].category == 'critical'
           }">
           {{ serverMessages[0].title }}
@@ -72,9 +67,7 @@
 
       <div *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
         <div class="line-divider"></div>
-        <span class="message-button" *ngIf="serverMessages[0].linkText">{{
-          serverMessages[0].linkText
-          }}</span>
+        <span class="message-button" *ngIf="serverMessages[0].linkText">{{ serverMessages[0].linkText }}</span>
         <span class="message-button" translate *ngIf="!serverMessages[0].linkText">Learn more</span>
       </div>
     </div>
@@ -86,10 +79,10 @@
   <div *ngIf="!balanceHidden" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
     <div class="total-amount-value" *ngIf="totalBalanceAlternative">
-      {{ totalBalanceAlternative }} {{ totalBalanceAlternativeIsoCode }}
+      {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
     </div>
     <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-      0.00 {{ totalBalanceAlternativeIsoCode }}
+      0.00 {{totalBalanceAlternativeIsoCode}}
       <span *ngIf="fetchingStatus">
         <ion-spinner></ion-spinner>
       </span>
@@ -101,9 +94,7 @@
     </div>
   </div>
 
-  <ion-list margin-bottom class="bp-list" *ngIf="
-      homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
-    ">
+  <ion-list margin-bottom class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
     <ion-item *ngIf="showShopOption" (click)="goToShop()">
       <ion-label>
         <div class="services-list-label">Shop</div>
@@ -147,11 +138,7 @@
           <ion-row align-items-center>
             <ion-col align-self-start col-4>
               <div class="message-img">
-                <img [ngClass]="{
-                    'card-img':
-                      advertisement.imgSrc ===
-                      'assets/img/bitpay-card/bitpay-card-visa.svg'
-                  }" src="{{advertisement.imgSrc}}" />
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
               </div>
             </ion-col>
             <ion-col col-8>
@@ -165,9 +152,7 @@
           </ion-row>
           <div *ngIf="advertisement.link" (click)="goTo(advertisement.link, advertisement.linkParams)">
             <div class="line-divider"></div>
-            <span class="message-button" *ngIf="advertisement.linkText">{{
-              advertisement.linkText
-              }}</span>
+            <span class="message-button" *ngIf="advertisement.linkText">{{advertisement.linkText}}</span>
           </div>
         </div>
       </div>
