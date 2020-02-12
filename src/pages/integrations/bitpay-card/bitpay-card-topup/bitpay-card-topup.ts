@@ -305,6 +305,7 @@ export class BitPayCardTopUpPage {
         .getPayProDetails(payProUrl, wallet.coin)
         .then(details => {
           const { instructions } = details;
+          this.logger.info('Instructions', instructions);
           let txp: Partial<TransactionProposal> = {
             coin: wallet.coin,
             amount: _.sumBy(instructions, 'amount'),
@@ -599,6 +600,8 @@ export class BitPayCardTopUpPage {
             // Save TX in memory
             this.createdTx = ctxp;
 
+            this.logger.info('Created Tx from topup', this.createdTx);
+
             this.totalAmountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
               ctxp.amount || parsedAmount.amountSat
@@ -716,7 +719,7 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  public onWalletSelect(wallet): void {
+  public async onWalletSelect(wallet): Promise<void> {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     if (this.countDown) {
@@ -729,7 +732,7 @@ export class BitPayCardTopUpPage {
     }
 
     this.onGoingProcessProvider.set('retrievingInputs');
-    this.calculateAmount(wallet)
+    await this.calculateAmount(wallet)
       .then(val => {
         let parsedAmount = this.txFormatProvider.parseAmount(
           wallet.coin,

@@ -1,41 +1,43 @@
 {
   "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug App in Chrome",
+  "configurations": [{
+      "name": "ng serve",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:8100/",
-      "webRoot": "${workspaceFolder}/www"
+      "preLaunchTask": "npm: start",
+      "url": "http://localhost:4200/#",
+      "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${webRoot}/*",
+        "/./*": "${webRoot}/*",
+        "/src/*": "${webRoot}/*",
+        "/*": "*",
+        "/./~/*": "${webRoot}/node_modules/*"
+      }
     },
     {
-      // To watch and rebuild changes in the app, use `npm run ionic:serve` in
-      // an external terminal, then re-run this task as often as needed.
+      "name": "ng test",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:9876/debug.html",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "port": 9870,
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${webRoot}/*",
+        "/./*": "${webRoot}/*",
+        "/src/*": "${webRoot}/*",
+        "/*": "*",
+        "/./~/*": "${webRoot}/node_modules/*"
+      }
+    },
+    {
+      "name": "ng e2e",
       "type": "node",
       "request": "launch",
-      "name": "Debug E2E Tests",
       "program": "${workspaceFolder}/node_modules/protractor/bin/protractor",
-      "args": [
-        "${workspaceRoot}/protractor.conf.js",
-        "--verbose",
-        "--browser=chrome",
-        // Overrides the multiCapabilities object in protractor.conf.js
-        // to avoid running multiple instances
-        "--multiCapabilities",
-        // Reasonable window size for side-by-side debugging
-        "--capabilities.chromeOptions.args=window-size=1050,800",
-        "--capabilities.chromeOptions.args=auto-open-devtools-for-tabs",
-        "--jasmineNodeOpts.defaultTimeoutInterval=600000"
-      ],
-      "skipFiles": [
-        "<node_internals>/**/*.js",
-        "${workspaceFolder}/node_modules/ts-node/**/*"
-      ],
-      // "preLaunchTask": "npm: env:e2e",
-      // "smartStep": true,
-      // "stopOnEntry": true,
-      "console": "externalTerminal",
-      "protocol": "inspector"
+      "protocol": "inspector",
+      "args": ["${workspaceFolder}/e2e/protractor.conf.js"]
     }
   ]
 }
