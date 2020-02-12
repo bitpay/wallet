@@ -77,7 +77,7 @@ export class SettingsPage {
   private cardIAB_Ref: InAppBrowserRef;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
-  public balanceHidden: boolean;
+  public showBalance: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -140,7 +140,7 @@ export class SettingsPage {
       this.language.getCurrent()
     );
 
-    this.setBalanceHiddenFlag();
+    this.setShowBalanceFlag();
 
     const opts = {
       showHidden: true
@@ -345,18 +345,18 @@ export class SettingsPage {
     });
   }
 
-  private setBalanceHiddenFlag() {
+  private setShowBalanceFlag() {
     this.profileProvider
-      .getHideTotalBalanceFlag()
-      .then(isHidden => {
-        this.balanceHidden = isHidden;
+      .getShowTotalBalanceFlag()
+      .then(isShown => {
+        this.showBalance = isShown;
       })
       .catch(err => {
         this.logger.error(err);
       });
   }
 
-  public toggleHideBalanceFlag(): void {
-    this.profileProvider.setHideTotalBalanceFlag(this.balanceHidden);
+  public toggleShowBalanceFlag(): void {
+    this.profileProvider.setShowTotalBalanceFlag(this.showBalance);
   }
 }

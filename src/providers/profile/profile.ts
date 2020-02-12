@@ -1786,20 +1786,20 @@ export class ProfileProvider {
     );
   }
 
-  public getHideTotalBalanceFlag(): Promise<boolean> {
+  public getShowTotalBalanceFlag(): Promise<boolean> {
     return this.persistenceProvider
-      .getHideTotalBalanceFlag()
-      .then(shouldHideBalance => {
-        const isHidden: boolean =
-          shouldHideBalance && shouldHideBalance.toString() == 'true'
-            ? true
-            : false;
-        return Promise.resolve(isHidden);
+      .getShowTotalBalanceFlag()
+      .then(shouldShowBalance => {
+        const isShown: boolean =
+          shouldShowBalance && shouldShowBalance.toString() == 'false'
+            ? false
+            : true;
+        return Promise.resolve(isShown);
       });
   }
 
-  public setHideTotalBalanceFlag(balanceHidden): void {
-    this.persistenceProvider.setHideTotalBalanceFlag(balanceHidden);
+  public setShowTotalBalanceFlag(showBalance): void {
+    this.persistenceProvider.setShowTotalBalanceFlag(showBalance);
   }
 
   public getTxps(opts): Promise<any> {
