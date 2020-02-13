@@ -298,7 +298,7 @@ export class HomePage {
 
           let walletTotalBalanceAlternative = 0;
           let walletTotalBalanceAlternativeLastWeek = 0;
-          if (status.wallet.network === 'livenet') {
+          if (status.wallet.network === 'livenet' && !wallet.hidden) {
             const balance =
               status.wallet.coin === 'xrp'
                 ? status.availableBalanceSat
