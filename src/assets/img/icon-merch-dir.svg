@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="51px" viewBox="0 0 51 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Component/Callout/Merchant-Directory" transform="translate(-45.000000, -64.000000)">
+            <g id="Callout">
+                <g id="Group-4" transform="translate(24.000000, 34.000000)">
+                    <g id="Group" transform="translate(19.000000, 29.000000)">
+                        <g id="paragraph">
+                            <rect id="Rectangle" fill="#4F6EF7" x="0" y="0" width="55" height="55"></rect>
+                            <path d="M25.3,12 L12.7,12 C12.313425,12 12,12.313089 12,12.7 L12,25.3 C12,25.686911 12.313425,26 12.7,26 L25.3,26 C25.686575,26 26,25.686911 26,25.3 L26,12.7 C26,12.313089 25.686575,12 25.3,12 Z" id="Path" fill="#1A3B8B" fill-rule="nonzero"></path>
+                            <path d="M25.3,30 L12.7,30 C12.313425,30 12,30.313089 12,30.7 L12,43.3 C12,43.686911 12.313425,44 12.7,44 L25.3,44 C25.686575,44 26,43.686911 26,43.3 L26,30.7 C26,30.313089 25.686575,30 25.3,30 Z" id="Path" fill="#1A3B8B" fill-rule="nonzero"></path>
+                            <path d="M43.2857143,17 L29.7142857,17 C29.3198,17 29,16.66421 29,16.25 L29,14.75 C29,14.33579 29.3198,14 29.7142857,14 L43.2857143,14 C43.6802,14 44,14.33579 44,14.75 L44,16.25 C44,16.66421 43.6802,17 43.2857143,17 Z" id="Path" fill="#F6F7FC" fill-rule="nonzero"></path>
+                            <path d="M43.2857143,24 L29.7142857,24 C29.3198,24 29,23.66421 29,23.25 L29,21.75 C29,21.3357825 29.3198,21 29.7142857,21 L43.2857143,21 C43.6802,21 44,21.3357825 44,21.75 L44,23.25 C44,23.66421 43.6802,24 43.2857143,24 Z" id="Path" fill="#F6F7FC" fill-rule="nonzero"></path>
+                            <path d="M43.2857143,35 L29.7142857,35 C29.3198,35 29,34.66421 29,34.25 L29,32.75 C29,32.33579 29.3198,32 29.7142857,32 L43.2857143,32 C43.6802,32 44,32.33579 44,32.75 L44,34.25 C44,34.66421 43.6802,35 43.2857143,35 Z" id="Path" fill="#F6F7FC" fill-rule="nonzero"></path>
+                            <path d="M43.2857143,42 L29.7142857,42 C29.3198,42 29,41.66421 29,41.25 L29,39.75 C29,39.33579 29.3198,39 29.7142857,39 L43.2857143,39 C43.6802,39 44,39.33579 44,39.75 L44,41.25 C44,41.66421 43.6802,42 43.2857143,42 Z" id="Path" fill="#F6F7FC" fill-rule="nonzero"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
