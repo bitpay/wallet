@@ -215,9 +215,11 @@ export class CopayApp {
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       // Only overlay for iOS
-      if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+      if (this.platform.is('ios')) {
+        this.statusBar.overlaysWebView(true);
+        this.statusBar.styleDefault();
+      }
 
-      this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       // Subscribe Resume
