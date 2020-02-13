@@ -7,10 +7,11 @@ const fs = require('fs');
 try {
   const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVInAppBrowserNavigationController.m`;
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('STATUS_BAR_HEIGHT 20.0')) {
+
+  if (content.includes('20.0')) {
     const result = content.replace(
-      /STATUS_BAR_HEIGHT 20.0/g,
-      'STATUS_BAR_HEIGHT 0'
+      /20.0/g,
+      '0'
     );
     fs.writeFileSync(file, result);
     console.log('successfully patched ios status bar height');
