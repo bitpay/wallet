@@ -9,6 +9,10 @@ page-amount {
     background: white;
   }
 
+  .container {
+    height: 100%;
+  }
+
   .send-max {
     text-transform: capitalize;
   }
@@ -144,6 +148,12 @@ page-amount {
         font-size: 14px;
         margin-top: 15px;
       }
+    }
+  }
+
+  .bottom-absolute {
+    @media (max-height: $short-screen) {
+      padding-bottom: 0;
     }
   }
 }
