@@ -54,6 +54,10 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
+// Integrations: BitPayCard - Phase one
+import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
+
+
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
@@ -231,5 +235,7 @@ export const PAGES = [
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,
-  SlideToAcceptPage
+  SlideToAcceptPage,
+  //    Phase one card pages
+  PhaseOneCardIntro,
 ];
