@@ -1,12 +1,23 @@
 <ion-header class="bp-header">
   <ion-navbar>
-    <ion-title>{{'Home' | translate}}</ion-title>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Home' | translate }}
+      </div>
+    </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content #scrollArea>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Home' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
 
   <div class="message-background" *ngIf="accessDenied">
     <div class="message-header"></div>
@@ -14,7 +25,7 @@
       <ion-row align-items-center>
         <div class="message-icon"><img src="assets/img/icon-danger.svg" /></div>
         <div class="message-title message-title-critical">
-          {{ 'Access denied' | translate}}
+          {{ 'Access denied' | translate }}
         </div>
       </ion-row>
       <div class="message-body">
@@ -78,7 +89,7 @@
     </div>
     <div class="average-container">
       <div *ngIf="averagePrice || averagePrice === 0" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
-        <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
+        <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number: '1.2-2' }}%</span>
       </div>
     </div>
   </div>
