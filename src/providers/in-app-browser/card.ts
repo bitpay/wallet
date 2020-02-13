@@ -39,7 +39,7 @@ export class IABCardProvider {
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider,
+    private profileProvider: ProfileProvider
   ) {}
 
   async getCards() {
@@ -128,7 +128,8 @@ export class IABCardProvider {
               if (fundedWallets.length === 0) {
                 option.disabled = true;
               } else {
-                hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
+                hasWallets[option.currency.toLowerCase()] =
+                  fundedWallets.length;
                 availableWallets.push(option);
               }
             }
