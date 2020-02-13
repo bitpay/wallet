@@ -8,6 +8,7 @@ import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/sim
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
+  BitPayCardProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
@@ -102,6 +103,7 @@ export class HomePage {
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
+  public showBitPayCardAdvertisement: boolean = true;
 
   private lastWeekRatesArray;
   private zone;
@@ -124,7 +126,8 @@ export class HomePage {
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private tabProvider: TabProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private bitPayCardProvider: BitPayCardProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
@@ -147,6 +150,10 @@ export class HomePage {
       .get()
       .filter(i => i.show)
       .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+
+    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
+      this.showBitPayCardAdvertisement = cards ? false : true;
+    });
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -418,7 +425,11 @@ export class HomePage {
       this.persistenceProvider
         .getAdvertisementDismissed(advertisement.name)
         .then((value: string) => {
-          if (value === 'dismissed') {
+          if (
+            value === 'dismissed' ||
+            (!this.showBitPayCardAdvertisement &&
+              advertisement.name == 'bitpay-card')
+          ) {
             this.removeAdvertisement(advertisement.name);
             return;
           }
