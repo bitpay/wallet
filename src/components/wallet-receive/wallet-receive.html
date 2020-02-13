@@ -64,7 +64,7 @@
       <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
         <div>...</div>
       </div>
-      <bp-qr-code-component [data]="address" [coin]="wallet.coin"></bp-qr-code-component>
+      <bp-qr-code-component *ngIf="address" [data]="address" [coin]="wallet.coin"></bp-qr-code-component>
     </div>
     <div class="line-divider"></div>
     <div class="close-btn" text-center>
