@@ -56,7 +56,7 @@ const Keys = {
   },
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  HIDE_TOTAL_BALANCE: 'hideTotalBalance',
+  SHOW_TOTAL_BALANCE: 'showTotalBalance',
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,
   KEY_ONBOARDING: 'keyOnboarding',
   KEYS: 'keys',
@@ -246,12 +246,12 @@ export class PersistenceProvider {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   }
 
-  setHideTotalBalanceFlag(val) {
-    return this.storage.set(Keys.HIDE_TOTAL_BALANCE, val);
+  setShowTotalBalanceFlag(val) {
+    return this.storage.set(Keys.SHOW_TOTAL_BALANCE, val);
   }
 
-  getHideTotalBalanceFlag() {
-    return this.storage.get(Keys.HIDE_TOTAL_BALANCE);
+  getShowTotalBalanceFlag() {
+    return this.storage.get(Keys.SHOW_TOTAL_BALANCE);
   }
 
   setHideWalletFlag(walletId: string, val) {

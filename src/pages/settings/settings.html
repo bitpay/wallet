@@ -65,13 +65,13 @@
     </button>
 
     <button ion-item>
-      <ion-icon class="item-img icon-settings" name="md-eye-off" item-start></ion-icon>
+      <ion-icon class="item-img icon-settings" name="md-eye" item-start></ion-icon>
       <ion-label>
         <div class="main-label">
-          {{'Hide Portfolio Value' | translate}}
+          {{'Show Portfolio Value' | translate}}
         </div>
       </ion-label>
-      <ion-toggle [(ngModel)]="balanceHidden" (ionChange)="toggleHideBalanceFlag()"></ion-toggle>
+      <ion-toggle [(ngModel)]="showBalance" (ionChange)="toggleShowBalanceFlag()"></ion-toggle>
     </button>
 
     <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">

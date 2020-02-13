@@ -96,7 +96,7 @@ export class HomePage {
   public totalBalanceAlternative: string;
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
-  public balanceHidden: boolean = true;
+  public showBalance: boolean = true;
   public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
@@ -138,7 +138,7 @@ export class HomePage {
     this.showSurveyCard();
     this.checkFeedbackInfo();
 
-    this.isBalanceHidden();
+    this.isBalanceShown();
     this.fetchStatus();
     await this.setDiscountedCard();
     this.fetchAdvertisements();
@@ -496,12 +496,12 @@ export class HomePage {
     });
   }
 
-  private isBalanceHidden() {
+  private isBalanceShown() {
     this.profileProvider
-      .getHideTotalBalanceFlag()
-      .then(isHidden => {
+      .getShowTotalBalanceFlag()
+      .then(isShown => {
         this.zone.run(() => {
-          this.balanceHidden = isHidden;
+          this.showBalance = isShown;
         });
       })
       .catch(err => {
