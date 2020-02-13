@@ -1,46 +1,51 @@
-<wide-header-page title="" [hideBackButton]="useAsModal">
-  <ion-buttons left *ngIf="useAsModal">
-    <button class="close-container disable-hover" (click)="closeModal()" ion-button>
-      <ion-icon ios="md-close" md="md-close"></ion-icon>
-    </button>
-  </ion-buttons>
-  <ion-buttons right>
-    <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
-      <span translate>Send max</span>
-    </button>
-  </ion-buttons>
-  <div class="amount-wrapper" page-content>
-    <div class="container">
-      <div class="amount-content">
-        <div class="expression-container">
-          <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
-            <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
-            <span *ngIf="!isNumber(expression)">{{expression}}</span>
+<ion-header>
+  <ion-navbar [hideBackButton]="useAsModal">
+    <ion-buttons left *ngIf="useAsModal">
+      <button class="close-container disable-hover" (click)="closeModal()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
+        <span translate>Send max</span>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="add-bottom-safe-area" no-bounce>
+  <div class="container">
+    <div class="amount-content">
+      <div class="expression-container">
+        <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
+          <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
+          <span *ngIf="!isNumber(expression)">{{expression}}</span>
+        </span>
+        <ng-template #noExpression>
+          <span class="expression">
+            {{ '0' }}
           </span>
-          <ng-template #noExpression>
-            <span class="expression">
-              {{ '0' }}
-            </span>
-          </ng-template>
-          <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
-        </div>
-        <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-        <div class="result">&asymp;
-          <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
-          <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
-          {{alternativeUnit}}
+        </ng-template>
+        <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
+      </div>
+      <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
+      <div class="result">&asymp;
+        <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
+        <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
+        {{alternativeUnit}}
+      </div>
+    </div>
+
+    <div class="amount-switcher-margin">
+      <div class="amount-switcher">
+        <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
+          <img class="switcher__icon" src="assets/img/icon-swap.svg">
+          <div class="switcher__label">{{unit}}</div>
         </div>
       </div>
+    </div>
 
-      <div class="amount-switcher-margin">
-        <div class="amount-switcher">
-          <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
-            <img class="switcher__icon" src="assets/img/icon-swap.svg">
-            <div class="switcher__label">{{unit}}</div>
-          </div>
-        </div>
-      </div>
-
+    <div class="bottom-absolute">
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
 
       <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
@@ -48,4 +53,4 @@
       </button>
     </div>
   </div>
-</wide-header-page>
+</ion-content>

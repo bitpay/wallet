@@ -1,11 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { TestUtils } from '../../../test';
 import { ImportWalletPage } from './import-wallet';
 
 describe('ImportWalletPage', () => {
   let fixture: ComponentFixture<ImportWalletPage>;
   let instance;
+  let errorsProvider: ErrorsProvider;
   let testBed: typeof TestBed;
+  let showDefaultErrorSpy;
 
   beforeEach(async(() => {
     return TestUtils.configurePageTestingModule([ImportWalletPage]).then(
@@ -13,6 +16,8 @@ describe('ImportWalletPage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
+        errorsProvider = testBed.get(ErrorsProvider);
+        showDefaultErrorSpy = spyOn(errorsProvider, 'showDefaultError');
         fixture.detectChanges();
       }
     );
@@ -66,7 +71,7 @@ describe('ImportWalletPage', () => {
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       expect(instance.importFromFile()).toBeUndefined();
     });
-    /* it('should call importBlob function if has backupText', () => {
+    it('should call importBlob function if has backupText', () => {
       testBed.createComponent(ImportWalletPage);
       let info = {
         bwsURL: 'https://bws.bitpay.com/bws/api',
@@ -79,7 +84,7 @@ describe('ImportWalletPage', () => {
       const spy = spyOn(instance, 'importBlob');
       instance.importFromFile();
       expect(spy).toHaveBeenCalled();
-    });  TODO */
+    });
   });
 
   describe('Function: importFromMnemonic', () => {
@@ -105,20 +110,19 @@ describe('ImportWalletPage', () => {
       expect(importMnemonicSpy).not.toHaveBeenCalled();
     });
 
-    /* it('should return error when use 13 words', () => {
+    it('should return error when use 13 words', () => {
       instance.importForm.controls['words'].setValue(
         'mom1 mom2 mom3 mom4 mom5 mom6 mom7 mom8 mom9 mom10 mom11 mom12 mom13'
       );
 
-      const popupSpy = spyOn(instance.popupProvider, 'ionicAlert');
       instance.importFromMnemonic();
-      expect(popupSpy).toHaveBeenCalledWith(
-        'Error',
-        'Wrong number of recovery words: 13'
+      expect(showDefaultErrorSpy).toHaveBeenCalledWith(
+        'Wrong number of recovery words: 13',
+        'Error'
       );
-    }); TODO */
+    });
 
-    /* it('should not return error when use 12 words with extra spaces', () => {
+    it('should not return error when use 12 words with extra spaces', () => {
       instance.importForm.controls['words'].setValue(
         '  mom1 mom2 mom3 mom4 mom5  mom6 mom7 mom8 mom9 mom10 mom11 mom12   '
       );
@@ -126,7 +130,7 @@ describe('ImportWalletPage', () => {
       const importMnemonicSpy = spyOn(instance, 'importMnemonic');
       instance.importFromMnemonic();
       expect(importMnemonicSpy).toHaveBeenCalled();
-    }); TODO */
+    });
   });
 
   describe('Function: import', () => {

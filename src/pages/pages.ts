@@ -11,6 +11,7 @@ import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { IntegrationsPage } from '../pages/integrations/integrations';
+import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -84,6 +85,7 @@ import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -144,6 +146,7 @@ export const PAGES = [
   BitPayCardPage,
   BitPaySettingsPage,
   BitPayCardTopUpPage,
+  BitPayIdPage,
   BuyCoinbasePage,
   CardCatalogPage,
   CreateWalletPage,
@@ -201,6 +204,7 @@ export const PAGES = [
   SendFeedbackPage,
   SurveyCardPage,
   FinishModalPage,
+  NewDesignTourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsModal,

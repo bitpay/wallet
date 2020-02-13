@@ -337,7 +337,10 @@ export class MultiSendPage {
         _.indexOf(this.validDataTypeMap, this.parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
-        if (isValid) this.invalidAddress = false;
+        if (isValid) {
+          this.invalidAddress = false;
+          this.newRecipient();
+        }
       } else {
         this.invalidAddress = true;
       }

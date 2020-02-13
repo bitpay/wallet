@@ -1,12 +1,14 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { TestUtils } from '../../../test';
-
 import { ConfirmPage } from './confirm';
 
 describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance;
+  let errorsProvider: ErrorsProvider;
+  let testBed: typeof TestBed;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {
@@ -21,6 +23,10 @@ describe('ConfirmPage', () => {
       instance.coin = 'btc';
       instance.tx = { coin: 'btc' };
       spyOn(instance.onGoingProcessProvider, 'set');
+      testBed = testEnv.testBed;
+      errorsProvider = testBed.get(ErrorsProvider);
+      spyOn(errorsProvider, 'showDefaultError');
+      spyOn(errorsProvider, 'showWrongEncryptPassswordError');
       fixture.detectChanges();
     })));
   afterEach(() => {
