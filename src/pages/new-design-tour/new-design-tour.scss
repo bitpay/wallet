@@ -11,53 +11,56 @@ page-new-design-tour {
         font-weight: 500;
         position: absolute;
         color: color($colors, primary);
-        top: 4%;
+        top: 6%;
       }
       .img-container {
+        padding-top: 9.5rem;
         height: 65%;
         @media (max-height: 650px) and (max-width: 768px) {
           height: 60%;
+          padding-top: 8.5rem;
         }
-        @media (min-height: 600px) and (min-width: 768px) {
+        @media (max-height: 600px) and (max-width: 768px) {
           height: 55%;
+          padding-top: 7.5rem;
         }
         @media (max-height: 550px) and (max-width: 768px) {
           height: 50%;
+          padding-top: 6.5rem;
         }
-        img {
-          padding-top: 6rem;
-          @media (max-height: 650px) and (max-width: 768px) {
-            padding-top: 5rem;
-          }
-          @media (min-height: 600px) and (min-width: 768px) {
-            padding-top: 3rem;
-          }
-          @media (max-height: 550px) and (max-width: 768px) {
-            padding-top: 4rem;
-          }
-          width: auto;
-          height: 100%;
-          justify-content: center;
-          align-self: center;
-          margin: 0 auto;
-          &.gif {
-            padding-top: calc(env(safe-area-inset-top));
-            padding-bottom: 6rem;
-            @media (max-height: 650px) and (max-width: 768px) {
-              padding-bottom: 5rem;
-            }
-            @media (min-height: 600px) and (min-width: 768px) {
-              padding-bottom: 3rem;
-            }
-            @media (max-height: 550px) and (max-width: 768px) {
-              padding-bottom: 4rem;
-            }
-          }
+      }
+
+      img {
+        box-shadow: 0 0px 50px 0 rgba(0, 0, 0, 0.1);
+        width: auto;
+        height: 100%;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+      }
+
+      .gif-container {
+        padding-bottom: 9.5rem;
+        height: 65%;
+        padding-top: calc(env(safe-area-inset-top));
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 60%;
+          padding-bottom: 8.5rem;
+        }
+        @media (max-height: 600px) and (max-width: 768px) {
+          height: 55%;
+          padding-bottom: 7.5rem;
+        }
+        @media (max-height: 550px) and (max-width: 768px) {
+          height: 50%;
+          padding-bottom: 6.5rem;
         }
       }
       .slide-info {
         background: white;
         height: 100%;
+        box-shadow: 0 -60px 50px 0 rgba(0, 0, 0, 0.05);
+        position: relative;
         .info {
           padding: 4rem;
           .title {
@@ -81,11 +84,15 @@ page-new-design-tour {
     z-index: 1;
     position: absolute;
     bottom: 2rem;
-    bottom: calc(2rem + env(safe-area-inset-bottom));
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
     bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
     right: 0;
     color: color($colors, primary);
     cursor: pointer;
     text-transform: uppercase;
+  }
+
+  .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 3rem;
   }
 }
