@@ -29,7 +29,7 @@ export class CustomAmountPage {
   public altAmountStr: string;
 
   constructor(
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,

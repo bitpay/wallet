@@ -243,7 +243,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     qrColor: {
       moduleColor: '#434D5A',
-      positionRingColor: '#E6F3F9',
+      positionRingColor: '#51B849',
       positionCenterColor: '#434D5A'
     }
   },
