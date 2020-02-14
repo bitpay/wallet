@@ -8,6 +8,7 @@ import { AppProvider, InAppBrowserProvider, PersistenceProvider } from '../../..
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from "../../../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page";
+import { PhaseTwoCardCountryList } from "../../../integrations/bitpay-card/bitpay-card-phases/phase-two/phase-two-country-list-page/phase-two-country-list-page";
 
 @Component({
   selector: 'bitpay-card-home',
@@ -45,6 +46,7 @@ export class BitPayCardHome implements OnInit {
         this.navCtrl.push(PhaseOneCardIntro);
         return;
       case 'phase-2':
+        this.navCtrl.push(PhaseTwoCardCountryList);
         return;
       case 'phase-3':
         return;
