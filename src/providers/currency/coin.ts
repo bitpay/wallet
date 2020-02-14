@@ -243,7 +243,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     qrColor: {
       moduleColor: '#434D5A',
-      positionRingColor: '#6B71D6',
+      positionRingColor: '#E6F3F9',
       positionCenterColor: '#434D5A'
     }
   },
@@ -283,7 +283,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     qrColor: {
       moduleColor: '#434D5A',
-      positionRingColor: '#6B71D6',
+      positionRingColor: '#2775CA',
       positionCenterColor: '#434D5A'
     }
   },
@@ -323,7 +323,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     qrColor: {
       moduleColor: '#434D5A',
-      positionRingColor: '#6B71D6',
+      positionRingColor: '#00DCFA',
       positionCenterColor: '#434D5A'
     }
   }
