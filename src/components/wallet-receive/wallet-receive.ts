@@ -1,17 +1,11 @@
 import { Component } from '@angular/core';
-// import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
-import { Logger } from '../../providers/logger/logger';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
-// Native
-// import { SocialSharing } from '@ionic-native/social-sharing';
-
-// Pages
-// import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { CurrencyProvider } from '../../providers/currency/currency';
+import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { Events, Platform } from 'ionic-angular';
@@ -40,7 +34,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private walletProvider: WalletProvider,
     private events: Events,
     private bwcErrorProvider: BwcErrorProvider,
-    private platform: Platform
+    private platform: Platform,
+    public currencyProvider: CurrencyProvider
   ) {
     super();
   }

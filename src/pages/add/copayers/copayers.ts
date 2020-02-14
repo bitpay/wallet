@@ -15,6 +15,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -58,7 +59,8 @@ export class CopayersPage {
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public currencyProvider: CurrencyProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
