@@ -15,6 +15,7 @@ import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { CoinbaseAccountPage } from '../integrations/coinbase/coinbase-account/coinbase-account';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../integrations/simplex/simplex';
 import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
@@ -27,6 +28,7 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -75,6 +77,10 @@ export class WalletsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
 
+  public showCoinbase: boolean;
+  public coinbaseLinked: boolean;
+  public coinbaseData: object = {};
+
   constructor(
     private plt: Platform,
     private navCtrl: NavController,
@@ -95,7 +101,8 @@ export class WalletsPage {
     private statusBar: StatusBar,
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private coinbaseProvider: CoinbaseProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -128,6 +135,16 @@ export class WalletsPage {
 
     // Update list of wallets, status and TXPs
     this.setWallets();
+
+    // Get Coinbase Accounts and UserInfo
+    this.showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
+      'coinbase'
+    );
+    this.coinbaseLinked = this.coinbaseProvider.isLinked();
+    if (this.coinbaseLinked && this.showCoinbase) {
+      this.coinbaseProvider.getAccounts(this.coinbaseData);
+      this.coinbaseProvider.getCurrentUser(this.coinbaseData);
+    }
   }
 
   private _didEnter() {
@@ -309,7 +326,7 @@ export class WalletsPage {
 
   private setWallets = () => {
     // TEST
-    /* 
+    /*
     setTimeout(() => {
       this.logger.info('##### Load BITCOIN URI TEST');
       this.incomingDataProvider.redir('bitcoin:3KeJU7VxSKC451pPNSWjF6zK3gm2x7re7q?amount=0.0001');
@@ -657,5 +674,15 @@ export class WalletsPage {
               isZeroState: true
             });
     });
+  }
+
+  public goToCoinbaseAccount(id): void {
+    this.navCtrl.push(CoinbaseAccountPage, {
+      id
+    });
+  }
+
+  public goToCoinbase(): void {
+    this.navCtrl.push(CoinbasePage);
   }
 }

@@ -13,6 +13,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
+import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
 import { TabsPage } from '../../tabs/tabs';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
@@ -24,6 +25,7 @@ import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
+import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
@@ -86,6 +88,11 @@ export class ConfirmPage {
   public isOpenSelector: boolean;
   public fromWalletDetails: boolean;
 
+  // Coinbase
+  public fromCoinbase;
+
+  public mainTitle: string;
+
   constructor(
     protected addressProvider: AddressProvider,
     protected app: App,
@@ -113,10 +120,12 @@ export class ConfirmPage {
     protected walletProvider: WalletProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
+    protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
+    this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
@@ -127,6 +136,10 @@ export class ConfirmPage {
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
     this.appName = this.appProvider.info.nameCase;
+
+    this.mainTitle = this.fromCoinbase
+      ? 'Confirm Deposit'
+      : this.translate.instant('Confirm Payment');
   }
 
   ngOnInit() {
@@ -322,7 +335,11 @@ export class ConfirmPage {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
-    this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
+    this.setButtonText(
+      this.wallet.credentials.m > 1,
+      !!this.tx.paypro,
+      !!this.fromCoinbase
+    );
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
     const exit =
@@ -370,11 +387,23 @@ export class ConfirmPage {
     );
   }
 
-  private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
+  private setButtonText(
+    isMultisig: boolean,
+    isPayPro: boolean,
+    isCoinbase: boolean
+  ): void {
     if (isPayPro) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to pay')
         : this.translate.instant('Click to pay');
+    } else if (isCoinbase) {
+      this.buttonText = this.isCordova
+        ? this.translate.instant('Slide to deposit')
+        : this.translate.instant('Click to deposit');
+      this.successText =
+        this.wallet.credentials.n == 1
+          ? this.translate.instant('Deposit success')
+          : this.translate.instant('Deposit pending');
     } else if (isMultisig) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to accept')
@@ -762,6 +791,10 @@ export class ConfirmPage {
         txp.customData = {
           toWalletName: tx.name ? tx.name : null
         };
+      } else if (tx.recipientType == 'coinbase') {
+        txp.customData = {
+          service: 'coinbase'
+        };
       }
 
       if (tx.tokenAddress) {
@@ -1017,13 +1050,23 @@ export class ConfirmPage {
       'InvoiceUri'
     ]);
 
-    this.navCtrl.popToRoot();
-    setTimeout(() => {
-      this.navCtrl.push(WalletDetailsPage, {
-        walletId: this.wallet.credentials.walletId,
-        redir
-      });
-    }, 1000);
+    this.navCtrl.popToRoot().then(_ => {
+      if (this.fromCoinbase) {
+        this.coinbaseProvider.logEvent({
+          method: 'deposit',
+          amount: this.amount,
+          currency: this.coin
+        });
+        this.navCtrl.push(CoinbaseAccountPage, {
+          id: this.fromCoinbase.accountId
+        });
+      } else {
+        this.navCtrl.push(WalletDetailsPage, {
+          walletId: this.wallet.credentials.walletId,
+          redir
+        });
+      }
+    });
   }
 
   public chooseFeeLevel(): void {

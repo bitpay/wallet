@@ -1,51 +1,51 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-// providers
-import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../../providers/popup/popup';
+import { TranslateService } from '@ngx-translate/core';
+
+import { ConfigProvider } from '../../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 
 @Component({
   selector: 'page-coinbase-tx-details',
   templateUrl: 'coinbase-tx-details.html'
 })
 export class CoinbaseTxDetailsPage {
-  public updateRequired: boolean;
   public tx;
 
   constructor(
-    public viewCtrl: ViewController,
-    public coinbaseProvider: CoinbaseProvider,
-    public popupProvider: PopupProvider,
-    public navParams: NavParams
+    private viewCtrl: ViewController,
+    private navParams: NavParams,
+    private configProvider: ConfigProvider,
+    private externalLinkProvider: ExternalLinkProvider,
+    private translate: TranslateService
   ) {
     this.tx = this.navParams.data.tx;
   }
 
-  public remove() {
-    this.coinbaseProvider.setCredentials();
-    this.updateRequired = false;
-    var message = 'Are you sure you want to remove this transaction?';
-    this.popupProvider
-      .ionicConfirm(null, message, null, null)
-      .then((ok: boolean) => {
-        if (!ok) {
-          return;
-        }
-        this.coinbaseProvider.savePendingTransaction(
-          this.tx,
-          {
-            remove: true
-          },
-          () => {
-            this.updateRequired = true;
-            this.close();
-          }
-        );
-      });
+  public viewOnBlockchain(): void {
+    const defaults = this.configProvider.getDefaults();
+    const blockexplorerUrl =
+      defaults.blockExplorerUrl[this.tx.amount.currency.toLowerCase()];
+    const btx = this.tx;
+    const network = 'mainnet/';
+    const url = `https://${blockexplorerUrl}${network}tx/${btx.network.hash}`;
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Transaction on Insight');
+    const okText = this.translate.instant('Open Insight');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public close() {
-    this.viewCtrl.dismiss({ updateRequired: this.updateRequired });
+    this.viewCtrl.dismiss();
   }
 }

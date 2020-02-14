@@ -38,6 +38,7 @@ const Keys = {
   COINBASE_REFRESH_TOKEN: network => 'coinbaseRefreshToken-' + network,
   COINBASE_TOKEN: network => 'coinbaseToken-' + network,
   COINBASE_TXS: network => 'coinbaseTxs-' + network,
+  COINBASE: env => 'coinbase-' + env,
   CONFIG: 'config',
   FEEDBACK: 'feedback',
   SURVEY: 'survey',
@@ -271,6 +272,18 @@ export class PersistenceProvider {
 
   getRemotePrefsStoredFlag() {
     return this.storage.get(Keys.REMOTE_PREF_STORED);
+  }
+
+  setCoinbase(env: string, data) {
+    return this.storage.set(Keys.COINBASE(env), data);
+  }
+
+  getCoinbase(env: string) {
+    return this.storage.get(Keys.COINBASE(env));
+  }
+
+  removeCoinbase(env: string) {
+    return this.storage.remove(Keys.COINBASE(env));
   }
 
   setCoinbaseToken(network: string, token: string) {

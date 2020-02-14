@@ -1,120 +1,118 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Details
-    </ion-title>
-    <ion-buttons left>
-      <button (click)="close()" ion-button>
-        Close
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-  <ion-card>
-    <ion-card-content text-center>
-      <div>
-        <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
-        <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
-        <img src="assets/img/sold.svg" alt="sold" *ngIf="tx.type == 'sell' && tx.status == 'completed'">
-        <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
-      </div>
-      <div class="title" padding>
-        <div *ngIf="tx.status == 'completed'">
-          <span *ngIf="tx.type == 'buy' || tx.type == 'send'">Bought</span>
-          <span *ngIf="tx.type == 'sell'">Sold</span>
+<wide-header-page title="{{ tx.details.title }}" hideBackButton="true">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <div class="coinbase-subtitle">{{ tx.details.subtitle }}</div>
+    <ion-list class="bp-list">
+      <ion-item>
+        <div class="header-container">
+          <div class="amount-label">
+            <div class="coinbase-amount">
+              {{tx.amount.amount | number:'1.2-8'}}
+              <span class="coinbase-coin">
+                {{tx.amount.currency}}
+              </span>
+            </div>
+            <div class="alternative">
+              {{tx.native_amount.amount | number:'1.2-2'}} {{tx.native_amount.currency}}
+            </div>
+          </div>
         </div>
-        <div *ngIf="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
-          <span *ngIf="tx.to">Receiving purchased bitcoin</span>
-          <span *ngIf="tx.from">Sending bitcoin to sell</span>
+      </ion-item>
+
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label" translate>DETAILS</div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="tx.to && tx.to.address">
+        <ion-label>
+          <div class="summary-item">
+            <span>To</span>
+          </div>
+        </ion-label>
+        <ion-note copy-to-clipboard="{{ tx.to.address }}" item-end>
+          <div class="payment-proposal-to">
+            <img class="coin-img" src="assets/img/currencies/{{ tx.amount.currency.toLowerCase() }}.svg" alt="Coin" />
+            <span class="note-container ellipsis summary-item-detail">{{ tx.to.address }}</span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="tx.description">
+        <ion-label>
+          <div class="summary-item">
+            <span>Note</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <span class="note-container ellipsis summary-item-detail">{{tx.description}}</span>
+        </ion-note>
+      </ion-item>
+
+      <div *ngIf="tx.network && tx.network != 'off_blockchain'">
+        <ion-item *ngIf="tx.network.confirmations">
+          <ion-label>
+            <div class="summary-item">
+              <span>Confirmations</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <span class="note-container ellipsis summary-item-detail">
+              {{ tx.network.confirmations > 6 ? '+6' : tx.network.confirmations }}
+            </span>
+          </ion-note>
+        </ion-item>
+        <ion-item *ngIf="tx.network.transaction_fee">
+          <ion-label>
+            <div class="summary-item">
+              <span>Fee</span>
+            </div>
+          </ion-label>
+          <ion-note item-end>
+            <span class="note-container ellipsis summary-item-detail">
+              {{ tx.network.transaction_fee.amount | number:'1.2-8' }} {{ tx.network.transaction_fee.currency }}
+            </span>
+          </ion-note>
+        </ion-item>
+        <ion-item *ngIf="tx.network.hash">
+          <ion-label>
+            <div class="summary-item">
+              <span>Transaction ID</span>
+            </div>
+          </ion-label>
+          <ion-note copy-to-clipboard="{{ tx.network.hash }}" item-end>
+            <span class="note-container ellipsis summary-item-detail">{{ tx.network.hash }}</span>
+          </ion-note>
+        </ion-item>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{ tx.created_at | date:'medium' }}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <span class="note-container ellipsis summary-item-detail">{{tx.status}}</span>
+        </ion-note>
+      </ion-item>
+
+      <ion-row *ngIf="tx.network && tx.network.hash" justify-content-center class="background-button-content">
+        <div class="background-content">
+          <button ion-button clear (click)="viewOnBlockchain()">
+            {{'View on blockchain' | translate}}
+          </button>
         </div>
-        <div *ngIf="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
-          <span *ngIf="tx.type == 'buy'">Buying bitcoin</span>
-          <span *ngIf="tx.type == 'sell'">Selling bitcoin</span>
-        </div>
-      </div>
-      <div class="price">
-        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} {{tx.amount.currency}}
-      </div>
-      <div class="alternative-price">
-        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}} {{tx.native_amount.currency}}
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-list>
+      </ion-row>
 
-    <ion-item *ngFor="let err of tx.error.errors">
-      <ion-label>
-        <span>{{err.message}}</span>
-      </ion-label>
-    </ion-item>
+    </ion-list>
 
-    <ion-item *ngIf="tx.details && tx.status != 'pending'">
-      <ion-label>
-        <span>{{tx.details.title}}</span>
-      </ion-label>
-      <ion-note item-end>
-        {{tx.details.subtitle}}
-      </ion-note>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>
-        <span>Status</span>
-      </ion-label>
-      <ion-note item-end>
-        <span class="balanced" *ngIf="tx.status == 'completed'">Completed</span>
-        <span class="dark" *ngIf="tx.status == 'pending'">Pending</span>
-        <span class="assertive" *ngIf="tx.status == 'error'">Error</span>
-      </ion-note>
-    </ion-item>
-
-    <ion-item *ngIf="tx.created_at">
-      <ion-label>
-        <span>Date</span>
-      </ion-label>
-      <ion-note item-end>
-        {{tx.created_at | amCalendar}}
-      </ion-note>
-    </ion-item>
-
-    <ion-item *ngIf="tx.price_sensitivity">
-      <ion-label>
-        <span>Price Sensitivity</span>
-      </ion-label>
-      <ion-note item-end>
-        {{tx.price_sensitivity.name}}
-      </ion-note>
-    </ion-item>
-
-    <ion-item *ngIf="tx.sell_price_amount">
-      <ion-label>
-        <span>Sell Price</span>
-      </ion-label>
-      <ion-note item-end>
-        {{tx.sell_price_amount}} {{tx.sell_price_currency}}
-      </ion-note>
-    </ion-item>
-
-    <ion-item *ngIf="tx.description">
-      <ion-label>
-        <span *ngIf="tx.from && tx.type == 'send'">Sent bitcoin from</span>
-        <span *ngIf="tx.to && tx.type == 'send'">Receive bitcoin in</span>
-      </ion-label>
-      <ion-note item-end>
-        {{tx.description}}
-      </ion-note>
-    </ion-item>
-
-    <ion-item-divider *ngIf="tx.status == 'error'"></ion-item-divider>
-
-    <ion-item *ngIf="tx.status == 'error'">
-      <ion-label>
-        <span (click)="remove()">Remove transaction</span>
-      </ion-label>
-    </ion-item>
-
-  </ion-list>
-</ion-content>
+  </div>
+</wide-header-page>

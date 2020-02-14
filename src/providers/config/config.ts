@@ -190,7 +190,7 @@ export class ConfigProvider {
 
       // External services
       showIntegration: {
-        coinbase: false,
+        coinbase: true,
         debitcard: true,
         amazon: true,
         mercadolibre: true,
@@ -314,6 +314,9 @@ export class ConfigProvider {
       }
       if (this.configCache.showIntegration.simplex !== false) {
         this.configCache.showIntegration.simplex = this.configDefault.showIntegration.simplex;
+      }
+      if (this.configCache.showIntegration.coinbase !== false) {
+        this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
       }
     }
     if (!this.configCache.pushNotifications) {

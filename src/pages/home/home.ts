@@ -25,6 +25,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
@@ -70,6 +71,9 @@ export class HomePage {
   public discountedCard: CardConfig;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
+  public showCoinbase: boolean = false;
+
+  private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
 
   constructor(
@@ -109,6 +113,7 @@ export class HomePage {
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
     if (this.platformProvider.isElectron) this.checkNewRelease();
+    this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
@@ -208,9 +213,17 @@ export class HomePage {
     this.homeIntegrations = _.remove(integrations, x => {
       this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
       if (x.name == 'debitcard' && x.linked) return false;
-      else {
+      else if (x.name == 'coinbase' && (x.show == false || x.linked == true)) {
+        this.showCoinbase = false;
+        return false;
+      } else {
         if (x.name != 'simplex') {
           this.showServicesOption = true;
+        }
+        if (x.name == 'coinbase') {
+          this.showCoinbase = x.show == true && x.linked == false;
+          this.hasOldCoinbaseSession = x.oldLinked;
+          if (this.showCoinbase) this.addCoinbase();
         }
         return x;
       }
@@ -247,6 +260,27 @@ export class HomePage {
       a => a.name === 'bitpay-card'
     );
     !alreadyVisible && this.advertisements.unshift(card);
+  }
+
+  private addCoinbase() {
+    const alreadyVisible = this.advertisements.find(a => a.name === 'coinbase');
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'coinbase',
+        title: this.hasOldCoinbaseSession
+          ? 'Updated Coinbase integration'
+          : 'Now connect your Coinbase account!',
+        body: this.hasOldCoinbaseSession
+          ? 'Reconnect your coinbase account to quickly withdraw and deposit funds.'
+          : 'Login to your Coinbase account to quickly withdraw and deposit funds.',
+        app: 'bitpay',
+        linkText: this.hasOldCoinbaseSession
+          ? 'Reconnect Account'
+          : 'Connect Account',
+        link: CoinbasePage,
+        dismissible: true,
+        imgSrc: 'assets/img/coinbase/coinbase-icon.png'
+      });
   }
 
   private async setDiscountedCard(): Promise<void> {
@@ -367,7 +401,10 @@ export class HomePage {
       this.persistenceProvider
         .getAdvertisementDismissed(advertisement.name)
         .then((value: string) => {
-          if (value === 'dismissed') {
+          if (
+            value === 'dismissed' ||
+            (!this.showCoinbase && advertisement.name == 'coinbase')
+          ) {
             this.removeAdvertisement(advertisement.name);
             return;
           }
