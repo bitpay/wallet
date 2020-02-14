@@ -8,7 +8,7 @@ import { BitPayAccountProvider } from '../../../../../../providers/bitpay-accoun
 import { BitPayCardProvider } from '../../../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../../../providers/popup/popup';
-
+import { PhaseOneCardNotify } from '../phase-one-notify-page/phase-one-notify-page';
 
 @Component({
   selector: 'page-bitpay-phase-one-card-intro',
@@ -46,6 +46,10 @@ export class PhaseOneCardIntro {
 
   public goBack() {
     this.navCtrl.pop();
+  }
+
+  public addMe() {
+    this.navCtrl.push(PhaseOneCardNotify);
   }
 
   public async orderBitPayCard() {

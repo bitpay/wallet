@@ -56,7 +56,8 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 
 // Integrations: BitPayCard - Phase one
 import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
-
+import { PhaseOneCardNotify } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-notify-page/phase-one-notify-page';
+import { OnTheList } from '../pages/integrations/bitpay-card/bitpay-card-phases/shared/on-the-list-page/on-the-list-page';
 
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
@@ -238,4 +239,6 @@ export const PAGES = [
   SlideToAcceptPage,
   //    Phase one card pages
   PhaseOneCardIntro,
+  PhaseOneCardNotify,
+  OnTheList
 ];
