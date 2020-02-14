@@ -600,7 +600,8 @@ ion-alert .alert-message {
   .bp-qr-card {
     width: 100%;
     img {
-      height: 100px;
+      height: auto;
+      width: 100%;
     }
   }
 
