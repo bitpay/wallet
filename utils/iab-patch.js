@@ -9,10 +9,7 @@ try {
   const content = fs.readFileSync(file, 'utf8');
 
   if (content.includes('20.0')) {
-    const result = content.replace(
-      /20.0/g,
-      '0'
-    );
+    const result = content.replace(/20.0/g, '0');
     fs.writeFileSync(file, result);
     console.log('successfully patched ios status bar height');
   }
