@@ -8,7 +8,7 @@ export class CardPhasesProvider {
 
   }
   public getSession() {
-    return this.http.get(`https://bitpay.com/visa-api/session`);
+    return this.http.get('https://bitpay.com/visa-api/session');
   }
 
   public notify(csrfToken, body) {
@@ -18,6 +18,6 @@ export class CardPhasesProvider {
     const options = {
       headers: httpHeaders
     };
-    return this.http.post(`https://bitpay.com/visa-api/interested`, body, options);
+    return this.http.post('https://bitpay.com/visa-api/interested', body, options);
   }
 }
