@@ -1,7 +1,7 @@
 <ion-header class="bp-header">
   <ion-navbar>
     <ion-title>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea" (click)="enableCard()">
         {{ 'Cards' | translate }}
       </div>
     </ion-title>
