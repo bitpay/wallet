@@ -3,7 +3,7 @@
   "packageDescription": "Copay Bitcoin Wallet",
   "packageNameId": "com.bitpay.copay",
   "packageNameIdDesktop": "com.bitpay.copay.desktop2",
-  "themeColor": "#192c3a",
+  "themeColor": "#0c204e",
   "userVisibleName": "Copay",
   "purposeLine": "Copay Bitcoin Wallet",
   "bundleName": "copay",
