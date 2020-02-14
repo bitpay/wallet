@@ -193,6 +193,7 @@
       <ion-item *ngIf="!tx.paypro">
         <ion-label stacked>{{'Destination Tag' | translate}}</ion-label>
         <ion-input class="padded-input" type="number" placeholder="{{'Enter a destination tag' | translate}}" [(ngModel)]="tx.destinationTag" name="tx.destinationTag" autocomplete="off" autocorrect="off"></ion-input>
+        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
       <label-tip *ngIf="!tx.paypro && !tx.destinationTag" type="info" header="no-header">
