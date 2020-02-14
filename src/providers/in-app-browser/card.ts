@@ -11,6 +11,8 @@ import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
 import { InAppBrowserProvider } from '../../providers/in-app-browser/in-app-browser';
 import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
+import { ProfileProvider } from '../profile/profile';
+
 import {
   Network,
   PersistenceProvider
@@ -36,7 +38,8 @@ export class IABCardProvider {
     private persistenceProvider: PersistenceProvider,
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private profileProvider: ProfileProvider
   ) {}
 
   async getCards() {
@@ -77,7 +80,7 @@ export class IABCardProvider {
               token
             });
           });
-          // TODO logic for handling mismatching emails?
+
           const user = await this.persistenceProvider.getBitPayIdUserInfo(
             Network[this.NETWORK]
           );
@@ -114,9 +117,27 @@ export class IABCardProvider {
               `${this.BITPAY_API_URL}/i/${invoiceId}`
             );
 
+            let hasWallets = {};
+            let availableWallets = [];
+            for (const option of details.paymentOptions) {
+              const fundedWallets = this.profileProvider.getWallets({
+                coin: option.currency.toLowerCase(),
+                network: option.network,
+                minAmount: option.estimatedAmount
+              });
+              if (fundedWallets.length === 0) {
+                option.disabled = true;
+              } else {
+                hasWallets[option.currency.toLowerCase()] =
+                  fundedWallets.length;
+                availableWallets.push(option);
+              }
+            }
+
             const stateParams = {
               payProOptions: details,
-              walletCardRedir: true
+              walletCardRedir: true,
+              hasWallets
             };
 
             let nextView = {

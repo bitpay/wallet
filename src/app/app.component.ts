@@ -278,7 +278,7 @@ export class CopayApp {
       let token;
       try {
         token = await this.persistenceProvider.getBitPayIdPairingToken(
-          Network[this.NETWORK]
+          Network['testnet']
         );
       } catch (err) {
         this.logger.log(err);
