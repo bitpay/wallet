@@ -34,9 +34,9 @@ describe('ConfirmPage', () => {
   });
 
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
+    describe('ionViewDidLoad', () => {
       it('should set swipeBackEnabled to false', () => {
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(instance.navCtrl.swipeBackEnabled).toBe(false);
       });
       it('should display an error message if attempting to send to an old bch address', () => {
@@ -47,7 +47,7 @@ describe('ConfirmPage', () => {
           instance.popupProvider,
           'ionicConfirm'
         ).and.returnValue(Promise.resolve());
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(popupSpy).toHaveBeenCalled();
       });
       it('should instantiate the wallet selector with relevant wallets', () => {
@@ -63,7 +63,7 @@ describe('ConfirmPage', () => {
           onDidDismiss() {}
         });
         instance.wallets = [{}, {}];
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(setWalletSelectorSpy).toHaveBeenCalled();
       });
     });

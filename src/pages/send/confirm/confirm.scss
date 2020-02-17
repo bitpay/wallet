@@ -175,4 +175,10 @@ page-bitpay-card-topup {
     border-radius: 21px;
     margin: 25px auto;
   }
+  .scanner-icon {
+    z-index: 99;
+    font-size: 28px;
+    color: color($colors, primary);
+    padding-top: 20px;
+  }
 }
