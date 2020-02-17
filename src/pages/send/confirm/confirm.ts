@@ -34,6 +34,8 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+
+import { FormatCurrencyPipe } from '../../../pipes/format-currency';
 import {
   TransactionProposal,
   WalletProvider
@@ -94,6 +96,7 @@ export class ConfirmPage {
     protected configProvider: ConfigProvider,
     protected currencyProvider: CurrencyProvider,
     protected decimalPipe: DecimalPipe,
+    public formatCurrency: FormatCurrencyPipe,
     protected externalLinkProvider: ExternalLinkProvider,
     protected feeProvider: FeeProvider,
     protected logger: Logger,

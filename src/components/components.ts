@@ -1,3 +1,4 @@
+import { ConfirmCardPurchasePage } from '../pages/integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ActionCardV4Component } from './action-card-v4/action-card-v4';
 import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
@@ -21,5 +22,6 @@ export const COMPONENTS = [
   WalletItemContent,
   ClipboardCardPage,
   SearchBarComponent,
-  ExchangeRates
+  ExchangeRates,
+  ConfirmCardPurchasePage
 ];

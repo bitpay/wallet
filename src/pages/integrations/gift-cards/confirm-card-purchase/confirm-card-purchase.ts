@@ -19,6 +19,7 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 // Provider
 import { DecimalPipe } from '@angular/common';
+import { FormatCurrencyPipe } from '../../../../pipes/format-currency';
 import {
   AddressProvider,
   EmailNotificationsProvider,
@@ -90,6 +91,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     configProvider: ConfigProvider,
     currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
+    formatCurrency: FormatCurrencyPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
@@ -122,6 +124,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       configProvider,
       currencyProvider,
       decimalPipe,
+      formatCurrency,
       externalLinkProvider,
       feeProvider,
       logger,
@@ -635,12 +638,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
   }
 
-  public async onWalletSelect(wallet) {
+  public async onWalletSelect(wallet): Promise<void> {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     const email = await this.promptEmail();
     if (email) {
-      this.initialize(wallet, email).catch(() => {});
+      await this.initialize(wallet, email).catch(() => {});
     } else {
       this.setEmail(wallet);
     }

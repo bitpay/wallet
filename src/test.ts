@@ -79,15 +79,17 @@ import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
 import { ShortenedAddressPipe } from './pipes/shortened-address';
 
-import { DomProvider, Logger } from './providers';
+import { DomProvider, Logger, ReplaceParametersProvider } from './providers';
 import { ProvidersModule } from './providers/providers.module';
 
 import { ImageLoader, IonicImageLoader } from 'ionic-image-loader';
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
 import { ActionSheetComponent } from './components/action-sheet/action-sheet';
 import { InfoSheetComponent } from './components/info-sheet/info-sheet';
+import { FormatCurrencyPipe } from './pipes/format-currency';
 import { DomProviderMock } from './providers/dom/dom.mock';
 import { LoggerMock } from './providers/logger/logger.mock';
+import { EmailComponent } from './components/email-component/email-component';
 
 declare const require: any;
 
@@ -232,8 +234,10 @@ export class TestUtils {
         SatToFiatPipe,
         SatToUnitPipe,
         ShortenedAddressPipe,
+        FormatCurrencyPipe,
         InfoSheetComponent,
-        ActionSheetComponent
+        ActionSheetComponent,
+        EmailComponent
       ],
       imports: [...baseImports, MomentModule, ProvidersModule],
       schemas: [NO_ERRORS_SCHEMA],
@@ -242,18 +246,24 @@ export class TestUtils {
         AppProvider,
         DecimalPipe,
         KeysPipe,
+        FormatCurrencyPipe,
         OrderByPipe,
         SatToFiatPipe,
         SatToUnitPipe,
         ShortenedAddressPipe,
         GestureController,
         PlatformProvider,
+        ReplaceParametersProvider,
         ...providers
       ]
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [InfoSheetComponent, ActionSheetComponent]
+          entryComponents: [
+            InfoSheetComponent,
+            ActionSheetComponent,
+            EmailComponent
+          ]
         }
       })
       .compileComponents();
