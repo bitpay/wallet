@@ -141,7 +141,7 @@ page-cards {
         align-items: center;
         color: #ffffff;
         padding: 1rem 1.5rem 8px;
-        border-radius: 0 0 11px 11px;
+        border-radius: 11px 11px 0 0;
         margin-top: 8px;
         margin-bottom: 0;
 
@@ -181,11 +181,13 @@ page-cards {
 .fade-in {
   animation: fadeInX 400ms;
 }
+
 @keyframes fadeInX {
   from {
     transform: translateX(25px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
