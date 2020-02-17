@@ -146,15 +146,24 @@
           </ion-label>
           <ion-note item-end>
             <div class="total-amount">
-              <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
+              <span *ngIf="totalAmountStr && !isERCToken; else fiatAmount">{{totalAmountStr}}</span>
+            </div>
+          </ion-note>
+        </ion-item>
+    
+        <div class="amount-details">
+          <div class="secondary-note">
+            <div *ngIf="isERCToken; else fiatAmount"></div>
+            <ng-template #fiatAmount>
               <span *ngIf="totalAmount">
                 <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span>
                 <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span>
                 {{currencyIsoCode}}
               </span>
-            </div>
-          </ion-note>
-        </ion-item>
+            </ng-template>
+          </div>
+        </div>
+
       </div>
       <ion-item>
         <card-terms *ngIf="cardConfig" [cardName]="cardConfig.name"></card-terms>
