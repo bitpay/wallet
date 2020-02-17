@@ -24,17 +24,22 @@ page-home {
       }
     }
     .average-container {
+      display: flex;
       text-align: center;
       height: 21px;
-      width: 80px;
-      border-radius: 7px;
       .negative-avg {
         color: #cf2f32;
         background-color: rgba(207, 47, 60, 0.1);
+        border-radius: 50vh;
+        padding-right: 1rem;
+        padding-left: 1rem;
       }
       .possitive-avg {
         color: #2fcfa4;
         background-color: rgba(47, 207, 164, 0.1);
+        border-radius: 50vh;
+        padding-right: 1rem;
+        padding-left: 1rem;
       }
       .average {
         font-size: 14px;
@@ -42,6 +47,18 @@ page-home {
         height: 21px;
         font-weight: 500;
       }
+      .date {
+        font-weight: 500;
+        color: #434d5a;
+        opacity: 50%;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+  .section-header {
+    .date {
+      font-weight: 500;
+      color: color($colors, primary);
     }
   }
   .balance-hidden {

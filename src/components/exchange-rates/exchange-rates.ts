@@ -64,13 +64,13 @@ export class ExchangeRates {
       this.exchangeRatesProvider
         .getHistoricalRates(this.isoCode, coin.unitCode)
         .subscribe(
-          response => {
-            this.coins[index].historicalRates = response.reverse();
-            this.updateValues(index);
-          },
-          err => {
-            this.logger.error('Error getting rates:', err);
-          }
+        response => {
+          this.coins[index].historicalRates = response.reverse();
+          this.updateValues(index);
+        },
+        err => {
+          this.logger.error('Error getting rates:', err);
+        }
         );
     });
   }
@@ -87,15 +87,15 @@ export class ExchangeRates {
       this.exchangeRatesProvider
         .getCurrentRate(this.isoCode, coin.unitCode)
         .subscribe(
-          response => {
-            this.coins[i].historicalRates[
-              this.coins[i].historicalRates.length - 1
-            ] = response;
-            this.updateValues(i);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-          }
+        response => {
+          this.coins[i].historicalRates[
+            this.coins[i].historicalRates.length - 1
+          ] = response;
+          this.updateValues(i);
+        },
+        err => {
+          this.logger.error('Error getting current rate:', err);
+        }
         );
     });
   }
@@ -115,5 +115,14 @@ export class ExchangeRates {
       .alternativeIsoCode;
     this.isIsoCodeSupported = _.includes(this.fiatCodes, alternativeIsoCode);
     this.isoCode = this.isIsoCodeSupported ? alternativeIsoCode : 'USD';
+  }
+
+  public getDigitsInfo(coin: string) {
+    switch (coin) {
+      case 'xrp':
+        return '1.4-4';
+      default:
+        return '1.2-2';
+    }
   }
 }

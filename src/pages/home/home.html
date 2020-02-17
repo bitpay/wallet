@@ -91,6 +91,7 @@
       <div *ngIf="averagePrice || averagePrice === 0" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
         <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number: '1.2-2' }}%</span>
       </div>
+      <span *ngIf="averagePrice || averagePrice === 0" class="date">| 1w</span>
     </div>
   </div>
 
@@ -160,7 +161,10 @@
   </ion-slides>
 
   <div padding-right>
-    <div class="section-header" translate>Exchange Rates</div>
+    <div class="section-header">
+      <div translate>Exchange Rates</div>
+      <div class="date">1w</div>
+    </div>
     <exchange-rates #exchangeRates></exchange-rates>
   </div>
 </ion-content>
