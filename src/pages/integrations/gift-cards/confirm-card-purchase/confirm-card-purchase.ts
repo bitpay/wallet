@@ -581,6 +581,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ctxp.amount || amountSat
     );
 
+    this.logger.info('Tx for gift purchase', this.tx);
     // Warn: fee too high
     if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
       this.checkFeeHigh(
