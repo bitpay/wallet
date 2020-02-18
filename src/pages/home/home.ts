@@ -19,6 +19,7 @@ import {
   TabProvider,
   WalletProvider
 } from '../../providers';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
@@ -110,6 +111,7 @@ export class HomePage {
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
+    private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private formatCurrencyPipe: FormatCurrencyPipe,
@@ -499,6 +501,7 @@ export class HomePage {
   }
 
   public goToBuyCrypto() {
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
     this.simplexProvider.getSimplex().then(simplexData => {
       if (simplexData && !_.isEmpty(simplexData)) {
         this.navCtrl.push(SimplexPage);
