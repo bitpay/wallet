@@ -16,7 +16,6 @@ import { AddressProvider } from '../../../providers/address/address';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ErrorsProvider } from '../../../providers/errors/errors';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -65,7 +64,6 @@ export class MultiSendPage {
     private addressProvider: AddressProvider,
     private events: Events,
     private actionSheetProvider: ActionSheetProvider,
-    private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
@@ -319,11 +317,13 @@ export class MultiSendPage {
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
-        let url =
-          'https://bitpay.github.io/address-translator?addr=' + this.search;
-        this.externalLinkProvider.open(url);
+        const legacyAddr = this.search;
+        const cashAddr = this.addressProvider.translateToCashAddress(
+          legacyAddr
+        );
+        this.search = cashAddr;
+        this.processInput();
       }
-      this.search = '';
     });
   }
 

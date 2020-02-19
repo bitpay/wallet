@@ -19,6 +19,11 @@ export class AddressProvider {
     this.core = this.bwcProvider.getCore();
   }
 
+  public translateToCashAddress(addressToTranslate: string): string {
+    var addressObj = this.bitcore.Address(addressToTranslate).toObject();
+    return this.bitcoreCash.Address.fromObject(addressObj).toCashAddress();
+  }
+
   public extractAddress(str: string): string {
     const extractedAddress = str.replace(/^[a-z]+:/i, '').replace(/\?.*/, '');
     return extractedAddress;
