@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Logger } from '../../providers/logger/logger';
 
 export interface CoinNetwork {
   coin: string;
@@ -13,7 +14,7 @@ export class AddressProvider {
   private bitcoreCash;
   private core;
 
-  constructor(private bwcProvider: BwcProvider) {
+  constructor(private bwcProvider: BwcProvider, private logger: Logger) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.core = this.bwcProvider.getCore();
@@ -21,7 +22,11 @@ export class AddressProvider {
 
   public translateToCashAddress(addressToTranslate: string): string {
     var addressObj = this.bitcore.Address(addressToTranslate).toObject();
-    return this.bitcoreCash.Address.fromObject(addressObj).toCashAddress();
+    const cashAdrr = this.bitcoreCash.Address.fromObject(
+      addressObj
+    ).toCashAddress();
+    this.logger.info(`converted: ${addressToTranslate} -> ${cashAdrr}`);
+    return cashAdrr;
   }
 
   public extractAddress(str: string): string {
