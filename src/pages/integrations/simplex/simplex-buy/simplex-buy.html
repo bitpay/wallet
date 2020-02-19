@@ -34,9 +34,10 @@
       </ion-item>
       <ion-item>
         <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
-        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+        <ion-select [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
           <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
           <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
         </ion-select>
       </ion-item>
       <label-tip type="warn" header="no-header" *ngIf="!quoteForm.controls.amount.valid">
