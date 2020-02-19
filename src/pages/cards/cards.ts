@@ -17,7 +17,7 @@ export class CardsPage {
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
-  public longPressed = 0;
+  public tapped = 0;
   public showBitpayCardGetStarted: boolean;
   public ready: boolean;
   public cardExperimentEnabled: boolean;
@@ -73,9 +73,9 @@ export class CardsPage {
   }
 
   public enableCard() {
-    this.longPressed++;
+    this.tapped++;
 
-    if (this.longPressed >= 3) {
+    if (this.tapped >= 10) {
       this.persistenceProvider.getCardExperimentFlag().then(res => {
         res === 'enabled'
           ? this.persistenceProvider.removeCardExperimentFlag()
@@ -86,7 +86,7 @@ export class CardsPage {
             res === 'enabled' ? 'disabled' : 'enabled'
           }. Restart required.`
         );
-        this.longPressed = 0;
+        this.tapped = 0;
       });
     }
   }

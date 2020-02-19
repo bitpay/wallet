@@ -1,4 +1,4 @@
-<ion-header class="bp-header" (longPress)="enableCard()">
+<ion-header class="bp-header">
   <ion-navbar>
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
@@ -10,7 +10,7 @@
 <ion-content #scrollArea>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
+      <ion-toolbar class="wide-header__title" (click)="enableCard()" tappable>
         <expandable-header-primary>
           {{ 'Cards' | translate }}
         </expandable-header-primary>
