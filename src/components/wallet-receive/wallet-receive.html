@@ -64,9 +64,9 @@
       <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
         <div>...</div>
       </div>
-      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="address">
-        <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ address }}" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-      </div>
+      <bp-qr-code *ngIf="address" class="card qr-card bp-qr-card" legacy="{{ useLegacyQrCode }}" copy-to-clipboard="{{ address }}" contents="{{ address }}" [moduleColor]="currencyProvider.getModuleColor(wallet.coin)" [positionRingColor]="currencyProvider.getPositionRingColor(wallet.coin)" [positionCenterColor]="currencyProvider.getPositionCenterColor(wallet.coin)" mask-x-to-y-ratio="1">
+        <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
+      </bp-qr-code>
     </div>
     <div class="line-divider"></div>
     <div class="close-btn" text-center>

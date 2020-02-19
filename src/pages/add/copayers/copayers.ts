@@ -15,6 +15,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -37,6 +39,7 @@ export class CopayersPage {
   public wallet;
   public copayers: any[];
   public secret;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
@@ -58,7 +61,9 @@ export class CopayersPage {
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public currencyProvider: CurrencyProvider,
+    private configProvider: ConfigProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -66,6 +71,7 @@ export class CopayersPage {
     this.isCordova = this.platformProvider.isCordova;
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.useLegacyQrCode = this.configProvider.get().useLegacyQrCode;
   }
 
   ionViewDidLoad() {

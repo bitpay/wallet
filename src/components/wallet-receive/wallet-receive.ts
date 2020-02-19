@@ -1,17 +1,12 @@
 import { Component } from '@angular/core';
-// import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
-import { Logger } from '../../providers/logger/logger';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
-// Native
-// import { SocialSharing } from '@ionic-native/social-sharing';
-
-// Pages
-// import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
+import { CurrencyProvider } from '../../providers/currency/currency';
+import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { Events, Platform } from 'ionic-angular';
@@ -31,6 +26,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public loading: boolean;
   public playAnimation: boolean;
   public newAddressError: boolean;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -40,13 +36,16 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private walletProvider: WalletProvider,
     private events: Events,
     private bwcErrorProvider: BwcErrorProvider,
-    private platform: Platform
+    private platform: Platform,
+    public currencyProvider: CurrencyProvider,
+    private configProvider: ConfigProvider
   ) {
     super();
   }
 
   ngOnInit() {
     this.wallet = this.params.wallet;
+    this.useLegacyQrCode = this.configProvider.get().useLegacyQrCode;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
       this.events.subscribe('bwsEvent', this.bwsEventHandler);

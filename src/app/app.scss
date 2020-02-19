@@ -270,7 +270,7 @@ button.item {
 }
 
 .background_xrp.testnet {
-  filter: opacity(0.5);
+  filter: opacity(0.4);
 }
 
 .icon-card {
@@ -594,6 +594,14 @@ ion-alert .alert-message {
       height: 100%;
       width: 100%;
       opacity: 0.715;
+    }
+  }
+
+  .bp-qr-card {
+    width: 100%;
+    img {
+      height: auto;
+      width: 100%;
     }
   }
 

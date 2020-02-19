@@ -1165,32 +1165,36 @@ export class ProfileProvider {
   public importWithDerivationPath(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Importing Wallet with derivation path');
-      this._importWithDerivationPath(opts).then(data => {
-        // Check if wallet exists
-        data.walletClient.openWallet(err => {
-          if (err) {
-            if (err.message.indexOf('not found') > 0) {
-              err = 'WALLET_DOES_NOT_EXIST';
+      this._importWithDerivationPath(opts)
+        .then(data => {
+          // Check if wallet exists
+          data.walletClient.openWallet(err => {
+            if (err) {
+              if (err.message.indexOf('not found') > 0) {
+                err = 'WALLET_DOES_NOT_EXIST';
+              }
+              return reject(err);
             }
-            return reject(err);
-          }
-          this.keyProvider.addKey(data.key).then(() => {
-            this.addAndBindWalletClient(data.walletClient, {
-              bwsurl: opts.bwsurl
-            })
-              .then(walletClient => {
-                return this.checkIfAlreadyExist([].concat(walletClient)).then(
-                  () => {
-                    return resolve(walletClient);
-                  }
-                );
+            this.keyProvider.addKey(data.key).then(() => {
+              this.addAndBindWalletClient(data.walletClient, {
+                bwsurl: opts.bwsurl
               })
-              .catch(err => {
-                return reject(err);
-              });
+                .then(walletClient => {
+                  return this.checkIfAlreadyExist([].concat(walletClient)).then(
+                    () => {
+                      return resolve(walletClient);
+                    }
+                  );
+                })
+                .catch(err => {
+                  return reject(err);
+                });
+            });
           });
+        })
+        .catch(err => {
+          return reject(err);
         });
-      });
     });
   }
 

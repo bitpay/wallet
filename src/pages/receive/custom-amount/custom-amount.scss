@@ -26,9 +26,6 @@ page-custom-amount {
     .qr-card {
       max-height: 425px;
       cursor: pointer;
-      @media (max-height: 530px) {
-        width: 60%;
-      }
       .copy-icon {
         position: absolute;
         top: 1.5rem;
@@ -36,7 +33,6 @@ page-custom-amount {
       }
       .qr-card-amount {
         text-align: center;
-        margin-bottom: -10px;
         margin-top: 15px;
         font-size: 1.8rem;
         font-weight: bold;
