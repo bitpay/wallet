@@ -80,6 +80,18 @@
         <ion-toggle [(ngModel)]="showBalance" (ionChange)="toggleShowBalanceFlag()"></ion-toggle>
       </button>
 
+      <button ion-item>
+        <ion-icon class="item-img icon-settings" style="opacity: 0.3;" item-start>
+          <img src="assets/img/settings-icons/icon-qrcode.svg">
+        </ion-icon>
+        <ion-label>
+          <div class="main-label">
+            {{'Use Legacy QR Code' | translate}}
+          </div>
+        </ion-label>
+        <ion-toggle [(ngModel)]="useLegacyQrCode" (ionChange)="toggleQrCodeLegacyFlag()"></ion-toggle>
+      </button>
+
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
         {{ 'Crypto Wallets & Keys' | translate }}
       </ion-item-divider>

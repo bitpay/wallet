@@ -4,7 +4,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
 
-import { ErrorHandler, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {
   Config,
@@ -143,7 +143,8 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       useClass: IonicErrorHandler
     },
     FormatCurrencyPipe
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
   constructor(public config: Config) {}
