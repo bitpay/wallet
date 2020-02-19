@@ -42,7 +42,9 @@ export class SimplexBuyPage {
   public maxFiatAmount: number;
   public supportedFiatAltCurrencies: string[];
   public altCurrenciesToShow: string[];
+  public altCurrenciesToShow2: string[];
   public altCurrencyInitial: string;
+  public selectOptions;
 
   // Platform info
   public isCordova: boolean;
@@ -72,6 +74,8 @@ export class SimplexBuyPage {
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
+    this.altCurrenciesToShow2 = [];
+    this.supportedFiatAltCurrencies = this.simplexProvider.getSupportedFiatAltCurrencies();
     const config = this.configProvider.get();
     const isoCode = config.wallet.settings.alternativeIsoCode;
 
@@ -105,6 +109,16 @@ export class SimplexBuyPage {
 
     if (this.altCurrenciesToShow.indexOf(this.altCurrencyInitial) < 0)
       this.altCurrenciesToShow.push(this.altCurrencyInitial);
+
+    this.selectOptions = {
+      title: this.translate.instant('Select Currency'),
+      cssClass: 'simplex-currency-' + (this.altCurrenciesToShow.length + 1)
+    };
+
+    this.supportedFiatAltCurrencies.forEach((currency: string) => {
+      if (this.altCurrenciesToShow.indexOf(currency) < 0)
+        this.altCurrenciesToShow2.push(currency);
+    });
 
     this.okText = this.translate.instant('Select');
     this.cancelText = this.translate.instant('Cancel');
@@ -178,7 +192,8 @@ export class SimplexBuyPage {
 
   public currencyIsFiat(): boolean {
     return (
-      this.altCurrenciesToShow.indexOf(this.quoteForm.value.altCurrency) > -1
+      this.altCurrenciesToShow.indexOf(this.quoteForm.value.altCurrency) > -1 ||
+      this.altCurrenciesToShow2.indexOf(this.quoteForm.value.altCurrency) > -1
     );
   }
 

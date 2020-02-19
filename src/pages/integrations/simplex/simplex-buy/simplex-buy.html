@@ -26,9 +26,10 @@
     <form class="form-margin" [formGroup]="quoteForm">
       <ion-item>
         <ion-input class="input-box" item-end type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
-        <ion-select class="switcher" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+        <ion-select class="switcher" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
           <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
           <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
         </ion-select>
       </ion-item>
     </form>
@@ -103,7 +104,7 @@
       </ion-note>
     </ion-item>
 
-    <div class="line-divider"></div>
+    <div *ngIf="!currencyIsFiat()" class="line-divider"></div>
 
     <ion-item *ngIf="!currencyIsFiat()">
       <ion-label>
@@ -148,7 +149,7 @@
       </ion-label>
       <ion-note item-end>
         <div class="total-amount" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
-          <span *ngIf="!currencyIsFiat()">{{ fiatTotalAmount }} {{ fiatCurrency }}</span>
+          <span *ngIf="!currencyIsFiat()">{{ fiatTotalAmount | number : '1.2-2' }} {{ fiatCurrency }}</span>
           <span *ngIf="currencyIsFiat()">
             {{ cryptoAmount }} {{ wallet.coin | uppercase }}
           </span>
@@ -165,7 +166,7 @@
     </div>
   </ion-list>
 
-  <label-tip type="warn" header="no-header" *ngIf="currencyIsFiat() && quoteForm.controls.amount.valid">
+  <label-tip type="warn" header="no-header" *ngIf="quoteForm.controls.amount.valid">
     <div label-tip-body>
       <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate.</div>
     </div>

@@ -83,3 +83,19 @@ page-simplex-buy {
     margin: 0 auto;
   }
 }
+
+.simplex-currency-3 {
+  .alert-radio-group {
+    button:nth-child(3) {
+      border-bottom: 1px solid #dedede;
+    }
+  }
+}
+
+.simplex-currency-4 {
+  .alert-radio-group {
+    button:nth-child(4) {
+      border-bottom: 1px solid #dedede;
+    }
+  }
+}
