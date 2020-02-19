@@ -8,6 +8,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -27,6 +28,7 @@ export class CustomAmountPage {
   public amountUnitStr: string;
   public amountCoin: string;
   public altAmountStr: string;
+  public useLegacyQrCode: boolean;
 
   constructor(
     public currencyProvider: CurrencyProvider,
@@ -38,10 +40,12 @@ export class CustomAmountPage {
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private configProvider: ConfigProvider
   ) {
     const walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
+    this.useLegacyQrCode = this.configProvider.get().useLegacyQrCode;
 
     this.wallet = this.profileProvider.getWallet(walletId);
 
