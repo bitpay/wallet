@@ -1303,6 +1303,8 @@ export class ProfileProvider {
                 n: opts.n || 1
               })
             );
+            if (opts && opts.password)
+              opts.password = '\0'.repeat(opts.password.length);
           } else {
             return reject(e);
           }
@@ -1351,6 +1353,8 @@ export class ProfileProvider {
                     err,
                     this.translate.instant('Error creating wallet')
                   );
+                  if (opts.password)
+                    opts.password = '\0'.repeat(opts.password.length);
                   return reject(msg);
                 } else if (copayerRegistered) {
                   // try with account + 1
@@ -1376,6 +1380,8 @@ export class ProfileProvider {
                     prefs,
                     data.walletClient.preferences
                   );
+                  if (opts.password)
+                    opts.password = '\0'.repeat(opts.password.length);
                   return resolve(data);
                 }
               }
@@ -1606,6 +1612,7 @@ export class ProfileProvider {
   public createWallet(opts) {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
+      if (password) password = '\0'.repeat(password.length);
       return this._createWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();
@@ -1626,6 +1633,7 @@ export class ProfileProvider {
   public joinWallet(opts): Promise<any> {
     return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
       opts.password = password;
+      if (password) password = '\0'.repeat(password.length);
       return this._joinWallet(opts).then(data => {
         // Encrypt wallet
         this.onGoingProcessProvider.pause();

@@ -1124,6 +1124,7 @@ export class WalletProvider {
         txp,
         password
       );
+      if (password) password = '\0'.repeat(password.length);
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
@@ -1610,29 +1611,11 @@ export class WalletProvider {
           let keys;
           try {
             keys = this.getKeysWithPassword(wallet, password);
+            if (password) password = '\0'.repeat(password.length);
           } catch (e) {
             return reject(e);
           }
           return resolve(keys);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  public getMnemonicAndPassword(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.prepare(wallet)
-        .then((password: string) => {
-          let keys;
-          try {
-            keys = this.getKeysWithPassword(wallet, password);
-          } catch (e) {
-            return reject(e);
-          }
-          const mnemonic = keys.mnemonic;
-          return resolve({ mnemonic, password });
         })
         .catch(err => {
           return reject(err);
