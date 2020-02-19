@@ -1,29 +1,61 @@
 page-simplex-buy {
-  .spinner {
-    text-align: center;
-    margin: 15px 0;
-  }
   ion-spinner {
     * {
       stroke: #0d172c !important;
     }
   }
-
+  .form-margin {
+    padding-right: 0.8rem;
+    .switcher {
+      color: #4f6ef7;
+      background: rgba(79, 110, 247, 0.1);
+      border-radius: 50vh;
+      padding: 1rem 1.2rem 1rem 1.2rem;
+    }
+    .input-box {
+      border-bottom: 1px solid #4f6ef7;
+    }
+  }
   .wallet {
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    span {
+      height: 19px;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19px;
+      text-align: right;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md,
+      &.icon-ios {
+        margin: 9px 0px 9px 0;
+        justify-content: center;
+        padding: 7px;
+        img {
+          width: 20px;
+        }
+        &.rectangle {
+          border-radius: 7px;
+          justify-content: center;
+        }
+        .coin-img {
+          width: 12px;
+          height: 18px;
+          margin: 0px;
+          &-btc,
+          &-bch {
+            width: 12px;
+          }
+          &-eth {
+            width: 20px;
+          }
+        }
+      }
+    }
     .multiple-length {
       display: flex;
-    }
-    .coin-img {
-      &-btc,
-      &-bch {
-        width: 12px;
-      }
-      &-eth {
-        width: 20px;
-      }
     }
     .text-address {
       display: flex;
@@ -36,15 +68,15 @@ page-simplex-buy {
       padding-left: 1rem;
     }
   }
-  .total-amount ion-note {
-    text-align: right;
-  }
   .terms {
     padding: 0 3rem 3rem 3rem;
     color: color($colors, light-grey);
     a {
       cursor: pointer;
     }
+  }
+  .terms-margin {
+    margin-top: 3rem;
   }
   .simplex-logo {
     display: flex;

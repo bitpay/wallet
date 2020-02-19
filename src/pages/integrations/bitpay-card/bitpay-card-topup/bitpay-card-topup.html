@@ -126,7 +126,7 @@
       </ion-label>
       <ion-note item-end>
         <div class="total-amount">
-          <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}} ~ </span>
+          <span *ngIf="totalAmountStr && !isERCToken">{{totalAmountStr}}</span>
           <span *ngIf="totalAmount && isERCToken">{{totalAmount | number:'1.2-2'}} {{currencyIsoCode}} </span>
         </div>
       </ion-note>

@@ -44,6 +44,10 @@ export class SimplexBuyPage {
   public altCurrenciesToShow: string[];
   public altCurrencyInitial: string;
 
+  // Platform info
+  public isCordova: boolean;
+  public hideSlideButton: boolean;
+
   private quoteId: string;
   private createdOn: string;
 
@@ -66,6 +70,8 @@ export class SimplexBuyPage {
     private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
+    this.isCordova = this.platformProvider.isCordova;
+    this.hideSlideButton = false;
     const config = this.configProvider.get();
     const isoCode = config.wallet.settings.alternativeIsoCode;
 
@@ -105,6 +111,16 @@ export class SimplexBuyPage {
     this.showLoading = false;
     this.minFiatAmount = 50;
     this.maxFiatAmount = 20000;
+
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideSlideButton = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideSlideButton = false;
+      });
+    }
 
     if (_.isEmpty(this.wallets)) {
       this.showError(
