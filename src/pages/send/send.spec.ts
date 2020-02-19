@@ -15,6 +15,7 @@ describe('SendPage', () => {
 
   const wallet = {
     coin: 'bch',
+    network: 'testnet',
     status: {
       totalBalanceStr: '1.000000'
     }
@@ -44,7 +45,6 @@ describe('SendPage', () => {
         );
         instance.ionViewWillEnter();
 
-        expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'btc' });
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
       });
     });
@@ -90,7 +90,7 @@ describe('SendPage', () => {
       });
 
       it('should handle btc livenet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
           memo:
@@ -122,10 +122,9 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
-          {
-            activePage: 'SendPage'
-          }
+          'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
+          'btc',
+          true
         );
       }));
 
@@ -154,6 +153,13 @@ describe('SendPage', () => {
       });
 
       it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'bch',
+          network: 'testnet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -187,6 +193,13 @@ describe('SendPage', () => {
       }));
 
       it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'bch',
+          network: 'livenet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -280,7 +293,7 @@ describe('SendPage', () => {
       });
 
       it('should handle btc testnet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
           memo:
@@ -312,10 +325,9 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
-          {
-            activePage: 'SendPage'
-          }
+          'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
+          'btc',
+          true
         );
       }));
 
@@ -344,6 +356,13 @@ describe('SendPage', () => {
       });
 
       it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'bch',
+          network: 'testnet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -376,6 +395,13 @@ describe('SendPage', () => {
       }));
 
       it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'bch',
+          network: 'livenet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -409,6 +435,13 @@ describe('SendPage', () => {
       }));
 
       it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'btc',
+          network: 'testnet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -469,7 +502,7 @@ describe('SendPage', () => {
       });
 
       it('should handle bch livenet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
           memo:
@@ -501,10 +534,9 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          {
-            activePage: 'SendPage'
-          }
+          'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          'bch',
+          true
         );
       }));
 
@@ -533,6 +565,13 @@ describe('SendPage', () => {
       });
 
       it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'btc',
+          network: 'testnet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -599,6 +638,13 @@ describe('SendPage', () => {
       }));
 
       it('should handle paypro btc testnet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'btc',
+          network: 'livenet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -659,7 +705,7 @@ describe('SendPage', () => {
       });
 
       it('should handle bch testnet paypro and call to redir function', fakeAsync(() => {
-        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
           memo:
@@ -691,10 +737,9 @@ describe('SendPage', () => {
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
-          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
-          {
-            activePage: 'SendPage'
-          }
+          'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          'bch',
+          true
         );
       }));
 
@@ -727,6 +772,13 @@ describe('SendPage', () => {
       });
 
       it('should handle paypro BTC livenet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'btc',
+          network: 'testnet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -760,6 +812,13 @@ describe('SendPage', () => {
       }));
 
       it('should handle paypro BTC testnet and call error modal', fakeAsync(() => {
+        instance.wallet = {
+          coin: 'btc',
+          network: 'livenet',
+          status: {
+            totalBalanceStr: '1.000000'
+          }
+        };
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',

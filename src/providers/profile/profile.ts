@@ -12,6 +12,7 @@ import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { CurrencyProvider } from '../currency/currency';
+import { ErrorsProvider } from '../errors/errors';
 import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
@@ -72,7 +73,8 @@ export class ProfileProvider {
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -759,12 +761,7 @@ export class ProfileProvider {
         );
         const msg = countInArray == 1 ? msg1 : msg2;
         const title = this.translate.instant('Error');
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'default-error',
-          { msg, title }
-        );
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
+        this.errorsProvider.showDefaultError(msg, title, () => {
           return resolve();
         });
       } else {
@@ -1168,32 +1165,36 @@ export class ProfileProvider {
   public importWithDerivationPath(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Importing Wallet with derivation path');
-      this._importWithDerivationPath(opts).then(data => {
-        // Check if wallet exists
-        data.walletClient.openWallet(err => {
-          if (err) {
-            if (err.message.indexOf('not found') > 0) {
-              err = 'WALLET_DOES_NOT_EXIST';
+      this._importWithDerivationPath(opts)
+        .then(data => {
+          // Check if wallet exists
+          data.walletClient.openWallet(err => {
+            if (err) {
+              if (err.message.indexOf('not found') > 0) {
+                err = 'WALLET_DOES_NOT_EXIST';
+              }
+              return reject(err);
             }
-            return reject(err);
-          }
-          this.keyProvider.addKey(data.key).then(() => {
-            this.addAndBindWalletClient(data.walletClient, {
-              bwsurl: opts.bwsurl
-            })
-              .then(walletClient => {
-                return this.checkIfAlreadyExist([].concat(walletClient)).then(
-                  () => {
-                    return resolve(walletClient);
-                  }
-                );
+            this.keyProvider.addKey(data.key).then(() => {
+              this.addAndBindWalletClient(data.walletClient, {
+                bwsurl: opts.bwsurl
               })
-              .catch(err => {
-                return reject(err);
-              });
+                .then(walletClient => {
+                  return this.checkIfAlreadyExist([].concat(walletClient)).then(
+                    () => {
+                      return resolve(walletClient);
+                    }
+                  );
+                })
+                .catch(err => {
+                  return reject(err);
+                });
+            });
           });
+        })
+        .catch(err => {
+          return reject(err);
         });
-      });
     });
   }
 
@@ -1789,20 +1790,20 @@ export class ProfileProvider {
     );
   }
 
-  public getHideTotalBalanceFlag(): Promise<boolean> {
+  public getShowTotalBalanceFlag(): Promise<boolean> {
     return this.persistenceProvider
-      .getHideTotalBalanceFlag()
-      .then(shouldHideBalance => {
-        const isHidden: boolean =
-          shouldHideBalance && shouldHideBalance.toString() == 'true'
-            ? true
-            : false;
-        return Promise.resolve(isHidden);
+      .getShowTotalBalanceFlag()
+      .then(shouldShowBalance => {
+        const isShown: boolean =
+          shouldShowBalance && shouldShowBalance.toString() == 'false'
+            ? false
+            : true;
+        return Promise.resolve(isShown);
       });
   }
 
-  public setHideTotalBalanceFlag(balanceHidden): void {
-    this.persistenceProvider.setHideTotalBalanceFlag(balanceHidden);
+  public setShowTotalBalanceFlag(showBalance): void {
+    this.persistenceProvider.setShowTotalBalanceFlag(showBalance);
   }
 
   public getTxps(opts): Promise<any> {

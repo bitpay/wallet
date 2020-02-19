@@ -4,9 +4,11 @@ import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choos
 import { EmailComponent } from '../../components/email-component/email-component';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
+import { MemoComponent } from '../../components/memo-component/memo-component';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
+import { WalletTabOptionsComponent } from '../../components/wallet-tab-options/wallet-tab-options';
 import { Coin } from '../../providers/currency/currency';
 import { DomProvider } from '../../providers/dom/dom';
 
@@ -40,17 +42,19 @@ export type InfoSheetType =
   | 'miner-fee-notice'
   | 'payment-request'
   | 'print-required'
-  | 'receiving-bitcoin'
   | 'sensitive-info'
   | 'in-app-notification'
   | 'request-feature'
   | 'report-issue'
-  | 'new-key';
+  | 'new-key'
+  | 'wrong-encrypt-password';
 
 export type OptionsSheetType =
   | 'address-options'
   | 'gift-card-options'
-  | 'incoming-data';
+  | 'incoming-data'
+  | 'address-book'
+  | 'send-options';
 
 export interface WalletSelectorParams {
   wallets: any[];
@@ -60,6 +64,10 @@ export interface WalletSelectorParams {
 
 export interface WalletReceiveParams {
   wallet: any;
+}
+
+export interface WalletTabOptionsParams {
+  walletsGroups: any;
 }
 
 export interface ChooseFeeLevelParams {
@@ -98,6 +106,11 @@ export class ActionSheetProvider {
       .instance;
   }
 
+  public createMemoComponent(memo): MemoComponent {
+    return this.setupSheet<MemoComponent>(MemoComponent, null, { memo })
+      .instance;
+  }
+
   public createEmailComponent(): EmailComponent {
     return this.setupSheet<EmailComponent>(EmailComponent).instance;
   }
@@ -127,6 +140,16 @@ export class ActionSheetProvider {
   ): ChooseFeeLevelComponent {
     return this.setupSheet<ChooseFeeLevelComponent>(
       ChooseFeeLevelComponent,
+      null,
+      params
+    ).instance;
+  }
+
+  public createWalletTabOptions(
+    params: WalletTabOptionsParams
+  ): WalletTabOptionsComponent {
+    return this.setupSheet<WalletTabOptionsComponent>(
+      WalletTabOptionsComponent,
       null,
       params
     ).instance;

@@ -1,15 +1,18 @@
-<wide-header-page title="Select Currency">
+<wide-header-page title="{{'Select Currency' | translate}}">
   <div page-content>
     <ion-list class="settings-list bp-list">
       <div *ngFor="let option of paymentOptions">
-        <button class="list-button" ion-item (click)="goToPayPro(option.currency)">
+        <button class="list-button" ion-item (click)="goToPayPro(option.currency)" [disabled]="option.disabled">
           <ion-icon item-start>
             <img src="assets/img/currencies/{{option.currency.toLowerCase()}}.svg" />
           </ion-icon>
-          <div class="item-title">{{ getCoinName(option.currency.toLowerCase()) }}</div>
-          <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}} ~ {{option.estimatedAmount | satToFiat: option.currency.toLowerCase()}}</span>
+          <div class="item-title">{{getCoinName(option.currency.toLowerCase())}}</div>
+          <span class="alternative">{{option.estimatedAmount | satToUnit: option.currency.toLowerCase()}}</span>
+          <ion-note item-end>
+            <span *ngIf="!option.disabled">{{hasWallets[option.currency.toLowerCase()]}} {{hasWallets[option.currency.toLowerCase()] > 1 ? 'Wallets' : 'Wallet'}}</span>
+          </ion-note>
         </button>
-     </div>
+      </div>
     </ion-list>
   </div>
 </wide-header-page>

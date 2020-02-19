@@ -1,0 +1,12 @@
+<action-sheet>
+  <div class="title">
+    <span translate>Memo</span>
+  </div>
+  <form [formGroup]="memoForm">
+    <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" formControlName="memo" autocomplete="off" autocorrect="off"></ion-textarea>
+  </form>
+
+  <button ion-button class="button-standard safe-area" [disabled]="memoForm.invalid" (click)="optionClicked()">
+    {{'Save' | translate}}
+  </button>
+</action-sheet>

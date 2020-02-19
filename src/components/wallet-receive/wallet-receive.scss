@@ -4,20 +4,12 @@ page-choose-fee-level {
   .error {
     color: color($colors, danger);
   }
-  .wallet-button {
-    background: none;
-  }
   .title {
     font-weight: 500;
     > img {
       vertical-align: sub;
       margin-right: 5px;
     }
-  }
-  .no-wallets {
-    text-align: center;
-    padding: 20px;
-    color: color($colors, danger);
   }
   .back-button {
     background-color: $background-color;
@@ -58,14 +50,8 @@ page-choose-fee-level {
           transform: rotate(-360deg);
         }
       }
-      .loading-dots {
-        display: inline-block;
-      }
       .fade-in-out {
         opacity: 0.1;
-      }
-      .qr-code-bounce {
-        animation: bounce-down 0.5s linear;
       }
       @keyframes bounce-down {
         0% {

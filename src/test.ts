@@ -85,11 +85,11 @@ import { ProvidersModule } from './providers/providers.module';
 import { ImageLoader, IonicImageLoader } from 'ionic-image-loader';
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
 import { ActionSheetComponent } from './components/action-sheet/action-sheet';
+import { EmailComponent } from './components/email-component/email-component';
 import { InfoSheetComponent } from './components/info-sheet/info-sheet';
 import { FormatCurrencyPipe } from './pipes/format-currency';
 import { DomProviderMock } from './providers/dom/dom.mock';
 import { LoggerMock } from './providers/logger/logger.mock';
-import { EmailComponent } from './components/email-component/email-component';
 
 declare const require: any;
 

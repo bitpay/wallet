@@ -13,8 +13,9 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
+import { ScanPage } from '../../scan/scan';
 import { TabsPage } from '../../tabs/tabs';
-import { WalletsPage } from '../../wallets/wallets';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -25,6 +26,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -97,6 +99,7 @@ export class ConfirmPage {
     protected currencyProvider: CurrencyProvider,
     protected decimalPipe: DecimalPipe,
     public formatCurrency: FormatCurrencyPipe,
+    protected errorsProvider: ErrorsProvider,
     protected externalLinkProvider: ExternalLinkProvider,
     protected feeProvider: FeeProvider,
     protected logger: Logger,
@@ -141,10 +144,16 @@ export class ConfirmPage {
     this.navCtrl.swipeBackEnabled = true;
   }
 
-  ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
+  ngOnDestroy() {
+    this.events.unsubscribe('Local/TagScan', this.updateDestinationTag);
+  }
+
+  private updateDestinationTag: any = data => {
+    this.tx.destinationTag = data.value;
+  };
+
+  ionViewDidLoad() {
+    this.logger.info('Loaded: ConfirmPage');
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     this.coin = this.navParams.data.coin;
@@ -259,10 +268,7 @@ export class ConfirmPage {
         this.hideSlideButton = false;
       });
     }
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: ConfirmPage');
+    this.events.subscribe('Local/TagScan', this.updateDestinationTag);
   }
 
   private getAmountDetails() {
@@ -833,17 +839,7 @@ export class ConfirmPage {
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {
       if (option || typeof option === 'undefined') {
-        this.fromWalletDetails
-          ? this.navCtrl.pop()
-          : this.app
-              .getRootNavs()[0]
-              .setRoot(WalletsPage)
-              .then(() =>
-                this.app
-                  .getRootNav()
-                  .getActiveChildNav()
-                  .select(1)
-              ); // using setRoot(TabsPage) as workaround when coming from scanner
+        this.fromWalletDetails ? this.navCtrl.pop() : this.navCtrl.popToRoot();
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -868,6 +864,11 @@ export class ConfirmPage {
       return;
     }
 
+    if ((error as Error).message === 'WRONG_PASSWORD') {
+      this.errorsProvider.showWrongEncryptPassswordError();
+      return;
+    }
+
     // Currently the paypro error is the following string: 500 - "{}"
     if (error.toString().includes('500')) {
       msg = this.translate.instant(
@@ -877,28 +878,27 @@ export class ConfirmPage {
 
     const infoSheetTitle = title ? title : this.translate.instant('Error');
 
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: msg || this.bwcErrorProvider.msg(error), title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
-    errorInfoSheet.onDidDismiss(() => {
-      if (exit) {
-        this.fromWalletDetails
-          ? this.navCtrl.popToRoot()
-          : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.app
-              .getRootNavs()[0]
-              .setRoot(TabsPage)
-              .then(() =>
-                this.app
-                  .getRootNav()
-                  .getActiveChildNav()
-                  .select(1)
-              ); // using setRoot(TabsPage) as workaround when coming from scanner
+    this.errorsProvider.showDefaultError(
+      msg || this.bwcErrorProvider.msg(error),
+      infoSheetTitle,
+      () => {
+        if (exit) {
+          this.fromWalletDetails
+            ? this.navCtrl.popToRoot()
+            : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
+            ? this.navCtrl.pop()
+            : this.app
+                .getRootNavs()[0]
+                .setRoot(TabsPage)
+                .then(() =>
+                  this.app
+                    .getRootNav()
+                    .getActiveChildNav()
+                    .select(1)
+                ); // using setRoot(TabsPage) as workaround when coming from scanner
+        }
       }
-    });
+    );
   }
 
   public toggleAddress(): void {
@@ -983,7 +983,11 @@ export class ConfirmPage {
             txid: txp.txid
           });
         }
-        return this.openFinishModal();
+        let redir;
+        if (txp.payProUrl && txp.payProUrl.includes('redir=wc')) {
+          redir = 'wc';
+        }
+        return this.openFinishModal(false, { redir });
       })
       .catch(err => {
         if (this.isCordova) this.slideButton.isConfirmed(false);
@@ -1013,7 +1017,7 @@ export class ConfirmPage {
       });
   }
 
-  protected async openFinishModal(onlyPublish?: boolean) {
+  protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
     let params: { finishText: string; finishComment?: string } = {
       finishText: this.successText
     };
@@ -1040,23 +1044,13 @@ export class ConfirmPage {
       'InvoiceUri'
     ]);
 
-    if (this.fromWalletDetails) {
-      this.navCtrl.popToRoot();
-    } else {
-      // using setRoot(TabsPage) as workaround when coming from scanner
-      this.app
-        .getRootNavs()[0]
-        .setRoot(TabsPage)
-        .then(() => {
-          this.app
-            .getRootNav()
-            .getActiveChildNav()
-            .select(1);
-          setTimeout(() => {
-            this.events.publish('OpenWallet', this.wallet);
-          }, 1000);
-        });
-    }
+    this.navCtrl.popToRoot();
+    setTimeout(() => {
+      this.navCtrl.push(WalletDetailsPage, {
+        walletId: this.wallet.credentials.walletId,
+        redir
+      });
+    }, 1000);
   }
 
   public chooseFeeLevel(): void {
@@ -1131,5 +1125,17 @@ export class ConfirmPage {
 
   public close() {
     this.navCtrl.popToRoot();
+  }
+
+  public editMemo(memo: string) {
+    const memoComponent = this.actionSheetProvider.createMemoComponent(memo);
+    memoComponent.present();
+    memoComponent.onDidDismiss(memo => {
+      if (memo) this.tx.description = memo;
+    });
+  }
+
+  public openScanner(): void {
+    this.navCtrl.push(ScanPage, { fromConfirm: true });
   }
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NavParams } from 'ionic-angular';
-import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../../../providers/bwc/bwc';
+import { ErrorsProvider } from '../../../../../providers/errors/errors';
 import { Logger } from '../../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 
@@ -25,7 +25,7 @@ export class WalletMnemonicRecoverPage {
     private popupProvider: PopupProvider,
     private translate: TranslateService,
     private bwcProvider: BwcProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private errorsProvider: ErrorsProvider
   ) {
     this.mnemonicPhrase = '';
     this.mnemonicEncrypted =
@@ -78,10 +78,6 @@ export class WalletMnemonicRecoverPage {
   ): void {
     if (!err) return;
     this.logger.error('Could not get keys:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
+    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 }

@@ -21,10 +21,10 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
@@ -63,7 +63,6 @@ export class ImportWalletPage {
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
-    private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -74,7 +73,8 @@ export class ImportWalletPage {
     private actionSheetProvider: ActionSheetProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private modalCtrl: ModalController,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -178,14 +178,10 @@ export class ImportWalletPage {
       coin: parsedCode[5] // deprecated
     };
     if (!info.data) {
-      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'default-error',
-        {
-          msg: this.translate.instant('Invalid data'),
-          title: this.translate.instant('Error')
-        }
+      this.showErrorInfoSheet(
+        this.translate.instant('Error'),
+        this.translate.instant('Invalid data')
       );
-      errorInfoSheet.present();
       return undefined;
     }
     if (info.type == '1' && info.hasPassphrase) {
@@ -193,7 +189,7 @@ export class ImportWalletPage {
       const subtitle = this.translate.instant(
         'Password required. Make sure to enter your password in advanced options'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
     }
     return info;
   }
@@ -214,7 +210,7 @@ export class ImportWalletPage {
 
     if (err) {
       const title = this.translate.instant('Error');
-      this.popupProvider.ionicAlert(title, err);
+      this.showErrorInfoSheet(title, err);
       return;
     }
 
@@ -231,7 +227,7 @@ export class ImportWalletPage {
       .catch(err => {
         this.onGoingProcessProvider.clear();
         const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
+        this.showErrorInfoSheet(title, err);
         return;
       });
   }
@@ -406,7 +402,7 @@ export class ImportWalletPage {
     ) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant('Invalid derivation path');
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
 
@@ -415,7 +411,7 @@ export class ImportWalletPage {
       const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
 
@@ -429,7 +425,7 @@ export class ImportWalletPage {
       const subtitle = this.translate.instant(
         'Invalid derivation path for selected coin'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
     this.createSpecifyingwords(opts);
@@ -452,9 +448,13 @@ export class ImportWalletPage {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           this.logger.error('Create: could not create wallet', err);
-          const title = this.translate.instant('Error');
-          err = this.bwcErrorProvider.msg(err);
-          this.popupProvider.ionicAlert(title, err);
+          if (err.message === 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            const title = this.translate.instant('Error');
+            err = this.bwcErrorProvider.msg(err);
+            this.showErrorInfoSheet(title, err);
+          }
         }
         return;
       });
@@ -472,7 +472,7 @@ export class ImportWalletPage {
     if (!this.importForm.valid) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant('There is an error in the form');
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
 
@@ -484,7 +484,7 @@ export class ImportWalletPage {
       const subtitle = this.translate.instant(
         'Please, select your backup file'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
 
@@ -501,7 +501,7 @@ export class ImportWalletPage {
     if (!this.importForm.valid) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant('There is an error in the form');
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     }
 
@@ -562,7 +562,7 @@ export class ImportWalletPage {
       ) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
-        this.popupProvider.ionicAlert(title, subtitle);
+        this.showErrorInfoSheet(title, subtitle);
         return;
       }
 
@@ -576,7 +576,7 @@ export class ImportWalletPage {
         const subtitle = this.translate.instant(
           'Invalid derivation path for selected coin'
         );
-        this.popupProvider.ionicAlert(title, subtitle);
+        this.showErrorInfoSheet(title, subtitle);
         return;
       }
     }
@@ -590,7 +590,7 @@ export class ImportWalletPage {
       const subtitle = this.translate.instant(
         'Please enter the recovery phrase'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.showErrorInfoSheet(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       opts.extendedPrivateKey = words;
@@ -605,7 +605,7 @@ export class ImportWalletPage {
         const subtitle = this.translate.instant(
           'Wrong number of recovery words:'
         );
-        this.popupProvider.ionicAlert(title, subtitle + ' ' + wordList.length);
+        this.showErrorInfoSheet(title, subtitle + ' ' + wordList.length);
         return;
       }
     }
@@ -662,11 +662,7 @@ export class ImportWalletPage {
     this.navCtrl.push(ScanPage, { fromImport: true });
   }
 
-  private showErrorInfoSheet(title: Error | string, msg: string): void {
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    errorInfoSheet.present();
+  private showErrorInfoSheet(title: string, msg: string): void {
+    this.errorsProvider.showDefaultError(msg, title);
   }
 }

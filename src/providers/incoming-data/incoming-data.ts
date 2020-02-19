@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
+import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -32,7 +33,8 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private iab: InAppBrowserProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -181,6 +183,13 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidInvoiceUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://invoice') === 0
+    );
+  }
+
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
@@ -233,19 +242,47 @@ export class IncomingDataProvider {
     try {
       const disableLoader = true;
       const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+
       const selected = details.paymentOptions.filter(option => option.selected);
+
       if (selected.length === 1) {
-        // BTC, BCH, ETH Chains
+        // Confirm Page - selectedTransactionCurrency set to selected
         const [{ currency }] = selected;
-        this.goToPayPro(invoiceUrl, currency.toLowerCase(), disableLoader);
+        return this.goToPayPro(
+          invoiceUrl,
+          currency.toLowerCase(),
+          disableLoader
+        );
       } else {
-        // If ERC20
-        if (selected.length > 1) {
-          details.paymentOptions = selected;
+        // Select Invoice Currency - No selectedTransactionCurrency set
+        let hasWallets = {};
+        let availableWallets = [];
+        for (const option of details.paymentOptions) {
+          const fundedWallets = this.profileProvider.getWallets({
+            coin: option.currency.toLowerCase(),
+            network: option.network,
+            minAmount: option.estimatedAmount
+          });
+          if (fundedWallets.length === 0) {
+            option.disabled = true;
+          } else {
+            hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
+            availableWallets.push(option);
+          }
         }
-        // No currencies selected
+        if (availableWallets.length === 1) {
+          // Only one available wallet with balance
+          const [{ currency }] = availableWallets;
+          return this.goToPayPro(
+            invoiceUrl,
+            currency.toLowerCase(),
+            disableLoader
+          );
+        }
+
         const stateParams = {
-          payProOptions: details
+          payProOptions: details,
+          hasWallets
         };
         let nextView = {
           name: 'SelectInvoicePage',
@@ -601,6 +638,13 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
+  private goToInvoice(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Invoice URL');
+
+    const invoiceUrl = this.getParameterByName('url', data);
+    this.redir(invoiceUrl);
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
@@ -680,6 +724,11 @@ export class IncomingDataProvider {
       this.goToSimplex(data);
       return true;
 
+      // Invoice Intent
+    } else if (this.isValidInvoiceUri(data)) {
+      this.goToInvoice(data);
+      return true;
+
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
       this.goToBitPayCard(data);
@@ -704,7 +753,36 @@ export class IncomingDataProvider {
     } else if (this.isValidImportPrivateKey(data)) {
       this.goToImportByPrivateKey(data);
       return true;
+    } else if (data.includes('wallet-card')) {
+      const event = data.split('wallet-card/')[1];
+      /*
+       *
+       * handler for wallet-card events
+       *
+       * leaving this as a switch in case events become complex and require wallet side and iab actions
+       *
+       * */
+      switch (event) {
+        case 'email-verified':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, {
+            message: 'email-verified'
+          });
+          break;
 
+        case 'get-started':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, {
+            message: 'get-started'
+          });
+          break;
+
+        case 'retry':
+          this.iab.refs.card.show();
+          this.iab.sendMessageToIAB(this.iab.refs.card, { message: 'retry' });
+      }
+
+      return true;
       // Anything else
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {
@@ -813,7 +891,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'RippleAddress',
-        title: this.translate.instant('Ripple Address')
+        title: this.translate.instant('XRP Address')
       };
 
       // Coinbase
@@ -1004,6 +1082,7 @@ export class IncomingDataProvider {
     }
 
     try {
+      const { memo, network } = payProDetails;
       const disableLoader = true;
       const { paymentOptions } = await this.payproProvider.getPayProOptions(
         url,
@@ -1020,12 +1099,12 @@ export class IncomingDataProvider {
       const stateParams = {
         amount: estimatedAmount,
         toAddress,
-        description: payProDetails.memo,
+        description: memo,
         data,
         invoiceID,
         paypro: payProDetails,
         coin,
-        network: payProDetails.network,
+        network,
         payProUrl: url,
         requiredFeeRate
       };

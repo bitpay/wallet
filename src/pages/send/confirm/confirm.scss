@@ -1,10 +1,8 @@
 page-confirm,
 confirm-card-purchase-page,
 page-txp-details,
-page-tx-details {
-  .add-padding-bottom {
-    height: 90vh;
-  }
+page-tx-details,
+page-bitpay-card-topup {
   .amount-label {
     padding-top: 1rem;
     .amount {
@@ -157,20 +155,6 @@ page-tx-details {
           height: 18px;
           margin: 0px;
         }
-        &.background {
-          &_btc {
-            background-color: #f7931a;
-          }
-          &_bch {
-            background-color: #2fcf6e;
-          }
-          &_eth {
-            background-color: #6b71d6;
-          }
-          &_xrp {
-            background-color: #000000;
-          }
-        }
       }
     }
   }
@@ -190,5 +174,11 @@ page-tx-details {
     max-width: 200px;
     border-radius: 21px;
     margin: 25px auto;
+  }
+  .scanner-icon {
+    z-index: 99;
+    font-size: 28px;
+    color: color($colors, primary);
+    padding-top: 20px;
   }
 }

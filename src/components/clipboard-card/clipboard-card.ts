@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-clipboard-card',
@@ -12,5 +13,5 @@ export class ClipboardCardPage {
   @Input()
   remainingTimeStr;
 
-  constructor() {}
+  constructor(public translate: TranslateService) {}
 }

@@ -6,13 +6,14 @@ action-card-v4.card {
   .action-card {
     &__content {
       background: white;
-      padding: 15px;
+      padding: 15px 20px;
     }
 
     &__title {
+      color: #000000;
       font-size: 20px;
       font-weight: 500;
-      padding: 10px 0px;
+      padding: 7px 0px 10px;
     }
 
     &__body {
@@ -22,9 +23,12 @@ action-card-v4.card {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       [action-card-body] {
         margin-right: 8px;
+        min-width: 0;
       }
+
       .cta {
         color: map-get($colors, primary);
         background-color: rgba(79, 110, 247, 0.15);
@@ -37,6 +41,7 @@ action-card-v4.card {
         border-radius: 18px;
         display: flex;
         align-items: center;
+
         [action-card-button] {
           padding: 0rem 1.2rem;
         }

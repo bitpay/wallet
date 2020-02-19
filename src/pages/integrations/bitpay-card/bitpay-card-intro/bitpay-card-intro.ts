@@ -11,6 +11,10 @@ import { ExternalLinkProvider } from '../../../../providers/external-link/extern
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
+import {
+  InAppBrowserProvider,
+  PersistenceProvider
+} from '../../../../providers';
 import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
@@ -19,7 +23,7 @@ import { BitPayCardPage } from '../bitpay-card';
 })
 export class BitPayCardIntroPage {
   public accounts;
-
+  public cardExperimentEnabled: boolean;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -28,8 +32,14 @@ export class BitPayCardIntroPage {
     private popupProvider: PopupProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private navCtrl: NavController,
-    private externalLinkProvider: ExternalLinkProvider
-  ) {}
+    private externalLinkProvider: ExternalLinkProvider,
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider
+  ) {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      this.cardExperimentEnabled = status === 'enabled';
+    });
+  }
 
   ionViewWillEnter() {
     if (this.navParams.data.secret) {
@@ -101,10 +111,23 @@ export class BitPayCardIntroPage {
     this.externalLinkProvider.open(url);
   }
 
-  public orderBitPayCard() {
-    this.bitPayCardProvider.logEvent('legacycard_order', {});
-    let url = 'https://bitpay.com/visa/get-started';
-    this.externalLinkProvider.open(url);
+  public async orderBitPayCard() {
+    if (this.cardExperimentEnabled) {
+      this.iab.refs.card.executeScript(
+        {
+          code: `window.postMessage(${JSON.stringify({
+            message: 'orderCard'
+          })}, '*')`
+        },
+        () => {
+          this.iab.refs.card.show();
+        }
+      );
+    } else {
+      this.bitPayCardProvider.logEvent('legacycard_order', {});
+      let url = 'https://bitpay.com/visa/get-started';
+      this.externalLinkProvider.open(url);
+    }
   }
 
   public connectBitPayCard() {

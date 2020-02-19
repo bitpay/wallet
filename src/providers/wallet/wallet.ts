@@ -482,8 +482,8 @@ export class WalletProvider {
           if (addr) {
             // prevent to show legacy address
             const isBchLegacy = wallet.coin == 'bch' && addr.match(/^[CHmn]/);
-
-            if (!forceNew && !isBchLegacy) return resolve(addr);
+            const isValid = this.addressProvider.isValid(addr);
+            if (!forceNew && !isBchLegacy && isValid) return resolve(addr);
           }
 
           if (!wallet.isComplete())

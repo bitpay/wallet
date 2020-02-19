@@ -1,4 +1,4 @@
-<wide-header-page title="{{ 'Create {coinLabel} wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
+<wide-header-page title="{{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid" ion-button>
       <span translate>Create</span>
@@ -72,14 +72,14 @@
         </ion-item>
 
         <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
-          <ion-label>Testnet</ion-label>
+          <ion-label><span *ngIf="coin === 'eth'">Kovan </span>Testnet</ion-label>
           <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
 
         <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
           <span label-tip-title translate>Testnet Wallet</span>
-          <div label-tip-body translate>
-            The testnet is an alternative {{ coinName }} block chain, to be used for testing. Testnet coins are separate and distinct from actual {{ coinName }}, and do not have any value. This allows application developers or {{ coinName }} testers to experiment, without having to use real {{ coinName }}.
+          <div label-tip-body>
+            {{ 'The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}' | translate : {coinName: coinName } }} .
           </div>
         </label-tip>
 

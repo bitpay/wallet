@@ -113,9 +113,6 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -305,7 +302,6 @@ export class BitPayCardTopUpPage {
         .getPayProDetails(payProUrl, wallet.coin)
         .then(details => {
           const { instructions } = details;
-          this.logger.info('Instructions', instructions);
           let txp: Partial<TransactionProposal> = {
             coin: wallet.coin,
             amount: _.sumBy(instructions, 'amount'),
@@ -411,7 +407,26 @@ export class BitPayCardTopUpPage {
               excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
               returnInputs: true
             })
-            .then(resp => {
+            .then(async resp => {
+              if (this.currencyProvider.isERCToken(wallet.coin)) {
+                const tokenAddress = wallet.credentials.token.address;
+                try {
+                  const {
+                    availableAmount
+                  } = await this.walletProvider.getBalance(wallet, {
+                    tokenAddress
+                  });
+                  return resolve({
+                    sendMax: true,
+                    amount: availableAmount,
+                    inputs: resp.inputs,
+                    fee: resp.fee,
+                    feePerKb
+                  });
+                } catch (err) {
+                  return reject(err);
+                }
+              }
               return resolve({
                 sendMax: true,
                 amount: resp.amount,
@@ -439,7 +454,7 @@ export class BitPayCardTopUpPage {
     return `${v[0]}.${f}`;
   }
 
-  private calculateAmount(wallet): Promise<any> {
+  private async calculateAmount(wallet): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
       // Global variables defined beforeEnter
@@ -560,7 +575,7 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private initializeTopUp(wallet, parsedAmount): void {
+  private async initializeTopUp(wallet, parsedAmount): Promise<void> {
     let COIN = wallet.coin.toUpperCase();
     this.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -599,8 +614,6 @@ export class BitPayCardTopUpPage {
 
             // Save TX in memory
             this.createdTx = ctxp;
-
-            this.logger.info('Created Tx from topup', this.createdTx);
 
             this.totalAmountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
@@ -733,13 +746,13 @@ export class BitPayCardTopUpPage {
 
     this.onGoingProcessProvider.set('retrievingInputs');
     await this.calculateAmount(wallet)
-      .then(val => {
+      .then(async val => {
         let parsedAmount = this.txFormatProvider.parseAmount(
           wallet.coin,
           val.amount,
           val.currency
         );
-        this.initializeTopUp(wallet, parsedAmount);
+        await this.initializeTopUp(wallet, parsedAmount);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

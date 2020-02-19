@@ -34,6 +34,7 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
@@ -92,6 +93,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     currencyProvider: CurrencyProvider,
     decimalPipe: DecimalPipe,
     formatCurrency: FormatCurrencyPipe,
+    errorsProvider: ErrorsProvider,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
@@ -125,6 +127,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       currencyProvider,
       decimalPipe,
       formatCurrency,
+      errorsProvider,
       externalLinkProvider,
       feeProvider,
       logger,
@@ -165,9 +168,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   ionViewWillEnter() {
-    if (this.navCtrl.getPrevious().name == 'SelectInvoicePage') {
-      this.navCtrl.remove(this.navCtrl.getPrevious().index);
-    }
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
@@ -196,7 +196,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (!isSlideConfirmFinished) {
       this.giftCardProvider.logEvent('giftcards_purchase_start', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
       this.giftCardProvider.logEvent('add_to_cart', {
@@ -206,7 +205,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     } else {
       this.giftCardProvider.logEvent('giftcards_purchase_finish', {
         brand: this.cardConfig.name,
-        usdAmount: this.amount,
         transactionCurrency
       });
 
@@ -221,8 +219,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           {
             name: this.cardConfig.name,
             category: 'giftCards',
-            quantity: 1,
-            price: giftData.amount.toString(10)
+            quantity: 1
           }
         ]
       });
@@ -266,13 +263,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async setTotalAmount(
     wallet,
-    amountSat: number,
     invoiceFeeSat: number,
     networkFeeSat: number
   ) {
-    const amount = await this.satToFiat(wallet.coin, amountSat);
-    this.amount = Number(amount);
-
     const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
     this.invoiceFee = Number(invoiceFee);
 
@@ -464,23 +457,28 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       return Promise.resolve(notificationEmail);
     }
     const email = await this.giftCardProvider.getUserEmail();
-    if (email) return Promise.resolve(email);
+    if (email) {
+      return Promise.resolve(email);
+    }
+    return this.setEmail();
   }
 
-  private setEmail(wallet) {
+  private async setEmail() {
     const emailComponent = this.actionSheetProvider.createEmailComponent();
-    emailComponent.present();
-    emailComponent.onDidDismiss(email => {
-      if (email) {
-        if (!this.giftCardProvider.emailIsValid(email)) {
+    await emailComponent.present();
+    return new Promise(resolve => {
+      emailComponent.onDidDismiss(email => {
+        if (email) {
+          if (!this.giftCardProvider.emailIsValid(email)) {
+            this.throwEmailRequiredError();
+          }
+          this.giftCardProvider.storeEmail(email);
+          resolve(email);
+        } else {
           this.throwEmailRequiredError();
         }
-        this.giftCardProvider.storeEmail(email);
-        this.initialize(wallet, email);
-      } else {
-        this.throwEmailRequiredError();
-      }
-      this.isOpenSelector = false;
+        this.isOpenSelector = false;
+      });
     });
   }
 
@@ -581,7 +579,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ctxp.amount || amountSat
     );
 
-    this.logger.info('Tx for gift purchase', this.tx);
     // Warn: fee too high
     if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
       this.checkFeeHigh(
@@ -590,7 +587,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
-    this.setTotalAmount(wallet, amountSat, invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(wallet, invoiceFeeSat, ctxp.fee);
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
@@ -646,8 +643,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (email) {
       await this.initialize(wallet, email).catch(() => {});
     } else {
-      this.setEmail(wallet);
+      this.setEmail();
     }
+    await this.initialize(wallet, email).catch(() => {});
   }
 
   public showWallets(): void {

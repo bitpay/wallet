@@ -1,106 +1,118 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      <img width="130" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex">
+    <ion-title class="bp-title">
+      <img width="110" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex" class="simplex-logo">
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
-  <div class="wrapper">
-    <div class="container">
+<ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+  <ion-item class="wallet" *ngIf="!wallet" (click)="showWallets()">
+    <ion-icon item-start>
+      <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
+    </ion-icon>
+    <span translate>Select a wallet</span>
+    <ion-note item-end>
+      <button ion-button clear color="grey" icon-only>
+        <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+        <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+      </button>
+    </ion-note>
+  </ion-item>
+  <ion-list *ngIf="wallet">
+    <ion-item>
+      <ion-label>{{'Deposit to' | translate}}</ion-label>
+    </ion-item>
+    <button ion-item detail-none (click)="showWallets()">
+      <wallet-item-content [wallet]="wallet"></wallet-item-content>
+    </button>
 
-      <div padding>
-        <div class="wallet" *ngIf="!wallet" (click)="showWallets()">
-          <ion-icon item-start>
-            <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
-          </ion-icon>
-          <div translate>Select a wallet</div>
-          <div class="last-item" item-end>
-            <button ion-button clear color="grey" icon-only>
-              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-            </button>
-          </div>
+    <form [formGroup]="quoteForm">
+      <ion-item>
+        <ion-label *ngIf="currencyIsFiat()">{{'Amount to pay' | translate}}</ion-label>
+        <ion-label *ngIf="!currencyIsFiat()">{{'Approximate receiving amount' | translate}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+          <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
+        </ion-select>
+      </ion-item>
+      <label-tip type="warn" header="no-header" *ngIf="!quoteForm.controls.amount.valid">
+        <div label-tip-body>
+          <div translate>The {{ quoteForm.value.altCurrency }} amount must be between {{ minFiatAmount }} and {{ maxFiatAmount }}</div>
         </div>
-        <ion-list *ngIf="wallet">
+      </label-tip>
+    </form>
+  </ion-list>
+
+  <div class="spinner" *ngIf="showLoading">
+    <ion-spinner icon="crescent"></ion-spinner>
+  </div>
+  <div *ngIf="wallet && cryptoAmount && quoteForm.valid && !showLoading">
+    <ion-list>
+      <ion-item class="total-amount" *ngIf="currencyIsFiat()">
+        {{'Approximate receiving amount' | translate}}
+        <ion-note item-end>
           <div>
-            <div class="title">
-              <span translate>Deposit to</span>
-            </div>
-            <button ion-item detail-none (click)="showWallets()">
-              <wallet-item-content [wallet]="wallet"></wallet-item-content>
-            </button>
+            <span *ngIf="!wallet.coin">...</span>
+            <span *ngIf="wallet.coin">
+              {{ cryptoAmount }} {{ wallet.coin | uppercase }}
+            </span>
           </div>
+          <div *ngIf="currencyIsFiat()">({{fiatBaseAmount}} {{ fiatCurrency }})</div>
+        </ion-note>
+      </ion-item>
 
-          <form [formGroup]="quoteForm">
-            <ion-label>{{'Amount' | translate}}</ion-label>
-            <ion-item>
-              <ion-input type="number" formControlName="amount" (ionChange)="amountChange()"></ion-input>
-              <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
-                <ion-option *ngFor="let fiatAltCurrency of supportedFiatAltCurrencies" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
-                <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
-              </ion-select>
-            </ion-item>
-            <label-tip type="warn" header="no-header" *ngIf="!quoteForm.controls.amount.valid">
-              <div label-tip-body>
-                <div translate>The {{ quoteForm.value.altCurrency }} amount must be between {{ minFiatAmount }} and {{ maxFiatAmount }}</div>
-              </div>
-            </label-tip>
-          </form>
-        </ion-list>
-      </div>
-
-      <div class="spinner" *ngIf="showLoading">
-        <ion-spinner icon="crescent"></ion-spinner>
-      </div>
-      <div *ngIf="wallet && cryptoAmount && quoteForm.valid && !showLoading">
-        <ion-list>
-          <ion-item *ngIf="currencyIsFiat()">
-            {{'Approximate amount' | translate}}
-            <ion-note item-end>
-              <span *ngIf="!wallet.coin">...</span>
-              <span *ngIf="wallet.coin">
-                {{ cryptoAmount }} {{ wallet.coin | uppercase }}
-              </span>
-            </ion-note>
-          </ion-item>
-          <div *ngIf="!currencyIsFiat()">
-            <ion-item *ngIf="fiatBaseAmount">
-              {{'Base amount' | translate}}
-              <ion-note item-end>
-                <span>
-                  {{ fiatBaseAmount }} {{ fiatCurrency }}
-                </span>
-              </ion-note>
-            </ion-item>
-
-            <ion-item *ngIf="fiatTotalAmount">
-              {{'Total amount' | translate}}
-              <ion-note item-end>
-                <span>
-                  {{ fiatTotalAmount }} {{ fiatCurrency }}
-                </span>
-              </ion-note>
-            </ion-item>
-          </div>
-        </ion-list>
+      <div *ngIf="!currencyIsFiat()">
+        <ion-item *ngIf="fiatBaseAmount">
+          {{"Approximate receiving fiat amount" | translate}}
+          <ion-note item-end>
+            <span>
+              {{ fiatBaseAmount }} {{ fiatCurrency }}
+            </span>
+          </ion-note>
+        </ion-item>
 
         <label-tip type="warn" header="no-header">
           <div label-tip-body>
-            <div translate>The final amount is based on the exchange rate when the transaction is complete</div>
+            <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate.</div>
           </div>
         </label-tip>
-        <div class="terms">
-          <span translate>This service is provided by a third party, and you are subject to their: </span>
-          <a (click)="openExternalLink('https://www.simplex.com/terms-of-use/')" translate>
-            Terms of use
-          </a>
-        </div>
-      </div>
 
+        <ion-item [ngStyle]="{'margin-bottom': '20px'}">
+          {{'Total amount to pay' | translate}}
+          <ion-note item-end>
+            <span>
+              {{ fiatTotalAmount }} {{ fiatCurrency }}
+            </span>
+          </ion-note>
+        </ion-item>
+      </div>
+    </ion-list>
+
+    <label-tip *ngIf="currencyIsFiat()" type="warn" header="no-header">
+      <div label-tip-body>
+        <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate.</div>
+      </div>
+    </label-tip>
+    <div class="terms">
+      <span translate>What service fees am I paying?</span>
+      <br>
+      <span translate>Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD).</span>
+      <a (click)="openExternalLink('https://www.simplex.com/kb/what-service-fees-am-i-paying/')" translate>
+        Read more
+      </a>
+    </div>
+    <div class="terms">
+      <span translate>This service is provided by a third party, and you are subject to their </span>
+      <a (click)="openExternalLink('https://www.simplex.com/terms-of-use/')" translate>
+        Terms of use
+      </a>
     </div>
   </div>
+
 </ion-content>
 
 <ion-footer>

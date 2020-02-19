@@ -19,10 +19,10 @@ import { CreateWalletPage } from '../create-wallet/create-wallet';
 import {
   ActionSheetProvider,
   BwcErrorProvider,
+  ErrorsProvider,
   Logger,
   OnGoingProcessProvider,
   PersistenceProvider,
-  PopupProvider,
   ProfileProvider,
   PushNotificationsProvider,
   WalletProvider
@@ -66,9 +66,9 @@ export class SelectCurrencyPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.availableChains = this.navParam.data.isShared
       ? this.currencyProvider.getMultiSigCoins()
@@ -86,8 +86,8 @@ export class SelectCurrencyPage {
     this.isOnboardingFlow = this.navParam.data.isOnboardingFlow;
     this.isZeroState = this.navParam.data.isZeroState;
     this.title = this.isZeroState
-      ? this.translate.instant('Select currencies')
-      : this.translate.instant('Select currency');
+      ? this.translate.instant('Select Currencies')
+      : this.translate.instant('Select Currency');
   }
 
   private shouldShowKeyOnboarding() {
@@ -171,9 +171,13 @@ export class SelectCurrencyPage {
       err.message != 'PASSWORD_CANCELLED'
     ) {
       this.logger.error('Create: could not create wallet', err);
-      const title = this.translate.instant('Error');
-      err = this.bwcErrorProvider.msg(err);
-      this.popupProvider.ionicAlert(title, err);
+      if (err.message === 'WRONG_PASSWORD') {
+        this.errorsProvider.showWrongEncryptPassswordError();
+      } else {
+        const title = this.translate.instant('Error');
+        err = this.bwcErrorProvider.msg(err);
+        this.errorsProvider.showDefaultError(err, title);
+      }
     }
     return;
   }

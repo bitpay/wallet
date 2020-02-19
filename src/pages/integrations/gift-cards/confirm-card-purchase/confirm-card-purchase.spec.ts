@@ -6,10 +6,10 @@ import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ClaimCodeType } from '../../../../providers/gift-card/gift-card.types';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
+import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
-import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 
 import * as moment from 'moment';
 
@@ -1447,7 +1447,7 @@ describe('ConfirmCardPurchasePage', () => {
         onGoingProcessProvider = testBed.get(OnGoingProcessProvider);
         txFormatProvider = testBed.get(TxFormatProvider);
         walletProvider = testBed.get(WalletProvider);
-        formatCurrencyPipeSpy = spyOn<any>(
+        formatCurrencyPipeSpy = spyOn(
           FormatCurrencyPipe.prototype,
           'transform'
         ).and.returnValue('$' + '12');
@@ -1532,45 +1532,46 @@ describe('ConfirmCardPurchasePage', () => {
       spyOn(currencyProvider, 'isERCToken').and.returnValue(
         Promise.resolve(isERCTokenHelper(currency))
       );
-      spyOn<any>(instance, 'promptEmail').and.returnValue('test@bitpay.com');
+      spyOn(instance as any, 'promptEmail').and.returnValue('test@bitpay.com');
       spyOn(onGoingProcessProvider, 'set');
       spyOn(onGoingProcessProvider, 'clear');
 
-      spyOn<any>(payproProvider, 'getPayProDetails').and.returnValue(
+      spyOn(payproProvider as any, 'getPayProDetails').and.returnValue(
         Promise.resolve(payproDetailsForCurrency)
       );
 
-      spyOn<any>(txFormatProvider, 'parseAmount').and.returnValue(
+      spyOn(txFormatProvider as any, 'parseAmount').and.returnValue(
         Promise.resolve(parseAmountObj)
       );
 
-      spyOn<any>(txFormatProvider, 'formatAmountStr').and.returnValue('');
+      spyOn(txFormatProvider as any, 'formatAmountStr').and.returnValue('');
 
-      spyOn<any>(currencyProvider, 'isUtxoCoin').and.returnValue(
+      spyOn(currencyProvider as any, 'isUtxoCoin').and.returnValue(
         isUTXOHelper(currency)
       );
 
-      let createInvoiceSpy = spyOn<any>(
-        instance,
+      let createInvoiceSpy = spyOn(
+        instance as any,
         'createInvoice'
       ).and.returnValue(Promise.resolve(testInvoice));
 
-      spyOn<any>(currencyProvider, 'getChain').and.returnValue(
+      spyOn(currencyProvider as any, 'getChain').and.returnValue(
         instance.wallet.coin.toLowerCase()
       );
-      spyOn<any>(instance, 'satToFiat').and.callThrough();
-      let initializeSpy = spyOn<any>(instance, 'initialize').and.callThrough();
+      spyOn(instance as any, 'satToFiat').and.callThrough();
+      let initializeSpy = spyOn(
+        instance as any,
+        'initialize'
+      ).and.callThrough();
       spyOn(walletProvider, 'getAddress').and.returnValue(
         Promise.resolve(mockedAddress)
       );
-      let createTxSpy = spyOn<any>(instance, 'createTx').and.callThrough();
-      let walletSpyCreateTx = spyOn<any>(
-        walletProvider,
+      let createTxSpy = spyOn(instance as any, 'createTx').and.callThrough();
+      let walletSpyCreateTx = spyOn(
+        walletProvider as any,
         'createTx'
       ).and.callThrough();
-      spyOn<any>(instance, 'logGiftCardPurchaseEvent').and.callFake(
-        function() {}
-      );
+      spyOn(instance as any, 'logGiftCardPurchaseEvent').and.callFake(() => {});
 
       await instance.onWalletSelect(instance.wallet);
       expect(currencyProvider.isERCToken).toHaveBeenCalled();
@@ -1583,12 +1584,10 @@ describe('ConfirmCardPurchasePage', () => {
 
       let key = 'giftData';
 
-      window.console.log(instance.tx);
-
       delete instance.tx[key];
       delete expectedCreatedTx[key];
 
-      expect(instance.tx).toEqual(expectedCreatedTx);
+      expect((instance as any).tx).toEqual(expectedCreatedTx);
     });
   }
 

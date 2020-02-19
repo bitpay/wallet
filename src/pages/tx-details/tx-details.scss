@@ -3,7 +3,6 @@ page-tx-details {
     max-width: 200px;
   }
   $item-border-color: #efefef;
-  $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
   .header-container {
     padding: 20px 0px 20px 0px;
@@ -47,7 +46,7 @@ page-tx-details {
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
-    padding: 17px $item-lateral-padding;
+    padding: 17px 0px;
     > * {
       padding-right: 0;
     }

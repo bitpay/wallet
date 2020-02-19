@@ -15,6 +15,7 @@
     <access origin="https://bws.bitpay.com" />
     <access origin="https://bitpay.com" />
     <access origin="https://test.bitpay.com" />
+    <access origin="https://staging.bitpay.com" />
     <access origin="https://auth.shapeshift.io" />
     <access origin="https://shapeshift.io" />
     <access origin="https://api.coinbase.com" />
@@ -73,7 +74,7 @@
     <plugin name="cordova-plugin-add-swift-support" spec="1.7.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.3" />
-    <plugin name="cordova-plugin-inappbrowser" spec="2.0.2" />
+    <plugin name="cordova-plugin-inappbrowser" spec="3.1.0" />
     <plugin name="cordova-plugin-touch-id" spec="3.4.0">
       <variable name="FACEID_USAGE_DESCRIPTION" value=" " />
     </plugin>

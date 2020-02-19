@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
@@ -13,11 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
-import {
-  Coin,
-  CoinsMap,
-  CurrencyProvider
-} from '../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -48,8 +40,7 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
-  public wallets = {} as CoinsMap<any>;
-  public hasWallets = {} as CoinsMap<boolean>;
+  public hasWallets: boolean;
   public invalidAddress: boolean;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -92,7 +83,7 @@ export class SendPage {
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private viewCtrl: ViewController
+    private errorsProvider: ErrorsProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
@@ -107,10 +98,9 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
-    for (const coin of this.currencyProvider.getAvailableCoins()) {
-      this.wallets[coin] = this.profileProvider.getWallets({ coin });
-      this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
-    }
+    this.hasWallets = !_.isEmpty(
+      this.profileProvider.getWallets({ coin: this.wallet.coin })
+    );
   }
 
   ngOnDestroy() {
@@ -149,6 +139,7 @@ export class SendPage {
     let isValid, addrData;
     if (isPayPro) {
       isValid =
+        data &&
         data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
         data.network == this.wallet.network;
     } else {
@@ -193,12 +184,7 @@ export class SendPage {
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
     const title = this.translate.instant('Error');
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg, title }
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(() => {
+    this.errorsProvider.showDefaultError(msg, title, () => {
       this.search = '';
     });
   }
@@ -239,23 +225,24 @@ export class SendPage {
             this.search
           );
           const payproOptions = await this.payproProvider.getPayProOptions(
-            invoiceUrl,
-            true
+            invoiceUrl
           );
-          const selected = payproOptions.paymentOptions.filter(
-            option => option.selected
+          const selected = payproOptions.paymentOptions.find(
+            option =>
+              option.selected &&
+              this.wallet.coin.toUpperCase() === option.currency
           );
-          if (selected.length > 0) {
-            const isValid = this.checkCoinAndNetwork(selected[0], true);
+          if (selected) {
+            const isValid = this.checkCoinAndNetwork(selected, true);
             if (isValid) {
-              this.incomingDataProvider.redir(this.search, {
-                activePage: 'SendPage'
-              });
+              this.incomingDataProvider.goToPayPro(
+                payproOptions.payProUrl,
+                this.wallet.coin,
+                true
+              );
             }
           } else {
-            this.incomingDataProvider.redir(this.search, {
-              activePage: 'SendPage'
-            });
+            this.redir();
           }
         } catch (err) {
           this.invalidAddress = true;
@@ -298,13 +285,17 @@ export class SendPage {
     );
   }
 
-  public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage, {
-      wallet: this.wallet
-    });
-  }
+  public showMoreOptions(): void {
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'send-options'
+    );
+    optionsSheet.present();
 
-  public close(): void {
-    this.viewCtrl.dismiss();
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'multi-send')
+        this.navCtrl.push(MultiSendPage, {
+          wallet: this.wallet
+        });
+    });
   }
 }

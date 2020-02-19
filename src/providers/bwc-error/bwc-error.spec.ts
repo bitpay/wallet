@@ -109,6 +109,11 @@ describe('BwcErrorProvider: Bwc Error Provider', () => {
       err = new Error('INSUFFICIENT_FUNDS');
       expect(bwcErrorProvider.msg(err)).toEqual('Insufficient funds');
 
+      err = new Error('INSUFFICIENT_ETH_FEE');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Your linked ETH wallet does not have enough ETH for fee'
+      );
+
       err = new Error('CONNECTION_ERROR');
       expect(bwcErrorProvider.msg(err)).toEqual('Network error');
 
@@ -143,6 +148,11 @@ describe('BwcErrorProvider: Bwc Error Provider', () => {
       err = new Error('LOCKED_FUNDS');
       expect(bwcErrorProvider.msg(err)).toEqual(
         'Funds are locked by pending spend proposals'
+      );
+
+      err = new Error('LOCKED_ETH_FEE');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Your ETH linked wallet funds are locked by pending spend proposals'
       );
 
       err = new Error('COPAYER_VOTED');

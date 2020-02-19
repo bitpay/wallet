@@ -199,7 +199,7 @@ export class KeyProvider {
       try {
         this.decryptPrivateKey(key, password);
       } catch (e) {
-        return Promise.reject(this.translate.instant('Wrong password'));
+        return Promise.reject('WRONG_PASSWORD');
       }
       return Promise.resolve();
     });

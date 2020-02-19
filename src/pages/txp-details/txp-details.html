@@ -1,11 +1,11 @@
-<wide-header-page title="{{'Payment Proposal'|translate}}">
+<wide-header-page title="{{'Payment Proposal'|translate}}" [hasSlideButton]="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova">
   <ion-buttons left>
-    <button clear wide-header-bar-button (click)="close()" ion-button>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
       <ion-icon ios="md-close" md="md-close"></ion-icon>
     </button>
   </ion-buttons>
 
-  <div page-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
+  <div page-content>
     <div class="line-divider" *ngIf="tx"></div>
     <ion-list *ngIf="tx" class="bp-list">
       <ion-item>
@@ -101,13 +101,7 @@
         <ion-note item-end>
           <ion-row align-items-center class="wallet" *ngIf="wallet">
             <ion-col>
-              <ion-icon class="item-img rectangle" [ngClass]="{ 'background_btc': tx.coin == 'btc',
-            'background_bch': tx.coin == 'bch',
-            'background_eth': tx.coin == 'eth',
-            'background_xrp': tx.coin == 'xrp',
-            'testnet': tx.network === 'testnet' }" item-start>
-                <img src="assets/img/currencies/{{wallet?.coin}}.svg" />
-              </ion-icon>
+              <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
             </ion-col>
 
             <ion-col>
@@ -117,9 +111,9 @@
         </ion-note>
       </ion-item>
 
-      <div class="line-divider"></div>
+      <div class="line-divider" *ngIf="tx.creatorName && isShared"></div>
 
-      <ion-item>
+      <ion-item *ngIf="tx.creatorName && isShared">
         <ion-label>
           <div class="summary-item">
             <span translate>Created by</span>
@@ -200,8 +194,8 @@
                 <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
               </div>
               <div class="timeline-content-label">
-                <div class="action">{{a.description}}</div>
-                <div class="name">{{a.by}}</div>
+                <div class="action ellipsis">{{a.description}}</div>
+                <div class="name ellipsis">{{a.by}}</div>
               </div>
               <ion-note class="ellipsis">
                 <time>{{ a.time * 1000 | amTimeAgo}}</time>

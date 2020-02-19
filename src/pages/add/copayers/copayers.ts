@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavParams, Platform, ViewController } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  Platform,
+  ViewController
+} from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // Native
@@ -9,6 +15,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -17,6 +25,8 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
+// Pages
+import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
 @Component({
   selector: 'page-copayers',
   templateUrl: 'copayers.html'
@@ -29,6 +39,7 @@ export class CopayersPage {
   public wallet;
   public copayers: any[];
   public secret;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
@@ -49,7 +60,10 @@ export class CopayersPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private navCtrl: NavController,
+    public currencyProvider: CurrencyProvider,
+    private configProvider: ConfigProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -57,6 +71,7 @@ export class CopayersPage {
     this.isCordova = this.platformProvider.isCordova;
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.useLegacyQrCode = this.configProvider.get().useLegacyQrCode;
   }
 
   ionViewDidLoad() {
@@ -119,7 +134,9 @@ export class CopayersPage {
           if (err) this.logger.error(err);
           this.viewCtrl.dismiss().then(() => {
             this.events.publish('Local/WalletListChange');
-            this.events.publish('OpenWallet', this.wallet);
+            this.navCtrl.push(WalletDetailsPage, {
+              walletId: this.wallet.credentials.walletId
+            });
           });
         });
       }

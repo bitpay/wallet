@@ -12,9 +12,10 @@ page-home {
       margin-left: 0px;
     }
     .total-amount-value {
+      color: #000000;
       font-size: 38px;
       line-height: 56px;
-      font-weight: 500;
+      font-weight: 700;
       ion-spinner {
         margin-left: 15px;
         * {
@@ -27,11 +28,11 @@ page-home {
       height: 21px;
       width: 80px;
       border-radius: 7px;
-      &.negative-avg {
+      .negative-avg {
         color: #cf2f32;
         background-color: rgba(207, 47, 60, 0.1);
       }
-      &.possitive-avg {
+      .possitive-avg {
         color: #2fcfa4;
         background-color: rgba(47, 207, 164, 0.1);
       }
@@ -90,9 +91,6 @@ page-home {
       &-adv {
         padding: 0px 15px 7px 0px;
       }
-    }
-
-    &-title {
       &-info {
         color: color($colors, info);
       }
@@ -127,6 +125,11 @@ page-home {
     &-img {
       img {
         border-radius: 50%;
+        width: 60px;
+        height: 60px;
+      }
+      img.card-img {
+        border-radius: 0;
         width: 60px;
         height: 60px;
       }

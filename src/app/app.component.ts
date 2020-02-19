@@ -15,7 +15,13 @@ import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Observable, Subscription } from 'rxjs';
 
 // Providers
-import { GiftCardProvider } from '../providers';
+import {
+  BitPayProvider,
+  GiftCardProvider,
+  IABCardProvider,
+  InAppBrowserProvider,
+  PersistenceProvider
+} from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
@@ -24,6 +30,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
+import { Network } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -33,6 +40,7 @@ import { SimplexProvider } from '../providers/simplex/simplex';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // Pages
+import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -66,15 +74,16 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 export class CopayApp {
   @ViewChild('appNav')
   nav: NavController;
-
+  cardIAB_Ref: InAppBrowser;
+  NETWORK = 'livenet';
   public rootPage:
     | typeof AmountPage
     | typeof DisclaimerPage
     | typeof TabsPage
     | typeof OnboardingPage;
   private onResumeSubscription: Subscription;
-  private isWalletModalOpen: boolean;
-  private walletModal: any;
+  private isCopayerModalOpen: boolean;
+  private copayerModal: any;
 
   private pageMap = {
     AddressbookAddPage,
@@ -119,7 +128,11 @@ export class CopayApp {
     private renderer: Renderer,
     private userAgent: UserAgent,
     private device: Device,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private persistenceProvider: PersistenceProvider,
+    private iab: InAppBrowserProvider,
+    private iabCardProvider: IABCardProvider,
+    private bitpayProvider: BitPayProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -129,6 +142,11 @@ export class CopayApp {
 
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
+    if (this.iab) {
+      Object.keys(this.iab.refs).forEach(ref => {
+        this.iab.refs[ref].close();
+      });
+    }
   }
 
   initializeApp() {
@@ -161,7 +179,7 @@ export class CopayApp {
       });
   }
 
-  private onAppLoad(readySource) {
+  private async onAppLoad(readySource) {
     const deviceInfo = this.platformProvider.getDeviceInfo();
 
     this.logger.info(
@@ -197,9 +215,11 @@ export class CopayApp {
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       // Only overlay for iOS
-      if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+      if (this.platform.is('ios')) {
+        this.statusBar.overlaysWebView(true);
+        this.statusBar.styleDefault();
+      }
 
-      this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       // Subscribe Resume
@@ -217,6 +237,9 @@ export class CopayApp {
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
     }
+
+    const experiment = await this.persistenceProvider.getCardExperimentFlag();
+    this.bitpayProvider.init(experiment);
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
@@ -250,6 +273,31 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
+    // hiding this behind feature flag
+    if (experiment === 'enabled') {
+      let token;
+      try {
+        token = await this.persistenceProvider.getBitPayIdPairingToken(
+          Network['testnet']
+        );
+      } catch (err) {
+        this.logger.log(err);
+      }
+      // preloading the view
+      setTimeout(() => {
+        this.iab
+          .createIABInstance(
+            'card',
+            CARD_IAB_CONFIG,
+            'https://test.bitpay.com/wallet-card?context=bpa',
+            `sessionStorage.setItem('isPaired', ${!!token})`
+          )
+          .then(ref => {
+            this.cardIAB_Ref = ref;
+            this.iabCardProvider.init();
+          });
+      });
+    }
   }
 
   private onProfileLoad(profile) {
@@ -360,26 +408,33 @@ export class CopayApp {
   }
 
   private openWallet(wallet, params) {
-    // check if modal is already open
-    if (this.isWalletModalOpen) {
-      this.walletModal.dismiss();
-    }
-    const page = wallet.isComplete() ? WalletDetailsPage : CopayersPage;
-    this.isWalletModalOpen = true;
-    this.walletModal = this.modalCtrl.create(
-      page,
-      {
+    if (wallet.isComplete()) {
+      this.getGlobalTabs().select(1);
+      this.nav.push(WalletDetailsPage, {
         ...params,
         walletId: wallet.credentials.walletId
-      },
-      {
-        cssClass: 'wallet-details-modal'
+      });
+    } else {
+      // check if modal is already open
+      if (this.isCopayerModalOpen) {
+        this.copayerModal.dismiss();
       }
-    );
-    this.walletModal.present();
-    this.walletModal.onDidDismiss(() => {
-      this.isWalletModalOpen = false;
-    });
+      this.isCopayerModalOpen = true;
+      this.copayerModal = this.modalCtrl.create(
+        CopayersPage,
+        {
+          ...params,
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'wallet-details-modal'
+        }
+      );
+      this.copayerModal.present();
+      this.copayerModal.onDidDismiss(() => {
+        this.isCopayerModalOpen = false;
+      });
+    }
   }
 
   private async closeScannerFromWithinWallet() {

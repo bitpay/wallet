@@ -1,26 +1,37 @@
 <ion-header class="bp-header">
   <ion-navbar>
-    <ion-title>{{'Home' | translate}}</ion-title>
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Home' | translate }}
+      </div>
+    </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
+<ion-content #scrollArea>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Home' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
 
   <div class="message-background" *ngIf="accessDenied">
     <div class="message-header"></div>
     <div class="message-content">
       <ion-row align-items-center>
-        <div class="message-icon">
-          <img src="assets/img/icon-danger.svg">
-        </div>
+        <div class="message-icon"><img src="assets/img/icon-danger.svg" /></div>
         <div class="message-title message-title-critical">
-          {{ 'Access denied' | translate}}
+          {{ 'Access denied' | translate }}
         </div>
       </ion-row>
       <div class="message-body">
-        Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.
+        Unfortunately, your country/region has banned the use or acceptance of
+        cryptocurrencies as a valid form of payment and we are therefore unable
+        to service you.
       </div>
       <div>
         <div class="line-divider"></div>
@@ -40,8 +51,8 @@
     <div class="message-content">
       <ion-row align-items-center>
         <div class="message-icon">
-          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'" src="assets/img/icon-info-blue.svg">
-          <img *ngIf="serverMessages[0].category === 'critical'" src="assets/img/icon-danger.svg">
+          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'" src="assets/img/icon-info-blue.svg" />
+          <img *ngIf="serverMessages[0].category === 'critical'" src="assets/img/icon-danger.svg" />
         </div>
         <div class="message-title" *ngIf="serverMessages[0].title" [ngClass]="{
             'message-title-info': !serverMessages[0].category || serverMessages[0].category == 'info',
@@ -56,9 +67,7 @@
 
       <div *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
         <div class="line-divider"></div>
-        <span class="message-button" *ngIf="serverMessages[0].linkText">{{
-          serverMessages[0].linkText
-        }}</span>
+        <span class="message-button" *ngIf="serverMessages[0].linkText">{{ serverMessages[0].linkText }}</span>
         <span class="message-button" translate *ngIf="!serverMessages[0].linkText">Learn more</span>
       </div>
     </div>
@@ -67,30 +76,26 @@
   <page-feedback-card #showCard></page-feedback-card>
   <page-survey-card #showSurvey></page-survey-card>
 
-  <div class="total-amount-container" (longPress)="toggleHideBalanceFlag()">
+  <div *ngIf="showBalance" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
-    <div *ngIf="!balanceHidden">
-      <div class="total-amount-value" *ngIf="totalBalanceAlternative">{{totalBalanceAlternative}} {{totalBalanceAlternativeIsoCode}}</div>
-      <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
-        0.00 {{totalBalanceAlternativeIsoCode}}
-        <span *ngIf="fetchingStatus">
-          <ion-spinner></ion-spinner>
-        </span>
-      </div>
+    <div class="total-amount-value" *ngIf="totalBalanceAlternative">
+      {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
     </div>
-    <div class="balance-hidden" *ngIf="balanceHidden">
-      <span class="title" translate>[Balance Hidden]</span>
-      <div class="subtitle" translate>
-        Tap and hold to show
-      </div>
+    <div class="total-amount-value" *ngIf="!totalBalanceAlternative">
+      0.00 {{totalBalanceAlternativeIsoCode}}
+      <span *ngIf="fetchingStatus">
+        <ion-spinner></ion-spinner>
+      </span>
     </div>
-    <div *ngIf="averagePrice || averagePrice === 0" class="average-container" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
-      <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number:'1.2-2' }}%</span>
+    <div class="average-container">
+      <div *ngIf="averagePrice || averagePrice === 0" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number: '1.2-2' }}%</span>
+      </div>
     </div>
   </div>
 
-  <ion-list margin-bottom class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
-    <ion-item *ngIf="showShopOption" (click)="goToShop()">
+  <ion-list margin-bottom class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0">
+    <ion-item (click)="goToShop()">
       <ion-label>
         <div class="services-list-label">Shop</div>
       </ion-label>
@@ -98,7 +103,7 @@
         <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
       </ion-note>
     </ion-item>
-    <div class="line-divider" *ngIf="showShopOption"></div>
+    <div class="line-divider"></div>
     <ion-item *ngIf="showServicesOption" (click)="goToServices()">
       <ion-label>
         <div class="services-list-label">Services</div>
@@ -133,7 +138,7 @@
           <ion-row align-items-center>
             <ion-col align-self-start col-4>
               <div class="message-img">
-                <img src="{{advertisement.imgSrc}}">
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
               </div>
             </ion-col>
             <ion-col col-8>
@@ -145,7 +150,7 @@
               </div>
             </ion-col>
           </ion-row>
-          <div *ngIf="advertisement.link" (click)="goTo(advertisement.link)">
+          <div *ngIf="advertisement.link" (click)="goTo(advertisement.link, advertisement.linkParams)">
             <div class="line-divider"></div>
             <span class="message-button" *ngIf="advertisement.linkText">{{advertisement.linkText}}</span>
           </div>

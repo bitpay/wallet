@@ -32,7 +32,7 @@ $colors: (
   info: #5476eb,
   light: #f4f4f4,
   blank: #fff,
-  dark: #424242,
+  dark: #000,
   grey: #667,
   light-grey: #9b9bab,
   error: #e56c7b
@@ -52,8 +52,9 @@ $feather-dark: #f8f8f9;
 $feather: #fbfbff;
 // Refresh color
 $refresher-icon-color: color($colors, primary);
-$refresher-icon-font-size: 14px;
-$refresher-height: 140px;
+$refresher-icon-font-size: 12px;
+$refresher-height: 120px;
+$refresher-border-color: none;
 // Toolbar
 $toolbar-text-color: color($colors, light);
 // Main color
@@ -191,6 +192,14 @@ ion-footer {
     margin-bottom: -4px;
   }
 }
+
+/* Force safe-area for iPhone X -- Need testing
+.ios .tabs:not(.tabs-ios[tabsPlacement=top]) ion-footer .toolbar:last-child {
+  padding-bottom: 0 !important;
+  padding-bottom: calc(env(safe-area-inset-bottom)) !important;
+  padding-bottom: -webkit-calc(env(safe-area-inset-bottom)) !important;
+}
+*/
 
 .toolbar {
   // Titles centered on all headers for material design

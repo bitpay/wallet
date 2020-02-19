@@ -11,16 +11,17 @@ import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { IntegrationsPage } from '../pages/integrations/integrations';
+import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
-import { TxDetailsPage } from '../pages/tx-details/tx-details';
+import { TxDetailsModal } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
-import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
+import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Invoice
@@ -84,6 +85,7 @@ import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -144,6 +146,7 @@ export const PAGES = [
   BitPayCardPage,
   BitPaySettingsPage,
   BitPayCardTopUpPage,
+  BitPayIdPage,
   BuyCoinbasePage,
   CardCatalogPage,
   CreateWalletPage,
@@ -201,9 +204,10 @@ export const PAGES = [
   SendFeedbackPage,
   SurveyCardPage,
   FinishModalPage,
+  NewDesignTourPage,
   TabsPage,
   TxpDetailsPage,
-  TxDetailsPage,
+  TxDetailsModal,
   TxpPage,
   WalletSettingsPage,
   WalletDeletePage,
@@ -223,7 +227,7 @@ export const PAGES = [
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
-  WalletBalancePage,
+  WalletBalanceModal,
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,

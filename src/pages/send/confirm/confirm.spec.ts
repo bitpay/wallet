@@ -1,12 +1,14 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { TestUtils } from '../../../test';
-
 import { ConfirmPage } from './confirm';
 
 describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance;
+  let errorsProvider: ErrorsProvider;
+  let testBed: typeof TestBed;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {
@@ -21,6 +23,10 @@ describe('ConfirmPage', () => {
       instance.coin = 'btc';
       instance.tx = { coin: 'btc' };
       spyOn(instance.onGoingProcessProvider, 'set');
+      testBed = testEnv.testBed;
+      errorsProvider = testBed.get(ErrorsProvider);
+      spyOn(errorsProvider, 'showDefaultError');
+      spyOn(errorsProvider, 'showWrongEncryptPassswordError');
       fixture.detectChanges();
     })));
   afterEach(() => {
@@ -28,9 +34,9 @@ describe('ConfirmPage', () => {
   });
 
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
+    describe('ionViewDidLoad', () => {
       it('should set swipeBackEnabled to false', () => {
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(instance.navCtrl.swipeBackEnabled).toBe(false);
       });
       it('should display an error message if attempting to send to an old bch address', () => {
@@ -41,7 +47,7 @@ describe('ConfirmPage', () => {
           instance.popupProvider,
           'ionicConfirm'
         ).and.returnValue(Promise.resolve());
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(popupSpy).toHaveBeenCalled();
       });
       it('should instantiate the wallet selector with relevant wallets', () => {
@@ -57,7 +63,7 @@ describe('ConfirmPage', () => {
           onDidDismiss() {}
         });
         instance.wallets = [{}, {}];
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(setWalletSelectorSpy).toHaveBeenCalled();
       });
     });

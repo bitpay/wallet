@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   Renderer,
   ViewChild
@@ -14,7 +15,7 @@ import { NavController, NavParams } from 'ionic-angular';
   selector: 'page-slide-to-accept',
   templateUrl: 'slide-to-accept.html'
 })
-export class SlideToAcceptPage implements AfterViewInit {
+export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   @Output()
   slideDone = new EventEmitter<boolean>();
 
@@ -34,6 +35,20 @@ export class SlideToAcceptPage implements AfterViewInit {
   }
   get slideButtonDone() {
     return this.done;
+  }
+
+  ngOnChanges(changes) {
+    if (
+      changes &&
+      changes.disabled &&
+      changes.disabled.previousValue === true &&
+      changes.disabled.firstChange === false
+    ) {
+      this.animation = false;
+      setTimeout(() => {
+        this.toggleAnimation();
+      }, 300);
+    }
   }
 
   @ViewChild('slideButton', { read: ElementRef })
@@ -66,12 +81,7 @@ export class SlideToAcceptPage implements AfterViewInit {
     public navCtrl: NavController,
     public navParams: NavParams,
     public renderer: Renderer
-  ) {
-    this.animation = false;
-    setTimeout(() => {
-      this.toggleAnimation();
-    }, 3000);
-  }
+  ) {}
 
   ngAfterViewInit() {
     setTimeout(() => {

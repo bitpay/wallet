@@ -15,11 +15,11 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
@@ -28,7 +28,9 @@ import {
 } from '../../../providers/wallet/wallet';
 
 // Pages
+import { CopayersPage } from '../../add/copayers/copayers';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 @Component({
   selector: 'page-create-wallet',
@@ -77,7 +79,6 @@ export class CreateWalletPage implements OnInit {
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
@@ -88,7 +89,8 @@ export class CreateWalletPage implements OnInit {
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private modalCtrl: ModalController,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -265,7 +267,7 @@ export class CreateWalletPage implements OnInit {
       ) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
-        this.popupProvider.ionicAlert(title, subtitle);
+        this.errorsProvider.showDefaultError(subtitle, title);
         return;
       }
     }
@@ -275,7 +277,7 @@ export class CreateWalletPage implements OnInit {
       const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.errorsProvider.showDefaultError(subtitle, title);
       return;
     }
 
@@ -289,7 +291,7 @@ export class CreateWalletPage implements OnInit {
       const subtitle = this.translate.instant(
         'Invalid derivation path for selected coin'
       );
-      this.popupProvider.ionicAlert(title, subtitle);
+      this.errorsProvider.showDefaultError(subtitle, title);
       return;
     }
 
@@ -329,7 +331,22 @@ export class CreateWalletPage implements OnInit {
         this.navCtrl.popToRoot().then(() => {
           this.events.publish('Local/WalletListChange');
           setTimeout(() => {
-            this.events.publish('OpenWallet', wallet);
+            if (wallet.isComplete()) {
+              this.navCtrl.push(WalletDetailsPage, {
+                walletId: wallet.credentials.walletId
+              });
+            } else {
+              const copayerModal = this.modalCtrl.create(
+                CopayersPage,
+                {
+                  walletId: wallet.credentials.walletId
+                },
+                {
+                  cssClass: 'wallet-details-modal'
+                }
+              );
+              copayerModal.present();
+            }
           }, 1000);
         });
       })
@@ -341,9 +358,13 @@ export class CreateWalletPage implements OnInit {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           this.logger.error('Create: could not create wallet', err);
-          const title = this.translate.instant('Error');
-          err = this.bwcErrorProvider.msg(err);
-          this.popupProvider.ionicAlert(title, err);
+          if (err.message === 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPassswordError();
+          } else {
+            const title = this.translate.instant('Error');
+            err = this.bwcErrorProvider.msg(err);
+            this.errorsProvider.showDefaultError(err, title);
+          }
         }
         return;
       });
