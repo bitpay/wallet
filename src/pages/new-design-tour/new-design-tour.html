@@ -45,7 +45,7 @@
   <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="newDesignTourSlides.getActiveIndex() < 2">
     {{ 'Next' | translate }}
   </button>
-  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newDesignTourSlides.getActiveIndex() == 2">
+  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newDesignTourSlides.getActiveIndex() >= 2">
     {{'Done' | translate }}
   </button>
 </div>
