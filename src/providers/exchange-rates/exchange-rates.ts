@@ -14,7 +14,7 @@ export interface ApiPrice {
 @Injectable()
 export class ExchangeRatesProvider {
   private bwsURL: string;
-  private lastDates = 6;
+  private lastDates = 24;
   private historicalDates: any[];
 
   constructor(
@@ -54,13 +54,8 @@ export class ExchangeRatesProvider {
       if (i == 0) {
         this.historicalDates.push(moment().unix() * 1000);
       } else {
-        const today = moment().set({
-          hour: 15,
-          minute: 0,
-          second: 0,
-          millisecond: 0
-        });
-        this.historicalDates.push(today.subtract(i, 'day').unix() * 1000);
+        const today = moment();
+        this.historicalDates.push(today.subtract(i, 'hours').unix() * 1000);
       }
     }
   }
