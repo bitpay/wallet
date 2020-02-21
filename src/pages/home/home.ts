@@ -105,7 +105,7 @@ export class HomePage {
   public discountedCard: CardConfig;
   public showBitPayCardAdvertisement: boolean = true;
 
-  private lastWeekRatesArray;
+  private lastDayRatesArray;
   private zone;
 
   constructor(
@@ -274,7 +274,7 @@ export class HomePage {
     this.fetchingStatus = true;
     this.wallets = this.profileProvider.getWallets();
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
-    this.lastWeekRatesArray = await this.getLastWeekRates();
+    this.lastDayRatesArray = await this.getLastDayRates();
     if (_.isEmpty(this.wallets)) {
       this.fetchingStatus = false;
       return;
@@ -297,17 +297,14 @@ export class HomePage {
           }
 
           let walletTotalBalanceAlternative = 0;
-          let walletTotalBalanceAlternativeLastWeek = 0;
+          let walletTotalBalanceAlternativeLastDay = 0;
           if (status.wallet.network === 'livenet' && !wallet.hidden) {
             const balance =
               status.wallet.coin === 'xrp'
                 ? status.availableBalanceSat
                 : status.totalBalanceSat;
-            walletTotalBalanceAlternativeLastWeek = parseFloat(
-              this.getWalletTotalBalanceAlternativeLastWeek(
-                balance,
-                wallet.coin
-              )
+            walletTotalBalanceAlternativeLastDay = parseFloat(
+              this.getWalletTotalBalanceAlternativeLastDay(balance, wallet.coin)
             );
             if (status.wallet.coin === 'xrp') {
               walletTotalBalanceAlternative = parseFloat(
@@ -324,7 +321,7 @@ export class HomePage {
           }
           return Promise.resolve({
             walletTotalBalanceAlternative,
-            walletTotalBalanceAlternativeLastWeek
+            walletTotalBalanceAlternativeLastDay
           });
         })
         .catch(err => {
@@ -347,13 +344,13 @@ export class HomePage {
           _.compact(balanceAlternativeArray),
           b => b.walletTotalBalanceAlternative
         ).toFixed(2);
-        const totalBalanceAlternativeLastWeek = _.sumBy(
+        const totalBalanceAlternativeLastDay = _.sumBy(
           _.compact(balanceAlternativeArray),
-          b => b.walletTotalBalanceAlternativeLastWeek
+          b => b.walletTotalBalanceAlternativeLastDay
         ).toFixed(2);
         const difference =
           parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-          parseFloat(totalBalanceAlternativeLastWeek.replace(/,/g, ''));
+          parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
         this.averagePrice =
           (difference * 100) /
           parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
@@ -361,13 +358,13 @@ export class HomePage {
       });
     });
   }
-  private getWalletTotalBalanceAlternativeLastWeek(
+  private getWalletTotalBalanceAlternativeLastDay(
     balanceSat: number,
     coin: string
   ): string {
     return this.rateProvider
       .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin, {
-        customRate: this.lastWeekRatesArray[coin]
+        customRate: this.lastDayRatesArray[coin]
       })
       .toFixed(2);
   }
@@ -381,7 +378,7 @@ export class HomePage {
       .toFixed(2);
   }
 
-  private getLastWeekRates(): Promise<any> {
+  private getLastDayRates(): Promise<any> {
     const availableChains = this.currencyProvider.getAvailableChains();
     const getHistoricalRate = unitCode => {
       return new Promise(resolve => {
@@ -389,7 +386,8 @@ export class HomePage {
           .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
           .subscribe(
             response => {
-              return resolve({ rate: response.reverse()[0], unitCode });
+              const lastDayRate = response.reverse()[0];
+              return resolve({ rate: lastDayRate, unitCode });
             },
             err => {
               this.logger.error('Error getting current rate:', err);
@@ -403,10 +401,10 @@ export class HomePage {
     _.forEach(availableChains, unitCode => {
       promises.push(getHistoricalRate(unitCode));
     });
-    return Promise.all(promises).then(lastWeekRates => {
+    return Promise.all(promises).then(lastDayRates => {
       let ratesByCoin = {};
-      lastWeekRates.forEach(lastWeekRate => {
-        ratesByCoin[lastWeekRate.unitCode] = lastWeekRate.rate.rate;
+      lastDayRates.forEach(lastDayRate => {
+        ratesByCoin[lastDayRate.unitCode] = lastDayRate.rate.rate;
       });
       return Promise.resolve(ratesByCoin);
     });
