@@ -116,4 +116,13 @@ export class ExchangeRates {
     this.isIsoCodeSupported = _.includes(this.fiatCodes, alternativeIsoCode);
     this.isoCode = this.isIsoCodeSupported ? alternativeIsoCode : 'USD';
   }
+
+  public getDigitsInfo(coin: string) {
+    switch (coin) {
+      case 'xrp':
+        return '1.4-4';
+      default:
+        return '1.2-2';
+    }
+  }
 }

@@ -9,7 +9,7 @@
     </ion-label>
     <ion-note item-end>
       <div class="main-note">
-        <span *ngIf="isoCode === 'USD' && isIsoCodeSupported">$</span>{{ coin.currentPrice| number:'1.2-2' }}
+        <span *ngIf="isoCode === 'USD' && isIsoCodeSupported">$</span>{{ coin.currentPrice| number: this.getDigitsInfo(coin.unitCode) }}
         <span class="unit" *ngIf="isoCode !== 'USD' && isIsoCodeSupported">{{ isoCode }}</span>
         <span class="unit" *ngIf="!isIsoCodeSupported">USD</span>
       </div>
