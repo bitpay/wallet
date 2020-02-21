@@ -118,6 +118,9 @@ msgstr ""
 msgid "Add account"
 msgstr ""
 
+msgid "Add an existent contact or wallet"
+msgstr ""
+
 msgid "Add as a contact"
 msgstr ""
 
@@ -128,9 +131,6 @@ msgid "Add funds to get started"
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
-
-msgid "Add to an existent contact or wallet"
 msgstr ""
 
 msgid "Address"
@@ -187,13 +187,16 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
+msgid "Amount Cost"
+msgstr ""
+
+msgid "Amount Receiving"
+msgstr ""
+
 msgid "Amount Too Low To Spend"
 msgstr ""
 
 msgid "Amount below minimum allowed"
-msgstr ""
-
-msgid "Amount to pay"
 msgstr ""
 
 msgid "Amount too big"
@@ -474,9 +477,6 @@ msgstr ""
 msgid "Coin Selector"
 msgstr ""
 
-msgid "Commit Hash"
-msgstr ""
-
 msgid "Completed"
 msgstr ""
 
@@ -490,6 +490,9 @@ msgid "Confirm & Finish"
 msgstr ""
 
 msgid "Confirm Payment"
+msgstr ""
+
+msgid "Confirm Purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -1287,9 +1290,8 @@ msgstr ""
 
 msgid ""
 "If you need to send to \"old\" addresses (like the one you just pasted), "
-"and you are SURE those are BCH addresses, you can \"translate\" them using "
-"the BCH Translator tool and paste the corresponding address in CashAddr "
-"format for that \"old\" address."
+"and you are SURE those are BCH addresses, you can \"translate\" them to the "
+"corresponding address in CashAddr format."
 msgstr ""
 
 msgid "Import"
@@ -1895,6 +1897,9 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
+msgid "Price"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -2377,6 +2382,9 @@ msgstr ""
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
+msgid "TOTAL"
+msgstr ""
+
 msgid "Take control of your crypto"
 msgstr ""
 
@@ -2701,9 +2709,6 @@ msgstr ""
 msgid "Total Locked Balance"
 msgstr ""
 
-msgid "Total amount to pay"
-msgstr ""
-
 msgid "Total cash value"
 msgstr ""
 
@@ -2810,6 +2815,9 @@ msgid "Updating transaction history. Please stand by."
 msgstr ""
 
 msgid "Urgent"
+msgstr ""
+
+msgid "Use Legacy QR Code"
 msgstr ""
 
 msgid "Use Unconfirmed Funds"
@@ -3227,7 +3235,7 @@ msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid ""
-"Your wallets have now all been consolidated into one tab tallowing you to "
+"Your wallets have now all been consolidated into one tab allowing you to "
 "access and organize all of your crypto assets with ease."
 msgstr ""
 
