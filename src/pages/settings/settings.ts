@@ -78,6 +78,7 @@ export class SettingsPage {
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
   public showBalance: boolean;
+  public useLegacyQrCode: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -156,6 +157,8 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
+
+    this.useLegacyQrCode = this.config.useLegacyQrCode;
   }
 
   ionViewDidEnter() {
@@ -358,5 +361,12 @@ export class SettingsPage {
 
   public toggleShowBalanceFlag(): void {
     this.profileProvider.setShowTotalBalanceFlag(this.showBalance);
+  }
+
+  public toggleQrCodeLegacyFlag(): void {
+    let opts = {
+      useLegacyQrCode: this.useLegacyQrCode
+    };
+    this.configProvider.set(opts);
   }
 }

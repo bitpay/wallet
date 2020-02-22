@@ -158,7 +158,8 @@ export class TransferToPage {
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
           coin: addrData.coin,
-          getAddress: () => Promise.resolve(k)
+          getAddress: () => Promise.resolve(k),
+          destinationTag: v.tag
         });
       });
       contactsList = _.orderBy(contactsList, 'name');
@@ -272,7 +273,8 @@ export class TransferToPage {
           coin: item.coin,
           network: item.network,
           useAsModal: this._useAsModal,
-          fromWalletDetails: this._fromWalletDetails
+          fromWalletDetails: this._fromWalletDetails,
+          destinationTag: item.destinationTag
         });
       })
       .catch(err => {

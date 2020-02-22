@@ -13,6 +13,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
+import { ScanPage } from '../../scan/scan';
 import { TabsPage } from '../../tabs/tabs';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -140,7 +141,16 @@ export class ConfirmPage {
     this.navCtrl.swipeBackEnabled = true;
   }
 
-  ionViewWillEnter() {
+  ngOnDestroy() {
+    this.events.unsubscribe('Local/TagScan', this.updateDestinationTag);
+  }
+
+  private updateDestinationTag: any = data => {
+    this.tx.destinationTag = data.value;
+  };
+
+  ionViewDidLoad() {
+    this.logger.info('Loaded: ConfirmPage');
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     this.coin = this.navParams.data.coin;
@@ -255,10 +265,7 @@ export class ConfirmPage {
         this.hideSlideButton = false;
       });
     }
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: ConfirmPage');
+    this.events.subscribe('Local/TagScan', this.updateDestinationTag);
   }
 
   private getAmountDetails() {
@@ -1123,5 +1130,9 @@ export class ConfirmPage {
     memoComponent.onDidDismiss(memo => {
       if (memo) this.tx.description = memo;
     });
+  }
+
+  public openScanner(): void {
+    this.navCtrl.push(ScanPage, { fromConfirm: true });
   }
 }

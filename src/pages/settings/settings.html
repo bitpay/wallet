@@ -70,7 +70,7 @@
         <span class="main-label" translate>Notifications</span>
       </button>
 
-      <button ion-item>
+      <ion-item class="align-with-button">
         <ion-icon class="item-img icon-settings" name="md-eye" item-start></ion-icon>
         <ion-label>
           <div class="main-label">
@@ -78,7 +78,19 @@
           </div>
         </ion-label>
         <ion-toggle [(ngModel)]="showBalance" (ionChange)="toggleShowBalanceFlag()"></ion-toggle>
-      </button>
+      </ion-item>
+
+      <ion-item class="align-with-button">
+        <ion-icon class="item-img icon-settings" style="opacity: 0.3;" item-start>
+          <img src="assets/img/settings-icons/icon-qrcode.svg">
+        </ion-icon>
+        <ion-label>
+          <div class="main-label">
+            {{'Use Legacy QR Code' | translate}}
+          </div>
+        </ion-label>
+        <ion-toggle [(ngModel)]="useLegacyQrCode" (ionChange)="toggleQrCodeLegacyFlag()"></ion-toggle>
+      </ion-item>
 
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
         {{ 'Crypto Wallets & Keys' | translate }}

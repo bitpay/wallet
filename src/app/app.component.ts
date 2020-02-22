@@ -278,7 +278,7 @@ export class CopayApp {
       let token;
       try {
         token = await this.persistenceProvider.getBitPayIdPairingToken(
-          Network[this.NETWORK]
+          Network['testnet']
         );
       } catch (err) {
         this.logger.log(err);
@@ -289,7 +289,7 @@ export class CopayApp {
           .createIABInstance(
             'card',
             CARD_IAB_CONFIG,
-            'https://test.bitpay.com/wallet-card',
+            'https://test.bitpay.com/wallet-card?context=bpa',
             `sessionStorage.setItem('isPaired', ${!!token})`
           )
           .then(ref => {

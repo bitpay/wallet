@@ -145,14 +145,12 @@ export class BitPayIdProvider {
     const user: any = await this.persistenceProvider.getBitPayIdUserInfo(
       network
     );
-    // TODO add in logic to remove all cards
 
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network)
-        // TODO leave commented for the time being
-        // this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitPayIdUserInfo(network),
+        this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
       this.iab.refs.card.executeScript(
         {

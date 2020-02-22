@@ -35,7 +35,7 @@
       <div class="info">
         <div class="title" translate>A New Home for Wallets</div>
         <div class="text" translate>
-          Your wallets have now all been consolidated into one tab tallowing you to access and organize all of your crypto assets with ease.
+          Your wallets have now all been consolidated into one tab allowing you to access and organize all of your crypto assets with ease.
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
   <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="newDesignTourSlides.getActiveIndex() < 2">
     {{ 'Next' | translate }}
   </button>
-  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newDesignTourSlides.getActiveIndex() == 2">
+  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newDesignTourSlides.getActiveIndex() >= 2">
     {{'Done' | translate }}
   </button>
 </div>

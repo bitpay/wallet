@@ -105,6 +105,8 @@ export interface Config {
   blockExplorerUrl: CoinsMap<string>;
 
   allowMultiplePrimaryWallets: boolean;
+
+  useLegacyQrCode: boolean;
 }
 
 @Injectable()
@@ -218,7 +220,9 @@ export class ConfigProvider {
 
       blockExplorerUrl: this.currencyProvider.getBlockExplorerUrls(),
 
-      allowMultiplePrimaryWallets: false
+      allowMultiplePrimaryWallets: false,
+
+      useLegacyQrCode: false
     };
   }
 
@@ -322,6 +326,9 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitToSatoshi = this.configDefault.wallet.settings.unitToSatoshi;
       this.configCache.wallet.settings.unitDecimals = this.configDefault.wallet.settings.unitDecimals;
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
+    }
+    if (!this.configCache.useLegacyQrCode) {
+      this.configCache.useLegacyQrCode = this.configDefault.useLegacyQrCode;
     }
   }
 }

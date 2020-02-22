@@ -1,7 +1,7 @@
 <ion-header no-border class="wallet-details-header">
   <ion-navbar>
     <ion-title>
-      <div class="header-wallet-name" [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+      <div class="header-wallet-name" [reveal-at-scroll-pos]="(expandableHeader.headerHeight - 200)" [scrollArea]="scrollArea">
         {{wallet?.name}}
       </div>
     </ion-title>

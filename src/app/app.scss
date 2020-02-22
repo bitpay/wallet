@@ -270,7 +270,7 @@ button.item {
 }
 
 .background_xrp.testnet {
-  filter: opacity(0.5);
+  filter: opacity(0.4);
 }
 
 .icon-card {
@@ -547,11 +547,10 @@ ion-alert .alert-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #434d5a;
+  color: #9b9bab;
   font-size: 16px;
   font-weight: 500;
-  opacity: 50%;
-  margin: 20px 0px 10px 20px;
+  margin: 20px 16px 10px 20px;
 }
 
 .key-name {
@@ -594,6 +593,14 @@ ion-alert .alert-message {
       height: 100%;
       width: 100%;
       opacity: 0.715;
+    }
+  }
+
+  .bp-qr-card {
+    width: 100%;
+    img {
+      height: auto;
+      width: 100%;
     }
   }
 
@@ -733,6 +740,7 @@ page-bitpay-card,
 }
 
 .tabbar {
+  height: 10vh;
   .tabs-md &,
   .tabs-ios & {
     background: white;

@@ -10,7 +10,7 @@
 <ion-content #scrollArea>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-      <ion-toolbar class="wide-header__title">
+      <ion-toolbar class="wide-header__title" (click)="enableCard()" tappable>
         <expandable-header-primary>
           {{ 'Cards' | translate }}
         </expandable-header-primary>

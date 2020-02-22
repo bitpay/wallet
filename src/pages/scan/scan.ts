@@ -57,6 +57,7 @@ export class ScanPage {
   public fromJoin: boolean;
   public fromSend: boolean;
   public fromMultiSend: boolean;
+  public fromConfirm: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -125,6 +126,7 @@ export class ScanPage {
     this.fromJoin = this.navParams.data.fromJoin;
     this.fromSend = this.navParams.data.fromSend;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.fromConfirm = this.navParams.data.fromConfirm;
 
     if (!env.activateScanner) {
       // test scanner visibility in E2E mode
@@ -327,6 +329,9 @@ export class ScanPage {
       this.navCtrl.pop();
     } else if (this.fromMultiSend) {
       this.events.publish('Local/AddressScanMultiSend', { value: contents });
+      this.navCtrl.pop();
+    } else if (this.fromConfirm) {
+      this.events.publish('Local/TagScan', { value: contents });
       this.navCtrl.pop();
     } else {
       const redirParms = { activePage: 'ScanPage' };

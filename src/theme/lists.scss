@@ -12,7 +12,7 @@
   &.top-padding {
     margin-top: 40px;
   }
-  ion-item {
+  ion-item:not(.align-with-button) {
     padding-left: 19px;
   }
 
