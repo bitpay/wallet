@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { availableCoins, CoinOpts } from './coin';
-import { Token, TokenOpts } from './token';
+import { Token, TokenOpts, Tokens } from './token';
 
 export enum Coin {
   BTC = 'btc',
   BCH = 'bch',
   ETH = 'eth',
-  XRP = 'xrp',
-  USDC = 'usdc',
-  GUSD = 'gusd',
-  PAX = 'pax'
+  XRP = 'xrp'
 }
 
-export type CoinsMap<T> = { [key in Coin]: T };
+export type CoinsMap<T> = { [key in Coin | Tokens]: T };
 
 @Injectable()
 export class CurrencyProvider {

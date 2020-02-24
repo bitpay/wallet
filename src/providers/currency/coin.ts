@@ -1,4 +1,5 @@
 import { CoinsMap } from './currency';
+import { TokenOpts, TokensMap } from './token';
 
 export interface CoinOpts {
   // Bitcore-node
@@ -45,6 +46,44 @@ export interface CoinOpts {
     positionCenterColor: string;
   };
 }
+
+const getTokenOpts = () => {
+  let availableToken = {};
+  for (let [token, opts] of Object.entries(TokenOpts)) {
+    availableToken[token] = {
+      name: opts.name,
+      chain: 'ETH',
+      coin: token,
+      unitInfo: {
+        unitName: opts.symbol,
+        unitToSatoshi: Number(`1e${opts.decimal}`),
+        unitDecimals: opts.decimal,
+        unitCode: token
+      },
+      properties: {
+        hasMultiSig: false,
+        hasMultiSend: false,
+        isUtxo: false,
+        isERCToken: true,
+        isStableCoin: true,
+        singleAddress: true
+      },
+      paymentInfo: {
+        paymentCode: 'EIP681b',
+        protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
+        ratesApi: `https://bitpay.com/api/rates/usdc`,
+        blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      },
+      feeInfo: {
+        feeUnit: 'Gwei',
+        feeUnitAmount: 1e9,
+        blockTime: 0.2,
+        maxMerchantFee: 'urgent'
+      }
+    };
+  }
+  return availableToken as TokensMap<CoinOpts>;
+};
 
 export const availableCoins: CoinsMap<CoinOpts> = {
   btc: {
@@ -207,124 +246,5 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       positionCenterColor: '#9E9E9E'
     }
   },
-  pax: {
-    name: 'Paxos Standard',
-    chain: 'ETH',
-    coin: 'pax',
-    unitInfo: {
-      unitName: 'PAX',
-      unitToSatoshi: 1e18,
-      unitDecimals: 18,
-      unitCode: 'pax'
-    },
-    properties: {
-      hasMultiSig: false,
-      hasMultiSend: false,
-      isUtxo: false,
-      isERCToken: true,
-      isStableCoin: true,
-      singleAddress: true
-    },
-    paymentInfo: {
-      paymentCode: 'EIP681b',
-      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/pax',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
-    },
-    feeInfo: {
-      feeUnit: 'Gwei',
-      feeUnitAmount: 1e9,
-      blockTime: 0.2,
-      maxMerchantFee: 'urgent'
-    },
-    theme: {
-      backgroundColor: 'rgba(0,132,93,1)',
-      gradientBackgroundColor: 'rgba(0,209,147, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#51B849',
-      positionCenterColor: '#434D5A'
-    }
-  },
-  usdc: {
-    name: 'USD Coin',
-    chain: 'ETH',
-    coin: 'usdc',
-    unitInfo: {
-      unitName: 'USDC',
-      unitToSatoshi: 1e6,
-      unitDecimals: 6,
-      unitCode: 'usdc'
-    },
-    properties: {
-      hasMultiSig: false,
-      hasMultiSend: false,
-      isUtxo: false,
-      isERCToken: true,
-      isStableCoin: true,
-      singleAddress: true
-    },
-    paymentInfo: {
-      paymentCode: 'EIP681b',
-      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/usdc',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
-    },
-    feeInfo: {
-      feeUnit: 'Gwei',
-      feeUnitAmount: 1e9,
-      blockTime: 0.2,
-      maxMerchantFee: 'urgent'
-    },
-    theme: {
-      backgroundColor: 'rgba(39,117,201,1)',
-      gradientBackgroundColor: 'rgba(93,156,224, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#2775CA',
-      positionCenterColor: '#434D5A'
-    }
-  },
-  gusd: {
-    name: 'Gemini Dollar',
-    chain: 'ETH',
-    coin: 'gusd',
-    unitInfo: {
-      unitName: 'GUSD',
-      unitToSatoshi: 1e2,
-      unitDecimals: 2,
-      unitCode: 'gusd'
-    },
-    properties: {
-      hasMultiSig: false,
-      hasMultiSend: false,
-      isUtxo: false,
-      isERCToken: true,
-      isStableCoin: true,
-      singleAddress: true
-    },
-    paymentInfo: {
-      paymentCode: 'EIP681b',
-      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/gusd',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
-    },
-    feeInfo: {
-      feeUnit: 'Gwei',
-      feeUnitAmount: 1e9,
-      blockTime: 0.2,
-      maxMerchantFee: 'urgent'
-    },
-    theme: {
-      backgroundColor: 'rgba(0,220,250,1)',
-      gradientBackgroundColor: 'rgba(72,233,255, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#00DCFA',
-      positionCenterColor: '#434D5A'
-    }
-  }
+  ...getTokenOpts()
 };
