@@ -116,7 +116,7 @@ ion-header.bp-header .toolbar {
   opacity: 0.6;
   border-radius: none;
   background-color: transparent !important;
-  margin-right: 13px;
+  margin-right: 5px;
   color: #434d5a;
   &.activated,
   &:hover:not(.disable-hover) {
@@ -188,7 +188,7 @@ ion-spinner * {
     min-width: 41px;
   }
   .back-button {
-    margin-left: 13px;
+    margin-left: 10px;
     height: 41px;
     width: 41px;
     border-radius: 50%;
@@ -441,6 +441,20 @@ a.royal {
 
   .input-wrapper {
     padding-bottom: 4px;
+  }
+}
+
+ion-searchbar {
+  background: white;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+  .searchbar-input-container {
+    input.searchbar-input {
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      background: #f8f8f8;
+      font-size: 16px;
+      box-shadow: none;
+    }
   }
 }
 
