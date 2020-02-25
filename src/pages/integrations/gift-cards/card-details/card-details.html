@@ -28,7 +28,7 @@
         <div *ngIf="card.claimCode">
           <div *ngIf="card.status !== 'Canceled'">
             <div (click)="copyCode(card.claimCode)" [copy-to-clipboard]="card.claimCode" [hide-toast]="true" tappable>
-              <div class="card-info__title">Claim Code</div>
+              <div class="card-info__title" translate>Claim Code</div>
               <div class="card-info__body" *ngIf="!showBarcode()">
                 {{card.claimCode}}
               </div>
@@ -41,7 +41,7 @@
                 {{card.claimCode}}
               </div>
               <div class="card-info__date" *ngIf="!hasPin()">
-                Created {{card.date | amTimeAgo}}
+                {{ 'Created {cardDate}' | translate: { cardDate: card.date | amTimeAgo } }}
               </div>
             </div>
             <div *ngIf="hasPin()">
