@@ -30,6 +30,7 @@
       <ion-item *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
         <ion-label stacked>{{ 'Destination Tag' | translate }}</ion-label>
         <ion-input formControlName="tag" type="number"></ion-input>
+        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
       <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
@@ -38,5 +39,5 @@
         </div>
       </label-tip>
     </form>
-   </div>
+  </div>
 </wide-header-page>

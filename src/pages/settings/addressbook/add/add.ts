@@ -73,9 +73,19 @@ export class AddressbookAddPage {
   }
 
   private updateAddressHandler: any = data => {
-    this.addressBookAdd.controls['address'].setValue(
-      this.parseAddress(data.value)
-    );
+    const regex = /^[0-9]{9,}$/;
+    if (
+      regex.test(data.value) &&
+      this.addressBookAdd.value.address &&
+      this.getCoinAndNetwork() &&
+      this.getCoinAndNetwork().coin === 'xrp'
+    ) {
+      this.addressBookAdd.controls['tag'].setValue(data.value);
+    } else {
+      this.addressBookAdd.controls['address'].setValue(
+        this.parseAddress(data.value)
+      );
+    }
   };
 
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
