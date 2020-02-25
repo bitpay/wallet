@@ -49,6 +49,7 @@ export interface WalletOptions {
   compliantDerivation: any;
   useLegacyCoinType?: boolean;
   useLegacyPurpose?: boolean;
+  useBech32?: boolean;
 }
 
 export interface TransactionProposal {

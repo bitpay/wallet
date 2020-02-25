@@ -121,6 +121,7 @@ export class CreateWalletPage implements OnInit {
       recoveryPhrase: [null],
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
+      useBech32: [false],
       singleAddress: [false],
       coin: [null, Validators.required]
     });
@@ -181,6 +182,8 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['selectedSeed'].setValue(seed); // new or set
     if (this.createForm.controls['testnet'])
       this.createForm.controls['testnet'].setValue(false);
+    if (this.createForm.controls['useBech32'])
+      this.createForm.controls['useBech32'].setValue(false);
     this.createForm.controls['derivationPath'].setValue(
       this.derivationPathByDefault
     );
@@ -205,6 +208,7 @@ export class CreateWalletPage implements OnInit {
           ? this.createForm.value.myName
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
+      useBech32: this.createForm.value.useBech32,
       bwsurl: this.createForm.value.bwsURL,
       singleAddress: this.currencyProvider.isSingleAddress(
         this.createForm.value.coin
