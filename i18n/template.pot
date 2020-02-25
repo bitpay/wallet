@@ -219,6 +219,9 @@ msgstr ""
 msgid "Approximate receiving fiat amount"
 msgstr ""
 
+msgid "Archive"
+msgstr ""
+
 msgid "Archive All {brand} Gift Cards?"
 msgstr ""
 
@@ -384,6 +387,12 @@ msgstr ""
 msgid "Buy Gift Cards"
 msgstr ""
 
+msgid "Buy Now"
+msgstr ""
+
+msgid "Buy {displayName} Gift Card"
+msgstr ""
+
 msgid "Buying Bitcoin..."
 msgstr ""
 
@@ -448,6 +457,9 @@ msgid "Check the transaction on your wallet details"
 msgstr ""
 
 msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Claim Code"
 msgstr ""
 
 msgid "Clear"
@@ -705,6 +717,9 @@ msgid "Created"
 msgstr ""
 
 msgid "Created by"
+msgstr ""
+
+msgid "Created {cardDate}"
 msgstr ""
 
 msgid "Creating Gift Card..."
@@ -989,7 +1004,7 @@ msgstr ""
 msgid "Exceeded daily limit of $500 per user"
 msgstr ""
 
-msgid "Exchange Rates"
+msgid "Exchange Rates (1d)"
 msgstr ""
 
 msgid "Exchanges"
@@ -1116,6 +1131,9 @@ msgid "Get Help"
 msgstr ""
 
 msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
 msgstr ""
 
 msgid ""
@@ -1428,6 +1446,12 @@ msgstr ""
 msgid "Last Month"
 msgstr ""
 
+msgid "Last day"
+msgstr ""
+
+msgid "Last four digits"
+msgstr ""
+
 msgid "Learn More"
 msgstr ""
 
@@ -1437,9 +1461,18 @@ msgstr ""
 msgid "Learn more about testnet blockchain"
 msgstr ""
 
+msgid "Learn where you can spend your crypto today."
+msgstr ""
+
 msgid ""
 "Legacy wallets created before 9/15 can't support additional wallets being "
 "added."
+msgstr ""
+
+msgid "Leverage your crypto with a reloadable BitPay card."
+msgstr ""
+
+msgid "Leverage your crypto with an amazon.com gift card."
 msgstr ""
 
 msgid "Linked"
@@ -1500,6 +1533,9 @@ msgid "Me"
 msgstr ""
 
 msgid "Memo"
+msgstr ""
+
+msgid "Merchant Directory"
 msgstr ""
 
 msgid "Merchant Message"
@@ -1751,6 +1787,9 @@ msgstr ""
 msgid "Order Now"
 msgstr ""
 
+msgid "Order now"
+msgstr ""
+
 msgid "Ouch!"
 msgstr ""
 
@@ -1980,6 +2019,9 @@ msgstr ""
 msgid "Receipt Email"
 msgstr ""
 
+msgid "Receive"
+msgstr ""
+
 msgid "Received"
 msgstr ""
 
@@ -2110,6 +2152,9 @@ msgid "Scan again"
 msgstr ""
 
 msgid "Scanning Wallet funds..."
+msgstr ""
+
+msgid "Search Gift Cards"
 msgstr ""
 
 msgid "Search Transactions"
@@ -2286,7 +2331,13 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
+msgid "Shop"
+msgstr ""
+
 msgid "Shop anytime, around the world"
+msgstr ""
+
+msgid "Shop at Amazon"
 msgstr ""
 
 msgid "Show"
@@ -2847,6 +2898,9 @@ msgstr ""
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Directory"
+msgstr ""
+
 msgid "View Invoice"
 msgstr ""
 
@@ -3266,6 +3320,9 @@ msgstr ""
 msgid "{coinName} Address"
 msgstr ""
 
+msgid "{coinName} Wallets"
+msgstr ""
+
 msgid ""
 "{displayName} gift cards contain an additional activation fee of {fee} "
 "{currency}."
@@ -3274,13 +3331,10 @@ msgstr ""
 msgid "{displayName} requires you to present a printed gift card at redemption."
 msgstr ""
 
-msgid "{{ getCoinName(coin) }} Wallets"
+msgid "{walletsGroupLength} Wallet"
 msgstr ""
 
-msgid "{{ walletsGroup.length }} Wallet"
-msgstr ""
-
-msgid "{{ walletsGroup.length }} Wallets"
+msgid "{walletsGroupLength} Wallets"
 msgstr ""
 
 msgid ""
