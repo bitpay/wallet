@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2020-02-21 18:05\n"
+"PO-Revision-Date: 2020-02-25 16:06\n"
 
 msgid "(possible double spend)"
 msgstr "(możliwa podwójna wypłata)"
@@ -195,6 +195,9 @@ msgstr ""
 msgid "Approximate receiving fiat amount"
 msgstr ""
 
+msgid "Archive"
+msgstr ""
+
 msgid "Archive All {brand} Gift Cards?"
 msgstr ""
 
@@ -345,6 +348,12 @@ msgstr "Kup kartę podarunkową"
 msgid "Buy Gift Cards"
 msgstr ""
 
+msgid "Buy Now"
+msgstr ""
+
+msgid "Buy {displayName} Gift Card"
+msgstr ""
+
 msgid "Buying Bitcoin..."
 msgstr "Zakup bitcoinów..."
 
@@ -404,6 +413,9 @@ msgstr "Sprawdź transakcję w swoim portfelu"
 
 msgid "Choose a backup file from your computer"
 msgstr "Wybierz plik kopii zapasowej z komputera"
+
+msgid "Claim Code"
+msgstr ""
 
 msgid "Clear"
 msgstr "Wyczyść"
@@ -656,6 +668,9 @@ msgstr "Utworzono"
 
 msgid "Created by"
 msgstr "Utworzony przez"
+
+msgid "Created {cardDate}"
+msgstr ""
 
 msgid "Creating Gift Card..."
 msgstr "Tworzenie karty podarunkowej..."
@@ -930,7 +945,7 @@ msgstr ""
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Dzienny limit 500$ na użytkownika został przekroczony"
 
-msgid "Exchange Rates"
+msgid "Exchange Rates (1d)"
 msgstr ""
 
 msgid "Exchanges"
@@ -1054,6 +1069,9 @@ msgid "Get Help"
 msgstr ""
 
 msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
 msgstr ""
 
 msgid "Get detailed information for all transaction activity and reload dollars from the app."
@@ -1326,6 +1344,12 @@ msgstr "Język"
 msgid "Last Month"
 msgstr ""
 
+msgid "Last day"
+msgstr ""
+
+msgid "Last four digits"
+msgstr ""
+
 msgid "Learn More"
 msgstr ""
 
@@ -1335,7 +1359,16 @@ msgstr "Dowiedz się więcej"
 msgid "Learn more about testnet blockchain"
 msgstr ""
 
+msgid "Learn where you can spend your crypto today."
+msgstr ""
+
 msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
+msgstr ""
+
+msgid "Leverage your crypto with a reloadable BitPay card."
+msgstr ""
+
+msgid "Leverage your crypto with an amazon.com gift card."
 msgstr ""
 
 msgid "Linked"
@@ -1397,6 +1430,9 @@ msgstr "Ja"
 
 msgid "Memo"
 msgstr "Notatka"
+
+msgid "Merchant Directory"
+msgstr ""
 
 msgid "Merchant Message"
 msgstr "Wiadomość handlowa"
@@ -1641,6 +1677,9 @@ msgstr ""
 msgid "Order Now"
 msgstr ""
 
+msgid "Order now"
+msgstr ""
+
 msgid "Ouch!"
 msgstr "Ała!"
 
@@ -1866,6 +1905,9 @@ msgstr ""
 msgid "Receipt Email"
 msgstr ""
 
+msgid "Receive"
+msgstr ""
+
 msgid "Received"
 msgstr "Otrzymane"
 
@@ -1994,6 +2036,9 @@ msgstr "Skanuj ponownie"
 
 msgid "Scanning Wallet funds..."
 msgstr "Skanowanie środków portfela..."
+
+msgid "Search Gift Cards"
+msgstr ""
 
 msgid "Search Transactions"
 msgstr ""
@@ -2169,7 +2214,13 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
+msgid "Shop"
+msgstr ""
+
 msgid "Shop anytime, around the world"
+msgstr ""
+
+msgid "Shop at Amazon"
 msgstr ""
 
 msgid "Show"
@@ -2637,6 +2688,9 @@ msgstr "Widok"
 msgid "View Confirmation Status"
 msgstr "Podgląd stanu potwierdzenia"
 
+msgid "View Directory"
+msgstr ""
+
 msgid "View Invoice"
 msgstr ""
 
@@ -2988,19 +3042,19 @@ msgstr ""
 msgid "{coinName} Address"
 msgstr ""
 
+msgid "{coinName} Wallets"
+msgstr ""
+
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
 msgstr ""
 
 msgid "{displayName} requires you to present a printed gift card at redemption."
 msgstr ""
 
-msgid "{{ getCoinName(coin) }} Wallets"
+msgid "{walletsGroupLength} Wallet"
 msgstr ""
 
-msgid "{{ walletsGroup.length }} Wallet"
-msgstr ""
-
-msgid "{{ walletsGroup.length }} Wallets"
+msgid "{walletsGroupLength} Wallets"
 msgstr ""
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
