@@ -130,10 +130,10 @@
           </div>
         </ion-label>
         <ion-note *ngIf="walletsGroup.length == 1" item-end>
-          <span translate>{{ walletsGroup.length }} Wallet</span>
+          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
         </ion-note>
         <ion-note *ngIf="walletsGroup.length > 1" item-end>
-          <span translate>{{ walletsGroup.length }} Wallets</span>
+          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
         </ion-note>
       </button>
       <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">

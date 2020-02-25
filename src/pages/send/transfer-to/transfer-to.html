@@ -19,7 +19,7 @@
   <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0]">
     <div class="section-header">
       <ion-label class="key-name">
-        <span translate>{{ getCoinName(coin) }} Wallets</span>
+        <span>{{'{coinName} Wallets' | translate: { coinName: getCoinName(coin) } }}</span>
       </ion-label>
     </div>
     <ion-list no-lines class="bp-list">

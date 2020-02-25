@@ -54,8 +54,8 @@
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
-      <button clear (click)="openTransferToModal()" ion-button translate>
-        Add an existent contact or wallet
+      <button clear (click)="openTransferToModal()" ion-button>
+        {{'Add an existent contact or wallet' | translate}}
       </button>
     </div>
   </div>

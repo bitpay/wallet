@@ -1,4 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -64,10 +65,12 @@ export class HomePage {
   public advertisements: Advertisement[] = [
     {
       name: 'bitpay-card',
-      title: 'Get a BitPay Card',
-      body: 'Leverage your crypto with a reloadable BitPay card.',
+      title: this.translate.instant('Get a BitPay Card'),
+      body: this.translate.instant(
+        'Leverage your crypto with a reloadable BitPay card.'
+      ),
       app: 'bitpay',
-      linkText: 'Order now',
+      linkText: this.translate.instant('Order now'),
       link: BitPayCardIntroPage,
       dismissible: true,
       /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
@@ -75,20 +78,24 @@ export class HomePage {
     },
     {
       name: 'merchant-directory',
-      title: 'Merchant Directory',
-      body: 'Learn where you can spend your crypto today.',
+      title: this.translate.instant('Merchant Directory'),
+      body: this.translate.instant(
+        'Learn where you can spend your crypto today.'
+      ),
       app: 'bitpay',
-      linkText: 'View Directory',
+      linkText: this.translate.instant('View Directory'),
       link: 'https://bitpay.com/directory/?hideGiftCards=true',
       imgSrc: 'assets/img/icon-merch-dir.svg',
       dismissible: true
     },
     {
       name: 'amazon-gift-cards',
-      title: 'Shop at Amazon',
-      body: 'Leverage your crypto with an amazon.com gift card.',
+      title: this.translate.instant('Shop at Amazon'),
+      body: this.translate.instant(
+        'Leverage your crypto with an amazon.com gift card.'
+      ),
       app: 'bitpay',
-      linkText: 'Buy Now',
+      linkText: this.translate.instant('Buy Now'),
       link: CardCatalogPage,
       imgSrc: 'assets/img/amazon.svg',
       dismissible: true
@@ -128,7 +135,8 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private tabProvider: TabProvider,
     private modalCtrl: ModalController,
-    private bitPayCardProvider: BitPayCardProvider
+    private bitPayCardProvider: BitPayCardProvider,
+    private translate: TranslateService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }

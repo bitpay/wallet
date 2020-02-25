@@ -19,7 +19,7 @@
 
       <ion-item class="sub-title">
         <ion-label>
-          <div class="main-label">SUMMARY</div>
+          <div class="main-label">{{'SUMMARY' | translate}}</div>
         </ion-label>
       </ion-item>
 
@@ -150,7 +150,7 @@
             </div>
           </ion-note>
         </ion-item>
-    
+
         <div class="amount-details">
           <div class="secondary-note">
             <div *ngIf="isERCToken; else fiatAmount"></div>
@@ -172,8 +172,7 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)"
-      buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
       <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
