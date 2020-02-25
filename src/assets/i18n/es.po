@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2020-02-21 18:57\n"
+"PO-Revision-Date: 2020-02-25 18:38\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -121,7 +121,7 @@ msgid "Address"
 msgstr "Dirección"
 
 msgid "Address Book"
-msgstr "Libreta de Direcciones"
+msgstr "Libreta de direcciones"
 
 msgid "Address Type"
 msgstr "Tipo de dirección"
@@ -194,6 +194,9 @@ msgstr "Monto aproximado a recibir"
 
 msgid "Approximate receiving fiat amount"
 msgstr "Monto aproximado a recibir en dinero fiduciario"
+
+msgid "Archive"
+msgstr "Archivar"
 
 msgid "Archive All {brand} Gift Cards?"
 msgstr "¿Archivar todas las Gift Cards de {brand}?"
@@ -345,6 +348,12 @@ msgstr "Comprar Gift Card"
 msgid "Buy Gift Cards"
 msgstr "Comprar Gift Cards"
 
+msgid "Buy Now"
+msgstr "Comprar ahora"
+
+msgid "Buy {displayName} Gift Card"
+msgstr "Comprar Gift Card de {displayName}"
+
 msgid "Buying Bitcoin..."
 msgstr "Comprando Bitcoins..."
 
@@ -404,6 +413,9 @@ msgstr "Revise la transacción en los detalles de la billetera"
 
 msgid "Choose a backup file from your computer"
 msgstr "Selecciona el archivo de respaldo de tu computadora"
+
+msgid "Claim Code"
+msgstr "Código de reclamo"
 
 msgid "Clear"
 msgstr "Anular"
@@ -657,6 +669,9 @@ msgstr "Creado"
 msgid "Created by"
 msgstr "Creado por"
 
+msgid "Created {cardDate}"
+msgstr "Creado {cardDate}"
+
 msgid "Creating Gift Card..."
 msgstr "Creando Gift Card..."
 
@@ -673,7 +688,7 @@ msgid "Crypto to dollars in no time flat"
 msgstr "Criptomonedas a dólares en pocos minutos"
 
 msgid "Current Cards"
-msgstr "Tarjetas cctuales"
+msgstr "Tarjetas actuales"
 
 msgid "Current fee rate for this policy"
 msgstr "Comisión actual de esta política"
@@ -930,8 +945,8 @@ msgstr "Se requiere billetera Ethereum"
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Se excedió el limite de $500 por usuario"
 
-msgid "Exchange Rates"
-msgstr "Tarifas de cambio"
+msgid "Exchange Rates (1d)"
+msgstr "Tarifas de cambio (1d)"
 
 msgid "Exchanges"
 msgstr "Casas de cambio"
@@ -1055,6 +1070,9 @@ msgstr "Obtener ayuda"
 
 msgid "Get Started"
 msgstr "Comenzar"
+
+msgid "Get a BitPay Card"
+msgstr "Obtener tarjeta de BitPay"
 
 msgid "Get detailed information for all transaction activity and reload dollars from the app."
 msgstr "Obtén información detallada de todas tus transacciones y recarga dólares desde la aplicación."
@@ -1326,6 +1344,12 @@ msgstr "Idioma"
 msgid "Last Month"
 msgstr "Último mes"
 
+msgid "Last day"
+msgstr "Último día"
+
+msgid "Last four digits"
+msgstr "Últimos cuatro dígitos"
+
 msgid "Learn More"
 msgstr "Leer más"
 
@@ -1335,8 +1359,17 @@ msgstr "Más información"
 msgid "Learn more about testnet blockchain"
 msgstr "Aprenda más acerca de la blockchain de testnet"
 
+msgid "Learn where you can spend your crypto today."
+msgstr "Aprenda dónde puede gastar sus criptomonedas hoy."
+
 msgid "Legacy wallets created before 9/15 can't support additional wallets being added."
 msgstr "Las billeteras legacy creadas antes del 9/15 no soportan crear billeteras adicionales."
+
+msgid "Leverage your crypto with a reloadable BitPay card."
+msgstr "Aproveche sus criptomonedas con una tarjeta BitPay recargable."
+
+msgid "Leverage your crypto with an amazon.com gift card."
+msgstr "Aproveche sus criptomonedas con las gift cards de amazon.com."
 
 msgid "Linked"
 msgstr "Conectado"
@@ -1397,6 +1430,9 @@ msgstr "Yo"
 
 msgid "Memo"
 msgstr "Nota"
+
+msgid "Merchant Directory"
+msgstr "Directorio de comerciantes"
 
 msgid "Merchant Message"
 msgstr "Mensaje del comerciante"
@@ -1641,6 +1677,9 @@ msgstr "ID del pedido"
 msgid "Order Now"
 msgstr "Pedir ahora"
 
+msgid "Order now"
+msgstr "Pedir ahora"
+
 msgid "Ouch!"
 msgstr "¡Ups!"
 
@@ -1666,7 +1705,7 @@ msgid "Paste the backup plain text code"
 msgstr "Pegar el código de respaldo en texto plano"
 
 msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
-msgstr "Pegue este código en {cardConfig.website}. Esta Gift Card no se puede recuperar si pierde el código de promoción."
+msgstr "Pegue este código en {cardConfig.website}. Esta Gift Card no se puede recuperar si pierde el código de reclamo."
 
 msgid "Paying"
 msgstr "Pagando"
@@ -1866,6 +1905,9 @@ msgstr "Billetera de solo lectura"
 msgid "Receipt Email"
 msgstr "Correo electrónico de facturación"
 
+msgid "Receive"
+msgstr "Recibir"
+
 msgid "Received"
 msgstr "Recibido"
 
@@ -1994,6 +2036,9 @@ msgstr "Escanear de nuevo"
 
 msgid "Scanning Wallet funds..."
 msgstr "Buscando fondos en la billetera..."
+
+msgid "Search Gift Cards"
+msgstr "Buscar Gift Cards"
 
 msgid "Search Transactions"
 msgstr "Buscar transacciones"
@@ -2169,8 +2214,14 @@ msgstr "Compartir {{appName}}"
 msgid "Shared Wallet"
 msgstr "Billetera compartida"
 
+msgid "Shop"
+msgstr "Tienda"
+
 msgid "Shop anytime, around the world"
 msgstr "Comprar en cualquier momento, alrededor del mundo"
+
+msgid "Shop at Amazon"
+msgstr "Comprar en Amazon"
 
 msgid "Show"
 msgstr "Ver"
@@ -2308,7 +2359,7 @@ msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr "La casa de cambio más segura y rápida de la tierra"
 
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
-msgstr "El libro mayor de XRP requiere que todas las billeteras mantengan un balance mínimo de 20 XRP. Estos 20 XRP son no reembolsable y permanecerán bloqueado en su billetera."
+msgstr "El libro contable de XRP requiere que todas las billeteras mantengan un balance mínimo de 20 XRP. Estos 20 XRP no son reembolsables y permanecerán bloqueados en su billetera."
 
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet."
 msgstr "El libro contable de XRP requiere que todas las billeteras mantengan un balance mínimo de 20 XRP. Estos 20 XRP no son reembolsables y permanecerán bloqueados en su billetera. Por favor, deposite no menos de 20 XRP para activar su cartera."
@@ -2637,6 +2688,9 @@ msgstr "Ver"
 
 msgid "View Confirmation Status"
 msgstr "Ver estado de confirmación"
+
+msgid "View Directory"
+msgstr "Ver directorio"
 
 msgid "View Invoice"
 msgstr "Ver factura"
@@ -2989,20 +3043,20 @@ msgstr "Las billeteras {appName} utilizan el formato CashAddr por defecto"
 msgid "{coinName} Address"
 msgstr "Dirección {coinName}"
 
+msgid "{coinName} Wallets"
+msgstr "Billeteras {coinName}"
+
 msgid "{displayName} gift cards contain an additional activation fee of {fee} {currency}."
 msgstr "Las tarjetas de regalo de {displayName} contienen una tarifa adicional de activación de {fee} {currency}."
 
 msgid "{displayName} requires you to present a printed gift card at redemption."
 msgstr "{displayName} requiere presentar la Gift Card impresa para realizar el canje."
 
-msgid "{{ getCoinName(coin) }} Wallets"
-msgstr "Billeteras {{ getCoinName(coin) }}"
+msgid "{walletsGroupLength} Wallet"
+msgstr "{walletsGroupLength} Billetera"
 
-msgid "{{ walletsGroup.length }} Wallet"
-msgstr "{{ walletsGroup.length }} Billetera"
-
-msgid "{{ walletsGroup.length }} Wallets"
-msgstr "{{ walletsGroup.length }} Billeteras"
+msgid "{walletsGroupLength} Wallets"
+msgstr "{walletsGroupLength} Billeteras"
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitpay.com (instancia BWS pública de BitPay)."
