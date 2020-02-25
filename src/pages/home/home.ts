@@ -141,8 +141,9 @@ export class HomePage {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
-  async ngOnInit() {
-    await this.tabProvider.prefetchCards();
+  ionViewDidLoad() {
+    this.tabProvider.prefetchCards();
+    this.tabProvider.prefetchWallets();
   }
 
   async ionViewWillEnter() {

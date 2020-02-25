@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../gift-card/gift-card';
 import { GiftCard } from '../gift-card/gift-card.types';
+import { ProfileProvider } from '../profile/profile';
 
 @Injectable()
 export class TabProvider {
@@ -10,7 +11,8 @@ export class TabProvider {
 
   constructor(
     private bitPayCardProvider: BitPayCardProvider,
-    private giftCardProvider: GiftCardProvider
+    private giftCardProvider: GiftCardProvider,
+    private profileProvider: ProfileProvider
   ) {}
 
   prefetchBitpayCardItems(): Promise<any> {
@@ -30,5 +32,9 @@ export class TabProvider {
       this.prefetchBitpayCardItems(),
       this.prefetchGiftCards()
     ]);
+  }
+
+  prefetchWallets(): void {
+    this.profileProvider.getWallets();
   }
 }
