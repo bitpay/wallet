@@ -135,7 +135,13 @@ export class SimplexBuyPage {
         this.hideSlideButton = false;
       });
     }
+  }
 
+  ionViewDidLoad() {
+    this.logger.info('Loaded: SimplexBuyPage');
+  }
+
+  ionViewWillEnter() {
     if (_.isEmpty(this.wallets)) {
       this.showError(
         this.translate.instant('You do not have wallets able to receive funds')
@@ -144,10 +150,6 @@ export class SimplexBuyPage {
       if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
       else this.showWallets();
     }
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: SimplexBuyPage');
   }
 
   private calculateFiatRate(
