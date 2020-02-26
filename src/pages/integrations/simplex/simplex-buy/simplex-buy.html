@@ -82,86 +82,87 @@
         </ion-row>
       </ion-note>
     </button>
+    <div *ngIf="wallet">
+      <div class="line-divider"></div>
 
-    <div class="line-divider"></div>
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span *ngIf="currencyIsFiat()">{{"Amount Cost" | translate}}</span>
+            <span *ngIf="!currencyIsFiat()">{{"Amount Receiving" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
+            <span *ngIf="currencyIsFiat()">
+              {{ quoteForm.value.amount | number : '1.2-2' }} {{ fiatCurrency }}
+            </span>
+            <span *ngIf="!currencyIsFiat()">
+              {{ cryptoAmount }} {{ wallet.coin | uppercase }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
 
-    <ion-item>
-      <ion-label>
-        <div class="summary-item">
-          <span *ngIf="currencyIsFiat()">{{"Amount Cost" | translate}}</span>
-          <span *ngIf="!currencyIsFiat()">{{"Amount Receiving" | translate}}</span>
-        </div>
-      </ion-label>
-      <ion-note item-end>
-        <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
-          <span *ngIf="currencyIsFiat()">
-            {{ quoteForm.value.amount | number : '1.2-2' }} {{ fiatCurrency }}
-          </span>
-          <span *ngIf="!currencyIsFiat()">
-            {{ cryptoAmount }} {{ wallet.coin | uppercase }}
-          </span>
-        </div>
-      </ion-note>
-    </ion-item>
+      <div *ngIf="!currencyIsFiat()" class="line-divider"></div>
 
-    <div *ngIf="!currencyIsFiat()" class="line-divider"></div>
+      <ion-item *ngIf="!currencyIsFiat()">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Price</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
+            <span>
+              {{ fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
 
-    <ion-item *ngIf="!currencyIsFiat()">
-      <ion-label>
-        <div class="summary-item">
-          <span translate>Price</span>
-        </div>
-      </ion-label>
-      <ion-note item-end>
-        <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
-          <span>
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Fee" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
+            <span *ngIf="!currencyIsFiat()">
+              {{ fiatTotalAmount - fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
+            </span>
+            <span *ngIf="currencyIsFiat()">
+              {{ quoteForm.value.amount - fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="summary-line"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="main-label total-label">{{'TOTAL' | translate}}</div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="total-amount" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
+            <span *ngIf="!currencyIsFiat()">{{ fiatTotalAmount | number : '1.2-2' }} {{ fiatCurrency }}</span>
+            <span *ngIf="currencyIsFiat()">
+              {{ cryptoAmount }} {{ wallet.coin | uppercase }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="amount-details">
+        <div class="secondary-note">
+          <span *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading && currencyIsFiat()">
             {{ fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
           </span>
         </div>
-      </ion-note>
-    </ion-item>
-
-    <div class="line-divider"></div>
-
-    <ion-item>
-      <ion-label>
-        <div class="summary-item">
-          <span>{{"Fee" | translate}}</span>
-        </div>
-      </ion-label>
-      <ion-note item-end>
-        <div class="summary-item-detail" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
-          <span *ngIf="!currencyIsFiat()">
-            {{ fiatTotalAmount - fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
-          </span>
-          <span *ngIf="currencyIsFiat()">
-            {{ quoteForm.value.amount - fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
-          </span>
-        </div>
-      </ion-note>
-    </ion-item>
-
-    <div class="summary-line"></div>
-
-    <ion-item>
-      <ion-label>
-        <div class="main-label total-label">{{'TOTAL' | translate}}</div>
-      </ion-label>
-      <ion-note item-end>
-        <div class="total-amount" *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading; else ellipsis">
-          <span *ngIf="!currencyIsFiat()">{{ fiatTotalAmount | number : '1.2-2' }} {{ fiatCurrency }}</span>
-          <span *ngIf="currencyIsFiat()">
-            {{ cryptoAmount }} {{ wallet.coin | uppercase }}
-          </span>
-        </div>
-      </ion-note>
-    </ion-item>
-
-    <div class="amount-details">
-      <div class="secondary-note">
-        <span *ngIf="wallet && quoteForm.controls.amount.valid && !showLoading && currencyIsFiat()">
-          {{ fiatBaseAmount | number : '1.2-2' }} {{ fiatCurrency }}
-        </span>
       </div>
     </div>
   </ion-list>
