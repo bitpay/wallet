@@ -51,6 +51,7 @@ export class BitPayCardTopUpPage {
   public wallets;
 
   public totalAmountStr;
+  public invoice;
   public invoiceFee;
   public networkFee;
   public totalAmount;
@@ -486,6 +487,7 @@ export class BitPayCardTopUpPage {
               currency: wallet.coin.toUpperCase()
             })
               .then(inv => {
+                this.invoice = inv;
                 // Check if BTC or BCH is enabled in this account
                 if (!this.isCryptoCurrencySupported(wallet, inv)) {
                   return reject({
@@ -575,7 +577,7 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private initializeTopUp(wallet, parsedAmount): void {
+  private async initializeTopUp(wallet, parsedAmount) {
     let COIN = wallet.coin.toUpperCase();
     this.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -586,64 +588,66 @@ export class BitPayCardTopUpPage {
 
     this.logLegacyCardTopUpEvent(wallet, false);
 
-    this.createInvoice(dataSrc)
-      .then(invoice => {
-        // Check if BTC or BCH is enabled in this account
-        if (!this.isCryptoCurrencySupported(wallet, invoice)) {
-          let msg = this.translate.instant(
-            'Top-up with this cryptocurrency is not enabled'
+    let invoice = this.invoice;
+    if (!invoice && !this.useSendMax) {
+      try {
+        invoice = await this.createInvoice(dataSrc);
+      } catch (err) {
+        this.onGoingProcessProvider.clear();
+        return this.showErrorAndBack(err.title, err.message);
+      }
+    }
+    // Check if BTC or BCH is enabled in this account
+    if (!this.isCryptoCurrencySupported(wallet, invoice)) {
+      let msg = this.translate.instant(
+        'Top-up with this cryptocurrency is not enabled'
+      );
+      this.showErrorAndBack(null, msg);
+      return;
+    }
+
+    // Sometimes API does not return this element;
+    invoice['minerFees'][COIN]['totalFee'] =
+      invoice.minerFees[COIN].totalFee || 0;
+    let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+
+    let message = this.amountUnitStr + ' to ' + this.lastFourDigits;
+
+    // Set expiration time for this invoice
+    if (invoice['expirationTime'])
+      this.paymentTimeControl(invoice['expirationTime']);
+
+    this.createTx(wallet, invoice, message)
+      .then(ctxp => {
+        this.onGoingProcessProvider.clear();
+
+        // Save TX in memory
+        this.createdTx = ctxp;
+
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          wallet.coin,
+          ctxp.amount || parsedAmount.amountSat
+        );
+
+        if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+          // Warn: fee too high
+          this.checkFeeHigh(
+            Number(parsedAmount.amountSat),
+            Number(invoiceFeeSat) + Number(ctxp.fee)
           );
-          this.showErrorAndBack(null, msg);
-          return;
         }
 
-        // Sometimes API does not return this element;
-        invoice['minerFees'][COIN]['totalFee'] =
-          invoice.minerFees[COIN].totalFee || 0;
-        let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
-
-        let message = this.amountUnitStr + ' to ' + this.lastFourDigits;
-
-        // Set expiration time for this invoice
-        if (invoice['expirationTime'])
-          this.paymentTimeControl(invoice['expirationTime']);
-
-        this.createTx(wallet, invoice, message)
-          .then(ctxp => {
-            this.onGoingProcessProvider.clear();
-
-            // Save TX in memory
-            this.createdTx = ctxp;
-
-            this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-              wallet.coin,
-              ctxp.amount || parsedAmount.amountSat
-            );
-
-            if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
-              // Warn: fee too high
-              this.checkFeeHigh(
-                Number(parsedAmount.amountSat),
-                Number(invoiceFeeSat) + Number(ctxp.fee)
-              );
-            }
-
-            this.setTotalAmount(
-              wallet,
-              parsedAmount.amountSat,
-              Number(invoiceFeeSat),
-              ctxp.fee
-            );
-          })
-          .catch(err => {
-            this.onGoingProcessProvider.clear();
-            this._resetValues();
-            this.showError(err.title, err.message);
-          });
+        this.setTotalAmount(
+          wallet,
+          parsedAmount.amountSat,
+          Number(invoiceFeeSat),
+          ctxp.fee
+        );
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(err.title, err.message);
+        this._resetValues();
+        this.showError(err.title, err.message);
       });
   }
 
