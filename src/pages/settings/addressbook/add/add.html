@@ -29,7 +29,11 @@
 
       <ion-item *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
         <ion-label stacked>{{ 'Destination Tag' | translate }}</ion-label>
-        <ion-input formControlName="tag" type="number"></ion-input>
+        <ion-input formControlName="tag" type="number" [value]="addressBookAdd.value.tag"></ion-input>
+
+        <ion-icon *ngIf="addressBookAdd.value.tag && addressBookAdd.controls['tag'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+        <ion-icon *ngIf="addressBookAdd.value.tag && addressBookAdd.controls['tag'].status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
+
         <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
