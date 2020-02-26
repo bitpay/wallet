@@ -211,11 +211,14 @@ export class TxFormatProvider {
     };
   }
 
+  public toFixedNumber(value: number, decimals) {
+    const shifted = Math.floor(value * Math.pow(10, decimals));
+    const unshifted = shifted / Math.pow(10, decimals);
+    return Number(unshifted.toFixed(decimals));
+  }
+
   public satToUnit(amount: number, coin: Coin): number {
-    let { unitToSatoshi, unitDecimals } = this.currencyProvider.getPrecision(
-      coin
-    );
-    let satToUnit = 1 / unitToSatoshi;
-    return parseFloat((amount * satToUnit).toFixed(unitDecimals));
+    let { unitDecimals } = this.currencyProvider.getPrecision(coin);
+    return this.toFixedNumber(amount, unitDecimals);
   }
 }
