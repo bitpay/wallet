@@ -43,11 +43,6 @@ page-bitpay-card-topup {
       background-color: #fbfbfb;
     }
   }
-  .item-gravatar {
-    img {
-      margin-right: 1rem;
-    }
-  }
   .padded-input {
     padding-top: 10px;
     padding-bottom: 15px;
@@ -154,6 +149,18 @@ page-bitpay-card-topup {
           width: 18px;
           height: 18px;
           margin: 0px;
+        }
+      }
+    }
+    .gravatar {
+      ion-icon {
+        padding: 0px !important;
+        margin: 0px !important;
+        img {
+          width: 18px;
+        }
+        &.rectangle {
+          border-radius: 12px !important;
         }
       }
     }
