@@ -1,6 +1,25 @@
 gravatar {
-  img {
-    background-color: white;
-    border-radius: 50px;
+  .gravatar {
+    display: grid;
+    grid-template-rows: 1fr;
+    &-img {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+    }
+    &-coin {
+      grid-column: 2 / span 1;
+      grid-row: 2;
+      width: 20px;
+      ion-icon.item-img.icon {
+        margin: 0;
+        padding: 2px;
+        img {
+          width: 18px;
+        }
+        &.rectangle {
+          border-radius: 12px;
+        }
+      }
+    }
   }
 }

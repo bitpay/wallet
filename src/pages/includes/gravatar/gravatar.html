@@ -1,1 +1,4 @@
-<img class="gravatar" alt="{{ name }}" height="{{ height }}" width="{{ width }}" src="assets/img/contact-placeholder.svg">
+<div class="gravatar">
+  <img class="gravatar-img" alt="{{ name }}" height="{{ height }}" width="{{ width }}" src="assets/img/contact-placeholder.svg">
+  <coin-icon class="gravatar-coin" [coin]="coin" [network]="network"></coin-icon>
+</div>
