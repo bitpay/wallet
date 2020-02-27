@@ -158,4 +158,4 @@ import {
     CardPhasesProvider
   ]
 })
-export class ProvidersModule { }
+export class ProvidersModule {}

@@ -14,7 +14,6 @@ import { PhaseOneCardNotify } from '../phase-one-notify-page/phase-one-notify-pa
   selector: 'page-bitpay-phase-one-card-intro',
   templateUrl: './phase-one-intro-page.html'
 })
-
 export class PhaseOneCardIntro {
   public accounts;
 
@@ -25,9 +24,8 @@ export class PhaseOneCardIntro {
     private bitPayCardProvider: BitPayCardProvider,
     private externalLinkProvider: ExternalLinkProvider,
     public navCtrl: NavController,
-    private popupProvider: PopupProvider,
-  ) {
-  }
+    private popupProvider: PopupProvider
+  ) {}
 
   ionViewWillEnter() {
     this.bitPayAccountProvider.getAccounts((err, accounts) => {

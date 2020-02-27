@@ -12,27 +12,28 @@
   <div class="phaseOne__content">
     <div>
       <div class="phaseOne__content__title">
-        <span translate>Something new is on the horizon</span>
+        <span translate>Something exciting is arriving soon.</span>
       </div>
 
       <p class="phaseOne__content__description" translate>
-        Jump on the VIP list to get the new card for free as soon as it’s ready.
+        Join the waitlist and be the first to experience our brand new card.
       </p>
     </div>
   </div>
+
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <button ion-button class="button-standard" (click)="addMe()">
-      {{'Add Me' | translate}}
+      {{'Join the Waitlist' | translate}}
     </button>
     <button ion-button class="button-standard phaseOne__footer__secondary-button" color="light"
-      (click)="orderBitPayCard()">
-      {{'Order Legacy Card' | translate}}
+            (click)="orderBitPayCard()">
+      {{'I still want to order the current card' | translate}}
     </button>
     <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
-      {{'I already have a BitPay Card' | translate}}
+      {{'Pair My BitPay Card' | translate}}
     </button>
   </ion-toolbar>
 </ion-footer>

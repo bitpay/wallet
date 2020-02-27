@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 
@@ -17,12 +17,15 @@ export class PhaseTwoCardNotifyPage {
     private cardPhasesProvider: CardPhasesProvider
   ) {
     this.notifyForm = new FormGroup({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern(
-          /^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-        )
-      ])),
+      email: new FormControl(
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(
+            /^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+          )
+        ])
+      ),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
   }
@@ -32,13 +35,13 @@ export class PhaseTwoCardNotifyPage {
   }
 
   addMe() {
-    this.cardPhasesProvider.getSession().subscribe((data) => {
+    this.cardPhasesProvider.getSession().subscribe(data => {
       const csrf = data['data']['csrfToken'];
       const body = {
         email: this.notifyForm.get('email').value,
         created: new Date()
       };
-      this.cardPhasesProvider.notify(csrf, body).subscribe((val) => {
+      this.cardPhasesProvider.notify(csrf, body).subscribe(val => {
         if (val['data'] === 'Success') {
           this.navCtrl.push(OnTheList);
         }

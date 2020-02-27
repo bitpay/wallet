@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController } from 'ionic-angular';
 
@@ -25,14 +25,10 @@ export class PhaseTwoCardCountryList implements OnInit {
     private bitPayCardProvider: BitPayCardProvider,
     private externalLinkProvider: ExternalLinkProvider,
     public navCtrl: NavController,
-    private popupProvider: PopupProvider,
-  ) {
+    private popupProvider: PopupProvider
+  ) {}
 
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.bitPayAccountProvider.getAccounts((err, accounts) => {
