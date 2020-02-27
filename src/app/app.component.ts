@@ -274,30 +274,28 @@ export class CopayApp {
         this.logger.error('Error loading keys: ', err);
       });
     // hiding this behind feature flag
-    if (experiment === 'enabled') {
-      let token;
-      try {
-        token = await this.persistenceProvider.getBitPayIdPairingToken(
-          Network['testnet']
-        );
-      } catch (err) {
-        this.logger.log(err);
-      }
-      // preloading the view
-      setTimeout(() => {
-        this.iab
-          .createIABInstance(
-            'card',
-            CARD_IAB_CONFIG,
-            'https://test.bitpay.com/wallet-card?context=bpa',
-            `sessionStorage.setItem('isPaired', ${!!token})`
-          )
-          .then(ref => {
-            this.cardIAB_Ref = ref;
-            this.iabCardProvider.init();
-          });
-      });
+    let token;
+    try {
+      token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+    } catch (err) {
+      this.logger.log(err);
     }
+    // preloading the view
+    setTimeout(() => {
+      this.iab
+        .createIABInstance(
+          'card',
+          CARD_IAB_CONFIG,
+          'https://bitpay.com/wallet-card?context=bpa',
+          `sessionStorage.setItem('isPaired', ${!!token})`
+        )
+        .then(ref => {
+          this.cardIAB_Ref = ref;
+          this.iabCardProvider.init();
+        });
+    });
   }
 
   private onProfileLoad(profile) {

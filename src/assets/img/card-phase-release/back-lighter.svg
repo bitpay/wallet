@@ -1,0 +1,17 @@
+ <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+       height="26.409260218956916" width="32.40926021895757">
+    <defs>
+      <path id="path-1" opacity="1" fill-rule="evenodd" d="M23,8.5 L1,8.5 "/>
+      <path id="path-2" opacity="1" fill-rule="evenodd" d="M9,17 L0,8.5 L9,0 "/>
+    </defs>
+    <g transform="translate(3.704630109478785, 3.704630109478458)" opacity="1">
+      <g opacity="1">
+        <g opacity="1">
+          <use xlink:href="#path-1" fill-opacity="0" stroke="#FBFBFF" stroke-opacity="1" stroke-width="2"/>
+        </g>
+        <g opacity="1">
+          <use xlink:href="#path-2" fill-opacity="0" stroke="#FBFBFF" stroke-opacity="1" stroke-width="2"/>
+        </g>
+      </g>
+    </g>
+  </svg>

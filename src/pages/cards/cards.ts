@@ -81,6 +81,8 @@ export class CardsPage {
           ? this.persistenceProvider.removeCardExperimentFlag()
           : this.persistenceProvider.setCardExperimentFlag('enabled');
 
+        this.persistenceProvider.setBitpayIdPairingFlag('enabled');
+
         alert(
           `Card experiment ${
             res === 'enabled' ? 'disabled' : 'enabled'

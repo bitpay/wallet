@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
-    <ion-toolbar class="wide-header__title">
+    <ion-toolbar class="wide-header__title" (click)="enableBitPayIdPairing()" tappable>
       <expandable-header-primary>
         {{ 'Home' | translate }}
       </expandable-header-primary>

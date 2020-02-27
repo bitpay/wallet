@@ -1,0 +1,39 @@
+<ion-content no-bounce>
+  <div class="bitpayCard-header phaseOne">
+    <div>
+      <img src=" assets/img/card-phase-release/bitpay-card-spaceman-discover.svg" />
+    </div>
+
+    <button class="phaseOne__back-button" ion-button icon-only (click)="goBack()">
+      <img src="assets/img/card-phase-release/back-lighter.svg" alt="back button">
+    </button>
+  </div>
+
+  <div class="phaseOne__content">
+    <div>
+      <div class="phaseOne__content__title">
+        <span translate>Something exciting is arriving soon.</span>
+      </div>
+
+      <p class="phaseOne__content__description" translate>
+        Join the waitlist and be the first to experience our brand new card.
+      </p>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button class="button-standard" (click)="addMe()">
+      {{'Join the Waitlist' | translate}}
+    </button>
+    <button ion-button class="button-standard phaseOne__footer__secondary-button" color="light"
+            (click)="orderBitPayCard()">
+      {{'I still want to order the current card' | translate}}
+    </button>
+    <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
+      {{'Pair My BitPay Card' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

@@ -3,7 +3,7 @@
 </div>
 <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
   <div class="card-container">
-    <div class="card" [ngClass]="{ dark: bitpayCardItems.length === 2 && i === 1 }" (click)="goToCard(card.id)" tappable>
+    <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
       <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
       <span class="ellipsis" item-end>
         <div class="funds ellipsis">
@@ -24,18 +24,23 @@
     <div add-button-text translate>Add BitPay Card</div>
   </add-button>
 </div>
+
 <action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
   <div action-card-header>
     <div class="bitpay-card-header">
       <div class="bitpay-card-image">
         <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
-        <img src="assets/img/bitpay-card/bitpay-card.png" />
+        <img src="assets/img/bitpay-card/bitpay-card.png">
       </div>
     </div>
   </div>
-  <div action-card-title translate>Start using your crypto</div>
+
+  <div action-card-title translate *ngIf="!firstViewCardPhases">Start using your crypto</div>
   <div action-card-body [clamp]="2" translate>
-    Load dollars onto your BitPay Card. Shop anywhere that accepts Visa®
+    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere
+    that accepts Visa®
   </div>
+
   <div action-card-button translate>Get Started</div>
+
 </action-card-v4>

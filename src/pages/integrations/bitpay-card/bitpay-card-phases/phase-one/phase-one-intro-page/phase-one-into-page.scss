@@ -1,0 +1,45 @@
+.phaseOne {
+  &__back-button {
+    position: fixed;
+    top: 2rem;
+    left: 10px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &__content {
+    padding: 1rem 2rem;
+    &__title {
+      color: #000000;
+      font-size: 28px;
+      font-weight: bold;
+      line-height: 33px;
+    }
+
+    &__description {
+      color: #565d6d;
+      font-size: 16px;
+      line-height: 25px;
+    }
+  }
+
+  &__footer {
+    &__secondary-button {
+      color: #434d5a;
+    }
+  }
+
+  ion-toolbar {
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    background: white;
+    animation: fadein 500ms;
+    box-shadow: 0 -5px 40px 0 rgba(0, 0, 0, 0.1);
+    .toolbar-content {
+      padding: 20px 0;
+    }
+  }
+  ::ng-deep button {
+    max-width: none !important;
+  }
+}

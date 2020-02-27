@@ -1,0 +1,24 @@
+.phaseOne {
+  &__form-item {
+    padding-left: 0;
+  }
+
+  &__form-toggle {
+    margin-top: 2.5rem;
+
+    .toggle-icon::before {
+      background-color: rgba(128, 128, 128, 0.2);
+    }
+
+    &__label {
+      color: #565d6d;
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
+
+  &__content__on-list {
+    text-align: center;
+    margin-top: 3rem;
+  }
+}

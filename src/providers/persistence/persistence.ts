@@ -730,6 +730,19 @@ export class PersistenceProvider {
   removeBitPayIdUserInfo(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_USER_INFO(network));
   }
+
+  setBitpayIdPairingFlag(value: string) {
+    this.logger.debug('card experiment enabled: ', value);
+    return this.storage.set('BitpayIdPairingFlag', value);
+  }
+
+  getBitpayIdPairingFlag() {
+    return this.storage.get('BitpayIdPairingFlag');
+  }
+
+  removeBitpayIdPairingFlag() {
+    return this.storage.remove('BitpayIdPairingFlag');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {
