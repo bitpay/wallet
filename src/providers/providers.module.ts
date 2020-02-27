@@ -17,6 +17,7 @@ import {
   BitPayProvider,
   BwcErrorProvider,
   BwcProvider,
+  CardPhasesProvider,
   Clipboard,
   ClipboardProvider,
   CoinbaseProvider,
@@ -153,7 +154,8 @@ import {
     EmailNotificationsProvider,
     DecimalPipe,
     PersistenceProvider,
-    File
+    File,
+    CardPhasesProvider
   ]
 })
-export class ProvidersModule {}
+export class ProvidersModule { }

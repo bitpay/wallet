@@ -695,6 +695,14 @@ export class PersistenceProvider {
     return this.storage.remove('cardExperimentEnabled');
   }
 
+  getCardExperimentsPhase() {
+    return this.storage.get('cardExperimentsPhase');
+  }
+
+  removeCardExperimentsPhase() {
+    return this.storage.remove('cardExperimentsPhase');
+  }
+
   setWalletGroupName(keyId: string, name: string) {
     return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
   }

@@ -3,7 +3,7 @@
 </div>
 <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
   <div class="card-container">
-    <div class="card" [ngClass]="{ dark: bitpayCardItems.length === 2 && i === 1 }" (click)="goToCard(card.id)" tappable>
+    <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
       <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
       <span class="ellipsis" item-end>
         <div class="funds ellipsis">
@@ -24,18 +24,38 @@
     <div add-button-text translate>Add BitPay Card</div>
   </add-button>
 </div>
-<action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
+
+<action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayPhaseOne()" tappable>
   <div action-card-header>
     <div class="bitpay-card-header">
       <div class="bitpay-card-image">
         <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
-        <img src="assets/img/bitpay-card/bitpay-card.png" />
+        <img *ngIf="!firstViewCardPhases || firstViewCardPhases === 'phase-1'"
+          src="assets/img/bitpay-card/bitpay-card.png">
+
+        <!-- TODO: Update the image -->
+        <img *ngIf="firstViewCardPhases === 'phase-2'"
+          src="assets/img/card-phase-release/bitpay-card-spaceman-discover.svg">
+
       </div>
     </div>
   </div>
-  <div action-card-title translate>Start using your crypto</div>
-  <div action-card-body [clamp]="2" translate>
-    Load dollars onto your BitPay Card. Shop anywhere that accepts Visa®
+
+  <div action-card-title translate *ngIf="!firstViewCardPhases">Start using your crypto</div>
+  <div action-card-title translate *ngIf="firstViewCardPhases === 'phase-1'">Get a BitPay Card</div>
+  <div action-card-title translate *ngIf="firstViewCardPhases === 'phase-2'">Something exciting is arriving soon</div>
+
+  <div action-card-body *ngIf="!firstViewCardPhases || firstViewCardPhases === 'phase-1'" [clamp]="2" translate>
+    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere
+    that accepts Visa®
   </div>
-  <div action-card-button translate>Get Started</div>
+
+  <div action-card-body *ngIf="firstViewCardPhases === 'phase-2'" [clamp]="2" translate>
+    <!-- TODO: Update the text -->
+    Join the waiting list and be first to experience the brand new…
+  </div>
+
+  <div action-card-button *ngIf="!firstViewCardPhases || firstViewCardPhases === 'phase-1'" translate>Get Started</div>
+  <div action-card-button *ngIf="firstViewCardPhases === 'phase-2'" translate>Notify Me</div>
+
 </action-card-v4>

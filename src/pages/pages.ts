@@ -54,6 +54,18 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
+// Integrations: BitPayCard - Phases
+// Phase 2
+import { PhaseTwoCardCountryList } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-two/phase-two-country-list-page/phase-two-country-list-page';
+import { PhaseTwoCardNotifyPage } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-two/phase-two-notify-page/phase-two-notify-page';
+
+// Phase 1
+import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
+import { PhaseOneCardNotify } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-notify-page/phase-one-notify-page';
+
+//  Shared
+import { OnTheList } from '../pages/integrations/bitpay-card/bitpay-card-phases/shared/on-the-list-page/on-the-list-page';
+
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
@@ -231,5 +243,11 @@ export const PAGES = [
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,
-  SlideToAcceptPage
+  SlideToAcceptPage,
+  // Phases: card pages
+  PhaseOneCardIntro,
+  PhaseOneCardNotify,
+  OnTheList,
+  PhaseTwoCardCountryList,
+  PhaseTwoCardNotifyPage
 ];

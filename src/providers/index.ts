@@ -1,3 +1,5 @@
+// import { from } from 'rxjs/observable/from';
+
 /* Native modules */
 export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 export { Clipboard } from '@ionic-native/clipboard';
@@ -94,3 +96,5 @@ export {
 } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
+
+export { CardPhasesProvider } from '../providers/card-phases/card-phases';
