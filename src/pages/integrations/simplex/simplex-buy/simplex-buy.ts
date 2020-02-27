@@ -211,7 +211,8 @@ export class SimplexBuyPage {
 
   private setDefaultValues() {
     this.quoteForm.controls['amount'].setValue(undefined);
-    this.quoteForm.controls['altCurrency'].setValue(this.altCurrencyInitial);
+    if (!this.currencyIsFiat())
+      this.quoteForm.controls['altCurrency'].setValue(this.altCurrencyInitial);
     const min = this.calculateFiatRate(
       50,
       this.quoteForm.value.altCurrency,
@@ -240,6 +241,7 @@ export class SimplexBuyPage {
     this.logger.debug(
       'altCurrency changed to: ' + this.quoteForm.value.altCurrency
     );
+    if (!this.wallet) return;
 
     if (this.currencyIsFiat()) {
       this.quoteForm.controls['amount'].setValue(undefined);
