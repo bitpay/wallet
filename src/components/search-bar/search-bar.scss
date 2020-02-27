@@ -8,10 +8,9 @@ search-bar {
 
   ion-input {
     background: #f8f8f8;
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
-    padding: 0 20px 0 12px;
+    padding: 0 20px 0 20px;
 
     &:before {
       content: url(../assets/img/controls-ico-search.svg);
