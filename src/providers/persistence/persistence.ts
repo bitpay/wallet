@@ -695,14 +695,6 @@ export class PersistenceProvider {
     return this.storage.remove('cardExperimentEnabled');
   }
 
-  getCardExperimentsPhase() {
-    return this.storage.get('cardExperimentsPhase');
-  }
-
-  removeCardExperimentsPhase() {
-    return this.storage.remove('cardExperimentsPhase');
-  }
-
   setWalletGroupName(keyId: string, name: string) {
     return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
   }
@@ -737,6 +729,19 @@ export class PersistenceProvider {
 
   removeBitPayIdUserInfo(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_USER_INFO(network));
+  }
+
+  setBitpayIdPairingFlag(value: string) {
+    this.logger.debug('card experiment enabled: ', value);
+    return this.storage.set('BitpayIdPairingFlag', value);
+  }
+
+  getBitpayIdPairingFlag() {
+    return this.storage.get('BitpayIdPairingFlag');
+  }
+
+  removeBitpayIdPairingFlag() {
+    return this.storage.remove('BitpayIdPairingFlag');
   }
 }
 

@@ -50,6 +50,7 @@ export interface Advertisement {
   templateUrl: 'home.html'
 })
 export class HomePage {
+  public tapped = 0;
   showBuyCryptoOption: boolean;
   showServicesOption: boolean = false;
   @ViewChild('showSurvey')
@@ -590,6 +591,21 @@ export class HomePage {
         modal.present();
       }
     });
+  }
+
+  public enableBitPayIdPairing() {
+    this.tapped++;
+
+    if (this.tapped >= 10) {
+      this.persistenceProvider.getBitpayIdPairingFlag().then(res => {
+        res === 'enabled'
+          ? this.persistenceProvider.removeBitpayIdPairingFlag()
+          : this.persistenceProvider.setBitpayIdPairingFlag('enabled');
+
+        alert('bitpayID pairing enabled');
+        this.tapped = 0;
+      });
+    }
   }
 }
 

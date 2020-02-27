@@ -108,21 +108,20 @@ export class BitPayIdProvider {
 
             if (user) {
               const { data } = user;
-              const { email, familyName, givenName } = data;
+              // const { email, familyName, givenName } = data;
 
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
                 ),
-                // TODO remove this
-                this.persistenceProvider.setBitPayIdUserInfo(network, data),
-                this.persistenceProvider.setBitpayAccount(network, {
-                  email,
-                  token: token.data,
-                  familyName: familyName || '',
-                  givenName: givenName || ''
-                })
+                this.persistenceProvider.setBitPayIdUserInfo(network, data)
+                // this.persistenceProvider.setBitpayAccount(network, {
+                //   email,
+                //   token: token.data,
+                //   familyName: familyName || '',
+                //   givenName: givenName || ''
+                // })
               ]);
 
               successCallback(data);
@@ -149,8 +148,8 @@ export class BitPayIdProvider {
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network),
-        this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitPayIdUserInfo(network)
+        // this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
       this.iab.refs.card.executeScript(
         {
