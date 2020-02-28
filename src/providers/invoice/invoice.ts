@@ -11,7 +11,7 @@ export class InvoiceProvider {
     NETWORK: Network;
     BITPAY_API_URL: string;
   } = {
-    NETWORK: Network.testnet,
+    NETWORK: Network.livenet,
     BITPAY_API_URL: 'https://bitpay.com'
   };
 

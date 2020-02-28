@@ -24,7 +24,7 @@ card-catalog-page {
     &-prefix {
       display: none;
 
-      @media(min-width: 350px) {
+      @media (min-width: 350px) {
         display: inline;
       }
     }
@@ -32,7 +32,7 @@ card-catalog-page {
     &-suffix {
       display: inline;
 
-      @media(min-width: 350px) {
+      @media (min-width: 350px) {
         display: none;
       }
     }

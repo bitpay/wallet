@@ -641,7 +641,7 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova || true ? cardConfig.discounts : undefined
+    discounts: isCordova ? cardConfig.discounts : undefined
   };
 }
 
