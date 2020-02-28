@@ -450,9 +450,9 @@ ion-searchbar {
   padding-bottom: 10px;
   .searchbar-input-container {
     input.searchbar-input {
-      border: 1px solid rgba(0, 0, 0, 0.03);
       background: #f8f8f8;
       font-size: 16px;
+      border-radius: 8px;
       box-shadow: none;
     }
   }
