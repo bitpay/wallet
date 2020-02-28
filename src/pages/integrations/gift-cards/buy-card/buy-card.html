@@ -1,6 +1,7 @@
 <ion-header>
   <ion-navbar>
-    <ion-title class="bp-title">{{'Buy {displayName} Gift Card' | translate: { displayName: cardConfig?.displayName } }}</ion-title>
+    <ion-title class="bp-title">{{'Buy {displayName} Gift Card' | translate: { displayName: cardConfig?.displayName } }}
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -9,13 +10,16 @@
     <div class="amount-box">
       <div>
         <img-loader class="card-image" src="{{cardConfig?.cardImage}}">
-          <div class="discount" *ngIf="hasPercentageDiscount">
-            Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]">
-            </gift-card-discount-text>
-          </div>
         </img-loader>
       </div>
-      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency" [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)" (click)="onAmountClick()"></amount-picker>
+      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency"
+        [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)"
+        (click)="onAmountClick()"></amount-picker>
+      <div class="discount-header" *ngIf="hasPercentageDiscount">
+        <img src="assets/img/tags-stack.svg">
+        <div>Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]">
+          </gift-card-discount-text> off your purchase</div>
+      </div>
     </div>
     <div class="buy-box">
       <card-description class="buy-box__terms" [cardConfig]="cardConfig"></card-description>

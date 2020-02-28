@@ -114,7 +114,8 @@
         </ion-label>
       </button>
 
-      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
+      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index"
+        (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
         <ion-icon *ngIf="walletsGroup[0].canSign" class="item-img icon-settings" item-start>
           <img src="assets/img/settings-icons/icon-key.svg" />
         </ion-icon>
@@ -136,7 +137,8 @@
           {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
         </ion-note>
       </button>
-      <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
+      <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]"
+        (click)="goToAddView()">
         {{ 'Create or Import a Key' | translate }}
       </button>
 
@@ -158,7 +160,8 @@
         </ion-list>
       </div>
 
-      <button ion-item *ngFor="let card of (cardServices | orderBy: ['title'])" (click)="openSettingIntegration(card.name)">
+      <button ion-item *ngFor="let card of (cardServices | orderBy: ['title'])"
+        (click)="openSettingIntegration(card.name)">
         <ion-icon class="item-img" item-start>
           <img src="{{card.icon}}" />
         </ion-icon>
@@ -188,7 +191,8 @@
         {{ 'Exchanges' | translate }}
       </ion-item-divider>
 
-      <button ion-item *ngFor="let integration of (integrationServices | orderBy: ['title'])" (click)="openSettingIntegration(integration.name)">
+      <button ion-item *ngFor="let integration of (integrationServices | orderBy: ['title'])"
+        (click)="openSettingIntegration(integration.name)">
         <ion-icon class="item-img" item-start>
           <img src="{{integration.icon}}" />
         </ion-icon>

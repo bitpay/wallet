@@ -289,7 +289,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   private handleCreateInvoiceError(err) {
     let err_title = this.translate.instant('Error creating the invoice');
     let err_msg;
-    const errMessage = err && err.error && err.error.message;
+    const errMessage = err && ((err.error && err.error.message) || err.message);
     if (errMessage && errMessage.match(/suspended/i)) {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(

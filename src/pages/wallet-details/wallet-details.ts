@@ -113,11 +113,11 @@ export class WalletDetailsPage {
     this.cardIAB_Ref = this.iab.refs.card;
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
 
     const redirectionParam = this.navParams.get('redir');
-
     if (redirectionParam && redirectionParam.redir === 'wc') {
       setTimeout(() => {
         this.cardIAB_Ref.executeScript(
@@ -147,7 +147,6 @@ export class WalletDetailsPage {
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
-    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
 
     this.addressbookProvider
       .list()

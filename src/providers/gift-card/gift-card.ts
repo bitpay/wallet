@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
 import { ImageLoader } from 'ionic-image-loader';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
@@ -10,6 +11,7 @@ import { mergeMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
+import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
@@ -48,7 +50,9 @@ export class GiftCardProvider extends InvoiceProvider {
   constructor(
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
+    private bitpayIdProvider: BitPayIdProvider,
     private configProvider: ConfigProvider,
+    private events: Events,
     private imageLoader: ImageLoader,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private timeProvider: TimeProvider,
@@ -61,6 +65,22 @@ export class GiftCardProvider extends InvoiceProvider {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
     this.setCredentials();
+    this.listenForAuthChanges();
+  }
+
+  listenForAuthChanges() {
+    this.events.subscribe('BitPayId/Connected', async () => {
+      await this.persistenceProvider.setBitPayIdSettings(this.getNetwork(), {
+        syncGiftCardPurchases: true
+      });
+      await this.getCardConfigMap(true);
+    });
+    this.events.subscribe('BitPayId/Disconnected', async () => {
+      await this.getCardConfigMap(true);
+    });
+    this.events.subscribe('BitPayId/SettingsChanged', async () => {
+      await this.getCardConfigMap(true);
+    });
   }
 
   async getCardConfig(cardName: string) {
@@ -68,7 +88,11 @@ export class GiftCardProvider extends InvoiceProvider {
     return cardConfigMap[cardName];
   }
 
-  getCardConfigMap() {
+  getCardConfigMap(bustCache: boolean = false) {
+    if (bustCache) {
+      this.availableCardMapPromise = undefined;
+      this.availableCardsPromise = undefined;
+    }
     return this.availableCardMapPromise
       ? this.availableCardMapPromise
       : this.fetchCardConfigMap();
@@ -91,8 +115,16 @@ export class GiftCardProvider extends InvoiceProvider {
     return map || {};
   }
 
+  public async shouldSyncGiftCardPurchasesWithBitPayId() {
+    const [user, userSettings] = await Promise.all([
+      this.persistenceProvider.getBitPayIdUserInfo(this.getNetwork()),
+      this.persistenceProvider.getBitPayIdSettings(this.getNetwork())
+    ]);
+    return user && userSettings.syncGiftCardPurchases;
+  }
+
   public async createBitpayInvoice(data) {
-    const dataSrc = {
+    const params = {
       brand: data.cardName,
       currency: data.currency,
       amount: data.amount,
@@ -100,23 +132,32 @@ export class GiftCardProvider extends InvoiceProvider {
       discounts: data.discounts,
       email: data.email
     };
-    const url = `${this.getApiPath()}/pay`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+    const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
+    const promise = shouldSync
+      ? this.createAuthenticatedBitpayInvoice(params)
+      : this.createUnauthenticatedBitpayInvoice(params);
+    const cardOrder = await promise.catch(err => {
+      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
+      throw err;
     });
-    const cardOrder = await this.http
-      .post(url, dataSrc, { headers })
-      .toPromise()
-      .catch(err => {
-        this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
-        throw err;
-      });
     this.logger.info('BitPay Create Invoice: SUCCESS');
     return cardOrder as {
       accessKey: string;
       invoiceId: string;
       totalDiscount: number;
     };
+  }
+
+  public async createUnauthenticatedBitpayInvoice(params) {
+    const url = `${this.getApiPath()}/pay`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, params, { headers }).toPromise();
+  }
+
+  public async createAuthenticatedBitpayInvoice(params) {
+    return this.bitpayIdProvider.apiCall('createGiftCardInvoice', params);
   }
 
   async getActiveCards(): Promise<GiftCard[]> {
@@ -456,16 +497,29 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   async fetchAvailableCardMap() {
+    const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
+    const availableCardMap = shouldSync
+      ? await this.fetchAuthenticatedAvailableCardMap()
+      : await this.fetchPublicAvailableCardMap();
+    this.cacheApiCardConfig(availableCardMap);
+    return availableCardMap;
+  }
+
+  async fetchPublicAvailableCardMap(): Promise<AvailableCardMap> {
     const url = `${this.credentials.BITPAY_API_URL}/gift-cards/cards`;
-    const availableCardMap = (await this.http
+    return this.http
       .get(url, {
         headers: {
           'x-bitpay-version': this.appProvider.info.version
         }
       })
-      .toPromise()) as AvailableCardMap;
-    this.cacheApiCardConfig(availableCardMap);
-    return availableCardMap;
+      .toPromise() as Promise<AvailableCardMap>;
+  }
+
+  async fetchAuthenticatedAvailableCardMap(): Promise<AvailableCardMap> {
+    return this.bitpayIdProvider.apiCall('getGiftCardCatalog', {
+      bitpayVersion: this.appProvider.info.version
+    });
   }
 
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
@@ -587,7 +641,7 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova ? cardConfig.discounts : undefined
+    discounts: isCordova || true ? cardConfig.discounts : undefined
   };
 }
 

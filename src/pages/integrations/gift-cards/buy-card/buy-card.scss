@@ -33,6 +33,27 @@ buy-card-page {
         margin: 0 auto;
       }
     }
+
+    .discount-header {
+      background: white;
+      border-radius: 10px 10px 0 0;
+      font-weight: 500;
+      color: black;
+      padding: 16px 0;
+      border-bottom: 1px solid #f7f7f7;
+      display: flex;
+      justify-content: center;
+      font-weight: 600;
+
+      div {
+        text-align: left;
+        font-size: 15px;
+      }
+
+      img {
+        margin-right: 10px;
+      }
+    }
   }
 
   .buy-box {

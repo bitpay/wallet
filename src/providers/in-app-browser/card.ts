@@ -175,6 +175,8 @@ export class IABCardProvider {
               () => this.logger.log(`card -> reset iab state`)
             );
 
+            this.events.publish('BitPayId/Connected');
+
             const infoSheet = this.actionSheetProvider.createInfoSheet(
               'in-app-notification',
               {
