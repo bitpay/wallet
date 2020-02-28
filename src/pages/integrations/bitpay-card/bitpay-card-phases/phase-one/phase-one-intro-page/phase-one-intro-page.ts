@@ -81,11 +81,6 @@ export class PhaseOneCardIntro {
   }
 
   public addMe() {
-    this.complete = true;
-    setTimeout(() => {
-      this.goBack();
-    }, 2000);
-
     const body = {
       email: this.notifyForm.get('email').value,
       created: new Date()
@@ -102,7 +97,7 @@ export class PhaseOneCardIntro {
           this.complete = true;
           setTimeout(() => {
             this.goBack();
-          }, 1000);
+          }, 2000);
         }
       });
   }
