@@ -1,45 +1,97 @@
-.phaseOne {
-  &__back-button {
-    position: fixed;
-    top: 2rem;
-    left: 10px;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  &__content {
-    padding: 1rem 2rem;
-    &__title {
-      color: #000000;
-      font-size: 28px;
-      font-weight: bold;
-      line-height: 33px;
+page-bitpay-phase-one-card-intro {
+  @keyframes fadein {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
     }
-
-    &__description {
-      color: #565d6d;
-      font-size: 16px;
-      line-height: 25px;
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 
-  &__footer {
-    &__secondary-button {
-      color: #434d5a;
+  .phaseOne {
+    &__img {
+      transform: scale(0.8);
     }
-  }
+    &__back-button {
+      position: fixed;
+      top: 2rem;
+      left: 10px;
+      background: transparent;
+      box-shadow: none;
+    }
 
-  ion-toolbar {
-    border-top-right-radius: 25px;
-    border-top-left-radius: 25px;
-    background: white;
-    animation: fadein 500ms;
-    box-shadow: 0 -5px 40px 0 rgba(0, 0, 0, 0.1);
-    .toolbar-content {
-      padding: 20px 0;
+    &__content {
+      padding: 1rem 2rem;
+      &__title {
+        color: #000000;
+        font-size: 28px;
+        font-weight: bold;
+        line-height: 33px;
+      }
+
+      &__description {
+        color: #565d6d;
+        font-size: 16px;
+        line-height: 25px;
+      }
     }
-  }
-  ::ng-deep button {
-    max-width: none !important;
+
+    &__footer {
+      &__secondary-button {
+        color: #434d5a;
+      }
+    }
+
+    &__ctas {
+      margin-top: 50px;
+      button {
+        width: 100% !important;
+        max-width: none !important;
+      }
+    }
+
+    &__form {
+      &__link {
+        color: #1e46f5;
+      }
+      button {
+        margin-top: 20px;
+      }
+    }
+    &__complete {
+      img {
+        margin-top: 20px;
+      }
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    &__form-item {
+      padding-left: 0;
+    }
+
+    &__form-toggle {
+      margin-top: 2.5rem;
+
+      .toggle-icon::before {
+        background-color: rgba(128, 128, 128, 0.2);
+      }
+
+      &__label {
+        color: #565d6d;
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+
+    &__content__on-list {
+      text-align: center;
+      margin-top: 3rem;
+    }
   }
 }
