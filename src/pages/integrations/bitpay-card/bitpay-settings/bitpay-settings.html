@@ -13,10 +13,10 @@
             <img width="60" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
           </ion-icon>
           <h2>BitPay Visa&reg; Card</h2>
-          <p>{{bitpayCard.email}}</p>
+          <p *ngIf="bitpayCard.email">{{bitpayCard.email}}</p>
         </ion-item>
         <ion-item>
-          Last four digits
+          {{ 'Last four digits' | translate}}
           <ion-note item-end>
             {{bitpayCard.lastFourDigits}}
           </ion-note>

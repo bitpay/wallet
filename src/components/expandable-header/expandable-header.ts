@@ -134,12 +134,20 @@ export class ExpandableHeaderComponent {
   }
 
   transformFooterContent(transformations: number[]): void {
-    const [opacity] = transformations;
+    const [opacity, scale] = transformations;
+    const transformStr = `scale(${scale}, ${scale})`;
     this.footerContent &&
       this.renderer.setElementStyle(
         this.footerContent.element.nativeElement,
         'opacity',
         `${opacity}`
+      );
+
+    this.footerContent &&
+      this.renderer.setElementStyle(
+        this.footerContent.element.nativeElement,
+        'transform',
+        transformStr
       );
   }
 }

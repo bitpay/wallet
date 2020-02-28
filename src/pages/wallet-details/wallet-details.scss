@@ -118,6 +118,8 @@ page-wallet-details {
   }
 
   .action-buttons {
+    transform: inherit;
+    opacity: inherit;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -275,6 +277,8 @@ page-wallet-details {
   }
 
   .wallet-info {
+    transform: inherit;
+    opacity: inherit;
     height: 35px;
     width: 100%;
     display: flex;

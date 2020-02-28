@@ -34,19 +34,4 @@ page-addressbook {
       margin-left: 3px;
     }
   }
-  ion-icon.item-img.icon {
-    position: absolute;
-    top: 36px;
-    left: 40px;
-    margin: 0;
-    justify-content: center;
-    padding: 2px;
-    img {
-      width: 18px;
-    }
-    &.rectangle {
-      border-radius: 12px;
-      justify-content: center;
-    }
-  }
 }

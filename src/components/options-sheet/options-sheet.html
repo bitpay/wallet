@@ -1,7 +1,7 @@
 <action-sheet fromTop="true">
   <ion-list class="bp-list" [ngSwitch]="sheetType">
-    <div *ngSwitchCase="'address-options'">
-      <button ion-item (click)="optionClicked('request-amount')">
+    <div *ngSwitchCase="'wallet-options'">
+      <button ion-item (click)="optionClicked('request-amount')" *ngIf="params.showRequest">
         <ion-icon class="item-img icon-settings" item-start>
           <img src="assets/img/specific-amount.svg">
         </ion-icon>

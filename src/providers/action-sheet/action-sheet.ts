@@ -50,7 +50,7 @@ export type InfoSheetType =
   | 'wrong-encrypt-password';
 
 export type OptionsSheetType =
-  | 'address-options'
+  | 'wallet-options'
   | 'gift-card-options'
   | 'incoming-data'
   | 'address-book'

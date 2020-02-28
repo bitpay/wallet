@@ -29,9 +29,7 @@
             </div>
 
             <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
-              <ion-icon class="item-gravatar" item-left>
-                <gravatar [name]="item.recipient.name" [height]="20" [width]="20" [email]="item.recipient.email"></gravatar>
-              </ion-icon>
+              <gravatar [name]="item.recipient.name" [height]="40" [width]="40" [email]="item.recipient.email" [coin]="wallet.coin" [network]="wallet.network"></gravatar>
               <span class="name">{{item.recipient.name}}</span>
             </div>
 
@@ -54,8 +52,8 @@
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
-      <button clear (click)="openTransferToModal()" ion-button translate>
-        Add an existent contact or wallet
+      <button clear (click)="openTransferToModal()" ion-button>
+        {{'Add an existent contact or wallet' | translate}}
       </button>
     </div>
   </div>

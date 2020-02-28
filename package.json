@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "9.0.4",
+  "version": "9.0.5",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -192,7 +192,7 @@
     "@types/papaparse": "4.1.34",
     "@types/prismjs": "1.9.1",
     "adm-zip": "0.4.13",
-    "codecov": "3.1.0",
+    "codecov": "3.6.5",
     "core-js": "2.6.10",
     "electron": "5.0.13",
     "electron-builder": "21.2.0",
