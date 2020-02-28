@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
 import { BitPayAccountProvider } from '../../../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../../../providers/bitpay-card/bitpay-card';
 import { CardPhasesProvider } from '../../../../../../providers/card-phases/card-phases';
@@ -81,25 +80,15 @@ export class PhaseOneCardIntro {
   }
 
   public addMe() {
-    const body = {
-      email: this.notifyForm.get('email').value,
-      created: new Date()
-    };
-    this.cardPhasesProvider
-      .getSession()
-      .pipe(
-        switchMap(data =>
-          this.cardPhasesProvider.notify(data['data']['csrfToken'], body)
-        )
-      )
-      .subscribe(val => {
-        if (val['data'] === 'Success') {
-          this.complete = true;
-          setTimeout(() => {
-            this.goBack();
-          }, 2000);
-        }
-      });
+    const email = this.notifyForm.get('email').value;
+    this.cardPhasesProvider.notify(email).subscribe(val => {
+      if (val['data']['success']) {
+        this.complete = true;
+        setTimeout(() => {
+          this.goBack();
+        }, 2000);
+      }
+    });
   }
 
   public openPolicy() {

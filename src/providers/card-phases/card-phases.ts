@@ -144,12 +144,23 @@ export class CardPhasesProvider {
     return this.http.get(url);
   }
 
-  public notify(csrfToken, body) {
-    const url = 'https://bitpay.com/visa-api/interested';
+  public notify(email) {
+    const url = 'https://bitpay.com/api/v2';
     let httpHeaders = new HttpHeaders();
-    httpHeaders = httpHeaders.set('x-csrf-token', csrfToken);
+    httpHeaders = httpHeaders.set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
     const options = {
       headers: httpHeaders
+    };
+    const body = {
+      method: 'interested',
+      params: JSON.stringify({
+        email,
+        country: 'US',
+        topic: 'debitCard'
+      })
     };
     return this.http.post(url, body, options);
   }
