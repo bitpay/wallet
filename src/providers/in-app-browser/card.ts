@@ -168,12 +168,14 @@ export class IABCardProvider {
 
             this.cardIAB_Ref.executeScript(
               {
-                code: `window.postMessage('${JSON.stringify({
+                code: `window.postMessage(${JSON.stringify({
                   message: 'reset'
-                })}', '*')`
+                })}, '*')`
               },
               () => this.logger.log(`card -> reset iab state`)
             );
+
+            this.events.publish('BitPayId/Connected');
 
             const infoSheet = this.actionSheetProvider.createInfoSheet(
               'in-app-notification',

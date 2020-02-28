@@ -20,6 +20,24 @@ card-catalog-page {
     }
   }
 
+  .discount {
+    &-prefix {
+      display: none;
+
+      @media (min-width: 350px) {
+        display: inline;
+      }
+    }
+
+    &-suffix {
+      display: inline;
+
+      @media (min-width: 350px) {
+        display: none;
+      }
+    }
+  }
+
   ion-note.discount {
     background: #f2f2fa;
     border-radius: 20px;

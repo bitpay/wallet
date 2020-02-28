@@ -14,8 +14,8 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class BitPayIdProvider {
-  private NETWORK = 'testnet';
-  private BITPAY_API_URL = 'https://test.bitpay.com';
+  private NETWORK = Network.livenet;
+  private BITPAY_API_URL = 'https://bitpay.com';
   private deviceName = 'unknown device';
 
   constructor(
@@ -108,26 +108,26 @@ export class BitPayIdProvider {
 
             if (user) {
               const { data } = user;
-              const { email, familyName, givenName } = data;
+              // const { email, familyName, givenName } = data;
 
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
                 ),
-                // TODO remove this
-                this.persistenceProvider.setBitPayIdUserInfo(network, data),
-                this.persistenceProvider.setBitpayAccount(network, {
-                  email,
-                  token: token.data,
-                  familyName: familyName || '',
-                  givenName: givenName || ''
-                })
+                this.persistenceProvider.setBitPayIdUserInfo(network, data)
+                // this.persistenceProvider.setBitpayAccount(network, {
+                //   email,
+                //   token: token.data,
+                //   familyName: familyName || '',
+                //   givenName: givenName || ''
+                // })
               ]);
 
               successCallback(data);
             }
           } catch (err) {
+            alert(JSON.stringify(err));
             errorCallback(err);
           }
         },
@@ -135,6 +135,46 @@ export class BitPayIdProvider {
           errorCallback(err);
         }
       );
+    });
+  }
+
+  public async apiCall(method: string, params: any = {}) {
+    const url = `${this.BITPAY_API_URL}/api/v2/`;
+    const token = await this.persistenceProvider.getBitPayIdPairingToken(
+      Network[this.NETWORK]
+    );
+    const json = {
+      method,
+      params: JSON.stringify(params),
+      token
+    };
+    const dataToSign = `${url}${token}${JSON.stringify(json)}`;
+    const appIdentity = (await this.getAppIdentity()) as any;
+    const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
+
+    let headers = new HttpHeaders().set('content-type', 'application/json');
+    headers = headers.append('x-identity', appIdentity.pub);
+    headers = headers.append('x-signature', signedData);
+
+    const res: any = await this.http
+      .post(`${url}${token}`, json, { headers })
+      .toPromise();
+
+    if (res && res.error) {
+      throw new Error(res.error);
+    }
+    return res && res.data;
+  }
+
+  getAppIdentity() {
+    const network = Network[this.getEnvironment().network];
+    return new Promise((resolve, reject) => {
+      this.appIdentityProvider.getIdentity(network, (err, appIdentity) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(appIdentity);
+      });
     });
   }
 
@@ -149,8 +189,8 @@ export class BitPayIdProvider {
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network),
-        this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitPayIdUserInfo(network)
+        // this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
       this.iab.refs.card.executeScript(
         {

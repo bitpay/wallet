@@ -52,7 +52,8 @@ export class BuyCardPage {
       cardName: this.cardConfig.name,
       currency: this.cardConfig.currency,
       fixedUnit: true,
-      onlyIntegers: this.cardConfig.currency === 'JPY'
+      onlyIntegers:
+        this.cardConfig.currency === 'JPY' || this.cardConfig.integersOnly
     });
   }
 
