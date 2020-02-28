@@ -1,5 +1,4 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -98,7 +97,6 @@ export class WalletsPage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar,
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
@@ -125,10 +123,6 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
-    }
-
     // Update list of wallets, status and TXPs
     this.setWallets();
 

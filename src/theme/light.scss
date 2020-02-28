@@ -1,0 +1,41 @@
+.light {
+  // Uses default values. This is just to make a smooth transition between themes
+  @mixin transition {
+    transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
+  }
+
+  // General
+  page-theme {
+    ion-content.add-bottom-safe-area {
+      .fixed-content,
+      .scroll-content {
+        @include transition();
+      }
+    }
+    ion-content.add-padding-bottom,
+    .add-padding-bottom ion-content {
+      .fixed-content,
+      .scroll-content {
+        @include transition();
+      }
+    }
+
+    ion-content,
+    .content-ios .toolbar-background-ios,
+    .toolbar-background-md,
+    .toolbar-title,
+    .header .toolbar-background {
+      @include transition();
+    }
+
+    // Lists
+    .bp-list.settings-list {
+      .item {
+        &.item-ios,
+        &.item-md {
+          @include transition();
+        }
+      }
+    }
+  }
+}

@@ -8,8 +8,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="'#0C204E'">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': '#0C204E'}">
+<ion-content #scrollArea [fixed-scroll-bg-color]="backgroundColor">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': backgroundColor}">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
@@ -54,60 +54,58 @@
       </expandable-header-footer>
     </expandable-header>
 
-    <div class="fix-margin">
-      <div class="history-wrapper">
+    <div class="history-wrapper">
 
-        <!-- Transactions -->
+      <!-- Transactions -->
 
-        <div class="prompt-user activity-fix white-card" *ngIf="data && data.txs && data.txs.length == 0">
-          <div class="title-icon larger-icon">
-            <img src="assets/img/ghost-tongue-out.svg">
-          </div>
-          <div class="title-info">
-            <span translate>It's a ghost town in here</span>
-          </div>
-          <div class="subtitle-info">
-            <span translate>
-              If you have funds stored on a website then you should move them into a secure wallet... like this one!
-            </span>
-          </div>
+      <div class="prompt-user activity-fix white-card" *ngIf="data && data.txs && data.txs.length == 0">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-tongue-out.svg">
         </div>
-
-        <ion-list *ngIf="data && data.txs && data.txs.length > 0" class="tx-history">
-
-          <ion-item-divider sticky class="tx-history-header">
-            <span translate>Transactions</span>
-          </ion-item-divider>
-
-          <div class="item-wrapper" *ngFor="let tx of data.txs">
-            <button ion-item (click)="openTx(tx)">
-              <div class="tx-date" item-start>
-                <div class="tx-month">
-                  {{ tx.created_at | date : 'MMM' }}
-                </div>
-                <div class="tx-day">
-                  {{ tx.created_at | date : 'dd' }}
-                </div>
-              </div>
-
-              <div class="tx-description" *ngIf="tx.details">
-                {{ tx.details.title }}
-                <span class="tx-subtitle" *ngIf="tx.status != 'pending'">{{ tx.details.subtitle }}</span>
-                <span class="tx-subtitle" *ngIf="tx.status == 'pending'" translate>Pending</span>
-              </div>
-
-              <ion-note item-end text-end>
-                <div class="tx-amount">
-                  {{ tx.amount.amount | number:'1.2-8' }} {{ tx.amount.currency }}
-                </div>
-                <div class="tx-alternative-amount">
-                  <span>{{ tx.native_amount.amount }} {{ tx.native_amount.currency }}</span>
-                </div>
-              </ion-note>
-            </button>
-          </div>
-        </ion-list>
+        <div class="title-info">
+          <span translate>It's a ghost town in here</span>
+        </div>
+        <div class="subtitle-info">
+          <span translate>
+            If you have funds stored on a website then you should move them into a secure wallet... like this one!
+          </span>
+        </div>
       </div>
+
+      <ion-list *ngIf="data && data.txs && data.txs.length > 0" class="tx-history">
+
+        <ion-item-divider sticky class="tx-history-header">
+          <span translate>Transactions</span>
+        </ion-item-divider>
+
+        <div class="item-wrapper" *ngFor="let tx of data.txs">
+          <button ion-item (click)="openTx(tx)">
+            <div class="tx-date" item-start>
+              <div class="tx-month">
+                {{ tx.created_at | date : 'MMM' }}
+              </div>
+              <div class="tx-day">
+                {{ tx.created_at | date : 'dd' }}
+              </div>
+            </div>
+
+            <div class="tx-description" *ngIf="tx.details">
+              {{ tx.details.title }}
+              <span class="tx-subtitle" *ngIf="tx.status != 'pending'">{{ tx.details.subtitle }}</span>
+              <span class="tx-subtitle" *ngIf="tx.status == 'pending'" translate>Pending</span>
+            </div>
+
+            <ion-note item-end text-end>
+              <div class="tx-amount">
+                {{ tx.amount.amount | number:'1.2-8' }} {{ tx.amount.currency }}
+              </div>
+              <div class="tx-alternative-amount">
+                <span>{{ tx.native_amount.amount }} {{ tx.native_amount.currency }}</span>
+              </div>
+            </ion-note>
+          </button>
+        </div>
+      </ion-list>
     </div>
   </div>
 </ion-content>

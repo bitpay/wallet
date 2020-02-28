@@ -67,88 +67,54 @@ export class ExpandableHeaderComponent {
     this.headerHeight = this.element.nativeElement.offsetHeight;
   }
 
-  handleDomWrite(scrollTop: number) {
+  private handleDomWrite(scrollTop: number) {
     const newHeaderHeight = this.getNewHeaderHeight(scrollTop);
     newHeaderHeight > 0 && this.applyTransforms(scrollTop, newHeaderHeight);
   }
 
-  applyTransforms(scrollTop: number, newHeaderHeight: number): void {
+  private applyTransforms(scrollTop: number, newHeaderHeight: number): void {
     const transformations = this.computeTransformations(
       scrollTop,
       newHeaderHeight
     );
-    this.transformPrimaryContent(transformations, true);
-    this.transformFooterContent(transformations);
+    this.transformContent(transformations);
   }
 
-  getNewHeaderHeight(scrollTop: number): number {
+  private getNewHeaderHeight(scrollTop: number): number {
     const newHeaderHeight = this.headerHeight - scrollTop;
     return newHeaderHeight < 0 ? 0 : newHeaderHeight;
   }
 
-  computeTransformations(scrollTop: number, newHeaderHeight: number): number[] {
+  private computeTransformations(
+    scrollTop: number,
+    newHeaderHeight: number
+  ): number[] {
     const opacity = this.getScaleValue(newHeaderHeight, this.fadeFactor);
     const scale = this.getScaleValue(newHeaderHeight, 0.5);
     const translateY = scrollTop > 0 ? scrollTop / 1.5 : 0;
     return [opacity, scale, translateY];
   }
 
-  getScaleValue(newHeaderHeight: number, exponent: number): number {
+  private getScaleValue(newHeaderHeight: number, exponent: number): number {
     return (
       Math.pow(newHeaderHeight, exponent) /
       Math.pow(this.headerHeight, exponent)
     );
   }
 
-  transformPrimaryContent(transformations: number[], is3d: boolean): void {
-    let backColorGradient;
-    const [opacity, scale, translateY] = transformations;
-    const transform3d = `scale3d(${scale}, ${scale}, ${scale}) translateY(${translateY}px)`;
-    const transform2d = `scale(${scale}, ${scale}) translate(0, ${translateY}px)`;
-    const transformStr = is3d ? transform3d : transform2d;
+  private transformContent(transformations: number[]): void {
+    const [opacity] = transformations;
+
     this.renderer.setElementStyle(
       this.primaryContent.element.nativeElement,
       'opacity',
       `${opacity}`
     );
-    this.primaryContent &&
-      this.renderer.setElementStyle(
-        this.primaryContent.element.nativeElement,
-        'transform',
-        transformStr
-      );
-
-    backColorGradient = this.calculateBackColorGradient(opacity);
-
-    const linearGradient = `linear-gradient(180deg, #0C204E ${backColorGradient}% , #1C4386)`;
-
     this.renderer.setElementStyle(
-      this.element.nativeElement,
-      'background-image',
-      linearGradient
+      this.footerContent.element.nativeElement,
+      'opacity',
+      `${opacity}`
     );
-  }
-
-  calculateBackColorGradient(opacity: number): number {
-    return (1 - opacity) * 100;
-  }
-
-  transformFooterContent(transformations: number[]): void {
-    const [opacity, scale] = transformations;
-    const transformStr = `scale(${scale}, ${scale})`;
-    this.footerContent &&
-      this.renderer.setElementStyle(
-        this.footerContent.element.nativeElement,
-        'opacity',
-        `${opacity}`
-      );
-
-    this.footerContent &&
-      this.renderer.setElementStyle(
-        this.footerContent.element.nativeElement,
-        'transform',
-        transformStr
-      );
   }
 }
 

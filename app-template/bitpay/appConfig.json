@@ -3,7 +3,7 @@
   "packageDescription": "Secure Bitcoin Wallet",
   "packageNameId": "com.bitpay.wallet",
   "packageNameIdDesktop": "com.bitpay.wallet.desktop",
-  "themeColor": "#0c204e",
+  "themeColor": "#ffffff",
   "userVisibleName": "BitPay",
   "purposeLine": "Secure Bitcoin Wallet",
   "bundleName": "wallet",
