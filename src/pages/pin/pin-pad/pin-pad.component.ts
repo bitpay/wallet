@@ -29,13 +29,6 @@ export interface PinButton {
           <span *ngSwitchCase="'.'">
             <span *ngIf="type === 'amount'">.</span>
           </span>
-          <span
-            *ngSwitchCase="'0'"
-            class="key-wrapper"
-            [ngClass]="{ 'swap-key': type === 'amount' }"
-          >
-            <span>0</span>
-          </span>
           <span *ngSwitchDefault>{{ button.value }}</span>
         </div>
         <div class="letters" *ngIf="type === 'pin'">{{ button.letters }}</div>
