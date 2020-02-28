@@ -46,9 +46,7 @@
 
         <ion-row align-items-center class="wallet" *ngIf="tx.recipientType == 'contact'" (longPress)="toggleAddress()">
           <ion-col>
-            <ion-icon class="item-gravatar" item-start>
-              <gravatar [name]="tx.name" [height]="20" [width]="20" [email]="tx.email"></gravatar>
-            </ion-icon>
+            <gravatar [name]="tx.name" [height]="40" [width]="40" [email]="tx.email" [coin]="tx.coin" [network]="tx.network"></gravatar>
           </ion-col>
 
           <ion-col>

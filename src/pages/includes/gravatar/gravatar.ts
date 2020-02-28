@@ -13,6 +13,10 @@ export class GravatarPage {
   height: number;
   @Input()
   width: number;
+  @Input()
+  coin: string;
+  @Input()
+  network: string;
 
   constructor() {}
 }

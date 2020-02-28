@@ -20,8 +20,7 @@
     <ion-list margin-top>
       <button ion-item *ngFor="let entry of filteredAddressbook | orderBy : ['name']" (click)="viewEntry(entry)">
         <ion-icon item-start>
-          <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email"></gravatar>
-          <coin-icon [coin]="entry.coin" [network]="entry.network"></coin-icon>
+          <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email" [coin]="entry.coin" [network]="entry.network"></gravatar>
         </ion-icon>
         <div class="item-title">{{ entry.name }}</div>
         <div class="item-subtitle">{{ entry.address }}</div>

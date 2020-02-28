@@ -168,9 +168,9 @@ export class IABCardProvider {
 
             this.cardIAB_Ref.executeScript(
               {
-                code: `window.postMessage('${JSON.stringify({
+                code: `window.postMessage(${JSON.stringify({
                   message: 'reset'
-                })}', '*')`
+                })}, '*')`
               },
               () => this.logger.log(`card -> reset iab state`)
             );
