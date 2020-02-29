@@ -73,7 +73,8 @@ const Keys = {
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
-  BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`
+  BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
+  BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`
 };
 
 interface Storage {
@@ -729,6 +730,30 @@ export class PersistenceProvider {
 
   removeBitPayIdUserInfo(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_USER_INFO(network));
+  }
+
+  setBitPayIdSettings(network: Network, userSettings: any) {
+    return this.storage.set(Keys.BITPAY_ID_SETTINGS(network), userSettings);
+  }
+
+  getBitPayIdSettings(network: Network) {
+    return this.storage.get(Keys.BITPAY_ID_SETTINGS(network));
+  }
+
+  removeBitPayIdSettings(network: Network) {
+    return this.storage.remove(Keys.BITPAY_ID_SETTINGS(network));
+  }
+  setBitpayIdPairingFlag(value: string) {
+    this.logger.debug('card experiment enabled: ', value);
+    return this.storage.set('BitpayIdPairingFlag', value);
+  }
+
+  getBitpayIdPairingFlag() {
+    return this.storage.get('BitpayIdPairingFlag');
+  }
+
+  removeBitpayIdPairingFlag() {
+    return this.storage.remove('BitpayIdPairingFlag');
   }
 }
 

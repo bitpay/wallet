@@ -2,10 +2,12 @@
   &__icon {
     margin: 20px;
   }
+
   &__name {
     font-size: 16px;
     font-weight: 500;
   }
+
   &__container {
     display: flex;
     justify-content: center;
@@ -16,6 +18,7 @@
     border-radius: 5px;
     color: #434d5a;
   }
+
   &__disconnect-button {
     color: red;
     position: absolute;
@@ -23,5 +26,12 @@
     right: 0;
     bottom: 50px;
     margin: auto;
+  }
+
+  &__settings-list {
+    ion-item.item {
+      padding-left: 25px;
+      padding-right: 10px;
+    }
   }
 }

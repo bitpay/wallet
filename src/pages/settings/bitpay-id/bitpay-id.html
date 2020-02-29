@@ -1,22 +1,44 @@
 <ion-header>
-
-    <ion-navbar>
-        <ion-title>
-            {{'BitPay ID' |translate}}
-        </ion-title>
-    </ion-navbar>
-
+  <ion-navbar> <ion-title> {{'BitPay ID' |translate}} </ion-title> </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <div class="bitpay-id__container">
-        <img src="assets/img/app/icon-flat.svg" class="bitpay-id__icon" width="40">
-        <div class="col">
-            <div class="row bitpay-id__name">{{userBasicInfo?.givenName}} {{userBasicInfo?.familyName}}</div>
-            <div class="row bitpay-id__email">{{userBasicInfo?.email}}</div>
-        </div>
+  <div class="bitpay-id__container">
+    <img
+      src="assets/img/app/icon-flat.svg"
+      class="bitpay-id__icon"
+      width="40"
+    />
+    <div class="col">
+      <div class="row bitpay-id__name">
+        {{userBasicInfo?.givenName}} {{userBasicInfo?.familyName}}
+      </div>
+      <div class="row bitpay-id__email">{{userBasicInfo?.email}}</div>
     </div>
-    <button ion-button class="button-standard button-secondary bitpay-id__disconnect-button" (click)="disconnectBitPayID()">
-        {{'Disconnect' | translate}}
-    </button>
+  </div>
+  <ion-list class="bp-list bitpay-id__settings-list">
+    <ion-item>
+      <ion-label>{{'Sync gift card purchases' | translate}}</ion-label>
+      <ion-toggle
+        [(ngModel)]="bitpayIdSettings.syncGiftCardPurchases"
+        (ionChange)="onSettingsChange()"
+      ></ion-toggle>
+    </ion-item>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body>
+        <span translate
+          >If enabled, your gift card purchases will be associated with your
+          BitPay ID, allowing you to keep track of your gift card purchases even
+          if this device is lost.</span
+        >
+      </div>
+    </label-tip>
+  </ion-list>
+  <button
+    ion-button
+    class="button-standard button-secondary bitpay-id__disconnect-button"
+    (click)="disconnectBitPayID()"
+  >
+    {{'Disconnect' | translate}}
+  </button>
 </ion-content>

@@ -1,5 +1,5 @@
 import { HttpTestingController } from '@angular/common/http/testing';
-import { inject } from '@angular/core/testing';
+import { fakeAsync, inject } from '@angular/core/testing';
 import { TestUtils } from '../../test';
 import { PersistenceProvider } from '../persistence/persistence';
 import { GiftCardProvider } from './gift-card';
@@ -17,15 +17,13 @@ describe('GiftCardProvider', () => {
   describe('getCardConfig', () => {
     it('should retrieve the correct gift card config values based on card name', inject(
       [GiftCardProvider, HttpTestingController],
-      async (
-        giftCardProvider: GiftCardProvider,
-        httpMock: HttpTestingController
-      ) => {
-        const promise = giftCardProvider.getCardConfig('Amazon.com');
-        respondWithAvailableCards(httpMock, giftCardProvider);
-        const cardConfig = await promise;
-        expect(cardConfig.name).toBe('Amazon.com');
-      }
+      (giftCardProvider: GiftCardProvider, httpMock: HttpTestingController) =>
+        fakeAsync(async () => {
+          const promise = giftCardProvider.getCardConfig('Amazon.com');
+          respondWithAvailableCards(httpMock, giftCardProvider);
+          const cardConfig = await promise;
+          expect(cardConfig.name).toBe('Amazon.com');
+        })
     ));
   });
   describe('getPurchasedCards', () => {
@@ -37,27 +35,23 @@ describe('GiftCardProvider', () => {
     ));
     it('should return an empty array when the storage key for a brand is unset', inject(
       [GiftCardProvider, HttpTestingController],
-      async (
-        giftCardProvider: GiftCardProvider,
-        httpMock: HttpTestingController
-      ) => {
-        const promise = giftCardProvider.getPurchasedCards('Amazon.co.jp');
-        respondWithAvailableCards(httpMock, giftCardProvider);
-        const cards = await promise;
-        expect(cards).toEqual([]);
-      }
+      (giftCardProvider: GiftCardProvider, httpMock: HttpTestingController) =>
+        fakeAsync(async () => {
+          const promise = giftCardProvider.getPurchasedCards('Amazon.co.jp');
+          respondWithAvailableCards(httpMock, giftCardProvider);
+          const cards = await promise;
+          expect(cards).toEqual([]);
+        })
     ));
     it('should handle really old gift cards that do not have a currency defined in storage', inject(
       [GiftCardProvider, HttpTestingController],
-      async (
-        giftCardProvider: GiftCardProvider,
-        httpMock: HttpTestingController
-      ) => {
-        const promise = giftCardProvider.getPurchasedCards('Amazon.com');
-        respondWithAvailableCards(httpMock, giftCardProvider);
-        const cards = await promise;
-        expect(cards[0].currency).toBe('USD');
-      }
+      (giftCardProvider: GiftCardProvider, httpMock: HttpTestingController) =>
+        fakeAsync(async () => {
+          const promise = giftCardProvider.getPurchasedCards('Amazon.com');
+          respondWithAvailableCards(httpMock, giftCardProvider);
+          const cards = await promise;
+          expect(cards[0].currency).toBe('USD');
+        })
     ));
   });
   describe('archiveAllCards', () => {
@@ -69,16 +63,14 @@ describe('GiftCardProvider', () => {
     ));
     it('should archive all gift cards of a brand', inject(
       [GiftCardProvider, HttpTestingController],
-      async (
-        giftCardProvider: GiftCardProvider,
-        httpMock: HttpTestingController
-      ) => {
-        const archivePromise = giftCardProvider.archiveAllCards('Amazon.com');
-        respondWithAvailableCards(httpMock, giftCardProvider);
-        await archivePromise;
-        const cards = await giftCardProvider.getPurchasedCards('Amazon.com');
-        expect(cards.every(c => c.archived)).toBe(true);
-      }
+      (giftCardProvider: GiftCardProvider, httpMock: HttpTestingController) =>
+        fakeAsync(async () => {
+          const archivePromise = giftCardProvider.archiveAllCards('Amazon.com');
+          respondWithAvailableCards(httpMock, giftCardProvider);
+          await archivePromise;
+          const cards = await giftCardProvider.getPurchasedCards('Amazon.com');
+          expect(cards.every(c => c.archived)).toBe(true);
+        })
     ));
   });
 });

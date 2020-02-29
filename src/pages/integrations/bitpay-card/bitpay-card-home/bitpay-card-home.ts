@@ -6,7 +6,7 @@ import { AppProvider, InAppBrowserProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
-import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 
 @Component({
   selector: 'bitpay-card-home',
@@ -14,6 +14,7 @@ import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-ca
 })
 export class BitPayCardHome implements OnInit {
   public appName: string;
+  public firstViewCardPhases: string;
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
