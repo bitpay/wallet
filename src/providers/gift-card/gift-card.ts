@@ -157,7 +157,13 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   public async createAuthenticatedBitpayInvoice(params) {
-    return this.bitpayIdProvider.apiCall('createGiftCardInvoice', params);
+    const user = await this.persistenceProvider.getBitPayIdUserInfo(
+      this.getNetwork()
+    );
+    return this.bitpayIdProvider.apiCall('createGiftCardInvoice', {
+      ...params,
+      email: user.email
+    });
   }
 
   async getActiveCards(): Promise<GiftCard[]> {
