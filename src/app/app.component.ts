@@ -283,7 +283,7 @@ export class CopayApp {
       this.logger.log(err);
     }
 
-    if (!this.platformProvider.isElectron) {
+    if (this.platformProvider.isCordova) {
       // preloading the view
       setTimeout(() => {
         this.iab
