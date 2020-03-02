@@ -286,8 +286,6 @@ export class CopayApp {
     if (!this.platformProvider.isElectron) {
       // preloading the view
       setTimeout(() => {
-
-
         this.iab
           .createIABInstance(
             'card',
