@@ -282,20 +282,25 @@ export class CopayApp {
     } catch (err) {
       this.logger.log(err);
     }
-    // preloading the view
-    setTimeout(() => {
-      this.iab
-        .createIABInstance(
-          'card',
-          CARD_IAB_CONFIG,
-          'https://bitpay.com/wallet-card?context=bpa',
-          `sessionStorage.setItem('isPaired', ${!!token})`
-        )
-        .then(ref => {
-          this.cardIAB_Ref = ref;
-          this.iabCardProvider.init();
-        });
-    });
+
+    if (!this.platformProvider.isElectron) {
+      // preloading the view
+      setTimeout(() => {
+
+
+        this.iab
+          .createIABInstance(
+            'card',
+            CARD_IAB_CONFIG,
+            'https://bitpay.com/wallet-card?context=bpa',
+            `sessionStorage.setItem('isPaired', ${!!token})`
+          )
+          .then(ref => {
+            this.cardIAB_Ref = ref;
+            this.iabCardProvider.init();
+          });
+      });
+    }
   }
 
   private onProfileLoad(profile) {
