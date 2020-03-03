@@ -11,10 +11,12 @@ import {
       discount.amount | formatCurrency: cardConfig.currency:'minimal'
     }}</span>
     <span *ngIf="discount.type === 'percentage'">
-      <span *ngIf="showConcisePercentage"
+      <span *ngIf="shouldShowConcisePercentage(discount)"
         >{{ math.floor(discount.amount) }}%</span
       >
-      <span *ngIf="!showConcisePercentage">{{ discount.amount }}%</span>
+      <span *ngIf="!shouldShowConcisePercentage(discount)"
+        >{{ discount.amount }}%</span
+      >
     </span>
   `
 })
@@ -31,4 +33,8 @@ export class GiftCardDiscountText {
   math = Math;
 
   constructor() {}
+
+  shouldShowConcisePercentage(discount) {
+    return this.showConcisePercentage && discount.amount >= 1;
+  }
 }
