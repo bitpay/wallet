@@ -144,7 +144,7 @@ export class CardPhasesProvider {
     return this.http.get(url);
   }
 
-  public notify(email) {
+  public notify(email, country) {
     const url = 'https://bitpay.com/api/v2';
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.set(
@@ -158,7 +158,9 @@ export class CardPhasesProvider {
       method: 'interested',
       params: JSON.stringify({
         email,
-        country: 'US',
+        country,
+        cardType: country === 'US' ? 'USCard' : 'EuropeCard',
+        created: new Date(),
         topic: 'debitCard'
       })
     };

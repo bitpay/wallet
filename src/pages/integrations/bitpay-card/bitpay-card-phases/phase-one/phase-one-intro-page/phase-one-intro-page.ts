@@ -8,9 +8,58 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BitPayAccountProvider } from '../../../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../../../providers/bitpay-card/bitpay-card';
+import { BitPayProvider } from '../../../../../../providers/bitpay/bitpay';
 import { CardPhasesProvider } from '../../../../../../providers/card-phases/card-phases';
 import { ExternalLinkProvider } from '../../../../../../providers/external-link/external-link';
+import { PersistenceProvider } from '../../../../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../../../../providers/popup/popup';
+
+const AllowedCountries = [
+  'US',
+  'AD',
+  'AT',
+  'BE',
+  'BG',
+  'CH',
+  'CY',
+  'CZ',
+  'DE',
+  'DK',
+  'EE',
+  'ES',
+  'FI',
+  'FR',
+  'GB',
+  'GG',
+  'GI',
+  'GL',
+  'GR',
+  'HR',
+  'HU',
+  'IE',
+  'IL',
+  'IM',
+  'IS',
+  'IT',
+  'JE',
+  'LI',
+  'LT',
+  'LU',
+  'LV',
+  'MC',
+  'MT',
+  'NL',
+  'NO',
+  'PL',
+  'PT',
+  'RO',
+  'SE',
+  'SI',
+  'SK',
+  'SM',
+  'TR',
+  'VA'
+];
 
 @Component({
   selector: 'page-bitpay-phase-one-card-intro',
@@ -18,15 +67,11 @@ import { PopupProvider } from '../../../../../../providers/popup/popup';
   animations: [
     trigger('fade', [
       transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(10px)' }),
+        style({ opacity: 0, transform: 'translateY(20px)' }),
         animate(
           '400ms 100ms ease',
           style({ opacity: 1, transform: 'translateY(0)' })
         )
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate('400ms 100ms ease', style({ opacity: 0 }))
       ])
     ])
   ]
@@ -36,6 +81,9 @@ export class PhaseOneCardIntro {
   public notifyForm: FormGroup;
   public joinWaitlist: boolean;
   public complete: boolean;
+  public countrySelected: boolean;
+  public country = 'US';
+  public countryList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -44,7 +92,9 @@ export class PhaseOneCardIntro {
     private cardPhasesProvider: CardPhasesProvider,
     private externalLinkProvider: ExternalLinkProvider,
     public navCtrl: NavController,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private bp: BitPayProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.notifyForm = new FormGroup({
       email: new FormControl(
@@ -58,6 +108,15 @@ export class PhaseOneCardIntro {
       ),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
+    this.bp.get(
+      '/countries',
+      ({ data }) => {
+        this.countryList = data.filter(c =>
+          AllowedCountries.includes(c.shortCode)
+        );
+      },
+      () => {}
+    );
   }
 
   ionViewWillEnter() {
@@ -79,13 +138,26 @@ export class PhaseOneCardIntro {
     this.navCtrl.pop();
   }
 
+  public async joinList() {
+    const status = await this.persistenceProvider.getWaitingListStatus();
+    if (status) {
+      this.country = status.split('=')[1];
+      this.complete = true;
+    } else {
+      this.joinWaitlist = true;
+    }
+  }
+
   public addMe() {
     const email = this.notifyForm.get('email').value;
-    this.cardPhasesProvider.notify(email).subscribe(val => {
+    this.cardPhasesProvider.notify(email, this.country).subscribe(val => {
       if (val['data']['success']) {
         this.complete = true;
         setTimeout(() => {
           this.goBack();
+          this.persistenceProvider.setWaitingListStatus(
+            `onList?country=${this.country}`
+          );
         }, 2000);
       }
     });

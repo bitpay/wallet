@@ -11,8 +11,62 @@ page-bitpay-phase-one-card-intro {
   }
 
   .phaseOne {
+    &--border-overwrite {
+      .item-inner {
+        border-bottom: 0.55px solid #c4c4c4 !important;
+      }
+    }
+    &__country {
+      margin-top: 40px;
+    }
+    &__label {
+      font-size: 17px;
+      font-weight: 400;
+    }
+    &__select {
+      margin: 15px 0 40px 0;
+      height: 1.5em;
+      position: relative;
+
+      &__container {
+        margin: 50px 0;
+      }
+      &::after {
+        border-color: #565d6d transparent transparent;
+        border-style: solid;
+        border-width: 5px 5px 0;
+        content: '';
+        height: 0;
+        pointer-events: none;
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+      }
+
+      > select {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        background-color: transparent;
+        border-color: #c4c4c4;
+        border-radius: 0;
+        border-style: solid;
+        border-width: 0 0 0.55px;
+        color: #434d5a;
+        padding: 0 20px 0 0;
+        width: 100%;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
     &__img {
-      transform: scale(0.8);
+      &__container {
+        display: flex;
+        justify-content: center;
+      }
     }
     &__back-button {
       position: fixed;
@@ -35,6 +89,9 @@ page-bitpay-phase-one-card-intro {
         color: #565d6d;
         font-size: 16px;
         line-height: 25px;
+      }
+      &--center {
+        text-align: center;
       }
     }
 

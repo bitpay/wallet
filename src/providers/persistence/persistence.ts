@@ -755,6 +755,16 @@ export class PersistenceProvider {
   removeBitpayIdPairingFlag() {
     return this.storage.remove('BitpayIdPairingFlag');
   }
+
+  setWaitingListStatus(onList: string) {
+    return this.storage.set('waitingListStatus', onList);
+  }
+  getWaitingListStatus() {
+    return this.storage.get('waitingListStatus');
+  }
+  removeWaitingListStatus() {
+    return this.storage.remove('waitingListStatus');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {
