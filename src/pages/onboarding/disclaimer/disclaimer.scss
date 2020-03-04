@@ -1,6 +1,56 @@
 page-disclaimer {
+  .onboarding-slides {
+    .slide-zoom {
+      height: 100%;
+    }
+    ion-slide {
+      background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
+      .img-container {
+        display: flex;
+        padding-top: 10vh;
+        img {
+          margin: auto;
+          max-height: 23rem;
+        }
+        .tour-1 {
+          padding-left: 8rem;
+        }
+        .tour-3 {
+          padding-right: 8rem;
+        }
+      }
+      .slide-info {
+        background: white;
+        height: 100%;
+        .title {
+          color: #060606;
+          font-weight: 500;
+          font-size: 25px;
+          text-align: left;
+          padding-left: 3rem;
+        }
+        .info {
+          padding: 4rem;
+          .title {
+            align-items: center;
+            text-align: center;
+            line-height: 34px;
+            padding-left: 0;
+          }
+          .text {
+            font-size: 16px;
+            text-align: center;
+            color: rgb(46, 46, 46);
+            font-weight: 300;
+            padding-top: 15px;
+            line-height: 25px;
+          }
+        }
+      }
+    }
+  }
   .checkbox-list {
-    padding: 40px 30px 15px 15px;
+    padding: 30px 15px 15px 15px;
     text-align: center;
     ion-item {
       line-height: 25px;
@@ -31,6 +81,19 @@ page-disclaimer {
     }
   }
   .footer-container {
+    padding-bottom: 0;
     background-color: color($colors, blank);
+  }
+  .swiper-container-horizontal > .swiper-pagination-bullets {
+    position: fixed;
+    bottom: 15rem;
+  }
+  .next-slide-button {
+    position: absolute;
+    bottom: calc(2rem + env(safe-area-inset-bottom));
+    bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
+    width: 100%;
+    z-index: 1;
+    cursor: pointer;
   }
 }
