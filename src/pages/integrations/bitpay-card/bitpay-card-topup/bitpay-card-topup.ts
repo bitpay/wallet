@@ -142,9 +142,10 @@ export class BitPayCardTopUpPage {
 
         this.wallets = this.profileProvider.getWallets({
           onlyComplete: true,
+          coin,
           network: this.bitPayProvider.getEnvironment().network,
           hasFunds: true,
-          coin
+          minFiatCurrency: { amount: this.amount, currency: this.currency }
         });
 
         if (_.isEmpty(this.wallets)) {

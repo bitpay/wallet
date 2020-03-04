@@ -14,6 +14,7 @@ import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ProfileProvider } from '../profile/profile';
+import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
@@ -35,6 +36,7 @@ describe('Profile Provider', () => {
   const walletMock = {
     id1: {
       id: 'id1',
+      coin: 'btc',
       copayerId: 'copayerId1',
       lastKnownBalance: '10.00 BTC',
       lastKnownBalanceUpdatedOn: null,
@@ -70,6 +72,7 @@ describe('Profile Provider', () => {
     },
     id2: {
       id: 'id2',
+      coin: 'btc',
       copayerId: 'copayerId2',
       lastKnownBalance: '5.00 BCH',
       lastKnownBalanceUpdatedOn: null,
@@ -100,6 +103,7 @@ describe('Profile Provider', () => {
     },
     id3: {
       id: 'id3',
+      coin: 'btc',
       copayerId: 'copayerId3',
       lastKnownBalance: '1.50 BTC',
       lastKnownBalanceUpdatedOn: null,
@@ -1366,6 +1370,36 @@ describe('Profile Provider', () => {
       });
 
       expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('hasWalletWithFunds', () => {
+    beforeAll(async () => {
+      spyOn(RateProvider.prototype, 'getCoin').and.callFake(
+        () => new Promise(resolve => resolve([{ code: 'BOB', rate: 123 }]))
+      );
+    });
+
+    beforeEach(() => {
+      profileProvider.wallet = _.clone(walletMock);
+    });
+
+    it('should return true with multiple wallets', () => {
+      // The all wallets have more than 10 BOB worth of btc.
+      const res = profileProvider.hasWalletWithFunds(10, 'BOB');
+      expect(res).toEqual(true);
+    });
+
+    it('should return true just barely', () => {
+      // The wallet w/ 10 btc should equate to 123 * 10 bob, which would result in this returning true
+      const res = profileProvider.hasWalletWithFunds(1230, 'BOB');
+      expect(res).toEqual(true);
+    });
+
+    it('should return false', () => {
+      // The wallet w/ 10 btc is the biggest wallet. So no wallets are able to pay 1231 BOB.
+      const res = profileProvider.hasWalletWithFunds(1231, 'BOB');
+      expect(res).toEqual(false);
     });
   });
 });

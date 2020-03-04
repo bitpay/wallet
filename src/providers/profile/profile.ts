@@ -20,6 +20,7 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
+import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
 import { WalletOptions } from '../wallet/wallet';
@@ -74,7 +75,8 @@ export class ProfileProvider {
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private rateProvider: RateProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -1771,6 +1773,20 @@ export class ProfileProvider {
       );
     }
 
+    if (opts.minFiatCurrency) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
+        const availableBalanceFiat = this.rateProvider.toFiat(
+          wallet.cachedStatus.availableBalanceSat,
+          opts.minFiatCurrency.currency,
+          wallet.coin
+        );
+
+        return availableBalanceFiat >= Number(opts.minFiatCurrency.amount);
+      });
+    }
+
     return _.sortBy(ret, 'order');
   }
 
@@ -1836,5 +1852,17 @@ export class ProfileProvider {
       }
     });
     return keyIdIndex >= 0;
+  }
+
+  // Checks to see if a wallet exists with minimim fiat amount's worth in it (to pay invoice, for example)
+  public hasWalletWithFunds(fiatAmount: number, fiatCurrency: string): boolean {
+    const minFiatCurrency = {
+      amount: fiatAmount,
+      currency: fiatCurrency
+    };
+
+    const wallets = this.getWalletsFromGroup({ minFiatCurrency });
+
+    return Boolean(wallets.length);
   }
 }
