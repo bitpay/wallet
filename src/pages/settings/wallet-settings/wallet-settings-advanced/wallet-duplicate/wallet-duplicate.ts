@@ -15,6 +15,7 @@ import { OnGoingProcessProvider } from '../../../../../providers/on-going-proces
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
+
 @Component({
   selector: 'page-wallet-duplicate',
   templateUrl: 'wallet-duplicate.html'
@@ -163,7 +164,7 @@ export class WalletDuplicatePage {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           if (err.message == 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             this.setErr(this.bwcErrorProvider.msg(err));
           }
