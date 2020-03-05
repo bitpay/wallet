@@ -4,70 +4,75 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list *ngIf="fromWallets.length > 0 && toWallets.length > 0">
+<ion-content class="add-bottom-safe-area">
+
+  <ion-list>
+
     <div *ngIf="fromWallets.length > 0">
       <div class="title">
         <span translate>From</span>
       </div>
-      <button ion-item detail-none (click)="showWallets('from')">
+      <button *ngIf="fromWallet" ion-item detail-none (click)="showWallets('from')">
         <wallet-item-content [wallet]="fromWallet"></wallet-item-content>
+      </button>
+      <button *ngIf="!fromWallet" ion-button class="button-standard" (click)="showWallets('from')" translate>
+        Select Wallet
       </button>
     </div>
     <div *ngIf="toWallets.length > 0">
       <div class="title">
         <span translate>To</span>
       </div>
-      <button ion-item detail-none (click)="showWallets('to')">
+      <button *ngIf="toWallet" ion-item detail-none (click)="showWallets('to')">
         <wallet-item-content [wallet]="toWallet"></wallet-item-content>
+      </button>
+      <button *ngIf="!toWallet" ion-button class="button-standard" (click)="showWallets('to')" translate>
+        Select Wallet
       </button>
     </div>
 
-    <div padding></div>
+    <div *ngIf="fromWallet && toWallet">
+      <ion-item-divider>{{ 'Details' | translate  }}</ion-item-divider>
+      <ion-item>
+        {{'Rate' | translate}}
+        <ion-note item-end>
+          <span *ngIf="!limit">...</span>
+          <span *ngIf="limit">
+            {{limit.rate}} {{toWallet.coin | uppercase}} per {{fromWallet.coin | uppercase}}
+          </span>
+        </ion-note>
+      </ion-item>
 
-    <ion-item>
-      {{'Rate' | translate}}
-      <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
-          {{limit.rate}} {{toWallet.coin | uppercase}} per {{fromWallet.coin | uppercase}}
-        </span>
-      </ion-note>
-    </ion-item>
+      <ion-item>
+        {{'Deposit Min' | translate}}
+        <ion-note item-end>
+          <span *ngIf="!limit">...</span>
+          <span *ngIf="limit">
+            {{limit.minimum}} {{fromWallet.coin | uppercase}}
+          </span>
+        </ion-note>
+      </ion-item>
 
-    <ion-item>
-      {{'Deposit Min' | translate}}
-      <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
-          {{limit.minimum}} {{fromWallet.coin | uppercase}}
-        </span>
-      </ion-note>
-    </ion-item>
+      <ion-item>
+        {{'Deposit Max' | translate}}
+        <ion-note item-end>
+          <span *ngIf="!limit">...</span>
+          <span *ngIf="limit">
+            {{limit.limit}} {{fromWallet.coin | uppercase}}
+          </span>
+        </ion-note>
+      </ion-item>
 
-    <ion-item>
-      {{'Deposit Max' | translate}}
-      <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
-          {{limit.limit}} {{fromWallet.coin | uppercase}}
-        </span>
-      </ion-note>
-    </ion-item>
+      <ion-item>
+        {{'Miner fee' | translate}}
+        <ion-note item-end>
+          <span *ngIf="!limit">...</span>
+          <span *ngIf="limit">
+            {{limit.minerFee}} {{toWallet.coin | uppercase}}
+          </span>
+        </ion-note>
+      </ion-item>
 
-    <ion-item>
-      {{'Miner fee' | translate}}
-      <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
-          {{limit.minerFee}} {{toWallet.coin | uppercase}}
-        </span>
-      </ion-note>
-    </ion-item>
-  </ion-list>
-
-  <div *ngIf="fromWallets.length > 0 && toWallets.length > 0">
-    <ion-list margin-bottom>
       <ion-item-divider></ion-item-divider>
       <ion-item>
         <ion-label>
@@ -78,15 +83,11 @@
       <button ion-item class="button-link" (click)="openTerms()" translate>
         Terms of Service
       </button>
-    </ion-list>
-  </div>
+    </div>
+  </ion-list>
+
+  <button *ngIf="fromWallet && toWallet" ion-button class="button-standard" [disabled]="!termsAccepted" (click)="setAmount()">
+    {{'Continue' | translate}}
+  </button>
 
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar *ngIf="fromWallets.length > 0 && toWallets.length > 0">
-    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
-      {{'Continue' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>

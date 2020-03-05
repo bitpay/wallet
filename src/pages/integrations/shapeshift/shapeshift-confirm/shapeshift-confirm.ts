@@ -307,7 +307,7 @@ export class ShapeshiftConfirmPage {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
-    msg = msg && msg.errors ? msg.errors[0].message : msg;
+    msg = msg && msg.errors ? msg.errors[0].message : msg.message || msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.navCtrl.pop();
     });
@@ -409,7 +409,8 @@ export class ShapeshiftConfirmPage {
   private createTx(
     wallet,
     toAddress: string,
-    depositSat: number
+    depositSat: number,
+    destTag: string
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       this.message =
@@ -444,6 +445,8 @@ export class ShapeshiftConfirmPage {
       } else {
         txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
       }
+
+      if (destTag) txp.destinationTag = destTag;
 
       this.walletProvider
         .createTx(wallet, txp)
@@ -506,16 +509,29 @@ export class ShapeshiftConfirmPage {
     return warningMsg.join('\n');
   }
 
-  private getLegacyAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
-    let a = this.bitcoreCash.Address(addr).toObject();
+  private extractAddress(data: string): string {
+    const address = data.replace(/^[a-z]+:/i, '').replace(/\?.*/, '');
+    const params = /([\?\&]+[a-z]+=(\d+([\,\.]\d+)?))+/i;
+    return address.replace(params, '');
+  }
+
+  private getLegacyBchAddressFormat(addr: string): string {
+    const a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
   }
 
-  private getNewAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
-    let a = this.bitcore.Address(addr).toObject();
-    return this.bitcoreCash.Address.fromObject(a).toString(true);
+  private parseDestinationAddress(toAddress: string, coin: string): any {
+    if (coin == 'bch') {
+      const a = this.bitcore.Address(toAddress).toObject();
+      return {
+        toAddress: this.bitcoreCash.Address.fromObject(a).toString(true)
+      };
+    } else if (coin == 'xrp') {
+      const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
+      let destTag;
+      if (tagParam.exec(toAddress)) destTag = tagParam.exec(toAddress)[1];
+      return { toAddress: this.extractAddress(toAddress), destTag };
+    } else return { toAddress };
   }
 
   private getCoinPair(): string {
@@ -527,7 +543,7 @@ export class ShapeshiftConfirmPage {
     this.shapeshiftProvider.init((err, res) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(null, err.error.error_description);
+        this.showErrorAndBack(null, err);
         return;
       }
       this.accessToken = res.accessToken;
@@ -535,18 +551,18 @@ export class ShapeshiftConfirmPage {
       this.walletProvider
         .getAddress(this.toWallet, false)
         .then((withdrawalAddress: string) => {
-          withdrawalAddress = this.getLegacyAddressFormat(
-            withdrawalAddress,
-            this.toWallet.coin
-          );
+          if (this.toWallet.coin == 'bch') {
+            withdrawalAddress = this.getLegacyBchAddressFormat(
+              withdrawalAddress
+            );
+          }
 
           this.walletProvider
             .getAddress(this.fromWallet, false)
             .then((returnAddress: string) => {
-              returnAddress = this.getLegacyAddressFormat(
-                returnAddress,
-                this.fromWallet.coin
-              );
+              if (this.fromWallet.coin == 'bch') {
+                returnAddress = this.getLegacyBchAddressFormat(returnAddress);
+              }
 
               let data = {
                 withdrawal: withdrawalAddress,
@@ -564,7 +580,7 @@ export class ShapeshiftConfirmPage {
 
                 this.paymentTimeControl(shapeData.expiration);
 
-                let toAddress = this.getNewAddressFormat(
+                const { toAddress, destTag } = this.parseDestinationAddress(
                   shapeData.deposit,
                   this.fromWallet.coin
                 );
@@ -577,7 +593,7 @@ export class ShapeshiftConfirmPage {
                   (shapeData.withdrawalAmount * this.unitToSatoshi).toFixed(0)
                 );
 
-                this.createTx(this.fromWallet, toAddress, depositSat)
+                this.createTx(this.fromWallet, toAddress, depositSat, destTag)
                   .then(ctxp => {
                     this.onGoingProcessProvider.clear();
                     // Save in memory
