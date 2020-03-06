@@ -4,8 +4,8 @@
 
 <ion-content>
   <div class="total-amount-container">
-    <div class="section-header" translate>{{ card.unitCode.toUpperCase() }}</div>
-    <span id="showPrice" class="total-amount-value"></span>
+    <div id="displayDate" class="section-header" translate></div>
+    <span id="displayPrice" class="total-amount-value"></span>
     <span *ngIf="card.averagePrice || card.averagePrice === 0" [ngClass]="card.averagePrice >= 0 ? 'possitive-avg percent' : 'negative-avg percent'">
       <span id="averagePricePercent"><span *ngIf="card.averagePrice > 0">+</span></span>
     </span>

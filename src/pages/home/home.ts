@@ -388,35 +388,23 @@ export class HomePage {
   }
 
   private getLastDayRates(): Promise<any> {
-    this.exchangeRatesProvider.lastDates = 24;
     const availableChains = this.currencyProvider.getAvailableChains();
-    const getHistoricalRate = unitCode => {
-      return new Promise(resolve => {
-        this.exchangeRatesProvider
-          .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
-          .subscribe(
-            response => {
-              const lastDayRate = response.reverse()[0];
-              return resolve({ rate: lastDayRate, unitCode });
-            },
-            err => {
-              this.logger.error('Error getting current rate:', err);
-              return resolve();
+    return new Promise(resolve => {
+      this.exchangeRatesProvider
+        .getHistoricalRates(this.totalBalanceAlternativeIsoCode, 1)
+        .subscribe(
+          response => {
+            let ratesByCoin = {};
+            for (const unitCode of availableChains) {
+              ratesByCoin[unitCode] = response[unitCode][0].rate;
             }
-          );
-      });
-    };
-
-    const promises = [];
-    _.forEach(availableChains, unitCode => {
-      promises.push(getHistoricalRate(unitCode));
-    });
-    return Promise.all(promises).then(lastDayRates => {
-      let ratesByCoin = {};
-      lastDayRates.forEach(lastDayRate => {
-        ratesByCoin[lastDayRate.unitCode] = lastDayRate.rate.rate;
-      });
-      return Promise.resolve(ratesByCoin);
+            return resolve(ratesByCoin);
+          },
+          err => {
+            this.logger.error('Error getting current rate:', err);
+            return resolve();
+          }
+        );
     });
   }
 

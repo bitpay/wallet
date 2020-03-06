@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import * as moment from 'moment';
 import { ChartComponent } from '../chart-component/chart-component';
 @Component({
   selector: 'price-chart',
@@ -13,11 +12,9 @@ export class PriceChart {
   public loading: boolean = false;
   constructor() {}
 
-  public initChartData(dataSeries, activeOption): void {
-    this.rates = dataSeries.historicalRates.map(historicalRate => [
-      historicalRate.ts,
-      historicalRate.rate
-    ]);
+  public initChartData(params: { data; color }): void {
+    const { data, color } = params;
+    this.rates = data;
     const eventEmitter = this.priceChange;
     this.chartOptions = {
       series: [
@@ -41,23 +38,10 @@ export class PriceChart {
             const data = options.config.series[0].data;
             const index = options.dataPointIndex;
             if (data && data[index] && data[index][1]) {
-              eventEmitter.emit(data[index][1]);
-            }
-            const tooltip = document.getElementsByClassName(
-              'apexcharts-xaxistooltip'
-            )[0] as HTMLElement;
-            const tooltipStyle = _event.view.getComputedStyle(tooltip);
-            const offsetLeft = parseInt(
-              tooltipStyle.getPropertyValue('left'),
-              10
-            );
-            const width = parseInt(tooltipStyle.getPropertyValue('width'), 10);
-            const screenWidth = _event.view.screen.width;
-            const offsetRight = screenWidth - (offsetLeft + width);
-            if (offsetLeft && offsetLeft < 0) {
-              tooltip.style.left = '0';
-            } else if (offsetRight && offsetRight < 0) {
-              tooltip.style.left = `${offsetLeft + offsetRight}px`;
+              eventEmitter.emit({
+                date: data[index][0],
+                price: data[index][1]
+              });
             }
           }
         }
@@ -75,16 +59,7 @@ export class PriceChart {
         followCursor: true,
         shared: false,
         x: {
-          show: false,
-          formatter(val) {
-            if (activeOption === '1M') {
-              return `${moment(val).format('MMM DD')}`;
-            } else if (activeOption === '1W') {
-              return `${moment(val).format('MMM DD LT')}`;
-            } else {
-              return `${moment(val).format('ddd LT')}`;
-            }
-          }
+          show: false
         }
       },
       grid: {
@@ -130,14 +105,14 @@ export class PriceChart {
         }
       },
       stroke: {
-        colors: [dataSeries.backgroundColor],
+        colors: [color],
         curve: 'straight',
         width: 2
       },
       theme: {
         monochrome: {
           enabled: true,
-          color: dataSeries.backgroundColor
+          color
         }
       }
     };

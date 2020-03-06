@@ -23,9 +23,9 @@ export class PricePage {
   public activeOption: string = '1D';
   public availableOptions;
   public updateOptions = [
-    { label: '1D', date: 'days', lastDates: 24 },
-    { label: '1W', date: 'weeks', lastDates: 168 },
-    { label: '1M', date: 'months', lastDates: 31 }
+    { label: '1D', lastDate: 1 },
+    { label: '1W', lastDate: 7 },
+    { label: '1M', lastDate: 31 }
   ];
   public isIsoCodeSupported: boolean;
   public isoCode: string;
@@ -57,13 +57,13 @@ export class PricePage {
     });
   }
 
-  private getPrice() {
+  private getPrice(lastDate) {
     this.canvas.loading = true;
     this.exchangeRatesProvider
-      .getHistoricalRates(this.isoCode, this.card.unitCode)
+      .getHistoricalRates(this.isoCode, lastDate)
       .subscribe(
         response => {
-          this.card.historicalRates = response.reverse();
+          this.card.historicalRates = response[this.card.unitCode].reverse();
           this.updateValues();
           this.setPrice();
           this.redrawCanvas();
@@ -74,18 +74,41 @@ export class PricePage {
       );
   }
 
-  public setPrice(price = this.card.currentPrice) {
+  private formatDate(date) {
+    if (this.activeOption === '1Y') {
+      return `${moment(date).format('MMM DD YYYY')}`;
+    } else if (this.activeOption === '1M') {
+      return `${moment(date).format('MMM DD hh A')}`;
+    } else if (this.activeOption === '1W') {
+      return `${moment(date).format('ddd hh:mm A')}`;
+    } else {
+      return `${moment(date).format('hh:mm A')}`;
+    }
+  }
+
+  public setPrice(points: { date?: number; price?: number } = {}) {
+    const { date, price = this.card.currentPrice } = points;
+    const displayDate = date
+      ? this.formatDate(date)
+      : this.card.unitCode.toUpperCase();
     const minPrice = this.card.historicalRates[0].rate;
     this.card.averagePriceAmount = price - minPrice;
     this.card.averagePrice = (this.card.averagePriceAmount * 100) / minPrice;
+    const customPrecision = this.card.unitCode === 'xrp' ? 4 : 2;
     document.getElementById(
-      'showPrice'
-    ).textContent = `${this.formatCurrencyPipe.transform(price, this.isoCode)}`;
+      'displayPrice'
+    ).textContent = `${this.formatCurrencyPipe.transform(
+      price,
+      this.isoCode,
+      customPrecision
+    )}`;
+    document.getElementById('displayDate').textContent = `${displayDate}`;
     document.getElementById(
       'averagePriceAmount'
     ).textContent = `${this.formatCurrencyPipe.transform(
       this.card.averagePriceAmount,
-      this.isoCode
+      this.isoCode,
+      customPrecision
     )}`;
     document.getElementById(
       'averagePricePercent'
@@ -97,7 +120,6 @@ export class PricePage {
   }
 
   private redrawCanvas() {
-    const activeOption = this.activeOption;
     this.canvas.loading = false;
     const data = this.card.historicalRates.map(rate => [rate.ts, rate.rate]);
     this.canvas.chart.updateOptions(
@@ -114,16 +136,7 @@ export class PricePage {
         ],
         tooltip: {
           x: {
-            show: false,
-            formatter(val) {
-              if (activeOption === '1M') {
-                return `${moment(val).format('MMM DD')}`;
-              } else if (activeOption === '1W') {
-                return `${moment(val).format('MMM DD LT')}`;
-              } else {
-                return `${moment(val).format('ddd LT')}`;
-              }
-            }
+            show: false
           }
         }
       },
@@ -134,13 +147,20 @@ export class PricePage {
   }
 
   private drawCanvas() {
-    this.canvas.initChartData(this.card, this.activeOption);
+    const dataSeries = this.card.historicalRates.map(historicalRate => [
+      historicalRate.ts,
+      historicalRate.rate
+    ]);
+    this.canvas.initChartData({
+      data: dataSeries,
+      color: this.card.backgroundColor
+    });
   }
 
   public updateChart(option) {
-    this.activeOption = option.label;
-    this.exchangeRatesProvider.lastDates = option.lastDates;
-    this.getPrice();
+    const { label, lastDate } = option;
+    this.activeOption = label;
+    this.getPrice(lastDate);
   }
 
   private updateValues() {

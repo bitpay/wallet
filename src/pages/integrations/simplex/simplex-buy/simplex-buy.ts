@@ -93,8 +93,8 @@ export class SimplexBuyPage {
       this.currency && this.isSupportedFiat(this.currency)
         ? this.currency
         : this.isSupportedFiat(isoCode)
-          ? isoCode
-          : 'USD';
+        ? isoCode
+        : 'USD';
 
     this.quoteForm = this.fb.group({
       amount: [
@@ -271,9 +271,9 @@ export class SimplexBuyPage {
     this.maxFiatAmount = max;
     this.quoteForm.controls['amount'].setValue(
       this.amount ||
-      this.simplexProvider.supportedFiatAltCurrencies[
-        this.quoteForm.value.altCurrency
-      ].defaultValue
+        this.simplexProvider.supportedFiatAltCurrencies[
+          this.quoteForm.value.altCurrency
+        ].defaultValue
     );
   }
 
