@@ -202,6 +202,27 @@ export class ShapeshiftProvider {
       );
   }
 
+  public getOrderInfo(orderId: string, token: string, cb) {
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + token
+    };
+    this.httpNative
+      .get(this.credentials.API_URL + '/orderInfo/' + orderId, null, headers)
+      .subscribe(
+        data => {
+          this.logger.info('Shapeshift ORDER INFO: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          const error = this.parseError(data);
+          this.logger.error('Shapeshift ORDER INFO ERROR: ' + error);
+          return cb(error);
+        }
+      );
+  }
+
   public getStatus(addr: string, token: string, cb) {
     const headers = {
       'Content-Type': 'application/json',

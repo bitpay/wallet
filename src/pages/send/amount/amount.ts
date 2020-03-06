@@ -306,7 +306,7 @@ export class AmountPage {
         nextPage = CustomAmountPage;
         break;
       case 'ShapeshiftConfirmPage':
-        this.showSendMax = true;
+        this.showSendMax = false; // Disabled for now
         nextPage = ShapeshiftConfirmPage;
         break;
       default:

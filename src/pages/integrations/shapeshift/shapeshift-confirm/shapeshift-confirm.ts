@@ -46,13 +46,13 @@ export class ShapeshiftConfirmPage {
   private toWalletId: string;
   private createdTx;
   private message: string;
-  private configWallet;
   private bitcore;
   private bitcoreCash;
   private useSendMax: boolean;
   private sendMaxInfo;
   private accessToken: string;
-  private unitToSatoshi: number;
+  private precisionFromWallet;
+  private precisionToWallet;
 
   public withdrawalFee: number;
   public currencyIsoCode: string;
@@ -95,8 +95,7 @@ export class ShapeshiftConfirmPage {
     private translate: TranslateService,
     private feeProvider: FeeProvider
   ) {
-    this.configWallet = this.configProvider.get().wallet;
-    this.currencyIsoCode = 'USD'; // Only USD
+    this.currencyIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode; // Only USD
     this.isCordova = this.platformProvider.isCordova;
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
@@ -109,9 +108,12 @@ export class ShapeshiftConfirmPage {
     this.network = this.shapeshiftProvider.getNetwork();
     this.fromWallet = this.profileProvider.getWallet(this.fromWalletId);
     this.toWallet = this.profileProvider.getWallet(this.toWalletId);
-    this.unitToSatoshi = this.currencyProvider.getPrecision(
+    this.precisionFromWallet = this.currencyProvider.getPrecision(
       this.fromWallet.coin
-    ).unitToSatoshi;
+    );
+    this.precisionToWallet = this.currencyProvider.getPrecision(
+      this.toWallet.coin
+    );
   }
 
   ionViewDidEnter() {
@@ -151,7 +153,9 @@ export class ShapeshiftConfirmPage {
           .then(amountSat => {
             this.onGoingProcessProvider.clear();
             this.depositAmount = Number(
-              (amountSat / this.unitToSatoshi).toFixed(8)
+              (amountSat / this.precisionFromWallet.unitToSatoshi).toFixed(
+                this.precisionFromWallet.unitDecimals
+              )
             );
             this.createShift();
           })
@@ -167,7 +171,9 @@ export class ShapeshiftConfirmPage {
 
         // Calculate fee for withdraw (convert depositAmount to same unit as withdrawalFee)
         const withdrawalAmount = Number(
-          (this.depositAmount * this.rate).toFixed(8)
+          (this.depositAmount * this.rate).toFixed(
+            this.precisionToWallet.unitDecimals
+          )
         );
         if (
           !this.hasEnoughFundsForWithdraw(withdrawalAmount, this.withdrawalFee)
@@ -235,8 +241,12 @@ export class ShapeshiftConfirmPage {
 
             this.sendMaxInfo = sendMaxInfo;
 
-            let maxSat = parseInt((max * this.unitToSatoshi).toFixed(0), 10);
-            let minSat = parseInt((min * this.unitToSatoshi).toFixed(0), 10);
+            let maxSat = +(
+              max * this.precisionFromWallet.unitToSatoshi
+            ).toFixed(0);
+            let minSat = +(
+              min * this.precisionFromWallet.unitToSatoshi
+            ).toFixed(0);
 
             if (sendMaxInfo.amount > maxSat) {
               this.popupProvider
@@ -274,17 +284,13 @@ export class ShapeshiftConfirmPage {
   private getSendMaxInfo(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getFeeRate(
-          this.fromWallet.coin,
-          this.network,
-          this.configWallet.settings.feeLevel || 'normal'
-        )
+        .getFeeRate(this.fromWallet.coin, this.network, 'normal')
         .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');
           this.walletProvider
             .getSendMaxInfo(this.fromWallet, {
               feePerKb: feeRate,
-              excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
+              excludeUnconfirmedUtxos: true, // Do not use unconfirmed UTXOs
               returnInputs: true
             })
             .then(res => {
@@ -370,40 +376,53 @@ export class ShapeshiftConfirmPage {
   }
 
   private saveShapeshiftData(): void {
-    let address = this.shapeInfo.deposit;
-    let withdrawal = this.shapeInfo.withdrawal;
-    let now = moment().unix() * 1000;
+    let { toAddress } = this.parseDestinationAddress(
+      this.shapeInfo.deposit,
+      this.createdTx.coin
+    );
+    if (this.createdTx.coin == 'bch')
+      toAddress = this.getLegacyBchAddressFormat(toAddress);
+    const withdrawal = this.shapeInfo.withdrawal;
+    const now = moment().unix() * 1000;
 
-    this.shapeshiftProvider.getStatus(address, this.accessToken, (_, st) => {
-      let newData = {
-        address,
-        withdrawal,
-        date: now,
-        amount: this.amountStr,
-        rate:
-          this.rate +
-          ' ' +
-          this.toWallet.coin.toUpperCase() +
-          ' per ' +
-          this.fromWallet.coin.toUpperCase(),
-        title:
-          this.fromWallet.coin.toUpperCase() +
-          ' to ' +
-          this.toWallet.coin.toUpperCase(),
-        // From ShapeShift
-        status: st.status,
-        transaction: st.transaction || null, // Transaction ID of coin sent to withdrawal address
-        incomingCoin: st.incomingCoin || null, // Amount deposited
-        incomingType: st.incomingType || null, // Coin type of deposit
-        outgoingCoin: st.outgoingCoin || null, // Amount sent to withdrawal address
-        outgoingType: st.outgoingType || null // Coin type of withdrawal
-      };
+    this.shapeshiftProvider.getOrderInfo(
+      this.shapeInfo.orderId,
+      this.accessToken,
+      (_, st) => {
+        let newData = {
+          address: toAddress,
+          withdrawal,
+          date: now,
+          amount: this.amountStr,
+          rate:
+            this.rate +
+            ' ' +
+            this.toWallet.coin.toUpperCase() +
+            ' per ' +
+            this.fromWallet.coin.toUpperCase(),
+          title:
+            this.fromWallet.coin.toUpperCase() +
+            ' to ' +
+            this.toWallet.coin.toUpperCase(),
+          // From ShapeShift
+          orderId: this.shapeInfo.orderId,
+          status: st.status || null, // If there is an error, it is undefined. Set to null
+          error: st.error || null, // Show error if exist
+          transaction: st.transaction || null, // Transaction ID of coin sent to withdrawal address
+          incomingCoin: st.incomingCoin || null, // Amount deposited
+          incomingType: st.incomingType || null, // Coin type of deposit
+          outgoingCoin: st.outgoingCoin || null, // Amount sent to withdrawal address
+          outgoingType: st.outgoingType || null // Coin type of withdrawal
+        };
 
-      this.shapeshiftProvider.saveShapeshift(newData, null, () => {
-        this.logger.debug('Saved shift with status: ' + newData.status);
-        this.openFinishModal();
-      });
-    });
+        this.shapeshiftProvider.saveShapeshift(newData, null, () => {
+          this.logger.debug(
+            'Saved shift with status: ' + (newData.status || newData.error)
+          );
+          this.openFinishModal();
+        });
+      }
+    );
   }
 
   private createTx(
@@ -430,9 +449,7 @@ export class ShapeshiftConfirmPage {
         amount: depositSat,
         outputs,
         message: this.message,
-        excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
-          ? false
-          : true,
+        excludeUnconfirmedUtxos: true, // Do not use unconfirmed UTXOs
         customData: {
           shapeShift: toAddress,
           service: 'shapeshift'
@@ -443,7 +460,8 @@ export class ShapeshiftConfirmPage {
         txp.inputs = this.sendMaxInfo.inputs;
         txp.fee = this.sendMaxInfo.fee;
       } else {
-        txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+        if (wallet.coin != 'bch' && wallet.coin != 'xrp')
+          txp.feeLevel = 'priority'; // Avoid expired order due to slow TX confirmation
       }
 
       if (destTag) txp.destinationTag = destTag;
@@ -464,7 +482,7 @@ export class ShapeshiftConfirmPage {
 
   private showSendMaxWarning(): Promise<any> {
     return new Promise(resolve => {
-      let fee = this.sendMaxInfo.fee / this.unitToSatoshi;
+      let fee = this.sendMaxInfo.fee / this.precisionFromWallet.unitToSatoshi;
       let msg = this.replaceParametersProvider.replace(
         this.translate.instant(
           '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
@@ -485,7 +503,8 @@ export class ShapeshiftConfirmPage {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr =
-        this.sendMaxInfo.amountBelowFee / this.unitToSatoshi;
+        this.sendMaxInfo.amountBelowFee /
+        this.precisionFromWallet.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
@@ -497,7 +516,8 @@ export class ShapeshiftConfirmPage {
 
     if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr =
-        this.sendMaxInfo.amountAboveMaxSize / this.unitToSatoshi;
+        this.sendMaxInfo.amountAboveMaxSize /
+        this.precisionFromWallet.unitToSatoshi;
       let message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
@@ -516,6 +536,7 @@ export class ShapeshiftConfirmPage {
   }
 
   private getLegacyBchAddressFormat(addr: string): string {
+    // ShapeShift works with OLD format BCH address
     const a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
   }
@@ -587,10 +608,15 @@ export class ShapeshiftConfirmPage {
 
                 // To Sat
                 const depositSat = Number(
-                  (this.depositAmount * this.unitToSatoshi).toFixed(0)
+                  (
+                    this.depositAmount * this.precisionFromWallet.unitToSatoshi
+                  ).toFixed(0)
                 );
                 const withdrawalAmountSat = Number(
-                  (shapeData.withdrawalAmount * this.unitToSatoshi).toFixed(0)
+                  (
+                    shapeData.withdrawalAmount *
+                    this.precisionToWallet.unitToSatoshi
+                  ).toFixed(0)
                 );
 
                 this.createTx(this.fromWallet, toAddress, depositSat, destTag)

@@ -57,13 +57,18 @@ export class ShapeshiftDetailsPage {
 
   public openTransaction(id: string) {
     var url;
-    const chains = this.currencyProvider.getAvailableChains();
-    for (const chain of chains) {
-      if (this.ssData.outgoingType == chain) {
+    const coins = this.currencyProvider.getAvailableCoins();
+    for (const coin of coins) {
+      if (this.ssData.outgoingType.toLowerCase() == coin) {
+        const isBitPay =
+          this.defaults.blockExplorerUrl[coin].search('bitpay') == -1
+            ? false
+            : true;
         url =
           'https://' +
-          this.defaults.blockExplorerUrl[chain] +
-          'mainnet/tx/' +
+          this.defaults.blockExplorerUrl[coin] +
+          (isBitPay ? 'mainnet/' : '') +
+          'tx/' +
           id;
       }
     }
