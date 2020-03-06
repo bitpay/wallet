@@ -4,7 +4,6 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -26,7 +25,6 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public loading: boolean;
   public playAnimation: boolean;
   public newAddressError: boolean;
-  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -37,15 +35,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private events: Events,
     private bwcErrorProvider: BwcErrorProvider,
     private platform: Platform,
-    public currencyProvider: CurrencyProvider,
-    private configProvider: ConfigProvider
+    public currencyProvider: CurrencyProvider
   ) {
     super();
   }
 
   ngOnInit() {
     this.wallet = this.params.wallet;
-    this.useLegacyQrCode = this.configProvider.get().useLegacyQrCode;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
