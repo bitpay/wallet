@@ -207,17 +207,26 @@ export class IABCardProvider {
          * */
 
         case 'pairing':
-          const { secret } = event.data.params;
           // generates pairing token and also fetches user basic info and caches both
           this.bitpayIdProvider.generatePairingToken(
-            secret,
+            event.data.params,
             (user: User) => {
               if (user) {
                 this.getCards();
                 this.user.next(user);
               }
             },
-            err => this.logger.debug(err)
+            () => {
+              this.cardIAB_Ref.hide();
+              const errorSheet = this.actionSheetProvider.createInfoSheet(
+                'default-error',
+                {
+                  title: 'BitPay ID',
+                  msg: 'Uh oh, something went wrong please try again later.'
+                }
+              );
+              errorSheet.present();
+            }
           );
           break;
 
