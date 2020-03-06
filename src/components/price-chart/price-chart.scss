@@ -1,0 +1,37 @@
+price-chart {
+  .container {
+    height: 35rem;
+  }
+  .apexcharts-tooltip {
+    display: none;
+  }
+  .apexcharts-xaxistooltip-bottom:before {
+    display: none;
+  }
+  .apexcharts-xaxistooltip-bottom:after {
+    display: none;
+  }
+  .apexcharts-xaxistooltip {
+    top: 0 !important;
+    border: none;
+    background: none;
+    color: #4f6ef7;
+    font-weight: 700;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 1;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.5s ease;
+  }
+  .spinner {
+    z-index: 99;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    margin-top: -1.4rem;
+    margin-left: -1.4rem;
+  }
+}

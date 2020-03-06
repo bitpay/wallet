@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { PricePage } from '../../pages/home/price-page/price-page';
 import {
   ConfigProvider,
   CurrencyProvider,
@@ -9,15 +11,24 @@ import {
 } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
 
+export interface Card {
+  unitCode: string;
+  historicalRates: any;
+  currentPrice: number;
+  averagePrice: number;
+  averagePriceAmount: number;
+  backgroundColor: string;
+  gradientBackgroundColor: string;
+  name: string;
+}
+
 @Component({
   selector: 'exchange-rates',
   templateUrl: 'exchange-rates.html'
 })
 export class ExchangeRates {
   public isIsoCodeSupported: boolean;
-  public lineChart: any;
   public isoCode: string;
-  public lastDates = 6;
   public coins = [];
   public fiatCodes = [
     'USD',
@@ -33,6 +44,7 @@ export class ExchangeRates {
   ];
 
   constructor(
+    private navCtrl: NavController,
     private currencyProvider: CurrencyProvider,
     private exchangeRatesProvider: ExchangeRatesProvider,
     private configProvider: ConfigProvider,
@@ -49,6 +61,7 @@ export class ExchangeRates {
         historicalRates: [],
         currentPrice: 0,
         averagePrice: 0,
+        averagePriceAmount: 0,
         backgroundColor,
         gradientBackgroundColor,
         name: this.currencyProvider.getCoinName(coin as Coin)
@@ -56,6 +69,10 @@ export class ExchangeRates {
       this.coins.push(card);
     }
     this.getPrices();
+  }
+
+  public goToPricePage(card) {
+    this.navCtrl.push(PricePage, { card });
   }
 
   public getPrices() {
@@ -104,9 +121,10 @@ export class ExchangeRates {
     this.coins[i].currentPrice = this.coins[i].historicalRates[
       this.coins[i].historicalRates.length - 1
     ].rate;
+    this.coins[i].averagePriceAmount =
+      this.coins[i].currentPrice - this.coins[i].historicalRates[0].rate;
     this.coins[i].averagePrice =
-      ((this.coins[i].currentPrice - this.coins[i].historicalRates[0].rate) *
-        100) /
+      (this.coins[i].averagePriceAmount * 100) /
       this.coins[i].historicalRates[0].rate;
   }
 

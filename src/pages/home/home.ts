@@ -388,6 +388,7 @@ export class HomePage {
   }
 
   private getLastDayRates(): Promise<any> {
+    this.exchangeRatesProvider.lastDates = 24;
     const availableChains = this.currencyProvider.getAvailableChains();
     const getHistoricalRate = unitCode => {
       return new Promise(resolve => {

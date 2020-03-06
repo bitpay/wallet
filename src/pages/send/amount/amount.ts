@@ -32,6 +32,7 @@ import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-co
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { SimplexBuyPage } from '../../integrations/simplex/simplex-buy/simplex-buy';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 @Component({
@@ -304,6 +305,9 @@ export class AmountPage {
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
+        break;
+      case 'SimplexBuyPage':
+        nextPage = SimplexBuyPage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = true;
