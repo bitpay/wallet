@@ -381,12 +381,9 @@ export class GiftCardProvider extends InvoiceProvider {
       .toPromise();
   }
 
-  updatePendingGiftCards(
-    cards: GiftCard[],
-    force: boolean = false
-  ): Observable<GiftCard> {
-    const cardsNeedingUpdate = cards.filter(
-      card => this.checkIfCardNeedsUpdate(card) || force
+  updatePendingGiftCards(cards: GiftCard[]): Observable<GiftCard> {
+    const cardsNeedingUpdate = cards.filter(card =>
+      this.checkIfCardNeedsUpdate(card)
     );
     return from(cardsNeedingUpdate).pipe(
       mergeMap(card =>
