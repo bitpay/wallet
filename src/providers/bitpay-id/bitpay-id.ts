@@ -113,7 +113,6 @@ export class BitPayIdProvider {
               .toPromise();
 
             if (user) {
-
               if (user.error) {
                 errorCallback(user.error);
                 return;
