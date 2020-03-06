@@ -5,4 +5,5 @@ export interface User {
     email?: string;
     eid?: string;
   };
+  error?: string;
 }

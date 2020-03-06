@@ -42,7 +42,7 @@ export class BitPayIdProvider {
     };
   }
 
-  public generatePairingToken(secret, successCallback, errorCallback) {
+  public generatePairingToken(payload, successCallback, errorCallback) {
     const network = Network[this.getEnvironment().network];
 
     this.appIdentityProvider.getIdentity(network, (err, appIdentity) => {
@@ -51,13 +51,21 @@ export class BitPayIdProvider {
         return errorCallback(err);
       }
 
+      const { secret, code } = payload;
+
+      const params = {
+        secret,
+        version: 2,
+        deviceName: this.deviceName
+      };
+
+      if (code) {
+        params['code'] = code;
+      }
+
       let json: any = {
         method: 'createToken',
-        params: {
-          secret,
-          version: 2,
-          deviceName: this.deviceName
-        }
+        params
       };
 
       let dataToSign = JSON.stringify(json['params']);
@@ -88,8 +96,6 @@ export class BitPayIdProvider {
               .post(url, json, { headers })
               .toPromise();
 
-            this.logger.debug('BitPayID: successfully paired');
-
             json = {
               method: 'getBasicInfo',
               token: token.data
@@ -107,6 +113,12 @@ export class BitPayIdProvider {
               .toPromise();
 
             if (user) {
+              if (user.error) {
+                errorCallback(user.error);
+                return;
+              }
+
+              this.logger.debug('BitPayID: successfully paired');
               const { data } = user;
               // const { email, familyName, givenName } = data;
 
