@@ -216,7 +216,9 @@ export class IABCardProvider {
                 this.user.next(user);
               }
             },
-            () => {
+            error => {
+              this.logger.error(`pairing error -> ${error}`);
+
               this.cardIAB_Ref.hide();
               const errorSheet = this.actionSheetProvider.createInfoSheet(
                 'default-error',
