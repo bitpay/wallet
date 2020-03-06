@@ -471,6 +471,17 @@ export class BitPayCardTopUpPage {
               });
             }
 
+            const highTopUpAmount = this.txFormatProvider.parseAmount(
+              this.wallet.coin,
+              3000,
+              'USD'
+            ).amountSat;
+
+            if (maxValues.amount >= highTopUpAmount) {
+              const amount = maxValues.amount - 2 * maxValues.fee;
+              return resolve({ amount, currency: 'sat' });
+            }
+
             const {
               unitDecimals,
               unitToSatoshi
