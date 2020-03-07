@@ -184,14 +184,14 @@ export class CopayApp {
 
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash +
-        deviceInfo
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash +
+      deviceInfo
     );
 
     if (this.platform.is('cordova')) {
@@ -200,15 +200,15 @@ export class CopayApp {
       // Set User-Agent
       this.userAgent.set(
         this.appProvider.info.name +
-          ' ' +
-          this.appProvider.info.version +
-          ' (' +
-          this.device.platform +
-          ' ' +
-          this.device.version +
-          ' - ' +
-          this.device.model +
-          ')'
+        ' ' +
+        this.appProvider.info.version +
+        ' (' +
+        this.device.platform +
+        ' ' +
+        this.device.version +
+        ' - ' +
+        this.device.model +
+        ')'
       );
 
       // Set to portrait
@@ -326,14 +326,24 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.appProvider.isLockModalOpen) return;
+
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
         : null;
-    if (!lockMethod) return;
-    if (lockMethod == 'pin') this.openPINModal('checkPin');
-    if (lockMethod == 'fingerprint') this.openFingerprintModal();
+
+    if (!lockMethod) {
+      return;
+    }
+
+    if (lockMethod == 'pin') {
+      this.iabCardProvider.pause();
+      this.openPINModal('checkPin');
+    } else if (lockMethod == 'fingerprint') {
+      this.iabCardProvider.pause();
+      this.openFingerprintModal();
+    }
   }
 
   private openPINModal(action): void {
@@ -348,8 +358,7 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.appProvider.isLockModalOpen = false;
-      this.events.publish('Home/reloadStatus');
+      this.onLockDidDismiss();
     });
   }
 
@@ -365,9 +374,14 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.appProvider.isLockModalOpen = false;
-      this.events.publish('Home/reloadStatus');
+      this.onLockDidDismiss();
     });
+  }
+
+  private onLockDidDismiss(): void {
+    this.appProvider.isLockModalOpen = false;
+    this.events.publish('Home/reloadStatus');
+    this.iabCardProvider.resume();
   }
 
   private registerIntegrations(): void {

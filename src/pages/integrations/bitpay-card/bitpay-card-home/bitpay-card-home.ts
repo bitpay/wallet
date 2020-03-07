@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, InAppBrowserProvider } from '../../../../providers';
+import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
@@ -22,8 +22,8 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private iab: InAppBrowserProvider
-  ) {}
+    private iabCardProvider: IABCardProvider
+  ) { }
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
@@ -36,16 +36,11 @@ export class BitPayCardHome implements OnInit {
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
       const message = `loadDashboard?${cardId}`;
-      this.iab.refs.card.executeScript(
-        {
-          code: `window.postMessage(${JSON.stringify({
-            message
-          })}, '*')`
-        },
-        () => {
-          this.iab.refs.card.show();
-        }
-      );
+      this.iabCardProvider.sendMessage({
+        message
+      }, () => {
+        this.iabCardProvider.show();
+      });
     } else {
       this.navCtrl.push(BitPayCardPage, { id: cardId });
     }

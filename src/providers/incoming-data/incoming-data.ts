@@ -8,7 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
-import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
+import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -34,7 +34,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -764,22 +764,24 @@ export class IncomingDataProvider {
        * */
       switch (event) {
         case 'email-verified':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
             message: 'email-verified'
           });
           break;
 
         case 'get-started':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
             message: 'get-started'
           });
           break;
 
         case 'retry':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, { message: 'retry' });
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
+            message: 'retry'
+          });
       }
 
       return true;

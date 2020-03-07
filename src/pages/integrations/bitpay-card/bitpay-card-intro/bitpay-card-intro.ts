@@ -12,7 +12,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
 import {
-  InAppBrowserProvider,
+  IABCardProvider,
   PersistenceProvider
 } from '../../../../providers';
 import { BitPayCardPage } from '../bitpay-card';
@@ -34,7 +34,7 @@ export class BitPayCardIntroPage {
     private navCtrl: NavController,
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
@@ -113,16 +113,11 @@ export class BitPayCardIntroPage {
 
   public async orderBitPayCard() {
     if (this.cardExperimentEnabled) {
-      this.iab.refs.card.executeScript(
-        {
-          code: `window.postMessage(${JSON.stringify({
-            message: 'orderCard'
-          })}, '*')`
-        },
-        () => {
-          this.iab.refs.card.show();
-        }
-      );
+      this.iabCardProvider.sendMessage({
+        message: 'orderCard'
+      }, () => {
+        this.iabCardProvider.show();
+      });
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});
       let url = 'https://bitpay.com/visa/get-started';

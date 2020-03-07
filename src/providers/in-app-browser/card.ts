@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators/filter';
+import { take } from 'rxjs/operators/take';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -24,6 +26,8 @@ export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
   private NETWORK = 'testnet';
   private BITPAY_API_URL = 'https://test.bitpay.com';
+  private _isHidden = true;
+  private _pausedState = false;
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
@@ -40,7 +44,7 @@ export class IABCardProvider {
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider
-  ) {}
+  ) { }
 
   async getCards() {
     const json = {
@@ -91,9 +95,21 @@ export class IABCardProvider {
             cards
           );
         },
-        () => {}
+        () => { }
       );
-    } catch (err) {}
+    } catch (err) { }
+  }
+
+  get ref() {
+    return this.cardIAB_Ref;
+  }
+
+  get isHidden() {
+    return this._isHidden;
+  }
+
+  get isVisible() {
+    return !this._isHidden;
   }
 
   init(): void {
@@ -150,7 +166,7 @@ export class IABCardProvider {
             this.logger.error(err);
           }
 
-          this.cardIAB_Ref.hide();
+          this.hide();
           break;
 
         /*
@@ -159,12 +175,10 @@ export class IABCardProvider {
          *
          * */
         case 'pairingOnly':
-          const subscription: Subscription = this.user$.subscribe(user => {
-            if (Object.entries(user).length === 0) {
-              return;
-            }
-
-            this.cardIAB_Ref.hide();
+          this.user$.pipe(
+            filter((user) => Object.entries(user).length > 0),
+            take(1)
+          ).subscribe(() => {
 
             this.cardIAB_Ref.executeScript(
               {
@@ -181,11 +195,11 @@ export class IABCardProvider {
               'in-app-notification',
               {
                 title: 'BitPay ID',
-                body: this.translate.instant('BitPay ID successfully paired.')
+                body: this.translate.instant('BitPay ID successfully connected.')
               }
             );
             infoSheet.present();
-            subscription.unsubscribe();
+            this.hide();
           });
 
           break;
@@ -197,7 +211,7 @@ export class IABCardProvider {
          * */
 
         case 'close':
-          this.cardIAB_Ref.hide();
+          this.hide();
           break;
 
         /*
@@ -283,7 +297,7 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {}
+          } catch (err) { }
 
           break;
 
@@ -301,5 +315,40 @@ export class IABCardProvider {
           break;
       }
     });
+  }
+
+  sendMessage(message: object, cb?: (...args: any[]) => void): void {
+    const script = {
+      code: `window.postMessage(${JSON.stringify({ ...message })}, '*')`
+    };
+
+    this.cardIAB_Ref.executeScript(script, cb);
+  }
+
+  hide(): void {
+    if (this.cardIAB_Ref) {
+      this.cardIAB_Ref.hide();
+      this._isHidden = true;
+    }
+  }
+
+  show(): void {
+    if (this.cardIAB_Ref) {
+      this.cardIAB_Ref.show();
+      this._isHidden = false;
+    }
+  }
+
+  pause(): void {
+    this._pausedState = this.isVisible;
+    this.hide();
+  }
+
+  resume(): void {
+    if (this._pausedState) {
+      this.show();
+    }
+
+    this._pausedState = false;
   }
 }
