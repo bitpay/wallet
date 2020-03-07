@@ -5,6 +5,7 @@ import { Events } from 'ionic-angular';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators/filter';
 import { take } from 'rxjs/operators/take';
+import * as _ from 'lodash';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -20,6 +21,7 @@ import {
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { SimplexProvider } from '../simplex/simplex';
 
 @Injectable()
 export class IABCardProvider {
@@ -43,7 +45,8 @@ export class IABCardProvider {
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private simplexProvider: SimplexProvider
   ) { }
 
   async getCards() {
@@ -309,6 +312,21 @@ export class IABCardProvider {
 
         case 'addCard':
           this.getCards();
+          break;
+
+        case 'buyCrypto':
+          this.simplexProvider.getSimplex().then(simplexData => {
+            const hasData = simplexData && !_.isEmpty(simplexData);
+            const nextView = {
+              name: hasData ? 'SimplexPage' : 'SimplexBuyPage',
+              params: {},
+              callback: () => {
+                this.hide();
+              }
+            };
+
+            this.events.publish('IncomingDataRedir', nextView);
+          });
           break;
 
         default:
