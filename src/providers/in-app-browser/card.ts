@@ -26,8 +26,11 @@ import { SimplexProvider } from '../simplex/simplex';
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
-  private NETWORK = 'testnet';
-  private BITPAY_API_URL = 'https://test.bitpay.com';
+  private NETWORK = Network.testnet;
+  private BITPAY_API_URL =
+    this.NETWORK == 'livenet'
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
   private _isHidden = true;
   private _pausedState = false;
 

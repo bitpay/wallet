@@ -14,8 +14,11 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class BitPayIdProvider {
-  private NETWORK = Network.livenet;
-  private BITPAY_API_URL = 'https://bitpay.com';
+  private NETWORK = Network.testnet;
+  private BITPAY_API_URL =
+    this.NETWORK == 'livenet'
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
   private deviceName = 'unknown device';
 
   constructor(
