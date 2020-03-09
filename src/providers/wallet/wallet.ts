@@ -813,10 +813,12 @@ export class WalletProvider {
                 });
               };
 
-              this.getLowAmount(wallet).then(fee => {
-                opts.lowAmount = fee;
-                updateLowAmount(txs);
-              });
+              if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+                this.getLowAmount(wallet).then(fee => {
+                  opts.lowAmount = fee;
+                  updateLowAmount(txs);
+                });
+              }
 
               updateNotes()
                 .then(() => {
