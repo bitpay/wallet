@@ -23,7 +23,7 @@ export class BitPayCardHome implements OnInit {
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
@@ -36,11 +36,14 @@ export class BitPayCardHome implements OnInit {
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
       const message = `loadDashboard?${cardId}`;
-      this.iabCardProvider.sendMessage({
-        message
-      }, () => {
-        this.iabCardProvider.show();
-      });
+      this.iabCardProvider.sendMessage(
+        {
+          message
+        },
+        () => {
+          this.iabCardProvider.show();
+        }
+      );
     } else {
       this.navCtrl.push(BitPayCardPage, { id: cardId });
     }
