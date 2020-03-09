@@ -117,11 +117,14 @@ export class WalletDetailsPage {
     const redirectionParam = this.navParams.get('redir');
     if (redirectionParam && redirectionParam.redir === 'wc') {
       setTimeout(() => {
-        this.iabCardProvider.sendMessage({
-          message: 'paymentBroadcasted'
-        }, () => {
-          this.logger.log('card IAB -> payment broadcasting opening IAB');
-        });
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'paymentBroadcasted'
+          },
+          () => {
+            this.logger.log('card IAB -> payment broadcasting opening IAB');
+          }
+        );
         this.iabCardProvider.show();
       }, 1000);
     }

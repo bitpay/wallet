@@ -9,10 +9,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 // pages
 import { User } from '../../models/user/user.model';
-import {
-  BitPayIdProvider,
-  IABCardProvider
-} from '../../providers';
+import { BitPayIdProvider, IABCardProvider } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -183,13 +180,16 @@ export class SettingsPage {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
-      this.iabCardProvider.sendMessage({
-        message: 'pairingOnly'
-      }, () => {
-        setTimeout(() => {
-          this.iabCardProvider.show();
-        }, 500);
-      });
+      this.iabCardProvider.sendMessage(
+        {
+          message: 'pairingOnly'
+        },
+        () => {
+          setTimeout(() => {
+            this.iabCardProvider.show();
+          }, 500);
+        }
+      );
     }
   }
 

@@ -419,11 +419,13 @@ export class CopayApp {
       // wait for wallets status
       setTimeout(() => {
         const globalNav = this.getGlobalTabs().getSelected();
-        globalNav.push(this.pageMap[nextView.name], nextView.params).then(() => {
-          if (typeof nextView.callback === 'function') {
-            nextView.callback();
-          }
-        });
+        globalNav
+          .push(this.pageMap[nextView.name], nextView.params)
+          .then(() => {
+            if (typeof nextView.callback === 'function') {
+              nextView.callback();
+            }
+          });
       }, 300);
     });
   }

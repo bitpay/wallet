@@ -602,7 +602,9 @@ export class HomePage {
           ? this.persistenceProvider.removeBitpayIdPairingFlag()
           : this.persistenceProvider.setBitpayIdPairingFlag('enabled');
 
-        alert('bitpayID pairing enabled');
+        alert(
+          `BitPay ID pairing feature ${res === 'enabled' ? res : 'disabled'}`
+        );
         this.tapped = 0;
       });
     }

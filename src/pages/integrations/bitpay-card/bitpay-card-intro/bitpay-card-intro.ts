@@ -115,24 +115,31 @@ export class BitPayCardIntroPage {
 
   public async orderBitPayCard() {
     if (this.cardExperimentEnabled) {
-
-      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(10, 'USD');
+      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+        10,
+        'USD'
+      );
 
       if (!hasWalletWithFunds) {
-        this.iabCardProvider.sendMessage({
-          message: 'needFunds'
-        }, () => {
-          this.iabCardProvider.show();
-        });
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'needFunds'
+          },
+          () => {
+            this.iabCardProvider.show();
+          }
+        );
         return;
       }
 
-      this.iabCardProvider.sendMessage({
-        message: 'orderCard'
-      }, () => {
-        this.iabCardProvider.show();
-      });
-
+      this.iabCardProvider.sendMessage(
+        {
+          message: 'orderCard'
+        },
+        () => {
+          this.iabCardProvider.show();
+        }
+      );
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});
       let url = 'https://bitpay.com/visa/get-started';

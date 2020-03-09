@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
+import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators/filter';
 import { take } from 'rxjs/operators/take';
-import * as _ from 'lodash';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -50,7 +50,7 @@ export class IABCardProvider {
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
     private simplexProvider: SimplexProvider
-  ) { }
+  ) {}
 
   async getCards() {
     const json = {
@@ -101,9 +101,9 @@ export class IABCardProvider {
             cards
           );
         },
-        () => { }
+        () => {}
       );
-    } catch (err) { }
+    } catch (err) {}
   }
 
   get ref() {
@@ -181,32 +181,35 @@ export class IABCardProvider {
          *
          * */
         case 'pairingOnly':
-          this.user$.pipe(
-            filter((user) => Object.entries(user).length > 0),
-            take(1)
-          ).subscribe(() => {
+          this.user$
+            .pipe(
+              filter(user => Object.entries(user).length > 0),
+              take(1)
+            )
+            .subscribe(() => {
+              this.cardIAB_Ref.executeScript(
+                {
+                  code: `window.postMessage(${JSON.stringify({
+                    message: 'reset'
+                  })}, '*')`
+                },
+                () => this.logger.log(`card -> reset iab state`)
+              );
 
-            this.cardIAB_Ref.executeScript(
-              {
-                code: `window.postMessage(${JSON.stringify({
-                  message: 'reset'
-                })}, '*')`
-              },
-              () => this.logger.log(`card -> reset iab state`)
-            );
+              this.events.publish('BitPayId/Connected');
 
-            this.events.publish('BitPayId/Connected');
-
-            const infoSheet = this.actionSheetProvider.createInfoSheet(
-              'in-app-notification',
-              {
-                title: 'BitPay ID',
-                body: this.translate.instant('BitPay ID successfully connected.')
-              }
-            );
-            infoSheet.present();
-            this.hide();
-          });
+              const infoSheet = this.actionSheetProvider.createInfoSheet(
+                'in-app-notification',
+                {
+                  title: 'BitPay ID',
+                  body: this.translate.instant(
+                    'BitPay ID successfully connected.'
+                  )
+                }
+              );
+              infoSheet.present();
+              this.hide();
+            });
 
           break;
 
@@ -303,7 +306,7 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) { }
+          } catch (err) {}
 
           break;
 
@@ -348,6 +351,7 @@ export class IABCardProvider {
 
   hide(): void {
     if (this.cardIAB_Ref) {
+      this.sendMessage({ message: 'iabHiding' });
       this.cardIAB_Ref.hide();
       this._isHidden = true;
     }
@@ -355,6 +359,7 @@ export class IABCardProvider {
 
   show(): void {
     if (this.cardIAB_Ref) {
+      this.sendMessage({ message: 'iabOpening' });
       this.cardIAB_Ref.show();
       this._isHidden = false;
     }
