@@ -60,19 +60,17 @@ export class ExchangeRates {
 
   public getPrices() {
     this.setIsoCode();
-    _.forEach(this.coins, (coin, index) => {
-      this.exchangeRatesProvider
-        .getHistoricalRates(this.isoCode, coin.unitCode)
-        .subscribe(
-          response => {
-            this.coins[index].historicalRates = response.reverse();
-            this.updateValues(index);
-          },
-          err => {
-            this.logger.error('Error getting rates:', err);
-          }
-        );
-    });
+    this.exchangeRatesProvider.getHistoricalRates(this.isoCode).subscribe(
+      response => {
+        _.forEach(this.coins, (coin, index) => {
+          this.coins[index].historicalRates = response[coin.unitCode].reverse();
+          this.updateValues(index);
+        });
+      },
+      err => {
+        this.logger.error('Error getting rates:', err);
+      }
+    );
   }
 
   public updateCurrentPrice() {
