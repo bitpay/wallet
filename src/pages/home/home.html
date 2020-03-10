@@ -40,6 +40,21 @@
     </div>
   </div>
 
+  <div class="message-background" *ngIf="newReleaseAvailable">
+    <div class="message-header"></div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-update.svg" /></div>
+        <div class="message-title">
+          {{ 'There is a new version available' | translate }}
+        </div>
+      </ion-row>
+      <div class="message-body" translate>
+        An update to this app is available. For your security, please update to the latest version.
+      </div>
+    </div>
+  </div>
+
   <div class="message-background" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
     <div class="message-header">
       <ion-row *ngIf="serverMessages[0].dismissible" justify-content-end>

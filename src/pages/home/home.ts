@@ -21,6 +21,8 @@ import { ConfigProvider } from '../../providers/config/config';
 import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
@@ -90,6 +92,7 @@ export class HomePage {
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
+  public newReleaseAvailable: boolean = false;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -106,7 +109,9 @@ export class HomePage {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
-    private events: Events
+    private events: Events,
+    private releaseProvider: ReleaseProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
@@ -117,8 +122,7 @@ export class HomePage {
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.showTotalBalance = this.configProvider.get().showTotalBalance;
-    if (this.showTotalBalance) this.getCachedTotalBalance();
+    if (this.platformProvider.isElectron) this.checkNewRelease();
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
@@ -234,10 +238,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-            discount.amount,
-            discountedCard.currency,
-            'minimal'
-          )}`
+          discount.amount,
+          discountedCard.currency,
+          'minimal'
+        )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -249,7 +253,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-        } gift cards. Limited time offer.`,
+          } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -407,6 +411,14 @@ export class HomePage {
     this.showSurvey.setShowSurveyCard(!hideSurvey);
   }
 
+  private checkNewRelease() {
+    this.releaseProvider.getLatestAppVersion().then((data: any) => {
+      this.newReleaseAvailable = this.releaseProvider.newReleaseAvailable(
+        data.version
+      );
+    });
+  }
+
   private checkFeedbackInfo() {
     // Hide feeback card if survey card is shown
     // TODO remove this condition
@@ -485,5 +497,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-  }-gift-card-discount`;
+    }-gift-card-discount`;
 }
