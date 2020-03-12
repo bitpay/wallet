@@ -84,7 +84,6 @@ export class DisclaimerPage {
     this.persistenceProvider.setNewDesignSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
     this.persistenceProvider.setSurveyFlag();
-    this.persistenceProvider.setEthLiveCardFlag();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });
   }

@@ -51,8 +51,6 @@ interface UpdateWalletOptsI {
   templateUrl: 'wallets.html'
 })
 export class WalletsPage {
-  @ViewChild('showEthLiveCard')
-  showEthLiveCard;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -171,7 +169,6 @@ export class WalletsPage {
 
     // Required delay to improve performance loading
     setTimeout(() => {
-      this.showEthLive();
       this.checkEmailLawCompliance();
     }, 2000);
 
@@ -344,19 +341,6 @@ export class WalletsPage {
       this.fetchAllWalletsStatus();
     }
   };
-
-  private async showEthLive() {
-    const hideEthLiveCard = await this.persistenceProvider.getEthLiveCardFlag();
-    if (!hideEthLiveCard) {
-      let hasNoLegacy = false;
-      this.walletsGroups.forEach((walletsGroup: any[]) => {
-        if (walletsGroup[0].canAddNewAccount) {
-          hasNoLegacy = true;
-        }
-      });
-      this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
-    }
-  }
 
   public checkClipboard() {
     return this.clipboardProvider
