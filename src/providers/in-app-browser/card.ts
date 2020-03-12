@@ -223,6 +223,24 @@ export class IABCardProvider {
           this.hide();
           break;
 
+        case 'topup':
+
+          const {id, currency} = event.data.params;
+
+          let nextView = {
+            name: 'AmountPage',
+            params: {
+              nextPage: 'BitPayCardTopUpPage',
+              currency,
+              id,
+              card: 'v2'
+            }
+          };
+          this.events.publish('IncomingDataRedir', nextView);
+          this.hide();
+          break;
+
+
         /*
          *
          * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
