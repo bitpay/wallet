@@ -496,7 +496,7 @@ export class BitPayCardTopUpPage {
 
             this.createInvoice({
               amount: maxAmount,
-              currency: wallet.coin.toUpperCase(),
+              currency: wallet.coin.toUpperCase()
             })
               .then(inv => {
                 // Check if BTC or BCH is enabled in this account
@@ -594,19 +594,18 @@ export class BitPayCardTopUpPage {
 
     var dataSrc: any = {
       amount: parsedAmount.amount,
-      currency: parsedAmount.currency,
+      currency: parsedAmount.currency
     };
 
     if (this.navParams.get('v2')) {
-
-      const {amount, currency, coin} = parsedAmount;
+      const { amount, currency, coin } = parsedAmount;
 
       dataSrc = {
         invoicePrice: amount,
         invoiceCurrency: currency,
         transactionCurrency: coin.toUpperCase(),
         v2: true
-      }
+      };
     }
     this.onGoingProcessProvider.set('loadingTxInfo');
 
@@ -778,7 +777,7 @@ export class BitPayCardTopUpPage {
           val.amount,
           val.currency
         );
-        this.initializeTopUp(wallet, {...parsedAmount, coin: wallet.coin});
+        this.initializeTopUp(wallet, { ...parsedAmount, coin: wallet.coin });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -820,7 +819,6 @@ export class BitPayCardTopUpPage {
     );
     modal.present();
     modal.onDidDismiss(async () => {
-
       if (this.navParams.get('v2')) {
         this.iabCardProvider.show();
         this.iabCardProvider.sendMessage({
@@ -828,14 +826,12 @@ export class BitPayCardTopUpPage {
         });
         await this.navCtrl.popToRoot({ animate: false });
       } else {
-
         await this.navCtrl.push(
           BitPayCardPage,
           { id: this.cardId },
           { animate: false }
         );
       }
-
     });
   }
 

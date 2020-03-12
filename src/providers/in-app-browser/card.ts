@@ -224,8 +224,7 @@ export class IABCardProvider {
           break;
 
         case 'topup':
-
-          const {id, currency} = event.data.params;
+          const { id, currency } = event.data.params;
 
           let nextView = {
             name: 'AmountPage',
@@ -239,7 +238,6 @@ export class IABCardProvider {
           this.events.publish('IncomingDataRedir', nextView);
           this.hide();
           break;
-
 
         /*
          *
