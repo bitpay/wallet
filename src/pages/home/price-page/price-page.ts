@@ -63,7 +63,7 @@ export class PricePage {
       .getHistoricalRates(this.isoCode, lastDate)
       .subscribe(
         response => {
-          this.card.historicalRates = response[this.card.unitCode].reverse();
+          this.card.historicalRates = response[this.card.unitCode];
           this.updateValues();
           this.setPrice();
           this.redrawCanvas();
@@ -91,7 +91,9 @@ export class PricePage {
     const displayDate = date
       ? this.formatDate(date)
       : this.card.unitCode.toUpperCase();
-    const minPrice = this.card.historicalRates[0].rate;
+    const minPrice = this.card.historicalRates[
+      this.card.historicalRates.length - 1
+    ].rate;
     this.card.averagePriceAmount = price - minPrice;
     this.card.averagePrice = (this.card.averagePriceAmount * 100) / minPrice;
     const customPrecision = this.card.unitCode === 'xrp' ? 4 : 2;
@@ -164,10 +166,10 @@ export class PricePage {
   }
 
   private updateValues() {
-    this.card.currentPrice = this.card.historicalRates[
+    this.card.currentPrice = this.card.historicalRates[0].rate;
+    const minPrice = this.card.historicalRates[
       this.card.historicalRates.length - 1
     ].rate;
-    const minPrice = this.card.historicalRates[0].rate;
     this.card.averagePriceAmount = this.card.currentPrice - minPrice;
     this.card.averagePrice = (this.card.averagePriceAmount * 100) / minPrice;
   }

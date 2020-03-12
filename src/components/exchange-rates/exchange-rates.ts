@@ -80,7 +80,7 @@ export class ExchangeRates {
     this.exchangeRatesProvider.getHistoricalRates(this.isoCode, 1).subscribe(
       response => {
         _.forEach(this.coins, (coin, index) => {
-          this.coins[index].historicalRates = response[coin.unitCode].reverse();
+          this.coins[index].historicalRates = response[coin.unitCode];
           this.updateValues(index);
         });
       },
@@ -91,9 +91,7 @@ export class ExchangeRates {
   }
 
   public updateCurrentPrice() {
-    const lastRequest = this.coins[0].historicalRates[
-      this.coins[0].historicalRates.length - 1
-    ].ts;
+    const lastRequest = this.coins[0].historicalRates[0].ts;
     if (moment(lastRequest).isBefore(moment(), 'days')) {
       this.getPrices();
       return;
@@ -103,9 +101,7 @@ export class ExchangeRates {
         .getCurrentRate(this.isoCode, coin.unitCode)
         .subscribe(
           response => {
-            this.coins[i].historicalRates[
-              this.coins[i].historicalRates.length - 1
-            ] = response;
+            this.coins[i].historicalRates.unshift(response);
             this.updateValues(i);
           },
           err => {
@@ -116,14 +112,15 @@ export class ExchangeRates {
   }
 
   private updateValues(i: number) {
-    this.coins[i].currentPrice = this.coins[i].historicalRates[
-      this.coins[i].historicalRates.length - 1
-    ].rate;
+    this.coins[i].currentPrice = this.coins[i].historicalRates[0].rate;
     this.coins[i].averagePriceAmount =
-      this.coins[i].currentPrice - this.coins[i].historicalRates[0].rate;
+      this.coins[i].currentPrice -
+      this.coins[i].historicalRates[this.coins[i].historicalRates.length - 1]
+        .rate;
     this.coins[i].averagePrice =
       (this.coins[i].averagePriceAmount * 100) /
-      this.coins[i].historicalRates[0].rate;
+      this.coins[i].historicalRates[this.coins[i].historicalRates.length - 1]
+        .rate;
   }
 
   private setIsoCode() {

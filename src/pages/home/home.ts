@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { ExchangeRates } from '../../components/exchange-rates/exchange-rates';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
@@ -50,6 +51,7 @@ export interface Advertisement {
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild('exchangeRates') exchangeRates: ExchangeRates;
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showServicesOption: boolean = false;
@@ -241,6 +243,7 @@ export class HomePage {
     setTimeout(() => {
       this.fetchStatus();
       this.fetchAdvertisements();
+      this.exchangeRates.updateCurrentPrice();
       refresher.complete();
     }, 2000);
   }
