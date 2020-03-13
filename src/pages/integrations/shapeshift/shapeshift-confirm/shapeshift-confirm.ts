@@ -284,7 +284,11 @@ export class ShapeshiftConfirmPage {
   private getSendMaxInfo(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getFeeRate(this.fromWallet.coin, this.network, 'normal')
+        .getFeeRate(
+          this.fromWallet.coin,
+          this.network,
+          this.feeProvider.getCoinCurrentFeeLevel(this.fromWallet.coin)
+        )
         .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');
           this.walletProvider

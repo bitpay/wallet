@@ -41,6 +41,23 @@ export class FeeProvider {
     return feeOpts;
   }
 
+  public getCoinCurrentFeeLevel(coin): string {
+    let feeLevel;
+    switch (coin) {
+      case 'bch':
+        feeLevel = 'normal';
+        break;
+      case 'xrp':
+        feeLevel = 'normal';
+        break;
+      default:
+        feeLevel =
+          this.configProvider.get().wallet.settings.feeLevel || 'normal';
+        break;
+    }
+    return feeLevel;
+  }
+
   public getCurrentFeeLevel(): string {
     return this.configProvider.get().wallet.settings.feeLevel || 'normal';
   }
