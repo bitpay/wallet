@@ -47,20 +47,20 @@
           </div>
           <ion-list class="checkbox-list" no-lines>
             <ion-item>
-              <ion-label>
+              <ion-label class="text">
                 {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
               </ion-label>
               <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
             </ion-item>
             <ion-item>
-              <ion-label>
+              <ion-label class="text">
                 {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase' | translate}}.
               </ion-label>
               <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
             </ion-item>
             <div *ngIf="hasEmail">
               <ion-item>
-                <ion-label>
+                <ion-label class="text">
                   <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
                 </ion-label>
                 <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
@@ -76,7 +76,7 @@
         <div class="footer-container">
           <div class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third">
             <ion-item no-lines>
-              <ion-label>
+              <ion-label class="text">
                 {{'I have read, understood, and agree to the Terms of Use' | translate}}.
               </ion-label>
               <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
