@@ -25,7 +25,6 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
@@ -85,7 +84,6 @@ export class WalletsPage {
     private logger: Logger,
     private events: Events,
     private popupProvider: PopupProvider,
-    private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private payproProvider: PayproProvider,
@@ -110,7 +108,7 @@ export class WalletsPage {
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
-      this._willEnter(true);
+      this._willEnter();
       this._didEnter();
     });
   }
@@ -123,17 +121,18 @@ export class WalletsPage {
     this._didEnter();
   }
 
-  private _willEnter(shouldUpdate: boolean = false) {
+  private _willEnter() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
 
     // Update list of wallets, status and TXPs
-    this.setWallets(shouldUpdate);
+    this.setWallets();
   }
 
   private _didEnter() {
     this.checkClipboard();
+    this.updateTxps();
 
     // Show integrations
     const integrations = this.homeIntegrationsProvider
@@ -179,9 +178,7 @@ export class WalletsPage {
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
       // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', () =>
-        this.setWallets(true)
-      );
+      this.events.subscribe('Local/WalletListChange', () => this.setWallets());
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletActionHandler);
@@ -203,7 +200,6 @@ export class WalletsPage {
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
       this.events.unsubscribe('Local/WalletFocus', this.walletFocusHandler);
     });
-    this.setWallets(true);
   }
 
   ngOnDestroy() {
@@ -303,7 +299,7 @@ export class WalletsPage {
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.setWallets(true);
+      this.setWallets();
     },
     5000,
     {
@@ -311,7 +307,7 @@ export class WalletsPage {
     }
   );
 
-  private setWallets = (shouldUpdate: boolean = false) => {
+  private setWallets = () => {
     // TEST
     /* 
     setTimeout(() => {
@@ -336,13 +332,6 @@ export class WalletsPage {
     this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
       keyId: 'read-only'
     });
-
-    this.profileProvider.setLastKnownBalance();
-
-    // Avoid heavy tasks that can slow down the unlocking experience
-    if (!this.appProvider.isLockModalOpen && shouldUpdate) {
-      this.fetchAllWalletsStatus();
-    }
   };
 
   public checkClipboard() {
@@ -557,48 +546,6 @@ export class WalletsPage {
       .catch(err => {
         this.logger.error(err);
       });
-  }
-
-  private fetchAllWalletsStatus(): void {
-    if (_.isEmpty(this.wallets)) return;
-
-    this.logger.debug('fetchAllWalletsStatus');
-    const pr = wallet => {
-      return this.walletProvider
-        .fetchStatus(wallet, {})
-        .then(async status => {
-          wallet.cachedStatus = status;
-          wallet.error = wallet.errorObj = null;
-
-          const balance =
-            wallet.coin === 'xrp'
-              ? wallet.cachedStatus.availableBalanceStr
-              : wallet.cachedStatus.totalBalanceStr;
-
-          this.persistenceProvider.setLastKnownBalance(wallet.id, balance);
-
-          this.events.publish('Local/WalletUpdate', {
-            walletId: wallet.id,
-            finished: true
-          });
-
-          return Promise.resolve();
-        })
-        .catch(err => {
-          this.processWalletError(wallet, err);
-          return Promise.resolve();
-        });
-    };
-
-    const promises = [];
-
-    _.each(this.profileProvider.wallet, wallet => {
-      promises.push(pr(wallet));
-    });
-
-    Promise.all(promises).then(() => {
-      this.updateTxps();
-    });
   }
 
   private processWalletError(wallet, err): void {

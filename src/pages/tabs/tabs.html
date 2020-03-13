@@ -1,6 +1,6 @@
 <ion-tabs #tabs>
   <ion-tab [root]="homeRoot" tabIcon="tab-home"></ion-tab>
-  <ion-tab [root]="walletsRoot" tabIcon="tab-wallets"></ion-tab>
+  <ion-tab [root]="walletsRoot" [tabBadge]="txpsN" tabIcon="tab-wallets"></ion-tab>
   <ion-tab [root]="cardsRoot" [show]="appName === 'BitPay'" tabIcon="tab-cards"></ion-tab>
   <ion-tab [root]="settingsRoot" tabIcon="tab-settings"></ion-tab>
 </ion-tabs>

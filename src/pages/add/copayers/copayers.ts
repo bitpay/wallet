@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  NavController,
-  NavParams,
-  Platform,
-  ViewController
-} from 'ionic-angular';
+import { Events, NavParams, Platform, ViewController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // Native
@@ -24,8 +18,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
-// Pages
-import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
 @Component({
   selector: 'page-copayers',
   templateUrl: 'copayers.html'
@@ -59,8 +51,8 @@ export class CopayersPage {
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private navCtrl: NavController,
-    public currencyProvider: CurrencyProvider
+    public currencyProvider: CurrencyProvider,
+    private configProvider: ConfigProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -72,28 +64,22 @@ export class CopayersPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CopayersPage');
+  }
 
+  ngOnInit() {
+    this.subscribeEvents();
+    this.events.publish('Local/WalletFocus', {
+      walletId: this.wallet.credentials.walletId
+    });
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.events.publish('Local/WalletFocus', {
         walletId: this.wallet.credentials.walletId
       });
       this.subscribeEvents();
     });
-
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.unsubscribeEvents();
     });
-  }
-
-  ionViewWillEnter() {
-    this.events.publish('Local/WalletFocus', {
-      walletId: this.wallet.credentials.walletId
-    });
-    this.subscribeEvents();
-  }
-
-  ionViewWillLeave() {
-    this.unsubscribeEvents();
   }
 
   ngOnDestroy() {
@@ -111,6 +97,7 @@ export class CopayersPage {
   }
 
   close() {
+    this.unsubscribeEvents();
     this.viewCtrl.dismiss();
   }
 
@@ -128,12 +115,8 @@ export class CopayersPage {
         // TODO?
         this.wallet.openWallet(err => {
           if (err) this.logger.error(err);
-          this.viewCtrl.dismiss().then(() => {
-            this.events.publish('Local/WalletListChange');
-            this.navCtrl.push(WalletDetailsPage, {
-              walletId: this.wallet.credentials.walletId
-            });
-          });
+          this.events.publish('Local/WalletListChange');
+          this.close();
         });
       }
     }
@@ -168,20 +151,16 @@ export class CopayersPage {
             this.logger.warn('Key was not removed. Still in use');
           }
         }
-        this.dismiss();
+        this.events.publish('Local/WalletListChange');
+        setTimeout(() => {
+          this.close();
+        }, 1000);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
-  }
-
-  public dismiss() {
-    this.events.publish('Local/WalletListChange');
-    setTimeout(() => {
-      this.viewCtrl.dismiss();
-    }, 1000);
   }
 
   public showFullInfo(): void {
