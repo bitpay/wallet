@@ -755,6 +755,8 @@ export class IncomingDataProvider {
       return true;
     } else if (data.includes('wallet-card')) {
       const event = data.split('wallet-card/')[1];
+      const [ switchExp, payload ] = (event || '').split('?');
+
       /*
        *
        * handler for wallet-card events
@@ -762,7 +764,22 @@ export class IncomingDataProvider {
        * leaving this as a switch in case events become complex and require wallet side and iab actions
        *
        * */
-      switch (event) {
+      switch (switchExp) {
+
+        case 'pairing':
+          const secret = payload.split('=')[1].split('&')[0];
+          const params = {
+            secret,
+            withNotification: true
+          };
+          if (payload.includes('&code=')) {
+            params['code'] = payload.split('&code=')[1];
+          }
+
+          this.iabCardProvider.pairing(params);
+
+          break;
+
         case 'email-verified':
           this.iabCardProvider.show();
           this.iabCardProvider.sendMessage({

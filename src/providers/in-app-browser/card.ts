@@ -4,8 +4,6 @@ import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators/filter';
-import { take } from 'rxjs/operators/take';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -22,6 +20,7 @@ import {
 } from '../../providers/persistence/persistence';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { SimplexProvider } from '../simplex/simplex';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 @Injectable()
 export class IABCardProvider {
@@ -49,8 +48,10 @@ export class IABCardProvider {
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
-    private simplexProvider: SimplexProvider
-  ) {}
+    private simplexProvider: SimplexProvider,
+    private onGoingProcess: OnGoingProcessProvider
+  ) {
+  }
 
   async getCards() {
     const json = {
@@ -65,6 +66,7 @@ export class IABCardProvider {
         json,
         async res => {
           if (res && res.error) {
+            this.logger.error('could not fetch cards');
             return;
           }
 
@@ -101,9 +103,12 @@ export class IABCardProvider {
             cards
           );
         },
-        () => {}
+        () => {
+          this.logger.error('could not fetch cards');
+        }
       );
-    } catch (err) {}
+    } catch (err) {
+    }
   }
 
   get ref() {
@@ -175,42 +180,16 @@ export class IABCardProvider {
           this.hide();
           break;
 
+
         /*
          *
-         * Pairing only handler -> pair completed from iab
+         * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
          *
          * */
-        case 'pairingOnly':
-          this.user$
-            .pipe(
-              filter(user => Object.entries(user).length > 0),
-              take(1)
-            )
-            .subscribe(() => {
-              this.cardIAB_Ref.executeScript(
-                {
-                  code: `window.postMessage(${JSON.stringify({
-                    message: 'reset'
-                  })}, '*')`
-                },
-                () => this.logger.log(`card -> reset iab state`)
-              );
 
-              this.events.publish('BitPayId/Connected');
-
-              const infoSheet = this.actionSheetProvider.createInfoSheet(
-                'in-app-notification',
-                {
-                  title: 'BitPay ID',
-                  body: this.translate.instant(
-                    'BitPay ID successfully connected.'
-                  )
-                }
-              );
-              infoSheet.present();
-              this.hide();
-            });
-
+        case 'pairing':
+          const {params} = event.data;
+          this.pairing(params);
           break;
 
         /*
@@ -237,38 +216,6 @@ export class IABCardProvider {
           };
           this.events.publish('IncomingDataRedir', nextView);
           this.hide();
-          break;
-
-        /*
-         *
-         * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
-         *
-         * */
-
-        case 'pairing':
-          // generates pairing token and also fetches user basic info and caches both
-          this.bitpayIdProvider.generatePairingToken(
-            event.data.params,
-            (user: User) => {
-              if (user) {
-                this.getCards();
-                this.user.next(user);
-              }
-            },
-            error => {
-              this.logger.error(`pairing error -> ${error}`);
-
-              this.cardIAB_Ref.hide();
-              const errorSheet = this.actionSheetProvider.createInfoSheet(
-                'default-error',
-                {
-                  title: 'BitPay ID',
-                  msg: 'Uh oh, something went wrong please try again later.'
-                }
-              );
-              errorSheet.present();
-            }
-          );
           break;
 
         /*
@@ -322,7 +269,9 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {}
+          } catch (err) {
+
+          }
 
           break;
 
@@ -355,6 +304,85 @@ export class IABCardProvider {
           break;
       }
     });
+  }
+
+  pairing(params) {
+    const { withNotification } = params;
+
+    // set the overall app loading state
+    this.onGoingProcess.set('connectingBitPayId');
+
+    // generates pairing token and also fetches user basic info and caches both
+    this.bitpayIdProvider.generatePairingToken(
+      params,
+      async (user: User) => {
+
+        if (user) {
+
+          // publish to correct window
+          this.events.publish('BitPayId/Connected');
+
+          // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
+          if (withNotification) {
+
+            // resets inappbrowser connect state
+            this.cardIAB_Ref.executeScript(
+              {
+                code: `window.postMessage(${JSON.stringify({
+                  message: 'reset'
+                })}, '*')`
+              },
+              () => this.logger.log(`card -> reset iab state`)
+            );
+
+            // pairing notification
+            const infoSheet = this.actionSheetProvider.createInfoSheet(
+              'in-app-notification',
+              {
+                title: 'BitPay ID',
+                body: this.translate.instant(
+                  'BitPay ID successfully connected.'
+                )
+              }
+            );
+
+            await infoSheet.present();
+            // close in app browser
+            this.hide();
+          }
+
+          // publish new user
+          this.user.next(user);
+          // clear out loading state
+          setTimeout( () => {
+            this.onGoingProcess.clear();
+          }, 300);
+
+          // fetch new cards
+          this.getCards();
+
+        }
+      },
+      async err => {
+        this.logger.error(`pairing error -> ${err}`);
+
+        const errorSheet = this.actionSheetProvider.createInfoSheet(
+          'default-error',
+          {
+            title: 'BitPay ID',
+            msg: 'Uh oh, something went wrong please try again later.'
+          }
+        );
+
+        await errorSheet.present();
+
+        // clear out loading state
+        this.onGoingProcess.clear();
+        // close in app browser
+        this.hide();
+
+      }
+    );
   }
 
   sendMessage(message: object, cb?: (...args: any[]) => void): void {
