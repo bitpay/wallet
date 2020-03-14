@@ -14,13 +14,13 @@ import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { SimplexProvider } from '../simplex/simplex';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 @Injectable()
 export class IABCardProvider {
@@ -50,8 +50,7 @@ export class IABCardProvider {
     private profileProvider: ProfileProvider,
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider
-  ) {
-  }
+  ) {}
 
   async getCards() {
     const json = {
@@ -107,8 +106,7 @@ export class IABCardProvider {
           this.logger.error('could not fetch cards');
         }
       );
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   get ref() {
@@ -180,7 +178,6 @@ export class IABCardProvider {
           this.hide();
           break;
 
-
         /*
          *
          * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
@@ -188,7 +185,7 @@ export class IABCardProvider {
          * */
 
         case 'pairing':
-          const {params} = event.data;
+          const { params } = event.data;
           this.pairing(params);
           break;
 
@@ -269,9 +266,7 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {
-
-          }
+          } catch (err) {}
 
           break;
 
@@ -316,15 +311,12 @@ export class IABCardProvider {
     this.bitpayIdProvider.generatePairingToken(
       params,
       async (user: User) => {
-
         if (user) {
-
           // publish to correct window
           this.events.publish('BitPayId/Connected');
 
           // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
           if (withNotification) {
-
             // resets inappbrowser connect state
             this.cardIAB_Ref.executeScript(
               {
@@ -354,13 +346,12 @@ export class IABCardProvider {
           // publish new user
           this.user.next(user);
           // clear out loading state
-          setTimeout( () => {
+          setTimeout(() => {
             this.onGoingProcess.clear();
           }, 300);
 
           // fetch new cards
           this.getCards();
-
         }
       },
       async err => {
@@ -380,7 +371,6 @@ export class IABCardProvider {
         this.onGoingProcess.clear();
         // close in app browser
         this.hide();
-
       }
     );
   }

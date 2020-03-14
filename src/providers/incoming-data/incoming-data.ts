@@ -755,7 +755,7 @@ export class IncomingDataProvider {
       return true;
     } else if (data.includes('wallet-card')) {
       const event = data.split('wallet-card/')[1];
-      const [ switchExp, payload ] = (event || '').split('?');
+      const [switchExp, payload] = (event || '').split('?');
 
       /*
        *
@@ -765,7 +765,6 @@ export class IncomingDataProvider {
        *
        * */
       switch (switchExp) {
-
         case 'pairing':
           const secret = payload.split('=')[1].split('&')[0];
           const params = {
