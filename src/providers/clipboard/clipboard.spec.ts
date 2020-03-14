@@ -23,8 +23,10 @@ describe('ClipboardProvider', () => {
   class PlatformProviderMock {
     isCordova: boolean;
     isElectron: boolean;
-    constructor() { }
-    getOS() { return { OSName: 'Clipboard Unit Test' }};
+    constructor() {}
+    getOS() {
+      return { OSName: 'Clipboard Unit Test' };
+    }
   }
 
   function init() {
