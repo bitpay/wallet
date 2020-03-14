@@ -5,7 +5,7 @@ import { ProfileProvider } from '../profile/profile';
 import { WalletProvider } from '../wallet/wallet';
 import { EmailNotificationsProvider } from './email-notifications';
 
-describe('Provider: Wallet Provider', () => {
+describe('Provider: Email Notifications Provider', () => {
   let emailNotificationsProvider: EmailNotificationsProvider;
   let configProvider: ConfigProvider;
   let persistenceProvider: PersistenceProvider;
