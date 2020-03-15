@@ -6,7 +6,7 @@ import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
-import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
+// import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
 @Component({
@@ -31,9 +31,10 @@ export class BitPayCardHome implements OnInit {
   }
 
   public goToBitPayCardIntroPage() {
-    this.navCtrl.push(
-      this.cardExperimentEnabled ? BitPayCardIntroPage : PhaseOneCardIntro
-    );
+    this.navCtrl.push(PhaseOneCardIntro);
+    // this.navCtrl.push(
+    //   this.cardExperimentEnabled ? BitPayCardIntroPage : PhaseOneCardIntro
+    // );
   }
 
   public goToCard(cardId): void {
