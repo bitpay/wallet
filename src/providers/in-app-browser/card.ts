@@ -102,8 +102,10 @@ export class IABCardProvider {
             cards
           );
 
-          sessionStorage.setItem('cards', JSON.stringify(JSON.stringify(cards)));
-
+          sessionStorage.setItem(
+            'cards',
+            JSON.stringify(JSON.stringify(cards))
+          );
         },
         () => {
           this.logger.error('could not fetch cards');

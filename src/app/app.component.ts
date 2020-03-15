@@ -291,7 +291,9 @@ export class CopayApp {
             'https://bitpay.com/wallet-card?context=bpa',
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 
-              sessionStorage.setItem('cards', ${JSON.stringify(JSON.stringify(cards))});
+              sessionStorage.setItem('cards', ${JSON.stringify(
+                JSON.stringify(cards)
+              )});
               })()`
           )
           .then(ref => {
