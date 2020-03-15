@@ -101,6 +101,9 @@ export class IABCardProvider {
             user.email,
             cards
           );
+
+          sessionStorage.setItem('cards', JSON.stringify(JSON.stringify(cards)));
+
         },
         () => {
           this.logger.error('could not fetch cards');
@@ -340,7 +343,6 @@ export class IABCardProvider {
 
             await infoSheet.present();
             // close in app browser
-            this.hide();
           }
 
           // publish new user
@@ -352,6 +354,7 @@ export class IABCardProvider {
 
           // fetch new cards
           this.getCards();
+          this.hide();
         }
       },
       async err => {

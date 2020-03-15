@@ -275,15 +275,11 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
-    // hiding this behind feature flag
-    let token;
-    try {
-      token = await this.persistenceProvider.getBitPayIdPairingToken(
-        Network[this.NETWORK]
-      );
-    } catch (err) {
-      this.logger.log(err);
-    }
+
+    let [token, cards]: any = await Promise.all([
+      this.persistenceProvider.getBitPayIdPairingToken(Network[this.NETWORK]),
+      this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
+    ]);
 
     if (this.platformProvider.isCordova) {
       // preloading the view
@@ -293,7 +289,10 @@ export class CopayApp {
             'card',
             CARD_IAB_CONFIG,
             'https://bitpay.com/wallet-card?context=bpa',
-            `sessionStorage.setItem('isPaired', ${!!token})`
+            `(() => {
+              sessionStorage.setItem('isPaired', ${!!token}); 
+              sessionStorage.setItem('cards', ${JSON.stringify(JSON.stringify(cards))});
+              })()`
           )
           .then(ref => {
             this.cardIAB_Ref = ref;
