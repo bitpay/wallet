@@ -474,7 +474,7 @@ export class BitPayCardTopUpPage {
 
             const highTopUpAmount = this.txFormatProvider.parseAmount(
               this.wallet.coin,
-              3000,
+              1000,
               'USD'
             ).amountSat;
 
