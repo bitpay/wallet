@@ -19,8 +19,7 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
   templateUrl: 'shapeshift-shift.html'
 })
 export class ShapeshiftShiftPage {
-  private walletsBtc;
-  private walletsBch;
+  private allWallets;
 
   public toWallets;
   public fromWallets;
@@ -42,8 +41,6 @@ export class ShapeshiftShiftPage {
     private shapeshiftProvider: ShapeshiftProvider,
     private translate: TranslateService
   ) {
-    this.walletsBtc = [];
-    this.walletsBch = [];
     this.toWallets = [];
     this.fromWallets = [];
     this.fromWalletSelectorTitle = 'From';
@@ -51,19 +48,12 @@ export class ShapeshiftShiftPage {
     this.termsAccepted = false;
     this.network = this.shapeshiftProvider.getNetwork();
 
-    this.walletsBtc = this.profileProvider.getWallets({
+    this.allWallets = this.profileProvider.getWallets({
       onlyComplete: true,
-      network: this.network,
-      coin: 'btc'
+      network: this.network
     });
 
-    this.walletsBch = this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      coin: 'bch'
-    });
-
-    if (_.isEmpty(this.walletsBtc) || _.isEmpty(this.walletsBch)) {
+    if (_.isEmpty(this.allWallets)) {
       this.showErrorAndBack(
         null,
         this.translate.instant('No wallets available to use ShapeShift')
@@ -71,8 +61,7 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    const allWallets = _.concat(this.walletsBtc, this.walletsBch);
-    this.fromWallets = allWallets.filter(w => {
+    this.fromWallets = this.allWallets.filter(w => {
       return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
     });
 
@@ -83,8 +72,6 @@ export class ShapeshiftShiftPage {
       );
       return;
     }
-
-    this.onFromWalletSelect(this.fromWallets[0]);
   }
 
   ionViewDidLoad() {
@@ -100,20 +87,23 @@ export class ShapeshiftShiftPage {
     this.externalLinkProvider.open(url);
   }
 
-  private showErrorAndBack(title: string, msg): void {
+  private showErrorAndBack(title: string, msg, noExit?: boolean): void {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
-    msg = msg && msg.errors ? msg.errors[0].message : msg;
+    msg = msg && msg.errors ? msg.errors[0].message : msg.message || msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
-      this.navCtrl.pop();
+      this.toWallet = this.limit = null;
+      if (!noExit) this.navCtrl.pop();
     });
   }
 
   private showToWallets(): void {
-    this.toWallets =
-      this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
-
-    this.toWallets = this.toWallets.filter(w => !w.needsBackup);
+    this.toWallets = this.allWallets.filter(
+      w =>
+        !w.needsBackup &&
+        w.id != this.fromWallet.id &&
+        w.coin != this.fromWallet.coin
+    );
 
     if (_.isEmpty(this.toWallets)) {
       let msg = this.translate.instant(
@@ -122,28 +112,31 @@ export class ShapeshiftShiftPage {
       this.showErrorAndBack(null, msg);
       return;
     }
+  }
 
-    this.onToWalletSelect(this.toWallets[0]);
+  public onFromWalletSelect(wallet): void {
+    this.fromWallet = wallet;
+    this.toWallet = null; // Clear variable to select wallet again
+    this.showToWallets();
+  }
 
+  public onToWalletSelect(wallet): void {
+    this.toWallet = wallet;
+    this.updateMarketInfo();
+  }
+
+  private updateMarketInfo() {
+    if (!this.fromWallet || !this.toWallet) return;
     let msg = this.translate.instant(
       'ShapeShift is not available at this moment. Please, try again later.'
     );
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
 
     this.shapeshiftProvider.getMarketInfo(pair, (error, limit) => {
-      if (error) return this.showErrorAndBack(null, msg);
+      if (error) return this.showErrorAndBack(null, error, true);
       this.limit = limit;
       if (this.limit['rate'] == 0) return this.showErrorAndBack(null, msg);
     });
-  }
-
-  public onFromWalletSelect(wallet): void {
-    this.fromWallet = wallet;
-    this.showToWallets();
-  }
-
-  public onToWalletSelect(wallet): void {
-    this.toWallet = wallet;
   }
 
   public setAmount(): void {
@@ -178,10 +171,10 @@ export class ShapeshiftShiftPage {
         : this.toWalletSelectorTitle;
     if (selector == 'from') {
       walletsForActionSheet = this.fromWallets;
-      selectedWalletId = this.fromWallet.id;
+      selectedWalletId = this.fromWallet ? this.fromWallet.id : null;
     } else if (selector == 'to') {
       walletsForActionSheet = this.toWallets;
-      selectedWalletId = this.toWallet.id;
+      selectedWalletId = this.toWallet ? this.toWallet.id : null;
     }
     const params = {
       wallets: walletsForActionSheet,

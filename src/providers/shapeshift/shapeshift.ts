@@ -167,7 +167,7 @@ export class ShapeshiftProvider {
       data => {
         const error = this.parseError(data);
         this.logger.error('Shapeshift PAIR ERROR: ' + error);
-        return cb(data);
+        return cb(error);
       }
     );
   }
@@ -181,7 +181,7 @@ export class ShapeshiftProvider {
       data => {
         const error = this.parseError(data);
         this.logger.error('Shapeshift LIMIT ERROR: ' + error);
-        return cb(data);
+        return cb(error);
       }
     );
   }
@@ -197,7 +197,28 @@ export class ShapeshiftProvider {
         data => {
           const error = this.parseError(data);
           this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
-          return cb(data);
+          return cb(error);
+        }
+      );
+  }
+
+  public getOrderInfo(orderId: string, token: string, cb) {
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + token
+    };
+    this.httpNative
+      .get(this.credentials.API_URL + '/orderInfo/' + orderId, null, headers)
+      .subscribe(
+        data => {
+          this.logger.info('Shapeshift ORDER INFO: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          const error = this.parseError(data);
+          this.logger.error('Shapeshift ORDER INFO ERROR: ' + error);
+          return cb(error);
         }
       );
   }
@@ -218,7 +239,7 @@ export class ShapeshiftProvider {
         data => {
           const error = this.parseError(data);
           this.logger.error('Shapeshift STATUS ERROR: ' + error);
-          return cb(data.error);
+          return cb(error);
         }
       );
   }
@@ -395,7 +416,7 @@ export class ShapeshiftProvider {
         this.logger.error(
           'ShapeShift: Get Account ERROR ' + data.status + '. ' + error
         );
-        return cb(data.error);
+        return cb(error);
       }
     );
   }
@@ -438,6 +459,6 @@ export class ShapeshiftProvider {
       : err.error.error && err.error.error.message
       ? err.error.error.message
       : err.error;
-    return parsedError;
+    return parsedError.message || parsedError;
   }
 }
