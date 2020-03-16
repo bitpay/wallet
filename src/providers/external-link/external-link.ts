@@ -3,6 +3,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { Events } from 'ionic-angular';
+import 'rxjs/add/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
 import { ElectronProvider } from '../electron/electron';
 import { PlatformProvider } from '../platform/platform';

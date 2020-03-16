@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events } from 'ionic-angular';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import * as _ from 'lodash';
+import { BehaviorSubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -13,17 +14,24 @@ import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { SimplexProvider } from '../simplex/simplex';
 
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
-  private NETWORK = 'testnet';
-  private BITPAY_API_URL = 'https://test.bitpay.com';
+  private NETWORK = Network.testnet;
+  private BITPAY_API_URL =
+    this.NETWORK == 'livenet'
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
+  private _isHidden = true;
+  private _pausedState = false;
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
@@ -39,7 +47,9 @@ export class IABCardProvider {
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private simplexProvider: SimplexProvider,
+    private onGoingProcess: OnGoingProcessProvider
   ) {}
 
   async getCards() {
@@ -55,6 +65,7 @@ export class IABCardProvider {
         json,
         async res => {
           if (res && res.error) {
+            this.logger.error('could not fetch cards');
             return;
           }
 
@@ -90,10 +101,29 @@ export class IABCardProvider {
             user.email,
             cards
           );
+
+          sessionStorage.setItem(
+            'cards',
+            JSON.stringify(JSON.stringify(cards))
+          );
         },
-        () => {}
+        () => {
+          this.logger.error('could not fetch cards');
+        }
       );
     } catch (err) {}
+  }
+
+  get ref() {
+    return this.cardIAB_Ref;
+  }
+
+  get isHidden() {
+    return this._isHidden;
+  }
+
+  get isVisible() {
+    return !this._isHidden;
   }
 
   init(): void {
@@ -150,54 +180,7 @@ export class IABCardProvider {
             this.logger.error(err);
           }
 
-          this.cardIAB_Ref.hide();
-          break;
-
-        /*
-         *
-         * Pairing only handler -> pair completed from iab
-         *
-         * */
-        case 'pairingOnly':
-          const subscription: Subscription = this.user$.subscribe(user => {
-            if (Object.entries(user).length === 0) {
-              return;
-            }
-
-            this.cardIAB_Ref.hide();
-
-            this.cardIAB_Ref.executeScript(
-              {
-                code: `window.postMessage(${JSON.stringify({
-                  message: 'reset'
-                })}, '*')`
-              },
-              () => this.logger.log(`card -> reset iab state`)
-            );
-
-            this.events.publish('BitPayId/Connected');
-
-            const infoSheet = this.actionSheetProvider.createInfoSheet(
-              'in-app-notification',
-              {
-                title: 'BitPay ID',
-                body: this.translate.instant('BitPay ID successfully paired.')
-              }
-            );
-            infoSheet.present();
-            subscription.unsubscribe();
-          });
-
-          break;
-
-        /*
-         *
-         * Closes the IAB
-         *
-         * */
-
-        case 'close':
-          this.cardIAB_Ref.hide();
+          this.hide();
           break;
 
         /*
@@ -207,29 +190,34 @@ export class IABCardProvider {
          * */
 
         case 'pairing':
-          // generates pairing token and also fetches user basic info and caches both
-          this.bitpayIdProvider.generatePairingToken(
-            event.data.params,
-            (user: User) => {
-              if (user) {
-                this.getCards();
-                this.user.next(user);
-              }
-            },
-            error => {
-              this.logger.error(`pairing error -> ${error}`);
+          const { params } = event.data;
+          this.pairing(params);
+          break;
 
-              this.cardIAB_Ref.hide();
-              const errorSheet = this.actionSheetProvider.createInfoSheet(
-                'default-error',
-                {
-                  title: 'BitPay ID',
-                  msg: 'Uh oh, something went wrong please try again later.'
-                }
-              );
-              errorSheet.present();
+        /*
+         *
+         * Closes the IAB
+         *
+         * */
+
+        case 'close':
+          this.hide();
+          break;
+
+        case 'topup':
+          const { id, currency } = event.data.params;
+
+          let nextView = {
+            name: 'AmountPage',
+            params: {
+              nextPage: 'BitPayCardTopUpPage',
+              currency,
+              id,
+              card: 'v2'
             }
-          );
+          };
+          this.events.publish('IncomingDataRedir', nextView);
+          this.hide();
           break;
 
         /*
@@ -297,9 +285,135 @@ export class IABCardProvider {
           this.getCards();
           break;
 
+        case 'buyCrypto':
+          this.simplexProvider.getSimplex().then(simplexData => {
+            const hasData = simplexData && !_.isEmpty(simplexData);
+            const nextView = {
+              name: hasData ? 'SimplexPage' : 'SimplexBuyPage',
+              params: {},
+              callback: () => {
+                this.hide();
+              }
+            };
+
+            this.events.publish('IncomingDataRedir', nextView);
+          });
+          break;
+
         default:
           break;
       }
     });
+  }
+
+  pairing(params) {
+    const { withNotification } = params;
+
+    // set the overall app loading state
+    this.onGoingProcess.set('connectingBitPayId');
+
+    // generates pairing token and also fetches user basic info and caches both
+    this.bitpayIdProvider.generatePairingToken(
+      params,
+      async (user: User) => {
+        if (user) {
+          // publish to correct window
+          this.events.publish('BitPayId/Connected');
+
+          // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
+          if (withNotification) {
+            // resets inappbrowser connect state
+            this.cardIAB_Ref.executeScript(
+              {
+                code: `window.postMessage(${JSON.stringify({
+                  message: 'reset'
+                })}, '*')`
+              },
+              () => this.logger.log(`card -> reset iab state`)
+            );
+
+            // pairing notification
+            const infoSheet = this.actionSheetProvider.createInfoSheet(
+              'in-app-notification',
+              {
+                title: 'BitPay ID',
+                body: this.translate.instant(
+                  'BitPay ID successfully connected.'
+                )
+              }
+            );
+
+            await infoSheet.present();
+            // close in app browser
+          }
+
+          // publish new user
+          this.user.next(user);
+          // clear out loading state
+          setTimeout(() => {
+            this.onGoingProcess.clear();
+          }, 300);
+
+          // fetch new cards
+          this.getCards();
+          this.hide();
+        }
+      },
+      async err => {
+        this.logger.error(`pairing error -> ${err}`);
+
+        const errorSheet = this.actionSheetProvider.createInfoSheet(
+          'default-error',
+          {
+            title: 'BitPay ID',
+            msg: 'Uh oh, something went wrong please try again later.'
+          }
+        );
+
+        await errorSheet.present();
+
+        // clear out loading state
+        this.onGoingProcess.clear();
+        // close in app browser
+        this.hide();
+      }
+    );
+  }
+
+  sendMessage(message: object, cb?: (...args: any[]) => void): void {
+    const script = {
+      code: `window.postMessage(${JSON.stringify({ ...message })}, '*')`
+    };
+
+    this.cardIAB_Ref.executeScript(script, cb);
+  }
+
+  hide(): void {
+    if (this.cardIAB_Ref) {
+      this.sendMessage({ message: 'iabHiding' });
+      this.cardIAB_Ref.hide();
+      this._isHidden = true;
+    }
+  }
+
+  show(): void {
+    if (this.cardIAB_Ref) {
+      this.sendMessage({ message: 'iabOpening' });
+      this.cardIAB_Ref.show();
+      this._isHidden = false;
+    }
+  }
+
+  pause(): void {
+    this._pausedState = this.isVisible;
+    this.hide();
+  }
+
+  resume(): void {
+    if (this._pausedState) {
+      this.show();
+    }
+
+    this._pausedState = false;
   }
 }

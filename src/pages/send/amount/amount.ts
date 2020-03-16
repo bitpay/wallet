@@ -603,6 +603,12 @@ export class AmountPage {
       }
     }
 
+    if (this.navParams.get('card') === 'v2') {
+      data = {
+        ...data,
+        v2: true
+      };
+    }
     this.useAsModal
       ? this.closeModal(data)
       : this.navCtrl.push(this.nextView, data);

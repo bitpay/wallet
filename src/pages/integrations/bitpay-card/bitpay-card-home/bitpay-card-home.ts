@@ -2,10 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, InAppBrowserProvider } from '../../../../providers';
+import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
+// import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
 @Component({
@@ -22,7 +23,7 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider
   ) {}
 
   ngOnInit() {
@@ -31,19 +32,20 @@ export class BitPayCardHome implements OnInit {
 
   public goToBitPayCardIntroPage() {
     this.navCtrl.push(PhaseOneCardIntro);
+    // this.navCtrl.push(
+    //   this.cardExperimentEnabled ? BitPayCardIntroPage : PhaseOneCardIntro
+    // );
   }
 
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
       const message = `loadDashboard?${cardId}`;
-      this.iab.refs.card.executeScript(
+      this.iabCardProvider.sendMessage(
         {
-          code: `window.postMessage(${JSON.stringify({
-            message
-          })}, '*')`
+          message
         },
         () => {
-          this.iab.refs.card.show();
+          this.iabCardProvider.show();
         }
       );
     } else {

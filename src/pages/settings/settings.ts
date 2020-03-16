@@ -8,13 +8,8 @@ import * as _ from 'lodash';
 // providers
 import { Observable } from 'rxjs';
 // pages
-import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
-import {
-  BitPayIdProvider,
-  IABCardProvider,
-  InAppBrowserProvider
-} from '../../providers';
+import { BitPayIdProvider, IABCardProvider } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -74,7 +69,6 @@ export class SettingsPage {
   public walletsGroups: any[];
   public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
-  private cardIAB_Ref: InAppBrowserRef;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
   public showBalance: boolean;
@@ -96,7 +90,6 @@ export class SettingsPage {
     private touchid: TouchIdProvider,
     private analyticsProvider: AnalyticsProvider,
     private persistanceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
     private iabCardProvider: IABCardProvider
@@ -115,9 +108,7 @@ export class SettingsPage {
       .getBitpayIdPairingFlag()
       .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
 
-    this.cardIAB_Ref = this.iab.refs.card;
-
-    if (this.cardIAB_Ref) {
+    if (this.iabCardProvider.ref) {
       // check for user info
       this.persistanceProvider
         .getBitPayIdUserInfo(this.network)
@@ -189,15 +180,13 @@ export class SettingsPage {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
-      this.cardIAB_Ref.executeScript(
+      this.iabCardProvider.sendMessage(
         {
-          code: `window.postMessage(${JSON.stringify({
-            message: 'pairingOnly'
-          })}, '*')`
+          message: 'pairingOnly'
         },
         () => {
           setTimeout(() => {
-            this.cardIAB_Ref.show();
+            this.iabCardProvider.show();
           }, 500);
         }
       );

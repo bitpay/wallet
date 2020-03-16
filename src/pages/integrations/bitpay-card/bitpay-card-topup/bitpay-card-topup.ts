@@ -9,7 +9,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
-import { IncomingDataProvider } from '../../../../providers';
+import { IABCardProvider, IncomingDataProvider } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
@@ -93,7 +93,8 @@ export class BitPayCardTopUpPage {
     private translate: TranslateService,
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
-    private payproProvider: PayproProvider
+    private payproProvider: PayproProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
@@ -590,10 +591,22 @@ export class BitPayCardTopUpPage {
   private initializeTopUp(wallet, parsedAmount): void {
     let COIN = wallet.coin.toUpperCase();
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    var dataSrc = {
+
+    var dataSrc: any = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency
     };
+
+    if (this.navParams.get('v2')) {
+      const { amount, currency, coin } = parsedAmount;
+
+      dataSrc = {
+        invoicePrice: amount,
+        invoiceCurrency: currency,
+        transactionCurrency: coin.toUpperCase(),
+        v2: true
+      };
+    }
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     this.logLegacyCardTopUpEvent(wallet, false);
@@ -764,7 +777,7 @@ export class BitPayCardTopUpPage {
           val.amount,
           val.currency
         );
-        this.initializeTopUp(wallet, parsedAmount);
+        this.initializeTopUp(wallet, { ...parsedAmount, coin: wallet.coin });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -806,12 +819,19 @@ export class BitPayCardTopUpPage {
     );
     modal.present();
     modal.onDidDismiss(async () => {
-      await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.push(
-        BitPayCardPage,
-        { id: this.cardId },
-        { animate: false }
-      );
+      if (this.navParams.get('v2')) {
+        this.iabCardProvider.show();
+        this.iabCardProvider.sendMessage({
+          message: `topUpComplete?${this.cardId}`
+        });
+        await this.navCtrl.popToRoot({ animate: false });
+      } else {
+        await this.navCtrl.push(
+          BitPayCardPage,
+          { id: this.cardId },
+          { animate: false }
+        );
+      }
     });
   }
 

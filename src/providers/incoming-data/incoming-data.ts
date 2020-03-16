@@ -8,7 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
-import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
+import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -34,7 +34,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -755,6 +755,8 @@ export class IncomingDataProvider {
       return true;
     } else if (data.includes('wallet-card')) {
       const event = data.split('wallet-card/')[1];
+      const [switchExp, payload] = (event || '').split('?');
+
       /*
        *
        * handler for wallet-card events
@@ -762,24 +764,40 @@ export class IncomingDataProvider {
        * leaving this as a switch in case events become complex and require wallet side and iab actions
        *
        * */
-      switch (event) {
+      switch (switchExp) {
+        case 'pairing':
+          const secret = payload.split('=')[1].split('&')[0];
+          const params = {
+            secret,
+            withNotification: true
+          };
+          if (payload.includes('&code=')) {
+            params['code'] = payload.split('&code=')[1];
+          }
+
+          this.iabCardProvider.pairing(params);
+
+          break;
+
         case 'email-verified':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
             message: 'email-verified'
           });
           break;
 
         case 'get-started':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
             message: 'get-started'
           });
           break;
 
         case 'retry':
-          this.iab.refs.card.show();
-          this.iab.sendMessageToIAB(this.iab.refs.card, { message: 'retry' });
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
+            message: 'retry'
+          });
       }
 
       return true;

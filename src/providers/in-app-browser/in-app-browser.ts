@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 @Injectable()
 export class InAppBrowserProvider {
@@ -17,7 +18,8 @@ export class InAppBrowserProvider {
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private onGoingProcess: OnGoingProcessProvider
   ) {
     this.logger.debug('InAppBrowserProvider initialized');
   }
@@ -72,6 +74,7 @@ export class InAppBrowserProvider {
             })
             .present();
         };
+        this.onGoingProcess.clear();
         rej();
       });
 

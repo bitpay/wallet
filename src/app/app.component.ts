@@ -51,6 +51,7 @@ import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
+import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -98,6 +99,7 @@ export class CopayApp {
     PaperWalletPage,
     ShapeshiftPage,
     SimplexPage,
+    SimplexBuyPage,
     SelectInvoicePage,
     WalletDetailsPage
   };
@@ -273,15 +275,11 @@ export class CopayApp {
         this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
       });
-    // hiding this behind feature flag
-    let token;
-    try {
-      token = await this.persistenceProvider.getBitPayIdPairingToken(
-        Network[this.NETWORK]
-      );
-    } catch (err) {
-      this.logger.log(err);
-    }
+
+    let [token, cards]: any = await Promise.all([
+      this.persistenceProvider.getBitPayIdPairingToken(Network[this.NETWORK]),
+      this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
+    ]);
 
     if (this.platformProvider.isCordova) {
       // preloading the view
@@ -291,7 +289,12 @@ export class CopayApp {
             'card',
             CARD_IAB_CONFIG,
             'https://bitpay.com/wallet-card?context=bpa',
-            `sessionStorage.setItem('isPaired', ${!!token})`
+            `(() => {
+              sessionStorage.setItem('isPaired', ${!!token}); 
+              sessionStorage.setItem('cards', ${JSON.stringify(
+                JSON.stringify(cards)
+              )});
+              })()`
           )
           .then(ref => {
             this.cardIAB_Ref = ref;
@@ -326,14 +329,24 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.appProvider.isLockModalOpen) return;
+
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
         : null;
-    if (!lockMethod) return;
-    if (lockMethod == 'pin') this.openPINModal('checkPin');
-    if (lockMethod == 'fingerprint') this.openFingerprintModal();
+
+    if (!lockMethod) {
+      return;
+    }
+
+    if (lockMethod == 'pin') {
+      this.iabCardProvider.pause();
+      this.openPINModal('checkPin');
+    } else if (lockMethod == 'fingerprint') {
+      this.iabCardProvider.pause();
+      this.openFingerprintModal();
+    }
   }
 
   private openPINModal(action): void {
@@ -348,8 +361,7 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.appProvider.isLockModalOpen = false;
-      this.events.publish('Home/reloadStatus');
+      this.onLockDidDismiss();
     });
   }
 
@@ -365,9 +377,14 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.appProvider.isLockModalOpen = false;
-      this.events.publish('Home/reloadStatus');
+      this.onLockDidDismiss();
     });
+  }
+
+  private onLockDidDismiss(): void {
+    this.appProvider.isLockModalOpen = false;
+    this.events.publish('Home/reloadStatus');
+    this.iabCardProvider.resume();
   }
 
   private registerIntegrations(): void {
@@ -403,7 +420,13 @@ export class CopayApp {
       // wait for wallets status
       setTimeout(() => {
         const globalNav = this.getGlobalTabs().getSelected();
-        globalNav.push(this.pageMap[nextView.name], nextView.params);
+        globalNav
+          .push(this.pageMap[nextView.name], nextView.params)
+          .then(() => {
+            if (typeof nextView.callback === 'function') {
+              nextView.callback();
+            }
+          });
       }, 300);
     });
   }

@@ -24,6 +24,9 @@ describe('ClipboardProvider', () => {
     isCordova: boolean;
     isElectron: boolean;
     constructor() {}
+    getOS() {
+      return { OSName: 'Clipboard Unit Test' };
+    }
   }
 
   function init() {

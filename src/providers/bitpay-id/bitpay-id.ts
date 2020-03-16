@@ -15,7 +15,10 @@ import { PlatformProvider } from '../platform/platform';
 @Injectable()
 export class BitPayIdProvider {
   private NETWORK = Network.livenet;
-  private BITPAY_API_URL = 'https://bitpay.com';
+  private BITPAY_API_URL =
+    this.NETWORK == 'livenet'
+      ? 'https://bitpay.com'
+      : 'https://test.bitpay.com';
   private deviceName = 'unknown device';
 
   constructor(
@@ -120,20 +123,20 @@ export class BitPayIdProvider {
 
               this.logger.debug('BitPayID: successfully paired');
               const { data } = user;
-              // const { email, familyName, givenName } = data;
+              const { email, familyName, givenName } = data;
 
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
                 ),
-                this.persistenceProvider.setBitPayIdUserInfo(network, data)
-                // this.persistenceProvider.setBitpayAccount(network, {
-                //   email,
-                //   token: token.data,
-                //   familyName: familyName || '',
-                //   givenName: givenName || ''
-                // })
+                this.persistenceProvider.setBitPayIdUserInfo(network, data),
+                this.persistenceProvider.setBitpayAccount(network, {
+                  email,
+                  token: token.data,
+                  familyName: familyName || '',
+                  givenName: givenName || ''
+                })
               ]);
 
               successCallback(data);
@@ -201,8 +204,8 @@ export class BitPayIdProvider {
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network)
-        // this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitPayIdUserInfo(network),
+        this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
       this.iab.refs.card.executeScript(
         {
