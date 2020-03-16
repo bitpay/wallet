@@ -354,7 +354,7 @@ export class BitPayCardTopUpPage {
               'Using merchant fee rate (for debit card):' + txp.feePerKb
             );
           } else {
-            txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+            txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
           }
 
           txp['origToAddress'] = txp.toAddress;
@@ -400,7 +400,7 @@ export class BitPayCardTopUpPage {
         .getFeeRate(
           wallet.coin,
           wallet.credentials.network,
-          this.feeProvider.getCurrentFeeLevel()
+          this.feeProvider.getCoinCurrentFeeLevel(wallet.coin)
         )
         .then(feePerKb => {
           this.walletProvider
@@ -515,10 +515,6 @@ export class BitPayCardTopUpPage {
                   (maxAmount * unitToSatoshi).toFixed(0)
                 );
                 let newAmountSat = maxAmountSat - invoiceFeeSat;
-
-                // Set expiration time for this invoice
-                if (inv.expirationTime)
-                  this.paymentTimeControl(inv.expirationTime);
 
                 if (newAmountSat <= 0) {
                   return reject({

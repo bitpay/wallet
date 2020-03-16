@@ -403,7 +403,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
-      txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+      txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     txp['origToAddress'] = txp.toAddress;

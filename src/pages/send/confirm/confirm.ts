@@ -75,7 +75,6 @@ export class ConfirmPage {
 
   // Config Related values
   public config;
-  public configFeeLevel: string;
 
   // Platform info
   public isCordova: boolean;
@@ -122,9 +121,6 @@ export class ConfirmPage {
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
-    this.configFeeLevel = this.config.wallet.settings.feeLevel
-      ? this.config.wallet.settings.feeLevel
-      : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
@@ -222,17 +218,7 @@ export class ConfirmPage {
       this.usingMerchantFee = true;
       this.tx.feeRate = +this.navParams.data.requiredFeeRate;
     } else {
-      switch (this.tx.coin) {
-        case 'bch':
-          this.tx.feeLevel = 'normal';
-          break;
-        case 'xrp':
-          this.tx.feeLevel = 'normal';
-          break;
-        default:
-          this.tx.feeLevel = this.configFeeLevel;
-          break;
-      }
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -333,17 +319,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      switch (wallet.coin) {
-        case 'bch':
-          this.tx.feeLevel = 'normal';
-          break;
-        case 'xrp':
-          this.tx.feeLevel = 'normal';
-          break;
-        default:
-          this.tx.feeLevel = this.configFeeLevel;
-          break;
-      }
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
