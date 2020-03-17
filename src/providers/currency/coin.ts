@@ -39,11 +39,6 @@ export interface CoinOpts {
     backgroundColor: string;
     gradientBackgroundColor: string;
   };
-  qrColor: {
-    moduleColor: string;
-    positionRingColor: string;
-    positionCenterColor: string;
-  };
 }
 
 export const availableCoins: CoinsMap<CoinOpts> = {
@@ -80,11 +75,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(247,146,26,1)',
       gradientBackgroundColor: 'rgba(247,146,26, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#F7931A',
-      positionCenterColor: '#434D5A'
     }
   },
   bch: {
@@ -120,11 +110,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(47,207,110,1)',
       gradientBackgroundColor: 'rgba(47,207,110, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#434D5A',
-      positionCenterColor: '#2FCF6E'
     }
   },
   eth: {
@@ -160,11 +145,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(135,206,250,1)',
       gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#434D5A',
-      positionCenterColor: '#6B71D6'
     }
   },
   xrp: {
@@ -200,11 +180,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(35,41,47,1)',
       gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#4E4E50',
-      positionRingColor: '#333333',
-      positionCenterColor: '#9E9E9E'
     }
   },
   pax: {
@@ -240,11 +215,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(0,132,93,1)',
       gradientBackgroundColor: 'rgba(0,209,147, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#51B849',
-      positionCenterColor: '#434D5A'
     }
   },
   usdc: {
@@ -280,11 +250,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(39,117,201,1)',
       gradientBackgroundColor: 'rgba(93,156,224, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#2775CA',
-      positionCenterColor: '#434D5A'
     }
   },
   gusd: {
@@ -320,11 +285,6 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     theme: {
       backgroundColor: 'rgba(0,220,250,1)',
       gradientBackgroundColor: 'rgba(72,233,255, 0.2)'
-    },
-    qrColor: {
-      moduleColor: '#434D5A',
-      positionRingColor: '#00DCFA',
-      positionCenterColor: '#434D5A'
     }
   }
 };

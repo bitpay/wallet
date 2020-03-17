@@ -119,16 +119,4 @@ export class CurrencyProvider {
   getTheme(coin: Coin) {
     return this.coinOpts[coin].theme;
   }
-
-  getModuleColor(coin: Coin): string {
-    return this.coinOpts[coin].qrColor.moduleColor;
-  }
-
-  getPositionRingColor(coin: Coin): string {
-    return this.coinOpts[coin].qrColor.positionRingColor;
-  }
-
-  getPositionCenterColor(coin: Coin): string {
-    return this.coinOpts[coin].qrColor.positionCenterColor;
-  }
 }
