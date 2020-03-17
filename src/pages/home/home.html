@@ -76,7 +76,7 @@
   <page-feedback-card #showCard></page-feedback-card>
   <page-survey-card #showSurvey></page-survey-card>
 
-  <div *ngIf="showBalance" class="total-amount-container">
+  <div *ngIf="showTotalBalance" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
     <div class="total-amount-value" *ngIf="totalBalanceAlternative">
       {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}

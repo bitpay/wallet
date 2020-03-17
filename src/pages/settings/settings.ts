@@ -71,8 +71,8 @@ export class SettingsPage {
   public bitPayIdUserInfo: any;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
-  public showBalance: boolean;
   public showReorder: boolean = false;
+  public showTotalBalance: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -132,8 +132,6 @@ export class SettingsPage {
       this.language.getCurrent()
     );
 
-    this.setShowBalanceFlag();
-
     const opts = {
       showHidden: true
     };
@@ -151,6 +149,8 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
+
+    this.showTotalBalance = this.config.showTotalBalance;
   }
 
   ionViewDidEnter() {
@@ -339,19 +339,11 @@ export class SettingsPage {
     });
   }
 
-  private setShowBalanceFlag() {
-    this.profileProvider
-      .getShowTotalBalanceFlag()
-      .then(isShown => {
-        this.showBalance = isShown;
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-  }
-
   public toggleShowBalanceFlag(): void {
-    this.profileProvider.setShowTotalBalanceFlag(this.showBalance);
+    let opts = {
+      showTotalBalance: this.showTotalBalance
+    };
+    this.configProvider.set(opts);
   }
 
   public reorder(): void {

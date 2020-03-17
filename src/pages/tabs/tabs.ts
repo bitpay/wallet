@@ -66,7 +66,7 @@ export class TabsPage {
     this.tabProvider.prefetchCards().then(data => {
       // [0] BitPay Cards
       // [1] Gift Cards
-      this.events.publish('Local/PreFetchCards', data[0]);
+      this.events.publish('Local/FetchCards', data[0]);
     });
   }
 
@@ -198,19 +198,7 @@ export class TabsPage {
   private async fetchAllWalletsStatus() {
     this.logger.debug('Fetching All Wallets and calculate Total Amount');
     this.wallets = this.profileProvider.getWallets();
-
-    let fetchingStatus = true;
-    if (_.isEmpty(this.wallets)) fetchingStatus = false;
-
-    // Pre-load event
-    this.events.publish('Local/HomeBalance', {
-      totalBalanceAlternative: this.totalBalanceAlternative,
-      totalBalanceAlternativeIsoCode: this.totalBalanceAlternativeIsoCode,
-      averagePrice: this.averagePrice,
-      fetchingStatus
-    });
-
-    if (!fetchingStatus) return;
+    if (_.isEmpty(this.wallets)) return;
 
     let foundMessage = false;
     this.lastDayRatesArray = await this.getLastDayRates();
@@ -270,13 +258,14 @@ export class TabsPage {
         (difference * 100) /
         parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
 
-      // Publish event
-      this.events.publish('Local/HomeBalance', {
+      const data = {
         totalBalanceAlternative: this.totalBalanceAlternative,
         totalBalanceAlternativeIsoCode: this.totalBalanceAlternativeIsoCode,
-        averagePrice: this.averagePrice,
-        fetchingStatus: false
-      });
+        averagePrice: this.averagePrice
+      };
+
+      // Publish event
+      this.events.publish('Local/HomeBalance', data);
       this.updateTxps();
     });
   }

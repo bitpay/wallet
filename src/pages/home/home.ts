@@ -14,10 +14,10 @@ import {
   GiftCardProvider,
   Logger,
   PersistenceProvider,
-  ProfileProvider,
   SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { ConfigProvider } from '../../providers/config/config';
 import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -81,10 +81,10 @@ export class HomePage {
       dismissible: true
     }
   ];
-  public totalBalanceAlternative: string;
+  public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
-  public showBalance: boolean = true;
+  public showTotalBalance: boolean = true;
   public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
@@ -98,7 +98,6 @@ export class HomePage {
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private formatCurrencyPipe: FormatCurrencyPipe,
-    private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
     private simplexProvider: SimplexProvider,
@@ -106,9 +105,11 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private modalCtrl: ModalController,
     private translate: TranslateService,
+    private configProvider: ConfigProvider,
     private events: Events
   ) {
     this.logger.info('Loaded: HomePage');
+    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.subscribeEvents();
   }
 
@@ -116,7 +117,8 @@ export class HomePage {
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.showBalance = await this.profileProvider.getShowTotalBalanceFlag();
+    this.showTotalBalance = this.configProvider.get().showTotalBalance;
+    if (this.showTotalBalance) this.getCachedTotalBalance();
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
@@ -127,12 +129,31 @@ export class HomePage {
     this.preFetchWallets();
   }
 
+  private getCachedTotalBalance() {
+    this.persistenceProvider.getTotalBalance().then(data => {
+      if (!data) return;
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      this.updateTotalBalance(data);
+    });
+  }
+
+  private updateTotalBalance(data) {
+    this.totalBalanceAlternative = data.totalBalanceAlternative;
+    this.averagePrice = data.averagePrice;
+    this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
+  }
+
+  private setTotalBalance(data) {
+    this.updateTotalBalance(data);
+    this.persistenceProvider.setTotalBalance(data);
+  }
+
   private subscribeEvents() {
     this.events.subscribe('Local/HomeBalance', data => {
-      this.totalBalanceAlternative = data.totalBalanceAlternative;
-      this.averagePrice = data.averagePrice;
-      this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
-      this.fetchingStatus = !!data.fetchingStatus;
+      if (data && this.showTotalBalance) this.setTotalBalance(data);
+      this.fetchingStatus = false;
     });
     this.events.subscribe('Local/ServerMessages', data => {
       this.serverMessages = _.orderBy(
@@ -147,12 +168,13 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
-    this.events.subscribe('Local/PreFetchCards', bpCards => {
+    this.events.subscribe('Local/FetchCards', bpCards => {
       if (!bpCards) this.addBitPayCard();
     });
   }
 
   private preFetchWallets() {
+    this.fetchingStatus = true;
     this.events.publish('Local/FetchWallets');
   }
 
