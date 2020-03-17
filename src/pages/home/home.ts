@@ -94,6 +94,8 @@ export class HomePage {
   public discountedCard: CardConfig;
   public newReleaseAvailable: boolean = false;
 
+  private newReleaseVersion: string;
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
@@ -290,6 +292,16 @@ export class HomePage {
     this.removeServerMessage(serverMessage.id);
   }
 
+  public dismissNewReleaseMessage(): void {
+    this.newReleaseAvailable = false;
+    this.logger.debug(
+      `New release message dismissed. version: ${this.newReleaseVersion}`
+    );
+    this.persistenceProvider.setNewReleaseMessageDismissed(
+      this.newReleaseVersion
+    );
+  }
+
   public checkServerMessage(serverMessage): void {
     if (serverMessage.app && serverMessage.app != this.appProvider.info.name) {
       this.removeServerMessage(serverMessage.id);
@@ -412,11 +424,17 @@ export class HomePage {
   }
 
   private checkNewRelease() {
-    this.releaseProvider.getLatestAppVersion().then((data: any) => {
-      this.newReleaseAvailable = this.releaseProvider.newReleaseAvailable(
-        data.version
-      );
-    });
+    this.persistenceProvider
+      .getNewReleaseMessageDismissed()
+      .then(dismissedVersion => {
+        this.releaseProvider.getLatestAppVersion().then((data: any) => {
+          if (data && data.version === dismissedVersion) return;
+          this.newReleaseVersion = data.version;
+          this.newReleaseAvailable = this.releaseProvider.newReleaseAvailable(
+            data.version
+          );
+        });
+      });
   }
 
   private checkFeedbackInfo() {
