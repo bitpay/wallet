@@ -82,6 +82,12 @@
 
       <ion-item-divider *ngIf="walletsGroups && walletsGroups[0]">
         {{ 'Crypto Wallets & Keys' | translate }}
+        <button class="reorder-option" ion-button item-end clear *ngIf="!showReorder && walletsGroups?.length > 1" (click)="reorder()">
+          <img src="assets/img/sort.svg">
+        </button>
+        <button class="reorder-option" ion-button item-end clear *ngIf="showReorder" (click)="reorder()">
+          {{'Done' | translate}}
+        </button>
       </ion-item-divider>
 
       <button ion-item (click)="openAddressBookPage()">
@@ -102,28 +108,31 @@
         </ion-label>
       </button>
 
-      <button ion-item *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-        <ion-icon *ngIf="walletsGroup[0].canSign" class="item-img icon-settings" item-start>
-          <img src="assets/img/settings-icons/icon-key.svg" />
-        </ion-icon>
-        <ion-icon *ngIf="!walletsGroup[0].canSign" class="item-img icon-settings" item-start>
-          <img src="assets/img/settings-icons/icon-read-only.svg" width="26" />
-        </ion-icon>
-        <ion-label>
-          <div class="main-label" *ngIf="walletsGroup[0].canSign">
-            <span>{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
-          </div>
-          <div class="main-label" *ngIf="!walletsGroup[0].canSign" translate>
-            Read Only Wallets
-          </div>
-        </ion-label>
-        <ion-note *ngIf="walletsGroup.length == 1" item-end>
-          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
-        </ion-note>
-        <ion-note *ngIf="walletsGroup.length > 1" item-end>
-          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
-        </ion-note>
-      </button>
+      <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)">
+        <button ion-item [attr.detail-none]="showReorder ? true : null" *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
+          <ion-icon *ngIf="walletsGroup[0].canSign" class="item-img icon-settings" item-start>
+            <img src="assets/img/settings-icons/icon-key.svg" />
+          </ion-icon>
+          <ion-icon *ngIf="!walletsGroup[0].canSign" class="item-img icon-settings" item-start>
+            <img src="assets/img/settings-icons/icon-read-only.svg" width="26" />
+          </ion-icon>
+          <ion-label>
+            <div class="main-label" *ngIf="walletsGroup[0].canSign">
+              <span>{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
+            </div>
+            <div class="main-label" *ngIf="!walletsGroup[0].canSign" translate>
+              Read Only Wallets
+            </div>
+          </ion-label>
+          <ion-note *ngIf="walletsGroup.length == 1" item-end>
+            {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: walletsGroup.length} }}
+          </ion-note>
+          <ion-note *ngIf="walletsGroup.length > 1" item-end>
+            {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: walletsGroup.length} }}
+          </ion-note>
+        </button>
+      </ion-list>
+
       <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
         {{ 'Create or Import a Key' | translate }}
       </button>

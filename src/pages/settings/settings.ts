@@ -72,13 +72,14 @@ export class SettingsPage {
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
   public showBalance: boolean;
+  public showReorder: boolean = false;
 
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private profileProvider: ProfileProvider,
+    public profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -138,6 +139,9 @@ export class SettingsPage {
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+    this.walletsGroups = _.sortBy(this.walletsGroups, walletGroup => {
+      return +this.profileProvider.walletsGroups[walletGroup[0].keyId].order;
+    });
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -325,6 +329,7 @@ export class SettingsPage {
   }
 
   public openWalletGroupSettings(keyId: string): void {
+    if (this.showReorder) return;
     this.navCtrl.push(KeySettingsPage, { keyId });
   }
 
@@ -347,5 +352,18 @@ export class SettingsPage {
 
   public toggleShowBalanceFlag(): void {
     this.profileProvider.setShowTotalBalanceFlag(this.showBalance);
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public reorderAccounts(indexes): void {
+    const element = this.walletsGroups[indexes.from];
+    this.walletsGroups.splice(indexes.from, 1);
+    this.walletsGroups.splice(indexes.to, 0, element);
+    _.each(this.walletsGroups, (walletGroup, index: number) => {
+      this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
+    });
   }
 }
