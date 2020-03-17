@@ -329,8 +329,10 @@ export class IncomingDataProvider {
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
-    if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin);
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
   }
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
@@ -349,8 +351,10 @@ export class IncomingDataProvider {
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
 
-    if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin);
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
   }
 
   private handleEthereumUri(data: string, redirParams?: RedirParams): void {
@@ -438,8 +442,10 @@ export class IncomingDataProvider {
 
     // Translate address
     this.logger.warn('Legacy Bitcoin Address transalated to: ' + address);
-    if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin);
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
   }
 
   private handlePlainUrl(data: string): void {
