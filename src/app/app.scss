@@ -753,6 +753,33 @@ page-bitpay-card,
   transform: translate(0, -10%);
 }
 
+.tabbar {
+  height: 10vh;
+  .tabs-md &,
+  .tabs-ios & {
+    background: white;
+  }
+
+  .tabs-ios & {
+    .tab-button-icon {
+      height: 22px;
+    }
+  }
+
+  justify-content: center;
+  padding-top: 5px;
+  transform: translate3d(0, 0, 0);
+
+  .tab-button {
+    max-width: 15vw;
+    min-width: 80px; // Prevent the names of the tabs from disappearing
+
+    .tab-button-text {
+      display: block;
+    }
+  }
+}
+
 ion-tabs:after {
   // Workaround to prevent tabs from disappearing when activated
   position: absolute;
