@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  BitPayIdProvider,
   BitPayProvider,
   GiftCardProvider,
   IABCardProvider,
@@ -134,7 +135,8 @@ export class CopayApp {
     private persistenceProvider: PersistenceProvider,
     private iab: InAppBrowserProvider,
     private iabCardProvider: IABCardProvider,
-    private bitpayProvider: BitPayProvider
+    private bitpayProvider: BitPayProvider,
+    private bitpayIdProvider: BitPayIdProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -241,7 +243,11 @@ export class CopayApp {
     }
 
     const experiment = await this.persistenceProvider.getCardExperimentFlag();
+    if (experiment === 'enabled') {
+      this.NETWORK = 'testnet';
+    }
     this.bitpayProvider.init(experiment);
+    this.bitpayIdProvider.init(experiment);
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
@@ -282,13 +288,17 @@ export class CopayApp {
     ]);
 
     if (this.platformProvider.isCordova) {
+      const host =
+        this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
+      this.logger.log(`IAB host -> ${host}`);
       // preloading the view
+
       setTimeout(() => {
         this.iab
           .createIABInstance(
             'card',
             CARD_IAB_CONFIG,
-            'https://bitpay.com/wallet-card?context=bpa',
+            `https://${host}/wallet-card?context=bpa`,
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 
               sessionStorage.setItem('cards', ${JSON.stringify(

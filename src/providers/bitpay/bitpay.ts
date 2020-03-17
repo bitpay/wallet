@@ -25,6 +25,7 @@ export class BitPayProvider {
       this.NETWORK == 'livenet'
         ? 'https://bitpay.com'
         : 'https://test.bitpay.com';
+    this.logger.log(`bitpay provider initialized with ${this.NETWORK}`);
   }
 
   public getEnvironment() {

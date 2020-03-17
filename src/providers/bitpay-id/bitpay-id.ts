@@ -14,11 +14,8 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class BitPayIdProvider {
-  private NETWORK = Network.livenet;
-  private BITPAY_API_URL =
-    this.NETWORK == 'livenet'
-      ? 'https://bitpay.com'
-      : 'https://test.bitpay.com';
+  private NETWORK: string;
+  private BITPAY_API_URL: string;
   private deviceName = 'unknown device';
 
   constructor(
@@ -31,12 +28,20 @@ export class BitPayIdProvider {
     private iab: InAppBrowserProvider
   ) {
     this.logger.debug('BitPayProvider initialized');
-
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
       this.deviceName = this.device.model;
     }
+  }
+
+  public init(status: string) {
+    this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
+    this.BITPAY_API_URL =
+      this.NETWORK == 'livenet'
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
+    this.logger.log(`bitpay id provider initialized with ${this.NETWORK}`);
   }
 
   public getEnvironment() {
