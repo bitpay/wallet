@@ -1821,22 +1821,6 @@ export class ProfileProvider {
     );
   }
 
-  public getShowTotalBalanceFlag(): Promise<boolean> {
-    return this.persistenceProvider
-      .getShowTotalBalanceFlag()
-      .then(shouldShowBalance => {
-        const isShown: boolean =
-          shouldShowBalance && shouldShowBalance.toString() == 'false'
-            ? false
-            : true;
-        return Promise.resolve(isShown);
-      });
-  }
-
-  public setShowTotalBalanceFlag(showBalance): void {
-    this.persistenceProvider.setShowTotalBalanceFlag(showBalance);
-  }
-
   public getTxps(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       const MAX = 100;

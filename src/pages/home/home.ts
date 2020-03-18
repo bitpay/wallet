@@ -1,6 +1,6 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, Slides } from 'ionic-angular';
+import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
@@ -9,25 +9,18 @@ import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/sim
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
-  BitPayCardProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
   Logger,
   PersistenceProvider,
-  ProfileProvider,
-  SimplexProvider,
-  TabProvider,
-  WalletProvider
+  SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { CurrencyProvider } from '../../providers/currency/currency';
-import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { RateProvider } from '../../providers/rate/rate';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
@@ -61,22 +54,8 @@ export class HomePage {
   @ViewChild(Slides) slides: Slides;
   public serverMessages: any[];
   public showServerMessage: boolean;
-  public wallets;
   public showAdvertisements: boolean;
   public advertisements: Advertisement[] = [
-    {
-      name: 'bitpay-card',
-      title: this.translate.instant('Get a BitPay Card'),
-      body: this.translate.instant(
-        'Leverage your crypto with a reloadable BitPay card.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Order now'),
-      link: BitPayCardIntroPage,
-      dismissible: true,
-      /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
-      imgSrc: 'assets/img/icon-bpcard.svg'
-    },
     {
       name: 'merchant-directory',
       title: this.translate.instant('Merchant Directory'),
@@ -102,19 +81,15 @@ export class HomePage {
       dismissible: true
     }
   ];
-  public totalBalanceAlternative: string;
+  public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
-  public showBalance: boolean = true;
+  public showTotalBalance: boolean = true;
   public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
-  public showBitPayCardAdvertisement: boolean = true;
-
-  private lastDayRatesArray;
-  private zone;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -123,39 +98,84 @@ export class HomePage {
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private formatCurrencyPipe: FormatCurrencyPipe,
-    private walletProvider: WalletProvider,
-    private profileProvider: ProfileProvider,
     private navCtrl: NavController,
-    private configProvider: ConfigProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
     private giftCardProvider: GiftCardProvider,
-    private currencyProvider: CurrencyProvider,
-    private rateProvider: RateProvider,
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private tabProvider: TabProvider,
     private modalCtrl: ModalController,
-    private bitPayCardProvider: BitPayCardProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private configProvider: ConfigProvider,
+    private events: Events
   ) {
-    this.zone = new NgZone({ enableLongStackTrace: false });
-  }
-
-  async ngOnInit() {
-    await this.tabProvider.prefetchCards();
+    this.logger.info('Loaded: HomePage');
+    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
+    this.subscribeEvents();
   }
 
   async ionViewWillEnter() {
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.isBalanceShown();
-    this.fetchStatus();
+    this.showTotalBalance = this.configProvider.get().showTotalBalance;
+    if (this.showTotalBalance) this.getCachedTotalBalance();
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
     this.fetchDiscountAdvertisements();
+  }
+
+  ionViewDidLoad() {
+    this.preFetchWallets();
+  }
+
+  private getCachedTotalBalance() {
+    this.persistenceProvider.getTotalBalance().then(data => {
+      if (!data) return;
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      this.updateTotalBalance(data);
+    });
+  }
+
+  private updateTotalBalance(data) {
+    this.totalBalanceAlternative = data.totalBalanceAlternative;
+    this.averagePrice = data.averagePrice;
+    this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
+  }
+
+  private setTotalBalance(data) {
+    this.updateTotalBalance(data);
+    this.persistenceProvider.setTotalBalance(data);
+  }
+
+  private subscribeEvents() {
+    this.events.subscribe('Local/HomeBalance', data => {
+      if (data && this.showTotalBalance) this.setTotalBalance(data);
+      this.fetchingStatus = false;
+    });
+    this.events.subscribe('Local/ServerMessages', data => {
+      this.serverMessages = _.orderBy(
+        data.serverMessages,
+        ['priority'],
+        ['asc']
+      );
+      this.serverMessages.forEach(serverMessage => {
+        this.checkServerMessage(serverMessage);
+      });
+    });
+    this.events.subscribe('Local/AccessDenied', () => {
+      this.accessDenied = true;
+    });
+    this.events.subscribe('Local/FetchCards', bpCards => {
+      if (!bpCards) this.addBitPayCard();
+    });
+  }
+
+  private preFetchWallets() {
+    this.fetchingStatus = true;
+    this.events.publish('Local/FetchWallets');
   }
 
   private setIntegrations() {
@@ -164,10 +184,6 @@ export class HomePage {
       .get()
       .filter(i => i.show)
       .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
-
-    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-      this.showBitPayCardAdvertisement = cards ? false : true;
-    });
 
     this.homeIntegrations = _.remove(integrations, x => {
       this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
@@ -179,6 +195,25 @@ export class HomePage {
         return x;
       }
     });
+  }
+
+  private addBitPayCard() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'bitpay-card'
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'bitpay-card',
+        title: this.translate.instant('Get a BitPay Card'),
+        body: this.translate.instant(
+          'Leverage your crypto with a reloadable BitPay card.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Order now'),
+        link: BitPayCardIntroPage,
+        dismissible: true,
+        imgSrc: 'assets/img/icon-bpcard.svg'
+      });
   }
 
   private async setDiscountedCard(): Promise<void> {
@@ -232,15 +267,10 @@ export class HomePage {
     discountedCard && this.addGiftCardDiscount(discountedCard);
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
-    leading: true
-  });
-
   public doRefresh(refresher): void {
-    this.debounceRefreshHomePage();
+    this.fetchAdvertisements();
+    this.preFetchWallets();
     setTimeout(() => {
-      this.fetchStatus();
-      this.fetchAdvertisements();
       refresher.complete();
     }, 2000);
   }
@@ -277,137 +307,6 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private async fetchStatus() {
-    let foundMessage = false;
-
-    this.fetchingStatus = true;
-    this.wallets = this.profileProvider.getWallets();
-    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
-    this.lastDayRatesArray = await this.getLastDayRates();
-    if (_.isEmpty(this.wallets)) {
-      this.fetchingStatus = false;
-      return;
-    }
-    this.logger.debug('fetchStatus');
-    const pr = wallet => {
-      return this.walletProvider
-        .fetchStatus(wallet, {})
-        .then(async status => {
-          if (!foundMessage && !_.isEmpty(status.serverMessages)) {
-            this.serverMessages = _.orderBy(
-              status.serverMessages,
-              ['priority'],
-              ['asc']
-            );
-            this.serverMessages.forEach(serverMessage => {
-              this.checkServerMessage(serverMessage);
-            });
-            foundMessage = true;
-          }
-
-          let walletTotalBalanceAlternative = 0;
-          let walletTotalBalanceAlternativeLastDay = 0;
-          if (status.wallet.network === 'livenet' && !wallet.hidden) {
-            const balance =
-              status.wallet.coin === 'xrp'
-                ? status.availableBalanceSat
-                : status.totalBalanceSat;
-            walletTotalBalanceAlternativeLastDay = parseFloat(
-              this.getWalletTotalBalanceAlternativeLastDay(balance, wallet.coin)
-            );
-            if (status.wallet.coin === 'xrp') {
-              walletTotalBalanceAlternative = parseFloat(
-                this.getWalletTotalBalanceAlternative(
-                  status.availableBalanceSat,
-                  'xrp'
-                )
-              );
-            } else {
-              walletTotalBalanceAlternative = parseFloat(
-                status.totalBalanceAlternative.replace(/,/g, '')
-              );
-            }
-          }
-          return Promise.resolve({
-            walletTotalBalanceAlternative,
-            walletTotalBalanceAlternativeLastDay
-          });
-        })
-        .catch(err => {
-          if (err.message === '403') {
-            this.accessDenied = true;
-          }
-          return Promise.resolve();
-        });
-    };
-
-    const promises = [];
-
-    _.each(this.profileProvider.wallet, wallet => {
-      promises.push(pr(wallet));
-    });
-
-    Promise.all(promises).then(balanceAlternativeArray => {
-      this.zone.run(() => {
-        this.totalBalanceAlternative = _.sumBy(
-          _.compact(balanceAlternativeArray),
-          b => b.walletTotalBalanceAlternative
-        ).toFixed(2);
-        const totalBalanceAlternativeLastDay = _.sumBy(
-          _.compact(balanceAlternativeArray),
-          b => b.walletTotalBalanceAlternativeLastDay
-        ).toFixed(2);
-        const difference =
-          parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-          parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
-        this.averagePrice =
-          (difference * 100) /
-          parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
-        this.fetchingStatus = false;
-      });
-    });
-  }
-  private getWalletTotalBalanceAlternativeLastDay(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin, {
-        customRate: this.lastDayRatesArray[coin]
-      })
-      .toFixed(2);
-  }
-
-  private getWalletTotalBalanceAlternative(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin)
-      .toFixed(2);
-  }
-
-  private getLastDayRates(): Promise<any> {
-    const availableChains = this.currencyProvider.getAvailableChains();
-    return new Promise(resolve => {
-      this.exchangeRatesProvider
-        .getHistoricalRates(this.totalBalanceAlternativeIsoCode)
-        .subscribe(
-          response => {
-            let ratesByCoin = {};
-            for (const unitCode of availableChains) {
-              ratesByCoin[unitCode] = response[unitCode][0].rate;
-            }
-            return resolve(ratesByCoin);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-            return resolve();
-          }
-        );
-    });
-  }
-
   private async fetchDiscountAdvertisements(): Promise<void> {
     await this.fetchGiftCardDiscount();
     this.logPresentedWithGiftCardDiscountEvent();
@@ -425,11 +324,7 @@ export class HomePage {
       this.persistenceProvider
         .getAdvertisementDismissed(advertisement.name)
         .then((value: string) => {
-          if (
-            value === 'dismissed' ||
-            (!this.showBitPayCardAdvertisement &&
-              advertisement.name == 'bitpay-card')
-          ) {
+          if (value === 'dismissed') {
             this.removeAdvertisement(advertisement.name);
             return;
           }
@@ -505,19 +400,6 @@ export class HomePage {
         this.navCtrl.push(SimplexBuyPage);
       }
     });
-  }
-
-  private isBalanceShown() {
-    this.profileProvider
-      .getShowTotalBalanceFlag()
-      .then(isShown => {
-        this.zone.run(() => {
-          this.showBalance = isShown;
-        });
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
   }
 
   private async showSurveyCard() {

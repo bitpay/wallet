@@ -46,6 +46,8 @@ $background-colors: (
 );
 // App background color
 $background-color: white;
+$tabs-background: white;
+$tabs-border-color: rgba(0, 0, 0, 0.1);
 // Item list background color
 $list-background-color: #ffffff;
 $feather-dark: #f8f8f9;
@@ -119,6 +121,7 @@ $alert-md-sub-title-font-size: 12.5px;
 $alert-md-message-font-size: 12.5px;
 $button-md-text-transform: none;
 $button-md-clear-background-color-hover: transparent;
+$badge-md-border-radius: 9px;
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
