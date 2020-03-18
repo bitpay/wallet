@@ -41,6 +41,7 @@ export class KeySettingsPage {
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
+  public derivationStrategy: string;
 
   private keyId: string;
 
@@ -68,6 +69,9 @@ export class KeySettingsPage {
       keyId: this.keyId,
       showHidden: true
     });
+    this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      this.wallets[0].credentials.rootPath
+    );
     this.canSign = this.walletsGroup.canSign;
     this.isDeletedSeed = this.walletsGroup.isDeletedSeed;
     this.needsBackup = this.walletsGroup.needsBackup;
@@ -146,11 +150,7 @@ export class KeySettingsPage {
   }
 
   public openBackupSettings(): void {
-    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      this.wallets[0].credentials.rootPath
-    );
-
-    if (derivationStrategy == 'BIP45') {
+    if (this.derivationStrategy == 'BIP45') {
       this.navCtrl.push(WalletExportPage, {
         walletId: this.wallets[0].credentials.walletId
       });

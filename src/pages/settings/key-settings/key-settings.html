@@ -89,7 +89,7 @@
         </label-tip>
       </div>
 
-      <button ion-item *ngIf="encryptEnabled" (click)="openClearEncryptPasswordPage()">
+      <button ion-item *ngIf="encryptEnabled && derivationStrategy !== 'BIP45'" (click)="openClearEncryptPasswordPage()">
         <span translate>Clear Encrypt Password</span>
       </button>
 
