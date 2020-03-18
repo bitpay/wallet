@@ -124,6 +124,8 @@ export class HomePage {
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
+    this.showTotalBalance = this.configProvider.get().showTotalBalance;
+    if (this.showTotalBalance) this.getCachedTotalBalance();
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.setIntegrations();
     this.fetchAdvertisements();
@@ -240,10 +242,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-          discount.amount,
-          discountedCard.currency,
-          'minimal'
-        )}`
+            discount.amount,
+            discountedCard.currency,
+            'minimal'
+          )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -255,7 +257,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-          } gift cards. Limited time offer.`,
+        } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -515,5 +517,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-    }-gift-card-discount`;
+  }-gift-card-discount`;
 }
