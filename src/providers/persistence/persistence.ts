@@ -69,6 +69,7 @@ const Keys = {
   ORDER_WALLET: walletId => 'order-' + walletId,
   ORDER_WALLET_GROUP: keyId => 'order-' + keyId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
+  RELEASE_MESSAGE_DISMISSED: 'releaseMessageDismissed',
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
@@ -564,6 +565,14 @@ export class PersistenceProvider {
 
   removeServerMessageDismissed(id) {
     return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
+  }
+
+  setNewReleaseMessageDismissed(version) {
+    return this.storage.set(Keys.RELEASE_MESSAGE_DISMISSED, version);
+  }
+
+  getNewReleaseMessageDismissed() {
+    return this.storage.get(Keys.RELEASE_MESSAGE_DISMISSED);
   }
 
   setAdvertisementDismissed(name) {

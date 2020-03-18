@@ -21,6 +21,8 @@ import { ConfigProvider } from '../../providers/config/config';
 import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
@@ -90,6 +92,9 @@ export class HomePage {
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
+  public newReleaseAvailable: boolean = false;
+
+  private newReleaseVersion: string;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -106,7 +111,9 @@ export class HomePage {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
-    private events: Events
+    private events: Events,
+    private releaseProvider: ReleaseProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
@@ -119,6 +126,7 @@ export class HomePage {
     this.checkFeedbackInfo();
     this.showTotalBalance = this.configProvider.get().showTotalBalance;
     if (this.showTotalBalance) this.getCachedTotalBalance();
+    if (this.platformProvider.isElectron) this.checkNewRelease();
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
@@ -286,6 +294,16 @@ export class HomePage {
     this.removeServerMessage(serverMessage.id);
   }
 
+  public dismissNewReleaseMessage(): void {
+    this.newReleaseAvailable = false;
+    this.logger.debug(
+      `New release message dismissed. version: ${this.newReleaseVersion}`
+    );
+    this.persistenceProvider.setNewReleaseMessageDismissed(
+      this.newReleaseVersion
+    );
+  }
+
   public checkServerMessage(serverMessage): void {
     if (serverMessage.app && serverMessage.app != this.appProvider.info.name) {
       this.removeServerMessage(serverMessage.id);
@@ -405,6 +423,20 @@ export class HomePage {
   private async showSurveyCard() {
     const hideSurvey = await this.persistenceProvider.getSurveyFlag();
     this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
+  private checkNewRelease() {
+    this.persistenceProvider
+      .getNewReleaseMessageDismissed()
+      .then(dismissedVersion => {
+        this.releaseProvider.getLatestAppVersion().then((data: any) => {
+          if (data && data.version === dismissedVersion) return;
+          this.newReleaseVersion = data.version;
+          this.newReleaseAvailable = this.releaseProvider.newReleaseAvailable(
+            data.version
+          );
+        });
+      });
   }
 
   private checkFeedbackInfo() {

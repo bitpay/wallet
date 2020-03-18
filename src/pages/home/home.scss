@@ -81,7 +81,9 @@ page-home {
     // padding-bottom: 0px;
 
     &-header {
-      height: 30px;
+      &.no-dismissible {
+        height: 30px;
+      }
       .button[icon-only] {
         font-size: 10px;
       }
