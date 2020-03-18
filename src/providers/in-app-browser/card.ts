@@ -343,6 +343,7 @@ export class IABCardProvider {
 
             await infoSheet.present();
             // close in app browser
+            this.hide();
           }
 
           // publish new user
@@ -354,26 +355,28 @@ export class IABCardProvider {
 
           // fetch new cards
           this.getCards();
-          this.hide();
         }
       },
       async err => {
         this.logger.error(`pairing error -> ${err}`);
 
-        const errorSheet = this.actionSheetProvider.createInfoSheet(
-          'default-error',
-          {
-            title: 'BitPay ID',
-            msg: 'Uh oh, something went wrong please try again later.'
-          }
-        );
-
-        await errorSheet.present();
-
         // clear out loading state
         this.onGoingProcess.clear();
         // close in app browser
-        this.hide();
+
+        if (withNotification) {
+          const errorSheet = this.actionSheetProvider.createInfoSheet(
+            'default-error',
+            {
+              title: 'BitPay ID',
+              msg: 'Uh oh, something went wrong please try again later.'
+            }
+          );
+
+          await errorSheet.present();
+
+          this.hide();
+        }
       }
     );
   }
