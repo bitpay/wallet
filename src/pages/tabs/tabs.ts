@@ -32,7 +32,6 @@ export class TabsPage {
 
   public txpsN: number;
 
-  private wallets;
   private totalBalanceAlternative = '0';
   private totalBalanceAlternativeIsoCode = 'USD';
   private averagePrice = 0;
@@ -197,8 +196,8 @@ export class TabsPage {
 
   private async fetchAllWalletsStatus() {
     this.logger.debug('Fetching All Wallets and calculate Total Amount');
-    this.wallets = this.profileProvider.getWallets();
-    if (_.isEmpty(this.wallets)) return;
+    const wallets = this.profileProvider.getWallets();
+    if (_.isEmpty(wallets)) return;
 
     let foundMessage = false;
     this.lastDayRatesArray = await this.getLastDayRates();
