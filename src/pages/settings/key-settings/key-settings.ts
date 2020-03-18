@@ -40,7 +40,6 @@ export class KeySettingsPage {
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
-  public reorderHeight: string;
 
   private keyId: string;
 
@@ -68,7 +67,6 @@ export class KeySettingsPage {
       keyId: this.keyId,
       showHidden: true
     });
-    this.reorderHeight = (91 * this.wallets.length).toString() + 'px';
     this.canSign = this.walletsGroup.canSign;
     this.isDeletedSeed = this.walletsGroup.isDeletedSeed;
     this.needsBackup = this.walletsGroup.needsBackup;
@@ -197,6 +195,7 @@ export class KeySettingsPage {
   }
 
   openWalletSettings(id) {
+    if (this.showReorder) return;
     this.navCtrl.push(WalletSettingsPage, { walletId: id });
   }
 

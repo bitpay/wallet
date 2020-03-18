@@ -329,6 +329,9 @@ export class WalletsPage {
         'keyId'
       )
     );
+    this.walletsGroups = _.sortBy(this.walletsGroups, walletGroup => {
+      return +this.profileProvider.walletsGroups[walletGroup[0].keyId].order;
+    });
 
     this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
       keyId: 'read-only'

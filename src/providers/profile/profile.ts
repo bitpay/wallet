@@ -147,6 +147,15 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
+  public setWalletGroupOrder(keyId: string, index: number): void {
+    this.persistenceProvider.setWalletGroupOrder(keyId, index).then(() => {
+      this.logger.debug(
+        'Wallet group new order stored for ' + keyId + ': ' + index
+      );
+    });
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
+  }
+
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
@@ -159,6 +168,11 @@ export class ProfileProvider {
 
   private async getWalletOrder(walletId: string) {
     const order = await this.persistenceProvider.getWalletOrder(walletId);
+    return order;
+  }
+
+  private async getWalletGroupOrder(keyId: string) {
+    const order = await this.persistenceProvider.getWalletGroupOrder(keyId);
     return order;
   }
 
@@ -318,6 +332,7 @@ export class ProfileProvider {
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      order = await this.getWalletGroupOrder(keyId);
       name = await this.getWalletGroupName(keyId);
       if (!name) {
         let walletsGroups = _.cloneDeep(this.walletsGroups);

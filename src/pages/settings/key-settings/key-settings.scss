@@ -1,41 +1,4 @@
 page-key-settings {
-  .wide-header {
-    .toolbar-background {
-      background: white;
-    }
-
-    ion-title .toolbar-title {
-      font-weight: 400;
-    }
-
-    &__title {
-      color: black;
-      font-size: 25px;
-      font-weight: 500;
-      padding: 30px 0 20px 20px;
-    }
-
-    ion-navbar {
-      .ios & {
-        padding-top: 3rem; // Fix iOS 10.3
-        padding-top: calc(4px + env(safe-area-inset-top));
-
-        ion-title {
-          padding-top: 3rem; // Fix iOS 10.3
-          padding-top: env(safe-area-inset-top);
-        }
-      }
-    }
-
-    &.cordova {
-      ion-navbar {
-        .ios & {
-          padding-bottom: 7px;
-        }
-      }
-    }
-  }
-
   .subtitle-container {
     display: flex;
     justify-content: space-between;

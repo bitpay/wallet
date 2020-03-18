@@ -39,6 +39,9 @@ export class AddWalletPage {
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+    this.walletsGroups = _.sortBy(this.walletsGroups, walletGroup => {
+      return +this.profileProvider.walletsGroups[walletGroup[0].keyId].order;
+    });
   }
 
   ionViewDidLoad() {

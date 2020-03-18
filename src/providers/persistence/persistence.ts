@@ -67,6 +67,7 @@ const Keys = {
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
+  ORDER_WALLET_GROUP: keyId => 'order-' + keyId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
@@ -623,6 +624,18 @@ export class PersistenceProvider {
 
   removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
+  }
+
+  setWalletGroupOrder(keyId: string, order: number) {
+    return this.storage.set(Keys.ORDER_WALLET_GROUP(keyId), order);
+  }
+
+  getWalletGroupOrder(keyId: string) {
+    return this.storage.get(Keys.ORDER_WALLET_GROUP(keyId));
+  }
+
+  removeWalletGroupOrder(keyId: string) {
+    return this.storage.remove(Keys.ORDER_WALLET_GROUP(keyId));
   }
 
   setLockStatus(isLocked: string) {
