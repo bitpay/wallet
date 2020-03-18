@@ -900,7 +900,7 @@ export class ProfileProvider {
   public checkIfCorrectWalletToReImport(keyId, key) {
     this.logger.info("Checking if it's the correct wallet to re import");
     const keyToReImport = this.keyProvider.getKey(keyId);
-    return this.keyProvider.match(keyToReImport, key);
+    return this.keyProvider.isMatch(keyToReImport, key);
   }
 
   public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
