@@ -82,6 +82,7 @@ $text-input-md-show-valid-highlight: transparent;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
+$tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, 0.1);
 $item-ios-divider-background: $background-color;
 $item-ios-divider-color: color($colors, grey);
