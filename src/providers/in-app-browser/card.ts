@@ -360,7 +360,6 @@ export class IABCardProvider {
       async err => {
         this.logger.error(`pairing error -> ${err}`);
 
-
         // clear out loading state
         this.onGoingProcess.clear();
         // close in app browser
@@ -378,7 +377,6 @@ export class IABCardProvider {
 
           this.hide();
         }
-
       }
     );
   }
