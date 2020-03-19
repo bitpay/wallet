@@ -53,7 +53,8 @@ const AllowedCountries = [
   'SI',
   'CA',
   'US',
-  'AUS'
+  'AUS',
+  'AU'
 ];
 
 @Component({
