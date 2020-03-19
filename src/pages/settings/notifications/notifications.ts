@@ -73,8 +73,12 @@ export class NotificationsPage {
       this.platformProvider.isIOS && this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
 
-    this.pushNotifications = config.pushNotifications.enabled;
-    this.desktopNotifications = config.desktopNotifications.enabled;
+    this.pushNotifications = config.pushNotifications
+      ? config.pushNotifications.enabled
+      : false;
+    this.desktopNotifications = config.desktopNotifications
+      ? config.desktopNotifications.enabled
+      : false;
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
       : false;
