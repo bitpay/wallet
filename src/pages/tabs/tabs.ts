@@ -197,7 +197,10 @@ export class TabsPage {
   private async fetchAllWalletsStatus() {
     this.logger.debug('Fetching All Wallets and calculate Total Amount');
     const wallets = this.profileProvider.getWallets();
-    if (_.isEmpty(wallets)) return;
+    if (_.isEmpty(wallets)) {
+      this.events.publish('Local/HomeBalance');
+      return;
+    }
 
     let foundMessage = false;
     this.lastDayRatesArray = await this.getLastDayRates();
