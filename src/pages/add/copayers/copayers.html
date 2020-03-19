@@ -6,7 +6,8 @@
   </ion-buttons>
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="showDeletePopup()" *ngIf="wallet.notAuthorized || (!wallet.notAuthorized && secret)" ion-button>
-      <span translate>Cancel</span>
+      <span *ngIf="!canSign" translate>Delete</span>
+      <span *ngIf="canSign" translate>Hide</span>
     </button>
   </ion-buttons>
   <div page-content>

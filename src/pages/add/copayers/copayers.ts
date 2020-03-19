@@ -27,6 +27,7 @@ export class CopayersPage {
   public isCordova: boolean;
 
   public wallet;
+  public canSign: boolean;
   public copayers: any[];
   public secret;
 
@@ -57,6 +58,7 @@ export class CopayersPage {
     this.isCordova = this.platformProvider.isCordova;
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.canSign = this.wallet.canSign;
   }
 
   ionViewDidLoad() {
@@ -120,16 +122,28 @@ export class CopayersPage {
   }
 
   public showDeletePopup(): void {
-    let title = this.translate.instant('Confirm');
-    let msg = this.translate.instant(
-      'Are you sure you want to cancel and delete this wallet?'
-    );
+    const title = this.translate.instant('Confirm');
+    let msg;
+    if (!this.canSign) {
+      msg = this.translate.instant(
+        'Are you sure you want to delete this wallet?'
+      );
+    }
+    msg = this.translate.instant('Are you sure you want to hide this wallet?');
     this.popupProvider.ionicConfirm(title, msg).then(res => {
       if (res) this.deleteWallet();
     });
   }
 
   private deleteWallet(): void {
+    if (this.canSign) {
+      this.profileProvider.toggleHideWalletFlag(this.wallet.id);
+      this.events.publish('Local/WalletListChange');
+      setTimeout(() => {
+        this.close();
+      }, 1000);
+      return;
+    }
     this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider
       .deleteWalletClient(this.wallet)
