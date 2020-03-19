@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   ModalController,
-  NavController,
   NavParams,
   ViewController
 } from 'ionic-angular';
@@ -76,8 +75,7 @@ export class TxpDetailsPage {
     private decimalPipe: DecimalPipe,
     private payproProvider: PayproProvider,
     private bwcErrorProvider: BwcErrorProvider,
-    private errorsProvider: ErrorsProvider,
-    private navCtrl: NavController
+    private errorsProvider: ErrorsProvider
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
