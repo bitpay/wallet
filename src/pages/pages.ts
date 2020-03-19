@@ -98,6 +98,7 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
+import { ClearEncryptPasswordPage } from '../pages/settings/key-settings/clear-encrypt-password/clear-encrypt-password';
 import { ExtendedPrivateKeyPage } from '../pages/settings/key-settings/extended-private-key/extended-private-key';
 import { KeyDeletePage } from '../pages/settings/key-settings/key-delete/key-delete';
 import { KeyNamePage } from '../pages/settings/key-settings/key-name/key-name';
@@ -224,6 +225,7 @@ export const PAGES = [
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
   ExtendedPrivateKeyPage,
+  ClearEncryptPasswordPage,
   KeyDeletePage,
   KeyQrExportPage,
   KeySettingsPage,

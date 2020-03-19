@@ -89,6 +89,10 @@
         </label-tip>
       </div>
 
+      <button ion-item *ngIf="encryptEnabled && derivationStrategy !== 'BIP45'" (click)="openClearEncryptPasswordPage()">
+        <span translate>Clear Encrypt Password</span>
+      </button>
+
       <div *ngIf="touchIdAvailable">
         <ion-item>
           <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>

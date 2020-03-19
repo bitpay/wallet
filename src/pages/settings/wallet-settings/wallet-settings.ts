@@ -5,7 +5,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -50,8 +49,7 @@ export class WalletSettingsPage {
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    private events: Events,
-    private errorsProvider: ErrorsProvider
+    private events: Events
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -106,55 +104,6 @@ export class WalletSettingsPage {
     this.profileProvider.toggleHideBalanceFlag(
       this.wallet.credentials.walletId
     );
-  }
-
-  public encryptChange(): void {
-    if (!this.wallet) return;
-    const val = this.encryptEnabled;
-
-    if (val && !this.wallet.isPrivKeyEncrypted) {
-      this.logger.debug('Encrypting private key for', this.wallet.name);
-      this.keyProvider
-        .encrypt(this.wallet.credentials.keyId)
-        .then(() => {
-          this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.toString())
-          );
-          this.logger.debug('Wallet encrypted');
-        })
-        .catch(err => {
-          this.encryptEnabled = false;
-          const title = this.translate.instant('Could not encrypt wallet');
-          this.showErrorInfoSheet(err, title);
-        });
-    } else if (!val && this.wallet.isPrivKeyEncrypted) {
-      this.keyProvider
-        .decrypt(this.wallet.credentials.keyId)
-        .then(() => {
-          this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.toString())
-          );
-          this.logger.debug('Wallet decrypted');
-        })
-        .catch(err => {
-          this.encryptEnabled = true;
-          if (err === 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
-          } else {
-            const title = this.translate.instant('Could not decrypt wallet');
-            this.showErrorInfoSheet(err, title);
-          }
-        });
-    }
-  }
-
-  private showErrorInfoSheet(
-    err: Error | string,
-    infoSheetTitle: string
-  ): void {
-    if (!err) return;
-    this.logger.warn('Could not encrypt/decrypt wallet:', err);
-    this.errorsProvider.showDefaultError(err, infoSheetTitle);
   }
 
   public openSupportEncryptPassword(): void {

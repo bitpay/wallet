@@ -730,9 +730,29 @@ export class ProfileProvider {
       });
   }
 
-  private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
-    // Encrypt wallet
+  private async addAndBindWalletClients(
+    data,
+    opts = { bwsurl: null, keyId: null }
+  ): Promise<any> {
+    if (opts.keyId) {
+      // re-import attempt
+      if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+        const wallets = this.getWalletsFromGroup({
+          keyId: opts.keyId,
+          showHidden: true
+        });
+        await this.deleteWalletGroup(opts.keyId, wallets);
+        await this.keyProvider.removeKey(opts.keyId);
+      } else {
+        return Promise.reject(
+          this.translate.instant(
+            'The recovery phrase you entered do not match the wallet you are trying to re-import'
+          )
+        );
+      }
+    }
     this.onGoingProcessProvider.pause();
+    // Encrypt wallet
     return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
       return this.keyProvider.addKey(data.key).then(async () => {
@@ -877,12 +897,19 @@ export class ProfileProvider {
     });
   }
 
+  public checkIfCorrectWalletToReImport(keyId, key) {
+    this.logger.info("Checking if it's the correct wallet to re import");
+    const keyToReImport = this.keyProvider.getKey(keyId);
+    return this.keyProvider.isMatch(keyToReImport, key);
+  }
+
   public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     this.logger.info('Importing Wallet xPrivKey');
     opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
-        bwsurl: opts.bwsurl
+        bwsurl: opts.bwsurl,
+        keyId: opts.keyId
       });
     });
   }
@@ -893,13 +920,31 @@ export class ProfileProvider {
     opts.words = words;
     return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
-        bwsurl: opts.bwsurl
+        bwsurl: opts.bwsurl,
+        keyId: opts.keyId
       });
     });
   }
 
   public importFile(str: string, opts): Promise<any> {
-    return this._importFile(str, opts).then(data => {
+    return this._importFile(str, opts).then(async data => {
+      if (opts.keyId) {
+        // re-import attempt
+        if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+          const wallets = this.getWalletsFromGroup({
+            keyId: opts.keyId,
+            showHidden: true
+          });
+          await this.deleteWalletGroup(opts.keyId, wallets);
+          await this.keyProvider.removeKey(opts.keyId);
+        } else {
+          return Promise.reject(
+            this.translate.instant(
+              'The recovery phrase you entered do not match the wallet you are trying to re-import'
+            )
+          );
+        }
+      }
       this.onGoingProcessProvider.pause();
       return this.askToEncryptKey(data.key).then(() => {
         this.onGoingProcessProvider.resume();
@@ -1185,12 +1230,29 @@ export class ProfileProvider {
       this._importWithDerivationPath(opts)
         .then(data => {
           // Check if wallet exists
-          data.walletClient.openWallet(err => {
+          data.walletClient.openWallet(async err => {
             if (err) {
               if (err.message.indexOf('not found') > 0) {
                 err = 'WALLET_DOES_NOT_EXIST';
               }
               return reject(err);
+            }
+            if (opts.keyId) {
+              // re-import attempt
+              if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+                const wallets = this.getWalletsFromGroup({
+                  keyId: opts.keyId,
+                  showHidden: true
+                });
+                await this.deleteWalletGroup(opts.keyId, wallets);
+                await this.keyProvider.removeKey(opts.keyId);
+              } else {
+                return reject(
+                  this.translate.instant(
+                    'The recovery phrase you entered do not match the wallet you are trying to re-import'
+                  )
+                );
+              }
             }
             this.keyProvider.addKey(data.key).then(() => {
               this.addAndBindWalletClient(data.walletClient, {

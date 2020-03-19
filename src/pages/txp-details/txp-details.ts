@@ -278,7 +278,7 @@ export class TxpDetailsPage {
     }
 
     if ((error as Error).message === 'WRONG_PASSWORD') {
-      this.errorsProvider.showWrongEncryptPassswordError();
+      this.errorsProvider.showWrongEncryptPasswordError();
       return;
     }
 

@@ -19,6 +19,7 @@ import { KeyNamePage } from '../key-settings/key-name/key-name';
 import { KeyOnboardingPage } from '../key-settings/key-onboarding/key-onboarding';
 import { WalletSettingsPage } from '../wallet-settings/wallet-settings';
 import { WalletExportPage } from '../wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
+import { ClearEncryptPasswordPage } from './clear-encrypt-password/clear-encrypt-password';
 import { ExtendedPrivateKeyPage } from './extended-private-key/extended-private-key';
 import { KeyDeletePage } from './key-delete/key-delete';
 import { KeyQrExportPage } from './key-qr-export/key-qr-export';
@@ -40,6 +41,7 @@ export class KeySettingsPage {
   public isDeletedSeed: boolean;
   public needsBackup: boolean;
   public showReorder: boolean;
+  public derivationStrategy: string;
 
   private keyId: string;
 
@@ -67,6 +69,9 @@ export class KeySettingsPage {
       keyId: this.keyId,
       showHidden: true
     });
+    this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      this.wallets[0].credentials.rootPath
+    );
     this.canSign = this.walletsGroup.canSign;
     this.isDeletedSeed = this.walletsGroup.isDeletedSeed;
     this.needsBackup = this.walletsGroup.needsBackup;
@@ -99,7 +104,8 @@ export class KeySettingsPage {
         .encrypt(this.keyId)
         .then(() => {
           const key = this.keyProvider.getKey(this.keyId);
-          this.keyProvider.addKey(key);
+          const replaceKey = true;
+          this.keyProvider.addKey(key, replaceKey);
           this.profileProvider.walletsGroups[
             this.keyId
           ].isPrivKeyEncrypted = true;
@@ -115,7 +121,8 @@ export class KeySettingsPage {
         .decrypt(this.keyId)
         .then(() => {
           const key = this.keyProvider.getKey(this.keyId);
-          this.keyProvider.addKey(key);
+          const replaceKey = true;
+          this.keyProvider.addKey(key, replaceKey);
           this.profileProvider.walletsGroups[
             this.keyId
           ].isPrivKeyEncrypted = false;
@@ -124,7 +131,7 @@ export class KeySettingsPage {
         .catch(err => {
           this.encryptEnabled = true;
           if (err === 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             const title = this.translate.instant('Could not decrypt wallet');
             this.showErrorInfoSheet(err, title);
@@ -143,11 +150,7 @@ export class KeySettingsPage {
   }
 
   public openBackupSettings(): void {
-    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      this.wallets[0].credentials.rootPath
-    );
-
-    if (derivationStrategy == 'BIP45') {
+    if (this.derivationStrategy == 'BIP45') {
       this.navCtrl.push(WalletExportPage, {
         walletId: this.wallets[0].credentials.walletId
       });
@@ -156,6 +159,12 @@ export class KeySettingsPage {
         keyId: this.keyId
       });
     }
+  }
+
+  public openClearEncryptPasswordPage(): void {
+    this.navCtrl.push(ClearEncryptPasswordPage, {
+      keyId: this.keyId
+    });
   }
 
   public openWalletGroupDelete(): void {

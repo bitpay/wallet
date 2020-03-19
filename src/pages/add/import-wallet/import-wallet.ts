@@ -40,6 +40,7 @@ export class ImportWalletPage {
   private reader: FileReader;
   private defaults;
   private processedInfo;
+  private keyId: string;
   public availableCoins: string[];
   public importForm: FormGroup;
   public prettyFileName: string;
@@ -53,6 +54,7 @@ export class ImportWalletPage {
   public okText: string;
   public cancelText: string;
   public showAdvOpts: boolean;
+  public title: string;
 
   constructor(
     private app: App,
@@ -90,6 +92,10 @@ export class ImportWalletPage {
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
 
+    this.keyId = this.navParams.data.keyId; // re-import option
+    this.title = !this.keyId
+      ? this.translate.instant('Import Wallet')
+      : this.translate.instant('Re-Import Wallets');
     this.formFile = null;
 
     this.importForm = this.form.group({
@@ -217,6 +223,8 @@ export class ImportWalletPage {
     this.onGoingProcessProvider.set('importingWallet');
     opts.compressed = null;
     opts.password = null;
+
+    opts.keyId = this.keyId;
 
     this.profileProvider
       .importFile(str2, opts)
@@ -428,10 +436,10 @@ export class ImportWalletPage {
       this.showErrorInfoSheet(title, subtitle);
       return;
     }
-    this.createSpecifyingwords(opts);
+    this.createSpecifyingWords(opts);
   }
 
-  private createSpecifyingwords(opts): void {
+  private createSpecifyingWords(opts): void {
     this.logger.debug('Creating from import');
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
@@ -442,21 +450,10 @@ export class ImportWalletPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        if (
-          err &&
-          err.message != 'FINGERPRINT_CANCELLED' &&
-          err.message != 'PASSWORD_CANCELLED'
-        ) {
-          this.logger.error('Create: could not create wallet', err);
-          if (err.message === 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
-          } else {
-            const title = this.translate.instant('Error');
-            err = this.bwcErrorProvider.msg(err);
-            this.showErrorInfoSheet(title, err);
-          }
-        }
-        return;
+        this.logger.error('Create: could not create wallet', err);
+        const title = this.translate.instant('Error');
+        err = this.bwcErrorProvider.msg(err);
+        this.showErrorInfoSheet(title, err);
       });
   }
 
@@ -582,6 +579,7 @@ export class ImportWalletPage {
     }
 
     opts.passphrase = this.importForm.value.passphrase || null;
+    opts.keyId = this.keyId;
 
     const words: string = this.importForm.value.words || null;
 

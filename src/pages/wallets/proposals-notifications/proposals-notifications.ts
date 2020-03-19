@@ -290,7 +290,7 @@ export class ProposalsNotificationsPage {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           if (err.message == 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             const title = this.translate.instant('Error');
             const msg = this.bwcErrorProvider.msg(err);

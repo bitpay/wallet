@@ -287,11 +287,15 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
-      <span sheet-title-text translate>Could not decrypt wallet</span>
-      <span sheet-text translate>
-        Wrong password
+      <span sheet-title-text translate>Wrong password</span>
+      <span sheet-text>
+        <span translate>Forgot your password?</span>
+        <ul>
+          <li translate>Try entering any passwords you may have set in the past</li>
+          <li translate>Remember there are no special requirements for the password (numbers, symbols, etc.)</li>
+          <li translate>You can always reset your encrypt password on your key settings using your 12 words recovery phrase</li>
+        </ul>
       </span>
-      <span sheet-button-text translate>I forgot my password</span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
   </div>

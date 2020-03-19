@@ -73,7 +73,7 @@ export class BackupKeyPage {
         ) {
           const title = this.translate.instant('Could not decrypt wallet');
           if (err.message == 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
           }

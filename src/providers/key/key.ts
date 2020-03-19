@@ -57,12 +57,14 @@ export class KeyProvider {
     });
   }
 
-  public addKey(keyToAdd): Promise<any> {
+  public addKey(keyToAdd, replaceKey?: boolean): Promise<any> {
     if (!keyToAdd) return Promise.resolve();
-    const keyIndex = this.keys.findIndex(k => this.Key.match(keyToAdd, k));
+    const keyIndex = this.keys.findIndex(k => this.isMatch(keyToAdd, k));
 
     if (keyIndex >= 0) {
-      this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
+      // only for encrypt/decrypt
+      if (replaceKey) this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
+      else return Promise.resolve();
     } else {
       this.keys.push(this.Key.fromObj(keyToAdd));
     }
@@ -72,7 +74,7 @@ export class KeyProvider {
 
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
-      if (!this.keys.find(k => this.Key.match(keyToAdd, k))) {
+      if (!this.keys.find(k => this.isMatch(keyToAdd, k))) {
         this.keys.push(this.Key.fromObj(keyToAdd));
         this.isDirty = true;
       } else {
@@ -275,5 +277,12 @@ export class KeyProvider {
     const key = this.getKey(keyId);
 
     return key.sign(rootPath, txp, password);
+  }
+
+  public isMatch(key1, key2) {
+    // return this.Key.match(key1, key2); TODO needs to be fixed on bwc
+    if (key1.fingerPrint && key2.fingerPrint)
+      return key1.fingerPrint === key2.fingerPrint;
+    else return key1.id === key2.id;
   }
 }
