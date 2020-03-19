@@ -122,7 +122,7 @@ describe('NotificationsPage', () => {
 
         instance.pushNotificationsChange();
         const opts = {
-          pushNotificationsEnabled: true
+          pushNotifications: { enabled: true }
         };
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
         expect(instance.pushProvider.init).toHaveBeenCalled();
@@ -134,7 +134,7 @@ describe('NotificationsPage', () => {
 
         instance.pushNotificationsChange();
         const opts = {
-          pushNotificationsEnabled: false
+          pushNotifications: { enabled: false }
         };
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
         expect(instance.pushProvider.disable).toHaveBeenCalled();
@@ -154,7 +154,7 @@ describe('NotificationsPage', () => {
       });
       it('should set push notifications setting correctly', () => {
         const opts = {
-          pushNotificationsEnabled: true
+          pushNotifications: { enabled: true }
         };
         spyOn(instance.configProvider, 'get').and.returnValue(opts);
         instance.updateConfig();
@@ -164,7 +164,7 @@ describe('NotificationsPage', () => {
       it('should set confirmedTxsNotifications to config.confirmedTxsNotifications.enabled if config.confirmedTxsNotifications exists', () => {
         const opts = {
           confirmedTxsNotifications: { enabled: true },
-          pushNotificationsEnabled: true
+          pushNotifications: { enabled: true }
         };
         spyOn(instance.configProvider, 'get').and.returnValue(opts);
 
@@ -173,7 +173,7 @@ describe('NotificationsPage', () => {
       });
       it('should set confirmedTxsNotifications to false if config.confirmedTxsNotifications does not exist', () => {
         const opts = {
-          pushNotificationsEnabled: true
+          pushNotifications: { enabled: true }
         };
         spyOn(instance.configProvider, 'get').and.returnValue(opts);
 

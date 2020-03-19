@@ -42,7 +42,7 @@ export class PushNotificationsProvider {
     if (!this.usePushNotifications || this._token) return;
     this.configProvider.load().then(() => {
       const config = this.configProvider.get();
-      if (!config.pushNotificationsEnabled) return;
+      if (!config.pushNotifications.enabled) return;
 
       this.logger.debug('Starting push notification registration...');
 
