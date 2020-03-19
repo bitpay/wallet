@@ -23,10 +23,10 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ReleaseProvider } from '../../providers/release/release';
+import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
-import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
 export interface Advertisement {
   name: string;
