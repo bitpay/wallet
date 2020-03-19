@@ -35,7 +35,7 @@ export class BitPayIdProvider {
     }
   }
 
-  public init(status: string) {
+  public setNetwork(status: string) {
     this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'

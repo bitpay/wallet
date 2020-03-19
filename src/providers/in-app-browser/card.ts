@@ -25,8 +25,8 @@ import { SimplexProvider } from '../simplex/simplex';
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
-  private NETWORK = Network.testnet;
-  private BITPAY_API_URL = 'https://test.bitpay.com';
+  private NETWORK: string;
+  private BITPAY_API_URL: string;
 
   private _isHidden = true;
   private _pausedState = false;
@@ -49,6 +49,15 @@ export class IABCardProvider {
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider
   ) {}
+
+  public setNetwork(status: string) {
+    this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
+    this.BITPAY_API_URL =
+      this.NETWORK == 'livenet'
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
+    this.logger.log(`card provider initialized with ${this.NETWORK}`);
+  }
 
   async getCards() {
     const json = {

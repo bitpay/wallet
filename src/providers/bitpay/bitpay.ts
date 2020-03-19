@@ -19,7 +19,7 @@ export class BitPayProvider {
     this.logger.debug('BitPayProvider initialized');
   }
 
-  public init(status: string) {
+  public setNetwork(status: string) {
     this.NETWORK = status === 'enabled' ? 'testnet' : 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'
