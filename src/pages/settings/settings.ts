@@ -150,7 +150,7 @@ export class SettingsPage {
         ? this.config.lock.method.toLowerCase()
         : null;
 
-    this.showTotalBalance = this.config.showTotalBalance;
+    this.showTotalBalance = this.config.totalBalance.show;
   }
 
   ionViewDidEnter() {
@@ -341,7 +341,7 @@ export class SettingsPage {
 
   public toggleShowBalanceFlag(): void {
     let opts = {
-      showTotalBalance: this.showTotalBalance
+      totalBalance: { show: this.showTotalBalance }
     };
     this.configProvider.set(opts);
   }

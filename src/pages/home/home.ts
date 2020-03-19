@@ -116,15 +116,17 @@ export class HomePage {
     private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
-    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.subscribeEvents();
   }
 
   async ionViewWillEnter() {
+    const config = this.configProvider.get();
+    this.totalBalanceAlternativeIsoCode =
+      config.wallet.settings.alternativeIsoCode;
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.showTotalBalance = this.configProvider.get().showTotalBalance;
+    this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.setIntegrations();

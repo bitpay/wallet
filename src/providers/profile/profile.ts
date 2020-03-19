@@ -514,7 +514,7 @@ export class ProfileProvider {
   }
 
   private showDesktopNotifications(n, wallet): void {
-    if (!this.configProvider.get().desktopNotificationsEnabled) return;
+    if (!this.configProvider.get().desktopNotifications.enabled) return;
 
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
