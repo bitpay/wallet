@@ -28,19 +28,18 @@
 <action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
   <div action-card-header>
     <div class="bitpay-card-header">
-      <div class="bitpay-card-image">
+      <div class="bitpay-card-image" style="background: #062150">
         <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
-        <img src="assets/img/bitpay-card/bitpay-card.png">
+        <img src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg" style="transform: scale(1.3)">
       </div>
     </div>
   </div>
 
-  <div action-card-title translate *ngIf="!firstViewCardPhases">Start using your crypto</div>
+  <div action-card-title translate *ngIf="!firstViewCardPhases">Something exciting is arriving</div>
   <div action-card-body [clamp]="2" translate>
-    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere
-    that accepts Visa®
+    Join the waitlist and be first<br> to experience the new card.
   </div>
 
-  <div action-card-button translate>Get Started</div>
+  <div action-card-button translate>Notify me</div>
 
 </action-card-v4>

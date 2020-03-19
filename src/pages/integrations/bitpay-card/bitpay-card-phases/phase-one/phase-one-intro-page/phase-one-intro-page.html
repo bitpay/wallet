@@ -38,10 +38,10 @@
         <div class="phaseOne__content">
             <div>
                 <div class="phaseOne__content__title">
-                    <span translate>Something exciting is arriving soon.</span>
+                    <span translate>Something exciting is arriving</span>
                 </div>
                 <p class="phaseOne__content__description" translate>
-                    Join the list and be the first to experience our brand new card.
+                    Join the waitlist and be the first to experience our new card.
                 </p>
             </div>
 
@@ -98,11 +98,7 @@
             <ng-template #main>
                 <div class="phaseOne__ctas" *ngIf="!joinWaitlist" @fade>
                     <button ion-button class="button-standard" (click)="joinList()">
-                        {{'Join the Waitlist' | translate}}
-                    </button>
-                    <button ion-button class="button-standard phaseOne__footer__secondary-button" color="light"
-                            (click)="orderBitPayCard()">
-                        {{'I still want to order the current card' | translate}}
+                        {{'Continue' | translate}}
                     </button>
                     <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
                         {{'Pair My BitPay Card' | translate}}

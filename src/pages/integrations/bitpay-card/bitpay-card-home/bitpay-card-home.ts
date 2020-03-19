@@ -5,7 +5,7 @@ import { NavController } from 'ionic-angular';
 import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
-import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
+import { BitPayCardPage } from '../bitpay-card';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 

@@ -23,7 +23,7 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ReleaseProvider } from '../../providers/release/release';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
@@ -212,13 +212,13 @@ export class HomePage {
     !alreadyVisible &&
       this.advertisements.unshift({
         name: 'bitpay-card',
-        title: this.translate.instant('Get a BitPay Card'),
+        title: this.translate.instant('Coming soon'),
         body: this.translate.instant(
-          'Leverage your crypto with a reloadable BitPay card.'
+          'Join the waitlist and be first to experience the new card.'
         ),
         app: 'bitpay',
-        linkText: this.translate.instant('Order now'),
-        link: BitPayCardIntroPage,
+        linkText: this.translate.instant('Notify Me'),
+        link: PhaseOneCardIntro,
         dismissible: true,
         imgSrc: 'assets/img/icon-bpcard.svg'
       });
