@@ -246,8 +246,9 @@ export class CopayApp {
     if (experiment === 'enabled') {
       this.NETWORK = 'testnet';
     }
-    this.bitpayProvider.init(experiment);
-    this.bitpayIdProvider.init(experiment);
+    this.bitpayProvider.setNetwork(this.NETWORK);
+    this.bitpayIdProvider.setNetwork(this.NETWORK);
+    this.iabCardProvider.setNetwork(this.NETWORK);
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
