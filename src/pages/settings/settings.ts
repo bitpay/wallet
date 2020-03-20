@@ -137,9 +137,6 @@ export class SettingsPage {
     };
     const wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
-    this.walletsGroups = _.sortBy(this.walletsGroups, walletGroup => {
-      return +this.profileProvider.walletsGroups[walletGroup[0].keyId].order;
-    });
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,

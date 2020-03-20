@@ -145,6 +145,9 @@ export class SelectCurrencyPage {
       .then(wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
+        this.profileProvider.setNewWalletGroupOrder(
+          wallets[0].credentials.keyId
+        );
         this.endProcess();
       })
       .catch(e => {

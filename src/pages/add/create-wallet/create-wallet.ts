@@ -323,6 +323,7 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        this.profileProvider.setNewWalletGroupOrder(wallet.credentials.keyId);
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
