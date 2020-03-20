@@ -262,7 +262,21 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    this.navCtrl.push(BitPaySettingsPage, { id });
+    this.persistanceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        const message = `openSettings?${id}`;
+        this.iabCardProvider.sendMessage(
+          {
+            message
+          },
+          () => {
+            this.iabCardProvider.show();
+          }
+        );
+      } else {
+        this.navCtrl.push(BitPaySettingsPage, { id });
+      }
+    });
   }
 
   public openGiftCardsSettings() {
