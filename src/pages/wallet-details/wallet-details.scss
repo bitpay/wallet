@@ -67,6 +67,11 @@ page-wallet-details {
     cursor: pointer;
     font-size: 38px;
     font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    img {
+      margin-left: 50px;
+    }
   }
 
   .balance-alt-str {
