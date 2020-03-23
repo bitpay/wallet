@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 @Pipe({
-  name: 'shortenedAdrress',
+  name: 'shortenedAddress',
   pure: false
 })
 export class ShortenedAddressPipe implements PipeTransform {

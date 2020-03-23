@@ -3,6 +3,7 @@ import { ActionCardComponent } from './action-card/action-card';
 import { ACTION_SHEET_COMPONENTS } from './action-sheets';
 import { AddButtonComponent } from './add-button/add-button';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
+import { BalanceToShowComponent } from './balance-to-show/balance-to-show';
 import { ClipboardCardPage } from './clipboard-card/clipboard-card';
 import { CoinIconComponent } from './coin-icon/coin-icon';
 import { ExchangeRates } from './exchange-rates/exchange-rates';
@@ -25,5 +26,6 @@ export const COMPONENTS = [
   ClipboardCardPage,
   SearchBarComponent,
   ExchangeRates,
-  CoinIconComponent
+  CoinIconComponent,
+  BalanceToShowComponent
 ];
