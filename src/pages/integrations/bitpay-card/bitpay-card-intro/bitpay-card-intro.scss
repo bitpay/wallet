@@ -38,7 +38,6 @@ page-bitpay-card-intro {
 
   .bitpayCard {
     &-header {
-      background: linear-gradient(180deg, #ffffff 0%, #e2e5f2 100%);
       /*  TODO  border-radius: 0 0 65% 25%;*/
       overflow: hidden;
       text-align: center;
@@ -93,6 +92,11 @@ page-bitpay-card-intro {
       p {
         padding-left: 64px;
       }
+    }
+    &__agreement {
+      margin: 50px 0 100px 0;
+      font-size: 11px;
+      color: #626262;
     }
   }
 }

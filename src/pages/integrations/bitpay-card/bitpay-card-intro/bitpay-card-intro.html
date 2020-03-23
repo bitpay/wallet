@@ -1,24 +1,12 @@
 <ion-header no-border>
   <ion-navbar>
-    <ion-buttons right>
-      <button class="info" ion-button icon-only (click)="bitPayCardInfo()">
-        <ion-icon name="information-circle"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content no-bounce>
   <div class="bitpayCard-header" [class.bitpayCard-header--new]="cardExperimentEnabled">
-    <div class="bitpayCard-img" [class.bitpayCard-img--new]="cardExperimentEnabled">
-
-      <ng-container *ngIf="cardExperimentEnabled else regular">
-        <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg" />
-      </ng-container>
-      <ng-template #regular>
-        <img src="assets/img/bitpay-card/bitpay-card.png" />
-      </ng-template>
-
+    <div class="bitpayCard-img">
+      <img src="assets/img/bitpay-card/bitpay-card-mc-angled.svg" />
     </div>
   </div>
   <div class="bitpayCard-content">
@@ -28,37 +16,47 @@
         <br>
         <span translate>Live on crypto.</span>
       </div>
-      <p translate>Get one of the fastest, easiest ways to turn your cryptocurrency into dollars for Visa® shopping.</p>
+      <p translate>The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the BitPay App and spend in minutes.</p>
     </div>
 
     <div>
       <div class="bitpayCard-item">
         <div class="bitpayCard-item-header">
           <img src="assets/img/bitpay-card/bitpay-card-intro-1.svg" />
-          <div class="bitpayCard-item-title" translate>Crypto to dollars in no time flat</div>
+          <div class="bitpayCard-item-title" translate>Instant Reloads</div>
         </div>
-        <p translate>Load dollars in the BitPay app, or from any compatible crypto wallet.</p>
+        <p translate>Reload your balance with no conversion fees* and spend. Powered by our competitive <a (click)="openExchangeRates()">exchange rates</a>.</p>
       </div>
       <div class="bitpayCard-item">
         <div class="bitpayCard-item-header">
           <img src="assets/img/bitpay-card/bitpay-card-intro-2.svg" />
-          <div class="bitpayCard-item-title" translate>Shop anytime, around the world</div>
+          <div class="bitpayCard-item-title" translate>Flexibility</div>
         </div>
-        <p translate>Use your BitPay Card with any retailer that accepts Visa®.</p>
+        <p translate>Designed for people who want to live life on crypto. View your balance, request a new PIN, and top-up instantly all within the BitPay App.</p>
       </div>
       <div class="bitpayCard-item">
         <div class="bitpayCard-item-header">
           <img src="assets/img/bitpay-card/bitpay-card-intro-3.svg" />
-          <div class="bitpayCard-item-title" translate>Manage your card on-the-go</div>
+          <div class="bitpayCard-item-title" translate>Enhanced Security</div>
         </div>
-        <p translate>Get detailed information for all transaction activity and reload dollars from the app.</p>
+        <p translate>Includes EMV chip and options to lock your card and control how you spend.</p>
+      </div>
+      <div class="bitpayCard-item">
+        <div class="bitpayCard-item-header">
+          <img src="assets/img/bitpay-card/bitpay-card-intro-4.svg" />
+          <div class="bitpayCard-item-title" translate>Worldwide</div>
+        </div>
+        <p translate>Ready to use in millions of locations around the world. Pay with contactless, PIN or simply withdraw cash from any compatible ATM.</p>
+      </div>
+      <div class="bitpayCard__agreement">
+        *Network fees and miner fees may apply.<br><br>
+        BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE SCHEDULE, IF ANY. This card is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from Mastercard International Incorporated. “Metropolitan Commercial Bank” and “Metropolitan” are registered trademarks of Metropolitan Commercial Bank ©2014.
       </div>
 
     </div>
   </div>
 </ion-content>
 
-<ng-container *ngIf="cardExperimentEnabled else reg">
   <ion-footer>
     <ion-toolbar>
       <button ion-button class="button-standard" (click)="orderBitPayCard()">
@@ -66,19 +64,5 @@
       </button>
     </ion-toolbar>
   </ion-footer>
-</ng-container>
-
-<ng-template #reg>
-  <ion-footer>
-    <ion-toolbar>
-      <button ion-button class="button-standard" (click)="orderBitPayCard()">
-        {{'Order Now' | translate}}
-      </button>
-      <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
-        {{'I already have a BitPay Card' | translate}}
-      </button>
-    </ion-toolbar>
-  </ion-footer>
-</ng-template>
 
 
