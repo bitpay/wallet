@@ -77,6 +77,10 @@
   color: #464d5f;
 }
 
+.tab-badge {
+  font-family: Heebo !important;
+}
+
 @include makeIcon(tab-scan, '\e900', 16px);
 @include makeIcon(tab-button-back, '\e905', 17px);
 @include makeIcon(tab-receive, '\e902');

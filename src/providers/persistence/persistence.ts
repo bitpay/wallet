@@ -753,6 +753,14 @@ export class PersistenceProvider {
     return this.storage.get(Keys.BITPAY_ID_SETTINGS(network));
   }
 
+  setCardNotificationBadge(value) {
+    return this.storage.set('cardNotificationBadge', value);
+  }
+
+  getCardNotificationBadge() {
+    return this.storage.get('cardNotificationBadge');
+  }
+
   removeBitPayIdSettings(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_SETTINGS(network));
   }
