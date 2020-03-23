@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
+    "no-console": false,
     // "interface-name": [true, "never-prefix"],
     "no-submodule-imports": [
       true,
@@ -10,9 +11,7 @@
       "ts-md5/dist/md5",
       "ionic-angular/gestures/gesture"
     ],
-
     // "no-any": true,
-
     // Temporarily relax rules
     "member-ordering": false,
     "variable-name": false,

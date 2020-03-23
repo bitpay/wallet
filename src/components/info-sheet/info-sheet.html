@@ -316,5 +316,14 @@
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'speed-up-tx'" type="warning">
+      <span sheet-title-text translate>Something wrong!</span>
+      <span sheet-text translate>
+        This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee.
+      </span>
+      <span sheet-button-text translate>Speed up transaction</span>
+      <span sheet-second-button-text translate>View details</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

@@ -413,4 +413,11 @@ page-wallet-details {
       margin-left: 5px;
     }
   }
+  .ion-ios-alert-outline:before {
+    color: color($colors, warning);
+    font-size: 44px;
+  }
+  .unconfirmedTx {
+    background-color: color($background-colors, warning);
+  }
 }

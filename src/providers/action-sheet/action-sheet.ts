@@ -49,7 +49,8 @@ export type InfoSheetType =
   | 'new-key'
   | 'wrong-encrypt-password'
   | 'bch-legacy-warning-1'
-  | 'bch-legacy-warning-2';
+  | 'bch-legacy-warning-2'
+  | 'speed-up-tx';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -82,7 +83,7 @@ export interface ChooseFeeLevelParams {
 }
 @Injectable()
 export class ActionSheetProvider {
-  constructor(private domProvider: DomProvider) {}
+  constructor(private domProvider: DomProvider) { }
 
   public createOptionsSheet(
     type: OptionsSheetType,
@@ -158,7 +159,7 @@ export class ActionSheetProvider {
   }
 
   private setupSheet<T extends ActionSheetParent>(
-    componentType: { new (...args): T },
+    componentType: { new(...args): T },
     sheetType?: string,
     params?
   ): ComponentRef<T> {

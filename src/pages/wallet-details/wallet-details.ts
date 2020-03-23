@@ -11,6 +11,7 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -31,6 +32,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
+// import { ConfirmPage } from '../../pages/send/confirm/confirm';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -272,6 +274,8 @@ export class WalletDetailsPage {
       });
 
       if (!action && txp.status == 'pending') {
+        // tslint:disable-next-line:no-console
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         this.txpsPending.push(txp);
       }
 
@@ -445,6 +449,38 @@ export class WalletDetailsPage {
       });
   }
 
+  public itemTapped(tx) {
+    if (this.isUnconfirmed(tx)) {
+      this.goToTxDetails(tx);
+    } else {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    }
+  }
+
+  private speedUpTx(tx) {
+    const data = {
+      amount: tx.amount,
+      network: this.wallet.network,
+      coin: this.wallet.coin,
+      speedUpTx: true,
+      toAddress: tx.addressTo,
+      walletId: this.wallet.credentials.walletId,
+      fromWalletDetails: true,
+      txid: tx.txid
+    };
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@TX', tx);
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@wallet', this.wallet);
+    const nextView = {
+      name: 'ConfirmPage',
+      params: data
+    }
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
   public goToTxDetails(tx) {
     const txDetailModal = this.modalCtrl.create(TxDetailsModal, {
       walletId: this.wallet.credentials.walletId,
@@ -509,8 +545,16 @@ export class WalletDetailsPage {
     return this.timeProvider.withinPastDay(time);
   }
 
-  public isUnconfirmed(tx) {
-    return !tx.confirmations || tx.confirmations === 0;
+  public isUnconfirmed(tx): boolean {
+    if (this.wallet.coin !== 'btc') return false;
+
+    const currentTime = moment();
+    const txTime = moment(tx.time * 1000);
+
+    return (
+      currentTime.diff(txTime, 'seconds') >= 1 &&
+      (!tx.confirmations || tx.confirmations === 0)
+    );
   }
 
   public openBalanceDetails(): void {
