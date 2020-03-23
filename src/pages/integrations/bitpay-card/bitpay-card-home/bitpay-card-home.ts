@@ -29,7 +29,7 @@ export class BitPayCardHome implements OnInit {
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    for(let card of this.bitpayCardItems) {
+    for (let card of this.bitpayCardItems) {
       if (card.provider === 'galileo') {
         this.disableAddCard = true;
         break;

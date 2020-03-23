@@ -59,9 +59,9 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
-    this.persistenceProvider.getCardNotificationBadge().then( status => {
+    this.persistenceProvider.getCardNotificationBadge().then(status => {
       if (status === 'disabled') {
-       this.cardNotificationBadgeText = null;
+        this.cardNotificationBadgeText = null;
       }
     });
   }
