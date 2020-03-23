@@ -16,6 +16,7 @@ import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-int
 export class BitPayCardHome implements OnInit {
   public appName: string;
   public firstViewCardPhases: string;
+  public disableAddCard: boolean;
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
@@ -28,6 +29,12 @@ export class BitPayCardHome implements OnInit {
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
+    for(let card of this.bitpayCardItems) {
+      if (card.provider === 'galileo') {
+        this.disableAddCard = true;
+        break;
+      }
+    }
   }
 
   public goToBitPayCardIntroPage() {

@@ -19,7 +19,7 @@
     <div class="slit"></div>
   </div>
 </div>
-<div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length">
+<div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard">
   <add-button (click)="goToBitPayCardIntroPage()" tappable>
     <div add-button-text translate>Add BitPay Card</div>
   </add-button>
