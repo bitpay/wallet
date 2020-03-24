@@ -838,7 +838,7 @@ export class BitPayCardTopUpPage {
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: 'From'
+      title: this.translate.instant('From')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params

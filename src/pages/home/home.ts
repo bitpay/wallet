@@ -58,32 +58,7 @@ export class HomePage {
   public serverMessages: any[];
   public showServerMessage: boolean;
   public showAdvertisements: boolean;
-  public advertisements: Advertisement[] = [
-    {
-      name: 'merchant-directory',
-      title: this.translate.instant('Merchant Directory'),
-      body: this.translate.instant(
-        'Learn where you can spend your crypto today.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('View Directory'),
-      link: 'https://bitpay.com/directory/?hideGiftCards=true',
-      imgSrc: 'assets/img/icon-merch-dir.svg',
-      dismissible: true
-    },
-    {
-      name: 'amazon-gift-cards',
-      title: this.translate.instant('Shop at Amazon'),
-      body: this.translate.instant(
-        'Leverage your crypto with an amazon.com gift card.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Buy Now'),
-      link: CardCatalogPage,
-      imgSrc: 'assets/img/amazon.svg',
-      dismissible: true
-    }
-  ];
+  public advertisements: Advertisement[] = [];
   public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
@@ -127,6 +102,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
+    this.setAdvertisements();
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
@@ -141,6 +117,36 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.preFetchWallets();
+  }
+
+  private setAdvertisements() {
+    if (this.advertisements.length > 0) return;
+    this.advertisements.push(
+      {
+        name: 'merchant-directory',
+        title: this.translate.instant('Merchant Directory'),
+        body: this.translate.instant(
+          'Learn where you can spend your crypto today.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('View Directory'),
+        link: 'https://bitpay.com/directory/?hideGiftCards=true',
+        imgSrc: 'assets/img/icon-merch-dir.svg',
+        dismissible: true
+      },
+      {
+        name: 'amazon-gift-cards',
+        title: this.translate.instant('Shop at Amazon'),
+        body: this.translate.instant(
+          'Leverage your crypto with an amazon.com gift card.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Buy Now'),
+        link: CardCatalogPage,
+        imgSrc: 'assets/img/amazon.svg',
+        dismissible: true
+      }
+    );
   }
 
   private getCachedTotalBalance() {
