@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, IABCardProvider } from '../../../../providers';
+import { AppProvider, IABCardProvider, PersistenceProvider } from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../bitpay-card';
@@ -24,17 +24,21 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private events: Events,
+    private persistenceProvider: PersistenceProvider
   ) {}
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    for (let card of this.bitpayCardItems) {
-      if (card.provider === 'galileo') {
+    this.events.subscribe('reachedCardLimit', () => {
+      this.disableAddCard = true;
+    });
+    this.persistenceProvider.getReachedCardLimit().then( (status) => {
+      if(status) {
         this.disableAddCard = true;
-        break;
       }
-    }
+    });
   }
 
   public goToBitPayCardIntroPage() {

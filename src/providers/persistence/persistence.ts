@@ -786,6 +786,13 @@ export class PersistenceProvider {
   removeWaitingListStatus() {
     return this.storage.remove('waitingListStatus');
   }
+
+  setReachedCardLimit(reachedCardLimit: boolean) {
+    return this.storage.set('reachedCardLimit', reachedCardLimit);
+  }
+  getReachedCardLimit() {
+    return this.storage.get('reachedCardLimit');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {

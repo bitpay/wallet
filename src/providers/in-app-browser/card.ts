@@ -82,7 +82,8 @@ export class IABCardProvider {
           const cards = [];
 
           data.forEach(card => {
-            const { eid, id, lastFourDigits, token } = card;
+
+            const { eid, id, lastFourDigits, token, status, provider } = card;
 
             if (!eid || !id || !lastFourDigits || !token) {
               this.logger.warn(
@@ -95,13 +96,23 @@ export class IABCardProvider {
               eid,
               id,
               lastFourDigits,
-              token
+              token,
+              status,
+              provider
             });
           });
 
           const user = await this.persistenceProvider.getBitPayIdUserInfo(
             Network[this.NETWORK]
           );
+
+          for (let card of cards) {
+            if (card.provider === 'galileo') {
+              this.persistenceProvider.setReachedCardLimit(true);
+              this.events.publish('reachedCardLimit');
+              break;
+            }
+          }
 
           await this.persistenceProvider.setBitpayDebitCards(
             Network[this.NETWORK],

@@ -31,7 +31,7 @@ export class TabsPage {
   tabs;
 
   public txpsN: number;
-  public cardNotificationBadgeText = 'New';
+  public cardNotificationBadgeText;
   private totalBalanceAlternative = '0';
   private totalBalanceAlternativeIsoCode = 'USD';
   private averagePrice = 0;
@@ -59,9 +59,14 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
-    this.persistenceProvider.getCardNotificationBadge().then(status => {
-      if (status === 'disabled') {
-        this.cardNotificationBadgeText = null;
+    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+      if (status === 'enabled') {
+        this.cardNotificationBadgeText = 'New';
+        this.persistenceProvider.getCardNotificationBadge().then( badgeStatus => {
+          if (badgeStatus === 'disabled') {
+            this.cardNotificationBadgeText = null;
+          }
+        });
       }
     });
   }
@@ -75,8 +80,12 @@ export class TabsPage {
   }
 
   disableCardNotificationBadge() {
-    this.cardNotificationBadgeText = null;
-    this.persistenceProvider.setCardNotificationBadge('disabled');
+    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+      if (status === 'enabled') {
+        this.cardNotificationBadgeText = null;
+        this.persistenceProvider.setCardNotificationBadge('disabled');
+      }
+    });
   }
 
   updateTxps() {
