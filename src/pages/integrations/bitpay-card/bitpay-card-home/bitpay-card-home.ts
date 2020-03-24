@@ -1,8 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, IABCardProvider } from '../../../../providers';
+import {
+  AppProvider,
+  IABCardProvider,
+  PersistenceProvider
+} from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../bitpay-card';
@@ -16,6 +20,7 @@ import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-int
 export class BitPayCardHome implements OnInit {
   public appName: string;
   public firstViewCardPhases: string;
+  public disableAddCard: boolean;
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
@@ -23,11 +28,21 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private events: Events,
+    private persistenceProvider: PersistenceProvider
   ) {}
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
+    this.events.subscribe('reachedCardLimit', () => {
+      this.disableAddCard = true;
+    });
+    this.persistenceProvider.getReachedCardLimit().then(limitReached => {
+      if (limitReached) {
+        this.disableAddCard = true;
+      }
+    });
   }
 
   public goToBitPayCardIntroPage() {

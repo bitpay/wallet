@@ -108,6 +108,11 @@ export class BitPayCardIntroPage {
     this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
   }
 
+  public openExchangeRates() {
+    let url = 'https://bitpay.com/exchange-rates';
+    this.externalLinkProvider.open(url);
+  }
+
   public bitPayCardInfo() {
     let url = 'https://bitpay.com/visa/faq';
     this.externalLinkProvider.open(url);

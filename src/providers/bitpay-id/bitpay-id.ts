@@ -131,6 +131,7 @@ export class BitPayIdProvider {
               const { email, familyName, givenName } = data;
 
               await Promise.all([
+                this.persistenceProvider.setReachedCardLimit(false),
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data

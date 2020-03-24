@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 // Providers
+import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
@@ -29,7 +30,8 @@ export class CardsPage {
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
-    private tabProvider: TabProvider
+    private tabProvider: TabProvider,
+    private events: Events
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
@@ -45,6 +47,15 @@ export class CardsPage {
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
     await this.fetchAllCards();
+    if (this.bitpayCardItems) {
+      for (let card of this.bitpayCardItems) {
+        if (card.provider === 'galileo') {
+          this.persistenceProvider.setReachedCardLimit(true);
+          this.events.publish('reachedCardLimit');
+          break;
+        }
+      }
+    }
     this.ready = true;
   }
 

@@ -22,7 +22,7 @@ try {
   const content = fs
     .readFileSync(file, 'utf8')
     .split('#define    LOCATIONBAR_HEIGHT 21.0');
-  if (content.includes('20.0')) {
+  if (content[0].includes('20.0')) {
     const result =
       content[0].replace(/20.0/g, '0') +
       '#define    LOCATIONBAR_HEIGHT 21.0' +

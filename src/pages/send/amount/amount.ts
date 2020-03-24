@@ -23,7 +23,11 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
+import {
+  ActionSheetProvider,
+  GiftCardProvider,
+  IABCardProvider
+} from '../../../providers';
 import { getActivationFee } from '../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -101,7 +105,8 @@ export class AmountPage {
     private events: Events,
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private iabCardProvider: IABCardProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -179,6 +184,9 @@ export class AmountPage {
 
   ionViewWillLeave() {
     this._disableHardwareKeyboard();
+    if (this.navParams.get('card') === 'v2') {
+      this.iabCardProvider.show();
+    }
   }
 
   private walletDisableHardwareKeyboardHandler: any = () => {

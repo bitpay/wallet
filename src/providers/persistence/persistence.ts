@@ -753,6 +753,14 @@ export class PersistenceProvider {
     return this.storage.get(Keys.BITPAY_ID_SETTINGS(network));
   }
 
+  setCardNotificationBadge(value) {
+    return this.storage.set('cardNotificationBadge', value);
+  }
+
+  getCardNotificationBadge() {
+    return this.storage.get('cardNotificationBadge');
+  }
+
   removeBitPayIdSettings(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_SETTINGS(network));
   }
@@ -777,6 +785,13 @@ export class PersistenceProvider {
   }
   removeWaitingListStatus() {
     return this.storage.remove('waitingListStatus');
+  }
+
+  setReachedCardLimit(reachedCardLimit: boolean) {
+    return this.storage.set('reachedCardLimit', reachedCardLimit);
+  }
+  getReachedCardLimit() {
+    return this.storage.get('reachedCardLimit');
   }
 }
 

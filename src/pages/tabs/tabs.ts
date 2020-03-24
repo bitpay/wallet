@@ -31,7 +31,7 @@ export class TabsPage {
   tabs;
 
   public txpsN: number;
-
+  public cardNotificationBadgeText;
   private totalBalanceAlternative = '0';
   private totalBalanceAlternativeIsoCode = 'USD';
   private averagePrice = 0;
@@ -59,6 +59,18 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        this.cardNotificationBadgeText = 'New';
+        this.persistenceProvider
+          .getCardNotificationBadge()
+          .then(badgeStatus => {
+            if (badgeStatus === 'disabled') {
+              this.cardNotificationBadgeText = null;
+            }
+          });
+      }
+    });
   }
 
   ngOnInit() {
@@ -66,6 +78,15 @@ export class TabsPage {
       // [0] BitPay Cards
       // [1] Gift Cards
       this.events.publish('Local/FetchCards', data[0]);
+    });
+  }
+
+  disableCardNotificationBadge() {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        this.cardNotificationBadgeText = null;
+        this.persistenceProvider.setCardNotificationBadge('disabled');
+      }
     });
   }
 
