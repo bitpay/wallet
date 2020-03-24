@@ -2,10 +2,12 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
-  NgZone
+  NgZone,
+  ViewChild
 } from '@angular/core';
 import {
   Events,
+  Navbar,
   NavController,
   NavParams,
   ViewController
@@ -92,6 +94,8 @@ export class AmountPage {
 
   private fromCoinbase;
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
@@ -159,6 +163,12 @@ export class AmountPage {
   }
 
   async ionViewDidLoad() {
+    this.navBar.backButtonClick = () => {
+      if (this.navParams.get('card') === 'v2') {
+        this.iabCardProvider.show();
+      }
+      this.navCtrl.pop();
+    };
     this.setAvailableUnits();
     this.updateUnitUI();
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
@@ -188,9 +198,6 @@ export class AmountPage {
 
   ionViewWillLeave() {
     this._disableHardwareKeyboard();
-    if (this.navParams.get('card') === 'v2') {
-      this.iabCardProvider.show();
-    }
   }
 
   private walletDisableHardwareKeyboardHandler: any = () => {
