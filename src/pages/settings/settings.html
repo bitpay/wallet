@@ -110,18 +110,12 @@
 
       <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)">
         <button ion-item [attr.detail-none]="showReorder ? true : null" *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
-          <ion-icon *ngIf="walletsGroup[0].canSign" class="item-img icon-settings" item-start>
+          <ion-icon class="item-img icon-settings" item-start>
             <img src="assets/img/settings-icons/icon-key.svg" />
           </ion-icon>
-          <ion-icon *ngIf="!walletsGroup[0].canSign" class="item-img icon-settings" item-start>
-            <img src="assets/img/settings-icons/icon-read-only.svg" width="26" />
-          </ion-icon>
           <ion-label>
-            <div class="main-label" *ngIf="walletsGroup[0].canSign">
+            <div class="main-label">
               <span>{{profileProvider.getWalletGroup(walletsGroup[0].keyId).name}}</span>
-            </div>
-            <div class="main-label" *ngIf="!walletsGroup[0].canSign" translate>
-              Read Only Wallets
             </div>
           </ion-label>
           <ion-note *ngIf="walletsGroup.length == 1" item-end>
@@ -132,6 +126,23 @@
           </ion-note>
         </button>
       </ion-list>
+
+      <button ion-item (click)="openWalletGroupSettings(readOnlyWalletsGroup[0].keyId)" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-read-only.svg" width="26" />
+        </ion-icon>
+        <ion-label>
+          <div class="main-label" translate>
+            Read Only
+          </div>
+        </ion-label>
+        <ion-note *ngIf="readOnlyWalletsGroup.length == 1" item-end>
+          {{'{walletsGroupLength} Wallet' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
+        </ion-note>
+        <ion-note *ngIf="readOnlyWalletsGroup.length > 1" item-end>
+          {{'{walletsGroupLength} Wallets' | translate:{walletsGroupLength: readOnlyWalletsGroup.length} }}
+        </ion-note>
+      </button>
 
       <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
         {{ 'Create or Import a Key' | translate }}

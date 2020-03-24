@@ -156,6 +156,17 @@ export class ProfileProvider {
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
   }
 
+  public setNewWalletGroupOrder(newWalletKeyId: string): void {
+    const promises = [];
+    Object.keys(this.walletsGroups).forEach(keyId => {
+      promises.push(this.getWalletGroupOrder(keyId));
+    });
+    Promise.all(promises).then(order => {
+      const index = !_.max(order) ? 0 : +_.max(order) + 1;
+      this.setWalletGroupOrder(newWalletKeyId, index);
+    });
+  }
+
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
@@ -1744,12 +1755,26 @@ export class ProfileProvider {
   public getWallets(opts?) {
     const wallets = [];
     opts = opts || {};
-    // workaround to get wallets in the correct order
-    Object.keys(this.walletsGroups).forEach(keyId => {
-      opts.keyId = keyId;
+    // workaround to get wallets and wallets groups in the correct order
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      opts.keyId = walletsGroup.key;
       wallets.push(this.getWalletsFromGroup(opts));
     });
     return _.flatten(wallets);
+  }
+
+  private getOrderedWalletsGroups() {
+    let walletsGroups = [];
+    for (let key in this.walletsGroups) {
+      walletsGroups.push({
+        key,
+        value: this.walletsGroups[key]
+      });
+    }
+    const orderedWalletsGroups = _.sortBy(walletsGroups, walletGroup => {
+      return +walletGroup.value.order;
+    });
+    return orderedWalletsGroups;
   }
 
   public getWalletsFromGroup(opts) {
