@@ -38,8 +38,8 @@ export class BitPayCardHome implements OnInit {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
-    this.persistenceProvider.getReachedCardLimit().then(status => {
-      if (status) {
+    this.persistenceProvider.getReachedCardLimit().then(limitReached => {
+      if (limitReached) {
         this.disableAddCard = true;
       }
     });
