@@ -31,6 +31,7 @@ import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
+import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
@@ -113,6 +114,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     platformProvider: PlatformProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
+    coinbaseProvider: CoinbaseProvider,
     appProvider: AppProvider
   ) {
     super(
@@ -142,6 +144,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       clipboardProvider,
       events,
+      coinbaseProvider,
       appProvider
     );
     this.configWallet = this.configProvider.get().wallet;

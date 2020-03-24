@@ -52,6 +52,7 @@ export class HomeIntegrationsProvider {
     name: string;
     show: boolean;
     linked: boolean;
+    oldLinked?: boolean;
     type: string;
   }> {
     return _.orderBy(this.services, ['name'], ['asc']);

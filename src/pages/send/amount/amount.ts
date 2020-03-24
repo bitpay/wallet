@@ -32,12 +32,13 @@ import { getActivationFee } from '../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
-import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
-import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
+
+import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
+
 @Component({
   selector: 'page-amount',
   templateUrl: 'amount.html'
@@ -89,6 +90,8 @@ export class AmountPage {
   public cardName: string;
   public cardConfig: CardConfig;
 
+  private fromCoinbase;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
@@ -124,6 +127,7 @@ export class AmountPage {
     this.onlyIntegers = this.navParams.data.onlyIntegers
       ? this.navParams.data.onlyIntegers
       : false;
+    this.fromCoinbase = this.navParams.data.fromCoinbase;
 
     this.showSendMax = false;
     this.useSendMax = false;
@@ -145,10 +149,10 @@ export class AmountPage {
       this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
-    // BitPay Card ID or Wallet ID
+    // BitPay Card ID or Wallet ID or Coinbase Account ID
     this._id = this.navParams.data.id;
 
-    // Use only with ShapeShift
+    // Use only with ShapeShift and Coinbase Withdraw
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.cardName = this.navParams.get('cardName');
@@ -304,18 +308,16 @@ export class AmountPage {
       case 'ConfirmCardPurchasePage':
         nextPage = ConfirmCardPurchasePage;
         break;
-      case 'BuyCoinbasePage':
-        nextPage = BuyCoinbasePage;
-        break;
-      case 'SellCoinbasePage':
-        nextPage = SellCoinbasePage;
-        break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = false; // Disabled for now
         nextPage = ShapeshiftConfirmPage;
+        break;
+      case 'CoinbaseWithdrawPage':
+        this.showSendMax = false;
+        nextPage = CoinbaseWithdrawPage;
         break;
       default:
         this.showSendMax = true;
@@ -562,7 +564,8 @@ export class AmountPage {
         coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
-        cardName: this.cardName
+        cardName: this.cardName,
+        description: this.description
       };
     } else {
       let amount = _amount;
@@ -578,7 +581,8 @@ export class AmountPage {
         color: this.color,
         coin,
         useSendMax: this.useSendMax,
-        description: this.description
+        description: this.description,
+        fromCoinbase: this.fromCoinbase
       };
 
       if (unit.isFiat) {

@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Confirm Payment' | translate}}" [hasSlideButton]="!hideSlideButton && isCordova">
+<wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
   <div page-content>
     <ion-list *ngIf="tx" class="bp-list">
       <ion-item class="sub-title">
@@ -10,14 +10,15 @@
       <ion-item>
         <ion-label>
           <div class="summary-item">
-            <span translate>Sending to</span>
+            <span *ngIf="tx.recipientType != 'coinbase'" translate>Sending to</span>
+            <span *ngIf="tx.recipientType == 'coinbase'" translate>Transfer to</span>
           </div>
         </ion-label>
 
         <ion-note item-end>
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
-            <div class="background-content" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
-              <img class="coin-img" *ngIf="!tx.paypro" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+            <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
+              <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
               <span *ngIf="!tx.name">{{tx.origToAddress | shortenedAddress}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
@@ -28,6 +29,11 @@
               <ion-icon *ngIf="!tx.paypro.verified" name="unlock" color="danger"></ion-icon>
 
               <span>{{tx.paypro.host || tx.paypro.toAddress}}</span>
+            </div>
+
+            <div *ngIf="!tx.paypro && fromCoinbase">
+              <img class="coin-img" src="assets/img/coinbase/coinbase-icon.png">
+              <span class="ellipsis">{{ fromCoinbase.accountName }}</span>
             </div>
           </div>
 
@@ -54,6 +60,18 @@
                 <span class="note-container ellipsis" *ngIf="tx.name && !showAddress">{{tx.name}}</span>
                 <span class="note-container ellipsis" *ngIf="tx.name && showAddress" copy-to-clipboard="{{ tx.toAddress }}">{{tx.toAddress}}</span>
               </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="wallet" *ngIf="tx.recipientType == 'coinbase'">
+            <ion-col>
+              <ion-icon item-start>
+                <img src="assets/img/coinbase/coinbase-icon.png" width="32">
+              </ion-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="ellipsis">Coinbase: {{ fromCoinbase?.accountName }}</span>
             </ion-col>
           </ion-row>
 

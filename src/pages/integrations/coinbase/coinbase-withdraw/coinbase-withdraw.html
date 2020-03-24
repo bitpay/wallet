@@ -1,0 +1,87 @@
+<wide-header-page title="{{ 'Confirm Withdraw' | translate }}" [hasSlideButton]="!hideSlideButton && isCordova">
+  <div page-content>
+  <ion-list class="bp-list">
+    <ion-item class="sub-title">
+      <ion-label>
+        <div class="main-label" translate>SUMMARY</div>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="wallet">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Transfer to</span>
+        </div>
+      </ion-label>
+
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet">
+          <ion-col>
+            <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
+          </ion-col>
+
+          <ion-col>
+            <div *ngIf="!address">...</div>
+            <div *ngIf="address" copy-to-clipboard="{{ address }}">
+              <span class="ellipsis" *ngIf="!wallet.name">{{address}}</span>
+              <span class="ellipsis" *ngIf="wallet.name">{{wallet.name}}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-note>
+    </ion-item>
+
+    <div class="line-divider"></div>
+
+    <button ion-item detail-none class="not-clickable">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Sending from</span>
+        </div>
+      </ion-label>
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet">
+          <ion-col>
+            <ion-icon item-start>
+              <img src="assets/img/coinbase/coinbase-icon.png" width="32">
+            </ion-icon>
+          </ion-col>
+          <ion-col>
+            <span class="ellipsis">Coinbase: {{ data?.account?.name }}</span>
+          </ion-col>
+        </ion-row>
+      </ion-note>
+    </button>
+
+    <ion-item *ngIf="description">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Description</span>
+        </div>
+      </ion-label>
+      <ion-note class="main-note" item-end>{{ description }}</ion-note>
+    </ion-item>
+
+    <div class="summary-line"></div>
+
+    <ion-item>
+      <ion-label>
+        <div class="main-label total-label">TOTAL</div>
+      </ion-label>
+      <ion-note item-end>
+        <div class="total-amount">
+          {{ amount }} {{ currency }}
+        </div>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+  </div>
+
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !data" [buttonText]="buttonText" (slideDone)="approve()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="approve()" [disabled]="!wallet || !data">{{buttonText}}</button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

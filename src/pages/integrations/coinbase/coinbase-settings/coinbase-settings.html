@@ -14,60 +14,21 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
-          <img margin-left src="assets/img/coinbase/coinbase-logo.png" width="150">
+          <img src="assets/img/coinbase/coinbase-logo.png" width="150">
+          <div class="email-account" *ngIf="linkedAccount">{{data?.user?.email || '...'}}</div>
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
 
     <ion-list class="bp-list">
       <ion-item>
-        <ion-label>{{'Show' | translate}}</ion-label>
+        <ion-label>{{'Show on wallet tab' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
     </ion-list>
 
-    <ion-spinner *ngIf="loading"></ion-spinner>
-
-    <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
-      <ion-item-divider>Account</ion-item-divider>
-      <ion-item>
-        <span>ID</span>
-        <ion-note item-end>
-          {{coinbaseAccount.id}}
-        </ion-note>
-      </ion-item>
-      <ion-item>
-        <span>Name</span>
-        <ion-note item-end>
-          {{coinbaseAccount.name}}
-        </ion-note>
-      </ion-item>
-      <ion-item>
-        <span>Balance</span>
-        <ion-note item-end>
-          {{coinbaseAccount.balance.amount}} {{coinbaseAccount.balance.currency}}
-        </ion-note>
-      </ion-item>
-    </ion-list>
-
-    <ion-list *ngIf="coinbaseUser">
-      <ion-item-divider>User Information</ion-item-divider>
-      <ion-item>
-        <span>ID</span>
-        <ion-note item-end>
-          {{coinbaseUser.id}}
-        </ion-note>
-      </ion-item>
-      <ion-item>
-        <span>Email</span>
-        <ion-note item-end>
-          {{coinbaseUser.email}}
-        </ion-note>
-      </ion-item>
-    </ion-list>
-
     <div padding-bottom padding-top>
-      <button *ngIf="coinbaseAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+      <button *ngIf="linkedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
         {{'Log out' | translate}}
       </button>
     </div>
