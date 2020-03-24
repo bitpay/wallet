@@ -138,7 +138,7 @@ export class ConfirmPage {
     this.appName = this.appProvider.info.nameCase;
 
     this.mainTitle = this.fromCoinbase
-      ? 'Confirm Deposit'
+      ? this.translate.instant('Confirm Deposit')
       : this.translate.instant('Confirm Payment');
   }
 

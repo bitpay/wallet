@@ -85,15 +85,17 @@ export class CoinbaseAccountPage {
   public showErrorAndBack(err): void {
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
-    this.popupProvider.ionicAlert('Error', err).then(() => {
-      this.navCtrl.pop();
-    });
+    this.popupProvider
+      .ionicAlert(this.translate.instant('Error'), err)
+      .then(() => {
+        this.navCtrl.pop();
+      });
   }
 
   public showError(err): void {
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
-    this.popupProvider.ionicAlert('Error', err);
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 
   public openTx(tx) {
