@@ -67,6 +67,7 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
+  public readOnlyWalletsGroup: any[];
   public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
@@ -136,7 +137,19 @@ export class SettingsPage {
       showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
-    this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+    this.walletsGroups = _.values(
+      _.groupBy(
+        _.filter(wallets, wallet => {
+          return wallet.keyId != 'read-only';
+        }),
+        'keyId'
+      )
+    );
+
+    this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
+      keyId: 'read-only'
+    });
+
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
