@@ -217,7 +217,7 @@
 
             <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
 
-              <button ion-item (click)="itemTapped(tx)" [ngClass]="{'unconfirmedTx': isUnconfirmed(tx)}">
+              <button ion-item (click)="itemTapped(tx)" [ngClass]="{'unconfirmedTx': isUnconfirmed(tx) && tx.action == 'received'}">
                 <ion-icon class="item-img" item-start>
                   <div *ngIf="tx.confirmations <= 0 && !isUnconfirmed(tx)">
                     <img src="assets/img/tx-action/icon-confirming.svg" width="40">

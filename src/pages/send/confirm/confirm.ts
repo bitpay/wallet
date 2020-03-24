@@ -233,6 +233,9 @@ export class ConfirmPage {
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
       this.tx.feeRate = +this.navParams.data.requiredFeeRate;
+    } else if (this.navParams.data.speedUpTx) {
+      this.usingCustomFee = true;
+      this.tx.feeLevel = 'custom';
     } else {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
@@ -273,7 +276,7 @@ export class ConfirmPage {
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(
       this.tx.amount /
-      this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
   }
@@ -386,7 +389,7 @@ export class ConfirmPage {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-      this.tx.amount + this.tx.feeRate &&
+        this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -475,11 +478,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-        wallet.coin,
-        tx.network,
-        this.usingMerchantFee
-          ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
-          : this.tx.feeLevel
+          wallet.coin,
+          tx.network,
+          this.usingMerchantFee
+            ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
+            : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -490,7 +493,7 @@ export class ConfirmPage {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-              tx.feeRate
+                tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
@@ -610,17 +613,34 @@ export class ConfirmPage {
               return resolve();
             }
             tx.speedUpTxInfo = speedUpTxInfo;
-            tx.amount = tx.speedUpTxInfo.amount;
+            tx.spendUnconfirmed = true;
             this.getAmountDetails();
           }
-          this.showSpeedUpTxWarning(wallet, speedUpTxInfo);
 
-          this.buildTxp(tx, wallet, opts)
-            .then(() => {
-              return resolve();
+          this.feeProvider
+            .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
+            .then(speedUpTxFee => {
+              speedUpTxInfo.fee = speedUpTxFee;
+              tx.amount = tx.speedUpTxInfo.amount - speedUpTxInfo.fee;
+              this.showSpeedUpTxWarning(wallet, speedUpTxInfo);
+              this.getInputs(wallet)
+                .then(inputs => {
+                  tx.speedUpTxInfo.inputs = inputs;
+                  this.buildTxp(tx, wallet, opts)
+                    .then(() => {
+                      return resolve();
+                    })
+                    .catch(err => {
+                      return reject(err);
+                    });
+                })
+                .catch(err => {
+                  return reject(err);
+                });
             })
-            .catch(err => {
-              return reject(err);
+            .catch(() => {
+              const msg = this.translate.instant('Error getting Speed Up fee');
+              return reject(msg);
             });
         })
         .catch(() => {
@@ -651,7 +671,11 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          if (this.currencyProvider.isUtxoCoin(tx.coin)) {
+          if (tx.speedUpTx) {
+            const per = this.getFeeRate(txp.amount, txp.fee);
+            txp.feeRatePerStr = per.toFixed(2) + '%';
+            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
+          } else if (this.currencyProvider.isUtxoCoin(tx.coin)) {
             const per = this.getFeeRate(txp.amount, txp.fee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
@@ -665,9 +689,9 @@ export class ConfirmPage {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-            wallet.id +
-            ' Txp:' +
-            txp.id
+              wallet.id +
+              ' Txp:' +
+              txp.id
           );
           return resolve();
         })
@@ -709,11 +733,9 @@ export class ConfirmPage {
       if (!tx.speedUpTx) return resolve();
 
       this.onGoingProcessProvider.set('retrievingInputs');
-      const txid = this.navParams.data.txid;
       this.walletProvider
-        .getTx(wallet, txid)
+        .getTx(wallet, this.navParams.data.txid)
         .then(res => {
-          console.log("--------------", res);
           this.onGoingProcessProvider.clear();
           return resolve(res);
         })
@@ -733,7 +755,6 @@ export class ConfirmPage {
     const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
 
     const { unitToSatoshi } = this.currencyProvider.getPrecision(this.tx.coin);
-
     const fee = sendMaxInfo.fee / unitToSatoshi;
 
     const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -748,13 +769,10 @@ export class ConfirmPage {
     minerFeeNoticeInfoSheet.present();
   }
 
-
   private showSpeedUpTxWarning(wallet, speedUpTxInfo): void {
     if (!speedUpTxInfo) return;
 
-    const warningMsg = this.verifyExcludedUtxos(wallet, speedUpTxInfo);
-
-    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
+    const coinName = this.currencyProvider.getCoinName(wallet.coin);
 
     const { unitToSatoshi } = this.currencyProvider.getPrecision(this.tx.coin);
 
@@ -766,7 +784,7 @@ export class ConfirmPage {
         coinName,
         fee,
         coin: this.tx.coin.toUpperCase(),
-        msg: !_.isEmpty(warningMsg) ? warningMsg : ''
+        msg: ''
       }
     );
     minerFeeNoticeInfoSheet.present();
@@ -867,14 +885,13 @@ export class ConfirmPage {
         ];
       }
 
-      if (tx.speedUpTx) {
-        txp.inputs = tx.speedUpTxInfo.outputs;
-        txp.fee = tx.speedUpTxInfo.fee;
-      }
-
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;
         txp.fee = tx.sendMaxInfo.fee;
+      } else if (tx.speedUpTx) {
+        txp.inputs = [];
+        txp.inputs.push(tx.speedUpTxInfo.inputs);
+        txp.fee = tx.speedUpTxInfo.fee;
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
@@ -942,6 +959,12 @@ export class ConfirmPage {
     });
   }
 
+  private getInputs(wallet): Promise<any> {
+    return this.walletProvider.getUtxos(wallet).then(utxos => {
+      return _.find(utxos, ['txid', this.navParams.data.txid]);
+    });
+  }
+
   private showInsufficientFundsInfoSheet(): void {
     const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
       'insufficient-funds'
@@ -996,8 +1019,8 @@ export class ConfirmPage {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
             : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-              ? this.navCtrl.pop()
-              : this.app
+            ? this.navCtrl.pop()
+            : this.app
                 .getRootNavs()[0]
                 .setRoot(TabsPage)
                 .then(() =>

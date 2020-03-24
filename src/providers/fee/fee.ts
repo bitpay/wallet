@@ -145,4 +145,11 @@ export class FeeProvider {
       );
     });
   }
+
+  public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
+    return this.getFeeRate('btc', network, 'urgent').then(urgentFee => {
+      const fee = (urgentFee / 1000) * (txSize + 225);
+      return Number(fee.toFixed());
+    });
+  }
 }

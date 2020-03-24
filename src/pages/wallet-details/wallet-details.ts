@@ -275,7 +275,6 @@ export class WalletDetailsPage {
 
       if (!action && txp.status == 'pending') {
         // tslint:disable-next-line:no-console
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         this.txpsPending.push(txp);
       }
 
@@ -450,7 +449,7 @@ export class WalletDetailsPage {
   }
 
   public itemTapped(tx) {
-    if (this.isUnconfirmed(tx)) {
+    if (!this.isUnconfirmed(tx)) {
       this.goToTxDetails(tx);
     } else {
       const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
@@ -462,23 +461,24 @@ export class WalletDetailsPage {
   }
 
   private speedUpTx(tx) {
-    const data = {
-      amount: tx.amount,
-      network: this.wallet.network,
-      coin: this.wallet.coin,
-      speedUpTx: true,
-      toAddress: tx.addressTo,
-      walletId: this.wallet.credentials.walletId,
-      fromWalletDetails: true,
-      txid: tx.txid
-    };
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@TX', tx);
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@wallet', this.wallet);
-    const nextView = {
-      name: 'ConfirmPage',
-      params: data
-    }
-    this.events.publish('IncomingDataRedir', nextView);
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      const data = {
+        amount: tx.amount,
+        network: this.wallet.network,
+        coin: this.wallet.coin,
+        speedUpTx: true,
+        toAddress: addr,
+        walletId: this.wallet.credentials.walletId,
+        fromWalletDetails: true,
+        txid: tx.txid,
+        spendUnconfirmed: true
+      };
+      const nextView = {
+        name: 'ConfirmPage',
+        params: data
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    });
   }
 
   public goToTxDetails(tx) {
