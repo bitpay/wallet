@@ -2,7 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, IABCardProvider, PersistenceProvider } from '../../../../providers';
+import {
+  AppProvider,
+  IABCardProvider,
+  PersistenceProvider
+} from '../../../../providers';
 
 // Pages
 import { BitPayCardPage } from '../bitpay-card';
@@ -34,8 +38,8 @@ export class BitPayCardHome implements OnInit {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
-    this.persistenceProvider.getReachedCardLimit().then( (status) => {
-      if(status) {
+    this.persistenceProvider.getReachedCardLimit().then(status => {
+      if (status) {
         this.disableAddCard = true;
       }
     });

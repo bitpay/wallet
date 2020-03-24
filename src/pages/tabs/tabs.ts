@@ -59,14 +59,16 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
-    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         this.cardNotificationBadgeText = 'New';
-        this.persistenceProvider.getCardNotificationBadge().then( badgeStatus => {
-          if (badgeStatus === 'disabled') {
-            this.cardNotificationBadgeText = null;
-          }
-        });
+        this.persistenceProvider
+          .getCardNotificationBadge()
+          .then(badgeStatus => {
+            if (badgeStatus === 'disabled') {
+              this.cardNotificationBadgeText = null;
+            }
+          });
       }
     });
   }
@@ -80,7 +82,7 @@ export class TabsPage {
   }
 
   disableCardNotificationBadge() {
-    this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         this.cardNotificationBadgeText = null;
         this.persistenceProvider.setCardNotificationBadge('disabled');

@@ -82,7 +82,6 @@ export class IABCardProvider {
           const cards = [];
 
           data.forEach(card => {
-
             const { eid, id, lastFourDigits, token, status, provider } = card;
 
             if (!eid || !id || !lastFourDigits || !token) {

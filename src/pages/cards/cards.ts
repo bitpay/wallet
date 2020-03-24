@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
 // Providers
+import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { TabProvider } from '../../providers/tab/tab';
-import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'page-cards',

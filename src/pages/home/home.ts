@@ -23,11 +23,11 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ReleaseProvider } from '../../providers/release/release';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 
 export interface Advertisement {
   name: string;
@@ -118,7 +118,9 @@ export class HomePage {
   ) {
     this.logger.info('Loaded: HomePage');
     this.subscribeEvents();
-    this.persistenceProvider.getCardExperimentFlag().then( status => this.cardExperimentEnabled = status === 'enabled');
+    this.persistenceProvider
+      .getCardExperimentFlag()
+      .then(status => (this.cardExperimentEnabled = status === 'enabled'));
   }
 
   async ionViewWillEnter() {
@@ -210,38 +212,35 @@ export class HomePage {
   }
 
   private addBitPayCard() {
-
-    const card: Advertisement = this.cardExperimentEnabled ? {
-      name: 'bitpay-card',
-      title: this.translate.instant('Fund it. Spend it.'),
-      body: this.translate.instant(
-        'Instantly reload your card with no conversion fee!'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Order'),
-      link: BitPayCardIntroPage,
-      dismissible: true,
-      imgSrc: 'assets/img/icon-bpcard.svg'
-    } : {
-      name: 'bitpay-card',
-      title: this.translate.instant('Coming soon'),
-      body: this.translate.instant(
-        'Join the waitlist and be first to experience the new card.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Notify Me'),
-      link: PhaseOneCardIntro,
-      dismissible: true,
-      imgSrc: 'assets/img/icon-bpcard.svg'
-    };
+    const card: Advertisement = this.cardExperimentEnabled
+      ? {
+          name: 'bitpay-card',
+          title: this.translate.instant('Fund it. Spend it.'),
+          body: this.translate.instant(
+            'Instantly reload your card with no conversion fee!'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Order'),
+          link: BitPayCardIntroPage,
+          dismissible: true,
+          imgSrc: 'assets/img/icon-bpcard.svg'
+        }
+      : {
+          name: 'bitpay-card',
+          title: this.translate.instant('Coming soon'),
+          body: this.translate.instant(
+            'Join the waitlist and be first to experience the new card.'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Notify Me'),
+          link: PhaseOneCardIntro,
+          dismissible: true,
+          imgSrc: 'assets/img/icon-bpcard.svg'
+        };
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'bitpay-card'
     );
-    !alreadyVisible &&
-    this.advertisements.unshift(card);
-
-
-
+    !alreadyVisible && this.advertisements.unshift(card);
   }
 
   private async setDiscountedCard(): Promise<void> {
