@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
@@ -48,6 +49,7 @@ export class CoinbaseWithdrawPage {
     private profileProvider: ProfileProvider,
     private modalCtrl: ModalController,
     private platformProvider: PlatformProvider,
+    private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
@@ -64,8 +66,8 @@ export class CoinbaseWithdrawPage {
     );
 
     this.buttonText = this.isCordova
-      ? 'Slide to withdraw'
-      : 'Click to withdraw';
+      ? this.translate.instant('Slide to withdraw')
+      : this.translate.instant('Click to withdraw');
   }
 
   ionViewDidLoad() {
@@ -78,7 +80,7 @@ export class CoinbaseWithdrawPage {
 
   ionViewWillEnter() {
     if (_.isEmpty(this.wallet)) {
-      this.showErrorAndBack('No wallet found');
+      this.showErrorAndBack(this.translate.instant('No wallet found'));
       return;
     }
 
@@ -130,14 +132,16 @@ export class CoinbaseWithdrawPage {
       .catch(e => {
         this.onGoingProcessProvider.clear();
         if (e == '2fa') {
-          const message = 'Enter 2-step verification';
+          const message = this.translate.instant('Enter 2-step verification');
           const opts = {
             type: 'number',
             enableBackdropDismiss: false
           };
           this.popupProvider.ionicPrompt(null, message, opts).then(res => {
             if (res === null) {
-              this.showErrorAndBack('Missing 2-step verification');
+              this.showErrorAndBack(
+                this.translate.instant('Missing 2-step verification')
+              );
               return;
             }
             this._sendTransaction(tx, res);
@@ -149,8 +153,10 @@ export class CoinbaseWithdrawPage {
   }
 
   private openFinishModal(): void {
-    let finishText = 'Withdraw success';
-    let finishComment = 'It could take a while to confirm transaction';
+    let finishText = this.translate.instant('Withdraw success');
+    let finishComment = this.translate.instant(
+      'It could take a while to confirm transaction'
+    );
     let modal = this.modalCtrl.create(
       FinishModalPage,
       { finishText, finishComment },

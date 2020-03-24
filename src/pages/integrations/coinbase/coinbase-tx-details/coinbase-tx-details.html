@@ -32,7 +32,7 @@
       <ion-item *ngIf="tx.to && tx.to.address">
         <ion-label>
           <div class="summary-item">
-            <span>To</span>
+            <span translate>To</span>
           </div>
         </ion-label>
         <ion-note copy-to-clipboard="{{ tx.to.address }}" item-end>
@@ -46,7 +46,7 @@
       <ion-item *ngIf="tx.description">
         <ion-label>
           <div class="summary-item">
-            <span>Note</span>
+            <span translate>Notes</span>
           </div>
         </ion-label>
         <ion-note item-end>
@@ -58,7 +58,7 @@
         <ion-item *ngIf="tx.network.confirmations">
           <ion-label>
             <div class="summary-item">
-              <span>Confirmations</span>
+              <span translate>Confirmations</span>
             </div>
           </ion-label>
           <ion-note item-end>
@@ -70,7 +70,7 @@
         <ion-item *ngIf="tx.network.transaction_fee">
           <ion-label>
             <div class="summary-item">
-              <span>Fee</span>
+              <span translate>Fee</span>
             </div>
           </ion-label>
           <ion-note item-end>
@@ -82,7 +82,7 @@
         <ion-item *ngIf="tx.network.hash">
           <ion-label>
             <div class="summary-item">
-              <span>Transaction ID</span>
+              <span translate>Transaction ID</span>
             </div>
           </ion-label>
           <ion-note copy-to-clipboard="{{ tx.network.hash }}" item-end>

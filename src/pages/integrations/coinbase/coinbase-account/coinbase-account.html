@@ -35,7 +35,7 @@
         <div class="wallet-info">
           <div class="left-buttons" *ngIf="data?.account?.primary">
             <span class="square-border">
-              <span>PRIMARY</span>
+              <span translate>PRIMARY</span>
             </span>
           </div>
           <ion-spinner name="crescent" *ngIf="!data || !data?.txs"></ion-spinner>
@@ -90,7 +90,7 @@
               <div class="tx-description" *ngIf="tx.details">
                 {{ tx.details.title }}
                 <span class="tx-subtitle" *ngIf="tx.status != 'pending'">{{ tx.details.subtitle }}</span>
-                <span class="tx-subtitle" *ngIf="tx.status == 'pending'">Pending</span>
+                <span class="tx-subtitle" *ngIf="tx.status == 'pending'" translate>Pending</span>
               </div>
 
               <ion-note item-end text-end>

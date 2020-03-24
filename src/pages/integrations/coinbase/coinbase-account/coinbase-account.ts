@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -40,6 +41,7 @@ export class CoinbaseAccountPage {
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private statusBar: StatusBar,
+    private translate: TranslateService,
     protected onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -111,14 +113,14 @@ export class CoinbaseAccountPage {
     });
 
     if (_.isEmpty(wallets)) {
-      this.showError('No wallet available to deposit');
+      this.showError(this.translate.instant('No wallet available to deposit'));
       return;
     }
 
     const params = {
       wallets,
       selectedWalletId: null,
-      title: 'Transfer from'
+      title: this.translate.instant('Transfer from')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -128,7 +130,12 @@ export class CoinbaseAccountPage {
       if (!fromWallet) return;
       this.onGoingProcessProvider.set('generatingNewAddress');
       this.coinbase
-        .getAddress(this.id, 'Transfer from BitPay: ' + fromWallet.name)
+        .getAddress(
+          this.id,
+          this.translate.instant('Transfer from BitPay') +
+            ': ' +
+            fromWallet.name
+        )
         .then(data => {
           this.onGoingProcessProvider.clear();
           this.navCtrl.push(AmountPage, {
@@ -137,7 +144,8 @@ export class CoinbaseAccountPage {
             walletId: fromWallet.id,
             fromWalletDetails: true,
             toAddress: data.address,
-            description: 'Deposit to: ' + account_name,
+            description:
+              this.translate.instant('Deposit to') + ': ' + account_name,
             recipientType: 'coinbase',
             fromCoinbase: { accountId: this.id, accountName: account_name }
           });
@@ -156,14 +164,14 @@ export class CoinbaseAccountPage {
     });
 
     if (_.isEmpty(wallets)) {
-      this.showError('No wallet available to withdraw');
+      this.showError(this.translate.instant('No wallet available to withdraw'));
       return;
     }
 
     const params = {
       wallets,
       selectedWalletId: null,
-      title: 'Transfer to'
+      title: this.translate.instant('Transfer to')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -177,7 +185,8 @@ export class CoinbaseAccountPage {
         currency: native_currency,
         coin,
         nextPage: 'CoinbaseWithdrawPage',
-        description: 'Transfer to BitPay: ' + toWallet.name
+        description:
+          this.translate.instant('Transfer to BitPay') + ': ' + toWallet.name
       });
     });
   }

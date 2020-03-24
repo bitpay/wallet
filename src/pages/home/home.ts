@@ -268,15 +268,19 @@ export class HomePage {
       this.advertisements.unshift({
         name: 'coinbase',
         title: this.hasOldCoinbaseSession
-          ? 'Updated Coinbase integration'
-          : 'Now connect your Coinbase account!',
+          ? this.translate.instant('Updated Coinbase integration')
+          : this.translate.instant('Now connect your Coinbase account!'),
         body: this.hasOldCoinbaseSession
-          ? 'Reconnect your coinbase account to quickly withdraw and deposit funds.'
-          : 'Login to your Coinbase account to quickly withdraw and deposit funds.',
+          ? this.translate.instant(
+              'Reconnect your coinbase account to quickly withdraw and deposit funds.'
+            )
+          : this.translate.instant(
+              'Login to your Coinbase account to quickly withdraw and deposit funds.'
+            ),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
-          ? 'Reconnect Account'
-          : 'Connect Account',
+          ? this.translate.instant('Reconnect Account')
+          : this.translate.instant('Connect Account'),
         link: CoinbasePage,
         dismissible: true,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'

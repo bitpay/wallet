@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // providers
@@ -29,6 +30,7 @@ export class CoinbasePage {
     private platformProvider: PlatformProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private navParams: NavParams,
+    private translate: TranslateService,
     private formBuilder: FormBuilder
   ) {
     this.oauthCodeForm = this.formBuilder.group({
@@ -97,7 +99,10 @@ export class CoinbasePage {
       })
       .catch(e => {
         this.onGoingProcessProvider.clear();
-        this.popupProvider.ionicAlert('Error connecting to Coinbase', e);
+        this.popupProvider.ionicAlert(
+          this.translate.instant('Error connecting to Coinbase'),
+          e
+        );
         if (!this.isElectron) {
           let previousView = this.navCtrl.getPrevious();
           this.navCtrl.removeView(previousView);
@@ -108,11 +113,12 @@ export class CoinbasePage {
   public openSignupWindow(): void {
     let url = this.coinbaseProvider.signupUrl;
     let optIn = true;
-    let title = 'Sign Up for Coinbase';
-    let message =
-      'This will open Coinbase.com, where you can create an account.';
-    let okText = 'Go to Coinbase';
-    let cancelText = 'Back';
+    let title = this.translate.instant('Sign Up for Coinbase');
+    let message = this.translate.instant(
+      'This will open Coinbase.com, where you can create an account.'
+    );
+    let okText = this.translate.instant('Go to Coinbase');
+    let cancelText = this.translate.instant('Back');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -126,11 +132,12 @@ export class CoinbasePage {
   public openSupportWindow(): void {
     let url = this.coinbaseProvider.supportUrl;
     let optIn = true;
-    let title = 'Coinbase Support';
-    let message =
-      'You can email support@coinbase.com for direct support, or you can view their help center.';
-    let okText = 'Open Help Center';
-    let cancelText = 'Go Back';
+    let title = this.translate.instant('Coinbase Support');
+    let message = this.translate.instant(
+      'You can email support@coinbase.com for direct support, or you can view their help center.'
+    );
+    let okText = this.translate.instant('Open Help Center');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
