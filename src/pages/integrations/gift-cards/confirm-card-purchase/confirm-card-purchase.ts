@@ -22,7 +22,8 @@ import { DecimalPipe } from '@angular/common';
 import {
   AddressProvider,
   EmailNotificationsProvider,
-  FeeProvider, IABCardProvider,
+  FeeProvider,
+  IABCardProvider,
   IncomingDataProvider,
   TxConfirmNotificationProvider
 } from '../../../../providers';

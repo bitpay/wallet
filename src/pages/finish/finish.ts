@@ -28,11 +28,10 @@ export class FinishModalPage {
       : 'success';
 
     if (this.navParams.get('redir')) {
-      setTimeout( () => {
+      setTimeout(() => {
         this.viewCtrl.dismiss();
       }, 4000);
     }
-
   }
 
   public close(): void {

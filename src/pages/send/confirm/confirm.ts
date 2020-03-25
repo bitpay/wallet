@@ -31,6 +31,7 @@ import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -42,7 +43,6 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
-import { IABCardProvider } from '../../../providers/in-app-browser/card';
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
@@ -1026,7 +1026,11 @@ export class ConfirmPage {
   }
 
   protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
-    let params: { finishText: string; finishComment?: string; redir?: object } = {
+    let params: {
+      finishText: string;
+      finishComment?: string;
+      redir?: object;
+    } = {
       finishText: this.successText,
       redir
     };
@@ -1064,7 +1068,6 @@ export class ConfirmPage {
           id: this.fromCoinbase.accountId
         });
       } else {
-
         if (redir) {
           setTimeout(() => {
             this.iabCardProvider.sendMessage(
@@ -1082,7 +1085,6 @@ export class ConfirmPage {
             walletId: this.wallet.credentials.walletId
           });
         }
-
       }
     });
   }
