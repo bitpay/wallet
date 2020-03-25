@@ -424,7 +424,7 @@ export class ConfirmPage {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to speed up')
         : this.translate.instant('Click to speed up');
-      this.successText = this.translate.instant('Sped up transaction');
+      this.successText = this.translate.instant('Sped up successfully');
     } else {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
