@@ -93,6 +93,7 @@ export class ConfirmPage {
   public fromCoinbase;
 
   public mainTitle: string;
+  public isSpeedUpTx: boolean;
 
   constructor(
     protected addressProvider: AddressProvider,
@@ -138,10 +139,7 @@ export class ConfirmPage {
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
     this.appName = this.appProvider.info.nameCase;
-
-    this.mainTitle = this.fromCoinbase
-      ? this.translate.instant('Confirm Deposit')
-      : this.translate.instant('Confirm Payment');
+    this.isSpeedUpTx = this.navParams.data.speedUpTx;
   }
 
   ngOnInit() {
@@ -167,6 +165,7 @@ export class ConfirmPage {
     this.coin = this.navParams.data.coin;
     let networkName;
     let amount;
+    this.setTitle();
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
@@ -226,14 +225,14 @@ export class ConfirmPage {
       coin: this.navParams.data.coin,
       txp: {},
       tokenAddress: this.navParams.data.tokenAddress,
-      speedUpTx: this.navParams.data.speedUpTx ? true : false
+      speedUpTx: this.isSpeedUpTx
     };
     this.tx.origToAddress = this.tx.toAddress;
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
       this.tx.feeRate = +this.navParams.data.requiredFeeRate;
-    } else if (this.navParams.data.speedUpTx) {
+    } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
       this.tx.feeLevel = 'custom';
     } else {
@@ -271,6 +270,16 @@ export class ConfirmPage {
       });
     }
     this.events.subscribe('Local/TagScan', this.updateDestinationTag);
+  }
+
+  private setTitle(): void {
+    if (this.fromCoinbase) {
+      this.mainTitle = this.translate.instant('Confirm Deposit');
+    } else if (this.isSpeedUpTx) {
+      this.mainTitle = this.translate.instant('Confirm Speed Up');
+    } else {
+      this.mainTitle = this.translate.instant('Confirm Payment');
+    }
   }
 
   private getAmountDetails() {

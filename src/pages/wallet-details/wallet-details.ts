@@ -469,7 +469,9 @@ export class WalletDetailsPage {
         walletId: this.wallet.credentials.walletId,
         fromWalletDetails: true,
         txid: tx.txid,
-        spendUnconfirmed: true
+        spendUnconfirmed: true,
+        recipientType: 'wallet',
+        name: this.wallet.name
       };
       const nextView = {
         name: 'ConfirmPage',
