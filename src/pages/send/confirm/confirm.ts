@@ -576,7 +576,7 @@ export class ConfirmPage {
             tx.amount = tx.sendMaxInfo.amount;
             this.getAmountDetails();
           }
-          this.showSendMaxWarning(wallet, sendMaxInfo);
+          this.showWarningSheet(wallet, sendMaxInfo);
           // txp already generated for this wallet?
           if (tx.txp[wallet.id]) {
             return resolve();
@@ -622,7 +622,7 @@ export class ConfirmPage {
             .then(speedUpTxFee => {
               speedUpTxInfo.fee = speedUpTxFee;
               tx.amount = tx.speedUpTxInfo.amount - speedUpTxInfo.fee;
-              this.showSpeedUpTxWarning(wallet, speedUpTxInfo);
+              this.showWarningSheet(wallet, speedUpTxInfo);
               this.getInputs(wallet)
                 .then(inputs => {
                   tx.speedUpTxInfo.inputs = inputs;
@@ -747,44 +747,29 @@ export class ConfirmPage {
     });
   }
 
-  private showSendMaxWarning(wallet, sendMaxInfo): void {
-    if (!sendMaxInfo) return;
+  private showWarningSheet(wallet, info): void {
+    if (!info) return;
 
-    const warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
+    let msg = '';
 
-    const coinName = this.currencyProvider.getCoinName(this.wallet.coin);
+    if (!this.tx.speedUpTx) msg = this.verifyExcludedUtxos(wallet, info);
 
-    const { unitToSatoshi } = this.currencyProvider.getPrecision(this.tx.coin);
-    const fee = sendMaxInfo.fee / unitToSatoshi;
-
-    const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'miner-fee-notice',
-      {
-        coinName,
-        fee,
-        coin: this.tx.coin.toUpperCase(),
-        msg: !_.isEmpty(warningMsg) ? warningMsg : ''
-      }
-    );
-    minerFeeNoticeInfoSheet.present();
-  }
-
-  private showSpeedUpTxWarning(wallet, speedUpTxInfo): void {
-    if (!speedUpTxInfo) return;
-
+    const infoSheetType = this.tx.speedUpTx
+      ? 'speed-up-notice'
+      : 'miner-fee-notice';
     const coinName = this.currencyProvider.getCoinName(wallet.coin);
 
     const { unitToSatoshi } = this.currencyProvider.getPrecision(this.tx.coin);
 
-    const fee = speedUpTxInfo.fee / unitToSatoshi;
+    const fee = info.fee / unitToSatoshi;
 
     const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'miner-fee-notice',
+      infoSheetType,
       {
         coinName,
         fee,
         coin: this.tx.coin.toUpperCase(),
-        msg: ''
+        msg
       }
     );
     minerFeeNoticeInfoSheet.present();
@@ -1220,8 +1205,13 @@ export class ConfirmPage {
   }
 
   public chooseFeeLevel(): void {
-    if (this.tx.coin === 'bch' || this.tx.coin === 'xrp') return;
-    if (this.usingMerchantFee) return;
+    if (
+      this.tx.coin === 'bch' ||
+      this.tx.coin === 'xrp' ||
+      this.usingMerchantFee ||
+      this.tx.speedUpTxInfo
+    )
+      return;
 
     const txObject = {
       network: this.tx.network,

@@ -449,7 +449,7 @@ export class WalletDetailsPage {
   }
 
   public itemTapped(tx) {
-    if (!this.isUnconfirmed(tx)) {
+    if (!this.canSpeedUpTx(tx)) {
       this.goToTxDetails(tx);
     } else {
       const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
@@ -545,15 +545,21 @@ export class WalletDetailsPage {
     return this.timeProvider.withinPastDay(time);
   }
 
-  public isUnconfirmed(tx): boolean {
+  public isUnconfirmed(tx) {
+    return !tx.confirmations || tx.confirmations === 0;
+  }
+
+  public canSpeedUpTx(tx): boolean {
     if (this.wallet.coin !== 'btc') return false;
 
     const currentTime = moment();
     const txTime = moment(tx.time * 1000);
 
+    // Can speed up the tx after 4 hours without confirming
     return (
-      currentTime.diff(txTime, 'seconds') >= 1 &&
-      (!tx.confirmations || tx.confirmations === 0)
+      currentTime.diff(txTime, 'hours') >= 4 &&
+      this.isUnconfirmed(tx) &&
+      tx.action === 'received'
     );
   }
 

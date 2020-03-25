@@ -50,7 +50,8 @@ export type InfoSheetType =
   | 'wrong-encrypt-password'
   | 'bch-legacy-warning-1'
   | 'bch-legacy-warning-2'
-  | 'speed-up-tx';
+  | 'speed-up-tx'
+  | 'speed-up-notice';
 
 export type OptionsSheetType =
   | 'wallet-options'
