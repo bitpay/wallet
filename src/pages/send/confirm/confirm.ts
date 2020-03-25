@@ -600,56 +600,44 @@ export class ConfirmPage {
   }
 
   public speedUpTx(tx, wallet, opts) {
-    return new Promise((resolve, reject) => {
-      this.getSpeedUpTxInfo(_.clone(tx), wallet)
-        .then(speedUpTxInfo => {
-          if (speedUpTxInfo) {
-            this.logger.debug('Speed Up info', speedUpTxInfo);
+    return this.getSpeedUpTxInfo(_.clone(tx), wallet)
+      .then(speedUpTxInfo => {
+        if (speedUpTxInfo) {
+          this.logger.debug('Speed Up info', speedUpTxInfo);
 
-            if (speedUpTxInfo.amount <= 0) {
-              this.showErrorInfoSheet(
-                this.translate.instant('Not enough funds for fee')
-              );
-              return resolve();
-            }
-            tx.speedUpTxInfo = speedUpTxInfo;
-            tx.spendUnconfirmed = true;
-            this.getAmountDetails();
+          if (speedUpTxInfo.amount <= 0) {
+            this.showErrorInfoSheet(
+              this.translate.instant('Not enough funds for fee')
+            );
+            return Promise.resolve();
           }
+          tx.speedUpTxInfo = speedUpTxInfo;
+          tx.spendUnconfirmed = true;
+          this.getAmountDetails();
+        }
 
-          this.feeProvider
-            .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
-            .then(speedUpTxFee => {
-              speedUpTxInfo.fee = speedUpTxFee;
-              tx.amount = tx.speedUpTxInfo.amount - speedUpTxInfo.fee;
-              this.showWarningSheet(wallet, speedUpTxInfo);
-              this.getInputs(wallet)
-                .then(inputs => {
-                  tx.speedUpTxInfo.inputs = inputs;
-                  this.buildTxp(tx, wallet, opts)
-                    .then(() => {
-                      return resolve();
-                    })
-                    .catch(err => {
-                      return reject(err);
-                    });
-                })
-                .catch(err => {
-                  return reject(err);
-                });
-            })
-            .catch(() => {
-              const msg = this.translate.instant('Error getting Speed Up fee');
-              return reject(msg);
+        return this.feeProvider
+          .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
+          .then(speedUpTxFee => {
+            speedUpTxInfo.fee = speedUpTxFee;
+            tx.amount = tx.speedUpTxInfo.amount - speedUpTxInfo.fee;
+            this.showWarningSheet(wallet, speedUpTxInfo);
+            return this.getInputs(wallet).then(inputs => {
+              tx.speedUpTxInfo.inputs = inputs;
+              return this.buildTxp(tx, wallet, opts);
             });
-        })
-        .catch(() => {
-          const msg = this.translate.instant(
-            'Error getting Speed Up information'
-          );
-          return reject(msg);
-        });
-    });
+          })
+          .catch(() => {
+            const msg = this.translate.instant('Error getting Speed Up fee');
+            return Promise.reject(msg);
+          });
+      })
+      .catch(() => {
+        const msg = this.translate.instant(
+          'Error getting Speed Up information'
+        );
+        return Promise.reject(msg);
+      });
   }
 
   protected getFeeRate(amount: number, fee: number) {
@@ -725,22 +713,20 @@ export class ConfirmPage {
   }
 
   private getSpeedUpTxInfo(tx, wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!tx.speedUpTx) return resolve();
+    if (!tx.speedUpTx) return Promise.resolve();
 
-      this.onGoingProcessProvider.set('retrievingInputs');
-      this.walletProvider
-        .getTx(wallet, this.navParams.data.txid)
-        .then(res => {
-          this.onGoingProcessProvider.clear();
-          return resolve(res);
-        })
-        .catch(err => {
-          this.onGoingProcessProvider.clear();
-          this.logger.warn('Error getting speed up info', err);
-          return reject(err);
-        });
-    });
+    this.onGoingProcessProvider.set('retrievingInputs');
+    return this.walletProvider
+      .getTx(wallet, this.navParams.data.txid)
+      .then(res => {
+        this.onGoingProcessProvider.clear();
+        return Promise.resolve(res);
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.logger.warn('Error getting speed up info', err);
+        return Promise.reject(err);
+      });
   }
 
   private showWarningSheet(wallet, info): void {
