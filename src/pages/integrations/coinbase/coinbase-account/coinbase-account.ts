@@ -100,6 +100,10 @@ export class CoinbaseAccountPage {
     this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 
+  public getNativeBalance(currency): string {
+    return this.coinbase.nativeBalance[currency];
+  }
+
   public openTx(tx) {
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx });
     modal.present();

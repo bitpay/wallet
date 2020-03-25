@@ -676,6 +676,10 @@ export class WalletsPage {
     });
   }
 
+  public getNativeBalance(currency): string {
+    return this.coinbaseProvider.nativeBalance[currency];
+  }
+
   public goToCoinbaseAccount(id): void {
     this.navCtrl.push(CoinbaseAccountPage, {
       id

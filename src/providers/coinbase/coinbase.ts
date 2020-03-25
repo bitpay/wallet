@@ -33,6 +33,8 @@ export class CoinbaseProvider {
 
   private coinbaseData;
 
+  public nativeBalance = {};
+
   constructor(
     private http: HttpClient,
     private logger: Logger,
@@ -132,6 +134,17 @@ export class CoinbaseProvider {
         '&account=all&state=SECURE_RANDOM&scope=' +
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+    }
+  }
+
+  private updateNativeCurrencies(coinbaseRates): void {
+    const accounts = this.coinbaseData['accounts'];
+    if (!accounts) return;
+    for (var i = 0, len = accounts.length; i < len; i++) {
+      const currency = accounts[i]['balance']['currency'];
+      const amount = +accounts[i]['balance']['amount'];
+      this.nativeBalance[currency] =
+        (amount / coinbaseRates.rates[currency]).toFixed(2) || 0;
     }
   }
 
@@ -639,6 +652,27 @@ export class CoinbaseProvider {
     });
   }
 
+  private updateExchangeRates(): void {
+    const nativeCurrency = this.coinbaseData['user']['native_currency'];
+    if (!nativeCurrency) return;
+    const url =
+      this.credentials.API +
+      '/v2/exchange-rates' +
+      '?currency=' +
+      nativeCurrency;
+
+    this.logger.debug('Coinbase: Getting Exchange Rates...');
+    this.http.get(url).subscribe(
+      data => {
+        this.logger.info('Coinbase: Get Exchange Rates SUCCESS');
+        this.updateNativeCurrencies(data['data']);
+      },
+      data => {
+        this.logger.error('Coinbase: Get Exchange Rates ERROR ' + data.status);
+      }
+    );
+  }
+
   private _registerToken(access_token: string, refresh_token: string): void {
     if (!access_token || !refresh_token) {
       this.logger.info('Coinbase: No token to register');
@@ -701,11 +735,14 @@ export class CoinbaseProvider {
           user: {},
           txs: {}
         };
-        if (this.coinbaseData && this.coinbaseData['token'])
+        if (this.coinbaseData && this.coinbaseData['token']) {
           this._registerToken(
             this.coinbaseData['token']['access_token'],
             this.coinbaseData['token']['refresh_token']
           );
+          this.updateExchangeRates();
+        }
+
         this.homeIntegrationsProvider.register({
           name: 'coinbase',
           title: 'Coinbase',
