@@ -7,6 +7,11 @@ page-coinbase-account {
     margin-right: 5px;
   }
 
+  .balance-content,
+  .balance-str {
+    display: block !important;
+  }
+
   .balance-coin {
     font-size: 18px;
     font-weight: 200;
