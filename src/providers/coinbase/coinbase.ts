@@ -715,6 +715,7 @@ export class CoinbaseProvider {
           page: 'CoinbasePage',
           show: !!this.configProvider.get().showIntegration['coinbase'],
           linked: this.linkedAccount,
+          email: this.coinbaseData['user']['email'] || null,
           oldLinked, // Register OLD existent users -> show a different banner
           type: 'exchange'
         });

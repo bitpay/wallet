@@ -204,6 +204,7 @@
           <img src="{{integration.icon}}" />
         </ion-icon>
         <span class="main-label">{{ integration.title }}</span>
+        <div *ngIf="integration.email" class="secondary-label">{{ integration.email }}</div>
         <ion-note item-end *ngIf="integration.linked">
           <span *ngIf="integration.linked" translate>Linked</span>
           <span *ngIf="!integration.linked">
