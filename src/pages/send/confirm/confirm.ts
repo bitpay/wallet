@@ -42,6 +42,7 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
+import { IABCardProvider } from '../../../providers/in-app-browser/card';
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
@@ -121,7 +122,8 @@ export class ConfirmPage {
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
-    protected appProvider: AppProvider
+    protected appProvider: AppProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -1024,8 +1026,9 @@ export class ConfirmPage {
   }
 
   protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
-    let params: { finishText: string; finishComment?: string } = {
-      finishText: this.successText
+    let params: { finishText: string; finishComment?: string; redir?: object } = {
+      finishText: this.successText,
+      redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
@@ -1061,10 +1064,25 @@ export class ConfirmPage {
           id: this.fromCoinbase.accountId
         });
       } else {
-        this.navCtrl.push(WalletDetailsPage, {
-          walletId: this.wallet.credentials.walletId,
-          redir
-        });
+
+        if (redir) {
+          setTimeout(() => {
+            this.iabCardProvider.sendMessage(
+              {
+                message: 'paymentBroadcasted'
+              },
+              () => {
+                this.logger.log('card IAB -> payment broadcasting opening IAB');
+              }
+            );
+            this.iabCardProvider.show();
+          }, 1000);
+        } else {
+          this.navCtrl.push(WalletDetailsPage, {
+            walletId: this.wallet.credentials.walletId
+          });
+        }
+
       }
     });
   }
