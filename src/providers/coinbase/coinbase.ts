@@ -334,8 +334,9 @@ export class CoinbaseProvider {
           accounts.push(allAccounts[i]);
         }
       }
-      data['accounts'] = accounts;
-      this.setAccounts(accounts);
+      const orderedAccounts = _.orderBy(accounts, ['name'], ['asc']);
+      data['accounts'] = orderedAccounts;
+      this.setAccounts(orderedAccounts);
     });
   }
 
