@@ -31,6 +31,7 @@ import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -121,7 +122,8 @@ export class ConfirmPage {
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
-    protected appProvider: AppProvider
+    protected appProvider: AppProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -1024,8 +1026,13 @@ export class ConfirmPage {
   }
 
   protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
-    let params: { finishText: string; finishComment?: string } = {
-      finishText: this.successText
+    let params: {
+      finishText: string;
+      finishComment?: string;
+      redir?: object;
+    } = {
+      finishText: this.successText,
+      redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
@@ -1061,10 +1068,23 @@ export class ConfirmPage {
           id: this.fromCoinbase.accountId
         });
       } else {
-        this.navCtrl.push(WalletDetailsPage, {
-          walletId: this.wallet.credentials.walletId,
-          redir
-        });
+        if (redir) {
+          setTimeout(() => {
+            this.iabCardProvider.sendMessage(
+              {
+                message: 'paymentBroadcasted'
+              },
+              () => {
+                this.logger.log('card IAB -> payment broadcasting opening IAB');
+              }
+            );
+            this.iabCardProvider.show();
+          }, 1000);
+        } else {
+          this.navCtrl.push(WalletDetailsPage, {
+            walletId: this.wallet.credentials.walletId
+          });
+        }
       }
     });
   }

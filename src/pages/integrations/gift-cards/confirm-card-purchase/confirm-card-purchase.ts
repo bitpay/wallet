@@ -23,6 +23,7 @@ import {
   AddressProvider,
   EmailNotificationsProvider,
   FeeProvider,
+  IABCardProvider,
   IncomingDataProvider,
   TxConfirmNotificationProvider
 } from '../../../../providers';
@@ -115,7 +116,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     clipboardProvider: ClipboardProvider,
     events: Events,
     coinbaseProvider: CoinbaseProvider,
-    appProvider: AppProvider
+    appProvider: AppProvider,
+    iabCardProvider: IABCardProvider
   ) {
     super(
       addressProvider,
@@ -145,7 +147,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       clipboardProvider,
       events,
       coinbaseProvider,
-      appProvider
+      appProvider,
+      iabCardProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }

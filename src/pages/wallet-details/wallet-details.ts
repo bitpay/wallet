@@ -14,7 +14,6 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
-import { IABCardProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -85,7 +84,6 @@ export class WalletDetailsPage {
     private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private iabCardProvider: IABCardProvider,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
@@ -113,21 +111,6 @@ export class WalletDetailsPage {
   async ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
-
-    const redirectionParam = this.navParams.get('redir');
-    if (redirectionParam && redirectionParam.redir === 'wc') {
-      setTimeout(() => {
-        this.iabCardProvider.sendMessage(
-          {
-            message: 'paymentBroadcasted'
-          },
-          () => {
-            this.logger.log('card IAB -> payment broadcasting opening IAB');
-          }
-        );
-        this.iabCardProvider.show();
-      }, 1000);
-    }
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
