@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 // providers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
+import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
@@ -42,6 +43,7 @@ export class CoinbaseAccountPage {
     private profileProvider: ProfileProvider,
     private statusBar: StatusBar,
     private translate: TranslateService,
+    private incomingDataProvider: IncomingDataProvider,
     protected onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -51,13 +53,13 @@ export class CoinbaseAccountPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CoinbaseAccountPage');
+    this.updateAll();
   }
 
   ionViewWillEnter() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
-    this.updateAll();
   }
 
   ionViewWillLeave() {
@@ -139,13 +141,25 @@ export class CoinbaseAccountPage {
             fromWallet.name
         )
         .then(data => {
+          let toAddress = data.address;
+          let destinationTag;
+          if (coin == 'xrp' || coin == 'bch') {
+            toAddress = this.incomingDataProvider.extractAddress(
+              data.deposit_uri
+            );
+            const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
+            if (tagParam.exec(data.deposit_uri)) {
+              destinationTag = tagParam.exec(data.deposit_uri)[1];
+            }
+          }
           this.onGoingProcessProvider.clear();
           this.navCtrl.push(AmountPage, {
             currency: native_currency,
             coin,
             walletId: fromWallet.id,
             fromWalletDetails: true,
-            toAddress: data.address,
+            toAddress,
+            destinationTag,
             description:
               this.translate.instant('Deposit to') + ': ' + account_name,
             recipientType: 'coinbase',
