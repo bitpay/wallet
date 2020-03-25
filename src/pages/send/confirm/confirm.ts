@@ -276,7 +276,7 @@ export class ConfirmPage {
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(
       this.tx.amount /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+      this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
   }
@@ -389,7 +389,7 @@ export class ConfirmPage {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-        this.tx.amount + this.tx.feeRate &&
+      this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -422,9 +422,9 @@ export class ConfirmPage {
           : this.translate.instant('Proposal created');
     } else if (isSpeedUp) {
       this.buttonText = this.isCordova
-        ? this.translate.instant('Slide to speed up tx')
-        : this.translate.instant('Click to speed up tx');
-      this.successText = this.translate.instant('Speeded up tx');
+        ? this.translate.instant('Slide to speed up')
+        : this.translate.instant('Click to speed up');
+      this.successText = this.translate.instant('Sped up transaction');
     } else {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
@@ -478,11 +478,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
+          : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -493,7 +493,7 @@ export class ConfirmPage {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-                tx.feeRate
+              tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
@@ -671,11 +671,7 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          if (tx.speedUpTx) {
-            const per = this.getFeeRate(txp.amount, txp.fee);
-            txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
-          } else if (this.currencyProvider.isUtxoCoin(tx.coin)) {
+          if (this.currencyProvider.isUtxoCoin(tx.coin)) {
             const per = this.getFeeRate(txp.amount, txp.fee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
@@ -689,9 +685,9 @@ export class ConfirmPage {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-              wallet.id +
-              ' Txp:' +
-              txp.id
+            wallet.id +
+            ' Txp:' +
+            txp.id
           );
           return resolve();
         })
@@ -750,13 +746,17 @@ export class ConfirmPage {
   private showWarningSheet(wallet, info): void {
     if (!info) return;
 
-    let msg = '';
+    let msg, infoSheetType;
 
-    if (!this.tx.speedUpTx) msg = this.verifyExcludedUtxos(wallet, info);
+    if (this.tx.sendMax) {
+      const warningMsg = this.verifyExcludedUtxos(wallet, info);
+      msg = !_.isEmpty(warningMsg) ? warningMsg : '';
+      infoSheetType = 'miner-fee-notice';
+    } else {
+      infoSheetType = 'speed-up-notice';
+      msg = '';
+    }
 
-    const infoSheetType = this.tx.speedUpTx
-      ? 'speed-up-notice'
-      : 'miner-fee-notice';
     const coinName = this.currencyProvider.getCoinName(wallet.coin);
 
     const { unitToSatoshi } = this.currencyProvider.getPrecision(this.tx.coin);
@@ -1004,8 +1004,8 @@ export class ConfirmPage {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
             : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app
+              ? this.navCtrl.pop()
+              : this.app
                 .getRootNavs()[0]
                 .setRoot(TabsPage)
                 .then(() =>

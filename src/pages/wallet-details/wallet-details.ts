@@ -32,7 +32,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-// import { ConfirmPage } from '../../pages/send/confirm/confirm';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -274,7 +273,6 @@ export class WalletDetailsPage {
       });
 
       if (!action && txp.status == 'pending') {
-        // tslint:disable-next-line:no-console
         this.txpsPending.push(txp);
       }
 
