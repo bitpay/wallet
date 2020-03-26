@@ -354,7 +354,7 @@ export class ConfirmPage {
       this.wallet.credentials.m > 1,
       !!this.tx.paypro,
       !!this.fromCoinbase,
-      this.tx.speedUpTx
+      this.isSpeedUpTx
     );
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);

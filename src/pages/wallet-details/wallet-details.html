@@ -219,11 +219,8 @@
 
               <button ion-item (click)="itemTapped(tx)" [ngClass]="{'speed-up-bg': canSpeedUpTx(tx)}">
                 <ion-icon class="item-img" item-start>
-                  <div *ngIf="tx.confirmations <= 0 && !canSpeedUpTx(tx)">
+                  <div *ngIf="tx.confirmations <= 0">
                     <img src="assets/img/tx-action/icon-confirming.svg" width="40">
-                  </div>
-                  <div *ngIf="tx.confirmations <= 0 && canSpeedUpTx(tx)">
-                    <ion-icon name="ios-alert-outline"></ion-icon>
                   </div>
                   <div *ngIf="tx.confirmations > 0">
                     <span *ngIf="tx.customData && tx.customData.service">
