@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 // Providers
+import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
@@ -25,6 +26,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public loading: boolean;
   public playAnimation: boolean;
   public newAddressError: boolean;
+  public bchCashAddress: string;
+  public bchAddrFormat;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -35,13 +38,15 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private events: Events,
     private bwcErrorProvider: BwcErrorProvider,
     private platform: Platform,
-    public currencyProvider: CurrencyProvider
+    public currencyProvider: CurrencyProvider,
+    private addressProvider: AddressProvider
   ) {
     super();
   }
 
   ngOnInit() {
     this.wallet = this.params.wallet;
+    this.bchAddrFormat = 'cashAddress';
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
@@ -95,6 +100,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
         if (this.address && this.address != address) {
           this.playAnimation = true;
         }
+        if (this.wallet.coin === 'bch') this.bchCashAddress = address;
+
         this.updateQrAddress(address, newAddr);
       })
       .catch(err => {
@@ -120,10 +127,22 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
     if (newAddr) {
+      address = this.bchAddrFormat
+        ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
+        : this.bchCashAddress;
       await Observable.timer(400).toPromise();
     }
     this.address = address;
+
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
+  }
+
+  public setQrAddress() {
+    const addr =
+      this.bchAddrFormat === 'legacy'
+        ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
+        : this.bchCashAddress;
+    this.updateQrAddress(addr, false);
   }
 }

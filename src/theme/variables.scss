@@ -122,6 +122,11 @@ $alert-md-message-font-size: 12.5px;
 $button-md-text-transform: none;
 $button-md-clear-background-color-hover: transparent;
 $badge-md-border-radius: 9px;
+$segment-button-md-border-color-activated: color($colors, primary);
+$segment-button-md-border-bottom-width: 0.5px;
+$segment-button-md-text-color-activated: color($colors, dark);
+$segment-button-md-height: 5rem;
+$segment-button-md-padding-top: 4px;
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here

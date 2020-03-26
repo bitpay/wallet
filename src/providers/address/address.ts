@@ -103,4 +103,9 @@ export class AddressProvider {
 
     return false;
   }
+
+  public getLegacyBchAddressFormat(addr: string): string {
+    const a = this.bitcoreCash.Address(addr).toObject();
+    return this.bitcore.Address.fromObject(a).toString();
+  }
 }
