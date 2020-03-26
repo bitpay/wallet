@@ -238,6 +238,7 @@ export class SendPage {
               this.incomingDataProvider.goToPayPro(
                 payproOptions.payProUrl,
                 this.wallet.coin,
+                undefined,
                 true
               );
             }
