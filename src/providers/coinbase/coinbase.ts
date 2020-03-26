@@ -33,6 +33,7 @@ export class CoinbaseProvider {
 
   private coinbaseData;
 
+  public userData = {};
   public nativeBalance = {};
 
   constructor(
@@ -320,6 +321,7 @@ export class CoinbaseProvider {
           this._registerToken(data['access_token'], data['refresh_token']);
           this.setToken(data);
           this.logAccountLinked();
+          this.getCurrentUser(); // Cache user data
           return resolve();
         },
         data => {
@@ -364,13 +366,14 @@ export class CoinbaseProvider {
     });
   }
 
-  public getCurrentUser(data) {
+  public getCurrentUser(data?) {
     if (!this.isLinked()) return;
-    data['user'] = this.coinbaseData['user'] || {};
+    if (data) data['user'] = this.coinbaseData['user'] || {};
     this._getCurrentUser().then(remoteData => {
       const user = remoteData.data;
-      data['user'] = user;
+      if (data) data['user'] = user;
       this.setCurrentUser(user);
+      this.userData = user;
     });
   }
 
@@ -652,14 +655,13 @@ export class CoinbaseProvider {
     });
   }
 
-  private updateExchangeRates(): void {
-    const nativeCurrency = this.coinbaseData['user']['native_currency'];
-    if (!nativeCurrency) return;
+  public updateExchangeRates(): void {
+    if (!this.userData || !this.userData['native_currency']) return;
     const url =
       this.credentials.API +
       '/v2/exchange-rates' +
       '?currency=' +
-      nativeCurrency;
+      this.userData['native_currency'];
 
     this.logger.debug('Coinbase: Getting Exchange Rates...');
     this.http.get(url).subscribe(
@@ -690,6 +692,7 @@ export class CoinbaseProvider {
   public logout() {
     this.removeData();
     this.linkedAccount = this.accessToken = this.refreshToken = null;
+    this.userData = this.nativeBalance = {};
     this.coinbaseData = {
       token: {},
       accounts: [],
@@ -735,12 +738,17 @@ export class CoinbaseProvider {
           user: {},
           txs: {}
         };
-        if (this.coinbaseData && this.coinbaseData['token']) {
+
+        if (
+          this.coinbaseData &&
+          this.coinbaseData['token'] &&
+          this.coinbaseData['user']
+        ) {
           this._registerToken(
             this.coinbaseData['token']['access_token'],
             this.coinbaseData['token']['refresh_token']
           );
-          this.updateExchangeRates();
+          this.userData = this.coinbaseData['user'];
         }
 
         this.homeIntegrationsProvider.register({
@@ -753,7 +761,7 @@ export class CoinbaseProvider {
           page: 'CoinbasePage',
           show: !!this.configProvider.get().showIntegration['coinbase'],
           linked: this.linkedAccount,
-          email: this.coinbaseData['user']['email'] || null,
+          email: this.userData['email'] || null,
           oldLinked, // Register OLD existent users -> show a different banner
           type: 'exchange'
         });

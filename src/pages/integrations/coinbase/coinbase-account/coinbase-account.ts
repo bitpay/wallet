@@ -70,13 +70,14 @@ export class CoinbaseAccountPage {
 
   private updateAll() {
     this.zone.run(() => {
+      this.data['user'] = this.coinbase.userData;
       this.coinbase.getAccount(this.id, this.data);
       this.coinbase.getTransactions(this.id, this.data);
-      this.coinbase.getCurrentUser(this.data);
     });
   }
 
   public doRefresh(refresher) {
+    this.coinbase.updateExchangeRates();
     this.updateAll();
 
     setTimeout(() => {

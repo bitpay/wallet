@@ -142,8 +142,8 @@ export class WalletsPage {
     );
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
     if (this.coinbaseLinked && this.showCoinbase) {
+      this.coinbaseData['user'] = this.coinbaseProvider.userData;
       this.coinbaseProvider.getAccounts(this.coinbaseData);
-      this.coinbaseProvider.getCurrentUser(this.coinbaseData);
     }
   }
 
@@ -182,6 +182,8 @@ export class WalletsPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletsPage');
+
+    this.coinbaseProvider.updateExchangeRates(); // only once
 
     // Required delay to improve performance loading
     setTimeout(() => {
@@ -628,6 +630,7 @@ export class WalletsPage {
 
   public doRefresh(refresher): void {
     this.debounceSetWallets();
+    this.coinbaseProvider.updateExchangeRates();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
