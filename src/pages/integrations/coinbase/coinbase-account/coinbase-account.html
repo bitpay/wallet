@@ -29,8 +29,8 @@
               {{data?.account?.balance.currency}}
             </span>
           </div>
-          <div class="balance-alt-str" *ngIf="getNativeBalance(data?.account?.balance?.currency)">
-            {{ getNativeBalance(data.account.balance.currency) | currency:' ':' ' }} {{ data?.user?.native_currency }}
+          <div class="balance-alt-str" *ngIf="getNativeBalance()">
+            {{ getNativeBalance() | currency:' ':' ' }} {{ nativeCurrency }}
           </div>
         </div>
       </expandable-header-primary>

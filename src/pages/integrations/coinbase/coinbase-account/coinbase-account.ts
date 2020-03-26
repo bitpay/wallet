@@ -29,6 +29,7 @@ export class CoinbaseAccountPage {
   public id: string;
   public isCordova: boolean;
   public data: object = {};
+  public nativeCurrency;
   private zone;
 
   constructor(
@@ -53,13 +54,13 @@ export class CoinbaseAccountPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CoinbaseAccountPage');
-    this.updateAll();
   }
 
   ionViewWillEnter() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
+    this.updateAll();
   }
 
   ionViewWillLeave() {
@@ -70,15 +71,26 @@ export class CoinbaseAccountPage {
 
   private updateAll() {
     this.zone.run(() => {
-      this.data['user'] = this.coinbase.userData;
+      this.nativeCurrency = this.coinbase.coinbaseData['user'][
+        'native_currency'
+      ];
       this.coinbase.getAccount(this.id, this.data);
       this.coinbase.getTransactions(this.id, this.data);
     });
   }
 
+  private debounceUpdateAll = _.debounce(
+    async () => {
+      this.updateAll();
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
+
   public doRefresh(refresher) {
-    this.coinbase.updateExchangeRates();
-    this.updateAll();
+    this.debounceUpdateAll();
 
     setTimeout(() => {
       refresher.complete();
@@ -101,8 +113,12 @@ export class CoinbaseAccountPage {
     this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 
-  public getNativeBalance(currency): string {
-    return this.coinbase.nativeBalance[currency];
+  public getNativeBalance(): string {
+    if (!this.data['account']) return null;
+    return this.coinbase.getNativeCurrencyBalance(
+      this.data['account'].balance.amount,
+      this.data['account'].balance.currency
+    );
   }
 
   public openTx(tx) {

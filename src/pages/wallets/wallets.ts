@@ -115,20 +115,16 @@ export class WalletsPage {
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
-      this._willEnter();
+      this.setWallets();
       this._didEnter();
     });
-  }
-
-  ionViewWillEnter() {
-    this._willEnter();
   }
 
   ionViewDidEnter() {
     this._didEnter();
   }
 
-  private _willEnter() {
+  ionViewWillEnter() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
@@ -137,13 +133,19 @@ export class WalletsPage {
     this.setWallets();
 
     // Get Coinbase Accounts and UserInfo
+    this.setCoinbase();
+  }
+
+  private setCoinbase(force?) {
     this.showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
       'coinbase'
     );
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
     if (this.coinbaseLinked && this.showCoinbase) {
-      this.coinbaseData['user'] = this.coinbaseProvider.userData;
-      this.coinbaseProvider.getAccounts(this.coinbaseData);
+      if (force || !this.coinbaseData['accounts']) {
+        this.coinbaseProvider.updateExchangeRates();
+        this.coinbaseProvider.preFetchAllData(this.coinbaseData);
+      } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
     }
   }
 
@@ -182,8 +184,6 @@ export class WalletsPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletsPage');
-
-    this.coinbaseProvider.updateExchangeRates(); // only once
 
     // Required delay to improve performance loading
     setTimeout(() => {
@@ -319,6 +319,16 @@ export class WalletsPage {
   private debounceSetWallets = _.debounce(
     async () => {
       this.setWallets();
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
+
+  private debounceSetCoinbase = _.debounce(
+    async () => {
+      this.setCoinbase(true);
     },
     5000,
     {
@@ -630,7 +640,7 @@ export class WalletsPage {
 
   public doRefresh(refresher): void {
     this.debounceSetWallets();
-    this.coinbaseProvider.updateExchangeRates();
+    this.debounceSetCoinbase();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
@@ -679,8 +689,8 @@ export class WalletsPage {
     });
   }
 
-  public getNativeBalance(currency): string {
-    return this.coinbaseProvider.nativeBalance[currency];
+  public getNativeBalance(amount, currency): string {
+    return this.coinbaseProvider.getNativeCurrencyBalance(amount, currency);
   }
 
   public goToCoinbaseAccount(id): void {
