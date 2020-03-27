@@ -27,11 +27,30 @@
       </ion-item>
     </ion-list>
 
-    <div padding-bottom padding-top>
-      <button *ngIf="linkedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
-        {{'Log out' | translate}}
-      </button>
-    </div>
+    <ion-list *ngIf="linkedAccount" class="bp-list">
+      <ion-item>
+        <ion-label>{{'Name' | translate}}</ion-label>
+        <ion-note item-end>
+          {{ data?.user?.name }}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'Native Currency' | translate}}</ion-label>
+        <ion-note item-end>
+          {{ data?.user?.native_currency }}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{'Country' | translate}}</ion-label>
+        <ion-note item-end>
+          {{ data?.user?.country?.name }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <button *ngIf="linkedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+      {{'Log out' | translate}}
+    </button>
 
   </div>
 </ion-content>
