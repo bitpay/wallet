@@ -1035,6 +1035,7 @@ export class ConfirmPage {
     this.onGoingProcessProvider.set('creatingTx');
     return this.getTxp(_.clone(tx), wallet, false)
       .then(txp => {
+        this.logger.debug('Transaction Fee:', txp.fee);
         return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
