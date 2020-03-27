@@ -49,6 +49,7 @@ export interface Advertisement {
 export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
+  showShoppingOption: boolean;
   showServicesOption: boolean = false;
   @ViewChild('showSurvey')
   showSurvey;
@@ -212,6 +213,7 @@ export class HomePage {
 
     this.homeIntegrations = _.remove(integrations, x => {
       this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
+      this.showShoppingOption  = x.name == 'giftcards' && x.show == true;
       if (x.name == 'debitcard' && x.linked) return false;
       else if (x.name == 'coinbase' && (x.show == false || x.linked == true)) {
         this.showCoinbase = false;
