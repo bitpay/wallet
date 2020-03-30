@@ -128,7 +128,6 @@ export class CoinbaseAccountPage {
 
   public deposit(): void {
     const account_name = this.data['account'].name;
-    const native_currency = this.data['user'].native_currency;
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,
@@ -175,7 +174,7 @@ export class CoinbaseAccountPage {
           }
           this.onGoingProcessProvider.clear();
           this.navCtrl.push(AmountPage, {
-            currency: native_currency,
+            currency: this.nativeCurrency,
             coin,
             walletId: fromWallet.id,
             fromWalletDetails: true,
@@ -191,7 +190,6 @@ export class CoinbaseAccountPage {
   }
 
   public withdraw(): void {
-    const native_currency = this.data['user'].native_currency;
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,
@@ -219,7 +217,7 @@ export class CoinbaseAccountPage {
       this.navCtrl.push(AmountPage, {
         id: this.id,
         toWalletId: toWallet.id,
-        currency: native_currency,
+        currency: this.nativeCurrency,
         coin,
         nextPage: 'CoinbaseWithdrawPage',
         description:
