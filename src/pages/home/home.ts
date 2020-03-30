@@ -49,7 +49,8 @@ export interface Advertisement {
 export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
-  showServicesOption: boolean = false;
+  showShoppingOption: boolean;
+  showServicesOption: boolean;
   @ViewChild('showSurvey')
   showSurvey;
   @ViewChild('showCard')
@@ -106,7 +107,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
-    this.setAdvertisements();
+    this.setMerchantDirectoryAdvertisement();
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
@@ -124,10 +125,12 @@ export class HomePage {
     this.preFetchWallets();
   }
 
-  private setAdvertisements() {
-    if (this.advertisements.length > 0) return;
-    this.advertisements.push(
-      {
+  private setMerchantDirectoryAdvertisement() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'merchant-directory'
+    );
+    !alreadyVisible &&
+      this.advertisements.push({
         name: 'merchant-directory',
         title: this.translate.instant('Merchant Directory'),
         body: this.translate.instant(
@@ -138,20 +141,7 @@ export class HomePage {
         link: 'https://bitpay.com/directory/?hideGiftCards=true',
         imgSrc: 'assets/img/icon-merch-dir.svg',
         dismissible: true
-      },
-      {
-        name: 'amazon-gift-cards',
-        title: this.translate.instant('Shop at Amazon'),
-        body: this.translate.instant(
-          'Leverage your crypto with an amazon.com gift card.'
-        ),
-        app: 'bitpay',
-        linkText: this.translate.instant('Buy Now'),
-        link: CardCatalogPage,
-        imgSrc: 'assets/img/amazon.svg',
-        dismissible: true
-      }
-    );
+      });
   }
 
   private getCachedTotalBalance() {
@@ -205,29 +195,55 @@ export class HomePage {
 
   private setIntegrations() {
     // Show integrations
+    this.showBuyCryptoOption = false;
+    this.showShoppingOption = false;
+    this.showServicesOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
-      .filter(i => i.show)
-      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+      .filter(i => i.show);
 
-    this.homeIntegrations = _.remove(integrations, x => {
-      this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
-      if (x.name == 'debitcard' && x.linked) return false;
-      else if (x.name == 'coinbase' && (x.show == false || x.linked == true)) {
-        this.showCoinbase = false;
-        return false;
-      } else {
-        if (x.name != 'simplex') {
+    integrations.forEach(x => {
+      switch (x.name) {
+        case 'simplex':
+          this.showBuyCryptoOption = true;
+          break;
+        case 'giftcards':
+          this.showShoppingOption = true;
+          this.setGiftCardAdvertisement();
+          break;
+        case 'shapeshift':
           this.showServicesOption = true;
-        }
-        if (x.name == 'coinbase') {
-          this.showCoinbase = x.show == true && x.linked == false;
+          break;
+        case 'coinbase':
+          this.showCoinbase = x.linked == false;
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
-        }
-        return x;
+          break;
       }
     });
+
+    this.homeIntegrations = integrations.filter(
+      i => i.name == 'shapeshift' || (i.name == 'coinbase' && !i.linked)
+    );
+  }
+
+  private setGiftCardAdvertisement() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'amazon-gift-cards'
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'amazon-gift-cards',
+        title: this.translate.instant('Shop at Amazon'),
+        body: this.translate.instant(
+          'Leverage your crypto with an amazon.com gift card.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Buy Now'),
+        link: CardCatalogPage,
+        imgSrc: 'assets/img/amazon.svg',
+        dismissible: true
+      });
   }
 
   private addBitPayCard() {

@@ -113,8 +113,8 @@
     </div>
   </div>
 
-  <ion-list margin-bottom class="bp-list" *ngIf="homeIntegrations && homeIntegrations.length > 0">
-    <ion-item (click)="goToShop()">
+  <ion-list margin-bottom class="bp-list">
+    <ion-item *ngIf="showShoppingOption" (click)="goToShop()">
       <ion-label>
         <div class="services-list-label" translate>Shop</div>
       </ion-label>
@@ -122,7 +122,7 @@
         <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
       </ion-note>
     </ion-item>
-    <div class="line-divider"></div>
+    <div *ngIf="showShoppingOption" class="line-divider"></div>
     <ion-item *ngIf="showServicesOption" (click)="goToServices()">
       <ion-label>
         <div class="services-list-label" translate>Services</div>
