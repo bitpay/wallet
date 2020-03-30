@@ -26,6 +26,7 @@ export class CoinbaseWithdrawPage {
 
   private accountId: string;
 
+  public hideSlideButton: boolean;
   public data: object = {};
   public amount: string;
   public currency: string;
@@ -53,6 +54,7 @@ export class CoinbaseWithdrawPage {
     private walletProvider: WalletProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
+    this.hideSlideButton = false;
 
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
@@ -72,6 +74,16 @@ export class CoinbaseWithdrawPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CoinbaseWithdrawPage');
+    this.navCtrl.swipeBackEnabled = false;
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideSlideButton = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideSlideButton = false;
+      });
+    }
   }
 
   ionViewWillLeave() {
@@ -154,23 +166,27 @@ export class CoinbaseWithdrawPage {
       });
   }
 
-  private openFinishModal(): void {
-    let finishText = this.translate.instant('Withdraw success');
-    let finishComment = this.translate.instant(
+  public openFinishModal() {
+    const finishText = this.translate.instant('Withdraw success');
+    const finishComment = this.translate.instant(
       'It could take a while to confirm transaction'
     );
-    let modal = this.modalCtrl.create(
+    const modal = this.modalCtrl.create(
       FinishModalPage,
       { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
     modal.onDidDismiss(_ => {
-      this.navCtrl.popToRoot().then(_ => {
+      this.navCtrl.popToRoot({ animate: false }).then(_ => {
         this.navCtrl.parent.select(1);
-        this.navCtrl.push(CoinbaseAccountPage, {
-          id: this.accountId
-        });
+        this.navCtrl.push(
+          CoinbaseAccountPage,
+          {
+            id: this.accountId
+          },
+          { animate: false }
+        );
       });
     });
   }

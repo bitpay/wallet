@@ -174,7 +174,7 @@ export class CoinbaseAccountPage {
           }
           this.onGoingProcessProvider.clear();
           this.navCtrl.push(AmountPage, {
-            currency: this.nativeCurrency,
+            alternativeCurrency: this.nativeCurrency,
             coin,
             walletId: fromWallet.id,
             fromWalletDetails: true,
@@ -217,7 +217,7 @@ export class CoinbaseAccountPage {
       this.navCtrl.push(AmountPage, {
         id: this.id,
         toWalletId: toWallet.id,
-        currency: this.nativeCurrency,
+        alternativeCurrency: this.nativeCurrency,
         coin,
         nextPage: 'CoinbaseWithdrawPage',
         description:

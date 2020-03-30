@@ -142,7 +142,7 @@ export class WalletsPage {
     );
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
     if (this.coinbaseLinked && this.showCoinbase) {
-      if (force || !this.coinbaseData['accounts']) {
+      if (force || !this.coinbaseData) {
         this.coinbaseProvider.updateExchangeRates();
         this.coinbaseProvider.preFetchAllData(this.coinbaseData);
       } else this.coinbaseData = this.coinbaseProvider.coinbaseData;

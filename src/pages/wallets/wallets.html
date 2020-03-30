@@ -119,7 +119,7 @@
         <div *ngIf="!coinbaseData.accounts" translate>Loading accounts...</div>
         <div *ngFor="let ac of coinbaseData.accounts">
           <ion-list no-lines class="bp-list" [hidden]="collapsedAccounts">
-            <button ion-item (click)="goToCoinbaseAccount(ac.id)">
+            <button ion-item detail-none (click)="goToCoinbaseAccount(ac.id)">
               <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
               <ion-label>
                 {{ac.name}}

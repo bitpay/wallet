@@ -741,6 +741,7 @@ export class CoinbaseProvider {
             this.coinbaseData['token']['access_token'],
             this.coinbaseData['token']['refresh_token']
           );
+          this.updateExchangeRates();
         }
 
         this.homeIntegrationsProvider.register({
