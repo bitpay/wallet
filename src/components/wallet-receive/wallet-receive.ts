@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ComponentRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
@@ -12,6 +12,9 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { Events, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
+import { InfoSheetType } from '../../providers/action-sheet/action-sheet';
+import { DomProvider } from '../../providers/dom/dom';
 
 @Component({
   selector: 'wallet-receive',
@@ -27,7 +30,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public playAnimation: boolean;
   public newAddressError: boolean;
   public bchCashAddress: string;
-  public bchAddrFormat;
+  public bchAddrFormat: string;
+  public disclaimerAccepted: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -39,7 +43,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private bwcErrorProvider: BwcErrorProvider,
     private platform: Platform,
     public currencyProvider: CurrencyProvider,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private domProvider: DomProvider
   ) {
     super();
   }
@@ -47,6 +52,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   ngOnInit() {
     this.wallet = this.params.wallet;
     this.bchAddrFormat = 'cashAddress';
+    this.disclaimerAccepted = false;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
@@ -139,10 +145,56 @@ export class WalletReceiveComponent extends ActionSheetParent {
   }
 
   public setQrAddress() {
-    const addr =
-      this.bchAddrFormat === 'legacy'
-        ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
-        : this.bchCashAddress;
-    this.updateQrAddress(addr, false);
+    if (this.bchAddrFormat === 'legacy') this.showFirstWarning();
+    else {
+      this.disclaimerAccepted = false;
+      this.updateQrAddress(this.bchCashAddress, false);
+    }
+  }
+
+  public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
+    return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
+      .instance;
+  }
+
+  private setupSheet<T extends ActionSheetParent>(
+    componentType: { new (...args): T },
+    sheetType?: string,
+    params?
+  ): ComponentRef<T> {
+    const sheet = this.domProvider.appendComponentToBody<T>(componentType);
+    sheet.instance.componentRef = sheet;
+    sheet.instance.sheetType = sheetType;
+    sheet.instance.params = params;
+    return sheet;
+  }
+
+  private showFirstWarning() {
+    const infoSheet = this.createInfoSheet('bch-legacy-warning-1');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        this.showSecondWarning();
+      } else {
+        this.disclaimerAccepted = false;
+        this.bchAddrFormat = 'cashAddress';
+      }
+    });
+  }
+  public showSecondWarning() {
+    const infoSheet = this.createInfoSheet('bch-legacy-warning-2');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        const legacyAddr = this.addressProvider.getLegacyBchAddressFormat(
+          this.bchCashAddress
+        );
+        this.disclaimerAccepted = true;
+        this.updateQrAddress(legacyAddr, false);
+      } else {
+        this.disclaimerAccepted = false;
+        this.bchAddrFormat = 'cashAddress';
+      }
+    });
   }
 }

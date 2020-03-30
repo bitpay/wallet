@@ -47,7 +47,9 @@ export type InfoSheetType =
   | 'request-feature'
   | 'report-issue'
   | 'new-key'
-  | 'wrong-encrypt-password';
+  | 'wrong-encrypt-password'
+  | 'bch-legacy-warning-1'
+  | 'bch-legacy-warning-2';
 
 export type OptionsSheetType =
   | 'wallet-options'

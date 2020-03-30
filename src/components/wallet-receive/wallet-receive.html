@@ -43,7 +43,7 @@
       </div>
     </ion-row>
     <div class="line-divider"></div>
-    <div class="addr-content">
+    <div class="addr-content" [ngClass]="{'blur': bchAddrFormat === 'legacy' && !disclaimerAccepted}">
       <div class="addr-container">
         <div class="text-address ellipsis">
           <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup">
+    <div class="qr-container" *ngIf="wallet && wallet?.isComplete() && !wallet?.needsBackup" [ngClass]="{'blur': bchAddrFormat === 'legacy' && !disclaimerAccepted}">
       <div class="lines-background"></div>
       <div class="prompt-user-fullscreen-container" *ngIf="newAddressError && !address">
         <div class="prompt-user">

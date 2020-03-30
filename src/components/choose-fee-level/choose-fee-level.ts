@@ -1,14 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Slides } from 'ionic-angular';
-// import { ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
-// import { PopupProvider } from '../../providers/popup/popup';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 interface FeeOpts {
