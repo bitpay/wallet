@@ -27,7 +27,7 @@ export class FinishModalPage {
       ? this.navParams.data.cssClass
       : 'success';
 
-    if (this.navParams.get('redir')) {
+    if (this.navParams.get('autoDismiss')) {
       setTimeout(() => {
         this.viewCtrl.dismiss();
       }, 4000);

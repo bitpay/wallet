@@ -1025,14 +1025,19 @@ export class ConfirmPage {
       });
   }
 
-  protected async openFinishModal(onlyPublish?: boolean, redir?: object) {
+  protected async openFinishModal(
+    onlyPublish?: boolean,
+    redirectionParam?: { redir: string }
+  ) {
+    const { redir } = redirectionParam;
+
     let params: {
       finishText: string;
       finishComment?: string;
-      redir?: object;
+      autoDismiss?: boolean;
     } = {
       finishText: this.successText,
-      redir
+      autoDismiss: !!redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
