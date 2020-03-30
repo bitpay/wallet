@@ -31,7 +31,8 @@ export class CoinbaseProvider {
   private accessToken: string;
   private refreshToken: string;
 
-  private coinbaseData;
+  public coinbaseData;
+  private coinbaseExchange;
 
   constructor(
     private http: HttpClient,
@@ -133,6 +134,11 @@ export class CoinbaseProvider {
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
     }
+  }
+
+  public getNativeCurrencyBalance(amount, currency): string {
+    if (!this.coinbaseExchange) return null;
+    return (amount / this.coinbaseExchange.rates[currency]).toFixed(2) || '0';
   }
 
   private parseErrorsAsString(e): string {
@@ -306,6 +312,7 @@ export class CoinbaseProvider {
           this.logger.info('Coinbase: GET Access Token: SUCCESS');
           this._registerToken(data['access_token'], data['refresh_token']);
           this.setToken(data);
+          this.preFetchAllData();
           this.logAccountLinked();
           return resolve();
         },
@@ -317,10 +324,10 @@ export class CoinbaseProvider {
     });
   }
 
-  public getAccounts(data) {
+  public getAccounts(data?) {
     if (!this.isLinked()) return;
     const availableCoins = this.currencyProvider.getAvailableCoins();
-    data['accounts'] = this.coinbaseData['accounts'] || [];
+    if (data) data['accounts'] = this.coinbaseData['accounts'] || [];
     // go to coinbase to update data
     this._getAccounts().then(remoteData => {
       let accounts = [];
@@ -334,8 +341,9 @@ export class CoinbaseProvider {
           accounts.push(allAccounts[i]);
         }
       }
-      data['accounts'] = accounts;
-      this.setAccounts(accounts);
+      const orderedAccounts = _.orderBy(accounts, ['name'], ['asc']);
+      if (data) data['accounts'] = orderedAccounts;
+      this.setAccounts(orderedAccounts);
     });
   }
 
@@ -350,13 +358,14 @@ export class CoinbaseProvider {
     });
   }
 
-  public getCurrentUser(data) {
+  public getCurrentUser(data?) {
     if (!this.isLinked()) return;
-    data['user'] = this.coinbaseData['user'] || {};
+    if (data) data['user'] = this.coinbaseData['user'] || {};
     this._getCurrentUser().then(remoteData => {
       const user = remoteData.data;
-      data['user'] = user;
+      if (data) data['user'] = user;
       this.setCurrentUser(user);
+      if (!data) this.updateExchangeRates();
     });
   }
 
@@ -382,6 +391,11 @@ export class CoinbaseProvider {
     code?: string
   ): Promise<any> {
     return this._sendTransaction(accountId, tx, code);
+  }
+
+  public preFetchAllData(data?) {
+    this.getCurrentUser(data);
+    this.getAccounts(data);
   }
 
   private isExpiredTokenError(errors): boolean {
@@ -638,6 +652,27 @@ export class CoinbaseProvider {
     });
   }
 
+  public updateExchangeRates(): void {
+    if (!this.coinbaseData || !this.coinbaseData['user']['native_currency'])
+      return;
+    const url =
+      this.credentials.API +
+      '/v2/exchange-rates' +
+      '?currency=' +
+      this.coinbaseData['user']['native_currency'];
+
+    this.logger.debug('Coinbase: Getting Exchange Rates...');
+    this.http.get(url).subscribe(
+      data => {
+        this.logger.info('Coinbase: Get Exchange Rates SUCCESS');
+        this.coinbaseExchange = data['data'];
+      },
+      data => {
+        this.logger.error('Coinbase: Get Exchange Rates ERROR ' + data.status);
+      }
+    );
+  }
+
   private _registerToken(access_token: string, refresh_token: string): void {
     if (!access_token || !refresh_token) {
       this.logger.info('Coinbase: No token to register');
@@ -700,11 +735,14 @@ export class CoinbaseProvider {
           user: {},
           txs: {}
         };
-        if (this.coinbaseData && this.coinbaseData['token'])
+
+        if (this.coinbaseData && this.coinbaseData['token']) {
           this._registerToken(
             this.coinbaseData['token']['access_token'],
             this.coinbaseData['token']['refresh_token']
           );
+        }
+
         this.homeIntegrationsProvider.register({
           name: 'coinbase',
           title: 'Coinbase',
@@ -715,6 +753,7 @@ export class CoinbaseProvider {
           page: 'CoinbasePage',
           show: !!this.configProvider.get().showIntegration['coinbase'],
           linked: this.linkedAccount,
+          email: this.coinbaseData['user']['email'] || null,
           oldLinked, // Register OLD existent users -> show a different banner
           type: 'exchange'
         });

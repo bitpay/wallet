@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 // providers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
+import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
@@ -28,6 +29,7 @@ export class CoinbaseAccountPage {
   public id: string;
   public isCordova: boolean;
   public data: object = {};
+  public nativeCurrency;
   private zone;
 
   constructor(
@@ -42,6 +44,7 @@ export class CoinbaseAccountPage {
     private profileProvider: ProfileProvider,
     private statusBar: StatusBar,
     private translate: TranslateService,
+    private incomingDataProvider: IncomingDataProvider,
     protected onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -68,14 +71,26 @@ export class CoinbaseAccountPage {
 
   private updateAll() {
     this.zone.run(() => {
+      this.nativeCurrency = this.coinbase.coinbaseData['user'][
+        'native_currency'
+      ];
       this.coinbase.getAccount(this.id, this.data);
       this.coinbase.getTransactions(this.id, this.data);
-      this.coinbase.getCurrentUser(this.data);
     });
   }
 
+  private debounceUpdateAll = _.debounce(
+    async () => {
+      this.updateAll();
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
+
   public doRefresh(refresher) {
-    this.updateAll();
+    this.debounceUpdateAll();
 
     setTimeout(() => {
       refresher.complete();
@@ -98,6 +113,14 @@ export class CoinbaseAccountPage {
     this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 
+  public getNativeBalance(): string {
+    if (!this.data['account']) return null;
+    return this.coinbase.getNativeCurrencyBalance(
+      this.data['account'].balance.amount,
+      this.data['account'].balance.currency
+    );
+  }
+
   public openTx(tx) {
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx });
     modal.present();
@@ -105,7 +128,6 @@ export class CoinbaseAccountPage {
 
   public deposit(): void {
     const account_name = this.data['account'].name;
-    const native_currency = this.data['user'].native_currency;
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,
@@ -139,13 +161,25 @@ export class CoinbaseAccountPage {
             fromWallet.name
         )
         .then(data => {
+          let toAddress = data.address;
+          let destinationTag;
+          if (coin == 'xrp' || coin == 'bch') {
+            toAddress = this.incomingDataProvider.extractAddress(
+              data.deposit_uri
+            );
+            const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
+            if (tagParam.exec(data.deposit_uri)) {
+              destinationTag = tagParam.exec(data.deposit_uri)[1];
+            }
+          }
           this.onGoingProcessProvider.clear();
           this.navCtrl.push(AmountPage, {
-            currency: native_currency,
+            currency: this.nativeCurrency,
             coin,
             walletId: fromWallet.id,
             fromWalletDetails: true,
-            toAddress: data.address,
+            toAddress,
+            destinationTag,
             description:
               this.translate.instant('Deposit to') + ': ' + account_name,
             recipientType: 'coinbase',
@@ -156,7 +190,6 @@ export class CoinbaseAccountPage {
   }
 
   public withdraw(): void {
-    const native_currency = this.data['user'].native_currency;
     const coin = this.data['account'].currency.code.toLowerCase();
     const wallets = this.profileProvider.getWallets({
       onlyComplete: true,
@@ -184,7 +217,7 @@ export class CoinbaseAccountPage {
       this.navCtrl.push(AmountPage, {
         id: this.id,
         toWalletId: toWallet.id,
-        currency: native_currency,
+        currency: this.nativeCurrency,
         coin,
         nextPage: 'CoinbaseWithdrawPage',
         description:

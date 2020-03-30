@@ -100,58 +100,40 @@
         </ion-list>
       </div>
 
-      <div *ngIf="showCoinbase">
-        <div *ngIf="!coinbaseLinked && wallets && wallets[0]">
-          <action-card-v4 (click)="goToCoinbase()" tappable>
-            <div action-card-header>
-              <div class="zero-state-coinbase">
-                <div class="zero-state-image">
-                  <img src="assets/img/coinbase/coinbase-logo-white.svg">
-                </div>
-              </div>
+      <div *ngIf="showCoinbase && coinbaseLinked && coinbaseData">
+        <div class="section-header">
+          <ion-icon class="item-img" item-start>
+            <img src="assets/img/coinbase/coinbase-icon.png" width="20" />
+          </ion-icon>
+          <ion-label class="key-name">
+            <span *ngIf="!coinbaseData.user">...</span>
+            <span *ngIf="coinbaseData.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
+          </ion-label>
+          <div class="collapse">
+            <div class="collapse-btn" *ngIf="coinbaseData.accounts.length > 1" (click)="collapsedAccounts = !collapsedAccounts">
+              <ion-icon *ngIf="!collapsedAccounts" name="ios-arrow-down"></ion-icon>
+              <ion-icon *ngIf="collapsedAccounts" name="ios-arrow-up"></ion-icon>
             </div>
-            <div action-card-title translate>Connect Account</div>
-            <div action-card-body translate>
-              Deposit and withdraw from your coinbase account.
-            </div>
-            <div action-card-button translate>
-              Connect
-            </div>
-          </action-card-v4>
+          </div>
         </div>
-
-        <div *ngIf="coinbaseLinked && coinbaseData">
-          <div class="section-header">
-            <ion-icon class="item-img" item-start>
-              <img src="assets/img/coinbase/coinbase-icon.png" width="20" />
-            </ion-icon>
-            <ion-label class="key-name">
-              <span *ngIf="!coinbaseData.user">...</span>
-              <span *ngIf="coinbaseData.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
-            </ion-label>
-            <div class="collapse">
-              <div class="collapse-btn" *ngIf="coinbaseData.accounts.length > 1" (click)="collapsedAccounts = !collapsedAccounts">
-                <ion-icon *ngIf="!collapsedAccounts" name="ios-arrow-down"></ion-icon>
-                <ion-icon *ngIf="collapsedAccounts" name="ios-arrow-up"></ion-icon>
-              </div>
-            </div>
-          </div>
-          <div *ngFor="let ac of coinbaseData.accounts">
-            <ion-list no-lines class="bp-list" [hidden]="collapsedAccounts">
-              <button ion-item (click)="goToCoinbaseAccount(ac.id)">
-                <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
-                <ion-label>
-                  {{ac.name}}
-                </ion-label>
-                <ion-note item-end>
-                  <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
-                </ion-note>
-              </button>
-            </ion-list>
-          </div>
+        <div *ngIf="!coinbaseData.accounts" translate>Loading accounts...</div>
+        <div *ngFor="let ac of coinbaseData.accounts">
+          <ion-list no-lines class="bp-list" [hidden]="collapsedAccounts">
+            <button ion-item (click)="goToCoinbaseAccount(ac.id)">
+              <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
+              <ion-label>
+                {{ac.name}}
+              </ion-label>
+              <ion-note item-end>
+                <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
+                <div class="secondary-note" *ngIf="getNativeBalance(ac.balance.amount, ac.balance.currency)">
+                  {{ getNativeBalance(ac.balance.amount, ac.balance.currency) | currency:' ':' ' }} {{ coinbaseData.user.native_currency }}
+                </div>
+              </ion-note>
+            </button>
+          </ion-list>
         </div>
       </div>
-
 
     </div>
 

@@ -37,7 +37,7 @@ export class CoinbaseSettingsPage {
 
   ionViewWillEnter() {
     this.linkedAccount = this.coinbaseProvider.isLinked();
-    this.coinbaseProvider.getCurrentUser(this.data);
+    if (this.linkedAccount) this.coinbaseProvider.getCurrentUser(this.data);
   }
 
   public showInHomeSwitch(): void {
