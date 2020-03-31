@@ -171,15 +171,6 @@ export class AmountPage {
     };
     this.setAvailableUnits();
     this.updateUnitUI();
-    const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
-      .isFiat
-      ? this.currencyProvider.getPrecision(
-          this.availableUnits[this.altUnitIndex].id
-        )
-      : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
-    this.unitToSatoshi = unitToSatoshi;
-    this.satToUnit = 1 / this.unitToSatoshi;
-    this.unitDecimals = unitDecimals;
     this.cardConfig =
       this.cardName &&
       (await this.giftCardProvider.getCardConfig(this.cardName));
@@ -650,6 +641,15 @@ export class AmountPage {
   private updateUnitUI(): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
+    const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
+      .isFiat
+      ? this.currencyProvider.getPrecision(
+          this.availableUnits[this.altUnitIndex].id
+        )
+      : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
+    this.unitToSatoshi = unitToSatoshi;
+    this.satToUnit = 1 / this.unitToSatoshi;
+    this.unitDecimals = unitDecimals;
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
