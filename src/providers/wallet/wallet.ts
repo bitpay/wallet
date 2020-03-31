@@ -1362,6 +1362,21 @@ export class WalletProvider {
     });
   }
 
+  public getUtxos(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      wallet.getUtxos(
+        {
+          coin: wallet.coin
+        },
+        (err, resp) => {
+          if (err || !resp || !resp.length)
+            return reject(err ? err : 'No UTXOs');
+          return resolve(resp);
+        }
+      );
+    });
+  }
+
   public reject(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       this.rejectTx(wallet, txp)

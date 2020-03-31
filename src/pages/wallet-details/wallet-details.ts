@@ -11,6 +11,7 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -445,6 +446,40 @@ export class WalletDetailsPage {
       });
   }
 
+  public itemTapped(tx) {
+    if (!this.canSpeedUpTx(tx)) {
+      this.goToTxDetails(tx);
+    } else {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    }
+  }
+
+  private speedUpTx(tx) {
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      const data = {
+        amount: 0,
+        network: this.wallet.network,
+        coin: this.wallet.coin,
+        speedUpTx: true,
+        toAddress: addr,
+        walletId: this.wallet.credentials.walletId,
+        fromWalletDetails: true,
+        txid: tx.txid,
+        recipientType: 'wallet',
+        name: this.wallet.name
+      };
+      const nextView = {
+        name: 'ConfirmPage',
+        params: data
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    });
+  }
+
   public goToTxDetails(tx) {
     const txDetailModal = this.modalCtrl.create(TxDetailsModal, {
       walletId: this.wallet.credentials.walletId,
@@ -511,6 +546,20 @@ export class WalletDetailsPage {
 
   public isUnconfirmed(tx) {
     return !tx.confirmations || tx.confirmations === 0;
+  }
+
+  public canSpeedUpTx(tx): boolean {
+    if (this.wallet.coin !== 'btc') return false;
+
+    const currentTime = moment();
+    const txTime = moment(tx.time * 1000);
+
+    // Can speed up the tx after 4 hours without confirming
+    return (
+      currentTime.diff(txTime, 'hours') >= 4 &&
+      this.isUnconfirmed(tx) &&
+      tx.action === 'received'
+    );
   }
 
   public openBalanceDetails(): void {

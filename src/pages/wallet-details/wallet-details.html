@@ -217,7 +217,7 @@
 
             <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
 
-              <button ion-item (click)="goToTxDetails(tx)">
+              <button ion-item (click)="itemTapped(tx)" [ngClass]="{'speed-up-bg': canSpeedUpTx(tx)}">
                 <ion-icon class="item-img" item-start>
                   <div *ngIf="tx.confirmations <= 0">
                     <img src="assets/img/tx-action/icon-confirming.svg" width="40">

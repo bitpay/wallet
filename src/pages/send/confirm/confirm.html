@@ -1,5 +1,11 @@
 <wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
   <div page-content>
+    <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
+      <div label-tip-body translate>
+        A transaction using your delayed transaction inputs will be send to your own wallet with a higher miner fee to speed up the last confirmation time
+        <br>
+      </div>
+    </label-tip>
     <ion-list *ngIf="tx" class="bp-list">
       <ion-item class="sub-title">
         <ion-label>

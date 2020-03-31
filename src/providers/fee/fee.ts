@@ -145,4 +145,17 @@ export class FeeProvider {
       );
     });
   }
+
+  public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
+    // Only for BTC
+    return this.getFeeRate('btc', network, 'urgent').then(urgentFee => {
+      // 250 bytes approx. is the minimum size of a tx with 1 input and 1 output
+      const averageTxSize = 250;
+      const fee = (urgentFee / 1000) * (txSize + averageTxSize);
+      this.logger.debug(
+        'Fee needed to speed up the tx: ' + Number(fee.toFixed())
+      );
+      return Number(fee.toFixed());
+    });
+  }
 }
