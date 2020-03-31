@@ -286,6 +286,24 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'bch-legacy-warning-1'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        Legacy address types in Bitcoin Cash are OBSOLETE. Only use this feature if you are required to provide a legacy address to the sending party
+      </span>
+      <span sheet-button-text translate>I Understand</span>
+      <span sheet-second-button-text translate>Cancel</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'bch-legacy-warning-2'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        Sending BTC to a Bitcoin Cash legacy address will result on permanent lost of funds. This feature is only for advanced users.
+      </span>
+      <span sheet-second-button-text translate>Cancel</span>
+      <span sheet-button-text translate>Show me the legacy address</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
       <span sheet-title-text translate>Wrong password</span>
       <span sheet-text>
