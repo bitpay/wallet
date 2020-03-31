@@ -93,6 +93,7 @@ export class AmountPage {
   public cardConfig: CardConfig;
 
   private fromCoinbase;
+  private alternativeCurrency;
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -132,6 +133,7 @@ export class AmountPage {
       ? this.navParams.data.onlyIntegers
       : false;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
+    this.alternativeCurrency = this.navParams.data.alternativeCurrency;
 
     this.showSendMax = false;
     this.useSendMax = false;
@@ -270,7 +272,10 @@ export class AmountPage {
       this.altUnitIndex = this.unitIndex;
       this.unitIndex = this.availableUnits.length;
     } else {
-      this.fiatCode = this.config.wallet.settings.alternativeIsoCode || 'USD';
+      this.fiatCode =
+        this.alternativeCurrency ||
+        this.config.wallet.settings.alternativeIsoCode ||
+        'USD';
       fiatName = this.config.wallet.settings.alternativeName || this.fiatCode;
       this.altUnitIndex = this.availableUnits.length;
     }
