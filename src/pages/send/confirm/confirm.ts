@@ -285,7 +285,7 @@ export class ConfirmPage {
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(
       this.tx.amount /
-      this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
   }
@@ -398,7 +398,7 @@ export class ConfirmPage {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-      this.tx.amount + this.tx.feeRate &&
+        this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -487,11 +487,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-        wallet.coin,
-        tx.network,
-        this.usingMerchantFee
-          ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
-          : this.tx.feeLevel
+          wallet.coin,
+          tx.network,
+          this.usingMerchantFee
+            ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
+            : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -502,7 +502,7 @@ export class ConfirmPage {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-              tx.feeRate
+                tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
@@ -621,31 +621,34 @@ export class ConfirmPage {
             return Promise.resolve();
           }
           tx.speedUpTxInfo = speedUpTxInfo;
-          tx.spendUnconfirmed = true;
-          this.getAmountDetails();
         }
 
         return this.feeProvider
           .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
           .then(speedUpTxFee => {
             speedUpTxInfo.fee = speedUpTxFee;
-            tx.amount = tx.speedUpTxInfo.amount - speedUpTxInfo.fee;
             this.showWarningSheet(wallet, speedUpTxInfo);
-            return this.getInputs(wallet).then(inputs => {
-              tx.speedUpTxInfo.inputs = inputs;
+            return this.getInput(wallet).then(input => {
+              tx.speedUpTxInfo.input = input;
+              tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
+
+              this.tx.amount = tx.amount;
+              this.getAmountDetails();
               return this.buildTxp(tx, wallet, opts);
             });
           })
-          .catch(() => {
-            const msg = this.translate.instant('Error getting Speed Up fee');
-            return Promise.reject(msg);
+          .catch(err => {
+            const error = err
+              ? err
+              : this.translate.instant('Error getting Speed Up fee');
+            return Promise.reject(error);
           });
       })
-      .catch(() => {
-        const msg = this.translate.instant(
-          'Error getting Speed Up information'
-        );
-        return Promise.reject(msg);
+      .catch(err => {
+        const error = err
+          ? err
+          : this.translate.instant('Error getting Speed Up information');
+        return Promise.reject(error);
       });
   }
 
@@ -682,9 +685,9 @@ export class ConfirmPage {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-            wallet.id +
-            ' Txp:' +
-            txp.id
+              wallet.id +
+              ' Txp:' +
+              txp.id
           );
           return resolve();
         })
@@ -864,14 +867,17 @@ export class ConfirmPage {
           }
         ];
       }
+      txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
+      txp.dryRun = dryRun;
 
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;
         txp.fee = tx.sendMaxInfo.fee;
       } else if (tx.speedUpTx) {
         txp.inputs = [];
-        txp.inputs.push(tx.speedUpTxInfo.inputs);
+        txp.inputs.push(tx.speedUpTxInfo.input);
         txp.fee = tx.speedUpTxInfo.fee;
+        txp.excludeUnconfirmedUtxos = true;
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
@@ -884,9 +890,6 @@ export class ConfirmPage {
         txp.payProUrl = tx.payProUrl;
         tx.paypro.host = new URL(tx.payProUrl).host;
       }
-
-      txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
-      txp.dryRun = dryRun;
 
       if (tx.recipientType == 'wallet') {
         txp.customData = {
@@ -939,9 +942,26 @@ export class ConfirmPage {
     });
   }
 
-  private getInputs(wallet): Promise<any> {
+  private getInput(wallet): Promise<any> {
     return this.walletProvider.getUtxos(wallet).then(utxos => {
-      return _.find(utxos, ['txid', this.navParams.data.txid]);
+      let biggestUtxo = 0;
+      let input;
+      _.forEach(utxos, (u, i) => {
+        if (u.txid === this.navParams.data.txid) {
+          if (u.amount > biggestUtxo) {
+            biggestUtxo = u.amount;
+            input = utxos[i];
+          }
+        } else {
+          if (u.confirmations <= 0)
+            throw new Error(
+              this.translate.instant(
+                'Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again.'
+              )
+            );
+        }
+      });
+      return input;
     });
   }
 
@@ -999,8 +1019,8 @@ export class ConfirmPage {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
             : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-              ? this.navCtrl.pop()
-              : this.app
+            ? this.navCtrl.pop()
+            : this.app
                 .getRootNavs()[0]
                 .setRoot(TabsPage)
                 .then(() =>
@@ -1142,9 +1162,9 @@ export class ConfirmPage {
       finishComment?: string;
       autoDismiss?: boolean;
     } = {
-        finishText: this.successText,
-        autoDismiss: !!redir
-      };
+      finishText: this.successText,
+      autoDismiss: !!redir
+    };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(

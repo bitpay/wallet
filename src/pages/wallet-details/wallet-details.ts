@@ -461,7 +461,7 @@ export class WalletDetailsPage {
   private speedUpTx(tx) {
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       const data = {
-        amount: tx.amount,
+        amount: 0,
         network: this.wallet.network,
         coin: this.wallet.coin,
         speedUpTx: true,
@@ -469,7 +469,6 @@ export class WalletDetailsPage {
         walletId: this.wallet.credentials.walletId,
         fromWalletDetails: true,
         txid: tx.txid,
-        spendUnconfirmed: true,
         recipientType: 'wallet',
         name: this.wallet.name
       };
