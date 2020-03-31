@@ -560,6 +560,10 @@ export class PersistenceProvider {
       });
   }
 
+  removeAllBitPayAccounts(network: string) {
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
+  }
+
   setGiftCards(cardName: string, network: Network, gcs: string) {
     return this.storage.set(Keys.GIFT_CARDS(cardName, network), gcs);
   }

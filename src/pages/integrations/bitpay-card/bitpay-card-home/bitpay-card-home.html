@@ -1,24 +1,52 @@
 <div class="section-header" *ngIf="bitpayCardItems?.length" translate>
   Debit Cards
 </div>
-<div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
-  <div class="card-container">
-    <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
-      <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
-      <span class="ellipsis" item-end>
-        <div class="funds ellipsis">
-          <span *ngIf="card.balance">
-            {{ card.balance | formatCurrency: card?.currency: 'minimal' }}
-          </span>
-          <span *ngIf="!card.balance" class="funds--cta">
-            {{ 'Add funds' | translate }}
-          </span>
+
+<ng-container *ngIf="cardExperimentEnabled else regCards">
+
+  <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
+    <div class="card-container">
+      <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
+        <div class="number ellipsis">
+          <img [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
         </div>
-      </span>
+        <span class="ellipsis" item-end>
+      <div class="funds ellipsis">
+        <span *ngIf="card.cardBalance">
+          {{ card.cardBalance | formatCurrency: card?.currency: 'minimal' }}
+        </span>
+        <span *ngIf="!card.cardBalance" class="funds--cta">
+          {{ 'Add funds' | translate }}
+        </span>
+      </div>
+    </span>
+      </div>
+      <div class="slit"></div>
     </div>
-    <div class="slit"></div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #regCards>
+  <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
+    <div class="card-container">
+      <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
+        <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
+        <span class="ellipsis" item-end>
+      <div class="funds ellipsis">
+        <span *ngIf="card.balance">
+          {{ card.balance | formatCurrency: card?.currency: 'minimal' }}
+        </span>
+        <span *ngIf="!card.balance" class="funds--cta">
+          {{ 'Add funds' | translate }}
+        </span>
+      </div>
+    </span>
+      </div>
+      <div class="slit"></div>
+    </div>
+  </div>
+</ng-template>
+
 <div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard">
   <add-button (click)="goToBitPayCardIntroPage()" tappable>
     <div add-button-text translate>Add BitPay Card</div>
@@ -65,4 +93,5 @@
 
   </action-card-v4>
 </ng-template>
+
 

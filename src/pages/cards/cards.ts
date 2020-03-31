@@ -6,12 +6,14 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { Network, PersistenceProvider } from '../../providers/persistence/persistence';
 import { TabProvider } from '../../providers/tab/tab';
+import { IABCardProvider } from '../../providers/in-app-browser/card';
 
 @Component({
   selector: 'page-cards',
-  templateUrl: 'cards.html'
+  templateUrl: 'cards.html',
+
 })
 export class CardsPage {
   public bitpayCardItems;
@@ -31,7 +33,8 @@ export class CardsPage {
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider,
-    private events: Events
+    private events: Events,
+    private iabCardProvider: IABCardProvider
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
@@ -46,27 +49,48 @@ export class CardsPage {
       'debitcard'
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
+    // check persistence first
+    this.bitpayCardItems = await this.filterCards('Galileo');
     await this.fetchAllCards();
-    if (this.bitpayCardItems) {
-      for (let card of this.bitpayCardItems) {
-        if (card.provider === 'galileo') {
-          this.persistenceProvider.setReachedCardLimit(true);
-          this.events.publish('reachedCardLimit');
-          break;
-        }
-      }
-    }
-    this.ready = true;
+
+  }
+
+  // method for filtering out and showing one galileo card
+  private async filterCards(provider: string) {
+    let cards = await this.persistenceProvider.getBitpayDebitCards(Network.testnet);
+    let idx = cards.findIndex( c => c.provider === provider);
+    cards.splice(idx, 1);
+    return cards;
   }
 
   private async fetchBitpayCardItems() {
-    this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
-    this.gotCardItems = true;
-    const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-      noHistory: true
-    });
-    this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-    this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+
+    if (this.cardExperimentEnabled) {
+
+      await this.iabCardProvider.getCards();
+      this.bitpayCardItems = await this.filterCards('Galileo');
+
+      if (this.bitpayCardItems) {
+        for (let card of this.bitpayCardItems) {
+          if (card.provider === 'galileo') {
+            this.persistenceProvider.setReachedCardLimit(true);
+            this.events.publish('reachedCardLimit');
+            break;
+          }
+        }
+      }
+      this.gotCardItems = true;
+
+    } else {
+      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
+
+      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
+        noHistory: true
+      });
+      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
+      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+    }
+
   }
 
   private async fetchActiveGiftCards() {
