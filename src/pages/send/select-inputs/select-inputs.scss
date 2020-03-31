@@ -1,0 +1,70 @@
+page-select-inputs {
+  .info {
+    color: color($colors, info);
+  }
+  .warning {
+    color: color($colors, danger);
+  }
+  .card {
+    ion-list {
+      padding: 1rem 2rem 1rem 2rem;
+    }
+    .close-icon {
+      padding-right: 1rem;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      .name {
+        padding-left: 1rem;
+      }
+      .coin-icon {
+        width: 12px;
+      }
+    }
+    .total-amount {
+      font-size: 30px;
+      font-weight: bold;
+    }
+  }
+  .send-header-wrapper {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrapper {
+    background-color: #f8f8f8;
+    display: flex;
+    align-items: baseline;
+    border-radius: 8px;
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+    .scan-icon {
+      margin: 0;
+      border-left: 1px solid rgba(151, 151, 151, 0.2);
+      padding: 0rem 1rem 0.8rem 1.4rem;
+      z-index: 999;
+    }
+    .backspace-icon {
+      z-index: 999;
+    }
+  }
+  .invalid {
+    border: 1px solid color($colors, error);
+    color: color($colors, error);
+    background-color: #fff6f7;
+  }
+  .no-wallet-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+  }
+}

@@ -654,7 +654,7 @@ export class WalletDetailsPage {
     });
   }
 
-  public requestSpecificAmount(): void {
+  private requestSpecificAmount(): void {
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       this.navCtrl.push(AmountPage, {
         toAddress: addr,
@@ -669,12 +669,13 @@ export class WalletDetailsPage {
     });
   }
 
-  public shareAddress(): void {
+  private shareAddress(): void {
     if (!this.isCordova) return;
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       this.socialSharing.share(addr);
     });
   }
+
   public showErrorInfoSheet(error: Error | string): void {
     const infoSheetTitle = this.translate.instant('Error');
     this.errorsProvider.showDefaultError(

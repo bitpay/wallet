@@ -28,6 +28,7 @@ import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { ConfirmPage } from '../send/confirm/confirm';
+import { SelectInputsPage } from '../send/select-inputs/select-inputs';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { MultiSendPage } from './multi-send/multi-send';
@@ -129,8 +130,11 @@ export class SendPage {
     this.navCtrl.push(ScanPage, { fromSend: true });
   }
 
-  public isMultiSend(coin: Coin) {
-    return this.currencyProvider.isMultiSend(coin);
+  public showOptions(coin: Coin) {
+    return (
+      this.currencyProvider.isMultiSend(coin) ||
+      this.currencyProvider.isUtxoCoin(coin)
+    );
   }
 
   private checkCoinAndNetwork(data, isPayPro?): boolean {
@@ -287,13 +291,21 @@ export class SendPage {
 
   public showMoreOptions(): void {
     const optionsSheet = this.actionSheetProvider.createOptionsSheet(
-      'send-options'
+      'send-options',
+      {
+        isUtxoCoin: this.currencyProvider.isUtxoCoin(this.wallet.coin),
+        isMultiSend: this.currencyProvider.isMultiSend(this.wallet.coin)
+      }
     );
     optionsSheet.present();
 
     optionsSheet.onDidDismiss(option => {
       if (option == 'multi-send')
         this.navCtrl.push(MultiSendPage, {
+          wallet: this.wallet
+        });
+      if (option == 'select-inputs')
+        this.navCtrl.push(SelectInputsPage, {
           wallet: this.wallet
         });
     });

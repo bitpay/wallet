@@ -4,7 +4,6 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { PlatformProvider } from '../../providers/platform/platform';
-
 @Component({
   selector: 'options-sheet',
   templateUrl: 'options-sheet.html'
