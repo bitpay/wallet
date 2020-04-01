@@ -91,7 +91,7 @@ export class HomeGiftCards implements OnInit {
     await this.initGiftCards();
     setTimeout(() => {
       this.ready = true;
-    });
+    }, 50);
     const availableCards = await this.giftCardProvider.getAvailableCards();
     this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
     this.discountedCard = availableCards.find(cardConfig =>

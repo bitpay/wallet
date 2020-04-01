@@ -58,7 +58,7 @@ export class BitPayCardHome implements OnInit {
     });
     setTimeout(() => {
       this.ready = true;
-    });
+    }, 50);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -68,7 +68,7 @@ export class BitPayCardHome implements OnInit {
       this.ready = false;
       setTimeout(() => {
         this.ready = true;
-      });
+      }, 50);
     }
   }
 
