@@ -241,9 +241,13 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
       const disableLoader = true;
-      const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+      const payProOptions = await this.payproProvider.getPayProOptions(
+        invoiceUrl
+      );
 
-      const selected = details.paymentOptions.filter(option => option.selected);
+      const selected = payProOptions.paymentOptions.filter(
+        option => option.selected
+      );
 
       if (selected.length === 1) {
         // Confirm Page - selectedTransactionCurrency set to selected
@@ -251,13 +255,14 @@ export class IncomingDataProvider {
         return this.goToPayPro(
           invoiceUrl,
           currency.toLowerCase(),
+          payProOptions,
           disableLoader
         );
       } else {
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
-        for (const option of details.paymentOptions) {
+        for (const option of payProOptions.paymentOptions) {
           const fundedWallets = this.profileProvider.getWallets({
             coin: option.currency.toLowerCase(),
             network: option.network,
@@ -276,12 +281,13 @@ export class IncomingDataProvider {
           return this.goToPayPro(
             invoiceUrl,
             currency.toLowerCase(),
+            payProOptions,
             disableLoader
           );
         }
 
         const stateParams = {
-          payProOptions: details,
+          payProOptions,
           hasWallets
         };
         let nextView = {
@@ -1076,11 +1082,16 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
-  public goToPayPro(url: string, coin: Coin, disableLoader?: boolean): void {
+  public goToPayPro(
+    url: string,
+    coin: Coin,
+    payProOptions?,
+    disableLoader?: boolean
+  ): void {
     this.payproProvider
       .getPayProDetails(url, coin, disableLoader)
       .then(details => {
-        this.handlePayPro(details, url, coin);
+        this.handlePayPro(details, payProOptions, url, coin);
       })
       .catch(err => {
         this.events.publish('incomingDataError', err);
@@ -1088,7 +1099,12 @@ export class IncomingDataProvider {
       });
   }
 
-  private async handlePayPro(payProDetails, url, coin: Coin): Promise<void> {
+  private async handlePayPro(
+    payProDetails,
+    payProOptions,
+    url,
+    coin: Coin
+  ): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');
       const error = this.translate.instant('No wallets available');
@@ -1108,10 +1124,13 @@ export class IncomingDataProvider {
     try {
       const { memo, network } = payProDetails;
       const disableLoader = true;
-      const { paymentOptions } = await this.payproProvider.getPayProOptions(
-        url,
-        disableLoader
-      );
+      if (!payProOptions) {
+        payProOptions = await this.payproProvider.getPayProOptions(
+          url,
+          disableLoader
+        );
+      }
+      const paymentOptions = payProOptions.paymentOptions;
       const { estimatedAmount } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );
