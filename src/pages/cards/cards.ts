@@ -57,8 +57,8 @@ export class CardsPage {
 
   // method for filtering out and showing one galileo card
   private async filterCards(provider: string) {
-    let cards = await this.persistenceProvider.getBitpayDebitCards(Network.testnet);
-    let idx = cards.findIndex( c => c.provider === provider);
+    const cards = await this.persistenceProvider.getBitpayDebitCards(Network.testnet);
+    const idx = cards.findIndex( c => c.provider === provider);
     cards.splice(idx, 1);
     return cards;
   }
