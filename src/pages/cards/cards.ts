@@ -18,7 +18,7 @@ import { TabProvider } from '../../providers/tab/tab';
   templateUrl: 'cards.html'
 })
 export class CardsPage {
-  public bitpayCardItems;
+  public bitpayCardItems = [];
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
