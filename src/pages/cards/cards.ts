@@ -112,17 +112,23 @@ export class CardsPage {
 
     if (this.tapped >= 10) {
       this.persistenceProvider.getCardExperimentFlag().then(res => {
-        res === 'enabled'
-          ? this.persistenceProvider.removeCardExperimentFlag()
-          : this.persistenceProvider.setCardExperimentFlag('enabled');
-
-        this.persistenceProvider.setBitpayIdPairingFlag('enabled');
-
-        alert(
-          `Card experiment ${
-            res === 'enabled' ? 'disabled' : 'enabled'
-          }. Restart required.`
-        );
+        if (res === 'enabled') {
+          this.persistenceProvider.removeCardExperimentFlag();
+          this.persistenceProvider.setBitpayIdPairingFlag('disabled');
+          alert('Card experiment disabled. Restart the app.');
+        } else {
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+          this.persistenceProvider.setBitpayIdPairingFlag('enabled');
+          alert('Card experiment enabled.');
+          const enableLivenet = confirm('Enable livenet testing?');
+          const network = enableLivenet ? 'livenet' : 'testnet';
+          this.persistenceProvider.setCardExperimentNetwork(Network[network]);
+          alert(
+            `Card experiment -> ${
+              enableLivenet ? 'livenet enabled' : 'testnet enabled'
+              }. Restart the app.`
+          );
+        }
         this.tapped = 0;
       });
     }

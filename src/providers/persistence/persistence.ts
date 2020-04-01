@@ -714,7 +714,6 @@ export class PersistenceProvider {
   }
 
   setCardExperimentFlag(value: string) {
-    this.logger.debug('card experiment enabled: ', value);
     return this.storage.set('cardExperimentEnabled', value);
   }
 
@@ -724,6 +723,14 @@ export class PersistenceProvider {
 
   removeCardExperimentFlag() {
     return this.storage.remove('cardExperimentEnabled');
+  }
+
+  getCardExperimentNetwork() {
+    return this.storage.get('cardExperimentNetwork');
+  }
+
+  setCardExperimentNetwork(network: Network) {
+    return this.storage.set('cardExperimentNetwork', network);
   }
 
   setWalletGroupName(keyId: string, name: string) {
