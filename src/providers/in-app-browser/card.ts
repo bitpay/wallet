@@ -114,7 +114,7 @@ export class IABCardProvider {
           'x-signature': signedData
         };
         // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
-        const {data}: any = await this.http
+        const { data }: any = await this.http
           .post(`${url}/api/v2/graphql`, json, { headers })
           .toPromise();
 

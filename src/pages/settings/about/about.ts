@@ -8,9 +8,11 @@ import { SessionLogPage } from './session-log/session-log';
 
 // providers
 import {
-  AppProvider, BitPayProvider,
+  AppProvider,
+  BitPayProvider,
   ExternalLinkProvider,
-  Logger, PersistenceProvider,
+  Logger,
+  PersistenceProvider,
   ReplaceParametersProvider
 } from '../../../providers';
 
@@ -114,8 +116,9 @@ export class AboutPage {
   public async wipeBitPayAccounts() {
     this.tapped++;
     if (this.tapped >= 10) {
-
-      await this.persistenceProvider.removeAllBitPayAccounts(this.bitpayProvider.getEnvironment().network);
+      await this.persistenceProvider.removeAllBitPayAccounts(
+        this.bitpayProvider.getEnvironment().network
+      );
       alert('removed accounts');
       this.tapped = 0;
     }

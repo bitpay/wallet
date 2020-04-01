@@ -89,7 +89,7 @@ export class HomeGiftCards implements OnInit {
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
     await this.initGiftCards();
-    setTimeout( () => {
+    setTimeout(() => {
       this.ready = true;
     });
     const availableCards = await this.giftCardProvider.getAvailableCards();

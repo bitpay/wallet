@@ -8,10 +8,10 @@ import {
 } from '../../../../providers';
 
 // Pages
+import { animate, style, transition, trigger } from '@angular/animations';
 import { BitPayCardPage } from '../bitpay-card';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'bitpay-card-home',
@@ -56,18 +56,17 @@ export class BitPayCardHome implements OnInit {
         this.disableAddCard = true;
       }
     });
-    setTimeout( () => {
+    setTimeout(() => {
       this.ready = true;
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
     const prev = changes['bitpayCardItems'].previousValue;
     const curr = changes['bitpayCardItems'].currentValue;
-    if((!prev && curr) || (prev && !curr) || (curr.length > prev.length)) {
+    if ((!prev && curr) || (prev && !curr) || curr.length > prev.length) {
       this.ready = false;
-      setTimeout( () => {
+      setTimeout(() => {
         this.ready = true;
       });
     }
