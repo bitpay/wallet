@@ -49,6 +49,7 @@ export interface WalletOptions {
   compliantDerivation: any;
   useLegacyCoinType?: boolean;
   useLegacyPurpose?: boolean;
+  useNativeSegwit?: boolean;
 }
 
 export interface TransactionProposal {

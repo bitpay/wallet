@@ -479,18 +479,18 @@ export class ProfileProvider {
 
       const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
-        wallet.n == 1 &&
-        wallet.credentials.addressType == 'P2PKH' &&
-        derivationStrategy == 'BIP44' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
+        (wallet.credentials.addressType == 'P2WPKH' &&
+          derivationStrategy == 'BIP44' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
       if (
-        wallet.n > 1 &&
-        wallet.credentials.addressType == 'P2SH' &&
-        derivationStrategy == 'BIP48' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
+        (wallet.credentials.addressType == 'P2WSH' &&
+          derivationStrategy == 'BIP48' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
@@ -1429,7 +1429,8 @@ export class ProfileProvider {
                 network: opts.networkName,
                 singleAddress: opts.singleAddress,
                 walletPrivKey: opts.walletPrivKey,
-                coin: opts.coin
+                coin: opts.coin,
+                useNativeSegwit: opts.useNativeSegwit
               },
               err => {
                 const copayerRegistered =
