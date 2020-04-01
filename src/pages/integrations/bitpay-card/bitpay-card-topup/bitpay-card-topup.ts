@@ -58,6 +58,7 @@ export class BitPayCardTopUpPage {
   public currencyIsoCode;
   public amountUnitStr;
   public lastFourDigits;
+  public brand;
   public currencySymbol;
   public rate;
   private countDown;
@@ -137,6 +138,7 @@ export class BitPayCardTopUpPage {
       })
       .then(card => {
         this.bitPayCardProvider.setCurrencySymbol(card[0]);
+        this.brand = card[0].brand;
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
         this.currencyIsoCode = card[0].currency;
