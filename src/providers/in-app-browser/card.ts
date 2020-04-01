@@ -255,6 +255,11 @@ export class IABCardProvider {
           this.hide();
           break;
 
+        case 'updateBalance':
+          await this.getCards();
+          this.events.publish('updateBalance');
+          break;
+
         case 'topup':
           const { id, currency } = event.data.params;
 

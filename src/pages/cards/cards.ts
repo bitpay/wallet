@@ -41,6 +41,9 @@ export class CardsPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
+    this.events.subscribe('updateBalance', async () => {
+      this.bitpayCardItems = await this.filterCards('Galileo');
+    });
   }
 
   async ionViewWillEnter() {
