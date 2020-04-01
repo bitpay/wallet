@@ -245,8 +245,9 @@ export class CopayApp {
     const experiment = await this.persistenceProvider.getCardExperimentFlag();
     const experimentNetwork = await this.persistenceProvider.getCardExperimentNetwork();
     if (experiment === 'enabled') {
-      this.logger.log(`card experiment network = ${experimentNetwork}`);
-      this.NETWORK = experimentNetwork;
+      const network = experimentNetwork || 'testnet';
+      this.NETWORK = network;
+      this.logger.log(`card experiment network = ${network}`);
     }
     this.bitpayProvider.setNetwork(this.NETWORK);
     this.bitpayIdProvider.setNetwork(this.NETWORK);
