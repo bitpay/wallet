@@ -52,7 +52,7 @@ export class ExtendedPrivateKeyPage {
       .catch(err => {
         if (err && err.message != 'PASSWORD_CANCELLED') {
           if (err.message == 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             let title = this.translate.instant('Could not decrypt wallet');
             this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);

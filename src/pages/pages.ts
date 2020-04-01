@@ -28,11 +28,11 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 
 // Integrations: Coinbase
-import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
+import { CoinbaseAccountPage } from '../pages/integrations/coinbase/coinbase-account/coinbase-account';
 import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
-import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
+import { CoinbaseWithdrawPage } from '../pages/integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 
 // Integrations: ShapeShift
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
@@ -98,6 +98,7 @@ import { NotificationsPage } from '../pages/settings/notifications/notifications
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Group Settings */
+import { ClearEncryptPasswordPage } from '../pages/settings/key-settings/clear-encrypt-password/clear-encrypt-password';
 import { ExtendedPrivateKeyPage } from '../pages/settings/key-settings/extended-private-key/extended-private-key';
 import { KeyDeletePage } from '../pages/settings/key-settings/key-delete/key-delete';
 import { KeyNamePage } from '../pages/settings/key-settings/key-name/key-name';
@@ -152,12 +153,13 @@ export const PAGES = [
   BitPaySettingsPage,
   BitPayCardTopUpPage,
   BitPayIdPage,
-  BuyCoinbasePage,
   CardCatalogPage,
   CreateWalletPage,
   CreateNewWalletPage,
+  CoinbaseAccountPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
+  CoinbaseWithdrawPage,
   CopayersPage,
   FeedbackCardPage,
   SharePage,
@@ -189,7 +191,6 @@ export const PAGES = [
   ScanPage,
   SendPage,
   SettingsPage,
-  SellCoinbasePage,
   SelectCurrencyPage,
   SelectInvoicePage,
   CoinbaseSettingsPage,
@@ -224,6 +225,7 @@ export const PAGES = [
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
   ExtendedPrivateKeyPage,
+  ClearEncryptPasswordPage,
   KeyDeletePage,
   KeyQrExportPage,
   KeySettingsPage,

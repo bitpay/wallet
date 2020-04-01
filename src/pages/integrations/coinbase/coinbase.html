@@ -14,77 +14,28 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
-          <img margin-left src="assets/img/coinbase/coinbase-logo.png" width="150">
-          <ion-spinner *ngIf="accessToken && loading"></ion-spinner>
+          <img src="assets/img/coinbase/coinbase-logo.png" width="150">
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
 
-    <div *ngIf="!accessToken" class="center-header">
+    <div class="center-header">
       <div padding text-center>
-        <div *ngIf="!showOauthForm">Coinbase's exchange service is available in US, and can take 3-5 days to buy or sell bitcoin.</div>
-        <div *ngIf="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
+        <div *ngIf="!showOauthForm" translate>Manage your Coinbase account, check balances, deposit and withdraw funds between wallets.</div>
+        <div *ngIf="showOauthForm" translate>If you have trouble, contact Coinbase support for direct assistance.</div>
+        <button margin-top *ngIf="!showOauthForm" ion-button class="button-standard" (click)="openAuthenticateWindow()">Connect Coinbase Account</button>
+        <button margin *ngIf="!showOauthForm" ion-button clear small color="dark" (click)="openSignupWindow()">Sign Up for Coinbase &rarr;</button>
       </div>
-      <button margin-top *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="openAuthenticateWindow()">Connect Coinbase Account</button>
-      <button margin *ngIf="!showOauthForm" ion-button clear small color="dark" (click)="openSignupWindow()">Sign Up for Coinbase &rarr;</button>
       <div *ngIf="showOauthForm" margin>
         <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
-          <ion-label stacked>OAuth Code</ion-label>
+          <ion-label stacked><span translate>OAuth Code</span></ion-label>
           <ion-input type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
-          <button ion-button block outline type="submit" [disabled]="!oauthCodeForm.valid">Connect Coinbase Account</button>
+          <button ion-button class="button-standard" type="submit" [disabled]="!oauthCodeForm.valid" translate>Connect Coinbase Account</button>
         </form>
-        <button margin-top ion-button block clear small color="dark" (click)="openSupportWindow()">Coinbase Support &rarr;</button>
+        <button margin-top ion-button block clear small color="dark" (click)="openSupportWindow()">
+          <span translate>Coinbase Support</span> &rarr;
+        </button>
       </div>
-    </div>
-    <div *ngIf="accessToken">
-      <ion-list>
-        <button padding ion-item (click)="goToBuyCoinbasePage()">
-          <ion-icon item-start>
-            <img src="assets/img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
-          </ion-icon>
-          <ion-label>Buy</ion-label>
-          <ion-note *ngIf="buyPrice" item-end>
-            {{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/BTC
-          </ion-note>
-        </button>
-        <button padding ion-item (click)="goToSellCoinbasePage()">
-          <ion-icon item-start>
-            <img src="assets/img/sell-bitcoin.svg" alt="sell bitcoin" width="30">
-          </ion-icon>
-          <ion-label>Sell</ion-label>
-          <ion-note *ngIf="sellPrice" item-end>
-            {{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC
-          </ion-note>
-        </button>
-        <ion-item-divider>Activity</ion-item-divider>
-        <div *ngIf="pendingTransactions.data && !error">
-          <button ion-item (click)="openTxModal(tx)" *ngFor="let tx of pendingTransactions.data | keys">
-            <ion-icon item-start>
-              <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
-              <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
-              <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
-              <img src="assets/img/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
-            </ion-icon>
-            <span *ngIf="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
-            <span *ngIf="tx.type == 'send' && tx.to && tx.status == 'completed'">Bought</span>
-            <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
-            {{tx.amount.currency}}
-            <ion-note item-end text-end>
-              <div class="assertive" *ngIf="tx.error || tx.status == 'error'">
-                Error
-              </div>
-              <div *ngIf="!tx.error">
-                <div *ngIf="tx.status == 'completed'">
-                  <time *ngIf="tx.created_at">{{tx.created_at | amTimeAgo}}</time>
-                </div>
-                <div *ngIf="tx.status == 'pending'">
-                  <span *ngIf="tx.status == 'pending'">Pending</span>
-                </div>
-              </div>
-            </ion-note>
-          </button>
-        </div>
-      </ion-list>
     </div>
   </div>
 </ion-content>

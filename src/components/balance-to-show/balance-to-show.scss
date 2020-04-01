@@ -1,0 +1,22 @@
+balance-to-show {
+  position: relative;
+  .unit {
+    font-size: 20px;
+    position: absolute;
+    margin-left: 7px;
+    top: -6px;
+    font-weight: 400;
+    opacity: 0.5;
+  }
+  .resizeAmountFont {
+    @media (max-width: 410px) {
+      .amount {
+        font-size: 25px;
+      }
+      .unit {
+        font-size: 16px;
+        top: 2px;
+      }
+    }
+  }
+}

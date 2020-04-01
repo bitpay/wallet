@@ -95,11 +95,7 @@ export class CardDetailsPage {
 
   updateGiftCard() {
     this.giftCardProvider
-      .updatePendingGiftCards(
-        [this.card],
-        this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode &&
-          !this.card.barcodeImage
-      )
+      .updatePendingGiftCards([this.card])
       .pipe(take(1))
       .subscribe(card => (this.card = card));
   }

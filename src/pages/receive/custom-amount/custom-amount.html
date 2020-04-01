@@ -29,7 +29,7 @@
           <br>
           <small>({{altAmountStr}})</small>
         </div>
-        <bp-qr-code class="card qr-card bp-qr-card" legacy="{{ useLegacyQrCode }}" copy-to-clipboard="{{ qrAddress }}" contents="{{ qrAddress }}" [moduleColor]="currencyProvider.getModuleColor(wallet.coin)" [positionRingColor]="currencyProvider.getPositionRingColor(wallet.coin)" [positionCenterColor]="currencyProvider.getPositionCenterColor(wallet.coin)" mask-x-to-y-ratio="1">
+        <bp-qr-code class="card qr-card bp-qr-card" copy-to-clipboard="{{ qrAddress }}" contents="{{ qrAddress }}" mask-x-to-y-ratio="1">
           <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
         </bp-qr-code>
       </div>

@@ -42,7 +42,7 @@ export class PushNotificationsProvider {
     if (!this.usePushNotifications || this._token) return;
     this.configProvider.load().then(() => {
       const config = this.configProvider.get();
-      if (!config.pushNotificationsEnabled) return;
+      if (!config.pushNotifications.enabled) return;
 
       this.logger.debug('Starting push notification registration...');
 
@@ -77,8 +77,9 @@ export class PushNotificationsProvider {
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
           const walletIdHashed = data.walletId;
+          const tokenAddress = data.tokenAddress;
           if (!walletIdHashed) return;
-          this._openWallet(walletIdHashed);
+          this._openWallet(walletIdHashed, tokenAddress);
         }
       });
     }
@@ -182,8 +183,8 @@ export class PushNotificationsProvider {
     });
   }
 
-  private async _openWallet(walletIdHashed) {
-    const wallet = this.findWallet(walletIdHashed);
+  private async _openWallet(walletIdHashed, tokenAddress) {
+    const wallet = this.findWallet(walletIdHashed, tokenAddress);
 
     if (!wallet) return;
 
@@ -192,13 +193,23 @@ export class PushNotificationsProvider {
     this.events.publish('OpenWallet', wallet);
   }
 
-  private findWallet(walletIdHashed) {
+  private findWallet(walletIdHashed, tokenAddress) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
     const wallets = this.profileProvider.getWallets();
     const wallet = _.find(wallets, w => {
-      walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
+      if (tokenAddress) {
+        const walletId = w.credentials.walletId;
+        const lastHyphenPosition = walletId.lastIndexOf('-');
+        const walletIdWithoutTokenAddress = walletId.substring(
+          0,
+          lastHyphenPosition
+        );
+        walletIdHash = sjcl.hash.sha256.hash(walletIdWithoutTokenAddress);
+      } else {
+        walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
+      }
       return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 

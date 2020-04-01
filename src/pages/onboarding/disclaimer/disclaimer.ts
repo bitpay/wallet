@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Slides } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 import { TabsPage } from '../../tabs/tabs';
@@ -14,6 +14,9 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
   templateUrl: 'disclaimer.html'
 })
 export class DisclaimerPage {
+  @ViewChild('walletGroupOnboardingSlides')
+  walletGroupOnboardingSlides: Slides;
+
   public accepted;
   public terms;
   public hasEmail: boolean;
@@ -39,6 +42,10 @@ export class DisclaimerPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: DisclaimerPage');
+  }
+
+  public nextSlide(): void {
+    this.walletGroupOnboardingSlides.slideNext();
   }
 
   selectTerms() {
@@ -84,7 +91,6 @@ export class DisclaimerPage {
     this.persistenceProvider.setNewDesignSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
     this.persistenceProvider.setSurveyFlag();
-    this.persistenceProvider.setEthLiveCardFlag();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });
   }

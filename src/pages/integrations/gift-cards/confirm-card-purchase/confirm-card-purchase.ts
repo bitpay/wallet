@@ -23,6 +23,7 @@ import {
   AddressProvider,
   EmailNotificationsProvider,
   FeeProvider,
+  IABCardProvider,
   IncomingDataProvider,
   TxConfirmNotificationProvider
 } from '../../../../providers';
@@ -31,6 +32,7 @@ import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
+import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
@@ -113,7 +115,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     platformProvider: PlatformProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
-    appProvider: AppProvider
+    coinbaseProvider: CoinbaseProvider,
+    appProvider: AppProvider,
+    iabCardProvider: IABCardProvider
   ) {
     super(
       addressProvider,
@@ -142,7 +146,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       clipboardProvider,
       events,
-      appProvider
+      coinbaseProvider,
+      appProvider,
+      iabCardProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -172,7 +178,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      hasFunds: true
+      hasFunds: true,
+      minFiatCurrency: { amount: this.amount, currency: this.currency }
     });
     if (_.isEmpty(this.wallets)) {
       this.showErrorInfoSheet(
@@ -402,7 +409,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {
-      txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+      txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     txp['origToAddress'] = txp.toAddress;

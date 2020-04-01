@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Events } from 'ionic-angular';
+import { Subject } from 'rxjs/Subject';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 @Injectable()
 export class InAppBrowserProvider {
@@ -15,7 +17,9 @@ export class InAppBrowserProvider {
   constructor(
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events,
+    private onGoingProcess: OnGoingProcessProvider
   ) {
     this.logger.debug('InAppBrowserProvider initialized');
   }
@@ -70,12 +74,14 @@ export class InAppBrowserProvider {
             })
             .present();
         };
+        this.onGoingProcess.clear();
         rej();
       });
 
-      // add observable to listen for url changes
-      ref.events$ = Observable.fromEvent(ref, 'message');
+      ref.events$ = new Subject<Event>();
 
+      ref.addEventListener('message', e => ref.events$.next(e));
+      this.events.subscribe('iab_message_update', e => ref.events$.next(e));
       // providing two ways to get ref - caching it here and also returning it
       this.refs[refName] = ref;
 

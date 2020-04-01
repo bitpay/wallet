@@ -20,6 +20,7 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
+import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
 import { WalletOptions } from '../wallet/wallet';
@@ -74,7 +75,8 @@ export class ProfileProvider {
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private rateProvider: RateProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -145,6 +147,26 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
+  public setWalletGroupOrder(keyId: string, index: number): void {
+    this.persistenceProvider.setWalletGroupOrder(keyId, index).then(() => {
+      this.logger.debug(
+        'Wallet group new order stored for ' + keyId + ': ' + index
+      );
+    });
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
+  }
+
+  public setNewWalletGroupOrder(newWalletKeyId: string): void {
+    const promises = [];
+    Object.keys(this.walletsGroups).forEach(keyId => {
+      promises.push(this.getWalletGroupOrder(keyId));
+    });
+    Promise.all(promises).then(order => {
+      const index = !_.max(order) ? 0 : +_.max(order) + 1;
+      this.setWalletGroupOrder(newWalletKeyId, index);
+    });
+  }
+
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
@@ -157,6 +179,11 @@ export class ProfileProvider {
 
   private async getWalletOrder(walletId: string) {
     const order = await this.persistenceProvider.getWalletOrder(walletId);
+    return order;
+  }
+
+  private async getWalletGroupOrder(keyId: string) {
+    const order = await this.persistenceProvider.getWalletGroupOrder(keyId);
     return order;
   }
 
@@ -316,6 +343,7 @@ export class ProfileProvider {
       isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
       canSign = true;
       isDeletedSeed = this.keyProvider.isDeletedSeed(keyId);
+      order = await this.getWalletGroupOrder(keyId);
       name = await this.getWalletGroupName(keyId);
       if (!name) {
         let walletsGroups = _.cloneDeep(this.walletsGroups);
@@ -497,7 +525,7 @@ export class ProfileProvider {
   }
 
   private showDesktopNotifications(n, wallet): void {
-    if (!this.configProvider.get().desktopNotificationsEnabled) return;
+    if (!this.configProvider.get().desktopNotifications.enabled) return;
 
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
@@ -713,9 +741,29 @@ export class ProfileProvider {
       });
   }
 
-  private addAndBindWalletClients(data, opts = { bwsurl: null }): Promise<any> {
-    // Encrypt wallet
+  private async addAndBindWalletClients(
+    data,
+    opts = { bwsurl: null, keyId: null }
+  ): Promise<any> {
+    if (opts.keyId) {
+      // re-import attempt
+      if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+        const wallets = this.getWalletsFromGroup({
+          keyId: opts.keyId,
+          showHidden: true
+        });
+        await this.deleteWalletGroup(opts.keyId, wallets);
+        await this.keyProvider.removeKey(opts.keyId);
+      } else {
+        return Promise.reject(
+          this.translate.instant(
+            'The recovery phrase you entered do not match the wallet you are trying to re-import'
+          )
+        );
+      }
+    }
     this.onGoingProcessProvider.pause();
+    // Encrypt wallet
     return this.askToEncryptKey(data.key).then(() => {
       this.onGoingProcessProvider.resume();
       return this.keyProvider.addKey(data.key).then(async () => {
@@ -860,12 +908,19 @@ export class ProfileProvider {
     });
   }
 
+  public checkIfCorrectWalletToReImport(keyId, key) {
+    this.logger.info("Checking if it's the correct wallet to re import");
+    const keyToReImport = this.keyProvider.getKey(keyId);
+    return this.keyProvider.isMatch(keyToReImport, key);
+  }
+
   public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     this.logger.info('Importing Wallet xPrivKey');
     opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
-        bwsurl: opts.bwsurl
+        bwsurl: opts.bwsurl,
+        keyId: opts.keyId
       });
     });
   }
@@ -876,13 +931,31 @@ export class ProfileProvider {
     opts.words = words;
     return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
-        bwsurl: opts.bwsurl
+        bwsurl: opts.bwsurl,
+        keyId: opts.keyId
       });
     });
   }
 
   public importFile(str: string, opts): Promise<any> {
-    return this._importFile(str, opts).then(data => {
+    return this._importFile(str, opts).then(async data => {
+      if (opts.keyId) {
+        // re-import attempt
+        if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+          const wallets = this.getWalletsFromGroup({
+            keyId: opts.keyId,
+            showHidden: true
+          });
+          await this.deleteWalletGroup(opts.keyId, wallets);
+          await this.keyProvider.removeKey(opts.keyId);
+        } else {
+          return Promise.reject(
+            this.translate.instant(
+              'The recovery phrase you entered do not match the wallet you are trying to re-import'
+            )
+          );
+        }
+      }
       this.onGoingProcessProvider.pause();
       return this.askToEncryptKey(data.key).then(() => {
         this.onGoingProcessProvider.resume();
@@ -1168,12 +1241,29 @@ export class ProfileProvider {
       this._importWithDerivationPath(opts)
         .then(data => {
           // Check if wallet exists
-          data.walletClient.openWallet(err => {
+          data.walletClient.openWallet(async err => {
             if (err) {
               if (err.message.indexOf('not found') > 0) {
                 err = 'WALLET_DOES_NOT_EXIST';
               }
               return reject(err);
+            }
+            if (opts.keyId) {
+              // re-import attempt
+              if (this.checkIfCorrectWalletToReImport(opts.keyId, data.key)) {
+                const wallets = this.getWalletsFromGroup({
+                  keyId: opts.keyId,
+                  showHidden: true
+                });
+                await this.deleteWalletGroup(opts.keyId, wallets);
+                await this.keyProvider.removeKey(opts.keyId);
+              } else {
+                return reject(
+                  this.translate.instant(
+                    'The recovery phrase you entered do not match the wallet you are trying to re-import'
+                  )
+                );
+              }
             }
             this.keyProvider.addKey(data.key).then(() => {
               this.addAndBindWalletClient(data.walletClient, {
@@ -1665,12 +1755,26 @@ export class ProfileProvider {
   public getWallets(opts?) {
     const wallets = [];
     opts = opts || {};
-    // workaround to get wallets in the correct order
-    Object.keys(this.walletsGroups).forEach(keyId => {
-      opts.keyId = keyId;
+    // workaround to get wallets and wallets groups in the correct order
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      opts.keyId = walletsGroup.key;
       wallets.push(this.getWalletsFromGroup(opts));
     });
     return _.flatten(wallets);
+  }
+
+  private getOrderedWalletsGroups() {
+    let walletsGroups = [];
+    for (let key in this.walletsGroups) {
+      walletsGroups.push({
+        key,
+        value: this.walletsGroups[key]
+      });
+    }
+    const orderedWalletsGroups = _.sortBy(walletsGroups, walletGroup => {
+      return +walletGroup.value.order;
+    });
+    return orderedWalletsGroups;
   }
 
   public getWalletsFromGroup(opts) {
@@ -1771,6 +1875,20 @@ export class ProfileProvider {
       );
     }
 
+    if (opts.minFiatCurrency) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
+        const availableBalanceFiat = this.rateProvider.toFiat(
+          wallet.cachedStatus.availableBalanceSat,
+          opts.minFiatCurrency.currency,
+          wallet.coin
+        );
+
+        return availableBalanceFiat >= Number(opts.minFiatCurrency.amount);
+      });
+    }
+
     return _.sortBy(ret, 'order');
   }
 
@@ -1788,22 +1906,6 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].hidden
     );
-  }
-
-  public getShowTotalBalanceFlag(): Promise<boolean> {
-    return this.persistenceProvider
-      .getShowTotalBalanceFlag()
-      .then(shouldShowBalance => {
-        const isShown: boolean =
-          shouldShowBalance && shouldShowBalance.toString() == 'false'
-            ? false
-            : true;
-        return Promise.resolve(isShown);
-      });
-  }
-
-  public setShowTotalBalanceFlag(showBalance): void {
-    this.persistenceProvider.setShowTotalBalanceFlag(showBalance);
   }
 
   public getTxps(opts): Promise<any> {
@@ -1836,5 +1938,17 @@ export class ProfileProvider {
       }
     });
     return keyIdIndex >= 0;
+  }
+
+  // Checks to see if a wallet exists with minimim fiat amount's worth in it (to pay invoice, for example)
+  public hasWalletWithFunds(fiatAmount: number, fiatCurrency: string): boolean {
+    const minFiatCurrency = {
+      amount: fiatAmount,
+      currency: fiatCurrency
+    };
+
+    const wallets = this.getWalletsFromGroup({ minFiatCurrency });
+
+    return Boolean(wallets.length);
   }
 }

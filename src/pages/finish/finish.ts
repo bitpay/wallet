@@ -26,6 +26,12 @@ export class FinishModalPage {
     this.cssClass = this.navParams.data.cssClass
       ? this.navParams.data.cssClass
       : 'success';
+
+    if (this.navParams.get('autoDismiss')) {
+      setTimeout(() => {
+        this.viewCtrl.dismiss();
+      }, 4000);
+    }
   }
 
   public close(): void {

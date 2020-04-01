@@ -4,17 +4,33 @@
 </ion-header>
 
 <ion-content no-bounce>
-    <img class="phaseOne__img" src="assets/img/card-phase-release/bitpay-card-spaceman-discover.svg"/>
+    <div class="phaseOne__img__container">
+        <img class="phaseOne__img" src="assets/img/card-phase-release/bitpay-card-spaceman-discover.svg"/>
+    </div>
+
 
     <ng-container *ngIf="complete; else start">
         <div class="phaseOne__complete" @fade>
-            <div class="phaseOne__content__title">
-                <span translate>You're on the list</span>
-            </div>
-            <img src="assets/img/card-phase-release/success.svg"/>
-            <p class="phaseOne__content__description" translate>
-                We will notify you as soon as the card is ready.
-            </p>
+
+            <ng-container *ngIf="country === 'US' else thanks">
+                <div class="phaseOne__content__title">
+                    <span translate>You're on the list!</span>
+                </div>
+                <img src="assets/img/card-phase-release/success.svg"/>
+                <p class="phaseOne__content__description" translate>
+                    We'll notify you as soon as the card is ready.
+                </p>
+            </ng-container>
+            <ng-template #thanks>
+                <div class="phaseOne__content__title">
+                    <span translate>Thanks!</span>
+                </div>
+                <img src="assets/img/card-phase-release/success.svg"/>
+                <p class="phaseOne__content__description phaseOne__content--center" translate>
+                    We'll let you know as soon as the BitPay Card<br> is available in your area.
+                </p>
+            </ng-template>
+
         </div>
     </ng-container>
 
@@ -22,54 +38,73 @@
         <div class="phaseOne__content">
             <div>
                 <div class="phaseOne__content__title">
-                    <span translate>Something exciting is arriving soon.</span>
+                    <span translate>Something exciting is arriving</span>
                 </div>
                 <p class="phaseOne__content__description" translate>
-                    Join the waitlist and be the first to experience our brand new card.
+                    Join the waitlist and be the first to experience our new card.
                 </p>
             </div>
 
             <ng-container *ngIf="joinWaitlist else main">
+
+                <ng-container *ngIf="!countrySelected else enterEmailAndConfirm">
+                    <div @fade class="phaseOne__country">
+                        <div class="phaseOne__select__container">
+                            <div class="phaseOne__label">
+                                <label>Select Country</label>
+                            </div>
+                            <div class="phaseOne__select">
+                                <select [(ngModel)]="country">
+                                    <option *ngFor="let country of countryList" [value]="country.shortCode">{{country.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button ion-button class="button-standard" [disabled]="false" (click)="countrySelected = true">
+                            {{'Continue' | translate}}
+                        </button>
+                    </div>
+                </ng-container>
+
+                <ng-template #enterEmailAndConfirm>
+                    <div @fade>
+                        <form [formGroup]="notifyForm">
+                            <ion-item class="phaseOne__form-item phaseOne__form__dark phaseOne--border-overwrite">
+                                <ion-label floating>{{ 'Email' | translate }}</ion-label>
+                                <ion-input mode="md" formControlName="email" type="email"></ion-input>
+                            </ion-item>
+
+                            <ion-item class="phaseOne__form-item phaseOne__form-toggle" no-lines>
+                                <ion-label (click)="openPolicy()" class="phaseOne__form-toggle__label">I would also like to receive marketing and
+                                    promotional
+                                    communications from BitPay subject to BitPay's
+                                    <span class="phaseOne__form__link"> Privacy Policy</span>.
+                                </ion-label>
+                                <ion-toggle formControlName="agreement" color="success"></ion-toggle>
+                            </ion-item>
+                        </form>
+
+                        <button ion-button class="button-standard" [disabled]="notifyForm.invalid" (click)="addMe()">
+                            {{'Notify Me' | translate}}
+                        </button>
+                    </div>
+
+                </ng-template>
+
                 <div class="phaseOne__form" @fade>
-                    <form [formGroup]="notifyForm">
-                        <ion-item class="phaseOne__form-item phaseOne__form__dark">
-                            <ion-label floating>{{ 'Email' | translate }}</ion-label>
-                            <ion-input autofocus="true"
-                                       mode="md" formControlName="email" type="email"></ion-input>
-                        </ion-item>
 
-                        <ion-item class="phaseOne__form-item phaseOne__form-toggle" no-lines>
-                            <ion-toggle formControlName="agreement" item-start color="success"></ion-toggle>
-                            <ion-label (click)="openPolicy()" class="phaseOne__form-toggle__label">I would also like to receive marketing and
-                                promotional
-                                communications from BitPay subject to BitPay's
-                                <span class="phaseOne__form__link"> Privacy Policy</span>.
-                            </ion-label>
-                        </ion-item>
-                    </form>
-
-                    <button ion-button class="button-standard" [disabled]="notifyForm.invalid" (click)="addMe()">
-                        {{'Notify Me' | translate}}
-                    </button>
                 </div>
             </ng-container>
 
             <ng-template #main>
                 <div class="phaseOne__ctas" *ngIf="!joinWaitlist" @fade>
-                    <button ion-button class="button-standard" (click)="joinWaitlist = true">
-                        {{'Join the Waitlist' | translate}}
-                    </button>
-                    <button ion-button class="button-standard phaseOne__footer__secondary-button" color="light"
-                            (click)="orderBitPayCard()">
-                        {{'I still want to order the current card' | translate}}
+                    <button ion-button class="button-standard" (click)="joinList()">
+                        {{'Continue' | translate}}
                     </button>
                     <button ion-button clear color="dark" class="button-standard" (click)="connectBitPayCard()">
                         {{'Pair My BitPay Card' | translate}}
                     </button>
                 </div>
             </ng-template>
-
-
         </div>
     </ng-template>
 

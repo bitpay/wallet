@@ -15,6 +15,7 @@ import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { CoinbaseAccountPage } from '../integrations/coinbase/coinbase-account/coinbase-account';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../integrations/simplex/simplex';
 import { SimplexBuyPage } from '../integrations/simplex/simplex-buy/simplex-buy';
@@ -25,9 +26,9 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -51,8 +52,6 @@ interface UpdateWalletOptsI {
   templateUrl: 'wallets.html'
 })
 export class WalletsPage {
-  @ViewChild('showEthLiveCard')
-  showEthLiveCard;
   @ViewChild('priceCard')
   priceCard;
   public wallets;
@@ -78,6 +77,10 @@ export class WalletsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
 
+  public showCoinbase: boolean;
+  public coinbaseLinked: boolean;
+  public coinbaseData: object = {};
+
   constructor(
     private plt: Platform,
     private navCtrl: NavController,
@@ -87,7 +90,6 @@ export class WalletsPage {
     private logger: Logger,
     private events: Events,
     private popupProvider: PopupProvider,
-    private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private payproProvider: PayproProvider,
@@ -99,7 +101,8 @@ export class WalletsPage {
     private statusBar: StatusBar,
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private coinbaseProvider: CoinbaseProvider
   ) {
     this.slideDown = false;
     this.isBlur = false;
@@ -112,30 +115,43 @@ export class WalletsPage {
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
-      this._willEnter(true);
+      this.setWallets();
       this._didEnter();
     });
-  }
-
-  ionViewWillEnter() {
-    this._willEnter();
   }
 
   ionViewDidEnter() {
     this._didEnter();
   }
 
-  private _willEnter(shouldUpdate: boolean = false) {
+  ionViewWillEnter() {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
 
     // Update list of wallets, status and TXPs
-    this.setWallets(shouldUpdate);
+    this.setWallets();
+
+    // Get Coinbase Accounts and UserInfo
+    this.setCoinbase();
+  }
+
+  private setCoinbase(force?) {
+    this.showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
+      'coinbase'
+    );
+    this.coinbaseLinked = this.coinbaseProvider.isLinked();
+    if (this.coinbaseLinked && this.showCoinbase) {
+      if (force || !this.coinbaseData) {
+        this.coinbaseProvider.updateExchangeRates();
+        this.coinbaseProvider.preFetchAllData(this.coinbaseData);
+      } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
+    }
   }
 
   private _didEnter() {
     this.checkClipboard();
+    this.updateTxps();
 
     // Show integrations
     const integrations = this.homeIntegrationsProvider
@@ -171,7 +187,6 @@ export class WalletsPage {
 
     // Required delay to improve performance loading
     setTimeout(() => {
-      this.showEthLive();
       this.checkEmailLawCompliance();
     }, 2000);
 
@@ -182,9 +197,7 @@ export class WalletsPage {
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
       // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', () =>
-        this.setWallets(true)
-      );
+      this.events.subscribe('Local/WalletListChange', () => this.setWallets());
 
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletActionHandler);
@@ -206,7 +219,6 @@ export class WalletsPage {
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
       this.events.unsubscribe('Local/WalletFocus', this.walletFocusHandler);
     });
-    this.setWallets(true);
   }
 
   ngOnDestroy() {
@@ -306,7 +318,7 @@ export class WalletsPage {
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.setWallets(true);
+      this.setWallets();
     },
     5000,
     {
@@ -314,9 +326,19 @@ export class WalletsPage {
     }
   );
 
-  private setWallets = (shouldUpdate: boolean = false) => {
+  private debounceSetCoinbase = _.debounce(
+    async () => {
+      this.setCoinbase(true);
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
+
+  private setWallets = () => {
     // TEST
-    /* 
+    /*
     setTimeout(() => {
       this.logger.info('##### Load BITCOIN URI TEST');
       this.incomingDataProvider.redir('bitcoin:3KeJU7VxSKC451pPNSWjF6zK3gm2x7re7q?amount=0.0001');
@@ -336,27 +358,7 @@ export class WalletsPage {
     this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
       keyId: 'read-only'
     });
-
-    this.profileProvider.setLastKnownBalance();
-
-    // Avoid heavy tasks that can slow down the unlocking experience
-    if (!this.appProvider.isLockModalOpen && shouldUpdate) {
-      this.fetchAllWalletsStatus();
-    }
   };
-
-  private async showEthLive() {
-    const hideEthLiveCard = await this.persistenceProvider.getEthLiveCardFlag();
-    if (!hideEthLiveCard) {
-      let hasNoLegacy = false;
-      this.walletsGroups.forEach((walletsGroup: any[]) => {
-        if (walletsGroup[0].canAddNewAccount) {
-          hasNoLegacy = true;
-        }
-      });
-      this.showEthLiveCard.setShowEthLiveCard(hasNoLegacy);
-    }
-  }
 
   public checkClipboard() {
     return this.clipboardProvider
@@ -572,48 +574,6 @@ export class WalletsPage {
       });
   }
 
-  private fetchAllWalletsStatus(): void {
-    if (_.isEmpty(this.wallets)) return;
-
-    this.logger.debug('fetchAllWalletsStatus');
-    const pr = wallet => {
-      return this.walletProvider
-        .fetchStatus(wallet, {})
-        .then(async status => {
-          wallet.cachedStatus = status;
-          wallet.error = wallet.errorObj = null;
-
-          const balance =
-            wallet.coin === 'xrp'
-              ? wallet.cachedStatus.availableBalanceStr
-              : wallet.cachedStatus.totalBalanceStr;
-
-          this.persistenceProvider.setLastKnownBalance(wallet.id, balance);
-
-          this.events.publish('Local/WalletUpdate', {
-            walletId: wallet.id,
-            finished: true
-          });
-
-          return Promise.resolve();
-        })
-        .catch(err => {
-          this.processWalletError(wallet, err);
-          return Promise.resolve();
-        });
-    };
-
-    const promises = [];
-
-    _.each(this.profileProvider.wallet, wallet => {
-      promises.push(pr(wallet));
-    });
-
-    Promise.all(promises).then(() => {
-      this.updateTxps();
-    });
-  }
-
   private processWalletError(wallet, err): void {
     wallet.error = wallet.errorObj = null;
 
@@ -680,6 +640,7 @@ export class WalletsPage {
 
   public doRefresh(refresher): void {
     this.debounceSetWallets();
+    this.debounceSetCoinbase();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
@@ -726,5 +687,19 @@ export class WalletsPage {
               isZeroState: true
             });
     });
+  }
+
+  public getNativeBalance(amount, currency): string {
+    return this.coinbaseProvider.getNativeCurrencyBalance(amount, currency);
+  }
+
+  public goToCoinbaseAccount(id): void {
+    this.navCtrl.push(CoinbaseAccountPage, {
+      id
+    });
+  }
+
+  public goToCoinbase(): void {
+    this.navCtrl.push(CoinbasePage);
   }
 }

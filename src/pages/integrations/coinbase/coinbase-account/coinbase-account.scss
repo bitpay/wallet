@@ -1,0 +1,73 @@
+page-coinbase-account {
+  .logo img {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .balance-content,
+  .balance-str {
+    display: block !important;
+  }
+
+  .balance-coin {
+    font-size: 18px;
+    font-weight: 200;
+    vertical-align: super;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    margin-left: 5px;
+  }
+
+  .received {
+    color: color($colors, success);
+  }
+
+  .sent {
+    color: color($colors, warning);
+  }
+
+  .tx-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tx-subtitle {
+    display: block;
+    color: #434d5a;
+    font-size: 13px;
+    margin-top: 3px;
+  }
+
+  .tx-amount {
+    opacity: 1;
+  }
+
+  .tx-alternative-amount {
+    font-size: 14px;
+    margin-top: 3px;
+    opacity: 0.4;
+    font-weight: 300;
+    color: #434d5a;
+  }
+
+  .tx-date {
+    text-align: center;
+    color: #434d5a;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    .tx-month {
+      opacity: 0.4;
+      font-weight: 300;
+    }
+
+    .tx-day {
+      font-size: 18px;
+    }
+  }
+}

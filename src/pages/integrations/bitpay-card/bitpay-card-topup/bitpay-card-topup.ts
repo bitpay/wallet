@@ -9,7 +9,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
-import { IncomingDataProvider } from '../../../../providers';
+import { IABCardProvider, IncomingDataProvider } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
@@ -93,7 +93,8 @@ export class BitPayCardTopUpPage {
     private translate: TranslateService,
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
-    private payproProvider: PayproProvider
+    private payproProvider: PayproProvider,
+    private iabCardProvider: IABCardProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
@@ -142,9 +143,10 @@ export class BitPayCardTopUpPage {
 
         this.wallets = this.profileProvider.getWallets({
           onlyComplete: true,
+          coin,
           network: this.bitPayProvider.getEnvironment().network,
           hasFunds: true,
-          coin
+          minFiatCurrency: { amount: this.amount, currency: this.currency }
         });
 
         if (_.isEmpty(this.wallets)) {
@@ -302,6 +304,13 @@ export class BitPayCardTopUpPage {
         .getPayProDetails(payProUrl, wallet.coin)
         .then(details => {
           const { instructions } = details;
+
+          this.logger.debug(
+            `PayProDetails instructions amount ${_.sumBy(
+              instructions,
+              'amount'
+            )}`
+          );
           let txp: Partial<TransactionProposal> = {
             coin: wallet.coin,
             amount: _.sumBy(instructions, 'amount'),
@@ -349,10 +358,15 @@ export class BitPayCardTopUpPage {
               : Math.ceil(details.requiredFeeRate * 1024);
             txp.feePerKb = requiredFeeRate;
             this.logger.debug(
+              `PayProDetails requiredFeeRate: ${
+                details.requiredFeeRate
+              }. Txp feePerKb: ${txp.feePerKb}`
+            );
+            this.logger.debug(
               'Using merchant fee rate (for debit card):' + txp.feePerKb
             );
           } else {
-            txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+            txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
           }
 
           txp['origToAddress'] = txp.toAddress;
@@ -398,7 +412,7 @@ export class BitPayCardTopUpPage {
         .getFeeRate(
           wallet.coin,
           wallet.credentials.network,
-          this.feeProvider.getCurrentFeeLevel()
+          this.feeProvider.getCoinCurrentFeeLevel(wallet.coin)
         )
         .then(feePerKb => {
           this.walletProvider
@@ -445,15 +459,6 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private toFixedTrunc(value, n) {
-    const v = value.toString().split('.');
-    if (n <= 0) return v[0];
-    let f = v[1] || '';
-    if (f.length > n) return `${v[0]}.${f.substr(0, n)}`;
-    while (f.length < n) f += '0';
-    return `${v[0]}.${f}`;
-  }
-
   private calculateAmount(wallet): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
@@ -462,31 +467,32 @@ export class BitPayCardTopUpPage {
       let c = this.currency;
 
       if (this.useSendMax) {
+        // Workaround to get invoiceFeeSat and payProFeeSat to calculate newAmountSat for the invoice
+        // getSendMaxInfo to get *maxAmountSat* and *maxAmountFeeSat*
+        // Create 1usd invoice to get payProUrl and *invoiceFeeSat*
+        // getPayProDetails to get requiredFeeRate and calculate *payProFeeSat*
+        // Get *transactionFee* comparing *maxAmountFeeSat* and *payProFeeSat*
+        // Calculate newAmountSat = maxAmountSat - invoiceFeeSat - transactionFee
+
+        this.logger.debug(`Calculating wallet send max`);
+
         this.getSendMaxInfo(wallet)
           .then(maxValues => {
-            if (maxValues.amount == 0) {
-              return reject({
-                message: this.translate.instant('Insufficient funds for fee')
-              });
-            }
+            const maxAmountSat = maxValues.amount;
+            const maxAmountFeeSat = maxValues.feePerKb;
 
-            const {
-              unitDecimals,
-              unitToSatoshi
-            } = this.currencyProvider.getPrecision(this.wallet.coin);
-            let maxAmount = Number(
-              (maxValues.amount / unitToSatoshi).toFixed(unitDecimals)
+            this.logger.debug(
+              `getSendMaxInfo -> maxAmountSat: ${maxAmountSat} - maxAmountFeeSat: ${maxAmountFeeSat}`
             );
 
-            // Round to 6 digits
-            maxAmount = this.toFixedTrunc(maxAmount, 6);
+            this.logger.debug(`Creating 1usd invoice`);
 
             this.createInvoice({
-              amount: maxAmount,
-              currency: wallet.coin.toUpperCase()
+              amount: 1,
+              currency: 'USD'
             })
               .then(inv => {
-                // Check if BTC or BCH is enabled in this account
+                // Check if COIN is enabled in this account
                 if (!this.isCryptoCurrencySupported(wallet, inv)) {
                   return reject({
                     message: this.translate.instant(
@@ -497,25 +503,69 @@ export class BitPayCardTopUpPage {
 
                 inv['minerFees'][COIN]['totalFee'] =
                   inv.minerFees[COIN].totalFee || 0;
-                let invoiceFeeSat = inv.minerFees[COIN].totalFee;
-                let maxAmountSat = Number(
-                  (maxAmount * unitToSatoshi).toFixed(0)
+
+                const invoiceFeeSat = inv.minerFees[COIN].totalFee;
+
+                this.logger.debug(
+                  `createInvoice -> invoiceFeeSat: ${invoiceFeeSat}`
                 );
-                let newAmountSat = maxAmountSat - invoiceFeeSat;
 
-                // Set expiration time for this invoice
-                if (inv.expirationTime)
-                  this.paymentTimeControl(inv.expirationTime);
+                const paymentCode = this.currencyProvider.getPaymentCode(
+                  wallet.coin
+                );
+                const protocolUrl = inv.paymentCodes[COIN][paymentCode];
+                const payProUrl = this.incomingDataProvider.getPayProUrl(
+                  protocolUrl
+                );
 
-                if (newAmountSat <= 0) {
+                if (!payProUrl) {
                   return reject({
-                    message: this.translate.instant(
-                      'Insufficient funds for fee'
-                    )
+                    title: this.translate.instant('Error in Payment Protocol'),
+                    message: this.translate.instant('Invalid URL')
                   });
                 }
 
-                return resolve({ amount: newAmountSat, currency: 'sat' });
+                this.logger.debug(`createInvoice -> protocolUrl: ${payProUrl}`);
+
+                this.logger.debug(`Getting paypro details`);
+
+                this.payproProvider
+                  .getPayProDetails(payProUrl, wallet.coin)
+                  .then(details => {
+                    const payProFeeSat = !this.currencyProvider.isUtxoCoin(
+                      wallet.coin
+                    )
+                      ? details.requiredFeeRate
+                      : Math.ceil(details.requiredFeeRate * 1024);
+
+                    this.logger.debug(
+                      `getPayProDetails -> payProFeeSat: ${payProFeeSat}`
+                    );
+
+                    let transactionFee =
+                      payProFeeSat > maxAmountFeeSat
+                        ? payProFeeSat
+                        : maxAmountFeeSat;
+
+                    this.logger.debug(`transactionFee: ${transactionFee}`);
+
+                    let newAmountSat =
+                      maxAmountSat - invoiceFeeSat - transactionFee;
+
+                    if (newAmountSat <= 0) {
+                      return reject({
+                        message: this.translate.instant(
+                          'Insufficient funds for fee'
+                        )
+                      });
+                    }
+
+                    this.logger.debug(
+                      `Calculating newAmountSat (newAmountSat = maxAmountSat - invoiceFeeSat - transactionFee). newAmountSat: ${newAmountSat}`
+                    );
+
+                    return resolve({ amount: newAmountSat, currency: 'sat' });
+                  });
               })
               .catch(err => {
                 return reject(err);
@@ -578,14 +628,31 @@ export class BitPayCardTopUpPage {
   private initializeTopUp(wallet, parsedAmount): void {
     let COIN = wallet.coin.toUpperCase();
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    var dataSrc = {
+
+    var dataSrc: any = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency
     };
+
+    if (this.navParams.get('v2')) {
+      const { amount, currency, coin } = parsedAmount;
+
+      dataSrc = {
+        invoicePrice: amount,
+        invoiceCurrency: currency,
+        transactionCurrency: coin.toUpperCase(),
+        v2: true
+      };
+    }
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     this.logLegacyCardTopUpEvent(wallet, false);
 
+    this.logger.debug(
+      `Creating invoice. amount: ${dataSrc.amount} - currency: ${
+        dataSrc.currency
+      }`
+    );
     this.createInvoice(dataSrc)
       .then(invoice => {
         // Check if BTC or BCH is enabled in this account
@@ -601,6 +668,8 @@ export class BitPayCardTopUpPage {
         invoice['minerFees'][COIN]['totalFee'] =
           invoice.minerFees[COIN].totalFee || 0;
         let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+
+        this.logger.debug(`Invoice fee. invoiceFeeSat: ${invoiceFeeSat}`);
 
         let message = this.amountUnitStr + ' to ' + this.lastFourDigits;
 
@@ -752,7 +821,7 @@ export class BitPayCardTopUpPage {
           val.amount,
           val.currency
         );
-        this.initializeTopUp(wallet, parsedAmount);
+        this.initializeTopUp(wallet, { ...parsedAmount, coin: wallet.coin });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -769,7 +838,7 @@ export class BitPayCardTopUpPage {
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: 'From'
+      title: this.translate.instant('From')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -794,12 +863,19 @@ export class BitPayCardTopUpPage {
     );
     modal.present();
     modal.onDidDismiss(async () => {
-      await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.push(
-        BitPayCardPage,
-        { id: this.cardId },
-        { animate: false }
-      );
+      if (this.navParams.get('v2')) {
+        this.iabCardProvider.show();
+        this.iabCardProvider.sendMessage({
+          message: `topUpComplete?${this.cardId}`
+        });
+        await this.navCtrl.popToRoot({ animate: false });
+      } else {
+        await this.navCtrl.push(
+          BitPayCardPage,
+          { id: this.cardId },
+          { animate: false }
+        );
+      }
     });
   }
 

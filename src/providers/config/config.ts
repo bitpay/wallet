@@ -71,9 +71,13 @@ export interface Config {
     giftcards: boolean;
   };
 
-  pushNotificationsEnabled: boolean;
+  pushNotifications: {
+    enabled: boolean;
+  };
 
-  desktopNotificationsEnabled: boolean;
+  desktopNotifications: {
+    enabled: boolean;
+  };
 
   confirmedTxsNotifications: {
     enabled: boolean;
@@ -106,7 +110,9 @@ export interface Config {
 
   allowMultiplePrimaryWallets: boolean;
 
-  useLegacyQrCode: boolean;
+  totalBalance: {
+    show: boolean;
+  };
 }
 
 @Injectable()
@@ -184,7 +190,7 @@ export class ConfigProvider {
 
       // External services
       showIntegration: {
-        coinbase: false,
+        coinbase: true,
         debitcard: true,
         amazon: true,
         mercadolibre: true,
@@ -193,9 +199,13 @@ export class ConfigProvider {
         giftcards: true
       },
 
-      pushNotificationsEnabled: true,
+      pushNotifications: {
+        enabled: true
+      },
 
-      desktopNotificationsEnabled: true,
+      desktopNotifications: {
+        enabled: true
+      },
 
       confirmedTxsNotifications: {
         enabled: true
@@ -222,7 +232,9 @@ export class ConfigProvider {
 
       allowMultiplePrimaryWallets: false,
 
-      useLegacyQrCode: false
+      totalBalance: {
+        show: true
+      }
     };
   }
 
@@ -303,12 +315,15 @@ export class ConfigProvider {
       if (this.configCache.showIntegration.simplex !== false) {
         this.configCache.showIntegration.simplex = this.configDefault.showIntegration.simplex;
       }
+      if (this.configCache.showIntegration.coinbase !== false) {
+        this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
+      }
     }
-    if (!this.configCache.pushNotificationsEnabled) {
-      this.configCache.pushNotificationsEnabled = this.configDefault.pushNotificationsEnabled;
+    if (!this.configCache.pushNotifications) {
+      this.configCache.pushNotifications = this.configDefault.pushNotifications;
     }
-    if (!this.configCache.desktopNotificationsEnabled) {
-      this.configCache.desktopNotificationsEnabled = this.configDefault.desktopNotificationsEnabled;
+    if (!this.configCache.desktopNotifications) {
+      this.configCache.desktopNotifications = this.configDefault.desktopNotifications;
     }
     if (!this.configCache.emailNotifications) {
       this.configCache.emailNotifications = this.configDefault.emailNotifications;
@@ -327,8 +342,9 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitDecimals = this.configDefault.wallet.settings.unitDecimals;
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
     }
-    if (!this.configCache.useLegacyQrCode) {
-      this.configCache.useLegacyQrCode = this.configDefault.useLegacyQrCode;
+
+    if (!this.configCache.totalBalance) {
+      this.configCache.totalBalance = this.configDefault.totalBalance;
     }
   }
 }

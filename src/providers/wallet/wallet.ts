@@ -813,10 +813,12 @@ export class WalletProvider {
                 });
               };
 
-              this.getLowAmount(wallet).then(fee => {
-                opts.lowAmount = fee;
-                updateLowAmount(txs);
-              });
+              if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+                this.getLowAmount(wallet).then(fee => {
+                  opts.lowAmount = fee;
+                  updateLowAmount(txs);
+                });
+              }
 
               updateNotes()
                 .then(() => {
@@ -1355,6 +1357,21 @@ export class WalletProvider {
             .catch(err => {
               return reject(err);
             });
+        }
+      );
+    });
+  }
+
+  public getUtxos(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      wallet.getUtxos(
+        {
+          coin: wallet.coin
+        },
+        (err, resp) => {
+          if (err || !resp || !resp.length)
+            return reject(err ? err : 'No UTXOs');
+          return resolve(resp);
         }
       );
     });

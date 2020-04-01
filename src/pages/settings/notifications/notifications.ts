@@ -73,8 +73,12 @@ export class NotificationsPage {
       this.platformProvider.isIOS && this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
 
-    this.pushNotifications = config.pushNotificationsEnabled;
-    this.desktopNotifications = config.desktopNotificationsEnabled;
+    this.pushNotifications = config.pushNotifications
+      ? config.pushNotifications.enabled
+      : false;
+    this.desktopNotifications = config.desktopNotifications
+      ? config.desktopNotifications.enabled
+      : false;
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
       : false;
@@ -96,18 +100,18 @@ export class NotificationsPage {
 
   public pushNotificationsChange() {
     const opts = {
-      pushNotificationsEnabled: this.pushNotifications
+      pushNotifications: { enabled: this.pushNotifications }
     };
 
     this.configProvider.set(opts);
 
-    if (opts.pushNotificationsEnabled) this.pushProvider.init();
+    if (opts.pushNotifications.enabled) this.pushProvider.init();
     else this.pushProvider.disable();
   }
 
   public desktopNotificationChange() {
     const opts = {
-      desktopNotificationsEnabled: this.desktopNotifications
+      desktopNotifications: { enabled: this.desktopNotifications }
     };
 
     this.configProvider.set(opts);

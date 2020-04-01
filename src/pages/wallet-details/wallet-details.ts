@@ -11,11 +11,10 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
 // providers
-import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
-import { InAppBrowserProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -54,7 +53,6 @@ interface UpdateWalletOptsI {
   templateUrl: 'wallet-details.html'
 })
 export class WalletDetailsPage {
-  private cardIAB_Ref: InAppBrowserRef;
   private currentPage: number = 0;
   private showBackupNeededMsg: boolean = true;
   private onResumeSubscription: Subscription;
@@ -87,7 +85,6 @@ export class WalletDetailsPage {
     private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private iab: InAppBrowserProvider,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
@@ -110,29 +107,11 @@ export class WalletDetailsPage {
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
-    this.cardIAB_Ref = this.iab.refs.card;
   }
 
   async ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
-
-    const redirectionParam = this.navParams.get('redir');
-    if (redirectionParam && redirectionParam.redir === 'wc') {
-      setTimeout(() => {
-        this.cardIAB_Ref.executeScript(
-          {
-            code: `window.postMessage(${JSON.stringify({
-              message: 'paymentBroadcasted'
-            })}, '*')`
-          },
-          () => {
-            this.logger.log('card IAB -> payment broadcasting opening IAB');
-          }
-        );
-        this.cardIAB_Ref.show();
-      }, 1000);
-    }
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
@@ -467,6 +446,40 @@ export class WalletDetailsPage {
       });
   }
 
+  public itemTapped(tx) {
+    if (!this.canSpeedUpTx(tx)) {
+      this.goToTxDetails(tx);
+    } else {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    }
+  }
+
+  private speedUpTx(tx) {
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      const data = {
+        amount: 0,
+        network: this.wallet.network,
+        coin: this.wallet.coin,
+        speedUpTx: true,
+        toAddress: addr,
+        walletId: this.wallet.credentials.walletId,
+        fromWalletDetails: true,
+        txid: tx.txid,
+        recipientType: 'wallet',
+        name: this.wallet.name
+      };
+      const nextView = {
+        name: 'ConfirmPage',
+        params: data
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    });
+  }
+
   public goToTxDetails(tx) {
     const txDetailModal = this.modalCtrl.create(TxDetailsModal, {
       walletId: this.wallet.credentials.walletId,
@@ -533,6 +546,20 @@ export class WalletDetailsPage {
 
   public isUnconfirmed(tx) {
     return !tx.confirmations || tx.confirmations === 0;
+  }
+
+  public canSpeedUpTx(tx): boolean {
+    if (this.wallet.coin !== 'btc') return false;
+
+    const currentTime = moment();
+    const txTime = moment(tx.time * 1000);
+
+    // Can speed up the tx after 4 hours without confirming
+    return (
+      currentTime.diff(txTime, 'hours') >= 4 &&
+      this.isUnconfirmed(tx) &&
+      tx.action === 'received'
+    );
   }
 
   public openBalanceDetails(): void {

@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { from } from 'rxjs/observable/from';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
+import { timer } from 'rxjs/observable/timer';
 import { mergeMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
 import { AnalyticsProvider } from '../analytics/analytics';
@@ -73,6 +74,7 @@ export class GiftCardProvider extends InvoiceProvider {
       await this.persistenceProvider.setBitPayIdSettings(this.getNetwork(), {
         syncGiftCardPurchases: true
       });
+      await timer(1000).toPromise();
       await this.getCardConfigMap(true);
     });
     this.events.subscribe('BitPayId/Disconnected', async () => {
@@ -90,12 +92,16 @@ export class GiftCardProvider extends InvoiceProvider {
 
   getCardConfigMap(bustCache: boolean = false) {
     if (bustCache) {
-      this.availableCardMapPromise = undefined;
-      this.availableCardsPromise = undefined;
+      this.clearAvailableCardsCache();
     }
     return this.availableCardMapPromise
       ? this.availableCardMapPromise
       : this.fetchCardConfigMap();
+  }
+
+  clearAvailableCardsCache() {
+    this.availableCardMapPromise = undefined;
+    this.availableCardsPromise = undefined;
   }
 
   async fetchCardConfigMap() {
@@ -120,7 +126,7 @@ export class GiftCardProvider extends InvoiceProvider {
       this.persistenceProvider.getBitPayIdUserInfo(this.getNetwork()),
       this.persistenceProvider.getBitPayIdSettings(this.getNetwork())
     ]);
-    return user && userSettings.syncGiftCardPurchases;
+    return user && userSettings && userSettings.syncGiftCardPurchases;
   }
 
   public async createBitpayInvoice(data) {
@@ -157,7 +163,13 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   public async createAuthenticatedBitpayInvoice(params) {
-    return this.bitpayIdProvider.apiCall('createGiftCardInvoice', params);
+    const user = await this.persistenceProvider.getBitPayIdUserInfo(
+      this.getNetwork()
+    );
+    return this.bitpayIdProvider.apiCall('createGiftCardInvoice', {
+      ...params,
+      email: user.email
+    });
   }
 
   async getActiveCards(): Promise<GiftCard[]> {
@@ -369,12 +381,9 @@ export class GiftCardProvider extends InvoiceProvider {
       .toPromise();
   }
 
-  updatePendingGiftCards(
-    cards: GiftCard[],
-    force: boolean = false
-  ): Observable<GiftCard> {
-    const cardsNeedingUpdate = cards.filter(
-      card => this.checkIfCardNeedsUpdate(card) || force
+  updatePendingGiftCards(cards: GiftCard[]): Observable<GiftCard> {
+    const cardsNeedingUpdate = cards.filter(card =>
+      this.checkIfCardNeedsUpdate(card)
     );
     return from(cardsNeedingUpdate).pipe(
       mergeMap(card =>
@@ -443,7 +452,10 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getSupportedCards(): Promise<CardConfig[]> {
     const [availableCards, cachedApiCardConfig] = await Promise.all([
-      this.getAvailableCards().catch(_ => [] as CardConfig[]),
+      this.getAvailableCards().catch(_ => {
+        this.clearAvailableCardsCache();
+        return [] as CardConfig[];
+      }),
       this.getCachedApiCardConfig().catch(_ => ({} as CardConfigMap))
     ]);
     const cachedCardNames = Object.keys(cachedApiCardConfig);

@@ -81,7 +81,9 @@ page-home {
     // padding-bottom: 0px;
 
     &-header {
-      height: 30px;
+      &.no-dismissible {
+        height: 30px;
+      }
       .button[icon-only] {
         font-size: 10px;
       }
@@ -157,5 +159,14 @@ page-home {
     &-arrow {
       margin-right: 10px;
     }
+  }
+  .date-label {
+    display: inline-block;
+    background: #f6f7fc;
+    border-radius: 25vh;
+    padding: 0 18px;
+    color: #9ba3ae;
+    font-size: 12px;
+    cursor: default;
   }
 }

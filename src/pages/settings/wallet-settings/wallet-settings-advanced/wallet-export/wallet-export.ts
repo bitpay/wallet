@@ -145,7 +145,7 @@ export class WalletExportPage {
           err.message != 'PASSWORD_CANCELLED'
         ) {
           if (err.message == 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
           }
@@ -210,7 +210,7 @@ export class WalletExportPage {
             err.message != 'PASSWORD_CANCELLED'
           ) {
             if (err.message == 'WRONG_PASSWORD') {
-              this.errorsProvider.showWrongEncryptPassswordError();
+              this.errorsProvider.showWrongEncryptPasswordError();
             } else {
               this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
             }

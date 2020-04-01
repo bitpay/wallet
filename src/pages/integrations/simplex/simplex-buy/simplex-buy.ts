@@ -102,7 +102,7 @@ export class SimplexBuyPage {
     this.wallets = this.profileProvider.getWallets({
       network: 'livenet',
       onlyComplete: true,
-      coin: ['btc', 'bch', 'eth', 'xrp'],
+      coin: ['btc', 'bch', 'eth', 'xrp', 'pax'],
       backedUp: true
     });
     this.altCurrenciesToShow = ['USD', 'EUR'];
@@ -315,7 +315,7 @@ export class SimplexBuyPage {
 
     this.showLoading = true;
     const data = {
-      digital_currency: this.currencyProvider.getChain(this.wallet.coin),
+      digital_currency: this.wallet.coin.toUpperCase(),
       fiat_currency: this.currencyIsFiat()
         ? this.quoteForm.value.altCurrency
         : this.altCurrencyInitial,
@@ -371,11 +371,11 @@ export class SimplexBuyPage {
             amount: this.fiatTotalAmount
           },
           requested_digital_amount: {
-            currency: this.currencyProvider.getChain(this.wallet.coin),
+            currency: this.wallet.coin.toUpperCase(),
             amount: this.cryptoAmount
           },
           destination_wallet: {
-            currency: this.currencyProvider.getChain(this.wallet.coin),
+            currency: this.wallet.coin.toUpperCase(),
             address,
             tag: ''
           },
@@ -491,7 +491,7 @@ export class SimplexBuyPage {
               address,
               created_on: Date.now(),
               crypto_amount: this.cryptoAmount,
-              coin: this.currencyProvider.getChain(this.wallet.coin),
+              coin: this.wallet.coin.toUpperCase(),
               fiat_base_amount: this.fiatBaseAmount,
               fiat_total_amount: this.fiatTotalAmount,
               fiat_total_amount_currency: this.currencyIsFiat()

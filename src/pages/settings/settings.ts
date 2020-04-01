@@ -8,13 +8,8 @@ import * as _ from 'lodash';
 // providers
 import { Observable } from 'rxjs';
 // pages
-import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
-import {
-  BitPayIdProvider,
-  IABCardProvider,
-  InAppBrowserProvider
-} from '../../providers';
+import { BitPayIdProvider, IABCardProvider } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -72,20 +67,20 @@ export class SettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
+  public readOnlyWalletsGroup: any[];
   public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
-  private cardIAB_Ref: InAppBrowserRef;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
-  public showBalance: boolean;
-  public useLegacyQrCode: boolean;
+  public showReorder: boolean = false;
+  public showTotalBalance: boolean;
 
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private profileProvider: ProfileProvider,
+    public profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -96,7 +91,6 @@ export class SettingsPage {
     private touchid: TouchIdProvider,
     private analyticsProvider: AnalyticsProvider,
     private persistanceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
     private iabCardProvider: IABCardProvider
@@ -115,9 +109,7 @@ export class SettingsPage {
       .getBitpayIdPairingFlag()
       .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
 
-    this.cardIAB_Ref = this.iab.refs.card;
-
-    if (this.cardIAB_Ref) {
+    if (this.iabCardProvider.ref) {
       // check for user info
       this.persistanceProvider
         .getBitPayIdUserInfo(this.network)
@@ -141,13 +133,23 @@ export class SettingsPage {
       this.language.getCurrent()
     );
 
-    this.setShowBalanceFlag();
-
     const opts = {
       showHidden: true
     };
     const wallets = this.profileProvider.getWallets(opts);
-    this.walletsGroups = _.values(_.groupBy(wallets, 'keyId'));
+    this.walletsGroups = _.values(
+      _.groupBy(
+        _.filter(wallets, wallet => {
+          return wallet.keyId != 'read-only';
+        }),
+        'keyId'
+      )
+    );
+
+    this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
+      keyId: 'read-only'
+    });
+
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
@@ -158,7 +160,7 @@ export class SettingsPage {
         ? this.config.lock.method.toLowerCase()
         : null;
 
-    this.useLegacyQrCode = this.config.useLegacyQrCode;
+    this.showTotalBalance = this.config.totalBalance.show;
   }
 
   ionViewDidEnter() {
@@ -189,15 +191,13 @@ export class SettingsPage {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
-      this.cardIAB_Ref.executeScript(
+      this.iabCardProvider.sendMessage(
         {
-          code: `window.postMessage(${JSON.stringify({
-            message: 'pairingOnly'
-          })}, '*')`
+          message: 'pairingOnly'
         },
         () => {
           setTimeout(() => {
-            this.cardIAB_Ref.show();
+            this.iabCardProvider.show();
           }, 500);
         }
       );
@@ -272,7 +272,21 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    this.navCtrl.push(BitPaySettingsPage, { id });
+    this.persistanceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        const message = `openSettings?${id}`;
+        this.iabCardProvider.sendMessage(
+          {
+            message
+          },
+          () => {
+            this.iabCardProvider.show();
+          }
+        );
+      } else {
+        this.navCtrl.push(BitPaySettingsPage, { id });
+      }
+    });
   }
 
   public openGiftCardsSettings() {
@@ -339,6 +353,7 @@ export class SettingsPage {
   }
 
   public openWalletGroupSettings(keyId: string): void {
+    if (this.showReorder) return;
     this.navCtrl.push(KeySettingsPage, { keyId });
   }
 
@@ -348,25 +363,23 @@ export class SettingsPage {
     });
   }
 
-  private setShowBalanceFlag() {
-    this.profileProvider
-      .getShowTotalBalanceFlag()
-      .then(isShown => {
-        this.showBalance = isShown;
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-  }
-
   public toggleShowBalanceFlag(): void {
-    this.profileProvider.setShowTotalBalanceFlag(this.showBalance);
-  }
-
-  public toggleQrCodeLegacyFlag(): void {
     let opts = {
-      useLegacyQrCode: this.useLegacyQrCode
+      totalBalance: { show: this.showTotalBalance }
     };
     this.configProvider.set(opts);
+  }
+
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
+  }
+
+  public reorderAccounts(indexes): void {
+    const element = this.walletsGroups[indexes.from];
+    this.walletsGroups.splice(indexes.from, 1);
+    this.walletsGroups.splice(indexes.to, 0, element);
+    _.each(this.walletsGroups, (walletGroup, index: number) => {
+      this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
+    });
   }
 }

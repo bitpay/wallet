@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
-import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -18,14 +17,14 @@ export class CoinbaseSettingsPage {
   private serviceName: string = 'coinbase';
   public showInHome;
   public service;
-  public coinbaseAccount;
-  public coinbaseUser;
   public loading: boolean;
+
+  public data: object = {};
+  public linkedAccount: boolean;
 
   constructor(
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
-    private logger: Logger,
     private coinbaseProvider: CoinbaseProvider,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
@@ -36,42 +35,9 @@ export class CoinbaseSettingsPage {
     this.showInHome = !!this.service[0].show;
   }
 
-  ionViewDidLoad() {
-    this.loading = true;
-    this.coinbaseProvider.init((err, data) => {
-      if (err || _.isEmpty(data)) {
-        this.loading = false;
-        if (err) {
-          this.logger.error(err);
-          let errorId = err.errors ? err.errors[0].id : null;
-          err = err.errors ? err.errors[0].message : err;
-          this.popupProvider
-            .ionicAlert('Error connecting to Coinbase', err)
-            .then(() => {
-              if (errorId == 'revoked_token') {
-                this.coinbaseProvider.logout();
-                this.navCtrl.popToRoot({ animate: false });
-              }
-            });
-        }
-        return;
-      }
-      let accessToken = data.accessToken;
-      let accountId = data.accountId;
-      this.coinbaseProvider.getAccount(
-        accessToken,
-        accountId,
-        (err, account) => {
-          this.loading = false;
-          if (err) this.logger.error(err);
-          this.coinbaseAccount = account.data[0];
-        }
-      );
-      this.coinbaseProvider.getCurrentUser(accessToken, (err, user) => {
-        if (err) this.logger.error(err);
-        this.coinbaseUser = user.data;
-      });
-    });
+  ionViewWillEnter() {
+    this.linkedAccount = this.coinbaseProvider.isLinked();
+    if (this.linkedAccount) this.coinbaseProvider.getCurrentUser(this.data);
   }
 
   public showInHomeSwitch(): void {
@@ -94,8 +60,6 @@ export class CoinbaseSettingsPage {
       .then(res => {
         if (res) {
           this.coinbaseProvider.logout();
-          this.showInHome = false;
-          this.showInHomeSwitch();
           this.navCtrl.popToRoot();
         }
       });

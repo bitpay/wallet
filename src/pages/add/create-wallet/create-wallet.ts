@@ -31,7 +31,6 @@ import {
 import { CopayersPage } from '../../add/copayers/copayers';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
-
 @Component({
   selector: 'page-create-wallet',
   templateUrl: 'create-wallet.html'
@@ -324,6 +323,7 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        this.profileProvider.setNewWalletGroupOrder(wallet.credentials.keyId);
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
@@ -359,7 +359,7 @@ export class CreateWalletPage implements OnInit {
         ) {
           this.logger.error('Create: could not create wallet', err);
           if (err.message === 'WRONG_PASSWORD') {
-            this.errorsProvider.showWrongEncryptPassswordError();
+            this.errorsProvider.showWrongEncryptPasswordError();
           } else {
             const title = this.translate.instant('Error');
             err = this.bwcErrorProvider.msg(err);

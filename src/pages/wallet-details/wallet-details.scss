@@ -1,3 +1,4 @@
+page-coinbase-account,
 page-wallet-details {
   $wallet-details-primary-color: #0c204e;
   $icon-width: 36px;
@@ -67,6 +68,11 @@ page-wallet-details {
     cursor: pointer;
     font-size: 38px;
     font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    img {
+      margin-left: 50px;
+    }
   }
 
   .balance-alt-str {
@@ -406,5 +412,12 @@ page-wallet-details {
       vertical-align: middle;
       margin-left: 5px;
     }
+  }
+  .ion-ios-alert-outline:before {
+    color: color($colors, warning);
+    font-size: 44px;
+  }
+  .speed-up-bg {
+    background-color: color($background-colors, warning);
   }
 }

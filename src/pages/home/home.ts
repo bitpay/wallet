@@ -1,6 +1,6 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, Slides } from 'ionic-angular';
+import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { IntegrationsPage } from '../../pages/integrations/integrations';
@@ -9,26 +9,23 @@ import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/sim
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
-  BitPayCardProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
   Logger,
   PersistenceProvider,
-  ProfileProvider,
-  SimplexProvider,
-  TabProvider,
-  WalletProvider
+  SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { CurrencyProvider } from '../../providers/currency/currency';
-import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { RateProvider } from '../../providers/rate/rate';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
@@ -52,7 +49,8 @@ export interface Advertisement {
 export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
-  showServicesOption: boolean = false;
+  showShoppingOption: boolean;
+  showServicesOption: boolean;
   @ViewChild('showSurvey')
   showSurvey;
   @ViewChild('showCard')
@@ -61,60 +59,23 @@ export class HomePage {
   @ViewChild(Slides) slides: Slides;
   public serverMessages: any[];
   public showServerMessage: boolean;
-  public wallets;
   public showAdvertisements: boolean;
-  public advertisements: Advertisement[] = [
-    {
-      name: 'bitpay-card',
-      title: this.translate.instant('Get a BitPay Card'),
-      body: this.translate.instant(
-        'Leverage your crypto with a reloadable BitPay card.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Order now'),
-      link: BitPayCardIntroPage,
-      dismissible: true,
-      /* imgSrc: TODO 'assets/img/bitpay-card-solid.svg' */
-      imgSrc: 'assets/img/icon-bpcard.svg'
-    },
-    {
-      name: 'merchant-directory',
-      title: this.translate.instant('Merchant Directory'),
-      body: this.translate.instant(
-        'Learn where you can spend your crypto today.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('View Directory'),
-      link: 'https://bitpay.com/directory/?hideGiftCards=true',
-      imgSrc: 'assets/img/icon-merch-dir.svg',
-      dismissible: true
-    },
-    {
-      name: 'amazon-gift-cards',
-      title: this.translate.instant('Shop at Amazon'),
-      body: this.translate.instant(
-        'Leverage your crypto with an amazon.com gift card.'
-      ),
-      app: 'bitpay',
-      linkText: this.translate.instant('Buy Now'),
-      link: CardCatalogPage,
-      imgSrc: 'assets/img/amazon.svg',
-      dismissible: true
-    }
-  ];
-  public totalBalanceAlternative: string;
+  public advertisements: Advertisement[] = [];
+  public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
-  public showBalance: boolean = true;
+  public showTotalBalance: boolean = true;
   public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
-  public showBitPayCardAdvertisement: boolean = true;
+  public newReleaseAvailable: boolean = false;
+  public cardExperimentEnabled: boolean;
+  public showCoinbase: boolean = false;
 
-  private lastDayRatesArray;
-  private zone;
+  private hasOldCoinbaseSession: boolean;
+  private newReleaseVersion: string;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -123,62 +84,221 @@ export class HomePage {
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private formatCurrencyPipe: FormatCurrencyPipe,
-    private walletProvider: WalletProvider,
-    private profileProvider: ProfileProvider,
     private navCtrl: NavController,
-    private configProvider: ConfigProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
     private giftCardProvider: GiftCardProvider,
-    private currencyProvider: CurrencyProvider,
-    private rateProvider: RateProvider,
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private tabProvider: TabProvider,
     private modalCtrl: ModalController,
-    private bitPayCardProvider: BitPayCardProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private configProvider: ConfigProvider,
+    private events: Events,
+    private releaseProvider: ReleaseProvider,
+    private platformProvider: PlatformProvider
   ) {
-    this.zone = new NgZone({ enableLongStackTrace: false });
-  }
-
-  async ngOnInit() {
-    await this.tabProvider.prefetchCards();
+    this.logger.info('Loaded: HomePage');
+    this.subscribeEvents();
+    this.persistenceProvider
+      .getCardExperimentFlag()
+      .then(status => (this.cardExperimentEnabled = status === 'enabled'));
   }
 
   async ionViewWillEnter() {
+    const config = this.configProvider.get();
+    this.totalBalanceAlternativeIsoCode =
+      config.wallet.settings.alternativeIsoCode;
+    this.setMerchantDirectoryAdvertisement();
     this.showNewDesignSlides();
     this.showSurveyCard();
     this.checkFeedbackInfo();
-    this.isBalanceShown();
-    this.fetchStatus();
+    this.showTotalBalance = config.totalBalance.show;
+    if (this.showTotalBalance) this.getCachedTotalBalance();
+    if (this.platformProvider.isElectron) this.checkNewRelease();
+    this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
     this.fetchAdvertisements();
     await this.setDiscountedCard();
     this.fetchDiscountAdvertisements();
   }
 
+  ionViewDidLoad() {
+    this.preFetchWallets();
+  }
+
+  private setMerchantDirectoryAdvertisement() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'merchant-directory'
+    );
+    !alreadyVisible &&
+      this.advertisements.push({
+        name: 'merchant-directory',
+        title: this.translate.instant('Merchant Directory'),
+        body: this.translate.instant(
+          'Learn where you can spend your crypto today.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('View Directory'),
+        link: 'https://bitpay.com/directory/?hideGiftCards=true',
+        imgSrc: 'assets/img/icon-merch-dir.svg',
+        dismissible: true
+      });
+  }
+
+  private getCachedTotalBalance() {
+    this.persistenceProvider.getTotalBalance().then(data => {
+      if (!data) return;
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      this.updateTotalBalance(data);
+    });
+  }
+
+  private updateTotalBalance(data) {
+    this.totalBalanceAlternative = data.totalBalanceAlternative;
+    this.averagePrice = data.averagePrice;
+    this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
+  }
+
+  private setTotalBalance(data) {
+    this.updateTotalBalance(data);
+    this.persistenceProvider.setTotalBalance(data);
+  }
+
+  private subscribeEvents() {
+    this.events.subscribe('Local/HomeBalance', data => {
+      if (data && this.showTotalBalance) this.setTotalBalance(data);
+      this.fetchingStatus = false;
+    });
+    this.events.subscribe('Local/ServerMessages', data => {
+      this.serverMessages = _.orderBy(
+        data.serverMessages,
+        ['priority'],
+        ['asc']
+      );
+      this.serverMessages.forEach(serverMessage => {
+        this.checkServerMessage(serverMessage);
+      });
+    });
+    this.events.subscribe('Local/AccessDenied', () => {
+      this.accessDenied = true;
+    });
+    this.events.subscribe('Local/FetchCards', bpCards => {
+      if (!bpCards) this.addBitPayCard();
+    });
+  }
+
+  private preFetchWallets() {
+    this.fetchingStatus = true;
+    this.events.publish('Local/FetchWallets');
+  }
+
   private setIntegrations() {
     // Show integrations
+    this.showBuyCryptoOption = false;
+    this.showShoppingOption = false;
+    this.showServicesOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
-      .filter(i => i.show)
-      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+      .filter(i => i.show);
 
-    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-      this.showBitPayCardAdvertisement = cards ? false : true;
-    });
-
-    this.homeIntegrations = _.remove(integrations, x => {
-      this.showBuyCryptoOption = x.name == 'simplex' && x.show == true;
-      if (x.name == 'debitcard' && x.linked) return false;
-      else {
-        if (x.name != 'simplex') {
+    integrations.forEach(x => {
+      switch (x.name) {
+        case 'simplex':
+          this.showBuyCryptoOption = true;
+          break;
+        case 'giftcards':
+          this.showShoppingOption = true;
+          this.setGiftCardAdvertisement();
+          break;
+        case 'shapeshift':
           this.showServicesOption = true;
-        }
-        return x;
+          break;
+        case 'coinbase':
+          this.showCoinbase = x.linked == false;
+          this.hasOldCoinbaseSession = x.oldLinked;
+          if (this.showCoinbase) this.addCoinbase();
+          break;
       }
     });
+
+    this.homeIntegrations = integrations.filter(
+      i => i.name == 'shapeshift' || (i.name == 'coinbase' && !i.linked)
+    );
+  }
+
+  private setGiftCardAdvertisement() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'amazon-gift-cards'
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'amazon-gift-cards',
+        title: this.translate.instant('Shop at Amazon'),
+        body: this.translate.instant(
+          'Leverage your crypto with an amazon.com gift card.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Buy Now'),
+        link: CardCatalogPage,
+        imgSrc: 'assets/img/amazon.svg',
+        dismissible: true
+      });
+  }
+
+  private addBitPayCard() {
+    const card: Advertisement = this.cardExperimentEnabled
+      ? {
+          name: 'bitpay-card',
+          title: this.translate.instant('Fund it. Spend it.'),
+          body: this.translate.instant(
+            'Instantly reload your card with no conversion fee!'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Order'),
+          link: BitPayCardIntroPage,
+          dismissible: true,
+          imgSrc: 'assets/img/icon-bpcard.svg'
+        }
+      : {
+          name: 'bitpay-card',
+          title: this.translate.instant('Coming soon'),
+          body: this.translate.instant(
+            'Join the waitlist and be first to experience the new card.'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Notify Me'),
+          link: PhaseOneCardIntro,
+          dismissible: true,
+          imgSrc: 'assets/img/icon-bpcard.svg'
+        };
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'bitpay-card'
+    );
+    !alreadyVisible && this.advertisements.unshift(card);
+  }
+
+  private addCoinbase() {
+    const alreadyVisible = this.advertisements.find(a => a.name === 'coinbase');
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'coinbase',
+        title: this.hasOldCoinbaseSession
+          ? this.translate.instant('Coinbase updated!')
+          : this.translate.instant('Connect your Coinbase!'),
+        body: this.hasOldCoinbaseSession
+          ? this.translate.instant(
+              'Reconnect to quickly withdraw and deposit funds.'
+            )
+          : this.translate.instant('Easily deposit and withdraws funds.'),
+        app: 'bitpay',
+        linkText: this.hasOldCoinbaseSession
+          ? this.translate.instant('Reconnect Account')
+          : this.translate.instant('Connect Account'),
+        link: CoinbasePage,
+        dismissible: true,
+        imgSrc: 'assets/img/coinbase/coinbase-icon.png'
+      });
   }
 
   private async setDiscountedCard(): Promise<void> {
@@ -232,15 +352,10 @@ export class HomePage {
     discountedCard && this.addGiftCardDiscount(discountedCard);
   }
 
-  private debounceRefreshHomePage = _.debounce(async () => {}, 5000, {
-    leading: true
-  });
-
   public doRefresh(refresher): void {
-    this.debounceRefreshHomePage();
+    this.fetchAdvertisements();
+    this.preFetchWallets();
     setTimeout(() => {
-      this.fetchStatus();
-      this.fetchAdvertisements();
       refresher.complete();
     }, 2000);
   }
@@ -254,6 +369,16 @@ export class HomePage {
     this.logger.debug(`Server message id: ${serverMessage.id} dismissed`);
     this.persistenceProvider.setServerMessageDismissed(serverMessage.id);
     this.removeServerMessage(serverMessage.id);
+  }
+
+  public dismissNewReleaseMessage(): void {
+    this.newReleaseAvailable = false;
+    this.logger.debug(
+      `New release message dismissed. version: ${this.newReleaseVersion}`
+    );
+    this.persistenceProvider.setNewReleaseMessageDismissed(
+      this.newReleaseVersion
+    );
   }
 
   public checkServerMessage(serverMessage): void {
@@ -277,148 +402,6 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private async fetchStatus() {
-    let foundMessage = false;
-
-    this.fetchingStatus = true;
-    this.wallets = this.profileProvider.getWallets();
-    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
-    this.lastDayRatesArray = await this.getLastDayRates();
-    if (_.isEmpty(this.wallets)) {
-      this.fetchingStatus = false;
-      return;
-    }
-    this.logger.debug('fetchStatus');
-    const pr = wallet => {
-      return this.walletProvider
-        .fetchStatus(wallet, {})
-        .then(async status => {
-          if (!foundMessage && !_.isEmpty(status.serverMessages)) {
-            this.serverMessages = _.orderBy(
-              status.serverMessages,
-              ['priority'],
-              ['asc']
-            );
-            this.serverMessages.forEach(serverMessage => {
-              this.checkServerMessage(serverMessage);
-            });
-            foundMessage = true;
-          }
-
-          let walletTotalBalanceAlternative = 0;
-          let walletTotalBalanceAlternativeLastDay = 0;
-          if (status.wallet.network === 'livenet' && !wallet.hidden) {
-            const balance =
-              status.wallet.coin === 'xrp'
-                ? status.availableBalanceSat
-                : status.totalBalanceSat;
-            walletTotalBalanceAlternativeLastDay = parseFloat(
-              this.getWalletTotalBalanceAlternativeLastDay(balance, wallet.coin)
-            );
-            if (status.wallet.coin === 'xrp') {
-              walletTotalBalanceAlternative = parseFloat(
-                this.getWalletTotalBalanceAlternative(
-                  status.availableBalanceSat,
-                  'xrp'
-                )
-              );
-            } else {
-              walletTotalBalanceAlternative = parseFloat(
-                status.totalBalanceAlternative.replace(/,/g, '')
-              );
-            }
-          }
-          return Promise.resolve({
-            walletTotalBalanceAlternative,
-            walletTotalBalanceAlternativeLastDay
-          });
-        })
-        .catch(err => {
-          if (err.message === '403') {
-            this.accessDenied = true;
-          }
-          return Promise.resolve();
-        });
-    };
-
-    const promises = [];
-
-    _.each(this.profileProvider.wallet, wallet => {
-      promises.push(pr(wallet));
-    });
-
-    Promise.all(promises).then(balanceAlternativeArray => {
-      this.zone.run(() => {
-        this.totalBalanceAlternative = _.sumBy(
-          _.compact(balanceAlternativeArray),
-          b => b.walletTotalBalanceAlternative
-        ).toFixed(2);
-        const totalBalanceAlternativeLastDay = _.sumBy(
-          _.compact(balanceAlternativeArray),
-          b => b.walletTotalBalanceAlternativeLastDay
-        ).toFixed(2);
-        const difference =
-          parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-          parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
-        this.averagePrice =
-          (difference * 100) /
-          parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
-        this.fetchingStatus = false;
-      });
-    });
-  }
-  private getWalletTotalBalanceAlternativeLastDay(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin, {
-        customRate: this.lastDayRatesArray[coin]
-      })
-      .toFixed(2);
-  }
-
-  private getWalletTotalBalanceAlternative(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin)
-      .toFixed(2);
-  }
-
-  private getLastDayRates(): Promise<any> {
-    const availableChains = this.currencyProvider.getAvailableChains();
-    const getHistoricalRate = unitCode => {
-      return new Promise(resolve => {
-        this.exchangeRatesProvider
-          .getHistoricalRates(this.totalBalanceAlternativeIsoCode, unitCode)
-          .subscribe(
-            response => {
-              const lastDayRate = response.reverse()[0];
-              return resolve({ rate: lastDayRate, unitCode });
-            },
-            err => {
-              this.logger.error('Error getting current rate:', err);
-              return resolve();
-            }
-          );
-      });
-    };
-
-    const promises = [];
-    _.forEach(availableChains, unitCode => {
-      promises.push(getHistoricalRate(unitCode));
-    });
-    return Promise.all(promises).then(lastDayRates => {
-      let ratesByCoin = {};
-      lastDayRates.forEach(lastDayRate => {
-        ratesByCoin[lastDayRate.unitCode] = lastDayRate.rate.rate;
-      });
-      return Promise.resolve(ratesByCoin);
-    });
-  }
-
   private async fetchDiscountAdvertisements(): Promise<void> {
     await this.fetchGiftCardDiscount();
     this.logPresentedWithGiftCardDiscountEvent();
@@ -438,8 +421,7 @@ export class HomePage {
         .then((value: string) => {
           if (
             value === 'dismissed' ||
-            (!this.showBitPayCardAdvertisement &&
-              advertisement.name == 'bitpay-card')
+            (!this.showCoinbase && advertisement.name == 'coinbase')
           ) {
             this.removeAdvertisement(advertisement.name);
             return;
@@ -518,22 +500,23 @@ export class HomePage {
     });
   }
 
-  private isBalanceShown() {
-    this.profileProvider
-      .getShowTotalBalanceFlag()
-      .then(isShown => {
-        this.zone.run(() => {
-          this.showBalance = isShown;
-        });
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-  }
-
   private async showSurveyCard() {
     const hideSurvey = await this.persistenceProvider.getSurveyFlag();
     this.showSurvey.setShowSurveyCard(!hideSurvey);
+  }
+
+  private checkNewRelease() {
+    this.persistenceProvider
+      .getNewReleaseMessageDismissed()
+      .then(dismissedVersion => {
+        this.releaseProvider.getLatestAppVersion().then((data: any) => {
+          if (data && data.version === dismissedVersion) return;
+          this.newReleaseVersion = data.version;
+          this.newReleaseAvailable = this.releaseProvider.newReleaseAvailable(
+            data.version
+          );
+        });
+      });
   }
 
   private checkFeedbackInfo() {
@@ -602,7 +585,9 @@ export class HomePage {
           ? this.persistenceProvider.removeBitpayIdPairingFlag()
           : this.persistenceProvider.setBitpayIdPairingFlag('enabled');
 
-        alert('bitpayID pairing enabled');
+        alert(
+          `BitPay ID pairing feature ${res === 'enabled' ? res : 'disabled'}`
+        );
         this.tapped = 0;
       });
     }

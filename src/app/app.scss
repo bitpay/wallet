@@ -780,14 +780,19 @@ page-bitpay-card,
   }
 }
 
-ion-tabs:after {
-  // Workaround to prevent tabs from disappearing when activated
-  position: absolute;
-  display: none;
-  content: url('../assets/img/tab-icons/tab-home-active.svg')
-    url('../assets/img/tab-icons/tab-wallets-active.svg')
-    url('../assets/img/tab-icons/tab-cards-active.svg')
-    url('../assets/img/tab-icons/tab-settings-active.svg');
+ion-tabs {
+  &:after {
+    // Workaround to prevent tabs from disappearing when activated
+    position: absolute;
+    display: none;
+    content: url('../assets/img/tab-icons/tab-home-active.svg')
+      url('../assets/img/tab-icons/tab-wallets-active.svg')
+      url('../assets/img/tab-icons/tab-cards-active.svg')
+      url('../assets/img/tab-icons/tab-settings-active.svg');
+  }
+  .tab-badge {
+    font-family: 'Roboto';
+  }
 }
 
 $home-active: url('../assets/img/tab-icons/tab-home-active.svg') no-repeat 50%

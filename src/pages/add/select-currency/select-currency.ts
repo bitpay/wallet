@@ -145,6 +145,9 @@ export class SelectCurrencyPage {
       .then(wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
+        this.profileProvider.setNewWalletGroupOrder(
+          wallets[0].credentials.keyId
+        );
         this.endProcess();
       })
       .catch(e => {
@@ -165,21 +168,10 @@ export class SelectCurrencyPage {
 
   private showError(err) {
     this.onGoingProcessProvider.clear();
-    if (
-      err &&
-      err.message != 'FINGERPRINT_CANCELLED' &&
-      err.message != 'PASSWORD_CANCELLED'
-    ) {
-      this.logger.error('Create: could not create wallet', err);
-      if (err.message === 'WRONG_PASSWORD') {
-        this.errorsProvider.showWrongEncryptPassswordError();
-      } else {
-        const title = this.translate.instant('Error');
-        err = this.bwcErrorProvider.msg(err);
-        this.errorsProvider.showDefaultError(err, title);
-      }
-    }
-    return;
+    this.logger.error('Create: could not create wallet', err);
+    const title = this.translate.instant('Error');
+    err = this.bwcErrorProvider.msg(err);
+    this.errorsProvider.showDefaultError(err, title);
   }
 
   private endProcess() {

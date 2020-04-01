@@ -45,7 +45,9 @@
         <div class="balance-content" (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet?.balanceHidden && !wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
             <div class="balance-str">
-              {{ wallet?.cachedStatus ? wallet?.cachedStatus.totalBalanceStr  : wallet?.lastKnownBalance }} <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg"></div>
+              <balance-to-show [balance]="wallet?.cachedStatus ? wallet?.cachedStatus.totalBalanceStr  : wallet?.lastKnownBalance"></balance-to-show>
+              <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg">
+            </div>
             <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative">
               {{wallet?.cachedStatus.totalBalanceAlternative}} {{wallet?.cachedStatus.alternativeIsoCode}}
             </div>
@@ -215,7 +217,7 @@
 
             <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
 
-              <button ion-item (click)="goToTxDetails(tx)">
+              <button ion-item (click)="itemTapped(tx)" [ngClass]="{'speed-up-bg': canSpeedUpTx(tx)}">
                 <ion-icon class="item-img" item-start>
                   <div *ngIf="tx.confirmations <= 0">
                     <img src="assets/img/tx-action/icon-confirming.svg" width="40">
@@ -225,6 +227,7 @@
                       <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
                       <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                       <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
+                      <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                       <ng-container *ngIf="supportedCards | async as cardConfig">
                         <img-loader class="icon-services" *ngIf="tx.customData.service === 'giftcards'" [src]="cardConfig[tx.customData.giftCardName]?.icon" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                       </ng-container>

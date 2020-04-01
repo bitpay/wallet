@@ -12,8 +12,9 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 
 // pages
 import {
-  InAppBrowserProvider,
-  PersistenceProvider
+  IABCardProvider,
+  PersistenceProvider,
+  ProfileProvider
 } from '../../../../providers';
 import { BitPayCardPage } from '../bitpay-card';
 
@@ -34,7 +35,8 @@ export class BitPayCardIntroPage {
     private navCtrl: NavController,
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider,
+    private profileProvider: ProfileProvider
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
@@ -106,6 +108,11 @@ export class BitPayCardIntroPage {
     this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
   }
 
+  public openExchangeRates() {
+    let url = 'https://bitpay.com/exchange-rates';
+    this.externalLinkProvider.open(url);
+  }
+
   public bitPayCardInfo() {
     let url = 'https://bitpay.com/visa/faq';
     this.externalLinkProvider.open(url);
@@ -113,14 +120,29 @@ export class BitPayCardIntroPage {
 
   public async orderBitPayCard() {
     if (this.cardExperimentEnabled) {
-      this.iab.refs.card.executeScript(
+      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+        10,
+        'USD'
+      );
+
+      if (!hasWalletWithFunds) {
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'needFunds'
+          },
+          () => {
+            this.iabCardProvider.show();
+          }
+        );
+        return;
+      }
+
+      this.iabCardProvider.sendMessage(
         {
-          code: `window.postMessage(${JSON.stringify({
-            message: 'orderCard'
-          })}, '*')`
+          message: 'orderCard'
         },
         () => {
-          this.iab.refs.card.show();
+          this.iabCardProvider.show();
         }
       );
     } else {

@@ -14,8 +14,8 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class BitPayIdProvider {
-  private NETWORK = Network.livenet;
-  private BITPAY_API_URL = 'https://bitpay.com';
+  private NETWORK: string;
+  private BITPAY_API_URL: string;
   private deviceName = 'unknown device';
 
   constructor(
@@ -28,12 +28,20 @@ export class BitPayIdProvider {
     private iab: InAppBrowserProvider
   ) {
     this.logger.debug('BitPayProvider initialized');
-
     if (this.platformProvider.isElectron) {
       this.deviceName = this.platformProvider.getOS().OSName;
     } else if (this.platformProvider.isCordova) {
       this.deviceName = this.device.model;
     }
+  }
+
+  public setNetwork(network: string) {
+    this.NETWORK = network;
+    this.BITPAY_API_URL =
+      this.NETWORK == 'livenet'
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
+    this.logger.log(`bitpay id provider initialized with ${this.NETWORK}`);
   }
 
   public getEnvironment() {
@@ -42,7 +50,7 @@ export class BitPayIdProvider {
     };
   }
 
-  public generatePairingToken(secret, successCallback, errorCallback) {
+  public generatePairingToken(payload, successCallback, errorCallback) {
     const network = Network[this.getEnvironment().network];
 
     this.appIdentityProvider.getIdentity(network, (err, appIdentity) => {
@@ -51,13 +59,21 @@ export class BitPayIdProvider {
         return errorCallback(err);
       }
 
+      const { secret, code } = payload;
+
+      const params = {
+        secret,
+        version: 2,
+        deviceName: this.deviceName
+      };
+
+      if (code) {
+        params['code'] = code;
+      }
+
       let json: any = {
         method: 'createToken',
-        params: {
-          secret,
-          version: 2,
-          deviceName: this.deviceName
-        }
+        params
       };
 
       let dataToSign = JSON.stringify(json['params']);
@@ -88,8 +104,6 @@ export class BitPayIdProvider {
               .post(url, json, { headers })
               .toPromise();
 
-            this.logger.debug('BitPayID: successfully paired');
-
             json = {
               method: 'getBasicInfo',
               token: token.data
@@ -107,21 +121,28 @@ export class BitPayIdProvider {
               .toPromise();
 
             if (user) {
+              if (user.error) {
+                errorCallback(user.error);
+                return;
+              }
+
+              this.logger.debug('BitPayID: successfully paired');
               const { data } = user;
-              // const { email, familyName, givenName } = data;
+              const { email, familyName, givenName } = data;
 
               await Promise.all([
+                this.persistenceProvider.setReachedCardLimit(false),
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
                 ),
-                this.persistenceProvider.setBitPayIdUserInfo(network, data)
-                // this.persistenceProvider.setBitpayAccount(network, {
-                //   email,
-                //   token: token.data,
-                //   familyName: familyName || '',
-                //   givenName: givenName || ''
-                // })
+                this.persistenceProvider.setBitPayIdUserInfo(network, data),
+                this.persistenceProvider.setBitpayAccount(network, {
+                  email,
+                  token: token.data,
+                  familyName: familyName || '',
+                  givenName: givenName || ''
+                })
               ]);
 
               successCallback(data);
@@ -189,8 +210,8 @@ export class BitPayIdProvider {
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
-        this.persistenceProvider.removeBitPayIdUserInfo(network)
-        // this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitPayIdUserInfo(network),
+        this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
       this.iab.refs.card.executeScript(
         {

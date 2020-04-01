@@ -38,10 +38,10 @@ const Keys = {
   COINBASE_REFRESH_TOKEN: network => 'coinbaseRefreshToken-' + network,
   COINBASE_TOKEN: network => 'coinbaseToken-' + network,
   COINBASE_TXS: network => 'coinbaseTxs-' + network,
+  COINBASE: env => 'coinbase-' + env,
   CONFIG: 'config',
   FEEDBACK: 'feedback',
   SURVEY: 'survey',
-  ETH_LIVE_CARD: 'ethLiveCard',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: (network: Network) => {
     const suffix = network === Network.livenet ? '' : `-${network}`;
@@ -56,7 +56,7 @@ const Keys = {
   },
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  SHOW_TOTAL_BALANCE: 'showTotalBalance',
+  TOTAL_BALANCE: 'totalBalance',
   HIDE_WALLET: walletId => 'hideWallet-' + walletId,
   KEY_ONBOARDING: 'keyOnboarding',
   KEYS: 'keys',
@@ -68,7 +68,9 @@ const Keys = {
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
+  ORDER_WALLET_GROUP: keyId => 'order-' + keyId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
+  RELEASE_MESSAGE_DISMISSED: 'releaseMessageDismissed',
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
@@ -152,14 +154,6 @@ export class PersistenceProvider {
 
   getSurveyFlag() {
     return this.storage.get(Keys.SURVEY);
-  }
-
-  setEthLiveCardFlag() {
-    return this.storage.set(Keys.ETH_LIVE_CARD, true);
-  }
-
-  getEthLiveCardFlag() {
-    return this.storage.get(Keys.ETH_LIVE_CARD);
   }
 
   setKeyOnboardingFlag() {
@@ -247,12 +241,12 @@ export class PersistenceProvider {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   }
 
-  setShowTotalBalanceFlag(val) {
-    return this.storage.set(Keys.SHOW_TOTAL_BALANCE, val);
+  setTotalBalance(data) {
+    return this.storage.set(Keys.TOTAL_BALANCE, data);
   }
 
-  getShowTotalBalanceFlag() {
-    return this.storage.get(Keys.SHOW_TOTAL_BALANCE);
+  getTotalBalance() {
+    return this.storage.get(Keys.TOTAL_BALANCE);
   }
 
   setHideWalletFlag(walletId: string, val) {
@@ -278,6 +272,18 @@ export class PersistenceProvider {
 
   getRemotePrefsStoredFlag() {
     return this.storage.get(Keys.REMOTE_PREF_STORED);
+  }
+
+  setCoinbase(env: string, data) {
+    return this.storage.set(Keys.COINBASE(env), data);
+  }
+
+  getCoinbase(env: string) {
+    return this.storage.get(Keys.COINBASE(env));
+  }
+
+  removeCoinbase(env: string) {
+    return this.storage.remove(Keys.COINBASE(env));
   }
 
   setCoinbaseToken(network: string, token: string) {
@@ -574,6 +580,14 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
   }
 
+  setNewReleaseMessageDismissed(version) {
+    return this.storage.set(Keys.RELEASE_MESSAGE_DISMISSED, version);
+  }
+
+  getNewReleaseMessageDismissed() {
+    return this.storage.get(Keys.RELEASE_MESSAGE_DISMISSED);
+  }
+
   setAdvertisementDismissed(name) {
     return this.storage.set(Keys.ADVERTISEMENT_DISMISSED(name), 'dismissed');
   }
@@ -632,6 +646,18 @@ export class PersistenceProvider {
 
   removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
+  }
+
+  setWalletGroupOrder(keyId: string, order: number) {
+    return this.storage.set(Keys.ORDER_WALLET_GROUP(keyId), order);
+  }
+
+  getWalletGroupOrder(keyId: string) {
+    return this.storage.get(Keys.ORDER_WALLET_GROUP(keyId));
+  }
+
+  removeWalletGroupOrder(keyId: string) {
+    return this.storage.remove(Keys.ORDER_WALLET_GROUP(keyId));
   }
 
   setLockStatus(isLocked: string) {
@@ -740,6 +766,14 @@ export class PersistenceProvider {
     return this.storage.get(Keys.BITPAY_ID_SETTINGS(network));
   }
 
+  setCardNotificationBadge(value) {
+    return this.storage.set('cardNotificationBadge', value);
+  }
+
+  getCardNotificationBadge() {
+    return this.storage.get('cardNotificationBadge');
+  }
+
   removeBitPayIdSettings(network: Network) {
     return this.storage.remove(Keys.BITPAY_ID_SETTINGS(network));
   }
@@ -754,6 +788,23 @@ export class PersistenceProvider {
 
   removeBitpayIdPairingFlag() {
     return this.storage.remove('BitpayIdPairingFlag');
+  }
+
+  setWaitingListStatus(onList: string) {
+    return this.storage.set('waitingListStatus', onList);
+  }
+  getWaitingListStatus() {
+    return this.storage.get('waitingListStatus');
+  }
+  removeWaitingListStatus() {
+    return this.storage.remove('waitingListStatus');
+  }
+
+  setReachedCardLimit(reachedCardLimit: boolean) {
+    return this.storage.set('reachedCardLimit', reachedCardLimit);
+  }
+  getReachedCardLimit() {
+    return this.storage.get('reachedCardLimit');
   }
 }
 

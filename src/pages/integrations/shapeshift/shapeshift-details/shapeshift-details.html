@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content class="add-bottom-safe-area" no-bounce>
   <div class="header-modal">
     <div class="title-modal">
       {{ssData.title}}
@@ -23,16 +23,19 @@
       <span class="amount-unit">{{amountUnit}}</span>
     </div>
   </div>
+  <div margin-left *ngIf="ssData.error" class="assertive">{{ ssData.error }}</div>
 
   <ion-list>
-    <ion-item-divider></ion-item-divider>
     <ion-item>
       {{'Status' | translate}}
       <ion-note item-end>
         <span class="assertive" *ngIf="ssData.status == 'failed'" translate>Failed</span>
         <span class="balanced" *ngIf="ssData.status == 'complete'" translate>Completed</span>
+        <span class="balanced" *ngIf="ssData.status == 'resolved'" translate>Resolved</span>
         <span class="dark" *ngIf="ssData.status == 'received'" translate>Pending</span>
         <span class="text-gray" *ngIf="ssData.status == 'no_deposits'" translate>Pending</span>
+        <span class="assertive" *ngIf="ssData.status == 'expired'" translate>Expired</span>
+        <span class="assertive" *ngIf="!ssData.status || ssData.status == 'error'" translate>Error</span>
       </ion-note>
     </ion-item>
 
@@ -53,6 +56,13 @@
         <span *ngIf="ssData.date">
           {{ ssData.date | amDateFormat:'MMM D, YYYY'}}
         </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="ssData.orderId">
+      {{'Order ID' | translate}}
+      <ion-note item-end>
+        <span copy-to-clipboard="{{ssData.orderId}}">{{ ssData.orderId }}</span>
       </ion-note>
     </ion-item>
 
@@ -103,10 +113,8 @@
         {{'See transaction' | translate}}
       </button>
     </div>
-    <ion-item-divider></ion-item-divider>
-    <button class="assertive" ion-item detail-none text-center (click)="remove()">
-      {{'Remove' | translate}}
-    </button>
-
   </ion-list>
+  <button ion-button class="button-standard" color="danger" (click)="remove()">
+    {{'Remove' | translate}}
+  </button>
 </ion-content>

@@ -37,6 +37,14 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'speed-up-notice'" type="warning">
+      <span sheet-title-text translate>Miner Fee Notice</span>
+      <span sheet-text>
+        {{'Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.' | translate: {coinName: params.coinName, fee: params.fee, coin:params.coin} }}
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
       <span sheet-title-text>{{ 'Network Fee Warning' | translate }}</span>
       <span sheet-text>
@@ -286,13 +294,44 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
-      <span sheet-title-text translate>Could not decrypt wallet</span>
+    <info-sheet-template *ngSwitchCase="'bch-legacy-warning-1'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
       <span sheet-text translate>
-        Wrong password
+        Legacy address types in Bitcoin Cash are OBSOLETE. Only use this feature if you are required to provide a legacy address to the sending party
       </span>
-      <span sheet-button-text translate>I forgot my password</span>
+      <span sheet-button-text translate>I Understand</span>
+      <span sheet-second-button-text translate>Cancel</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'bch-legacy-warning-2'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        Sending BTC to a Bitcoin Cash legacy address will result on permanent lost of funds. This feature is only for advanced users.
+      </span>
+      <span sheet-second-button-text translate>Cancel</span>
+      <span sheet-button-text translate>Show me the legacy address</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
+      <span sheet-title-text translate>Wrong password</span>
+      <span sheet-text>
+        <span translate>Forgot your password?</span>
+        <ul>
+          <li translate>Try entering any passwords you may have set in the past</li>
+          <li translate>Remember there are no special requirements for the password (numbers, symbols, etc.)</li>
+          <li translate>You can always reset your encrypt password on your key settings using your 12 words recovery phrase</li>
+        </ul>
+      </span>
       <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'speed-up-tx'" type="warning">
+      <span sheet-title-text translate>Transaction still unconfirmed</span>
+      <span sheet-text translate>
+        This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee.
+      </span>
+      <span sheet-button-text translate>Speed up transaction</span>
+      <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
   </div>
 </action-sheet>

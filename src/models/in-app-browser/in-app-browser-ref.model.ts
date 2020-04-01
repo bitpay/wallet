@@ -1,7 +1,7 @@
 /// <reference types="cordova-plugin-inappbrowser" />
 
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 export interface InAppBrowserRef extends InAppBrowser {
-  events$?: Observable<Event>;
+  events$?: Subject<Event>;
   error?: boolean;
 }

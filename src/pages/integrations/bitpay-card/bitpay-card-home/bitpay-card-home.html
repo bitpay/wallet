@@ -19,28 +19,50 @@
     <div class="slit"></div>
   </div>
 </div>
-<div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length">
+<div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard">
   <add-button (click)="goToBitPayCardIntroPage()" tappable>
     <div add-button-text translate>Add BitPay Card</div>
   </add-button>
 </div>
 
-<action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
-  <div action-card-header>
-    <div class="bitpay-card-header">
-      <div class="bitpay-card-image">
-        <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
-        <img src="assets/img/bitpay-card/bitpay-card.png">
+<ng-container *ngIf="cardExperimentEnabled else reg">
+  <action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
+    <div action-card-header>
+      <div class="bitpay-card-header">
+        <div class="bitpay-card-image bitpay-card-image--mc">
+          <img src="assets/img/bitpay-card/bitpay-card-mc-peek.svg">
+        </div>
       </div>
     </div>
-  </div>
 
-  <div action-card-title translate *ngIf="!firstViewCardPhases">Start using your crypto</div>
-  <div action-card-body [clamp]="2" translate>
-    Load dollars onto your BitPay Card using your crypto wallet. Shop anywhere
-    that accepts Visa®
-  </div>
+    <div action-card-title translate>Fund it. Spend it. Live on crypto.</div>
+    <div action-card-body [clamp]="2" translate>
+      Instantly reload your card with no conversion fee!
+    </div>
 
-  <div action-card-button translate>Get Started</div>
+    <div action-card-button translate>Order</div>
 
-</action-card-v4>
+  </action-card-v4>
+</ng-container>
+
+<ng-template #reg>
+  <action-card-v4 *ngIf="!bitpayCardItems?.length" (click)="goToBitPayCardIntroPage()" tappable>
+    <div action-card-header>
+      <div class="bitpay-card-header">
+        <div class="bitpay-card-image" style="background: #062150">
+          <!-- TODO <img src="assets/img/bitpay-card/bitpay-card-front-midnight.svg"> -->
+          <img src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg" style="transform: scale(1.3)">
+        </div>
+      </div>
+    </div>
+
+    <div action-card-title translate>Something exciting is arriving</div>
+    <div action-card-body [clamp]="2" translate>
+      Join the waitlist and be first<br> to experience the new card.
+    </div>
+
+    <div action-card-button translate>Notify me</div>
+
+  </action-card-v4>
+</ng-template>
+

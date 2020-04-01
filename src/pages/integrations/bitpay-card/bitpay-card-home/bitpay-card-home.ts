@@ -1,11 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // Providers
-import { AppProvider, InAppBrowserProvider } from '../../../../providers';
+import {
+  AppProvider,
+  IABCardProvider,
+  PersistenceProvider
+} from '../../../../providers';
 
 // Pages
-import { BitPayCardPage } from '../../../integrations/bitpay-card/bitpay-card';
+import { BitPayCardPage } from '../bitpay-card';
+import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
 @Component({
@@ -15,6 +20,7 @@ import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-int
 export class BitPayCardHome implements OnInit {
   public appName: string;
   public firstViewCardPhases: string;
+  public disableAddCard: boolean;
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
@@ -22,28 +28,38 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
-    private iab: InAppBrowserProvider
+    private iabCardProvider: IABCardProvider,
+    private events: Events,
+    private persistenceProvider: PersistenceProvider
   ) {}
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
+    this.events.subscribe('reachedCardLimit', () => {
+      this.disableAddCard = true;
+    });
+    this.persistenceProvider.getReachedCardLimit().then(limitReached => {
+      if (limitReached) {
+        this.disableAddCard = true;
+      }
+    });
   }
 
   public goToBitPayCardIntroPage() {
-    this.navCtrl.push(PhaseOneCardIntro);
+    this.navCtrl.push(
+      this.cardExperimentEnabled ? BitPayCardIntroPage : PhaseOneCardIntro
+    );
   }
 
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
       const message = `loadDashboard?${cardId}`;
-      this.iab.refs.card.executeScript(
+      this.iabCardProvider.sendMessage(
         {
-          code: `window.postMessage(${JSON.stringify({
-            message
-          })}, '*')`
+          message
         },
         () => {
-          this.iab.refs.card.show();
+          this.iabCardProvider.show();
         }
       );
     } else {

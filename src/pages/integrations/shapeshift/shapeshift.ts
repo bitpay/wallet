@@ -138,36 +138,51 @@ export class ShapeshiftPage {
     this.externalLinkProvider.open(url);
   }
 
+  private getInfo(data, at, cb) {
+    if (data && data.orderId)
+      return this.shapeshiftProvider.getOrderInfo(data.orderId, at, cb);
+    return this.shapeshiftProvider.getStatus(data.address, at, cb);
+  }
+
   private updateShift = _.debounce(
     shifts => {
       if (_.isEmpty(shifts.data)) return;
       _.forEach(shifts.data, dataFromStorage => {
         if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
 
-        this.shapeshiftProvider.getStatus(
-          dataFromStorage.address,
-          this.accessToken,
-          (err, st) => {
-            if (err) return;
+        this.getInfo(dataFromStorage, this.accessToken, (err, st) => {
+          if (err) return;
 
-            this.shifts.data[st.address].status = st.status;
-            this.shifts.data[st.address].transaction = st.transaction || null;
-            this.shifts.data[st.address].incomingCoin = st.incomingCoin || null;
-            this.shifts.data[st.address].incomingType = st.incomingType || null;
-            this.shifts.data[st.address].outgoingCoin = st.outgoingCoin || null;
-            this.shifts.data[st.address].outgoingType = st.outgoingType || null;
-            this.shapeshiftProvider.saveShapeshift(
-              this.shifts.data[st.address],
-              null,
-              () => {
-                this.logger.debug('Saved shift with status: ' + st.status);
-              }
-            );
-          }
-        );
+          this.shifts.data[dataFromStorage.address] = _.assign(
+            this.shifts.data[dataFromStorage.address],
+            {
+              status: st.status || dataFromStorage.status || null,
+              error: st.error || dataFromStorage.error || null,
+              transaction:
+                st.transaction || dataFromStorage.transaction || null,
+              incomingCoin:
+                st.incomingCoin || dataFromStorage.incomingCoin || null,
+              incomingType:
+                st.incomingType || dataFromStorage.incomingType || null,
+              outgoingCoin:
+                st.outgoingCoin || dataFromStorage.outgoingCoin || null,
+              outgoingType:
+                st.outgoingType || dataFromStorage.outgoingType || null
+            }
+          );
+          this.shapeshiftProvider.saveShapeshift(
+            this.shifts.data[dataFromStorage.address],
+            null,
+            () => {
+              this.logger.debug(
+                'Saved shift with status: ' + (st.status || st.error)
+              );
+            }
+          );
+        });
       });
     },
-    1000,
+    3000,
     {
       leading: true
     }
@@ -180,7 +195,10 @@ export class ShapeshiftPage {
     }
     // Check if shiftData status FAILURE for 24 hours
     if (
-      (shiftData.status == 'failed' || shiftData.status == 'no_deposits') &&
+      (shiftData.status == 'failed' ||
+        shiftData.status == 'no_deposits' ||
+        shiftData.status == 'expired' ||
+        !shiftData.status) &&
       this.timeProvider.withinPastDay(shiftData.date)
     ) {
       return true;

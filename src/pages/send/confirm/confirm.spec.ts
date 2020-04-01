@@ -26,7 +26,7 @@ describe('ConfirmPage', () => {
       testBed = testEnv.testBed;
       errorsProvider = testBed.get(ErrorsProvider);
       spyOn(errorsProvider, 'showDefaultError');
-      spyOn(errorsProvider, 'showWrongEncryptPassswordError');
+      spyOn(errorsProvider, 'showWrongEncryptPasswordError');
       fixture.detectChanges();
     })));
   afterEach(() => {

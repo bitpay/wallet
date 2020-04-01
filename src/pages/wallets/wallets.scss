@@ -430,4 +430,19 @@ page-integrations {
       left: calc(4% + 5px);
     }
   }
+
+  .zero-state-coinbase {
+    background-color: rgba(22, 82, 240, 0.7);
+    overflow: hidden;
+    width: 100%;
+    height: 90px;
+
+    .zero-state-image {
+      text-align: center;
+      img {
+        width: 160px;
+        margin-top: 25px;
+      }
+    }
+  }
 }

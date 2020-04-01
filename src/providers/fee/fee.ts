@@ -41,6 +41,23 @@ export class FeeProvider {
     return feeOpts;
   }
 
+  public getCoinCurrentFeeLevel(coin): string {
+    let feeLevel;
+    switch (coin) {
+      case 'bch':
+        feeLevel = 'normal';
+        break;
+      case 'xrp':
+        feeLevel = 'normal';
+        break;
+      default:
+        feeLevel =
+          this.configProvider.get().wallet.settings.feeLevel || 'normal';
+        break;
+    }
+    return feeLevel;
+  }
+
   public getCurrentFeeLevel(): string {
     return this.configProvider.get().wallet.settings.feeLevel || 'normal';
   }
@@ -126,6 +143,19 @@ export class FeeProvider {
           );
         }
       );
+    });
+  }
+
+  public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
+    // Only for BTC
+    return this.getFeeRate('btc', network, 'urgent').then(urgentFee => {
+      // 250 bytes approx. is the minimum size of a tx with 1 input and 1 output
+      const averageTxSize = 250;
+      const fee = (urgentFee / 1000) * (txSize + averageTxSize);
+      this.logger.debug(
+        'Fee needed to speed up the tx: ' + Number(fee.toFixed())
+      );
+      return Number(fee.toFixed());
     });
   }
 }
