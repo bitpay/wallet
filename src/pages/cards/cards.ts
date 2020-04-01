@@ -6,14 +6,16 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { Network, PersistenceProvider } from '../../providers/persistence/persistence';
-import { TabProvider } from '../../providers/tab/tab';
 import { IABCardProvider } from '../../providers/in-app-browser/card';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
+import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
   selector: 'page-cards',
-  templateUrl: 'cards.html',
-
+  templateUrl: 'cards.html'
 })
 export class CardsPage {
   public bitpayCardItems;
@@ -52,21 +54,20 @@ export class CardsPage {
     // check persistence first
     this.bitpayCardItems = await this.filterCards('Galileo');
     await this.fetchAllCards();
-
   }
 
   // method for filtering out and showing one galileo card
   private async filterCards(provider: string) {
-    const cards = await this.persistenceProvider.getBitpayDebitCards(Network.testnet);
-    const idx = cards.findIndex( c => c.provider === provider);
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network.testnet
+    );
+    const idx = cards.findIndex(c => c.provider === provider);
     cards.splice(idx, 1);
     return cards;
   }
 
   private async fetchBitpayCardItems() {
-
     if (this.cardExperimentEnabled) {
-
       await this.iabCardProvider.getCards();
       this.bitpayCardItems = await this.filterCards('Galileo');
 
@@ -80,7 +81,6 @@ export class CardsPage {
         }
       }
       this.gotCardItems = true;
-
     } else {
       this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
 
@@ -90,7 +90,6 @@ export class CardsPage {
       this.bitpayCardItems = await updatedBitpayCardItemsPromise;
       this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
     }
-
   }
 
   private async fetchActiveGiftCards() {
@@ -126,7 +125,7 @@ export class CardsPage {
           alert(
             `Card experiment -> ${
               enableLivenet ? 'livenet enabled' : 'testnet enabled'
-              }. Restart the app.`
+            }. Restart the app.`
           );
         }
         this.tapped = 0;

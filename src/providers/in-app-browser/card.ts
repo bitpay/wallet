@@ -14,13 +14,13 @@ import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
+import { HttpClient } from '@angular/common/http';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { SimplexProvider } from '../simplex/simplex';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class IABCardProvider {
@@ -48,8 +48,7 @@ export class IABCardProvider {
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider,
     private http: HttpClient
-  ) {
-  }
+  ) {}
 
   public setNetwork(network: string) {
     this.NETWORK = network;
@@ -61,7 +60,6 @@ export class IABCardProvider {
   }
 
   async getCards() {
-
     this.logger.log('start get cards');
 
     const token = await this.persistenceProvider.getBitPayIdPairingToken(
@@ -109,20 +107,18 @@ export class IABCardProvider {
 
         const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
         const dataToSign = `${url}${JSON.stringify(json)}`;
-        const signedData = bitauthService.sign(
-          dataToSign,
-          appIdentity.priv
-        );
+        const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
 
         const headers = {
           'x-identity': appIdentity.pub,
           'x-signature': signedData
         };
         // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
-        const res: any = await this.http.post(`${url}/api/v2/graphql`, json, { headers }).toPromise();
+        const res: any = await this.http
+          .post(`${url}/api/v2/graphql`, json, { headers })
+          .toPromise();
 
         if (res && res.data && res.data.user && res.data.user.cards) {
-
           let cards = res.data.user.cards;
           const user = await this.persistenceProvider.getBitPayIdUserInfo(
             Network[this.NETWORK]
@@ -151,17 +147,18 @@ export class IABCardProvider {
             cards
           );
 
-          this.ref.executeScript({
-            code: `sessionStorage.setItem(
+          this.ref.executeScript(
+            {
+              code: `sessionStorage.setItem(
             'cards',
             ${JSON.stringify(JSON.stringify(cards))}
           )`
-          }, () => this.logger.log('added cards'));
+            },
+            () => this.logger.log('added cards')
+          );
 
           this.logger.log('success retrieved cards');
-
         }
-
       }
     );
   }
@@ -183,7 +180,6 @@ export class IABCardProvider {
     this.cardIAB_Ref = this.iab.refs.card;
 
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
-
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
@@ -326,8 +322,7 @@ export class IABCardProvider {
                 );
               }
             );
-          } catch (err) {
-          }
+          } catch (err) {}
 
           break;
 
