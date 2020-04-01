@@ -80,7 +80,6 @@ export class CardsPage {
           }
         }
       }
-      this.gotCardItems = true;
     } else {
       this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
 
@@ -90,6 +89,7 @@ export class CardsPage {
       this.bitpayCardItems = await updatedBitpayCardItemsPromise;
       this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
     }
+    this.gotCardItems = true;
   }
 
   private async fetchActiveGiftCards() {
