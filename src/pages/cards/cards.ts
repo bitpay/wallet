@@ -67,10 +67,9 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.cardExperimentEnabled) {
+    if (this.cardExperimentEnabled && this.bitpayCardItems.length > 0) {
       await this.iabCardProvider.getCards();
       this.bitpayCardItems = await this.filterCards('Galileo');
-
       if (this.bitpayCardItems) {
         for (let card of this.bitpayCardItems) {
           if (card.provider === 'galileo') {
