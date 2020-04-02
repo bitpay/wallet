@@ -126,6 +126,7 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
+import { SelectInputsPage } from '../pages/send/select-inputs/select-inputs';
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
 import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
@@ -161,6 +162,7 @@ export const PAGES = [
   CoinbaseTxDetailsPage,
   CoinbaseWithdrawPage,
   CopayersPage,
+  SelectInputsPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,

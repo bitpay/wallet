@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -59,6 +64,7 @@ export class TransferToPage {
   public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
 
+  private _fromSelectInputs: boolean;
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
 
@@ -71,7 +77,9 @@ export class TransferToPage {
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private viewCtrl: ViewController,
+    private events: Events
   ) {
     this.availableCoins = this.currencyProvider.getAvailableCoins();
     for (const coin of this.availableCoins) {
@@ -125,6 +133,15 @@ export class TransferToPage {
 
   get fromWalletDetails() {
     return this._fromWalletDetails;
+  }
+
+  @Input()
+  set fromSelectInputs(fromSelectInputs: boolean) {
+    this._fromSelectInputs = fromSelectInputs;
+  }
+
+  get fromSelectInputs() {
+    return this._fromSelectInputs;
   }
 
   public getCoinName(coin: Coin) {
@@ -262,20 +279,31 @@ export class TransferToPage {
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
 
-        this.navCtrl.push(AmountPage, {
-          walletId: this.navParams.data.wallet.id,
-          recipientType: item.recipientType,
-          amount: parseInt(this.navParams.data.amount, 10),
-          toAddress: addr,
-          name: item.name,
-          email: item.email,
-          color: item.color,
-          coin: item.coin,
-          network: item.network,
-          useAsModal: this._useAsModal,
-          fromWalletDetails: this._fromWalletDetails,
-          destinationTag: item.destinationTag
-        });
+        if (this._fromSelectInputs) {
+          const recipient = {
+            recipientType: item.recipientType,
+            toAddress: addr,
+            name: item.name,
+            email: item.email
+          };
+          this.events.publish('addRecipient', recipient);
+          this.viewCtrl.dismiss();
+        } else {
+          this.navCtrl.push(AmountPage, {
+            walletId: this.navParams.data.wallet.id,
+            recipientType: item.recipientType,
+            amount: parseInt(this.navParams.data.amount, 10),
+            toAddress: addr,
+            name: item.name,
+            email: item.email,
+            color: item.color,
+            coin: item.coin,
+            network: item.network,
+            useAsModal: this._useAsModal,
+            fromWalletDetails: this._fromWalletDetails,
+            destinationTag: item.destinationTag
+          });
+        }
       })
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);

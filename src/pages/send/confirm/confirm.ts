@@ -71,6 +71,7 @@ export class ConfirmPage {
   public amount;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
+  public fromSelectInputs: boolean;
   public recipients;
   public coin: Coin;
   public appName: string;
@@ -138,6 +139,7 @@ export class ConfirmPage {
     this.showMultiplesOutputs = false;
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
   }
@@ -169,6 +171,12 @@ export class ConfirmPage {
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
+    }
+    if (this.fromSelectInputs) {
+      networkName = this.navParams.data.network;
+      amount = this.navParams.data.amount
+        ? this.navParams.data.amount
+        : this.navParams.data.totalInputsAmount;
     } else {
       amount = this.navParams.data.amount;
       try {
@@ -225,8 +233,11 @@ export class ConfirmPage {
       coin: this.navParams.data.coin,
       txp: {},
       tokenAddress: this.navParams.data.tokenAddress,
-      speedUpTx: this.isSpeedUpTx
+      speedUpTx: this.isSpeedUpTx,
+      fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
+      inputs: this.navParams.data.inputs
     };
+
     this.tx.origToAddress = this.tx.toAddress;
 
     if (this.navParams.data.requiredFeeRate) {
@@ -858,6 +869,18 @@ export class ConfirmPage {
           });
         }
       } else {
+        if (tx.fromSelectInputs) {
+          const size = this.walletProvider.getEstimatedTxSize(
+            wallet,
+            1,
+            tx.inputs.length
+          );
+          const estimatedFee =
+            size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+          tx.fee = estimatedFee;
+          tx.amount = tx.amount - estimatedFee;
+        }
+
         txp.outputs = [
           {
             toAddress: tx.toAddress,
@@ -878,6 +901,9 @@ export class ConfirmPage {
         txp.inputs.push(tx.speedUpTxInfo.input);
         txp.fee = tx.speedUpTxInfo.fee;
         txp.excludeUnconfirmedUtxos = true;
+      } else if (tx.fromSelectInputs) {
+        txp.inputs = tx.inputs;
+        txp.fee = tx.fee;
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;

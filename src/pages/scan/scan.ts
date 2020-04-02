@@ -57,6 +57,7 @@ export class ScanPage {
   public fromJoin: boolean;
   public fromSend: boolean;
   public fromMultiSend: boolean;
+  public fromSelectInputs: boolean;
   public fromConfirm: boolean;
 
   constructor(
@@ -126,6 +127,7 @@ export class ScanPage {
     this.fromJoin = this.navParams.data.fromJoin;
     this.fromSend = this.navParams.data.fromSend;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.fromConfirm = this.navParams.data.fromConfirm;
 
     if (!env.activateScanner) {
@@ -329,6 +331,9 @@ export class ScanPage {
       this.navCtrl.pop();
     } else if (this.fromMultiSend) {
       this.events.publish('Local/AddressScanMultiSend', { value: contents });
+      this.navCtrl.pop();
+    } else if (this.fromSelectInputs) {
+      this.events.publish('Local/AddressScanSelectInputs', { value: contents });
       this.navCtrl.pop();
     } else if (this.fromConfirm) {
       this.events.publish('Local/TagScan', { value: contents });
