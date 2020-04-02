@@ -560,6 +560,10 @@ export class PersistenceProvider {
       });
   }
 
+  removeAllBitPayAccounts(network: string) {
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
+  }
+
   setGiftCards(cardName: string, network: Network, gcs: string) {
     return this.storage.set(Keys.GIFT_CARDS(cardName, network), gcs);
   }
@@ -710,7 +714,6 @@ export class PersistenceProvider {
   }
 
   setCardExperimentFlag(value: string) {
-    this.logger.debug('card experiment enabled: ', value);
     return this.storage.set('cardExperimentEnabled', value);
   }
 
@@ -720,6 +723,14 @@ export class PersistenceProvider {
 
   removeCardExperimentFlag() {
     return this.storage.remove('cardExperimentEnabled');
+  }
+
+  getCardExperimentNetwork() {
+    return this.storage.get('cardExperimentNetwork');
+  }
+
+  setCardExperimentNetwork(network: Network) {
+    return this.storage.set('cardExperimentNetwork', network);
   }
 
   setWalletGroupName(keyId: string, name: string) {

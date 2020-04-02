@@ -6,7 +6,11 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { IABCardProvider } from '../../providers/in-app-browser/card';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
 import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
@@ -14,7 +18,7 @@ import { TabProvider } from '../../providers/tab/tab';
   templateUrl: 'cards.html'
 })
 export class CardsPage {
-  public bitpayCardItems;
+  public bitpayCardItems = [];
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
@@ -31,10 +35,14 @@ export class CardsPage {
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider,
-    private events: Events
+    private events: Events,
+    private iabCardProvider: IABCardProvider
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
+    });
+    this.events.subscribe('updateBalance', async () => {
+      this.bitpayCardItems = await this.filterCards('Galileo');
     });
   }
 
@@ -46,27 +54,44 @@ export class CardsPage {
       'debitcard'
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
+    // check persistence first
+    this.bitpayCardItems = await this.filterCards('Galileo');
     await this.fetchAllCards();
-    if (this.bitpayCardItems) {
-      for (let card of this.bitpayCardItems) {
-        if (card.provider === 'galileo') {
-          this.persistenceProvider.setReachedCardLimit(true);
-          this.events.publish('reachedCardLimit');
-          break;
-        }
-      }
-    }
-    this.ready = true;
+  }
+
+  // method for filtering out and showing one galileo card
+  private async filterCards(provider: string) {
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network.testnet
+    );
+    const idx = cards.findIndex(c => c.provider === provider);
+    cards.splice(idx, 1);
+    return cards;
   }
 
   private async fetchBitpayCardItems() {
-    this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
+    if (this.cardExperimentEnabled && this.bitpayCardItems.length > 0) {
+      await this.iabCardProvider.getCards();
+      this.bitpayCardItems = await this.filterCards('Galileo');
+      if (this.bitpayCardItems) {
+        for (let card of this.bitpayCardItems) {
+          if (card.provider === 'galileo') {
+            this.persistenceProvider.setReachedCardLimit(true);
+            this.events.publish('reachedCardLimit');
+            break;
+          }
+        }
+      }
+    } else {
+      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
+
+      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
+        noHistory: true
+      });
+      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
+      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+    }
     this.gotCardItems = true;
-    const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-      noHistory: true
-    });
-    this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-    this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
   }
 
   private async fetchActiveGiftCards() {
@@ -88,17 +113,23 @@ export class CardsPage {
 
     if (this.tapped >= 10) {
       this.persistenceProvider.getCardExperimentFlag().then(res => {
-        res === 'enabled'
-          ? this.persistenceProvider.removeCardExperimentFlag()
-          : this.persistenceProvider.setCardExperimentFlag('enabled');
-
-        this.persistenceProvider.setBitpayIdPairingFlag('enabled');
-
-        alert(
-          `Card experiment ${
-            res === 'enabled' ? 'disabled' : 'enabled'
-          }. Restart required.`
-        );
+        if (res === 'enabled') {
+          this.persistenceProvider.removeCardExperimentFlag();
+          this.persistenceProvider.setBitpayIdPairingFlag('disabled');
+          alert('Card experiment disabled. Restart the app.');
+        } else {
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+          this.persistenceProvider.setBitpayIdPairingFlag('enabled');
+          alert('Card experiment enabled.');
+          const enableLivenet = confirm('Enable livenet testing?');
+          const network = enableLivenet ? 'livenet' : 'testnet';
+          this.persistenceProvider.setCardExperimentNetwork(Network[network]);
+          alert(
+            `Card experiment -> ${
+              enableLivenet ? 'livenet enabled' : 'testnet enabled'
+            }. Restart the app.`
+          );
+        }
         this.tapped = 0;
       });
     }

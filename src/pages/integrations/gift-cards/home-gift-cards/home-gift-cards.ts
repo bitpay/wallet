@@ -50,6 +50,15 @@ import { GiftCardItem } from './gift-card-item/gift-card-item';
     ]),
     trigger('preventInitialChildAnimations', [
       transition(':enter', [query(':enter', [], { optional: true })])
+    ]),
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('200ms')
+      ])
     ])
   ]
 })
@@ -65,7 +74,7 @@ export class HomeGiftCards implements OnInit {
 
   @Input('scrollArea')
   scrollArea: Content;
-
+  ready: boolean;
   @ViewChild(ItemSliding)
   slidingItem: ItemSliding;
 
@@ -80,6 +89,9 @@ export class HomeGiftCards implements OnInit {
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
     await this.initGiftCards();
+    setTimeout(() => {
+      this.ready = true;
+    }, 50);
     const availableCards = await this.giftCardProvider.getAvailableCards();
     this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
     this.discountedCard = availableCards.find(cardConfig =>
