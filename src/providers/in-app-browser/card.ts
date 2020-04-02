@@ -15,6 +15,7 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
 import { HttpClient } from '@angular/common/http';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
@@ -47,7 +48,8 @@ export class IABCardProvider {
     private profileProvider: ProfileProvider,
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider,
-    private http: HttpClient
+    private http: HttpClient,
+    private externalLinkProvider: ExternalLinkProvider
   ) {}
 
   public setNetwork(network: string) {
@@ -253,6 +255,11 @@ export class IABCardProvider {
 
         case 'close':
           this.hide();
+          break;
+
+        case 'openLink':
+          const { url } = event.data.params;
+          this.externalLinkProvider.open(url);
           break;
 
         case 'updateBalance':
