@@ -323,6 +323,7 @@ export class ProfileProvider {
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
     wallet.canAddNewAccount = this.checkAccountCreation(wallet, keyId);
+    wallet.isSegwit = this.checkIfSegwit(wallet.credentials.addressType);
 
     this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
@@ -512,6 +513,13 @@ export class ProfileProvider {
       }
       return false;
     }
+  }
+
+  public checkIfSegwit(addressType: string) {
+    if (!addressType) return false;
+    else if (addressType == 'P2WPKH' || addressType == 'P2WSH') {
+      return true;
+    } else return false;
   }
 
   public setFastRefresh(wallet): void {
