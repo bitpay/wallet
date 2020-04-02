@@ -64,7 +64,11 @@ export class BitPayCardHome implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     const prev = changes['bitpayCardItems'].previousValue;
     const curr = changes['bitpayCardItems'].currentValue;
-    if ((!prev && curr) || (prev && !curr) || curr.length > prev.length) {
+    if (
+      (!prev && curr) ||
+      (prev && !curr) ||
+      (curr && prev && curr.length > prev.length)
+    ) {
       this.ready = false;
       setTimeout(() => {
         this.ready = true;
