@@ -62,7 +62,7 @@ export class IABCardProvider {
   }
 
   async getCards() {
-    this.logger.log('start get cards');
+    this.logger.log(`start get cards from network - ${this.NETWORK}`);
 
     const token = await this.persistenceProvider.getBitPayIdPairingToken(
       Network[this.NETWORK]
