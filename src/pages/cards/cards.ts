@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
+import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../providers/in-app-browser/card';
@@ -27,10 +28,11 @@ export class CardsPage {
   public ready: boolean;
   public cardExperimentEnabled: boolean;
   public gotCardItems: boolean = false;
-
+  private NETWORK: string;
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private bitPayProvider: BitPayProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
@@ -41,6 +43,9 @@ export class CardsPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
+
+    this.NETWORK = this.bitPayProvider.getEnvironment().network;
+
     this.events.subscribe('updateBalance', async () => {
       this.bitpayCardItems = await this.filterCards('Galileo');
     });
@@ -62,7 +67,7 @@ export class CardsPage {
   // method for filtering out and showing one galileo card
   private async filterCards(provider: string) {
     const cards = await this.persistenceProvider.getBitpayDebitCards(
-      Network.testnet
+      Network[this.NETWORK]
     );
     const idx = cards.findIndex(c => c.provider === provider);
     cards.splice(idx, 1);
