@@ -1158,6 +1158,11 @@ export class ConfirmPage {
           this.walletProvider.removeTx(wallet, txp).catch(() => {
             this.logger.warn('Could not delete payment proposal');
           });
+        } else if (this.isSpeedUpTx) {
+          this.logger.warn('Speed up transaction error: removing transaction');
+          this.walletProvider.removeTx(wallet, txp).catch(() => {
+            this.logger.warn('Could not delete transaction');
+          });
         }
       });
   }
