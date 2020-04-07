@@ -951,6 +951,28 @@ describe('Provider: Incoming Data Provider', () => {
       );
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
+    it('Should handle BitPay redir link', () => {
+      let data = ['bitpay://landing/card'];
+      data.forEach(link => {
+        expect(incomingDataProvider.redir(link)).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data (redirect): BitPay Redir'
+        );
+        const redir = link.replace('bitpay://landing/', '');
+        switch (redir) {
+          default:
+          case 'card':
+            let nextView = {
+              name: 'PhaseOneCardIntro'
+            };
+            expect(eventsSpy).toHaveBeenCalledWith(
+              'IncomingDataRedir',
+              nextView
+            );
+            break;
+        }
+      });
+    });
   });
 
   describe('Function: finishIncomingData', () => {
