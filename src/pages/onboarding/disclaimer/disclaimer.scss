@@ -4,12 +4,17 @@ page-disclaimer {
       height: 100%;
     }
     ion-slide {
-      background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
       .img-container {
         display: flex;
-        padding-top: 10vh;
-        @media (max-width: 350px) {
-          padding-top: 0;
+        height: 50%;
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 45%;
+        }
+        @media (max-height: 600px) and (max-width: 768px) {
+          height: 40%;
+        }
+        @media (max-height: 550px) and (max-width: 768px) {
+          height: 35%;
         }
         img {
           margin: auto;
@@ -19,16 +24,10 @@ page-disclaimer {
           }
         }
         .tour-1 {
-          padding-left: 8rem;
-          @media (max-width: 350px) {
-            padding-left: 4rem;
-          }
+          padding-left: 4rem;
         }
         .tour-3 {
-          padding-right: 8rem;
-          @media (max-width: 350px) {
-            padding-left: 4rem;
-          }
+          padding-right: 4rem;
         }
       }
       .slide-info {
@@ -106,16 +105,9 @@ page-disclaimer {
       line-height: 15px;
     }
   }
-  .footer-container {
-    padding-bottom: 0;
-    background-color: color($colors, blank);
-  }
-  .swiper-container-horizontal > .swiper-pagination-bullets {
-    position: fixed;
-    bottom: 15rem;
-    @media (max-width: 350px) {
-      bottom: 13rem;
-    }
+  .disclaimer-agreement {
+    padding-top: 3rem; // Fix iOS 10.3
+    padding-top: calc(3rem + env(safe-area-inset-top));
   }
   .next-slide-button {
     position: absolute;
