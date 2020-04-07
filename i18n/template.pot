@@ -3357,7 +3357,7 @@ msgid ""
 "wallet provider"
 msgstr ""
 
-msgid "We'll let you know as soon as the BitPay Card"
+msgid "We'll let you know as soon as the BitPay Card is available in your area."
 msgstr ""
 
 msgid "We'll notify you as soon as the card is ready."
