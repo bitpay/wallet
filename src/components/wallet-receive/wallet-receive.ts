@@ -132,10 +132,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
   }
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
+    if (this.wallet.coin === 'bch') {
+      address =
+        this.bchAddrFormat === 'legacy'
+          ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
+          : this.bchCashAddress;
+    }
     if (newAddr) {
-      address = this.bchAddrFormat
-        ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
-        : this.bchCashAddress;
       await Observable.timer(400).toPromise();
     }
     this.address = address;
