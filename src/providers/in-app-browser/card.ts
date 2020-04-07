@@ -420,11 +420,13 @@ export class IABCardProvider {
 
           // fetch new cards
           this.getCards();
+
+          this.sendMessage({ message: 'pairingSuccess' });
         }
       },
       async err => {
         this.logger.error(`pairing error -> ${err}`);
-
+        this.sendMessage({ message: 'pairingFailed' });
         // clear out loading state
         this.onGoingProcess.clear();
         // close in app browser

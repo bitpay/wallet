@@ -52,7 +52,7 @@ export class BitPayCardHome implements OnInit {
       this.disableAddCard = true;
     });
     this.persistenceProvider.getReachedCardLimit().then(limitReached => {
-      if (limitReached) {
+      if (limitReached == 'true') {
         this.disableAddCard = true;
       }
     });
