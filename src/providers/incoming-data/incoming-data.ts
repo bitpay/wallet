@@ -195,6 +195,11 @@ export class IncomingDataProvider {
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
   }
 
+  private isValidBitPayRedirLink(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(data && data.indexOf('bitpay://landing') === 0);
+  }
+
   private isValidJoinCode(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/));
@@ -609,6 +614,25 @@ export class IncomingDataProvider {
     }
   }
 
+  private goToBitPayRedir(data: string): void {
+    this.logger.debug('Incoming-data (redirect): BitPay Redir');
+    const redir = data.replace('bitpay://landing/', '');
+    switch (redir) {
+      default:
+      case 'card':
+        // Disable BitPay Card
+        if (!this.appProvider.info._enabledExtensions.debitcard) {
+          this.logger.warn('BitPay Card has been disabled for this build');
+          return;
+        }
+        const nextView = {
+          name: 'PhaseOneCardIntro'
+        };
+        this.incomingDataRedir(nextView);
+        break;
+    }
+  }
+
   private goToCoinbase(data: string): void {
     this.logger.debug('Incoming-data (redirect): Coinbase URL');
 
@@ -739,6 +763,11 @@ export class IncomingDataProvider {
       // Invoice Intent
     } else if (this.isValidInvoiceUri(data)) {
       this.goToInvoice(data);
+      return true;
+
+      // BitPay Redir Link
+    } else if (this.isValidBitPayRedirLink(data)) {
+      this.goToBitPayRedir(data);
       return true;
 
       // BitPayCard Authentication
