@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { ActionSheetProvider } from '../../../../providers';
 import {
   getActivationFee,
+  hasPromotion,
   hasVisibleDiscount
 } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
@@ -17,7 +18,8 @@ export class BuyCardPage {
   amount: number;
   cardConfig: CardConfig;
   printAlertShown = false;
-  hasPercentageDiscount: boolean = false;
+  hasVisibleDiscount: boolean = false;
+  hasPromotion: boolean = false;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -28,7 +30,8 @@ export class BuyCardPage {
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
-    this.hasPercentageDiscount = hasVisibleDiscount(this.cardConfig);
+    this.hasVisibleDiscount = hasVisibleDiscount(this.cardConfig);
+    this.hasPromotion = hasPromotion(this.cardConfig);
   }
 
   ionViewWillEnter() {

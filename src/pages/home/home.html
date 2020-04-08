@@ -72,7 +72,8 @@
     <div class="message-content">
       <ion-row align-items-center>
         <div class="message-icon">
-          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'" src="assets/img/icon-info-blue.svg" />
+          <img *ngIf="!serverMessages[0].category || serverMessages[0].category === 'info'"
+            src="assets/img/icon-info-blue.svg" />
           <img *ngIf="serverMessages[0].category === 'critical'" src="assets/img/icon-danger.svg" />
         </div>
         <div class="message-title" *ngIf="serverMessages[0].title" [ngClass]="{
@@ -143,7 +144,8 @@
     <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
   </ion-list>
 
-  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true">
+  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true"
+    (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let advertisement of advertisements">
       <div class="message-background">
         <div class="message-header" *ngIf="advertisement.dismissible">
@@ -157,7 +159,8 @@
           <ion-row align-items-center>
             <ion-col align-self-start col-4>
               <div class="message-img">
-                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}"
+                  src="{{advertisement.imgSrc}}" />
               </div>
             </ion-col>
             <ion-col col-8>

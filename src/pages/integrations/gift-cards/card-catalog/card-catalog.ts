@@ -7,7 +7,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import {
   getDisplayNameSortValue,
+  getPromo,
   GiftCardProvider,
+  hasPromotion,
   hasVisibleDiscount
 } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
@@ -98,8 +100,8 @@ export class CardCatalogPage extends WideHeaderPage {
     this.logGiftCardBrandView(cardConfig);
 
     this.navCtrl.push(BuyCardPage, { cardConfig });
-    if (this.hasPercentageDiscount(cardConfig)) {
-      this.logDiscountClick(cardConfig);
+    if (!!getPromo(cardConfig)) {
+      this.logPromoClick(cardConfig);
     }
   }
 
@@ -122,14 +124,18 @@ export class CardCatalogPage extends WideHeaderPage {
     });
   }
 
-  logDiscountClick(cardConfig: CardConfig) {
+  logPromoClick(cardConfig: CardConfig) {
     this.giftCardProvider.logEvent(
-      'clickedGiftCardDiscount',
-      this.giftCardProvider.getDiscountEventParams(cardConfig, 'Gift Card List')
+      'clickedGiftCardPromo',
+      this.giftCardProvider.getPromoEventParams(cardConfig, 'Gift Card List')
     );
   }
 
-  hasPercentageDiscount(cardConfig: CardConfig) {
+  hasPromotion(cardConfig: CardConfig) {
+    return hasPromotion(cardConfig);
+  }
+
+  hasVisibleDiscount(cardConfig: CardConfig) {
     return hasVisibleDiscount(cardConfig);
   }
 
