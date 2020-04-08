@@ -29,6 +29,7 @@ export class CardsPage {
   public cardExperimentEnabled: boolean;
   public gotCardItems: boolean = false;
   private NETWORK: string;
+  public showDisclaimer: boolean;
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -62,6 +63,9 @@ export class CardsPage {
     // check persistence first
     this.bitpayCardItems = await this.filterCards('Galileo');
     await this.fetchAllCards();
+    setTimeout( () => {
+      this.showDisclaimer = true;
+    }, 300);
   }
 
   // method for filtering out and showing one galileo card
