@@ -65,7 +65,6 @@ export class WalletDeletePage {
 
         if (!keyInUse) {
           this.keyProvider.removeKey(this.keyId);
-          delete this.profileProvider.walletsGroups[this.keyId];
           this.goHome();
         } else {
           this.logger.warn('Key was not removed. Still in use');
