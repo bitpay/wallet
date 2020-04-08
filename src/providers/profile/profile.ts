@@ -1556,6 +1556,18 @@ export class ProfileProvider {
     return this.walletsGroups[keyId];
   }
 
+  private _deleteWalletClient(wallet) {
+    this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
+    const walletId = wallet.credentials.walletId;
+
+    wallet.removeAllListeners();
+    this.profile.deleteWallet(walletId);
+
+    delete this.wallet[walletId];
+
+    this.persistenceProvider.removeAllWalletData(walletId);
+  }
+
   public deleteWalletClient(wallet): Promise<any> {
     this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
     const walletId = wallet.credentials.walletId;
@@ -1567,19 +1579,16 @@ export class ProfileProvider {
 
     this.persistenceProvider.removeAllWalletData(walletId);
     this.events.publish('Local/WalletListChange');
-
     return this.storeProfileIfDirty();
   }
 
   public deleteWalletGroup(keyId: string, wallets): Promise<any> {
-    let promises = [];
     wallets.forEach(wallet => {
-      promises.push(this.deleteWalletClient(wallet));
+      this._deleteWalletClient(wallet);
     });
-    return Promise.all(promises).then(() => {
-      this.persistenceProvider.removeAllWalletGroupData(keyId);
-      return Promise.resolve();
-    });
+    this.persistenceProvider.removeAllWalletGroupData(keyId);
+    this.events.publish('Local/WalletListChange');
+    return this.storeProfileIfDirty();
   }
 
   private getDefaultWalletOpts(coin): Partial<WalletOptions> {

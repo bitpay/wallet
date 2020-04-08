@@ -157,7 +157,6 @@ export class CopayersPage {
 
           if (!keyInUse) {
             this.keyProvider.removeKey(keyId);
-            delete this.profileProvider.walletsGroups[keyId];
           } else {
             this.logger.warn('Key was not removed. Still in use');
           }
