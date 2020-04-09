@@ -20,6 +20,15 @@ export interface GiftCardActivationFee {
   type: 'fixed' | 'percentage';
 }
 
+export interface GiftCardPromotion {
+  cta?: string;
+  description: string;
+  details: string;
+  icon: string;
+  shortDescription: string;
+  title: string;
+}
+
 export interface CommonCardConfig {
   activationFees?: GiftCardActivationFee[];
   cardImage: string;
@@ -39,6 +48,7 @@ export interface CommonCardConfig {
   minAmount?: number;
   maxAmount?: number;
   printRequired?: boolean;
+  promotions?: GiftCardPromotion[];
   redeemButtonText?: string;
   redeemInstructions?: string;
   redeemUrl?: string;

@@ -18,7 +18,10 @@ import {
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
+import {
+  hasPromotion,
+  hasVisibleDiscount
+} from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -117,8 +120,7 @@ export class HomePage {
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
     this.fetchAdvertisements();
-    await this.setDiscountedCard();
-    this.fetchDiscountAdvertisements();
+    this.fetchGiftCardAdvertisement();
   }
 
   ionViewDidLoad() {
@@ -301,19 +303,6 @@ export class HomePage {
       });
   }
 
-  private async setDiscountedCard(): Promise<void> {
-    this.discountedCard = await this.getDiscountedCard();
-    this.discountedCard && this.addGiftCardDiscount(this.discountedCard);
-  }
-
-  private async getDiscountedCard(): Promise<CardConfig> {
-    const availableCards = await this.giftCardProvider.getAvailableCards();
-    const discountedCard = availableCards.find(cardConfig =>
-      hasVisibleDiscount(cardConfig)
-    );
-    return discountedCard;
-  }
-
   private addGiftCardDiscount(discountedCard: CardConfig) {
     const discount = discountedCard.discounts[0];
     const discountText =
@@ -344,12 +333,44 @@ export class HomePage {
       });
   }
 
-  private async fetchGiftCardDiscount() {
+  private addGiftCardPromotion(promotedCard: CardConfig) {
+    const promo = promotedCard.promotions[0];
+    const advertisementName = promo.shortDescription;
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === advertisementName
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: advertisementName,
+        title: promo.title,
+        body: promo.description,
+        app: 'bitpay',
+        linkText: promo.cta || 'Buy Now',
+        link: BuyCardPage,
+        linkParams: { cardConfig: promotedCard },
+        dismissible: true,
+        imgSrc: promo.icon
+      });
+  }
+
+  private async fetchGiftCardAdvertisement() {
     const availableCards = await this.giftCardProvider.getAvailableCards();
     const discountedCard = availableCards.find(cardConfig =>
       hasVisibleDiscount(cardConfig)
     );
-    discountedCard && this.addGiftCardDiscount(discountedCard);
+    const promotedCard = availableCards.find(card => hasPromotion(card));
+    if (discountedCard) {
+      this.addGiftCardDiscount(discountedCard);
+    } else if (promotedCard) {
+      this.addGiftCardPromotion(promotedCard);
+    }
+  }
+
+  slideChanged() {
+    const slideIndex = this.slides && this.slides.getActiveIndex();
+    const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
+    const cardConfig = activeAd.linkParams && activeAd.linkParams.cardConfig;
+    cardConfig && this.logPresentedWithGiftCardPromoEvent(cardConfig);
   }
 
   public doRefresh(refresher): void {
@@ -402,11 +423,6 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private async fetchDiscountAdvertisements(): Promise<void> {
-    await this.fetchGiftCardDiscount();
-    this.logPresentedWithGiftCardDiscountEvent();
-  }
-
   private fetchAdvertisements(): void {
     this.advertisements.forEach(advertisement => {
       if (
@@ -432,20 +448,14 @@ export class HomePage {
     });
   }
 
-  logPresentedWithGiftCardDiscountEvent() {
-    const giftCardDiscount = this.advertisements.find(a =>
-      a.name.includes('gift-card-discount')
+  logPresentedWithGiftCardPromoEvent(promotedCard: CardConfig) {
+    this.giftCardProvider.logEvent(
+      'presentedWithGiftCardPromo',
+      this.giftCardProvider.getPromoEventParams(
+        promotedCard,
+        'Home Tab Advertisement'
+      )
     );
-    const isCurrentSlide = !this.slides || this.slides.getActiveIndex() === 0;
-    giftCardDiscount &&
-      isCurrentSlide &&
-      this.giftCardProvider.logEvent(
-        'presentedWithGiftCardDiscount',
-        this.giftCardProvider.getDiscountEventParams(
-          this.discountedCard,
-          'Home Tab Advertisement'
-        )
-      );
   }
 
   public dismissAdvertisement(advertisement): void {
@@ -470,8 +480,8 @@ export class HomePage {
     }
     if (page === BuyCardPage) {
       this.giftCardProvider.logEvent(
-        'clickedGiftCardDiscount',
-        this.giftCardProvider.getDiscountEventParams(
+        'clickedGiftCardPromo',
+        this.giftCardProvider.getPromoEventParams(
           params.cardConfig,
           'Home Tab Advertisement'
         )

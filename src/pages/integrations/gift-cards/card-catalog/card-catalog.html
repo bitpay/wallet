@@ -53,10 +53,13 @@
             </ion-note>
           </div>
         </ion-label>
-        <ion-note item-end class="discount" *ngIf="hasPercentageDiscount(card)"><span class="discount-prefix">Save
+        <ion-note item-end class="discount" *ngIf="hasVisibleDiscount(card)"><span class="discount-prefix">Save
           </span>
           <gift-card-discount-text [showConcisePercentage]="true" [cardConfig]="card" [discount]="card.discounts[0]">
           </gift-card-discount-text><span class="discount-suffix"> Off</span>
+        </ion-note>
+        <ion-note item-end class="discount" *ngIf="!hasVisibleDiscount(card) && hasPromotion(card)">
+          Deal
         </ion-note>
 
       </button>
@@ -91,10 +94,13 @@
             </ion-note>
           </div>
         </ion-label>
-        <ion-note item-end class="discount" *ngIf="hasPercentageDiscount(card)"><span class="discount-prefix">Save
+        <ion-note item-end class="discount" *ngIf="hasVisibleDiscount(card)"><span class="discount-prefix">Save
           </span>
           <gift-card-discount-text [showConcisePercentage]="true" [cardConfig]="card" [discount]="card.discounts[0]">
           </gift-card-discount-text><span class="discount-suffix"> Off</span>
+        </ion-note>
+        <ion-note item-end class="discount" *ngIf="!hasVisibleDiscount(card) && hasPromotion(card)">
+          Deal
         </ion-note>
       </button>
 

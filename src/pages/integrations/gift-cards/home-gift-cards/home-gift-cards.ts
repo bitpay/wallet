@@ -16,7 +16,6 @@ import {
 } from '../../../../providers';
 import {
   GiftCardProvider,
-  hasVisibleDiscount,
   sortByDisplayName
 } from '../../../../providers/gift-card/gift-card';
 import {
@@ -65,7 +64,6 @@ import { GiftCardItem } from './gift-card-item/gift-card-item';
 export class HomeGiftCards implements OnInit {
   public activeBrands: GiftCard[][];
   public appName: string;
-  public discountedCard: CardConfig;
   public hideDiscount: boolean = false;
   public primaryCatalogCurrency: string = 'usd';
   public disableArchiveAnimation: boolean = true; // Removes flicker on iOS when returning to home tab
@@ -94,9 +92,6 @@ export class HomeGiftCards implements OnInit {
     }, 50);
     const availableCards = await this.giftCardProvider.getAvailableCards();
     this.primaryCatalogCurrency = getPrimaryCatalogCurrency(availableCards);
-    this.discountedCard = availableCards.find(cardConfig =>
-      hasVisibleDiscount(cardConfig)
-    );
     this.hideDiscount = await this.persistenceProvider.getHideGiftCardDiscountItem();
     await timer(3000).toPromise();
     this.giftCardProvider.preloadImages();
@@ -106,32 +101,15 @@ export class HomeGiftCards implements OnInit {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public async buyCard(cardName: string, discountContext?: string) {
+  public async buyCard(cardName: string) {
     const cardConfig = await this.giftCardProvider.getCardConfig(cardName);
     this.navCtrl.push(BuyCardPage, { cardConfig });
-    if (this.discountedCard && this.discountedCard.name === cardName) {
-      this.logDiscountClick(discountContext);
-    }
-  }
-
-  public logDiscountClick(context: string) {
-    this.giftCardProvider.logEvent(
-      'clickedGiftCardDiscount',
-      this.giftCardProvider.getDiscountEventParams(this.discountedCard, context)
-    );
   }
 
   public onGiftCardAction(event, purchasedCards: GiftCard[]) {
     event.action === 'view'
       ? this.viewGiftCards(event.cardName, purchasedCards)
       : this.showArchiveSheet(event);
-  }
-
-  public onPromoScrollIntoView(context: string) {
-    this.giftCardProvider.logEvent(
-      'presentedWithGiftCardDiscount',
-      this.giftCardProvider.getDiscountEventParams(this.discountedCard, context)
-    );
   }
 
   private async viewGiftCards(cardName: string, cards: GiftCard[]) {

@@ -32,6 +32,8 @@ import {
   CardConfigMap,
   GiftCard,
   GiftCardActivationFee,
+  GiftCardDiscount,
+  GiftCardPromotion,
   GiftCardSaveParams
 } from './gift-card.types';
 
@@ -611,14 +613,15 @@ export class GiftCardProvider extends InvoiceProvider {
     this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
-  getDiscountEventParams(discountedCard: CardConfig, context?: string) {
-    const discount = discountedCard.discounts[0];
+  getPromoEventParams(promotedCard: CardConfig, context?: string) {
+    const discount = promotedCard.discounts && promotedCard.discounts[0];
+    const promo = promotedCard.promotions && promotedCard.promotions[0];
     return {
-      brand: discountedCard.name,
-      code: discount.code,
+      brand: promotedCard.name,
+      name: (discount && discount.code) || promo.shortDescription,
       context,
-      type: discount.type,
-      discountAmount: discount.amount
+      type: (discount && discount.type) || 'promo',
+      ...(discount && { discountAmount: discount && discount.amount })
     };
   }
 
@@ -653,7 +656,8 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova ? cardConfig.discounts : undefined
+    discounts: isCordova ? cardConfig.discounts : undefined,
+    promotions: isCordova ? cardConfig.promotions : undefined
   };
 }
 
@@ -762,6 +766,19 @@ export function getCardsFromInvoiceMap(
 
 export function hasVisibleDiscount(cardConfig: CardConfig) {
   return !!getVisibleDiscount(cardConfig);
+}
+
+export function hasPromotion(cardConfig: CardConfig) {
+  return !!(cardConfig.promotions && cardConfig.promotions[0]);
+}
+
+export function getPromo(
+  cardConfig: CardConfig
+): GiftCardDiscount | GiftCardPromotion {
+  return (
+    getVisibleDiscount(cardConfig) ||
+    (cardConfig.promotions && cardConfig.promotions[0])
+  );
 }
 
 export function getVisibleDiscount(cardConfig: CardConfig) {
