@@ -63,7 +63,7 @@ export class CardsPage {
     // check persistence first
     this.bitpayCardItems = await this.filterCards('Galileo');
     await this.fetchAllCards();
-    setTimeout( () => {
+    setTimeout(() => {
       this.showDisclaimer = true;
     }, 300);
   }

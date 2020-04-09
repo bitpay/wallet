@@ -47,7 +47,7 @@
     </div>
   </ng-template>
 
-  <div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard">
+  <div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard" @fade>
     <add-button (click)="goToBitPayCardIntroPage()" tappable>
       <div add-button-text translate>Add BitPay Card</div>
     </add-button>
