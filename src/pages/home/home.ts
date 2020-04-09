@@ -252,12 +252,12 @@ export class HomePage {
     const card: Advertisement = this.cardExperimentEnabled
       ? {
           name: 'bitpay-card',
-          title: this.translate.instant('Fund it. Spend it.'),
+          title: this.translate.instant('Live on crypto'),
           body: this.translate.instant(
-            'Instantly reload your card with no conversion fee!'
+            'Designed for people who want to live life on crypto.'
           ),
           app: 'bitpay',
-          linkText: this.translate.instant('Order'),
+          linkText: this.translate.instant('Sign up'),
           link: BitPayCardIntroPage,
           dismissible: true,
           imgSrc: 'assets/img/icon-bpcard.svg'

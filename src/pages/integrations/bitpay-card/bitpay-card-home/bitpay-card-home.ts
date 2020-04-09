@@ -31,8 +31,9 @@ import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-int
 export class BitPayCardHome implements OnInit {
   public appName: string;
   public firstViewCardPhases: string;
-  public disableAddCard: boolean;
+  public disableAddCard = true;
   public ready: boolean;
+  private _initial = true;
 
   @Input() showBitpayCardGetStarted: boolean;
   @Input() public bitpayCardItems: any;
@@ -52,16 +53,19 @@ export class BitPayCardHome implements OnInit {
       this.disableAddCard = true;
     });
     this.persistenceProvider.getReachedCardLimit().then(limitReached => {
-      if (limitReached == 'true') {
-        this.disableAddCard = true;
-      }
+      this.disableAddCard = limitReached == true;
+      setTimeout(() => {
+        this.ready = true;
+        this._initial = false;
+      }, 50);
     });
-    setTimeout(() => {
-      this.ready = true;
-    }, 50);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (this._initial) {
+      return;
+    }
+
     const prev = changes['bitpayCardItems'].previousValue;
     const curr = changes['bitpayCardItems'].currentValue;
     if (

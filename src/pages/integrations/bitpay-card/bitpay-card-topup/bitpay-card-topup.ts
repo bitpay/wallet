@@ -639,10 +639,15 @@ export class BitPayCardTopUpPage {
     if (this.navParams.get('v2')) {
       const { amount, currency, coin } = parsedAmount;
 
+      let walletId;
+      if (wallet && wallet.request && wallet.request.credentials) {
+        walletId = wallet.request.credentials.walletId;
+      }
       dataSrc = {
         invoicePrice: amount,
         invoiceCurrency: currency,
         transactionCurrency: coin.toUpperCase(),
+        walletId,
         v2: true
       };
     }
