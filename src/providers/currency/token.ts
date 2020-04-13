@@ -23,5 +23,11 @@ export const TokenOpts = {
     symbol: 'GUSD',
     decimal: 2,
     address: '0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'
+  },
+  '0x4Fabb145d64652a948d72533023f6E7A623C7C53': {
+    name: 'Binance USD Coin',
+    symbol: 'BUSD',
+    decimal: 18,
+    address: '0x4Fabb145d64652a948d72533023f6E7A623C7C53'
   }
 };
