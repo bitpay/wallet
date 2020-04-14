@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
@@ -26,6 +27,7 @@ export class FeedbackCardPage {
     private navCtrl: NavController,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
+    private analyticsProvider: AnalyticsProvider,
     private translate: TranslateService,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
@@ -72,6 +74,10 @@ export class FeedbackCardPage {
 
   public goFeedbackFlow(): void {
     this.hideCard();
+    this.analyticsProvider.logEvent('feedback_card_app_sentiment', {
+      happinessLevel: this.score,
+      happinessDescription: this.button_title
+    });
     this.navCtrl.push(SendFeedbackPage, {
       score: this.score,
       fromCard: true
