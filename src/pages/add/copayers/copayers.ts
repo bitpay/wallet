@@ -9,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -30,6 +31,7 @@ export class CopayersPage {
   public canSign: boolean;
   public copayers: any[];
   public secret;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
@@ -50,7 +52,8 @@ export class CopayersPage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private configProvider: ConfigProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -59,6 +62,7 @@ export class CopayersPage {
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.canSign = this.wallet.canSign;
+    this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
   }
 
   ionViewDidLoad() {
