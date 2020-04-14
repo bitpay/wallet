@@ -60,7 +60,20 @@
         <div class="feedback-action-icon arrow arrow-right"></div>
       </ion-row>
     </div>
-    <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request/create')">
+    <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="openSharePage()">
+      <ion-row>
+        <div class="feedback-icon">
+          <img src="assets/img/ico-chat.svg" />
+        </div>
+        <ion-col>
+          <div class="user-feedback-title">
+            <span translate>Share with friends</span>
+          </div>
+        </ion-col>
+        <div class="feedback-action-icon arrow arrow-right"></div>
+      </ion-row>
+    </div>
+    <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request')">
       <ion-row>
         <div class="feedback-icon">
           <img src="assets/img/ico-chat.svg" />

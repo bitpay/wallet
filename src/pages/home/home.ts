@@ -52,8 +52,6 @@ export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showShoppingOption: boolean;
-  @ViewChild('showSurvey')
-  showSurvey;
   @ViewChild('showCard')
   showCard;
 
@@ -109,7 +107,6 @@ export class HomePage {
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
     this.showNewDesignSlides();
-    this.showSurveyCard();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
@@ -240,29 +237,29 @@ export class HomePage {
   private addBitPayCard() {
     const card: Advertisement = this.cardExperimentEnabled
       ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Live on crypto'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Sign up'),
-          link: BitPayCardIntroPage,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        }
+        name: 'bitpay-card',
+        title: this.translate.instant('Live on crypto'),
+        body: this.translate.instant(
+          'Designed for people who want to live life on crypto.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Sign up'),
+        link: BitPayCardIntroPage,
+        dismissible: true,
+        imgSrc: 'assets/img/icon-bpcard.svg'
+      }
       : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
+        name: 'bitpay-card',
+        title: this.translate.instant('Coming soon'),
+        body: this.translate.instant(
+          'Join the waitlist and be first to experience the new card.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Notify Me'),
+        link: PhaseOneCardIntro,
+        dismissible: true,
+        imgSrc: 'assets/img/icon-bpcard.svg'
+      };
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'bitpay-card'
     );
@@ -279,8 +276,8 @@ export class HomePage {
           : this.translate.instant('Connect your Coinbase!'),
         body: this.hasOldCoinbaseSession
           ? this.translate.instant(
-              'Reconnect to quickly withdraw and deposit funds.'
-            )
+            'Reconnect to quickly withdraw and deposit funds.'
+          )
           : this.translate.instant('Easily deposit and withdraw funds.'),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
@@ -297,10 +294,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-            discount.amount,
-            discountedCard.currency,
-            'minimal'
-          )}`
+          discount.amount,
+          discountedCard.currency,
+          'minimal'
+        )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -312,7 +309,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-        } gift cards. Limited time offer.`,
+          } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -493,11 +490,6 @@ export class HomePage {
     });
   }
 
-  private async showSurveyCard() {
-    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
-    this.showSurvey.setShowSurveyCard(!hideSurvey);
-  }
-
   private checkNewRelease() {
     this.persistenceProvider
       .getNewReleaseMessageDismissed()
@@ -513,9 +505,6 @@ export class HomePage {
   }
 
   private checkFeedbackInfo() {
-    // Hide feeback card if survey card is shown
-    // TODO remove this condition
-    if (this.showSurvey) return;
     this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
         this.initFeedBackInfo();
@@ -590,5 +579,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-  }-gift-card-discount`;
+    }-gift-card-discount`;
 }

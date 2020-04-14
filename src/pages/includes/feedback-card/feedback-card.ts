@@ -39,9 +39,7 @@ export class FeedbackCardPage {
     if (this.isShowRateCard) {
       let appName = this.appProvider.info.nameCase;
       this.feedbackCardTitle = this.replaceParametersProvider.replace(
-        this.translate.instant(
-          'How satisfied are you with {{appName}} wallet?'
-        ),
+        this.translate.instant('How satisfied are you with using {{appName}}?'),
         { appName }
       );
     }
@@ -64,10 +62,10 @@ export class FeedbackCardPage {
         this.button_title = this.translate.instant("I'm disappointed");
         break;
       case 2:
-        this.button_title = this.translate.instant("I'm satisfied");
+        this.button_title = this.translate.instant("It's ok for now");
         break;
       case 3:
-        this.button_title = this.translate.instant("I'm very happy");
+        this.button_title = this.translate.instant('I love it!');
         break;
     }
   }
