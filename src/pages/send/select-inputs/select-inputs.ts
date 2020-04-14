@@ -39,7 +39,7 @@ export class SelectInputsPage {
   public invalidAddress: boolean;
   public bitcore;
   public recipient;
-  public inputs = [];
+  public inputs: any[] = [];
   public totalAmount: number = 0;
 
   private selectedInputs = [];
@@ -397,14 +397,14 @@ export class SelectInputsPage {
   public shortcuts(selectAll: boolean) {
     this.selectedInputs = [];
     this.totalAmount = 0;
-    for (let i = 0; i <= this.inputs.length; i++) {
-      this.inputs[i].checked = selectAll;
+    this.inputs.forEach(input => {
+      input.checked = selectAll;
       if (selectAll) {
-        this.selectedInputs.push(this.inputs[i]);
+        this.selectedInputs.push(input);
         this.totalAmount = Number(
           _.sumBy(this.selectedInputs, 'amount').toFixed(8)
         );
       }
-    }
+    });
   }
 }

@@ -2,6 +2,24 @@ page-select-inputs {
   .info {
     color: color($colors, info);
   }
+  .card {
+    ion-list {
+      padding: 1rem 2rem 1rem 2rem;
+    }
+    .close-icon {
+      padding-right: 1rem;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      .name {
+        padding-left: 1rem;
+      }
+      .coin-icon {
+        width: 12px;
+      }
+    }
+  }
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -126,7 +144,7 @@ page-select-inputs {
     &-header {
       position: relative;
       margin: 1rem 2rem 1rem 2rem;
-      height: 11rem;
+      height: 13rem;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
