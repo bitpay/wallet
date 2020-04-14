@@ -1,6 +1,6 @@
-<wide-header-page title="{{'Select inputs for your transaction' | translate}}">
+<wide-header-page title="{{'Select inputs' | translate}}">
   <ion-buttons right>
-    <button *ngIf="recipient && selectedInputs && selectedInputs.length > 0" clear wide-header-bar-button (click)="goToConfirm()" ion-button icon-only>
+    <button [disabled]="canContinue()" clear wide-header-bar-button (click)="goToConfirm()" ion-button icon-only>
       <span translation>Continue</span>
     </button>
   </ion-buttons>
@@ -44,33 +44,54 @@
           <span *ngIf="!recipient.amountToShow" class="info">{{'Click here if you prefer to enter the amount' | translate}}</span>
         </ion-list>
       </div>
+      <div *ngIf="recipient" class="total-inputs-header">
 
-      <div class="card" *ngIf="recipient">
-        <ion-item-divider>
-          <span class="ellipsis">{{ 'Total inputs amount' | translate}}</span>
-        </ion-item-divider>
-        <ion-item>
-          <div class="total-amount">{{totalAmount}} {{wallet.coin | uppercase}}</div>
-          <div class="warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
-            <small>{{'This amount should be higher than the amount you are trying to send.' | translate}}</small>
+        <div class="total-inputs">
+          <span class="ellipsis">{{ 'Total selected inputs' | translate}}</span>
+        </div>
+
+        <div class="total-inputs-content">
+          <div>
+            <div class="total-inputs-str">
+              {{totalAmount}} {{wallet.coin | uppercase}}
+            </div>
+            <div class="total-inputs-warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
+              <small>{{'This amount should be higher than the amount you are trying to send.' | translate}}</small>
+            </div>
           </div>
-        </ion-item>
-        <ion-item-divider>
+        </div>
+
+      </div>
+
+      <ion-list *ngIf="recipient" class="wallet-inputs">
+        <ion-item-divider sticky class="wallet-inputs-header">
           <span class="ellipsis">{{ 'Wallet Inputs' | translate}}</span>
+          <button ion-button item-end clear *ngIf="inputs.length > 0" (click)="shortcuts(false)">
+            <ion-icon name="md-trash" color="grey"></ion-icon>
+          </button>
+          <button ion-button item-end clear *ngIf="inputs.length > 0" (click)="shortcuts(true)">
+            <ion-icon name="ios-checkmark-circle" color="grey"></ion-icon>
+          </button>
         </ion-item-divider>
         <ion-item *ngIf="inputs.length == 0">
           <div class="warning">
             <small>{{'No available inputs.' | translate}}</small>
           </div>
         </ion-item>
-        <ion-item *ngFor="let input of inputs; let i = index">
-          <ion-label padding-left>
-            <div>{{input.address}}</div>
-            <div>{{input.amount}} {{wallet.coin | uppercase}}</div>
-          </ion-label>
-          <ion-checkbox mode="ios" (click)="selectInput(input, i)" [checked]="input.checked"></ion-checkbox>
-        </ion-item>
-      </div>
+        <div class="item-wrapper" *ngFor="let input of inputs; let i = index">
+          <ion-item (click)="selectInput(input, i)">
+            <ion-label padding-left>
+              <div class="amount">
+                {{input.amount}} {{wallet.coin | uppercase}}
+              </div>
+              <div class="address">
+                {{input.address}}
+              </div>
+            </ion-label>
+            <ion-checkbox mode="ios" (click)="selectInput(input, i)" [checked]="input.checked"></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-list>
     </div>
     <div *ngIf="!recipient" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>

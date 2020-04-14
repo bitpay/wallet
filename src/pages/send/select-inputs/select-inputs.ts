@@ -207,7 +207,6 @@ export class SelectInputsPage {
   }
 
   public openAmountModal(item): void {
-    if (this.recipient.amountToShow) return;
     let modal = this.modalCtrl.create(
       AmountPage,
       {
@@ -385,5 +384,27 @@ export class SelectInputsPage {
       input.checked = false;
     });
     this.cleanSearch();
+  }
+
+  public canContinue() {
+    return this.recipient
+      ? (this.selectedInputs && this.selectedInputs.length <= 0) ||
+          (this.recipient.amountToShow &&
+            this.recipient.amountToShow > this.totalAmount)
+      : true;
+  }
+
+  public shortcuts(selectAll: boolean) {
+    this.selectedInputs = [];
+    this.totalAmount = 0;
+    for (let i = 0; i <= this.inputs.length; i++) {
+      this.inputs[i].checked = selectAll;
+      if (selectAll) {
+        this.selectedInputs.push(this.inputs[i]);
+        this.totalAmount = Number(
+          _.sumBy(this.selectedInputs, 'amount').toFixed(8)
+        );
+      }
+    }
   }
 }

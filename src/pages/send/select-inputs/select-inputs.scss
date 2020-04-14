@@ -2,31 +2,6 @@ page-select-inputs {
   .info {
     color: color($colors, info);
   }
-  .warning {
-    color: color($colors, danger);
-  }
-  .card {
-    ion-list {
-      padding: 1rem 2rem 1rem 2rem;
-    }
-    .close-icon {
-      padding-right: 1rem;
-    }
-    .wallet {
-      display: flex;
-      align-items: center;
-      .name {
-        padding-left: 1rem;
-      }
-      .coin-icon {
-        width: 12px;
-      }
-    }
-    .total-amount {
-      font-size: 30px;
-      font-weight: bold;
-    }
-  }
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -66,5 +41,103 @@ page-select-inputs {
     justify-content: center;
     text-align: center;
     padding: 30px;
+  }
+
+  .wallet-inputs {
+    &-header {
+      height: 5rem;
+      border-bottom: 0;
+
+      &.item {
+        min-height: 26px;
+        background: $feather-dark;
+
+        ion-label {
+          margin: 0;
+          font-size: 14px;
+        }
+
+        .item-inner {
+          padding: 0 !important;
+          border: none;
+        }
+      }
+
+      ion-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .item {
+      font-size: 16px;
+      padding-left: 19px;
+
+      .item-icon {
+        margin-right: 15px;
+      }
+
+      .item-inner {
+        background-image: none;
+        margin-left: 3px;
+        border-bottom: 1px solid color($colors, light);
+      }
+    }
+
+    .amount {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 24px;
+      color: color($colors, dark);
+    }
+
+    .address {
+      font-size: 14px;
+      margin-top: 8px;
+      opacity: 0.4;
+      font-weight: 300;
+      color: #434d5a;
+    }
+  }
+
+  ion-checkbox .item-cover {
+    display: none;
+  }
+
+  .total-inputs {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #434d5a;
+    opacity: 0.4;
+    &-str {
+      cursor: pointer;
+      font-size: 38px;
+      font-weight: 500;
+      display: flex;
+      align-items: baseline;
+    }
+    &-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    &-header {
+      position: relative;
+      margin: 1rem 2rem 1rem 2rem;
+      height: 11rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+    &-warning {
+      padding-top: 10px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: color($colors, danger);
+    }
   }
 }
