@@ -19,13 +19,11 @@
       <ion-list *ngIf="recipient" class="content-list">
         <ion-item-divider class="item-divider-header">
           <span class="ellipsis">{{ 'Recipient' | translate}}</span>
-          <button ion-button item-end clear (click)="removeRecipient()">
-            <ion-icon name="ios-close-outline" color="grey"></ion-icon>
-          </button>
+          <ion-icon class="close-icon pointer" name="ios-close-outline" item-right (click)="removeRecipient()"></ion-icon>
         </ion-item-divider>
         <ion-item (click)="openAmountModal(recipient)" class="recipient">
-          <ion-icon class="item-img" item-start>
-            <img *ngIf="recipient.recipientType == 'wallet'" [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
+          <ion-icon class="item-img wallet" item-start>
+            <img *ngIf="recipient.recipientType == 'wallet'" [ngClass]="{ testnet: wallet.network === 'testnet' }" class="icon-wallet" src="assets/img/currencies/{{wallet.coin}}.svg" />
             <gravatar *ngIf="recipient.recipientType == 'contact'" [name]="recipient.name" [height]="40" [width]="40" [email]="recipient.email" [coin]="wallet.coin" [network]="wallet.network"></gravatar>
             <img *ngIf="recipient.recipientType == 'address'" class="coin-icon" src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin" />
           </ion-icon>

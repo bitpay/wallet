@@ -1,4 +1,5 @@
-page-select-inputs {
+page-select-inputs,
+page-multi-send {
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -151,6 +152,17 @@ page-select-inputs {
       font-weight: 400;
       line-height: 24px;
       color: color($colors, danger);
+    }
+  }
+  .wallet {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .coin-icon {
+      width: 12px;
+    }
+    .icon-wallet {
+      margin-right: 0px;
     }
   }
 }
