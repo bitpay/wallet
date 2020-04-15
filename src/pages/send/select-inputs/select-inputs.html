@@ -16,55 +16,52 @@
         </ion-item>
       </div>
 
-      <div class="card" *ngIf="recipient">
-        <ion-item-divider>
+      <ion-list *ngIf="recipient" class="content-list">
+        <ion-item-divider class="item-divider-header">
           <span class="ellipsis">{{ 'Recipient' | translate}}</span>
-          <ion-icon class="close-icon pointer" name="ios-close-outline" item-right (click)="removeRecipient()"></ion-icon>
+          <button ion-button item-end clear (click)="removeRecipient()">
+            <ion-icon name="ios-close-outline" color="grey"></ion-icon>
+          </button>
         </ion-item-divider>
-        <ion-list class="pointer" (click)="openAmountModal(recipient)">
-          <div class="wallet" *ngIf="recipient.recipientType == 'wallet'">
-            <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
-            <span class="name">{{recipient.name}}</span>
-          </div>
+        <ion-item (click)="openAmountModal(recipient)" class="recipient">
+          <ion-icon class="item-img" item-start>
+            <img *ngIf="recipient.recipientType == 'wallet'" [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
+            <gravatar *ngIf="recipient.recipientType == 'contact'" [name]="recipient.name" [height]="40" [width]="40" [email]="recipient.email" [coin]="wallet.coin" [network]="wallet.network"></gravatar>
+            <img *ngIf="recipient.recipientType == 'address'" class="coin-icon" src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin" />
+          </ion-icon>
+          <ion-label>
+            <span *ngIf="recipient.recipientType == 'wallet'">{{recipient.name}}</span>
+            <span *ngIf="recipient.recipientType == 'contact'">{{recipient.name}}</span>
+            <span *ngIf="recipient.recipientType == 'address'" class="ellipsis">{{recipient.toAddress}}</span>
+          </ion-label>
+          <ion-note item-end text-end>
+            <div *ngIf="recipient.amountToShow" class="amount">
+              {{recipient.amountToShow}} {{wallet.coin | uppercase}}
+            </div>
+            <div *ngIf="recipient.amountToShow" class="amount-str">
+              {{recipient.altAmountStr}}
+            </div>
+            <span *ngIf="!recipient.amountToShow" ion-text color="primary">{{'Specify Amount' | translate}}</span>
+          </ion-note>
+        </ion-item>
+      </ion-list>
 
-          <div class="wallet" *ngIf="recipient.recipientType == 'contact'">
-            <gravatar [name]="recipient.name" [height]="40" [width]="40" [email]="recipient.email" [coin]="wallet.coin" [network]="wallet.network"></gravatar>
-            <span class="name">{{recipient.name}}</span>
-          </div>
-
-          <div class="wallet" *ngIf="recipient.recipientType == 'address'">
-            <img class="coin-icon" src="assets/img/icon-{{wallet.coin}}-small.svg" alt="Coin" />
-            <span class="address-divider"></span>
-            <span class="ellipsis">{{recipient.toAddress}}</span>
-          </div>
-
-          <br>
-          <span *ngIf="recipient.amountToShow">{{'Amount:' | translate}} </span>
-          <span *ngIf="recipient.amountToShow">{{recipient.amountToShow}} {{wallet.coin | uppercase}} ({{recipient.altAmountStr}})</span>
-          <span *ngIf="!recipient.amountToShow" class="info">{{'Click here if you prefer to enter the amount' | translate}}</span>
-        </ion-list>
-      </div>
-      <div *ngIf="recipient" class="total-inputs-header">
-
-        <div class="total-inputs">
+      <ion-list *ngIf="recipient">
+        <ion-item-divider class="item-divider-header">
           <span class="ellipsis">{{ 'Total selected inputs' | translate}}</span>
-        </div>
-
-        <div class="total-inputs-content">
-          <div>
-            <div class="total-inputs-str">
-              {{totalAmount}} {{wallet.coin | uppercase}}
-            </div>
-            <div class="total-inputs-warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
-              <small>{{'This amount should be higher than the amount you are trying to send.' | translate}}</small>
-            </div>
+        </ion-item-divider>
+        <ion-item class="total-inputs-content">
+          <div class="total-inputs-str">
+            {{totalAmount}} {{wallet.coin | uppercase}}
           </div>
-        </div>
+          <div class="total-inputs-warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
+            <small>{{'This amount should be higher than the amount you are trying to send.' | translate}}</small>
+          </div>
+        </ion-item>
+      </ion-list>
 
-      </div>
-
-      <ion-list *ngIf="recipient" class="wallet-inputs">
-        <ion-item-divider sticky class="wallet-inputs-header">
+      <ion-list *ngIf="recipient" class="content-list">
+        <ion-item-divider sticky class="item-divider-header">
           <span class="ellipsis">{{ 'Wallet Inputs' | translate}}</span>
           <button ion-button item-end clear *ngIf="inputs.length > 0" (click)="shortcuts(false)">
             <ion-icon name="md-trash" color="grey"></ion-icon>

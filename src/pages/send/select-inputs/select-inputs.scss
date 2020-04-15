@@ -1,25 +1,4 @@
 page-select-inputs {
-  .info {
-    color: color($colors, info);
-  }
-  .card {
-    ion-list {
-      padding: 1rem 2rem 1rem 2rem;
-    }
-    .close-icon {
-      padding-right: 1rem;
-    }
-    .wallet {
-      display: flex;
-      align-items: center;
-      .name {
-        padding-left: 1rem;
-      }
-      .coin-icon {
-        width: 12px;
-      }
-    }
-  }
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -61,33 +40,55 @@ page-select-inputs {
     padding: 30px;
   }
 
-  .wallet-inputs {
-    &-header {
-      height: 5rem;
-      border-bottom: 0;
-
-      &.item {
-        min-height: 26px;
-        background: $feather-dark;
-
-        ion-label {
-          margin: 0;
-          font-size: 14px;
-        }
-
-        .item-inner {
-          padding: 0 !important;
-          border: none;
-        }
-      }
+  .item-divider-header {
+    height: 5rem;
+    border-bottom: 0;
+    &.item {
+      min-height: 26px;
+      background: $feather-dark;
 
       ion-label {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .item-inner {
+        padding: 0 !important;
+        border: none;
       }
     }
 
+    ion-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .amount {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: color($colors, dark);
+  }
+
+  .address,
+  .amount-str {
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0.4;
+    font-weight: 300;
+    color: #434d5a;
+  }
+
+  .recipient.item {
+    .item-inner {
+      padding: 11px 10px 11px 0;
+      min-height: 76px;
+    }
+  }
+
+  .content-list {
     .item {
       font-size: 16px;
       padding-left: 19px;
@@ -101,21 +102,6 @@ page-select-inputs {
         margin-left: 3px;
         border-bottom: 1px solid color($colors, light);
       }
-    }
-
-    .amount {
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 24px;
-      color: color($colors, dark);
-    }
-
-    .address {
-      font-size: 14px;
-      margin-top: 8px;
-      opacity: 0.4;
-      font-weight: 300;
-      color: #434d5a;
     }
   }
 
@@ -135,6 +121,15 @@ page-select-inputs {
       font-weight: 500;
       display: flex;
       align-items: baseline;
+      @media (max-height: 650px) and (max-width: 768px) {
+        font-size: 34px;
+      }
+      @media (max-height: 600px) and (max-width: 768px) {
+        font-size: 30px;
+      }
+      @media (max-height: 550px) and (max-width: 768px) {
+        font-size: 24px;
+      }
     }
     &-content {
       display: flex;
