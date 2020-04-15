@@ -148,10 +148,9 @@ export class GiftCardProvider extends InvoiceProvider {
 
     const cardOrder = await promise(params).catch(async err => {
       this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(err));
-      if (attempt <= 3 && err.status == 403) {
-        attempt++;
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        return this.createBitpayInvoice(data, attempt);
+      if (attempt <= 5 && err.status == 403) {
+        await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+        return this.createBitpayInvoice(data, ++attempt);
       } else throw err;
     });
     this.logger.info('BitPay Create Invoice: SUCCESS');
