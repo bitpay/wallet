@@ -74,7 +74,7 @@
       <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
         <div>...</div>
       </div>
-      <bp-qr-code *ngIf="address" class="card qr-card bp-qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1">
+      <bp-qr-code *ngIf="address" class="card qr-card bp-qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1" legacy="{{ useLegacyQrCode }}">
         <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
       </bp-qr-code>
     </div>

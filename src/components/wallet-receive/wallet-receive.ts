@@ -5,6 +5,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 // Providers
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -32,6 +33,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public bchCashAddress: string;
   public bchAddrFormat: string;
   public disclaimerAccepted: boolean;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -44,13 +46,15 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private platform: Platform,
     public currencyProvider: CurrencyProvider,
     private addressProvider: AddressProvider,
-    private domProvider: DomProvider
+    private domProvider: DomProvider,
+    private configProvider: ConfigProvider
   ) {
     super();
   }
 
   ngOnInit() {
     this.wallet = this.params.wallet;
+    this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.bchAddrFormat = 'cashAddress';
     this.disclaimerAccepted = false;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {

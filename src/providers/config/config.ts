@@ -110,6 +110,10 @@ export interface Config {
 
   allowMultiplePrimaryWallets: boolean;
 
+  legacyQrCode: {
+    show: boolean;
+  };
+
   totalBalance: {
     show: boolean;
   };
@@ -232,6 +236,10 @@ export class ConfigProvider {
 
       allowMultiplePrimaryWallets: false,
 
+      legacyQrCode: {
+        show: false
+      },
+
       totalBalance: {
         show: true
       }
@@ -345,6 +353,10 @@ export class ConfigProvider {
 
     if (!this.configCache.totalBalance) {
       this.configCache.totalBalance = this.configDefault.totalBalance;
+    }
+
+    if (!this.configCache.legacyQrCode) {
+      this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
     }
   }
 }

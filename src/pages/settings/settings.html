@@ -108,6 +108,18 @@
         </ion-label>
       </button>
 
+      <ion-item class="align-with-button">
+        <ion-icon class="item-img icon-settings" style="opacity: 0.3;" item-start>
+          <img src="assets/img/settings-icons/icon-qrcode.svg">
+        </ion-icon>
+        <ion-label>
+          <div class="main-label">
+            {{'Use Basic QR Code' | translate}}
+          </div>
+        </ion-label>
+        <ion-toggle [(ngModel)]="useLegacyQrCode" (ionChange)="toggleQrCodeLegacyFlag()"></ion-toggle>
+      </ion-item>
+
       <ion-list reorder="{{showReorder}}" (ionItemReorder)="reorderAccounts($event)">
         <button ion-item [attr.detail-none]="showReorder ? true : null" *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="openWalletGroupSettings(walletsGroup[0].keyId)">
           <ion-icon class="item-img icon-settings" item-start>

@@ -74,6 +74,7 @@ export class SettingsPage {
   private user$: Observable<User>;
   public showReorder: boolean = false;
   public showTotalBalance: boolean;
+  public useLegacyQrCode: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -159,6 +160,8 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
+
+    this.useLegacyQrCode = this.config.legacyQrCode.show;
 
     this.showTotalBalance = this.config.totalBalance.show;
   }
@@ -381,5 +384,12 @@ export class SettingsPage {
     _.each(this.walletsGroups, (walletGroup, index: number) => {
       this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
     });
+  }
+
+  public toggleQrCodeLegacyFlag(): void {
+    let opts = {
+      legacyQrCode: { show: this.useLegacyQrCode }
+    };
+    this.configProvider.set(opts);
   }
 }
