@@ -39,7 +39,7 @@ export class SelectInputsPage {
   public invalidAddress: boolean;
   public bitcore;
   public recipient;
-  public inputs = [];
+  public inputs: any[] = [];
   public totalAmount: number = 0;
 
   private selectedInputs = [];
@@ -207,7 +207,6 @@ export class SelectInputsPage {
   }
 
   public openAmountModal(item): void {
-    if (this.recipient.amountToShow) return;
     let modal = this.modalCtrl.create(
       AmountPage,
       {
@@ -385,5 +384,27 @@ export class SelectInputsPage {
       input.checked = false;
     });
     this.cleanSearch();
+  }
+
+  public canContinue() {
+    return this.recipient
+      ? (this.selectedInputs && this.selectedInputs.length <= 0) ||
+          (this.recipient.amountToShow &&
+            this.recipient.amountToShow > this.totalAmount)
+      : true;
+  }
+
+  public shortcuts(selectAll: boolean) {
+    this.selectedInputs = [];
+    this.totalAmount = 0;
+    this.inputs.forEach(input => {
+      input.checked = selectAll;
+      if (selectAll) {
+        this.selectedInputs.push(input);
+        this.totalAmount = Number(
+          _.sumBy(this.selectedInputs, 'amount').toFixed(8)
+        );
+      }
+    });
   }
 }
