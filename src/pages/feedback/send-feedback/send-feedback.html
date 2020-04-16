@@ -63,7 +63,7 @@
     <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="openSharePage()">
       <ion-row>
         <div class="feedback-icon">
-          <img src="assets/img/ico-chat.svg" />
+          <img src="assets/img/add-favorite.svg" />
         </div>
         <ion-col>
           <div class="user-feedback-title">
@@ -73,7 +73,7 @@
         <div class="feedback-action-icon arrow arrow-right"></div>
       </ion-row>
     </div>
-    <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request')">
+    <div *ngIf="score != 3" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/feature-request')">
       <ion-row>
         <div class="feedback-icon">
           <img src="assets/img/ico-chat.svg" />
@@ -88,7 +88,7 @@
         </div>
       </ion-row>
     </div>
-    <div *ngIf="score != 3" class="user-feedback-card" (click)="showInfoSheet('report-issue','https://bitpay.com/request-help/wizard?category=wallet')">
+    <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://bitpay.com/request-help/wizard?category=wallet')">
       <ion-row>
         <div class="feedback-icon">
           <img src="assets/img/ico-bug.svg" />
@@ -96,21 +96,6 @@
         <ion-col>
           <div class="user-feedback-title">
             <span translate>Report an Issue</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon">
-          <img src="assets/img/ico-link.svg" />
-        </div>
-      </ion-row>
-    </div>
-    <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp/create')">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/icon-question-help.svg" />
-        </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Get Help</span>
           </div>
         </ion-col>
         <div class="feedback-action-icon">

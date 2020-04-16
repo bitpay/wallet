@@ -74,7 +74,6 @@ page-home {
       border-radius: 12px;
       background-color: #f9f9fb;
       margin: 2rem auto 0 auto;
-      &:not(:first-child),
       &.no-margin {
         margin-top: 0;
       }

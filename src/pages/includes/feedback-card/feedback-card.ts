@@ -75,8 +75,7 @@ export class FeedbackCardPage {
   public goFeedbackFlow(): void {
     this.hideCard();
     this.analyticsProvider.logEvent('feedback_card_app_sentiment', {
-      happinessLevel: this.score,
-      happinessDescription: this.button_title
+      happinessLevel: this.score
     });
     this.navCtrl.push(SendFeedbackPage, {
       score: this.score,
