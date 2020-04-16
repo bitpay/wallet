@@ -513,11 +513,13 @@ export class PersistenceProvider {
 
   setBitpayDebitCards(network: string, email: string, cards) {
     return this.getBitpayAccounts(network).then(allAccounts => {
-      allAccounts = allAccounts || {};
-      if (!allAccounts[email])
-        throw new Error('Cannot set cards for unknown account ' + email);
-      allAccounts[email].cards = cards;
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
+      let accounts = { ...(allAccounts || {}) };
+      try {
+        accounts[email] = { cards };
+      } catch (err) {
+        this.logger.error(err);
+      }
+      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), accounts);
     });
   }
 
