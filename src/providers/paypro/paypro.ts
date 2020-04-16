@@ -21,29 +21,12 @@ export class PayproProvider {
     this.logger.debug('PayproProvider initialized');
   }
 
-  public getPayProOptions(paymentUrl, disableLoader?: boolean): Promise<any> {
+  public getPayProOptions(paymentUrl): Promise<any> {
     const bwc = this.bwcProvider.getPayProV2();
     const options: any = {
       paymentUrl
     };
-    if (!disableLoader) {
-      this.onGoingProcessProvider.set('fetchingPayProOptions');
-    }
-
-    return bwc
-      .getPaymentOptions(options)
-      .then(payProOptions => {
-        if (!disableLoader) this.onGoingProcessProvider.clear();
-        return payProOptions;
-      })
-      .catch(error => {
-        this.logger.debug(error);
-        this.onGoingProcessProvider.clear();
-        this.errorsProvider.showDefaultError(
-          this.translate.instant('Could not fetch payment options'),
-          'Error'
-        );
-      });
+    return bwc.getPaymentOptions(options);
   }
 
   public getPayProDetails(

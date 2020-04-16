@@ -1152,12 +1152,8 @@ export class IncomingDataProvider {
 
     try {
       const { memo, network } = payProDetails;
-      const disableLoader = true;
       if (!payProOptions) {
-        payProOptions = await this.payproProvider.getPayProOptions(
-          url,
-          disableLoader
-        );
+        payProOptions = await this.payproProvider.getPayProOptions(url);
       }
       const paymentOptions = payProOptions.paymentOptions;
       const { estimatedAmount } = paymentOptions.find(
