@@ -14,6 +14,7 @@ import { ScanPage } from '../../scan/scan';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -48,6 +49,7 @@ export class JoinWalletPage {
   private coin: Coin;
 
   constructor(
+    private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
@@ -303,7 +305,10 @@ export class JoinWalletPage {
       .catch(err => {
         this.onGoingProcessProvider.clear();
         const title = this.translate.instant('Error');
-        this.errorsProvider.showDefaultError(err, title);
+        this.errorsProvider.showDefaultError(
+          this.bwcErrorProvider.msg(err),
+          title
+        );
         return;
       });
   }
