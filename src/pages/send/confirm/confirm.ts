@@ -171,8 +171,7 @@ export class ConfirmPage {
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
-    }
-    if (this.fromSelectInputs) {
+    } else if (this.fromSelectInputs) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.amount
         ? this.navParams.data.amount
