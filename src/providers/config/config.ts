@@ -115,6 +115,7 @@ export interface Config {
   };
 
   theme: {
+    enabled: boolean;
     system: boolean;
     name: string;
   };
@@ -246,6 +247,7 @@ export class ConfigProvider {
       },
 
       theme: {
+        enabled: false,
         system: true,
         name: 'light'
       },
@@ -283,9 +285,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-      spendUnconfirmed +
-      ' - lockMethod: ' +
-      lockMethod
+        spendUnconfirmed +
+        ' - lockMethod: ' +
+        lockMethod
     );
   }
 
@@ -361,7 +363,7 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
     }
 
-    if (!this.configCache.theme) {
+    if (!this.configCache.theme || !this.configCache.theme.enabled) {
       this.configCache.theme = this.configDefault.theme;
     }
 

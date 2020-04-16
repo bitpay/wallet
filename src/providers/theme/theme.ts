@@ -40,8 +40,14 @@ export class ThemeProvider {
     this.logger.debug('ThemeProvider initialized');
   }
 
+  private isEnabled(): boolean {
+    const config = this.configProvider.get();
+    return !!config.theme.enabled;
+  }
+
   public load() {
     return new Promise(resolve => {
+      if (!this.isEnabled()) return resolve();
       const config = this.configProvider.get();
       if (!config.theme.system) {
         this.useSystemTheme = false;
@@ -94,6 +100,7 @@ export class ThemeProvider {
   }
 
   public apply() {
+    if (!this.isEnabled()) return;
     if (this.platformProvider.isCordova) {
       setTimeout(() => {
         if (this.isDarkModeEnabled()) {
@@ -123,13 +130,17 @@ export class ThemeProvider {
         this.useSystemTheme = false;
         this.currentAppTheme = theme || detectedSystemTheme;
     }
-    this.apply();
     this.setConfigTheme();
+    this.apply();
   }
 
   private setConfigTheme(): void {
     let opts = {
-      theme: { name: this.currentAppTheme, system: this.useSystemTheme }
+      theme: {
+        enabled: true,
+        name: this.currentAppTheme,
+        system: this.useSystemTheme
+      }
     };
     this.configProvider.set(opts);
   }
@@ -148,6 +159,7 @@ export class ThemeProvider {
   }
 
   public getCurrentAppTheme() {
+    if (!this.isEnabled()) return;
     return this.useSystemTheme
       ? 'System Default'
       : this.availableThemes[this.currentAppTheme].name;
