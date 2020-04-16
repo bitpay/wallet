@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
-import { Events } from 'ionic-angular';
+import { Events} from 'ionic-angular';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
@@ -61,14 +61,16 @@ export class IABCardProvider {
     this.logger.log(`card provider initialized with ${this.NETWORK}`);
   }
 
-  async getCards() {
-    this.logger.log(`start get cards from network - ${this.NETWORK}`);
+  getCards() {
 
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(
-      Network[this.NETWORK]
-    );
+    return new Promise( async (res) => {
+      this.logger.log(`start get cards from network - ${this.NETWORK}`);
 
-    const query = `
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+
+      const query = `
       query START_GET_CARDS($token:String!) {
         user:bitpayUser(token:$token) {
           cards:debitCards {
@@ -95,74 +97,76 @@ export class IABCardProvider {
       }
     `;
 
-    const json = {
-      query,
-      variables: { token }
-    };
+      const json = {
+        query,
+        variables: { token }
+      };
 
-    this.appIdentityProvider.getIdentity(
-      this.NETWORK,
-      async (err, appIdentity) => {
-        if (err) {
-          return;
-        }
-
-        const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
-        const dataToSign = `${url}${JSON.stringify(json)}`;
-        const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
-
-        const headers = {
-          'x-identity': appIdentity.pub,
-          'x-signature': signedData
-        };
-        // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
-        const { data }: any = await this.http
-          .post(`${url}/api/v2/graphql`, json, { headers })
-          .toPromise();
-
-        if (data && data.user && data.user.cards) {
-          let cards = data.user.cards;
-          const user = await this.persistenceProvider.getBitPayIdUserInfo(
-            Network[this.NETWORK]
-          );
-
-          for (let card of cards) {
-            if (card.provider === 'galileo') {
-              this.persistenceProvider.setReachedCardLimit(true);
-              this.events.publish('reachedCardLimit');
-              break;
-            }
+      this.appIdentityProvider.getIdentity(
+        this.NETWORK,
+        async (err, appIdentity) => {
+          if (err) {
+            return;
           }
 
-          cards = cards.map(c => {
-            return {
-              ...c,
-              currencyMeta: c.currency,
-              currency: c.currency.code,
-              eid: c.id
-            };
-          });
+          const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
+          const dataToSign = `${url}${JSON.stringify(json)}`;
+          const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
 
-          await this.persistenceProvider.setBitpayDebitCards(
-            Network[this.NETWORK],
-            user.email,
-            cards
-          );
+          const headers = {
+            'x-identity': appIdentity.pub,
+            'x-signature': signedData
+          };
+          // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
+          const { data }: any = await this.http
+            .post(`${url}/api/v2/graphql`, json, { headers })
+            .toPromise();
 
-          this.ref.executeScript(
-            {
-              code: `sessionStorage.setItem(
+          if (data && data.user && data.user.cards) {
+            let cards = data.user.cards;
+            const user = await this.persistenceProvider.getBitPayIdUserInfo(
+              Network[this.NETWORK]
+            );
+
+            for (let card of cards) {
+              if (card.provider === 'galileo') {
+                this.persistenceProvider.setReachedCardLimit(true);
+                this.events.publish('reachedCardLimit');
+                break;
+              }
+            }
+
+            cards = cards.map(c => {
+              return {
+                ...c,
+                currencyMeta: c.currency,
+                currency: c.currency.code,
+                eid: c.id
+              };
+            });
+
+            await this.persistenceProvider.setBitpayDebitCards(
+              Network[this.NETWORK],
+              user.email,
+              cards
+            );
+
+            this.ref.executeScript(
+              {
+                code: `sessionStorage.setItem(
             'cards',
             ${JSON.stringify(JSON.stringify(cards))}
           )`
-            },
-            () => this.logger.log('added cards')
-          );
-
-          this.logger.log('success retrieved cards');
+              },
+              () => this.logger.log('added cards')
+            );
+            res();
+            this.logger.log('success retrieved cards');
+          }
         }
-      }
-    );
+      );
+    })
+
   }
 
   get ref() {
@@ -262,9 +266,10 @@ export class IABCardProvider {
           this.externalLinkProvider.open(url);
           break;
 
-        case 'updateBalance':
-          await this.getCards();
-          this.events.publish('updateBalance');
+        case 'navigateToCardTabPage':
+          this.events.publish('IncomingDataRedir', {
+            name: 'CardsPage',
+          });
           break;
 
         case 'topup':
@@ -366,6 +371,14 @@ export class IABCardProvider {
         default:
           break;
       }
+    });
+  }
+
+  async updateCards() {
+    this.logger.log('card -> update balance');
+    await this.getCards();
+    setTimeout( () => {
+      this.events.publish('updateCards');
     });
   }
 

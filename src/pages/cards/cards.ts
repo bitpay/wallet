@@ -47,7 +47,7 @@ export class CardsPage {
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
-    this.events.subscribe('updateBalance', async () => {
+    this.events.subscribe('updateCards', async () => {
       this.bitpayCardItems = await this.filterCards('Galileo');
     });
   }
