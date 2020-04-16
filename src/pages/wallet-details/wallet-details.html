@@ -109,6 +109,9 @@
             <span class="square-border" *ngIf="!wallet?.canSign">
               <span>READ ONLY</span>
             </span>
+            <span class="square-border" *ngIf="wallet?.coin == 'btc' && wallet?.isSegwit">
+              <span>SEGWIT</span>
+            </span>
             <span class="square-border" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet?.singleAddress && isUtxoCoin()">
               <span>AUDITABLE</span>
             </span>

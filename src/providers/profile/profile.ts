@@ -323,6 +323,7 @@ export class ProfileProvider {
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
     wallet.canAddNewAccount = this.checkAccountCreation(wallet, keyId);
+    wallet.isSegwit = this.checkIfSegwit(wallet.credentials.addressType);
 
     this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
@@ -479,18 +480,18 @@ export class ProfileProvider {
 
       const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
-        wallet.n == 1 &&
-        wallet.credentials.addressType == 'P2PKH' &&
-        derivationStrategy == 'BIP44' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
+        (wallet.credentials.addressType == 'P2WPKH' &&
+          derivationStrategy == 'BIP44' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
       if (
-        wallet.n > 1 &&
-        wallet.credentials.addressType == 'P2SH' &&
-        derivationStrategy == 'BIP48' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
+        (wallet.credentials.addressType == 'P2WSH' &&
+          derivationStrategy == 'BIP48' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
@@ -512,6 +513,13 @@ export class ProfileProvider {
       }
       return false;
     }
+  }
+
+  public checkIfSegwit(addressType: string) {
+    if (!addressType) return false;
+    else if (addressType == 'P2WPKH' || addressType == 'P2WSH') {
+      return true;
+    } else return false;
   }
 
   public setFastRefresh(wallet): void {
@@ -1429,7 +1437,8 @@ export class ProfileProvider {
                 network: opts.networkName,
                 singleAddress: opts.singleAddress,
                 walletPrivKey: opts.walletPrivKey,
-                coin: opts.coin
+                coin: opts.coin,
+                useNativeSegwit: opts.useNativeSegwit
               },
               err => {
                 const copayerRegistered =

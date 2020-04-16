@@ -88,6 +88,11 @@
           <ion-input type="text" formControlName="derivationPath"></ion-input>
         </ion-item>
 
+        <ion-item [ngClass]="{'with-label': createForm.value.useNativeSegwit}" *ngIf="coin === 'btc' && createForm.value.selectedSeed == 'new'">
+          <ion-label>{{'Segwit' | translate}}</ion-label>
+          <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
+        </ion-item>
+
         <ion-item *ngIf="!isSingleAddress()" [ngClass]="{'with-label': createForm.value.singleAddress}">
           <ion-label>{{'Single address' | translate}}</ion-label>
           <ion-toggle formControlName="singleAddress"></ion-toggle>
