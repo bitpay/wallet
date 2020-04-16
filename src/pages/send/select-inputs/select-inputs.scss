@@ -1,5 +1,6 @@
 page-select-inputs,
-page-multi-send {
+page-multi-send,
+page-proposals-notifications {
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -44,6 +45,9 @@ page-multi-send {
   .item-divider-header {
     height: 5rem;
     border-bottom: 0;
+    &.sm {
+      height: 1rem;
+    }
     &.item {
       min-height: 26px;
       background: $feather-dark;

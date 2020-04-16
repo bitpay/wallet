@@ -1,78 +1,53 @@
 page-proposals-notifications {
-  .txps-status {
-    .section-header {
-      font-size: 18px;
-      &:first-child {
-        margin-top: 2rem;
+  .select-all {
+    display: flex;
+    .multi-sign {
+      cursor: pointer;
+      color: color($colors, primary);
+      ion-icon {
+        font-size: 3rem;
+        margin-right: 2rem;
+      }
+      &.close ion-icon {
+        margin-right: 5px;
       }
     }
-    .card {
-      padding-top: 0px;
-      .wallet-divider {
-        padding: 1.2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .wallet-title {
-          display: flex;
-          align-items: center;
-          .name {
-            font-weight: 400;
-          }
-        }
-        .multi-sign {
-          cursor: pointer;
-          color: color($colors, primary);
-          ion-icon {
-            font-size: 3rem;
-            margin-right: 2rem;
-          }
-          &.close ion-icon {
-            margin-right: 5px;
-          }
-        }
-        .select-all {
-          display: flex;
-        }
-        .circle-status {
-          width: 1rem;
-          height: 1rem;
-          border-radius: 10px;
-          margin-right: 0.3rem;
-          padding: 4px;
-        }
-        .assertive {
-          background-color: color($colors, danger);
-        }
-        .balanced {
-          background-color: color($colors, success);
-        }
+  }
+  .circle-status {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 10px;
+    margin-right: 0.3rem;
+    padding: 4px;
+  }
+  .assertive {
+    background-color: color($colors, danger);
+  }
+  .balanced {
+    background-color: color($colors, success);
+  }
+  .txp-container {
+    &:last-child .proposal-container {
+      .item-inner {
+        border-bottom: none;
       }
-
-      .txp-container {
-        &:last-child .proposal-container {
-          .item-inner {
-            border-bottom: none;
-          }
-        }
-        display: flex;
-        align-items: center;
-        background-color: white;
-        ion-checkbox {
-          margin-left: 1.2rem;
-          .checkbox-icon {
-            border-color: color($colors, primary);
-          }
-        }
-        page-txp {
-          width: 100%;
-        }
-        .with-checkbox {
-          margin-left: 16px;
-          .proposal-container {
-            padding-left: 0;
-          }
-        }
+    }
+    display: flex;
+    align-items: center;
+    background-color: white;
+    ion-checkbox {
+      margin-left: 1.2rem;
+      .checkbox-icon {
+        border-color: color($colors, primary);
+      }
+    }
+    page-txp {
+      width: 100%;
+    }
+    .with-checkbox {
+      margin-left: 16px;
+      .proposal-container {
+        padding-left: 0;
       }
     }
   }
