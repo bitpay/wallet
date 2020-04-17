@@ -6,18 +6,16 @@
   </ion-buttons>
   <div page-content>
     <div class="msg-to-user">
-      <ion-row>
-        <ion-col>
-          <div class="feedback-title">
-            <span>{{reaction}}</span>
-          </div>
-        </ion-col>
-        <ion-col class="rating">
+      <div class="rating-title">
+        <div class="feedback-title">
+          <span>{{reaction}}</span>
+        </div>
+        <div>
           <img *ngIf="1 == score" src="assets/img/disappointed-face.svg" />
           <img *ngIf="2 == score" src="assets/img/satisfied-face.svg" />
           <img *ngIf="3 == score || !score" src="assets/img/happy-face.svg" />
-        </ion-col>
-      </ion-row>
+        </div>
+      </div>
       <div class="feedback-msg">{{comment}}</div>
     </div>
 
