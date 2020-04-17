@@ -718,20 +718,6 @@
       filter: invert(1);
     }
   }
-  page-proposals-notifications {
-    .txps-status {
-      .card {
-        background-color: $bg-color-dark-theme-2;
-        color: $text-color-dark-theme;
-        .txp-container {
-          background-color: $bg-color-dark-theme-2;
-          ion-checkbox .checkbox-icon {
-            background-color: $bg-color-dark-theme-2;
-          }
-        }
-      }
-    }
-  }
   page-txp {
     .item {
       &.item-ios,
@@ -944,7 +930,8 @@
 
   page-send,
   page-multi-send,
-  page-select-inputs {
+  page-select-inputs,
+  page-proposals-notifications {
     .amount {
       color: $text-color-dark-theme;
     }
@@ -992,6 +979,15 @@
     .invalid {
       border: 1px solid color($colors, error);
       color: color($colors, error);
+    }
+    ion-checkbox {
+      .checkbox-icon {
+        border-color: color($colors, primary);
+        background-color: $bg-color-dark-theme;
+      }
+    }
+    .txp-container {
+      background-color: $bg-color-dark-theme;
     }
   }
 
