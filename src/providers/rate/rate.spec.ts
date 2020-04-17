@@ -43,6 +43,9 @@ describe('RateProvider', () => {
   const gusdResponse = [
     { code: 'GUSD', name: 'Gemini US Dollar', rate: 9371.93 }
   ];
+  const busdResponse = [
+    { code: 'BUSD', name: 'Binance USD Coin', rate: 9371.93 }
+  ];
   const fiatResponse = {
     ts: 1559315523000,
     rate: 8427.66,
@@ -55,6 +58,7 @@ describe('RateProvider', () => {
   let paxUrl: string = 'https://bitpay.com/api/rates/pax';
   let usdcUrl: string = 'https://bitpay.com/api/rates/usdc';
   let gusdUrl: string = 'https://bitpay.com/api/rates/gusd';
+  let busdUrl: string = 'https://bitpay.com/api/rates/busd';
 
   let fiatRateUrl: string =
     'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';
@@ -76,6 +80,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -96,6 +101,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -116,6 +122,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -136,6 +143,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -153,6 +161,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -227,6 +236,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -249,6 +259,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -271,6 +282,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -293,6 +305,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -315,6 +328,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -337,6 +351,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -359,6 +374,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -381,6 +397,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -400,9 +417,11 @@ describe('RateProvider', () => {
         { name: 'Ripple', isoCode: 'XRP' },
         { name: 'Paxos Standard USD', isoCode: 'PAX' },
         { name: 'Circle USD Coin', isoCode: 'USDC' },
-        { name: 'Gemini US Dollar', isoCode: 'GUSD' }
+        { name: 'Gemini US Dollar', isoCode: 'GUSD' },
+        { name: 'Binance USD Coin', isoCode: 'BUSD' }
       ]);
       expect(service.listAlternatives(true)).toEqual([
+        { name: 'Binance USD Coin', isoCode: 'BUSD' },
         { name: 'Bitcoin', isoCode: 'BTC' },
         { name: 'Bitcoin Cash', isoCode: 'BCH' },
         { name: 'Circle USD Coin', isoCode: 'USDC' },
@@ -421,6 +440,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
@@ -443,6 +463,7 @@ describe('RateProvider', () => {
     httpMock.match(paxUrl)[0].flush(paxResponse);
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
+    httpMock.match(busdUrl)[0].flush(busdResponse);
     httpMock.verify();
   });
 
