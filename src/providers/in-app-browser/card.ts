@@ -146,6 +146,14 @@ export class IABCardProvider {
               Network[this.NETWORK]
             );
 
+            for (let card of cards) {
+              if (card.provider === 'galileo') {
+                this.persistenceProvider.setReachedCardLimit(true);
+                this.events.publish('reachedCardLimit');
+                break;
+              }
+            }
+
             cards = cards.map(c => {
               return {
                 ...c,
