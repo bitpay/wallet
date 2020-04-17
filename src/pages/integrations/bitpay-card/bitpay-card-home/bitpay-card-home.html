@@ -4,14 +4,15 @@
   </div>
   <ng-container *ngIf="cardExperimentEnabled else regCards">
 
-    <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
+    <div *ngFor="let card of bitpayCardItems; let i = index;" class="card-item">
       <div class="card-container">
-        <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
+        <div class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
           <div class="number ellipsis">
             <img [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
           </div>
           <span class="ellipsis" item-end>
-      <div class="funds ellipsis">
+      <div class="funds ellipsis" style="position: relative;">
+<!--        <img *ngIf="isFetching" class="card-spinner" src="assets/img/thin-spinner.svg" @fade>-->
         <span *ngIf="card.cardBalance">
           {{ card.cardBalance | formatCurrency: card?.currency: 'minimal' }}
         </span>
@@ -29,7 +30,7 @@
   <ng-template #regCards>
     <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
       <div class="card-container">
-        <div class="card" [ngClass]="{dark: bitpayCardItems.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
+        <div class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)" tappable>
           <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
           <span class="ellipsis" item-end>
       <div class="funds ellipsis">

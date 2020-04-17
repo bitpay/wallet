@@ -872,7 +872,7 @@ export class BitPayCardTopUpPage {
     this.iabCardProvider.updateCards();
     modal.onDidDismiss(async () => {
       if (this.navParams.get('v2')) {
-        setTimeout( () => {
+        setTimeout(() => {
           this.iabCardProvider.show();
         }, 200);
         this.iabCardProvider.sendMessage({

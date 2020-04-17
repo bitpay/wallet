@@ -96,8 +96,12 @@ export class BitPayIdPage {
                   })}, '*')`
                 },
                 () => {
+
                   infoSheet.present();
-                  this.navCtrl.popToRoot();
+                  setTimeout( () => {
+                    this.navCtrl.popToRoot();
+                  }, 400);
+
                 }
               );
               this.events.publish('BitPayId/Disconnected');

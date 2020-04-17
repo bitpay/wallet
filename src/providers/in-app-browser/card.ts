@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
-import { Events} from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
@@ -28,8 +28,9 @@ export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
   private NETWORK: string;
   private BITPAY_API_URL: string;
-
+  private fetchLock: boolean;
   private _isHidden = true;
+  public hasCards: boolean;
   private _pausedState = false;
 
   public user = new BehaviorSubject({});
@@ -62,13 +63,26 @@ export class IABCardProvider {
   }
 
   getCards() {
+    return new Promise(async (res, rej) => {
 
-    return new Promise( async (res) => {
-      this.logger.log(`start get cards from network - ${this.NETWORK}`);
+      if (this.fetchLock) {
+        this.logger.log(`CARD - Get cards already in progress`);
+        return res();
+      }
+
+      this.logger.log(`CARD - start get cards from network - ${this.NETWORK}`);
+
+      this.fetchLock = true;
+      this.events.publish('isFetchingDebitCards', true);
 
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
         Network[this.NETWORK]
       );
+
+      if (!token) {
+        this.fetchLock = false;
+        return res();
+      }
 
       const query = `
       query START_GET_CARDS($token:String!) {
@@ -120,7 +134,12 @@ export class IABCardProvider {
           // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
           const { data }: any = await this.http
             .post(`${url}/api/v2/graphql`, json, { headers })
-            .toPromise();
+            .toPromise()
+            .catch( (err) => {
+              this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
+              this.fetchLock = false;
+              return rej(err);
+            });
 
           if (data && data.user && data.user.cards) {
             let cards = data.user.cards;
@@ -128,45 +147,46 @@ export class IABCardProvider {
               Network[this.NETWORK]
             );
 
-            for (let card of cards) {
-              if (card.provider === 'galileo') {
-                this.persistenceProvider.setReachedCardLimit(true);
-                this.events.publish('reachedCardLimit');
-                break;
-              }
-            }
-
             cards = cards.map(c => {
               return {
                 ...c,
                 currencyMeta: c.currency,
                 currency: c.currency.code,
-                eid: c.id
+                eid: c.id,
+                show: true
               };
             });
 
-            await this.persistenceProvider.setBitpayDebitCards(
-              Network[this.NETWORK],
-              user.email,
-              cards
-            );
+            setTimeout( async () => {
+              await this.persistenceProvider.setBitpayDebitCards(
+                Network[this.NETWORK],
+                user.email,
+                cards
+              );
+            });
+
 
             this.ref.executeScript(
               {
                 code: `sessionStorage.setItem(
-            'cards',
-            ${JSON.stringify(JSON.stringify(cards))}
-          )`
+                  'cards',
+                  ${JSON.stringify(JSON.stringify(cards))}
+                  )`
               },
               () => this.logger.log('added cards')
             );
+
+            this.fetchLock = false;
+            this.events.publish('isFetchingDebitCards', false);
+            this.events.publish('updateCards', cards);
+            this.logger.log('CARD - success retrieved cards');
+
             res();
-            this.logger.log('success retrieved cards');
+
           }
         }
       );
-    })
-
+    });
   }
 
   get ref() {
@@ -268,7 +288,7 @@ export class IABCardProvider {
 
         case 'navigateToCardTabPage':
           this.events.publish('IncomingDataRedir', {
-            name: 'CardsPage',
+            name: 'CardsPage'
           });
           break;
 
@@ -375,9 +395,8 @@ export class IABCardProvider {
   }
 
   async updateCards() {
-    this.logger.log('card -> update balance');
     await this.getCards();
-    setTimeout( () => {
+    setTimeout(() => {
       this.events.publish('updateCards');
     });
   }
@@ -424,17 +443,19 @@ export class IABCardProvider {
             this.hide();
           }
 
-          // publish new user
-          this.user.next(user);
           // clear out loading state
           setTimeout(() => {
             this.onGoingProcess.clear();
           }, 300);
 
+          // publish new user
+          this.user.next(user);
+
           // fetch new cards
-          this.getCards();
+          await this.getCards();
 
           this.sendMessage({ message: 'pairingSuccess' });
+
         }
       },
       async err => {
