@@ -6,12 +6,12 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { Device } from '@ionic-native/device';
 import * as bitauthService from 'bitauth';
+import { Events } from 'ionic-angular';
 import { User } from '../../models/user/user.model';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { Network, PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
-import { Events } from 'ionic-angular';
 
 @Injectable()
 export class BitPayIdProvider {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 // Providers
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -13,7 +14,6 @@ import {
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { TabProvider } from '../../providers/tab/tab';
-import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'page-cards',
@@ -66,7 +66,6 @@ export class CardsPage {
     this.events.subscribe('bitpayIdDisconnected', async () => {
       this.gotCardItems = false;
     });
-
   }
 
   async ionViewWillEnter() {
@@ -86,9 +85,7 @@ export class CardsPage {
   }
 
   private async prepareDebitCards() {
-
-    return new Promise( async (res) => {
-
+    return new Promise(async res => {
       // retrieve cards from storage
       const cards = await this.persistenceProvider.getBitpayDebitCards(
         Network[this.NETWORK]

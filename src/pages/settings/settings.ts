@@ -26,6 +26,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
@@ -45,7 +46,6 @@ import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
-import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'page-settings',
@@ -112,10 +112,9 @@ export class SettingsPage {
     this.isCordova = this.platformProvider.isCordova;
     this.user$ = this.iabCardProvider.user$;
 
-    this.events.subscribe('updateCards', (cards) => {
+    this.events.subscribe('updateCards', cards => {
       this.bitpayCardItems = cards;
     });
-
   }
 
   ionViewDidLoad() {
@@ -135,13 +134,12 @@ export class SettingsPage {
           this.bitPayIdUserInfo = user;
         });
 
-      this.user$.subscribe( async user => {
+      this.user$.subscribe(async user => {
         if (user) {
           this.bitPayIdUserInfo = user;
           this.changeRef.detectChanges();
         }
       });
-
     }
 
     this.currentLanguageName = this.language.getName(

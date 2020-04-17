@@ -64,7 +64,6 @@ export class IABCardProvider {
 
   getCards() {
     return new Promise(async (res, rej) => {
-
       if (this.fetchLock) {
         this.logger.log(`CARD - Get cards already in progress`);
         return res();
@@ -135,7 +134,7 @@ export class IABCardProvider {
           const { data }: any = await this.http
             .post(`${url}/api/v2/graphql`, json, { headers })
             .toPromise()
-            .catch( (err) => {
+            .catch(err => {
               this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
               this.fetchLock = false;
               return rej(err);
@@ -157,14 +156,13 @@ export class IABCardProvider {
               };
             });
 
-            setTimeout( async () => {
+            setTimeout(async () => {
               await this.persistenceProvider.setBitpayDebitCards(
                 Network[this.NETWORK],
                 user.email,
                 cards
               );
             });
-
 
             this.ref.executeScript(
               {
@@ -182,7 +180,6 @@ export class IABCardProvider {
             this.logger.log('CARD - success retrieved cards');
 
             res();
-
           }
         }
       );
@@ -455,7 +452,6 @@ export class IABCardProvider {
           await this.getCards();
 
           this.sendMessage({ message: 'pairingSuccess' });
-
         }
       },
       async err => {
