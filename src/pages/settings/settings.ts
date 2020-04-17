@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { Events, ModalController, NavController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -27,6 +27,7 @@ import { ThemeProvider } from '../../providers/theme/theme';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
@@ -50,7 +51,18 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html'
+  templateUrl: 'settings.html',
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('200ms')
+      ])
+    ])
+  ]
 })
 export class SettingsPage {
   public appName: string;
@@ -98,11 +110,16 @@ export class SettingsPage {
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
     private iabCardProvider: IABCardProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private events: Events
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
     this.user$ = this.iabCardProvider.user$;
+
+    this.events.subscribe('updateCards', cards => {
+      this.bitpayCardItems = cards;
+    });
   }
 
   ionViewDidLoad() {
@@ -124,13 +141,9 @@ export class SettingsPage {
           this.bitPayIdUserInfo = user;
         });
 
-      this.user$.subscribe(user => {
+      this.user$.subscribe(async user => {
         if (user) {
           this.bitPayIdUserInfo = user;
-          this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-            this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
-            this.bitpayCardItems = cards;
-          });
           this.changeRef.detectChanges();
         }
       });
@@ -196,19 +209,20 @@ export class SettingsPage {
     });
   }
 
+  public trackBy(index) {
+    return index;
+  }
+
   public openBitPayIdPage(): void {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
+      this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
           message: 'pairingOnly'
         },
-        () => {
-          setTimeout(() => {
-            this.iabCardProvider.show();
-          }, 500);
-        }
+        () => {}
       );
     }
   }

@@ -28,8 +28,9 @@ export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
   private NETWORK: string;
   private BITPAY_API_URL: string;
-
+  private fetchLock: boolean;
   private _isHidden = true;
+  public hasCards: boolean;
   private _pausedState = false;
 
   public user = new BehaviorSubject({});
@@ -61,14 +62,28 @@ export class IABCardProvider {
     this.logger.log(`card provider initialized with ${this.NETWORK}`);
   }
 
-  async getCards() {
-    this.logger.log(`start get cards from network - ${this.NETWORK}`);
+  getCards() {
+    return new Promise(async (res, rej) => {
+      if (this.fetchLock) {
+        this.logger.log(`CARD - Get cards already in progress`);
+        return res();
+      }
 
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(
-      Network[this.NETWORK]
-    );
+      this.logger.log(`CARD - start get cards from network - ${this.NETWORK}`);
 
-    const query = `
+      this.fetchLock = true;
+      this.events.publish('isFetchingDebitCards', true);
+
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+
+      if (!token) {
+        this.fetchLock = false;
+        return res();
+      }
+
+      const query = `
       query START_GET_CARDS($token:String!) {
         user:bitpayUser(token:$token) {
           cards:debitCards {
@@ -95,74 +110,88 @@ export class IABCardProvider {
       }
     `;
 
-    const json = {
-      query,
-      variables: { token }
-    };
+      const json = {
+        query,
+        variables: { token }
+      };
 
-    this.appIdentityProvider.getIdentity(
-      this.NETWORK,
-      async (err, appIdentity) => {
-        if (err) {
-          return;
-        }
-
-        const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
-        const dataToSign = `${url}${JSON.stringify(json)}`;
-        const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
-
-        const headers = {
-          'x-identity': appIdentity.pub,
-          'x-signature': signedData
-        };
-        // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
-        const { data }: any = await this.http
-          .post(`${url}/api/v2/graphql`, json, { headers })
-          .toPromise();
-
-        if (data && data.user && data.user.cards) {
-          let cards = data.user.cards;
-          const user = await this.persistenceProvider.getBitPayIdUserInfo(
-            Network[this.NETWORK]
-          );
-
-          for (let card of cards) {
-            if (card.provider === 'galileo') {
-              this.persistenceProvider.setReachedCardLimit(true);
-              this.events.publish('reachedCardLimit');
-              break;
-            }
+      this.appIdentityProvider.getIdentity(
+        this.NETWORK,
+        async (err, appIdentity) => {
+          if (err) {
+            return;
           }
 
-          cards = cards.map(c => {
-            return {
-              ...c,
-              currencyMeta: c.currency,
-              currency: c.currency.code,
-              eid: c.id
-            };
-          });
+          const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
+          const dataToSign = `${url}${JSON.stringify(json)}`;
+          const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
 
-          await this.persistenceProvider.setBitpayDebitCards(
-            Network[this.NETWORK],
-            user.email,
-            cards
-          );
+          const headers = {
+            'x-identity': appIdentity.pub,
+            'x-signature': signedData
+          };
+          // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
+          const { data }: any = await this.http
+            .post(`${url}/api/v2/graphql`, json, { headers })
+            .toPromise()
+            .catch(err => {
+              this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
+              this.fetchLock = false;
+              return rej(err);
+            });
 
-          this.ref.executeScript(
-            {
-              code: `sessionStorage.setItem(
-            'cards',
-            ${JSON.stringify(JSON.stringify(cards))}
-          )`
-            },
-            () => this.logger.log('added cards')
-          );
+          if (data && data.user && data.user.cards) {
+            let cards = data.user.cards;
+            const user = await this.persistenceProvider.getBitPayIdUserInfo(
+              Network[this.NETWORK]
+            );
 
-          this.logger.log('success retrieved cards');
+            for (let card of cards) {
+              if (card.provider === 'galileo') {
+                this.persistenceProvider.setReachedCardLimit(true);
+                this.events.publish('reachedCardLimit');
+                break;
+              }
+            }
+
+            cards = cards.map(c => {
+              return {
+                ...c,
+                currencyMeta: c.currency,
+                currency: c.currency.code,
+                eid: c.id,
+                show: true
+              };
+            });
+
+            setTimeout(async () => {
+              await this.persistenceProvider.setBitpayDebitCards(
+                Network[this.NETWORK],
+                user.email,
+                cards
+              );
+            });
+
+            this.ref.executeScript(
+              {
+                code: `sessionStorage.setItem(
+                  'cards',
+                  ${JSON.stringify(JSON.stringify(cards))}
+                  )`
+              },
+              () => this.logger.log('added cards')
+            );
+
+            this.fetchLock = false;
+            this.events.publish('isFetchingDebitCards', false);
+            this.events.publish('updateCards', cards);
+            this.logger.log('CARD - success retrieved cards');
+
+            res();
+          }
         }
-      }
-    );
+      );
+    });
   }
 
   get ref() {
@@ -262,9 +291,10 @@ export class IABCardProvider {
           this.externalLinkProvider.open(url);
           break;
 
-        case 'updateBalance':
-          await this.getCards();
-          this.events.publish('updateBalance');
+        case 'navigateToCardTabPage':
+          this.events.publish('IncomingDataRedir', {
+            name: 'CardsPage'
+          });
           break;
 
         case 'topup':
@@ -369,6 +399,13 @@ export class IABCardProvider {
     });
   }
 
+  async updateCards() {
+    await this.getCards();
+    setTimeout(() => {
+      this.events.publish('updateCards');
+    });
+  }
+
   pairing(params) {
     const { withNotification } = params;
     // set the overall app loading state
@@ -411,15 +448,16 @@ export class IABCardProvider {
             this.hide();
           }
 
-          // publish new user
-          this.user.next(user);
           // clear out loading state
           setTimeout(() => {
             this.onGoingProcess.clear();
           }, 300);
 
+          // publish new user
+          this.user.next(user);
+
           // fetch new cards
-          this.getCards();
+          await this.getCards();
 
           this.sendMessage({ message: 'pairingSuccess' });
         }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 // Providers
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -16,10 +17,21 @@ import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
   selector: 'page-cards',
-  templateUrl: 'cards.html'
+  templateUrl: 'cards.html',
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('200ms')
+      ])
+    ])
+  ]
 })
 export class CardsPage {
-  public bitpayCardItems = [];
+  public bitpayCardItems;
   public showGiftCards: boolean;
   public showBitPayCard: boolean;
   public activeCards: any;
@@ -47,8 +59,12 @@ export class CardsPage {
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
-    this.events.subscribe('updateBalance', async () => {
-      this.bitpayCardItems = await this.filterCards('Galileo');
+    this.events.subscribe('updateCards', async () => {
+      this.bitpayCardItems = await this.prepareDebitCards();
+    });
+
+    this.events.subscribe('bitpayIdDisconnected', async () => {
+      this.gotCardItems = false;
     });
   }
 
@@ -60,37 +76,41 @@ export class CardsPage {
       'debitcard'
     );
     this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
-    // check persistence first
-    this.bitpayCardItems = await this.filterCards('Galileo');
+
+    // get debit cards from persistence storage and process them
+    this.bitpayCardItems = await this.prepareDebitCards();
+    this.gotCardItems = true;
+    // fetch latest
     await this.fetchAllCards();
-    setTimeout(() => {
-      this.showDisclaimer = true;
-    }, 300);
   }
 
-  // method for filtering out and showing one galileo card
-  private async filterCards(provider: string) {
-    const cards = await this.persistenceProvider.getBitpayDebitCards(
-      Network[this.NETWORK]
-    );
-    const idx = cards.findIndex(c => c.provider === provider);
-    cards.splice(idx, 1);
-    return cards;
+  private async prepareDebitCards() {
+    return new Promise(async res => {
+      // retrieve cards from storage
+      const cards = await this.persistenceProvider.getBitpayDebitCards(
+        Network[this.NETWORK]
+      );
+      // filter out and show one galileo card
+      const idx = cards.findIndex(c => {
+        return c.provider === 'galileo' && c.cardType === 'physical';
+      });
+
+      // if galileo then show disclaimer and remove add card ability
+      if (idx !== -1) {
+        this.showDisclaimer = true;
+        await this.persistenceProvider.setReachedCardLimit(true);
+        this.events.publish('reachedCardLimit');
+      }
+
+      cards.splice(idx, 1);
+
+      res(cards);
+    });
   }
 
   private async fetchBitpayCardItems() {
-    if (this.cardExperimentEnabled && this.bitpayCardItems.length > 0) {
+    if (this.cardExperimentEnabled) {
       await this.iabCardProvider.getCards();
-      this.bitpayCardItems = await this.filterCards('Galileo');
-      if (this.bitpayCardItems) {
-        for (let card of this.bitpayCardItems) {
-          if (card.provider === 'galileo') {
-            this.persistenceProvider.setReachedCardLimit(true);
-            this.events.publish('reachedCardLimit');
-            break;
-          }
-        }
-      }
     } else {
       this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
 

@@ -32,11 +32,11 @@ export class BitPayCardHome implements OnInit {
   public appName: string;
   public firstViewCardPhases: string;
   public disableAddCard = true;
+  public isFetching: boolean;
   public ready: boolean;
   private _initial = true;
-
   @Input() showBitpayCardGetStarted: boolean;
-  @Input() public bitpayCardItems: any;
+  @Input() bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
 
   constructor(
@@ -51,6 +51,9 @@ export class BitPayCardHome implements OnInit {
     this.appName = this.appProvider.info.userVisibleName;
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
+    });
+    this.events.subscribe('isFetchingDebitCards', status => {
+      this.isFetching = status;
     });
     this.persistenceProvider.getReachedCardLimit().then(limitReached => {
       this.disableAddCard = limitReached == true;

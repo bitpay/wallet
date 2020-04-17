@@ -6,6 +6,7 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { Device } from '@ionic-native/device';
 import * as bitauthService from 'bitauth';
+import { Events } from 'ionic-angular';
 import { User } from '../../models/user/user.model';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
@@ -25,7 +26,8 @@ export class BitPayIdProvider {
     private device: Device,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private iab: InAppBrowserProvider
+    private iab: InAppBrowserProvider,
+    private events: Events
   ) {
     this.logger.debug('BitPayProvider initialized');
     if (this.platformProvider.isElectron) {
@@ -131,7 +133,6 @@ export class BitPayIdProvider {
               const { email, familyName, givenName } = data;
 
               await Promise.all([
-                this.persistenceProvider.setReachedCardLimit(false),
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,
                   token.data
@@ -213,6 +214,7 @@ export class BitPayIdProvider {
         this.persistenceProvider.removeBitPayIdUserInfo(network),
         this.persistenceProvider.removeBitpayAccount(network, user.email)
       ]);
+      this.events.publish('bitpayIdDisconnected');
       this.iab.refs.card.executeScript(
         {
           code: `window.postMessage(${JSON.stringify({

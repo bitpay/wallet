@@ -869,9 +869,12 @@ export class BitPayCardTopUpPage {
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
+    this.iabCardProvider.updateCards();
     modal.onDidDismiss(async () => {
       if (this.navParams.get('v2')) {
-        this.iabCardProvider.show();
+        setTimeout(() => {
+          this.iabCardProvider.show();
+        }, 200);
         this.iabCardProvider.sendMessage({
           message: `topUpComplete?${this.cardId}`
         });
