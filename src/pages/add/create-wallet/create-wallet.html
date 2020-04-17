@@ -89,7 +89,7 @@
         </ion-item>
 
         <ion-item [ngClass]="{'with-label': createForm.value.useNativeSegwit}" *ngIf="coin === 'btc' && createForm.value.selectedSeed == 'new'">
-          <ion-label>{{'Segwit' | translate}}</ion-label>
+          <ion-label>Segwit</ion-label>
           <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
         </ion-item>
 
