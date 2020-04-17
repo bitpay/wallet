@@ -13,22 +13,7 @@ declare var cordova: any;
 export class ThemeProvider {
   public currentAppTheme: string;
 
-  public availableThemes = {
-    light: {
-      name: this.translate.instant('Light Mode'),
-      backgroundColor: '#ffffff',
-      fixedScrollBgColor: '#f8f8f9',
-      walletDetailsBackgroundStart: '#ffffff',
-      walletDetailsBackgroundEnd: '#ffffff'
-    },
-    dark: {
-      name: this.translate.instant('Dark Mode'),
-      backgroundColor: '#121212',
-      fixedScrollBgColor: '#121212',
-      walletDetailsBackgroundStart: '#121212',
-      walletDetailsBackgroundEnd: '#101010'
-    }
-  };
+  public availableThemes;
 
   public useSystemTheme: boolean = false;
 
@@ -40,6 +25,22 @@ export class ThemeProvider {
     private configProvider: ConfigProvider
   ) {
     this.logger.debug('ThemeProvider initialized');
+    this.availableThemes = {
+      light: {
+        name: this.translate.instant('Light Mode'),
+        backgroundColor: '#ffffff',
+        fixedScrollBgColor: '#f8f8f9',
+        walletDetailsBackgroundStart: '#ffffff',
+        walletDetailsBackgroundEnd: '#ffffff'
+      },
+      dark: {
+        name: this.translate.instant('Dark Mode'),
+        backgroundColor: '#121212',
+        fixedScrollBgColor: '#121212',
+        walletDetailsBackgroundStart: '#121212',
+        walletDetailsBackgroundEnd: '#101010'
+      }
+    };
   }
 
   private isEnabled(): boolean {
