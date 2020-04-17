@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -13,6 +12,7 @@ import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ThemeProvider } from '../../../providers/theme/theme';
 import { TimeProvider } from '../../../providers/time/time';
 
 import * as _ from 'lodash';
@@ -50,8 +50,8 @@ export class BitPayCardPage {
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private statusBar: StatusBar,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -81,8 +81,8 @@ export class BitPayCardPage {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleLightContent();
+    if (this.platformProvider.isCordova) {
+      this.themeProvider.useCustomStatusBar('#0c204e');
     }
   }
 
@@ -91,8 +91,8 @@ export class BitPayCardPage {
   }
 
   ionViewWillLeave() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
+    if (this.platformProvider.isCordova) {
+      this.themeProvider.useDefaultStatusBar();
     }
   }
 

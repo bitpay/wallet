@@ -14,6 +14,7 @@ import { OnGoingProcessProvider } from '../../../../providers/on-going-process/o
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 
 // Page
 import { AmountPage } from '../../../send/amount/amount';
@@ -30,6 +31,7 @@ export class CoinbaseAccountPage {
   public isCordova: boolean;
   public data: object = {};
   public nativeCurrency;
+  public backgroundColor: string;
   private zone;
 
   constructor(
@@ -45,6 +47,7 @@ export class CoinbaseAccountPage {
     private statusBar: StatusBar,
     private translate: TranslateService,
     private incomingDataProvider: IncomingDataProvider,
+    private themeProvider: ThemeProvider,
     protected onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -60,6 +63,7 @@ export class CoinbaseAccountPage {
     if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
+    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.updateAll();
   }
 

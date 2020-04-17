@@ -1,5 +1,4 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -8,7 +7,7 @@ import {
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
@@ -33,6 +32,7 @@ import { EmailNotificationsProvider } from '../../providers/email-notifications/
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -60,10 +60,9 @@ export class WalletsPage {
   public txpsN: number;
   public homeIntegrations;
   public showAnnouncement: boolean = false;
-  public validDataFromClipboard;
+  public validDataFromClipboard = null;
   public payProDetailsData;
   public remainingTimeStr: string;
-  public slideDown: boolean;
 
   public hideHomeIntegrations: boolean;
   public accessDenied: boolean;
@@ -98,13 +97,12 @@ export class WalletsPage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private statusBar: StatusBar,
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
+    private onGoingProvessProvider: OnGoingProcessProvider,
     private coinbaseProvider: CoinbaseProvider
   ) {
-    this.slideDown = false;
     this.isBlur = false;
     this.isCordova = this.platformProvider.isCordova;
     this.isElectron = this.platformProvider.isElectron;
@@ -125,10 +123,6 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
-    }
-
     // Update list of wallets, status and TXPs
     this.setWallets();
 
@@ -224,16 +218,6 @@ export class WalletsPage {
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
-  }
-
-  ionViewWillLeave() {
-    this.resetValuesForAnimationCard();
-  }
-
-  private async resetValuesForAnimationCard() {
-    await Observable.timer(50).toPromise();
-    this.validDataFromClipboard = null;
-    this.slideDown = false;
   }
 
   private debounceFetchWalletStatus = _.debounce(
@@ -360,56 +344,51 @@ export class WalletsPage {
     });
   };
 
-  public checkClipboard() {
+  private checkClipboard() {
     return this.clipboardProvider
       .getData()
-      .then(async data => {
-        this.validDataFromClipboard = this.incomingDataProvider.parseData(data);
-        if (!this.validDataFromClipboard) {
-          return;
-        }
+      .then(data => {
+        if (_.isEmpty(data)) return;
+        const dataFromClipboard = this.incomingDataProvider.parseData(data);
+        if (!dataFromClipboard) return;
         const dataToIgnore = [
           'BitcoinAddress',
           'BitcoinCashAddress',
           'EthereumAddress',
           'PlainUrl'
         ];
-        if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
-          this.validDataFromClipboard = null;
-          return;
-        }
+        if (dataToIgnore.indexOf(dataFromClipboard.type) > -1) return;
         if (
-          this.validDataFromClipboard.type === 'PayPro' ||
-          this.validDataFromClipboard.type === 'InvoiceUri'
+          dataFromClipboard.type === 'PayPro' ||
+          dataFromClipboard.type === 'InvoiceUri'
         ) {
-          try {
-            const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
-            const disableLoader = true;
-            const payproOptions = await this.payproProvider.getPayProOptions(
-              invoiceUrl,
-              disableLoader
-            );
-            const { expires, paymentOptions, payProUrl } = payproOptions;
-            let selected = paymentOptions.filter(option => option.selected);
-            if (selected.length === 0) {
-              // No Currency Selected default to BTC
-              selected.push(payproOptions.paymentOptions[0]); // BTC
-            }
-            const [{ currency, estimatedAmount }] = selected;
-            this.payProDetailsData = payproOptions;
-            this.payProDetailsData.coin = currency.toLowerCase();
-            this.payProDetailsData.amount = estimatedAmount;
-            this.payProDetailsData.host = new URL(payProUrl).host;
-            this.clearCountDownInterval();
-            this.paymentTimeControl(expires);
-          } catch (err) {
-            this.payProDetailsData = {};
-            this.payProDetailsData.error = err.message;
-            this.logger.warn('Error in Payment Protocol', err);
-          }
+          const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
+          this.payproProvider
+            .getPayProOptions(invoiceUrl)
+            .then(payproOptions => {
+              if (!payproOptions) return;
+              const { expires, paymentOptions, payProUrl } = payproOptions;
+              let selected = paymentOptions.filter(option => option.selected);
+              if (selected.length === 0) {
+                // No Currency Selected default to BTC
+                selected.push(payproOptions.paymentOptions[0]); // BTC
+              }
+              const [{ currency, estimatedAmount }] = selected;
+              this.payProDetailsData = payproOptions;
+              this.payProDetailsData.coin = currency.toLowerCase();
+              this.payProDetailsData.amount = estimatedAmount;
+              this.payProDetailsData.host = new URL(payProUrl).host;
+              this.validDataFromClipboard = dataFromClipboard;
+              this.clearCountDownInterval();
+              this.paymentTimeControl(expires);
+            })
+            .catch(err => {
+              this.hideClipboardCard();
+              this.payProDetailsData = {};
+              this.payProDetailsData.error = err.message;
+              this.logger.warn('Error in Payment Protocol', err);
+            });
         }
-        await Observable.timer(50).toPromise();
-        this.slideDown = true;
       })
       .catch(err => {
         this.logger.warn('Paste from clipboard: ', err);
@@ -419,12 +398,16 @@ export class WalletsPage {
   public hideClipboardCard() {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
-    this.slideDown = false;
   }
 
   public processClipboardData(data): void {
+    this.onGoingProvessProvider.set('fetchingPayProOptions');
     this.clearCountDownInterval();
+    this.hideClipboardCard();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
+    setTimeout(() => {
+      this.onGoingProvessProvider.clear();
+    }, 3000);
   }
 
   private clearCountDownInterval(): void {

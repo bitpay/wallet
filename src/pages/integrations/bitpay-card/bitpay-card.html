@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <ion-list *ngIf="!getStarted">
+    <ion-list class="bp-list" *ngIf="!getStarted">
       <ion-item>
         <ion-label>
           <span translate>Activity</span>
@@ -53,7 +53,7 @@
         </ion-icon>
         <span translate>Confirming</span>
       </ion-item-divider>
-      <ion-list>
+      <ion-list class="bp-list">
         <div *ngFor="let card of bitpayCardTransactionHistoryConfirming">
           <page-card-item [card]="card" [currency]="currency"></page-card-item>
         </div>
@@ -65,7 +65,7 @@
         </ion-icon>
         <span translate>Pre-Auth Holds</span>
       </ion-item-divider>
-      <ion-list>
+      <ion-list class="bp-list">
         <div *ngFor="let card of bitpayCardTransactionHistoryPreAuth">
           <page-card-item [card]="card" [currency]="currency"></page-card-item>
         </div>
@@ -74,7 +74,7 @@
       <ion-item-divider *ngIf="(bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]) || (bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0])">
         <span translate>Completed</span>
       </ion-item-divider>
-      <ion-list>
+      <ion-list class="bp-list">
         <div *ngFor="let card of bitpayCardTransactionHistoryCompleted">
           <page-card-item [card]="card" [currency]="currency"></page-card-item>
         </div>

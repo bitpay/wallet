@@ -131,7 +131,8 @@ export class GiftCardProvider extends InvoiceProvider {
     return user && userSettings && userSettings.syncGiftCardPurchases;
   }
 
-  public async createBitpayInvoice(data) {
+  public async createBitpayInvoice(data, attempt: number = 1) {
+    this.logger.info('BitPay Creating Invoice: try... ' + attempt);
     const params = {
       brand: data.cardName,
       currency: data.currency,
@@ -142,11 +143,15 @@ export class GiftCardProvider extends InvoiceProvider {
     };
     const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
     const promise = shouldSync
-      ? this.createAuthenticatedBitpayInvoice(params)
-      : this.createUnauthenticatedBitpayInvoice(params);
-    const cardOrder = await promise.catch(err => {
-      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
-      throw err;
+      ? this.createAuthenticatedBitpayInvoice.bind(this)
+      : this.createUnauthenticatedBitpayInvoice.bind(this);
+
+    const cardOrder = await promise(params).catch(async err => {
+      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(err));
+      if (attempt <= 5 && err.status == 403) {
+        await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+        return this.createBitpayInvoice(data, ++attempt);
+      } else throw err;
     });
     this.logger.info('BitPay Create Invoice: SUCCESS');
     return cardOrder as {

@@ -76,7 +76,8 @@ const Keys = {
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
-  BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`
+  BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
+  APP_THEME: 'app-theme'
 };
 
 interface Storage {
@@ -806,9 +807,11 @@ export class PersistenceProvider {
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }
+
   getWaitingListStatus() {
     return this.storage.get('waitingListStatus');
   }
+
   removeWaitingListStatus() {
     return this.storage.remove('waitingListStatus');
   }
@@ -818,6 +821,14 @@ export class PersistenceProvider {
   }
   getReachedCardLimit() {
     return this.storage.get('reachedCardLimit');
+  }
+
+  setAppTheme(value: string) {
+    return this.storage.set(Keys.APP_THEME, value);
+  }
+
+  getAppTheme() {
+    return this.storage.get(Keys.APP_THEME);
   }
 }
 

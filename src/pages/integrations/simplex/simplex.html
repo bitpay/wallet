@@ -27,7 +27,7 @@
       </ion-toolbar>
     </expandable-header>
 
-    <ion-list *ngIf="paymentRequests && paymentRequests.length > 0">
+    <ion-list class="bp-list" *ngIf="paymentRequests && paymentRequests.length > 0">
       <ion-item-divider>{{'Payment Requests' | translate}}
         <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
       </ion-item-divider>

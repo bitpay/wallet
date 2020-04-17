@@ -1,90 +1,96 @@
-<ion-slides #walletGroupOnboardingSlides pager="true" class="onboarding-slides">
-  <ion-slide>
-    <div class="img-container">
-      <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
-    </div>
-    <div class="slide-info">
-      <div class="info">
-        <div class="title" translate>Store, manage, and protect your crypto.</div>
-        <div class="text" translate>
-          Multisig and key encryption help you always keep your funds secure.
+<wide-header-page>
+  <div page-content>
+    <ion-slides #walletGroupOnboardingSlides pager="true" class="onboarding-slides">
+      <ion-slide>
+        <div class="slide-info">
+          <div class="img-container">
+            <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
+          </div>
+          <div class="info">
+            <div class="title" translate>Store, manage, and protect your crypto.</div>
+            <div class="text" translate>
+              Multisig and key encryption help you always keep your funds secure.
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </ion-slide>
-  <ion-slide>
-    <div class="img-container">
-      <img src="assets/img/onboarding-tour2.svg" />
-    </div>
-    <div class="slide-info">
-      <div class="info">
-        <div class="title" translate>Turn crypto into dollars using our BitPay Card.</div>
-        <div class="text" translate>
-          Load dollars and spend crypto with our Visa Debit card in seconds.
+      </ion-slide>
+      <ion-slide>
+        <div class="slide-info">
+          <div class="img-container">
+            <img src="assets/img/onboarding-tour2.svg" />
+          </div>
+          <div class="info">
+            <div class="title" translate>Turn crypto into dollars using our BitPay Card.</div>
+            <div class="text" translate>
+              Load dollars and spend crypto with our Visa Debit card in seconds.
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </ion-slide>
-  <ion-slide>
-    <div class="img-container">
-      <img class="tour-3" src="assets/img/onboarding-tour3.svg" />
-    </div>
-    <div class="slide-info">
-      <div class="info">
-        <div class="title" translate>Spend crypto at your favorite stores.</div>
-        <div class="text" translate>
-          Use crypto to buy store credit at places like Amazon, Uber, and Spotify.
+      </ion-slide>
+      <ion-slide>
+        <div class="slide-info">
+          <div class="img-container">
+            <img class="tour-3" src="assets/img/onboarding-tour3.svg" />
+          </div>
+          <div class="info">
+            <div class="title" translate>Spend crypto at your favorite stores.</div>
+            <div class="text" translate>
+              Use crypto to buy store credit at places like Amazon, Uber, and Spotify.
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </ion-slide>
-  <ion-slide>
-    <div class="slide-info disclaimer-agreement" page-content>
-      <div class="title">
-        {{ 'Please Review' | translate }}
-      </div>
-      <ion-list class="checkbox-list" no-lines>
-        <ion-item>
-          <ion-label class="text">
-            {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
-          </ion-label>
-          <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
-        </ion-item>
-        <ion-item>
-          <ion-label class="text">
-            {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase' | translate}}.
-          </ion-label>
-          <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
-        </ion-item>
-        <div *ngIf="hasEmail">
-          <ion-item>
-            <ion-label class="text">
-              <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
-            </ion-label>
-            <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
-          </ion-item>
-          <a class="external-link" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+      </ion-slide>
+      <ion-slide>
+        <div class="slide-info">
+          <div class="title">
+            {{ 'Please Review' | translate }}
+          </div>
+          <ion-list class="checkbox-list" no-lines>
+            <ion-item>
+              <ion-label class="text">
+                {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
+              </ion-label>
+              <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label class="text">
+                {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase' | translate}}.
+              </ion-label>
+              <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
+            </ion-item>
+            <div *ngIf="hasEmail">
+              <ion-item>
+                <ion-label class="text">
+                  <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
+                </ion-label>
+                <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
+              </ion-item>
+              <a class="external-link" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+            </div>
+          </ion-list>
         </div>
-      </ion-list>
+      </ion-slide>
+    </ion-slides>
+    <div class="next-slide-button" padding>
+      <ion-toolbar *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 3">
+        <div class="footer-container">
+          <div class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third">
+            <ion-item no-lines>
+              <ion-label class="text">
+                {{'I have read, understood, and agree to the Terms of Use' | translate}}.
+              </ion-label>
+              <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+            </ion-item>
+            <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
+          </div>
+          <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
+            <span translate>I understand</span>
+          </button>
+        </div>
+      </ion-toolbar>
+      <button ion-button class="button-standard" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 3">
+        {{'Continue' | translate}}
+      </button>
     </div>
-  </ion-slide>
-</ion-slides>
-<div class="next-slide-button">
-  <div *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 3">
-    <div class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third">
-      <ion-item no-lines>
-        <ion-label class="text">
-          {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-        </ion-label>
-        <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
-      </ion-item>
-      <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
-    </div>
-    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
-      <span translate>I understand</span>
-    </button>
   </div>
-  <button ion-button class="button-standard" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 3">
-    {{'Continue' | translate}}
-  </button>
-</div>
+</wide-header-page>

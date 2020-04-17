@@ -12,6 +12,7 @@ import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -82,7 +83,8 @@ export class SendPage {
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
@@ -224,6 +226,7 @@ export class SendPage {
         (parsedData && parsedData.type == 'PayPro') ||
         (parsedData && parsedData.type == 'InvoiceUri')
       ) {
+        this.onGoingProcessProvider.set('fetchingPayProOptions');
         try {
           const invoiceUrl = this.incomingDataProvider.getPayProUrl(
             this.search
@@ -231,6 +234,7 @@ export class SendPage {
           const payproOptions = await this.payproProvider.getPayProOptions(
             invoiceUrl
           );
+          this.onGoingProcessProvider.clear();
           const selected = payproOptions.paymentOptions.find(
             option =>
               option.selected &&
@@ -250,6 +254,7 @@ export class SendPage {
             this.redir();
           }
         } catch (err) {
+          this.onGoingProcessProvider.clear();
           this.invalidAddress = true;
           this.logger.warn(err);
         }

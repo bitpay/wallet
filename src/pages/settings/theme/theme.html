@@ -1,0 +1,18 @@
+<wide-header-page title="{{ 'Themes' | translate }}">
+  <div page-content>
+    <ion-list radio-group [(ngModel)]="selectedTheme" class="settings-list bp-list">
+      <ion-item *ngFor="let t of availableThemes | keys">
+        <ion-label>
+          {{ t.value.name }}
+        </ion-label>
+        <ion-radio (click)="save(t.key)" [value]="t.key"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          {{ 'System Default' | translate }}
+        </ion-label>
+        <ion-radio (click)="save('system')" [value]="'system'"></ion-radio>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>

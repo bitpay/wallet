@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { NavController, Platform } from 'ionic-angular';
 
 import * as _ from 'lodash';
@@ -11,6 +10,7 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 
 @Component({
   selector: 'page-shapeshift-settings',
@@ -31,12 +31,12 @@ export class ShapeshiftSettingsPage {
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private platform: Platform,
-    private statusBar: StatusBar,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
@@ -47,13 +47,13 @@ export class ShapeshiftSettingsPage {
 
   ionViewWillEnter() {
     if (this.platform.is('cordova')) {
-      this.statusBar.styleBlackOpaque();
+      this.themeProvider.useCustomStatusBar(this.headerColor);
     }
   }
 
   ionViewWillLeave() {
     if (this.platform.is('cordova')) {
-      this.statusBar.styleDefault();
+      this.themeProvider.useDefaultStatusBar();
     }
   }
 

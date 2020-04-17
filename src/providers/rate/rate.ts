@@ -83,7 +83,7 @@ export class RateProvider {
     opts?: { customRate?: number; rates? }
   ): number {
     if (!this.isCoinAvailable(chain)) {
-      return null;
+      return 0;
     }
     const customRate = opts && opts.customRate;
     const rate = customRate || this.getRate(code, chain, opts);

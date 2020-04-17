@@ -64,6 +64,9 @@ export class AltCurrencyPage {
       },
       {
         isoCode: 'PAX'
+      },
+      {
+        isoCode: 'BUSD'
       }
     ];
   }

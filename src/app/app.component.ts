@@ -38,6 +38,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { SimplexProvider } from '../providers/simplex/simplex';
+import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // Pages
@@ -138,7 +139,8 @@ export class CopayApp {
     private iab: InAppBrowserProvider,
     private iabCardProvider: IABCardProvider,
     private bitpayProvider: BitPayProvider,
-    private bitpayIdProvider: BitPayIdProvider
+    private bitpayIdProvider: BitPayIdProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -223,15 +225,18 @@ export class CopayApp {
       // Only overlay for iOS
       if (this.platform.is('ios')) {
         this.statusBar.overlaysWebView(true);
-        this.statusBar.styleDefault();
       }
 
       this.splashScreen.hide();
 
       // Subscribe Resume
-      this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.onResumeSubscription = this.platform.resume.subscribe(async () => {
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
+
+        // Set Theme (light or dark mode)
+        await this.themeProvider.load();
+        this.themeProvider.apply();
 
         // Clear all notifications
         this.pushNotificationsProvider.clearAllNotifications();
@@ -243,6 +248,10 @@ export class CopayApp {
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
     }
+
+    // Set Theme (light or dark mode)
+    this.themeProvider.apply();
+    if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
 
     const experiment = await this.persistenceProvider.getCardExperimentFlag();
     const experimentNetwork = await this.persistenceProvider.getCardExperimentNetwork();
@@ -318,6 +327,19 @@ export class CopayApp {
           });
       });
     }
+  }
+
+  private updateDesktopOnFocus() {
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
+    win.on('focus', () => {
+      if (this.themeProvider.useSystemTheme) {
+        this.themeProvider.getDetectedSystemTheme().then(theme => {
+          if (this.themeProvider.currentAppTheme == theme) return;
+          this.themeProvider.setActiveTheme('system', theme);
+        });
+      }
+    });
   }
 
   private onProfileLoad(profile) {

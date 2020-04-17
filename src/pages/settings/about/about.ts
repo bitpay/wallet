@@ -10,10 +10,12 @@ import { SessionLogPage } from './session-log/session-log';
 import {
   AppProvider,
   BitPayProvider,
+  ConfigProvider,
   ExternalLinkProvider,
   Logger,
   PersistenceProvider,
-  ReplaceParametersProvider
+  ReplaceParametersProvider,
+  ThemeProvider
 } from '../../../providers';
 
 @Component({
@@ -25,6 +27,7 @@ export class AboutPage {
   public commitHash: string;
   public title: string;
   private tapped = 0;
+  public pressed: number = 0;
   constructor(
     private navCtrl: NavController,
     private appProvider: AppProvider,
@@ -33,7 +36,9 @@ export class AboutPage {
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
     private bitpayProvider: BitPayProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private configProvider: ConfigProvider,
+    private themeProvider: ThemeProvider
   ) {}
 
   ionViewDidLoad() {
@@ -121,6 +126,18 @@ export class AboutPage {
       );
       alert('removed accounts');
       this.tapped = 0;
+    }
+  }
+
+  public async easterEgg() {
+    const config = this.configProvider.get();
+    if (config.theme.enabled) return;
+    this.pressed++;
+    if (this.pressed == 5) {
+      this.themeProvider.getDetectedSystemTheme().then(detectedTheme => {
+        this.themeProvider.setActiveTheme('system', detectedTheme);
+        this.pressed = 0;
+      });
     }
   }
 }

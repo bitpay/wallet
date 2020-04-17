@@ -182,6 +182,41 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
     }
   },
+  busd: {
+    name: 'Binance USD Coin',
+    chain: 'ETH',
+    coin: 'busd',
+    unitInfo: {
+      unitName: 'BUSD',
+      unitToSatoshi: 1e18,
+      unitDecimals: 18,
+      unitCode: 'busd'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'EIP681',
+      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
+      ratesApi: 'https://bitpay.com/api/rates/busd',
+      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+    },
+    feeInfo: {
+      feeUnit: 'Gwei',
+      feeUnitAmount: 1e9,
+      blockTime: 0.2,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      backgroundColor: 'rgba(135,206,250,1)',
+      gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
+    }
+  },
   pax: {
     name: 'Paxos Standard',
     chain: 'ETH',

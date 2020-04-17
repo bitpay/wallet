@@ -29,7 +29,8 @@ export class PopupProvider {
               resolve();
             }
           }
-        ]
+        ],
+        cssClass: 'alertTheme'
       });
       alert.present();
     });
@@ -61,7 +62,8 @@ export class PopupProvider {
             }
           }
         ],
-        enableBackdropDismiss: false
+        enableBackdropDismiss: false,
+        cssClass: 'alertTheme'
       });
       confirm.present();
     });

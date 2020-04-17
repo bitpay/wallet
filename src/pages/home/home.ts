@@ -292,7 +292,7 @@ export class HomePage {
           ? this.translate.instant(
               'Reconnect to quickly withdraw and deposit funds.'
             )
-          : this.translate.instant('Easily deposit and withdraws funds.'),
+          : this.translate.instant('Easily deposit and withdraw funds.'),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
           ? this.translate.instant('Reconnect Account')

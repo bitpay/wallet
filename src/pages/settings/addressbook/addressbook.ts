@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
@@ -21,7 +21,6 @@ export class AddressbookPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public alertCtrl: AlertController,
     private logger: Logger,
     private addressbookProvider: AddressBookProvider,
     private addressProvider: AddressProvider
