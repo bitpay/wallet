@@ -9,7 +9,7 @@ import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
   ExternalLinkProvider,
-  // FeedbackProvider,
+  FeedbackProvider,
   GiftCardProvider,
   Logger,
   PersistenceProvider,
@@ -85,7 +85,7 @@ export class HomePage {
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
     private simplexProvider: SimplexProvider,
-    // private feedbackProvider: FeedbackProvider,
+    private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private modalCtrl: ModalController,
     private translate: TranslateService,
@@ -510,20 +510,20 @@ export class HomePage {
         this.initFeedBackInfo();
       } else {
         const feedbackInfo = info;
-        // // Check if current version is greater than saved version
-        // const currentVersion = this.appProvider.info.version;
-        // const savedVersion = feedbackInfo.version;
-        // const isVersionUpdated = this.feedbackProvider.isVersionUpdated(
-        //   currentVersion,
-        //   savedVersion
-        // );
-        // if (!isVersionUpdated) {
-        //   this.initFeedBackInfo();
-        //   return;
-        // }
+        // Check if current version is greater than saved version
+        const currentVersion = this.appProvider.info.version;
+        const savedVersion = feedbackInfo.version;
+        const isVersionUpdated = this.feedbackProvider.isVersionUpdated(
+          currentVersion,
+          savedVersion
+        );
+        if (!isVersionUpdated) {
+          this.initFeedBackInfo();
+          return;
+        }
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
-        this.showRateCard = (timeExceeded && !feedbackInfo.sent) || true;
+        this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });

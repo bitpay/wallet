@@ -86,7 +86,7 @@ export class SendFeedbackPage {
         );
         break;
       case 2:
-        this.reaction = this.translate.instant('Thanks!');
+        this.reaction = this.translate.instant('How can we improve?');
         this.comment = this.translate.instant(
           "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
         );
@@ -94,7 +94,7 @@ export class SendFeedbackPage {
       case 3:
         this.reaction = this.translate.instant('Thanks!');
         this.comment = this.translate.instant(
-          "We're always listening for ways we can improve your experience. Feel free to leave us 5 star review in the app store or request a new feature."
+          "We're always listening for ways we can improve your experience. Feel free to leave us 5 star review in the app store or share with your friends!"
         );
         break;
       default:
