@@ -3,6 +3,7 @@ gravatar {
     display: grid;
     grid-template-rows: 1fr;
     &-img {
+      filter: invert(0.5);
       grid-column: 1 / span 2;
       grid-row: 1 / span 2;
     }

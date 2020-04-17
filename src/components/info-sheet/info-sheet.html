@@ -139,7 +139,7 @@
 
       <span sheet-text>
         <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets.length > 0">
-          <ion-list>
+          <ion-list class="bp-list">
             <div *ngFor="let wallet of params.wallets">
               <wallet-item-content [wallet]="wallet" (click)="optionClicked(wallet)"></wallet-item-content>
             </div>

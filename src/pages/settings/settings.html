@@ -21,6 +21,16 @@
     <ion-list class="bp-list">
       <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
 
+      <button ion-item (click)="openThemePage()" *ngIf="appTheme">
+        <ion-icon class="item-img icon-settings ionic-icon" name="ios-color-palette" item-start></ion-icon>
+        <ion-label>
+          <div class="main-label">{{ 'Theme' | translate }}</div>
+        </ion-label>
+        <ion-note item-end>
+          {{ appTheme }}
+        </ion-note>
+      </button>
+
       <button ion-item (click)="openAltCurrencyPage()">
         <ion-icon class="item-img icon-settings" item-start>
           <img src="assets/img/settings-icons/icon-currency.svg" />
@@ -109,7 +119,7 @@
       </button>
 
       <ion-item class="align-with-button">
-        <ion-icon class="item-img icon-settings" style="opacity: 0.3;" item-start>
+        <ion-icon class="item-img icon-settings icon-qrcode" style="opacity: 0.3;" item-start>
           <img src="assets/img/settings-icons/icon-qrcode.svg">
         </ion-icon>
         <ion-label>

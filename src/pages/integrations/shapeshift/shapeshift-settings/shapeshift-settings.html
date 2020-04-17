@@ -35,7 +35,7 @@
     </ion-list>
     <ion-spinner *ngIf="loading"></ion-spinner>
 
-    <ion-list *ngIf="shapeshiftUser">
+    <ion-list class="bp-list" *ngIf="shapeshiftUser">
       <ion-item-divider>User Information</ion-item-divider>
       <ion-item *ngIf="shapeshiftUser.username">
         <span>Username</span>

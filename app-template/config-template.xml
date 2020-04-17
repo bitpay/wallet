@@ -105,12 +105,11 @@
 
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.2.1" />
 
+    <plugin name="cordova-plugin-theme-detection" spec="1.2.1" />
+
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
-      <config-file target="*-Info.plist" parent="UIUserInterfaceStyle">
-        <string>Light</string>
-      </config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
         <true />
       </config-file>

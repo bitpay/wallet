@@ -114,6 +114,12 @@ export interface Config {
     show: boolean;
   };
 
+  theme: {
+    enabled: boolean;
+    system: boolean;
+    name: string;
+  };
+
   totalBalance: {
     show: boolean;
   };
@@ -240,6 +246,12 @@ export class ConfigProvider {
         show: false
       },
 
+      theme: {
+        enabled: false,
+        system: true,
+        name: 'light'
+      },
+
       totalBalance: {
         show: true
       }
@@ -349,6 +361,10 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitToSatoshi = this.configDefault.wallet.settings.unitToSatoshi;
       this.configCache.wallet.settings.unitDecimals = this.configDefault.wallet.settings.unitDecimals;
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
+    }
+
+    if (!this.configCache.theme || !this.configCache.theme.enabled) {
+      this.configCache.theme = this.configDefault.theme;
     }
 
     if (!this.configCache.totalBalance) {

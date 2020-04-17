@@ -65,13 +65,17 @@ import { FileMock } from '@ionic-native-mocks/file';
 import { QRScannerMock } from '@ionic-native-mocks/qr-scanner';
 import { TouchIDMock } from '@ionic-native-mocks/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { Device } from '@ionic-native/device';
 import { File } from '@ionic-native/file';
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { TouchID } from '@ionic-native/touch-id';
 import { Subject } from 'rxjs/Subject';
 import { AppProvider } from './providers/app/app';
+import { PersistenceProvider } from './providers/persistence/persistence';
 import { PlatformProvider } from './providers/platform/platform';
+import { ThemeProvider } from './providers/theme/theme';
 
 import { KeysPipe } from './pipes/keys';
 import { OrderByPipe } from './pipes/order-by';
@@ -180,8 +184,10 @@ const ionicProviders = [
     useFactory: () => ViewControllerMock.instance()
   },
   { provide: DomProvider, useClass: DomProviderMock },
+  { provide: Device, useClass: Device },
   { provide: File, useClass: FileMock },
   { provide: QRScanner, useClass: QRScannerMock },
+  { provide: StatusBar, useClass: StatusBar },
   { provide: TouchID, useClass: TouchIDMock },
   {
     provide: AndroidFingerprintAuth,
@@ -215,7 +221,12 @@ export class TestUtils {
     return TestBed.configureTestingModule({
       declarations: [...components],
       imports: baseImports,
-      providers: baseProviders
+      providers: [
+        ...baseProviders,
+        PersistenceProvider,
+        PlatformProvider,
+        ThemeProvider
+      ]
     });
   }
 
@@ -248,6 +259,7 @@ export class TestUtils {
         ShortenedAddressPipe,
         GestureController,
         PlatformProvider,
+        ThemeProvider,
         ...providers
       ]
     })
