@@ -95,9 +95,11 @@ export class ScanPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ScanPage');
+    this.navCtrl.swipeBackEnabled = false;
   }
 
   ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
     this.tabBarElement.style.display = 'flex';
     this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
     this.events.unsubscribe(
@@ -401,6 +403,6 @@ export class ScanPage {
   }
 
   public closeCam() {
-    this.navCtrl.pop();
+    this.navCtrl.pop({ animate: false });
   }
 }
