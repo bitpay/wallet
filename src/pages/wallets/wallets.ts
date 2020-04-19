@@ -630,7 +630,7 @@ export class WalletsPage {
   }
 
   public scan(): void {
-    this.navCtrl.push(ScanPage);
+    this.navCtrl.push(ScanPage, {}, { animate: false });
   }
 
   public settings(): void {
