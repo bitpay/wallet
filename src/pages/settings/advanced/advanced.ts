@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 
@@ -7,6 +9,8 @@ import {
   AppProvider,
   ConfigProvider,
   Logger,
+  PlatformProvider,
+  PopupProvider,
   ProfileProvider
 } from '../../../providers';
 import { WalletRecoverPage } from './wallet-recover-page/wallet-recover-page';
@@ -26,6 +30,10 @@ export class AdvancedPage {
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private logger: Logger,
+    private platformProvider: PlatformProvider,
+    private splashScreen: SplashScreen,
+    private popupProvider: PopupProvider,
+    private translate: TranslateService,
     private appProvider: AppProvider
   ) {
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -65,5 +73,18 @@ export class AdvancedPage {
 
   public openWalletRecoveryPage() {
     this.navCtrl.push(WalletRecoverPage);
+  }
+
+  public resetAllSettings() {
+    const title = this.translate.instant('Reset All Settings');
+    const message = this.translate.instant(
+      'Do you want to reset all settings to default value?'
+    );
+    this.popupProvider.ionicConfirm(title, message).then(ok => {
+      if (!ok) return;
+      this.configProvider.reset();
+      window.location.reload();
+      if (this.platformProvider.isCordova) this.splashScreen.show();
+    });
   }
 }

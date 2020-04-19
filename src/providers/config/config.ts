@@ -375,4 +375,8 @@ export class ConfigProvider {
       this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
     }
   }
+
+  public reset() {
+    this.persistence.clearConfig();
+  }
 }
