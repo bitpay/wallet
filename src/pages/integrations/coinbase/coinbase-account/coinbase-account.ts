@@ -1,5 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
@@ -11,7 +10,6 @@ import { ActionSheetProvider } from '../../../../providers/action-sheet/action-s
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ThemeProvider } from '../../../../providers/theme/theme';
@@ -28,7 +26,6 @@ const TIMEOUT_FOR_REFRESHER = 1000;
 })
 export class CoinbaseAccountPage {
   public id: string;
-  public isCordova: boolean;
   public data: object = {};
   public nativeCurrency;
   public backgroundColor: string;
@@ -42,9 +39,7 @@ export class CoinbaseAccountPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private modalCtrl: ModalController,
-    private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
-    private statusBar: StatusBar,
     private translate: TranslateService,
     private incomingDataProvider: IncomingDataProvider,
     private themeProvider: ThemeProvider,
@@ -52,7 +47,6 @@ export class CoinbaseAccountPage {
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.id = this.navParams.data.id;
-    this.isCordova = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
@@ -60,17 +54,8 @@ export class CoinbaseAccountPage {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleLightContent();
-    }
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.updateAll();
-  }
-
-  ionViewWillLeave() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
-    }
   }
 
   private updateAll() {
