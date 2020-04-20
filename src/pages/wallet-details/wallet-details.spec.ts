@@ -33,10 +33,11 @@ describe('WalletDetailsPage', () => {
     fixture.destroy();
   });
   describe('Lifecycle Hooks', () => {
-    describe('ionViewDidLoad', () => {
+    describe('ionViewWillEnter', () => {
       it('should subscribe to events', () => {
         const subscribeSpy = spyOn(instance.events, 'subscribe');
-        instance.ionViewWillLoad();
+        const publishSpy = spyOn(instance.events, 'publish');
+        instance.ionViewWillEnter();
         expect(subscribeSpy).toHaveBeenCalledWith(
           'Local/WalletUpdate',
           instance.updateStatus
@@ -45,14 +46,7 @@ describe('WalletDetailsPage', () => {
           'Local/WalletHistoryUpdate',
           instance.updateHistory
         );
-      });
-    });
-    describe('ionViewDidEnter', () => {
-      it('should publish to wallet focus event', () => {
-        instance.ionViewDidLoad();
-        const subscribeSpy = spyOn(instance.events, 'publish');
-        instance.ionViewDidEnter();
-        expect(subscribeSpy).toHaveBeenCalled();
+        expect(publishSpy).toHaveBeenCalled();
       });
     });
   });
@@ -85,7 +79,7 @@ describe('WalletDetailsPage', () => {
     });
     describe('showHistory', () => {
       it('should add the next page of transactions to the list', () => {
-        instance.ionViewDidLoad();
+        instance.ionViewWillEnter();
         instance.currentPage = 0;
         instance.wallet.completeHistory = new Array(11).map(() => {});
         const spy = spyOn(instance, 'groupHistory');
