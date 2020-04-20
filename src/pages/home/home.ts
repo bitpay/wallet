@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { IntegrationsPage } from '../../pages/integrations/integrations';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
@@ -53,7 +52,6 @@ export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showShoppingOption: boolean;
-  showServicesOption: boolean;
   @ViewChild('showSurvey')
   showSurvey;
   @ViewChild('showCard')
@@ -68,7 +66,6 @@ export class HomePage {
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
   public showTotalBalance: boolean = true;
-  public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
@@ -199,7 +196,6 @@ export class HomePage {
     // Show integrations
     this.showBuyCryptoOption = false;
     this.showShoppingOption = false;
-    this.showServicesOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
       .filter(i => i.show);
@@ -213,9 +209,6 @@ export class HomePage {
           this.showShoppingOption = true;
           this.setGiftCardAdvertisement();
           break;
-        case 'shapeshift':
-          this.showServicesOption = true;
-          break;
         case 'coinbase':
           this.showCoinbase = x.linked == false;
           this.hasOldCoinbaseSession = x.oldLinked;
@@ -223,10 +216,6 @@ export class HomePage {
           break;
       }
     });
-
-    this.homeIntegrations = integrations.filter(
-      i => i.name == 'shapeshift' || (i.name == 'coinbase' && !i.linked)
-    );
   }
 
   private setGiftCardAdvertisement() {
@@ -491,12 +480,6 @@ export class HomePage {
 
   public goToShop() {
     this.navCtrl.push(CardCatalogPage);
-  }
-
-  public goToServices() {
-    this.navCtrl.push(IntegrationsPage, {
-      homeIntegrations: this.homeIntegrations
-    });
   }
 
   public goToBuyCrypto() {

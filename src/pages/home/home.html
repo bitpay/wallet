@@ -124,15 +124,6 @@
       </ion-note>
     </ion-item>
     <div *ngIf="showShoppingOption" class="line-divider"></div>
-    <ion-item *ngIf="showServicesOption" (click)="goToServices()">
-      <ion-label>
-        <div class="services-list-label" translate>Services</div>
-      </ion-label>
-      <ion-note item-end>
-        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-      </ion-note>
-    </ion-item>
-    <div class="line-divider" *ngIf="showServicesOption"></div>
     <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
       <ion-label>
         <div class="services-list-label" translate>Buy Crypto</div>

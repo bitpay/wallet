@@ -11,6 +11,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
+import { ShapeshiftSettingsPage } from './shapeshift-settings/shapeshift-settings';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
 // Providers
@@ -226,6 +227,9 @@ export class ShapeshiftPage {
     switch (page) {
       case 'Shift':
         this.navCtrl.push(ShapeshiftShiftPage);
+        break;
+      case 'Settings':
+        this.navCtrl.push(ShapeshiftSettingsPage);
         break;
     }
   }
