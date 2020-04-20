@@ -421,6 +421,10 @@
         background: $bg-color-dark-theme-toolbar;
       }
     }
+    ion-note.note.discount {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+    }
   }
 
   .header-extend {
@@ -496,6 +500,11 @@
       .title-modal {
         color: $text-color-dark-theme-2;
       }
+    }
+  }
+  page-bitpay-card-intro {
+    ion-toolbar {
+      background-color: $bg-color-dark-theme-2;
     }
   }
 
@@ -1337,6 +1346,13 @@
         img {
           filter: invert(1);
         }
+      }
+    }
+  }
+  page-session-log {
+    .filter-container {
+      .labels {
+        color: $text-color-dark-theme;
       }
     }
   }

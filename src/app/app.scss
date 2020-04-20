@@ -53,7 +53,16 @@ ion-title.bp-title {
 ion-alert.alert-top {
   align-items: center;
 }
-
+ion-alert {
+  .alert-wrapper {
+    color: black;
+  }
+  .alert-radio-group {
+    .alert-radio:not([aria-checked='true']) .alert-radio-label {
+      color: black;
+    }
+  }
+}
 // Text wrap
 // --------------------------------------------------
 ion-label {

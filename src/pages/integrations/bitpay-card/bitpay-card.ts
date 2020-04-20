@@ -39,6 +39,7 @@ export class BitPayCardPage {
   public currency: string;
   public okText: string;
   public cancelText: string;
+  public backgroundColor: string;
 
   constructor(
     private translate: TranslateService,
@@ -81,6 +82,9 @@ export class BitPayCardPage {
   }
 
   ionViewWillEnter() {
+    this.backgroundColor = this.themeProvider.isDarkModeEnabled()
+      ? this.themeProvider.getThemeInfo().walletDetailsBackgroundStart
+      : '#0c204e';
     if (this.platformProvider.isCordova) {
       this.themeProvider.useCustomStatusBar('#0c204e');
     }
