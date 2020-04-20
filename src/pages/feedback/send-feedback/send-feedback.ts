@@ -208,7 +208,8 @@ export class SendFeedbackPage {
       if (!option) {
         this.openExternalLink(externalLink);
       } else {
-        this.openExternalLink('https://help.bitpay.com/requestHelp/create');
+        // Click on Get Help
+        this.openExternalLink('https://support.bitpay.com/hc/en-us');
       }
     });
   }
