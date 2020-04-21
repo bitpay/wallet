@@ -429,14 +429,28 @@ export class WalletDetailsPage {
   }
 
   public itemTapped(tx) {
-    if (!this.canSpeedUpTx(tx)) {
-      this.goToTxDetails(tx);
-    } else {
+    if (tx.hasUnconfirmedInputs) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'unconfirmed-inputs'
+      );
+      infoSheet.present();
+      infoSheet.onDidDismiss(() => {
+        this.goToTxDetails(tx);
+      });
+    } else if (tx.isRBF) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('rbf-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    } else if (this.canSpeedUpTx(tx)) {
       const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
         option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
       });
+    } else {
+      this.goToTxDetails(tx);
     }
   }
 

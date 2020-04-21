@@ -372,7 +372,10 @@ page-wallet-details {
     color: color($colors, warning);
     font-size: 44px;
   }
-  .speed-up-bg {
+  .warning-background {
     background-color: color($background-colors, warning);
+  }
+  .danger-background {
+    background-color: color($background-colors, danger);
   }
 }

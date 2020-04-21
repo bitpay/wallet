@@ -46,6 +46,7 @@
   $bg-color-warning: #ffe7d9;
   $bg-color-warning-2: #947143;
   $bg-color-danger: #ffd9de;
+  $bg-color-danger-2: #3e080e;
   $bg-color-success: #d9fff3;
   $bg-color-info: #dde1f0;
 
@@ -858,11 +859,18 @@
       .item {
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
-        &.speed-up-bg {
+        &.warning-background {
           background-color: $bg-color-warning-2;
           ion-note.note > .amount > .received,
           .action {
             color: color($colors, warning);
+          }
+        }
+        &.danger-background {
+          background-color: $bg-color-danger-2;
+          ion-note.note > .amount > .received,
+          .action {
+            color: color($colors, danger);
           }
         }
         .item-inner {

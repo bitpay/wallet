@@ -24,10 +24,6 @@
       <div *ngIf="tx && tx.removed" class="box-notification warning" text-wrap>
         <span translate>The payment was removed by creator</span>
       </div>
-      <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification warning" text-wrap>
-        <span translate>Warning: this transaction has unconfirmed inputs</span>
-      </div>
-
       <div class="line-divider" *ngIf="tx && tx.status != 'pending'"></div>
 
       <div *ngIf="tx && tx.status != 'pending'">
