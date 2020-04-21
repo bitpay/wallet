@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor">
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" no-bounce>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">

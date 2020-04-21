@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="backgroundColor">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': backgroundColor}">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" [ngStyle]="{'background': backgroundColor}">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">

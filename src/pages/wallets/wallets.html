@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content #scrollArea>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
