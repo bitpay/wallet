@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 // providers
 import { ConfigProvider } from '../config/config';
@@ -12,22 +13,7 @@ declare var cordova: any;
 export class ThemeProvider {
   public currentAppTheme: string;
 
-  public availableThemes = {
-    light: {
-      name: 'Light Mode',
-      backgroundColor: '#ffffff',
-      fixedScrollBgColor: '#f8f8f9',
-      walletDetailsBackgroundStart: '#ffffff',
-      walletDetailsBackgroundEnd: '#ffffff'
-    },
-    dark: {
-      name: 'Dark Mode',
-      backgroundColor: '#121212',
-      fixedScrollBgColor: '#121212',
-      walletDetailsBackgroundStart: '#121212',
-      walletDetailsBackgroundEnd: '#101010'
-    }
-  };
+  public availableThemes;
 
   public useSystemTheme: boolean = false;
 
@@ -35,9 +21,26 @@ export class ThemeProvider {
     private logger: Logger,
     private statusBar: StatusBar,
     private platformProvider: PlatformProvider,
+    private translate: TranslateService,
     private configProvider: ConfigProvider
   ) {
     this.logger.debug('ThemeProvider initialized');
+    this.availableThemes = {
+      light: {
+        name: this.translate.instant('Light Mode'),
+        backgroundColor: '#ffffff',
+        fixedScrollBgColor: '#f8f8f9',
+        walletDetailsBackgroundStart: '#ffffff',
+        walletDetailsBackgroundEnd: '#ffffff'
+      },
+      dark: {
+        name: this.translate.instant('Dark Mode'),
+        backgroundColor: '#121212',
+        fixedScrollBgColor: '#121212',
+        walletDetailsBackgroundStart: '#121212',
+        walletDetailsBackgroundEnd: '#101010'
+      }
+    };
   }
 
   private isEnabled(): boolean {
