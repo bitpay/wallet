@@ -17,14 +17,13 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
   templateUrl: 'share.html'
 })
 export class SharePage {
-  public facebook: boolean;
-  public twitter: boolean;
-  public googleplus: boolean;
-  public email: boolean;
-  public whatsapp: boolean;
   public title: string;
 
+  private facebook: boolean;
+  private twitter: boolean;
+  private whatsapp: boolean;
   private downloadUrl: string;
+  private downloadText: string;
   private shareFacebookVia: string;
   private shareTwitterVia: string;
 
@@ -47,6 +46,12 @@ export class SharePage {
       this.appProvider.info.name == 'copay'
         ? defaults.download.copay.url
         : defaults.download.bitpay.url;
+    this.downloadText = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        'Spend and control your cryptocurrency by downloading the {{appName}} app.'
+      ),
+      { appName: this.appProvider.info.nameCase }
+    );
   }
 
   ionViewWillEnter() {
@@ -105,7 +110,7 @@ export class SharePage {
     }
     this.socialSharing.shareVia(
       this.shareFacebookVia,
-      null,
+      this.downloadText,
       null,
       null,
       this.downloadUrl
@@ -120,7 +125,7 @@ export class SharePage {
     }
     this.socialSharing.shareVia(
       this.shareTwitterVia,
-      null,
+      this.downloadText,
       null,
       null,
       this.downloadUrl
@@ -133,7 +138,11 @@ export class SharePage {
       this.showError();
       return;
     }
-    this.socialSharing.shareViaWhatsApp(this.downloadUrl);
+    this.socialSharing.shareViaWhatsApp(
+      this.downloadText,
+      null,
+      this.downloadUrl
+    );
   }
 
   private showError() {

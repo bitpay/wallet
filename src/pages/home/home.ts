@@ -52,8 +52,6 @@ export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showShoppingOption: boolean;
-  @ViewChild('showSurvey')
-  showSurvey;
   @ViewChild('showCard')
   showCard;
 
@@ -109,7 +107,6 @@ export class HomePage {
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
     this.showNewDesignSlides();
-    this.showSurveyCard();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
@@ -493,11 +490,6 @@ export class HomePage {
     });
   }
 
-  private async showSurveyCard() {
-    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
-    this.showSurvey.setShowSurveyCard(!hideSurvey);
-  }
-
   private checkNewRelease() {
     this.persistenceProvider
       .getNewReleaseMessageDismissed()
@@ -513,9 +505,6 @@ export class HomePage {
   }
 
   private checkFeedbackInfo() {
-    // Hide feeback card if survey card is shown
-    // TODO remove this condition
-    if (this.showSurvey) return;
     this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
         this.initFeedBackInfo();
