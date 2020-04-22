@@ -312,7 +312,7 @@ export class CopayApp {
         this.iab
           .createIABInstance(
             'card',
-            CARD_IAB_CONFIG,
+            `${CARD_IAB_CONFIG},OverrideUserAgent=${this.platformProvider.getUserAgent()}`,
             `https://${host}/wallet-card?context=bpa`,
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 

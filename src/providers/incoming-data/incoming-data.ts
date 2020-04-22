@@ -839,6 +839,13 @@ export class IncomingDataProvider {
           this.iabCardProvider.sendMessage({
             message: 'retry'
           });
+          break;
+
+        case 'debit-card-order':
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
+            message: 'debit-card-order'
+          });
       }
 
       return true;
