@@ -84,6 +84,9 @@ msgid ""
 "master key."
 msgstr ""
 
+msgid "ACTIVATED"
+msgstr ""
+
 msgid "AMOUNT"
 msgstr ""
 
@@ -105,9 +108,6 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-msgid "Activated"
-msgstr ""
-
 msgid "Activation Fee"
 msgstr ""
 
@@ -123,6 +123,9 @@ msgstr ""
 msgid "Add BitPay Card"
 msgstr ""
 
+msgid "Add Recipient"
+msgstr ""
+
 msgid "Add Wallet"
 msgstr ""
 
@@ -136,9 +139,6 @@ msgid "Add as a contact"
 msgstr ""
 
 msgid "Add funds"
-msgstr ""
-
-msgid "Add funds to get started"
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -208,9 +208,6 @@ msgid "Amount below minimum allowed"
 msgstr ""
 
 msgid "Amount too big"
-msgstr ""
-
-msgid "Amount:"
 msgstr ""
 
 msgid ""
@@ -497,9 +494,6 @@ msgstr ""
 msgid "Clear cache"
 msgstr ""
 
-msgid "Click here if you prefer to enter the amount"
-msgstr ""
-
 msgid "Click to accept"
 msgstr ""
 
@@ -718,9 +712,6 @@ msgstr ""
 msgid "Could not fetch payment details"
 msgstr ""
 
-msgid "Could not fetch payment options"
-msgstr ""
-
 msgid "Could not get claim code. Please contact BitPay support."
 msgstr ""
 
@@ -820,6 +811,9 @@ msgstr ""
 msgid "DETAILS"
 msgstr ""
 
+msgid "Dark Mode"
+msgstr ""
+
 msgid "Date"
 msgstr ""
 
@@ -877,9 +871,12 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+msgid "Designed for people who want to live life on crypto."
+msgstr ""
+
 msgid ""
 "Designed for people who want to live life on crypto. View your balance, "
-"request a new PIN, and top-up instantly all within the BitPay App."
+"request a new PIN, and reload instantly all within the BitPay App."
 msgstr ""
 
 msgid "Destination Tag"
@@ -955,7 +952,7 @@ msgid ""
 "Shared Wallet you will need the recovery phrase from each copayer."
 msgstr ""
 
-msgid "Easily deposit and withdraws funds."
+msgid "Easily deposit and withdraw funds."
 msgstr ""
 
 msgid "Economy"
@@ -1481,10 +1478,10 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-msgid "Instant Reloads"
+msgid "Instant Reloads*"
 msgstr ""
 
-msgid "Instantly reload your card with no conversion fee!"
+msgid "Instantly reload your card with no conversion fee!*"
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1614,6 +1611,9 @@ msgstr ""
 msgid "Leverage your crypto with an amazon.com gift card."
 msgstr ""
 
+msgid "Light Mode"
+msgstr ""
+
 msgid "Linked"
 msgstr ""
 
@@ -1621,6 +1621,9 @@ msgid "Linked Ethereum Wallet"
 msgstr ""
 
 msgid "Linked to wallet: {linkedEthWalletName}"
+msgstr ""
+
+msgid "Live on crypto"
 msgstr ""
 
 msgid "Live on crypto."
@@ -1801,7 +1804,7 @@ msgstr ""
 msgid "No enough confirmed funds"
 msgstr ""
 
-msgid "No entries for this log level"
+msgid "No entries for this log level."
 msgstr ""
 
 msgid "No funds found"
@@ -1949,9 +1952,6 @@ msgstr ""
 msgid "Open website"
 msgstr ""
 
-msgid "Order"
-msgstr ""
-
 msgid "Order Details"
 msgstr ""
 
@@ -2093,9 +2093,6 @@ msgid "Please upgrade the app to perform this action"
 msgstr ""
 
 msgid "Please wait..."
-msgstr ""
-
-msgid "Please, enter the amount"
 msgstr ""
 
 msgid "Please, select your backup file"
@@ -2404,10 +2401,10 @@ msgstr ""
 msgid "Select an Ethereum Wallet"
 msgstr ""
 
-msgid "Select inputs for transaction"
+msgid "Select inputs"
 msgstr ""
 
-msgid "Select inputs for your transaction"
+msgid "Select inputs for transaction"
 msgstr ""
 
 msgid "Select recipient"
@@ -2586,6 +2583,9 @@ msgstr ""
 msgid "Sign selected proposals"
 msgstr ""
 
+msgid "Sign up"
+msgstr ""
+
 msgid "Signatures rejected by server"
 msgstr ""
 
@@ -2631,6 +2631,9 @@ msgid "Something exciting is arriving"
 msgstr ""
 
 msgid "Something goes wrong..."
+msgstr ""
+
+msgid "Specify Amount"
 msgstr ""
 
 msgid "Specify Recovery Phrase"
@@ -2685,6 +2688,9 @@ msgid "Sweeping Wallet..."
 msgstr ""
 
 msgid "Sync gift card purchases"
+msgstr ""
+
+msgid "System Default"
 msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
@@ -2889,6 +2895,12 @@ msgid ""
 "minFiatAmount }} and {{ maxFiatAmount }}"
 msgstr ""
 
+msgid "Theme"
+msgstr ""
+
+msgid "Themes"
+msgstr ""
+
 msgid ""
 "There are no records of your wallet on our servers. If you are importing a "
 "BIP44 compatible wallet from a 3rd party you can continue to recreate it. "
@@ -3044,10 +3056,10 @@ msgstr ""
 msgid "Total cash value"
 msgstr ""
 
-msgid "Total inputs amount"
+msgid "Total number of copayers"
 msgstr ""
 
-msgid "Total number of copayers"
+msgid "Total selected inputs"
 msgstr ""
 
 msgid "Total wallet inputs"
@@ -3171,6 +3183,9 @@ msgid "Updating transaction history. Please stand by."
 msgstr ""
 
 msgid "Urgent"
+msgstr ""
+
+msgid "Use Basic QR Code"
 msgstr ""
 
 msgid "Use Unconfirmed Funds"
@@ -3357,7 +3372,7 @@ msgid ""
 "wallet provider"
 msgstr ""
 
-msgid "We'll let you know as soon as the BitPay Card is available in your area."
+msgid "We'll let you know as soon as the BitPay Card"
 msgstr ""
 
 msgid "We'll notify you as soon as the card is ready."

@@ -231,7 +231,7 @@
       <span sheet-text translate>
         5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
       </span>
-      <span sheet-button-text>{{'Rate on the {storeName}' | translate: {storeName: params?.storeName} }}</span>
+      <span sheet-button-text>{{'Continue to {storeName}' | translate: {storeName: params?.storeName} }}</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-failed'" type="danger">
@@ -331,6 +331,24 @@
         This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee.
       </span>
       <span sheet-button-text translate>Speed up transaction</span>
+      <span sheet-second-button-text translate>View details</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'rbf-tx'" type="danger">
+      <span sheet-title-text translate>RBF transaction</span>
+      <span sheet-text>
+        <span translate>Be careful. Until it confirms, the transaction could be replaced/redirected by the sender. You can try to speed it up by using a higher fee.</span>
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/360028824532-Why-can-t-I-pay-a-BitPay-invoice-using-RBF-')" translate>Read more</a>
+      </span>
+      <span sheet-button-text translate>Speed up transaction</span>
+      <span sheet-second-button-text translate>View details</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'unconfirmed-inputs'" type="danger">
+      <span sheet-title-text translate>Unconfirmed inputs</span>
+      <span sheet-text translate>
+        Be careful. Some inputs of this transaction has no confirmations. Please wait until they are confirmed.
+      </span>
       <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
   </div>

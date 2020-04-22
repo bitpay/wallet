@@ -21,9 +21,6 @@ describe('WalletsPage', () => {
       instance.showCard = {
         setShowRateCard: () => {}
       };
-      instance.showSurvey = {
-        setShowSurveyCard: () => {}
-      };
       fixture.detectChanges();
     })));
   afterEach(() => {

@@ -10,7 +10,6 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { IntegrationsPage } from '../pages/integrations/integrations';
 import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -66,7 +65,6 @@ import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
-import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
@@ -167,7 +165,6 @@ export const PAGES = [
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,
-  IntegrationsPage,
   JoinWalletPage,
   BackupGamePage,
   BackupKeyPage,
@@ -211,7 +208,6 @@ export const PAGES = [
   SearchTxModalPage,
   SessionLogPage,
   SendFeedbackPage,
-  SurveyCardPage,
   FinishModalPage,
   NewDesignTourPage,
   TabsPage,

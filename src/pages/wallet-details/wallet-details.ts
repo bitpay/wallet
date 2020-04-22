@@ -107,9 +107,7 @@ export class WalletDetailsPage {
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
-  }
 
-  async ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
 
@@ -142,28 +140,20 @@ export class WalletDetailsPage {
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
   }
 
-  // Event handling
-  ionViewWillLoad() {
-    this.subscribeEvents();
-  }
-
   ionViewWillEnter() {
     this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
-  }
-
-  // Start by firing a walletFocus event.
-  ionViewDidEnter() {
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
       walletId: this.wallet.credentials.walletId
     });
+    this.subscribeEvents();
   }
 
-  ionViewWillUnload() {
+  ionViewWillLeave() {
     this.profileProvider.setSlowRefresh(this.wallet);
     this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
     this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
@@ -439,14 +429,28 @@ export class WalletDetailsPage {
   }
 
   public itemTapped(tx) {
-    if (!this.canSpeedUpTx(tx)) {
-      this.goToTxDetails(tx);
-    } else {
+    if (tx.hasUnconfirmedInputs) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'unconfirmed-inputs'
+      );
+      infoSheet.present();
+      infoSheet.onDidDismiss(() => {
+        this.goToTxDetails(tx);
+      });
+    } else if (tx.isRBF) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('rbf-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    } else if (this.canSpeedUpTx(tx)) {
       const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
         option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
       });
+    } else {
+      this.goToTxDetails(tx);
     }
   }
 

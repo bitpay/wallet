@@ -24,6 +24,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 
 // pages
 import { FinishModalPage } from '../../finish/finish';
+import { SharePage } from '../../settings/share/share';
 
 @Component({
   selector: 'page-send-feedback',
@@ -85,7 +86,7 @@ export class SendFeedbackPage {
         );
         break;
       case 2:
-        this.reaction = this.translate.instant('Thanks!');
+        this.reaction = this.translate.instant('How can we improve?');
         this.comment = this.translate.instant(
           "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
         );
@@ -93,7 +94,7 @@ export class SendFeedbackPage {
       case 3:
         this.reaction = this.translate.instant('Thanks!');
         this.comment = this.translate.instant(
-          "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
+          "We're always listening for ways we can improve your experience. Feel free to leave us 5 star review in the app store or share with your friends!"
         );
         break;
       default:
@@ -136,6 +137,10 @@ export class SendFeedbackPage {
 
   public goHome() {
     this.navCtrl.popToRoot({ animate: false });
+  }
+
+  public openSharePage(): void {
+    this.navCtrl.push(SharePage);
   }
 
   public async sendFeedback(feedback: string, goHome: boolean): Promise<void> {
@@ -203,7 +208,8 @@ export class SendFeedbackPage {
       if (!option) {
         this.openExternalLink(externalLink);
       } else {
-        this.openExternalLink('https://help.bitpay.com/requestHelp/create');
+        // Click on Get Help
+        this.openExternalLink('https://support.bitpay.com/hc/en-us');
       }
     });
   }

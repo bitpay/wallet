@@ -73,7 +73,10 @@ page-home {
       width: 90%;
       border-radius: 12px;
       background-color: #f9f9fb;
-      margin: 0 auto;
+      margin: 2rem auto 0 auto;
+      &.no-margin {
+        margin-top: 0;
+      }
       .line-divider {
         margin: 0px 15px;
       }

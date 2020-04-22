@@ -1,14 +1,17 @@
-<ion-card *ngIf="isShowRateCard">
-  <ion-card-header class="feedback-header">
-    <ion-row>
-      <button ion-button clear icon-only item-end color="grey" (click)="hideCard()">
+<div class="message-background" *ngIf="isShowRateCard">
+  <div class="message-header">
+    <ion-row justify-content-end>
+      <button float-right ion-button clear icon-only color="grey" (click)="hideCard()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-row>
-  </ion-card-header>
-  <ion-card-content>
-    <div class="title" translate>Give us feedback</div>
-    <div class="subtitle">{{feedbackCardTitle}}</div>
+  </div>
+  <div class="message-content">
+    <ion-row class="title-container">
+      <div class="message-icon"><img src="assets/img/help-question-blue.svg" /></div>
+      <div class="message-title" translate>Feedback</div>
+    </ion-row>
+    <div class="message-body">{{feedbackCardTitle}}</div>
     <ion-list class="bp-list">
       <ion-row class="icons-row">
         <ion-col col-20>
@@ -27,9 +30,10 @@
           </ion-icon>
         </ion-col>
       </ion-row>
-      <button ion-button class="button-standard" (click)="goFeedbackFlow()" *ngIf="button_title">
-        <span>{{button_title}}</span>
-      </button>
     </ion-list>
-  </ion-card-content>
-</ion-card>
+    <div *ngIf="button_title">
+      <div class="line-divider"></div>
+      <span class="message-button" (click)="goFeedbackFlow()">{{button_title}}</span>
+    </div>
+  </div>
+</div>
