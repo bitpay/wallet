@@ -1269,8 +1269,21 @@
         }
       }
     }
-    .next-slide-button .text {
-      color: $text-color-dark-theme-2;
+    .toolbar {
+      .toolbar-background {
+        background: $bg-color-dark-theme;
+      }
+    }
+    .checkbox-list {
+      .external-link {
+        color: $text-color-dark-theme-2;
+      }
+      .text {
+        color: $text-color-dark-theme;
+      }
+    }
+    .swiper-pagination-bullet {
+      background-color: $text-color-dark-theme-2;
     }
   }
   page-backup-key,
