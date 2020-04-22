@@ -7,16 +7,13 @@ page-copayers {
   .copayers-header {
     width: 100%;
     &-content {
-      padding: 3rem 3rem 3rem 3rem;
-      @media (max-width: 370px) {
-        padding: 1.2rem 3rem 3rem 3rem;
-      }
+      padding: 0 2rem;
       .title {
         font-size: 18px;
         font-weight: 500;
-        padding-bottom: 2rem;
+        padding-bottom: 1rem;
         @media (max-width: 370px) {
-          padding-bottom: 1rem;
+          padding-bottom: 0.5rem;
         }
       }
       .text {
@@ -26,7 +23,7 @@ page-copayers {
   }
   .white-card {
     background: white;
-    padding: 3rem;
+    padding: 2rem;
     .title {
       font-size: 16px;
       font-weight: 500;

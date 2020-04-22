@@ -6,11 +6,11 @@
       </div>
     </ion-title>
     <ion-buttons right class="settings-button" *ngIf="wallets && wallets[0]">
-      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
-        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
-      </button>
       <button class="option-button disable-hover" (click)="showMoreOptions()" ion-button icon-only>
         <ion-icon name="ios-more" md="ios-more"></ion-icon>
+      </button>
+      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsNotificationsPage()">
+        <ion-badge class="notifications-badge">{{ txpsN }}</ion-badge>
       </button>
     </ion-buttons>
   </ion-navbar>

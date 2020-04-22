@@ -21,25 +21,23 @@ page-choose-fee-level {
     }
   }
   .addr-header {
-    margin-top: 2rem;
+    margin: 1rem 0;
+    padding: 0 15px;
     .addr-title {
       height: 30px;
       width: 86px;
       font-size: 23px;
       font-weight: 500;
       line-height: 30px;
-      margin-left: 25px;
       color: black;
-    }
-    .addr-buttons {
-      margin-right: 25px;
     }
 
     .addr-update {
-      height: 37px;
-      width: 38px;
+      height: 31px;
+      width: 32px;
       background-color: #edf0fe;
       border-radius: 50%;
+      margin-top: 0;
       .spin-backwards {
         animation: spin-backwards 0.5s ease-out 1;
       }
@@ -93,7 +91,7 @@ page-choose-fee-level {
     }
   }
   .addr-content {
-    margin: 17px 25px 0px 25px;
+    margin: 0 15px 0 15px;
     .addr-container {
       text-align: center;
       font-size: 15px;
@@ -124,43 +122,15 @@ page-choose-fee-level {
         }
       }
     }
-    .qr-container {
-      height: 100%;
-      position: relative;
-      .card {
-        z-index: 1;
-        position: relative;
-      }
-      .lines-background {
-        background: url(../assets/img/curved-lines-background.png) center center
-          no-repeat #ececec;
-        opacity: 0.1;
-        background-size: cover;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-      .qr-card {
-        @media (max-height: 560px) {
-          width: 60%;
-        }
-      }
-      .prompt-user {
-        .title-icon {
-          position: relative;
-        }
-      }
-    }
-  }
-  .close-btn {
-    margin: 2rem 0 2rem 0;
   }
   .blur {
     filter: blur(10px);
   }
   .segment-button {
     color: black;
+  }
+  .safe-area {
+    margin-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    margin-bottom: -webkit-calc(1.5rem + env(safe-area-inset-bottom));
   }
 }
