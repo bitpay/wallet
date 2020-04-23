@@ -110,9 +110,16 @@ export class SendPage {
   }
 
   private SendPageRedirEventHandler: any = nextView => {
+    const currentIndex = this.navCtrl.getActive().index;
+    const currentView = this.navCtrl.getViews();
     nextView.params.fromWalletDetails = true;
     nextView.params.walletId = this.wallet.credentials.walletId;
-    this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+    this.navCtrl
+      .push(this.pageMap[nextView.name], nextView.params, { animate: false })
+      .then(() => {
+        if (currentView[currentIndex].name == 'ScanPage')
+          this.navCtrl.remove(currentIndex);
+      });
   };
 
   private updateAddressHandler: any = data => {
@@ -129,7 +136,7 @@ export class SendPage {
   }
 
   public openScanner(): void {
-    this.navCtrl.push(ScanPage, { fromSend: true });
+    this.navCtrl.push(ScanPage, { fromSend: true }, { animate: false });
   }
 
   public showOptions(coin: Coin) {

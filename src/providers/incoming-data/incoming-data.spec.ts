@@ -976,30 +976,25 @@ describe('Provider: Incoming Data Provider', () => {
   });
 
   describe('Function: finishIncomingData', () => {
-    it('Should handle if there is data and redirTo is different to AmountPage', () => {
-      const data = {
-        redirTo: 'anyPage',
-        value: 123
+    it('Should handle if there is data and redirTo is PaperWalletPage', () => {
+      const stateParams = { privateKey: '123', toAddress: null, coin: 'btc' };
+      const nextView = {
+        name: 'PaperWalletPage',
+        params: stateParams
       };
-      const nextView = data;
+      const data = { redirTo: 'PaperWalletPage', value: '123' };
       incomingDataProvider.finishIncomingData(data);
-      expect(eventsSpy).toHaveBeenCalledWith(
-        'finishIncomingDataMenuEvent',
-        nextView
-      );
+      expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
     it('Should handle if there is data and redirTo is AmountPage', () => {
-      const data = {
-        redirTo: 'AmountPage',
-        value: 123,
-        coin: 'btc'
+      const stateParams = { toAddress: 'xxx', coin: 'bch', privateKey: null };
+      const nextView = {
+        name: 'AmountPage',
+        params: stateParams
       };
-      const nextView = data;
+      const data = { redirTo: 'AmountPage', value: 'xxx', coin: 'bch' };
       incomingDataProvider.finishIncomingData(data);
-      expect(eventsSpy).toHaveBeenCalledWith(
-        'finishIncomingDataMenuEvent',
-        nextView
-      );
+      expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
   });
 

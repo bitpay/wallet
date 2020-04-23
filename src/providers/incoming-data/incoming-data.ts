@@ -10,6 +10,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
@@ -34,6 +35,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
@@ -46,28 +48,17 @@ export class IncomingDataProvider {
   }
 
   public finishIncomingData(data: any): void {
-    let redirTo = null;
-    let value = null;
-    if (data) {
-      redirTo = data.redirTo;
-      value = data.value;
-    }
-    if (redirTo === 'AmountPage') {
-      let coin = data.coin ? data.coin : 'btc';
-      this.events.publish('finishIncomingDataMenuEvent', {
-        redirTo,
-        value,
-        coin
-      });
-    } else if (redirTo === 'PaperWalletPage') {
-      const nextView = {
-        name: 'PaperWalletPage',
-        params: { privateKey: value }
-      };
-      this.incomingDataRedir(nextView);
-    } else {
-      this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
-    }
+    if (!data || !data.redirTo) return;
+    const stateParams = {
+      toAddress: data.redirTo != 'PaperWalletPage' ? data.value : null,
+      coin: data.coin ? data.coin : 'btc',
+      privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
+    };
+    const nextView = {
+      name: data.redirTo,
+      params: stateParams
+    };
+    this.incomingDataRedir(nextView);
   }
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
@@ -245,6 +236,7 @@ export class IncomingDataProvider {
   private async handleBitPayInvoice(invoiceUrl: string) {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
+      this.onGoingProcessProvider.set('fetchingPayProOptions');
       const disableLoader = true;
       const payProOptions = await this.payproProvider.getPayProOptions(
         invoiceUrl
@@ -264,6 +256,7 @@ export class IncomingDataProvider {
           disableLoader
         );
       } else {
+        this.onGoingProcessProvider.clear();
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
@@ -302,6 +295,7 @@ export class IncomingDataProvider {
         this.incomingDataRedir(nextView);
       }
     } catch (err) {
+      this.onGoingProcessProvider.clear();
       this.events.publish('incomingDataError', err);
       this.logger.error(err);
     }
@@ -1127,9 +1121,11 @@ export class IncomingDataProvider {
     this.payproProvider
       .getPayProDetails(url, coin, disableLoader)
       .then(details => {
+        this.onGoingProcessProvider.clear();
         this.handlePayPro(details, payProOptions, url, coin);
       })
       .catch(err => {
+        this.onGoingProcessProvider.clear();
         this.events.publish('incomingDataError', err);
         this.logger.error(err);
       });
