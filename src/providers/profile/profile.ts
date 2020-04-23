@@ -926,7 +926,8 @@ export class ProfileProvider {
     this.logger.info('Importing Wallet xPrivKey');
     opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
-      const key = this.keyProvider.getKeyByFingerprint(data.key);
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
       if (key) {
         data.key = this.keyProvider.getKey(key.id);
         opts.keyId = key.id;
@@ -946,7 +947,8 @@ export class ProfileProvider {
     words = this.normalizeMnemonic(words);
     opts.words = words;
     return this.serverAssistedImport(opts).then(data => {
-      const key = this.keyProvider.getKeyByFingerprint(data.key);
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
       if (key) {
         data.key = this.keyProvider.getKey(key.id);
         opts.keyId = key.id;
@@ -1016,7 +1018,7 @@ export class ProfileProvider {
           credentials = data.credentials;
           // check if the key exists to just add the wallet
           if (data.key) {
-            key = this.keyProvider.getKeyByFingerprint(data.key);
+            key = this.keyProvider.getMatchedKey(data.key);
             if (key) {
               data.key = this.keyProvider.getKey(key.id);
               opts.keyId = null;

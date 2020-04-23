@@ -286,7 +286,7 @@ export class KeyProvider {
     else return key1.id === key2.id;
   }
 
-  public getKeyByFingerprint(key) {
+  public getMatchedKey(key) {
     return this.keys.find(k => this.isMatch(key, k));
   }
 }
