@@ -177,13 +177,6 @@ export class CopayersPage {
       });
   }
 
-  public showFullInfo(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet('copayers', {
-      secret: this.secret
-    });
-    infoSheet.present();
-  }
-
   public shareAddress(): void {
     this.socialSharing.share(this.secret);
   }

@@ -28,9 +28,12 @@
       <small>({{altAmountStr}})</small>
     </div>
     <div class="qr-container">
-      <bp-qr-code class="card qr-card" copy-to-clipboard="{{ qrAddress }}" contents="{{ qrAddress }}" mask-x-to-y-ratio="1" legacy="{{ useLegacyQrCode }}">
+      <bp-qr-code *ngIf="!useLegacyQrCode" class="card qr-card bp-qr-card" copy-to-clipboard="{{ qrAddress }}" contents="{{ qrAddress }}" mask-x-to-y-ratio="1">
         <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
       </bp-qr-code>
+      <div *ngIf="useLegacyQrCode" copy-to-clipboard="{{ qrAddress }}">
+        <ngx-qrcode hide-toast="true" qrc-value="{{ qrAddress }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
     </div>
   </div>
 </wide-header-page>
