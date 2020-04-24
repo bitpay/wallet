@@ -1,3 +1,7 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent></ion-navbar>
+</ion-header>
+
 <ion-content no-bounce>
     <ion-slides (ionSlideDidChange)="slideChanged()" #walletGroupOnboardingSlides [pager]="!walletGroupOnboardingSlides.isEnd()" class="onboarding-slides">
       <ion-slide>

@@ -48,7 +48,7 @@ export class DisclaimerPage {
     this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
   }
 
-  slideChanged() {
+  public slideChanged() {
     // Disable first and last slides bounce
     let currentIndex = this.walletGroupOnboardingSlides.getActiveIndex();
     if (currentIndex == 0)
