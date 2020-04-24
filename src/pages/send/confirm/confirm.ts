@@ -1043,17 +1043,7 @@ export class ConfirmPage {
         if (exit) {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
-            : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app
-                .getRootNavs()[0]
-                .setRoot(TabsPage)
-                .then(() =>
-                  this.app
-                    .getRootNav()
-                    .getActiveChildNav()
-                    .select(1)
-                ); // using setRoot(TabsPage) as workaround when coming from scanner
+            : this.navCtrl.pop();
         }
       }
     );
