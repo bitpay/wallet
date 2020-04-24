@@ -208,6 +208,9 @@
     .alert-wrapper {
       background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
+      .alert-title {
+        color: $text-color-dark-theme;
+      }
     }
     .alert-radio-group {
       .alert-radio:not([aria-checked='true']) .alert-radio-label {
@@ -860,14 +863,14 @@
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
         &.warning-background {
-          background-color: $bg-color-warning-2;
+          background-color: $bg-color-dark-theme-3;
           ion-note.note > .amount > .received,
           .action {
             color: color($colors, warning);
           }
         }
         &.danger-background {
-          background-color: $bg-color-danger-2;
+          background-color: $bg-color-dark-theme-3;
           ion-note.note > .amount > .received,
           .action {
             color: color($colors, danger);

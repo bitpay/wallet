@@ -56,6 +56,9 @@ ion-alert.alert-top {
 ion-alert {
   .alert-wrapper {
     color: black;
+    .alert-title {
+      color: black;
+    }
   }
   .alert-radio-group {
     .alert-radio:not([aria-checked='true']) .alert-radio-label {
