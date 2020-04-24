@@ -285,4 +285,8 @@ export class KeyProvider {
       return key1.fingerPrint === key2.fingerPrint;
     else return key1.id === key2.id;
   }
+
+  public getMatchedKey(key) {
+    return this.keys.find(k => this.isMatch(key, k));
+  }
 }

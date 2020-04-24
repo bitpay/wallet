@@ -926,6 +926,15 @@ export class ProfileProvider {
     this.logger.info('Importing Wallet xPrivKey');
     opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      if (key) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl,
         keyId: opts.keyId
@@ -938,6 +947,15 @@ export class ProfileProvider {
     words = this.normalizeMnemonic(words);
     opts.words = words;
     return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      if (key) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl,
         keyId: opts.keyId
@@ -998,8 +1016,16 @@ export class ProfileProvider {
       if (data.credentials) {
         try {
           credentials = data.credentials;
+          // check if the key exists to just add the wallet
           if (data.key) {
-            key = Key.fromObj(data.key);
+            key = this.keyProvider.getMatchedKey(data.key);
+            if (key) {
+              data.key = this.keyProvider.getKey(key.id);
+              opts.keyId = null;
+              data.credentials.keyId = key.id;
+            } else {
+              key = Key.fromObj(data.key);
+            }
           }
           addressBook = data.addressBook;
         } catch (err) {
