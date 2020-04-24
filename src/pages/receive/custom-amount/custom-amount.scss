@@ -1,16 +1,7 @@
 page-custom-amount {
-  .scroll-content {
-    background-color: white;
-    margin-top: 0rem;
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      background-color: white;
-    }
-  }
   .qr-card-amount {
     text-align: center;
-    margin-top: 15px;
+    margin: 10px 0;
     font-size: 1.8rem;
     font-weight: bold;
     small {
@@ -39,7 +30,6 @@ page-custom-amount {
     text-align: center;
     font-size: 15px;
     .text-address {
-      background-color: #f8f8f8;
       color: color($colors, light-grey);
       padding: 1.3rem 1rem;
       border-radius: 6px;
