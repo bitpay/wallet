@@ -15,7 +15,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { FinishModalPage } from '../../finish/finish';
 import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
