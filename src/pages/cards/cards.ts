@@ -100,6 +100,8 @@ export class CardsPage {
         this.showDisclaimer = true;
         await this.persistenceProvider.setReachedCardLimit(true);
         this.events.publish('reachedCardLimit');
+      } else {
+        this.showDisclaimer = false;
       }
 
       cards.splice(idx, 1);
