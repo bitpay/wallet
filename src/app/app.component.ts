@@ -202,6 +202,18 @@ export class CopayApp {
         deviceInfo
     );
 
+    this.platform.pause.subscribe( () => {
+      const config = this.configProvider.get();
+      const lockMethod =
+        config && config.lock && config.lock.method
+          ? config.lock.method.toLowerCase()
+          : null;
+      if (!lockMethod) {
+        return;
+      }
+      this.iabCardProvider.pause();
+    });
+
     if (this.platform.is('cordova')) {
       this.statusBar.show();
 
@@ -379,10 +391,8 @@ export class CopayApp {
     }
 
     if (lockMethod == 'pin') {
-      this.iabCardProvider.pause();
       this.openPINModal('checkPin');
     } else if (lockMethod == 'fingerprint') {
-      this.iabCardProvider.pause();
       this.openFingerprintModal();
     }
   }
