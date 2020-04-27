@@ -68,10 +68,10 @@
           {{'Generate New Address' | translate}}
         </button>
       </div>
-      <bp-qr-code *ngIf="address && !newAddressError" class="card qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1">
+      <bp-qr-code *ngIf="address && !newAddressError  && !useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1">
         <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
       </bp-qr-code>
-      <div *ngIf="address && useLegacyQrCode" class="qr-card" copy-to-clipboard="{{ address }}">
+      <div *ngIf="address && useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}">
         <ngx-qrcode hide-toast="true" qrc-value="{{ address }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
     </div>
