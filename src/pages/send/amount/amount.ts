@@ -36,6 +36,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { SimplexBuyPage } from '../../integrations/simplex/simplex-buy/simplex-buy';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
@@ -313,6 +314,9 @@ export class AmountPage {
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
+        break;
+      case 'SimplexBuyPage':
+        nextPage = SimplexBuyPage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = false; // Disabled for now

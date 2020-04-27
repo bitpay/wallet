@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { ExchangeRates } from '../../components/exchange-rates/exchange-rates';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
@@ -48,6 +49,7 @@ export interface Advertisement {
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild('exchangeRates') exchangeRates: ExchangeRates;
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showShoppingOption: boolean;
@@ -359,6 +361,7 @@ export class HomePage {
   public doRefresh(refresher): void {
     this.fetchAdvertisements();
     this.preFetchWallets();
+    this.exchangeRates.updateCurrentPrice();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
