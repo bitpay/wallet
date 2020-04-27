@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -12,7 +11,6 @@ import {
 // Pages
 import { CoinSelectorPage } from '../../includes/coin-selector/coin-selector';
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -57,7 +55,6 @@ export class ImportWalletPage {
   public title: string;
 
   constructor(
-    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
@@ -251,17 +248,9 @@ export class ImportWalletPage {
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
 
-    // using setRoot(TabsPage) as workaround when coming from scanner
-    this.app
-      .getRootNavs()[0]
-      .setRoot(TabsPage)
-      .then(() => {
-        this.app
-          .getRootNav()
-          .getActiveChildNav()
-          .select(1);
-        this.events.publish('Local/WalletListChange');
-      });
+    this.navCtrl.popToRoot().then(() => {
+      this.events.publish('Local/WalletListChange');
+    });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {

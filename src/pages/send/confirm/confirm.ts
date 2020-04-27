@@ -15,7 +15,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { FinishModalPage } from '../../finish/finish';
 import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
@@ -1043,17 +1042,7 @@ export class ConfirmPage {
         if (exit) {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
-            : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app
-                .getRootNavs()[0]
-                .setRoot(TabsPage)
-                .then(() =>
-                  this.app
-                    .getRootNav()
-                    .getActiveChildNav()
-                    .select(1)
-                ); // using setRoot(TabsPage) as workaround when coming from scanner
+            : this.navCtrl.pop();
         }
       }
     );
