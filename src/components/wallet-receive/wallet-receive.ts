@@ -57,19 +57,20 @@ export class WalletReceiveComponent extends ActionSheetParent {
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.bchAddrFormat = 'cashAddress';
     this.disclaimerAccepted = false;
-    this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      this.setAddress();
-      this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    });
     this.setAddress();
   }
 
   ionViewWillLeave() {
     this.onResumeSubscription.unsubscribe();
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.setAddress();
+      this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    });
   }
 
   private bwsEventHandler: any = (walletId, type, n) => {

@@ -926,8 +926,8 @@
     .addr-content {
       .addr-container {
         .text-address {
-          background-color: $bg-color-dark-theme-2;
-          color: $text-color-dark-theme-2;
+          background-color: $bg-color-dark-theme-3;
+          color: $text-color-dark-theme-3;
         }
       }
       .qr-container {
@@ -1327,21 +1327,14 @@
     }
   }
   page-custom-amount {
-    .scroll-content {
-      background-color: $bg-color-dark-theme-2;
-      margin-top: 0rem;
-      .wrapper {
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-      }
+    .qr-card-amount {
+      background-color: $bg-color-dark-theme;
     }
-
     .qr-container {
-      background-color: $bg-color-dark-theme-2;
+      background-color: $bg-color-dark-theme;
 
       div.qr-card.card {
-        background-color: $bg-color-dark-theme-2;
+        background-color: $bg-color-dark-theme;
       }
       .qr-card {
         background-color: white;
@@ -1349,7 +1342,7 @@
     }
     .receive-content {
       background-color: $bg-color-dark-theme;
-      .address-container {
+      .addr-container {
         .text-address {
           background: $bg-color-dark-theme-2;
           color: $text-color-dark-theme-2;

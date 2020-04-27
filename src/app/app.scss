@@ -128,7 +128,7 @@ ion-header.bp-header .toolbar {
   opacity: 0.6;
   border-radius: none;
   background-color: transparent !important;
-  margin-right: 5px;
+  margin: 0 5px;
   color: #434d5a;
   &.activated,
   &:hover:not(.disable-hover) {
@@ -584,23 +584,20 @@ ion-alert .alert-message {
 }
 
 .qr-container {
-  flex-grow: 1;
   @include center;
-
-  .qr-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  height: 293px;
 
   .qr-card {
-    transform: translateY(0);
     margin: 0;
     padding-bottom: 0;
-    width: 70%;
     max-width: 293px;
     max-height: 293px;
     box-shadow: none;
+
+    img {
+      height: auto;
+      width: 100%;
+    }
 
     .aclass {
       @include center;
@@ -613,20 +610,6 @@ ion-alert .alert-message {
       width: 100%;
       opacity: 0.715;
     }
-  }
-
-  .bp-qr-card {
-    width: 100%;
-    img {
-      height: auto;
-      width: 100%;
-    }
-  }
-
-  .qr-placeholder:after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
   }
 }
 
