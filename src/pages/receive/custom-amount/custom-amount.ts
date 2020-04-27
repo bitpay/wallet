@@ -119,16 +119,6 @@ export class CustomAmountPage {
     this.socialSharing.share(this.qrAddress);
   }
 
-  public showFullInfo(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'custom-amount',
-      {
-        qrAddress: this.qrAddress
-      }
-    );
-    infoSheet.present();
-  }
-
   public showPaymentRequestInfo(): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'payment-request',

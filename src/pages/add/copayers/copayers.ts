@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { KeyProvider } from '../../../providers/key/key';
@@ -51,7 +50,6 @@ export class CopayersPage {
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
-    private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
     private configProvider: ConfigProvider
   ) {
@@ -175,13 +173,6 @@ export class CopayersPage {
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
-  }
-
-  public showFullInfo(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet('copayers', {
-      secret: this.secret
-    });
-    infoSheet.present();
   }
 
   public shareAddress(): void {

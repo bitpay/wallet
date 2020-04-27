@@ -19,9 +19,13 @@
       </div>
     </div>
     <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
-      <bp-qr-code (click)="showFullInfo()" class="card qr-card" copy-to-clipboard="{{ secret }}" contents="{{ secret }}" mask-x-to-y-ratio="1" legacy="{{ useLegacyQrCode }}">
+      <bp-qr-code *ngIf="!useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ secret }}" contents="{{ secret }}" mask-x-to-y-ratio="1">
         <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
       </bp-qr-code>
+      <div *ngIf="useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ secret }}">
+        <ngx-qrcode hide-toast="true" qrc-value="{{ secret }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
+
     </div>
 
     <div class="white-card" *ngIf="!wallet.notAuthorized && copayers && secret">
