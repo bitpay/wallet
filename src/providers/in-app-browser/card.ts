@@ -89,48 +89,7 @@ export class IABCardProvider {
          * */
 
         case 'purchaseAttempt':
-          const { invoiceId } = event.data.params;
-
-          this.logger.debug('Incoming-data: Handling bitpay invoice');
-          try {
-            const details = await this.payproProvider.getPayProOptions(
-              `${this.BITPAY_API_URL}/i/${invoiceId}`
-            );
-
-            let hasWallets = {};
-            let availableWallets = [];
-            for (const option of details.paymentOptions) {
-              const fundedWallets = this.profileProvider.getWallets({
-                coin: option.currency.toLowerCase(),
-                network: option.network,
-                minAmount: option.estimatedAmount
-              });
-              if (fundedWallets.length === 0) {
-                option.disabled = true;
-              } else {
-                hasWallets[option.currency.toLowerCase()] =
-                  fundedWallets.length;
-                availableWallets.push(option);
-              }
-            }
-
-            const stateParams = {
-              payProOptions: details,
-              walletCardRedir: true,
-              hasWallets
-            };
-
-            let nextView = {
-              name: 'SelectInvoicePage',
-              params: stateParams
-            };
-            this.events.publish('IncomingDataRedir', nextView);
-          } catch (err) {
-            this.events.publish('incomingDataError', err);
-            this.logger.error(err);
-          }
-
-          this.hide();
+          this.purchaseAttempt(event);
           break;
 
         /*
@@ -169,19 +128,7 @@ export class IABCardProvider {
           break;
 
         case 'topup':
-          const { id, currency } = event.data.params;
-
-          let nextView = {
-            name: 'AmountPage',
-            params: {
-              nextPage: 'BitPayCardTopUpPage',
-              currency,
-              id,
-              card: 'v2'
-            }
-          };
-          this.events.publish('IncomingDataRedir', nextView);
-          this.hide();
+          this.topUp(event);
           break;
 
         /*
@@ -191,52 +138,7 @@ export class IABCardProvider {
          * */
 
         case 'signRequest':
-          try {
-            const token = await this.persistenceProvider.getBitPayIdPairingToken(
-              Network[this.NETWORK]
-            );
-
-            const { query, variables, name } = event.data.params;
-
-            const json = {
-              query,
-              variables: { ...variables, token }
-            };
-
-            this.appIdentityProvider.getIdentity(
-              this.NETWORK,
-              (err, appIdentity) => {
-                if (err) {
-                  return;
-                }
-
-                const url = `${this.BITPAY_API_URL}/`;
-                const dataToSign = `${url}${JSON.stringify(json)}`;
-                const signedData = bitauthService.sign(
-                  dataToSign,
-                  appIdentity.priv
-                );
-
-                const headers = {
-                  'x-identity': appIdentity.pub,
-                  'x-signature': signedData
-                };
-
-                this.cardIAB_Ref.executeScript(
-                  {
-                    code: `window.postMessage('${JSON.stringify({
-                      url,
-                      headers,
-                      json,
-                      name
-                    })}', '*')`
-                  },
-                  () => this.logger.log(`card - signed request -> ${name}`)
-                );
-              }
-            );
-          } catch (err) {}
-
+          this.signRequest(event);
           break;
 
         /*
@@ -441,6 +343,115 @@ export class IABCardProvider {
     setTimeout(() => {
       this.events.publish('updateCards');
     });
+  }
+
+  async signRequest(event) {
+    try {
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+
+      const { query, variables, name } = event.data.params;
+
+      const json = {
+        query,
+        variables: { ...variables, token }
+      };
+
+      this.appIdentityProvider.getIdentity(
+        this.NETWORK,
+        (err, appIdentity) => {
+          if (err) {
+            return;
+          }
+
+          const url = `${this.BITPAY_API_URL}/`;
+          const dataToSign = `${url}${JSON.stringify(json)}`;
+          const signedData = bitauthService.sign(
+            dataToSign,
+            appIdentity.priv
+          );
+
+          const headers = {
+            'x-identity': appIdentity.pub,
+            'x-signature': signedData
+          };
+
+          this.cardIAB_Ref.executeScript(
+            {
+              code: `window.postMessage('${JSON.stringify({
+                url,
+                headers,
+                json,
+                name
+              })}', '*')`
+            },
+            () => this.logger.log(`card - signed request -> ${name}`)
+          );
+        }
+      );
+    } catch (err) {}
+  }
+
+  async purchaseAttempt(event) {
+    const { invoiceId } = event.data.params;
+
+    this.logger.debug('Incoming-data: Handling bitpay invoice');
+    try {
+      const details = await this.payproProvider.getPayProOptions(
+        `${this.BITPAY_API_URL}/i/${invoiceId}`
+      );
+
+      let hasWallets = {};
+      let availableWallets = [];
+      for (const option of details.paymentOptions) {
+        const fundedWallets = this.profileProvider.getWallets({
+          coin: option.currency.toLowerCase(),
+          network: option.network,
+          minAmount: option.estimatedAmount
+        });
+        if (fundedWallets.length === 0) {
+          option.disabled = true;
+        } else {
+          hasWallets[option.currency.toLowerCase()] =
+            fundedWallets.length;
+          availableWallets.push(option);
+        }
+      }
+
+      const stateParams = {
+        payProOptions: details,
+        walletCardRedir: true,
+        hasWallets
+      };
+
+      let nextView = {
+        name: 'SelectInvoicePage',
+        params: stateParams
+      };
+      this.events.publish('IncomingDataRedir', nextView);
+    } catch (err) {
+      this.events.publish('incomingDataError', err);
+      this.logger.error(err);
+    }
+
+    this.hide();
+  }
+
+  topUp(event) {
+    const { id, currency } = event.data.params;
+
+    let nextView = {
+      name: 'AmountPage',
+      params: {
+        nextPage: 'BitPayCardTopUpPage',
+        currency,
+        id,
+        card: 'v2'
+      }
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+    this.hide();
   }
 
   pairing(event) {
