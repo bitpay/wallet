@@ -517,7 +517,10 @@ export class IABCardProvider {
 
   resume(): void {
     if (this._pausedState) {
-      this.show();
+      if (this.cardIAB_Ref) {
+        this.cardIAB_Ref.show();
+        this._isHidden = false;
+      }
     }
 
     this._pausedState = false;

@@ -823,14 +823,14 @@ export class IncomingDataProvider {
         case 'email-verified':
           this.iabCardProvider.show();
           this.iabCardProvider.sendMessage({
-            message: 'email-verified'
+            message: 'emailVerified'
           });
           break;
 
         case 'get-started':
           this.iabCardProvider.show();
           this.iabCardProvider.sendMessage({
-            message: 'get-started'
+            message: 'orderCard'
           });
           break;
 
@@ -844,7 +844,7 @@ export class IncomingDataProvider {
         case 'debit-card-order':
           this.iabCardProvider.show();
           this.iabCardProvider.sendMessage({
-            message: 'debit-card-order'
+            message: 'debitCardOrder'
           });
       }
 
