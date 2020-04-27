@@ -64,6 +64,8 @@
     transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
   }
 
+  @include toolbar-button-color($text-color-dark-theme);
+
   // TODO: Remove text opacity from default styles
   page-bitpay-card ion-title .toolbar-title,
   .wallet-details-header ion-title .toolbar-title,
