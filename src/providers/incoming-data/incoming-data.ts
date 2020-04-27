@@ -48,9 +48,11 @@ export class IncomingDataProvider {
   }
 
   public finishIncomingData(data: any): void {
-    if (!data || !data.redirTo) return;
+    if (!data) return;
     const stateParams = {
-      toAddress: data.redirTo != 'PaperWalletPage' ? data.value : null,
+      addressbookEntry:
+        data.redirTo == 'AddressBookAddPage' ? data.value : null,
+      toAddress: data.redirTo == 'AmountPage' ? data.value : null,
       coin: data.coin ? data.coin : 'btc',
       privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
     };
@@ -453,13 +455,15 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
+  // Deprecated
   private handlePlainUrl(data: string): void {
-    this.logger.debug('Incoming-data: Plain URL');
-    data = this.sanitizeUri(data);
-    this.showMenu({
-      data,
-      type: 'url'
-    });
+    this.logger.debug('Incoming-data: Plain URL', data);
+    // No process Plain URL anymore
+    // data = this.sanitizeUri(data);
+    // this.showMenu({
+    //  data,
+    //  type: 'url'
+    // });
   }
 
   private handlePlainBitcoinAddress(
