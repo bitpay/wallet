@@ -62,6 +62,214 @@ export class IABCardProvider {
     this.logger.log(`card provider initialized with ${this.NETWORK}`);
   }
 
+  get ref() {
+    return this.cardIAB_Ref;
+  }
+
+  get isHidden() {
+    return this._isHidden;
+  }
+
+  get isVisible() {
+    return !this._isHidden;
+  }
+
+  init(): void {
+    this.logger.debug('IABCardProvider initialized');
+    this.cardIAB_Ref = this.iab.refs.card;
+
+    this.cardIAB_Ref.events$.subscribe(async (event: any) => {
+      this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
+
+      switch (event.data.message) {
+        /*
+         *
+         * Handles paying for the card. The IAB generates the invoice id and passes it back here. This method then launches the payment experience.
+         *  TODO pass the user back to the the IAB when purchase is completed
+         * */
+
+        case 'purchaseAttempt':
+          const { invoiceId } = event.data.params;
+
+          this.logger.debug('Incoming-data: Handling bitpay invoice');
+          try {
+            const details = await this.payproProvider.getPayProOptions(
+              `${this.BITPAY_API_URL}/i/${invoiceId}`
+            );
+
+            let hasWallets = {};
+            let availableWallets = [];
+            for (const option of details.paymentOptions) {
+              const fundedWallets = this.profileProvider.getWallets({
+                coin: option.currency.toLowerCase(),
+                network: option.network,
+                minAmount: option.estimatedAmount
+              });
+              if (fundedWallets.length === 0) {
+                option.disabled = true;
+              } else {
+                hasWallets[option.currency.toLowerCase()] =
+                  fundedWallets.length;
+                availableWallets.push(option);
+              }
+            }
+
+            const stateParams = {
+              payProOptions: details,
+              walletCardRedir: true,
+              hasWallets
+            };
+
+            let nextView = {
+              name: 'SelectInvoicePage',
+              params: stateParams
+            };
+            this.events.publish('IncomingDataRedir', nextView);
+          } catch (err) {
+            this.events.publish('incomingDataError', err);
+            this.logger.error(err);
+          }
+
+          this.hide();
+          break;
+
+        /*
+         *
+         * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
+         *
+         * */
+
+        case 'pairing':
+          this.pairing(event);
+          break;
+
+        /*
+         *
+         * Closes the IAB
+         *
+         * */
+
+        case 'close':
+          this.hide();
+          break;
+
+        case 'balanceUpdate':
+          this.balanceUpdate(event);
+          break;
+
+        case 'openLink':
+          const { url } = event.data.params;
+          this.externalLinkProvider.open(url);
+          break;
+
+        case 'navigateToCardTabPage':
+          this.events.publish('IncomingDataRedir', {
+            name: 'CardsPage'
+          });
+          break;
+
+        case 'topup':
+          const { id, currency } = event.data.params;
+
+          let nextView = {
+            name: 'AmountPage',
+            params: {
+              nextPage: 'BitPayCardTopUpPage',
+              currency,
+              id,
+              card: 'v2'
+            }
+          };
+          this.events.publish('IncomingDataRedir', nextView);
+          this.hide();
+          break;
+
+        /*
+         *
+         * This signs graph queries from the IAB then sends it back. The actual request is made from inside the IAB.
+         *
+         * */
+
+        case 'signRequest':
+          try {
+            const token = await this.persistenceProvider.getBitPayIdPairingToken(
+              Network[this.NETWORK]
+            );
+
+            const { query, variables, name } = event.data.params;
+
+            const json = {
+              query,
+              variables: { ...variables, token }
+            };
+
+            this.appIdentityProvider.getIdentity(
+              this.NETWORK,
+              (err, appIdentity) => {
+                if (err) {
+                  return;
+                }
+
+                const url = `${this.BITPAY_API_URL}/`;
+                const dataToSign = `${url}${JSON.stringify(json)}`;
+                const signedData = bitauthService.sign(
+                  dataToSign,
+                  appIdentity.priv
+                );
+
+                const headers = {
+                  'x-identity': appIdentity.pub,
+                  'x-signature': signedData
+                };
+
+                this.cardIAB_Ref.executeScript(
+                  {
+                    code: `window.postMessage('${JSON.stringify({
+                      url,
+                      headers,
+                      json,
+                      name
+                    })}', '*')`
+                  },
+                  () => this.logger.log(`card - signed request -> ${name}`)
+                );
+              }
+            );
+          } catch (err) {}
+
+          break;
+
+        /*
+         *
+         * Fetch cards and update persistence
+         *
+         * */
+
+        case 'addCard':
+          this.getCards();
+          break;
+
+        case 'buyCrypto':
+          this.simplexProvider.getSimplex().then(simplexData => {
+            const hasData = simplexData && !_.isEmpty(simplexData);
+            const nextView = {
+              name: hasData ? 'SimplexPage' : 'SimplexBuyPage',
+              params: {},
+              callback: () => {
+                this.hide();
+              }
+            };
+
+            this.events.publish('IncomingDataRedir', nextView);
+          });
+          break;
+
+        default:
+          break;
+      }
+    });
+  }
+
   getCards() {
     return new Promise(async (res, rej) => {
       if (this.fetchLock) {
@@ -194,209 +402,38 @@ export class IABCardProvider {
     });
   }
 
-  get ref() {
-    return this.cardIAB_Ref;
-  }
+  async balanceUpdate(event) {
+    let cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network[this.NETWORK]
+    );
 
-  get isHidden() {
-    return this._isHidden;
-  }
+    if (cards.length < 1) {
+      return;
+    }
 
-  get isVisible() {
-    return !this._isHidden;
-  }
+    const { id, balance } = event.data.params;
 
-  init(): void {
-    this.logger.debug('IABCardProvider initialized');
-    this.cardIAB_Ref = this.iab.refs.card;
-
-    this.cardIAB_Ref.events$.subscribe(async (event: any) => {
-      this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
-
-      switch (event.data.message) {
-        /*
-         *
-         * Handles paying for the card. The IAB generates the invoice id and passes it back here. This method then launches the payment experience.
-         *  TODO pass the user back to the the IAB when purchase is completed
-         * */
-
-        case 'purchaseAttempt':
-          const { invoiceId } = event.data.params;
-
-          this.logger.debug('Incoming-data: Handling bitpay invoice');
-          try {
-            const details = await this.payproProvider.getPayProOptions(
-              `${this.BITPAY_API_URL}/i/${invoiceId}`
-            );
-
-            let hasWallets = {};
-            let availableWallets = [];
-            for (const option of details.paymentOptions) {
-              const fundedWallets = this.profileProvider.getWallets({
-                coin: option.currency.toLowerCase(),
-                network: option.network,
-                minAmount: option.estimatedAmount
-              });
-              if (fundedWallets.length === 0) {
-                option.disabled = true;
-              } else {
-                hasWallets[option.currency.toLowerCase()] =
-                  fundedWallets.length;
-                availableWallets.push(option);
-              }
-            }
-
-            const stateParams = {
-              payProOptions: details,
-              walletCardRedir: true,
-              hasWallets
-            };
-
-            let nextView = {
-              name: 'SelectInvoicePage',
-              params: stateParams
-            };
-            this.events.publish('IncomingDataRedir', nextView);
-          } catch (err) {
-            this.events.publish('incomingDataError', err);
-            this.logger.error(err);
-          }
-
-          this.hide();
-          break;
-
-        /*
-         *
-         * This handles the BitPay ID pairing and retrieves user data. It also passes it to the behavior subject.
-         *
-         * */
-
-        case 'pairing':
-          const { params } = event.data;
-          this.pairing(params);
-          break;
-
-        /*
-         *
-         * Closes the IAB
-         *
-         * */
-
-        case 'close':
-          this.hide();
-          break;
-
-        case 'openLink':
-          const { url } = event.data.params;
-          this.externalLinkProvider.open(url);
-          break;
-
-        case 'navigateToCardTabPage':
-          this.events.publish('IncomingDataRedir', {
-            name: 'CardsPage'
-          });
-          break;
-
-        case 'topup':
-          const { id, currency } = event.data.params;
-
-          let nextView = {
-            name: 'AmountPage',
-            params: {
-              nextPage: 'BitPayCardTopUpPage',
-              currency,
-              id,
-              card: 'v2'
-            }
-          };
-          this.events.publish('IncomingDataRedir', nextView);
-          this.hide();
-          break;
-
-        /*
-         *
-         * This signs graph queries from the IAB then sends it back. The actual request is made from inside the IAB.
-         *
-         * */
-
-        case 'signRequest':
-          try {
-            const token = await this.persistenceProvider.getBitPayIdPairingToken(
-              Network[this.NETWORK]
-            );
-
-            const { query, variables, name } = event.data.params;
-
-            const json = {
-              query,
-              variables: { ...variables, token }
-            };
-
-            this.appIdentityProvider.getIdentity(
-              this.NETWORK,
-              (err, appIdentity) => {
-                if (err) {
-                  return;
-                }
-
-                const url = `${this.BITPAY_API_URL}/`;
-                const dataToSign = `${url}${JSON.stringify(json)}`;
-                const signedData = bitauthService.sign(
-                  dataToSign,
-                  appIdentity.priv
-                );
-
-                const headers = {
-                  'x-identity': appIdentity.pub,
-                  'x-signature': signedData
-                };
-
-                this.cardIAB_Ref.executeScript(
-                  {
-                    code: `window.postMessage('${JSON.stringify({
-                      url,
-                      headers,
-                      json,
-                      name
-                    })}', '*')`
-                  },
-                  () => this.logger.log(`card - signed request -> ${name}`)
-                );
-              }
-            );
-          } catch (err) {}
-
-          break;
-
-        /*
-         *
-         * Fetch cards and update persistence
-         *
-         * */
-
-        case 'addCard':
-          this.getCards();
-          break;
-
-        case 'buyCrypto':
-          this.simplexProvider.getSimplex().then(simplexData => {
-            const hasData = simplexData && !_.isEmpty(simplexData);
-            const nextView = {
-              name: hasData ? 'SimplexPage' : 'SimplexBuyPage',
-              params: {},
-              callback: () => {
-                this.hide();
-              }
-            };
-
-            this.events.publish('IncomingDataRedir', nextView);
-          });
-          break;
-
-        default:
-          break;
+    cards = cards.map(c => {
+      if (c.eid === id) {
+        return {
+          ...c,
+          cardBalance: balance
+        };
       }
+      return c;
     });
+
+    const user = await this.persistenceProvider.getBitPayIdUserInfo(
+      Network[this.NETWORK]
+    );
+
+    await this.persistenceProvider.setBitpayDebitCards(
+      Network[this.NETWORK],
+      user.email,
+      cards
+    );
+
+    this.events.publish('updateCards');
   }
 
   async updateCards() {
@@ -406,8 +443,11 @@ export class IABCardProvider {
     });
   }
 
-  pairing(params) {
-    const { withNotification } = params;
+  pairing(event) {
+    const {
+      params,
+      params: { withNotification }
+    } = event.data;
     // set the overall app loading state
     this.onGoingProcess.set('connectingBitPayId');
 

@@ -45,10 +45,7 @@ export class BitPayCardHome implements OnInit {
     private iabCardProvider: IABCardProvider,
     private events: Events,
     private persistenceProvider: PersistenceProvider
-  ) {}
-
-  ngOnInit() {
-    this.appName = this.appProvider.info.userVisibleName;
+  ) {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
@@ -62,6 +59,10 @@ export class BitPayCardHome implements OnInit {
         this._initial = false;
       }, 50);
     });
+  }
+
+  ngOnInit() {
+    this.appName = this.appProvider.info.userVisibleName;
   }
 
   ngOnChanges(changes: SimpleChanges) {

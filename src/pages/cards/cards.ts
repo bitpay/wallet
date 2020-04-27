@@ -85,28 +85,30 @@ export class CardsPage {
   }
 
   private async prepareDebitCards() {
-    return new Promise(async res => {
+    return new Promise(res => {
       // retrieve cards from storage
-      const cards = await this.persistenceProvider.getBitpayDebitCards(
-        Network[this.NETWORK]
-      );
-      // filter out and show one galileo card
-      const idx = cards.findIndex(c => {
-        return c.provider === 'galileo' && c.cardType === 'physical';
-      });
+      setTimeout(async () => {
+        const cards = await this.persistenceProvider.getBitpayDebitCards(
+          Network[this.NETWORK]
+        );
+        // filter out and show one galileo card
+        const idx = cards.findIndex(c => {
+          return c.provider === 'galileo' && c.cardType === 'physical';
+        });
 
-      // if galileo then show disclaimer and remove add card ability
-      if (idx !== -1) {
-        this.showDisclaimer = true;
-        await this.persistenceProvider.setReachedCardLimit(true);
-        this.events.publish('reachedCardLimit');
-      } else {
-        this.showDisclaimer = false;
-      }
+        // if galileo then show disclaimer and remove add card ability
+        if (idx !== -1) {
+          this.showDisclaimer = true;
+          await this.persistenceProvider.setReachedCardLimit(true);
+          this.events.publish('reachedCardLimit');
+        } else {
+          this.showDisclaimer = false;
+        }
 
-      cards.splice(idx, 1);
+        cards.splice(idx, 1);
 
-      res(cards);
+        res(cards);
+      }, 100);
     });
   }
 
