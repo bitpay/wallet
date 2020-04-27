@@ -202,7 +202,7 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.platform.pause.subscribe( () => {
+    this.platform.pause.subscribe(() => {
       const config = this.configProvider.get();
       const lockMethod =
         config && config.lock && config.lock.method
