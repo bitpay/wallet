@@ -11,6 +11,23 @@ export class KeyOnboardingPage {
 
   constructor(private viewCtrl: ViewController) {}
 
+  ionViewWillLoad() {
+    this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
+  }
+
+  slideChanged() {
+    // Disable first and last slides bounce
+    let currentIndex = this.walletGroupOnboardingSlides.getActiveIndex();
+    if (currentIndex == 0)
+      this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
+    if (currentIndex > 0)
+      this.walletGroupOnboardingSlides.lockSwipeToPrev(false);
+    if (currentIndex >= 2)
+      this.walletGroupOnboardingSlides.lockSwipeToNext(true);
+    if (currentIndex < 2)
+      this.walletGroupOnboardingSlides.lockSwipeToNext(false);
+  }
+
   public nextSlide(): void {
     this.walletGroupOnboardingSlides.slideNext();
   }
