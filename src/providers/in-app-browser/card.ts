@@ -112,9 +112,21 @@ export class IABCardProvider {
           this.hide();
           break;
 
+        /*
+         *
+         * Balance update - added this to ensure balances are in sync between the index view and IAB
+         *
+         * */
+
         case 'balanceUpdate':
           this.balanceUpdate(event);
           break;
+
+        /*
+         *
+         * Open external link from the IAB
+         *
+         * */
 
         case 'openLink':
           const { url } = event.data.params;
