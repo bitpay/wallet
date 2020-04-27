@@ -152,10 +152,10 @@ export class TabsPage {
   private getLastDayRates(): Promise<any> {
     const today = moment();
     const availableChains = this.currencyProvider.getAvailableChains();
-    const ts = today.subtract(23, 'hours').unix() * 1000;
+    const ts = today.subtract(1, 'days').unix() * 1000;
     return new Promise(resolve => {
       this.exchangeRatesProvider
-        .getHistoricalRates(this.totalBalanceAlternativeIsoCode)
+        .getHistoricalRates(this.totalBalanceAlternativeIsoCode, 1)
         .subscribe(
           response => {
             let ratesByCoin = {};
