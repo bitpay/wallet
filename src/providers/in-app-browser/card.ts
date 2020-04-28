@@ -163,6 +163,16 @@ export class IABCardProvider {
           this.getCards();
           break;
 
+        /*
+         *
+         * From IAB settings toggle hide and show of cards
+         *
+         * */
+
+        case 'showHide':
+          this.toggleShow(event);
+          break;
+
         case 'buyCrypto':
           this.simplexProvider.getSimplex().then(simplexData => {
             const hasData = simplexData && !_.isEmpty(simplexData);
@@ -448,6 +458,40 @@ export class IABCardProvider {
     }
 
     this.hide();
+  }
+
+  async toggleShow(event) {
+    let cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network[this.NETWORK]
+    );
+
+    if (cards.length < 1) {
+      return;
+    }
+
+    const { id, show, provider } = event.data.params;
+
+    cards = cards.map( c => {
+      if (provider === 'galileo' || c.eid === id) {
+        return {
+          ...c,
+          show
+        };
+      }
+      return c;
+    });
+    
+    const user = await this.persistenceProvider.getBitPayIdUserInfo(
+      Network[this.NETWORK]
+    );
+
+    await this.persistenceProvider.setBitpayDebitCards(
+      Network[this.NETWORK],
+      user.email,
+      cards
+    );
+
+    this.events.publish('updateCards');
   }
 
   topUp(event) {

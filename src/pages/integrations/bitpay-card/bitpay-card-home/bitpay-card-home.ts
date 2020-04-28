@@ -52,6 +52,10 @@ export class BitPayCardHome implements OnInit {
     this.events.subscribe('isFetchingDebitCards', status => {
       this.isFetching = status;
     });
+  }
+
+  ngOnInit() {
+    this.appName = this.appProvider.info.userVisibleName;
     this.persistenceProvider.getReachedCardLimit().then(limitReached => {
       this.disableAddCard = limitReached == true;
       setTimeout(() => {
@@ -59,10 +63,6 @@ export class BitPayCardHome implements OnInit {
         this._initial = false;
       }, 50);
     });
-  }
-
-  ngOnInit() {
-    this.appName = this.appProvider.info.userVisibleName;
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -86,11 +86,13 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
+
       // retrieve cards from storage
       setTimeout(async () => {
-        const cards = await this.persistenceProvider.getBitpayDebitCards(
+        let cards = await this.persistenceProvider.getBitpayDebitCards(
           Network[this.NETWORK]
         );
+
         // filter out and show one galileo card
         const idx = cards.findIndex(c => {
           return c.provider === 'galileo' && c.cardType === 'physical';
@@ -98,7 +100,9 @@ export class CardsPage {
 
         // if galileo then show disclaimer and remove add card ability
         if (idx !== -1) {
-          this.showDisclaimer = true;
+          setTimeout( () => {
+            this.showDisclaimer = true;
+          }, 300);
           await this.persistenceProvider.setReachedCardLimit(true);
           this.events.publish('reachedCardLimit');
         } else {
@@ -106,6 +110,19 @@ export class CardsPage {
         }
 
         cards.splice(idx, 1);
+
+        // filter by show
+        cards = cards.filter(c => c.show == true);
+
+        // if all cards hidden
+        if (cards.length < 1) {
+          // card limit reached
+          if (idx !== -1 ) {
+            // do not show order now
+            this.showBitPayCard = false;
+          }
+          this.showDisclaimer = false;
+        }
 
         res(cards);
       }, 100);
