@@ -105,8 +105,6 @@ export class CardsPage {
           }, 300);
           await this.persistenceProvider.setReachedCardLimit(true);
           this.events.publish('reachedCardLimit');
-        } else {
-          this.showDisclaimer = false;
         }
 
         cards.splice(idx, 1);
@@ -121,7 +119,6 @@ export class CardsPage {
             // do not show order now
             this.showBitPayCard = false;
           }
-          this.showDisclaimer = false;
         }
 
         res(cards);
