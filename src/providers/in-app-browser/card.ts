@@ -380,38 +380,32 @@ export class IABCardProvider {
         variables: { ...variables, token }
       };
 
-      this.appIdentityProvider.getIdentity(
-        this.NETWORK,
-        (err, appIdentity) => {
-          if (err) {
-            return;
-          }
-
-          const url = `${this.BITPAY_API_URL}/`;
-          const dataToSign = `${url}${JSON.stringify(json)}`;
-          const signedData = bitauthService.sign(
-            dataToSign,
-            appIdentity.priv
-          );
-
-          const headers = {
-            'x-identity': appIdentity.pub,
-            'x-signature': signedData
-          };
-
-          this.cardIAB_Ref.executeScript(
-            {
-              code: `window.postMessage('${JSON.stringify({
-                url,
-                headers,
-                json,
-                name
-              })}', '*')`
-            },
-            () => this.logger.log(`card - signed request -> ${name}`)
-          );
+      this.appIdentityProvider.getIdentity(this.NETWORK, (err, appIdentity) => {
+        if (err) {
+          return;
         }
-      );
+
+        const url = `${this.BITPAY_API_URL}/`;
+        const dataToSign = `${url}${JSON.stringify(json)}`;
+        const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
+
+        const headers = {
+          'x-identity': appIdentity.pub,
+          'x-signature': signedData
+        };
+
+        this.cardIAB_Ref.executeScript(
+          {
+            code: `window.postMessage('${JSON.stringify({
+              url,
+              headers,
+              json,
+              name
+            })}', '*')`
+          },
+          () => this.logger.log(`card - signed request -> ${name}`)
+        );
+      });
     } catch (err) {}
   }
 
@@ -435,8 +429,7 @@ export class IABCardProvider {
         if (fundedWallets.length === 0) {
           option.disabled = true;
         } else {
-          hasWallets[option.currency.toLowerCase()] =
-            fundedWallets.length;
+          hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
           availableWallets.push(option);
         }
       }
@@ -471,7 +464,7 @@ export class IABCardProvider {
 
     const { id, show, provider } = event.data.params;
 
-    cards = cards.map( c => {
+    cards = cards.map(c => {
       if (provider === 'galileo' || c.eid === id) {
         return {
           ...c,
@@ -480,7 +473,7 @@ export class IABCardProvider {
       }
       return c;
     });
-    
+
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );

@@ -1,10 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 // Providers
-import {
-  AppProvider,
-  IABCardProvider,
-} from '../../../../providers';
+import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -42,7 +39,7 @@ export class BitPayCardHome implements OnInit {
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider,
-    private events: Events,
+    private events: Events
   ) {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
@@ -57,7 +54,9 @@ export class BitPayCardHome implements OnInit {
     setTimeout(() => {
       this.ready = true;
       this._initial = false;
-      this.disableAddCard = this.bitpayCardItems && this.bitpayCardItems.filter( c => c.provider === 'galileo').length > 0;
+      this.disableAddCard =
+        this.bitpayCardItems &&
+        this.bitpayCardItems.filter(c => c.provider === 'galileo').length > 0;
     }, 50);
   }
 

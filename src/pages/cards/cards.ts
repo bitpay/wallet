@@ -86,7 +86,6 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
-
       // retrieve cards from storage
       setTimeout(async () => {
         let cards = await this.persistenceProvider.getBitpayDebitCards(
@@ -100,7 +99,7 @@ export class CardsPage {
 
         // if galileo then show disclaimer and remove add card ability
         if (idx !== -1) {
-          setTimeout( () => {
+          setTimeout(() => {
             this.showDisclaimer = true;
           }, 300);
           await this.persistenceProvider.setReachedCardLimit(true);
@@ -115,7 +114,7 @@ export class CardsPage {
         // if all cards hidden
         if (cards.length < 1) {
           // card limit reached
-          if (idx !== -1 ) {
+          if (idx !== -1) {
             // do not show order now
             this.showBitPayCard = false;
           }
