@@ -26,12 +26,6 @@ msgid ""
 "XRP account on an exchange."
 msgstr ""
 
-msgid "A New Home for Wallets"
-msgstr ""
-
-msgid "A New Look and Feel"
-msgstr ""
-
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr ""
 
@@ -304,6 +298,16 @@ msgstr ""
 msgid "Bad wallet invitation"
 msgstr ""
 
+msgid ""
+"Be careful. Some inputs of this transaction has no confirmations. Please "
+"wait until they are confirmed."
+msgstr ""
+
+msgid ""
+"Be careful. Until it confirms, the transaction could be replaced/redirected "
+"by the sender. You can try to speed it up by using a higher fee."
+msgstr ""
+
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr ""
 
@@ -479,6 +483,9 @@ msgstr ""
 msgid "Check the transaction on your wallet details"
 msgstr ""
 
+msgid "Choose Assets"
+msgstr ""
+
 msgid "Choose a backup file from your computer"
 msgstr ""
 
@@ -632,6 +639,9 @@ msgstr ""
 msgid "Continue to Simplex"
 msgstr ""
 
+msgid "Continue to {storeName}"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr ""
 
@@ -666,11 +676,6 @@ msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr ""
 
 msgid "Copy to clipboard"
-msgstr ""
-
-msgid ""
-"Core features have now been re-organized into four accessible tabs allowing "
-"you to manage and spend your crypto seamlessly and quickly."
 msgstr ""
 
 msgid "Could not access wallet"
@@ -910,6 +915,9 @@ msgid "Do not include private key"
 msgstr ""
 
 msgid "Do this later?"
+msgstr ""
+
+msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
 msgid "Do you want to verify your account now?"
@@ -1158,6 +1166,9 @@ msgstr ""
 msgid "Fee rate"
 msgstr ""
 
+msgid "Feedback"
+msgstr ""
+
 msgid "Feedback could not be submitted. Please try again later."
 msgstr ""
 
@@ -1233,9 +1244,6 @@ msgstr ""
 msgid "Generating new address..."
 msgstr ""
 
-msgid "Get Help"
-msgstr ""
-
 msgid "Get Started"
 msgstr ""
 
@@ -1267,9 +1275,6 @@ msgid "Gift card canceled"
 msgstr ""
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
-msgstr ""
-
-msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
@@ -1328,7 +1333,10 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-msgid "How satisfied are you with {{appName}} wallet?"
+msgid "How can we improve?"
+msgstr ""
+
+msgid "How satisfied are you with using {{appName}}?"
 msgstr ""
 
 msgid ""
@@ -1353,6 +1361,9 @@ msgstr ""
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
+msgid "I love it!"
+msgstr ""
+
 msgid "I understand"
 msgstr ""
 
@@ -1369,13 +1380,7 @@ msgstr ""
 msgid "I'm disappointed"
 msgstr ""
 
-msgid "I'm satisfied"
-msgstr ""
-
 msgid "I'm sure"
-msgstr ""
-
-msgid "I'm very happy"
 msgstr ""
 
 msgid "I've used this card"
@@ -1490,9 +1495,6 @@ msgstr ""
 msgid "Insufficient funds for fee"
 msgstr ""
 
-msgid "Introducing Tabs"
-msgstr ""
-
 msgid "Invalid"
 msgstr ""
 
@@ -1545,6 +1547,9 @@ msgid ""
 "It's important that you write your recovery phrase down correctly. If "
 "something happens to your wallet, you'll need it to recover your money. "
 "Please review and try again."
+msgstr ""
+
+msgid "It's ok for now"
 msgstr ""
 
 msgid "Join"
@@ -1949,9 +1954,6 @@ msgstr ""
 msgid "Open settings"
 msgstr ""
 
-msgid "Open website"
-msgstr ""
-
 msgid "Order Details"
 msgstr ""
 
@@ -2163,13 +2165,13 @@ msgstr ""
 msgid "Quick and easy setup"
 msgstr ""
 
+msgid "RBF transaction"
+msgstr ""
+
 msgid "Random"
 msgstr ""
 
 msgid "Rate"
-msgstr ""
-
-msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Re-Import Wallets"
@@ -2315,6 +2317,9 @@ msgid "Requires invitation to join"
 msgstr ""
 
 msgid "Requires multiple devices (most secure)"
+msgstr ""
+
+msgid "Reset All Settings"
 msgstr ""
 
 msgid "Resolved"
@@ -2496,9 +2501,6 @@ msgstr ""
 msgid "Server response could not be verified"
 msgstr ""
 
-msgid "Services"
-msgstr ""
-
 msgid "Session Log"
 msgstr ""
 
@@ -2542,6 +2544,9 @@ msgid "Share this address with the devices joining this account."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
+msgstr ""
+
+msgid "Share with friends"
 msgstr ""
 
 msgid "Share {{appName}}"
@@ -2646,6 +2651,9 @@ msgid "Speed up successfully"
 msgstr ""
 
 msgid "Speed up transaction"
+msgstr ""
+
+msgid "Spend and control your cryptocurrency by downloading the {{appName}} app."
 msgstr ""
 
 msgid "Spend crypto at your favorite stores."
@@ -2794,11 +2802,6 @@ msgid ""
 "The higher the fee, the greater the incentive a miner has to include that "
 "transaction in a block. Current fees are determined based on network load "
 "and the selected policy."
-msgstr ""
-
-msgid ""
-"The home tab is where you can check your total wallet value, exchange "
-"rates, buy crypto, and see current offers at a glance."
 msgstr ""
 
 msgid ""
@@ -3149,6 +3152,9 @@ msgstr ""
 msgid "Unconfirmed"
 msgstr ""
 
+msgid "Unconfirmed inputs"
+msgstr ""
+
 msgid "Unlink account"
 msgstr ""
 
@@ -3342,9 +3348,6 @@ msgstr ""
 msgid "Warning!"
 msgstr ""
 
-msgid "Warning: this transaction has unconfirmed inputs"
-msgstr ""
-
 msgid "We appreciate your review"
 msgstr ""
 
@@ -3380,7 +3383,7 @@ msgstr ""
 
 msgid ""
 "We're always listening for ways we can improve your experience. Feel free "
-"to leave us a review in the app store or request a new feature."
+"to leave us 5 star review in the app store or share with your friends!"
 msgstr ""
 
 msgid ""
@@ -3392,12 +3395,6 @@ msgstr ""
 msgid ""
 "We're always listening for ways we can improve your experience. Is there "
 "anything we could do to improve your experience?"
-msgstr ""
-
-msgid "Website"
-msgstr ""
-
-msgid "What changed?"
 msgstr ""
 
 msgid "What do you call this key?"
@@ -3631,11 +3628,6 @@ msgid ""
 msgstr ""
 
 msgid "Your wallet {{walletName}} is complete."
-msgstr ""
-
-msgid ""
-"Your wallets have now all been consolidated into one tab allowing you to "
-"access and organize all of your crypto assets with ease."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
