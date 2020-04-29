@@ -29,8 +29,9 @@ export class IABCardProvider {
   private NETWORK: string;
   private BITPAY_API_URL: string;
   private fetchLock: boolean;
-  private _isHidden = true;
   public hasCards: boolean;
+  private _isHidden = true;
+  private _hasFirstView: boolean;
   private _pausedState = false;
 
   public user = new BehaviorSubject({});
@@ -60,6 +61,15 @@ export class IABCardProvider {
         ? 'https://bitpay.com'
         : 'https://test.bitpay.com';
     this.logger.log(`card provider initialized with ${this.NETWORK}`);
+  }
+
+  public setHasFirstView(status) {
+    this.logger.log(`CARD - has first view = ${status}`);
+    this._hasFirstView = status;
+  }
+
+  get hasFirstView() {
+    return this._hasFirstView;
   }
 
   get ref() {

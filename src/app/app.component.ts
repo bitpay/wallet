@@ -317,6 +317,8 @@ export class CopayApp {
     const hasFirstView =
       cards && cards.filter(c => c.provider === 'firstView').length > 0;
 
+    this.iabCardProvider.setHasFirstView(hasFirstView);
+
     if (this.platformProvider.isCordova) {
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
