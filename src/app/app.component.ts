@@ -208,7 +208,7 @@ export class CopayApp {
         config && config.lock && config.lock.method
           ? config.lock.method.toLowerCase()
           : null;
-      if (!lockMethod) {
+      if (!lockMethod || lockMethod === 'disabled') {
         return;
       }
       this.iabCardProvider.pause();

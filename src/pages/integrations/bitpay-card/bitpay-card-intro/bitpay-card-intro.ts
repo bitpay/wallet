@@ -125,7 +125,9 @@ export class BitPayCardIntroPage {
         'USD'
       );
 
-      if (!hasWalletWithFunds) {
+      const hasFirstView = await this.iabCardProvider.hasFirstView();
+
+      if (!hasWalletWithFunds && !hasFirstView) {
         this.iabCardProvider.sendMessage(
           {
             message: 'needFunds'

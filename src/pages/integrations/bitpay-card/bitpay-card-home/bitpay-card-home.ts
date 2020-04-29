@@ -1,11 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 // Providers
-import {
-  AppProvider,
-  IABCardProvider,
-  PersistenceProvider
-} from '../../../../providers';
+import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -43,25 +39,25 @@ export class BitPayCardHome implements OnInit {
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider,
-    private events: Events,
-    private persistenceProvider: PersistenceProvider
-  ) {}
-
-  ngOnInit() {
-    this.appName = this.appProvider.info.userVisibleName;
+    private events: Events
+  ) {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
     this.events.subscribe('isFetchingDebitCards', status => {
       this.isFetching = status;
     });
-    this.persistenceProvider.getReachedCardLimit().then(limitReached => {
-      this.disableAddCard = limitReached == true;
-      setTimeout(() => {
-        this.ready = true;
-        this._initial = false;
-      }, 50);
-    });
+  }
+
+  ngOnInit() {
+    this.appName = this.appProvider.info.userVisibleName;
+    setTimeout(() => {
+      this.ready = true;
+      this._initial = false;
+      this.disableAddCard =
+        this.bitpayCardItems &&
+        this.bitpayCardItems.filter(c => c.provider === 'galileo').length > 0;
+    }, 50);
   }
 
   ngOnChanges(changes: SimpleChanges) {
