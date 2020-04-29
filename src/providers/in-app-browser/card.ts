@@ -602,9 +602,15 @@ export class IABCardProvider {
     }
   }
 
-  show(): void {
+  show(enableLoadingScreen?: boolean): void {
     if (this.cardIAB_Ref) {
-      this.sendMessage({ message: 'iabOpening' });
+      let message = 'iabOpening';
+
+      if (enableLoadingScreen) {
+        message = `${message}?enableLoadingScreen`;
+      }
+
+      this.sendMessage({ message });
       this.cardIAB_Ref.show();
       this._isHidden = false;
     }

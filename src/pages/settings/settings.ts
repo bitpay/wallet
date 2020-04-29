@@ -304,13 +304,12 @@ export class SettingsPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         const message = `openSettings?${id}`;
+        this.iabCardProvider.show(true);
         this.iabCardProvider.sendMessage(
           {
             message
           },
-          () => {
-            this.iabCardProvider.show();
-          }
+          () => {}
         );
       } else {
         this.navCtrl.push(BitPaySettingsPage, { id });

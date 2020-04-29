@@ -88,13 +88,12 @@ export class BitPayCardHome implements OnInit {
   public goToCard(cardId): void {
     if (this.cardExperimentEnabled) {
       const message = `loadDashboard?${cardId}`;
+      this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
           message
         },
-        () => {
-          this.iabCardProvider.show();
-        }
+        () => {}
       );
     } else {
       this.navCtrl.push(BitPayCardPage, { id: cardId });

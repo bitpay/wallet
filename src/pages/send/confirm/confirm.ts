@@ -1220,6 +1220,7 @@ export class ConfirmPage {
       } else {
         if (redir) {
           setTimeout(() => {
+            this.iabCardProvider.show();
             this.iabCardProvider.sendMessage(
               {
                 message: 'paymentBroadcasted'
@@ -1228,7 +1229,6 @@ export class ConfirmPage {
                 this.logger.log('card IAB -> payment broadcasting opening IAB');
               }
             );
-            this.iabCardProvider.show();
           }, 1000);
         } else {
           this.navCtrl.push(WalletDetailsPage, {
