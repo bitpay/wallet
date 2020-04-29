@@ -118,7 +118,9 @@ export class SettingsPage {
     this.user$ = this.iabCardProvider.user$;
 
     this.events.subscribe('updateCards', cards => {
-      this.bitpayCardItems = cards;
+      if (cards && cards.length > 0) {
+        this.bitpayCardItems = cards;
+      }
     });
   }
 
