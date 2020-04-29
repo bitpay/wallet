@@ -4,7 +4,6 @@ import { Events, NavController } from 'ionic-angular';
 import {
   AppProvider,
   IABCardProvider,
-  PersistenceProvider
 } from '../../../../providers';
 
 // Pages
@@ -44,7 +43,6 @@ export class BitPayCardHome implements OnInit {
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider,
     private events: Events,
-    private persistenceProvider: PersistenceProvider
   ) {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
@@ -56,13 +54,11 @@ export class BitPayCardHome implements OnInit {
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    this.persistenceProvider.getReachedCardLimit().then(limitReached => {
-      this.disableAddCard = limitReached == true;
-      setTimeout(() => {
-        this.ready = true;
-        this._initial = false;
-      }, 50);
-    });
+    setTimeout(() => {
+      this.ready = true;
+      this._initial = false;
+      this.disableAddCard = this.bitpayCardItems && this.bitpayCardItems.filter( c => c.provider === 'galileo').length > 0;
+    }, 50);
   }
 
   ngOnChanges(changes: SimpleChanges) {
