@@ -681,6 +681,15 @@ export class IncomingDataProvider {
     this.redir(invoiceUrl);
   }
 
+  private openIAB(message): void {
+    this.iabCardProvider.hasFirstView().then(() => {
+      this.iabCardProvider.show();
+      this.iabCardProvider.sendMessage({
+        message
+      });
+    });
+  }
+
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
@@ -821,31 +830,19 @@ export class IncomingDataProvider {
           break;
 
         case 'email-verified':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'emailVerified'
-          });
+          this.openIAB('emailVerified');
           break;
 
         case 'get-started':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'orderCard'
-          });
+          this.openIAB('orderCard');
           break;
 
         case 'retry':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'retry'
-          });
+          this.openIAB('retry');
           break;
 
         case 'debit-card-order':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'debitCardOrder'
-          });
+          this.openIAB('debitCardOrder');
       }
 
       return true;

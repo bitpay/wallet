@@ -31,7 +31,6 @@ export class IABCardProvider {
   private fetchLock: boolean;
   public hasCards: boolean;
   private _isHidden = true;
-  private _hasFirstView: boolean;
   private _pausedState = false;
 
   public user = new BehaviorSubject({});
@@ -61,15 +60,6 @@ export class IABCardProvider {
         ? 'https://bitpay.com'
         : 'https://test.bitpay.com';
     this.logger.log(`card provider initialized with ${this.NETWORK}`);
-  }
-
-  public setHasFirstView(status) {
-    this.logger.log(`CARD - has first view = ${status}`);
-    this._hasFirstView = status;
-  }
-
-  get hasFirstView() {
-    return this._hasFirstView;
   }
 
   get ref() {
@@ -634,5 +624,27 @@ export class IABCardProvider {
     }
 
     this._pausedState = false;
+  }
+
+  async hasFirstView(): Promise<boolean> {
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      this.NETWORK
+    );
+    const hasFirstView =
+      cards && cards.filter(c => c.provider === 'firstView').length > 0;
+    this.logger.log(`CARD - has first view cards = ${hasFirstView}`);
+    if (this.cardIAB_Ref) {
+      this.cardIAB_Ref.executeScript(
+        {
+          code: `sessionStorage.setItem(
+                  'hasFirstView',
+                  ${hasFirstView}
+                  )`
+        },
+        () => this.logger.log('added cards')
+      );
+    }
+
+    return hasFirstView;
   }
 }
