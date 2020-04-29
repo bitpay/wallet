@@ -314,6 +314,8 @@ export class CopayApp {
       this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
     ]);
 
+    const hasFirstView = cards && cards.filter( c => c.provider === 'firstView').length > 0 ;
+
     if (this.platformProvider.isCordova) {
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
@@ -331,6 +333,7 @@ export class CopayApp {
               sessionStorage.setItem('cards', ${JSON.stringify(
                 JSON.stringify(cards)
               )});
+              sessionStorage.setItem('hasFirstView', ${hasFirstView}); 
               })()`
           )
           .then(ref => {
