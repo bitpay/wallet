@@ -9,10 +9,15 @@ import { SessionLogPage } from './session-log/session-log';
 // providers
 import {
   AppProvider,
+  BitPayProvider,
+  ConfigProvider,
   ExternalLinkProvider,
   Logger,
-  ReplaceParametersProvider
+  PersistenceProvider,
+  ReplaceParametersProvider,
+  ThemeProvider
 } from '../../../providers';
+
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
@@ -21,14 +26,19 @@ export class AboutPage {
   public version: string;
   public commitHash: string;
   public title: string;
-
+  private tapped = 0;
+  public pressed: number = 0;
   constructor(
     private navCtrl: NavController,
     private appProvider: AppProvider,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private bitpayProvider: BitPayProvider,
+    private persistenceProvider: PersistenceProvider,
+    private configProvider: ConfigProvider,
+    private themeProvider: ThemeProvider
   ) {}
 
   ionViewDidLoad() {
@@ -105,5 +115,29 @@ export class AboutPage {
 
   public openSendFeedbackPage(): void {
     this.navCtrl.push(SendFeedbackPage);
+  }
+
+  // adding this for testing purposes
+  public async wipeBitPayAccounts() {
+    this.tapped++;
+    if (this.tapped >= 10) {
+      await this.persistenceProvider.removeAllBitPayAccounts(
+        this.bitpayProvider.getEnvironment().network
+      );
+      alert('removed accounts');
+      this.tapped = 0;
+    }
+  }
+
+  public async easterEgg() {
+    const config = this.configProvider.get();
+    if (config.theme.enabled) return;
+    this.pressed++;
+    if (this.pressed == 5) {
+      this.themeProvider.getDetectedSystemTheme().then(detectedTheme => {
+        this.themeProvider.setActiveTheme('system', detectedTheme);
+        this.pressed = 0;
+      });
+    }
   }
 }

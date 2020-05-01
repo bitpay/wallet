@@ -76,10 +76,14 @@ export class PushNotificationsProvider {
         );
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
-          const walletIdHashed = data.walletId;
-          const tokenAddress = data.tokenAddress;
-          if (!walletIdHashed) return;
-          this._openWallet(walletIdHashed, tokenAddress);
+          if (data.redir) {
+            this.events.publish('IncomingDataRedir', { name: data.redir });
+          } else {
+            const walletIdHashed = data.walletId;
+            const tokenAddress = data.tokenAddress;
+            if (!walletIdHashed) return;
+            this._openWallet(walletIdHashed, tokenAddress);
+          }
         }
       });
     }

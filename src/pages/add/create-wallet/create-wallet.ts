@@ -120,6 +120,7 @@ export class CreateWalletPage implements OnInit {
       recoveryPhrase: [null],
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
+      useNativeSegwit: [false],
       singleAddress: [false],
       coin: [null, Validators.required]
     });
@@ -180,6 +181,8 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['selectedSeed'].setValue(seed); // new or set
     if (this.createForm.controls['testnet'])
       this.createForm.controls['testnet'].setValue(false);
+    if (this.createForm.controls['useNativeSegwit'])
+      this.createForm.controls['useNativeSegwit'].setValue(false);
     this.createForm.controls['derivationPath'].setValue(
       this.derivationPathByDefault
     );
@@ -204,6 +207,7 @@ export class CreateWalletPage implements OnInit {
           ? this.createForm.value.myName
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
+      useNativeSegwit: this.createForm.value.useNativeSegwit,
       bwsurl: this.createForm.value.bwsURL,
       singleAddress: this.currencyProvider.isSingleAddress(
         this.createForm.value.coin

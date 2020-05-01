@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <ion-list *ngIf="paymentRequest">
+  <ion-list class="bp-list" *ngIf="paymentRequest">
     <ion-item-divider></ion-item-divider>
     <ion-item *ngIf="paymentRequest.fiat_base_amount">
       {{'Approximate receiving fiat amount' | translate}}

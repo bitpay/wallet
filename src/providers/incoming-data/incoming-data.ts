@@ -10,6 +10,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
@@ -34,6 +35,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
@@ -46,28 +48,19 @@ export class IncomingDataProvider {
   }
 
   public finishIncomingData(data: any): void {
-    let redirTo = null;
-    let value = null;
-    if (data) {
-      redirTo = data.redirTo;
-      value = data.value;
-    }
-    if (redirTo === 'AmountPage') {
-      let coin = data.coin ? data.coin : 'btc';
-      this.events.publish('finishIncomingDataMenuEvent', {
-        redirTo,
-        value,
-        coin
-      });
-    } else if (redirTo === 'PaperWalletPage') {
-      const nextView = {
-        name: 'PaperWalletPage',
-        params: { privateKey: value }
-      };
-      this.incomingDataRedir(nextView);
-    } else {
-      this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
-    }
+    if (!data) return;
+    const stateParams = {
+      addressbookEntry:
+        data.redirTo == 'AddressBookAddPage' ? data.value : null,
+      toAddress: data.redirTo == 'AmountPage' ? data.value : null,
+      coin: data.coin ? data.coin : 'btc',
+      privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
+    };
+    const nextView = {
+      name: data.redirTo,
+      params: stateParams
+    };
+    this.incomingDataRedir(nextView);
   }
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
@@ -195,6 +188,11 @@ export class IncomingDataProvider {
     return !!(data && data.indexOf('bitpay://bitpay') === 0);
   }
 
+  private isValidBitPayRedirLink(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(data && data.indexOf('bitpay://landing') === 0);
+  }
+
   private isValidJoinCode(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/));
@@ -240,10 +238,15 @@ export class IncomingDataProvider {
   private async handleBitPayInvoice(invoiceUrl: string) {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
+      this.onGoingProcessProvider.set('fetchingPayProOptions');
       const disableLoader = true;
-      const details = await this.payproProvider.getPayProOptions(invoiceUrl);
+      const payProOptions = await this.payproProvider.getPayProOptions(
+        invoiceUrl
+      );
 
-      const selected = details.paymentOptions.filter(option => option.selected);
+      const selected = payProOptions.paymentOptions.filter(
+        option => option.selected
+      );
 
       if (selected.length === 1) {
         // Confirm Page - selectedTransactionCurrency set to selected
@@ -251,13 +254,15 @@ export class IncomingDataProvider {
         return this.goToPayPro(
           invoiceUrl,
           currency.toLowerCase(),
+          payProOptions,
           disableLoader
         );
       } else {
+        this.onGoingProcessProvider.clear();
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
-        for (const option of details.paymentOptions) {
+        for (const option of payProOptions.paymentOptions) {
           const fundedWallets = this.profileProvider.getWallets({
             coin: option.currency.toLowerCase(),
             network: option.network,
@@ -276,12 +281,13 @@ export class IncomingDataProvider {
           return this.goToPayPro(
             invoiceUrl,
             currency.toLowerCase(),
+            payProOptions,
             disableLoader
           );
         }
 
         const stateParams = {
-          payProOptions: details,
+          payProOptions,
           hasWallets
         };
         let nextView = {
@@ -291,6 +297,7 @@ export class IncomingDataProvider {
         this.incomingDataRedir(nextView);
       }
     } catch (err) {
+      this.onGoingProcessProvider.clear();
       this.events.publish('incomingDataError', err);
       this.logger.error(err);
     }
@@ -448,13 +455,15 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
+  // Deprecated
   private handlePlainUrl(data: string): void {
-    this.logger.debug('Incoming-data: Plain URL');
-    data = this.sanitizeUri(data);
-    this.showMenu({
-      data,
-      type: 'url'
-    });
+    this.logger.debug('Incoming-data: Plain URL', data);
+    // No process Plain URL anymore
+    // data = this.sanitizeUri(data);
+    // this.showMenu({
+    //  data,
+    //  type: 'url'
+    // });
   }
 
   private handlePlainBitcoinAddress(
@@ -603,6 +612,25 @@ export class IncomingDataProvider {
     }
   }
 
+  private goToBitPayRedir(data: string): void {
+    this.logger.debug('Incoming-data (redirect): BitPay Redir');
+    const redir = data.replace('bitpay://landing/', '');
+    switch (redir) {
+      default:
+      case 'card':
+        // Disable BitPay Card
+        if (!this.appProvider.info._enabledExtensions.debitcard) {
+          this.logger.warn('BitPay Card has been disabled for this build');
+          return;
+        }
+        const nextView = {
+          name: 'PhaseOneCardIntro'
+        };
+        this.incomingDataRedir(nextView);
+        break;
+    }
+  }
+
   private goToCoinbase(data: string): void {
     this.logger.debug('Incoming-data (redirect): Coinbase URL');
 
@@ -649,6 +677,15 @@ export class IncomingDataProvider {
 
     const invoiceUrl = this.getParameterByName('url', data);
     this.redir(invoiceUrl);
+  }
+
+  private openIAB(message): void {
+    this.iabCardProvider.hasFirstView().then(() => {
+      this.iabCardProvider.show();
+      this.iabCardProvider.sendMessage({
+        message
+      });
+    });
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
@@ -735,6 +772,11 @@ export class IncomingDataProvider {
       this.goToInvoice(data);
       return true;
 
+      // BitPay Redir Link
+    } else if (this.isValidBitPayRedirLink(data)) {
+      this.goToBitPayRedir(data);
+      return true;
+
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
       this.goToBitPayCard(data);
@@ -786,24 +828,19 @@ export class IncomingDataProvider {
           break;
 
         case 'email-verified':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'email-verified'
-          });
+          this.openIAB('emailVerified');
           break;
 
         case 'get-started':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'get-started'
-          });
+          this.openIAB('orderCard');
           break;
 
         case 'retry':
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'retry'
-          });
+          this.openIAB('retry');
+          break;
+
+        case 'debit-card-order':
+          this.openIAB('debitCardOrder');
       }
 
       return true;
@@ -1076,19 +1113,31 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
-  public goToPayPro(url: string, coin: Coin, disableLoader?: boolean): void {
+  public goToPayPro(
+    url: string,
+    coin: Coin,
+    payProOptions?,
+    disableLoader?: boolean
+  ): void {
     this.payproProvider
       .getPayProDetails(url, coin, disableLoader)
       .then(details => {
-        this.handlePayPro(details, url, coin);
+        this.onGoingProcessProvider.clear();
+        this.handlePayPro(details, payProOptions, url, coin);
       })
       .catch(err => {
+        this.onGoingProcessProvider.clear();
         this.events.publish('incomingDataError', err);
         this.logger.error(err);
       });
   }
 
-  private async handlePayPro(payProDetails, url, coin: Coin): Promise<void> {
+  private async handlePayPro(
+    payProDetails,
+    payProOptions,
+    url,
+    coin: Coin
+  ): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');
       const error = this.translate.instant('No wallets available');
@@ -1107,11 +1156,10 @@ export class IncomingDataProvider {
 
     try {
       const { memo, network } = payProDetails;
-      const disableLoader = true;
-      const { paymentOptions } = await this.payproProvider.getPayProOptions(
-        url,
-        disableLoader
-      );
+      if (!payProOptions) {
+        payProOptions = await this.payproProvider.getPayProOptions(url);
+      }
+      const paymentOptions = payProOptions.paymentOptions;
       const { estimatedAmount } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );

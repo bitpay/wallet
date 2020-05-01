@@ -7,8 +7,8 @@ import { Subscription } from 'rxjs';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -30,6 +30,7 @@ export class CopayersPage {
   public canSign: boolean;
   public copayers: any[];
   public secret;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
@@ -49,8 +50,8 @@ export class CopayersPage {
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
-    private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private configProvider: ConfigProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -59,6 +60,7 @@ export class CopayersPage {
     this.copayers = [];
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.canSign = this.wallet.canSign;
+    this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
   }
 
   ionViewDidLoad() {
@@ -157,7 +159,6 @@ export class CopayersPage {
 
           if (!keyInUse) {
             this.keyProvider.removeKey(keyId);
-            delete this.profileProvider.walletsGroups[keyId];
           } else {
             this.logger.warn('Key was not removed. Still in use');
           }
@@ -172,13 +173,6 @@ export class CopayersPage {
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
-  }
-
-  public showFullInfo(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet('copayers', {
-      secret: this.secret
-    });
-    infoSheet.present();
   }
 
   public shareAddress(): void {

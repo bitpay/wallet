@@ -1,45 +1,11 @@
 page-custom-amount {
-  .scroll-content {
-    background-color: white;
-    margin-top: 0rem;
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      background-color: white;
-    }
-  }
-
-  .qr-container {
-    height: 70vh;
-    position: relative;
-    .lines-background {
-      background: url(../assets/img/curved-lines-background.png) center center
-        no-repeat #ececec;
-      opacity: 0.1;
-      background-size: cover;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-    .qr-card {
-      max-height: 425px;
-      cursor: pointer;
-      .copy-icon {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-      }
-      .qr-card-amount {
-        text-align: center;
-        margin-top: 15px;
-        font-size: 1.8rem;
-        font-weight: bold;
-        small {
-          font-weight: normal;
-        }
-      }
+  .qr-card-amount {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    small {
+      font-weight: normal;
     }
   }
   .receive-content {
@@ -58,31 +24,34 @@ page-custom-amount {
         width: 2rem;
       }
     }
-    .address-container {
-      bottom: 0;
-      color: rgb(80, 80, 80);
-      width: 100%;
-      padding: 15px;
-      text-align: center;
-      font-size: 15px;
-      display: flex;
-      justify-content: center;
-      .text-address {
-        width: 80%;
-        background: color($colors, light);
-        color: color($colors, light-grey);
-        padding: 1.5rem 1rem;
-        border-radius: 3px;
-        &.ellipsis img {
-          vertical-align: middle;
+  }
+  .addr-container {
+    margin: 0 15px 0 15px;
+    text-align: center;
+    font-size: 15px;
+    .text-address {
+      color: color($colors, light-grey);
+      padding: 1.3rem 1rem;
+      border-radius: 6px;
+      position: relative;
+      .address-text {
+        width: 100%;
+        vertical-align: middle;
+        display: inline-block;
+        opacity: 1;
+        transition: opacity 500ms ease;
+        padding-left: 30px;
+        .address-placeholder {
+          font-size: 14px;
+          @media (max-height: 530px) {
+            font-size: 11.5px;
+          }
         }
-        .address-text {
-          width: 90%;
-          vertical-align: middle;
-          display: inline-block;
-          opacity: 1;
-          transition: opacity 500ms ease;
-        }
+      }
+      .copy-to-clip {
+        position: absolute;
+        left: 10px;
+        margin-top: 2px;
       }
     }
   }

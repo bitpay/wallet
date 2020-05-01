@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, Slides } from 'ionic-angular';
+import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { IntegrationsPage } from '../../pages/integrations/integrations';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
@@ -18,7 +17,10 @@ import {
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { hasVisibleDiscount } from '../../providers/gift-card/gift-card';
+import {
+  hasPromotion,
+  hasVisibleDiscount
+} from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -28,7 +30,6 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
-import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
 
 export interface Advertisement {
   name: string;
@@ -50,9 +51,6 @@ export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
   showShoppingOption: boolean;
-  showServicesOption: boolean;
-  @ViewChild('showSurvey')
-  showSurvey;
   @ViewChild('showCard')
   showCard;
 
@@ -65,7 +63,6 @@ export class HomePage {
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
   public showTotalBalance: boolean = true;
-  public homeIntegrations;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
@@ -89,7 +86,6 @@ export class HomePage {
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private modalCtrl: ModalController,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private events: Events,
@@ -108,8 +104,6 @@ export class HomePage {
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
-    this.showNewDesignSlides();
-    this.showSurveyCard();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
@@ -117,8 +111,7 @@ export class HomePage {
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
     this.fetchAdvertisements();
-    await this.setDiscountedCard();
-    this.fetchDiscountAdvertisements();
+    this.fetchGiftCardAdvertisement();
   }
 
   ionViewDidLoad() {
@@ -197,7 +190,6 @@ export class HomePage {
     // Show integrations
     this.showBuyCryptoOption = false;
     this.showShoppingOption = false;
-    this.showServicesOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
       .filter(i => i.show);
@@ -211,9 +203,6 @@ export class HomePage {
           this.showShoppingOption = true;
           this.setGiftCardAdvertisement();
           break;
-        case 'shapeshift':
-          this.showServicesOption = true;
-          break;
         case 'coinbase':
           this.showCoinbase = x.linked == false;
           this.hasOldCoinbaseSession = x.oldLinked;
@@ -221,10 +210,6 @@ export class HomePage {
           break;
       }
     });
-
-    this.homeIntegrations = integrations.filter(
-      i => i.name == 'shapeshift' || (i.name == 'coinbase' && !i.linked)
-    );
   }
 
   private setGiftCardAdvertisement() {
@@ -250,12 +235,12 @@ export class HomePage {
     const card: Advertisement = this.cardExperimentEnabled
       ? {
           name: 'bitpay-card',
-          title: this.translate.instant('Fund it. Spend it.'),
+          title: this.translate.instant('Live on crypto'),
           body: this.translate.instant(
-            'Instantly reload your card with no conversion fee!'
+            'Designed for people who want to live life on crypto.'
           ),
           app: 'bitpay',
-          linkText: this.translate.instant('Order'),
+          linkText: this.translate.instant('Sign up'),
           link: BitPayCardIntroPage,
           dismissible: true,
           imgSrc: 'assets/img/icon-bpcard.svg'
@@ -290,7 +275,7 @@ export class HomePage {
           ? this.translate.instant(
               'Reconnect to quickly withdraw and deposit funds.'
             )
-          : this.translate.instant('Easily deposit and withdraws funds.'),
+          : this.translate.instant('Easily deposit and withdraw funds.'),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
           ? this.translate.instant('Reconnect Account')
@@ -299,19 +284,6 @@ export class HomePage {
         dismissible: true,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
-  }
-
-  private async setDiscountedCard(): Promise<void> {
-    this.discountedCard = await this.getDiscountedCard();
-    this.discountedCard && this.addGiftCardDiscount(this.discountedCard);
-  }
-
-  private async getDiscountedCard(): Promise<CardConfig> {
-    const availableCards = await this.giftCardProvider.getAvailableCards();
-    const discountedCard = availableCards.find(cardConfig =>
-      hasVisibleDiscount(cardConfig)
-    );
-    return discountedCard;
   }
 
   private addGiftCardDiscount(discountedCard: CardConfig) {
@@ -344,12 +316,44 @@ export class HomePage {
       });
   }
 
-  private async fetchGiftCardDiscount() {
+  private addGiftCardPromotion(promotedCard: CardConfig) {
+    const promo = promotedCard.promotions[0];
+    const advertisementName = promo.shortDescription;
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === advertisementName
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: advertisementName,
+        title: promo.title,
+        body: promo.description,
+        app: 'bitpay',
+        linkText: promo.cta || 'Buy Now',
+        link: BuyCardPage,
+        linkParams: { cardConfig: promotedCard },
+        dismissible: true,
+        imgSrc: promo.icon
+      });
+  }
+
+  private async fetchGiftCardAdvertisement() {
     const availableCards = await this.giftCardProvider.getAvailableCards();
     const discountedCard = availableCards.find(cardConfig =>
       hasVisibleDiscount(cardConfig)
     );
-    discountedCard && this.addGiftCardDiscount(discountedCard);
+    const promotedCard = availableCards.find(card => hasPromotion(card));
+    if (discountedCard) {
+      this.addGiftCardDiscount(discountedCard);
+    } else if (promotedCard) {
+      this.addGiftCardPromotion(promotedCard);
+    }
+  }
+
+  slideChanged() {
+    const slideIndex = this.slides && this.slides.getActiveIndex();
+    const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
+    const cardConfig = activeAd.linkParams && activeAd.linkParams.cardConfig;
+    cardConfig && this.logPresentedWithGiftCardPromoEvent(cardConfig);
   }
 
   public doRefresh(refresher): void {
@@ -402,11 +406,6 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private async fetchDiscountAdvertisements(): Promise<void> {
-    await this.fetchGiftCardDiscount();
-    this.logPresentedWithGiftCardDiscountEvent();
-  }
-
   private fetchAdvertisements(): void {
     this.advertisements.forEach(advertisement => {
       if (
@@ -432,20 +431,14 @@ export class HomePage {
     });
   }
 
-  logPresentedWithGiftCardDiscountEvent() {
-    const giftCardDiscount = this.advertisements.find(a =>
-      a.name.includes('gift-card-discount')
+  logPresentedWithGiftCardPromoEvent(promotedCard: CardConfig) {
+    this.giftCardProvider.logEvent(
+      'presentedWithGiftCardPromo',
+      this.giftCardProvider.getPromoEventParams(
+        promotedCard,
+        'Home Tab Advertisement'
+      )
     );
-    const isCurrentSlide = !this.slides || this.slides.getActiveIndex() === 0;
-    giftCardDiscount &&
-      isCurrentSlide &&
-      this.giftCardProvider.logEvent(
-        'presentedWithGiftCardDiscount',
-        this.giftCardProvider.getDiscountEventParams(
-          this.discountedCard,
-          'Home Tab Advertisement'
-        )
-      );
   }
 
   public dismissAdvertisement(advertisement): void {
@@ -470,8 +463,8 @@ export class HomePage {
     }
     if (page === BuyCardPage) {
       this.giftCardProvider.logEvent(
-        'clickedGiftCardDiscount',
-        this.giftCardProvider.getDiscountEventParams(
+        'clickedGiftCardPromo',
+        this.giftCardProvider.getPromoEventParams(
           params.cardConfig,
           'Home Tab Advertisement'
         )
@@ -483,12 +476,6 @@ export class HomePage {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public goToServices() {
-    this.navCtrl.push(IntegrationsPage, {
-      homeIntegrations: this.homeIntegrations
-    });
-  }
-
   public goToBuyCrypto() {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
     this.simplexProvider.getSimplex().then(simplexData => {
@@ -498,11 +485,6 @@ export class HomePage {
         this.navCtrl.push(SimplexBuyPage);
       }
     });
-  }
-
-  private async showSurveyCard() {
-    const hideSurvey = await this.persistenceProvider.getSurveyFlag();
-    this.showSurvey.setShowSurveyCard(!hideSurvey);
   }
 
   private checkNewRelease() {
@@ -520,9 +502,6 @@ export class HomePage {
   }
 
   private checkFeedbackInfo() {
-    // Hide feeback card if survey card is shown
-    // TODO remove this condition
-    if (this.showSurvey) return;
     this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
         this.initFeedBackInfo();
@@ -560,20 +539,6 @@ export class HomePage {
     const url =
       "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
-  }
-
-  private showNewDesignSlides() {
-    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
-    this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
-      if (!value) {
-        this.persistenceProvider.setNewDesignSlidesFlag('completed');
-        const modal = this.modalCtrl.create(NewDesignTourPage, {
-          showBackdrop: false,
-          enableBackdropDismiss: false
-        });
-        modal.present();
-      }
-    });
   }
 
   public enableBitPayIdPairing() {

@@ -17,7 +17,9 @@
     </ion-toolbar>
   </expandable-header>
 
-  <ion-searchbar class="searchbar" placeholder="{{'Search currency' | translate}}" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-searchbar>
+  <div padding>
+    <ion-input class="search-wrapper" placeholder="{{'Search currency' | translate}}" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-input>
+  </div>
   <ion-list class="settings-list bp-list">
     <ion-item *ngFor="let lastUsedAltCurrency of lastUsedAltCurrencyList" (click)="save(lastUsedAltCurrency)">
       {{ lastUsedAltCurrency.name }}

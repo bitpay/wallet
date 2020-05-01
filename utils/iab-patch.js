@@ -154,3 +154,27 @@ try {
 } catch (err) {
   console.error(err);
 }
+
+/**
+ * Android - patches the IAB to allow overriding the User-Agent via the key 'OverrideUserAgent'
+ */
+try {
+  const file = `${__dirname}/../platforms/android/app/src/main/java/org/apache/cordova/inappbrowser/InAppBrowser.java`;
+  const content = fs.readFileSync(file, 'utf8');
+
+  const result = content
+    .replace(
+      `private static final List customizableOptions = Arrays.asList(CLOSE_BUTTON_CAPTION, TOOLBAR_COLOR, NAVIGATION_COLOR, CLOSE_BUTTON_COLOR, FOOTER_COLOR);`,
+      `private static final String OVERRIDE_USERAGENT = "OverrideUserAgent";
+    private static final List customizableOptions = Arrays.asList(CLOSE_BUTTON_CAPTION, TOOLBAR_COLOR, NAVIGATION_COLOR, CLOSE_BUTTON_COLOR, FOOTER_COLOR, OVERRIDE_USERAGENT);`
+    )
+    .replace(
+      `String overrideUserAgent = preferences.getString("OverrideUserAgent", null);`,
+      `String overrideUserAgent = preferences.getString("OverrideUserAgent", features.get(OVERRIDE_USERAGENT));`
+    );
+
+  fs.writeFileSync(file, result);
+  console.log(`successfully patched InAppBrowser.java`);
+} catch (err) {
+  console.error(err);
+}

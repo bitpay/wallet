@@ -110,6 +110,16 @@ export interface Config {
 
   allowMultiplePrimaryWallets: boolean;
 
+  legacyQrCode: {
+    show: boolean;
+  };
+
+  theme: {
+    enabled: boolean;
+    system: boolean;
+    name: string;
+  };
+
   totalBalance: {
     show: boolean;
   };
@@ -232,6 +242,16 @@ export class ConfigProvider {
 
       allowMultiplePrimaryWallets: false,
 
+      legacyQrCode: {
+        show: false
+      },
+
+      theme: {
+        enabled: false,
+        system: true,
+        name: 'light'
+      },
+
       totalBalance: {
         show: true
       }
@@ -343,8 +363,20 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
     }
 
+    if (!this.configCache.theme || !this.configCache.theme.enabled) {
+      this.configCache.theme = this.configDefault.theme;
+    }
+
     if (!this.configCache.totalBalance) {
       this.configCache.totalBalance = this.configDefault.totalBalance;
     }
+
+    if (!this.configCache.legacyQrCode) {
+      this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
+    }
+  }
+
+  public reset() {
+    this.persistence.clearConfig();
   }
 }

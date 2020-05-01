@@ -125,25 +125,25 @@ export class BitPayCardIntroPage {
         'USD'
       );
 
-      if (!hasWalletWithFunds) {
+      const hasFirstView = await this.iabCardProvider.hasFirstView();
+
+      if (!hasWalletWithFunds && !hasFirstView) {
+        this.iabCardProvider.show();
         this.iabCardProvider.sendMessage(
           {
             message: 'needFunds'
           },
-          () => {
-            this.iabCardProvider.show();
-          }
+          () => {}
         );
         return;
       }
 
+      this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
           message: 'orderCard'
         },
-        () => {
-          this.iabCardProvider.show();
-        }
+        () => {}
       );
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});

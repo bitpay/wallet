@@ -1,6 +1,5 @@
 import { Component, NgZone } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -27,6 +26,7 @@ import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -77,10 +77,10 @@ export class WalletDetailsPage {
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
   public associatedWallet: string;
+  public backgroundColor: string;
   private isCordova: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
-
   constructor(
     private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
@@ -100,16 +100,14 @@ export class WalletDetailsPage {
     private profileProvider: ProfileProvider,
     private viewCtrl: ViewController,
     private platformProvider: PlatformProvider,
-    private statusBar: StatusBar,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
-  }
 
-  async ionViewDidLoad() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
 
@@ -142,36 +140,20 @@ export class WalletDetailsPage {
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
   }
 
-  // Event handling
-  ionViewWillLoad() {
-    this.subscribeEvents();
-  }
-
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleLightContent();
-    }
+    this.backgroundColor = this.themeProvider.getThemeInfo().walletDetailsBackgroundStart;
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
-  }
-
-  ionViewWillLeave() {
-    if (this.platformProvider.isIOS) {
-      this.statusBar.styleDefault();
-    }
-  }
-
-  // Start by firing a walletFocus event.
-  ionViewDidEnter() {
     this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
       walletId: this.wallet.credentials.walletId
     });
+    this.subscribeEvents();
   }
 
-  ionViewWillUnload() {
+  ionViewWillLeave() {
     this.profileProvider.setSlowRefresh(this.wallet);
     this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
     this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
@@ -447,14 +429,28 @@ export class WalletDetailsPage {
   }
 
   public itemTapped(tx) {
-    if (!this.canSpeedUpTx(tx)) {
-      this.goToTxDetails(tx);
-    } else {
+    if (tx.hasUnconfirmedInputs) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'unconfirmed-inputs'
+      );
+      infoSheet.present();
+      infoSheet.onDidDismiss(() => {
+        this.goToTxDetails(tx);
+      });
+    } else if (tx.isRBF) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('rbf-tx');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
+      });
+    } else if (this.canSpeedUpTx(tx)) {
       const infoSheet = this.actionSheetProvider.createInfoSheet('speed-up-tx');
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
         option ? this.speedUpTx(tx) : this.goToTxDetails(tx);
       });
+    } else {
+      this.goToTxDetails(tx);
     }
   }
 
@@ -654,7 +650,7 @@ export class WalletDetailsPage {
     });
   }
 
-  public requestSpecificAmount(): void {
+  private requestSpecificAmount(): void {
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       this.navCtrl.push(AmountPage, {
         toAddress: addr,
@@ -669,12 +665,13 @@ export class WalletDetailsPage {
     });
   }
 
-  public shareAddress(): void {
+  private shareAddress(): void {
     if (!this.isCordova) return;
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
       this.socialSharing.share(addr);
     });
   }
+
   public showErrorInfoSheet(error: Error | string): void {
     const infoSheetTitle = this.translate.instant('Error');
     this.errorsProvider.showDefaultError(

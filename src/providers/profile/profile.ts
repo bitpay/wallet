@@ -323,6 +323,7 @@ export class ProfileProvider {
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
     wallet.canAddNewAccount = this.checkAccountCreation(wallet, keyId);
+    wallet.isSegwit = this.checkIfSegwit(wallet.credentials.addressType);
 
     this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
@@ -479,18 +480,18 @@ export class ProfileProvider {
 
       const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
-        wallet.n == 1 &&
-        wallet.credentials.addressType == 'P2PKH' &&
-        derivationStrategy == 'BIP44' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
+        (wallet.credentials.addressType == 'P2WPKH' &&
+          derivationStrategy == 'BIP44' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
       if (
-        wallet.n > 1 &&
-        wallet.credentials.addressType == 'P2SH' &&
-        derivationStrategy == 'BIP48' &&
-        (chain == 'btc' || (chain == 'bch' && coinCode == "145'"))
+        (wallet.n > 1 && wallet.credentials.addressType == 'P2SH') ||
+        (wallet.credentials.addressType == 'P2WSH' &&
+          derivationStrategy == 'BIP48' &&
+          (chain == 'btc' || (chain == 'bch' && coinCode == "145'")))
       ) {
         return true;
       }
@@ -512,6 +513,13 @@ export class ProfileProvider {
       }
       return false;
     }
+  }
+
+  public checkIfSegwit(addressType: string) {
+    if (!addressType) return false;
+    else if (addressType == 'P2WPKH' || addressType == 'P2WSH') {
+      return true;
+    } else return false;
   }
 
   public setFastRefresh(wallet): void {
@@ -918,6 +926,15 @@ export class ProfileProvider {
     this.logger.info('Importing Wallet xPrivKey');
     opts.xPrivKey = xPrivKey;
     return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      if (key) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl,
         keyId: opts.keyId
@@ -930,6 +947,15 @@ export class ProfileProvider {
     words = this.normalizeMnemonic(words);
     opts.words = words;
     return this.serverAssistedImport(opts).then(data => {
+      // If the key already exists, bind the new wallets to it.
+      const key = this.keyProvider.getMatchedKey(data.key);
+      if (key) {
+        data.key = this.keyProvider.getKey(key.id);
+        opts.keyId = key.id;
+        data.walletClients.forEach(walletClient => {
+          walletClient.credentials.keyId = walletClient.keyId = key.id;
+        });
+      }
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl,
         keyId: opts.keyId
@@ -990,8 +1016,16 @@ export class ProfileProvider {
       if (data.credentials) {
         try {
           credentials = data.credentials;
+          // check if the key exists to just add the wallet
           if (data.key) {
-            key = Key.fromObj(data.key);
+            key = this.keyProvider.getMatchedKey(data.key);
+            if (key) {
+              data.key = this.keyProvider.getKey(key.id);
+              opts.keyId = null;
+              data.credentials.keyId = key.id;
+            } else {
+              key = Key.fromObj(data.key);
+            }
           }
           addressBook = data.addressBook;
         } catch (err) {
@@ -1429,7 +1463,8 @@ export class ProfileProvider {
                 network: opts.networkName,
                 singleAddress: opts.singleAddress,
                 walletPrivKey: opts.walletPrivKey,
-                coin: opts.coin
+                coin: opts.coin,
+                useNativeSegwit: opts.useNativeSegwit
               },
               err => {
                 const copayerRegistered =
@@ -1556,6 +1591,18 @@ export class ProfileProvider {
     return this.walletsGroups[keyId];
   }
 
+  private _deleteWalletClient(wallet) {
+    this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
+    const walletId = wallet.credentials.walletId;
+
+    wallet.removeAllListeners();
+    this.profile.deleteWallet(walletId);
+
+    delete this.wallet[walletId];
+
+    this.persistenceProvider.removeAllWalletData(walletId);
+  }
+
   public deleteWalletClient(wallet): Promise<any> {
     this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
     const walletId = wallet.credentials.walletId;
@@ -1567,19 +1614,16 @@ export class ProfileProvider {
 
     this.persistenceProvider.removeAllWalletData(walletId);
     this.events.publish('Local/WalletListChange');
-
     return this.storeProfileIfDirty();
   }
 
   public deleteWalletGroup(keyId: string, wallets): Promise<any> {
-    let promises = [];
     wallets.forEach(wallet => {
-      promises.push(this.deleteWalletClient(wallet));
+      this._deleteWalletClient(wallet);
     });
-    return Promise.all(promises).then(() => {
-      this.persistenceProvider.removeAllWalletGroupData(keyId);
-      return Promise.resolve();
-    });
+    this.persistenceProvider.removeAllWalletGroupData(keyId);
+    this.events.publish('Local/WalletListChange');
+    return this.storeProfileIfDirty();
   }
 
   private getDefaultWalletOpts(coin): Partial<WalletOptions> {

@@ -13,31 +13,13 @@ page-integrations {
     }
   }
 
-  .toolbar-background {
-    background: none;
-  }
-
-  .bp-header {
-    .settings-button {
-      .notifications-badge {
-        border-radius: 9px;
-        font-size: 15px;
-        padding: 3px 7px;
-        padding-top: 4px;
-        font-weight: 600;
-        margin-right: 5px;
-      }
-
-      button.add {
-        margin-top: -4px;
-        img {
-          margin-left: 7px;
-          padding-bottom: 5px;
-          width: 28px;
-          opacity: 0.6;
-        }
-      }
-    }
+  .notifications-badge {
+    border-radius: 9px;
+    font-size: 15px;
+    padding: 3px 7px;
+    padding-top: 4px;
+    font-weight: 600;
+    margin-right: 5px;
   }
 
   .toolbar-title-ios {
@@ -87,26 +69,6 @@ page-integrations {
     & .item-inner {
       border: 0 !important;
     }
-  }
-
-  .clipboard-card {
-    z-index: 0;
-  }
-
-  .initial-margin {
-    margin-top: -140px;
-  }
-
-  .content-animation {
-    z-index: 5;
-    margin-top: 0px;
-    -webkit-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
-    -moz-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
-    -o-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
-    transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
-    animation-name: bounce-card;
-    animation-duration: 0.4s;
-    animation-delay: 0.5s;
   }
 
   .no-header {

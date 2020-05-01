@@ -24,11 +24,9 @@ export type InfoSheetType =
   | 'backup-ready'
   | 'backup-later-warning'
   | 'backup-safeguard-warning'
-  | 'copayers'
   | 'copy-to-clipboard'
   | 'copied-gift-card-claim-code'
   | 'copied-invoice-url'
-  | 'custom-amount'
   | 'default-error'
   | 'gift-card-archived'
   | 'gift-cards-unavailable'
@@ -51,7 +49,9 @@ export type InfoSheetType =
   | 'bch-legacy-warning-1'
   | 'bch-legacy-warning-2'
   | 'speed-up-tx'
-  | 'speed-up-notice';
+  | 'speed-up-notice'
+  | 'unconfirmed-inputs'
+  | 'rbf-tx';
 
 export type OptionsSheetType =
   | 'wallet-options'

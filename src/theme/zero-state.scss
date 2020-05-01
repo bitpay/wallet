@@ -3,7 +3,7 @@ $short-device-height: 570px;
 .prompt-user-fullscreen-container {
   @include center;
   min-height: 100%;
-  padding: 1rem;
+  padding-top: 2rem;
   flex-grow: 1;
 }
 

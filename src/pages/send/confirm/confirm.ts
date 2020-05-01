@@ -15,7 +15,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { FinishModalPage } from '../../finish/finish';
 import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
@@ -71,6 +70,7 @@ export class ConfirmPage {
   public amount;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
+  public fromSelectInputs: boolean;
   public recipients;
   public coin: Coin;
   public appName: string;
@@ -138,6 +138,7 @@ export class ConfirmPage {
     this.showMultiplesOutputs = false;
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
   }
@@ -169,6 +170,11 @@ export class ConfirmPage {
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
+    } else if (this.fromSelectInputs) {
+      networkName = this.navParams.data.network;
+      amount = this.navParams.data.amount
+        ? this.navParams.data.amount
+        : this.navParams.data.totalInputsAmount;
     } else {
       amount = this.navParams.data.amount;
       try {
@@ -225,8 +231,11 @@ export class ConfirmPage {
       coin: this.navParams.data.coin,
       txp: {},
       tokenAddress: this.navParams.data.tokenAddress,
-      speedUpTx: this.isSpeedUpTx
+      speedUpTx: this.isSpeedUpTx,
+      fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
+      inputs: this.navParams.data.inputs
     };
+
     this.tx.origToAddress = this.tx.toAddress;
 
     if (this.navParams.data.requiredFeeRate) {
@@ -433,7 +442,7 @@ export class ConfirmPage {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to speed up')
         : this.translate.instant('Click to speed up');
-      this.successText = this.translate.instant('Sped up successfully');
+      this.successText = this.translate.instant('Speed up successfully');
     } else {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
@@ -858,6 +867,18 @@ export class ConfirmPage {
           });
         }
       } else {
+        if (tx.fromSelectInputs) {
+          const size = this.walletProvider.getEstimatedTxSize(
+            wallet,
+            1,
+            tx.inputs.length
+          );
+          const estimatedFee =
+            size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+          tx.fee = estimatedFee;
+          tx.amount = tx.amount - estimatedFee;
+        }
+
         txp.outputs = [
           {
             toAddress: tx.toAddress,
@@ -878,6 +899,9 @@ export class ConfirmPage {
         txp.inputs.push(tx.speedUpTxInfo.input);
         txp.fee = tx.speedUpTxInfo.fee;
         txp.excludeUnconfirmedUtxos = true;
+      } else if (tx.fromSelectInputs) {
+        txp.inputs = tx.inputs;
+        txp.fee = tx.fee;
       } else {
         if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
@@ -1018,17 +1042,7 @@ export class ConfirmPage {
         if (exit) {
           this.fromWalletDetails
             ? this.navCtrl.popToRoot()
-            : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app
-                .getRootNavs()[0]
-                .setRoot(TabsPage)
-                .then(() =>
-                  this.app
-                    .getRootNav()
-                    .getActiveChildNav()
-                    .select(1)
-                ); // using setRoot(TabsPage) as workaround when coming from scanner
+            : this.navCtrl.pop();
         }
       }
     );
@@ -1132,6 +1146,11 @@ export class ConfirmPage {
           this.walletProvider.removeTx(wallet, txp).catch(() => {
             this.logger.warn('Could not delete payment proposal');
           });
+        } else if (this.isSpeedUpTx) {
+          this.logger.warn('Speed up transaction error: removing transaction');
+          this.walletProvider.removeTx(wallet, txp).catch(() => {
+            this.logger.warn('Could not delete transaction');
+          });
         }
       });
   }
@@ -1201,6 +1220,7 @@ export class ConfirmPage {
       } else {
         if (redir) {
           setTimeout(() => {
+            this.iabCardProvider.show();
             this.iabCardProvider.sendMessage(
               {
                 message: 'paymentBroadcasted'
@@ -1209,7 +1229,6 @@ export class ConfirmPage {
                 this.logger.log('card IAB -> payment broadcasting opening IAB');
               }
             );
-            this.iabCardProvider.show();
           }, 1000);
         } else {
           this.navCtrl.push(WalletDetailsPage, {

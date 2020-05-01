@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -12,6 +11,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
+import { ShapeshiftSettingsPage } from './shapeshift-settings/shapeshift-settings';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
 // Providers
@@ -21,6 +21,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
+import { ThemeProvider } from '../../../providers/theme/theme';
 import { TimeProvider } from '../../../providers/time/time';
 
 @Component({
@@ -52,7 +53,7 @@ export class ShapeshiftPage {
     protected translate: TranslateService,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
-    private statusBar: StatusBar
+    private themeProvider: ThemeProvider
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -72,7 +73,7 @@ export class ShapeshiftPage {
 
   ionViewWillEnter() {
     if (this.platformProvider.isCordova) {
-      this.statusBar.styleBlackOpaque();
+      this.themeProvider.useCustomStatusBar(this.headerColor);
     }
     if (this.navParams.data.code) {
       this.shapeshiftProvider.getStoredToken((at: string) => {
@@ -87,7 +88,7 @@ export class ShapeshiftPage {
 
   ionViewWillLeave() {
     if (this.platformProvider.isCordova) {
-      this.statusBar.styleDefault();
+      this.themeProvider.useDefaultStatusBar();
     }
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
@@ -226,6 +227,9 @@ export class ShapeshiftPage {
     switch (page) {
       case 'Shift':
         this.navCtrl.push(ShapeshiftShiftPage);
+        break;
+      case 'Settings':
+        this.navCtrl.push(ShapeshiftSettingsPage);
         break;
     }
   }

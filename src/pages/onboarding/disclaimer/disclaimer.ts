@@ -44,6 +44,23 @@ export class DisclaimerPage {
     this.logger.info('Loaded: DisclaimerPage');
   }
 
+  ionViewWillLoad() {
+    this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
+  }
+
+  public slideChanged() {
+    // Disable first and last slides bounce
+    let currentIndex = this.walletGroupOnboardingSlides.getActiveIndex();
+    if (currentIndex == 0)
+      this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
+    if (currentIndex > 0)
+      this.walletGroupOnboardingSlides.lockSwipeToPrev(false);
+    if (currentIndex >= 3)
+      this.walletGroupOnboardingSlides.lockSwipeToNext(true);
+    if (currentIndex < 3)
+      this.walletGroupOnboardingSlides.lockSwipeToNext(false);
+  }
+
   public nextSlide(): void {
     this.walletGroupOnboardingSlides.slideNext();
   }
@@ -90,7 +107,6 @@ export class DisclaimerPage {
     this.persistenceProvider.setEmailLawCompliance('accepted');
     this.persistenceProvider.setNewDesignSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
-    this.persistenceProvider.setSurveyFlag();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });
   }

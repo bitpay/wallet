@@ -1,6 +1,9 @@
-<wide-header-page>
-  <div page-content>
-    <ion-slides #walletGroupOnboardingSlides pager="true" class="onboarding-slides">
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+    <ion-slides (ionSlideDidChange)="slideChanged()" #walletGroupOnboardingSlides [pager]="!walletGroupOnboardingSlides.isEnd()" class="onboarding-slides">
       <ion-slide>
         <div class="slide-info">
           <div class="img-container">
@@ -71,26 +74,25 @@
         </div>
       </ion-slide>
     </ion-slides>
-    <div class="next-slide-button" padding>
-      <ion-toolbar *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 3">
-        <div class="footer-container">
-          <div class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third">
-            <ion-item no-lines>
-              <ion-label class="text">
-                {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-              </ion-label>
-              <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
-            </ion-item>
-            <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
-          </div>
-          <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
-            <span translate>I understand</span>
-          </button>
-        </div>
-      </ion-toolbar>
-      <button ion-button class="button-standard" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 3">
-        {{'Continue' | translate}}
+</ion-content>
+<ion-footer no-border>
+  <ion-toolbar>
+    <div *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 3">
+      <ion-list class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third" no-lines>
+        <ion-item>
+          <ion-label class="text">
+            {{'I have read, understood, and agree to the Terms of Use' | translate}}.
+          </ion-label>
+          <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+        </ion-item>
+        <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
+      </ion-list>
+      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
+        <span translate>I understand</span>
       </button>
     </div>
-  </div>
-</wide-header-page>
+    <button ion-button class="button-standard" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 3">
+      {{'Continue' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

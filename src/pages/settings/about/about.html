@@ -2,7 +2,7 @@
   <div page-content>
     <ion-list class="bp-list">
       <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
-      <button ion-item>
+      <button ion-item (click)="wipeBitPayAccounts()">
         <ion-icon class="item-img icon-settings" name="ios-download-outline" item-start></ion-icon>
         <span class="main-label" translate>Version</span>
         <ion-note item-end>
@@ -10,7 +10,7 @@
         </ion-note>
       </button>
 
-      <button ion-item>
+      <button ion-item (tap)="easterEgg($event)">
         <ion-icon class="item-img icon-settings" name="logo-github" item-start></ion-icon>
         <span class="main-label">Commit Hash</span>
         <ion-note item-end>

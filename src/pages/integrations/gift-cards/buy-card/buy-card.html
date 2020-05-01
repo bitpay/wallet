@@ -5,7 +5,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="gift-card-content">
+<ion-content no-bounce class="gift-card-content">
   <div class="wrapper">
     <div class="amount-box">
       <div>
@@ -15,14 +15,17 @@
       <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency"
         [supportedAmounts]="cardConfig.supportedAmounts" (amountChange)="onAmountChange($event)"
         (click)="onAmountClick()"></amount-picker>
-      <div class="discount-header" *ngIf="hasPercentageDiscount">
+      <div class="discount-header" *ngIf="hasVisibleDiscount">
         <img src="assets/img/tags-stack.svg">
         <div>Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]">
           </gift-card-discount-text> off your purchase</div>
       </div>
+      <div class="discount-header" *ngIf="!hasVisibleDiscount && hasPromotion">
+        {{cardConfig.promotions[0].shortDescription}}
+      </div>
     </div>
     <div class="buy-box">
-      <card-description class="buy-box__terms" [cardConfig]="cardConfig"></card-description>
+      <card-description class="buy-box__description" [cardConfig]="cardConfig"></card-description>
     </div>
   </div>
 </ion-content>

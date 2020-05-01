@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -12,7 +11,6 @@ import * as _ from 'lodash';
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
-import { TabsPage } from '../../tabs/tabs';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 
 // providers
@@ -53,7 +51,6 @@ export class SelectCurrencyPage {
   public isZeroState: boolean;
 
   constructor(
-    private app: App,
     private events: Events,
     private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
@@ -176,17 +173,9 @@ export class SelectCurrencyPage {
 
   private endProcess() {
     this.onGoingProcessProvider.clear();
-    // using setRoot(TabsPage) as workaround when coming from settings
-    this.app
-      .getRootNavs()[0]
-      .setRoot(TabsPage)
-      .then(() => {
-        this.app
-          .getRootNav()
-          .getActiveChildNav()
-          .select(1);
-        this.events.publish('Local/WalletListChange');
-      });
+    this.navCtrl.popToRoot().then(() => {
+      this.events.publish('Local/WalletListChange');
+    });
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {

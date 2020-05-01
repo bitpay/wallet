@@ -1,0 +1,1376 @@
+/* Index
+1 - Definitions
+1.1 - Backgrounds
+1.2 - Text
+1.3 - Messages
+1.4 - Borders
+1.5 - Slides
+
+2 - Transition between themes
+
+3 - General
+3.1 - Lists
+3.2 - Label tip
+3.3 - General cards
+3.4 - Expandable header
+3.5 - Toolbar
+
+4 - Components
+
+5 - Tabs
+5.1 - Tab Home
+5.2 - Tab Wallets
+5.3 - Tab Cards
+5.4 - Tab Settings
+
+6 - Other Pages
+*/
+
+.dark {
+  // 1 - Definitions
+  // 1.1 - Backgrounds
+  $bg-color-dark-theme: #121212;
+  $bg-color-dark-theme-2: #1d1d1d;
+  $bg-color-dark-theme-3: #383838;
+
+  $bg-color-dark-theme-toolbar: #121212;
+  $bg-color-dark-theme-message: #1d1d1d;
+  $gradient-dark-theme: #101010;
+
+  // 1.2 - Text
+  $text-color-dark-theme: rgba(255, 255, 255, 0.87);
+  $text-color-dark-theme-2: rgba(255, 255, 255, 0.6);
+  $text-color-dark-theme-3: rgba(255, 255, 255, 0.38);
+
+  // 1.3 - Messages
+  $bg-color-warning: #ffe7d9;
+  $bg-color-warning-2: #947143;
+  $bg-color-danger: #ffd9de;
+  $bg-color-danger-2: #3e080e;
+  $bg-color-success: #d9fff3;
+  $bg-color-info: #dde1f0;
+
+  // 1.4 - Borders
+  $border-color-dark-theme: rgb(76, 76, 76);
+  $border-color-dark-theme-2: rgba(76, 76, 76, 0.3);
+
+  // 1.5 - Slides
+  $swiper-pagination-bullet-active: #434c5a;
+  $swiper-pagination-bullet: #4f4f4e;
+
+  // 2 - Transition between themes
+  // This is just to make a smooth transition between themes
+  @mixin transition {
+    transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
+  }
+
+  @include toolbar-button-color($text-color-dark-theme);
+
+  // TODO: Remove text opacity from default styles
+  page-bitpay-card ion-title .toolbar-title,
+  .wallet-details-header ion-title .toolbar-title,
+  page-copayers .copayers-header-content .text,
+  page-finish .container .content .body-comment,
+  page-home .total-amount-container .average-container .date,
+  page-scan .page-scan-has-problems .header-container .subtitle,
+  page-addressbook .zero-state-description,
+  page-wallet-details .balance-alt-str,
+  page-wallet-details .balance-spendable,
+  page-wallet-details .tx-history .date,
+  .bp-list .secondary-label,
+  .bp-list .secondary-note {
+    opacity: 1;
+  }
+
+  page-add-wallet,
+  options-sheet {
+    .bp-list ion-icon.item-img.icon.item-icon.icon-settings {
+      &.icon-md,
+      &.icon-ios {
+        opacity: 1;
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  page-theme {
+    ion-content.add-bottom-safe-area {
+      .fixed-content,
+      .scroll-content {
+        @include transition();
+      }
+    }
+    ion-content.add-padding-bottom,
+    .add-padding-bottom ion-content {
+      .fixed-content,
+      .scroll-content {
+        @include transition();
+      }
+    }
+
+    ion-content,
+    .content-ios .toolbar-background-ios,
+    .toolbar-background-md,
+    .toolbar-title,
+    .header .toolbar-background {
+      @include transition();
+    }
+
+    // Lists
+    .bp-list.settings-list {
+      .item {
+        &.item-ios,
+        &.item-md {
+          @include transition();
+        }
+      }
+    }
+  }
+
+  // 3 - General
+  ion-content {
+    background-color: $bg-color-dark-theme;
+    color: $text-color-dark-theme;
+  }
+
+  ion-loading {
+    .loading-wrapper {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+  }
+
+  coin-icon {
+    ion-icon.item-img.icon.background_xrp {
+      background-color: color($colors, dark);
+      &.testnet {
+        filter: invert(0.2);
+      }
+    }
+  }
+
+  form {
+    .item-md.item-block .item-inner {
+      border-bottom: 1px solid $border-color-dark-theme;
+    }
+  }
+
+  .line-divider {
+    border: 0.5px solid $border-color-dark-theme-2;
+  }
+
+  .royal,
+  a.royal {
+    color: $text-color-dark-theme;
+  }
+
+  .item-divider-md,
+  .item-divider-ios {
+    background-color: $bg-color-dark-theme;
+  }
+
+  .tabs-md,
+  .tabs-ios {
+    .tabbar {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: $swiper-pagination-bullet-active;
+  }
+  .swiper-pagination-bullet {
+    background-color: $swiper-pagination-bullet;
+  }
+
+  button.item.activated,
+  .item-md.activated {
+    background-color: $bg-color-dark-theme-3;
+  }
+
+  .gift-card-content {
+    .header-extension {
+      background: $bg-color-dark-theme-toolbar;
+    }
+  }
+
+  .box-notification {
+    &.success,
+    &.info,
+    &.warning,
+    &.error {
+      background: none;
+      border: 1px solid;
+    }
+  }
+
+  ion-alert {
+    .alert-wrapper {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+      .alert-title {
+        color: $text-color-dark-theme;
+      }
+    }
+    .alert-radio-group {
+      .alert-radio:not([aria-checked='true']) .alert-radio-label {
+        color: $text-color-dark-theme;
+      }
+    }
+    .alert-input {
+      background: $bg-color-dark-theme;
+    }
+  }
+
+  ion-action-sheet {
+    .action-sheet-group {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+      .action-sheet-button {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  .search-wrapper {
+    background-color: $bg-color-dark-theme-2;
+    color: $text-color-dark-theme-2;
+  }
+  search-bar {
+    background: $bg-color-dark-theme;
+    ion-input {
+      background: $bg-color-dark-theme-message;
+      color: $text-color-dark-theme;
+    }
+  }
+  add-button {
+    .add-button {
+      &__icon {
+        filter: invert(1);
+      }
+
+      &__text {
+        color: $text-color-dark-theme-2;
+      }
+    }
+  }
+
+  .prompt-user {
+    .title-info {
+      color: $text-color-dark-theme;
+    }
+    .subtitle-info {
+      color: $text-color-dark-theme-2;
+    }
+  }
+
+  .gravatar-img {
+    filter: invert(1);
+  }
+
+  .alertTheme {
+    color: $text-color-dark-theme;
+    .alert-message {
+      color: $text-color-dark-theme;
+    }
+    .alert-wrapper {
+      background-color: $bg-color-dark-theme-2;
+    }
+  }
+
+  .alertDanger {
+    .alert-message {
+      color: color($colors, danger);
+    }
+    color: $text-color-dark-theme;
+    .alert-wrapper {
+      background-color: $bg-color-dark-theme-2;
+    }
+    .alert-input {
+      color: $text-color-dark-theme;
+    }
+  }
+
+  // 3.1 Lists
+  .bp-list {
+    .item {
+      &.item-ios,
+      &.item-md {
+        border: 0;
+        background-color: $bg-color-dark-theme;
+      }
+      &:not(.create-button):not(.assertive) {
+        &.item-ios,
+        &.item-md {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
+    .main-label,
+    .main-note,
+    .status .royal {
+      color: $text-color-dark-theme;
+    }
+    ion-item-divider {
+      background: $bg-color-dark-theme-2;
+      .label {
+        color: $text-color-dark-theme-3;
+      }
+    }
+    .summary-item-detail {
+      color: $text-color-dark-theme;
+      .text-input {
+        color: $text-color-dark-theme;
+        opacity: 1;
+      }
+    }
+    .total-amount {
+      color: $text-color-dark-theme;
+    }
+  }
+  .button-secondary {
+    background-color: $bg-color-dark-theme-3;
+    color: $text-color-dark-theme-2;
+
+    &:hover,
+    &:focus,
+    &:active {
+      &.button-md,
+      &.button-ios {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme-2;
+      }
+    }
+
+    &:active,
+    &.activated {
+      &.button-md,
+      &.button-ios {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme-2;
+      }
+    }
+  }
+
+  // 3.2 - Label tip
+  label-tip {
+    opacity: 0.7;
+    &[type='info'] {
+      background-color: $bg-color-info;
+      &:before {
+        border-bottom-color: $bg-color-info;
+      }
+    }
+    &[type='warn'] {
+      background-color: $bg-color-warning;
+      &:before {
+        border-bottom-color: $bg-color-warning;
+      }
+    }
+    &[type='danger'] {
+      background-color: $bg-color-danger;
+      &:before {
+        border-bottom-color: $bg-color-danger;
+      }
+    }
+  }
+
+  // 3.3 - General cards
+  action-card-v4.card {
+    background-color: $bg-color-dark-theme-2;
+    .action-card__content {
+      background-color: $bg-color-dark-theme-2;
+      .action-card__title {
+        color: $text-color-dark-theme;
+      }
+    }
+    .bitpay-card-header,
+    .home-gift-card-header {
+      background-color: $bg-color-dark-theme-3;
+    }
+  }
+  action-card.card {
+    background: $bg-color-dark-theme-2;
+    .action-card {
+      &__content {
+        background: $bg-color-dark-theme-2;
+      }
+    }
+  }
+  .card {
+    page-txp {
+      .proposal-container .item-inner {
+        border-bottom: 1px solid $border-color-dark-theme-2;
+      }
+    }
+  }
+
+  // 3.4 - Expandable header
+  ion-content.add-padding-bottom,
+  .add-padding-bottom ion-content {
+    .fixed-content,
+    .scroll-content {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  .wide-header__title {
+    color: $text-color-dark-theme;
+    background: $bg-color-dark-theme;
+  }
+
+  wide-header-page,
+  card-catalog-page {
+    .wide-header {
+      .toolbar-background {
+        background: $bg-color-dark-theme-toolbar;
+      }
+    }
+    ion-note.note.discount {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+    }
+  }
+
+  .header-extend {
+    background: $bg-color-dark-theme-toolbar;
+  }
+
+  // 3.5 - Toolbar
+  .content-ios .toolbar-background-ios {
+    background: $bg-color-dark-theme;
+  }
+  .toolbar-background-md,
+  .toolbar-background-ios {
+    background: $bg-color-dark-theme;
+    color: $text-color-dark-theme;
+  }
+
+  .bar-button-default-md,
+  .bar-button-default.bar-button-md-default,
+  .bar-button-clear-md-default {
+    color: $text-color-dark-theme !important;
+  }
+
+  .toolbar-content-md,
+  .toolbar-content-ios {
+    color: $text-color-dark-theme;
+    .bar-buttons-md,
+    .bar-buttons-ios {
+      .bar-button .button-inner {
+        color: $text-color-dark-theme-2;
+      }
+    }
+  }
+
+  .toolbar-title {
+    color: $text-color-dark-theme;
+  }
+
+  .header .toolbar-background {
+    background-color: $bg-color-dark-theme;
+  }
+
+  .toolbar {
+    &.toolbar-md,
+    &.toolbar-ios {
+      .back-button,
+      .close-container {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme !important;
+        &.button-default,
+        &.button-md.activated,
+        &.button-ios.activated {
+          background-color: $bg-color-dark-theme-2;
+        }
+      }
+    }
+  }
+
+  page-shapeshift,
+  page-bitpay-card,
+  page-shapeshift-settings {
+    .toolbar {
+      &.toolbar-md,
+      &.toolbar-ios {
+        .back-button {
+          background-color: rgba(155, 163, 174, 0.12);
+        }
+      }
+    }
+  }
+  page-shapeshift-details {
+    .header-modal {
+      background-color: $bg-color-dark-theme;
+      .title-modal {
+        color: $text-color-dark-theme-2;
+      }
+    }
+  }
+  page-bitpay-card-intro {
+    ion-toolbar {
+      background-color: $bg-color-dark-theme-2;
+    }
+  }
+
+  // 4 - Components
+  action-sheet {
+    .action-sheet {
+      background: $bg-color-dark-theme-2;
+      .bp-list {
+        .item {
+          &.item-ios,
+          &.item-md {
+            background-color: $bg-color-dark-theme-2;
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+  info-sheet {
+    .info-container {
+      background-color: $bg-color-dark-theme-2;
+      info-sheet-template {
+        .confirm-sheet {
+          background-color: $bg-color-dark-theme-2;
+          color: $text-color-dark-theme;
+          .sheet-title {
+            color: $text-color-dark-theme;
+          }
+          .sheet-text {
+            color: $text-color-dark-theme-2;
+          }
+          .sheet-btn-group {
+            border-top: 1px solid $border-color-dark-theme;
+
+            .sheet-btn.default,
+            .sheet-second-btn {
+              color: $text-color-dark-theme-2;
+            }
+          }
+        }
+      }
+    }
+  }
+  wallet-selector {
+    .item-divider-md,
+    .item-divider-ios {
+      background-color: $bg-color-dark-theme-2;
+      border-bottom: 1px solid $bg-color-dark-theme-2;
+    }
+  }
+  memo-component {
+    .text-input {
+      background-color: $bg-color-dark-theme;
+      color: $text-color-dark-theme;
+    }
+    .title {
+      color: $text-color-dark-theme;
+    }
+  }
+  page-choose-fee-level {
+    .testnet-warning {
+      background-color: color($colors, warning);
+    }
+
+    .fee {
+      &-speed-name {
+        color: $text-color-dark-theme;
+      }
+      &-speed-satByte {
+        color: $text-color-dark-theme;
+      }
+      &-avg-label {
+        color: $text-color-dark-theme;
+      }
+      &-avg-time {
+        color: $text-color-dark-theme;
+      }
+      &-card {
+        background-color: $bg-color-dark-theme;
+        .item {
+          &.item-ios,
+          &.item-md {
+            background: $bg-color-dark-theme;
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+  page-slide-to-accept {
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 18, 18, 0),
+      rgba(18, 18, 18, 1),
+      rgba(18, 18, 18, 1)
+    );
+    background: -webkit-linear-gradient(
+      to bottom,
+      rgba(18, 18, 18, 0),
+      rgba(18, 18, 18, 1),
+      rgba(18, 18, 18, 1)
+    );
+  }
+  page-fingerprint {
+    ion-content {
+      background-color: $bg-color-dark-theme !important;
+    }
+    .fingerprint-header {
+      border-bottom: 1px solid $border-color-dark-theme;
+      background-color: $bg-color-dark-theme-2;
+      .title {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  page-pin {
+    ion-header {
+      .toolbar-background {
+        background-color: $bg-color-dark-theme-2;
+      }
+    }
+    ion-content {
+      background-color: $bg-color-dark-theme !important;
+    }
+    .pin-header {
+      border-bottom: 1px solid $border-color-dark-theme;
+      background-color: $bg-color-dark-theme-2;
+    }
+    .content {
+      background-color: color($colors, blank);
+    }
+  }
+  .clipboard-card {
+    background: $bg-color-dark-theme-message;
+    .item-divider {
+      background: $bg-color-dark-theme-message;
+      border-bottom: 1px solid $bg-color-dark-theme-2;
+    }
+    page-clipboard-card {
+      .clipboard-paypro-container {
+        background: $bg-color-dark-theme-message;
+        color: $text-color-dark-theme;
+        .item-inner {
+          background: $bg-color-dark-theme-message;
+          color: $text-color-dark-theme;
+          border-bottom: 1px solid $bg-color-dark-theme-2;
+        }
+        ion-note {
+          .amount {
+            color: $text-color-dark-theme;
+          }
+        }
+        .loader {
+          background-color: #666;
+          &:after {
+            background-color: #2b2a2a;
+          }
+          &.gradient {
+            background-image: linear-gradient(to right, #666, #2b2a2a);
+            &:after {
+              background-color: #2a2929;
+            }
+          }
+        }
+      }
+      .clipboard {
+        background: $bg-color-dark-theme-message;
+        color: $text-color-dark-theme;
+        ion-label {
+          background: $bg-color-dark-theme-2;
+          color: $text-color-dark-theme;
+        }
+        img {
+          border-right: 1px solid $bg-color-dark-theme-message;
+        }
+      }
+    }
+  }
+  page-feedback-card {
+    ion-card.card {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+  }
+  incoming-data-menu {
+    img {
+      filter: invert(0.7);
+    }
+  }
+
+  // 5 - Tabs
+  // 5.1 Tab Home
+  page-home {
+    .total-amount-container {
+      .total-amount-value {
+        color: $text-color-dark-theme;
+      }
+    }
+
+    .section-header .date-label {
+      background-color: $bg-color-dark-theme-2;
+    }
+
+    .message {
+      &-background {
+        background-color: $bg-color-dark-theme-message;
+      }
+    }
+  }
+
+  // 5.2 - Tab Wallets
+  page-wallets {
+    .collapse > .collapse-btn {
+      background: $bg-color-dark-theme-2;
+    }
+    .section-header {
+      border-bottom: 1px solid $border-color-dark-theme;
+    }
+    .collapse .item-img {
+      filter: invert(1);
+    }
+  }
+  page-txp {
+    .item {
+      &.item-ios,
+      &.item-md {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme;
+      }
+    }
+    ion-note .amount {
+      color: $text-color-dark-theme;
+    }
+  }
+  page-txp-details {
+    .proposal-deletion {
+      background-color: $bg-color-dark-theme;
+    }
+
+    .proposal-rejection {
+      background-color: $bg-color-dark-theme;
+    }
+    ion-note.note {
+      .wallet {
+        .note-container {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
+  }
+
+  page-copayers,
+  page-txp-details,
+  page-tx-details {
+    .timeline-item {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  page-confirm,
+  confirm-card-purchase-page,
+  page-txp-details,
+  page-tx-details,
+  page-bitpay-card-topup {
+    .payment-proposal-to {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+    .wallet,
+    .multi-recip-title {
+      span {
+        color: $text-color-dark-theme;
+      }
+    }
+    .bp-list {
+      .summary-item,
+      .secondary-note {
+        color: $text-color-dark-theme;
+      }
+      ion-note.note {
+        .note-container {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
+    .background-button-content {
+      background-color: $bg-color-dark-theme-2;
+    }
+  }
+  page-bitpay-card-topup {
+    ion-content {
+      ion-item {
+        background-color: $bg-color-dark-theme;
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  page-wallet-details,
+  page-coinbase-account,
+  page-bitpay-card {
+    ion-content {
+      background: $bg-color-dark-theme;
+    }
+
+    .toolbar-background {
+      background: $bg-color-dark-theme !important;
+    }
+
+    .search-button img {
+      filter: invert(1);
+    }
+
+    .ion-ios-more:before {
+      filter: invert(1);
+    }
+
+    .wallet-info {
+      .left-buttons {
+        .encrypted,
+        .testnet {
+          filter: invert(1);
+        }
+        .read-only {
+          filter: invert(0);
+        }
+        .square-border {
+          span {
+            border: 1px solid $text-color-dark-theme;
+          }
+        }
+      }
+    }
+
+    .action-buttons {
+      .button-standard {
+        color: $text-color-dark-theme;
+      }
+    }
+
+    .balance-card {
+      background: $bg-color-dark-theme;
+    }
+
+    .tx-history {
+      .tx-history-header {
+        &.item {
+          background: #212121;
+        }
+      }
+
+      .item {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme;
+        &.warning-background {
+          background-color: $bg-color-dark-theme-3;
+          ion-note.note > .amount > .received,
+          .action {
+            color: color($colors, warning);
+          }
+        }
+        &.danger-background {
+          background-color: $bg-color-dark-theme-3;
+          ion-note.note > .amount > .received,
+          .action {
+            color: color($colors, danger);
+          }
+        }
+        .item-inner {
+          border-bottom: 1px solid $border-color-dark-theme;
+        }
+      }
+    }
+
+    .white-card {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+  }
+
+  page-copayers {
+    .white-card {
+      background: $bg-color-dark-theme;
+      color: $text-color-dark-theme;
+      .timeline-content-icon ion-icon {
+        &[name='ios-time-outline'] {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  .tx-history {
+    .icon-services {
+      border: 1px solid $text-color-dark-theme-2;
+    }
+    .amount {
+      color: $text-color-dark-theme;
+    }
+
+    .date {
+      color: $text-color-dark-theme-2;
+    }
+  }
+
+  wallet-receive,
+  page-choose-fee-level {
+    .addr-header {
+      .addr-title {
+        color: $text-color-dark-theme;
+      }
+      .addr-buttons .addr-update {
+        background-color: $bg-color-dark-theme-3;
+      }
+    }
+    .addr-content {
+      .addr-container {
+        .text-address {
+          background-color: $bg-color-dark-theme-3;
+          color: $text-color-dark-theme-3;
+        }
+      }
+      .qr-container {
+        .lines-background {
+          background: url(../assets/img/curved-lines-background.png) center
+            center no-repeat $bg-color-warning;
+          opacity: 0.1;
+        }
+      }
+    }
+    .close-btn {
+      button {
+        color: $text-color-dark-theme;
+      }
+    }
+    .segment-button {
+      color: $text-color-dark-theme;
+    }
+  }
+
+  page-send,
+  page-multi-send,
+  page-select-inputs,
+  page-proposals-notifications {
+    .amount {
+      color: $text-color-dark-theme;
+    }
+
+    .address,
+    .amount-str {
+      opacity: 1;
+      color: $text-color-dark-theme-2;
+    }
+    .recipient {
+      background-color: $bg-color-dark-theme;
+      ion-label {
+        color: $text-color-dark-theme;
+      }
+    }
+
+    .content-list {
+      .item {
+        background-color: $bg-color-dark-theme;
+        .item-inner {
+          border-bottom: 1px solid $border-color-dark-theme;
+        }
+      }
+      .item-divider-header {
+        &.item {
+          background: $bg-color-dark-theme-2;
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+
+    .total-inputs {
+      &-str {
+        color: $text-color-dark-theme;
+      }
+    }
+    .send-header-wrapper {
+      background-color: $bg-color-dark-theme;
+    }
+    .search-wrapper {
+      .scan-icon {
+        border-left: 1px solid rgba(151, 151, 151, 0.2);
+      }
+    }
+    .invalid {
+      border: 1px solid color($colors, error);
+      color: color($colors, error);
+    }
+    ion-checkbox {
+      .checkbox-icon {
+        border-color: color($colors, primary);
+        background-color: $bg-color-dark-theme;
+      }
+    }
+    .txp-container {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  create-new-wallet {
+    .zero-state-wallets {
+      background-color: $bg-color-dark-theme-3;
+    }
+  }
+
+  // 5.3 - Tab Cards
+  page-cards {
+    .card-item {
+      background: $bg-color-dark-theme;
+
+      &.light {
+        color: $text-color-dark-theme;
+
+        .card {
+          .funds {
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+
+  buy-card-page {
+    .amount-box {
+      background-image: linear-gradient(
+        -180deg,
+        $bg-color-dark-theme 30%,
+        $gradient-dark-theme 100%
+      );
+      .discount-header {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme;
+      }
+    }
+    .buy-box {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  page-bitpay-phase-one-card-intro {
+    .phaseOne {
+      &__content {
+        &__title {
+          color: $text-color-dark-theme;
+        }
+
+        &__description {
+          color: $text-color-dark-theme-3;
+        }
+      }
+
+      &__form {
+        &__link {
+          color: color($colors, primary);
+        }
+      }
+      &__form-toggle {
+        &__label {
+          color: $text-color-dark-theme-3;
+          font-size: 14px;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+
+  // 5.4 - Tab Settings
+  page-settings,
+  page-about {
+    .bp-list {
+      ion-note.note {
+        background: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme-2;
+      }
+      .icon-qrcode {
+        filter: invert(1);
+      }
+    }
+  }
+  page-alt-currency,
+  page-key-settings,
+  page-wallet-information,
+  page-wallet-addresses,
+  page-wallet-settings {
+    .bp-list.settings-list {
+      ion-item.item,
+      button.item {
+        .item-inner {
+          ion-note.note {
+            background: $bg-color-dark-theme-2;
+            color: $text-color-dark-theme-2;
+          }
+        }
+      }
+    }
+  }
+  page-addressbook-add,
+  page-join-wallet {
+    ion-item {
+      background: $bg-color-dark-theme;
+      color: $text-color-dark-theme-2;
+    }
+  }
+  page-addressbook {
+    .zero-state-icon {
+      background-color: $bg-color-dark-theme-3;
+    }
+  }
+  page-wallet-addresses {
+    button.item {
+      background: $bg-color-dark-theme;
+    }
+  }
+
+  page-scan {
+    .page-scan-has-problems {
+      background-color: $bg-color-dark-theme-toolbar;
+      .body {
+        background-color: $bg-color-dark-theme-toolbar;
+        div {
+          color: $bg-color-dark-theme-toolbar;
+        }
+      }
+    }
+  }
+  card-details-page {
+    background-color: $bg-color-dark-theme;
+    .gift-card-content .scroll-content > div.wrapper {
+      background-color: $bg-color-dark-theme;
+    }
+
+    .card-image {
+      img {
+        background: $bg-color-dark-theme;
+      }
+    }
+
+    .card-info {
+      background-color: $bg-color-dark-theme-3;
+      border: 1px solid $border-color-dark-theme;
+      &__title {
+        color: $text-color-dark-theme-2;
+      }
+
+      &__body {
+        color: $text-color-dark-theme;
+      }
+
+      &__date {
+        color: $text-color-dark-theme-3;
+      }
+
+      &.has-pin {
+        .separator {
+          border-top: 1px solid $border-color-dark-theme;
+        }
+      }
+    }
+  }
+  page-share {
+    .share-buttons {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  // 6 - Other Pages
+  page-amount {
+    ion-content.content {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+  page-simplex {
+    .buy-crypto-button {
+      color: $text-color-dark-theme;
+    }
+  }
+  page-simplex-buy {
+    .bp-list {
+      ion-note.note {
+        .note-container {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
+  }
+  page-add,
+  page-select-currency,
+  page-coin-selector,
+  select-invoice-page {
+    .list-button {
+      .item-title {
+        color: $text-color-dark-theme;
+      }
+      .item-subtitle {
+        color: $text-color-dark-theme-2;
+      }
+    }
+  }
+  page-import-wallet,
+  page-create-wallet,
+  page-bitpay-phase-one-card-intro {
+    ion-item {
+      background: $bg-color-dark-theme;
+      color: $text-color-dark-theme;
+    }
+  }
+  email-component {
+    .title {
+      color: $text-color-dark-theme;
+    }
+    .sub-title {
+      color: $text-color-dark-theme-2;
+    }
+    ion-item {
+      background: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+  }
+  page-send-feedback {
+    .msg-to-user {
+      background: $bg-color-dark-theme;
+      .feedback-title {
+        color: $text-color-dark-theme;
+      }
+      .feedback-msg {
+        color: $text-color-dark-theme;
+      }
+    }
+    .user-feedback-card {
+      background-color: $bg-color-dark-theme-2;
+      .user-feedback-title {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  page-key-onboarding,
+  page-disclaimer {
+    .key-onboarding-slides,
+    .onboarding-slides {
+      ion-slide {
+        background: linear-gradient(
+          to bottom,
+          $bg-color-dark-theme,
+          $gradient-dark-theme 80%
+        );
+      }
+      .slide-info {
+        background: $bg-color-dark-theme;
+        .info .title,
+        .title {
+          color: $text-color-dark-theme;
+        }
+        .info .text,
+        .text {
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+    .toolbar {
+      .toolbar-background {
+        background: $bg-color-dark-theme;
+      }
+    }
+    .checkbox-list {
+      .external-link {
+        color: $text-color-dark-theme-2;
+      }
+      .text {
+        color: $text-color-dark-theme;
+      }
+    }
+    .swiper-pagination-bullet {
+      background-color: $text-color-dark-theme-2;
+    }
+  }
+  page-backup-key,
+  page-backup-game {
+    ion-content.content {
+      background: $bg-color-dark-theme;
+    }
+    .key-container,
+    .grid-container > .key-container {
+      .word-container,
+      .word-container > .word-slides {
+        .word-title {
+          color: $text-color-dark-theme;
+        }
+        .word {
+          background: $bg-color-dark-theme-2;
+          color: $text-color-dark-theme;
+          .dash-line {
+            border-bottom: 1px $border-color-dark-theme dashed;
+          }
+        }
+      }
+    }
+    .grid-container > .mnemonic-words-container {
+      .mnemonic-words {
+        .words {
+          .button {
+            background-color: $bg-color-dark-theme-2;
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+  page-coinbase {
+    ion-content {
+      .center-header .button-clear-md-dark {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  page-custom-amount {
+    .qr-card-amount {
+      background-color: $bg-color-dark-theme;
+    }
+    .qr-container {
+      background-color: $bg-color-dark-theme;
+
+      div.qr-card.card {
+        background-color: $bg-color-dark-theme;
+      }
+      .qr-card {
+        background-color: white;
+      }
+    }
+    .receive-content {
+      background-color: $bg-color-dark-theme;
+      .addr-container {
+        .text-address {
+          background: $bg-color-dark-theme-2;
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+  }
+  card-terms {
+    .terms * {
+      color: $text-color-dark-theme-3;
+    }
+  }
+  page-card-item {
+    .card-icon {
+      .houston {
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+  page-session-log {
+    .filter-container {
+      .labels {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+}

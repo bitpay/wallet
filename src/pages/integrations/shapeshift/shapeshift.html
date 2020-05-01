@@ -9,17 +9,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor">
+<ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" no-bounce>
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
         <expandable-header-primary>
           <img margin-left width="155" (click)="update()" src="assets/img/shapeshift/logo-white-shapeshift.svg" alt="ShapeShift">
         </expandable-header-primary>
-        <ion-buttons end>
-          <button class="shift-button" *ngIf="accessToken" clear no-low-fee (click)="goTo('Shift')" [disabled]="disabled">
-            Shift
-            <ion-icon name="arrow-forward"></ion-icon>
+        <ion-buttons *ngIf="accessToken" end>
+          <button class="shift-button" (click)="goTo('Settings')">
+            <ion-icon name="settings"></ion-icon>
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -61,8 +60,13 @@
         Shapeshift is temporally disabled for this device. You can try it on our Desktop versions.
       </div>
 
-      <ion-list>
-        <ion-item-divider>{{'Transactions' | translate}}
+      <ion-list class="shift-history">
+        <button ion-item no-low-fee (click)="goTo('Shift')" [disabled]="disabled">
+          <ion-label>Shift</ion-label>
+          <ion-note item-end>{{ 'Choose Assets' | translate }}</ion-note>
+        </button>
+        <ion-item-divider class="shift-history-header">
+          {{'Transactions' | translate}}
           <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
         </ion-item-divider>
         <button ion-item *ngFor="let item of (shifts.data | keys : 'date') | orderBy : ['-order']" (click)="openShiftModal(item.value)">

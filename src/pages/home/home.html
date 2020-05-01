@@ -8,7 +8,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" enabled="false">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
@@ -20,7 +20,7 @@
   </expandable-header>
 
   <div class="message-background" *ngIf="accessDenied">
-    <div class="message-header"></div>
+    <div class="message-header no-dismissible"></div>
     <div class="message-content">
       <ion-row align-items-center>
         <div class="message-icon"><img src="assets/img/icon-danger.svg" /></div>
@@ -95,7 +95,6 @@
   </div>
 
   <page-feedback-card #showCard></page-feedback-card>
-  <page-survey-card #showSurvey></page-survey-card>
 
   <div *ngIf="showTotalBalance" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
@@ -123,15 +122,6 @@
       </ion-note>
     </ion-item>
     <div *ngIf="showShoppingOption" class="line-divider"></div>
-    <ion-item *ngIf="showServicesOption" (click)="goToServices()">
-      <ion-label>
-        <div class="services-list-label" translate>Services</div>
-      </ion-label>
-      <ion-note item-end>
-        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-      </ion-note>
-    </ion-item>
-    <div class="line-divider" *ngIf="showServicesOption"></div>
     <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
       <ion-label>
         <div class="services-list-label" translate>Buy Crypto</div>
@@ -143,9 +133,9 @@
     <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
   </ion-list>
 
-  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true">
+  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true" (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let advertisement of advertisements">
-      <div class="message-background">
+      <div class="message-background no-margin">
         <div class="message-header" *ngIf="advertisement.dismissible">
           <ion-row justify-content-end>
             <button float-right ion-button clear icon-only color="grey" (click)="dismissAdvertisement(advertisement)">

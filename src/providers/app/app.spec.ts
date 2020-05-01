@@ -5,6 +5,7 @@ import {
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { Device } from '@ionic-native/device';
 import { File } from '@ionic-native/file';
+import { StatusBar } from '@ionic-native/status-bar';
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -17,6 +18,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
+import { ThemeProvider } from '../theme/theme';
 import { AppProvider } from './app';
 
 import { LoggerMock } from '../logger/logger.mock';
@@ -45,8 +47,10 @@ describe('AppProvider', () => {
         Events,
         PersistenceProvider,
         PlatformProvider,
+        ThemeProvider,
         Platform,
         File,
+        StatusBar,
         Device
       ]
     });

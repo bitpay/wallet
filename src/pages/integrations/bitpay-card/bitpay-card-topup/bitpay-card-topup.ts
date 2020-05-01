@@ -58,6 +58,7 @@ export class BitPayCardTopUpPage {
   public currencyIsoCode;
   public amountUnitStr;
   public lastFourDigits;
+  public brand;
   public currencySymbol;
   public rate;
   private countDown;
@@ -137,6 +138,7 @@ export class BitPayCardTopUpPage {
       })
       .then(card => {
         this.bitPayCardProvider.setCurrencySymbol(card[0]);
+        this.brand = card[0].brand;
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
         this.currencyIsoCode = card[0].currency;
@@ -637,10 +639,15 @@ export class BitPayCardTopUpPage {
     if (this.navParams.get('v2')) {
       const { amount, currency, coin } = parsedAmount;
 
+      let walletId;
+      if (wallet && wallet.request && wallet.request.credentials) {
+        walletId = wallet.request.credentials.walletId;
+      }
       dataSrc = {
         invoicePrice: amount,
         invoiceCurrency: currency,
         transactionCurrency: coin.toUpperCase(),
+        walletId,
         v2: true
       };
     }
@@ -862,9 +869,12 @@ export class BitPayCardTopUpPage {
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
+    this.iabCardProvider.updateCards();
     modal.onDidDismiss(async () => {
       if (this.navParams.get('v2')) {
-        this.iabCardProvider.show();
+        setTimeout(() => {
+          this.iabCardProvider.show();
+        }, 200);
         this.iabCardProvider.sendMessage({
           message: `topUpComplete?${this.cardId}`
         });

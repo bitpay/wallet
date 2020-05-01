@@ -24,9 +24,9 @@ export class BalanceToShowComponent {
   }
 
   private processBalance(balance: string) {
-    this.resize = Boolean(balance.length >= 18);
-
     if (!balance || balance === '') return;
+
+    this.resize = Boolean(balance.length >= 18);
     if (balance.indexOf(' ') >= 0) {
       const spacePosition = balance.indexOf(' ');
       this.amount = balance.substr(0, spacePosition);

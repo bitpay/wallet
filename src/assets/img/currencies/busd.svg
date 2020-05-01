@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Coins/Large/BUSD</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Coins/Large/BUSD" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="usd-icon---test">
+            <circle id="Oval" fill="#F3BA2D" cx="25" cy="25" r="25"></circle>
+            <path d="M37.8994949,31.7383297 L37.8994949,37.7383297 L13.8994949,37.7383297 L13.8994949,31.7383297 L37.8994949,31.7383297 Z M37.1923882,22.5459415 L37.1923882,28.5459415 L13.1923882,28.5459415 L13.1923882,22.5459415 L37.1923882,22.5459415 Z M19,13.3535534 L19,19.3535534 L13,19.3535534 L13,13.3535534 L19,13.3535534 Z M37.2885822,13 L37.2885822,19 L22.2885822,19 L22.2885822,13 L37.2885822,13 Z" id="Rectangle-2" fill="#FFFFFF" transform="translate(25.449747, 25.369165) rotate(-45.000000) translate(-25.449747, -25.369165) "></path>
+        </g>
+    </g>
+</svg>

@@ -40,6 +40,10 @@ page-about {
         &.icon-settings {
           opacity: 0.5;
         }
+        &.ionic-icon {
+          font-size: 25px;
+          filter: contrast(0.2);
+        }
         img {
           width: 20px;
           height: 20px;
@@ -56,6 +60,11 @@ page-about {
     }
   }
 
+  .count-note {
+    min-width: 85px;
+    text-align: center;
+  }
+
   .create-button {
     background: white;
     color: color($colors, primary);
@@ -64,6 +73,11 @@ page-about {
   }
 
   .ion-md-eye:before {
+    width: 20px;
+    opacity: 0.55;
+  }
+
+  .ion-ios-moon:before {
     width: 20px;
     opacity: 0.55;
   }

@@ -9,6 +9,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
+import { ThemeProvider } from '../theme/theme';
 
 /* TODO: implement interface properly
 interface App {
@@ -58,7 +59,8 @@ export class AppProvider {
     public config: ConfigProvider,
     private persistence: PersistenceProvider,
     private file: File,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
@@ -81,6 +83,7 @@ export class AppProvider {
   private async loadProviders() {
     this.persistence.load();
     await this.config.load();
+    await this.themeProvider.load();
     this.language.load();
   }
 

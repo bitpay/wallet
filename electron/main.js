@@ -131,7 +131,7 @@ app.setAsDefaultProtocolClient('bchtest');
 app.setAsDefaultProtocolClient('ethereum');
 app.setAsDefaultProtocolClient(appConfig.name);
 app.setVersion(appConfig.version);
-app.setName(appConfig.nameCase);
+app.name = appConfig.nameCase;
 
 const getHomeDirPath = platform => {
   switch (platform) {

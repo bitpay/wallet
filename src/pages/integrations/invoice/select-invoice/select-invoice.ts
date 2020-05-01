@@ -42,6 +42,10 @@ export class SelectInvoicePage {
     if (this.navParams.data.walletCardRedir) {
       this.payProUrl += '?redir=wc';
     }
-    this.incomingDataProvider.goToPayPro(this.payProUrl, coin);
+    this.incomingDataProvider.goToPayPro(
+      this.payProUrl,
+      coin,
+      this.navParams.data.payProOptions
+    );
   }
 }

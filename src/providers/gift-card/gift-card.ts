@@ -32,6 +32,8 @@ import {
   CardConfigMap,
   GiftCard,
   GiftCardActivationFee,
+  GiftCardDiscount,
+  GiftCardPromotion,
   GiftCardSaveParams
 } from './gift-card.types';
 
@@ -129,7 +131,8 @@ export class GiftCardProvider extends InvoiceProvider {
     return user && userSettings && userSettings.syncGiftCardPurchases;
   }
 
-  public async createBitpayInvoice(data) {
+  public async createBitpayInvoice(data, attempt: number = 1) {
+    this.logger.info('BitPay Creating Invoice: try... ' + attempt);
     const params = {
       brand: data.cardName,
       currency: data.currency,
@@ -140,11 +143,15 @@ export class GiftCardProvider extends InvoiceProvider {
     };
     const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
     const promise = shouldSync
-      ? this.createAuthenticatedBitpayInvoice(params)
-      : this.createUnauthenticatedBitpayInvoice(params);
-    const cardOrder = await promise.catch(err => {
-      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
-      throw err;
+      ? this.createAuthenticatedBitpayInvoice.bind(this)
+      : this.createUnauthenticatedBitpayInvoice.bind(this);
+
+    const cardOrder = await promise(params).catch(async err => {
+      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(err));
+      if (attempt <= 5 && err.status == 403) {
+        await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+        return this.createBitpayInvoice(data, ++attempt);
+      } else throw err;
     });
     this.logger.info('BitPay Create Invoice: SUCCESS');
     return cardOrder as {
@@ -611,14 +618,15 @@ export class GiftCardProvider extends InvoiceProvider {
     this.analyticsProvider.logEvent(eventName, eventParams);
   }
 
-  getDiscountEventParams(discountedCard: CardConfig, context?: string) {
-    const discount = discountedCard.discounts[0];
+  getPromoEventParams(promotedCard: CardConfig, context?: string) {
+    const discount = promotedCard.discounts && promotedCard.discounts[0];
+    const promo = promotedCard.promotions && promotedCard.promotions[0];
     return {
-      brand: discountedCard.name,
-      code: discount.code,
+      brand: promotedCard.name,
+      name: (discount && discount.code) || promo.shortDescription,
       context,
-      type: discount.type,
-      discountAmount: discount.amount
+      type: (discount && discount.type) || 'promo',
+      ...(discount && { discountAmount: discount && discount.amount })
     };
   }
 
@@ -653,7 +661,8 @@ function getCardConfigFromApiConfigMap(
 function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
   return {
     ...cardConfig,
-    discounts: isCordova ? cardConfig.discounts : undefined
+    discounts: isCordova ? cardConfig.discounts : undefined,
+    promotions: isCordova ? cardConfig.promotions : undefined
   };
 }
 
@@ -762,6 +771,19 @@ export function getCardsFromInvoiceMap(
 
 export function hasVisibleDiscount(cardConfig: CardConfig) {
   return !!getVisibleDiscount(cardConfig);
+}
+
+export function hasPromotion(cardConfig: CardConfig) {
+  return !!(cardConfig.promotions && cardConfig.promotions[0]);
+}
+
+export function getPromo(
+  cardConfig: CardConfig
+): GiftCardDiscount | GiftCardPromotion {
+  return (
+    getVisibleDiscount(cardConfig) ||
+    (cardConfig.promotions && cardConfig.promotions[0])
+  );
 }
 
 export function getVisibleDiscount(cardConfig: CardConfig) {

@@ -41,7 +41,6 @@ const Keys = {
   COINBASE: env => 'coinbase-' + env,
   CONFIG: 'config',
   FEEDBACK: 'feedback',
-  SURVEY: 'survey',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: (network: Network) => {
     const suffix = network === Network.livenet ? '' : `-${network}`;
@@ -76,7 +75,8 @@ const Keys = {
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
-  BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`
+  BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
+  APP_THEME: 'app-theme'
 };
 
 interface Storage {
@@ -146,14 +146,6 @@ export class PersistenceProvider {
 
   getFeedbackInfo() {
     return this.storage.get(Keys.FEEDBACK);
-  }
-
-  setSurveyFlag() {
-    return this.storage.set(Keys.SURVEY, true);
-  }
-
-  getSurveyFlag() {
-    return this.storage.get(Keys.SURVEY);
   }
 
   setKeyOnboardingFlag() {
@@ -513,11 +505,13 @@ export class PersistenceProvider {
 
   setBitpayDebitCards(network: string, email: string, cards) {
     return this.getBitpayAccounts(network).then(allAccounts => {
-      allAccounts = allAccounts || {};
-      if (!allAccounts[email])
-        throw new Error('Cannot set cards for unknown account ' + email);
-      allAccounts[email].cards = cards;
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
+      let accounts = { ...(allAccounts || {}) };
+      try {
+        accounts[email] = { cards };
+      } catch (err) {
+        this.logger.error(err);
+      }
+      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), accounts);
     });
   }
 
@@ -558,6 +552,10 @@ export class PersistenceProvider {
       .then(allAccounts => {
         return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
       });
+  }
+
+  removeAllBitPayAccounts(network: string) {
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
   }
 
   setGiftCards(cardName: string, network: Network, gcs: string) {
@@ -710,7 +708,6 @@ export class PersistenceProvider {
   }
 
   setCardExperimentFlag(value: string) {
-    this.logger.debug('card experiment enabled: ', value);
     return this.storage.set('cardExperimentEnabled', value);
   }
 
@@ -720,6 +717,14 @@ export class PersistenceProvider {
 
   removeCardExperimentFlag() {
     return this.storage.remove('cardExperimentEnabled');
+  }
+
+  getCardExperimentNetwork() {
+    return this.storage.get('cardExperimentNetwork');
+  }
+
+  setCardExperimentNetwork(network: Network) {
+    return this.storage.set('cardExperimentNetwork', network);
   }
 
   setWalletGroupName(keyId: string, name: string) {
@@ -793,9 +798,11 @@ export class PersistenceProvider {
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }
+
   getWaitingListStatus() {
     return this.storage.get('waitingListStatus');
   }
+
   removeWaitingListStatus() {
     return this.storage.remove('waitingListStatus');
   }
@@ -805,6 +812,14 @@ export class PersistenceProvider {
   }
   getReachedCardLimit() {
     return this.storage.get('reachedCardLimit');
+  }
+
+  setAppTheme(value: string) {
+    return this.storage.set(Keys.APP_THEME, value);
+  }
+
+  getAppTheme() {
+    return this.storage.get(Keys.APP_THEME);
   }
 }
 

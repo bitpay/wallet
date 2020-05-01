@@ -14,6 +14,8 @@
     </div>
   </div>
   <div *ngSwitchDefault externalize-links>
+    <div markdown [data]="prepForMarkdown(cardConfig.promotions[0].details)" class="card-description__promotion"
+      *ngIf="hasPromotion(cardConfig)"></div>
     <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>
   </div>
 </div>

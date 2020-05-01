@@ -39,8 +39,10 @@ import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
   getActivationFee,
+  getPromo,
   getVisibleDiscount,
-  GiftCardProvider
+  GiftCardProvider,
+  hasVisibleDiscount
 } from '../../../../providers/gift-card/gift-card';
 import {
   CardConfig,
@@ -447,10 +449,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   private logDiscountedPurchase() {
-    if (!getVisibleDiscount(this.cardConfig)) return;
+    if (!getPromo(this.cardConfig)) return;
     const params = {
-      ...this.giftCardProvider.getDiscountEventParams(this.cardConfig),
-      discounted: true
+      ...this.giftCardProvider.getPromoEventParams(this.cardConfig),
+      discounted: hasVisibleDiscount(this.cardConfig) ? true : false
     };
     this.giftCardProvider.logEvent('purchasedGiftCard', params);
   }

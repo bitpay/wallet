@@ -1,8 +1,5 @@
 page-disclaimer {
   .onboarding-slides {
-    .slide-zoom {
-      height: 100%;
-    }
     ion-slide {
       background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
       .img-container {
@@ -32,7 +29,6 @@ page-disclaimer {
         }
       }
       .slide-info {
-        background: white;
         height: 100%;
         .title {
           color: #060606;
@@ -71,6 +67,11 @@ page-disclaimer {
       }
     }
   }
+  .toolbar {
+    .toolbar-background {
+      background: #ebedf8;
+    }
+  }
   .checkbox-list {
     padding: 30px 15px 15px 15px;
     text-align: center;
@@ -105,24 +106,5 @@ page-disclaimer {
       font-size: 13px;
       line-height: 15px;
     }
-  }
-  .footer-container {
-    padding-bottom: 0;
-    background-color: color($colors, blank);
-  }
-  .swiper-container-horizontal > .swiper-pagination-bullets {
-    position: fixed;
-    bottom: 15rem;
-    @media (max-width: 350px) {
-      bottom: 13rem;
-    }
-  }
-  .next-slide-button {
-    position: absolute;
-    bottom: calc(2rem + env(safe-area-inset-bottom));
-    bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
-    width: 100%;
-    z-index: 1;
-    cursor: pointer;
   }
 }

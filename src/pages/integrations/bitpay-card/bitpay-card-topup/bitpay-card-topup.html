@@ -7,8 +7,15 @@
 <ion-content [ngClass]="{'add-padding-bottom': isCordova}" no-bounce>
   <ion-item>
     <div class="bitpay-title">
-      <img src="assets/img/bitpay-card/bitpay-card-visa.svg">
-      <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
+      <ng-container *ngIf="brand === 'Mastercard' else visa">
+        <img src="assets/img/bitpay-card/bitpay-card-mc.svg">
+        <span>BitPay Card ({{lastFourDigits}})</span>
+      </ng-container>
+      <ng-template #visa>
+        <img src="assets/img/bitpay-card/bitpay-card-visa.svg">
+        <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
+      </ng-template>
+
     </div>
     <div class="amount-label">
       <div class="amount">{{amountUnitStr}}</div>
@@ -137,6 +144,11 @@
       </div>
     </div>
   </ion-list>
+  <div *ngIf="brand === 'Mastercard'" class="card-terms">
+    BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE SCHEDULE, IF ANY. This card is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from Mastercard International. "Metropolitan Commercial Bank" and "Metropolitan" are registered trademarks of Metropolitan Commercial Bank ©2014.<br><br>
+    Mastercard is a registered trademark and the circles design is a trademark of Mastercard International Incorporated.
+  </div>
+
 </ion-content>
 
 <ion-footer>

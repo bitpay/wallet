@@ -1,28 +1,5 @@
 <action-sheet>
-  <ion-list *ngIf="type === 'url'">
-    <ion-item-divider>{{'Website' | translate}}</ion-item-divider>
-    <ion-item>
-      {{data}}
-      <ion-icon item-start>
-        <img *ngIf="!https" src="assets/img/icon-lock-x.svg">
-        <img *ngIf="https" src="assets/img/icon-lock-green.svg">
-      </ion-icon>
-    </ion-item>
-    <button ion-item (click)="close('OpenExternalLink', data)">
-      <ion-icon item-start>
-        <img src="assets/img/icon-link-external.svg">
-      </ion-icon>
-      <span translate>Open website</span>
-    </button>
-    <button ion-item copy-to-clipboard="{{ data }}">
-      <ion-icon item-start>
-        <img src="assets/img/icon-paperclip.svg">
-      </ion-icon>
-      <span translate>Copy to clipboard</span>
-    </button>
-  </ion-list>
-
-  <ion-list *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress' || type === 'rippleAddress'">
+  <ion-list class="bp-list" *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress' || type === 'rippleAddress'">
     <ion-item-divider *ngIf="coinName">{{'{coinName} Address' | translate: { coinName: coinName } }}</ion-item-divider>
     <ion-item>
       {{data}}
@@ -30,7 +7,7 @@
         <img src="assets/img/icon-{{coin}}-small.svg" alt="Coin">
       </ion-icon>
     </ion-item>
-    <button ion-item (click)="close('AddressBookPage', data)">
+    <button ion-item (click)="close('AddressbookAddPage', data)">
       <ion-icon item-start>
         <img src="assets/img/icon-contacts.svg">
       </ion-icon>
@@ -50,7 +27,7 @@
     </button>
   </ion-list>
 
-  <ion-list *ngIf="type === 'text'">
+  <ion-list class="bp-list" *ngIf="type === 'text'">
     <ion-item-divider>{{'Text' | translate}}</ion-item-divider>
     <ion-item>
       {{data}}
@@ -63,7 +40,7 @@
     </button>
   </ion-list>
 
-  <ion-list *ngIf="type === 'privateKey'">
+  <ion-list class="bp-list" *ngIf="type === 'privateKey'">
     <ion-item-divider>{{'Private Key' | translate}}</ion-item-divider>
     <ion-item>{{data}}</ion-item>
     <button ion-item (click)="close('PaperWalletPage', data)">

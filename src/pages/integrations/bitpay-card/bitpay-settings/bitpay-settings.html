@@ -1,10 +1,16 @@
 <wide-header-page title="{{'Card Settings'|translate}}">
   <div page-content>
     <ion-list class="bp-list" [ngClass]="{'top-padding': !bitpayCard}">
-      <ion-item *ngIf="!bitpayCard">
-        <ion-label>{{'Show' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
-      </ion-item>
+      <ng-container *ngIf="!bitpayCard">
+        <ion-item>
+          <ion-label>{{'Show' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+        </ion-item>
+        <button ion-item class="pairButton" (click)="connectBitPayCard()">
+          <span class="main-label">{{'Pair My BitPay Card' | translate}}</span>
+        </button>
+      </ng-container>
+
 
 
       <div *ngIf="bitpayCard">

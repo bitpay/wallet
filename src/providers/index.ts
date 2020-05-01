@@ -89,6 +89,7 @@ export { ScanProvider } from '../providers/scan/scan';
 export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 export { SimplexProvider } from '../providers/simplex/simplex';
 export { TabProvider } from '../providers/tab/tab';
+export { ThemeProvider } from '../providers/theme/theme';
 export { TimeProvider } from '../providers/time/time';
 export { TouchIdProvider } from '../providers/touchid/touchid';
 export {

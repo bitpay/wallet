@@ -84,10 +84,19 @@
     </div>
 
     <div *ngSwitchCase="'send-options'">
-      <button ion-item (click)="optionClicked('multi-send')">
+      <button ion-item *ngIf="params?.isMultiSend" (click)="optionClicked('multi-send')">
         <ion-icon class="item-img icon-settings" name="people" item-start></ion-icon>
         <ion-label>
           <span class="main-label" translate>Transfer to Multiple Recipients</span>
+        </ion-label>
+      </button>
+
+      <button ion-item *ngIf="params?.isUtxoCoin" (click)="optionClicked('select-inputs')">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/tab-icons/ico-send.svg">
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>Select inputs for transaction</span>
         </ion-label>
       </button>
     </div>

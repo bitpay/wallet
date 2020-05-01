@@ -5,6 +5,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 // Providers
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -32,6 +33,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public bchCashAddress: string;
   public bchAddrFormat: string;
   public disclaimerAccepted: boolean;
+  public useLegacyQrCode: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -44,28 +46,31 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private platform: Platform,
     public currencyProvider: CurrencyProvider,
     private addressProvider: AddressProvider,
-    private domProvider: DomProvider
+    private domProvider: DomProvider,
+    private configProvider: ConfigProvider
   ) {
     super();
   }
 
   ngOnInit() {
     this.wallet = this.params.wallet;
+    this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.bchAddrFormat = 'cashAddress';
     this.disclaimerAccepted = false;
-    this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      this.setAddress();
-      this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    });
     this.setAddress();
   }
 
   ionViewWillLeave() {
     this.onResumeSubscription.unsubscribe();
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.setAddress();
+      this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    });
   }
 
   private bwsEventHandler: any = (walletId, type, n) => {
@@ -132,10 +137,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
   }
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
+    if (this.wallet.coin === 'bch') {
+      address =
+        this.bchAddrFormat === 'legacy'
+          ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
+          : this.bchCashAddress;
+    }
     if (newAddr) {
-      address = this.bchAddrFormat
-        ? this.addressProvider.getLegacyBchAddressFormat(this.bchCashAddress)
-        : this.bchCashAddress;
       await Observable.timer(400).toPromise();
     }
     this.address = address;

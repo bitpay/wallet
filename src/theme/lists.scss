@@ -84,6 +84,9 @@
         &_gusd {
           background-color: #caf5fe;
         }
+        &_busd {
+          background-color: #f3ba2d;
+        }
       }
     }
   }
@@ -122,8 +125,7 @@
   .main-label {
     font-weight: 500;
     font-size: 16px;
-    line-height: 30px;
-    height: 30px;
+    line-height: 20px;
     color: black;
   }
 
@@ -132,8 +134,6 @@
     color: #565d6d;
     opacity: 50%;
     font-weight: 400;
-    line-height: 8px;
-    height: 16px;
   }
 
   .main-note {

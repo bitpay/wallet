@@ -6,6 +6,7 @@ page-cards {
 
   .section-header {
     display: flex;
+    position: relative;
     justify-content: space-between;
     align-items: center;
     margin: 20px 0px 20px 20px;
@@ -192,4 +193,11 @@ page-cards {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.card-terms {
+  padding: 0 34px;
+  margin: 50px 0;
+  color: #757575;
+  font-size: 11px;
 }

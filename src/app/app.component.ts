@@ -38,6 +38,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { SimplexProvider } from '../providers/simplex/simplex';
+import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // Pages
@@ -48,6 +49,7 @@ import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
@@ -91,6 +93,7 @@ export class CopayApp {
     AddressbookAddPage,
     AmountPage,
     BitPayCardIntroPage,
+    PhaseOneCardIntro,
     CoinbasePage,
     ConfirmPage,
     CopayersPage,
@@ -136,7 +139,8 @@ export class CopayApp {
     private iab: InAppBrowserProvider,
     private iabCardProvider: IABCardProvider,
     private bitpayProvider: BitPayProvider,
-    private bitpayIdProvider: BitPayIdProvider
+    private bitpayIdProvider: BitPayIdProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -198,6 +202,18 @@ export class CopayApp {
         deviceInfo
     );
 
+    this.platform.pause.subscribe(() => {
+      const config = this.configProvider.get();
+      const lockMethod =
+        config && config.lock && config.lock.method
+          ? config.lock.method.toLowerCase()
+          : null;
+      if (!lockMethod || lockMethod === 'disabled') {
+        return;
+      }
+      this.iabCardProvider.pause();
+    });
+
     if (this.platform.is('cordova')) {
       this.statusBar.show();
 
@@ -221,15 +237,18 @@ export class CopayApp {
       // Only overlay for iOS
       if (this.platform.is('ios')) {
         this.statusBar.overlaysWebView(true);
-        this.statusBar.styleDefault();
       }
 
       this.splashScreen.hide();
 
       // Subscribe Resume
-      this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.onResumeSubscription = this.platform.resume.subscribe(async () => {
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
+
+        // Set Theme (light or dark mode)
+        await this.themeProvider.load();
+        this.themeProvider.apply();
 
         // Clear all notifications
         this.pushNotificationsProvider.clearAllNotifications();
@@ -242,9 +261,16 @@ export class CopayApp {
       this.pushNotificationsProvider.clearAllNotifications();
     }
 
+    // Set Theme (light or dark mode)
+    this.themeProvider.apply();
+    if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
+
     const experiment = await this.persistenceProvider.getCardExperimentFlag();
+    const experimentNetwork = await this.persistenceProvider.getCardExperimentNetwork();
     if (experiment === 'enabled') {
-      this.NETWORK = 'testnet';
+      const network = experimentNetwork || 'testnet';
+      this.NETWORK = network;
+      this.logger.log(`card experiment network = ${network}`);
     }
     this.bitpayProvider.setNetwork(this.NETWORK);
     this.bitpayIdProvider.setNetwork(this.NETWORK);
@@ -298,7 +324,7 @@ export class CopayApp {
         this.iab
           .createIABInstance(
             'card',
-            CARD_IAB_CONFIG,
+            `${CARD_IAB_CONFIG},OverrideUserAgent=${this.platformProvider.getUserAgent()}`,
             `https://${host}/wallet-card?context=bpa`,
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 
@@ -313,6 +339,19 @@ export class CopayApp {
           });
       });
     }
+  }
+
+  private updateDesktopOnFocus() {
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
+    win.on('focus', () => {
+      if (this.themeProvider.useSystemTheme) {
+        this.themeProvider.getDetectedSystemTheme().then(theme => {
+          if (this.themeProvider.currentAppTheme == theme) return;
+          this.themeProvider.setActiveTheme('system', theme);
+        });
+      }
+    });
   }
 
   private onProfileLoad(profile) {
@@ -352,10 +391,8 @@ export class CopayApp {
     }
 
     if (lockMethod == 'pin') {
-      this.iabCardProvider.pause();
       this.openPINModal('checkPin');
     } else if (lockMethod == 'fingerprint') {
-      this.iabCardProvider.pause();
       this.openFingerprintModal();
     }
   }

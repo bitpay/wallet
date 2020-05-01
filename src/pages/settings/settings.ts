@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import { Events, ModalController, NavController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -17,20 +16,23 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
+import { Logger } from '../../providers/logger/logger';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
+import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexSettingsPage } from '../integrations/simplex/simplex-settings/simplex-settings';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -44,11 +46,23 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
+import { ThemePage } from './theme/theme';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html'
+  templateUrl: 'settings.html',
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('200ms')
+      ])
+    ])
+  ]
 })
 export class SettingsPage {
   public appName: string;
@@ -74,6 +88,8 @@ export class SettingsPage {
   private user$: Observable<User>;
   public showReorder: boolean = false;
   public showTotalBalance: boolean;
+  public appTheme: string;
+  public useLegacyQrCode: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -90,14 +106,22 @@ export class SettingsPage {
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
     private analyticsProvider: AnalyticsProvider,
-    private persistanceProvider: PersistenceProvider,
+    private persistenceProvider: PersistenceProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private themeProvider: ThemeProvider,
+    private events: Events
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
     this.user$ = this.iabCardProvider.user$;
+
+    this.events.subscribe('updateCards', cards => {
+      if (cards && cards.length > 0) {
+        this.bitpayCardItems = cards;
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -105,25 +129,23 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-    this.persistanceProvider
+    this.persistenceProvider
       .getBitpayIdPairingFlag()
       .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
 
+    this.appTheme = this.themeProvider.getCurrentAppTheme();
+
     if (this.iabCardProvider.ref) {
       // check for user info
-      this.persistanceProvider
+      this.persistenceProvider
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
         });
 
-      this.user$.subscribe(user => {
+      this.user$.subscribe(async user => {
         if (user) {
           this.bitPayIdUserInfo = user;
-          this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-            this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
-            this.bitpayCardItems = cards;
-          });
           this.changeRef.detectChanges();
         }
       });
@@ -160,6 +182,8 @@ export class SettingsPage {
         ? this.config.lock.method.toLowerCase()
         : null;
 
+    this.useLegacyQrCode = this.config.legacyQrCode.show;
+
     this.showTotalBalance = this.config.totalBalance.show;
   }
 
@@ -187,19 +211,20 @@ export class SettingsPage {
     });
   }
 
+  public trackBy(index) {
+    return index;
+  }
+
   public openBitPayIdPage(): void {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
+      this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
           message: 'pairingOnly'
         },
-        () => {
-          setTimeout(() => {
-            this.iabCardProvider.show();
-          }, 500);
-        }
+        () => {}
       );
     }
   }
@@ -218,6 +243,10 @@ export class SettingsPage {
 
   public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
+  }
+
+  public openThemePage(): void {
+    this.navCtrl.push(ThemePage);
   }
 
   public openLockPage(): void {
@@ -260,7 +289,7 @@ export class SettingsPage {
         this.navCtrl.push(BitPaySettingsPage);
         break;
       case 'shapeshift':
-        this.navCtrl.push(ShapeshiftSettingsPage);
+        this.navCtrl.push(ShapeshiftPage);
         break;
       case 'simplex':
         this.navCtrl.push(SimplexSettingsPage);
@@ -272,16 +301,15 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    this.persistanceProvider.getCardExperimentFlag().then(status => {
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         const message = `openSettings?${id}`;
+        this.iabCardProvider.show(true);
         this.iabCardProvider.sendMessage(
           {
             message
           },
-          () => {
-            this.iabCardProvider.show();
-          }
+          () => {}
         );
       } else {
         this.navCtrl.push(BitPaySettingsPage, { id });
@@ -381,5 +409,12 @@ export class SettingsPage {
     _.each(this.walletsGroups, (walletGroup, index: number) => {
       this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
     });
+  }
+
+  public toggleQrCodeLegacyFlag(): void {
+    let opts = {
+      legacyQrCode: { show: this.useLegacyQrCode }
+    };
+    this.configProvider.set(opts);
   }
 }

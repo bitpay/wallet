@@ -49,6 +49,7 @@ export interface WalletOptions {
   compliantDerivation: any;
   useLegacyCoinType?: boolean;
   useLegacyPurpose?: boolean;
+  useNativeSegwit?: boolean;
 }
 
 export interface TransactionProposal {
@@ -93,6 +94,7 @@ export class WalletProvider {
   private WALLET_STATUS_DELAY_BETWEEN_TRIES: number = 1.6 * 1000;
   private SOFT_CONFIRMATION_LIMIT: number = 12;
   private SAFE_CONFIRMATIONS: number = 6;
+  private DEFAULT_RBF_SEQNUMBER = 0xffffffff;
 
   private errors = this.bwcProvider.getErrors();
 
@@ -698,15 +700,17 @@ export class WalletProvider {
           ): Promise<any> => {
             return new Promise((resolve, reject) => {
               this.fetchTxsFromServer(wallet, skip, endingTxid, requestLimit)
-                .then(result => {
+                .then(async result => {
                   const res = result.res;
                   const shouldContinue = result.shouldContinue
                     ? result.shouldContinue
                     : false;
 
-                  newTxs = newTxs.concat(
-                    this.processNewTxs(wallet, _.compact(res))
+                  const _newTxs = await this.processNewTxs(
+                    wallet,
+                    _.compact(res)
                   );
+                  newTxs = newTxs.concat(_newTxs);
                   WalletProvider.progressFn[walletId](
                     newTxs.concat(txsFromLocal),
                     newTxs.length
@@ -870,17 +874,30 @@ export class WalletProvider {
     });
   }
 
-  private processNewTxs(wallet, txs) {
+  private async processNewTxs(wallet, txs): Promise<any> {
     const now = Math.floor(Date.now() / 1000);
     const txHistoryUnique = {};
     const ret = [];
     wallet.hasUnsafeConfirmed = false;
 
-    _.each(txs, tx => {
+    for (let tx of txs) {
       tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now) tx.time = now;
+
+      if (tx.confirmations === 0 && wallet.coin === 'btc') {
+        const coins = await this.getCoinsForTx(wallet, tx.txid);
+        tx.isRBF = _.some(coins.inputs, input => {
+          return (
+            input.sequenceNumber &&
+            input.sequenceNumber < this.DEFAULT_RBF_SEQNUMBER - 1
+          );
+        });
+        tx.hasUnconfirmedInputs = _.some(coins.inputs, input => {
+          return input.mintHeight < 0;
+        });
+      }
 
       if (tx.confirmations >= this.SAFE_CONFIRMATIONS) {
         tx.safeConfirmed = this.SAFE_CONFIRMATIONS + '+';
@@ -900,9 +917,8 @@ export class WalletProvider {
       } else {
         this.logger.debug('Ignoring duplicate TX in history: ' + tx.txid);
       }
-    });
-
-    return ret;
+    }
+    return Promise.resolve(ret);
   }
 
   public removeAndMarkSoftConfirmedTx(txs): any[] {
@@ -959,14 +975,18 @@ export class WalletProvider {
     }
   }
 
-  private getEstimatedTxSize(wallet, nbOutputs?: number): number {
+  public getEstimatedTxSize(
+    wallet,
+    nbOutputs?: number,
+    nbInputs?: number
+  ): number {
     // Note: found empirically based on all multisig P2SH inputs and within m & n allowed limits.
     nbOutputs = nbOutputs ? nbOutputs : 2; // Assume 2 outputs
     const safetyMargin = 0.02;
     const overhead = 4 + 4 + 9 + 9;
     const inputSize = this.getEstimatedSizeForSingleInput(wallet);
     const outputSize = 34;
-    const nbInputs = 1; // Assume 1 input
+    nbInputs = nbInputs ? nbInputs : 1; // Assume 1 input
 
     const size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
     return parseInt((size * (1 + safetyMargin)).toFixed(0), 10);
@@ -1371,6 +1391,22 @@ export class WalletProvider {
         (err, resp) => {
           if (err || !resp || !resp.length)
             return reject(err ? err : 'No UTXOs');
+          return resolve(resp);
+        }
+      );
+    });
+  }
+
+  public getCoinsForTx(wallet, txId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      wallet.getCoinsForTx(
+        {
+          coin: wallet.coin,
+          network: wallet.network,
+          txId
+        },
+        (err, resp) => {
+          if (err) return reject(err);
           return resolve(resp);
         }
       );

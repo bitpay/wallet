@@ -10,8 +10,6 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { IntegrationsPage } from '../pages/integrations/integrations';
-import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -66,7 +64,6 @@ import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
-import { SurveyCardPage } from '../pages/includes/survey-card/survey-card';
 import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
@@ -96,6 +93,7 @@ import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
+import { ThemePage } from '../pages/settings/theme/theme';
 
 /* Wallet Group Settings */
 import { ClearEncryptPasswordPage } from '../pages/settings/key-settings/clear-encrypt-password/clear-encrypt-password';
@@ -126,6 +124,7 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
+import { SelectInputsPage } from '../pages/send/select-inputs/select-inputs';
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
 import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
@@ -161,10 +160,10 @@ export const PAGES = [
   CoinbaseTxDetailsPage,
   CoinbaseWithdrawPage,
   CopayersPage,
+  SelectInputsPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,
-  IntegrationsPage,
   JoinWalletPage,
   BackupGamePage,
   BackupKeyPage,
@@ -208,9 +207,7 @@ export const PAGES = [
   SearchTxModalPage,
   SessionLogPage,
   SendFeedbackPage,
-  SurveyCardPage,
   FinishModalPage,
-  NewDesignTourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsModal,
@@ -239,6 +236,7 @@ export const PAGES = [
   CardItemPage,
   CoinSelectorPage,
   SlideToAcceptPage,
+  ThemePage,
   // Phases: card pages
   PhaseOneCardIntro
 ];

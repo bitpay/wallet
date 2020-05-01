@@ -21,9 +21,6 @@ describe('WalletsPage', () => {
       instance.showCard = {
         setShowRateCard: () => {}
       };
-      instance.showSurvey = {
-        setShowSurveyCard: () => {}
-      };
       fixture.detectChanges();
     })));
   afterEach(() => {
@@ -73,14 +70,6 @@ describe('WalletsPage', () => {
           expect(setWalletsSpy).toHaveBeenCalled();
         });
       });
-
-      describe('ionViewWillLeave', () => {
-        it('should call resetValuesForAnimationCard', () => {
-          const spy = spyOn(instance, 'resetValuesForAnimationCard');
-          instance.ionViewWillLeave();
-          expect(spy).toHaveBeenCalled();
-        });
-      });
     });
   });
 
@@ -107,13 +96,6 @@ describe('WalletsPage', () => {
         });
         await instance.checkClipboard();
         expect(instance.validDataFromClipboard).toBeNull();
-      });
-      it('should parse InvoiceUri successfully', async () => {
-        spyOn(incomingDataProvider, 'parseData').and.returnValue({
-          type: 'InvoiceUri'
-        });
-        await instance.checkClipboard();
-        expect(instance.validDataFromClipboard.type).toEqual('InvoiceUri');
       });
     });
   });

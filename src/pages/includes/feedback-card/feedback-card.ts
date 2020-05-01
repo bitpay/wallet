@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
@@ -26,6 +27,7 @@ export class FeedbackCardPage {
     private navCtrl: NavController,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
+    private analyticsProvider: AnalyticsProvider,
     private translate: TranslateService,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
@@ -39,9 +41,7 @@ export class FeedbackCardPage {
     if (this.isShowRateCard) {
       let appName = this.appProvider.info.nameCase;
       this.feedbackCardTitle = this.replaceParametersProvider.replace(
-        this.translate.instant(
-          'How satisfied are you with {{appName}} wallet?'
-        ),
+        this.translate.instant('How satisfied are you with using {{appName}}?'),
         { appName }
       );
     }
@@ -64,16 +64,19 @@ export class FeedbackCardPage {
         this.button_title = this.translate.instant("I'm disappointed");
         break;
       case 2:
-        this.button_title = this.translate.instant("I'm satisfied");
+        this.button_title = this.translate.instant("It's ok for now");
         break;
       case 3:
-        this.button_title = this.translate.instant("I'm very happy");
+        this.button_title = this.translate.instant('I love it!');
         break;
     }
   }
 
   public goFeedbackFlow(): void {
     this.hideCard();
+    this.analyticsProvider.logEvent('feedback_card_app_sentiment', {
+      happinessLevel: this.score
+    });
     this.navCtrl.push(SendFeedbackPage, {
       score: this.score,
       fromCard: true

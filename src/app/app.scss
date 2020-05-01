@@ -53,7 +53,19 @@ ion-title.bp-title {
 ion-alert.alert-top {
   align-items: center;
 }
-
+ion-alert {
+  .alert-wrapper {
+    color: black;
+    .alert-title {
+      color: black;
+    }
+  }
+  .alert-radio-group {
+    .alert-radio:not([aria-checked='true']) .alert-radio-label {
+      color: black;
+    }
+  }
+}
 // Text wrap
 // --------------------------------------------------
 ion-label {
@@ -84,7 +96,7 @@ ion-header.bp-header .toolbar {
   }
 }
 .wide-header__title {
-  color: black;
+  color: $text-color;
   font-size: 25px;
   font-weight: 700;
   padding-top: 10px;
@@ -116,7 +128,7 @@ ion-header.bp-header .toolbar {
   opacity: 0.6;
   border-radius: none;
   background-color: transparent !important;
-  margin-right: 5px;
+  margin: 0 5px;
   color: #434d5a;
   &.activated,
   &:hover:not(.disable-hover) {
@@ -150,7 +162,6 @@ ion-header.bp-header .toolbar {
 /* Refresh component */
 ion-refresher-content {
   justify-content: normal;
-  padding-top: 15px;
 }
 
 ion-spinner * {
@@ -444,24 +455,17 @@ a.royal {
   }
 }
 
-ion-searchbar {
-  background: white;
-  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
-  padding-bottom: 10px;
-  .searchbar-input-container {
-    input.searchbar-input {
-      background: #f8f8f8;
-      font-size: 16px;
-      border-radius: 8px;
-      box-shadow: none;
-    }
+.search-wrapper {
+  background-color: #f8f8f8;
+  display: flex;
+  align-items: baseline;
+  border-radius: 8px;
+  .text-input-ios {
+    margin: 16px 8px 16px 8px;
   }
 }
 
 // Set backgrounds transparent so the QR Scanner can be seen behind the app.
-html,
-body,
-.back-transparent,
 ion-app,
 .nav-decor {
   background: transparent !important;
@@ -579,23 +583,20 @@ ion-alert .alert-message {
 }
 
 .qr-container {
-  flex-grow: 1;
   @include center;
-
-  .qr-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  height: 293px;
 
   .qr-card {
-    transform: translateY(0);
     margin: 0;
     padding-bottom: 0;
-    width: 70%;
     max-width: 293px;
     max-height: 293px;
     box-shadow: none;
+
+    img {
+      height: auto;
+      width: 100%;
+    }
 
     .aclass {
       @include center;
@@ -606,22 +607,7 @@ ion-alert .alert-message {
       filter: grayscale(100%);
       height: 100%;
       width: 100%;
-      opacity: 0.715;
     }
-  }
-
-  .bp-qr-card {
-    width: 100%;
-    img {
-      height: auto;
-      width: 100%;
-    }
-  }
-
-  .qr-placeholder:after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
   }
 }
 
@@ -688,8 +674,7 @@ ion-item.with-label.item {
   }
 }
 
-page-bitpay-card,
-.wallet-details-header {
+page-bitpay-card {
   @include toolbar-button-color(white);
 
   ion-title .toolbar-title {
@@ -855,7 +840,6 @@ ion-icon {
 
 .line-divider {
   box-sizing: border-box;
-  border: 0.5px solid #9ba3ae;
-  opacity: 0.1;
+  border: 0.5px solid rgba(155, 163, 174, 0.1);
   margin: 0px 25px;
 }

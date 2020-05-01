@@ -1,6 +1,9 @@
 <wide-header-page title="{{ 'Advanced' | translate }}">
   <div page-content>
     <ion-list class="settings-list bp-list">
+      <button ion-item (click)="resetAllSettings()">
+        <ion-label>{{ 'Reset All Settings' | translate }}</ion-label>
+      </button>
       <ion-item class="with-label no-border">
         <ion-label>{{ 'Use Unconfirmed Funds' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>

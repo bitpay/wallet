@@ -1,0 +1,172 @@
+page-select-inputs,
+page-multi-send,
+page-proposals-notifications {
+  .send-header-wrapper {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrapper {
+    background-color: #f8f8f8;
+    display: flex;
+    align-items: baseline;
+    border-radius: 8px;
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+    .scan-icon {
+      margin: 0;
+      border-left: 1px solid rgba(151, 151, 151, 0.2);
+      padding: 0rem 1rem 0.8rem 1.4rem;
+      z-index: 999;
+    }
+    .backspace-icon {
+      z-index: 999;
+    }
+  }
+  .invalid {
+    border: 1px solid color($colors, error);
+    color: color($colors, error);
+    background-color: #fff6f7;
+  }
+  .no-wallet-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .item-divider-header {
+    height: 5rem;
+    border-bottom: 0;
+    &.sm {
+      height: 1rem;
+    }
+    &.item {
+      min-height: 26px;
+      background: $feather-dark;
+
+      ion-label {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .item-inner {
+        padding: 0 !important;
+        border: none;
+      }
+    }
+
+    ion-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .amount {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: color($colors, dark);
+  }
+
+  .address,
+  .amount-str {
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0.4;
+    font-weight: 300;
+    color: #434d5a;
+  }
+
+  .recipient.item {
+    .item-inner {
+      padding: 11px 10px 11px 0;
+      min-height: 76px;
+    }
+  }
+
+  .content-list {
+    .item {
+      font-size: 16px;
+      padding-left: 19px;
+
+      .item-icon {
+        margin-right: 15px;
+      }
+
+      .item-inner {
+        background-image: none;
+        margin-left: 3px;
+        border-bottom: 1px solid color($colors, light);
+      }
+    }
+  }
+
+  ion-checkbox .item-cover {
+    display: none;
+  }
+
+  .total-inputs {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #434d5a;
+    opacity: 0.4;
+    &-str {
+      cursor: pointer;
+      font-size: 38px;
+      font-weight: 500;
+      display: flex;
+      align-items: baseline;
+      @media (max-height: 650px) and (max-width: 768px) {
+        font-size: 34px;
+      }
+      @media (max-height: 600px) and (max-width: 768px) {
+        font-size: 30px;
+      }
+      @media (max-height: 550px) and (max-width: 768px) {
+        font-size: 24px;
+      }
+    }
+    &-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    &-header {
+      position: relative;
+      margin: 1rem 2rem 1rem 2rem;
+      height: 13rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+    &-warning {
+      padding-top: 10px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: color($colors, danger);
+    }
+  }
+  .wallet {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .coin-icon {
+      width: 12px;
+    }
+    .icon-wallet {
+      margin-right: 0px;
+    }
+  }
+}

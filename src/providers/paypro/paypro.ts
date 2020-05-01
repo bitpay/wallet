@@ -21,29 +21,21 @@ export class PayproProvider {
     this.logger.debug('PayproProvider initialized');
   }
 
-  public getPayProOptions(paymentUrl, disableLoader?: boolean): Promise<any> {
+  public async getPayProOptions(paymentUrl, attempt: number = 1): Promise<any> {
+    this.logger.info('PayPro Options: try... ' + attempt);
     const bwc = this.bwcProvider.getPayProV2();
     const options: any = {
       paymentUrl
     };
-    if (!disableLoader) {
-      this.onGoingProcessProvider.set('fetchingPayProOptions');
-    }
-
-    return bwc
-      .getPaymentOptions(options)
-      .then(payProOptions => {
-        if (!disableLoader) this.onGoingProcessProvider.clear();
-        return payProOptions;
-      })
-      .catch(error => {
-        this.logger.debug(error);
-        this.onGoingProcessProvider.clear();
-        this.errorsProvider.showDefaultError(
-          this.translate.instant('Could not fetch payment options'),
-          'Error'
-        );
-      });
+    const payOpts = await bwc.getPaymentOptions(options).catch(async err => {
+      this.logger.error('PayPro Options: ERROR', JSON.stringify(err));
+      if (attempt <= 5) {
+        await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+        return this.getPayProOptions(paymentUrl, ++attempt);
+      } else throw err;
+    });
+    this.logger.info('PayPro Options: SUCCESS');
+    return payOpts;
   }
 
   public getPayProDetails(
