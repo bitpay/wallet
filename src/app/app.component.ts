@@ -314,7 +314,10 @@ export class CopayApp {
       this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
     ]);
 
-    if (this.platformProvider.isCordova) {
+    if (
+      this.platformProvider.isCordova &&
+      this.appProvider.info.name === 'bitpay'
+    ) {
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
       this.logger.log(`IAB host -> ${host}`);
