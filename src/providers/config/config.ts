@@ -246,6 +246,9 @@ export class ConfigProvider {
         show: false
       },
 
+      /*
+       * SET "TRUE" TO ENABLE DARK MODE
+       */
       theme: {
         enabled: false,
         system: true,

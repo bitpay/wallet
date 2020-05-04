@@ -110,6 +110,11 @@
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
+      <!-- REMOVE WHEN DARK MODE IS ENABLED -->
+      <config-file target="*-Info.plist" parent="UIUserInterfaceStyle">
+        <string>Light</string>
+      </config-file>
+      <!-- ############ -->
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
         <true />
       </config-file>
