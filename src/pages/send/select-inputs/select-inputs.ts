@@ -76,7 +76,7 @@ export class SelectInputsPage {
     };
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
-      'Local/AddressScanMultiSend',
+      'Local/AddressScanSelectInputs',
       this.updateAddressHandler
     );
     this.events.subscribe('addRecipient', newRecipient => {
@@ -91,7 +91,7 @@ export class SelectInputsPage {
 
   ngOnDestroy() {
     this.events.unsubscribe(
-      'Local/AddressScanMultiSend',
+      'Local/AddressScanSelectInputs',
       this.updateAddressHandler
     );
     this.events.unsubscribe('addRecipient', newRecipient => {
