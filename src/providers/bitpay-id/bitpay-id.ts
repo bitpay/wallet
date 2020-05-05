@@ -212,7 +212,7 @@ export class BitPayIdProvider {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
         this.persistenceProvider.removeBitPayIdUserInfo(network),
-        this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitpayAccountV2(network)
       ]);
       this.events.publish('bitpayIdDisconnected');
       this.iab.refs.card.executeScript(
