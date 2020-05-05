@@ -17,13 +17,11 @@
       </ion-toolbar>
     </expandable-header>
     <div *ngIf="gotCardItems" @fade>
-      <div [ngClass]="{'gift-cards-first': !bitpayCardItems?.length && activeCards?.length}">
-        <bitpay-card-home *ngIf="showBitPayCard"
-                          [cardExperimentEnabled]="cardExperimentEnabled"
-                          [bitpayCardItems]="bitpayCardItems"
-                          [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
-        <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
-      </div>
+      <bitpay-card-home *ngIf="showBitPayCard"
+                        [cardExperimentEnabled]="cardExperimentEnabled"
+                        [bitpayCardItems]="bitpayCardItems"
+                        [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
+      <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
       <p class="card-terms" *ngIf="cardExperimentEnabled && showBitPayCard && showDisclaimer" @fade>
         *Network fees and miner fees may apply.<br><br>
         BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE
