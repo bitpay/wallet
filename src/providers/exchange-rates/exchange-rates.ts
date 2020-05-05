@@ -15,8 +15,11 @@ export interface ApiPrice {
 @Injectable()
 export class ExchangeRatesProvider {
   private bwsURL: string;
-  private lastDates = 1;
-  private ratesCache: Observable<CoinsMap<ApiPrice[]>>;
+  private ratesCache: {
+    1?: Observable<CoinsMap<ApiPrice[]>>;
+    7?: Observable<CoinsMap<ApiPrice[]>>;
+    31?: Observable<CoinsMap<ApiPrice[]>>;
+  } = {};
 
   constructor(
     private httpClient: HttpClient,
@@ -28,17 +31,20 @@ export class ExchangeRatesProvider {
     this.bwsURL = defaults.bws.url;
   }
 
-  public getHistoricalRates(isoCode): Observable<CoinsMap<ApiPrice[]>> {
+  public getHistoricalRates(
+    isoCode,
+    dateOffset = 1
+  ): Observable<CoinsMap<ApiPrice[]>> {
     const today = moment();
-    const ts = today.subtract(this.lastDates, 'days').unix() * 1000;
+    const ts = today.subtract(dateOffset, 'days').unix() * 1000;
     const url = `${this.bwsURL}/v2/fiatrates/${isoCode}?ts=${ts}`;
 
-    if (!this.ratesCache) {
-      this.ratesCache = this.httpClient
+    if (!this.ratesCache[dateOffset]) {
+      this.ratesCache[dateOffset] = this.httpClient
         .get<CoinsMap<ApiPrice[]>>(url)
         .pipe(shareReplay());
     }
-    return this.ratesCache;
+    return this.ratesCache[dateOffset];
   }
 
   public getCurrentRate(isoCode, coin?): Observable<ApiPrice> {

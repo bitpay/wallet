@@ -721,6 +721,20 @@
     }
   }
 
+  // 5.15 Price Page
+  price-page {
+    .total-amount-container {
+      .total-amount-value {
+        color: $text-color-dark-theme;
+      }
+    }
+    .labels {
+      .inactive {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+
   // 5.2 - Tab Wallets
   page-wallets {
     .collapse > .collapse-btn {
