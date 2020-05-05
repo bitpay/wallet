@@ -145,6 +145,9 @@ export class BitPayCardIntroPage {
         },
         () => {}
       );
+      setTimeout( () => {
+        this.navCtrl.pop();
+      }, 300);
     } else {
       this.bitPayCardProvider.logEvent('legacycard_order', {});
       let url = 'https://bitpay.com/visa/get-started';

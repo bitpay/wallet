@@ -117,7 +117,15 @@ export class CardsPage {
         // if all cards are hidden
         if (cards.every(c => !!c.hide)) {
           // if galileo not found then show order card else hide it
-          this.showBitPayCard = this.showDisclaimer = galileo === -1;
+          if (galileo === -1) {
+            this.showBitPayCard = true;
+            setTimeout( () => {
+              this.showDisclaimer = true;
+            }, 300);
+          } else {
+            this.showBitPayCard = this.showDisclaimer = false;
+          }
+
           return res(cards);
         }
 
