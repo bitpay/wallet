@@ -543,13 +543,17 @@ export class IABCardProvider {
     this.hide();
   }
 
-  pairing(event) {
+  async pairing(event) {
     const {
       params,
       params: { withNotification }
     } = event.data;
     // set the overall app loading state
     this.onGoingProcess.set('connectingBitPayId');
+
+    await this.persistenceProvider.removeAllBitPayAccounts(
+      Network[this.NETWORK],
+    );
 
     // generates pairing token and also fetches user basic info and caches both
     this.bitpayIdProvider.generatePairingToken(
