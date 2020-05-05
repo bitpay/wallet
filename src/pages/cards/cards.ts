@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
 // Providers
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -51,7 +51,8 @@ export class CardsPage {
     private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider,
     private events: Events,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private changeRef: ChangeDetectorRef
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
@@ -59,8 +60,21 @@ export class CardsPage {
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
+    this.events.subscribe('showHideUpdate', async status => {
+      if (status === 'inProgress') {
+        this.gotCardItems = false;
+      } else {
+        this.bitpayCardItems = await this.prepareDebitCards();
+        setTimeout(() => {
+          this.gotCardItems = true;
+          this.changeRef.detectChanges();
+        });
+      }
+    });
+
     this.events.subscribe('updateCards', async () => {
       this.bitpayCardItems = await this.prepareDebitCards();
+      this.changeRef.detectChanges();
     });
 
     this.events.subscribe('bitpayIdDisconnected', async () => {
@@ -75,7 +89,6 @@ export class CardsPage {
     this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
       'debitcard'
     );
-    this.showBitPayCard = !!this.appProvider.info._enabledExtensions.debitcard;
 
     // get debit cards from persistence storage and process them
     this.bitpayCardItems = await this.prepareDebitCards();
@@ -86,40 +99,48 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
-      // retrieve cards from storage
+      // if disabled return
+      if (this.appProvider.info._enabledExtensions.debitcard == 'false') {
+        this.showBitPayCard = false;
+        return res([]);
+      }
+
       setTimeout(async () => {
+        // retrieve cards from storage
         let cards = await this.persistenceProvider.getBitpayDebitCards(
           Network[this.NETWORK]
         );
-
         // filter out and show one galileo card
-        const idx = cards.findIndex(c => {
+        const galileo = cards.findIndex(c => {
           return c.provider === 'galileo' && c.cardType === 'physical';
         });
+        // if all cards are hidden
+        if (cards.every(c => !!c.hide)) {
+          // if galileo not found then show order card else hide it
+          this.showBitPayCard = this.showDisclaimer = galileo === -1;
+          return res(cards);
+        }
 
         // if galileo then show disclaimer and remove add card ability
-        if (idx !== -1) {
-          setTimeout(() => {
-            this.showDisclaimer = true;
-          }, 300);
+        if (galileo !== -1) {
+          cards.splice(galileo, 1);
+
+          if (cards.filter(c => !c.hide).find(c => c.provider === 'galileo')) {
+            setTimeout(() => {
+              this.showDisclaimer = true;
+            }, 300);
+          } else {
+            this.showDisclaimer = false;
+          }
+
           await this.persistenceProvider.setReachedCardLimit(true);
           this.events.publish('reachedCardLimit');
+        } else {
+          // no MC so hide disclaimer
+          this.showDisclaimer = false;
         }
 
-        cards.splice(idx, 1);
-
-        // filter by show
-        cards = cards.filter(c => c.show == true);
-
-        // if all cards hidden
-        if (cards.length < 1) {
-          // card limit reached
-          if (idx !== -1) {
-            // do not show order now
-            this.showBitPayCard = false;
-          }
-        }
-
+        this.showBitPayCard = true;
         res(cards);
       }, 100);
     });

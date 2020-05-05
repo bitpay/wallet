@@ -56,8 +56,8 @@ export class BitPayCardHome implements OnInit {
       this._initial = false;
       this.disableAddCard =
         this.bitpayCardItems &&
-        this.bitpayCardItems.filter(c => c.provider === 'galileo').length > 0;
-    }, 50);
+        this.bitpayCardItems.find(c => c.provider === 'galileo');
+    }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges) {
