@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import { shareReplay } from 'rxjs/operators';
@@ -32,17 +33,22 @@ export class ExchangeRatesProvider {
   }
 
   public getHistoricalRates(
-    isoCode,
+    coin: string,
+    isoCode: string,
     dateOffset = 1
-  ): Observable<CoinsMap<ApiPrice[]>> {
-    const today = moment();
-    const ts = today.subtract(dateOffset, 'days').unix() * 1000;
-    const url = `${this.bwsURL}/v2/fiatrates/${isoCode}?ts=${ts}`;
+  ): Observable<ApiPrice[]> {
+    const observableBatch = [];
+    const historicalDates = this.setDates(dateOffset);
 
     if (!this.ratesCache[dateOffset]) {
-      this.ratesCache[dateOffset] = this.httpClient
-        .get<CoinsMap<ApiPrice[]>>(url)
-        .pipe(shareReplay());
+      _.forEach(historicalDates, date => {
+        observableBatch.push(
+          this.httpClient.get<ApiPrice>(
+            `${this.bwsURL}/v1/fiatrates/${isoCode}?coin=${coin}&ts=${date}`
+          ).pipe(shareReplay())
+        );
+      });
+      this.ratesCache[dateOffset] = Observable.forkJoin(observableBatch);
     }
     return this.ratesCache[dateOffset];
   }
@@ -51,5 +57,23 @@ export class ExchangeRatesProvider {
     return this.httpClient.get<ApiPrice>(
       `${this.bwsURL}/v1/fiatrates/${isoCode}?coin=${coin}`
     );
+  }
+
+  private setDates(dateOffset: number): number[] {
+    const intervals = 120;
+    const today = moment().set({
+      hour: 15,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+    const lastDate = today.subtract(dateOffset, 'day').unix() * 1000;
+    const historicalDates = [lastDate];
+    const intervalOffset = Math.round((today.unix() * 1000 - lastDate) / intervals);
+
+    for (let i = 0; i <= intervals; i++) {
+      historicalDates.push(historicalDates[i] + intervalOffset);
+    }
+    return historicalDates;
   }
 }
