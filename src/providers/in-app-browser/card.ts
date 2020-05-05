@@ -104,6 +104,15 @@ export class IABCardProvider {
 
         /*
          *
+         * This handles keeping the IAB session storage in sync with the IAB
+         *
+         * */
+        case 'syncCardState':
+          this.syncCardState(event);
+          break;
+
+        /*
+         *
          * Closes the IAB
          *
          * */
@@ -286,33 +295,45 @@ export class IABCardProvider {
               }
             }
 
+            let currentCards = await this.persistenceProvider.getBitpayDebitCards(
+              Network[this.NETWORK]
+            );
+
             cards = cards.map(c => {
+              // @ts-ignore
+              const { lockedByUser, hide } =
+                (currentCards || []).find(
+                  currentCard => currentCard.eid === c.id
+                ) || {};
+
               return {
                 ...c,
+                hide,
+                lockedByUser,
                 currencyMeta: c.currency,
                 currency: c.currency.code,
-                eid: c.id,
-                show: true
+                eid: c.id
               };
             });
 
-            setTimeout(async () => {
-              await this.persistenceProvider.setBitpayDebitCards(
-                Network[this.NETWORK],
-                user.email,
-                cards
-              );
-            });
-
-            this.ref.executeScript(
-              {
-                code: `sessionStorage.setItem(
+            await this.persistenceProvider.setBitpayDebitCards(
+              Network[this.NETWORK],
+              user.email,
+              cards
+            );
+            try {
+              this.ref.executeScript(
+                {
+                  code: `sessionStorage.setItem(
                   'cards',
                   ${JSON.stringify(JSON.stringify(cards))}
                   )`
-              },
-              () => this.logger.log('added cards')
-            );
+                },
+                () => this.logger.log('added cards')
+              );
+            } catch (err) {
+              this.logger.log(JSON.stringify(err));
+            }
 
             this.fetchLock = false;
             this.events.publish('isFetchingDebitCards', false);
@@ -365,6 +386,19 @@ export class IABCardProvider {
     setTimeout(() => {
       this.events.publish('updateCards');
     });
+  }
+
+  async syncCardState(event) {
+    const { cards } = event.data.params;
+    const user = await this.persistenceProvider.getBitPayIdUserInfo(
+      Network[this.NETWORK]
+    );
+    await this.persistenceProvider.setBitpayDebitCards(
+      Network[this.NETWORK],
+      user.email,
+      cards
+    );
+    this.logger.log('CARD synced state');
   }
 
   async signRequest(event) {
@@ -454,6 +488,7 @@ export class IABCardProvider {
   }
 
   async toggleShow(event) {
+    this.events.publish('showHideUpdate', 'inProgress');
     let cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
     );
@@ -462,18 +497,8 @@ export class IABCardProvider {
       return;
     }
 
-    const { id, show, provider } = event.data.params;
-
-    cards = cards.map(c => {
-      if (provider === 'galileo' || c.eid === id) {
-        return {
-          ...c,
-          show
-        };
-      }
-      return c;
-    });
-
+    const { hide, provider } = event.data.params;
+    cards = cards.map(c => (c.provider === provider ? { ...c, hide } : c));
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
@@ -484,7 +509,22 @@ export class IABCardProvider {
       cards
     );
 
-    this.events.publish('updateCards');
+    try {
+      this.ref.executeScript(
+        {
+          code: `sessionStorage.setItem(
+                  'cards',
+                  ${JSON.stringify(JSON.stringify(cards))}
+                  )`
+        },
+        () => this.logger.log('added cards')
+      );
+    } catch (err) {
+      this.logger.log(JSON.stringify(err));
+    }
+
+    this.logger.log('CARD - showHideUpdate - complete');
+    this.events.publish('showHideUpdate', 'complete');
   }
 
   topUp(event) {
