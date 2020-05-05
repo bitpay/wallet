@@ -27,6 +27,18 @@ export class PricePage {
     { label: '1W', lastDate: 7 },
     { label: '1M', lastDate: 31 }
   ];
+  private supportedFiatCodes: string[] = [
+    'USD',
+    'INR',
+    'GBP',
+    'EUR',
+    'CAD',
+    'COP',
+    'NGN',
+    'BRL',
+    'ARS',
+    'AUD'
+  ];
   public isIsoCodeSupported: boolean;
   public isoCode: string;
   public fiatCodes;
@@ -60,10 +72,10 @@ export class PricePage {
   private getPrice(lastDate) {
     this.canvas.loading = true;
     this.exchangeRatesProvider
-      .getHistoricalRates(this.isoCode, lastDate)
+      .getHistoricalRates(this.card.unitCode, this.isoCode, lastDate)
       .subscribe(
         response => {
-          this.card.historicalRates = response[this.card.unitCode];
+          this.card.historicalRates = response;
           this.updateValues();
           this.setPrice();
           this.redrawCanvas();
@@ -176,7 +188,10 @@ export class PricePage {
 
   private setIsoCode() {
     this.fiatCodes = this.simplexProvider.getSupportedFiatAltCurrencies();
-    this.isoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
+    const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
+    this.isoCode = this.supportedFiatCodes.includes(alternativeIsoCode)
+      ? alternativeIsoCode
+      : 'USD';
     this.isIsoCodeSupported = _.includes(this.fiatCodes, this.isoCode);
   }
 }
