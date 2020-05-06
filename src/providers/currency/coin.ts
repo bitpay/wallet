@@ -196,12 +196,12 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       hasMultiSig: false,
       hasMultiSend: false,
       isUtxo: false,
-      isERCToken: false,
-      isStableCoin: false,
+      isERCToken: true,
+      isStableCoin: true,
       singleAddress: true
     },
     paymentInfo: {
-      paymentCode: 'EIP681',
+      paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bitpay.com/api/rates/busd',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
