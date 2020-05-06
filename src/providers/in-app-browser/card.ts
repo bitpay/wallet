@@ -231,6 +231,7 @@ export class IABCardProvider {
             token,
             id,
             nickname,
+            pagingSupport,
             currency {
               name
               code
