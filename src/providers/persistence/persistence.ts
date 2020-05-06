@@ -508,7 +508,9 @@ export class PersistenceProvider {
   }
 
   setBitpayDebitCards(network: string, email: string, cards) {
-    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {[email]: {cards}});
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {
+      [email]: { cards }
+    });
   }
 
   // cards: [

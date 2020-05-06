@@ -119,7 +119,7 @@ export class CardsPage {
           // if galileo not found then show order card else hide it
           if (galileo === -1) {
             this.showBitPayCard = true;
-            setTimeout( () => {
+            setTimeout(() => {
               this.showDisclaimer = true;
             }, 300);
           } else {

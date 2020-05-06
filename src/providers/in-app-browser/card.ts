@@ -552,7 +552,7 @@ export class IABCardProvider {
     this.onGoingProcess.set('connectingBitPayId');
 
     await this.persistenceProvider.removeAllBitPayAccounts(
-      Network[this.NETWORK],
+      Network[this.NETWORK]
     );
 
     // generates pairing token and also fetches user basic info and caches both

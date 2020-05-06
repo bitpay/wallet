@@ -145,7 +145,7 @@ export class BitPayCardIntroPage {
         },
         () => {}
       );
-      setTimeout( () => {
+      setTimeout(() => {
         this.navCtrl.pop();
       }, 300);
     } else {
