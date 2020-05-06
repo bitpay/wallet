@@ -9,6 +9,8 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
+import { CoinbasePage } from '../coinbase';
+
 @Component({
   selector: 'page-coinbase-settings',
   templateUrl: 'coinbase-settings.html'
@@ -63,5 +65,12 @@ export class CoinbaseSettingsPage {
           this.navCtrl.popToRoot();
         }
       });
+  }
+
+  public goToCoinbase() {
+    this.navCtrl.push(CoinbasePage, { animate: false }).then(() => {
+      const previousView = this.navCtrl.getPrevious();
+      this.navCtrl.removeView(previousView);
+    });
   }
 }
