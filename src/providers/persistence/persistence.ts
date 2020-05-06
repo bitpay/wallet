@@ -503,15 +503,13 @@ export class PersistenceProvider {
     });
   }
 
+  removeBitpayAccountV2(network: string) {
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
+  }
+
   setBitpayDebitCards(network: string, email: string, cards) {
-    return this.getBitpayAccounts(network).then(allAccounts => {
-      let accounts = { ...(allAccounts || {}) };
-      try {
-        accounts[email] = { cards };
-      } catch (err) {
-        this.logger.error(err);
-      }
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), accounts);
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {
+      [email]: { cards }
     });
   }
 
