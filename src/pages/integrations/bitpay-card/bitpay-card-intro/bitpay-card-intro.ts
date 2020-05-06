@@ -121,7 +121,7 @@ export class BitPayCardIntroPage {
   public async orderBitPayCard() {
     if (this.cardExperimentEnabled) {
       const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
-        10,
+        12,
         'USD'
       );
 
