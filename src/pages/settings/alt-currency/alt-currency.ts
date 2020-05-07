@@ -117,6 +117,9 @@ export class AltCurrencyPage {
         this.PAGE_COUNTER * this.SHOW_LIMIT
       );
       this.PAGE_COUNTER++;
+
+      if (this.searchedAltCurrency) this.findCurrency();
+
       loading.complete();
     }, 300);
   }
@@ -159,13 +162,13 @@ export class AltCurrencyPage {
       .then(() => {});
   }
 
-  public findCurrency(searchedAltCurrency: string): void {
+  public findCurrency(): void {
     this.altCurrencyList = _.filter(this.completeAlternativeList, item => {
       var val = item.name;
       var val2 = item.isoCode;
       return (
-        _.includes(val.toLowerCase(), searchedAltCurrency.toLowerCase()) ||
-        _.includes(val2.toLowerCase(), searchedAltCurrency.toLowerCase())
+        _.includes(val.toLowerCase(), this.searchedAltCurrency.toLowerCase()) ||
+        _.includes(val2.toLowerCase(), this.searchedAltCurrency.toLowerCase())
       );
     });
   }
