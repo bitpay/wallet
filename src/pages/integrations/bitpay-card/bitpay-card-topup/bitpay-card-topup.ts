@@ -638,16 +638,12 @@ export class BitPayCardTopUpPage {
 
     if (this.navParams.get('v2')) {
       const { amount, currency, coin } = parsedAmount;
-
-      let walletId;
-      if (wallet && wallet.request && wallet.request.credentials) {
-        walletId = wallet.request.credentials.walletId;
-      }
+      const { id } = wallet;
       dataSrc = {
         invoicePrice: amount,
         invoiceCurrency: currency,
         transactionCurrency: coin.toUpperCase(),
-        walletId,
+        walletId: id,
         v2: true
       };
     }
