@@ -950,6 +950,13 @@ export class ConfirmPage {
       this.walletProvider
         .getAddress(this.wallet, false)
         .then(address => {
+          if (wallet.coin === 'xrp' && tx.toAddress === address) {
+            const err = this.translate.instant(
+              'Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again.'
+            );
+            return reject(err);
+          }
+
           txp.from = address;
           this.walletProvider
             .createTx(wallet, txp)
