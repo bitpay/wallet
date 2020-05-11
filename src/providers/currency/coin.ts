@@ -73,8 +73,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      backgroundColor: 'rgba(247,146,26,1)',
-      gradientBackgroundColor: 'rgba(247,146,26, 0.2)'
+      backgroundColor: '#f7921a',
+      gradientBackgroundColor: '#f7921a'
     }
   },
   bch: {
@@ -108,8 +108,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
-      backgroundColor: 'rgba(47,207,110,1)',
-      gradientBackgroundColor: 'rgba(47,207,110, 0.2)'
+      backgroundColor: '#2fcf6e',
+      gradientBackgroundColor: '#2fcf6e'
     }
   },
   eth: {
@@ -143,8 +143,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      backgroundColor: 'rgba(135,206,250,1)',
-      gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
+      backgroundColor: '#1e90ff',
+      gradientBackgroundColor: '#1e90ff'
     }
   },
   xrp: {
@@ -178,8 +178,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
-      backgroundColor: 'rgba(35,41,47,1)',
-      gradientBackgroundColor: 'rgba(68,79,91, 0.2)'
+      backgroundColor: '#565d6d',
+      gradientBackgroundColor: '#565d6d'
     }
   },
   busd: {
@@ -248,8 +248,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      backgroundColor: 'rgba(0,132,93,1)',
-      gradientBackgroundColor: 'rgba(0,209,147, 0.2)'
+      backgroundColor: '#00845d',
+      gradientBackgroundColor: '#00845d'
     }
   },
   usdc: {
@@ -283,8 +283,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      backgroundColor: 'rgba(39,117,201,1)',
-      gradientBackgroundColor: 'rgba(93,156,224, 0.2)'
+      backgroundColor: '#2775c9',
+      gradientBackgroundColor: '#2775c9'
     }
   },
   gusd: {
@@ -318,8 +318,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      backgroundColor: 'rgba(0,220,250,1)',
-      gradientBackgroundColor: 'rgba(72,233,255, 0.2)'
+      backgroundColor: '#00dcfa',
+      gradientBackgroundColor: '#00dcfa'
     }
   }
 };

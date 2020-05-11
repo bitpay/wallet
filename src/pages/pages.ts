@@ -76,6 +76,7 @@ import { WalletsPage } from '../pages/wallets/wallets';
 
 /* Home */
 import { ProposalsNotificationsPage } from '../pages/wallets/proposals-notifications/proposals-notifications';
+import { PricePage } from './home/price-page/price-page';
 
 /* Settings */
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
@@ -186,6 +187,7 @@ export const PAGES = [
   OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
+  PricePage,
   ProposalsNotificationsPage,
   ScanPage,
   SendPage,

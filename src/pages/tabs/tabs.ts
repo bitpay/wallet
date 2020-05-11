@@ -154,23 +154,23 @@ export class TabsPage {
     const availableChains = this.currencyProvider.getAvailableChains();
     const ts = today.subtract(23, 'hours').unix() * 1000;
     return new Promise(resolve => {
-      this.exchangeRatesProvider
-        .getHistoricalRates(this.totalBalanceAlternativeIsoCode)
-        .subscribe(
-          response => {
-            let ratesByCoin = {};
-            for (const unitCode of availableChains) {
-              ratesByCoin[unitCode] = _.find(response[unitCode], d => {
+      let ratesByCoin = {};
+      for (const unitCode of availableChains) {
+        this.exchangeRatesProvider
+          .getHistoricalRates(unitCode, this.totalBalanceAlternativeIsoCode)
+          .subscribe(
+            response => {
+              ratesByCoin[unitCode] = _.find(response, d => {
                 return d.ts < ts;
               }).rate;
+            },
+            err => {
+              this.logger.error('Error getting current rate:', err);
+              return resolve();
             }
-            return resolve(ratesByCoin);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-            return resolve();
-          }
-        );
+          );
+      }
+      return resolve(ratesByCoin);
     });
   }
 
