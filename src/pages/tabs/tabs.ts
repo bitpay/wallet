@@ -110,7 +110,9 @@ export class TabsPage {
       (eventName: string) => {
         if (walletId && type == eventName) {
           setTimeout(() => {
-            this.fetchAllWalletsStatus();
+            type === 'NewIncomingTx' || type === 'NewOutgoingTx'
+              ? this.fetchAllWalletsStatus()
+              : this.updateTxps();
           }, 2000);
         }
       }
