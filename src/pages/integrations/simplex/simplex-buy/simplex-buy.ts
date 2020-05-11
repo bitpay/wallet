@@ -294,6 +294,9 @@ export class SimplexBuyPage {
     );
     if (!this.wallet) return;
 
+    // To take default values after switching between currencies coming from charts
+    this.amount = undefined;
+
     if (this.currencyIsFiat()) {
       this.setFiatValues();
     } else {
