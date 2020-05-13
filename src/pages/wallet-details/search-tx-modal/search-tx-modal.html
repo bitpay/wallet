@@ -10,9 +10,9 @@
 </ion-header>
 
 <ion-content>
-  <div padding>
+  <ion-item class="search-container" no-lines padding>
     <ion-input class="search-wrapper" placeholder="{{'Search Transactions' | translate}}" [(ngModel)]="search" (ngModelChange)="updateSearchInput(search)"></ion-input>
-  </div>
+  </ion-item>
 
   <ion-list *ngIf="txHistorySearchResults && txHistorySearchResults[0]" class="bp-list tx-history">
     <div>
