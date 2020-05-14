@@ -242,6 +242,7 @@ export class ImportWalletPage {
       this.walletProvider.updateRemotePreferences(wallet);
       this.pushNotificationsProvider.updateSubscription(wallet);
       this.profileProvider.setWalletBackup(wallet.credentials.walletId);
+      this.walletProvider.fetchStatus(wallet, {});
     });
     if (wallets && wallets[0]) {
       this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
