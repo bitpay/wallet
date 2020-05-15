@@ -77,7 +77,8 @@ const Keys = {
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
   APP_THEME: 'app-theme',
-  USER_LOCATION: 'user-location'
+  USER_LOCATION: 'user-location',
+  COUNTRIES: 'countries'
 };
 
 interface Storage {
@@ -512,6 +513,14 @@ export class PersistenceProvider {
     return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {
       [email]: { cards }
     });
+  }
+
+  setCountries(countries) {
+    return this.storage.set(Keys.COUNTRIES, countries);
+  }
+
+  getCountries() {
+    return this.storage.get(Keys.COUNTRIES);
   }
 
   // cards: [
