@@ -25,7 +25,7 @@
         </div>
         <div action-card-title>
           <ng-container *ngIf="!initialized else titleInitialized">
-            <div class="loading--line" style="width: 60%"></div>
+            <div class="loading--line" style="width: 55%"></div>
           </ng-container>
           <ng-template #titleInitialized>
             <ng-container *ngIf="waitList else mc">
@@ -66,30 +66,27 @@
     <div class="section-header" translate>
       Debit Cards
     </div>
-    <!---- CARD DRAWER - EXPERIMENT ---->
-    <ng-container *ngIf="cardExperimentEnabled else regCards">
+    <ng-container *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy">
 
-      <ng-container *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy">
+      <div class="card-item" *ngIf="!card.hide">
+        <div class="card-container">
 
-        <div class="card-item" *ngIf="!card.hide">
-          <div class="card-container">
+          <ng-container *ngIf="!initialized else cardsInitialized">
+            <div @fadeUp class="card-loader__drawer">
+              <div class="loading--line" style="width: 25%"></div>
+              <div class="loading--line" style="width: 40%"></div>
+            </div>
+            <div class="slit card-loader--box-shadow"></div>
+          </ng-container>
 
-            <ng-container *ngIf="!initialized else cardsInitialized">
-              <div @fadeUp class="card-loader__drawer">
-                <div class="loading--line" style="width: 25%"></div>
-                <div class="loading--line" style="width: 40%"></div>
+          <ng-template #cardsInitialized>
+            <div @fadeUp class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)"
+                 tappable>
+              <div class="number ellipsis">
+                <img
+                    [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
               </div>
-              <div class="slit card-loader--box-shadow"></div>
-            </ng-container>
-
-            <ng-template #cardsInitialized>
-              <div @fadeUp class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)"
-                   tappable>
-                <div class="number ellipsis">
-                  <img
-                      [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
-                </div>
-                <span class="ellipsis" item-end>
+              <span class="ellipsis" item-end>
               <div class="funds ellipsis" style="position: relative;">
                 <span *ngIf="card.cardBalance">
                   {{ card.cardBalance | formatCurrency: card?.currency: 'minimal' }}
@@ -99,41 +96,16 @@
                 </span>
               </div>
             </span>
-              </div>
-              <div class="slit"></div>
-            </ng-template>
+            </div>
+            <div class="slit"></div>
+          </ng-template>
 
-          </div>
-        </div>
-      </ng-container>
-
-
-    </ng-container>
-
-    <!---- CARD DRAWER - REGULAR ---->
-    <ng-template #regCards>
-      <div *ngFor="let card of bitpayCardItems; let i = index" class="card-item">
-        <div class="card-container">
-          <div class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)"
-               tappable>
-            <div class="number ellipsis">Card (...{{ card.lastFourDigits }})</div>
-            <span class="ellipsis" item-end>
-              <div class="funds ellipsis">
-                <span *ngIf="card.balance">
-                  {{ card.balance | formatCurrency: card?.currency: 'minimal' }}
-                </span>
-                <span *ngIf="!card.balance" class="funds--cta">
-                  {{ 'Add funds' | translate }}
-                </span>
-              </div>
-              </span>
-          </div>
-          <div class="slit"></div>
         </div>
       </div>
-    </ng-template>
+    </ng-container>
 
-    <div class="add-button-wrapper--center" *ngIf="bitpayCardItems?.length && !disableAddCard" @fade>
+
+    <div class="add-button-wrapper--center" *ngIf="this.cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
       <add-button (click)="goToBitPayCardIntroPage()" tappable>
         <div add-button-text translate>Add BitPay Card</div>
       </add-button>

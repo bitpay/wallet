@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -45,7 +44,7 @@ export class CardsPage {
   private NETWORK: string;
   public initialized: boolean = false;
   public showDisclaimer: boolean;
-  public waitList: boolean;
+  public waitList = true;
   public IABReady: boolean;
   public hasCards: boolean;
   private IABPingLock: boolean;
@@ -55,7 +54,6 @@ export class CardsPage {
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayProvider: BitPayProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider,
@@ -72,6 +70,12 @@ export class CardsPage {
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
+    this.bitPayProvider.get('/countries',
+      ({ data }) => {
+        this.persistenceProvider.setCountries(data);
+      },
+      () => {});
+
     this.events.subscribe('showHideUpdate', async status => {
       if (status === 'inProgress') {
         this.initialized = false;
@@ -82,6 +86,18 @@ export class CardsPage {
           this.changeRef.detectChanges();
         });
       }
+    });
+
+    this.events.subscribe('experimentUpdateStart', async () => {
+      this.initialized = false;
+      this.waitList = false;
+      this.changeRef.detectChanges();
+    });
+
+    this.events.subscribe('experimentUpdateComplete', async () => {
+      this.bitpayCardItems = await this.prepareDebitCards();
+      this.initialized = true;
+      this.changeRef.detectChanges();
     });
 
     this.events.subscribe('updateCards', async () => {
@@ -96,7 +112,7 @@ export class CardsPage {
     this.events.subscribe('IABReady', async country => {
       clearInterval(this.IABPingInterval);
       // if wait list flag not set retrieve from storage
-      if (this.waitList === undefined) {
+      if (this.cardExperimentEnabled && this.waitList === undefined) {
         this.waitList = country && country !== 'US';
         this.logger.log(`COUNTRY ${country}`);
       }
@@ -104,6 +120,8 @@ export class CardsPage {
       this.initialized = this.IABReady = true;
       this.changeRef.detectChanges();
     });
+
+
   }
 
   async ionViewWillEnter() {
@@ -208,18 +226,8 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.cardExperimentEnabled) {
-      if (this.hasCards) {
-        await this.iabCardProvider.getCards();
-      }
-    } else {
-      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
-
-      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-        noHistory: true
-      });
-      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+    if (this.hasCards) {
+      await this.iabCardProvider.getCards();
     }
   }
 

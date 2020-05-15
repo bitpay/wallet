@@ -5,7 +5,6 @@ import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
-import { BitPayCardPage } from '../bitpay-card';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
@@ -80,11 +79,9 @@ export class BitPayCardHome implements OnInit {
 
   public goToBitPayCardIntroPage() {
     this.navCtrl.push(
-      this.cardExperimentEnabled
-        ? this.waitList
-          ? PhaseOneCardIntro
-          : BitPayCardIntroPage
-        : PhaseOneCardIntro
+      this.waitList
+        ? PhaseOneCardIntro
+        : BitPayCardIntroPage
     );
   }
 
@@ -93,17 +90,13 @@ export class BitPayCardHome implements OnInit {
   }
 
   public goToCard(cardId): void {
-    if (this.cardExperimentEnabled) {
-      const message = `loadDashboard?${cardId}`;
-      this.iabCardProvider.show();
-      this.iabCardProvider.sendMessage(
-        {
-          message
-        },
-        () => {}
-      );
-    } else {
-      this.navCtrl.push(BitPayCardPage, { id: cardId });
-    }
+    const message = `loadDashboard?${cardId}`;
+    this.iabCardProvider.show();
+    this.iabCardProvider.sendMessage(
+      {
+        message
+      },
+      () => {}
+    );
   }
 }
