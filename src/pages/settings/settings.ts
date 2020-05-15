@@ -198,8 +198,7 @@ export class SettingsPage {
         else return x;
       });
       this.cardServices = _.remove(_.clone(integrations), x => {
-        if ((x.name == 'debitcard' && x.linked) || x.type == 'exchange')
-          return false;
+        if (x.name == 'debitcard' || x.type == 'exchange') return false;
         else return x;
       });
     }, 200);
@@ -219,6 +218,7 @@ export class SettingsPage {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
+      this.logger.log('settings - pairing');
       this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
