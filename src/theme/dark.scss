@@ -528,6 +528,11 @@
         }
       }
     }
+    ion-spinner {
+      * {
+        stroke: $text-color-dark-theme !important;
+      }
+    }
   }
   page-shapeshift-details {
     .header-modal {
@@ -1238,6 +1243,11 @@
       ion-note.note {
         .note-container {
           color: $text-color-dark-theme;
+        }
+      }
+      form {
+        .item-block .item-inner {
+          border-bottom: none;
         }
       }
     }
