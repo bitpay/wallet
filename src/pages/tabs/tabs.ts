@@ -104,12 +104,15 @@ export class TabsPage {
         'transactionProposalRemoved',
         'TxProposalRemoved',
         'NewOutgoingTx',
-        'UpdateTx'
+        'UpdateTx',
+        'NewIncomingTx'
       ],
       (eventName: string) => {
         if (walletId && type == eventName) {
           setTimeout(() => {
-            this.updateTxps();
+            type === 'NewIncomingTx' || type === 'NewOutgoingTx'
+              ? this.fetchAllWalletsStatus()
+              : this.updateTxps();
           }, 2000);
         }
       }
