@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController } from 'ionic-angular';
 
@@ -104,14 +104,13 @@ export class PhaseOneCardIntro {
       agreement: new FormControl(false, Validators.requiredTrue)
     });
 
-    this.persistenceProvider.getCountries().then( (data) => {
-      if (data){
+    this.persistenceProvider.getCountries().then(data => {
+      if (data) {
         this.countryList = data.filter(c =>
           AllowedCountries.includes(c.shortCode)
         );
       }
-    })
-
+    });
   }
 
   ionViewWillEnter() {

@@ -648,7 +648,7 @@ export class IABCardProvider {
           // fetch new cards
           await this.getCards();
 
-          this.persistenceProvider.getCardExperimentFlag().then( (status) => {
+          this.persistenceProvider.getCardExperimentFlag().then(status => {
             if (status === 'enabled') {
               this.events.publish('experimentUpdateComplete');
             }

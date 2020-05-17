@@ -70,11 +70,13 @@ export class CardsPage {
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
-    this.bitPayProvider.get('/countries',
+    this.bitPayProvider.get(
+      '/countries',
       ({ data }) => {
         this.persistenceProvider.setCountries(data);
       },
-      () => {});
+      () => {}
+    );
 
     this.events.subscribe('showHideUpdate', async status => {
       if (status === 'inProgress') {
@@ -120,8 +122,6 @@ export class CardsPage {
       this.initialized = this.IABReady = true;
       this.changeRef.detectChanges();
     });
-
-
   }
 
   async ionViewWillEnter() {

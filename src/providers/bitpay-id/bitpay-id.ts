@@ -137,7 +137,6 @@ export class BitPayIdProvider {
                 this.events.publish('experimentUpdateStart');
               }
 
-
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
                   network,

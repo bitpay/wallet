@@ -828,7 +828,7 @@ export class IncomingDataProvider {
 
         case 'order-now':
           let nextView = {
-            name: 'BitPayCardIntroPage',
+            name: 'BitPayCardIntroPage'
           };
           this.incomingDataRedir(nextView);
           break;

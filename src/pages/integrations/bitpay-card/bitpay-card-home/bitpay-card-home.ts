@@ -5,9 +5,12 @@ import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  Network,
+  PersistenceProvider
+} from '../../../../providers/persistence/persistence';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
-import { Network, PersistenceProvider } from '../../../../providers/persistence/persistence';
 
 @Component({
   selector: 'bitpay-card-home',
@@ -81,11 +84,7 @@ export class BitPayCardHome implements OnInit {
   }
 
   public goToBitPayCardIntroPage() {
-    this.navCtrl.push(
-      this.waitList
-        ? PhaseOneCardIntro
-        : BitPayCardIntroPage
-    );
+    this.navCtrl.push(this.waitList ? PhaseOneCardIntro : BitPayCardIntroPage);
   }
 
   public trackBy(index) {
@@ -93,14 +92,17 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async goToCard(cardId) {
-
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(this.network);
+    const token = await this.persistenceProvider.getBitPayIdPairingToken(
+      this.network
+    );
     const email = this.bitpayCardItems[0].email;
 
-    const message = !token ? `loadDashboard?${cardId}&${email}` : `loadDashboard?${cardId}`;
+    const message = !token
+      ? `loadDashboard?${cardId}&${email}`
+      : `loadDashboard?${cardId}`;
 
     this.iabCardProvider.show();
-    setTimeout( () => {
+    setTimeout(() => {
       this.iabCardProvider.sendMessage(
         {
           message
@@ -108,6 +110,5 @@ export class BitPayCardHome implements OnInit {
         () => {}
       );
     }, 100);
-
   }
 }
