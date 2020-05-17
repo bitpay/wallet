@@ -151,7 +151,9 @@ export class IABCardProvider {
         case 'setUserLocation':
           const { country } = event.data.params;
           this.events.publish('IABReady', country);
-          this.persistenceProvider.setUserLocation(country);
+          if (country) {
+            this.persistenceProvider.setUserLocation(country);
+          }
           break;
 
         /*

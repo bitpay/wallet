@@ -585,32 +585,32 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToBitPayCard(data: string): void {
-    this.logger.debug('Incoming-data (redirect): BitPay Card URL');
-
-    // Disable BitPay Card
-    if (!this.appProvider.info._enabledExtensions.debitcard) {
-      this.logger.warn('BitPay Card has been disabled for this build');
-      return;
-    }
-
-    let secret = this.getParameterByName('secret', data);
-    let email = this.getParameterByName('email', data);
-    let otp = this.getParameterByName('otp', data);
-    let reason = this.getParameterByName('r', data);
-    switch (reason) {
-      default:
-      case '0':
-        /* For BitPay card binding */
-        let stateParams = { secret, email, otp };
-        let nextView = {
-          name: 'BitPayCardIntroPage',
-          params: stateParams
-        };
-        this.incomingDataRedir(nextView);
-        break;
-    }
-  }
+  // private goToBitPayCard(data: string): void {
+  //   this.logger.debug('Incoming-data (redirect): BitPay Card URL');
+  //
+  //   // Disable BitPay Card
+  //   if (!this.appProvider.info._enabledExtensions.debitcard) {
+  //     this.logger.warn('BitPay Card has been disabled for this build');
+  //     return;
+  //   }
+  //
+  //   let secret = this.getParameterByName('secret', data);
+  //   let email = this.getParameterByName('email', data);
+  //   let otp = this.getParameterByName('otp', data);
+  //   let reason = this.getParameterByName('r', data);
+  //   switch (reason) {
+  //     default:
+  //     case '0':
+  //       /* For BitPay card binding */
+  //       let stateParams = { secret, email, otp };
+  //       let nextView = {
+  //         name: 'BitPayCardIntroPage',
+  //         params: stateParams
+  //       };
+  //       this.incomingDataRedir(nextView);
+  //       break;
+  //   }
+  // }
 
   private goToBitPayRedir(data: string): void {
     this.logger.debug('Incoming-data (redirect): BitPay Redir');
@@ -779,7 +779,7 @@ export class IncomingDataProvider {
 
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
-      this.goToBitPayCard(data);
+      // this.goToBitPayCard(data);
       return true;
 
       // BitPay URI
@@ -824,7 +824,13 @@ export class IncomingDataProvider {
           }
 
           this.iabCardProvider.pairing(params);
+          break;
 
+        case 'order-now':
+          let nextView = {
+            name: 'BitPayCardIntroPage',
+          };
+          this.incomingDataRedir(nextView);
           break;
 
         case 'email-verified':

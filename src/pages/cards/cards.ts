@@ -112,10 +112,10 @@ export class CardsPage {
     this.events.subscribe('IABReady', async country => {
       clearInterval(this.IABPingInterval);
       // if wait list flag not set retrieve from storage
-      if (this.cardExperimentEnabled && this.waitList === undefined) {
-        this.waitList = country && country !== 'US';
-        this.logger.log(`COUNTRY ${country}`);
-      }
+      // if (this.cardExperimentEnabled && this.waitList === undefined) {
+      //   this.waitList = country && country !== 'US';
+      //   this.logger.log(`COUNTRY ${country}`);
+      // }
       this.logger.log(`cards - IAB ready ${country}`);
       this.initialized = this.IABReady = true;
       this.changeRef.detectChanges();
