@@ -916,9 +916,10 @@ describe('Provider: Incoming Data Provider', () => {
           'Incoming-data (redirect): ShapeShift URL'
         );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-    it('Should handle BitPay Card URI', () => {
+    xit('Should handle BitPay Card URI', () => {
       let data = 'bitpay://bitpay.com?secret=xxxxx&email=xxx@xx.com';
       let stateParams = { secret: 'xxxxx', email: 'xxx@xx.com', otp: null };
       let nextView = {

@@ -868,25 +868,26 @@ export class BitPayCardTopUpPage {
       { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
-    modal.present();
-    this.iabCardProvider.updateCards();
-    modal.onDidDismiss(async () => {
-      if (this.navParams.get('v2')) {
-        setTimeout(() => {
-          this.iabCardProvider.show();
-        }, 200);
-        this.iabCardProvider.sendMessage({
-          message: `topUpComplete?${this.cardId}`
-        });
+
+    if (this.navParams.get('v2')) {
+      this.iabCardProvider.updateCards();
+      this.iabCardProvider.show();
+      this.iabCardProvider.sendMessage({
+        message: `topUpComplete?${this.cardId}`
+      });
+      setTimeout(async () => {
         await this.navCtrl.popToRoot({ animate: false });
-      } else {
+      }, 500);
+    } else {
+      modal.present();
+      modal.onDidDismiss(async () => {
         await this.navCtrl.push(
           BitPayCardPage,
           { id: this.cardId },
           { animate: false }
         );
-      }
-    });
+      });
+    }
   }
 
   public openExternalLink(urlKey: string) {

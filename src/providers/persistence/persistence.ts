@@ -76,7 +76,9 @@ const Keys = {
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
-  APP_THEME: 'app-theme'
+  APP_THEME: 'app-theme',
+  USER_LOCATION: 'user-location',
+  COUNTRIES: 'countries'
 };
 
 interface Storage {
@@ -513,6 +515,14 @@ export class PersistenceProvider {
     });
   }
 
+  setCountries(countries) {
+    return this.storage.set(Keys.COUNTRIES, countries);
+  }
+
+  getCountries() {
+    return this.storage.get(Keys.COUNTRIES);
+  }
+
   // cards: [
   //   eid: card id
   //   id: card id
@@ -818,6 +828,14 @@ export class PersistenceProvider {
 
   getAppTheme() {
     return this.storage.get(Keys.APP_THEME);
+  }
+
+  setUserLocation(location: string) {
+    return this.storage.set(Keys.USER_LOCATION, location);
+  }
+
+  getUserLocation() {
+    return this.storage.get(Keys.USER_LOCATION);
   }
 }
 

@@ -32,6 +32,7 @@ export class IABCardProvider {
   public hasCards: boolean;
   private _isHidden = true;
   private _pausedState = false;
+  private _balanceUpdateLock: boolean;
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
@@ -129,6 +130,30 @@ export class IABCardProvider {
 
         case 'balanceUpdate':
           this.balanceUpdate(event);
+          break;
+
+        /*
+         *
+         * IAB Ready event
+         *
+         * */
+
+        case 'ready':
+          this.events.publish('IABReady');
+          break;
+
+        /*
+         *
+         * Sets User location
+         *
+         * */
+
+        case 'setUserLocation':
+          const { country } = event.data.params;
+          this.events.publish('IABReady', country);
+          if (country) {
+            this.persistenceProvider.setUserLocation(country);
+          }
           break;
 
         /*
@@ -317,6 +342,11 @@ export class IABCardProvider {
               };
             });
 
+            if (cards.length < 1) {
+              this.fetchLock = false;
+              return res();
+            }
+
             await this.persistenceProvider.setBitpayDebitCards(
               Network[this.NETWORK],
               user.email,
@@ -349,13 +379,16 @@ export class IABCardProvider {
   }
 
   async balanceUpdate(event) {
+    if (this._balanceUpdateLock) {
+      this.logger.log('CARD - balance update already in progress');
+      return;
+    }
+
+    this._balanceUpdateLock = true;
+
     let cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
     );
-
-    if (cards.length < 1) {
-      return;
-    }
 
     const { id, balance } = event.data.params;
 
@@ -373,13 +406,19 @@ export class IABCardProvider {
       Network[this.NETWORK]
     );
 
+    // adding this for possible race conditions
+    if (cards.length < 1) {
+      this._balanceUpdateLock = false;
+      return;
+    }
+
     await this.persistenceProvider.setBitpayDebitCards(
       Network[this.NETWORK],
       user.email,
       cards
     );
-
     this.events.publish('updateCards');
+    this._balanceUpdateLock = false;
   }
 
   async updateCards() {
@@ -394,6 +433,11 @@ export class IABCardProvider {
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
+
+    if (cards.length < 1) {
+      return;
+    }
+
     await this.persistenceProvider.setBitpayDebitCards(
       Network[this.NETWORK],
       user.email,
@@ -603,6 +647,12 @@ export class IABCardProvider {
 
           // fetch new cards
           await this.getCards();
+
+          this.persistenceProvider.getCardExperimentFlag().then(status => {
+            if (status === 'enabled') {
+              this.events.publish('experimentUpdateComplete');
+            }
+          });
 
           this.sendMessage({ message: 'pairingSuccess' });
         }

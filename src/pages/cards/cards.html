@@ -16,20 +16,28 @@
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
-    <div *ngIf="gotCardItems" @fade>
-      <bitpay-card-home *ngIf="showBitPayCard"
-                        [cardExperimentEnabled]="cardExperimentEnabled"
-                        [bitpayCardItems]="bitpayCardItems"
-                        [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
-      <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
-      <p class="card-terms" *ngIf="cardExperimentEnabled && showBitPayCard && showDisclaimer" @fade>
-        *Network fees and miner fees may apply.<br><br>
-        BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE
-        SCHEDULE, IF ANY. This card is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from
-        Mastercard International. "Metropolitan Commercial Bank" and "Metropolitan" are registered trademarks of Metropolitan Commercial Bank ©2014.<br><br>
-        Mastercard is a registered trademark and the circles design is a trademark of Mastercard International Incorporated.
-      </p>
-    </div>
+
+    <ng-container *ngIf="showBitPayCard">
+      <bitpay-card-home
+              [cardExperimentEnabled]="cardExperimentEnabled"
+              [bitpayCardItems]="bitpayCardItems"
+              [hasCards]="hasCards"
+              [network]="NETWORK"
+              [waitList]="waitList"
+              [initialized]="initialized"
+              [showBitpayCardGetStarted]="showBitpayCardGetStarted"></bitpay-card-home>
+    </ng-container>
+
+    <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
+
+
+    <p class="card-terms" *ngIf="cardExperimentEnabled && showBitPayCard && showDisclaimer && initialized" @fade>
+      *Network fees and miner fees may apply.<br><br>
+      BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE
+      SCHEDULE, IF ANY. This card is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from
+      Mastercard International. "Metropolitan Commercial Bank" and "Metropolitan" are registered trademarks of Metropolitan Commercial Bank ©2014.<br><br>
+      Mastercard is a registered trademark and the circles design is a trademark of Mastercard International Incorporated.
+    </p>
 
   </div>
 </ion-content>

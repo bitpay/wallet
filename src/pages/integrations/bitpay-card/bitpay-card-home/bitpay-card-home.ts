@@ -1,11 +1,14 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 // Providers
 import { AppProvider, IABCardProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
-import { BitPayCardPage } from '../bitpay-card';
+import {
+  Network,
+  PersistenceProvider
+} from '../../../../providers/persistence/persistence';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
@@ -13,32 +16,53 @@ import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-int
   selector: 'bitpay-card-home',
   templateUrl: 'bitpay-card-home.html',
   animations: [
-    trigger('fade', [
+    trigger('fadeUp', [
       transition(':enter', [
         style({
           transform: 'translateY(5px)',
           opacity: 0
         }),
-        animate('200ms')
+        animate('300ms')
+      ])
+    ]),
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate('300ms')
+      ])
+    ]),
+    trigger('tileSlideIn', [
+      transition(':enter', [
+        style({
+          transform: 'translateX(10px)',
+          opacity: 0
+        }),
+        animate('300ms ease')
       ])
     ])
   ]
 })
 export class BitPayCardHome implements OnInit {
   public appName: string;
-  public firstViewCardPhases: string;
   public disableAddCard = true;
   public isFetching: boolean;
   public ready: boolean;
-  private _initial = true;
+
   @Input() showBitpayCardGetStarted: boolean;
   @Input() bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
+  @Input() waitList: boolean;
+  @Input() hasCards: boolean;
+  @Input() network: Network;
+  @Input() initialized: boolean;
 
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider,
+    private persistenceProvider: PersistenceProvider,
     private events: Events
   ) {
     this.events.subscribe('reachedCardLimit', () => {
@@ -53,50 +77,38 @@ export class BitPayCardHome implements OnInit {
     this.appName = this.appProvider.info.userVisibleName;
     setTimeout(() => {
       this.ready = true;
-      this._initial = false;
       this.disableAddCard =
         this.bitpayCardItems &&
         this.bitpayCardItems.find(c => c.provider === 'galileo');
-    }, 100);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this._initial) {
-      return;
-    }
-
-    const prev = changes['bitpayCardItems'].previousValue;
-    const curr = changes['bitpayCardItems'].currentValue;
-    if (
-      (!prev && curr) ||
-      (prev && !curr) ||
-      (curr && prev && curr.length > prev.length)
-    ) {
-      this.ready = false;
-      setTimeout(() => {
-        this.ready = true;
-      }, 50);
-    }
+    }, 200);
   }
 
   public goToBitPayCardIntroPage() {
-    this.navCtrl.push(
-      this.cardExperimentEnabled ? BitPayCardIntroPage : PhaseOneCardIntro
-    );
+    this.navCtrl.push(this.waitList ? PhaseOneCardIntro : BitPayCardIntroPage);
   }
 
-  public goToCard(cardId): void {
-    if (this.cardExperimentEnabled) {
-      const message = `loadDashboard?${cardId}`;
-      this.iabCardProvider.show();
+  public trackBy(index) {
+    return index;
+  }
+
+  public async goToCard(cardId) {
+    const token = await this.persistenceProvider.getBitPayIdPairingToken(
+      this.network
+    );
+    const email = this.bitpayCardItems[0].email;
+
+    const message = !token
+      ? `loadDashboard?${cardId}&${email}`
+      : `loadDashboard?${cardId}`;
+
+    this.iabCardProvider.show();
+    setTimeout(() => {
       this.iabCardProvider.sendMessage(
         {
           message
         },
         () => {}
       );
-    } else {
-      this.navCtrl.push(BitPayCardPage, { id: cardId });
-    }
+    }, 100);
   }
 }

@@ -2,13 +2,15 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 
 // Providers
 import { animate, style, transition, trigger } from '@angular/animations';
+import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../providers/in-app-browser/card';
+import { Logger } from '../../providers/logger/logger';
 import {
   Network,
   PersistenceProvider
@@ -22,10 +24,10 @@ import { TabProvider } from '../../providers/tab/tab';
     trigger('fade', [
       transition(':enter', [
         style({
-          transform: 'translateY(5px)',
+          transform: 'translateY(20px)',
           opacity: 0
         }),
-        animate('200ms')
+        animate('400ms')
       ])
     ])
   ]
@@ -33,43 +35,74 @@ import { TabProvider } from '../../providers/tab/tab';
 export class CardsPage {
   public bitpayCardItems;
   public showGiftCards: boolean;
-  public showBitPayCard: boolean;
+  public showBitPayCard: boolean = true;
   public activeCards: any;
   public tapped = 0;
   public showBitpayCardGetStarted: boolean;
   public ready: boolean;
   public cardExperimentEnabled: boolean;
-  public gotCardItems: boolean = false;
   private NETWORK: string;
+  public initialized: boolean = false;
   public showDisclaimer: boolean;
+  public waitList = true;
+  public IABReady: boolean;
+  public hasCards: boolean;
+  private IABPingLock: boolean;
+  private IABPingInterval: any;
+
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayProvider: BitPayProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private giftCardProvider: GiftCardProvider,
     private persistenceProvider: PersistenceProvider,
     private tabProvider: TabProvider,
     private events: Events,
     private iabCardProvider: IABCardProvider,
-    private changeRef: ChangeDetectorRef
+    private changeRef: ChangeDetectorRef,
+    private logger: Logger,
+    private actionSheetProvider: ActionSheetProvider,
+    private translate: TranslateService
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
-      this.cardExperimentEnabled = status === 'enabled';
+      if (status === 'enabled') {
+        this.cardExperimentEnabled = true;
+        this.waitList = false;
+      }
     });
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
+    this.bitPayProvider.get(
+      '/countries',
+      ({ data }) => {
+        this.persistenceProvider.setCountries(data);
+      },
+      () => {}
+    );
+
     this.events.subscribe('showHideUpdate', async status => {
       if (status === 'inProgress') {
-        this.gotCardItems = false;
+        this.initialized = false;
       } else {
         this.bitpayCardItems = await this.prepareDebitCards();
         setTimeout(() => {
-          this.gotCardItems = true;
+          this.initialized = true;
           this.changeRef.detectChanges();
         });
       }
+    });
+
+    this.events.subscribe('experimentUpdateStart', async () => {
+      this.initialized = false;
+      this.waitList = false;
+      this.changeRef.detectChanges();
+    });
+
+    this.events.subscribe('experimentUpdateComplete', async () => {
+      this.bitpayCardItems = await this.prepareDebitCards();
+      this.initialized = true;
+      this.changeRef.detectChanges();
     });
 
     this.events.subscribe('updateCards', async () => {
@@ -78,7 +111,19 @@ export class CardsPage {
     });
 
     this.events.subscribe('bitpayIdDisconnected', async () => {
-      this.gotCardItems = false;
+      this.hasCards = false;
+    });
+
+    this.events.subscribe('IABReady', async country => {
+      clearInterval(this.IABPingInterval);
+      // if wait list flag not set retrieve from storage
+      // if (this.cardExperimentEnabled && this.waitList === undefined) {
+      //   this.waitList = country && country !== 'US';
+      //   this.logger.log(`COUNTRY ${country}`);
+      // }
+      this.logger.log(`cards - IAB ready ${country}`);
+      this.initialized = this.IABReady = true;
+      this.changeRef.detectChanges();
     });
   }
 
@@ -90,26 +135,55 @@ export class CardsPage {
       'debitcard'
     );
 
-    // get debit cards from persistence storage and process them
+    this.showBitPayCard = !(
+      this.appProvider.info._enabledExtensions.debitcard == 'false'
+    );
+
+    if (!this.IABReady && !this.IABPingLock) {
+      this.pingIAB();
+    }
+
     this.bitpayCardItems = await this.prepareDebitCards();
-    this.gotCardItems = true;
-    // fetch latest
     await this.fetchAllCards();
+  }
+
+  private pingIAB() {
+    this.IABPingLock = true;
+    let attempts = 0;
+    this.IABPingInterval = setInterval(() => {
+      if (attempts >= 10) {
+        clearInterval(this.IABPingInterval);
+        this.showBitPayCard = false;
+        this.actionSheetProvider
+          .createInfoSheet('default-error', {
+            msg: this.translate.instant(
+              'Uh oh something went wrong! Please try again later.'
+            ),
+            title: this.translate.instant('Error')
+          })
+          .present();
+        return;
+      }
+      this.logger.log(`PINGING IAB attempt ${attempts}`);
+      this.iabCardProvider.sendMessage({ message: 'IABReadyPing' });
+      attempts++;
+    }, 5000);
   }
 
   private async prepareDebitCards() {
     return new Promise(res => {
-      // if disabled return
-      if (this.appProvider.info._enabledExtensions.debitcard == 'false') {
-        this.showBitPayCard = false;
-        return res([]);
-      }
-
       setTimeout(async () => {
         // retrieve cards from storage
         let cards = await this.persistenceProvider.getBitpayDebitCards(
           Network[this.NETWORK]
         );
+
+        this.hasCards = cards.length > 0;
+
+        if (!this.hasCards) {
+          return res();
+        }
+
         // filter out and show one galileo card
         const galileo = cards.findIndex(c => {
           return c.provider === 'galileo' && c.cardType === 'physical';
@@ -150,23 +224,14 @@ export class CardsPage {
 
         this.showBitPayCard = true;
         res(cards);
-      }, 100);
+      }, 200);
     });
   }
 
   private async fetchBitpayCardItems() {
-    if (this.cardExperimentEnabled) {
+    if (this.hasCards) {
       await this.iabCardProvider.getCards();
-    } else {
-      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
-
-      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-        noHistory: true
-      });
-      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
     }
-    this.gotCardItems = true;
   }
 
   private async fetchActiveGiftCards() {

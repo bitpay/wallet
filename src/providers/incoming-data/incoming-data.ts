@@ -12,6 +12,7 @@ import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
+import { PersistenceProvider } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
 
 export interface RedirParams {
@@ -36,7 +37,8 @@ export class IncomingDataProvider {
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -585,32 +587,32 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToBitPayCard(data: string): void {
-    this.logger.debug('Incoming-data (redirect): BitPay Card URL');
-
-    // Disable BitPay Card
-    if (!this.appProvider.info._enabledExtensions.debitcard) {
-      this.logger.warn('BitPay Card has been disabled for this build');
-      return;
-    }
-
-    let secret = this.getParameterByName('secret', data);
-    let email = this.getParameterByName('email', data);
-    let otp = this.getParameterByName('otp', data);
-    let reason = this.getParameterByName('r', data);
-    switch (reason) {
-      default:
-      case '0':
-        /* For BitPay card binding */
-        let stateParams = { secret, email, otp };
-        let nextView = {
-          name: 'BitPayCardIntroPage',
-          params: stateParams
-        };
-        this.incomingDataRedir(nextView);
-        break;
-    }
-  }
+  // private goToBitPayCard(data: string): void {
+  //   this.logger.debug('Incoming-data (redirect): BitPay Card URL');
+  //
+  //   // Disable BitPay Card
+  //   if (!this.appProvider.info._enabledExtensions.debitcard) {
+  //     this.logger.warn('BitPay Card has been disabled for this build');
+  //     return;
+  //   }
+  //
+  //   let secret = this.getParameterByName('secret', data);
+  //   let email = this.getParameterByName('email', data);
+  //   let otp = this.getParameterByName('otp', data);
+  //   let reason = this.getParameterByName('r', data);
+  //   switch (reason) {
+  //     default:
+  //     case '0':
+  //       /* For BitPay card binding */
+  //       let stateParams = { secret, email, otp };
+  //       let nextView = {
+  //         name: 'BitPayCardIntroPage',
+  //         params: stateParams
+  //       };
+  //       this.incomingDataRedir(nextView);
+  //       break;
+  //   }
+  // }
 
   private goToBitPayRedir(data: string): void {
     this.logger.debug('Incoming-data (redirect): BitPay Redir');
@@ -779,7 +781,7 @@ export class IncomingDataProvider {
 
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
-      this.goToBitPayCard(data);
+      // this.goToBitPayCard(data);
       return true;
 
       // BitPay URI
@@ -824,6 +826,20 @@ export class IncomingDataProvider {
           }
 
           this.iabCardProvider.pairing(params);
+          break;
+
+        case 'order-now':
+          let nextView = {
+            name: 'BitPayCardIntroPage'
+          };
+          this.incomingDataRedir(nextView);
+
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+
+          this.events.publish('experimentUpdateStart');
+          setTimeout(() => {
+            this.events.publish('experimentUpdateComplete');
+          }, 300);
 
           break;
 
