@@ -548,6 +548,9 @@ export class WalletsPage {
     this.profileProvider
       .getTxps({ limit: 3 })
       .then(data => {
+        this.events.publish('Local/UpdateTxps', {
+          n: data.n
+        });
         this.zone.run(() => {
           this.txpsN = data.n;
         });
