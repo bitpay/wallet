@@ -57,6 +57,11 @@ export class TabsPage {
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
+
+    this.events.subscribe('experimentUpdateStart', () => {
+      this.tabs.select(2);
+    });
+
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.events.subscribe('Local/UpdateTxps', data => {
       this.setTxps(data);

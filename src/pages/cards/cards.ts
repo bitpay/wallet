@@ -94,14 +94,12 @@ export class CardsPage {
     });
 
     this.events.subscribe('experimentUpdateStart', async () => {
-      this.initialized = false;
       this.waitList = false;
       this.changeRef.detectChanges();
     });
 
     this.events.subscribe('experimentUpdateComplete', async () => {
       this.bitpayCardItems = await this.prepareDebitCards();
-      this.initialized = true;
       this.changeRef.detectChanges();
     });
 
