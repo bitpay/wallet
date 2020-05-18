@@ -13,7 +13,8 @@ import {
   GiftCardProvider,
   Logger,
   PersistenceProvider,
-  SimplexProvider
+  SimplexProvider,
+  BwcProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
@@ -67,6 +68,7 @@ export class HomePage {
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
+  // private pageMap: any;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
   public showCoinbase: boolean = false;
@@ -90,6 +92,7 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
+    private bwcProvider: BwcProvider,
     private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
@@ -97,6 +100,11 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
+    // this.pageMap = {
+    //   CoinbasePage,
+    //   PhaseOneCardIntro,
+    //   CardCatalogPage
+    // };
   }
 
   async ionViewWillEnter() {
@@ -104,6 +112,7 @@ export class HomePage {
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
+    this.loadAds();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
@@ -116,6 +125,36 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.preFetchWallets();
+  }
+
+  private loadAds() {
+    const client = this.bwcProvider.getClient(null, {});
+    client.getAdvertisements({}, (err, ads) => {
+      if (err) throw err;
+      _.forEach(ads, ad => {
+        const alreadyVisible = this.advertisements.find(
+          a => a.name === ad.name
+        );
+        this.persistenceProvider
+          .getAdvertisementDismissed(ad.name)
+          .then((value: string) => {
+            if (value === 'dismissed') {
+              return;
+            }
+            !alreadyVisible &&
+              this.advertisements.push({
+                name: ad.name,
+                title: this.translate.instant(ad.title),
+                body: this.translate.instant(ad.body),
+                app: ad.app,
+                linkText: ad.linkText,
+                link: ad.linkUrl,
+                imgSrc: ad.imgUrl,
+                dismissible: true
+              });
+          });
+      });
+    });
   }
 
   private setMerchantDirectoryAdvertisement() {
