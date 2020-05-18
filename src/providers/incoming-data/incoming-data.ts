@@ -829,11 +829,6 @@ export class IncomingDataProvider {
           break;
 
         case 'order-now':
-          let nextView = {
-            name: 'BitPayCardIntroPage'
-          };
-          this.incomingDataRedir(nextView);
-
           this.persistenceProvider.setCardExperimentFlag('enabled');
 
           this.events.publish('experimentUpdateStart');
