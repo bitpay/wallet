@@ -177,6 +177,10 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
+      if (!this.platformProvider.isCordova) {
+        return res();
+      }
+
       setTimeout(async () => {
         // retrieve cards from storage
         let cards = await this.persistenceProvider.getBitpayDebitCards(
@@ -241,7 +245,7 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.hasCards) {
+    if (this.hasCards && this.platformProvider.isCordova) {
       await this.iabCardProvider.getCards();
     }
   }
