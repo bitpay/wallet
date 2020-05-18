@@ -46,7 +46,7 @@
           Join the waitlist and be first to experience the new card.
         </div>
 
-        <div *ngIf="initialized && !waitList" action-card-body [clamp]="2" translate>
+        <div *ngIf="initialized && !waitList" action-card-body [clamp]="3" translate>
           Instantly reload your card with no conversion fee!*
         </div>
 
@@ -105,11 +105,7 @@
     </ng-container>
 
 
-    <div class="add-button-wrapper--center" *ngIf="this.cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
-      <add-button (click)="goToBitPayCardIntroPage()" tappable>
-        <div add-button-text translate>Add BitPay Card</div>
-      </add-button>
-
+    <ng-container *ngIf="this.cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
       <div @fade>
         <action-card-v4>
           <div action-card-header>
@@ -136,7 +132,7 @@
             <div class="loading--line" style="width: 30%"></div>
             <div class="loading--line" style="width: 50%"></div>
           </div>
-          <div *ngIf="initialized" action-card-body [clamp]="2" translate>
+          <div *ngIf="initialized" action-card-body [clamp]="3" translate>
             Instantly reload your card with no conversion fee!*
           </div>
           <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
@@ -145,7 +141,7 @@
         </action-card-v4>
       </div>
 
-    </div>
+    </ng-container>
   </ng-template>
 
 </div>
