@@ -15,6 +15,7 @@ import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
@@ -52,6 +53,7 @@ export class CardsPage {
 
   constructor(
     private appProvider: AppProvider,
+    private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayProvider: BitPayProvider,
     private giftCardProvider: GiftCardProvider,
@@ -134,11 +136,15 @@ export class CardsPage {
       'debitcard'
     );
 
-    this.showBitPayCard = !(
-      this.appProvider.info._enabledExtensions.debitcard == 'false'
-    );
+    this.showBitPayCard =
+      !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+      this.platformProvider.isCordova;
 
-    if (!this.IABReady && !this.IABPingLock) {
+    if (
+      !this.IABReady &&
+      !this.IABPingLock &&
+      this.platformProvider.isCordova
+    ) {
       this.pingIAB();
     }
 
