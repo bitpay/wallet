@@ -80,6 +80,7 @@ export class ProposalsNotificationsPage {
     this.navCtrl.swipeBackEnabled = false;
     this.updateAddressBook();
     this.updatePendingProposals();
+    this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
     });
@@ -94,18 +95,10 @@ export class ProposalsNotificationsPage {
     this.events.subscribe('Local/WalletUpdate', this.updatePendingProposals);
   }
 
-  // Event handling
-  ionViewWillLoad() {
-    this.subscribeEvents();
-  }
-
-  ionViewWillUnload() {
-    this.events.unsubscribe('Local/WalletUpdate', this.updatePendingProposals);
-    this.onResumeSubscription.unsubscribe();
-  }
-
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
+    this.events.unsubscribe('Local/WalletUpdate', this.updatePendingProposals);
+    this.onResumeSubscription.unsubscribe();
   }
 
   private updateDesktopOnFocus() {
