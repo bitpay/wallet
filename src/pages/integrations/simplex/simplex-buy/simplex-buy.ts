@@ -270,12 +270,11 @@ export class SimplexBuyPage {
     ]);
     this.minFiatAmount = min;
     this.maxFiatAmount = max;
-    this.quoteForm.controls['amount'].setValue(
-      this.amount ||
-        this.simplexProvider.supportedFiatAltCurrencies[
-          this.quoteForm.value.altCurrency
-        ].defaultValue
-    );
+
+    // This line sets the default value to 200 usd or its equivalent
+    const defaultValue = min * 4;
+
+    this.quoteForm.controls['amount'].setValue(this.amount || defaultValue);
   }
 
   private setDefaultValues() {

@@ -29,30 +29,61 @@ export class SimplexProvider {
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.passthrough_uri =
       env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;
-    this.supportedFiatAltCurrencies = {
-      AUD: { defaultValue: 300 },
-      CAD: { defaultValue: 300 },
-      CHF: { defaultValue: 200 },
-      CZK: { defaultValue: 5000 },
-      DKK: { defaultValue: 1500 },
-      EUR: { defaultValue: 200 },
-      HUF: { defaultValue: 65000 },
-      ILS: { defaultValue: 1000 },
-      JPY: { defaultValue: 22000 },
-      KRW: { defaultValue: 250000 },
-      NOK: { defaultValue: 2000 },
-      NZD: { defaultValue: 350 },
-      PLN: { defaultValue: 1000 },
-      RUB: { defaultValue: 15000 },
-      SEK: { defaultValue: 2000 },
-      TRY: { defaultValue: 2000 },
-      USD: { defaultValue: 200 },
-      ZAR: { defaultValue: 5000 }
-    };
+    this.supportedFiatAltCurrencies = [
+      'AED',
+      'ARS',
+      'AUD',
+      'AZN',
+      'BGN',
+      'BRL',
+      'CAD',
+      'CHF',
+      'CLP',
+      'CNY',
+      'COP',
+      'CRC',
+      'CZK',
+      'DKK',
+      'DOP',
+      'EUR',
+      'GBP',
+      'GEL',
+      'HKD',
+      'HUF',
+      'ILS',
+      'INR',
+      'JPY',
+      'KRW',
+      'KZT',
+      'MAD',
+      'MDL',
+      'MXN',
+      'MYR',
+      'NAD',
+      'NGN',
+      'NOK',
+      'NZD',
+      'PEN',
+      'PHP',
+      'PLN',
+      'QAR',
+      'RON',
+      'RUB',
+      'SEK',
+      'SGD',
+      'TRY',
+      'TWD',
+      'UAH',
+      'USD',
+      'UYU',
+      'UZS',
+      'VND',
+      'ZAR'
+    ];
   }
 
   public getSupportedFiatAltCurrencies(): string[] {
-    return Object.keys(this.supportedFiatAltCurrencies);
+    return this.supportedFiatAltCurrencies;
   }
 
   public getQuote(wallet, data): Promise<any> {
