@@ -199,13 +199,12 @@ ion-footer {
   }
 }
 
-/* Force safe-area for iPhone X -- Need testing
-.ios .tabs:not(.tabs-ios[tabsPlacement=top]) ion-footer .toolbar:last-child {
+/* Force safe-area for iPhone X with ion-footer */
+.ios .tabs:not(.tabs-ios[tabsPlacement='top']) ion-footer .toolbar:last-child {
   padding-bottom: 0 !important;
   padding-bottom: calc(env(safe-area-inset-bottom)) !important;
   padding-bottom: -webkit-calc(env(safe-area-inset-bottom)) !important;
 }
-*/
 
 .toolbar {
   // Titles centered on all headers for material design
