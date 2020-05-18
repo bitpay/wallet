@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 
@@ -36,6 +36,7 @@ export class TabsPage {
   private totalBalanceAlternativeIsoCode = 'USD';
   private averagePrice = 0;
   private lastDayRatesArray;
+  private zone;
 
   constructor(
     private appProvider: AppProvider,
@@ -52,10 +53,14 @@ export class TabsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private tabProvider: TabProvider
   ) {
+    this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.events.subscribe('Local/UpdateTxps', data => {
+      this.setTxps(data);
+    });
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
@@ -92,6 +97,12 @@ export class TabsPage {
 
   updateTxps() {
     this.profileProvider.getTxps({ limit: 3 }).then(data => {
+      this.setTxps(data);
+    });
+  }
+
+  setTxps(data) {
+    this.zone.run(() => {
       this.txpsN = data.n;
     });
   }
@@ -108,12 +119,12 @@ export class TabsPage {
         'NewIncomingTx'
       ],
       (eventName: string) => {
-        if (walletId && type == eventName) {
-          setTimeout(() => {
-            type === 'NewIncomingTx' || type === 'NewOutgoingTx'
-              ? this.fetchAllWalletsStatus()
-              : this.updateTxps();
-          }, 2000);
+        if (
+          walletId &&
+          type == eventName &&
+          (type === 'NewIncomingTx' || type === 'NewOutgoingTx')
+        ) {
+          this.fetchAllWalletsStatus();
         }
       }
     );
