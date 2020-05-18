@@ -15,6 +15,7 @@ import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { TabProvider } from '../../providers/tab/tab';
 
 @Component({
@@ -52,6 +53,7 @@ export class CardsPage {
 
   constructor(
     private appProvider: AppProvider,
+    private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayProvider: BitPayProvider,
     private giftCardProvider: GiftCardProvider,
@@ -134,11 +136,15 @@ export class CardsPage {
       'debitcard'
     );
 
-    this.showBitPayCard = !(
-      this.appProvider.info._enabledExtensions.debitcard == 'false'
-    );
+    this.showBitPayCard =
+      !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+      this.platformProvider.isCordova;
 
-    if (!this.IABReady && !this.IABPingLock) {
+    if (
+      !this.IABReady &&
+      !this.IABPingLock &&
+      this.platformProvider.isCordova
+    ) {
       this.pingIAB();
     }
 
@@ -171,6 +177,10 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
+      if (!this.platformProvider.isCordova) {
+        return res();
+      }
+
       setTimeout(async () => {
         // retrieve cards from storage
         let cards = await this.persistenceProvider.getBitpayDebitCards(
@@ -224,8 +234,10 @@ export class CardsPage {
           await this.persistenceProvider.setReachedCardLimit(true);
           this.events.publish('reachedCardLimit');
         } else {
-          // no MC so hide disclaimer
-          this.showDisclaimer = false;
+          if (this.waitList) {
+            // no MC so hide disclaimer
+            this.showDisclaimer = false;
+          }
         }
 
         this.showBitPayCard = true;
@@ -235,7 +247,7 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.hasCards) {
+    if (this.hasCards && this.platformProvider.isCordova) {
       await this.iabCardProvider.getCards();
     }
   }
