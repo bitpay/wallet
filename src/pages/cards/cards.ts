@@ -234,12 +234,10 @@ export class CardsPage {
           await this.persistenceProvider.setReachedCardLimit(true);
           this.events.publish('reachedCardLimit');
         } else {
-
           if (this.waitList) {
             // no MC so hide disclaimer
             this.showDisclaimer = false;
           }
-
         }
 
         this.showBitPayCard = true;
