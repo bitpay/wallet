@@ -31,7 +31,7 @@
     <gift-cards *ngIf="showGiftCards && activeCards" [scrollArea]="scrollArea" [activeCards]="activeCards"></gift-cards>
 
 
-    <p class="card-terms" *ngIf="cardExperimentEnabled && showBitPayCard && showDisclaimer && initialized" @fade>
+    <p class="card-terms" *ngIf="showBitPayCard && showDisclaimer && initialized && !waitList" @fade>
       *Network fees and miner fees may apply.<br><br>
       BY USING THIS CARD YOU AGREE WITH THE TERMS AND CONDITIONS OF THE CARDHOLDER AGREEMENT AND FEE
       SCHEDULE, IF ANY. This card is issued by Metropolitan Commercial Bank (Member FDIC) pursuant to a license from

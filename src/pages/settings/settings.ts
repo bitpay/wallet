@@ -220,12 +220,14 @@ export class SettingsPage {
     } else {
       this.logger.log('settings - pairing');
       this.iabCardProvider.show();
-      this.iabCardProvider.sendMessage(
-        {
-          message: 'pairingOnly'
-        },
-        () => {}
-      );
+      setTimeout(() => {
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'pairingOnly'
+          },
+          () => {}
+        );
+      }, 100);
     }
   }
 

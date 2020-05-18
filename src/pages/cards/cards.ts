@@ -68,6 +68,7 @@ export class CardsPage {
       if (status === 'enabled') {
         this.cardExperimentEnabled = true;
         this.waitList = false;
+        this.showDisclaimer = true;
       }
     });
 
@@ -203,6 +204,13 @@ export class CardsPage {
 
         // if galileo then show disclaimer and remove add card ability
         if (galileo !== -1) {
+          if (!this.cardExperimentEnabled) {
+            this.persistenceProvider.setCardExperimentFlag('enabled');
+            this.cardExperimentEnabled = true;
+          }
+
+          this.waitList = false;
+
           cards.splice(galileo, 1);
 
           if (cards.filter(c => !c.hide).find(c => c.provider === 'galileo')) {
