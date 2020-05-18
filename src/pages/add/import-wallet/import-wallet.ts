@@ -250,6 +250,7 @@ export class ImportWalletPage {
 
     this.navCtrl.popToRoot().then(() => {
       this.events.publish('Local/WalletListChange');
+      this.events.publish('Local/FetchWallets');
     });
   }
 
