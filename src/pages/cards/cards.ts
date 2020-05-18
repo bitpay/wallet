@@ -65,7 +65,10 @@ export class CardsPage {
     private translate: TranslateService
   ) {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
-      this.cardExperimentEnabled = status === 'enabled';
+      if (status === 'enabled') {
+        this.cardExperimentEnabled = true;
+        this.waitList = false;
+      }
     });
 
     this.NETWORK = this.bitPayProvider.getEnvironment().network;

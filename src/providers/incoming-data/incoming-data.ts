@@ -12,6 +12,7 @@ import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PayproProvider } from '../paypro/paypro';
+import { PersistenceProvider } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
 
 export interface RedirParams {
@@ -36,7 +37,8 @@ export class IncomingDataProvider {
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -831,6 +833,14 @@ export class IncomingDataProvider {
             name: 'BitPayCardIntroPage'
           };
           this.incomingDataRedir(nextView);
+
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+
+          this.events.publish('experimentUpdateStart');
+          setTimeout(() => {
+            this.events.publish('experimentUpdateComplete');
+          }, 300);
+
           break;
 
         case 'email-verified':
