@@ -20,12 +20,12 @@
       </ion-toolbar>
     </expandable-header>
 
-    <ion-list *ngIf="!linkedAccount" class="bp-list">
+    <ion-list class="bp-list">
       <ion-item>
         <ion-label>{{'Show on wallet tab' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
-      <button ion-item (click)="goToCoinbase()">
+      <button *ngIf="!linkedAccount" ion-item (click)="goToCoinbase()">
         <span translate>Connect Coinbase Account</span>
       </button>
     </ion-list>
