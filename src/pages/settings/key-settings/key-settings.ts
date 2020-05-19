@@ -219,6 +219,7 @@ export class KeySettingsPage {
     _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
+    this.profileProvider.setWallets();
   }
 
   public goToAddPage() {

@@ -49,6 +49,7 @@ export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
+  public wallets: any = [];
 
   public UPDATE_PERIOD = 15;
   public UPDATE_PERIOD_FAST = 5;
@@ -444,6 +445,7 @@ export class ProfileProvider {
         this.logger.debug('Updating token wallet from config ' + opts.walletId);
         this.updateWalletFromConfig(tokenWallet);
       }
+      this.setWallets();
     });
     return Promise.resolve(true);
   }
@@ -1805,6 +1807,14 @@ export class ProfileProvider {
       wallets.push(this.getWalletsFromGroup(opts));
     });
     return _.flatten(wallets);
+  }
+
+  public setGroupsWallets() {
+    const wallets = [];
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
+    });
+    this.wallets = _.values(_.groupBy(_.flatten(wallets), 'keyId'));
   }
 
   private getOrderedWalletsGroups() {

@@ -56,21 +56,13 @@ export class WalletsPage {
   priceCard;
   public wallets;
   public walletsGroups;
-  public readOnlyWalletsGroup;
   public txpsN: number;
-  public homeIntegrations;
-  public showAnnouncement: boolean = false;
   public validDataFromClipboard = null;
   public payProDetailsData;
   public remainingTimeStr: string;
 
-  public hideHomeIntegrations: boolean;
-  public accessDenied: boolean;
-  public isBlur: boolean;
-  public isCordova: boolean;
   public collapsedGroups;
 
-  private isElectron: boolean;
   private zone;
   private countDown;
   private onResumeSubscription: Subscription;
@@ -103,12 +95,9 @@ export class WalletsPage {
     private onGoingProvessProvider: OnGoingProcessProvider,
     private coinbaseProvider: CoinbaseProvider
   ) {
-    this.isBlur = false;
-    this.isCordova = this.platformProvider.isCordova;
-    this.isElectron = this.platformProvider.isElectron;
     this.collapsedGroups = {};
     // Update Wallet on Focus
-    if (this.isElectron) {
+    if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -123,8 +112,7 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    // Update list of wallets, status and TXPs
-    this.setWallets();
+    this.walletsGroups = this.profileProvider.wallets;
 
     // Get Coinbase Accounts and UserInfo
     this.setCoinbase();
@@ -146,20 +134,6 @@ export class WalletsPage {
   private _didEnter() {
     this.checkClipboard();
     this.updateTxps();
-
-    // Show integrations
-    const integrations = this.homeIntegrationsProvider
-      .get()
-      .filter(i => i.show)
-      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
-
-    // Hide BitPay if linked
-    setTimeout(() => {
-      this.homeIntegrations = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return false;
-        else return x;
-      });
-    }, 200);
   }
 
   private walletFocusHandler = opts => {
@@ -329,19 +303,8 @@ export class WalletsPage {
     },100);
     */
 
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsGroups = _.values(
-      _.groupBy(
-        _.filter(this.wallets, wallet => {
-          return wallet.keyId != 'read-only';
-        }),
-        'keyId'
-      )
-    );
-
-    this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
-      keyId: 'read-only'
-    });
+    this.profileProvider.setGroupsWallets();
+    this.walletsGroups = this.profileProvider.wallets;
   };
 
   private checkClipboard() {

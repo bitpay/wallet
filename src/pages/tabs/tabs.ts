@@ -58,6 +58,9 @@ export class TabsPage {
     this.appName = this.appProvider.info.nameCase;
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
 
+    // Cache ordered wallets by groups
+    this.profileProvider.setGroupsWallets();
+
     this.events.subscribe('experimentUpdateStart', () => {
       this.tabs.select(2);
     });
@@ -236,7 +239,7 @@ export class TabsPage {
 
   private async fetchAllWalletsStatus() {
     this.logger.debug('Fetching All Wallets and calculate Total Amount');
-    const wallets = this.profileProvider.getWallets();
+    const wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');
       return;
@@ -280,7 +283,7 @@ export class TabsPage {
 
     const promises = [];
 
-    _.each(this.profileProvider.wallet, wallet => {
+    _.each(wallets, wallet => {
       promises.push(pr(wallet));
     });
 
