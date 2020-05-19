@@ -112,13 +112,13 @@ export class HomePage {
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
-    this.loadAds();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
+    this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
   }
@@ -127,10 +127,15 @@ export class HomePage {
     this.preFetchWallets();
   }
 
-  private loadAds() {
+  private async loadAds() {
     const client = this.bwcProvider.getClient(null, {});
-    client.getAdvertisements({}, (err, ads) => {
+    let testing = await this.persistenceProvider.getTestingAdvertisments();
+    console.log('Testing........', testing);
+    client.getAdvertisements({ testing }, (err, ads) => {
       if (err) throw err;
+      if (testing) {
+        this.advertisements = [];
+      }
       _.forEach(ads, ad => {
         const alreadyVisible = this.advertisements.find(
           a => a.name === ad.name
