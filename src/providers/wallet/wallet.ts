@@ -126,6 +126,9 @@ export class WalletProvider {
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
+    this.events.subscribe('Local/FetchWallet', (wallet, opts) => {
+      this.fetchStatus(wallet, opts);
+    });
   }
 
   public invalidateCache(wallet): void {
@@ -439,6 +442,118 @@ export class WalletProvider {
           return reject(err);
         });
     });
+  }
+
+  private getWalletTotalBalanceAlternative(
+    balanceSat: number,
+    coin: string,
+    totalBalanceAlternativeIsoCode: string
+  ): string {
+    return this.rateProvider
+      .toFiat(balanceSat, totalBalanceAlternativeIsoCode, coin)
+      .toFixed(2);
+  }
+
+  private getWalletTotalBalanceAlternativeLastDay(
+    balanceSat: number,
+    coin: string,
+    totalBalanceAlternativeIsoCode: string,
+    lastDayRatesArray: any
+  ): string {
+    return this.rateProvider
+      .toFiat(balanceSat, totalBalanceAlternativeIsoCode, coin, {
+        customRate: lastDayRatesArray[coin]
+      })
+      .toFixed(2);
+  }
+
+  private calcTotalAmount(
+    statusWallet,
+    wallet,
+    totalBalanceAlternativeIsoCode,
+    lastDayRatesArray
+  ) {
+    let walletTotalBalanceAlternative = 0;
+    let walletTotalBalanceAlternativeLastDay = 0;
+    if (wallet.network === 'livenet' && !wallet.hidden) {
+      const balance =
+        wallet.coin === 'xrp'
+          ? statusWallet.availableBalanceSat
+          : statusWallet.totalBalanceSat;
+      walletTotalBalanceAlternativeLastDay = parseFloat(
+        this.getWalletTotalBalanceAlternativeLastDay(
+          balance,
+          wallet.coin,
+          totalBalanceAlternativeIsoCode,
+          lastDayRatesArray
+        )
+      );
+      if (wallet.coin === 'xrp') {
+        walletTotalBalanceAlternative = parseFloat(
+          this.getWalletTotalBalanceAlternative(
+            statusWallet.availableBalanceSat,
+            'xrp',
+            totalBalanceAlternativeIsoCode
+          )
+        );
+      } else {
+        walletTotalBalanceAlternative = parseFloat(
+          (statusWallet.totalBalanceAlternative || '0.00').replace(/,/g, '')
+        );
+      }
+    }
+    return {
+      walletTotalBalanceAlternative,
+      walletTotalBalanceAlternativeLastDay
+    };
+  }
+
+  public async getTotalAmount(
+    wallets,
+    totalBalanceAlternativeIsoCode,
+    lastDayRatesArray
+  ) {
+    this.logger.debug('Get Total Amount');
+    if (_.isEmpty(wallets))
+      return {
+        totalBalanceAlternativeIsoCode,
+        totalBalanceAlternative: '0',
+        averagePrice: 0
+      };
+
+    let totalAmountArray = [];
+
+    _.each(wallets, wallet => {
+      totalAmountArray.push(
+        this.calcTotalAmount(
+          wallet.cachedStatus,
+          wallet,
+          totalBalanceAlternativeIsoCode,
+          lastDayRatesArray
+        )
+      );
+    });
+
+    const totalBalanceAlternative = _.sumBy(
+      _.compact(totalAmountArray),
+      b => b.walletTotalBalanceAlternative
+    ).toFixed(2);
+    const totalBalanceAlternativeLastDay = _.sumBy(
+      _.compact(totalAmountArray),
+      b => b.walletTotalBalanceAlternativeLastDay
+    ).toFixed(2);
+    const difference =
+      parseFloat(totalBalanceAlternative.replace(/,/g, '')) -
+      parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
+    const averagePrice =
+      (difference * 100) /
+      parseFloat(totalBalanceAlternative.replace(/,/g, ''));
+
+    return {
+      totalBalanceAlternativeIsoCode,
+      totalBalanceAlternative,
+      averagePrice
+    };
   }
 
   // Check address

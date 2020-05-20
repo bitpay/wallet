@@ -1816,6 +1816,7 @@ export class ProfileProvider {
       wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
     });
     this.wallets = _.values(_.groupBy(_.flatten(wallets), 'keyId'));
+    this.events.publish('Local/FetchWallets');
   }
 
   private getOrderedWalletsGroups() {
