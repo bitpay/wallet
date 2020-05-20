@@ -116,7 +116,7 @@ export class BitPayCardHome implements OnInit {
           },
           () => {}
         );
-      }, 100);
+      });
     } else {
       this.navCtrl.push(BitPayCardPage, { id: cardId });
     }
