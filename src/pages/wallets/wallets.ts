@@ -101,10 +101,6 @@ export class WalletsPage {
       this.updateDesktopOnFocus();
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
-    this.events.subscribe('Home/reloadStatus', () => {
-      this.setWallets();
-      this._didEnter();
-    });
   }
 
   ionViewDidEnter() {
@@ -164,9 +160,6 @@ export class WalletsPage {
       // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
-      // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', () => this.setWallets());
-
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletActionHandler);
 
@@ -176,14 +169,12 @@ export class WalletsPage {
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setWallets();
       this.checkClipboard();
       subscribeEvents();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-      this.events.unsubscribe('Local/WalletListChange', this.setWallets);
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
       this.events.unsubscribe('Local/WalletFocus', this.walletFocusHandler);
     });
@@ -235,7 +226,6 @@ export class WalletsPage {
         this.navCtrl.getActive().name == 'WalletsPage'
       ) {
         this.checkClipboard();
-        this.setWallets();
       }
     });
   }
@@ -276,7 +266,8 @@ export class WalletsPage {
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.setWallets();
+      this.profileProvider.setOrderedWalletsByGroups();
+      this.walletsGroups = this.profileProvider.wallets;
     },
     5000,
     {
@@ -293,19 +284,6 @@ export class WalletsPage {
       leading: true
     }
   );
-
-  private setWallets = () => {
-    // TEST
-    /*
-    setTimeout(() => {
-      this.logger.info('##### Load BITCOIN URI TEST');
-      this.incomingDataProvider.redir('bitcoin:3KeJU7VxSKC451pPNSWjF6zK3gm2x7re7q?amount=0.0001');
-    },100);
-    */
-
-    this.profileProvider.setGroupsWallets();
-    this.walletsGroups = this.profileProvider.wallets;
-  };
 
   private checkClipboard() {
     return this.clipboardProvider

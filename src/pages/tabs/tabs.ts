@@ -58,9 +58,6 @@ export class TabsPage {
     this.appName = this.appProvider.info.nameCase;
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
 
-    // Cache ordered wallets by groups
-    this.profileProvider.setGroupsWallets();
-
     this.events.subscribe('experimentUpdateStart', () => {
       this.tabs.select(2);
     });
@@ -84,6 +81,9 @@ export class TabsPage {
           });
       }
     });
+
+    // Pre-ordered wallets
+    this.profileProvider.setOrderedWalletsByGroups();
   }
 
   ngOnInit() {

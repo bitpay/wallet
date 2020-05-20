@@ -146,6 +146,7 @@ export class ProfileProvider {
       );
     });
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
+    this.setOrderedWalletsByGroups();
   }
 
   public setWalletGroupOrder(keyId: string, index: number): void {
@@ -155,6 +156,7 @@ export class ProfileProvider {
       );
     });
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
+    this.setOrderedWalletsByGroups();
   }
 
   public setNewWalletGroupOrder(newWalletKeyId: string): void {
@@ -171,6 +173,7 @@ export class ProfileProvider {
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
+    this.setOrderedWalletsByGroups();
   }
 
   public async getWalletGroupName(keyId: string) {
@@ -445,7 +448,6 @@ export class ProfileProvider {
         this.logger.debug('Updating token wallet from config ' + opts.walletId);
         this.updateWalletFromConfig(tokenWallet);
       }
-      this.setWallets();
     });
     return Promise.resolve(true);
   }
@@ -787,7 +789,7 @@ export class ProfileProvider {
         }
         return this.storeProfileIfDirty()
           .then(() => {
-            this.events.publish('Local/WalletListChange');
+            this.setOrderedWalletsByGroups();
             return this.checkIfAlreadyExist(boundWalletClients).then(() => {
               return Promise.resolve(_.compact(boundWalletClients));
             });
@@ -858,7 +860,6 @@ export class ProfileProvider {
       } else {
         this.logger.debug('Storing new walletClient');
         return this.storeProfileIfDirty().then(() => {
-          this.events.publish('Local/WalletListChange');
           return Promise.resolve(wallet);
         });
       }
@@ -1615,7 +1616,7 @@ export class ProfileProvider {
     delete this.wallet[walletId];
 
     this.persistenceProvider.removeAllWalletData(walletId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroups();
     return this.storeProfileIfDirty();
   }
 
@@ -1624,7 +1625,7 @@ export class ProfileProvider {
       this._deleteWalletClient(wallet);
     });
     this.persistenceProvider.removeAllWalletGroupData(keyId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroups();
     return this.storeProfileIfDirty();
   }
 
@@ -1809,7 +1810,7 @@ export class ProfileProvider {
     return _.flatten(wallets);
   }
 
-  public setGroupsWallets() {
+  public setOrderedWalletsByGroups() {
     const wallets = [];
     this.getOrderedWalletsGroups().forEach(walletsGroup => {
       wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
@@ -1960,6 +1961,7 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].hidden
     );
+    this.setOrderedWalletsByGroups();
   }
 
   public getTxps(opts): Promise<any> {

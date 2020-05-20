@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
@@ -48,8 +48,7 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private keyProvider: KeyProvider,
-    private events: Events
+    private keyProvider: KeyProvider
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -180,7 +179,6 @@ export class WalletSettingsPage {
   public hiddenWalletChange(walletId: string): void {
     if (!walletId) return;
     this.profileProvider.toggleHideWalletFlag(walletId);
-    this.events.publish('Local/WalletListChange');
   }
 
   public openWalletGroupDelete(): void {

@@ -248,10 +248,7 @@ export class ImportWalletPage {
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
 
-    this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/WalletListChange');
-      this.events.publish('Local/FetchWallets');
-    });
+    this.navCtrl.popToRoot();
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {

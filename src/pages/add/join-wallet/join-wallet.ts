@@ -282,7 +282,6 @@ export class JoinWalletPage {
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
 
-        this.events.publish('Local/WalletListChange');
         setTimeout(() => {
           if (wallet.isComplete()) {
             this.navCtrl.push(WalletDetailsPage, {

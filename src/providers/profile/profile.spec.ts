@@ -914,7 +914,7 @@ describe('Profile Provider', () => {
       spyOn(profileProvider.profile, 'hasWallet').and.returnValue(false);
     });
 
-    it('should join wallet and publish "Local/WalletListChange" event', async () => {
+    it('should join wallet and publish "Local/WalletUpdate" event', async () => {
       const opts = {
         secret: 'secret5',
         coin: 'btc',
@@ -1014,8 +1014,6 @@ describe('Profile Provider', () => {
         .catch(err => {
           expect(err).not.toBeDefined();
         });
-
-      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
     });
   });
 

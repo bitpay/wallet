@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -82,7 +77,6 @@ export class CreateWalletPage implements OnInit {
     private logger: Logger,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
-    private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -333,7 +327,6 @@ export class CreateWalletPage implements OnInit {
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
         }
         this.navCtrl.popToRoot().then(() => {
-          this.events.publish('Local/WalletListChange');
           setTimeout(() => {
             if (wallet.isComplete()) {
               this.navCtrl.push(WalletDetailsPage, {
