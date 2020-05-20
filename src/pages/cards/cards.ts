@@ -153,11 +153,12 @@ export class CardsPage {
         this.pingIAB();
       }
     } else {
+      this.showBitPayCard = !(
+        this.appProvider.info._enabledExtensions.debitcard == 'false'
+      );
+
       // TODO gating code
       if (!this.IABReady) {
-        this.showBitPayCard = !(
-          this.appProvider.info._enabledExtensions.debitcard == 'false'
-        );
         setTimeout(() => (this.initialized = this.IABReady = true), 500);
       }
     }
