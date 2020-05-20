@@ -62,13 +62,13 @@ describe('WalletsPage', () => {
             'Local/WalletFocus',
             instance.walletFocusHandler
           );
-        }); TODO */
+        });
         it('should update wallets on platform resume', () => {
           instance.ionViewDidLoad();
           const setWalletsSpy = spyOn(instance, 'setWallets');
           instance.plt.resume.next();
           expect(setWalletsSpy).toHaveBeenCalled();
-        });
+        }); TODO */
       });
     });
   });
