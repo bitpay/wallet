@@ -89,6 +89,7 @@ export class KeyDeletePage {
 
   private goHome() {
     this.events.publish('Local/WalletListChange');
+    this.events.publish('Local/FetchWallets');
     setTimeout(() => {
       this.navCtrl.popToRoot();
     }, 1000);

@@ -145,7 +145,7 @@ export class SelectCurrencyPage {
         this.profileProvider.setNewWalletGroupOrder(
           wallets[0].credentials.keyId
         );
-        this.endProcess();
+        this.endProcess(wallets);
       })
       .catch(e => {
         this.showError(e);
@@ -171,11 +171,11 @@ export class SelectCurrencyPage {
     this.errorsProvider.showDefaultError(err, title);
   }
 
-  private endProcess() {
+  private endProcess(wallets?) {
     this.onGoingProcessProvider.clear();
     this.navCtrl.popToRoot().then(() => {
       this.events.publish('Local/WalletListChange');
-      this.events.publish('Local/FetchWallets');
+      this.events.publish('Local/FetchWallets', wallets);
     });
   }
 

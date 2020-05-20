@@ -66,8 +66,8 @@ export class TabsPage {
     this.events.subscribe('Local/UpdateTxps', data => {
       this.setTxps(data);
     });
-    this.events.subscribe('Local/FetchWallets', () => {
-      this.fetchAllWalletsStatus();
+    this.events.subscribe('Local/FetchWallets', newWallets => {
+      this.fetchWalletsStatus(newWallets);
     });
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
@@ -129,7 +129,7 @@ export class TabsPage {
           type == eventName &&
           (type === 'NewIncomingTx' || type === 'NewOutgoingTx')
         ) {
-          this.fetchAllWalletsStatus();
+          this.fetchWalletsStatus();
         }
       }
     );
@@ -234,9 +234,11 @@ export class TabsPage {
     };
   }
 
-  private async fetchAllWalletsStatus() {
-    this.logger.debug('Fetching All Wallets and calculate Total Amount');
-    const wallets = this.profileProvider.getWallets();
+  private async fetchWalletsStatus(newWallets?) {
+    this.logger.debug('Fetching Wallets and calculate Total Amount');
+    const wallets = _.isEmpty(newWallets)
+      ? this.profileProvider.getWallets()
+      : newWallets;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');
       return;
