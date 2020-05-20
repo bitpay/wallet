@@ -140,11 +140,11 @@ export class CardsPage {
       'debitcard'
     );
 
-    this.showBitPayCard =
-      !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
-      this.platformProvider.isCordova;
-
     if (this.cardExperimentEnabled) {
+      this.showBitPayCard =
+        !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+        this.platformProvider.isCordova;
+
       if (
         !this.IABReady &&
         !this.IABPingLock &&
@@ -155,6 +155,9 @@ export class CardsPage {
     } else {
       // TODO gating code
       if (!this.IABReady) {
+        this.showBitPayCard = !(
+          this.appProvider.info._enabledExtensions.debitcard == 'false'
+        );
         setTimeout(() => (this.initialized = this.IABReady = true), 500);
       }
     }
@@ -187,7 +190,7 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
-      if (!this.platformProvider.isCordova) {
+      if (!this.platformProvider.isCordova && this.cardExperimentEnabled) {
         return res();
       }
 
