@@ -9,6 +9,7 @@ import {
   Network,
   PersistenceProvider
 } from '../../../../providers/persistence/persistence';
+import { BitPayCardPage } from '../bitpay-card';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
@@ -49,6 +50,7 @@ export class BitPayCardHome implements OnInit {
   public disableAddCard = true;
   public isFetching: boolean;
   public ready: boolean;
+  public alreadyOnWaitList: boolean;
 
   @Input() showBitpayCardGetStarted: boolean;
   @Input() bitpayCardItems: any;
@@ -65,6 +67,10 @@ export class BitPayCardHome implements OnInit {
     private persistenceProvider: PersistenceProvider,
     private events: Events
   ) {
+    this.persistenceProvider.getWaitingListStatus().then(status => {
+      this.alreadyOnWaitList = !!status;
+    });
+
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
@@ -92,23 +98,27 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async goToCard(cardId) {
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(
-      this.network
-    );
-    const email = this.bitpayCardItems[0].email;
-
-    const message = !token
-      ? `loadDashboard?${cardId}&${email}`
-      : `loadDashboard?${cardId}`;
-
-    this.iabCardProvider.show();
-    setTimeout(() => {
-      this.iabCardProvider.sendMessage(
-        {
-          message
-        },
-        () => {}
+    if (this.cardExperimentEnabled) {
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        this.network
       );
-    }, 100);
+      const email = this.bitpayCardItems[0].email;
+
+      const message = !token
+        ? `loadDashboard?${cardId}&${email}`
+        : `loadDashboard?${cardId}`;
+
+      this.iabCardProvider.show();
+      setTimeout(() => {
+        this.iabCardProvider.sendMessage(
+          {
+            message
+          },
+          () => {}
+        );
+      });
+    } else {
+      this.navCtrl.push(BitPayCardPage, { id: cardId });
+    }
   }
 }

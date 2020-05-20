@@ -105,7 +105,46 @@
     </ng-container>
 
 
-    <ng-container *ngIf="this.cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
+    <ng-container *ngIf="waitList && !alreadyOnWaitList && bitpayCardItems?.length && !disableAddCard" @fade>
+      <div @fade>
+        <action-card-v4>
+          <div action-card-header>
+            <div class="bitpay-card-header">
+              <ng-container *ngIf="!initialized else headerInitialized">
+                <div class="card-loader__tile" style="width: 100%"></div>
+              </ng-container>
+              <ng-template #headerInitialized>
+                <div class="bitpay-card-image" style="background: #062150">
+                  <img @fade src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg"
+                       style="transform: scale(1.3)">
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div action-card-title>
+            <ng-container *ngIf="!initialized else titleInitialized">
+              <div class="loading--line" style="width: 60%"></div>
+            </ng-container>
+            <ng-template #titleInitialized>
+              <div @fade translate>Something exciting is arriving</div>
+            </ng-template>
+          </div>
+          <div *ngIf="!initialized" action-card-body style="width: 100%">
+            <div class="loading--line" style="width: 30%"></div>
+            <div class="loading--line" style="width: 50%"></div>
+          </div>
+          <div *ngIf="initialized" action-card-body [clamp]="3" translate>
+            Join the waitlist and be first to experience the new card.
+          </div>
+          <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
+            <div translate>Notify Me</div>
+          </div>
+        </action-card-v4>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
       <div @fade>
         <action-card-v4>
           <div action-card-header>
@@ -142,6 +181,8 @@
       </div>
 
     </ng-container>
+
+
   </ng-template>
 
 </div>
