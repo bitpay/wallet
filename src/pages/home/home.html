@@ -133,8 +133,43 @@
     <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
   </ion-list>
 
-  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0]" pager="true" (ionSlideDidChange)="slideChanged()">
+  <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let advertisement of advertisements">
+      <div class="message-background no-margin">
+        <div class="message-header" *ngIf="advertisement.dismissible">
+          <ion-row justify-content-end>
+            <button float-right ion-button clear icon-only color="grey" (click)="dismissAdvertisement(advertisement)">
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-row>
+        </div>
+        <div class="message-content">
+          <ion-row align-items-center>
+            <ion-col align-self-start col-4>
+              <div class="message-img">
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div class="message-title message-title-adv" *ngIf="advertisement.title">
+                {{ advertisement.title }}
+              </div>
+              <div class="message-body message-body-adv" *ngIf="advertisement.body">
+                {{ advertisement.body }}
+              </div>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="advertisement.link" (click)="goTo(advertisement.link, advertisement.linkParams)">
+            <div class="line-divider"></div>
+            <span class="message-button" *ngIf="advertisement.linkText">{{advertisement.linkText}}</span>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-slides *ngIf="showAdvertisements && testingsAds && testingsAds[0] && testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
+    <ion-slide *ngFor="let advertisement of testingAds">
       <div class="message-background no-margin">
         <div class="message-header" *ngIf="advertisement.dismissible">
           <ion-row justify-content-end>

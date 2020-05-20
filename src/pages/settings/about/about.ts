@@ -28,6 +28,7 @@ export class AboutPage {
   public title: string;
   private tapped = 0;
   private headerTaps = 0;
+  private releaseInfoTaps = 0;
   public pressed: number = 0;
   constructor(
     private navCtrl: NavController,
@@ -47,6 +48,7 @@ export class AboutPage {
     this.commitHash = this.appProvider.info.commitHash;
     this.version = this.appProvider.info.version;
     this.headerTaps = 0;
+    this.releaseInfoTaps = 0;
     this.title = this.replaceParametersProvider.replace(
       this.translate.instant('About {{appName}}'),
       { appName: this.appProvider.info.nameCase }
@@ -94,15 +96,21 @@ export class AboutPage {
     );
   }
 
+  public countReleaseInfoTaps() {
+    let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
+    this.releaseInfoTaps++;
+    if (easterEggStatus && this.releaseInfoTaps == 10) {
+      console.log('Testing ads disabled');
+      this.persistenceProvider.setTestingAdvertisements(false);
+    }
+  }
+
   public countAboutHeaderTaps() {
     this.headerTaps++;
     let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
     if (easterEggStatus && this.headerTaps == 12) {
-      console.log('Testing adverts enabled');
+      console.log('Testing ads enabled');
       this.persistenceProvider.setTestingAdvertisements(true);
-    } else if (easterEggStatus && this.headerTaps == 15) {
-      console.log('Testing adverts disabled');
-      this.persistenceProvider.setTestingAdvertisements(false);
     }
   }
 

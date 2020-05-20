@@ -1,7 +1,7 @@
 <wide-header-page (tap)="countAboutHeaderTaps($event)" title="{{title}}">
   <div page-content>
     <ion-list class="bp-list">
-      <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
+      <ion-item-divider (tap)="countReleaseInfoTaps($event)">{{'Release information'| translate}}</ion-item-divider>
       <button ion-item (click)="wipeBitPayAccounts()">
         <ion-icon class="item-img icon-settings" name="ios-download-outline" item-start></ion-icon>
         <span class="main-label" translate>Version</span>

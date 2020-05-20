@@ -8,13 +8,13 @@ import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/sim
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
+  BwcProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
   Logger,
   PersistenceProvider,
-  SimplexProvider,
-  BwcProvider
+  SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
@@ -39,6 +39,7 @@ export interface Advertisement {
   app: string;
   linkText: string;
   link: any;
+  isTesting: boolean;
   linkParams?: any;
   dismissible: true;
   imgSrc: string;
@@ -60,6 +61,8 @@ export class HomePage {
   public showServerMessage: boolean;
   public showAdvertisements: boolean;
   public advertisements: Advertisement[] = [];
+  public productionAds: Advertisement[] = [];
+  public testingAds: Advertisement[] = [];
   public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
@@ -71,6 +74,7 @@ export class HomePage {
   // private pageMap: any;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
+  public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
 
   private hasOldCoinbaseSession: boolean;
@@ -100,6 +104,10 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
+    this.persistenceProvider.getTestingAdvertisments().then(status => {
+      this.testingAdsEnabled = status;
+      console.log('Ads Status...', this.testingAdsEnabled);
+    });
     // this.pageMap = {
     //   CoinbasePage,
     //   PhaseOneCardIntro,
@@ -108,6 +116,11 @@ export class HomePage {
   }
 
   async ionViewWillEnter() {
+    // this.persistenceProvider.getTestingAdvertisments().then(status => {
+    //   this.testingAdsEnabled = status;
+    //   console.log('Ads Status...', this.testingAdsEnabled);
+    // });
+    // console.log('Ads Status...', this.testingAdsEnabled);
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
@@ -129,37 +142,70 @@ export class HomePage {
 
   private async loadAds() {
     const client = this.bwcProvider.getClient(null, {});
-    let testing = await this.persistenceProvider.getTestingAdvertisments();
-    console.log('Testing........', testing);
-    client.getAdvertisements({ testing }, (err, ads) => {
-      if (err) throw err;
-      if (testing) {
-        this.advertisements = [];
-      }
-      _.forEach(ads, ad => {
-        const alreadyVisible = this.advertisements.find(
-          a => a.name === ad.name
-        );
-        this.persistenceProvider
-          .getAdvertisementDismissed(ad.name)
-          .then((value: string) => {
-            if (value === 'dismissed') {
-              return;
-            }
-            !alreadyVisible &&
-              this.advertisements.push({
-                name: ad.name,
-                title: this.translate.instant(ad.title),
-                body: this.translate.instant(ad.body),
-                app: ad.app,
-                linkText: ad.linkText,
-                link: ad.linkUrl,
-                imgSrc: ad.imgUrl,
-                dismissible: true
+    this.testingAdsEnabled = await this.persistenceProvider.getTestingAdvertisments();
+    client.getAdvertisements(
+      { testing: this.testingAdsEnabled },
+      (err, ads) => {
+        if (err) throw err;
+        // this.advertisements = _.filter(this.advertisements, ad => {
+        //   return ad.isTesting === testing;
+        // });
+
+        if (this.testingAdsEnabled) {
+          console.log('Assigning test Ads');
+          _.forEach(ads, ad => {
+            const alreadyVisible = this.testingAds.find(
+              a => a.name === ad.name
+            );
+            this.persistenceProvider
+              .getAdvertisementDismissed(ad.name)
+              .then((value: string) => {
+                if (value === 'dismissed') {
+                  return;
+                }
+                !alreadyVisible &&
+                  this.testingAds.push({
+                    name: ad.name,
+                    title: this.translate.instant(ad.title),
+                    body: this.translate.instant(ad.body),
+                    app: ad.app,
+                    linkText: ad.linkText,
+                    link: ad.linkUrl,
+                    imgSrc: ad.imgUrl,
+                    isTesting: ad.isTesting,
+                    dismissible: true
+                  });
               });
           });
-      });
-    });
+          console.log(this.testingAds);
+        } else {
+          _.forEach(ads, ad => {
+            const alreadyVisible = this.advertisements.find(
+              a => a.name === ad.name
+            );
+            this.persistenceProvider
+              .getAdvertisementDismissed(ad.name)
+              .then((value: string) => {
+                if (value === 'dismissed') {
+                  return;
+                }
+                !alreadyVisible &&
+                  this.advertisements.push({
+                    name: ad.name,
+                    title: this.translate.instant(ad.title),
+                    body: this.translate.instant(ad.body),
+                    app: ad.app,
+                    linkText: ad.linkText,
+                    link: ad.linkUrl,
+                    imgSrc: ad.imgUrl,
+                    isTesting: ad.isTesting,
+                    dismissible: true
+                  });
+              });
+          });
+        }
+      }
+    );
   }
 
   private setMerchantDirectoryAdvertisement() {
@@ -177,6 +223,7 @@ export class HomePage {
         linkText: this.translate.instant('View Directory'),
         link: 'https://bitpay.com/directory/?hideGiftCards=true',
         imgSrc: 'assets/img/icon-merch-dir.svg',
+        isTesting: false,
         dismissible: true
       });
   }
@@ -270,6 +317,7 @@ export class HomePage {
         app: 'bitpay',
         linkText: this.translate.instant('Buy Now'),
         link: CardCatalogPage,
+        isTesting: false,
         imgSrc: 'assets/img/amazon.svg',
         dismissible: true
       });
@@ -286,6 +334,7 @@ export class HomePage {
           app: 'bitpay',
           linkText: this.translate.instant('Sign up'),
           link: BitPayCardIntroPage,
+          isTesting: false,
           dismissible: true,
           imgSrc: 'assets/img/icon-bpcard.svg'
         }
@@ -298,6 +347,7 @@ export class HomePage {
           app: 'bitpay',
           linkText: this.translate.instant('Notify Me'),
           link: PhaseOneCardIntro,
+          isTesting: false,
           dismissible: true,
           imgSrc: 'assets/img/icon-bpcard.svg'
         };
@@ -326,6 +376,7 @@ export class HomePage {
           : this.translate.instant('Connect Account'),
         link: CoinbasePage,
         dismissible: true,
+        isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
   }
@@ -355,6 +406,7 @@ export class HomePage {
         linkText: 'Buy Now',
         link: BuyCardPage,
         linkParams: { cardConfig: discountedCard },
+        isTesting: false,
         dismissible: true,
         imgSrc: discountedCard.icon
       });
@@ -375,6 +427,7 @@ export class HomePage {
         linkText: promo.cta || 'Buy Now',
         link: BuyCardPage,
         linkParams: { cardConfig: promotedCard },
+        isTesting: false,
         dismissible: true,
         imgSrc: promo.icon
       });
