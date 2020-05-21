@@ -245,10 +245,13 @@ export class ImportWalletPage {
     });
     if (wallets && wallets[0]) {
       this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
 
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(() => {
+      this.events.publish('Local/FetchWallets');
+    });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {

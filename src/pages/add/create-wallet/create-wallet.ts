@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -83,7 +88,8 @@ export class CreateWalletPage implements OnInit {
     private bwcProvider: BwcProvider,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private events: Events
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -321,12 +327,12 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.profileProvider.setNewWalletGroupOrder(wallet.credentials.keyId);
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
         }
         this.navCtrl.popToRoot().then(() => {
+          this.events.publish('Local/FetchWallets');
           setTimeout(() => {
             if (wallet.isComplete()) {
               this.navCtrl.push(WalletDetailsPage, {

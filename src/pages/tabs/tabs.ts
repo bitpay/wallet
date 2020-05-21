@@ -71,9 +71,6 @@ export class TabsPage {
           });
       }
     });
-
-    // Pre-ordered wallets
-    this.profileProvider.setOrderedWalletsByGroups();
   }
 
   ngOnInit() {
@@ -82,24 +79,6 @@ export class TabsPage {
       // [1] Gift Cards
       this.events.publish('Local/FetchCards', data[0]);
     });
-  }
-
-  updateTotalBalance() {
-    const totalBalanceAlternativeIsoCode =
-      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    this.exchangeRatesProvider
-      .getLastDayRates(totalBalanceAlternativeIsoCode)
-      .then(b => {
-        this.walletProvider
-          .getTotalAmount(
-            this.profileProvider.wallet,
-            totalBalanceAlternativeIsoCode,
-            b
-          )
-          .then(a => {
-            this.events.publish('Local/HomeBalance', a);
-          });
-      });
   }
 
   disableCardNotificationBadge() {
@@ -146,6 +125,25 @@ export class TabsPage {
     );
   };
 
+  private updateTotalBalance() {
+    this.logger.debug('Updating Total Balance');
+    const totalBalanceAlternativeIsoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
+    this.exchangeRatesProvider
+      .getLastDayRates(totalBalanceAlternativeIsoCode)
+      .then(lastDayRatesArray => {
+        this.walletProvider
+          .getTotalAmount(
+            this.profileProvider.wallet,
+            totalBalanceAlternativeIsoCode,
+            lastDayRatesArray
+          )
+          .then(data => {
+            this.events.publish('Local/HomeBalance', data);
+          });
+      });
+  }
+
   private processWalletError(wallet, err): void {
     wallet.error = wallet.errorObj = null;
 
@@ -170,8 +168,18 @@ export class TabsPage {
     );
   }
 
-  private fetchAllWalletsStatus() {
-    this.logger.debug('Fetching All Wallets');
+  private fetchAllWalletsStatus = _.debounce(
+    async () => {
+      this._fetchAllWallets();
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
+
+  private _fetchAllWallets() {
+    this.logger.debug('Fetching All Wallets and Total Amount');
     const wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');

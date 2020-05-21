@@ -108,7 +108,7 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    this.walletsGroups = this.profileProvider.wallets;
+    this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
 
     // Get Coinbase Accounts and UserInfo
     this.setCoinbase();
@@ -266,8 +266,8 @@ export class WalletsPage {
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.profileProvider.setOrderedWalletsByGroups();
-      this.walletsGroups = this.profileProvider.wallets;
+      this.profileProvider.setOrderedWalletsByGroup();
+      this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
     },
     5000,
     {

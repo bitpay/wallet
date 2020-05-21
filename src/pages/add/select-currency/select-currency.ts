@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -59,7 +64,8 @@ export class SelectCurrencyPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private events: Events
   ) {
     this.availableChains = this.navParam.data.isShared
       ? this.currencyProvider.getMultiSigCoins()
@@ -133,9 +139,10 @@ export class SelectCurrencyPage {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
       .createMultipleWallets(coins, selectedTokens)
-      .then(wallets => {
+      .then(async wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
+        await new Promise(resolve => setTimeout(resolve, 1000));
         this.profileProvider.setNewWalletGroupOrder(
           wallets[0].credentials.keyId
         );
@@ -167,7 +174,9 @@ export class SelectCurrencyPage {
 
   private endProcess() {
     this.onGoingProcessProvider.clear();
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(() => {
+      this.events.publish('Local/FetchWallets');
+    });
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {

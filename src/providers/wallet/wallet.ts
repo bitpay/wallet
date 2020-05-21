@@ -126,9 +126,6 @@ export class WalletProvider {
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
-    this.events.subscribe('Local/FetchWallet', (wallet, opts) => {
-      this.fetchStatus(wallet, opts);
-    });
   }
 
   public invalidateCache(wallet): void {
@@ -513,7 +510,6 @@ export class WalletProvider {
     totalBalanceAlternativeIsoCode,
     lastDayRatesArray
   ) {
-    this.logger.debug('Get Total Amount');
     if (_.isEmpty(wallets))
       return {
         totalBalanceAlternativeIsoCode,

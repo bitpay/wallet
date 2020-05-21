@@ -49,7 +49,7 @@ export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
-  public wallets: any = [];
+  public orderedWalletsByGroup: any = [];
 
   public UPDATE_PERIOD = 15;
   public UPDATE_PERIOD_FAST = 5;
@@ -146,7 +146,6 @@ export class ProfileProvider {
       );
     });
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
-    this.setOrderedWalletsByGroups();
   }
 
   public setWalletGroupOrder(keyId: string, index: number): void {
@@ -156,7 +155,6 @@ export class ProfileProvider {
       );
     });
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['order'] = index;
-    this.setOrderedWalletsByGroups();
   }
 
   public setNewWalletGroupOrder(newWalletKeyId: string): void {
@@ -167,13 +165,14 @@ export class ProfileProvider {
     Promise.all(promises).then(order => {
       const index = !_.max(order) ? 0 : +_.max(order) + 1;
       this.setWalletGroupOrder(newWalletKeyId, index);
+      this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
     });
   }
 
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
-    this.setOrderedWalletsByGroups();
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public async getWalletGroupName(keyId: string) {
@@ -421,6 +420,7 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.toString()));
+      this.setOrderedWalletsByGroup();
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
@@ -787,9 +787,9 @@ export class ProfileProvider {
           });
           boundWalletClients.push(boundClient);
         }
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty()
           .then(() => {
-            this.setOrderedWalletsByGroups();
             return this.checkIfAlreadyExist(boundWalletClients).then(() => {
               return Promise.resolve(_.compact(boundWalletClients));
             });
@@ -859,6 +859,7 @@ export class ProfileProvider {
         return Promise.resolve(wallet);
       } else {
         this.logger.debug('Storing new walletClient');
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty().then(() => {
           return Promise.resolve(wallet);
         });
@@ -1141,6 +1142,7 @@ export class ProfileProvider {
 
         return Promise.all(promises).then(() => {
           this.logger.info(`Bound ${profileLength} wallets`);
+          this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
           return Promise.resolve();
         });
       });
@@ -1616,7 +1618,8 @@ export class ProfileProvider {
     delete this.wallet[walletId];
 
     this.persistenceProvider.removeAllWalletData(walletId);
-    this.setOrderedWalletsByGroups();
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1625,7 +1628,8 @@ export class ProfileProvider {
       this._deleteWalletClient(wallet);
     });
     this.persistenceProvider.removeAllWalletGroupData(keyId);
-    this.setOrderedWalletsByGroups();
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1810,13 +1814,15 @@ export class ProfileProvider {
     return _.flatten(wallets);
   }
 
-  public setOrderedWalletsByGroups() {
+  public setOrderedWalletsByGroup() {
+    this.logger.debug('Set Ordered Wallets By Group');
     const wallets = [];
     this.getOrderedWalletsGroups().forEach(walletsGroup => {
       wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
     });
-    this.wallets = _.values(_.groupBy(_.flatten(wallets), 'keyId'));
-    this.events.publish('Local/FetchWallets');
+    this.orderedWalletsByGroup = _.values(
+      _.groupBy(_.flatten(wallets), 'keyId')
+    );
   }
 
   private getOrderedWalletsGroups() {
@@ -1962,7 +1968,7 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].hidden
     );
-    this.setOrderedWalletsByGroups();
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public getTxps(opts): Promise<any> {
