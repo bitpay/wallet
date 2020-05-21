@@ -126,7 +126,6 @@ export class TabsPage {
   };
 
   private updateTotalBalance() {
-    this.logger.debug('Updating Total Balance');
     const totalBalanceAlternativeIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     this.exchangeRatesProvider
@@ -139,6 +138,7 @@ export class TabsPage {
             lastDayRatesArray
           )
           .then(data => {
+            this.logger.debug('Total Balance Updated');
             this.events.publish('Local/HomeBalance', data);
           });
       });
@@ -179,12 +179,16 @@ export class TabsPage {
   );
 
   private _fetchAllWallets() {
-    this.logger.debug('Fetching All Wallets and Total Amount');
-    const wallets = this.profileProvider.wallet;
+    let wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');
       return;
     }
+
+    this.logger.debug('Fetching All Wallets and Updating Total Balance');
+    wallets = _.filter(this.profileProvider.wallet, w => {
+      return !w.hidden;
+    });
 
     let foundMessage = false;
 
