@@ -115,7 +115,7 @@ export class SimplexBuyPage {
     this.wallets = this.profileProvider.getWallets({
       network: 'livenet',
       onlyComplete: true,
-      coin: this.coin || ['btc', 'bch', 'eth', 'xrp', 'pax'],
+      coin: this.coin || ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
       backedUp: true
     });
     this.altCurrenciesToShow = ['USD', 'EUR'];
