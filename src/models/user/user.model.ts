@@ -4,7 +4,7 @@ export interface User {
     familyName?: string;
     email?: string;
     eid?: string;
-    experiments?: { naDebit?: boolean };
+    experiments?: [string]
   };
   error?: string;
 }
