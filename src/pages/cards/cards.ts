@@ -68,14 +68,6 @@ export class CardsPage {
     private translate: TranslateService,
     private bitPayCardProvider: BitPayCardProvider
   ) {
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      if (status === 'enabled') {
-        this.cardExperimentEnabled = true;
-        this.waitList = false;
-        this.showDisclaimer = true;
-      }
-    });
-
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
     this.bitPayProvider.get(
@@ -140,28 +132,38 @@ export class CardsPage {
       'debitcard'
     );
 
-    if (this.cardExperimentEnabled) {
-      this.showBitPayCard =
-        !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
-        this.platformProvider.isCordova;
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        this.logger.log(`CARD - experiment enabled`);
 
-      if (
-        !this.IABReady &&
-        !this.IABPingLock &&
-        this.platformProvider.isCordova
-      ) {
-        this.pingIAB();
-      }
-    } else {
-      this.showBitPayCard = !(
-        this.appProvider.info._enabledExtensions.debitcard == 'false'
-      );
+        this.cardExperimentEnabled = true;
+        this.waitList = false;
+        this.showDisclaimer = true;
 
-      // TODO gating code
-      if (!this.IABReady) {
-        setTimeout(() => (this.initialized = this.IABReady = true), 500);
+        this.showBitPayCard =
+          !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+          this.platformProvider.isCordova;
+
+        if (
+          !this.IABReady &&
+          !this.IABPingLock &&
+          this.platformProvider.isCordova
+        ) {
+          this.pingIAB();
+        }
+      } else {
+        this.logger.log(`CARD - experiment disabled`);
+        this.showBitPayCard = !(
+          this.appProvider.info._enabledExtensions.debitcard == 'false'
+        );
+
+        // TODO gating code
+        if (!this.IABReady) {
+          setTimeout(() => (this.initialized = this.IABReady = true), 500);
+        }
       }
-    }
+    });
+
     this.bitpayCardItems = await this.prepareDebitCards();
     await this.fetchAllCards();
   }
