@@ -83,6 +83,7 @@ export class HomePage {
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private Bitcore: any;
+  private config: any;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -108,11 +109,12 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
-    this.persistenceProvider.getTestingAdvertisments().then(status => {
-      this.testingAdsEnabled = status;
-      console.log('Ads Status...', this.testingAdsEnabled);
-    });
+    // this.persistenceProvider.getTestingAdvertisments().then(status => {
+    //   this.testingAdsEnabled = status;
+    //   console.log('Ads Status...', this.testingAdsEnabled);
+    // });
     this.Bitcore = this.bwcProvider.getBitcore();
+    this.config = this.configProvider.get();
     // this.pageMap = {
 
     //   CoinbasePage,
@@ -122,11 +124,6 @@ export class HomePage {
   }
 
   async ionViewWillEnter() {
-    // this.persistenceProvider.getTestingAdvertisments().then(status => {
-    //   this.testingAdsEnabled = status;
-    //   console.log('Ads Status...', this.testingAdsEnabled);
-    // });
-    // console.log('Ads Status...', this.testingAdsEnabled);
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
@@ -140,6 +137,7 @@ export class HomePage {
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
+    console.log('Advertisements', this.advertisements);
   }
 
   ionViewDidLoad() {
@@ -148,8 +146,7 @@ export class HomePage {
 
   private async loadAds() {
     const client = this.bwcProvider.getClient(null, {});
-    this.testingAdsEnabled = await this.persistenceProvider.getTestingAdvertisments();
-    const config = this.configProvider.get();
+
     client.getAdvertisements(
       { testing: this.testingAdsEnabled },
       (err, ads) => {
@@ -181,9 +178,11 @@ export class HomePage {
 
                 var isSignatureVerified = this.bwcProvider
                   .getUtils()
-                  .verifyMessage(message, ad.signature, config.adPubKey);
-
-                console.log('isSignatureVerfied', isSignatureVerified);
+                  .verifyMessage(
+                    message,
+                    ad.signature,
+                    this.config.adPubKey.pubkey
+                  );
 
                 !alreadyVisible &&
                   isSignatureVerified &&
@@ -202,8 +201,6 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
-
-                console.log(this.testingAds);
               });
           });
         } else {
@@ -233,11 +230,11 @@ export class HomePage {
 
                 var isSignatureVerified = this.bwcProvider
                   .getUtils()
-                  .verifyMessage(message, ad.signature, config.adPubKey);
-
-                console.log('Hello ', message, ad.signature);
-
-                console.log('isSignatureVerfied', isSignatureVerified);
+                  .verifyMessage(
+                    message,
+                    ad.signature,
+                    this.config.adPubKey.pubkey
+                  );
 
                 !alreadyVisible &&
                   isSignatureVerified &&
@@ -323,6 +320,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/FetchCards', bpCards => {
       if (!bpCards) this.addBitPayCard();
+    });
+    this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
+      this.testingAdsEnabled = testAdsStatus;
     });
   }
 

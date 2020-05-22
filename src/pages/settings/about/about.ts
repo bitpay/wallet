@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // pages
 import { SendFeedbackPage } from '../../feedback/send-feedback/send-feedback';
@@ -40,7 +40,8 @@ export class AboutPage {
     private bitpayProvider: BitPayProvider,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private events: Events
   ) {}
 
   ionViewDidLoad() {
@@ -102,6 +103,7 @@ export class AboutPage {
     if (easterEggStatus && this.releaseInfoTaps == 10) {
       console.log('Testing ads disabled');
       this.persistenceProvider.setTestingAdvertisements(false);
+      this.events.publish('Local/TestAdsToggle', false);
     }
   }
 
@@ -111,6 +113,7 @@ export class AboutPage {
     if (easterEggStatus && this.headerTaps == 12) {
       console.log('Testing ads enabled');
       this.persistenceProvider.setTestingAdvertisements(true);
+      this.events.publish('Local/TestAdsToggle', true);
     }
   }
 

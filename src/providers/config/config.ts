@@ -33,7 +33,9 @@ export interface Config {
     url: string;
   };
 
-  adPubKey: string;
+  adPubKey: {
+    pubkey: string;
+  };
 
   download: {
     bitpay: {
@@ -169,9 +171,10 @@ export class ConfigProvider {
         url: 'http://localhost:3232/bws/api'
       },
 
-      adPubKey:
-        '02ee30d0a61bdc7609d6cda8a096c832994788a88630687d13a4dfce385aa74652',
-
+      adPubKey: {
+        pubkey:
+          '02ee30d0a61bdc7609d6cda8a096c832994788a88630687d13a4dfce385aa74652'
+      },
       download: {
         bitpay: {
           url: 'https://bitpay.com/wallet'
