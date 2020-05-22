@@ -168,7 +168,7 @@
     </ion-slide>
   </ion-slides>
 
-  <ion-slides *ngIf="showAdvertisements && testingsAds && testingsAds[0] && testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
+  <ion-slides *ngIf="showAdvertisements && testingAds && testingAds[0] && testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let advertisement of testingAds">
       <div class="message-background no-margin">
         <div class="message-header" *ngIf="advertisement.dismissible">

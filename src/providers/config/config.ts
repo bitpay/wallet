@@ -33,6 +33,8 @@ export interface Config {
     url: string;
   };
 
+  adPubKey: string;
+
   download: {
     bitpay: {
       url: string;
@@ -164,8 +166,11 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://bws.bitpay.com/bws/api'
+        url: 'http://localhost:3232/bws/api'
       },
+
+      adPubKey:
+        '02ee30d0a61bdc7609d6cda8a096c832994788a88630687d13a4dfce385aa74652',
 
       download: {
         bitpay: {

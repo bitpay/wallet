@@ -34,7 +34,9 @@ import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-ca
 
 export interface Advertisement {
   name: string;
+  advertisementId?: string;
   title: string;
+  country?: string;
   body: string;
   app: string;
   linkText: string;
@@ -43,6 +45,7 @@ export interface Advertisement {
   linkParams?: any;
   dismissible: true;
   imgSrc: string;
+  signature?: string;
 }
 
 @Component({
@@ -79,6 +82,7 @@ export class HomePage {
 
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
+  private Bitcore: any;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -108,7 +112,9 @@ export class HomePage {
       this.testingAdsEnabled = status;
       console.log('Ads Status...', this.testingAdsEnabled);
     });
+    this.Bitcore = this.bwcProvider.getBitcore();
     // this.pageMap = {
+
     //   CoinbasePage,
     //   PhaseOneCardIntro,
     //   CardCatalogPage
@@ -143,16 +149,13 @@ export class HomePage {
   private async loadAds() {
     const client = this.bwcProvider.getClient(null, {});
     this.testingAdsEnabled = await this.persistenceProvider.getTestingAdvertisments();
+    const config = this.configProvider.get();
     client.getAdvertisements(
       { testing: this.testingAdsEnabled },
       (err, ads) => {
         if (err) throw err;
-        // this.advertisements = _.filter(this.advertisements, ad => {
-        //   return ad.isTesting === testing;
-        // });
 
         if (this.testingAdsEnabled) {
-          console.log('Assigning test Ads');
           _.forEach(ads, ad => {
             const alreadyVisible = this.testingAds.find(
               a => a.name === ad.name
@@ -163,21 +166,46 @@ export class HomePage {
                 if (value === 'dismissed') {
                   return;
                 }
+                var message = JSON.stringify({
+                  advertisementId: ad.advertisementId,
+                  name: ad.name,
+                  title: ad.title,
+                  type: 'standard',
+                  country: ad.country,
+                  body: ad.body,
+                  imgUrl: ad.imgUrl,
+                  linkText: ad.linkText,
+                  linkUrl: ad.linkUrl,
+                  app: ad.app
+                });
+
+                var isSignatureVerified = this.bwcProvider
+                  .getUtils()
+                  .verifyMessage(message, ad.signature, config.adPubKey);
+
+                console.log('isSignatureVerfied', isSignatureVerified);
+
                 !alreadyVisible &&
+                  isSignatureVerified &&
+                  ad.isTesting &&
                   this.testingAds.push({
                     name: ad.name,
+                    advertisementId: ad.advertisementId,
+                    country: ad.country,
                     title: this.translate.instant(ad.title),
                     body: this.translate.instant(ad.body),
                     app: ad.app,
                     linkText: ad.linkText,
                     link: ad.linkUrl,
                     imgSrc: ad.imgUrl,
+                    signature: ad.signature,
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+
+                console.log(this.testingAds);
               });
           });
-          console.log(this.testingAds);
         } else {
           _.forEach(ads, ad => {
             const alreadyVisible = this.advertisements.find(
@@ -189,15 +217,41 @@ export class HomePage {
                 if (value === 'dismissed') {
                   return;
                 }
+
+                var message = JSON.stringify({
+                  advertisementId: ad.advertisementId,
+                  name: ad.name,
+                  title: ad.title,
+                  type: 'standard',
+                  country: ad.country,
+                  body: ad.body,
+                  imgUrl: ad.imgUrl,
+                  linkText: ad.linkText,
+                  linkUrl: ad.linkUrl,
+                  app: ad.app
+                });
+
+                var isSignatureVerified = this.bwcProvider
+                  .getUtils()
+                  .verifyMessage(message, ad.signature, config.adPubKey);
+
+                console.log('Hello ', message, ad.signature);
+
+                console.log('isSignatureVerfied', isSignatureVerified);
+
                 !alreadyVisible &&
+                  isSignatureVerified &&
                   this.advertisements.push({
                     name: ad.name,
+                    country: ad.country,
+                    advertisementId: ad.advertisementId,
                     title: this.translate.instant(ad.title),
                     body: this.translate.instant(ad.body),
                     app: ad.app,
                     linkText: ad.linkText,
                     link: ad.linkUrl,
                     imgSrc: ad.imgUrl,
+                    signature: ad.signature,
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
