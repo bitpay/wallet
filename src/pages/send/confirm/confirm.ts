@@ -979,17 +979,16 @@ export class ConfirmPage {
       let input;
       _.forEach(utxos, (u, i) => {
         if (u.txid === this.navParams.data.txid) {
-          if (u.amount > biggestUtxo) {
-            biggestUtxo = u.amount;
-            input = utxos[i];
-          }
-        } else {
           if (u.confirmations <= 0)
             throw new Error(
               this.translate.instant(
                 'Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again.'
               )
             );
+          if (u.amount > biggestUtxo) {
+            biggestUtxo = u.amount;
+            input = utxos[i];
+          }
         }
       });
       return input;
