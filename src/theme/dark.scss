@@ -258,6 +258,9 @@
       }
     }
   }
+  .search-container {
+    background-color: $bg-color-dark-theme;
+  }
   .search-wrapper {
     background-color: $bg-color-dark-theme-2;
     color: $text-color-dark-theme-2;
@@ -528,6 +531,11 @@
         }
       }
     }
+    ion-spinner {
+      * {
+        stroke: $text-color-dark-theme !important;
+      }
+    }
   }
   page-shapeshift-details {
     .header-modal {
@@ -746,6 +754,20 @@
     .message {
       &-background {
         background-color: $bg-color-dark-theme-message;
+      }
+    }
+  }
+
+  // 5.15 Price Page
+  price-page {
+    .total-amount-container {
+      .total-amount-value {
+        color: $text-color-dark-theme;
+      }
+    }
+    .labels {
+      .inactive {
+        color: $text-color-dark-theme;
       }
     }
   }
@@ -1224,6 +1246,11 @@
       ion-note.note {
         .note-container {
           color: $text-color-dark-theme;
+        }
+      }
+      form {
+        .item-block .item-inner {
+          border-bottom: none;
         }
       }
     }

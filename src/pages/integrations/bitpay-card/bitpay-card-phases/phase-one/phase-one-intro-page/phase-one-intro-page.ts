@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController } from 'ionic-angular';
 
@@ -8,7 +8,6 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BitPayAccountProvider } from '../../../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../../../providers/bitpay-card/bitpay-card';
-import { BitPayProvider } from '../../../../../../providers/bitpay/bitpay';
 import { CardPhasesProvider } from '../../../../../../providers/card-phases/card-phases';
 import { ExternalLinkProvider } from '../../../../../../providers/external-link/external-link';
 import { PersistenceProvider } from '../../../../../../providers/persistence/persistence';
@@ -89,8 +88,8 @@ export class PhaseOneCardIntro {
     private externalLinkProvider: ExternalLinkProvider,
     public navCtrl: NavController,
     private popupProvider: PopupProvider,
-    private bp: BitPayProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private changeRef: ChangeDetectorRef
   ) {
     this.notifyForm = new FormGroup({
       email: new FormControl(
@@ -104,15 +103,14 @@ export class PhaseOneCardIntro {
       ),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
-    this.bp.get(
-      '/countries',
-      ({ data }) => {
+
+    this.persistenceProvider.getCountries().then(data => {
+      if (data) {
         this.countryList = data.filter(c =>
           AllowedCountries.includes(c.shortCode)
         );
-      },
-      () => {}
-    );
+      }
+    });
   }
 
   ionViewWillEnter() {
@@ -142,6 +140,7 @@ export class PhaseOneCardIntro {
     } else {
       this.joinWaitlist = true;
     }
+    this.changeRef.detectChanges();
   }
 
   public addMe() {

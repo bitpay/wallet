@@ -198,7 +198,7 @@
         </ion-note>
       </button>
 
-      <ng-container *ngIf="bitpayIdPairingEnabled">
+      <ng-container *ngIf="isCordova && bitpayIdPairingEnabled">
         <ion-item-divider>
           {{'BitPay Account' | translate}}
         </ion-item-divider>
@@ -213,6 +213,7 @@
           </ion-note>
         </button>
       </ng-container>
+
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{ 'Exchanges' | translate }}

@@ -950,6 +950,13 @@ export class ConfirmPage {
       this.walletProvider
         .getAddress(this.wallet, false)
         .then(address => {
+          if (wallet.coin === 'xrp' && tx.toAddress === address) {
+            const err = this.translate.instant(
+              'Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again.'
+            );
+            return reject(err);
+          }
+
           txp.from = address;
           this.walletProvider
             .createTx(wallet, txp)
@@ -972,17 +979,16 @@ export class ConfirmPage {
       let input;
       _.forEach(utxos, (u, i) => {
         if (u.txid === this.navParams.data.txid) {
-          if (u.amount > biggestUtxo) {
-            biggestUtxo = u.amount;
-            input = utxos[i];
-          }
-        } else {
           if (u.confirmations <= 0)
             throw new Error(
               this.translate.instant(
                 'Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again.'
               )
             );
+          if (u.amount > biggestUtxo) {
+            biggestUtxo = u.amount;
+            input = utxos[i];
+          }
         }
       });
       return input;
@@ -1174,7 +1180,7 @@ export class ConfirmPage {
     onlyPublish?: boolean,
     redirectionParam?: { redir: string }
   ) {
-    const { redir } = redirectionParam;
+    const { redir } = redirectionParam || { redir: '' };
 
     let params: {
       finishText: string;

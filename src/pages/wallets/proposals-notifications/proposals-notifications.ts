@@ -43,6 +43,7 @@ export class ProposalsNotificationsPage {
 
   private zone;
   private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
   private isElectron: boolean;
   private walletId: string;
 
@@ -80,8 +81,12 @@ export class ProposalsNotificationsPage {
     this.navCtrl.swipeBackEnabled = false;
     this.updateAddressBook();
     this.updatePendingProposals();
+    this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
+    });
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.unsubscribeEvents();
     });
 
     // Update Wallet on Focus
@@ -94,25 +99,29 @@ export class ProposalsNotificationsPage {
     this.events.subscribe('Local/WalletUpdate', this.updatePendingProposals);
   }
 
-  // Event handling
-  ionViewWillLoad() {
-    this.subscribeEvents();
-  }
-
-  ionViewWillUnload() {
+  unsubscribeEvents() {
     this.events.unsubscribe('Local/WalletUpdate', this.updatePendingProposals);
-    this.onResumeSubscription.unsubscribe();
   }
 
   ionViewWillLeave() {
+    this.unsubscribeEvents();
     this.navCtrl.swipeBackEnabled = true;
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
   }
 
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      this.updatePendingProposals();
+      if (
+        this.navCtrl.getActive() &&
+        this.navCtrl.getActive().name === 'ProposalsNotificationsPage'
+      )
+        this.updatePendingProposals();
     });
   }
 

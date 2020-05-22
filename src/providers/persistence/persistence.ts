@@ -77,7 +77,9 @@ const Keys = {
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
-  APP_THEME: 'app-theme'
+  APP_THEME: 'app-theme',
+  USER_LOCATION: 'user-location',
+  COUNTRIES: 'countries'
 };
 
 interface Storage {
@@ -515,16 +517,22 @@ export class PersistenceProvider {
     });
   }
 
+  removeBitpayAccountV2(network: string) {
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {});
+  }
+
   setBitpayDebitCards(network: string, email: string, cards) {
-    return this.getBitpayAccounts(network).then(allAccounts => {
-      let accounts = { ...(allAccounts || {}) };
-      try {
-        accounts[email] = { cards };
-      } catch (err) {
-        this.logger.error(err);
-      }
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), accounts);
+    return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), {
+      [email]: { cards }
     });
+  }
+
+  setCountries(countries) {
+    return this.storage.set(Keys.COUNTRIES, countries);
+  }
+
+  getCountries() {
+    return this.storage.get(Keys.COUNTRIES);
   }
 
   // cards: [
@@ -832,6 +840,14 @@ export class PersistenceProvider {
 
   getAppTheme() {
     return this.storage.get(Keys.APP_THEME);
+  }
+
+  setUserLocation(location: string) {
+    return this.storage.set(Keys.USER_LOCATION, location);
+  }
+
+  getUserLocation() {
+    return this.storage.get(Keys.USER_LOCATION);
   }
 }
 

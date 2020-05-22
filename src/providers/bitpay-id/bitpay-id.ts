@@ -130,7 +130,12 @@ export class BitPayIdProvider {
 
               this.logger.debug('BitPayID: successfully paired');
               const { data } = user;
-              const { email, familyName, givenName } = data;
+              const { email, familyName, givenName, experiments } = data;
+
+              if (experiments && experiments.naDebit) {
+                this.persistenceProvider.setCardExperimentFlag('enabled');
+                this.events.publish('experimentUpdateStart');
+              }
 
               await Promise.all([
                 this.persistenceProvider.setBitPayIdPairingToken(
@@ -212,7 +217,7 @@ export class BitPayIdProvider {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
         this.persistenceProvider.removeBitPayIdUserInfo(network),
-        this.persistenceProvider.removeBitpayAccount(network, user.email)
+        this.persistenceProvider.removeBitpayAccountV2(network)
       ]);
       this.events.publish('bitpayIdDisconnected');
       this.iab.refs.card.executeScript(

@@ -4,7 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/copay.svg)](https://codecov.io/gh/bitpay/copay/)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
-Copay is a secure bitcoin wallet platform for both desktop and mobile devices. Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
+Copay is a secure bitcoin wallet platform for both desktop and mobile devices. Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
 Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 

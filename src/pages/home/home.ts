@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import BWC from 'bitcore-wallet-client';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -82,7 +83,6 @@ export class HomePage {
 
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
-  private Bitcore: any;
   private config: any;
 
   constructor(
@@ -109,11 +109,6 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
-    // this.persistenceProvider.getTestingAdvertisments().then(status => {
-    //   this.testingAdsEnabled = status;
-    //   console.log('Ads Status...', this.testingAdsEnabled);
-    // });
-    this.Bitcore = this.bwcProvider.getBitcore();
     this.config = this.configProvider.get();
     // this.pageMap = {
 
@@ -137,7 +132,6 @@ export class HomePage {
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
-    console.log('Advertisements', this.advertisements);
   }
 
   ionViewDidLoad() {
@@ -163,29 +157,9 @@ export class HomePage {
                 if (value === 'dismissed') {
                   return;
                 }
-                var message = JSON.stringify({
-                  advertisementId: ad.advertisementId,
-                  name: ad.name,
-                  title: ad.title,
-                  type: 'standard',
-                  country: ad.country,
-                  body: ad.body,
-                  imgUrl: ad.imgUrl,
-                  linkText: ad.linkText,
-                  linkUrl: ad.linkUrl,
-                  app: ad.app
-                });
-
-                var isSignatureVerified = this.bwcProvider
-                  .getUtils()
-                  .verifyMessage(
-                    message,
-                    ad.signature,
-                    this.config.adPubKey.pubkey
-                  );
 
                 !alreadyVisible &&
-                  isSignatureVerified &&
+                  this.verifySignature(ad) &&
                   ad.isTesting &&
                   this.testingAds.push({
                     name: ad.name,
@@ -215,29 +189,8 @@ export class HomePage {
                   return;
                 }
 
-                var message = JSON.stringify({
-                  advertisementId: ad.advertisementId,
-                  name: ad.name,
-                  title: ad.title,
-                  type: 'standard',
-                  country: ad.country,
-                  body: ad.body,
-                  imgUrl: ad.imgUrl,
-                  linkText: ad.linkText,
-                  linkUrl: ad.linkUrl,
-                  app: ad.app
-                });
-
-                var isSignatureVerified = this.bwcProvider
-                  .getUtils()
-                  .verifyMessage(
-                    message,
-                    ad.signature,
-                    this.config.adPubKey.pubkey
-                  );
-
                 !alreadyVisible &&
-                  isSignatureVerified &&
+                  this.verifySignature(ad) &&
                   this.advertisements.push({
                     name: ad.name,
                     country: ad.country,
@@ -277,6 +230,39 @@ export class HomePage {
         isTesting: false,
         dismissible: true
       });
+  }
+
+  private verifySignature(ad): boolean {
+    var adMessage = JSON.stringify({
+      advertisementId: ad.advertisementId,
+      name: ad.name,
+      title: ad.title,
+      type: 'standard',
+      country: ad.country,
+      body: ad.body,
+      imgUrl: ad.imgUrl,
+      linkText: ad.linkText,
+      linkUrl: ad.linkUrl,
+      app: ad.app
+    });
+
+    const pubKey = this.config.adPubKey.pubkey;
+    if (!pubKey) return false;
+
+    const b = BWC.Bitcore;
+    const ECDSA = b.crypto.ECDSA;
+    const Hash = b.crypto.Hash;
+
+    const sigObj = b.crypto.Signature.fromString(ad.signature);
+    const _hashbuf = Hash.sha256(Buffer.from(adMessage));
+    const verificationResult = ECDSA.verify(
+      _hashbuf,
+      sigObj,
+      new b.PublicKey(pubKey),
+      'little'
+    );
+
+    return verificationResult;
   }
 
   private getCachedTotalBalance() {
@@ -599,10 +585,14 @@ export class HomePage {
   }
 
   private removeAdvertisement(name): void {
-    this.advertisements = _.filter(
-      this.advertisements,
-      adv => adv.name !== name
-    );
+    if (this.testingAdsEnabled) {
+      this.testingAds = _.filter(this.testingAds, adv => adv.name !== name);
+    } else {
+      this.advertisements = _.filter(
+        this.advertisements,
+        adv => adv.name !== name
+      );
+    }
     if (this.slides) this.slides.slideTo(0, 500);
   }
 

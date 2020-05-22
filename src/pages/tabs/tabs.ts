@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 
@@ -36,6 +36,7 @@ export class TabsPage {
   private totalBalanceAlternativeIsoCode = 'USD';
   private averagePrice = 0;
   private lastDayRatesArray;
+  private zone;
 
   constructor(
     private appProvider: AppProvider,
@@ -52,10 +53,19 @@ export class TabsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private tabProvider: TabProvider
   ) {
+    this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
     this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
+
+    this.events.subscribe('experimentUpdateStart', () => {
+      this.tabs.select(2);
+    });
+
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.events.subscribe('Local/UpdateTxps', data => {
+      this.setTxps(data);
+    });
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
@@ -92,6 +102,12 @@ export class TabsPage {
 
   updateTxps() {
     this.profileProvider.getTxps({ limit: 3 }).then(data => {
+      this.setTxps(data);
+    });
+  }
+
+  setTxps(data) {
+    this.zone.run(() => {
       this.txpsN = data.n;
     });
   }
@@ -104,13 +120,16 @@ export class TabsPage {
         'transactionProposalRemoved',
         'TxProposalRemoved',
         'NewOutgoingTx',
-        'UpdateTx'
+        'UpdateTx',
+        'NewIncomingTx'
       ],
       (eventName: string) => {
-        if (walletId && type == eventName) {
-          setTimeout(() => {
-            this.updateTxps();
-          }, 2000);
+        if (
+          walletId &&
+          type == eventName &&
+          (type === 'NewIncomingTx' || type === 'NewOutgoingTx')
+        ) {
+          this.fetchAllWalletsStatus();
         }
       }
     );
@@ -154,23 +173,23 @@ export class TabsPage {
     const availableChains = this.currencyProvider.getAvailableChains();
     const ts = today.subtract(23, 'hours').unix() * 1000;
     return new Promise(resolve => {
-      this.exchangeRatesProvider
-        .getHistoricalRates(this.totalBalanceAlternativeIsoCode)
-        .subscribe(
-          response => {
-            let ratesByCoin = {};
-            for (const unitCode of availableChains) {
-              ratesByCoin[unitCode] = _.find(response[unitCode], d => {
+      let ratesByCoin = {};
+      for (const unitCode of availableChains) {
+        this.exchangeRatesProvider
+          .getHistoricalRates(unitCode, this.totalBalanceAlternativeIsoCode)
+          .subscribe(
+            response => {
+              ratesByCoin[unitCode] = _.find(response, d => {
                 return d.ts < ts;
               }).rate;
+            },
+            err => {
+              this.logger.error('Error getting current rate:', err);
+              return resolve();
             }
-            return resolve(ratesByCoin);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-            return resolve();
-          }
-        );
+          );
+      }
+      return resolve(ratesByCoin);
     });
   }
 
