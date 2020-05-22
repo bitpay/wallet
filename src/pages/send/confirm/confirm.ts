@@ -1181,7 +1181,7 @@ export class ConfirmPage {
     onlyPublish?: boolean,
     redirectionParam?: { redir: string }
   ) {
-    const { redir } = redirectionParam;
+    const { redir } = redirectionParam || { redir: '' };
 
     let params: {
       finishText: string;
