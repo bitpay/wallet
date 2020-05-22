@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -65,8 +64,7 @@ export class CardsPage {
     private changeRef: ChangeDetectorRef,
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService,
-    private bitPayCardProvider: BitPayCardProvider
+    private translate: TranslateService
   ) {
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
@@ -132,37 +130,17 @@ export class CardsPage {
       'debitcard'
     );
 
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      if (status === 'enabled') {
-        this.logger.log(`CARD - experiment enabled`);
+    this.showBitPayCard =
+      !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+      this.platformProvider.isCordova;
 
-        this.cardExperimentEnabled = true;
-        this.waitList = false;
-        this.showDisclaimer = true;
-
-        this.showBitPayCard =
-          !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
-          this.platformProvider.isCordova;
-
-        if (
-          !this.IABReady &&
-          !this.IABPingLock &&
-          this.platformProvider.isCordova
-        ) {
-          this.pingIAB();
-        }
-      } else {
-        this.logger.log(`CARD - experiment disabled`);
-        this.showBitPayCard = !(
-          this.appProvider.info._enabledExtensions.debitcard == 'false'
-        );
-
-        // TODO gating code
-        if (!this.IABReady) {
-          setTimeout(() => (this.initialized = this.IABReady = true), 500);
-        }
-      }
-    });
+    if (
+      !this.IABReady &&
+      !this.IABPingLock &&
+      this.platformProvider.isCordova
+    ) {
+      this.pingIAB();
+    }
 
     this.bitpayCardItems = await this.prepareDebitCards();
     await this.fetchAllCards();
@@ -193,7 +171,7 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
-      if (!this.platformProvider.isCordova && this.cardExperimentEnabled) {
+      if (!this.platformProvider.isCordova) {
         return res();
       }
 
@@ -264,18 +242,8 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.platformProvider.isCordova && this.cardExperimentEnabled) {
-      if (this.hasCards) {
-        await this.iabCardProvider.getCards();
-      }
-    } else {
-      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
-
-      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-        noHistory: true
-      });
-      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+    if (this.hasCards && this.platformProvider.isCordova) {
+      await this.iabCardProvider.getCards();
     }
   }
 
