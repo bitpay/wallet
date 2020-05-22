@@ -282,24 +282,26 @@ export class JoinWalletPage {
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
 
-        setTimeout(() => {
-          if (wallet.isComplete()) {
-            this.navCtrl.push(WalletDetailsPage, {
-              walletId: wallet.credentials.walletId
-            });
-          } else {
-            const copayerModal = this.modalCtrl.create(
-              CopayersPage,
-              {
+        this.navCtrl.popToRoot({ animate: false }).then(() => {
+          setTimeout(() => {
+            if (wallet.isComplete()) {
+              this.navCtrl.push(WalletDetailsPage, {
                 walletId: wallet.credentials.walletId
-              },
-              {
-                cssClass: 'wallet-details-modal'
-              }
-            );
-            copayerModal.present();
-          }
-        }, 1000);
+              });
+            } else {
+              const copayerModal = this.modalCtrl.create(
+                CopayersPage,
+                {
+                  walletId: wallet.credentials.walletId
+                },
+                {
+                  cssClass: 'wallet-details-modal'
+                }
+              );
+              copayerModal.present();
+            }
+          }, 1000);
+        });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
