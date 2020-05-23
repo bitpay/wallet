@@ -332,11 +332,7 @@ export class IABCardProvider {
                   currentCard => currentCard.eid === c.id
                 ) || {};
 
-              const hideCardStatuses = [
-                'lost',
-                'stolen',
-                'canceled'
-              ];
+              const hideCardStatuses = ['lost', 'stolen', 'canceled'];
 
               if (c.status && hideCardStatuses.includes(c.status)) {
                 hide = true;
@@ -615,7 +611,6 @@ export class IABCardProvider {
       params,
       async (user: User) => {
         if (user) {
-
           this.sendMessage({ message: 'pairingSuccess' });
 
           this.logger.log(`pairing success -> ${JSON.stringify(user)}`);
@@ -662,7 +657,6 @@ export class IABCardProvider {
           setTimeout(() => {
             this.onGoingProcess.clear();
           }, 300);
-
         }
       },
       async err => {
