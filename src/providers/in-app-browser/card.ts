@@ -548,8 +548,16 @@ export class IABCardProvider {
       return;
     }
 
-    const { hide, provider } = event.data.params;
-    cards = cards.map(c => (c.provider === provider ? { ...c, hide } : c));
+    const { hide, provider, id } = event.data.params;
+
+    cards = cards.map(c => {
+      if ((provider === 'galileo' && c.provider === provider) || c.id === id) {
+        return { ...c, hide };
+      }
+
+      return c;
+    });
+
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
