@@ -327,10 +327,20 @@ export class IABCardProvider {
 
             cards = cards.map(c => {
               // @ts-ignore
-              const { lockedByUser, hide } =
+              let { lockedByUser, hide } =
                 (currentCards || []).find(
                   currentCard => currentCard.eid === c.id
                 ) || {};
+
+              const hideCardStatuses = [
+                'lost',
+                'stolen',
+                'canceled'
+              ];
+
+              if (c.status && hideCardStatuses.includes(c.status)) {
+                hide = true;
+              }
 
               return {
                 ...c,
