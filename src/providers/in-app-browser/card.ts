@@ -650,7 +650,7 @@ export class IABCardProvider {
 
           this.persistenceProvider.getCardExperimentFlag().then(status => {
             if (status === 'enabled') {
-              this.events.publish('experimentUpdateComplete');
+              this.events.publish('updateCards');
             }
           });
 

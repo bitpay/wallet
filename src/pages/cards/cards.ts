@@ -93,11 +93,6 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('experimentUpdateComplete', async () => {
-      this.bitpayCardItems = await this.prepareDebitCards();
-      this.changeRef.detectChanges();
-    });
-
     this.events.subscribe('updateCards', async () => {
       this.bitpayCardItems = await this.prepareDebitCards();
       this.changeRef.detectChanges();
@@ -107,18 +102,18 @@ export class CardsPage {
       this.hasCards = false;
     });
 
-    this.events.subscribe('IABReady', async country => {
+    this.events.subscribe('IABReady', country => {
       clearInterval(this.IABPingInterval);
+      this.persistenceProvider.getCardExperimentFlag().then( status => {
+        if (status === 'enabled') {
+          this.cardExperimentEnabled = true;
+          this.waitList = false;
+        }
+        this.logger.log(`cards - IAB ready ${country}`);
+        this.initialized = this.IABReady = true;
+        this.changeRef.detectChanges();
+      });
 
-      // TODO uncomment when we move to IP check after whitelist phase
-      // if wait list flag not set retrieve from storage
-      // if (this.cardExperimentEnabled && this.waitList === undefined) {
-      //   this.waitList = country && country !== 'US';
-      //   this.logger.log(`COUNTRY ${country}`);
-      // }
-      this.logger.log(`cards - IAB ready ${country}`);
-      this.initialized = this.IABReady = true;
-      this.changeRef.detectChanges();
     });
   }
 
