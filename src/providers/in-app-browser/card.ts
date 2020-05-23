@@ -615,6 +615,9 @@ export class IABCardProvider {
       params,
       async (user: User) => {
         if (user) {
+
+          this.sendMessage({ message: 'pairingSuccess' });
+
           this.logger.log(`pairing success -> ${JSON.stringify(user)}`);
           // publish to correct window
           this.events.publish('BitPayId/Connected');
@@ -647,24 +650,19 @@ export class IABCardProvider {
             this.hide();
           }
 
-          // clear out loading state
-          setTimeout(() => {
-            this.onGoingProcess.clear();
-          }, 300);
-
           // publish new user
           this.user.next(user);
 
           // fetch new cards
           await this.getCards();
 
-          this.persistenceProvider.getCardExperimentFlag().then(status => {
-            if (status === 'enabled') {
-              this.events.publish('updateCards');
-            }
-          });
+          this.events.publish('updateCards');
 
-          this.sendMessage({ message: 'pairingSuccess' });
+          // clear out loading state
+          setTimeout(() => {
+            this.onGoingProcess.clear();
+          }, 300);
+
         }
       },
       async err => {
