@@ -117,9 +117,8 @@ export class ShapeshiftProvider {
   }
 
   public saveShapeshift(data, opts, cb): void {
-    const network = this.getNetwork();
     this.persistenceProvider
-      .getShapeshift(network)
+      .getShapeshift(this.credentials.NETWORK)
       .then(oldData => {
         if (_.isString(oldData)) {
           oldData = JSON.parse(oldData);
@@ -138,7 +137,7 @@ export class ShapeshiftProvider {
 
         inv = JSON.stringify(inv);
 
-        this.persistenceProvider.setShapeshift(network, inv);
+        this.persistenceProvider.setShapeshift(this.credentials.NETWORK, inv);
         return cb(null);
       })
       .catch(err => {
@@ -147,9 +146,8 @@ export class ShapeshiftProvider {
   }
 
   public getShapeshift(cb) {
-    const network = this.getNetwork();
     this.persistenceProvider
-      .getShapeshift(network)
+      .getShapeshift(this.credentials.NETWORK)
       .then(ss => {
         return cb(null, ss);
       })
@@ -361,7 +359,8 @@ export class ShapeshiftProvider {
           return cb('unverified_account');
         } else {
           return cb(null, {
-            accessToken
+            accessToken,
+            user: data.user
           });
         }
       });

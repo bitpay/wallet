@@ -60,12 +60,19 @@
         Shapeshift is temporally disabled for this device. You can try it on our Desktop versions.
       </div>
 
+      <div class="center-header" *ngIf="!shifts.data">
+        <h4 translate>Trade Crypto with ShapeShift</h4>
+        <button ion-button class="button-standard" (click)="goTo('Shift')" [disabled]="disabled">
+          Get Started
+        </button>
+      </div>
+
       <ion-list class="shift-history bp-list">
-        <button ion-item no-low-fee (click)="goTo('Shift')" [disabled]="disabled">
+        <button ion-item no-low-fee *ngIf="shifts.data" (click)="goTo('Shift')" [disabled]="disabled">
           <ion-label>Shift</ion-label>
           <ion-note item-end>{{ 'Choose Assets' | translate }}</ion-note>
         </button>
-        <ion-item-divider class="shift-history-header">
+        <ion-item-divider *ngIf="shifts.data" class="shift-history-header">
           {{'Transactions' | translate}}
           <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
         </ion-item-divider>
