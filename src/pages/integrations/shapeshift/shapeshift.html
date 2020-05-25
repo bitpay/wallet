@@ -62,13 +62,13 @@
 
       <div class="center-header" *ngIf="!shifts.data">
         <h4 translate>Trade Crypto with ShapeShift</h4>
-        <button ion-button class="button-standard" (click)="goTo('Shift')" [disabled]="disabled">
+        <button ion-button class="button-standard" (click)="goTo('Shift')" translate>
           Get Started
         </button>
       </div>
 
       <ion-list class="shift-history bp-list">
-        <button ion-item no-low-fee *ngIf="shifts.data" (click)="goTo('Shift')" [disabled]="disabled">
+        <button ion-item no-low-fee *ngIf="shifts.data" (click)="goTo('Shift')">
           <ion-label>Shift</ion-label>
           <ion-note item-end>{{ 'Choose Assets' | translate }}</ion-note>
         </button>

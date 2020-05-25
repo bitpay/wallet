@@ -279,6 +279,7 @@ export class ShapeshiftPage {
         this.logger.error('Error connecting to ShapeShift: ' + err);
         return;
       }
+      if (this.platformProvider.isCordova) this.navCtrl.pop();
       this.accessToken = accessToken;
       this.init();
     });
