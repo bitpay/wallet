@@ -362,7 +362,7 @@ export class AmountPage {
   }
 
   public isSendMaxButtonShown() {
-    return this.showSendMax && !this.requestingAmount && !this.useAsModal;
+    return this.navParams.get('card') !== 'v2' && this.showSendMax && !this.requestingAmount && !this.useAsModal;
   }
 
   public resizeFont(): void {
