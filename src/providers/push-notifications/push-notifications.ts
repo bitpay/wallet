@@ -12,6 +12,7 @@ import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
+import BWC from 'bitcore-wallet-client';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -78,6 +79,13 @@ export class PushNotificationsProvider {
           // Notification was received on device tray and tapped by the user.
           if (data.redir) {
             this.events.publish('IncomingDataRedir', { name: data.redir });
+          } else if (
+            data.takeover_url &&
+            data.takeover_image &&
+            data.takeover_sig
+          ) {
+            if (!this.verifySignature(data)) return;
+            this.events.publish('ShowAdvertising', data);
           } else {
             const walletIdHashed = data.walletId;
             const tokenAddress = data.tokenAddress;
@@ -223,5 +231,29 @@ export class PushNotificationsProvider {
   public clearAllNotifications(): void {
     if (!this._token) return;
     this.FCMPlugin.clearAllNotifications();
+  }
+
+  private verifySignature(data): boolean {
+    const b = BWC.Bitcore;
+    const ECDSA = b.crypto.ECDSA;
+    const Hash = b.crypto.Hash;
+    const SEP = '::';
+    const pubKey =
+      '02463827f64d47a9adaeddbeb860c1ea83eeb19024f9056de1772604c8085340a5';
+    const _takeover_url = data.takeover_url;
+    const _takeover_image = data.takeover_image;
+    const _takeover_sig = data.takeover_sig;
+
+    const sigObj = b.crypto.Signature.fromString(_takeover_sig);
+    const _hashbuf = Hash.sha256(
+      Buffer.from(_takeover_url + SEP + _takeover_image)
+    );
+    const verificationResult = ECDSA.verify(
+      _hashbuf,
+      sigObj,
+      new b.PublicKey(pubKey),
+      'little'
+    );
+    return verificationResult;
   }
 }
