@@ -304,7 +304,7 @@ export class SettingsPage {
 
   public openCardSettings(id): void {
     const message = `openSettings?${id}`;
-    this.iabCardProvider.show(true);
+    this.iabCardProvider.show();
     setTimeout(() => {
       this.iabCardProvider.sendMessage(
         {

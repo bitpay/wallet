@@ -707,11 +707,11 @@ export class IABCardProvider {
     }
   }
 
-  show(enableLoadingScreen?: boolean): void {
+  show(disableLoadingScreen?: boolean): void {
     if (this.cardIAB_Ref) {
       let message = 'iabOpening';
 
-      if (enableLoadingScreen) {
+      if (disableLoadingScreen) {
         message = `${message}?enableLoadingScreen`;
       }
 

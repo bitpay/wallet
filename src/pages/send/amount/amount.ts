@@ -168,7 +168,7 @@ export class AmountPage {
   async ionViewDidLoad() {
     this.navBar.backButtonClick = () => {
       if (this.navParams.get('card') === 'v2') {
-        this.iabCardProvider.show();
+        this.iabCardProvider.show(true);
       }
       this.navCtrl.pop();
     };
