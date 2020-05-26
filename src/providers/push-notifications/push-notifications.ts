@@ -234,12 +234,13 @@ export class PushNotificationsProvider {
   }
 
   private verifySignature(data): boolean {
+    const pubKey = this.appProvider.info.marketingPublicKey;
+    if (!pubKey) return false;
+
     const b = BWC.Bitcore;
     const ECDSA = b.crypto.ECDSA;
     const Hash = b.crypto.Hash;
     const SEP = '::';
-    const pubKey =
-      '02463827f64d47a9adaeddbeb860c1ea83eeb19024f9056de1772604c8085340a5';
     const _takeover_url = data.takeover_url;
     const _takeover_image = data.takeover_image;
     const _takeover_sig = data.takeover_sig;
