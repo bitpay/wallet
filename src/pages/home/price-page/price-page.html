@@ -18,16 +18,19 @@
   </div>
 
   <price-chart #canvas (priceChange)="setPrice($event)" (touchend)="setPrice()" (mouseup)="setPrice()"></price-chart>
-
-  <span class="labels">
-    <div *ngFor="let option of updateOptions">
-      <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }" (click)="updateChart(option)" >
-        <ion-label>{{ option.label }}</ion-label>
-      </ion-chip>
-    </div>
-  </span>
-
-  <button ion-button class="button-standard" (click)="goToBuyCrypto()">
-    Buy {{ card.name }}
-  </button>
 </ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar>
+    <span class="labels">
+      <div *ngFor="let option of updateOptions">
+        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }" (click)="updateChart(option)" >
+          <ion-label>{{ option.label }}</ion-label>
+        </ion-chip>
+      </div>
+    </span>
+    <button ion-button class="button-standard" (click)="goToBuyCrypto()">
+      Buy {{ card.name }}
+    </button>
+  </ion-toolbar>
+</ion-footer>
