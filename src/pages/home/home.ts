@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, Slides } from 'ionic-angular';
+import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { AdvertisingComponent } from '../../components/advertising/advertising';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
@@ -91,8 +90,7 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
-    private platformProvider: PlatformProvider,
-    private modalCtrl: ModalController
+    private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.subscribeEvents();
@@ -180,12 +178,6 @@ export class HomePage {
     });
     this.events.subscribe('Local/FetchCards', bpCards => {
       if (!bpCards) this.addBitPayCard();
-    });
-    this.events.subscribe('ShowAdvertising', data => {
-      const modal = this.modalCtrl.create(AdvertisingComponent, {
-        advertising: data
-      });
-      modal.present();
     });
   }
 
