@@ -3,6 +3,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { TranslateService } from '@ngx-translate/core';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { CurrencyProvider } from '../currency/currency';
 import { ErrorsProvider } from '../errors/errors';
@@ -16,7 +17,8 @@ export class PayproProvider {
     private currencyProvider: CurrencyProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.logger.debug('PayproProvider initialized');
   }
@@ -64,8 +66,8 @@ export class PayproProvider {
         this.logger.debug(error);
         this.onGoingProcessProvider.clear();
         this.errorsProvider.showDefaultError(
-          this.translate.instant('Could not fetch payment details'),
-          'Error'
+          this.bwcErrorProvider.msg(error),
+          this.translate.instant('Could not fetch payment details')
         );
       });
   }
