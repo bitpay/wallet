@@ -41,6 +41,9 @@ import { SimplexProvider } from '../providers/simplex/simplex';
 import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
+// Components
+import { AdvertisingComponent } from '../components/advertising/advertising';
+
 // Pages
 import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
@@ -278,6 +281,7 @@ export class CopayApp {
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
+    this.showAdvertisingEvent();
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
@@ -479,6 +483,16 @@ export class CopayApp {
             }
           });
       }, 300);
+    });
+  }
+
+  private showAdvertisingEvent(): void {
+    this.events.subscribe('ShowAdvertising', data => {
+      this.getGlobalTabs().select(0);
+      const modal = this.modalCtrl.create(AdvertisingComponent, {
+        advertising: data
+      });
+      modal.present();
     });
   }
 
