@@ -132,7 +132,7 @@ export class BitPayIdProvider {
               const { data } = user;
               const { email, familyName, givenName, experiments } = data;
 
-              if (experiments && experiments.naDebit) {
+              if (experiments && experiments.includes('NADebitCard')) {
                 this.persistenceProvider.setCardExperimentFlag('enabled');
                 this.events.publish('experimentUpdateStart');
               }

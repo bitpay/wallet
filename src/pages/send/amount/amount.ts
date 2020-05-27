@@ -168,7 +168,7 @@ export class AmountPage {
   async ionViewDidLoad() {
     this.navBar.backButtonClick = () => {
       if (this.navParams.get('card') === 'v2') {
-        this.iabCardProvider.show();
+        this.iabCardProvider.show(true);
       }
       this.navCtrl.pop();
     };
@@ -362,7 +362,12 @@ export class AmountPage {
   }
 
   public isSendMaxButtonShown() {
-    return this.showSendMax && !this.requestingAmount && !this.useAsModal;
+    return (
+      this.navParams.get('card') !== 'v2' &&
+      this.showSendMax &&
+      !this.requestingAmount &&
+      !this.useAsModal
+    );
   }
 
   public resizeFont(): void {

@@ -9,7 +9,6 @@ import {
   Network,
   PersistenceProvider
 } from '../../../../providers/persistence/persistence';
-import { BitPayCardPage } from '../bitpay-card';
 import { BitPayCardIntroPage } from '../bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
@@ -98,27 +97,23 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async goToCard(cardId) {
-    if (this.cardExperimentEnabled) {
-      const token = await this.persistenceProvider.getBitPayIdPairingToken(
-        this.network
+    const token = await this.persistenceProvider.getBitPayIdPairingToken(
+      this.network
+    );
+    const email = this.bitpayCardItems[0].email;
+
+    const message = !token
+      ? `loadDashboard?${cardId}&${email}`
+      : `loadDashboard?${cardId}`;
+
+    this.iabCardProvider.show();
+    setTimeout(() => {
+      this.iabCardProvider.sendMessage(
+        {
+          message
+        },
+        () => {}
       );
-      const email = this.bitpayCardItems[0].email;
-
-      const message = !token
-        ? `loadDashboard?${cardId}&${email}`
-        : `loadDashboard?${cardId}`;
-
-      this.iabCardProvider.show();
-      setTimeout(() => {
-        this.iabCardProvider.sendMessage(
-          {
-            message
-          },
-          () => {}
-        );
-      });
-    } else {
-      this.navCtrl.push(BitPayCardPage, { id: cardId });
-    }
+    });
   }
 }

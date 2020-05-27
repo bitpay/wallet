@@ -327,10 +327,16 @@ export class IABCardProvider {
 
             cards = cards.map(c => {
               // @ts-ignore
-              const { lockedByUser, hide } =
+              let { lockedByUser, hide } =
                 (currentCards || []).find(
                   currentCard => currentCard.eid === c.id
                 ) || {};
+
+              const hideCardStatuses = ['lost', 'stolen', 'canceled'];
+
+              if (c.status && hideCardStatuses.includes(c.status)) {
+                hide = true;
+              }
 
               return {
                 ...c,
@@ -542,8 +548,16 @@ export class IABCardProvider {
       return;
     }
 
-    const { hide, provider } = event.data.params;
-    cards = cards.map(c => (c.provider === provider ? { ...c, hide } : c));
+    const { hide, provider, id } = event.data.params;
+
+    cards = cards.map(c => {
+      if ((provider === 'galileo' && c.provider === provider) || c.id === id) {
+        return { ...c, hide };
+      }
+
+      return c;
+    });
+
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
@@ -605,6 +619,8 @@ export class IABCardProvider {
       params,
       async (user: User) => {
         if (user) {
+          this.sendMessage({ message: 'pairingSuccess' });
+
           this.logger.log(`pairing success -> ${JSON.stringify(user)}`);
           // publish to correct window
           this.events.publish('BitPayId/Connected');
@@ -637,24 +653,18 @@ export class IABCardProvider {
             this.hide();
           }
 
-          // clear out loading state
-          setTimeout(() => {
-            this.onGoingProcess.clear();
-          }, 300);
-
           // publish new user
           this.user.next(user);
 
           // fetch new cards
           await this.getCards();
 
-          this.persistenceProvider.getCardExperimentFlag().then(status => {
-            if (status === 'enabled') {
-              this.events.publish('experimentUpdateComplete');
-            }
-          });
+          this.events.publish('updateCards');
 
-          this.sendMessage({ message: 'pairingSuccess' });
+          // clear out loading state
+          setTimeout(() => {
+            this.onGoingProcess.clear();
+          }, 300);
         }
       },
       async err => {
@@ -697,11 +707,11 @@ export class IABCardProvider {
     }
   }
 
-  show(enableLoadingScreen?: boolean): void {
+  show(disableLoadingScreen?: boolean): void {
     if (this.cardIAB_Ref) {
       let message = 'iabOpening';
 
-      if (enableLoadingScreen) {
+      if (disableLoadingScreen) {
         message = `${message}?enableLoadingScreen`;
       }
 
