@@ -268,14 +268,6 @@ export class CardsPage {
           this.persistenceProvider.setCardExperimentFlag('enabled');
           this.persistenceProvider.setBitpayIdPairingFlag('enabled');
           alert('Card experiment enabled.');
-          const enableLivenet = confirm('Enable livenet testing?');
-          const network = enableLivenet ? 'livenet' : 'testnet';
-          this.persistenceProvider.setCardExperimentNetwork(Network[network]);
-          alert(
-            `Card experiment -> ${
-              enableLivenet ? 'livenet enabled' : 'testnet enabled'
-            }. Restart the app.`
-          );
         }
         this.tapped = 0;
       });

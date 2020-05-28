@@ -268,13 +268,7 @@ export class CopayApp {
     this.themeProvider.apply();
     if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
 
-    const experiment = await this.persistenceProvider.getCardExperimentFlag();
-    const experimentNetwork = await this.persistenceProvider.getCardExperimentNetwork();
-    if (experiment === 'enabled') {
-      const network = experimentNetwork || 'testnet';
-      this.NETWORK = network;
-      this.logger.log(`card experiment network = ${network}`);
-    }
+    this.NETWORK = 'livenet';
     this.bitpayProvider.setNetwork(this.NETWORK);
     this.bitpayIdProvider.setNetwork(this.NETWORK);
     this.iabCardProvider.setNetwork(this.NETWORK);
