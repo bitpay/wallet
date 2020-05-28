@@ -40,11 +40,13 @@ export class PayproProvider {
     return payOpts;
   }
 
-  public getPayProDetails(
+  public async getPayProDetails(
     paymentUrl,
     coin,
-    disableLoader?: boolean
+    disableLoader?: boolean,
+    attempt: number = 1
   ): Promise<any> {
+    this.logger.info('PayPro Details: try... ' + attempt);
     const bwc = this.bwcProvider.getPayProV2();
     const chain = this.currencyProvider.getChain(coin).toUpperCase();
     const options: any = {
@@ -56,19 +58,25 @@ export class PayproProvider {
       this.onGoingProcessProvider.set('fetchingPayPro');
     }
 
-    return bwc
+    const payDetails = await bwc
       .selectPaymentOption(options)
-      .then(payProDetails => {
-        if (!disableLoader) this.onGoingProcessProvider.clear();
-        return payProDetails;
-      })
-      .catch(error => {
-        this.logger.debug(error);
-        this.onGoingProcessProvider.clear();
-        this.errorsProvider.showDefaultError(
-          this.bwcErrorProvider.msg(error),
-          this.translate.instant('Could not fetch payment details')
-        );
+      .catch(async err => {
+        this.logger.error('PayPro Details: ERROR', JSON.stringify(err));
+        if (attempt <= 5) {
+          await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+          return this.getPayProDetails(paymentUrl, coin, true, ++attempt);
+        } else {
+          this.logger.debug(err);
+          if (!disableLoader) this.onGoingProcessProvider.clear();
+          this.errorsProvider.showDefaultError(
+            this.bwcErrorProvider.msg(err),
+            this.translate.instant('Could not fetch payment details')
+          );
+          throw err;
+        }
       });
+    if (!disableLoader) this.onGoingProcessProvider.clear();
+    this.logger.info('PayPro Details: SUCCESS');
+    return payDetails;
   }
 }
