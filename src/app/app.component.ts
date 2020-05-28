@@ -267,8 +267,6 @@ export class CopayApp {
     // Set Theme (light or dark mode)
     this.themeProvider.apply();
     if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
-
-    this.NETWORK = 'livenet';
     this.bitpayProvider.setNetwork(this.NETWORK);
     this.bitpayIdProvider.setNetwork(this.NETWORK);
     this.iabCardProvider.setNetwork(this.NETWORK);
