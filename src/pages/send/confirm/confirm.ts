@@ -145,7 +145,9 @@ export class ConfirmPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
-    this.isCardPurchase = this.navParams.data.payProUrl.includes('redir=wc');
+    this.isCardPurchase =
+      this.navParams.data.payProUrl &&
+      this.navParams.data.payProUrl.includes('redir=wc');
   }
 
   ngOnInit() {
