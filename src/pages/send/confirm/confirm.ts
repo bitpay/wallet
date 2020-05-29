@@ -95,6 +95,10 @@ export class ConfirmPage {
   public mainTitle: string;
   public isSpeedUpTx: boolean;
 
+  // Card flags for zen desk chat support
+  private isCardPurchase: boolean;
+  private isHelpOpen: boolean = false;
+
   constructor(
     protected addressProvider: AddressProvider,
     protected app: App,
@@ -141,6 +145,9 @@ export class ConfirmPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
+    this.isCardPurchase =
+      this.navParams.data.payProUrl &&
+      this.navParams.data.payProUrl.includes('redir=wc');
   }
 
   ngOnInit() {
@@ -477,6 +484,12 @@ export class ConfirmPage {
     const totalSecs = expirationTime - now;
     const m = Math.floor(totalSecs / 60);
     const s = totalSecs % 60;
+    if (this.isCardPurchase && m < 11 && !this.isHelpOpen) {
+      this.isHelpOpen = true;
+      this.iabCardProvider.show();
+      this.iabCardProvider.sendMessage({ message: 'openZEChatStandalone' });
+    }
+
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 

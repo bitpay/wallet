@@ -271,7 +271,8 @@ export class IABCardProvider {
             disabled,
             activationDate,
             cardType,
-            cardBalance
+            cardBalance,
+            lockedByUser
           }
         }
       }
@@ -327,7 +328,7 @@ export class IABCardProvider {
 
             cards = cards.map(c => {
               // @ts-ignore
-              let { lockedByUser, hide } =
+              let { hide } =
                 (currentCards || []).find(
                   currentCard => currentCard.eid === c.id
                 ) || {};
@@ -341,7 +342,6 @@ export class IABCardProvider {
               return {
                 ...c,
                 hide,
-                lockedByUser,
                 currencyMeta: c.currency,
                 currency: c.currency.code,
                 eid: c.id
