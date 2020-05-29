@@ -405,9 +405,6 @@ export class WalletsPage {
     this.clearCountDownInterval();
     this.hideClipboardCard();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
-    setTimeout(() => {
-      this.onGoingProvessProvider.clear();
-    }, 3000);
   }
 
   private clearCountDownInterval(): void {

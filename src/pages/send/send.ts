@@ -241,7 +241,6 @@ export class SendPage {
           const payproOptions = await this.payproProvider.getPayProOptions(
             invoiceUrl
           );
-          this.onGoingProcessProvider.clear();
           const selected = payproOptions.paymentOptions.find(
             option =>
               option.selected &&
