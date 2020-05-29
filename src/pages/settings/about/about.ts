@@ -101,7 +101,6 @@ export class AboutPage {
     let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
     this.releaseInfoTaps++;
     if (easterEggStatus && this.releaseInfoTaps == 10) {
-      console.log('Testing ads disabled');
       this.persistenceProvider.setTestingAdvertisements(false);
       this.events.publish('Local/TestAdsToggle', false);
     }
@@ -111,7 +110,6 @@ export class AboutPage {
     this.headerTaps++;
     let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
     if (easterEggStatus && this.headerTaps == 12) {
-      console.log('Testing ads enabled');
       this.persistenceProvider.setTestingAdvertisements(true);
       this.events.publish('Local/TestAdsToggle', true);
     }
