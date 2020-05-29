@@ -352,7 +352,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     if (!payProUrl) {
       throw {
-        title: this.translate.instant('Error in Payment Protocol'),
+        title: this.translate.instant('Error fetching this invoice'),
         message: this.translate.instant('Invalid URL')
       };
     }
@@ -361,7 +361,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       .getPayProDetails(payProUrl, wallet.coin)
       .catch(err => {
         throw {
-          title: this.translate.instant('Error in Payment Protocol'),
+          title: this.translate.instant('Error fetching this invoice'),
           message: err
         };
       });

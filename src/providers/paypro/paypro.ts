@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { TranslateService } from '@ngx-translate/core';
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { CurrencyProvider } from '../currency/currency';
-import { ErrorsProvider } from '../errors/errors';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
@@ -15,27 +12,35 @@ export class PayproProvider {
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService,
-    private errorsProvider: ErrorsProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.logger.debug('PayproProvider initialized');
   }
 
-  public async getPayProOptions(paymentUrl, attempt: number = 1): Promise<any> {
+  public async getPayProOptions(
+    paymentUrl,
+    disableLoader?: boolean,
+    attempt: number = 1
+  ): Promise<any> {
     this.logger.info('PayPro Options: try... ' + attempt);
     const bwc = this.bwcProvider.getPayProV2();
     const options: any = {
       paymentUrl
     };
+    if (!disableLoader) {
+      this.onGoingProcessProvider.set('fetchingPayProOptions');
+    }
     const payOpts = await bwc.getPaymentOptions(options).catch(async err => {
       this.logger.error('PayPro Options: ERROR', JSON.stringify(err));
       if (attempt <= 5) {
         await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
-        return this.getPayProOptions(paymentUrl, ++attempt);
-      } else throw err;
+        return this.getPayProOptions(paymentUrl, disableLoader, ++attempt);
+      } else {
+        if (!disableLoader) this.onGoingProcessProvider.clear();
+        throw err;
+      }
     });
+    if (!disableLoader) this.onGoingProcessProvider.clear();
     this.logger.info('PayPro Options: SUCCESS');
     return payOpts;
   }
@@ -64,14 +69,14 @@ export class PayproProvider {
         this.logger.error('PayPro Details: ERROR', JSON.stringify(err));
         if (attempt <= 5) {
           await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
-          return this.getPayProDetails(paymentUrl, coin, true, ++attempt);
-        } else {
-          this.logger.debug(err);
-          if (!disableLoader) this.onGoingProcessProvider.clear();
-          this.errorsProvider.showDefaultError(
-            this.bwcErrorProvider.msg(err),
-            this.translate.instant('Could not fetch payment details')
+          return this.getPayProDetails(
+            paymentUrl,
+            coin,
+            disableLoader,
+            ++attempt
           );
+        } else {
+          if (!disableLoader) this.onGoingProcessProvider.clear();
           throw err;
         }
       });

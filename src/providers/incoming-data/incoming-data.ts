@@ -240,7 +240,6 @@ export class IncomingDataProvider {
   private async handleBitPayInvoice(invoiceUrl: string) {
     this.logger.debug('Incoming-data: Handling bitpay invoice');
     try {
-      this.onGoingProcessProvider.set('fetchingPayProOptions');
       const disableLoader = true;
       const payProOptions = await this.payproProvider.getPayProOptions(
         invoiceUrl
@@ -260,7 +259,6 @@ export class IncomingDataProvider {
           disableLoader
         );
       } else {
-        this.onGoingProcessProvider.clear();
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
