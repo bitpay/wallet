@@ -49,6 +49,7 @@ export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
+  public orderedWalletsByGroup: any = [];
 
   public UPDATE_PERIOD = 15;
   public UPDATE_PERIOD_FAST = 5;
@@ -164,12 +165,14 @@ export class ProfileProvider {
     Promise.all(promises).then(order => {
       const index = !_.max(order) ? 0 : +_.max(order) + 1;
       this.setWalletGroupOrder(newWalletKeyId, index);
+      this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
     });
   }
 
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public async getWalletGroupName(keyId: string) {
@@ -417,6 +420,7 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.toString()));
+      this.setOrderedWalletsByGroup();
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
@@ -783,9 +787,9 @@ export class ProfileProvider {
           });
           boundWalletClients.push(boundClient);
         }
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty()
           .then(() => {
-            this.events.publish('Local/WalletListChange');
             return this.checkIfAlreadyExist(boundWalletClients).then(() => {
               return Promise.resolve(_.compact(boundWalletClients));
             });
@@ -855,8 +859,8 @@ export class ProfileProvider {
         return Promise.resolve(wallet);
       } else {
         this.logger.debug('Storing new walletClient');
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty().then(() => {
-          this.events.publish('Local/WalletListChange');
           return Promise.resolve(wallet);
         });
       }
@@ -1138,6 +1142,7 @@ export class ProfileProvider {
 
         return Promise.all(promises).then(() => {
           this.logger.info(`Bound ${profileLength} wallets`);
+          this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
           return Promise.resolve();
         });
       });
@@ -1613,7 +1618,8 @@ export class ProfileProvider {
     delete this.wallet[walletId];
 
     this.persistenceProvider.removeAllWalletData(walletId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1622,7 +1628,8 @@ export class ProfileProvider {
       this._deleteWalletClient(wallet);
     });
     this.persistenceProvider.removeAllWalletGroupData(keyId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1807,6 +1814,17 @@ export class ProfileProvider {
     return _.flatten(wallets);
   }
 
+  public setOrderedWalletsByGroup() {
+    this.logger.debug('Set Ordered Wallets By Group');
+    const wallets = [];
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
+    });
+    this.orderedWalletsByGroup = _.values(
+      _.groupBy(_.flatten(wallets), 'keyId')
+    );
+  }
+
   private getOrderedWalletsGroups() {
     let walletsGroups = [];
     for (let key in this.walletsGroups) {
@@ -1950,6 +1968,7 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].hidden
     );
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public getTxps(opts): Promise<any> {

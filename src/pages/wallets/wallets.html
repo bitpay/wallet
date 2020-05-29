@@ -5,7 +5,7 @@
         {{ 'Wallets' | translate }}
       </div>
     </ion-title>
-    <ion-buttons right class="settings-button" *ngIf="wallets && wallets[0]">
+    <ion-buttons right class="settings-button" *ngIf="walletsGroups && walletsGroups[0]">
       <button class="option-button disable-hover" (click)="showMoreOptions()" ion-button icon-only>
         <ion-icon name="ios-more" md="ios-more"></ion-icon>
       </button>
@@ -45,7 +45,7 @@
       </page-clipboard-card>
     </div>
 
-    <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
+    <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
       <div class="section-header" *ngIf="walletGroup[0].canSign && walletsGroups.length > 1">
@@ -68,6 +68,14 @@
           </div>
         </div>
       </div>
+      <div class="section-header" *ngIf="walletGroup[0].keyId == 'read-only'">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-read-only.svg" width="20" />
+        </ion-icon>
+        <ion-label class="key-name">
+          <span translate>Read Only Wallets</span>
+        </ion-label>
+      </div>
       <ion-list no-lines class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0].keyId) }">
         <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
       </ion-list>
@@ -78,21 +86,6 @@
           <a class="label-tip-link" (click)="openBackupPage(walletGroup[0].keyId)" translate>Backup now</a>
         </div>
       </label-tip>
-    </div>
-
-    <div class="section-header" *ngIf="readOnlyWalletsGroup && readOnlyWalletsGroup.length > 0">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-read-only.svg" width="20" />
-      </ion-icon>
-      <ion-label class="key-name">
-        <span translate>Read Only Wallets</span>
-      </ion-label>
-    </div>
-
-    <div *ngFor="let readOnlyWallet of readOnlyWalletsGroup; let i = index">
-      <ion-list no-lines class="bp-list">
-        <wallet-item-content [wallet]="readOnlyWallet" (click)="goToWalletDetails(readOnlyWallet)"></wallet-item-content>
-      </ion-list>
     </div>
 
     <div *ngIf="showCoinbase && coinbaseLinked && coinbaseData">
@@ -131,9 +124,8 @@
     </div>
 
 
-    <div *ngIf="isCordova && wallets && wallets[0]" class="margin-helper"></div>
   </div>
-  <button *ngIf="wallets && wallets[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
+  <button *ngIf="walletsGroups && walletsGroups[0]" ion-button ion-fixed class="scan-button" (click)="scan()">
     <ion-avatar item-start> <img src="assets/img/scan.svg" /> </ion-avatar>
     <div translate>Scan</div>
   </button>

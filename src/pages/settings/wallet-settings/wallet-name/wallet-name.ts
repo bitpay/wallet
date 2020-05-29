@@ -73,6 +73,7 @@ export class WalletNamePage {
     this.events.publish('Local/ConfigUpdate', {
       walletId: this.wallet.credentials.walletId
     });
+    this.profileProvider.setOrderedWalletsByGroup();
     this.navCtrl.pop();
   }
 }

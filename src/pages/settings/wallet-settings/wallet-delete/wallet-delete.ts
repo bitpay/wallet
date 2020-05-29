@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 // providers
 import { KeyProvider } from '../../../../providers/key/key';
@@ -27,8 +27,7 @@ export class WalletDeletePage {
     private logger: Logger,
     private translate: TranslateService,
     private keyProvider: KeyProvider,
-    private pushNotificationsProvider: PushNotificationsProvider,
-    private events: Events
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {}
 
   ionViewDidLoad() {
@@ -82,7 +81,6 @@ export class WalletDeletePage {
   }
 
   private goHome() {
-    this.events.publish('Local/WalletListChange');
     setTimeout(() => {
       this.navCtrl.popToRoot();
     }, 1000);

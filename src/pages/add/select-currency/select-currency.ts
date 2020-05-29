@@ -51,7 +51,6 @@ export class SelectCurrencyPage {
   public isZeroState: boolean;
 
   constructor(
-    private events: Events,
     private actionSheetProvider: ActionSheetProvider,
     private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
@@ -65,7 +64,8 @@ export class SelectCurrencyPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private events: Events
   ) {
     this.availableChains = this.navParam.data.isShared
       ? this.currencyProvider.getMultiSigCoins()
@@ -139,9 +139,10 @@ export class SelectCurrencyPage {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
       .createMultipleWallets(coins, selectedTokens)
-      .then(wallets => {
+      .then(async wallets => {
         this.walletProvider.updateRemotePreferences(wallets);
         this.pushNotificationsProvider.updateSubscription(wallets);
+        await new Promise(resolve => setTimeout(resolve, 1000));
         this.profileProvider.setNewWalletGroupOrder(
           wallets[0].credentials.keyId
         );
@@ -174,7 +175,7 @@ export class SelectCurrencyPage {
   private endProcess() {
     this.onGoingProcessProvider.clear();
     this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/WalletListChange');
+      this.events.publish('Local/FetchWallets');
     });
   }
 

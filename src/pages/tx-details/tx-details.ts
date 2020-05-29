@@ -188,7 +188,15 @@ export class TxDetailsModal {
     }, 10);
   }
 
-  private updateTxDebounced = _.debounce(this.updateTx, 1000);
+  private updateTxDebounced = _.debounce(
+    async hideLoading => {
+      this.updateTx({ hideLoading });
+    },
+    1000,
+    {
+      leading: true
+    }
+  );
 
   private updateTx(opts?): void {
     opts = opts ? opts : {};

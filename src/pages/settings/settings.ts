@@ -400,13 +400,15 @@ export class SettingsPage {
     this.showReorder = !this.showReorder;
   }
 
-  public reorderAccounts(indexes): void {
+  public async reorderAccounts(indexes) {
     const element = this.walletsGroups[indexes.from];
     this.walletsGroups.splice(indexes.from, 1);
     this.walletsGroups.splice(indexes.to, 0, element);
     _.each(this.walletsGroups, (walletGroup, index: number) => {
       this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
     });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    this.profileProvider.setOrderedWalletsByGroup();
   }
 
   public toggleQrCodeLegacyFlag(): void {

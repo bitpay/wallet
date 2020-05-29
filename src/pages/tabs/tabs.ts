@@ -5,12 +5,10 @@ import { Events } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
-import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -20,7 +18,6 @@ import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -32,10 +29,6 @@ export class TabsPage {
 
   public txpsN: number;
   public cardNotificationBadgeText;
-  private totalBalanceAlternative = '0';
-  private totalBalanceAlternativeIsoCode = 'USD';
-  private averagePrice = 0;
-  private lastDayRatesArray;
   private zone;
 
   constructor(
@@ -43,20 +36,17 @@ export class TabsPage {
     private profileProvider: ProfileProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private rateProvider: RateProvider,
-    private currencyProvider: CurrencyProvider,
-    private configProvider: ConfigProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
     private events: Events,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
-    private tabProvider: TabProvider
+    private tabProvider: TabProvider,
+    private exchangeRatesProvider: ExchangeRatesProvider,
+    private configProvider: ConfigProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
-    this.totalBalanceAlternativeIsoCode = this.configProvider.get().wallet.settings.alternativeIsoCode;
 
     this.events.subscribe('experimentUpdateStart', () => {
       this.tabs.select(2);
@@ -135,6 +125,25 @@ export class TabsPage {
     );
   };
 
+  private updateTotalBalance() {
+    const totalBalanceAlternativeIsoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
+    this.exchangeRatesProvider
+      .getLastDayRates(totalBalanceAlternativeIsoCode)
+      .then(lastDayRatesArray => {
+        this.walletProvider
+          .getTotalAmount(
+            this.profileProvider.wallet,
+            totalBalanceAlternativeIsoCode,
+            lastDayRatesArray
+          )
+          .then(data => {
+            this.logger.debug('Total Balance Updated');
+            this.events.publish('Local/HomeBalance', data);
+          });
+      });
+  }
+
   private processWalletError(wallet, err): void {
     wallet.error = wallet.errorObj = null;
 
@@ -159,91 +168,29 @@ export class TabsPage {
     );
   }
 
-  private getWalletTotalBalanceAlternative(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin)
-      .toFixed(2);
-  }
-
-  private getLastDayRates(): Promise<any> {
-    const today = moment();
-    const availableChains = this.currencyProvider.getAvailableChains();
-    const ts = today.subtract(23, 'hours').unix() * 1000;
-    return new Promise(resolve => {
-      let ratesByCoin = {};
-      for (const unitCode of availableChains) {
-        this.exchangeRatesProvider
-          .getHistoricalRates(unitCode, this.totalBalanceAlternativeIsoCode)
-          .subscribe(
-            response => {
-              ratesByCoin[unitCode] = _.find(response, d => {
-                return d.ts < ts;
-              }).rate;
-            },
-            err => {
-              this.logger.error('Error getting current rate:', err);
-              return resolve();
-            }
-          );
-      }
-      return resolve(ratesByCoin);
-    });
-  }
-
-  private getWalletTotalBalanceAlternativeLastDay(
-    balanceSat: number,
-    coin: string
-  ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, this.totalBalanceAlternativeIsoCode, coin, {
-        customRate: this.lastDayRatesArray[coin]
-      })
-      .toFixed(2);
-  }
-
-  private calcTotalAmount(statusWallet, wallet) {
-    let walletTotalBalanceAlternative = 0;
-    let walletTotalBalanceAlternativeLastDay = 0;
-    if (statusWallet.wallet.network === 'livenet' && !wallet.hidden) {
-      const balance =
-        statusWallet.wallet.coin === 'xrp'
-          ? statusWallet.availableBalanceSat
-          : statusWallet.totalBalanceSat;
-      walletTotalBalanceAlternativeLastDay = parseFloat(
-        this.getWalletTotalBalanceAlternativeLastDay(balance, wallet.coin)
-      );
-      if (statusWallet.wallet.coin === 'xrp') {
-        walletTotalBalanceAlternative = parseFloat(
-          this.getWalletTotalBalanceAlternative(
-            statusWallet.availableBalanceSat,
-            'xrp'
-          )
-        );
-      } else {
-        walletTotalBalanceAlternative = parseFloat(
-          statusWallet.totalBalanceAlternative.replace(/,/g, '')
-        );
-      }
+  private fetchAllWalletsStatus = _.debounce(
+    async () => {
+      this._fetchAllWallets();
+    },
+    5000,
+    {
+      leading: true
     }
-    return {
-      walletTotalBalanceAlternative,
-      walletTotalBalanceAlternativeLastDay
-    };
-  }
+  );
 
-  private async fetchAllWalletsStatus() {
-    this.logger.debug('Fetching All Wallets and calculate Total Amount');
-    const wallets = this.profileProvider.getWallets();
+  private _fetchAllWallets() {
+    let wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');
       return;
     }
 
+    this.logger.debug('Fetching All Wallets and Updating Total Balance');
+    wallets = _.filter(this.profileProvider.wallet, w => {
+      return !w.hidden;
+    });
+
     let foundMessage = false;
-    this.lastDayRatesArray = await this.getLastDayRates();
 
     const pr = wallet => {
       return this.walletProvider
@@ -270,7 +217,7 @@ export class TabsPage {
             });
           }
 
-          return Promise.resolve(this.calcTotalAmount(status, wallet));
+          return Promise.resolve();
         })
         .catch(err => {
           this.processWalletError(wallet, err);
@@ -280,34 +227,12 @@ export class TabsPage {
 
     const promises = [];
 
-    _.each(this.profileProvider.wallet, wallet => {
+    _.each(wallets, wallet => {
       promises.push(pr(wallet));
     });
 
-    Promise.all(promises).then(balanceAlternativeArray => {
-      this.totalBalanceAlternative = _.sumBy(
-        _.compact(balanceAlternativeArray),
-        b => b.walletTotalBalanceAlternative
-      ).toFixed(2);
-      const totalBalanceAlternativeLastDay = _.sumBy(
-        _.compact(balanceAlternativeArray),
-        b => b.walletTotalBalanceAlternativeLastDay
-      ).toFixed(2);
-      const difference =
-        parseFloat(this.totalBalanceAlternative.replace(/,/g, '')) -
-        parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
-      this.averagePrice =
-        (difference * 100) /
-        parseFloat(this.totalBalanceAlternative.replace(/,/g, ''));
-
-      const data = {
-        totalBalanceAlternative: this.totalBalanceAlternative,
-        totalBalanceAlternativeIsoCode: this.totalBalanceAlternativeIsoCode,
-        averagePrice: this.averagePrice
-      };
-
-      // Publish event
-      this.events.publish('Local/HomeBalance', data);
+    Promise.all(promises).then(() => {
+      this.updateTotalBalance();
       this.updateTxps();
     });
   }

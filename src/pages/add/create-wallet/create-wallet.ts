@@ -82,14 +82,14 @@ export class CreateWalletPage implements OnInit {
     private logger: Logger,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
-    private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private events: Events
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -327,13 +327,12 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.profileProvider.setNewWalletGroupOrder(wallet.credentials.keyId);
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupGroupFlag(wallet.credentials.keyId);
           this.profileProvider.setWalletBackup(wallet.credentials.walletId);
         }
         this.navCtrl.popToRoot().then(() => {
-          this.events.publish('Local/WalletListChange');
+          this.events.publish('Local/FetchWallets');
           setTimeout(() => {
             if (wallet.isComplete()) {
               this.navCtrl.push(WalletDetailsPage, {

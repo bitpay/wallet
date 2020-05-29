@@ -84,7 +84,6 @@ export class CopayersPage {
   }
 
   ngOnDestroy() {
-    this.events.publish('Local/WalletListChange');
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
   }
@@ -116,7 +115,6 @@ export class CopayersPage {
         // TODO?
         this.wallet.openWallet(err => {
           if (err) this.logger.error(err);
-          this.events.publish('Local/WalletListChange');
           this.close();
         });
       }
@@ -140,7 +138,6 @@ export class CopayersPage {
   private deleteWallet(): void {
     if (this.canSign) {
       this.profileProvider.toggleHideWalletFlag(this.wallet.id);
-      this.events.publish('Local/WalletListChange');
       setTimeout(() => {
         this.close();
       }, 1000);
@@ -163,7 +160,6 @@ export class CopayersPage {
             this.logger.warn('Key was not removed. Still in use');
           }
         }
-        this.events.publish('Local/WalletListChange');
         setTimeout(() => {
           this.close();
         }, 1000);
