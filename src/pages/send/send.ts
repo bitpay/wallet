@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -84,7 +85,8 @@ export class SendPage {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
@@ -233,7 +235,6 @@ export class SendPage {
         (parsedData && parsedData.type == 'PayPro') ||
         (parsedData && parsedData.type == 'InvoiceUri')
       ) {
-        this.onGoingProcessProvider.set('fetchingPayProOptions');
         try {
           const invoiceUrl = this.incomingDataProvider.getPayProUrl(
             this.search
@@ -262,7 +263,11 @@ export class SendPage {
         } catch (err) {
           this.onGoingProcessProvider.clear();
           this.invalidAddress = true;
-          this.logger.warn(err);
+          this.logger.warn(this.bwcErrorProvider.msg(err));
+          this.errorsProvider.showDefaultError(
+            this.bwcErrorProvider.msg(err),
+            this.translate.instant('Error')
+          );
         }
       } else if (
         parsedData &&

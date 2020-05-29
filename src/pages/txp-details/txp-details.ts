@@ -232,10 +232,13 @@ export class TxpDetailsPage {
           this.paymentTimeControl(this.tx.paypro.expires);
         })
         .catch(err => {
-          this.logger.warn('Error in Payment Protocol: ', err);
+          this.logger.warn(
+            'Error fetching this invoice: ',
+            this.bwcErrorProvider.msg(err)
+          );
           this.paymentExpired = true;
           this.showErrorInfoSheet(
-            err,
+            this.bwcErrorProvider.msg(err),
             this.translate.instant('Error fetching this invoice')
           );
         });

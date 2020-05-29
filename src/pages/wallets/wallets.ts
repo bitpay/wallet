@@ -32,7 +32,6 @@ import { EmailNotificationsProvider } from '../../providers/email-notifications/
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -92,7 +91,6 @@ export class WalletsPage {
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
-    private onGoingProvessProvider: OnGoingProcessProvider,
     private coinbaseProvider: CoinbaseProvider
   ) {
     this.collapsedGroups = {};
@@ -305,7 +303,7 @@ export class WalletsPage {
         ) {
           const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
           this.payproProvider
-            .getPayProOptions(invoiceUrl)
+            .getPayProOptions(invoiceUrl, true)
             .then(payproOptions => {
               if (!payproOptions) return;
               const { expires, paymentOptions, payProUrl } = payproOptions;
@@ -326,8 +324,11 @@ export class WalletsPage {
             .catch(err => {
               this.hideClipboardCard();
               this.payProDetailsData = {};
-              this.payProDetailsData.error = err.message;
-              this.logger.warn('Error in Payment Protocol', err);
+              this.payProDetailsData.error = this.bwcErrorProvider.msg(err);
+              this.logger.warn(
+                'Error fetching this invoice',
+                this.bwcErrorProvider.msg(err)
+              );
             });
         }
       })
@@ -342,7 +343,6 @@ export class WalletsPage {
   }
 
   public processClipboardData(data): void {
-    this.onGoingProvessProvider.set('fetchingPayProOptions');
     this.clearCountDownInterval();
     this.hideClipboardCard();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });

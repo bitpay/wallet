@@ -4,6 +4,7 @@ import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -64,7 +65,8 @@ export class ScanPage {
     public translate: TranslateService,
     private navParams: NavParams,
     private platform: Platform,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -169,13 +171,17 @@ export class ScanPage {
 
   private showErrorInfoSheet(error: Error | string, title?: string): void {
     let infoSheetTitle = title ? title : this.translate.instant('Error');
-    this.errorsProvider.showDefaultError(error, infoSheetTitle, () => {
-      if (this.isCordova) {
-        this.activate();
-      } else if (this.isCameraSelected) {
-        this.scanner.startScan(this.selectedDevice);
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle,
+      () => {
+        if (this.isCordova) {
+          this.activate();
+        } else if (this.isCameraSelected) {
+          this.scanner.startScan(this.selectedDevice);
+        }
       }
-    });
+    );
   }
 
   private initializeBackButtonHandler(): void {

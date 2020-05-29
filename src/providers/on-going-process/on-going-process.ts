@@ -37,7 +37,7 @@ export class OnGoingProcessProvider {
       ),
       fetchingPayPro: this.translate.instant('Fetching payment information...'),
       fetchingPayProOptions: this.translate.instant(
-        'Fetching payment information...'
+        'Fetching payment options...'
       ),
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),

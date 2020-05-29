@@ -297,7 +297,7 @@ export class BitPayCardTopUpPage {
 
       if (!payProUrl) {
         return reject({
-          title: this.translate.instant('Error in Payment Protocol'),
+          title: this.translate.instant('Error fetching this invoice'),
           message: this.translate.instant('Invalid URL')
         });
       }
@@ -522,7 +522,9 @@ export class BitPayCardTopUpPage {
 
                 if (!payProUrl) {
                   return reject({
-                    title: this.translate.instant('Error in Payment Protocol'),
+                    title: this.translate.instant(
+                      'Error fetching this invoice'
+                    ),
                     message: this.translate.instant('Invalid URL')
                   });
                 }
@@ -567,6 +569,14 @@ export class BitPayCardTopUpPage {
                     );
 
                     return resolve({ amount: newAmountSat, currency: 'sat' });
+                  })
+                  .catch(err => {
+                    throw {
+                      title: this.translate.instant(
+                        'Error fetching this invoice'
+                      ),
+                      message: this.bwcErrorProvider.msg(err)
+                    };
                   });
               })
               .catch(err => {
