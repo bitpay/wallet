@@ -71,6 +71,7 @@ export class SettingsPage {
   public config;
   public selectedAlternative;
   public isCordova: boolean;
+  public isCopay: boolean;
   public lockMethod: string;
   public integrationServices = [];
   public cardServices = [];
@@ -115,6 +116,7 @@ export class SettingsPage {
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
+    this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
 
     this.events.subscribe('updateCards', cards => {
