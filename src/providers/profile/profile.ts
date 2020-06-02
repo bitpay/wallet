@@ -1404,11 +1404,13 @@ export class ProfileProvider {
       } else {
         const lang = this.languageProvider.getCurrent();
         try {
-          if (!opts.keyId) {
+          if (!opts.key && !opts.keyId) {
             key = Key.create({
               lang
             });
-          } else {
+          } else if (opts.key) {
+            key = opts.key;
+          } else if (opts.keyId) {
             key = this.keyProvider.getKey(opts.keyId);
           }
           walletClient.fromString(
@@ -1692,54 +1694,50 @@ export class ProfileProvider {
         const key = data.key;
         const firstWalletData = data;
 
-        this.keyProvider.addKey(key).then(() => {
-          const create2ndWallets = [];
-          coins.slice(1).forEach(coin => {
-            const newOpts: any = {};
-            Object.assign(newOpts, this.getDefaultWalletOpts(coin));
-            newOpts['keyId'] = key.id; // Add Key
-            create2ndWallets.push(this._createWallet(newOpts));
-          });
-          Promise.all(create2ndWallets)
-            .then(datas => {
-              datas.unshift(firstWalletData);
-              let walletClients = _.map(datas, 'walletClient');
-
-              // Handle tokens
-              if (!_.isEmpty(tokens)) {
-                const ethWalletClient = walletClients.find(
-                  wallet => wallet.credentials.coin === 'eth'
-                );
-
-                if (!ethWalletClient) reject('no eth wallet for tokens');
-
-                let tokenObjs = this.currencyProvider.getAvailableTokens();
-
-                const tokenClients = tokens.map(token => {
-                  token = tokenObjs.find(x => x.symbol == token);
-                  return this._createTokenWallet(ethWalletClient, token);
-                });
-
-                walletClients = walletClients.concat(tokenClients);
-              }
-
-              this.addAndBindWalletClients({
-                key: firstWalletData.key,
-                walletClients
-              })
-                .then(() => {
-                  return resolve(walletClients);
-                })
-                .catch(e => {
-                  reject(e);
-                });
-            })
-            .catch(e => {
-              // Remove key
-              this.keyProvider.removeKey(key.id);
-              reject(e);
-            });
+        const create2ndWallets = [];
+        coins.slice(1).forEach(coin => {
+          const newOpts: any = {};
+          Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+          newOpts['key'] = key; // Add Key
+          create2ndWallets.push(this._createWallet(newOpts));
         });
+        Promise.all(create2ndWallets)
+          .then(walletsData => {
+            walletsData.unshift(firstWalletData);
+            let walletClients = _.map(walletsData, 'walletClient');
+
+            // Handle tokens
+            if (!_.isEmpty(tokens)) {
+              const ethWalletClient = walletClients.find(
+                wallet => wallet.credentials.coin === 'eth'
+              );
+
+              if (!ethWalletClient) reject('no eth wallet for tokens');
+
+              let tokenObjs = this.currencyProvider.getAvailableTokens();
+
+              const tokenClients = tokens.map(token => {
+                token = tokenObjs.find(x => x.symbol == token);
+                return this._createTokenWallet(ethWalletClient, token);
+              });
+
+              walletClients = walletClients.concat(tokenClients);
+            }
+
+            this.addAndBindWalletClients({
+              key: firstWalletData.key,
+              walletClients
+            })
+              .then(() => {
+                return resolve(walletClients);
+              })
+              .catch(e => {
+                reject(e);
+              });
+          })
+          .catch(e => {
+            reject(e);
+          });
       });
     });
   }
