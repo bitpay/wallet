@@ -42,7 +42,8 @@ page-about {
         }
         &.ionic-icon {
           font-size: 25px;
-          filter: contrast(0.2);
+          color: #cdd1d7;
+          opacity: 1;
         }
         img {
           width: 20px;
@@ -72,13 +73,10 @@ page-about {
     text-align: center;
   }
 
-  .ion-md-eye:before {
+  .ion-md-eye:before,
+  .ion-ios-color-palette:before,
+  .ion-md-list-box:before {
     width: 20px;
-    opacity: 0.55;
-  }
-
-  .ion-ios-moon:before {
-    width: 20px;
-    opacity: 0.55;
+    height: 20px;
   }
 }
