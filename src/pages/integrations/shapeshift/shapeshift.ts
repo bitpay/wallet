@@ -30,7 +30,6 @@ import { TimeProvider } from '../../../providers/time/time';
 })
 export class ShapeshiftPage {
   public shifts;
-  public network: string;
   public oauthCodeForm: FormGroup;
   public showOauthForm: boolean;
   public accessToken: string;
@@ -62,8 +61,7 @@ export class ShapeshiftPage {
       ]
     });
     this.showOauthForm = false;
-    this.network = this.shapeshiftProvider.getNetwork();
-    this.shifts = { data: {} };
+    this.shifts = { data: null };
     this.headerColor = '#0d172c';
   }
 
@@ -98,16 +96,14 @@ export class ShapeshiftPage {
   };
 
   private init(): void {
-    this.loading = true;
     this.shapeshiftProvider.getStoredToken((at: string) => {
+      if (!at) return;
       this.accessToken = at;
       // Update Access Token if necessary
       this.shapeshiftProvider.init((err, data) => {
         if (err || _.isEmpty(data)) {
-          this.loading = false;
           if (err) {
             this.logger.error(err);
-            this.loading = false;
             if (err == 'unverified_account') {
               this.openShafeShiftWindow();
             } else {
@@ -124,13 +120,11 @@ export class ShapeshiftPage {
           }
           return;
         }
+      });
 
-        this.shapeshiftProvider.getShapeshift((err, ss) => {
-          this.loading = false;
-          if (err) this.logger.error(err);
-          if (ss) this.shifts = { data: ss };
-          this.updateShift(this.shifts);
-        });
+      this.shapeshiftProvider.getShapeshift((err, ss) => {
+        if (ss) this.shifts = { data: ss };
+        if (!err) this.updateShift(this.shifts);
       });
     });
   }
@@ -151,7 +145,9 @@ export class ShapeshiftPage {
       _.forEach(shifts.data, dataFromStorage => {
         if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
 
+        this.loading = true;
         this.getInfo(dataFromStorage, this.accessToken, (err, st) => {
+          this.loading = false;
           if (err) return;
 
           this.shifts.data[dataFromStorage.address] = _.assign(
@@ -283,7 +279,7 @@ export class ShapeshiftPage {
         this.logger.error('Error connecting to ShapeShift: ' + err);
         return;
       }
-      this.navCtrl.pop();
+      if (this.platformProvider.isCordova) this.navCtrl.pop();
       this.accessToken = accessToken;
       this.init();
     });
