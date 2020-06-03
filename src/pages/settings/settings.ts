@@ -419,4 +419,38 @@ export class SettingsPage {
     };
     this.configProvider.set(opts);
   }
+
+  public openPrivacyPolicy() {
+    const url = 'https://bitpay.com/about/privacy';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Privacy Policy');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
+
+  public openTermsOfUse() {
+    const url = 'https://bitpay.com/legal/terms-of-use';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Wallet Terms of Use');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
 }

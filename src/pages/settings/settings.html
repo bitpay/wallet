@@ -81,7 +81,7 @@
       </button>
 
       <ion-item class="align-with-button">
-        <ion-icon class="item-img icon-settings" name="md-eye" item-start></ion-icon>
+        <ion-icon class="item-img icon-settings ionic-icon" name="md-eye" item-start></ion-icon>
         <ion-label>
           <div class="main-label">
             {{'Show Portfolio Value' | translate}}
@@ -254,6 +254,18 @@
           <img src="assets/img/settings-icons/icon-heart.svg" />
         </ion-icon>
         <span class="main-label" translate>Share</span> {{ appName }}
+      </button>
+
+      <button ion-item (click)="openPrivacyPolicy()">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-lock.svg" />
+        </ion-icon>
+        <span class="main-label" translate>Privacy Policy</span>
+      </button>
+
+      <button ion-item (click)="openTermsOfUse()">
+        <ion-icon class="item-img icon-settings ionic-icon" name="md-list-box" item-start></ion-icon>
+        <span class="main-label" translate>Terms of Use</span>
       </button>
 
       <button ion-item (click)="openAboutPage()">
