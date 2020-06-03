@@ -52,58 +52,6 @@ describe('AboutPage', () => {
     });
   });
   describe('Methods', () => {
-    describe('#openPrivacyPolicy', () => {
-      it('should open privacy policy with correct params', () => {
-        spyOn(instance.externalLinkProvider, 'open');
-
-        const params = {
-          'Go Back': 'Go Back',
-          Open: 'Open',
-          'View Privacy Policy': 'View Privacy Policy'
-        };
-
-        spyOn(instance.translate, 'instant').and.callFake(myParam => {
-          return params[myParam];
-        });
-
-        instance.openPrivacyPolicy();
-
-        expect(instance.externalLinkProvider.open).toHaveBeenCalledWith(
-          'https://bitpay.com/about/privacy',
-          true,
-          null,
-          'View Privacy Policy',
-          'Open',
-          'Go Back'
-        );
-      });
-    });
-    describe('#openTermsOfUse', () => {
-      it('should open terms of use with correct params', () => {
-        spyOn(instance.externalLinkProvider, 'open');
-
-        const params = {
-          'Go Back': 'Go Back',
-          Open: 'Open',
-          'View Wallet Terms of Use': 'View Wallet Terms of Use'
-        };
-
-        spyOn(instance.translate, 'instant').and.callFake(myParam => {
-          return params[myParam];
-        });
-
-        instance.openTermsOfUse();
-
-        expect(instance.externalLinkProvider.open).toHaveBeenCalledWith(
-          'https://bitpay.com/about/terms#wallet',
-          true,
-          null,
-          'View Wallet Terms of Use',
-          'Open',
-          'Go Back'
-        );
-      });
-    });
     describe('#openExternalLink', () => {
       it('open github repo with correct params', () => {
         spyOn(instance.externalLinkProvider, 'open');
