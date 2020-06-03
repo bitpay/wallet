@@ -38,28 +38,23 @@ export class ExchangeRatesProvider {
     }
   }
 
-  public getLastDayRates(totalBalanceAlternativeIsoCode: string): Promise<any> {
-    const today = moment();
+  public getLastDayRates(): Promise<any> {
+    const isoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     const availableChains = this.currencyProvider.getAvailableChains();
-    const ts = today.subtract(23, 'hours').unix() * 1000;
     return new Promise(resolve => {
       let ratesByCoin = {};
-      for (const unitCode of availableChains) {
-        this.getHistoricalRates(
-          unitCode,
-          totalBalanceAlternativeIsoCode
-        ).subscribe(
+      _.forEach(availableChains, coin => {
+        this.getHistoricalRates(coin, isoCode).subscribe(
           response => {
-            ratesByCoin[unitCode] = _.find(response, d => {
-              return d.ts < ts;
-            }).rate;
+            ratesByCoin[coin] = _.last(response).rate;
           },
           err => {
             this.logger.error('Error getting current rate:', err);
-            return resolve();
+            return resolve(ratesByCoin);
           }
         );
-      }
+      });
       return resolve(ratesByCoin);
     });
   }
@@ -67,12 +62,13 @@ export class ExchangeRatesProvider {
   public getHistoricalRates(
     coin: string,
     isoCode: string,
+    force: boolean = false,
     dateOffset = 1
   ): Observable<ApiPrice[]> {
     const observableBatch = [];
     const historicalDates = this.setDates(dateOffset);
 
-    if (!this.ratesCache[coin][dateOffset]) {
+    if (!this.ratesCache[coin][dateOffset] || force) {
       _.forEach(historicalDates, date => {
         observableBatch.push(
           this.httpClient.get<ApiPrice>(

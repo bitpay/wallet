@@ -8,7 +8,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
-  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" enabled="false">
+  <ion-refresher (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="160" enabled="true">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
