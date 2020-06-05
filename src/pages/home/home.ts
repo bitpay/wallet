@@ -74,6 +74,8 @@ export class HomePage {
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
 
+  private isCordova: boolean;
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
@@ -97,6 +99,7 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   async ionViewWillEnter() {
@@ -232,7 +235,7 @@ export class HomePage {
   }
 
   private addBitPayCard() {
-    const card: Advertisement = this.cardExperimentEnabled
+    const card: Advertisement = this.cardExperimentEnabled && this.isCordova
       ? {
           name: 'bitpay-card',
           title: this.translate.instant('Live on crypto'),
