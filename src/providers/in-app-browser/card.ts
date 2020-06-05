@@ -741,8 +741,7 @@ export class IABCardProvider {
     const cards = await this.persistenceProvider.getBitpayDebitCards(
       this.NETWORK
     );
-    const hasFirstView =
-      cards && cards.filter(c => c.provider === 'firstView').length > 0;
+    const hasFirstView = cards && !!(cards.find( c => c.provider === 'firstView'));
     this.logger.log(`CARD - has first view cards = ${hasFirstView}`);
     if (this.cardIAB_Ref) {
       this.cardIAB_Ref.executeScript(
