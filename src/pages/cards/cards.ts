@@ -102,7 +102,7 @@ export class CardsPage {
       clearInterval(this.IABPingInterval);
       this.logger.log(`cards - IAB ready ${country}`);
 
-      this.persistenceProvider.getCardExperimentFlag().then( status => {
+      this.persistenceProvider.getCardExperimentFlag().then(status => {
         if (country === 'US' || status === 'enabled') {
           this.persistenceProvider.setCardExperimentFlag('enabled');
           this.cardExperimentEnabled = true;
@@ -111,7 +111,6 @@ export class CardsPage {
 
         this.initialized = this.IABReady = true;
         this.changeRef.detectChanges();
-
       });
     });
   }

@@ -64,7 +64,8 @@ export class TabsPage {
         this.persistenceProvider
           .getCardNotificationBadge()
           .then(badgeStatus => {
-            this.cardNotificationBadgeText = badgeStatus === 'disabled' ? null : 'New';
+            this.cardNotificationBadgeText =
+              badgeStatus === 'disabled' ? null : 'New';
           });
       }
     });

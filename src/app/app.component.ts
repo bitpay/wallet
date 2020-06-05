@@ -45,6 +45,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { AdvertisingComponent } from '../components/advertising/advertising';
 
 // Pages
+import { HttpClient } from '@angular/common/http';
 import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
@@ -67,7 +68,6 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { HttpClient } from '@angular/common/http';
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
 // to track the passed Url
@@ -227,14 +227,15 @@ export class CopayApp {
       this.statusBar.show();
 
       try {
-        const { country } = await this.http.get<{country: string}>('https://bitpay.com/wallet-card/location').toPromise();
+        const { country } = await this.http
+          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
+          .toPromise();
         if (country === 'US') {
           await this.persistenceProvider.setCardExperimentFlag('enabled');
         }
-      } catch(err) {
+      } catch (err) {
         this.logger.log(err);
       }
-
 
       // Set User-Agent
       this.userAgent.set(
