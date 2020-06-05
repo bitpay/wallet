@@ -100,14 +100,18 @@ export class CardsPage {
 
     this.events.subscribe('IABReady', country => {
       clearInterval(this.IABPingInterval);
-      this.persistenceProvider.getCardExperimentFlag().then(status => {
-        if (status === 'enabled') {
+      this.logger.log(`cards - IAB ready ${country}`);
+
+      this.persistenceProvider.getCardExperimentFlag().then( status => {
+        if (country === 'US' || status === 'enabled') {
+          this.persistenceProvider.setCardExperimentFlag('enabled');
           this.cardExperimentEnabled = true;
           this.waitList = false;
         }
-        this.logger.log(`cards - IAB ready ${country}`);
+
         this.initialized = this.IABReady = true;
         this.changeRef.detectChanges();
+
       });
     });
   }
