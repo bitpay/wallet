@@ -2,9 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 
 // Providers
 import { animate, style, transition, trigger } from '@angular/animations';
-import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
@@ -62,9 +60,7 @@ export class CardsPage {
     private events: Events,
     private iabCardProvider: IABCardProvider,
     private changeRef: ChangeDetectorRef,
-    private logger: Logger,
-    private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService
+    private logger: Logger
   ) {
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
@@ -147,14 +143,6 @@ export class CardsPage {
       if (attempts >= 10) {
         clearInterval(this.IABPingInterval);
         this.showBitPayCard = false;
-        this.actionSheetProvider
-          .createInfoSheet('default-error', {
-            msg: this.translate.instant(
-              'Uh oh something went wrong! Please try again later.'
-            ),
-            title: this.translate.instant('Error')
-          })
-          .present();
         return;
       }
       this.logger.log(`PINGING IAB attempt ${attempts}`);
