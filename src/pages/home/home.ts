@@ -74,6 +74,8 @@ export class HomePage {
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
 
+  private isCordova: boolean;
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
@@ -97,6 +99,7 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   async ionViewWillEnter() {
@@ -232,31 +235,32 @@ export class HomePage {
   }
 
   private addBitPayCard() {
-    const card: Advertisement = this.cardExperimentEnabled
-      ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Live on crypto'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Sign up'),
-          link: BitPayCardIntroPage,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        }
-      : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
+    const card: Advertisement =
+      this.cardExperimentEnabled && this.isCordova
+        ? {
+            name: 'bitpay-card',
+            title: this.translate.instant('Live on crypto'),
+            body: this.translate.instant(
+              'Designed for people who want to live life on crypto.'
+            ),
+            app: 'bitpay',
+            linkText: this.translate.instant('Sign up'),
+            link: BitPayCardIntroPage,
+            dismissible: true,
+            imgSrc: 'assets/img/icon-bpcard.svg'
+          }
+        : {
+            name: 'bitpay-card',
+            title: this.translate.instant('Coming soon'),
+            body: this.translate.instant(
+              'Join the waitlist and be first to experience the new card.'
+            ),
+            app: 'bitpay',
+            linkText: this.translate.instant('Notify Me'),
+            link: PhaseOneCardIntro,
+            dismissible: true,
+            imgSrc: 'assets/img/icon-bpcard.svg'
+          };
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'bitpay-card'
     );

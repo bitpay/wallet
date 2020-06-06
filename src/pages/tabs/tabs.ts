@@ -61,13 +61,11 @@ export class TabsPage {
     });
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
-        this.cardNotificationBadgeText = 'New';
         this.persistenceProvider
           .getCardNotificationBadge()
           .then(badgeStatus => {
-            if (badgeStatus === 'disabled') {
-              this.cardNotificationBadgeText = null;
-            }
+            this.cardNotificationBadgeText =
+              badgeStatus === 'disabled' ? null : 'New';
           });
       }
     });

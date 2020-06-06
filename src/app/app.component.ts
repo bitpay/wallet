@@ -45,6 +45,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { AdvertisingComponent } from '../components/advertising/advertising';
 
 // Pages
+import { HttpClient } from '@angular/common/http';
 import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
@@ -119,6 +120,7 @@ export class CopayApp {
     private splashScreen: SplashScreen,
     private events: Events,
     private logger: Logger,
+    private http: HttpClient,
     private appProvider: AppProvider,
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
@@ -217,8 +219,23 @@ export class CopayApp {
       this.iabCardProvider.pause();
     });
 
+    this.bitpayProvider.setNetwork(this.NETWORK);
+    this.bitpayIdProvider.setNetwork(this.NETWORK);
+    this.iabCardProvider.setNetwork(this.NETWORK);
+
     if (this.platform.is('cordova')) {
       this.statusBar.show();
+
+      try {
+        const { country } = await this.http
+          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
+          .toPromise();
+        if (country === 'US') {
+          await this.persistenceProvider.setCardExperimentFlag('enabled');
+        }
+      } catch (err) {
+        this.logger.log(err);
+      }
 
       // Set User-Agent
       this.userAgent.set(
@@ -267,9 +284,6 @@ export class CopayApp {
     // Set Theme (light or dark mode)
     this.themeProvider.apply();
     if (this.platformProvider.isElectron) this.updateDesktopOnFocus();
-    this.bitpayProvider.setNetwork(this.NETWORK);
-    this.bitpayIdProvider.setNetwork(this.NETWORK);
-    this.iabCardProvider.setNetwork(this.NETWORK);
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
