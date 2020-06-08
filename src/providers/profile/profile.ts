@@ -216,7 +216,6 @@ export class ProfileProvider {
     let k = this.keyProvider.getKey(wallet.credentials.keyId);
     if (!k) return false;
     if (!k.mnemonic && !k.mnemonicEncrypted) return false;
-    if (wallet.credentials.network == 'testnet') return false;
     return true;
   }
 
