@@ -49,6 +49,7 @@ export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
+  public orderedWalletsByGroup: any = [];
 
   public UPDATE_PERIOD = 15;
   public UPDATE_PERIOD_FAST = 5;
@@ -164,12 +165,14 @@ export class ProfileProvider {
     Promise.all(promises).then(order => {
       const index = !_.max(order) ? 0 : +_.max(order) + 1;
       this.setWalletGroupOrder(newWalletKeyId, index);
+      this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
     });
   }
 
   public setWalletGroupName(keyId: string, name: string): void {
     this.persistenceProvider.setWalletGroupName(keyId, name);
     if (this.walletsGroups[keyId]) this.walletsGroups[keyId].name = name;
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public async getWalletGroupName(keyId: string) {
@@ -417,6 +420,7 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.toString()));
+      this.setOrderedWalletsByGroup();
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
@@ -783,9 +787,9 @@ export class ProfileProvider {
           });
           boundWalletClients.push(boundClient);
         }
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty()
           .then(() => {
-            this.events.publish('Local/WalletListChange');
             return this.checkIfAlreadyExist(boundWalletClients).then(() => {
               return Promise.resolve(_.compact(boundWalletClients));
             });
@@ -855,8 +859,8 @@ export class ProfileProvider {
         return Promise.resolve(wallet);
       } else {
         this.logger.debug('Storing new walletClient');
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
         return this.storeProfileIfDirty().then(() => {
-          this.events.publish('Local/WalletListChange');
           return Promise.resolve(wallet);
         });
       }
@@ -1138,6 +1142,7 @@ export class ProfileProvider {
 
         return Promise.all(promises).then(() => {
           this.logger.info(`Bound ${profileLength} wallets`);
+          this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
           return Promise.resolve();
         });
       });
@@ -1399,11 +1404,13 @@ export class ProfileProvider {
       } else {
         const lang = this.languageProvider.getCurrent();
         try {
-          if (!opts.keyId) {
+          if (!opts.key && !opts.keyId) {
             key = Key.create({
               lang
             });
-          } else {
+          } else if (opts.key) {
+            key = opts.key;
+          } else if (opts.keyId) {
             key = this.keyProvider.getKey(opts.keyId);
           }
           walletClient.fromString(
@@ -1613,7 +1620,8 @@ export class ProfileProvider {
     delete this.wallet[walletId];
 
     this.persistenceProvider.removeAllWalletData(walletId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1622,7 +1630,8 @@ export class ProfileProvider {
       this._deleteWalletClient(wallet);
     });
     this.persistenceProvider.removeAllWalletGroupData(keyId);
-    this.events.publish('Local/WalletListChange');
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
+    this.events.publish('Local/FetchWallets');
     return this.storeProfileIfDirty();
   }
 
@@ -1685,54 +1694,50 @@ export class ProfileProvider {
         const key = data.key;
         const firstWalletData = data;
 
-        this.keyProvider.addKey(key).then(() => {
-          const create2ndWallets = [];
-          coins.slice(1).forEach(coin => {
-            const newOpts: any = {};
-            Object.assign(newOpts, this.getDefaultWalletOpts(coin));
-            newOpts['keyId'] = key.id; // Add Key
-            create2ndWallets.push(this._createWallet(newOpts));
-          });
-          Promise.all(create2ndWallets)
-            .then(datas => {
-              datas.unshift(firstWalletData);
-              let walletClients = _.map(datas, 'walletClient');
-
-              // Handle tokens
-              if (!_.isEmpty(tokens)) {
-                const ethWalletClient = walletClients.find(
-                  wallet => wallet.credentials.coin === 'eth'
-                );
-
-                if (!ethWalletClient) reject('no eth wallet for tokens');
-
-                let tokenObjs = this.currencyProvider.getAvailableTokens();
-
-                const tokenClients = tokens.map(token => {
-                  token = tokenObjs.find(x => x.symbol == token);
-                  return this._createTokenWallet(ethWalletClient, token);
-                });
-
-                walletClients = walletClients.concat(tokenClients);
-              }
-
-              this.addAndBindWalletClients({
-                key: firstWalletData.key,
-                walletClients
-              })
-                .then(() => {
-                  return resolve(walletClients);
-                })
-                .catch(e => {
-                  reject(e);
-                });
-            })
-            .catch(e => {
-              // Remove key
-              this.keyProvider.removeKey(key.id);
-              reject(e);
-            });
+        const create2ndWallets = [];
+        coins.slice(1).forEach(coin => {
+          const newOpts: any = {};
+          Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+          newOpts['key'] = key; // Add Key
+          create2ndWallets.push(this._createWallet(newOpts));
         });
+        Promise.all(create2ndWallets)
+          .then(walletsData => {
+            walletsData.unshift(firstWalletData);
+            let walletClients = _.map(walletsData, 'walletClient');
+
+            // Handle tokens
+            if (!_.isEmpty(tokens)) {
+              const ethWalletClient = walletClients.find(
+                wallet => wallet.credentials.coin === 'eth'
+              );
+
+              if (!ethWalletClient) reject('no eth wallet for tokens');
+
+              let tokenObjs = this.currencyProvider.getAvailableTokens();
+
+              const tokenClients = tokens.map(token => {
+                token = tokenObjs.find(x => x.symbol == token);
+                return this._createTokenWallet(ethWalletClient, token);
+              });
+
+              walletClients = walletClients.concat(tokenClients);
+            }
+
+            this.addAndBindWalletClients({
+              key: firstWalletData.key,
+              walletClients
+            })
+              .then(() => {
+                return resolve(walletClients);
+              })
+              .catch(e => {
+                reject(e);
+              });
+          })
+          .catch(e => {
+            reject(e);
+          });
       });
     });
   }
@@ -1805,6 +1810,17 @@ export class ProfileProvider {
       wallets.push(this.getWalletsFromGroup(opts));
     });
     return _.flatten(wallets);
+  }
+
+  public setOrderedWalletsByGroup() {
+    this.logger.debug('Set Ordered Wallets By Group');
+    const wallets = [];
+    this.getOrderedWalletsGroups().forEach(walletsGroup => {
+      wallets.push(this.getWalletsFromGroup({ keyId: walletsGroup.key }));
+    });
+    this.orderedWalletsByGroup = _.values(
+      _.groupBy(_.flatten(wallets), 'keyId')
+    );
   }
 
   private getOrderedWalletsGroups() {
@@ -1950,6 +1966,7 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].hidden
     );
+    this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
   }
 
   public getTxps(opts): Promise<any> {

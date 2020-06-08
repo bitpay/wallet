@@ -61,7 +61,25 @@ export class RateProvider {
   public getRate(code: string, chain?: string, opts?: { rates? }): number {
     const customRate =
       opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
-    return customRate || this.rates[chain][code];
+    if (customRate) return customRate;
+    if (this.rates[chain][code]) return this.rates[chain][code];
+    if (
+      !this.rates[chain][code] &&
+      this.rates[chain]['USD'] &&
+      this.rates['btc'][code] &&
+      this.rates['btc']['USD'] &&
+      this.rates['btc']['USD'] > 0
+    ) {
+      const newRate = +(
+        (this.rates[chain]['USD'] * this.rates['btc'][code]) /
+        this.rates['btc']['USD']
+      ).toFixed(2);
+      return newRate;
+    }
+    this.logger.warn(
+      'There are no rates for chain: ' + chain + ' - code: ' + code
+    );
+    return undefined;
   }
 
   private getAlternatives(): any[] {

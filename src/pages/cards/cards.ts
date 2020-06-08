@@ -2,11 +2,8 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 
 // Providers
 import { animate, style, transition, trigger } from '@angular/animations';
-import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -63,19 +60,8 @@ export class CardsPage {
     private events: Events,
     private iabCardProvider: IABCardProvider,
     private changeRef: ChangeDetectorRef,
-    private logger: Logger,
-    private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService,
-    private bitPayCardProvider: BitPayCardProvider
+    private logger: Logger
   ) {
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      if (status === 'enabled') {
-        this.cardExperimentEnabled = true;
-        this.waitList = false;
-        this.showDisclaimer = true;
-      }
-    });
-
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
     this.bitPayProvider.get(
@@ -103,11 +89,6 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('experimentUpdateComplete', async () => {
-      this.bitpayCardItems = await this.prepareDebitCards();
-      this.changeRef.detectChanges();
-    });
-
     this.events.subscribe('updateCards', async () => {
       this.bitpayCardItems = await this.prepareDebitCards();
       this.changeRef.detectChanges();
@@ -117,18 +98,20 @@ export class CardsPage {
       this.hasCards = false;
     });
 
-    this.events.subscribe('IABReady', async country => {
+    this.events.subscribe('IABReady', country => {
       clearInterval(this.IABPingInterval);
-
-      // TODO uncomment when we move to IP check after whitelist phase
-      // if wait list flag not set retrieve from storage
-      // if (this.cardExperimentEnabled && this.waitList === undefined) {
-      //   this.waitList = country && country !== 'US';
-      //   this.logger.log(`COUNTRY ${country}`);
-      // }
       this.logger.log(`cards - IAB ready ${country}`);
-      this.initialized = this.IABReady = true;
-      this.changeRef.detectChanges();
+
+      this.persistenceProvider.getCardExperimentFlag().then(status => {
+        if (country === 'US' || status === 'enabled') {
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+          this.cardExperimentEnabled = true;
+          this.waitList = false;
+        }
+
+        this.initialized = this.IABReady = true;
+        this.changeRef.detectChanges();
+      });
     });
   }
 
@@ -140,28 +123,18 @@ export class CardsPage {
       'debitcard'
     );
 
-    if (this.cardExperimentEnabled) {
-      this.showBitPayCard =
-        !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
-        this.platformProvider.isCordova;
+    this.showBitPayCard =
+      !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
+      this.platformProvider.isCordova;
 
-      if (
-        !this.IABReady &&
-        !this.IABPingLock &&
-        this.platformProvider.isCordova
-      ) {
-        this.pingIAB();
-      }
-    } else {
-      this.showBitPayCard = !(
-        this.appProvider.info._enabledExtensions.debitcard == 'false'
-      );
-
-      // TODO gating code
-      if (!this.IABReady) {
-        setTimeout(() => (this.initialized = this.IABReady = true), 500);
-      }
+    if (
+      !this.IABReady &&
+      !this.IABPingLock &&
+      this.platformProvider.isCordova
+    ) {
+      this.pingIAB();
     }
+
     this.bitpayCardItems = await this.prepareDebitCards();
     await this.fetchAllCards();
   }
@@ -173,14 +146,6 @@ export class CardsPage {
       if (attempts >= 10) {
         clearInterval(this.IABPingInterval);
         this.showBitPayCard = false;
-        this.actionSheetProvider
-          .createInfoSheet('default-error', {
-            msg: this.translate.instant(
-              'Uh oh something went wrong! Please try again later.'
-            ),
-            title: this.translate.instant('Error')
-          })
-          .present();
         return;
       }
       this.logger.log(`PINGING IAB attempt ${attempts}`);
@@ -191,7 +156,7 @@ export class CardsPage {
 
   private async prepareDebitCards() {
     return new Promise(res => {
-      if (!this.platformProvider.isCordova && this.cardExperimentEnabled) {
+      if (!this.platformProvider.isCordova) {
         return res();
       }
 
@@ -262,18 +227,8 @@ export class CardsPage {
   }
 
   private async fetchBitpayCardItems() {
-    if (this.platformProvider.isCordova && this.cardExperimentEnabled) {
-      if (this.hasCards) {
-        await this.iabCardProvider.getCards();
-      }
-    } else {
-      this.bitpayCardItems = await this.tabProvider.bitpayCardItemsPromise;
-
-      const updatedBitpayCardItemsPromise = this.bitPayCardProvider.get({
-        noHistory: true
-      });
-      this.bitpayCardItems = await updatedBitpayCardItemsPromise;
-      this.tabProvider.bitpayCardItemsPromise = updatedBitpayCardItemsPromise;
+    if (this.hasCards && this.platformProvider.isCordova) {
+      await this.iabCardProvider.getCards();
     }
   }
 
@@ -304,14 +259,6 @@ export class CardsPage {
           this.persistenceProvider.setCardExperimentFlag('enabled');
           this.persistenceProvider.setBitpayIdPairingFlag('enabled');
           alert('Card experiment enabled.');
-          const enableLivenet = confirm('Enable livenet testing?');
-          const network = enableLivenet ? 'livenet' : 'testnet';
-          this.persistenceProvider.setCardExperimentNetwork(Network[network]);
-          alert(
-            `Card experiment -> ${
-              enableLivenet ? 'livenet enabled' : 'testnet enabled'
-            }. Restart the app.`
-          );
         }
         this.tapped = 0;
       });

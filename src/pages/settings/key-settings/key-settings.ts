@@ -212,13 +212,15 @@ export class KeySettingsPage {
     this.showReorder = !this.showReorder;
   }
 
-  public reorderAccounts(indexes): void {
+  public async reorderAccounts(indexes) {
     const element = this.wallets[indexes.from];
     this.wallets.splice(indexes.from, 1);
     this.wallets.splice(indexes.to, 0, element);
     _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    this.profileProvider.setOrderedWalletsByGroup();
   }
 
   public goToAddPage() {

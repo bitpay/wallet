@@ -71,6 +71,7 @@ export class SettingsPage {
   public config;
   public selectedAlternative;
   public isCordova: boolean;
+  public isCopay: boolean;
   public lockMethod: string;
   public integrationServices = [];
   public cardServices = [];
@@ -115,6 +116,7 @@ export class SettingsPage {
   ) {
     this.appName = this.app.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
+    this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
 
     this.events.subscribe('updateCards', cards => {
@@ -303,19 +305,15 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      if (status === 'enabled') {
-        const message = `openSettings?${id}`;
-        this.iabCardProvider.show(true);
-        this.iabCardProvider.sendMessage(
-          {
-            message
-          },
-          () => {}
-        );
-      } else {
-        this.navCtrl.push(BitPaySettingsPage, { id });
-      }
+    const message = `openSettings?${id}`;
+    this.iabCardProvider.show();
+    setTimeout(() => {
+      this.iabCardProvider.sendMessage(
+        {
+          message
+        },
+        () => {}
+      );
     });
   }
 
@@ -404,13 +402,15 @@ export class SettingsPage {
     this.showReorder = !this.showReorder;
   }
 
-  public reorderAccounts(indexes): void {
+  public async reorderAccounts(indexes) {
     const element = this.walletsGroups[indexes.from];
     this.walletsGroups.splice(indexes.from, 1);
     this.walletsGroups.splice(indexes.to, 0, element);
     _.each(this.walletsGroups, (walletGroup, index: number) => {
       this.profileProvider.setWalletGroupOrder(walletGroup[0].keyId, index);
     });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    this.profileProvider.setOrderedWalletsByGroup();
   }
 
   public toggleQrCodeLegacyFlag(): void {
@@ -418,5 +418,39 @@ export class SettingsPage {
       legacyQrCode: { show: this.useLegacyQrCode }
     };
     this.configProvider.set(opts);
+  }
+
+  public openPrivacyPolicy() {
+    const url = 'https://bitpay.com/about/privacy';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Privacy Policy');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
+
+  public openTermsOfUse() {
+    const url = 'https://bitpay.com/legal/terms-of-use';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Wallet Terms of Use');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

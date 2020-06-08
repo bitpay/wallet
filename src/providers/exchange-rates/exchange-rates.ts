@@ -33,13 +33,35 @@ export class ExchangeRatesProvider {
     this.logger.debug('ExchangeRatesProvider initialized');
     const defaults = this.configProvider.getDefaults();
     this.bwsURL = defaults.bws.url;
-    this.initializeCache();
-  }
-
-  public initializeCache() {
     for (const coin of this.currencyProvider.getAvailableCoins()) {
       this.ratesCache[coin] = {};
     }
+  }
+
+  public getLastDayRates(totalBalanceAlternativeIsoCode: string): Promise<any> {
+    const today = moment();
+    const availableChains = this.currencyProvider.getAvailableChains();
+    const ts = today.subtract(23, 'hours').unix() * 1000;
+    return new Promise(resolve => {
+      let ratesByCoin = {};
+      for (const unitCode of availableChains) {
+        this.getHistoricalRates(
+          unitCode,
+          totalBalanceAlternativeIsoCode
+        ).subscribe(
+          response => {
+            ratesByCoin[unitCode] = _.find(response, d => {
+              return d.ts < ts;
+            }).rate;
+          },
+          err => {
+            this.logger.error('Error getting current rate:', err);
+            return resolve();
+          }
+        );
+      }
+      return resolve(ratesByCoin);
+    });
   }
 
   public getHistoricalRates(

@@ -32,7 +32,6 @@ import { EmailNotificationsProvider } from '../../providers/email-notifications/
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -56,21 +55,13 @@ export class WalletsPage {
   priceCard;
   public wallets;
   public walletsGroups;
-  public readOnlyWalletsGroup;
   public txpsN: number;
-  public homeIntegrations;
-  public showAnnouncement: boolean = false;
   public validDataFromClipboard = null;
   public payProDetailsData;
   public remainingTimeStr: string;
 
-  public hideHomeIntegrations: boolean;
-  public accessDenied: boolean;
-  public isBlur: boolean;
-  public isCordova: boolean;
   public collapsedGroups;
 
-  private isElectron: boolean;
   private zone;
   private countDown;
   private onResumeSubscription: Subscription;
@@ -100,22 +91,14 @@ export class WalletsPage {
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
-    private onGoingProvessProvider: OnGoingProcessProvider,
     private coinbaseProvider: CoinbaseProvider
   ) {
-    this.isBlur = false;
-    this.isCordova = this.platformProvider.isCordova;
-    this.isElectron = this.platformProvider.isElectron;
     this.collapsedGroups = {};
     // Update Wallet on Focus
-    if (this.isElectron) {
+    if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
     }
     this.zone = new NgZone({ enableLongStackTrace: false });
-    this.events.subscribe('Home/reloadStatus', () => {
-      this.setWallets();
-      this._didEnter();
-    });
   }
 
   ionViewDidEnter() {
@@ -123,8 +106,7 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    // Update list of wallets, status and TXPs
-    this.setWallets();
+    this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
 
     // Get Coinbase Accounts and UserInfo
     this.setCoinbase();
@@ -146,20 +128,6 @@ export class WalletsPage {
   private _didEnter() {
     this.checkClipboard();
     this.updateTxps();
-
-    // Show integrations
-    const integrations = this.homeIntegrationsProvider
-      .get()
-      .filter(i => i.show)
-      .filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
-
-    // Hide BitPay if linked
-    setTimeout(() => {
-      this.homeIntegrations = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return false;
-        else return x;
-      });
-    }, 200);
   }
 
   private walletFocusHandler = opts => {
@@ -190,9 +158,6 @@ export class WalletsPage {
       // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
 
-      // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-      this.events.subscribe('Local/WalletListChange', () => this.setWallets());
-
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletActionHandler);
 
@@ -202,14 +167,12 @@ export class WalletsPage {
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setWallets();
       this.checkClipboard();
       subscribeEvents();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-      this.events.unsubscribe('Local/WalletListChange', this.setWallets);
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
       this.events.unsubscribe('Local/WalletFocus', this.walletFocusHandler);
     });
@@ -261,7 +224,6 @@ export class WalletsPage {
         this.navCtrl.getActive().name == 'WalletsPage'
       ) {
         this.checkClipboard();
-        this.setWallets();
       }
     });
   }
@@ -302,7 +264,8 @@ export class WalletsPage {
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.setWallets();
+      this.profileProvider.setOrderedWalletsByGroup();
+      this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
     },
     5000,
     {
@@ -319,30 +282,6 @@ export class WalletsPage {
       leading: true
     }
   );
-
-  private setWallets = () => {
-    // TEST
-    /*
-    setTimeout(() => {
-      this.logger.info('##### Load BITCOIN URI TEST');
-      this.incomingDataProvider.redir('bitcoin:3KeJU7VxSKC451pPNSWjF6zK3gm2x7re7q?amount=0.0001');
-    },100);
-    */
-
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsGroups = _.values(
-      _.groupBy(
-        _.filter(this.wallets, wallet => {
-          return wallet.keyId != 'read-only';
-        }),
-        'keyId'
-      )
-    );
-
-    this.readOnlyWalletsGroup = this.profileProvider.getWalletsFromGroup({
-      keyId: 'read-only'
-    });
-  };
 
   private checkClipboard() {
     return this.clipboardProvider
@@ -364,7 +303,7 @@ export class WalletsPage {
         ) {
           const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
           this.payproProvider
-            .getPayProOptions(invoiceUrl)
+            .getPayProOptions(invoiceUrl, true)
             .then(payproOptions => {
               if (!payproOptions) return;
               const { expires, paymentOptions, payProUrl } = payproOptions;
@@ -385,8 +324,11 @@ export class WalletsPage {
             .catch(err => {
               this.hideClipboardCard();
               this.payProDetailsData = {};
-              this.payProDetailsData.error = err.message;
-              this.logger.warn('Error in Payment Protocol', err);
+              this.payProDetailsData.error = this.bwcErrorProvider.msg(err);
+              this.logger.warn(
+                'Error fetching this invoice',
+                this.bwcErrorProvider.msg(err)
+              );
             });
         }
       })
@@ -401,13 +343,9 @@ export class WalletsPage {
   }
 
   public processClipboardData(data): void {
-    this.onGoingProvessProvider.set('fetchingPayProOptions');
     this.clearCountDownInterval();
     this.hideClipboardCard();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
-    setTimeout(() => {
-      this.onGoingProvessProvider.clear();
-    }, 3000);
   }
 
   private clearCountDownInterval(): void {

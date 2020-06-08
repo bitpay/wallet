@@ -1133,11 +1133,20 @@
 
   // 5.4 - Tab Settings
   page-settings,
-  page-about {
+  page-about,
+  page-add-wallet {
     .bp-list {
       ion-note.note {
         background: $bg-color-dark-theme-2;
         color: $text-color-dark-theme-2;
+      }
+      ion-icon.item-img.icon {
+        &.icon-md.item-icon,
+        &.icon-ios.item-icon {
+          &.ionic-icon {
+            color: #555a60;
+          }
+        }
       }
       .icon-qrcode {
         filter: invert(1);

@@ -12,8 +12,6 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
   templateUrl: 'shapeshift-settings.html'
 })
 export class ShapeshiftSettingsPage {
-  private accessToken;
-
   public shapeshiftUser;
   public unverifiedAccount: boolean;
   public loading: boolean;
@@ -29,10 +27,8 @@ export class ShapeshiftSettingsPage {
   ionViewDidLoad() {
     this.loading = true;
     this.shapeshiftProvider.init((err, data) => {
-      if (!err && !data) {
-        this.loading = false;
-        return;
-      }
+      this.loading = false;
+      if (!err && !data) return;
       if (err) {
         this.logger.error(err);
         this.loading = false;
@@ -40,12 +36,7 @@ export class ShapeshiftSettingsPage {
         return;
       }
 
-      this.accessToken = data.accessToken;
-      this.shapeshiftProvider.getAccount(this.accessToken, (err, account) => {
-        this.loading = false;
-        if (err) this.logger.error(err);
-        this.shapeshiftUser = account.data;
-      });
+      this.shapeshiftUser = data.user;
     });
   }
 

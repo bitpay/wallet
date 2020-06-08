@@ -271,7 +271,8 @@ export class IABCardProvider {
             disabled,
             activationDate,
             cardType,
-            cardBalance
+            cardBalance,
+            lockedByUser
           }
         }
       }
@@ -327,15 +328,20 @@ export class IABCardProvider {
 
             cards = cards.map(c => {
               // @ts-ignore
-              const { lockedByUser, hide } =
+              let { hide } =
                 (currentCards || []).find(
                   currentCard => currentCard.eid === c.id
                 ) || {};
 
+              const hideCardStatuses = ['lost', 'stolen', 'canceled'];
+
+              if (c.status && hideCardStatuses.includes(c.status)) {
+                hide = true;
+              }
+
               return {
                 ...c,
                 hide,
-                lockedByUser,
                 currencyMeta: c.currency,
                 currency: c.currency.code,
                 eid: c.id
@@ -542,8 +548,16 @@ export class IABCardProvider {
       return;
     }
 
-    const { hide, provider } = event.data.params;
-    cards = cards.map(c => (c.provider === provider ? { ...c, hide } : c));
+    const { hide, provider, id } = event.data.params;
+
+    cards = cards.map(c => {
+      if ((provider === 'galileo' && c.provider === provider) || c.id === id) {
+        return { ...c, hide };
+      }
+
+      return c;
+    });
+
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
@@ -605,6 +619,8 @@ export class IABCardProvider {
       params,
       async (user: User) => {
         if (user) {
+          this.sendMessage({ message: 'pairingSuccess' });
+
           this.logger.log(`pairing success -> ${JSON.stringify(user)}`);
           // publish to correct window
           this.events.publish('BitPayId/Connected');
@@ -637,24 +653,18 @@ export class IABCardProvider {
             this.hide();
           }
 
-          // clear out loading state
-          setTimeout(() => {
-            this.onGoingProcess.clear();
-          }, 300);
-
           // publish new user
           this.user.next(user);
 
           // fetch new cards
           await this.getCards();
 
-          this.persistenceProvider.getCardExperimentFlag().then(status => {
-            if (status === 'enabled') {
-              this.events.publish('experimentUpdateComplete');
-            }
-          });
+          this.events.publish('updateCards');
 
-          this.sendMessage({ message: 'pairingSuccess' });
+          // clear out loading state
+          setTimeout(() => {
+            this.onGoingProcess.clear();
+          }, 300);
         }
       },
       async err => {
@@ -697,11 +707,11 @@ export class IABCardProvider {
     }
   }
 
-  show(enableLoadingScreen?: boolean): void {
+  show(disableLoadingScreen?: boolean): void {
     if (this.cardIAB_Ref) {
       let message = 'iabOpening';
 
-      if (enableLoadingScreen) {
+      if (disableLoadingScreen) {
         message = `${message}?enableLoadingScreen`;
       }
 
@@ -731,8 +741,7 @@ export class IABCardProvider {
     const cards = await this.persistenceProvider.getBitpayDebitCards(
       this.NETWORK
     );
-    const hasFirstView =
-      cards && cards.filter(c => c.provider === 'firstView').length > 0;
+    const hasFirstView = cards && !!cards.find(c => c.provider === 'firstView');
     this.logger.log(`CARD - has first view cards = ${hasFirstView}`);
     if (this.cardIAB_Ref) {
       this.cardIAB_Ref.executeScript(

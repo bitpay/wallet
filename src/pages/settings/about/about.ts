@@ -80,23 +80,6 @@ export class AboutPage {
     );
   }
 
-  public openTermsOfUse() {
-    const url = 'https://bitpay.com/about/terms#wallet';
-    const optIn = true;
-    const title = null;
-    const message = this.translate.instant('View Wallet Terms of Use');
-    const okText = this.translate.instant('Open');
-    const cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
-  }
-
   public countReleaseInfoTaps() {
     let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
     this.releaseInfoTaps++;
@@ -113,23 +96,6 @@ export class AboutPage {
       this.persistenceProvider.setTestingAdvertisements(true);
       this.events.publish('Local/TestAdsToggle', true);
     }
-  }
-
-  public openPrivacyPolicy() {
-    const url = 'https://bitpay.com/about/privacy';
-    const optIn = true;
-    const title = null;
-    const message = this.translate.instant('View Privacy Policy');
-    const okText = this.translate.instant('Open');
-    const cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
   }
 
   public openSessionLog(): void {
