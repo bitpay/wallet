@@ -53,6 +53,17 @@
       </ion-note>
     </button>
 
+    <ion-item *ngIf="wallet.coin == 'xrp'">
+      <ion-label stacked>{{'Destination Tag' | translate}}</ion-label>
+      <ion-input class="padded-input" type="number" placeholder="{{'Enter a destination tag' | translate}}" [(ngModel)]="destinationTag" name="destinationTag" autocomplete="off" autocorrect="off"></ion-input>
+    </ion-item>
+
+    <label-tip *ngIf="wallet.coin =='xrp' && !destinationTag" type="info" header="no-header">
+      <div label-tip-body translate>
+        A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange.
+      </div>
+    </label-tip>
+
     <ion-item *ngIf="description">
       <ion-label>
         <div class="summary-item">
@@ -78,10 +89,10 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !data" [buttonText]="buttonText" (slideDone)="approve()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !data || (wallet.coin == 'xrp' && !destinationTag)" [buttonText]="buttonText" (slideDone)="approve()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="approve()" [disabled]="!wallet || !data">{{buttonText}}</button>
+      <button ion-button full class="button-footer" (click)="approve()" [disabled]="!wallet || !data || (wallet.coin == 'xrp' && !destinationTag)">{{buttonText}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>
