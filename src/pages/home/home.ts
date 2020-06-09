@@ -3,8 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { SimplexPage } from '../../pages/integrations/simplex/simplex';
-import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
+// import { SimplexPage } from '../../pages/integrations/simplex/simplex';
+// import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
@@ -14,7 +14,13 @@ import {
   Logger,
   MerchantProvider,
   PersistenceProvider,
-  SimplexProvider
+  ProfileProvider,
+  HomeIntegrationsProvider,
+  PlatformProvider,
+  ReleaseProvider,
+  ActionSheetProvider,
+  ErrorsProvider
+  // SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
@@ -23,14 +29,12 @@ import {
   hasVisibleDiscount
 } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { AmountPage } from '../../pages/send/amount/amount';
 
 export interface Advertisement {
   name: string;
@@ -77,6 +81,12 @@ export class HomePage {
   private isCordova: boolean;
   private zone;
 
+  // Buy Crypto
+  public isOpenSelector: boolean;
+  public wallet;
+  public wallets: any[];
+  public coin: string[];
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
@@ -87,14 +97,16 @@ export class HomePage {
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
     private merchantProvider: MerchantProvider,
-    private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private profileProvider: ProfileProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -244,29 +256,29 @@ export class HomePage {
     const card: Advertisement =
       this.cardExperimentEnabled && this.isCordova
         ? {
-            name: 'bitpay-card',
-            title: this.translate.instant('Get the BitPay Card'),
-            body: this.translate.instant(
-              'Designed for people who want to live life on crypto.'
-            ),
-            app: 'bitpay',
-            linkText: this.translate.instant('Order Now'),
-            link: BitPayCardIntroPage,
-            dismissible: true,
-            imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
-          }
+          name: 'bitpay-card',
+          title: this.translate.instant('Get the BitPay Card'),
+          body: this.translate.instant(
+            'Designed for people who want to live life on crypto.'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Order Now'),
+          link: BitPayCardIntroPage,
+          dismissible: true,
+          imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+        }
         : {
-            name: 'bitpay-card',
-            title: this.translate.instant('Coming soon'),
-            body: this.translate.instant(
-              'Join the waitlist and be first to experience the new card.'
-            ),
-            app: 'bitpay',
-            linkText: this.translate.instant('Notify Me'),
-            link: PhaseOneCardIntro,
-            dismissible: true,
-            imgSrc: 'assets/img/icon-bpcard.svg'
-          };
+          name: 'bitpay-card',
+          title: this.translate.instant('Coming soon'),
+          body: this.translate.instant(
+            'Join the waitlist and be first to experience the new card.'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Notify Me'),
+          link: PhaseOneCardIntro,
+          dismissible: true,
+          imgSrc: 'assets/img/icon-bpcard.svg'
+        };
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'bitpay-card'
     );
@@ -283,8 +295,8 @@ export class HomePage {
           : this.translate.instant('Connect your Coinbase!'),
         body: this.hasOldCoinbaseSession
           ? this.translate.instant(
-              'Reconnect to quickly withdraw and deposit funds.'
-            )
+            'Reconnect to quickly withdraw and deposit funds.'
+          )
           : this.translate.instant('Easily deposit and withdraw funds.'),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
@@ -301,10 +313,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-            discount.amount,
-            discountedCard.currency,
-            'minimal'
-          )}`
+          discount.amount,
+          discountedCard.currency,
+          'minimal'
+        )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -316,7 +328,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-        } gift cards. Limited time offer.`,
+          } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -486,14 +498,64 @@ export class HomePage {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public goToBuyCrypto() {
+  public selectWallet() {
+    this.wallets = this.profileProvider.getWallets({
+      network: 'livenet',
+      onlyComplete: true,
+      coin: this.coin || ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
+      backedUp: true
+    });
+    if (_.isEmpty(this.wallets)) {
+      const err = this.translate.instant('You do not have wallets able to receive funds');
+      const title = this.translate.instant('Error');
+      this.errorsProvider.showDefaultError(err, title);
+    } else {
+      if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
+      else this.showWallets();
+    }
+  }
+
+  public showWallets(): void {
+    this.isOpenSelector = true;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: this.translate.instant('Select wallet to deposit to')
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
+      this.onWalletSelect(wallet);
+    });
+  }
+
+  private onWalletSelect(wallet): void {
+    if (!_.isEmpty(wallet)) {
+      this.wallet = wallet;
+      this.isOpenSelector = false;
+      this.goToAmountPage();
+    }
+  }
+
+  private goToAmountPage() {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
-    this.simplexProvider.getSimplex().then(simplexData => {
-      if (simplexData && !_.isEmpty(simplexData)) {
-        this.navCtrl.push(SimplexPage);
-      } else {
-        this.navCtrl.push(SimplexBuyPage);
-      }
+    this.navCtrl.push(AmountPage, {
+      fromBuyCrypto: true,
+      // coin,
+      nextPage: 'SimplexBuyPage',
+      walletId: this.wallet.id,
+      coin: this.coin,
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
+      // fromWalletDetails: true,
+      // toAddress,
+      // destinationTag,
+      // description:
+      //   this.translate.instant('Deposit to') + ': ' + account_name,
+      // recipientType: 'coinbase',
+      // fromCoinbase: { accountId: this.id, accountName: account_name }
     });
   }
 
@@ -572,5 +634,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-  }-gift-card-discount`;
+    }-gift-card-discount`;
 }

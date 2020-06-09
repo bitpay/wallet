@@ -13,6 +13,8 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 // Providers
 import { Config, ConfigProvider } from '../../../providers/config/config';
@@ -23,6 +25,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { SimplexProvider } from '../../../providers/simplex/simplex';
 
 // Pages
 import {
@@ -41,6 +44,7 @@ import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
 import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-amount',
@@ -95,6 +99,18 @@ export class AmountPage {
 
   private fromCoinbase;
   private alternativeCurrency;
+  public fromBuyCrypto: boolean;
+  public quoteForm: FormGroup;
+  public supportedFiatAltCurrencies: string[];
+  public altCurrenciesToShow: string[];
+  public altCurrenciesToShow2: string[];
+  showLoading: boolean;
+  cancelText: any;
+  okText: any;
+  selectOptions: { title: any; cssClass: string; };
+  altCurrencyInitial: any;
+  supportedFiatWarning: boolean;
+
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -115,7 +131,10 @@ export class AmountPage {
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private simplexProvider: SimplexProvider,
+    private formBuilder: FormBuilder,
+    private translate: TranslateService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -135,6 +154,7 @@ export class AmountPage {
       : false;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.alternativeCurrency = this.navParams.data.alternativeCurrency;
+    this.fromBuyCrypto = this.navParams.data.fromBuyCrypto;
 
     this.showSendMax = false;
     this.useSendMax = false;
@@ -174,6 +194,7 @@ export class AmountPage {
     };
     this.setAvailableUnits();
     this.updateUnitUI();
+    if (this.fromBuyCrypto) this.setBuyCryptoParams();
     this.cardConfig =
       this.cardName &&
       (await this.giftCardProvider.getCardConfig(this.cardName));
@@ -506,9 +527,9 @@ export class AmountPage {
     return parseFloat(
       this.rateProvider
         .toFiat(
-          val * this.unitToSatoshi,
-          this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
+        val * this.unitToSatoshi,
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -658,8 +679,8 @@ export class AmountPage {
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
       ? this.currencyProvider.getPrecision(
-          this.availableUnits[this.altUnitIndex].id
-        )
+        this.availableUnits[this.altUnitIndex].id
+      )
       : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -667,9 +688,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
@@ -711,5 +732,50 @@ export class AmountPage {
     } else {
       this.viewCtrl.dismiss(item);
     }
+  }
+
+  private setBuyCryptoParams() {
+    const isoCode = this.config.wallet.settings.alternativeIsoCode;
+    this.altCurrencyInitial =
+      this.fiatCode && this.isSupportedFiat(this.fiatCode)
+        ? this.fiatCode
+        : this.isSupportedFiat(isoCode)
+          ? isoCode
+          : 'USD';
+
+    this.quoteForm = this.formBuilder.group({
+      amount: [
+        200,
+        [Validators.required, Validators.min(50), Validators.max(20000)]
+      ],
+      altCurrency: [this.altCurrencyInitial, [Validators.required]]
+    });
+    this.altCurrenciesToShow = ['USD', 'EUR'];
+    this.altCurrenciesToShow2 = [];
+
+    if (this.altCurrenciesToShow.indexOf(this.altCurrencyInitial) < 0)
+      this.altCurrenciesToShow.push(this.altCurrencyInitial);
+
+    this.selectOptions = {
+      title: this.translate.instant('Select Currency'),
+      cssClass: 'simplex-currency-' + (this.altCurrenciesToShow.length + 1)
+    };
+
+    this.supportedFiatAltCurrencies = this.simplexProvider.getSupportedFiatAltCurrencies();
+
+    this.supportedFiatAltCurrencies.forEach((currency: string) => {
+      if (this.altCurrenciesToShow.indexOf(currency) < 0)
+        this.altCurrenciesToShow2.push(currency);
+    });
+
+    this.okText = this.translate.instant('Select');
+    this.cancelText = this.translate.instant('Cancel');
+    this.showLoading = false;
+  }
+
+  private isSupportedFiat(isoCode: string): boolean {
+    return (
+      this.simplexProvider.getSupportedFiatAltCurrencies().indexOf(isoCode) > -1
+    );
   }
 }

@@ -29,14 +29,14 @@
         <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-      <div class="result">&asymp;
+      <div class="result" *ngIf="!fromBuyCrypto">&asymp;
         <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
         <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
         {{alternativeUnit}}
       </div>
     </div>
 
-    <div class="amount-switcher-margin">
+    <div class="amount-switcher-margin" *ngIf="!fromBuyCrypto">
       <div class="amount-switcher">
         <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
           <img class="switcher__icon" src="assets/img/icon-swap.svg">
@@ -44,6 +44,16 @@
         </div>
       </div>
     </div>
+
+    <form class="form-margin" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+      <ion-item>
+        <ion-select class="switcher" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+          <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </form>
 
     <div class="bottom-absolute">
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
