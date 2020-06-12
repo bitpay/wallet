@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { PricePage } from '../../pages/home/price-page/price-page';
@@ -48,7 +48,8 @@ export class ExchangeRates {
     private currencyProvider: CurrencyProvider,
     private exchangeRatesProvider: ExchangeRatesProvider,
     private configProvider: ConfigProvider,
-    private logger: Logger
+    private logger: Logger,
+    private events: Events
   ) {
     const availableChains = this.currencyProvider.getAvailableChains();
     for (const coin of availableChains) {
@@ -69,18 +70,21 @@ export class ExchangeRates {
       this.coins.push(card);
     }
     this.getPrices();
+    this.events.subscribe('Local/PriceUpdate', () => {
+      this.getPrices(true);
+    });
   }
 
   public goToPricePage(card) {
     this.navCtrl.push(PricePage, { card });
   }
 
-  public getPrices() {
+  public getPrices(force: boolean = false) {
     this.setIsoCode();
 
     _.forEach(this.coins, (coin, index) => {
       this.exchangeRatesProvider
-        .getHistoricalRates(coin.unitCode, this.isoCode)
+        .getHistoricalRates(coin.unitCode, this.isoCode, force)
         .subscribe(response => {
           this.coins[index].historicalRates = response;
           this.updateValues(index);

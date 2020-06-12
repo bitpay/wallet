@@ -444,32 +444,25 @@ export class WalletProvider {
   private getWalletTotalBalanceAlternative(
     balanceSat: number,
     coin: string,
-    totalBalanceAlternativeIsoCode: string
+    isoCode: string
   ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, totalBalanceAlternativeIsoCode, coin)
-      .toFixed(2);
+    const balance = this.rateProvider.toFiat(balanceSat, isoCode, coin);
+    return balance ? balance.toFixed(2) : '0.00';
   }
 
   private getWalletTotalBalanceAlternativeLastDay(
     balanceSat: number,
     coin: string,
-    totalBalanceAlternativeIsoCode: string,
+    isoCode: string,
     lastDayRatesArray: any
   ): string {
-    return this.rateProvider
-      .toFiat(balanceSat, totalBalanceAlternativeIsoCode, coin, {
-        customRate: lastDayRatesArray[coin]
-      })
-      .toFixed(2);
+    const balanceLastDay = this.rateProvider.toFiat(balanceSat, isoCode, coin, {
+      customRate: lastDayRatesArray[coin]
+    });
+    return balanceLastDay ? balanceLastDay.toFixed(2) : '0.00';
   }
 
-  private calcTotalAmount(
-    statusWallet,
-    wallet,
-    totalBalanceAlternativeIsoCode,
-    lastDayRatesArray
-  ) {
+  private calcTotalAmount(statusWallet, wallet, isoCode, lastDayRatesArray) {
     let walletTotalBalanceAlternative = 0;
     let walletTotalBalanceAlternativeLastDay = 0;
     if (wallet.network === 'livenet' && !wallet.hidden) {
@@ -481,23 +474,13 @@ export class WalletProvider {
         this.getWalletTotalBalanceAlternativeLastDay(
           balance,
           wallet.coin,
-          totalBalanceAlternativeIsoCode,
+          isoCode,
           lastDayRatesArray
         )
       );
-      if (wallet.coin === 'xrp') {
-        walletTotalBalanceAlternative = parseFloat(
-          this.getWalletTotalBalanceAlternative(
-            statusWallet.availableBalanceSat,
-            'xrp',
-            totalBalanceAlternativeIsoCode
-          )
-        );
-      } else {
-        walletTotalBalanceAlternative = parseFloat(
-          (statusWallet.totalBalanceAlternative || '0.00').replace(/,/g, '')
-        );
-      }
+      walletTotalBalanceAlternative = parseFloat(
+        this.getWalletTotalBalanceAlternative(balance, wallet.coin, isoCode)
+      );
     }
     return {
       walletTotalBalanceAlternative,
@@ -505,26 +488,24 @@ export class WalletProvider {
     };
   }
 
-  public async getTotalAmount(
-    wallets,
-    totalBalanceAlternativeIsoCode,
-    lastDayRatesArray
-  ) {
+  public async getTotalAmount(wallets, lastDayRatesArray) {
+    const isoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     if (_.isEmpty(wallets))
       return {
-        totalBalanceAlternativeIsoCode,
+        isoCode,
         totalBalanceAlternative: '0',
         averagePrice: 0
       };
 
-    let totalAmountArray = [];
+    const totalAmountArray = [];
 
     _.each(wallets, wallet => {
       totalAmountArray.push(
         this.calcTotalAmount(
           wallet.cachedStatus,
           wallet,
-          totalBalanceAlternativeIsoCode,
+          isoCode,
           lastDayRatesArray
         )
       );
@@ -546,7 +527,7 @@ export class WalletProvider {
       parseFloat(totalBalanceAlternative.replace(/,/g, ''));
 
     return {
-      totalBalanceAlternativeIsoCode,
+      isoCode,
       totalBalanceAlternative,
       averagePrice
     };

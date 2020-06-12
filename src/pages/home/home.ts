@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -75,6 +75,7 @@ export class HomePage {
   private newReleaseVersion: string;
 
   private isCordova: boolean;
+  private zone;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -95,6 +96,7 @@ export class HomePage {
     private platformProvider: PlatformProvider
   ) {
     this.logger.info('Loaded: HomePage');
+    this.zone = new NgZone({ enableLongStackTrace: false });
     this.subscribeEvents();
     this.persistenceProvider
       .getCardExperimentFlag()
@@ -151,9 +153,11 @@ export class HomePage {
   }
 
   private updateTotalBalance(data) {
-    this.totalBalanceAlternative = data.totalBalanceAlternative;
-    this.averagePrice = data.averagePrice;
-    this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
+    this.zone.run(() => {
+      this.totalBalanceAlternative = data.totalBalanceAlternative;
+      this.averagePrice = data.averagePrice;
+      this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
+    });
   }
 
   private setTotalBalance(data) {

@@ -72,7 +72,7 @@ export class PricePage {
   private getPrice(lastDate) {
     this.canvas.loading = true;
     this.exchangeRatesProvider
-      .getHistoricalRates(this.card.unitCode, this.isoCode, lastDate)
+      .getHistoricalRates(this.card.unitCode, this.isoCode, false, lastDate)
       .subscribe(
         response => {
           this.card.historicalRates = response;

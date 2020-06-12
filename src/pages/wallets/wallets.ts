@@ -116,8 +116,9 @@ export class WalletsPage {
     this.showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
       'coinbase'
     );
+    if (!this.showCoinbase) return;
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
-    if (this.coinbaseLinked && this.showCoinbase) {
+    if (this.coinbaseLinked) {
       if (force || !this.coinbaseData) {
         this.coinbaseProvider.updateExchangeRates();
         this.coinbaseProvider.preFetchAllData(this.coinbaseData);
