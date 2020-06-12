@@ -31,6 +31,7 @@ export class CoinbaseWithdrawPage {
   public amount: string;
   public currency: string;
   public description: string;
+  public destinationTag: number;
 
   public wallet;
   public address: string;
@@ -124,7 +125,8 @@ export class CoinbaseWithdrawPage {
       to: this.address,
       amount: this.amount,
       currency: this.currency,
-      description: this.description
+      description: this.description,
+      destination_tag: this.destinationTag
     };
     this._sendTransaction(tx);
   }
