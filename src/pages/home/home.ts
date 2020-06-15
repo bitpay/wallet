@@ -3,23 +3,24 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { AmountPage } from '../../pages/send/amount/amount';
 // import { SimplexPage } from '../../pages/integrations/simplex/simplex';
 // import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
+  ActionSheetProvider,
   AppProvider,
+  ErrorsProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
+  HomeIntegrationsProvider,
   Logger,
   MerchantProvider,
   PersistenceProvider,
-  ProfileProvider,
-  HomeIntegrationsProvider,
   PlatformProvider,
-  ReleaseProvider,
-  ActionSheetProvider,
-  ErrorsProvider
+  ProfileProvider,
+  ReleaseProvider
   // SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
@@ -34,7 +35,6 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
-import { AmountPage } from '../../pages/send/amount/amount';
 
 export interface Advertisement {
   name: string;
@@ -506,7 +506,9 @@ export class HomePage {
       backedUp: true
     });
     if (_.isEmpty(this.wallets)) {
-      const err = this.translate.instant('You do not have wallets able to receive funds');
+      const err = this.translate.instant(
+        'You do not have wallets able to receive funds'
+      );
       const title = this.translate.instant('Error');
       this.errorsProvider.showDefaultError(err, title);
     } else {
@@ -545,10 +547,10 @@ export class HomePage {
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       // coin,
-      nextPage: 'SimplexBuyPage',
+      nextPage: 'CryptoPaymentMethodPage',
       walletId: this.wallet.id,
       coin: this.coin,
-      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
       // fromWalletDetails: true,
       // toAddress,
       // destinationTag,

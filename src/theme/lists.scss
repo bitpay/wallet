@@ -46,7 +46,8 @@
     }
   }
 
-  ion-icon.item-img.icon {
+  ion-icon.item-img.icon,
+  ion-note ion-icon.item-img.icon {
     &.icon-md.item-icon,
     &.icon-ios.item-icon {
       margin: 9px 15px 9px 0;

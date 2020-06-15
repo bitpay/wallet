@@ -15,7 +15,7 @@
 
 <ion-content class="add-bottom-safe-area" no-bounce>
   <div class="container">
-    <div class="amount-content">
+    <div class="amount-content" [ngClass]="{'amount-content-fixed': fromBuyCrypto}">
       <div class="expression-container">
         <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
           <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
@@ -45,14 +45,14 @@
       </div>
     </div>
 
-    <form class="form-margin" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
-      <ion-item>
-        <ion-select class="switcher" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+    <form class="amount-switcher-margin" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+      <div class="amount-switcher">
+        <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
           <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
           <ion-option *ngIf="wallet && wallet.coin" [value]="currencyProvider.getChain(wallet.coin)">{{ wallet.coin | uppercase }}</ion-option>
           <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
         </ion-select>
-      </ion-item>
+      </div>
     </form>
 
     <div class="bottom-absolute">

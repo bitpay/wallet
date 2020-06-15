@@ -38,6 +38,12 @@ coin-icon {
       &_busd {
         background-color: #f3ba2d;
       }
+      &_default {
+        background-color: #e6f8e9;
+      }
     }
+  }
+  .ion-logo-usd:before {
+    padding: 8px 11.5px;
   }
 }

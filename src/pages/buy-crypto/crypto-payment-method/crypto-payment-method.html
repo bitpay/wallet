@@ -1,0 +1,19 @@
+<wide-header-page title="{{'Select Payment Method' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected">
+      <div *ngFor="let method of methods | keys">
+        <ion-item>
+          <ion-label class="main-label">{{method.value.label}}</ion-label>
+          <ion-radio item-left [value]="method.key" disabled="{{method.value.disabled}}"></ion-radio>
+          <ion-icon item-end class="item-img">
+            <img src="{{method.value.imgSrc}}">
+          </ion-icon>
+        </ion-item>
+        <div class="line-divider"></div>
+      </div>
+    </ion-list>
+    <button ion-button class="button-standard button-primary" (click)="goToOrderSummary()">
+      <span>{{'View Order Summary' | translate}}</span>
+    </button>
+  </div>
+</wide-header-page>

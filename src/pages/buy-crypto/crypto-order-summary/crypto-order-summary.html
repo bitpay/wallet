@@ -1,0 +1,65 @@
+<wide-header-page title="{{'Order Summary' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <div class="item-label" translate>Amount</div>
+      <ion-card class="item-card">
+        <ion-item>
+          <coin-icon item-start [coin]="'default'"></coin-icon>
+          <div class="main-label">{{currency}}</div>
+          <ion-note item-end>
+            <ion-row align-items-center>
+              <div class="secondary-note" item-start>${{amount | number : '1.2-2'}}</div>
+              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+            </ion-row>
+          </ion-note>
+        </ion-item>
+      </ion-card>
+
+      <div class="item-label" translate>Currency</div>
+      <ion-card class="item-card">
+        <ion-item>
+          <coin-icon item-start [coin]="coin" [network]="network"></coin-icon>
+          <div class="main-label">
+            {{coin | uppercase}}
+          </div>
+          <ion-note item-end>
+            <ion-row align-items-center>
+              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+            </ion-row>
+          </ion-note>
+        </ion-item>
+      </ion-card>
+
+      <div class="item-label" translate>Country of Residence</div>
+      <ion-card class="item-card">
+        <ion-item>
+          <div class="main-label">{{country}}</div>
+          <ion-note item-end>
+            <ion-row align-items-center>
+              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+            </ion-row>
+          </ion-note>
+        </ion-item>
+      </ion-card>
+
+      <div class="item-label" translate>Payment Method</div>
+      <ion-card class="item-card">
+        <ion-item>
+          <div class="main-label">{{paymentMethod?.label}}</div>
+          <ion-note item-end>
+            <ion-row align-items-center>
+              <ion-icon class="item-img" item-start>
+                <img src="{{paymentMethod?.imgSrc}}">
+              </ion-icon>
+              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+            </ion-row>
+          </ion-note>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+    <button ion-button class="button-standard button-primary" (click)="goToConfirm()">
+      <span>{{'View Offers' | translate}}</span>
+    </button>
+  </div>
+</wide-header-page>

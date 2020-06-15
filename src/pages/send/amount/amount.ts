@@ -5,6 +5,7 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Events,
   Navbar,
@@ -13,38 +14,36 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 
 // Providers
-import { Config, ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
-import { ElectronProvider } from '../../../providers/electron/electron';
-import { FilterProvider } from '../../../providers/filter/filter';
-import { Logger } from '../../../providers/logger/logger';
-import { PlatformProvider } from '../../../providers/platform/platform';
-import { RateProvider } from '../../../providers/rate/rate';
-import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { SimplexProvider } from '../../../providers/simplex/simplex';
-
-// Pages
 import {
   ActionSheetProvider,
   GiftCardProvider,
   IABCardProvider
 } from '../../../providers';
+import { Config, ConfigProvider } from '../../../providers/config/config';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { ElectronProvider } from '../../../providers/electron/electron';
+import { FilterProvider } from '../../../providers/filter/filter';
 import { getActivationFee } from '../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
+import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { RateProvider } from '../../../providers/rate/rate';
+import { SimplexProvider } from '../../../providers/simplex/simplex';
+import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+
+// Pages
+import { CryptoPaymentMethodPage } from '../../buy-crypto/crypto-payment-method/crypto-payment-method';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
-import { SimplexBuyPage } from '../../integrations/simplex/simplex-buy/simplex-buy';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
-import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 import { TranslateService } from '@ngx-translate/core';
+import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 
 @Component({
   selector: 'page-amount',
@@ -107,10 +106,9 @@ export class AmountPage {
   showLoading: boolean;
   cancelText: any;
   okText: any;
-  selectOptions: { title: any; cssClass: string; };
+  selectOptions: { title: any; cssClass: string };
   altCurrencyInitial: any;
   supportedFiatWarning: boolean;
-
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -336,8 +334,8 @@ export class AmountPage {
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
         break;
-      case 'SimplexBuyPage':
-        nextPage = SimplexBuyPage;
+      case 'CryptoPaymentMethodPage':
+        nextPage = CryptoPaymentMethodPage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = false; // Disabled for now
@@ -527,9 +525,9 @@ export class AmountPage {
     return parseFloat(
       this.rateProvider
         .toFiat(
-        val * this.unitToSatoshi,
-        this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].id
+          val * this.unitToSatoshi,
+          this.fiatCode,
+          coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -593,7 +591,7 @@ export class AmountPage {
       data = {
         id: this._id,
         amount,
-        currency: unit.id.toUpperCase(),
+        currency: this.fromBuyCrypto ? this.unit : unit.id.toUpperCase(),
         coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
@@ -679,8 +677,8 @@ export class AmountPage {
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
       ? this.currencyProvider.getPrecision(
-        this.availableUnits[this.altUnitIndex].id
-      )
+          this.availableUnits[this.altUnitIndex].id
+        )
       : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -688,9 +686,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-      this.unit +
-      ' alternativeUnit:' +
-      this.alternativeUnit
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
     );
   }
 
@@ -740,8 +738,8 @@ export class AmountPage {
       this.fiatCode && this.isSupportedFiat(this.fiatCode)
         ? this.fiatCode
         : this.isSupportedFiat(isoCode)
-          ? isoCode
-          : 'USD';
+        ? isoCode
+        : 'USD';
 
     this.quoteForm = this.formBuilder.group({
       amount: [
@@ -777,5 +775,13 @@ export class AmountPage {
     return (
       this.simplexProvider.getSupportedFiatAltCurrencies().indexOf(isoCode) > -1
     );
+  }
+
+  public altCurrencyChange(): void {
+    this.logger.debug(
+      'altCurrency changed to: ' + this.quoteForm.value.altCurrency
+    );
+    if (!this.wallet) return;
+    this.unit = this.quoteForm.value.altCurrency;
   }
 }
