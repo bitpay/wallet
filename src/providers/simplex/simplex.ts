@@ -17,6 +17,7 @@ export class SimplexProvider {
   private env: string;
   public passthrough_uri: string;
   public supportedFiatAltCurrencies;
+  public supportedCoins;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -80,6 +81,7 @@ export class SimplexProvider {
       'VND',
       'ZAR'
     ];
+    this.supportedCoins = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
   }
 
   public getSupportedFiatAltCurrencies(): string[] {

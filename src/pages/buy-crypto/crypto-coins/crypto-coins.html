@@ -1,0 +1,18 @@
+<wide-header-page title="{{'Select Coin' | translate}}">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list" radio-group [(ngModel)]="coinSelected" (ionChange)="save()">
+      <div *ngFor="let coin of supportedCoins">
+        <ion-item>
+          <ion-radio item-left [value]="coin"></ion-radio>
+          <coin-icon [coin]="coin" item-left></coin-icon>
+          <ion-label class="main-label">{{coin | uppercase}}</ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

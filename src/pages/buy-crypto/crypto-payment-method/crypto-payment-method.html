@@ -1,6 +1,11 @@
 <wide-header-page title="{{'Select Payment Method' | translate}}">
+  <ion-buttons left *ngIf="useAsModal">
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
   <div page-content>
-    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected">
+    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected" (ionChange)="save()">
       <div *ngFor="let method of methods | keys">
         <ion-item>
           <ion-label class="main-label">{{method.value.label}}</ion-label>
@@ -12,7 +17,7 @@
         <div class="line-divider"></div>
       </div>
     </ion-list>
-    <button ion-button class="button-standard button-primary" (click)="goToOrderSummary()">
+    <button *ngIf="!useAsModal" ion-button class="button-standard button-primary" (click)="goToOrderSummary()">
       <span>{{'View Order Summary' | translate}}</span>
     </button>
   </div>

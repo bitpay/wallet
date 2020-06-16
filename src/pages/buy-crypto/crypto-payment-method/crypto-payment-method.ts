@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { Logger } from '../../../providers/logger/logger';
@@ -38,14 +38,15 @@ export class CryptoPaymentMethodPage {
   };
   public methodSelected: string;
   public paymentRequest;
+  public useAsModal: boolean;
 
   constructor(
     private logger: Logger,
     private navParams: NavParams,
     private translate: TranslateService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private viewCtrl: ViewController
   ) {
-    this.methodSelected = this.navParams.data.paymentMethod || 'applePay';
     this.methods = {
       applePay: {
         label: this.translate.instant('Apple Pay'),
@@ -75,6 +76,11 @@ export class CryptoPaymentMethodPage {
     this.logger.info('Loaded: CryptoPaymentMethodPage');
   }
 
+  ionViewWillEnter() {
+    this.methodSelected = this.navParams.data.paymentMethod || 'applePay';
+    this.useAsModal = this.navParams.data.useAsModal;
+  }
+
   public goToOrderSummary(): void {
     const params = {
       coin: this.navParams.data.coin,
@@ -85,5 +91,19 @@ export class CryptoPaymentMethodPage {
       amount: this.navParams.data.amount
     };
     this.navCtrl.push(CryptoOrderSummaryPage, params);
+  }
+
+  public close() {
+    this.viewCtrl.dismiss();
+  }
+
+  public save() {
+    if (
+      !this.useAsModal ||
+      !this.methodSelected ||
+      this.navParams.data.paymentMethod == this.methodSelected
+    )
+      return;
+    this.viewCtrl.dismiss({ paymentMethod: this.methods[this.methodSelected] });
   }
 }

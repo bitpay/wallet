@@ -613,7 +613,8 @@ export class AmountPage {
         coin,
         useSendMax: this.useSendMax,
         description: this.description,
-        fromCoinbase: this.fromCoinbase
+        fromCoinbase: this.fromCoinbase,
+        currency: this.unit
       };
 
       if (unit.isFiat) {

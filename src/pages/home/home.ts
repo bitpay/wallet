@@ -546,18 +546,10 @@ export class HomePage {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
-      // coin,
       nextPage: 'CryptoPaymentMethodPage',
       walletId: this.wallet.id,
       coin: this.coin,
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
-      // fromWalletDetails: true,
-      // toAddress,
-      // destinationTag,
-      // description:
-      //   this.translate.instant('Deposit to') + ': ' + account_name,
-      // recipientType: 'coinbase',
-      // fromCoinbase: { accountId: this.id, accountName: account_name }
     });
   }
 

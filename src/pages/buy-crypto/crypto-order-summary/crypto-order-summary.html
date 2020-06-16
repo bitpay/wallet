@@ -2,7 +2,7 @@
   <div page-content>
     <ion-list class="bp-list">
       <div class="item-label" translate>Amount</div>
-      <ion-card class="item-card">
+      <ion-card class="item-card" (click)="openAmountModal()">
         <ion-item>
           <coin-icon item-start [coin]="'default'"></coin-icon>
           <div class="main-label">{{currency}}</div>
@@ -16,7 +16,7 @@
       </ion-card>
 
       <div class="item-label" translate>Currency</div>
-      <ion-card class="item-card">
+      <ion-card class="item-card" (click)="openCryptoCoinsModal()">
         <ion-item>
           <coin-icon item-start [coin]="coin" [network]="network"></coin-icon>
           <div class="main-label">
@@ -43,7 +43,7 @@
       </ion-card>
 
       <div class="item-label" translate>Payment Method</div>
-      <ion-card class="item-card">
+      <ion-card class="item-card" (click)="openCryptoPaymentMethodModal()">
         <ion-item>
           <div class="main-label">{{paymentMethod?.label}}</div>
           <ion-note item-end>
