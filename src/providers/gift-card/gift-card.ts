@@ -131,6 +131,26 @@ export class GiftCardProvider extends InvoiceProvider {
     return user && userSettings && userSettings.syncGiftCardPurchases;
   }
 
+  public getUserEmail(): Promise<string> {
+    const getBitPayIdInfo = this.persistenceProvider.getBitPayIdUserInfo(
+      this.getNetwork()
+    );
+    const getGiftCardUserInfo = this.persistenceProvider.getGiftCardUserInfo();
+    const shouldSync = this.shouldSyncGiftCardPurchasesWithBitPayId();
+    return Promise.all([shouldSync, getBitPayIdInfo, getGiftCardUserInfo])
+      .then(([shouldSync, ...rest]) => {
+        const [bitpayIdEmail, giftCardEmail] = rest
+          .map(result => (_.isString(result) ? JSON.parse(result) : result))
+          .map(jsonResult => jsonResult && jsonResult.email);
+        return (
+          (shouldSync && bitpayIdEmail) ||
+          giftCardEmail ||
+          this.emailNotificationsProvider.getEmailIfEnabled()
+        );
+      })
+      .catch(_ => {});
+  }
+
   public async createBitpayInvoice(data, attempt: number = 1) {
     this.logger.info('BitPay Creating Invoice: try... ' + attempt);
     const params = {
