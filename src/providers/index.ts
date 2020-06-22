@@ -67,6 +67,7 @@ export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';
 export { ElectronProvider } from '../providers/electron/electron';
+export { MerchantProvider } from '../providers/merchant/merchant';
 export {
   OnGoingProcessProvider
 } from '../providers/on-going-process/on-going-process';
