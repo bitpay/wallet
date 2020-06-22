@@ -78,7 +78,7 @@ describe('GiftCardProvider', () => {
 function respondWithAvailableCards(
   httpMock: HttpTestingController,
   giftCardProvider: GiftCardProvider,
-  availableCardMap: AvailableCardMap = {
+  availableCardMap: AvailableCardMap = ({
     ['Amazon.com']: [
       {
         currency: 'USD',
@@ -97,7 +97,7 @@ function respondWithAvailableCards(
         website: 'amazon.com'
       }
     ]
-  } as AvailableCardMap
+  } as any) as AvailableCardMap
 ) {
   httpMock
     .expectOne(

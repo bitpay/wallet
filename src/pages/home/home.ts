@@ -12,6 +12,7 @@ import {
   FeedbackProvider,
   GiftCardProvider,
   Logger,
+  MerchantProvider,
   PersistenceProvider,
   SimplexProvider
 } from '../../providers';
@@ -70,7 +71,6 @@ export class HomePage {
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
   public showCoinbase: boolean = false;
-
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
 
@@ -86,6 +86,7 @@ export class HomePage {
     private formatCurrencyPipe: FormatCurrencyPipe,
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
+    private merchantProvider: MerchantProvider,
     private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -121,6 +122,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.preFetchWallets();
+    this.merchantProvider.getMerchants();
   }
 
   private setMerchantDirectoryAdvertisement() {

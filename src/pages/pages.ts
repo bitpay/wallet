@@ -135,6 +135,7 @@ import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
+import { MerchantPage } from './merchant/merchant';
 
 export const PAGES = [
   AddPage,
@@ -183,6 +184,7 @@ export const PAGES = [
   WalletsPage,
   LanguagePage,
   LockPage,
+  MerchantPage,
   MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
