@@ -35,7 +35,8 @@ export class MerchantProvider {
     const authChangeEvents = [
       'BitPayId/Connected',
       'BitPayId/Disconnected',
-      'BitPayId/SettingsChanged'
+      'BitPayId/SettingsChanged',
+      'GiftCards/GiftCardPurchased'
     ];
     authChangeEvents.forEach(authChangeEvent =>
       this.events.subscribe(authChangeEvent, () => this.refreshMerchants())
