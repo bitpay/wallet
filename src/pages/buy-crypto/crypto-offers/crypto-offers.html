@@ -1,0 +1,39 @@
+<wide-header-page title="{{'Viewing Offers' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item>
+        <ion-label class="summary-order">
+          Buying
+          <span class="summary-order-bold"><span *ngIf="currency === 'USD'">$</span>{{amount}} </span>
+          <span *ngIf="currency !== coin?.toUpperCase()">
+            <span class="summary-order-bold" *ngIf="fiatCurrency !== 'USD'">{{fiatCurrency}}</span> worth of
+          </span>
+          <span class="summary-order-bold">{{coin | uppercase}}</span> using <span class="summary-order-bold"> {{paymentMethod?.label}}</span></ion-label>
+      </ion-item>
+
+      <action-card-v4 (click)="goToSimplexBuyPage()" tappable>
+        <div action-card-body *ngIf="!sFiatMoney" class="loader">
+          <ion-spinner></ion-spinner>
+        </div>
+        <div action-card-body translate *ngIf="sFiatMoney">
+
+          <div class="main-label">{{sAmountReceiving}} {{coin | uppercase}}</div>
+
+          <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{sFiatMoney?.total_amount}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span></div>
+          <div class="provider">
+            <span class="secondary-label">Provided by</span>
+            <img src="assets/img/simplex/logo-simplex-color.svg">
+          </div>
+        </div>
+        <div action-card-button translate *ngIf="sFiatMoney">
+          View Offer
+        </div>
+      </action-card-v4>
+
+      <!-- TODO -->
+      <p class="card-terms">
+        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </ion-list>
+  </div>
+</wide-header-page>

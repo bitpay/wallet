@@ -8,8 +8,13 @@
     <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected" (ionChange)="save()">
       <div *ngFor="let method of methods | keys">
         <ion-item>
-          <ion-label class="main-label">{{method.value.label}}</ion-label>
-          <ion-radio item-left [value]="method.key" disabled="{{method.value.disabled}}"></ion-radio>
+          <ion-label>
+            <div class="main-label">{{method.value.label}}</div>
+            <div>
+              <img *ngIf="method.value.simplexSupport" src="assets/img/simplex/logo-simplex-color.svg">
+            </div>
+          </ion-label>
+          <ion-radio item-left [value]="method.key"></ion-radio>
           <ion-icon item-end class="item-img">
             <img src="{{method.value.imgSrc}}">
           </ion-icon>

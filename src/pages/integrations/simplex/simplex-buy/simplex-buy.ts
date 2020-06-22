@@ -54,9 +54,10 @@ export class SimplexBuyPage {
   private createdOn: string;
 
   // Amount Page Params
-  private amount?: number;
-  private coin?: string;
-  private currency?: string;
+  public amount?: number;
+  public coin?: string;
+  public currency?: string;
+  public walletId?: any;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -78,10 +79,11 @@ export class SimplexBuyPage {
     private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
-    // Amount Page Params
+    // Crypto Offers Page Params
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
     this.amount = this.navParams.data.amount;
+    this.walletId = this.navParams.data.walletId;
 
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
@@ -184,6 +186,11 @@ export class SimplexBuyPage {
   }
 
   public showWallets(): void {
+    if (this.walletId) {
+      const wallet = this.profileProvider.getWallet(this.walletId);
+      this.onWalletSelect(wallet);
+      return;
+    }
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {

@@ -1,0 +1,43 @@
+page-crypto-offers {
+  .bp-list {
+    .summary-order {
+      color: #757575;
+      font-size: 20px;
+      line-height: 40px;
+      &-bold {
+        color: black;
+        font-weight: 500;
+        border-bottom: solid 2.4px black;
+      }
+    }
+    .main-label {
+      font-size: 18px;
+    }
+
+    .provider {
+      margin-top: 15px;
+
+      img {
+        vertical-align: middle;
+        width: 65px;
+      }
+    }
+
+    .card-terms {
+      padding: 0 34px;
+      margin: 50px 0;
+      color: #757575;
+      font-size: 11px;
+    }
+    .loader {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      ion-spinner {
+        * {
+          stroke: color($colors, primary);
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import * as _ from 'lodash';
 
 // Providers
 import { Logger } from '../../../providers/logger/logger';

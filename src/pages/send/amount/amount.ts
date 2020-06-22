@@ -191,8 +191,8 @@ export class AmountPage {
       this.navCtrl.pop();
     };
     this.setAvailableUnits();
-    this.updateUnitUI();
     if (this.fromBuyCrypto) this.setBuyCryptoParams();
+    this.updateUnitUI();
     this.cardConfig =
       this.cardName &&
       (await this.giftCardProvider.getCardConfig(this.cardName));
@@ -673,7 +673,9 @@ export class AmountPage {
   }
 
   private updateUnitUI(): void {
-    this.unit = this.availableUnits[this.unitIndex].shortName;
+    this.unit = this.fromBuyCrypto
+      ? this.altCurrencyInitial
+      : this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat

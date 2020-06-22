@@ -4,33 +4,28 @@
       <div class="item-label" translate>Amount</div>
       <ion-card class="item-card" (click)="openAmountModal()">
         <ion-item>
-          <coin-icon item-start [coin]="'default'"></coin-icon>
+          <coin-icon item-start [coin]="currency === coin?.toUpperCase() ? coin : 'default'"></coin-icon>
           <div class="main-label">{{currency}}</div>
           <ion-note item-end>
             <ion-row align-items-center>
-              <div class="secondary-note" item-start>${{amount | number : '1.2-2'}}</div>
+              <div class="secondary-note" item-start> <span *ngIf="currency !== coin?.toUpperCase()">$</span>{{amount | number : getDigitsInfo(currency)}}</div>
               <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
             </ion-row>
           </ion-note>
         </ion-item>
       </ion-card>
 
-      <div class="item-label" translate>Currency</div>
-      <ion-card class="item-card" (click)="openCryptoCoinsModal()">
+      <div class="item-label" translate>Deposit to</div>
+      <ion-card class="item-card">
         <ion-item>
-          <coin-icon item-start [coin]="coin" [network]="network"></coin-icon>
+          <coin-icon item-start [coin]="wallet?.coin" [network]="wallet?.network"></coin-icon>
           <div class="main-label">
-            {{coin | uppercase}}
+            {{wallet?.name}}
           </div>
-          <ion-note item-end>
-            <ion-row align-items-center>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-            </ion-row>
-          </ion-note>
         </ion-item>
       </ion-card>
 
-      <div class="item-label" translate>Country of Residence</div>
+      <!-- <div class="item-label" translate>Country of Residence</div>
       <ion-card class="item-card">
         <ion-item>
           <div class="main-label">{{country}}</div>
@@ -40,7 +35,7 @@
             </ion-row>
           </ion-note>
         </ion-item>
-      </ion-card>
+      </ion-card> -->
 
       <div class="item-label" translate>Payment Method</div>
       <ion-card class="item-card" (click)="openCryptoPaymentMethodModal()">
@@ -58,7 +53,7 @@
       </ion-card>
     </ion-list>
 
-    <button ion-button class="button-standard button-primary" (click)="goToConfirm()">
+    <button ion-button class="button-standard button-primary" (click)="goToCryptoOffersPage()">
       <span>{{'View Offers' | translate}}</span>
     </button>
   </div>

@@ -18,22 +18,25 @@ export class CryptoPaymentMethodPage {
       label: any;
       method: string;
       imgSrc: string;
-      disabled: boolean;
-      selected: boolean;
+      simplexSupport: boolean;
     };
     debitCard: {
       label: any;
       method: string;
       imgSrc: string;
-      disabled: boolean;
-      selected: boolean;
+      simplexSupport: boolean;
     };
     bankTransfer: {
       label: any;
       method: string;
       imgSrc: string;
-      disabled: boolean;
-      selected: boolean;
+      simplexSupport: boolean;
+    };
+    creditCard: {
+      label: any;
+      method: string;
+      imgSrc: string;
+      simplexSupport: boolean;
     };
   };
   public methodSelected: string;
@@ -48,26 +51,29 @@ export class CryptoPaymentMethodPage {
     private viewCtrl: ViewController
   ) {
     this.methods = {
-      applePay: {
-        label: this.translate.instant('Apple Pay'),
-        method: 'applePay',
-        imgSrc: 'assets/img/buy-crypto/apple-pay.svg',
-        disabled: false,
-        selected: true
+      creditCard: {
+        label: this.translate.instant('Credit Card'),
+        method: 'creditCard',
+        imgSrc: 'assets/img/buy-crypto/debit-card.svg',
+        simplexSupport: true
       },
       debitCard: {
         label: this.translate.instant('Debit Card'),
         method: 'debitCard',
         imgSrc: 'assets/img/buy-crypto/debit-card.svg',
-        disabled: false,
-        selected: false
+        simplexSupport: true
+      },
+      applePay: {
+        label: this.translate.instant('Apple Pay'),
+        method: 'applePay',
+        imgSrc: 'assets/img/buy-crypto/apple-pay.svg',
+        simplexSupport: false
       },
       bankTransfer: {
         label: this.translate.instant('Bank Transfer'),
         method: 'bankTransfer',
         imgSrc: 'assets/img/buy-crypto/apple-pay.svg',
-        disabled: false,
-        selected: false
+        simplexSupport: false
       }
     };
   }
@@ -77,7 +83,7 @@ export class CryptoPaymentMethodPage {
   }
 
   ionViewWillEnter() {
-    this.methodSelected = this.navParams.data.paymentMethod || 'applePay';
+    this.methodSelected = this.navParams.data.paymentMethod || 'creditCard';
     this.useAsModal = this.navParams.data.useAsModal;
   }
 
