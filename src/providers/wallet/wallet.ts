@@ -527,7 +527,7 @@ export class WalletProvider {
       parseFloat(totalBalanceAlternative.replace(/,/g, ''));
 
     return {
-      isoCode,
+      totalBalanceAlternativeIsoCode: isoCode,
       totalBalanceAlternative,
       averagePrice
     };
