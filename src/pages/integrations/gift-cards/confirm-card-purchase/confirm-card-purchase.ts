@@ -445,6 +445,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.onGoingProcessProvider.clear();
     this.logger.debug('Saved new gift card with status: ' + card.status);
     this.logDiscountedPurchase();
+    this.events.publish('GiftCards/GiftCardPurchased');
     this.finish(card);
   }
 
