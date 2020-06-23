@@ -8,7 +8,6 @@ import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
-import { CryptoCoinsPage } from '../pages/buy-crypto/crypto-coins/crypto-coins';
 import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
 import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
@@ -168,7 +167,6 @@ export const PAGES = [
   CopayersPage,
   CryptoPaymentMethodPage,
   CryptoOrderSummaryPage,
-  CryptoCoinsPage,
   CryptoOffersPage,
   SelectInputsPage,
   FeedbackCardPage,

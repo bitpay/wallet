@@ -7,7 +7,6 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { SimplexProvider } from '../../../providers/simplex/simplex';
 
 // Pages
-import { CryptoCoinsPage } from '../../../pages/buy-crypto/crypto-coins/crypto-coins';
 import { CryptoOffersPage } from '../../../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoPaymentMethodPage } from '../../../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { AmountPage } from '../../../pages/send/amount/amount';
@@ -69,25 +68,6 @@ export class CryptoOrderSummaryPage {
       if (data) {
         this.amount = data.fiatAmount;
         this.currency = data.currency;
-      }
-    });
-  }
-
-  public openCryptoCoinsModal() {
-    let modal = this.modalCtrl.create(
-      CryptoCoinsPage,
-      {
-        coin: this.coin
-      },
-      {
-        showBackdrop: true,
-        enableBackdropDismiss: true
-      }
-    );
-    modal.present();
-    modal.onDidDismiss(data => {
-      if (data) {
-        this.coin = data.coinSelected;
       }
     });
   }
