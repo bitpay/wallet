@@ -790,4 +790,24 @@ export class IABCardProvider {
 
     return hasFirstView;
   }
+
+  updateWalletStatus() {
+    let wallets = this.profileProvider.wallet;
+    if (_.isEmpty(wallets)) {
+      this.events.publish('Local/HomeBalance');
+      return;
+    }
+
+    this.logger.debug('Fetching All Wallets and Updating Total Balance');
+    wallets = _.filter(this.profileProvider.wallet, w => {
+      return !w.hidden;
+    });
+
+    _.each(wallets, wallet => {
+      this.events.publish('Local/WalletFocus', {
+        walletId: wallet.id,
+        force: true
+      });
+    });
+  }
 }
