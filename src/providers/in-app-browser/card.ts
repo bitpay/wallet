@@ -15,12 +15,14 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
 import { HttpClient } from '@angular/common/http';
+import { AppProvider } from '../../providers/app/app';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { SimplexProvider } from '../simplex/simplex';
 
 @Injectable()
@@ -51,7 +53,9 @@ export class IABCardProvider {
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider,
     private http: HttpClient,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private themeProvider: ThemeProvider,
+    private appProvider: AppProvider
   ) {}
 
   public setNetwork(network: string) {
@@ -219,6 +223,35 @@ export class IABCardProvider {
             };
 
             this.events.publish('IncomingDataRedir', nextView);
+          });
+          break;
+
+        case 'getAppVersion':
+          this.sendMessage({
+            message: 'getAppVersion',
+            payload: this.appProvider.info.version
+          });
+          break;
+
+        case 'isDarkModeEnabled':
+          this.sendMessage({
+            message: 'isDarkModeEnabled',
+            payload: this.themeProvider.isDarkModeEnabled()
+          });
+          break;
+
+        case 'updateWalletStatus':
+          this.updateWalletStatus();
+          break;
+
+        case 'hasWalletWithFunds':
+          const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+            12,
+            'USD'
+          );
+          this.sendMessage({
+            message: 'hasWalletWithFunds',
+            payload: { hasWalletWithFunds }
           });
           break;
 
