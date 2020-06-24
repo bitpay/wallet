@@ -384,6 +384,13 @@ export class CopayApp {
         this.handleDeepLinksElectron();
       }
     } else {
+      (window as any).handleOpenURL = (url: string) => {
+        if (url.includes('wallet-card/order-now')) {
+          const context = url.includes('new') ? 'new' : 'fv';
+          this.persistenceProvider.setCardFastTrackEnabled(context);
+        }
+      };
+
       this.logger.info('No profile exists.');
       this.profile.createProfile();
       this.rootPage = OnboardingPage;
