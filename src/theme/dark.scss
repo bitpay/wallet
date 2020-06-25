@@ -24,6 +24,8 @@
 5.4 - Tab Settings
 
 6 - Other Pages
+
+7 - Buy Crypto
 */
 
 .dark {
@@ -1498,6 +1500,42 @@
     .filter-container {
       .labels {
         color: $text-color-dark-theme;
+      }
+    }
+  }
+
+  // Buy Crypto
+  page-crypto-order-summary {
+    .bp-list {
+      .card {
+        background: $bg-color-dark-theme;
+        .item {
+          &.item-ios,
+          &.item-md {
+            background-color: $bg-color-dark-theme-2;
+            ion-note {
+              img {
+                filter: brightness(0.5);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  page-crypto-payment-method {
+    .item-img img {
+      filter: brightness(0.5);
+    }
+  }
+  page-crypto-offers {
+    .bp-list {
+      .summary-order {
+        color: #757575;
+        &-bold {
+          color: $text-color-dark-theme;
+          border-bottom: solid 2.4px $text-color-dark-theme;
+        }
       }
     }
   }
