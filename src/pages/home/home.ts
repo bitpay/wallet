@@ -4,8 +4,6 @@ import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { AmountPage } from '../../pages/send/amount/amount';
-// import { SimplexPage } from '../../pages/integrations/simplex/simplex';
-// import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   ActionSheetProvider,
@@ -21,7 +19,6 @@ import {
   PlatformProvider,
   ProfileProvider,
   ReleaseProvider
-  // SimplexProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';

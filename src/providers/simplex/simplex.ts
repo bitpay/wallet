@@ -113,7 +113,7 @@ export class SimplexProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'simplex',
-      title: this.translate.instant('Buy Crypto (Simplex)'),
+      title: this.translate.instant('Buy Crypto'),
       icon: 'assets/img/simplex/icon-simplex.png',
       showIcon: true,
       logo: 'assets/img/simplex/logo-simplex-color.svg',
