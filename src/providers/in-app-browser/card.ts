@@ -251,7 +251,6 @@ export class IABCardProvider {
           );
           this.sendMessage({
             message: 'hasWalletWithFunds',
-            payload: { hasWalletWithFunds }
             payload: hasWalletWithFunds
           });
           break;
