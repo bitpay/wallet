@@ -1,13 +1,39 @@
 page-crypto-offers {
   .bp-list {
-    .summary-order {
+    .summary-title {
       color: #757575;
-      font-size: 20px;
-      line-height: 40px;
-      &-bold {
-        color: black;
-        font-weight: 500;
-        border-bottom: solid 2.4px black;
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .summary-description {
+      line-height: 24px;
+      color: black;
+      font-weight: 500;
+      font-size: 16px;
+      .coin-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: text-bottom;
+      }
+    }
+    .edit-container {
+      color: color($colors, primary);
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19px;
+      white-space: nowrap;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      height: 35px;
+      border: 1px solid color($colors, primary);
+      margin: auto;
+      .edit-label {
+        padding: 0rem 1.2rem;
+        margin: auto;
       }
     }
     .main-label {

@@ -252,29 +252,29 @@ export class HomePage {
     const card: Advertisement =
       this.cardExperimentEnabled && this.isCordova
         ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Get the BitPay Card'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Order Now'),
-          link: BitPayCardIntroPage,
-          dismissible: true,
-          imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
-        }
+            name: 'bitpay-card',
+            title: this.translate.instant('Get the BitPay Card'),
+            body: this.translate.instant(
+              'Designed for people who want to live life on crypto.'
+            ),
+            app: 'bitpay',
+            linkText: this.translate.instant('Order Now'),
+            link: BitPayCardIntroPage,
+            dismissible: true,
+            imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+          }
         : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
+            name: 'bitpay-card',
+            title: this.translate.instant('Coming soon'),
+            body: this.translate.instant(
+              'Join the waitlist and be first to experience the new card.'
+            ),
+            app: 'bitpay',
+            linkText: this.translate.instant('Notify Me'),
+            link: PhaseOneCardIntro,
+            dismissible: true,
+            imgSrc: 'assets/img/icon-bpcard.svg'
+          };
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'bitpay-card'
     );
@@ -291,8 +291,8 @@ export class HomePage {
           : this.translate.instant('Connect your Coinbase!'),
         body: this.hasOldCoinbaseSession
           ? this.translate.instant(
-            'Reconnect to quickly withdraw and deposit funds.'
-          )
+              'Reconnect to quickly withdraw and deposit funds.'
+            )
           : this.translate.instant('Easily deposit and withdraw funds.'),
         app: 'bitpay',
         linkText: this.hasOldCoinbaseSession
@@ -309,10 +309,10 @@ export class HomePage {
     const discountText =
       discount.type === 'flatrate'
         ? `${this.formatCurrencyPipe.transform(
-          discount.amount,
-          discountedCard.currency,
-          'minimal'
-        )}`
+            discount.amount,
+            discountedCard.currency,
+            'minimal'
+          )}`
         : `${discount.amount}%`;
     const advertisementName = getGiftCardAdvertisementName(discountedCard);
     const alreadyVisible = this.advertisements.find(
@@ -324,7 +324,7 @@ export class HomePage {
         title: `${discountText} off ${discountedCard.displayName}`,
         body: `Save ${discountText} off ${
           discountedCard.displayName
-          } gift cards. Limited time offer.`,
+        } gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -620,5 +620,5 @@ export class HomePage {
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
   return `${discountedCard.discounts[0].code}-${
     discountedCard.name
-    }-gift-card-discount`;
+  }-gift-card-discount`;
 }

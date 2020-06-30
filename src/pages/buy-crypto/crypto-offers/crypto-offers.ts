@@ -108,4 +108,8 @@ export class CryptoOffersPage {
       this.fiatCurrency = this.currency;
     }
   }
+
+  public goToEdit(): void {
+    this.navCtrl.pop();
+  }
 }

@@ -2,13 +2,27 @@
   <div page-content>
     <ion-list class="bp-list">
       <ion-item>
-        <ion-label class="summary-order">
-          Buying
-          <span class="summary-order-bold"><span *ngIf="currency === 'USD'">$</span>{{amount}} </span>
-          <span *ngIf="currency !== coin?.toUpperCase()">
-            <span class="summary-order-bold" *ngIf="fiatCurrency !== 'USD'">{{fiatCurrency}}</span> worth of
-          </span>
-          <span class="summary-order-bold">{{coin | uppercase}}</span> using <span class="summary-order-bold"> {{paymentMethod?.label}}</span></ion-label>
+        <ion-row>
+          <ion-col>
+            <div class="summary-title" translate>Amount</div>
+            <div class="summary-description"><span *ngIf="currency === 'USD'">$</span>{{amount}} <span *ngIf="currency !== 'USD'">{{currency}}</span></div>
+          </ion-col>
+          <ion-col>
+            <div class="summary-title" translate>Crypto</div>
+            <div class="summary-description"><img class="coin-icon" src="assets/img/currencies/{{coin}}.svg" /> {{coin | uppercase}}</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="summary-title" translate>Payment Method</div>
+            <div class="summary-description">{{paymentMethod?.label}}</div>
+          </ion-col>
+          <ion-col align-self-center>
+            <div class="edit-container" (click)="goToEdit()">
+              <div class="edit-label" translate>
+                Edit
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
       </ion-item>
 
       <action-card-v4 (click)="goToSimplexBuyPage()" tappable>
