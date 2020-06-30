@@ -66,12 +66,13 @@ export class CryptoPaymentMethodPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CryptoPaymentMethodPage');
+    this.methods = _.pickBy(this.methods, m => m.enabled);
   }
 
   ionViewWillEnter() {
-    this.methods = _.pickBy(this.methods, m => m.enabled);
-    this.methodSelected = this.navParams.data.paymentMethod || 'creditCard';
     this.useAsModal = this.navParams.data.useAsModal;
+    if (!this.methodSelected)
+      this.methodSelected = this.navParams.data.paymentMethod || 'creditCard';
   }
 
   public goToOrderSummary(): void {

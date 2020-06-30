@@ -79,7 +79,6 @@ export class HomePage {
   private zone;
 
   // Buy Crypto
-  public isOpenSelector: boolean;
   public wallet;
   public wallets: any[];
   public coin: string[];
@@ -509,17 +508,14 @@ export class HomePage {
       const title = this.translate.instant('Error');
       this.errorsProvider.showDefaultError(err, title);
     } else {
-      if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
-      else this.showWallets();
+      this.showWallets();
     }
   }
 
   public showWallets(): void {
-    this.isOpenSelector = true;
-    const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
-      selectedWalletId: id,
+      selectedWalletId: null,
       title: this.translate.instant('Select wallet to deposit to')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
@@ -534,7 +530,6 @@ export class HomePage {
   private onWalletSelect(wallet): void {
     if (!_.isEmpty(wallet)) {
       this.wallet = wallet;
-      this.isOpenSelector = false;
       this.goToAmountPage();
     }
   }

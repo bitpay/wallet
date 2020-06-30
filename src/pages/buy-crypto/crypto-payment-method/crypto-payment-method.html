@@ -15,7 +15,7 @@
               <img *ngIf="method.value.wyreSupport" src="assets/img/wyre/wyre.svg">
             </div>
           </ion-label>
-          <ion-radio item-left [value]="method.key"></ion-radio>
+          <ion-radio item-left value="{{method?.key}}" checked="methodSelected"></ion-radio>
           <ion-icon item-end class="item-img">
             <img src="{{method.value.imgSrc}}">
           </ion-icon>

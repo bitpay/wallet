@@ -1,5 +1,7 @@
 <ion-header>
-  <ion-navbar> <ion-title size="large" class="bp-header card-title">{{ card.name | translate}}</ion-title> </ion-navbar>
+  <ion-navbar>
+    <ion-title size="large" class="bp-header card-title">{{ card.name | translate}}</ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
@@ -24,12 +26,12 @@
   <ion-toolbar>
     <span class="labels">
       <div *ngFor="let option of updateOptions">
-        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }" (click)="updateChart(option)" >
+        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }" (click)="updateChart(option)">
           <ion-label>{{ option.label }}</ion-label>
         </ion-chip>
       </div>
     </span>
-    <button ion-button class="button-standard" (click)="goToBuyCrypto()">
+    <button ion-button class="button-standard" (click)="selectWallet()">
       Buy {{ card.name }}
     </button>
   </ion-toolbar>

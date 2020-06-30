@@ -1,23 +1,37 @@
 import { Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { FormatCurrencyPipe } from '../../../pipes/format-currency';
+
+// Components
 import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
-import { FormatCurrencyPipe } from '../../../pipes/format-currency';
+
+// Pages
+import { AmountPage } from '../../send/amount/amount';
+
+// Providers
 import {
+  ActionSheetProvider,
+  AnalyticsProvider,
   ConfigProvider,
+  ErrorsProvider,
   ExchangeRatesProvider,
   Logger,
+  ProfileProvider,
   SimplexProvider
 } from '../../../providers';
-import { AmountPage } from '../../send/amount/amount';
 
 @Component({
   selector: 'price-page',
   templateUrl: 'price-page.html'
 })
 export class PricePage {
+  coin: any;
+  wallet: any;
+  wallets: any[];
   @ViewChild('canvas') canvas: PriceChart;
   private card: Card;
   public activeOption: string = '1D';
@@ -49,9 +63,15 @@ export class PricePage {
     private formatCurrencyPipe: FormatCurrencyPipe,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private simplexProvider: SimplexProvider
+    private simplexProvider: SimplexProvider,
+    private profileProvider: ProfileProvider,
+    private translate: TranslateService,
+    private errorsProvider: ErrorsProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.card = _.clone(this.navParams.data.card);
+    this.coin = this.card.unitCode;
     this.updateValues();
     this.setIsoCode();
   }
@@ -59,14 +79,6 @@ export class PricePage {
   ionViewDidLoad() {
     this.setPrice();
     this.drawCanvas();
-  }
-
-  public goToBuyCrypto() {
-    this.navCtrl.push(AmountPage, {
-      nextPage: 'SimplexBuyPage',
-      coin: this.card.unitCode,
-      currency: this.isIsoCodeSupported ? this.isoCode : 'USD'
-    });
   }
 
   private getPrice(lastDate) {
@@ -193,5 +205,56 @@ export class PricePage {
       ? alternativeIsoCode
       : 'USD';
     this.isIsoCodeSupported = _.includes(this.fiatCodes, this.isoCode);
+  }
+
+  public selectWallet() {
+    this.wallets = this.profileProvider.getWallets({
+      network: 'livenet',
+      onlyComplete: true,
+      coin: this.coin,
+      backedUp: true
+    });
+    if (_.isEmpty(this.wallets)) {
+      const err = this.translate.instant(
+        'You do not have wallets able to receive funds'
+      );
+      const title = this.translate.instant('Error');
+      this.errorsProvider.showDefaultError(err, title);
+    } else {
+      this.showWallets();
+    }
+  }
+
+  public showWallets(): void {
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: null,
+      title: this.translate.instant('Select wallet to deposit to')
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
+      this.onWalletSelect(wallet);
+    });
+  }
+
+  private onWalletSelect(wallet): void {
+    if (!_.isEmpty(wallet)) {
+      this.wallet = wallet;
+      this.goToAmountPage();
+    }
+  }
+
+  private goToAmountPage() {
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.navCtrl.push(AmountPage, {
+      fromBuyCrypto: true,
+      nextPage: 'CryptoPaymentMethodPage',
+      walletId: this.wallet.id,
+      coin: this.coin,
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
   }
 }
