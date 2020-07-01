@@ -108,7 +108,7 @@ export class DisclaimerPage {
 
   confirm() {
     this.persistenceProvider.setEmailLawCompliance('accepted');
-    this.persistenceProvider.setNewDesignSlidesFlag('completed');
+    this.persistenceProvider.setNewFeatureSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
     this.persistenceProvider.getCardFastTrackEnabled().then(context => {
       if (context) {

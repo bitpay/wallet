@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Slides } from 'ionic-angular';
+import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { SimplexPage } from '../../pages/integrations/simplex/simplex';
@@ -31,6 +31,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { NewFeatureTourPage } from '../new-feature-tour/new-feature-tour';
 
 export interface Advertisement {
   name: string;
@@ -94,7 +95,8 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private modalCtrl: ModalController
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -110,6 +112,7 @@ export class HomePage {
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.setMerchantDirectoryAdvertisement();
+    this.showNewFeatureSlides();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance) this.getCachedTotalBalance();
@@ -549,6 +552,20 @@ export class HomePage {
     const url =
       "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
+  }
+
+  private showNewFeatureSlides() {
+    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
+    this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
+      if (!value) {
+        this.persistenceProvider.setNewFeatureSlidesFlag('completed');
+        const modal = this.modalCtrl.create(NewFeatureTourPage, {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        });
+        modal.present();
+      }
+    });
   }
 
   public enableBitPayIdPairing() {
