@@ -5,6 +5,7 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { SimplexProvider } from '../../../providers/simplex/simplex';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
 import { CryptoOffersPage } from '../../../pages/buy-crypto/crypto-offers/crypto-offers';
@@ -23,6 +24,7 @@ export class CryptoOrderSummaryPage {
   public currency: string;
   public currencies;
   public amount: any;
+  public address: string;
 
   constructor(
     private logger: Logger,
@@ -30,7 +32,8 @@ export class CryptoOrderSummaryPage {
     private modalCtrl: ModalController,
     private simplexProvider: SimplexProvider,
     private navCtrl: NavController,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private walletProvider: WalletProvider
   ) {
     this.currencies = this.simplexProvider.supportedCoins;
   }
@@ -46,6 +49,9 @@ export class CryptoOrderSummaryPage {
     this.coin = this.navParams.data.coin;
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      this.address = addr;
+    });
   }
 
   public openAmountModal() {

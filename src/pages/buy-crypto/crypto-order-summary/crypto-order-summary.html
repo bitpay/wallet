@@ -22,20 +22,15 @@
           <div class="main-label">
             {{wallet?.name}}
           </div>
-        </ion-item>
-      </ion-card>
-
-      <!-- <div class="item-label" translate>Country of Residence</div>
-      <ion-card class="item-card">
-        <ion-item>
-          <div class="main-label">{{country}}</div>
           <ion-note item-end>
             <ion-row align-items-center>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+              <div class="secondary-note address-label" copy-to-clipboard="{{ address }}">
+                <span>{{address | shortenedAddress}}</span>
+              </div>
             </ion-row>
           </ion-note>
         </ion-item>
-      </ion-card> -->
+      </ion-card>
 
       <div class="item-label" translate>Payment Method</div>
       <ion-card class="item-card" (click)="openCryptoPaymentMethodModal()">
