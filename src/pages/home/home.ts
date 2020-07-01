@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { SelectCurrencyPage } from '../../pages/add/select-currency/select-currency';
 import { AmountPage } from '../../pages/send/amount/amount';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
@@ -81,7 +82,6 @@ export class HomePage {
   // Buy Crypto
   public wallet;
   public wallets: any[];
-  public coin: string[];
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -498,15 +498,15 @@ export class HomePage {
     this.wallets = this.profileProvider.getWallets({
       network: 'livenet',
       onlyComplete: true,
-      coin: this.coin || ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
+      coin: ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
       backedUp: true
     });
     if (_.isEmpty(this.wallets)) {
-      const err = this.translate.instant(
-        'You do not have wallets able to receive funds'
-      );
-      const title = this.translate.instant('Error');
-      this.errorsProvider.showDefaultError(err, title);
+      this.errorsProvider.showNoWalletError(option => {
+        if (option) {
+          this.navCtrl.push(SelectCurrencyPage);
+        }
+      });
     } else {
       this.showWallets();
     }
@@ -540,7 +540,6 @@ export class HomePage {
       fromBuyCrypto: true,
       nextPage: 'CryptoPaymentMethodPage',
       walletId: this.wallet.id,
-      coin: this.coin,
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
   }

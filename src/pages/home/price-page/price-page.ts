@@ -10,6 +10,7 @@ import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
 
 // Pages
+import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
 import { AmountPage } from '../../send/amount/amount';
 
 // Providers
@@ -215,11 +216,11 @@ export class PricePage {
       backedUp: true
     });
     if (_.isEmpty(this.wallets)) {
-      const err = this.translate.instant(
-        'You do not have wallets able to receive funds'
-      );
-      const title = this.translate.instant('Error');
-      this.errorsProvider.showDefaultError(err, title);
+      this.errorsProvider.showNoWalletError(option => {
+        if (option) {
+          this.navCtrl.push(SelectCurrencyPage);
+        }
+      });
     } else {
       this.showWallets();
     }
