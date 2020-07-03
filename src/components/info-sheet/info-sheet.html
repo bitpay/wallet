@@ -337,5 +337,23 @@
       </span>
       <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'subtotal-amount'" type="info">
+      <span sheet-title-text>{{ 'Subtotal' | translate }}</span>
+      <span sheet-text>
+        {{ 'For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs.' | translate }}
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115002990803-What-is-the-Network-Cost-fee-on-BitPay-invoices-and-why-is-BitPay-charging-it')" translate>Read more</a>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'total-amount'" type="info">
+      <span sheet-title-text>{{ 'Total' | translate }}</span>
+      <span sheet-text>
+        {{ 'The total amount is the subtotal amount plus transaction fees.' | translate }}
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-')" translate>Read more</a>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
