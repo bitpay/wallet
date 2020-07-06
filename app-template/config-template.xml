@@ -59,8 +59,7 @@
     <preference name="deployment-target" value="10.3" />
 
     <!-- Supported Platforms -->
-    <!--<engine name="android" spec="8.1.0" />-->
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="8.1.0" />
     <engine name="ios" spec="5.1.1" />
 
     <!-- Plugins -->
