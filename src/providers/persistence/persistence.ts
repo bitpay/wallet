@@ -78,7 +78,8 @@ const Keys = {
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
   APP_THEME: 'app-theme',
   USER_LOCATION: 'user-location',
-  COUNTRIES: 'countries'
+  COUNTRIES: 'countries',
+  CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled'
 };
 
 interface Storage {
@@ -836,6 +837,14 @@ export class PersistenceProvider {
 
   getUserLocation() {
     return this.storage.get(Keys.USER_LOCATION);
+  }
+
+  setCardFastTrackEnabled(value: string) {
+    return this.storage.set(Keys.CARD_FAST_TRACK_ENABLED, value);
+  }
+
+  getCardFastTrackEnabled() {
+    return this.storage.get(Keys.CARD_FAST_TRACK_ENABLED);
   }
 }
 
