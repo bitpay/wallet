@@ -31,6 +31,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { ScanPage } from '../scan/scan';
 
 export interface Advertisement {
   name: string;
@@ -495,6 +496,10 @@ export class HomePage {
         this.navCtrl.push(SimplexBuyPage);
       }
     });
+  }
+
+  public goToScan(): void {
+    this.navCtrl.push(ScanPage, {}, { animate: false });
   }
 
   private checkNewRelease() {
