@@ -128,7 +128,7 @@
     "bitcore-wallet-client": "8.20.5",
     "buffer-compare": "1.1.1",
     "chart.js": "2.8.0",
-    "cordova": "9.0.0",
+    "cordova": "8.1.2",
     "cordova-android": "8.1.0",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "5.1.0",
