@@ -73,18 +73,23 @@
                 <ion-input mode="md" formControlName="email" type="email"></ion-input>
               </ion-item>
 
-              <ion-item class="phaseOne__form-item phaseOne__form-toggle" no-lines>
-                <ion-label (click)="openPolicy()" class="phaseOne__form-toggle__label">I would also like to receive marketing and
-                  promotional
-                  communications from BitPay subject to BitPay's
-                  <span class="phaseOne__form__link"> Privacy Policy</span>.
+              <ion-item class="phaseOne__form-item phaseOne__form-group phaseOne__form-privacy">
+                <ion-label class="phaseOne__form-group__label">
+                  <span translate>BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our</span>
+                  <span translate class="phaseOne__form__link" (click)="openPolicy()"> Privacy Policy</span>.
+                </ion-label>
+              </ion-item>
+
+              <ion-item class="phaseOne__form-item phaseOne__form-group">
+                <ion-label (click)="openPolicy()" class="phaseOne__form-group__label phaseOne__form-group--large-lh">
+                  <span translate>Yes, please use my email address to send me exclusive email offers.</span>
                 </ion-label>
                 <ion-toggle formControlName="agreement" color="success"></ion-toggle>
               </ion-item>
             </form>
 
             <button ion-button class="button-standard" [disabled]="notifyForm.invalid" (click)="addMe()">
-              {{'Notify Me' | translate}}
+              {{'Add Me' | translate}}
             </button>
           </div>
 
