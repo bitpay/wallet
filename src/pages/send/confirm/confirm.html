@@ -187,8 +187,10 @@
       <ion-item>
         <ion-label>
           <div class="main-label total-label subtotal-label">
-            <span translate>SUBTOTAL</span>
-            <img *ngIf="tx.paypro" width="21" (click)="showSubtotalAmountSheet()" src="assets/img/icon-info-blue.svg" margin-left>
+            <span class="title" translate>SUBTOTAL</span>
+            <ion-icon *ngIf="tx.paypro" class="item-img info" (click)="showSubtotalAmountSheet()">
+              <img src="assets/img/icon-info-blue.svg" width="22">
+            </ion-icon>
           </div>
         </ion-label>
         <ion-note item-end>
@@ -211,7 +213,9 @@
         <ion-label>
           <div class="main-label total-label">
             <span translate>TOTAL</span>
-            <img width="21" (click)="showTotalAmountSheet()" src="assets/img/icon-info-blue.svg" margin-left>
+            <ion-icon class="item-img info" (click)="showTotalAmountSheet()">
+              <img src="assets/img/icon-info-blue.svg" width="22">
+            </ion-icon>
           </div>
         </ion-label>
         <ion-note item-end>

@@ -355,5 +355,18 @@
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'no-wallets-available'" type="info">
+      <span sheet-title-text translate>No wallets available</span>
+      <span sheet-text>
+        <span translate>What could have happened?</span>
+        <ul>
+          <li translate>There are no wallets with enough funds to make the payment</li>
+          <li translate>Part or the entirety of the funds in your wallet/s are unconfirmed</li>
+          <li translate>Your wallet is testnet</li>
+        </ul>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

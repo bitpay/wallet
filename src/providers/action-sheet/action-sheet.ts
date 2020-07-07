@@ -53,7 +53,8 @@ export type InfoSheetType =
   | 'unconfirmed-inputs'
   | 'rbf-tx'
   | 'total-amount'
-  | 'subtotal-amount';
+  | 'subtotal-amount'
+  | 'no-wallets-available';
 
 export type OptionsSheetType =
   | 'wallet-options'

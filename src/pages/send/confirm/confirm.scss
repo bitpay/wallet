@@ -190,4 +190,9 @@ page-bitpay-card-topup {
     color: color($colors, primary);
     padding-top: 20px;
   }
+  .item-img {
+    &.info {
+      padding-left: 10px;
+    }
+  }
 }

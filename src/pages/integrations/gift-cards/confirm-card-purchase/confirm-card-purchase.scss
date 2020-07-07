@@ -36,6 +36,12 @@ confirm-card-purchase-page {
     }
   }
 
+  .item-img {
+    &.info {
+      padding-left: 10px;
+    }
+  }
+
   .gift-card-title {
     display: block;
     margin-bottom: 1.2rem;
