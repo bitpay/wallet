@@ -233,11 +233,11 @@ export class TxDetailsModal {
 
         if (this.btx.action != 'invalid') {
           if (this.btx.action == 'sent')
-            this.title = this.translate.instant('Sent Funds');
+            this.title = this.translate.instant('Sent');
           if (this.btx.action == 'received')
-            this.title = this.translate.instant('Received Funds');
+            this.title = this.translate.instant('Received');
           if (this.btx.action == 'moved')
-            this.title = this.translate.instant('Moved Funds');
+            this.title = this.translate.instant('Sent to self');
         }
 
         this.updateMemo();

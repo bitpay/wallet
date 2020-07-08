@@ -216,10 +216,12 @@ export class TransferToPage {
   private filterIrrelevantRecipients(recipient: {
     coin: string;
     network: string;
+    walletId: string;
   }): boolean {
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
-          this._wallet.network === recipient.network
+          this._wallet.network === recipient.network &&
+          this._wallet.id !== recipient.walletId
       : true;
   }
 

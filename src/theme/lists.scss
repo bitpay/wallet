@@ -179,9 +179,15 @@
   }
 
   .main-label.total-label {
-    color: #9ba3ae;
+    display: flex;
+    color: #000000;
     font-size: 16px;
     font-weight: 500;
+  }
+  .subtotal-label {
+    :not(img) {
+      opacity: 0.5;
+    }
   }
   .total-amount {
     color: #000000;
@@ -190,8 +196,21 @@
     line-height: 30px;
     text-align: right;
   }
+  .subtotal-amount {
+    opacity: 0.5;
+  }
   .amount-details {
     padding-right: 19px;
+  }
+  .total-amount-note {
+    color: #000000;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: end;
+  }
+  .subtotal-amount-note {
+    opacity: 50%;
   }
   coin-icon {
     margin: 0px !important;

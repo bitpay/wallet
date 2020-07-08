@@ -186,21 +186,44 @@
 
       <ion-item>
         <ion-label>
-          <div class="main-label total-label">TOTAL</div>
+          <div class="main-label total-label subtotal-label">
+            <span translate>SUBTOTAL</span>
+            <img *ngIf="tx.paypro" width="21" (click)="showSubtotalAmountSheet()" src="assets/img/icon-info-blue.svg" margin-left>
+          </div>
         </ion-label>
         <ion-note item-end>
-          <div class="total-amount">
+          <div class="total-amount subtotal-amount">
             {{amount}} {{tx.coin | uppercase}}
           </div>
         </ion-note>
       </ion-item>
 
-      <div class="amount-details">
-        <div class="secondary-note">
+      <div class="amount-details" padding-bottom>
+        <div class="total-amount-note subtotal-amount-note">
           {{tx.amount | satToFiat: tx.coin}}
         </div>
-        <div class="secondary-note">
+        <div class="total-amount-note subtotal-amount-note">
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
+        </div>
+      </div>
+
+      <ion-item *ngIf="totalAmountStr">
+        <ion-label>
+          <div class="main-label total-label">
+            <span translate>TOTAL</span>
+            <img width="21" (click)="showTotalAmountSheet()" src="assets/img/icon-info-blue.svg" margin-left>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="total-amount">
+            {{totalAmountStr}} {{tx.coin | uppercase}}
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="amount-details" *ngIf="totalFiatAmount" padding-bottom>
+        <div class="total-amount-note total-amount-note">
+          {{totalFiatAmount | satToFiat: tx.coin}}
         </div>
       </div>
 

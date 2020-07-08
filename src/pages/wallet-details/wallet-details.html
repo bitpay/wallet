@@ -284,8 +284,8 @@
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-              <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Moved</span>
-              <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Moved</span>
+              <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Sent to self</span>
+              <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Sent to self</span>
               <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
               <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
             </div>

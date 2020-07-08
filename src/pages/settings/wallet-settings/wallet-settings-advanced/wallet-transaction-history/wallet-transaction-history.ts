@@ -134,7 +134,7 @@ export class WalletTransactionHistoryPage {
           _comment = it.note ? it.note.body : '';
 
           if (it.action == 'moved')
-            _note += ' Moved:' + (it.amount * this.satToUnit).toFixed(8);
+            _note += ' Sent to self:' + (it.amount * this.satToUnit).toFixed(8);
 
           this.csvContent.push({
             Date: this.formatDate(it.time * 1000),
