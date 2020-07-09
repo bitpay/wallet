@@ -386,6 +386,9 @@ export class IABCardProvider {
               return res();
             }
 
+            this.sortCards(cards, ['virtual', 'physical'], 'cardType');
+            this.sortCards(cards, ['galileo', 'firstview'], 'provider');
+
             await this.persistenceProvider.setBitpayDebitCards(
               Network[this.NETWORK],
               user.email,
@@ -414,6 +417,19 @@ export class IABCardProvider {
           }
         }
       );
+    });
+  }
+
+  public sortCards(cards: object[], order: string[], key: string) {
+    const orderBy = (p: string) => order.indexOf(p) + 1 || order.length + 1;
+    cards.sort((a, b) => {
+      if (orderBy(a[key]) > orderBy(b[key])) {
+        return 1;
+      }
+      if (orderBy(a[key]) < orderBy(b[key])) {
+        return -1;
+      }
+      return 0;
     });
   }
 
