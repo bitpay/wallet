@@ -387,7 +387,7 @@ export class IABCardProvider {
             }
 
             this.sortCards(cards, ['virtual', 'physical'], 'cardType');
-            this.sortCards(cards, ['galileo', 'firstview'], 'provider');
+            this.sortCards(cards, ['galileo', 'firstView'], 'provider');
 
             await this.persistenceProvider.setBitpayDebitCards(
               Network[this.NETWORK],

@@ -175,7 +175,7 @@ export class CardsPage {
         // sort by provider
         this.iabCardProvider.sortCards(
           cards,
-          ['galileo', 'firstview'],
+          ['galileo', 'firstView'],
           'provider'
         );
 
@@ -202,7 +202,7 @@ export class CardsPage {
           // only show cards that are active and if galileo only show virtual
           cards = cards.filter(
             c =>
-              (c.provider === 'firstview' || c.cardType === 'virtual') &&
+              (c.provider === 'firstView' || c.cardType === 'virtual') &&
               c.status === 'active'
           );
 
