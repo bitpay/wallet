@@ -724,6 +724,14 @@ export class IABCardProvider {
     );
   }
 
+  setTheme() {
+    let message = 'isDarkModeEnabled';
+    this.sendMessage({
+      message,
+      payload: { theme: this.themeProvider.isDarkModeEnabled() }
+    });
+  }
+
   sendMessage(message: object, cb?: (...args: any[]) => void): void {
     const script = {
       code: `window.postMessage(${JSON.stringify({ ...message })}, '*')`
@@ -748,6 +756,7 @@ export class IABCardProvider {
         message = `${message}?enableLoadingScreen`;
       }
 
+      this.setTheme();
       this.sendMessage({ message });
       this.cardIAB_Ref.show();
       this._isHidden = false;

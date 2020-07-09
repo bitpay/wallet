@@ -15,6 +15,7 @@ import {
 } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { TabProvider } from '../../providers/tab/tab';
+import { ThemeProvider } from '../../providers/theme/theme';
 
 @Component({
   selector: 'page-cards',
@@ -60,7 +61,8 @@ export class CardsPage {
     private events: Events,
     private iabCardProvider: IABCardProvider,
     private changeRef: ChangeDetectorRef,
-    private logger: Logger
+    private logger: Logger,
+    private themeProvider: ThemeProvider
   ) {
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
@@ -149,7 +151,13 @@ export class CardsPage {
         return;
       }
       this.logger.log(`PINGING IAB attempt ${attempts}`);
-      this.iabCardProvider.sendMessage({ message: 'IABReadyPing' });
+      this.iabCardProvider.sendMessage({
+        message: 'IABReadyPing',
+        payload: {
+          appVersion: this.appProvider.info.version,
+          theme: this.themeProvider.isDarkModeEnabled()
+        }
+      });
       attempts++;
     }, 5000);
   }
