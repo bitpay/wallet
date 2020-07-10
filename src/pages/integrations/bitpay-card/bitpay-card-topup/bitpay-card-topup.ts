@@ -20,6 +20,7 @@ import {
   Coin,
   CurrencyProvider
 } from '../../../../providers/currency/currency';
+import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -32,7 +33,6 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
-
 const FEE_TOO_HIGH_LIMIT_PER = 15;
 
 @Component({
@@ -95,7 +95,8 @@ export class BitPayCardTopUpPage {
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
     private payproProvider: PayproProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private errorsProvider: ErrorsProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
@@ -152,10 +153,7 @@ export class BitPayCardTopUpPage {
         });
 
         if (_.isEmpty(this.wallets)) {
-          this.showErrorAndBack(
-            null,
-            this.translate.instant('No wallets available')
-          );
+          this.errorsProvider.showNoWalletsAvailableInfo();
           return;
         }
 
