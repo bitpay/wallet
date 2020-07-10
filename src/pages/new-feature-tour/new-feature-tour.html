@@ -1,0 +1,38 @@
+<ion-slides #newFeatureTourSlides pager="true" class="new-feature-tour-slides">
+  <ion-slide>
+    <div class="page-title" translate>What's new</div>
+    <div class="img-container">
+      <img src="assets/img/new-feature-tour1.png" />
+    </div>
+    <div class="slide-info">
+      <div class="info">
+        <div class="title" translate>Try dark mode</div>
+        <div class="text" translate>
+          Enabling dark mode can prolong the battery life of your device. But let's be honest, dark mode just looks super amazing!
+        </div>
+      </div>
+    </div>
+  </ion-slide>
+  <ion-slide>
+    <div class="page-title" translate>What's new</div>
+    <div class="img-container">
+      <img src="assets/img/new-feature-tour2.png" />
+    </div>
+    <div class="slide-info">
+      <div class="info">
+        <div class="title" translate>Enable from settings</div>
+        <div class="text" translate>
+          To enable the dark mode, tap the gear icon at the bottom, tap Theme and select Dark Mode
+        </div>
+      </div>
+    </div>
+  </ion-slide>
+</ion-slides>
+<div padding>
+  <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="newFeatureTourSlides.getActiveIndex() < 1">
+    {{ 'Next' | translate }}
+  </button>
+  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="newFeatureTourSlides.getActiveIndex() >= 1">
+    {{'Done' | translate }}
+  </button>
+</div>
