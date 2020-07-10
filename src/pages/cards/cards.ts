@@ -180,14 +180,20 @@ export class CardsPage {
           return res();
         }
 
-        // filter out and show one galileo card
-        const galileo = cards.findIndex(c => {
-          return c.provider === 'galileo' && c.cardType === 'physical';
-        });
+        // sort by provider
+        this.iabCardProvider.sortCards(
+          cards,
+          ['galileo', 'firstView'],
+          'provider'
+        );
+
+        const hasGalileo =
+          cards.findIndex(c => c.provider === 'galileo') !== -1;
+
         // if all cards are hidden
         if (cards.every(c => !!c.hide)) {
           // if galileo not found then show order card else hide it
-          if (galileo === -1) {
+          if (!hasGalileo) {
             this.showBitPayCard = true;
             setTimeout(() => {
               this.showDisclaimer = true;
@@ -200,16 +206,15 @@ export class CardsPage {
         }
 
         // if galileo then show disclaimer and remove add card ability
-        if (galileo !== -1) {
-          //
-          // if (!this.cardExperimentEnabled) {
-          //   this.persistenceProvider.setCardExperimentFlag('enabled');
-          //   this.cardExperimentEnabled = true;
-          // }
+        if (hasGalileo) {
+          // only show cards that are active and if galileo only show virtual
+          cards = cards.filter(
+            c =>
+              (c.provider === 'firstView' || c.cardType === 'virtual') &&
+              c.status === 'active'
+          );
 
           this.waitList = false;
-
-          cards.splice(galileo, 1);
 
           if (cards.filter(c => !c.hide).find(c => c.provider === 'galileo')) {
             setTimeout(() => {
