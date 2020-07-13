@@ -186,7 +186,7 @@
 
       <ion-item>
         <ion-label>
-          <div class="main-label total-label subtotal-label">
+          <div class="main-label total-label" [ngClass]="{'subtotal-label': !wallet?.credentials.token}">
             <span class="title" translate>SUBTOTAL</span>
             <ion-icon *ngIf="tx.paypro" class="item-img info" (click)="showSubtotalAmountSheet()">
               <img src="assets/img/icon-info-blue.svg" width="22">
@@ -194,22 +194,22 @@
           </div>
         </ion-label>
         <ion-note item-end>
-          <div class="total-amount subtotal-amount">
+          <div class="total-amount" [ngClass]="{'subtotal-amount': !wallet?.credentials.token}">
             {{amount}} {{tx.coin | uppercase}}
           </div>
         </ion-note>
       </ion-item>
 
       <div class="amount-details" padding-bottom>
-        <div class="total-amount-note subtotal-amount-note">
+        <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           {{tx.amount | satToFiat: tx.coin}}
         </div>
-        <div class="total-amount-note subtotal-amount-note">
+        <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
         </div>
       </div>
 
-      <ion-item *ngIf="totalAmountStr">
+      <ion-item *ngIf="totalAmountStr && !wallet?.credentials.token">
         <ion-label>
           <div class="main-label total-label">
             <span translate>TOTAL</span>
@@ -225,9 +225,9 @@
         </ion-note>
       </ion-item>
 
-      <div class="amount-details" *ngIf="totalFiatAmount" padding-bottom>
+      <div class="amount-details" *ngIf="totalAmount && !wallet?.credentials.token" padding-bottom>
         <div class="total-amount-note total-amount-note">
-          {{totalFiatAmount | satToFiat: tx.coin}}
+          {{totalAmount | satToFiat: tx.coin}}
         </div>
       </div>
 

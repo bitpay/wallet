@@ -76,7 +76,7 @@ export class ConfirmPage {
   public appName: string;
   public merchantFeeLabel: string;
   public totalAmountStr: string;
-  public totalFiatAmount;
+  public totalAmount;
   // Config Related values
   public config;
 
@@ -308,12 +308,14 @@ export class ConfirmPage {
   }
 
   private getTotalAmountDetails(tx, wallet) {
-    this.totalFiatAmount = tx.amount + tx.txp[wallet.id].fee;
-    this.totalAmountStr = this.decimalPipe.transform(
-      (tx.amount + tx.txp[wallet.id].fee) /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
-      '1.2-6'
-    );
+    if (wallet && wallet.credentials && !wallet.credentials.token) {
+      this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
+      this.totalAmountStr = this.decimalPipe.transform(
+        (tx.amount + tx.txp[wallet.id].fee) /
+          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        '1.2-6'
+      );
+    }
   }
 
   private isChain() {
