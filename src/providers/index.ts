@@ -1,12 +1,12 @@
 // import { from } from 'rxjs/observable/from';
 
 /* Native modules */
-export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 export { AppleWalletNg } from 'apple-wallet-ng';
 export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
 export { FCMNG } from 'fcm-ng';
 export { File } from '@ionic-native/file';
+export { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 export { LaunchReview } from '@ionic-native/launch-review';
 export { QRScanner } from '@ionic-native/qr-scanner';
 export { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -14,7 +14,6 @@ export { SocialSharing } from '@ionic-native/social-sharing';
 export { SplashScreen } from '@ionic-native/splash-screen';
 export { StatusBar } from '@ionic-native/status-bar';
 export { Toast } from '@ionic-native/toast';
-export { TouchID } from '@ionic-native/touch-id';
 export { Vibration } from '@ionic-native/vibration';
 export { UserAgent } from '@ionic-native/user-agent';
 
