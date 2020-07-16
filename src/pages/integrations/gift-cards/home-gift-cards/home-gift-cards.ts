@@ -98,7 +98,7 @@ export class HomeGiftCards implements OnInit {
   }
 
   public buyGiftCards() {
-    this.navCtrl.push(CardCatalogPage);
+    this.navCtrl.push(CardCatalogPage, { giftCardsOnly: true });
   }
 
   public async buyCard(cardName: string) {

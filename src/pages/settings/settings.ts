@@ -396,6 +396,7 @@ export class SettingsPage {
       totalBalance: { show: this.showTotalBalance }
     };
     this.configProvider.set(opts);
+    if (this.showTotalBalance) this.events.publish('Local/FetchWallets');
   }
 
   public reorder(): void {

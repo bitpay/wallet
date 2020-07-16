@@ -10,6 +10,7 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { NewFeatureTourPage } from '../pages/new-feature-tour/new-feature-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -135,6 +136,7 @@ import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
+import { MerchantPage } from './merchant/merchant';
 
 export const PAGES = [
   AddPage,
@@ -183,6 +185,7 @@ export const PAGES = [
   WalletsPage,
   LanguagePage,
   LockPage,
+  MerchantPage,
   MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
@@ -210,6 +213,7 @@ export const PAGES = [
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,
+  NewFeatureTourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsModal,

@@ -34,4 +34,13 @@ export class ErrorsProvider {
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(dismissFunction);
   }
+
+  public showNoWalletsAvailableInfo(dismissFunction?) {
+    this.logger.warn('No wallets available');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'no-wallets-available'
+    );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(dismissFunction);
+  }
 }

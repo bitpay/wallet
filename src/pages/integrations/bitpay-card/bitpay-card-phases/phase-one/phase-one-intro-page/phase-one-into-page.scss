@@ -126,9 +126,11 @@ page-bitpay-phase-one-card-intro {
       padding-left: 0;
     }
 
-    &__form-toggle {
+    &__form-privacy {
       margin-top: 2.5rem;
+    }
 
+    &__form-group {
       .toggle-icon::before {
         background-color: rgba(128, 128, 128, 0.2);
       }
@@ -136,7 +138,11 @@ page-bitpay-phase-one-card-intro {
       &__label {
         color: #565d6d;
         font-size: 14px;
-        line-height: 18px;
+        line-height: 1.5;
+      }
+
+      &--large-lh {
+        line-height: 2;
       }
     }
 

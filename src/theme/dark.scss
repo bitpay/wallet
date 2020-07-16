@@ -198,7 +198,7 @@
 
   button.item.activated,
   .item-md.activated {
-    background-color: $bg-color-dark-theme-3;
+    background-color: $bg-color-dark-theme-2;
   }
 
   .gift-card-content {
@@ -506,11 +506,6 @@
         background: $bg-color-dark-theme-toolbar;
       }
     }
-
-    ion-note.note.discount {
-      background: $bg-color-dark-theme-2;
-      color: $text-color-dark-theme-2;
-    }
   }
 
   .header-extend {
@@ -622,7 +617,19 @@
       }
     }
   }
-
+  amount-picker {
+    .amount-picker {
+      &__amount {
+        color: $color-primary;
+      }
+      &__button {
+        border-color: $color-primary;
+        img {
+          filter: brightness(1.7) hue-rotate(8deg);
+        }
+      }
+    }
+  }
   info-sheet {
     .info-container {
       background-color: $bg-color-dark-theme-2;
@@ -939,6 +946,7 @@
 
     .bp-list {
       .summary-item,
+      .total-amount-note,
       .secondary-note {
         color: $text-color-dark-theme;
       }
@@ -1226,11 +1234,65 @@
       .discount-header {
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
+        border-bottom: 1px solid rgba(247, 247, 247, 0.02);
       }
     }
 
     .buy-box {
-      background-color: $bg-color-dark-theme;
+      background-color: #171717;
+    }
+  }
+
+  card-catalog-page {
+    .card-list-item {
+      background: none;
+
+      &__label {
+        color: $text-color-dark-theme;
+      }
+    }
+    .category-item {
+      background: none;
+
+      ion-label {
+        color: $text-color-dark-theme;
+      }
+
+      &:after {
+        background-color: $bg-color-dark-theme-2;
+      }
+    }
+    .no-results {
+      &__title {
+        color: $text-color-dark-theme;
+      }
+      &__subtitle {
+        color: $text-color-dark-theme-3;
+      }
+    }
+  }
+
+  card-catalog-page,
+  merchant-page {
+    .section-divider {
+      background: $bg-color-dark-theme-2;
+    }
+  }
+
+  merchant-page {
+    .cover {
+      background-image: linear-gradient(180deg, #121212 0%, #1d1d1d 100%);
+    }
+    .body {
+      &__title,
+      &__subtitle {
+        color: $text-color-dark-theme;
+      }
+
+      &__caption,
+      &__instructions {
+        color: $text-color-dark-theme-2;
+      }
     }
   }
 
@@ -1491,6 +1553,7 @@
   }
 
   page-key-onboarding,
+  page-new-feature-tour,
   page-disclaimer {
     .key-onboarding-slides,
     .onboarding-slides {

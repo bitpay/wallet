@@ -41,10 +41,9 @@ import {
 export class GiftCardProvider extends InvoiceProvider {
   countryPromise: Promise<string>;
   availableCardsPromise: Promise<CardConfig[]>;
-  availableCardMapPromise: Promise<{ [name: string]: CardConfig }>;
+  supportedCardMapPromise: Promise<{ [name: string]: CardConfig }>;
 
   cachedApiCardConfigPromise: Promise<CardConfigMap>;
-
   cardUpdatesSubject: Subject<GiftCard> = new Subject<GiftCard>();
   cardUpdates$: Observable<GiftCard> = this.cardUpdatesSubject.asObservable();
 
@@ -78,44 +77,44 @@ export class GiftCardProvider extends InvoiceProvider {
         syncGiftCardPurchases: true
       });
       await timer(1000).toPromise();
-      await this.getCardConfigMap(true);
+      await this.getSupportedCardConfigMap(true);
     });
     this.events.subscribe('BitPayId/Disconnected', async () => {
-      await this.getCardConfigMap(true);
+      await this.getSupportedCardConfigMap(true);
     });
     this.events.subscribe('BitPayId/SettingsChanged', async () => {
-      await this.getCardConfigMap(true);
+      await this.getSupportedCardConfigMap(true);
     });
   }
 
   async getCardConfig(cardName: string) {
-    const cardConfigMap = await this.getCardConfigMap();
+    const cardConfigMap = await this.getSupportedCardConfigMap();
     return cardConfigMap[cardName];
   }
 
-  getCardConfigMap(bustCache: boolean = false) {
+  getSupportedCardConfigMap(bustCache: boolean = false) {
     if (bustCache) {
-      this.clearAvailableCardsCache();
+      this.clearCardConfigCache();
     }
-    return this.availableCardMapPromise
-      ? this.availableCardMapPromise
+    return this.supportedCardMapPromise
+      ? this.supportedCardMapPromise
       : this.fetchCardConfigMap();
   }
 
-  clearAvailableCardsCache() {
-    this.availableCardMapPromise = undefined;
+  clearCardConfigCache() {
+    this.supportedCardMapPromise = undefined;
     this.availableCardsPromise = undefined;
   }
 
   async fetchCardConfigMap() {
-    this.availableCardMapPromise = this.getSupportedCards().then(
+    this.supportedCardMapPromise = this.getSupportedCards().then(
       availableCards =>
         availableCards.reduce(
           (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
           {}
         )
     );
-    return this.availableCardMapPromise;
+    return this.supportedCardMapPromise;
   }
 
   async getCardMap(cardName: string) {
@@ -130,6 +129,26 @@ export class GiftCardProvider extends InvoiceProvider {
       this.persistenceProvider.getBitPayIdSettings(this.getNetwork())
     ]);
     return user && userSettings && userSettings.syncGiftCardPurchases;
+  }
+
+  public getUserEmail(): Promise<string> {
+    const getBitPayIdInfo = this.persistenceProvider.getBitPayIdUserInfo(
+      this.getNetwork()
+    );
+    const getGiftCardUserInfo = this.persistenceProvider.getGiftCardUserInfo();
+    const shouldSync = this.shouldSyncGiftCardPurchasesWithBitPayId();
+    return Promise.all([shouldSync, getBitPayIdInfo, getGiftCardUserInfo])
+      .then(([shouldSync, ...rest]) => {
+        const [bitpayIdEmail, giftCardEmail] = rest
+          .map(result => (_.isString(result) ? JSON.parse(result) : result))
+          .map(jsonResult => jsonResult && jsonResult.email);
+        return (
+          (shouldSync && bitpayIdEmail) ||
+          giftCardEmail ||
+          this.emailNotificationsProvider.getEmailIfEnabled()
+        );
+      })
+      .catch(_ => {});
   }
 
   public async createBitpayInvoice(data, attempt: number = 1) {
@@ -183,7 +202,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getActiveCards(): Promise<GiftCard[]> {
     const [configMap, giftCardMap] = await Promise.all([
-      this.getCardConfigMap(),
+      this.getSupportedCardConfigMap(),
       this.persistenceProvider.getActiveGiftCards(this.getNetwork())
     ]);
     const validSchema =
@@ -195,7 +214,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getPurchasedCards(cardName: string): Promise<GiftCard[]> {
     const [configMap, giftCardMap] = await Promise.all([
-      this.getCardConfigMap(),
+      this.getSupportedCardConfigMap(),
       this.getCardMap(cardName)
     ]);
     return getCardsFromInvoiceMap(giftCardMap, configMap);
@@ -217,6 +236,16 @@ export class GiftCardProvider extends InvoiceProvider {
     return cardsGroup
       .reduce((allCards, brandCards) => allCards.concat(brandCards), [])
       .sort(sortByDescendingDate);
+  }
+
+  async getRecentlyPurchasedBrandNames(): Promise<string[]> {
+    const purchasedBrands = await this.getPurchasedBrands();
+    const recentlyPurchasedBrands = purchasedBrands
+      .map(cards => cards.sort(sortByDescendingDate))
+      .sort((a, b) => sortByDescendingDate(a[0], b[0]));
+    return recentlyPurchasedBrands
+      .map(brandCards => brandCards[0].displayName)
+      .slice(0, 6);
   }
 
   async getPurchasedBrands(): Promise<GiftCard[][]> {
@@ -462,7 +491,7 @@ export class GiftCardProvider extends InvoiceProvider {
   async getSupportedCards(): Promise<CardConfig[]> {
     const [availableCards, cachedApiCardConfig] = await Promise.all([
       this.getAvailableCards().catch(_ => {
-        this.clearAvailableCardsCache();
+        this.clearCardConfigCache();
         return [] as CardConfig[];
       }),
       this.getCachedApiCardConfig().catch(_ => ({} as CardConfigMap))
@@ -626,18 +655,20 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   async fetchAvailableCards(): Promise<CardConfig[]> {
-    this.availableCardsPromise = this.fetchAvailableCardMap().then(
-      availableCardMap =>
-        getCardConfigFromApiConfigMap(
-          availableCardMap,
-          this.platformProvider.isCordova
-        )
-          .map(apiCardConfig => ({
-            ...apiCardConfig,
-            displayName: apiCardConfig.displayName || apiCardConfig.name
-          }))
-          .filter(filterDisplayableConfig)
-          .sort(sortByDisplayName)
+    this.availableCardsPromise = Promise.all([
+      this.fetchAvailableCardMap()
+    ]).then(([availableCardMap]) =>
+      getCardConfigFromApiConfigMap(
+        availableCardMap,
+        this.platformProvider.isCordova
+      )
+        .map(apiCardConfig => ({
+          ...apiCardConfig,
+          displayName: apiCardConfig.displayName || apiCardConfig.name,
+          tags: apiCardConfig.tags || []
+        }))
+        .filter(filterDisplayableConfig)
+        .sort(sortByDisplayName)
     );
     return this.availableCardsPromise;
   }
@@ -684,7 +715,7 @@ export class GiftCardProvider extends InvoiceProvider {
 function getCardConfigFromApiConfigMap(
   availableCardMap: AvailableCardMap,
   isCordova: boolean
-) {
+): CardConfig[] {
   const cardNames = Object.keys(availableCardMap);
   const availableCards = cardNames
     .filter(
@@ -773,8 +804,8 @@ export function sortByDescendingDate(a: GiftCard, b: GiftCard) {
 }
 
 export function sortByDisplayName(
-  a: CardConfig | GiftCard,
-  b: CardConfig | GiftCard
+  a: { displayName: string },
+  b: { displayName: string }
 ) {
   const aSortValue = getDisplayNameSortValue(a.displayName);
   const bSortValue = getDisplayNameSortValue(b.displayName);

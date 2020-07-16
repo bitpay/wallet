@@ -113,23 +113,17 @@
   </div>
 
   <ion-list margin-bottom class="bp-list">
-    <ion-item *ngIf="showShoppingOption" (click)="goToShop()">
+    <button ion-item *ngIf="showShoppingOption" (click)="goToShop()">
       <ion-label>
         <div class="services-list-label" translate>Shop</div>
       </ion-label>
-      <ion-note item-end>
-        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-      </ion-note>
-    </ion-item>
+    </button>
     <div *ngIf="showShoppingOption" class="line-divider"></div>
-    <ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
+    <button ion-item *ngIf="showBuyCryptoOption" (click)="goToBuyCrypto()">
       <ion-label>
         <div class="services-list-label" translate>Buy Crypto</div>
       </ion-label>
-      <ion-note item-end>
-        <ion-icon class="services-list-arrow" name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-      </ion-note>
-    </ion-item>
+    </button>
     <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
   </ion-list>
 
@@ -147,7 +141,7 @@
           <ion-row align-items-center>
             <ion-col align-self-start col-4>
               <div class="message-img">
-                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-visa.svg'}" src="{{advertisement.imgSrc}}" />
+                <img [ngClass]="{'card-img': advertisement.imgSrc === 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'}" src="{{advertisement.imgSrc}}" />
               </div>
             </ion-col>
             <ion-col col-8>
@@ -168,11 +162,9 @@
     </ion-slide>
   </ion-slides>
 
-  <div padding-right>
-    <div class="section-header">
-      <div translate>Exchange Rates</div>
-      <div translate class="date-label">1D</div>
-    </div>
-    <exchange-rates #exchangeRates></exchange-rates>
+  <div class="section-header">
+    <div translate>Exchange Rates</div>
+    <div translate class="date-label">1D</div>
   </div>
+  <exchange-rates #exchangeRates></exchange-rates>
 </ion-content>

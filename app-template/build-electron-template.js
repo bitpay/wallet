@@ -36,7 +36,7 @@ builder
         gatekeeperAssess: false,
         hardenedRuntime: false,
         artifactName: '*USERVISIBLENAME*',
-        darkModeSupport: false,
+        darkModeSupport: true,
         identity: 'BitPay, Inc. (884JRH5R93)',
         provisioningProfile: './*PACKAGENAME*-embedded.provisionprofile',
         extendInfo: {

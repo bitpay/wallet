@@ -187,11 +187,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       minFiatCurrency: { amount: this.amount, currency: this.currency }
     });
     if (_.isEmpty(this.wallets)) {
-      this.showErrorInfoSheet(
-        this.translate.instant('No wallets available'),
-        null,
-        true
-      );
+      this.errorsProvider.showNoWalletsAvailableInfo();
       return;
     }
     this.showWallets(); // Show wallet selector
@@ -245,8 +241,34 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
   }
 
-  public openExternalLink(url: string) {
-    this.externalLinkProvider.open(url);
+  public openExternalLink(urlKey: string) {
+    let url: string;
+    let title: string;
+    switch (urlKey) {
+      case 'networkCost':
+        url =
+          'https://support.bitpay.com/hc/en-us/articles/115002990803-Why-Am-I-Being-Charged-an-Additional-Network-Cost-on-My-BitPay-Invoice-';
+        title = this.translate.instant('Network Cost');
+        break;
+      case 'minerFee':
+        url =
+          'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-Why-are-miner-fees-so-high-';
+        title = this.translate.instant('Miner Fee');
+        break;
+    }
+    let message = this.translate.instant(
+      'This information is available at the website.'
+    );
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      true,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   private resetValues() {
@@ -448,6 +470,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.onGoingProcessProvider.clear();
     this.logger.debug('Saved new gift card with status: ' + card.status);
     this.logDiscountedPurchase();
+    this.events.publish('GiftCards/GiftCardPurchased');
     this.finish(card);
   }
 

@@ -53,19 +53,23 @@ ion-title.bp-title {
 ion-alert.alert-top {
   align-items: center;
 }
+
 ion-alert {
   .alert-wrapper {
     color: black;
+
     .alert-title {
       color: black;
     }
   }
+
   .alert-radio-group {
     .alert-radio:not([aria-checked='true']) .alert-radio-label {
       color: black;
     }
   }
 }
+
 // Text wrap
 // --------------------------------------------------
 ion-label {
@@ -88,6 +92,7 @@ ion-label {
 ion-header.bp-header .toolbar {
   ion-title {
     padding: 0;
+
     .toolbar-title.toolbar-title-md,
     .toolbar-title.toolbar-title-ios {
       font-size: 18px;
@@ -95,6 +100,7 @@ ion-header.bp-header .toolbar {
     }
   }
 }
+
 .wide-header__title {
   color: $text-color;
   font-size: 25px;
@@ -113,9 +119,11 @@ ion-header.bp-header .toolbar {
   background-color: rgba(155, 163, 174, 0.2);
   color: #d8d8d8;
   box-shadow: none;
+
   &.button-ios {
     margin: 0;
   }
+
   &.button-md.activated,
   &.button-ios.activated {
     background-color: rgba(155, 163, 174, 0.2);
@@ -130,6 +138,7 @@ ion-header.bp-header .toolbar {
   background-color: transparent !important;
   margin: 0 5px;
   color: #434d5a;
+
   &.activated,
   &:hover:not(.disable-hover) {
     color: #434d5a;
@@ -198,20 +207,24 @@ ion-spinner * {
   .back-button-md {
     min-width: 41px;
   }
+
   .back-button {
-    margin-left: 10px;
+    margin-left: 15px;
     height: 41px;
     width: 41px;
     border-radius: 50%;
     background-color: rgba(155, 163, 174, 0.12);
     color: #d8d8d8;
     box-shadow: none;
+
     .back-button-icon-md {
       padding: 0px 0px 32px 4px;
+
       &::before {
         font-size: 14px;
       }
     }
+
     .back-button-icon-ios {
       margin: 2px 2px 0px 0px;
     }
@@ -242,6 +255,7 @@ ion-spinner * {
   height: $icon-dim;
   width: $icon-dim;
   margin-right: 16px;
+
   &.disabled {
     background-color: color($colors, grey);
   }
@@ -464,6 +478,7 @@ a.royal {
   display: flex;
   align-items: baseline;
   border-radius: 8px;
+
   .text-input-ios {
     margin: 16px 8px 16px 8px;
   }
@@ -690,6 +705,7 @@ page-bitpay-card {
     &.title-ios {
       padding: 0 70px 1px;
     }
+
     .toolbar-title {
       opacity: 0.7;
       font-weight: 600;
@@ -744,6 +760,7 @@ page-bitpay-card {
 
 .tabbar {
   height: 10vh;
+
   .tabs-md &,
   .tabs-ios & {
     background: white;
@@ -779,6 +796,7 @@ ion-tabs {
       url('../assets/img/tab-icons/tab-cards-active.svg')
       url('../assets/img/tab-icons/tab-settings-active.svg');
   }
+
   .tab-badge {
     font-family: 'Roboto';
   }
@@ -811,30 +829,37 @@ ion-icon {
   &[class*='tab-home'] {
     background: $home-inactive;
     background-size: contain;
+
     .tab-button[aria-selected='true'] & {
       background: $home-active;
       background-size: contain;
     }
   }
+
   &[class*='tab-wallets'] {
     background: $wallets-inactive;
     background-size: contain;
+
     .tab-button[aria-selected='true'] & {
       background: $wallets-active;
       background-size: contain;
     }
   }
+
   &[class*='tab-cards'] {
     background: $cards-inactive;
     background-size: contain;
+
     .tab-button[aria-selected='true'] & {
       background: $cards-active;
       background-size: contain;
     }
   }
+
   &[class*='tab-settings'] {
     background: $settings-inactive;
     background-size: contain;
+
     .tab-button[aria-selected='true'] & {
       background: $settings-active;
       background-size: contain;

@@ -247,7 +247,7 @@ export class ConfigProvider {
       },
 
       theme: {
-        enabled: false,
+        enabled: true,
         system: true,
         name: 'light'
       },

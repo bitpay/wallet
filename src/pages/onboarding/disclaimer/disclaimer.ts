@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, Slides } from 'ionic-angular';
+import { Events, NavController, Slides } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 import { TabsPage } from '../../tabs/tabs';
 
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 
 @Component({
@@ -27,7 +28,9 @@ export class DisclaimerPage {
     private emailProvider: EmailNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private iabCardProvider: IABCardProvider,
+    private events: Events
   ) {
     this.hasEmail = this.emailProvider.getEmailIfEnabled() ? true : false;
     this.accepted = {
@@ -105,8 +108,27 @@ export class DisclaimerPage {
 
   confirm() {
     this.persistenceProvider.setEmailLawCompliance('accepted');
-    this.persistenceProvider.setNewDesignSlidesFlag('completed');
+    this.persistenceProvider.setNewFeatureSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
+    this.persistenceProvider.getCardFastTrackEnabled().then(context => {
+      if (context) {
+        setTimeout(() => {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage({
+            message: 'debitCardOrder',
+            payload: context
+          });
+        }, 200);
+        this.persistenceProvider.setCardExperimentFlag('enabled');
+        setTimeout(() => {
+          this.events.publish('experimentUpdateStart');
+          setTimeout(() => {
+            this.events.publish('experimentUpdateComplete');
+          }, 300);
+        }, 400);
+      }
+    });
+
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });
   }
