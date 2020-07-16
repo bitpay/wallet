@@ -87,6 +87,7 @@
       &.icon-md,
       &.icon-ios {
         opacity: 1;
+
         img {
           filter: invert(1);
         }
@@ -101,6 +102,7 @@
         @include transition();
       }
     }
+
     ion-content.add-padding-bottom,
     .add-padding-bottom ion-content {
       .fixed-content,
@@ -144,6 +146,7 @@
   coin-icon {
     ion-icon.item-img.icon.background_xrp {
       background-color: color($colors, dark);
+
       &.testnet {
         filter: invert(0.2);
       }
@@ -175,9 +178,11 @@
     .tabbar {
       background-color: $bg-color-dark-theme;
     }
+
     .tab-button {
       opacity: 0.4;
     }
+
     .tab-button[aria-selected='true'] {
       opacity: 1;
     }
@@ -186,6 +191,7 @@
   .swiper-pagination-bullet-active {
     background-color: $swiper-pagination-bullet-active;
   }
+
   .swiper-pagination-bullet {
     background-color: $swiper-pagination-bullet;
   }
@@ -215,18 +221,22 @@
   .toggle-md {
     .toggle-icon {
       background-color: $bg-color-dark-theme-3;
+
       &::before {
         background-color: $bg-color-dark-theme-3;
       }
+
       .toggle-inner {
         background-color: $toggle-color-dark-theme;
       }
     }
   }
+
   .alert-ios {
     .alert-button {
       border-color: $bg-color-dark-theme-3;
     }
+
     .alert-input {
       border-color: $bg-color-dark-theme-3;
     }
@@ -236,42 +246,52 @@
     .alert-wrapper {
       background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
+
       .alert-title {
         color: $text-color-dark-theme;
       }
     }
+
     .alert-radio-group {
       .alert-radio:not([aria-checked='true']) .alert-radio-label {
         color: $text-color-dark-theme;
       }
     }
+
     .alert-input {
       background: $bg-color-dark-theme;
     }
   }
+
   .alert-ios .alert-button ion-action-sheet {
     .action-sheet-group {
       background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
+
       .action-sheet-button {
         color: $text-color-dark-theme;
       }
     }
   }
+
   .search-container {
     background-color: $bg-color-dark-theme;
   }
+
   .search-wrapper {
     background-color: $bg-color-dark-theme-2;
     color: $text-color-dark-theme-2;
   }
+
   search-bar {
     background: $bg-color-dark-theme;
+
     ion-input {
       background: $bg-color-dark-theme-message;
       color: $text-color-dark-theme;
     }
   }
+
   add-button {
     .add-button {
       &__icon {
@@ -288,6 +308,7 @@
     .title-info {
       color: $text-color-dark-theme;
     }
+
     .subtitle-info {
       color: $text-color-dark-theme-2;
     }
@@ -299,9 +320,11 @@
 
   .alertTheme {
     color: $text-color-dark-theme;
+
     .alert-message {
       color: $text-color-dark-theme;
     }
+
     .alert-wrapper {
       background-color: $bg-color-dark-theme-2;
     }
@@ -311,10 +334,13 @@
     .alert-message {
       color: color($colors, danger);
     }
+
     color: $text-color-dark-theme;
+
     .alert-wrapper {
       background-color: $bg-color-dark-theme-2;
     }
+
     .alert-input {
       color: $text-color-dark-theme;
     }
@@ -328,6 +354,7 @@
         border: 0;
         background-color: $bg-color-dark-theme;
       }
+
       &:not(.create-button):not(.assertive) {
         &.item-ios,
         &.item-md {
@@ -335,28 +362,35 @@
         }
       }
     }
+
     .main-label,
     .main-note,
     .status .royal {
       color: $text-color-dark-theme;
     }
+
     ion-item-divider {
       background: $bg-color-dark-theme-2;
+
       .label {
         color: $text-color-dark-theme-3;
       }
     }
+
     .summary-item-detail {
       color: $text-color-dark-theme;
+
       .text-input {
         color: $text-color-dark-theme;
         opacity: 1;
       }
     }
+
     .total-amount {
       color: $text-color-dark-theme;
     }
   }
+
   .button-secondary {
     background-color: $bg-color-dark-theme-3;
     color: $text-color-dark-theme-2;
@@ -385,24 +419,31 @@
   label-tip {
     opacity: 0.7;
     color: $text-color-dark-theme-2;
+
     &[type='info'] {
       background-color: $bg-color-dark-theme-4;
+
       &:before {
         border-bottom-color: $bg-color-dark-theme-4;
       }
     }
+
     &[type='warn'] {
       background-color: $bg-color-dark-theme-4;
+
       &:before {
         border-bottom-color: $bg-color-dark-theme-4;
       }
     }
+
     &[type='danger'] {
       background-color: $bg-color-dark-theme-4;
+
       &:before {
         border-bottom-color: $bg-color-dark-theme-4;
       }
     }
+
     .label-header {
       color: $text-color-dark-theme;
     }
@@ -411,25 +452,31 @@
   // 3.3 - General cards
   action-card-v4.card {
     background-color: $bg-color-dark-theme-2;
+
     .action-card__content {
       background-color: $bg-color-dark-theme-2;
+
       .action-card__title {
         color: $text-color-dark-theme;
       }
     }
+
     .bitpay-card-header,
     .home-gift-card-header {
       background-color: $bg-color-dark-theme-3;
     }
   }
+
   action-card.card {
     background: $bg-color-dark-theme-2;
+
     .action-card {
       &__content {
         background: $bg-color-dark-theme-2;
       }
     }
   }
+
   .card {
     page-txp {
       .proposal-container .item-inner {
@@ -459,6 +506,7 @@
         background: $bg-color-dark-theme-toolbar;
       }
     }
+
     ion-note.note.discount {
       background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme-2;
@@ -473,6 +521,7 @@
   .content-ios .toolbar-background-ios {
     background: $bg-color-dark-theme;
   }
+
   .toolbar-background-md,
   .toolbar-background-ios {
     background: $bg-color-dark-theme;
@@ -488,6 +537,7 @@
   .toolbar-content-md,
   .toolbar-content-ios {
     color: $text-color-dark-theme;
+
     .bar-buttons-md,
     .bar-buttons-ios {
       .bar-button .button-inner {
@@ -511,6 +561,7 @@
       .close-container {
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme !important;
+
         &.button-default,
         &.button-md.activated,
         &.button-ios.activated {
@@ -531,20 +582,24 @@
         }
       }
     }
+
     ion-spinner {
       * {
         stroke: $text-color-dark-theme !important;
       }
     }
   }
+
   page-shapeshift-details {
     .header-modal {
       background-color: $bg-color-dark-theme;
+
       .title-modal {
         color: $text-color-dark-theme-2;
       }
     }
   }
+
   page-bitpay-card-intro {
     ion-toolbar {
       background-color: $bg-color-dark-theme-2;
@@ -555,6 +610,7 @@
   action-sheet {
     .action-sheet {
       background: $bg-color-dark-theme-2;
+
       .bp-list {
         .item {
           &.item-ios,
@@ -566,19 +622,24 @@
       }
     }
   }
+
   info-sheet {
     .info-container {
       background-color: $bg-color-dark-theme-2;
+
       info-sheet-template {
         .confirm-sheet {
           background-color: $bg-color-dark-theme-2;
           color: $text-color-dark-theme;
+
           .sheet-title {
             color: $text-color-dark-theme;
           }
+
           .sheet-text {
             color: $text-color-dark-theme-2;
           }
+
           .sheet-btn-group {
             border-top: 1px solid $border-color-dark-theme;
 
@@ -591,6 +652,7 @@
       }
     }
   }
+
   wallet-selector {
     .item-divider-md,
     .item-divider-ios {
@@ -598,15 +660,18 @@
       border-bottom: 1px solid $bg-color-dark-theme-2;
     }
   }
+
   memo-component {
     .text-input {
       background-color: $bg-color-dark-theme;
       color: $text-color-dark-theme;
     }
+
     .title {
       color: $text-color-dark-theme;
     }
   }
+
   page-choose-fee-level {
     .testnet-warning {
       background-color: color($colors, warning);
@@ -616,17 +681,22 @@
       &-speed-name {
         color: $text-color-dark-theme;
       }
+
       &-speed-satByte {
         color: $text-color-dark-theme;
       }
+
       &-avg-label {
         color: $text-color-dark-theme;
       }
+
       &-avg-time {
         color: $text-color-dark-theme;
       }
+
       &-card {
         background-color: $bg-color-dark-theme;
+
         .item {
           &.item-ios,
           &.item-md {
@@ -637,6 +707,7 @@
       }
     }
   }
+
   page-slide-to-accept {
     background: linear-gradient(
       to bottom,
@@ -651,87 +722,108 @@
       rgba(18, 18, 18, 1)
     );
   }
+
   page-fingerprint {
     ion-content {
       background-color: $bg-color-dark-theme !important;
     }
+
     .fingerprint-header {
       border-bottom: 1px solid $border-color-dark-theme;
       background-color: $bg-color-dark-theme-2;
+
       .title {
         color: $text-color-dark-theme;
       }
     }
   }
+
   page-pin {
     ion-header {
       .toolbar-background {
         background-color: $bg-color-dark-theme-2;
       }
     }
+
     ion-content {
       background-color: $bg-color-dark-theme !important;
     }
+
     .pin-header {
       border-bottom: 1px solid $border-color-dark-theme;
       background-color: $bg-color-dark-theme-2;
     }
+
     .content {
       background-color: color($colors, blank);
     }
   }
+
   .clipboard-card {
     background: $bg-color-dark-theme-message;
+
     .item-divider {
       background: $bg-color-dark-theme-message;
       border-bottom: 1px solid $bg-color-dark-theme-2;
     }
+
     page-clipboard-card {
       .clipboard-paypro-container {
         background: $bg-color-dark-theme-message;
         color: $text-color-dark-theme;
+
         .item-inner {
           background: $bg-color-dark-theme-message;
           color: $text-color-dark-theme;
           border-bottom: 1px solid $bg-color-dark-theme-2;
         }
+
         ion-note {
           .amount {
             color: $text-color-dark-theme;
           }
         }
+
         .loader {
           background-color: #666;
+
           &:after {
             background-color: #2b2a2a;
           }
+
           &.gradient {
             background-image: linear-gradient(to right, #666, #2b2a2a);
+
             &:after {
               background-color: #2a2929;
             }
           }
         }
       }
+
       .clipboard {
         background: $bg-color-dark-theme-message;
         color: $text-color-dark-theme;
+
         ion-label {
           background: $bg-color-dark-theme-2;
           color: $text-color-dark-theme;
         }
+
         img {
           border-right: 1px solid $bg-color-dark-theme-message;
         }
       }
     }
   }
+
   page-feedback-card {
     ion-card.card {
       background-color: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
     }
   }
+
   incoming-data-menu {
     img {
       filter: invert(0.7);
@@ -765,6 +857,7 @@
         color: $text-color-dark-theme;
       }
     }
+
     .labels {
       .inactive {
         color: $text-color-dark-theme;
@@ -777,13 +870,16 @@
     .collapse > .collapse-btn {
       background: $bg-color-dark-theme-2;
     }
+
     .section-header {
       border-bottom: 1px solid $border-color-dark-theme;
     }
+
     .collapse .item-img {
       filter: invert(1);
     }
   }
+
   page-txp {
     .item {
       &.item-ios,
@@ -792,10 +888,12 @@
         color: $text-color-dark-theme;
       }
     }
+
     ion-note .amount {
       color: $text-color-dark-theme;
     }
   }
+
   page-txp-details {
     .proposal-deletion {
       background-color: $bg-color-dark-theme;
@@ -804,6 +902,7 @@
     .proposal-rejection {
       background-color: $bg-color-dark-theme;
     }
+
     ion-note.note {
       .wallet {
         .note-container {
@@ -830,27 +929,32 @@
       background-color: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
     }
+
     .wallet,
     .multi-recip-title {
       span {
         color: $text-color-dark-theme;
       }
     }
+
     .bp-list {
       .summary-item,
       .secondary-note {
         color: $text-color-dark-theme;
       }
+
       ion-note.note {
         .note-container {
           color: $text-color-dark-theme;
         }
       }
     }
+
     .background-button-content {
       background-color: $bg-color-dark-theme-2;
     }
   }
+
   page-bitpay-card-topup {
     ion-content {
       ion-item {
@@ -859,6 +963,7 @@
       }
     }
   }
+
   page-wallet-details,
   page-coinbase-account,
   page-bitpay-card {
@@ -884,9 +989,11 @@
         .testnet {
           filter: invert(1);
         }
+
         .read-only {
           filter: invert(0);
         }
+
         .square-border {
           span {
             border: 1px solid $text-color-dark-theme;
@@ -915,20 +1022,25 @@
       .item {
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
+
         &.warning-background {
           background-color: $bg-color-dark-theme-3;
+
           ion-note.note > .amount > .received,
           .action {
             color: color($colors, warning);
           }
         }
+
         &.danger-background {
           background-color: $bg-color-dark-theme-3;
+
           ion-note.note > .amount > .received,
           .action {
             color: color($colors, danger);
           }
         }
+
         .item-inner {
           border-bottom: 1px solid $border-color-dark-theme;
         }
@@ -945,6 +1057,7 @@
     .white-card {
       background: $bg-color-dark-theme;
       color: $text-color-dark-theme;
+
       .timeline-content-icon ion-icon {
         &[name='ios-time-outline'] {
           filter: invert(1);
@@ -957,6 +1070,7 @@
     .icon-services {
       border: 1px solid $text-color-dark-theme-2;
     }
+
     .amount {
       color: $text-color-dark-theme;
     }
@@ -972,10 +1086,12 @@
       .addr-title {
         color: $text-color-dark-theme;
       }
+
       .addr-buttons .addr-update {
         background-color: $bg-color-dark-theme-3;
       }
     }
+
     .addr-content {
       .addr-container {
         .text-address {
@@ -983,6 +1099,7 @@
           color: $text-color-dark-theme-3;
         }
       }
+
       .qr-container {
         .lines-background {
           background: url(../assets/img/curved-lines-background.png) center
@@ -991,11 +1108,13 @@
         }
       }
     }
+
     .close-btn {
       button {
         color: $text-color-dark-theme;
       }
     }
+
     .segment-button {
       color: $text-color-dark-theme;
     }
@@ -1014,8 +1133,10 @@
       opacity: 1;
       color: $text-color-dark-theme-2;
     }
+
     .recipient {
       background-color: $bg-color-dark-theme;
+
       ion-label {
         color: $text-color-dark-theme;
       }
@@ -1024,10 +1145,12 @@
     .content-list {
       .item {
         background-color: $bg-color-dark-theme;
+
         .item-inner {
           border-bottom: 1px solid $border-color-dark-theme;
         }
       }
+
       .item-divider-header {
         &.item {
           background: $bg-color-dark-theme-2;
@@ -1041,24 +1164,29 @@
         color: $text-color-dark-theme;
       }
     }
+
     .send-header-wrapper {
       background-color: $bg-color-dark-theme;
     }
+
     .search-wrapper {
       .scan-icon {
         border-left: 1px solid rgba(151, 151, 151, 0.2);
       }
     }
+
     .invalid {
       border: 1px solid color($colors, error);
       color: color($colors, error);
     }
+
     ion-checkbox {
       .checkbox-icon {
         border-color: color($colors, primary);
         background-color: $bg-color-dark-theme;
       }
     }
+
     .txp-container {
       background-color: $bg-color-dark-theme;
     }
@@ -1094,11 +1222,13 @@
         $bg-color-dark-theme 30%,
         $gradient-dark-theme 100%
       );
+
       .discount-header {
         background-color: $bg-color-dark-theme-2;
         color: $text-color-dark-theme;
       }
     }
+
     .buy-box {
       background-color: $bg-color-dark-theme;
     }
@@ -1121,6 +1251,7 @@
           color: color($colors, primary);
         }
       }
+
       &__form-toggle {
         &__label {
           color: $text-color-dark-theme-3;
@@ -1140,6 +1271,7 @@
         background: $bg-color-dark-theme-2;
         color: $text-color-dark-theme-2;
       }
+
       ion-icon.item-img.icon {
         &.icon-md.item-icon,
         &.icon-ios.item-icon {
@@ -1148,11 +1280,13 @@
           }
         }
       }
+
       .icon-qrcode {
         filter: invert(1);
       }
     }
   }
+
   page-alt-currency,
   page-key-settings,
   page-wallet-information,
@@ -1170,6 +1304,7 @@
       }
     }
   }
+
   page-addressbook-add,
   page-join-wallet {
     ion-item {
@@ -1177,11 +1312,13 @@
       color: $text-color-dark-theme-2;
     }
   }
+
   page-addressbook {
     .zero-state-icon {
       background-color: $bg-color-dark-theme-3;
     }
   }
+
   page-wallet-addresses {
     button.item {
       background: $bg-color-dark-theme;
@@ -1191,16 +1328,20 @@
   page-scan {
     .page-scan-has-problems {
       background-color: $bg-color-dark-theme-toolbar;
+
       .body {
         background-color: $bg-color-dark-theme-toolbar;
+
         div {
           color: $bg-color-dark-theme-toolbar;
         }
       }
     }
   }
+
   card-details-page {
     background-color: $bg-color-dark-theme;
+
     .gift-card-content .scroll-content > div.wrapper {
       background-color: $bg-color-dark-theme;
     }
@@ -1214,6 +1355,7 @@
     .card-info {
       background-color: $bg-color-dark-theme-3;
       border: 1px solid $border-color-dark-theme;
+
       &__title {
         color: $text-color-dark-theme-2;
       }
@@ -1233,6 +1375,7 @@
       }
     }
   }
+
   page-share {
     .share-buttons {
       background-color: $bg-color-dark-theme;
@@ -1245,11 +1388,13 @@
       background-color: $bg-color-dark-theme;
     }
   }
+
   page-simplex {
     .buy-crypto-button {
       color: $text-color-dark-theme;
     }
   }
+
   page-simplex-buy {
     .bp-list {
       ion-note.note {
@@ -1257,6 +1402,7 @@
           color: $text-color-dark-theme;
         }
       }
+
       form {
         .item-block .item-inner {
           border-bottom: none;
@@ -1264,6 +1410,7 @@
       }
     }
   }
+
   page-add,
   page-select-currency,
   page-coin-selector,
@@ -1272,11 +1419,13 @@
       .item-title {
         color: $text-color-dark-theme;
       }
+
       .item-subtitle {
         color: $text-color-dark-theme-2;
       }
     }
   }
+
   page-import-wallet,
   page-create-wallet,
   page-bitpay-phase-one-card-intro {
@@ -1285,35 +1434,62 @@
       color: $text-color-dark-theme;
     }
   }
-  email-component {
+
+  phone-sheet {
+    .country__label {
+      color: white;
+    }
+  }
+
+  email-component,
+  phone-sheet,
+  phone-page {
     .title {
       color: $text-color-dark-theme;
     }
+
     .sub-title {
-      color: $text-color-dark-theme-2;
-    }
-    ion-item {
-      background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
     }
+
+    ion-item,
+    ion-item.item-toggle ion-label {
+      background: $bg-color-dark-theme;
+      color: $text-color-dark-theme;
+    }
+
+    .phone-input {
+      color: white;
+      border-bottom-color: white;
+
+      &__country-code {
+        border-color: white;
+      }
+    }
   }
+
   page-send-feedback {
     .msg-to-user {
       background: $bg-color-dark-theme;
+
       .feedback-title {
         color: $text-color-dark-theme;
       }
+
       .feedback-msg {
         color: $text-color-dark-theme;
       }
     }
+
     .user-feedback-card {
       background-color: $bg-color-dark-theme-2;
+
       .user-feedback-title {
         color: $text-color-dark-theme;
       }
     }
   }
+
   page-key-onboarding,
   page-disclaimer {
     .key-onboarding-slides,
@@ -1325,40 +1501,49 @@
           $gradient-dark-theme 80%
         );
       }
+
       .slide-info {
         background: $bg-color-dark-theme;
+
         .info .title,
         .title {
           color: $text-color-dark-theme;
         }
+
         .info .text,
         .text {
           color: $text-color-dark-theme-2;
         }
       }
     }
+
     .toolbar {
       .toolbar-background {
         background: $bg-color-dark-theme;
       }
     }
+
     .checkbox-list {
       .external-link {
         color: $text-color-dark-theme-2;
       }
+
       .text {
         color: $text-color-dark-theme;
       }
     }
+
     .swiper-pagination-bullet {
       background-color: $text-color-dark-theme-2;
     }
   }
+
   page-backup-key,
   page-backup-game {
     ion-content.content {
       background: $bg-color-dark-theme;
     }
+
     .key-container,
     .grid-container > .key-container {
       .word-container,
@@ -1366,15 +1551,18 @@
         .word-title {
           color: $text-color-dark-theme;
         }
+
         .word {
           background: $bg-color-dark-theme-2;
           color: $text-color-dark-theme;
+
           .dash-line {
             border-bottom: 1px $border-color-dark-theme dashed;
           }
         }
       }
     }
+
     .grid-container > .mnemonic-words-container {
       .mnemonic-words {
         .words {
@@ -1386,6 +1574,7 @@
       }
     }
   }
+
   page-coinbase {
     ion-content {
       .center-header .button-clear-md-dark {
@@ -1393,22 +1582,27 @@
       }
     }
   }
+
   page-custom-amount {
     .qr-card-amount {
       background-color: $bg-color-dark-theme;
     }
+
     .qr-container {
       background-color: $bg-color-dark-theme;
 
       div.qr-card.card {
         background-color: $bg-color-dark-theme;
       }
+
       .qr-card {
         background-color: white;
       }
     }
+
     .receive-content {
       background-color: $bg-color-dark-theme;
+
       .addr-container {
         .text-address {
           background: $bg-color-dark-theme-2;
@@ -1417,11 +1611,13 @@
       }
     }
   }
+
   card-terms {
     .terms * {
       color: $text-color-dark-theme-3;
     }
   }
+
   page-card-item {
     .card-icon {
       .houston {
@@ -1431,6 +1627,7 @@
       }
     }
   }
+
   page-session-log {
     .filter-container {
       .labels {

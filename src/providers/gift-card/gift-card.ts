@@ -39,6 +39,7 @@ import {
 
 @Injectable()
 export class GiftCardProvider extends InvoiceProvider {
+  countryPromise: Promise<string>;
   availableCardsPromise: Promise<CardConfig[]>;
   availableCardMapPromise: Promise<{ [name: string]: CardConfig }>;
 
@@ -139,7 +140,8 @@ export class GiftCardProvider extends InvoiceProvider {
       amount: data.amount,
       clientId: data.uuid,
       discounts: data.discounts,
-      email: data.email
+      email: data.email,
+      phone: data.phone
     };
     const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
     const promise = shouldSync
@@ -577,6 +579,44 @@ export class GiftCardProvider extends InvoiceProvider {
       ? await this.cachedApiCardConfigPromise
       : await this.fetchCachedApiCardConfig();
     return config || {};
+  }
+
+  async savePhone(
+    phone: string,
+    phoneCountryInfo: { phoneCountryCode: string; countryIsoCode: string }
+  ): Promise<void> {
+    await Promise.all([
+      this.persistenceProvider.setPhone(phone),
+      this.persistenceProvider.setPhoneCountryInfo(phoneCountryInfo)
+    ]);
+  }
+
+  async getPhoneAndCountryCode(): Promise<{
+    phone: string;
+    phoneCountryInfo;
+  }> {
+    const [phone, phoneCountryInfo] = await Promise.all([
+      this.persistenceProvider.getPhone(),
+      this.persistenceProvider.getPhoneCountryInfo()
+    ]);
+    return {
+      phone: phone && `${phone}`,
+      phoneCountryInfo: phoneCountryInfo || {
+        phoneCountryCode: '',
+        countryIsoCode: ''
+      }
+    };
+  }
+
+  async getCountry(): Promise<string> {
+    this.countryPromise = this.countryPromise
+      ? this.countryPromise
+      : this.http
+          .get('https://bitpay.com/wallet-card/location')
+          .map((res: { country: string }) => res.country)
+          .toPromise()
+          .catch(_ => 'US');
+    return this.countryPromise;
   }
 
   async getAvailableCards(): Promise<CardConfig[]> {

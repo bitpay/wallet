@@ -86,6 +86,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public cardConfig: CardConfig;
   public displayNameIncludesGiftCard: boolean = false;
 
+  public phone: string;
+
   constructor(
     addressProvider: AddressProvider,
     app: App,
@@ -158,6 +160,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   async ngOnInit() {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
+    this.phone = this.navParams.get('phone');
     this.cardConfig = await this.giftCardProvider.getCardConfig(
       this.navParams.get('cardName')
     );
@@ -509,7 +512,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       uuid: wallet.id,
       email,
       buyerSelectedTransactionCurrency: COIN,
-      cardName: this.cardConfig.name
+      cardName: this.cardConfig.name,
+      ...(this.phone && { phone: this.phone })
     };
 
     this.onGoingProcessProvider.set('loadingTxInfo');

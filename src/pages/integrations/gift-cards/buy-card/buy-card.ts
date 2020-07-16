@@ -9,6 +9,7 @@ import {
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
+import { PhonePage } from '../phone/phone';
 
 @Component({
   selector: 'buy-card-page',
@@ -77,7 +78,10 @@ export class BuyCardPage {
       currency: this.cardConfig.currency,
       cardName: this.cardConfig.name
     };
-    this.nav.push(ConfirmCardPurchasePage, data);
+    const page = this.cardConfig.mobilePaymentsSupported
+      ? PhonePage
+      : ConfirmCardPurchasePage;
+    this.nav.push(page, data);
   }
 
   checkForActivationFee() {

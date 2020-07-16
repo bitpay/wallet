@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="9px" viewBox="0 0 16 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Path</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-165.000000, -780.000000)" fill="#979797" fill-rule="nonzero" stroke="#979797">
+            <g id="Phone-number-input" transform="translate(57.000000, 763.000000)">
+                <g id="chevron-down" transform="translate(109.000000, 18.000000)">
+                    <path d="M7,7 C6.71584699,7 6.47540984,6.89138867 6.23497268,6.71761055 L0.180327869,1.0480993 C-0.0601092896,0.809154383 -0.0601092896,0.461598138 0.180327869,0.244375485 C0.420765027,0.00543056633 0.770491803,0.00543056633 0.989071038,0.244375485 L7,5.84871994 L13.010929,0.179208689 C13.2513661,-0.0597362296 13.6010929,-0.0597362296 13.8196721,0.179208689 C14.0601093,0.418153607 14.0601093,0.765709853 13.8196721,0.982932506 L7.76502732,6.65244375 C7.52459016,6.95655547 7.28415301,7 7,7 Z" id="Path"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

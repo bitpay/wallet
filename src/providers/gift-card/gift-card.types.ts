@@ -31,6 +31,7 @@ export interface GiftCardPromotion {
 
 export interface CommonCardConfig {
   activationFees?: GiftCardActivationFee[];
+  allowedPhoneCountries?: string[];
   cardImage: string;
   currency: string;
   defaultClaimCodeType: ClaimCodeType;
@@ -47,6 +48,7 @@ export interface CommonCardConfig {
   logoBackgroundColor: string;
   minAmount?: number;
   maxAmount?: number;
+  mobilePaymentsSupported?: boolean;
   printRequired?: boolean;
   promotions?: GiftCardPromotion[];
   redeemButtonText?: string;

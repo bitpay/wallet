@@ -61,6 +61,8 @@ const Keys = {
   KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  PHONE: 'phone',
+  PHONE_COUNTRY_INFO: 'phoneCountryInfo',
   PROFILE: 'profile',
   PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
@@ -188,6 +190,25 @@ export class PersistenceProvider {
 
   clearBackupFlag(walletId: string) {
     return this.storage.remove(Keys.BACKUP(walletId));
+  }
+
+  getPhone() {
+    return this.storage.get(Keys.PHONE);
+  }
+
+  setPhone(phone: string) {
+    return this.storage.set(Keys.PHONE, phone);
+  }
+
+  getPhoneCountryInfo() {
+    return this.storage.get(Keys.PHONE_COUNTRY_INFO);
+  }
+
+  setPhoneCountryInfo(phoneCountryInfo: {
+    phoneCountryCode: string; // e.g. 1
+    countryIsoCode: string; // e.g. 'US'
+  }) {
+    return this.storage.set(Keys.PHONE_COUNTRY_INFO, phoneCountryInfo);
   }
 
   setBackupGroupFlag(keyId: string, timestamp?) {
