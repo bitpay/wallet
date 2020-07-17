@@ -15,7 +15,10 @@ import {
 } from '../../../../providers';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
-import { getPhoneCountryCodes } from '../../../../providers/phone/phone';
+import {
+  getPhoneCountryCodes,
+  PhoneCountryCode
+} from '../../../../providers/phone/phone';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
 
 @Component({
@@ -24,12 +27,7 @@ import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-p
 })
 export class PhonePage {
   public initialCountryCode: string;
-  public country: {
-    emoji: string;
-    phone: string;
-    name: string;
-    countryCode: string;
-  };
+  public country: PhoneCountryCode;
   public phoneForm: FormGroup;
   public phoneMask;
   public cardConfig: CardConfig;
@@ -43,7 +41,7 @@ export class PhonePage {
     private platformProvider: PlatformProvider
   ) {
     this.phoneForm = new FormGroup({
-      phone: new FormControl('', getValidators(true)),
+      phone: new FormControl(''),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
   }
@@ -84,7 +82,7 @@ export class PhonePage {
     );
   }
 
-  async prefillPhone(phone: string, phoneCountry: any) {
+  async prefillPhone(phone: string, phoneCountry: PhoneCountryCode) {
     this.country = phoneCountry;
     this.phoneForm.setValue({
       phone: phone.replace(phoneCountry.phone, ''),
@@ -156,7 +154,7 @@ export class PhonePage {
   }
 }
 
-function getValidators(country: any): ValidatorFn {
+function getValidators(country: PhoneCountryCode): ValidatorFn {
   const isUS = country.phone === '1';
   return Validators.compose([
     Validators.required,
@@ -188,7 +186,7 @@ function getPhoneMask(phoneCountryCode) {
 function getSavedPhoneCountryCode(
   phoneCountryCode: string,
   countryIsoCode: string
-): any {
+): PhoneCountryCode {
   const countryCodes = getPhoneCountryCodes();
   return countryCodes.find(
     countryCodeObj =>

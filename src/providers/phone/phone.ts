@@ -1,6 +1,15 @@
 import { countries } from 'countries-list';
 
-export function getPhoneCountryCodes(allowedPhoneCountries?: string[]) {
+export interface PhoneCountryCode {
+  emoji: string;
+  phone: string;
+  name: string;
+  countryCode: string;
+}
+
+export function getPhoneCountryCodes(
+  allowedPhoneCountries?: string[]
+): PhoneCountryCode[] {
   const countryCodes = Object.keys(countries);
   const countryList = Object.values(countries);
   const countryListWithCodes = countryList
