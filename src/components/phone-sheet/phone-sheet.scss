@@ -7,10 +7,17 @@ phone-sheet {
     margin-top: 24px;
   }
 
+  search-bar {
+    color: black;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 28px;
+  }
+
   .countries {
     color: black;
     font-size: 16px;
-    padding-top: 10px;
+    padding: 10px 3px;
 
     .country {
       color: black;

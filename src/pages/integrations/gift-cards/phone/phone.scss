@@ -7,6 +7,12 @@ phone-page {
     margin-top: 24px;
   }
 
+  ion-content,
+  .fixed-content,
+  .scroll-content {
+    height: 100vh !important;
+  }
+
   .padding {
     padding: 20px;
     padding-bottom: 0;

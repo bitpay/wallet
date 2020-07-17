@@ -292,6 +292,14 @@
     }
   }
 
+  action-sheet search-bar {
+    background: $bg-color-dark-theme-2;
+
+    ion-input {
+      background: #292929;
+    }
+  }
+
   add-button {
     .add-button {
       &__icon {
@@ -617,19 +625,23 @@
       }
     }
   }
+
   amount-picker {
     .amount-picker {
       &__amount {
         color: $color-primary;
       }
+
       &__button {
         border-color: $color-primary;
+
         img {
           filter: brightness(1.7) hue-rotate(8deg);
         }
       }
     }
   }
+
   info-sheet {
     .info-container {
       background-color: $bg-color-dark-theme-2;
@@ -1251,6 +1263,7 @@
         color: $text-color-dark-theme;
       }
     }
+
     .category-item {
       background: none;
 
@@ -1262,10 +1275,12 @@
         background-color: $bg-color-dark-theme-2;
       }
     }
+
     .no-results {
       &__title {
         color: $text-color-dark-theme;
       }
+
       &__subtitle {
         color: $text-color-dark-theme-3;
       }
@@ -1283,6 +1298,7 @@
     .cover {
       background-image: linear-gradient(180deg, #121212 0%, #1d1d1d 100%);
     }
+
     .body {
       &__title,
       &__subtitle {
@@ -1522,10 +1538,11 @@
 
     .phone-input {
       color: white;
-      border-bottom-color: white;
+      $phone-input-border-color-dark-theme: rgba(255, 255, 255, 0.4);
+      border-bottom-color: $phone-input-border-color-dark-theme;
 
       &__country-code {
-        border-color: white;
+        border-color: $phone-input-border-color-dark-theme;
       }
     }
   }

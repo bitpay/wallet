@@ -8,7 +8,11 @@ import {
 import { countries } from 'countries-list';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ActionSheetProvider, GiftCardProvider } from '../../../../providers';
+import {
+  ActionSheetProvider,
+  GiftCardProvider,
+  PlatformProvider
+} from '../../../../providers';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { getPhoneCountryCodes } from '../../../../providers/phone/phone';
@@ -35,7 +39,8 @@ export class PhonePage {
     private externalLinkProvider: ExternalLinkProvider,
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private platformProvider: PlatformProvider
   ) {
     this.phoneForm = new FormGroup({
       phone: new FormControl('', getValidators(true)),
@@ -112,7 +117,11 @@ export class PhonePage {
     const phoneSheet = this.actionSheetProvider.createPhoneSheet({
       allowedPhoneCountries: this.cardConfig.allowedPhoneCountries
     });
-    await phoneSheet.present();
+    const sheetHeight = this.platformProvider.isCordova ? '50vh' : '90vh';
+    await phoneSheet.present({
+      maxHeight: sheetHeight,
+      minHeight: sheetHeight
+    });
     phoneSheet.onDidDismiss(country => {
       if (!country) return;
       this.country = country;

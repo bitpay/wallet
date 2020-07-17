@@ -126,6 +126,7 @@ export class HomePage {
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
+    this.giftCardProvider.getCountry();
   }
 
   private setMerchantDirectoryAdvertisement() {
