@@ -115,7 +115,11 @@ export class PhonePage {
     const phoneSheet = this.actionSheetProvider.createPhoneSheet({
       allowedPhoneCountries: this.cardConfig.allowedPhoneCountries
     });
-    const sheetHeight = this.platformProvider.isCordova ? '50vh' : '90vh';
+    const sheetHeight = this.platformProvider.isCordova
+      ? this.platformProvider.isIOS
+        ? '50vh'
+        : '70vh'
+      : '90vh';
     await phoneSheet.present({
       maxHeight: sheetHeight,
       minHeight: sheetHeight
