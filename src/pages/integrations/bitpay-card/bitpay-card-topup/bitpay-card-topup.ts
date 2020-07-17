@@ -126,15 +126,6 @@ export class BitPayCardTopUpPage {
 
     let coin = Coin[this.currency] ? Coin[this.currency] : null;
 
-    this.brand === 'Mastercard'
-      ? this.bitPayCardProvider.logEvent('mastercard_topup_amount', {
-          usdAmount: this.amount,
-          transactionCurrency: 'USD'
-        })
-      : this.bitPayCardProvider.logEvent('legacycard_topup_amount', {
-          usdAmount: this.amount,
-          transactionCurrency: 'USD'
-        });
     this.bitPayCardProvider
       .get({
         cardId: this.cardId,
@@ -636,8 +627,8 @@ export class BitPayCardTopUpPage {
 
     let cardTopupFinishEventName =
       this.brand === 'Mastercard'
-        ? 'mastercard_topup_amount'
-        : 'legacycard_topup_amount';
+        ? 'mastercard_topup_finish'
+        : 'legacycard_topup_finish';
 
     !isConfirm
       ? this.bitPayCardProvider.logEvent(
