@@ -1532,10 +1532,16 @@
 
     ion-item,
     ion-item.item-toggle ion-label {
-      background: $bg-color-dark-theme;
+      background: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
     }
+  }
 
+  phone-page {
+    ion-item,
+    ion-item.item-toggle ion-label {
+      background: $bg-color-dark-theme;
+    }
     .phone-input {
       color: white;
       $phone-input-border-color-dark-theme: rgba(255, 255, 255, 0.4);
