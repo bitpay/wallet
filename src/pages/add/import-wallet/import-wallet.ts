@@ -590,11 +590,14 @@ export class ImportWalletPage {
       const wordList = words.trim().split(/[\u3000\s]+/);
 
       if (wordList.length % 3 != 0) {
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant(
-          'Wrong number of recovery words:'
+        this.logger.warn('Incorrect words length');
+        const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+          'recovery-phrase-length',
+          {
+            wordListLength: wordList.length
+          }
         );
-        this.showErrorInfoSheet(title, subtitle + ' ' + wordList.length);
+        errorInfoSheet.present();
         return;
       }
     }

@@ -54,7 +54,8 @@ export type InfoSheetType =
   | 'rbf-tx'
   | 'total-amount'
   | 'subtotal-amount'
-  | 'no-wallets-available';
+  | 'no-wallets-available'
+  | 'recovery-phrase-length';
 
 export type OptionsSheetType =
   | 'wallet-options'
