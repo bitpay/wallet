@@ -66,6 +66,7 @@ export { KeyProvider } from '../providers/key/key';
 export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';
+export { LogsProvider } from '../providers/logs/logs';
 export { ElectronProvider } from '../providers/electron/electron';
 export { MerchantProvider } from '../providers/merchant/merchant';
 export {
