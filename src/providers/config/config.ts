@@ -173,7 +173,7 @@ export class ConfigProvider {
 
       adPubKey: {
         pubkey:
-          '02ee30d0a61bdc7609d6cda8a096c832994788a88630687d13a4dfce385aa74652'
+          '022fd3864dcba0c5177a0b76a94143ac26dcf4cf32ce7bb3d42a1cecae4102e105'
       },
       download: {
         bitpay: {
