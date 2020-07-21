@@ -1,13 +1,13 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events } from 'ionic-angular';
+import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../../providers/config/config';
 import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -18,6 +18,7 @@ import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -31,7 +32,11 @@ export class TabsPage {
   public cardNotificationBadgeText;
   private zone;
 
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
+
   constructor(
+    private plt: Platform,
     private appProvider: AppProvider,
     private profileProvider: ProfileProvider,
     private logger: Logger,
@@ -42,23 +47,45 @@ export class TabsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private tabProvider: TabProvider,
     private exchangeRatesProvider: ExchangeRatesProvider,
-    private configProvider: ConfigProvider
+    private platformProvider: PlatformProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
 
-    this.events.subscribe('experimentUpdateStart', () => {
-      this.tabs.select(2);
+    if (this.platformProvider.isElectron) {
+      this.updateDesktopOnFocus();
+    }
+
+    const subscribeEvents = () => {
+      this.events.subscribe('experimentUpdateStart', () => {
+        this.tabs.select(2);
+      });
+      this.events.subscribe('bwsEvent', this.bwsEventHandler);
+      this.events.subscribe('Local/UpdateTxps', data => {
+        this.setTxps(data);
+      });
+      this.events.subscribe('Local/FetchWallets', () => {
+        this.fetchAllWalletsStatus();
+      });
+    };
+
+    subscribeEvents();
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      subscribeEvents();
+      setTimeout(() => {
+        this.updateTxps();
+        this.fetchAllWalletsStatus();
+      }, 1000);
     });
 
-    this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    this.events.subscribe('Local/UpdateTxps', data => {
-      this.setTxps(data);
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.events.unsubscribe('bwsEvent');
+      this.events.unsubscribe('Local/UpdateTxps');
+      this.events.unsubscribe('Local/FetchWallets');
+      this.events.unsubscribe('experimentUpdateStart');
     });
-    this.events.subscribe('Local/FetchWallets', () => {
-      this.fetchAllWalletsStatus();
-    });
+
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
         this.persistenceProvider
@@ -79,6 +106,11 @@ export class TabsPage {
     });
   }
 
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
   disableCardNotificationBadge() {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       if (status === 'enabled') {
@@ -97,6 +129,17 @@ export class TabsPage {
   setTxps(data) {
     this.zone.run(() => {
       this.txpsN = data.n;
+    });
+  }
+
+  private updateDesktopOnFocus() {
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
+    win.on('focus', () => {
+      setTimeout(() => {
+        this.updateTxps();
+        this.fetchAllWalletsStatus();
+      }, 1000);
     });
   }
 
@@ -124,22 +167,15 @@ export class TabsPage {
   };
 
   private updateTotalBalance() {
-    const totalBalanceAlternativeIsoCode =
-      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    this.exchangeRatesProvider
-      .getLastDayRates(totalBalanceAlternativeIsoCode)
-      .then(lastDayRatesArray => {
-        this.walletProvider
-          .getTotalAmount(
-            this.profileProvider.wallet,
-            totalBalanceAlternativeIsoCode,
-            lastDayRatesArray
-          )
-          .then(data => {
-            this.logger.debug('Total Balance Updated');
-            this.events.publish('Local/HomeBalance', data);
-          });
-      });
+    this.exchangeRatesProvider.getLastDayRates().then(lastDayRatesArray => {
+      this.walletProvider
+        .getTotalAmount(this.profileProvider.wallet, lastDayRatesArray)
+        .then(data => {
+          this.logger.debug('Total Balance and Price Updated');
+          this.events.publish('Local/HomeBalance', data);
+          this.events.publish('Local/PriceUpdate');
+        });
+    });
   }
 
   private processWalletError(wallet, err): void {

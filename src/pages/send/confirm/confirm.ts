@@ -75,7 +75,8 @@ export class ConfirmPage {
   public coin: Coin;
   public appName: string;
   public merchantFeeLabel: string;
-
+  public totalAmountStr: string;
+  public totalAmount;
   // Config Related values
   public config;
 
@@ -304,6 +305,17 @@ export class ConfirmPage {
         this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
+  }
+
+  private getTotalAmountDetails(tx, wallet) {
+    if (wallet && wallet.credentials && !wallet.credentials.token) {
+      this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
+      this.totalAmountStr = this.decimalPipe.transform(
+        (tx.amount + tx.txp[wallet.id].fee) /
+          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        '1.2-6'
+      );
+    }
   }
 
   private isChain() {
@@ -568,6 +580,7 @@ export class ConfirmPage {
             // txp already generated for this wallet?
             if (tx.txp[wallet.id]) {
               this.onGoingProcessProvider.clear();
+              this.getTotalAmountDetails(tx, wallet);
               return resolve();
             }
 
@@ -610,6 +623,7 @@ export class ConfirmPage {
           this.showWarningSheet(wallet, sendMaxInfo);
           // txp already generated for this wallet?
           if (tx.txp[wallet.id]) {
+            this.getTotalAmountDetails(tx, wallet);
             return resolve();
           }
 
@@ -689,6 +703,20 @@ export class ConfirmPage {
     minerFeeInfoSheet.present();
   }
 
+  protected showTotalAmountSheet() {
+    const totalAmountFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'total-amount'
+    );
+    totalAmountFeeInfoSheet.present();
+  }
+
+  protected showSubtotalAmountSheet() {
+    const subtotalAmountFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'subtotal-amount'
+    );
+    subtotalAmountFeeInfoSheet.present();
+  }
+
   private buildTxp(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
@@ -711,6 +739,9 @@ export class ConfirmPage {
               ' Txp:' +
               txp.id
           );
+
+          this.getTotalAmountDetails(tx, wallet);
+
           return resolve();
         })
         .catch(err => {

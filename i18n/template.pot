@@ -114,9 +114,6 @@ msgstr ""
 msgid "Add BitPay Account?"
 msgstr ""
 
-msgid "Add BitPay Card"
-msgstr ""
-
 msgid "Add Recipient"
 msgstr ""
 
@@ -465,6 +462,11 @@ msgstr ""
 msgid "Cannot join the same wallet more that once"
 msgstr ""
 
+msgid ""
+"Cannot send XRP to the same wallet you are trying to send from. Please "
+"check the destination address and try it again."
+msgstr ""
+
 msgid "Card Archived"
 msgstr ""
 
@@ -712,9 +714,6 @@ msgid "Could not delete payment proposal"
 msgstr ""
 
 msgid "Could not encrypt wallet"
-msgstr ""
-
-msgid "Could not fetch payment details"
 msgstr ""
 
 msgid "Could not get claim code. Please contact BitPay support."
@@ -1082,9 +1081,6 @@ msgstr ""
 msgid "Error getting fee rate"
 msgstr ""
 
-msgid "Error in Payment Protocol"
-msgstr ""
-
 msgid "Error pairing BitPay Account"
 msgstr ""
 
@@ -1148,9 +1144,6 @@ msgstr ""
 msgid "Failed to export"
 msgstr ""
 
-msgid "Featured Brands"
-msgstr ""
-
 msgid "Featured Currencies"
 msgstr ""
 
@@ -1184,10 +1177,18 @@ msgstr ""
 msgid "Fetching payment information..."
 msgstr ""
 
+msgid "Fetching payment options..."
+msgstr ""
+
 msgid "File/Text"
 msgstr ""
 
 msgid "Flexibility"
+msgstr ""
+
+msgid ""
+"For BitPay invoices and gift cards the subtotal amount is the product or "
+"service amount plus network costs."
 msgstr ""
 
 msgid "Forgot your password?"
@@ -1257,6 +1258,9 @@ msgid "Get started"
 msgstr ""
 
 msgid "Get started by adding your first one."
+msgstr ""
+
+msgid "Get the BitPay Card"
 msgstr ""
 
 msgid "Getting fee levels..."
@@ -1458,7 +1462,7 @@ msgstr ""
 
 msgid ""
 "In order to protect your funds from being accessible to hackers and "
-"theives, the Master Key to your wallet must be kept somewhere safe and "
+"thieves, the Master Key to your wallet must be kept somewhere safe and "
 "remain a secret."
 msgstr ""
 
@@ -1558,9 +1562,6 @@ msgstr ""
 msgid "Join Shared Wallet"
 msgstr ""
 
-msgid "Join the waitlist and be first"
-msgstr ""
-
 msgid "Join the waitlist and be first to experience the new card."
 msgstr ""
 
@@ -1626,9 +1627,6 @@ msgid "Linked Ethereum Wallet"
 msgstr ""
 
 msgid "Linked to wallet: {linkedEthWalletName}"
-msgstr ""
-
-msgid "Live on crypto"
 msgstr ""
 
 msgid "Live on crypto."
@@ -1715,15 +1713,6 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
-msgstr ""
-
-msgid "More Brands"
-msgstr ""
-
-msgid "Moved"
-msgstr ""
-
-msgid "Moved Funds"
 msgstr ""
 
 msgid "Moving"
@@ -2212,9 +2201,6 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-msgid "Received Funds"
-msgstr ""
-
 msgid "Receiving"
 msgstr ""
 
@@ -2337,6 +2323,9 @@ msgstr ""
 msgid "START OVER"
 msgstr ""
 
+msgid "SUBTOTAL"
+msgstr ""
+
 msgid "SUMMARY"
 msgstr ""
 
@@ -2361,9 +2350,6 @@ msgstr ""
 msgid "Scanning Wallet funds..."
 msgstr ""
 
-msgid "Search Gift Cards"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -2377,6 +2363,9 @@ msgid "Search contact or enter address"
 msgstr ""
 
 msgid "Search currency"
+msgstr ""
+
+msgid "Search for a brand"
 msgstr ""
 
 msgid "Security"
@@ -2492,7 +2481,7 @@ msgstr ""
 msgid "Sent"
 msgstr ""
 
-msgid "Sent Funds"
+msgid "Sent to self"
 msgstr ""
 
 msgid "Sent to {walletName}"
@@ -2579,16 +2568,19 @@ msgstr ""
 msgid "Show on wallet tab"
 msgstr ""
 
+msgid "Sign Up"
+msgstr ""
+
 msgid "Sign Up for Coinbase"
+msgstr ""
+
+msgid "Sign Up for Coinbase &rarr;"
 msgstr ""
 
 msgid "Sign Up for ShapeShift"
 msgstr ""
 
 msgid "Sign selected proposals"
-msgstr ""
-
-msgid "Sign up"
 msgstr ""
 
 msgid "Signatures rejected by server"
@@ -2678,6 +2670,9 @@ msgid "Store this key separately"
 msgstr ""
 
 msgid "Store, manage, and protect your crypto."
+msgstr ""
+
+msgid "Subtotal"
 msgstr ""
 
 msgid "Super Economy"
@@ -2859,6 +2854,9 @@ msgid ""
 "testing. Testnet coins are separate and distinct from actual {coinName}, "
 "and do not have any value. This allows application developers or {coinName} "
 "testers to experiment, without having to use real {coinName}"
+msgstr ""
+
+msgid "The total amount is the subtotal amount plus transaction fees."
 msgstr ""
 
 msgid "The total amount of {coinName} stored in this wallet."
@@ -3068,6 +3066,9 @@ msgstr ""
 msgid "Total wallet inputs"
 msgstr ""
 
+msgid "Trade Crypto with ShapeShift"
+msgstr ""
+
 msgid "Trade any leading blockchain asset for any other. Protection by Design."
 msgstr ""
 
@@ -3249,6 +3250,9 @@ msgid "View details"
 msgstr ""
 
 msgid "View on blockchain"
+msgstr ""
+
+msgid "Virtual"
 msgstr ""
 
 msgid "Visit ShapeShift.io"

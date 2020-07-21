@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { Logger } from '../logger/logger';
 import { Network, PersistenceProvider } from '../persistence/persistence';
@@ -60,20 +59,6 @@ export class InvoiceProvider {
 
   public storeEmail(email: string): void {
     this.setUserInfo({ email });
-  }
-
-  public getUserEmail(): Promise<string> {
-    return this.persistenceProvider
-      .getGiftCardUserInfo()
-      .then(data => {
-        if (_.isString(data)) {
-          data = JSON.parse(data);
-        }
-        return data && data.email
-          ? data.email
-          : this.emailNotificationsProvider.getEmailIfEnabled();
-      })
-      .catch(_ => {});
   }
 
   private setUserInfo(data: any): void {

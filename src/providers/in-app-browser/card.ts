@@ -15,12 +15,14 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
 import { HttpClient } from '@angular/common/http';
+import { AppProvider } from '../../providers/app/app';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import {
   Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { SimplexProvider } from '../simplex/simplex';
 
 @Injectable()
@@ -51,7 +53,9 @@ export class IABCardProvider {
     private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider,
     private http: HttpClient,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private themeProvider: ThemeProvider,
+    private appProvider: AppProvider
   ) {}
 
   public setNetwork(network: string) {
@@ -222,6 +226,35 @@ export class IABCardProvider {
           });
           break;
 
+        case 'getAppVersion':
+          this.sendMessage({
+            message: 'getAppVersion',
+            payload: this.appProvider.info.version
+          });
+          break;
+
+        case 'isDarkModeEnabled':
+          this.sendMessage({
+            message: 'isDarkModeEnabled',
+            payload: this.themeProvider.isDarkModeEnabled()
+          });
+          break;
+
+        case 'updateWalletStatus':
+          this.updateWalletStatus();
+          break;
+
+        case 'hasWalletWithFunds':
+          const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+            12,
+            'USD'
+          );
+          this.sendMessage({
+            message: 'hasWalletWithFunds',
+            payload: hasWalletWithFunds
+          });
+          break;
+
         default:
           break;
       }
@@ -353,6 +386,9 @@ export class IABCardProvider {
               return res();
             }
 
+            this.sortCards(cards, ['virtual', 'physical'], 'cardType');
+            this.sortCards(cards, ['galileo', 'firstView'], 'provider');
+
             await this.persistenceProvider.setBitpayDebitCards(
               Network[this.NETWORK],
               user.email,
@@ -381,6 +417,19 @@ export class IABCardProvider {
           }
         }
       );
+    });
+  }
+
+  public sortCards(cards: object[], order: string[], key: string) {
+    const orderBy = (p: string) => order.indexOf(p) + 1 || order.length + 1;
+    cards.sort((a, b) => {
+      if (orderBy(a[key]) > orderBy(b[key])) {
+        return 1;
+      }
+      if (orderBy(a[key]) < orderBy(b[key])) {
+        return -1;
+      }
+      return 0;
     });
   }
 
@@ -691,6 +740,14 @@ export class IABCardProvider {
     );
   }
 
+  setTheme() {
+    let message = 'isDarkModeEnabled';
+    this.sendMessage({
+      message,
+      payload: { theme: this.themeProvider.isDarkModeEnabled() }
+    });
+  }
+
   sendMessage(message: object, cb?: (...args: any[]) => void): void {
     const script = {
       code: `window.postMessage(${JSON.stringify({ ...message })}, '*')`
@@ -715,6 +772,7 @@ export class IABCardProvider {
         message = `${message}?enableLoadingScreen`;
       }
 
+      this.setTheme();
       this.sendMessage({ message });
       this.cardIAB_Ref.show();
       this._isHidden = false;
@@ -756,5 +814,25 @@ export class IABCardProvider {
     }
 
     return hasFirstView;
+  }
+
+  updateWalletStatus() {
+    let wallets = this.profileProvider.wallet;
+    if (_.isEmpty(wallets)) {
+      this.events.publish('Local/HomeBalance');
+      return;
+    }
+
+    this.logger.debug('Fetching All Wallets and Updating Total Balance');
+    wallets = _.filter(this.profileProvider.wallet, w => {
+      return !w.hidden;
+    });
+
+    _.each(wallets, wallet => {
+      this.events.publish('Local/WalletFocus', {
+        walletId: wallet.id,
+        force: true
+      });
+    });
   }
 }

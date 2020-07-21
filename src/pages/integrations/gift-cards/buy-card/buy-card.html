@@ -17,7 +17,8 @@
         (click)="onAmountClick()"></amount-picker>
       <div class="discount-header" *ngIf="hasVisibleDiscount">
         <img src="assets/img/tags-stack.svg">
-        <div>Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]">
+        <div>Save <gift-card-discount-text [cardConfig]="cardConfig" [discount]="cardConfig.discounts[0]"
+            [numberOnly]="true">
           </gift-card-discount-text> off your purchase</div>
       </div>
       <div class="discount-header" *ngIf="!hasVisibleDiscount && hasPromotion">

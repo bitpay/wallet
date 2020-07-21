@@ -685,4 +685,32 @@ export class WalletDetailsPage {
       keyId: this.wallet.credentials.keyId
     });
   }
+
+  public getBalance() {
+    const lastKnownBalance = this.wallet.lastKnownBalance;
+    if (this.wallet.coin === 'xrp') {
+      const availableBalanceStr =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.availableBalanceStr;
+      return availableBalanceStr || lastKnownBalance;
+    } else {
+      const totalBalanceStr =
+        this.wallet.cachedStatus && this.wallet.cachedStatus.totalBalanceStr;
+      return totalBalanceStr || lastKnownBalance;
+    }
+  }
+
+  public getAlternativeBalance() {
+    if (this.wallet.coin === 'xrp') {
+      const availableAlternative =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.availableBalanceAlternative;
+      return availableAlternative;
+    } else {
+      const totalBalanceAlternative =
+        this.wallet.cachedStatus &&
+        this.wallet.cachedStatus.totalBalanceAlternative;
+      return totalBalanceAlternative;
+    }
+  }
 }

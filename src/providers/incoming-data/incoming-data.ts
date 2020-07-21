@@ -850,6 +850,11 @@ export class IncomingDataProvider {
 
         case 'debit-card-order':
           this.openIAB('debitCardOrder');
+          this.persistenceProvider.setCardExperimentFlag('enabled');
+          this.events.publish('experimentUpdateStart');
+          setTimeout(() => {
+            this.events.publish('experimentUpdateComplete');
+          }, 300);
       }
 
       return true;

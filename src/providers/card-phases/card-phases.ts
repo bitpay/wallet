@@ -138,6 +138,8 @@ export class CardPhasesProvider {
     'UY',
     'VG'
   ];
+
+  private otherCardCountries = ['AU', 'MX', 'CA'];
   constructor(private http: HttpClient) {}
   public getSession() {
     const url = 'https://bitpay.com/visa-api/session';
@@ -154,15 +156,22 @@ export class CardPhasesProvider {
     const options = {
       headers: httpHeaders
     };
+
+    let params = {
+      email,
+      country,
+      cardType: country === 'US' ? 'USCard' : 'EuropeCard',
+      created: new Date(),
+      topic: 'debitCard'
+    };
+
+    if (this.otherCardCountries.includes(country)) {
+      params = { ...params, cardType: 'OtherCard' };
+    }
+
     const body = {
       method: 'interested',
-      params: JSON.stringify({
-        email,
-        country,
-        cardType: country === 'US' ? 'USCard' : 'EuropeCard',
-        created: new Date(),
-        topic: 'debitCard'
-      })
+      params: JSON.stringify(params)
     };
     return this.http.post(url, body, options);
   }

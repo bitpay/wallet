@@ -45,11 +45,11 @@
         <div class="balance-content" (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet?.balanceHidden && !wallet?.scanning && !walletNotRegistered && (wallet?.cachedStatus || wallet?.lastKnownBalance)">
             <div class="balance-str">
-              <balance-to-show [balance]="wallet?.cachedStatus ? wallet?.cachedStatus.totalBalanceStr  : wallet?.lastKnownBalance"></balance-to-show>
+              <balance-to-show [balance]="getBalance()"></balance-to-show>
               <img *ngIf="wallet.coin === 'xrp'" width="21" (click)="openBalanceDetails()" src="assets/img/icon-info-blue.svg">
             </div>
             <div class="balance-alt-str" *ngIf="wallet?.cachedStatus && wallet?.cachedStatus.totalBalanceAlternative">
-              {{wallet?.cachedStatus.totalBalanceAlternative}} {{wallet?.cachedStatus.alternativeIsoCode}}
+              {{getAlternativeBalance()}} {{wallet?.cachedStatus.alternativeIsoCode}}
             </div>
           </div>
 
@@ -284,8 +284,8 @@
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-              <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Moved</span>
-              <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Moved</span>
+              <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Sent to self</span>
+              <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Sent to self</span>
               <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
               <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
             </div>
