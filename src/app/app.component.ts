@@ -362,6 +362,7 @@ export class CopayApp {
       // preloading the view
 
       setTimeout(() => {
+        this.logger.debug('BitPay: create IAB Instance');
         this.iab
           .createIABInstance(
             'card',
@@ -377,6 +378,9 @@ export class CopayApp {
           .then(ref => {
             this.cardIAB_Ref = ref;
             this.iabCardProvider.init();
+          })
+          .catch(e => {
+            this.logger.debug('Error creating IAB instance: ', e.message);
           });
       });
     }

@@ -120,34 +120,6 @@ describe('SessionLogPage', () => {
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
       });
     });
-    describe('#prepareSessionLogs', () => {
-      it('should prepare the correct logs of the session', () => {
-        spyOn(instance.logger, 'get').and.returnValue({
-          '01/07/2008': {
-            level: 1,
-            msg: 'msg',
-            timestamp: '01/07/2008'
-          }
-        });
-
-        const logs = instance.prepareSessionLogs();
-        expect(logs).toEqual(
-          'Session Logs.\nBe careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg\n'
-        );
-      });
-    });
-    describe('#sendLogs', () => {
-      it('should share logs', () => {
-        const promise = Promise.resolve(
-          'Session Logs.\nBe careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg\n'
-        );
-        spyOn(instance, 'prepareSessionLogs').and.returnValue(promise);
-
-        instance.sendLogs();
-
-        expect(instance.prepareSessionLogs).toHaveBeenCalled();
-      });
-    });
     describe('#showOptionsMenu', () => {
       it('should create actionSheet', () => {
         instance.showOptionsMenu();
