@@ -23,11 +23,16 @@
 
   <form [formGroup]="importForm">
     <ion-item *ngIf="selectedTab == 'words'">
-      <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
+      <ion-label stacked>{{'Type the recovery phrase' | translate}}</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">
       </ion-textarea>
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
+
+
+    <label-tip *ngIf="selectedTab == 'words'" type="info" header="no-header" class="no-arrowhead">
+      <div label-tip-body translate>Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly. </div>
+    </label-tip>
 
     <div *ngIf="selectedTab == 'file'">
       <ion-item class="hide-validation" *ngIf="!isSafari && !isCordova">
