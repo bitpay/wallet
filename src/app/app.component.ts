@@ -31,6 +31,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
+import { LogsProvider } from '../providers/logs/logs';
 import { Network } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
@@ -145,7 +146,8 @@ export class CopayApp {
     private iabCardProvider: IABCardProvider,
     private bitpayProvider: BitPayProvider,
     private bitpayIdProvider: BitPayIdProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private logsProvider: LogsProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -188,7 +190,15 @@ export class CopayApp {
         } catch (error) {
           message = 'Unknown error';
         }
-        this.popupProvider.ionicAlert(title, message);
+        this.popupProvider.ionicAlert(title, message).then(() => {
+          // Share logs
+          const platform = this.platformProvider.isCordova
+            ? this.platformProvider.isAndroid
+              ? 'android'
+              : 'ios'
+            : 'desktop';
+          this.logsProvider.get(this.appProvider.info.nameCase, platform);
+        });
       });
   }
 
@@ -219,6 +229,7 @@ export class CopayApp {
       this.iabCardProvider.pause();
     });
 
+    this.logger.debug('BitPay: setting network');
     this.bitpayProvider.setNetwork(this.NETWORK);
     this.bitpayIdProvider.setNetwork(this.NETWORK);
     this.iabCardProvider.setNetwork(this.NETWORK);
@@ -227,17 +238,20 @@ export class CopayApp {
       this.statusBar.show();
 
       try {
+        this.logger.debug('BitPay: setting country');
         const { country } = await this.http
           .get<{ country: string }>('https://bitpay.com/wallet-card/location')
           .toPromise();
         if (country === 'US') {
+          this.logger.debug('If US: Set Card Experiment Flag Enabled');
           await this.persistenceProvider.setCardExperimentFlag('enabled');
         }
       } catch (err) {
-        this.logger.log(err);
+        this.logger.error('Error setting country: ', err);
       }
 
       // Set User-Agent
+      this.logger.debug('Setting User Agent');
       this.userAgent.set(
         this.appProvider.info.name +
           ' ' +
@@ -252,6 +266,7 @@ export class CopayApp {
       );
 
       // Set to portrait
+      this.logger.debug('Setting Screen Orientation');
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       // Only overlay for iOS
@@ -259,9 +274,11 @@ export class CopayApp {
         this.statusBar.overlaysWebView(true);
       }
 
+      this.logger.debug('Hide Splash Screen');
       this.splashScreen.hide();
 
       // Subscribe Resume
+      this.logger.debug('On Resume Subscription');
       this.onResumeSubscription = this.platform.resume.subscribe(async () => {
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
@@ -275,6 +292,7 @@ export class CopayApp {
       });
 
       // Check PIN or Fingerprint
+      this.logger.debug('Open Lock Modal');
       this.openLockModal();
 
       // Clear all notifications
@@ -307,10 +325,20 @@ export class CopayApp {
                 this.rootPage = DisclaimerPage;
                 break;
               default:
-                this.popupProvider.ionicAlert(
-                  'Could not initialize the app',
-                  err.message
-                );
+                this.popupProvider
+                  .ionicAlert('Could not load the profile', err.message)
+                  .then(() => {
+                    // Share logs
+                    const platform = this.platformProvider.isCordova
+                      ? this.platformProvider.isAndroid
+                        ? 'android'
+                        : 'ios'
+                      : 'desktop';
+                    this.logsProvider.get(
+                      this.appProvider.info.nameCase,
+                      platform
+                    );
+                  });
             }
           });
       })
@@ -334,6 +362,7 @@ export class CopayApp {
       // preloading the view
 
       setTimeout(() => {
+        this.logger.debug('BitPay: create IAB Instance');
         this.iab
           .createIABInstance(
             'card',
@@ -349,6 +378,9 @@ export class CopayApp {
           .then(ref => {
             this.cardIAB_Ref = ref;
             this.iabCardProvider.init();
+          })
+          .catch(e => {
+            this.logger.debug('Error creating IAB instance: ', e.message);
           });
       });
     }

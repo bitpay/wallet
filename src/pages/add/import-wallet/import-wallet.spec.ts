@@ -1,14 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorsProvider } from '../../../providers/errors/errors';
+import { ModalMock } from 'ionic-mocks';
 import { TestUtils } from '../../../test';
 import { ImportWalletPage } from './import-wallet';
+
+// providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 
 describe('ImportWalletPage', () => {
   let fixture: ComponentFixture<ImportWalletPage>;
   let instance;
-  let errorsProvider: ErrorsProvider;
   let testBed: typeof TestBed;
-  let showDefaultErrorSpy;
 
   beforeEach(async(() => {
     return TestUtils.configurePageTestingModule([ImportWalletPage]).then(
@@ -16,8 +17,6 @@ describe('ImportWalletPage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
-        errorsProvider = testBed.get(ErrorsProvider);
-        showDefaultErrorSpy = spyOn(errorsProvider, 'showDefaultError');
         fixture.detectChanges();
       }
     );
@@ -114,12 +113,19 @@ describe('ImportWalletPage', () => {
       instance.importForm.controls['words'].setValue(
         'mom1 mom2 mom3 mom4 mom5 mom6 mom7 mom8 mom9 mom10 mom11 mom12 mom13'
       );
-
-      instance.importFromMnemonic();
-      expect(showDefaultErrorSpy).toHaveBeenCalledWith(
-        'Wrong number of recovery words: 13',
-        'Error'
+      const actionSheetProvider: ActionSheetProvider = testBed.get(
+        ActionSheetProvider
       );
+      const modal = ModalMock.instance();
+      spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue(modal);
+      instance.importFromMnemonic();
+      expect(actionSheetProvider.createInfoSheet).toHaveBeenCalledWith(
+        'recovery-phrase-length',
+        {
+          wordListLength: 13
+        }
+      );
+      expect(modal.present).toHaveBeenCalled();
     });
 
     it('should not return error when use 12 words with extra spaces', () => {

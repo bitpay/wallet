@@ -305,7 +305,8 @@
         <ul>
           <li translate>Try entering any passwords you may have set in the past</li>
           <li translate>Remember there are no special requirements for the password (numbers, symbols, etc.)</li>
-          <li translate>You can always reset your encrypt password on your key settings using your 12 words recovery phrase</li>
+          <li translate>Keep in mind your encrypt password is not the 12-word recovery phrase</li>
+          <li translate>You can always reset your encrypt password on your key settings under the option <b>Clear Encrypt Password</b> using your 12 words recovery phrase</li>
         </ul>
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -333,7 +334,7 @@
     <info-sheet-template *ngSwitchCase="'unconfirmed-inputs'" type="danger">
       <span sheet-title-text translate>Unconfirmed inputs</span>
       <span sheet-text translate>
-        Be careful. Some inputs of this transaction has no confirmations. Please wait until they are confirmed.
+        Be careful. Some inputs of this transaction have no confirmations. Please wait until they are confirmed.
       </span>
       <span sheet-second-button-text translate>View details</span>
     </info-sheet-template>
@@ -364,6 +365,20 @@
           <li translate>There are no wallets with enough funds to make the payment</li>
           <li translate>Part or the entirety of the funds in your wallet/s are unconfirmed</li>
           <li translate>Your wallet is testnet</li>
+        </ul>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'recovery-phrase-length'" type="warning">
+      <span sheet-title-text translate>Something went wrong</span>
+      <span sheet-text>
+        <span translate>What could have happened?</span>
+        <ul>
+          <li translate>You have entered the phrase without spaces</li>
+          <li translate>The recovery phrase is invalid</li>
+          <li *ngIf="params.wordListLength === 1">{{'You have only entered {wordListLength} word, please follow the recommendations provided' | translate: params }}</li>
+          <li *ngIf="params.wordListLength !== 1">{{'You have only entered {wordListLength} words, please follow the recommendations provided' | translate: params }}</li>
         </ul>
       </span>
       <span sheet-button-text translate>GOT IT</span>
