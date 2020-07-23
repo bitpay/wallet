@@ -77,7 +77,6 @@ export class HomePage {
   public showRateCard: boolean;
   public accessDenied: boolean;
   public discountedCard: CardConfig;
-  // private pageMap: any;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
@@ -501,6 +500,7 @@ export class HomePage {
   }
 
   public doRefresh(refresher): void {
+    this.loadAds();
     this.fetchAdvertisements();
     this.preFetchWallets();
     setTimeout(() => {
