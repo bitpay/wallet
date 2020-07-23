@@ -35,6 +35,7 @@ export interface GiftCardPromotion {
 
 export interface CommonCardConfig {
   activationFees?: GiftCardActivationFee[];
+  allowedPhoneCountries?: string[];
   brandColor?: string;
   cardImage: string;
   categories: DirectoryCategory[];
@@ -54,6 +55,7 @@ export interface CommonCardConfig {
   logoBackgroundColor: string;
   minAmount?: number;
   maxAmount?: number;
+  mobilePaymentsSupported?: boolean;
   printRequired?: boolean;
   promotions?: GiftCardPromotion[];
   redeemButtonText?: string;

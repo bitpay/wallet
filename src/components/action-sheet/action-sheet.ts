@@ -8,6 +8,8 @@ import { DomProvider } from '../../providers/dom/dom';
   templateUrl: 'action-sheet.html'
 })
 export class ActionSheetComponent {
+  public maxHeight: string = '90vh';
+  public minHeight: string = 'unset';
   private transitionDuration: number = 250;
   private parentComponentRef: any;
   private deregisterBackButtonAction;
@@ -26,10 +28,20 @@ export class ActionSheetComponent {
     this.overrideHardwareBackButton();
   }
 
-  public async present(componentRef: any) {
+  public async present(
+    componentRef: any,
+    params: { maxHeight: string; minHeight: string } = {
+      maxHeight: '90vh',
+      minHeight: 'unset'
+    }
+  ) {
     this.parentComponentRef = componentRef;
     await Observable.timer(50).toPromise();
-    this.zone.run(() => (this.slideIn = true));
+    this.zone.run(() => {
+      this.maxHeight = params.maxHeight;
+      this.minHeight = params.minHeight;
+      this.slideIn = true;
+    });
   }
 
   public async dismiss(data?: any): Promise<void> {

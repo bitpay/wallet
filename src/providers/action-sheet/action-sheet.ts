@@ -6,6 +6,7 @@ import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/i
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
+import { PhoneSheet } from '../../components/phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { WalletTabOptionsComponent } from '../../components/wallet-tab-options/wallet-tab-options';
@@ -38,6 +39,7 @@ export type InfoSheetType =
   | 'legacy-address-info'
   | 'miner-fee'
   | 'miner-fee-notice'
+  | 'one-phone-country'
   | 'payment-request'
   | 'print-required'
   | 'sensitive-info'
@@ -121,6 +123,10 @@ export class ActionSheetProvider {
 
   public createEmailComponent(): EmailComponent {
     return this.setupSheet<EmailComponent>(EmailComponent).instance;
+  }
+
+  public createPhoneSheet(params): PhoneSheet {
+    return this.setupSheet<PhoneSheet>(PhoneSheet, null, params).instance;
   }
 
   public createWalletSelector(

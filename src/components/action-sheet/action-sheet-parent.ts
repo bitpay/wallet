@@ -11,8 +11,13 @@ export class ActionSheetParent {
   @ViewChild(ActionSheetComponent)
   actionSheet: ActionSheetComponent;
 
-  public async present(): Promise<void> {
-    return this.actionSheet.present(this.componentRef);
+  public async present(
+    params: { maxHeight: string; minHeight: string } = {
+      maxHeight: '90vh',
+      minHeight: 'unset'
+    }
+  ): Promise<void> {
+    return this.actionSheet.present(this.componentRef, params);
   }
 
   public async dismiss(data?: any): Promise<void> {

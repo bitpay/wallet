@@ -48,6 +48,7 @@ import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboa
 import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
 import { FixedScrollBgColor } from '../directives/fixed-scroll-bg-color/fixed-scroll-bg-color';
 import { IonContentBackgroundColor } from '../directives/ion-content-background-color/ion-content-background-color';
+import { IonMask } from '../directives/ion-mask/ion-mask';
 import { LongPress } from '../directives/long-press/long-press';
 import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
@@ -87,6 +88,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     ExternalizeLinks,
     FixedScrollBgColor,
     IonContentBackgroundColor,
+    IonMask,
     LongPress,
     NavbarBg,
     NoLowFee,

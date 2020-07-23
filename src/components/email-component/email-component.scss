@@ -1,16 +1,21 @@
-email-component {
+email-component,
+phone-sheet,
+phone-page {
   .padding {
     padding: 25px;
   }
+
   .padding-bottom {
     padding-bottom: 25px;
   }
+
   .title {
     color: black;
     font-size: 23px;
     font-weight: 700;
     line-height: 33px;
   }
+
   .sub-title {
     color: #565d6d;
     font-size: 16px;
@@ -27,8 +32,9 @@ email-component {
 
     &__form {
       &__link {
-        color: #1e46f5;
+        color: $color-primary;
       }
+
       button {
         margin-top: 20px;
       }
