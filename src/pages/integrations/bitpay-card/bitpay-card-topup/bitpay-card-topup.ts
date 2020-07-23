@@ -112,7 +112,7 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewDidEnter() {
-    this.logLegacyCardAddToCartEvent();
+    this.logCardAddToCartEvent();
   }
 
   ionViewWillEnter() {
@@ -126,11 +126,6 @@ export class BitPayCardTopUpPage {
 
     let coin = Coin[this.currency] ? Coin[this.currency] : null;
 
-    this.bitPayCardProvider.logEvent('legacycard_topup_amount', {
-      usdAmount: this.amount,
-      transactionCurrency: 'USD'
-    });
-
     this.bitPayCardProvider
       .get({
         cardId: this.cardId,
@@ -143,6 +138,16 @@ export class BitPayCardTopUpPage {
         this.lastFourDigits = card[0].lastFourDigits;
         this.currencySymbol = card[0].currencySymbol;
         this.currencyIsoCode = card[0].currency;
+
+        this.brand === 'Mastercard'
+          ? this.bitPayCardProvider.logEvent('mastercard_topup_amount', {
+              usdAmount: this.amount,
+              transactionCurrency: 'USD'
+            })
+          : this.bitPayCardProvider.logEvent('legacycard_topup_amount', {
+              usdAmount: this.amount,
+              transactionCurrency: 'USD'
+            });
 
         this.wallets = this.profileProvider.getWallets({
           onlyComplete: true,
@@ -219,7 +224,7 @@ export class BitPayCardTopUpPage {
       this.walletProvider
         .publishAndSign(wallet, txp)
         .then(txp => {
-          this.logLegacyCardSetCheckoutOption(wallet);
+          this.logCardSetCheckoutOption(wallet);
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
@@ -604,35 +609,62 @@ export class BitPayCardTopUpPage {
     }
   }
 
-  logLegacyCardTopUpEvent(wallet, isConfirm) {
-    const legacyCardTopUpEventInfo = {
+  logCardTopUpEvent(wallet, isConfirm) {
+    let cardTopupEventInfo = {
       usdAmount: this.amount,
       transactionCurrency: wallet.coin.toUpperCase()
     };
 
+    const cardTopUpEventInfo = {
+      usdAmount: this.amount,
+      transactionCurrency: wallet.coin.toUpperCase()
+    };
+
+    let cardTopupAmountEventName =
+      this.brand === 'Mastercard'
+        ? 'mastercard_topup_amount'
+        : 'legacycard_topup_amount';
+
+    let cardTopupFinishEventName =
+      this.brand === 'Mastercard'
+        ? 'mastercard_topup_finish'
+        : 'legacycard_topup_finish';
+
     !isConfirm
       ? this.bitPayCardProvider.logEvent(
-          'legacycard_topup_amount',
-          legacyCardTopUpEventInfo
+          cardTopupAmountEventName,
+          cardTopUpEventInfo
         )
       : this.bitPayCardProvider.logEvent(
-          'legacycard_topup_finish',
-          legacyCardTopUpEventInfo
+          cardTopupFinishEventName,
+          cardTopupEventInfo
         );
   }
 
-  logLegacyCardPurchaseEvent() {
-    this.bitPayCardProvider.logEvent('purchase', {
-      value: this.amount,
-      items: [
-        {
-          name: 'legacyCard',
-          category: 'debitCard',
-          quantity: 1,
-          price: this.amount
-        }
-      ]
-    });
+  logCardPurchaseEvent() {
+    this.brand === 'Mastercard'
+      ? this.bitPayCardProvider.logEvent('purchase', {
+          value: this.amount,
+          items: [
+            {
+              name: 'mastercard',
+              category: 'debitCard',
+              quantity: 1,
+              price: this.amount
+            }
+          ]
+        })
+      : this.bitPayCardProvider.logEvent('purchase', {
+          value: this.amount,
+          items: [
+            {
+              name: 'legacyCard',
+              category: 'debitCard',
+              quantity: 1,
+              price: this.amount
+            }
+          ]
+        });
   }
 
   private initializeTopUp(wallet, parsedAmount): void {
@@ -661,7 +693,7 @@ export class BitPayCardTopUpPage {
     }
     this.onGoingProcessProvider.set('loadingTxInfo');
 
-    this.logLegacyCardTopUpEvent(wallet, false);
+    this.logCardTopUpEvent(wallet, false);
 
     this.logger.debug(
       `Creating invoice. amount: ${dataSrc.amount} - currency: ${
@@ -731,11 +763,12 @@ export class BitPayCardTopUpPage {
       });
   }
 
-  logLegacyCardAddToCartEvent() {
+  logCardAddToCartEvent() {
+    let cardName = this.brand === 'Mastercard' ? 'mastercard' : 'legacyCard';
     this.bitPayCardProvider.logEvent('add_to_cart', {
       items: [
         {
-          name: 'legacyCard',
+          name: cardName,
           category: 'debitCard'
         }
       ]
@@ -765,8 +798,8 @@ export class BitPayCardTopUpPage {
         this.onGoingProcessProvider.set('topup');
         this.publishAndSign(this.wallet, this.createdTx)
           .then(() => {
-            this.logLegacyCardTopUpEvent(this.wallet, true);
-            this.logLegacyCardPurchaseEvent();
+            this.logCardTopUpEvent(this.wallet, true);
+            this.logCardPurchaseEvent();
             this.onGoingProcessProvider.clear();
             this.openFinishModal();
           })
@@ -809,11 +842,16 @@ export class BitPayCardTopUpPage {
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
-  logLegacyCardSetCheckoutOption(wallet) {
-    this.bitPayCardProvider.logEvent('set_checkout_option', {
-      checkout_option: wallet.coin,
-      checkout_step: 1
-    });
+  logCardSetCheckoutOption(wallet) {
+    this.brand === 'Mastercard'
+      ? this.bitPayCardProvider.logEvent('mastercard_set_checkout_option', {
+          checkout_option: wallet.coin,
+          checkout_step: 1
+        })
+      : this.bitPayCardProvider.logEvent('legacycard_set_checkout_option', {
+          checkout_option: wallet.coin,
+          checkout_step: 1
+        });
   }
 
   public onWalletSelect(wallet): void {
