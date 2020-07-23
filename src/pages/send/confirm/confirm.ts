@@ -399,7 +399,7 @@ export class ConfirmPage {
               this.translate.instant(
                 'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
               ),
-              this.translate.instant('No enough confirmed funds'),
+              this.translate.instant('Not enough confirmed funds'),
               exit
             );
           } else if (previousView === 'AmountPage') {
