@@ -259,22 +259,29 @@ export class ConfigProvider {
   }
 
   public load() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.persistence
         .getConfig()
         .then((config: Config) => {
           if (!_.isEmpty(config)) {
+            this.logger.debug('Using Custom Configuration');
             this.configCache = _.clone(config);
             this.backwardCompatibility();
           } else {
+            this.logger.debug('Using Default Configurartion');
             this.configCache = _.clone(this.configDefault);
           }
           this.logImportantConfig(this.configCache);
           resolve();
         })
         .catch(err => {
-          this.logger.error('Error Loading Config');
-          reject(err);
+          this.logger.error(err.message);
+          this.logger.error(
+            'There was an error reading the app config. It was reseted to default values'
+          );
+          this.configCache = _.clone(this.configDefault);
+          this.reset(); // remove local config
+          resolve();
         });
     });
   }
@@ -316,6 +323,7 @@ export class ConfigProvider {
   }
 
   private backwardCompatibility() {
+    this.logger.debug('Config: setting backwardCompatibility');
     // these ifs are to avoid migration problems
     if (this.configCache.bws) {
       this.configCache.bws = this.configDefault.bws;
@@ -363,7 +371,10 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
     }
 
-    if (!this.configCache.theme || !this.configCache.theme.enabled) {
+    if (
+      !this.configCache.theme ||
+      (this.configCache.theme && !this.configCache.theme.enabled)
+    ) {
       this.configCache.theme = this.configDefault.theme;
     }
 
