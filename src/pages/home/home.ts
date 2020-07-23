@@ -1,6 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import BWC from 'bitcore-wallet-client';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -252,7 +251,7 @@ export class HomePage {
     const pubKey = this.config.adPubKey.pubkey;
     if (!pubKey) return false;
 
-    const b = BWC.Bitcore;
+    const b = this.bwcProvider.getBitcore();
     const ECDSA = b.crypto.ECDSA;
     const Hash = b.crypto.Hash;
 
