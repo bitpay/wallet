@@ -31,6 +31,7 @@ const Keys = {
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
   BACKUP_WALLET_GROUP: keyId => 'walletGroupBackup-' + keyId,
+  TESTING_ADVERTISEMENTS: 'testingAdvertisements',
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
   HISTORY_CACHE: cardId => 'historyCache-' + cardId,
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
@@ -227,6 +228,21 @@ export class PersistenceProvider {
 
   setCleanAndScanAddresses(walletId: string) {
     return this.storage.set(Keys.CLEAN_AND_SCAN_ADDRESSES, walletId);
+  }
+
+  setTestingAdvertisements(isViewingTestAdvertisements: string) {
+    return this.storage.set(
+      Keys.TESTING_ADVERTISEMENTS,
+      isViewingTestAdvertisements
+    );
+  }
+
+  getTestingAdvertisments() {
+    return this.storage.get(Keys.TESTING_ADVERTISEMENTS);
+  }
+
+  removeTestingAdvertisments() {
+    return this.storage.remove(Keys.TESTING_ADVERTISEMENTS);
   }
 
   getCleanAndScanAddresses() {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // pages
 import { SendFeedbackPage } from '../../feedback/send-feedback/send-feedback';
@@ -25,6 +25,8 @@ export class AboutPage {
   public commitHash: string;
   public title: string;
   private tapped = 0;
+  private releaseInfoTaps = 0;
+  private easterEggStatus;
   public pressed: number = 0;
   constructor(
     private navCtrl: NavController,
@@ -34,17 +36,20 @@ export class AboutPage {
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
     private bitpayProvider: BitPayProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private events: Events
   ) {}
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     this.logger.info('Loaded: AboutPage');
     this.commitHash = this.appProvider.info.commitHash;
     this.version = this.appProvider.info.version;
+    this.releaseInfoTaps = 0;
     this.title = this.replaceParametersProvider.replace(
       this.translate.instant('About {{appName}}'),
       { appName: this.appProvider.info.nameCase }
     );
+    this.easterEggStatus = await this.persistenceProvider.getTestingAdvertisments();
   }
 
   public openExternalLink(): void {
@@ -69,6 +74,21 @@ export class AboutPage {
       okText,
       cancelText
     );
+  }
+
+  public async countReleaseHeaderTaps() {
+    this.releaseInfoTaps++;
+    if (this.releaseInfoTaps !== 12) return;
+    this.releaseInfoTaps = 0;
+    if (this.easterEggStatus === 'enabled') {
+      this.easterEggStatus = undefined;
+      this.persistenceProvider.removeTestingAdvertisments();
+      this.events.publish('Local/TestAdsToggle', false);
+    } else {
+      this.easterEggStatus = 'enabled';
+      this.persistenceProvider.setTestingAdvertisements('enabled');
+      this.events.publish('Local/TestAdsToggle', true);
+    }
   }
 
   public openSessionLog(): void {

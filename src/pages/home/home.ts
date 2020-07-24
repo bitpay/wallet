@@ -8,6 +8,7 @@ import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/sim
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
+  BwcProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
@@ -35,14 +36,18 @@ import { NewFeatureTourPage } from '../new-feature-tour/new-feature-tour';
 
 export interface Advertisement {
   name: string;
+  advertisementId?: string;
   title: string;
+  country?: string;
   body: string;
   app: string;
   linkText: string;
   link: any;
+  isTesting: boolean;
   linkParams?: any;
   dismissible: true;
   imgSrc: string;
+  signature?: string;
 }
 
 @Component({
@@ -61,6 +66,8 @@ export class HomePage {
   public showServerMessage: boolean;
   public showAdvertisements: boolean;
   public advertisements: Advertisement[] = [];
+  public productionAds: Advertisement[] = [];
+  public testingAds: Advertisement[] = [];
   public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
   public averagePrice: number;
@@ -71,6 +78,7 @@ export class HomePage {
   public discountedCard: CardConfig;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
+  public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
@@ -95,6 +103,7 @@ export class HomePage {
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
+    private bwcProvider: BwcProvider,
     private platformProvider: PlatformProvider,
     private modalCtrl: ModalController
   ) {
@@ -104,6 +113,9 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
+    this.persistenceProvider
+      .getTestingAdvertisments()
+      .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
   }
 
@@ -119,6 +131,7 @@ export class HomePage {
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
+    this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
   }
@@ -127,6 +140,80 @@ export class HomePage {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
     this.giftCardProvider.getCountry();
+  }
+
+  private async loadAds() {
+    const client = this.bwcProvider.getClient(null, {});
+
+    client.getAdvertisements(
+      { testing: this.testingAdsEnabled },
+      (err, ads) => {
+        if (err) throw err;
+
+        if (this.testingAdsEnabled) {
+          _.forEach(ads, ad => {
+            const alreadyVisible = this.testingAds.find(
+              a => a.name === ad.name
+            );
+            this.persistenceProvider
+              .getAdvertisementDismissed(ad.name)
+              .then((value: string) => {
+                if (value === 'dismissed') {
+                  return;
+                }
+
+                !alreadyVisible &&
+                  this.verifySignature(ad) &&
+                  ad.isTesting &&
+                  this.testingAds.push({
+                    name: ad.name,
+                    advertisementId: ad.advertisementId,
+                    country: ad.country,
+                    title: this.translate.instant(ad.title),
+                    body: this.translate.instant(ad.body),
+                    app: ad.app,
+                    linkText: ad.linkText,
+                    link: ad.linkUrl,
+                    imgSrc: ad.imgUrl,
+                    signature: ad.signature,
+                    isTesting: ad.isTesting,
+                    dismissible: true
+                  });
+              });
+          });
+        } else {
+          _.forEach(ads, ad => {
+            const alreadyVisible = this.advertisements.find(
+              a => a.name === ad.name
+            );
+            this.persistenceProvider
+              .getAdvertisementDismissed(ad.name)
+              .then((value: string) => {
+                if (value === 'dismissed') {
+                  return;
+                }
+
+                !alreadyVisible &&
+                  this.verifySignature(ad) &&
+                  this.advertisements.push({
+                    name: ad.name,
+                    country: ad.country,
+                    advertisementId: ad.advertisementId,
+                    title: this.translate.instant(ad.title),
+                    body: this.translate.instant(ad.body),
+                    app: ad.app,
+                    linkText: ad.linkText,
+                    link: ad.linkUrl,
+                    imgSrc: ad.imgUrl,
+                    signature: ad.signature,
+                    isTesting: ad.isTesting,
+                    dismissible: true
+                  });
+              });
+          });
+        }
+      }
+    );
   }
 
   private setMerchantDirectoryAdvertisement() {
@@ -144,8 +231,43 @@ export class HomePage {
         linkText: this.translate.instant('View Directory'),
         link: 'https://bitpay.com/directory/?hideGiftCards=true',
         imgSrc: 'assets/img/icon-merch-dir.svg',
+        isTesting: false,
         dismissible: true
       });
+  }
+
+  private verifySignature(ad): boolean {
+    var adMessage = JSON.stringify({
+      advertisementId: ad.advertisementId,
+      name: ad.name,
+      title: ad.title,
+      type: 'standard',
+      country: ad.country,
+      body: ad.body,
+      imgUrl: ad.imgUrl,
+      linkText: ad.linkText,
+      linkUrl: ad.linkUrl,
+      app: ad.app
+    });
+
+    const config = this.configProvider.getDefaults();
+    const pubKey = config.adPubKey.pubkey;
+    if (!pubKey) return false;
+
+    const b = this.bwcProvider.getBitcore();
+    const ECDSA = b.crypto.ECDSA;
+    const Hash = b.crypto.Hash;
+
+    const sigObj = b.crypto.Signature.fromString(ad.signature);
+    const _hashbuf = Hash.sha256(Buffer.from(adMessage));
+    const verificationResult = ECDSA.verify(
+      _hashbuf,
+      sigObj,
+      new b.PublicKey(pubKey),
+      'little'
+    );
+
+    return verificationResult;
   }
 
   private getCachedTotalBalance() {
@@ -191,6 +313,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/FetchCards', bpCards => {
       if (!bpCards) this.addBitPayCard();
+    });
+    this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
+      this.testingAdsEnabled = testAdsStatus;
     });
   }
 
@@ -239,6 +364,7 @@ export class HomePage {
         app: 'bitpay',
         linkText: this.translate.instant('Buy Now'),
         link: CardCatalogPage,
+        isTesting: false,
         imgSrc: 'assets/img/amazon.svg',
         dismissible: true
       });
@@ -256,6 +382,7 @@ export class HomePage {
             app: 'bitpay',
             linkText: this.translate.instant('Order Now'),
             link: BitPayCardIntroPage,
+            isTesting: false,
             dismissible: true,
             imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
           }
@@ -268,6 +395,7 @@ export class HomePage {
             app: 'bitpay',
             linkText: this.translate.instant('Notify Me'),
             link: PhaseOneCardIntro,
+            isTesting: false,
             dismissible: true,
             imgSrc: 'assets/img/icon-bpcard.svg'
           };
@@ -296,6 +424,7 @@ export class HomePage {
           : this.translate.instant('Connect Account'),
         link: CoinbasePage,
         dismissible: true,
+        isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
   }
@@ -325,6 +454,7 @@ export class HomePage {
         linkText: 'Buy Now',
         link: BuyCardPage,
         linkParams: { cardConfig: discountedCard },
+        isTesting: false,
         dismissible: true,
         imgSrc: discountedCard.icon
       });
@@ -345,6 +475,7 @@ export class HomePage {
         linkText: promo.cta || 'Buy Now',
         link: BuyCardPage,
         linkParams: { cardConfig: promotedCard },
+        isTesting: false,
         dismissible: true,
         imgSrc: promo.icon
       });
@@ -371,6 +502,7 @@ export class HomePage {
   }
 
   public doRefresh(refresher): void {
+    this.loadAds();
     this.fetchAdvertisements();
     this.preFetchWallets();
     setTimeout(() => {
@@ -462,10 +594,14 @@ export class HomePage {
   }
 
   private removeAdvertisement(name): void {
-    this.advertisements = _.filter(
-      this.advertisements,
-      adv => adv.name !== name
-    );
+    if (this.testingAdsEnabled) {
+      this.testingAds = _.filter(this.testingAds, adv => adv.name !== name);
+    } else {
+      this.advertisements = _.filter(
+        this.advertisements,
+        adv => adv.name !== name
+      );
+    }
     if (this.slides) this.slides.slideTo(0, 500);
   }
 
