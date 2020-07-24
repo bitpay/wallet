@@ -65,9 +65,14 @@ export class WalletAddressesPage {
         doNotVerify: true
       })
       .then(allAddresses => {
-        const { token } = this.wallet.credentials;
+        const { token, multisigEthInfo } = this.wallet.credentials;
         this.walletProvider
-          .getBalance(this.wallet, { tokenAddress: token ? token.address : '' })
+          .getBalance(this.wallet, {
+            tokenAddress: token ? token.address : '',
+            multisigContractAddress: multisigEthInfo
+              ? multisigEthInfo.multisigContractAddress
+              : ''
+          })
           .then(resp => {
             this.withBalance = resp.byAddress;
 

@@ -131,7 +131,8 @@ export class ProfileProvider {
     // for token wallets
     wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
       wallet.coin,
-      wallet.id
+      wallet.id,
+      wallet.n
     );
 
     if (wallet.linkedEthWallet) {
@@ -1202,6 +1203,12 @@ export class ProfileProvider {
     });
   }
 
+  private getBWSURL(walletId: string) {
+    const config = this.configProvider.get();
+    const defaults = this.configProvider.getDefaults();
+    return (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
+  }
+
   private async bindWallet(credentials): Promise<any> {
     if (!credentials.walletId || !credentials.m) {
       return Promise.reject(
@@ -1210,16 +1217,10 @@ export class ProfileProvider {
     }
 
     // Create the client
-    const getBWSURL = (walletId: string) => {
-      const config = this.configProvider.get();
-      const defaults = this.configProvider.getDefaults();
-      return (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
-    };
-
     const walletClient = this.bwcProvider.getClient(
       JSON.stringify(credentials),
       {
-        bwsurl: getBWSURL(credentials.walletId),
+        bwsurl: this.getBWSURL(credentials.walletId),
         bp_partner: this.appProvider.info.name,
         bp_partner_version: this.appProvider.info.version
       }
@@ -1657,7 +1658,7 @@ export class ProfileProvider {
       tokenObj
     );
     const walletClient = this.bwcProvider.getClient(null, {
-      baseUrl: ethWallet.baseUrl,
+      baseUrl: this.getBWSURL(ethWallet.credentials.walletId),
       bp_partner: ethWallet.bp_partner,
       bp_partner_version: ethWallet.bp_partner_version
     });
@@ -1672,6 +1673,30 @@ export class ProfileProvider {
     return walletClient;
   }
 
+  private _createMultisigEthWallet(ethWallet, multisigEthInfo) {
+    this.logger.debug(
+      `Creating ETH multisig wallet ${multisigEthInfo.walletName} for ${
+        ethWallet.id
+      }:`
+    );
+    const multisigEthCredentials = ethWallet.credentials.getMultisigEthCredentials(
+      multisigEthInfo
+    );
+    const walletClient = this.bwcProvider.getClient(null, {
+      bwsurl: this.getBWSURL(ethWallet.credentials.walletId),
+      bp_partner: ethWallet.bp_partner,
+      bp_partner_version: ethWallet.bp_partner_version
+    });
+    walletClient.fromObj(multisigEthCredentials);
+    // Add the token info to the ethWallet.
+    ethWallet.preferences = ethWallet.preferences || {};
+    ethWallet.preferences.multisigEthInfo =
+      ethWallet.preferences.multisigEthInfo || [];
+    ethWallet.preferences.multisigEthInfo.push(multisigEthInfo);
+
+    return walletClient;
+  }
+
   public createTokenWallet(ethWallet, token): Promise<any> {
     if (_.isString(token)) {
       let tokens = this.currencyProvider.getAvailableTokens();
@@ -1679,6 +1704,14 @@ export class ProfileProvider {
     }
     const tokenWalletClient = this._createTokenWallet(ethWallet, token);
     return this.addAndBindWalletClient(tokenWalletClient);
+  }
+
+  public createMultisigEthWallet(ethWallet, multisigEthInfo): Promise<any> {
+    const multisigEthWalletClient = this._createMultisigEthWallet(
+      ethWallet,
+      multisigEthInfo
+    );
+    return this.addAndBindWalletClient(multisigEthWalletClient);
   }
 
   public createMultipleWallets(coins: string[], tokens = []): Promise<any> {

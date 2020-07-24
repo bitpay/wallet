@@ -31,6 +31,9 @@ export class OnGoingProcessProvider {
       ),
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
+      creatingEthMultisigWallet: this.translate.instant(
+        'Creating ETH multisig wallet. Please wait...'
+      ),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'

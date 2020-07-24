@@ -1,18 +1,13 @@
 <action-sheet>
   <div class="info-container" [ngSwitch]="sheetType">
     <info-sheet-template *ngSwitchCase="'address-copied'" type="success">
-      <span sheet-title-text
-        >{{'Copied {coin} address' | translate: {coin: params.coin | uppercase }
-        }}</span
-      >
+      <span sheet-title-text>{{'Copied {coin} address' | translate: {coin: params.coin | uppercase }
+        }}</span>
       <span sheet-text class="text-address">{{params.address}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'backup-needed-with-activity'"
-      type="info"
-    >
+    <info-sheet-template *ngSwitchCase="'backup-needed-with-activity'" type="info">
       <span sheet-title-text translate>Needs Backup</span>
       <span sheet-text translate>
         Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen.
@@ -57,10 +52,7 @@
       <span sheet-second-button-text translate>Send Max</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'import-no-wallet-warning'"
-      type="warning"
-    >
+    <info-sheet-template *ngSwitchCase="'import-no-wallet-warning'" type="warning">
       <span sheet-title-text translate>We couldn't find your wallet!</span>
       <span sheet-text>
         {{ 'There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds.' | translate }}
@@ -85,8 +77,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
-      <span sheet-title-text
-        >{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType} }}</span>
+      <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType} }}</span>
       <span sheet-text translate>
         Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
       </span>
@@ -116,73 +107,41 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'copied-gift-card-claim-code'"
-      type="success"
-    >
-      <span sheet-title-text style="word-break: break-all;"
-        >{{'Copied: {claimCode}' | translate: params }}</span
-      >
+    <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
+      <span sheet-title-text style="word-break: break-all;">{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>
-        <redeem-instructions
-          [cardConfig]="params.cardConfig"
-          [params]="params"
-        ></redeem-instructions>
+        <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'addTokenWallet'"
-      type="{{ params.wallets[0] ? 'info' : 'warning' }}"
-    >
-      <span
-        *ngIf="params.wallets && params.wallets.length > 0"
-        sheet-title-text
-        translate
-        >Select an Ethereum Wallet</span
-      >
-      <span *ngIf="!params.wallets[0]" sheet-title-text translate
-        >Ethereum wallet required</span
-      >
-      <span
-        *ngIf="params.wallets && params.wallets.length > 0"
-        sheet-text
-        translate
-        >Which Ethereum wallet would you like this token to use for transaction costs?</span>
+    <info-sheet-template *ngSwitchCase="'linkEthWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
+      <span *ngIf="params.wallets && params.wallets.length > 0" sheet-title-text translate>Select an Ethereum Wallet</span>
+      <span *ngIf="!params.wallets[0]" sheet-title-text translate>Ethereum wallet required</span>
+      <span *ngIf="params.wallets && params.wallets.length > 0 && !params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
+      <span *ngIf="params.wallets && params.wallets.length > 0 && params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this multisig to use for transaction costs?</span>
 
-      <span *ngIf="!params.wallets[0]" sheet-text translate>
-        In order to create a token wallet, an Ethereum (ETH) wallet is required.  Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
+      <span *ngIf="!params.wallets[0] && !params.isEthMultisig" sheet-text translate>
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
+      </span>
+      <span *ngIf="!params.wallets[0] && params.isEthMultisig" sheet-text translate>
+        In order to create this multisig wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
       </span>
 
       <span sheet-text>
-        <div
-          style="margin-top: 20px"
-          *ngIf="params.wallets && params.wallets.length > 0"
-        >
+        <div style="margin-top: 20px" *ngIf="params.wallets && params.wallets.length > 0">
           <ion-list class="bp-list">
             <div *ngFor="let wallet of params.wallets">
-              <wallet-item-content
-                [wallet]="wallet"
-                (click)="optionClicked(wallet)"
-              ></wallet-item-content>
+              <wallet-item-content [wallet]="wallet" (click)="optionClicked(wallet)"></wallet-item-content>
             </div>
           </ion-list>
         </div>
       </span>
 
-      <span
-        sheet-button-text
-        translate
-        [ngClass]="{'sheet-btn default': !params.wallets[0] }"
-        >Go Back</span
-      >
+      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">Go Back</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'copied-invoice-url'"
-      type="{{ params.error ? 'danger' : 'success' }}"
-    >
+    <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
       <span *ngIf="!params.error" sheet-title-text class="truncate">
         <span translate>Copied</span>: {{params.invoiceUrl}}
       </span>
@@ -190,32 +149,16 @@
         <span translate>Error</span>: {{params.error}}
       </span>
       <span sheet-text>
-        <redeem-instructions
-          [cardConfig]="params.cardConfig"
-          [params]="params"
-        ></redeem-instructions>
+        <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
       <span sheet-button-text translate>GOT IT</span>
-      <span
-        sheet-button-text
-        class="sheet-btn-invoice"
-        translate
-        (click)="openInBrowser(params.invoiceUrl)"
-        style="float: right;"
-        item-end
-        >OPEN IN BROWSER
+      <span sheet-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)" style="float: right;" item-end>OPEN IN BROWSER
       </span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'archive-all-gift-cards'"
-      type="warning"
-    >
-      <span sheet-title-text
-        >{{'Archive All {brand} Gift Cards?' | translate: params }}</span
-      >
-      <span sheet-text
-        >{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
+    <info-sheet-template *ngSwitchCase="'archive-all-gift-cards'" type="warning">
+      <span sheet-title-text>{{'Archive All {brand} Gift Cards?' | translate: params }}</span>
+      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
@@ -225,10 +168,7 @@
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'hide-gift-card-discount-item'"
-      type="warning"
-    >
+    <info-sheet-template *ngSwitchCase="'hide-gift-card-discount-item'" type="warning">
       <span sheet-title-text translate>Hide discount?</span>
       <span sheet-text translate>Would you like to hide this gift card discount?</span>
       <span sheet-button-text translate>YES</span>
@@ -252,19 +192,13 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'below-minimum-gift-card-amount'"
-      type="danger"
-    >
+    <info-sheet-template *ngSwitchCase="'below-minimum-gift-card-amount'" type="danger">
       <span sheet-title-text translate>Below Minimum Amount</span>
       <span sheet-text>{{'The purchase amount must be at least {minAmount} {currency}. Please modify your amount.' | translate: params }}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'above-maximum-gift-card-amount'"
-      type="danger"
-    >
+    <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger">
       <span sheet-title-text translate>Purchase Limit Reached</span>
       <span sheet-text>
         {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate:params }}
@@ -273,9 +207,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
-      <span sheet-title-text
-        >{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span
-      >
+      <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
       <span sheet-text translate>
         If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can "translate" them to the corresponding address in CashAddr format.
       </span>
@@ -288,10 +220,8 @@
       <span sheet-text translate>
         5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
       </span>
-      <span sheet-button-text
-        >{{'Continue to {storeName}' | translate: {storeName: params?.storeName}
-        }}</span
-      >
+      <span sheet-button-text>{{'Continue to {storeName}' | translate: {storeName: params?.storeName}
+        }}</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-failed'" type="danger">
@@ -414,12 +344,7 @@
       <span sheet-title-text translate>RBF transaction</span>
       <span sheet-text>
         <span translate>Be careful. Until it confirms, the transaction could be replaced/redirected by the sender. You can try to speed it up by using a higher fee.</span>
-        <a
-          class="label-tip-link"
-          (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/360028824532-Why-can-t-I-pay-a-BitPay-invoice-using-RBF-')"
-          translate
-          >Read more</a
-        >
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/360028824532-Why-can-t-I-pay-a-BitPay-invoice-using-RBF-')" translate>Read more</a>
       </span>
       <span sheet-button-text translate>Speed up transaction</span>
       <span sheet-second-button-text translate>View details</span>
@@ -437,12 +362,7 @@
       <span sheet-title-text>{{ 'Subtotal' | translate }}</span>
       <span sheet-text>
         {{ 'For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs.' | translate }}
-        <a
-          class="label-tip-link"
-          (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115002990803-What-is-the-Network-Cost-fee-on-BitPay-invoices-and-why-is-BitPay-charging-it')"
-          translate
-          >Read more</a
-        >
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115002990803-What-is-the-Network-Cost-fee-on-BitPay-invoices-and-why-is-BitPay-charging-it')" translate>Read more</a>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -451,12 +371,7 @@
       <span sheet-title-text>{{ 'Total' | translate }}</span>
       <span sheet-text>
         {{ 'The total amount is the subtotal amount plus transaction fees.' | translate }}
-        <a
-          class="label-tip-link"
-          (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-')"
-          translate
-          >Read more</a
-        >
+        <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-')" translate>Read more</a>
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -478,10 +393,7 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template
-      *ngSwitchCase="'recovery-phrase-length'"
-      type="warning"
-    >
+    <info-sheet-template *ngSwitchCase="'recovery-phrase-length'" type="warning">
       <span sheet-title-text translate>Something went wrong</span>
       <span sheet-text>
         <span translate>What could have happened?</span>

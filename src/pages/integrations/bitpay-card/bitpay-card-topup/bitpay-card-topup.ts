@@ -355,6 +355,11 @@ export class BitPayCardTopUpPage {
             txp.tokenAddress = wallet.credentials.token.address;
           }
 
+          if (wallet.credentials.multisigEthInfo) {
+            txp.multisigContractAddress =
+              wallet.credentials.multisigEthInfo.multisigContractAddress;
+          }
+
           if (details.requiredFeeRate) {
             const requiredFeeRate = !this.currencyProvider.isUtxoCoin(
               wallet.coin
@@ -427,13 +432,21 @@ export class BitPayCardTopUpPage {
               returnInputs: true
             })
             .then(async resp => {
+              let tokenAddress, multisigContractAddress;
               if (this.currencyProvider.isERCToken(wallet.coin)) {
-                const tokenAddress = wallet.credentials.token.address;
+                tokenAddress = wallet.credentials.token.address;
+              }
+              if (this.wallet.credentials.multisigEthInfo) {
+                multisigContractAddress =
+                  wallet.credentials.multisigEthInfo.multisigContractAddress;
+              }
+              if (tokenAddress || multisigContractAddress) {
                 try {
                   const {
                     availableAmount
                   } = await this.walletProvider.getBalance(wallet, {
-                    tokenAddress
+                    tokenAddress,
+                    multisigContractAddress
                   });
                   return resolve({
                     sendMax: true,

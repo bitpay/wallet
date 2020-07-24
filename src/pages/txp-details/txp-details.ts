@@ -27,7 +27,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { FinishModalPage } from '../finish/finish';
 
 import * as _ from 'lodash';
-
 @Component({
   selector: 'page-txp-details',
   templateUrl: 'txp-details.html'
@@ -55,6 +54,7 @@ export class TxpDetailsPage {
   public isCordova: boolean;
 
   private countDown;
+  private executionPending: boolean;
 
   constructor(
     private navParams: NavParams,
@@ -196,6 +196,7 @@ export class TxpDetailsPage {
 
     var actionDescriptions = {
       created: this.translate.instant('Proposal Created'),
+      failed: this.translate.instant('Execution Failed'),
       accept: this.translate.instant('Accepted'),
       reject: this.translate.instant('Rejected'),
       broadcasted: this.translate.instant('Broadcasted')
@@ -392,14 +393,17 @@ export class TxpDetailsPage {
     this.walletProvider
       .getTxp(this.wallet, this.tx.id)
       .then(tx => {
-        let action = _.find(tx.actions, {
+        let action: any = _.find(tx.actions, {
           copayerId: this.wallet.credentials.copayerId
         });
 
         this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
-
-        if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
-
+        if ((!action || action.type === 'failed') && tx.status == 'pending') {
+          this.tx.pendingForUs = true;
+          if (action.type === 'failed') {
+            this.executionPending = true;
+          }
+        }
         this.updateCopayerList();
         this.initActionList();
       })
@@ -428,7 +432,28 @@ export class TxpDetailsPage {
   }
 
   public onConfirm(): void {
-    this.sign();
+    if (this.tx.multisigContractAddress) {
+      this.goToConfirm();
+    } else {
+      this.sign();
+    }
+  }
+
+  public goToConfirm(): void {
+    let amount = 0;
+    this.viewCtrl.dismiss({
+      walletId: this.wallet.credentials.walletId,
+      amount,
+      coin: this.wallet.coin,
+      network: this.wallet.network,
+      multisigContractAddress: this.wallet.credentials.multisigEthInfo
+        .multisigContractAddress, // address eth multisig contract
+      toAddress: this.wallet.credentials.multisigEthInfo
+        .multisigContractAddress, // address eth multisig contract
+      isEthMultisigConfirm: !this.executionPending ? true : false,
+      isEthMultisigExecute: this.executionPending ? true : false,
+      transactionId: this.tx.multisigTxId
+    });
   }
 
   public close(): void {

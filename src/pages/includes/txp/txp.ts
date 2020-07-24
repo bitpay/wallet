@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { TimeProvider } from '../../../providers/time/time';
 
 import { TxpDetailsPage } from '../../txp-details/txp-details';
+
+import { ConfirmPage } from '../../send/confirm/confirm';
 
 @Component({
   selector: 'page-txp',
@@ -15,7 +17,8 @@ export class TxpPage {
 
   constructor(
     private timeProvider: TimeProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private navCtrl: NavController
   ) {}
 
   @Input()
@@ -57,5 +60,10 @@ export class TxpPage {
       { showBackdrop: false, enableBackdropDismiss: false }
     );
     modal.present();
+    modal.onDidDismiss(opts => {
+      if (opts && opts.multisigContractAddress) {
+        this.navCtrl.push(ConfirmPage, opts);
+      }
+    });
   }
 }

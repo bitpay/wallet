@@ -172,7 +172,7 @@
 
 
     <div class="prompt-user activity-fix white-card" *ngIf="shouldShowZeroState()">
-      <div class="title-icon larger-icon">
+      <div class="title-icon larger-icon" *ngIf="!wallet?.credentials.multisigEthInfo">
         <img *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTongue" width="42" src="assets/img/icon-warning-circled.svg" />
         <ng-template #ghostTongue>
           <img src="assets/img/ghost-tongue-out.svg">
@@ -181,7 +181,8 @@
       <div class="title-info">
         <span translate *ngIf="wallet?.coin === 'xrp' && wallet?.cachedStatus && !wallet?.cachedStatus.lockedBalanceSat; else ghostTown">XRP Minimum Balance</span>
         <ng-template #ghostTown>
-          <span translate>It's a ghost town in here</span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo">It's a ghost town in here</span>
+          <span translate *ngIf="wallet?.credentials.multisigEthInfo">Join more Copayers</span>
         </ng-template>
       </div>
       <div class="subtitle-info">
@@ -189,10 +190,21 @@
           The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet.
         </span>
         <ng-template #noFunds>
-          <span translate>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo">
             If you have funds stored on a website then you should move them into a secure wallet... like this one!
           </span>
+          <span translate *ngIf="wallet?.credentials.multisigEthInfo">
+            Share this invitation with the Copayers who join this wallet.
+          </span>
         </ng-template>
+      </div>
+      <div class="qr-container" *ngIf="wallet?.credentials.multisigEthInfo">
+        <bp-qr-code *ngIf="wallet?.credentials.multisigEthInfo.multisigContractAddress && !useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ wallet.credentials.multisigEthInfo.multisigContractAddress }}" contents="{{ wallet.credentials.multisigEthInfo.multisigContractAddress }}" mask-x-to-y-ratio="1">
+          <img [ngClass]="{'testnet': wallet.network === 'testnet'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
+        </bp-qr-code>
+        <div *ngIf="wallet?.credentials.multisigEthInfo.multisigContractAddress && useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ wallet.credentials.multisigEthInfo.multisigContractAddress }}">
+          <ngx-qrcode hide-toast="true" qrc-value="{{ wallet.credentials.multisigEthInfo.multisigContractAddress }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        </div>
       </div>
     </div>
 
@@ -248,7 +260,8 @@
 
             <div class="action" *ngIf="tx.confirmations <= 0 && !(tx.amount === 0 && wallet?.coin === 'eth')">
               <span *ngIf="(tx.action == 'sent') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Sending'
-                    | translate}}</span>
+                    | translate}}
+              </span>
               <span *ngIf="(tx.action == 'moved') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Moving'
                     | translate}}</span>
               <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name
@@ -280,7 +293,7 @@
             </div>
 
             <div class="action" *ngIf="tx.amount === 0 && wallet?.coin === 'eth'">
-              <span>{{'Fee for token transfer' | translate}}</span>
+              <span>{{'Interaction with contract' | translate}}</span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">

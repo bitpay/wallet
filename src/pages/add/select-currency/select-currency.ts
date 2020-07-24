@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
+import { JoinWalletPage } from '../join-wallet/join-wallet';
 
 // providers
 import {
@@ -55,7 +56,7 @@ export class SelectCurrencyPage {
     private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private logger: Logger,
-    private navParam: NavParams,
+    public navParam: NavParams,
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
@@ -67,9 +68,10 @@ export class SelectCurrencyPage {
     private errorsProvider: ErrorsProvider,
     private events: Events
   ) {
-    this.availableChains = this.navParam.data.isShared
-      ? this.currencyProvider.getMultiSigCoins()
-      : this.currencyProvider.getAvailableChains();
+    this.availableChains =
+      this.navParam.data.isShared || this.navParam.data.isJoin
+        ? this.currencyProvider.getMultiSigCoins()
+        : this.currencyProvider.getAvailableChains();
     this.availableTokens = this.currencyProvider.getAvailableTokens();
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
@@ -116,12 +118,20 @@ export class SelectCurrencyPage {
   }
 
   public goToCreateWallet(coin: string): void {
-    this.navCtrl.push(CreateWalletPage, {
-      isShared: this.navParam.data.isShared,
-      coin,
-      keyId: this.navParam.data.keyId,
-      showKeyOnboarding: this.showKeyOnboarding
-    });
+    if (this.navParam.data.isJoin) {
+      this.navCtrl.push(JoinWalletPage, {
+        keyId: this.navParam.data.keyId,
+        url: this.navParam.data.url,
+        coin
+      });
+    } else {
+      this.navCtrl.push(CreateWalletPage, {
+        isShared: this.navParam.data.isShared,
+        coin,
+        keyId: this.navParam.data.keyId,
+        showKeyOnboarding: this.showKeyOnboarding
+      });
+    }
   }
 
   public getCoinName(coin: Coin): string {
@@ -199,7 +209,7 @@ export class SelectCurrencyPage {
       : [];
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(
-      'addTokenWallet',
+      'linkEthWallet',
       {
         wallets: eligibleWallets,
         token
