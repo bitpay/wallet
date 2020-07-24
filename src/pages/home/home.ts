@@ -82,7 +82,6 @@ export class HomePage {
   public showCoinbase: boolean = false;
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
-  private config: any;
 
   private isCordova: boolean;
   private zone;
@@ -114,7 +113,9 @@ export class HomePage {
     this.persistenceProvider
       .getCardExperimentFlag()
       .then(status => (this.cardExperimentEnabled = status === 'enabled'));
-    this.config = this.configProvider.get();
+    this.persistenceProvider
+      .getTestingAdvertisments()
+      .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
   }
 
@@ -248,7 +249,8 @@ export class HomePage {
       app: ad.app
     });
 
-    const pubKey = this.config.adPubKey.pubkey;
+    const config = this.configProvider.getDefaults();
+    const pubKey = config.adPubKey.pubkey;
     if (!pubKey) return false;
 
     const b = this.bwcProvider.getBitcore();

@@ -209,7 +209,7 @@ export class PersistenceProvider {
     return this.storage.set(Keys.CLEAN_AND_SCAN_ADDRESSES, walletId);
   }
 
-  setTestingAdvertisements(isViewingTestAdvertisements: boolean) {
+  setTestingAdvertisements(isViewingTestAdvertisements: string) {
     return this.storage.set(
       Keys.TESTING_ADVERTISEMENTS,
       isViewingTestAdvertisements
@@ -218,6 +218,10 @@ export class PersistenceProvider {
 
   getTestingAdvertisments() {
     return this.storage.get(Keys.TESTING_ADVERTISEMENTS);
+  }
+
+  removeTestingAdvertisments() {
+    return this.storage.remove(Keys.TESTING_ADVERTISEMENTS);
   }
 
   getCleanAndScanAddresses() {
