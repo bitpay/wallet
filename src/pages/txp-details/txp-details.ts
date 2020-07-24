@@ -176,7 +176,9 @@ export class TxpDetailsPage {
       }).length ==
       this.tx.requiredSignatures - 1;
 
-    if (lastSigner) {
+    if (this.isShared && this.tx.coin === 'eth') {
+      this.buttonText = this.translate.instant('Continue');
+    } else if (lastSigner) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to send')
         : this.translate.instant('Click to send');
