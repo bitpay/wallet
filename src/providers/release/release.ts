@@ -58,11 +58,8 @@ export class ReleaseProvider {
     let current = this.formatTagNumber(currentVersion);
     let latest = this.formatTagNumber(latestVersion);
 
-    if (
-      latest.major > current.major ||
-      (latest.major == current.major && latest.minor > current.minor) ||
-      (latest.minor == current.minor && latest.patch > current.patch)
-    ) {
+    if (latest.major > current.major) {
+      this.logger.debug('Major version is available');
       return true;
     }
     return false;

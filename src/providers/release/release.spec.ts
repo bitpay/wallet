@@ -93,12 +93,12 @@ describe('Release Provider', () => {
   it('should be a new minor version available', () => {
     const minorAppVersion = '1.2.0';
     const result = releaseProvider.newReleaseAvailable(minorAppVersion);
-    expect(result).toBeTruthy;
+    expect(result).toBeFalsy;
   });
 
   it('should be a new patch version available', () => {
     const patchAppVersion = '1.1.2';
     const result = releaseProvider.newReleaseAvailable(patchAppVersion);
-    expect(result).toBeTruthy;
+    expect(result).toBeFalsy;
   });
 });
