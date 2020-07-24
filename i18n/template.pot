@@ -132,6 +132,9 @@ msgstr ""
 msgid "Add as a contact"
 msgstr ""
 
+msgid "Add copayers"
+msgstr ""
+
 msgid "Add funds"
 msgstr ""
 
@@ -145,6 +148,9 @@ msgid "Address Book"
 msgstr ""
 
 msgid "Address Type"
+msgstr ""
+
+msgid "Address already added"
 msgstr ""
 
 msgid "Addressbook is empty"
@@ -204,9 +210,7 @@ msgstr ""
 msgid "Amount too big"
 msgstr ""
 
-msgid ""
-"An update to this app is available. For your security, please update to the "
-"latest version."
+msgid "An update to this app is available."
 msgstr ""
 
 msgid "Apply changes"
@@ -671,6 +675,12 @@ msgstr ""
 msgid "Copayer data mismatch"
 msgstr ""
 
+msgid "Copayer {{idx+1}}"
+msgstr ""
+
+msgid "Copayers"
+msgstr ""
+
 msgid "Copied"
 msgstr ""
 
@@ -801,6 +811,9 @@ msgid "Created by"
 msgstr ""
 
 msgid "Created {cardDate}"
+msgstr ""
+
+msgid "Creating ETH multisig wallet. Please wait..."
 msgstr ""
 
 msgid "Creating Gift Card..."
@@ -961,6 +974,12 @@ msgid "Duplicate to BCH"
 msgstr ""
 
 msgid "Duplicating wallet..."
+msgstr ""
+
+msgid "ETH Multisig"
+msgstr ""
+
+msgid "ETH Multisig Wallet creation"
 msgstr ""
 
 msgid ""
@@ -1145,6 +1164,9 @@ msgstr ""
 msgid "Exchanges"
 msgstr ""
 
+msgid "Execution Failed"
+msgstr ""
+
 msgid "Expired"
 msgstr ""
 
@@ -1182,9 +1204,6 @@ msgid "Featured Currencies"
 msgstr ""
 
 msgid "Fee"
-msgstr ""
-
-msgid "Fee for token transfer"
 msgstr ""
 
 msgid "Fee level is not defined"
@@ -1489,9 +1508,14 @@ msgid "Importing Wallet..."
 msgstr ""
 
 msgid ""
-"In order to create a token wallet, an Ethereum (ETH) wallet is required.  "
+"In order to create a token wallet, an Ethereum (ETH) wallet is required. "
 "Please create an ETH wallet first. Only one {{ params.token.name }} wallet "
 "is allowed per ETH wallet."
+msgstr ""
+
+msgid ""
+"In order to create this multisig wallet, an Ethereum (ETH) wallet is "
+"required. Please create an ETH wallet first."
 msgstr ""
 
 msgid ""
@@ -1536,6 +1560,9 @@ msgid "Insufficient funds"
 msgstr ""
 
 msgid "Insufficient funds for fee"
+msgstr ""
+
+msgid "Interaction with contract"
 msgstr ""
 
 msgid "Invalid"
@@ -1599,6 +1626,9 @@ msgid "Join"
 msgstr ""
 
 msgid "Join Shared Wallet"
+msgstr ""
+
+msgid "Join more Copayers"
 msgstr ""
 
 msgid "Join the waitlist and be first to experience the new card."
@@ -1666,6 +1696,12 @@ msgid "Linked"
 msgstr ""
 
 msgid "Linked Ethereum Wallet"
+msgstr ""
+
+msgid "Linked to"
+msgstr ""
+
+msgid "Linked to (Copayer 1)"
 msgstr ""
 
 msgid "Linked to wallet: {linkedEthWalletName}"
@@ -1775,6 +1811,9 @@ msgid "Multiple recipients ({recipientsCount})"
 msgstr ""
 
 msgid "Multisig and key encryption help you always keep your funds secure."
+msgstr ""
+
+msgid "Multisig contract address not found."
 msgstr ""
 
 msgid "Name"
@@ -2185,6 +2224,9 @@ msgstr ""
 msgid "Proposal Created"
 msgstr ""
 
+msgid "Proposal confirmed"
+msgstr ""
+
 msgid "Proposal created"
 msgstr ""
 
@@ -2446,6 +2488,9 @@ msgstr ""
 msgid "Select a wallet"
 msgstr ""
 
+msgid "Select a wallet to link to"
+msgstr ""
+
 msgid "Select an Ethereum Wallet"
 msgstr ""
 
@@ -2581,6 +2626,9 @@ msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this address with the devices joining this account."
+msgstr ""
+
+msgid "Share this invitation with the Copayers who join this wallet."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
@@ -2837,6 +2885,9 @@ msgid ""
 "process before continue."
 msgstr ""
 
+msgid "The ethereum paired wallet you choose does not belong to this contract"
+msgstr ""
+
 msgid ""
 "The fastest, easiest way to turn your crypto into dollars for shopping. "
 "Load funds in the BitPay App and spend in minutes."
@@ -2860,6 +2911,9 @@ msgid ""
 msgstr ""
 
 msgid "The invoice is no available"
+msgstr ""
+
+msgid "The maximum number of Copayers has already been reached"
 msgstr ""
 
 msgid ""
@@ -3499,6 +3553,11 @@ msgid "Where would you like to receive your Amazon gift card purchase receipts?"
 msgstr ""
 
 msgid ""
+"Which Ethereum wallet would you like this multisig to use for transaction "
+"costs?"
+msgstr ""
+
+msgid ""
 "Which Ethereum wallet would you like this token to use for transaction "
 "costs?"
 msgstr ""
@@ -3560,6 +3619,11 @@ msgid "Yes"
 msgstr ""
 
 msgid "Yes, please use my email address to send me exclusive email offers."
+msgstr ""
+
+msgid ""
+"You are creating a {m}-{n} wallet. And you need all {m} copayers addresses "
+"at creation time."
 msgstr ""
 
 msgid ""
