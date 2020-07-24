@@ -68,8 +68,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"A transaction using your delayed transaction inputs will be send to your "
-"own wallet with a higher miner fee to speed up the last confirmation time"
+"A transaction using your delayed transaction inputs will be sent to your "
+"own wallet with a higher miner fee to speed up the last confirmation time."
 msgstr ""
 
 msgid ""
@@ -112,6 +112,9 @@ msgid "Add"
 msgstr ""
 
 msgid "Add BitPay Account?"
+msgstr ""
+
+msgid "Add Me"
 msgstr ""
 
 msgid "Add Recipient"
@@ -296,7 +299,7 @@ msgid "Bad wallet invitation"
 msgstr ""
 
 msgid ""
-"Be careful. Some inputs of this transaction has no confirmations. Please "
+"Be careful. Some inputs of this transaction have no confirmations. Please "
 "wait until they are confirmed."
 msgstr ""
 
@@ -315,7 +318,7 @@ msgstr ""
 
 msgid ""
 "Because you are sending the maximum amount contained in this wallet, the "
-"{coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
+"{coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}"
 msgstr ""
 
 msgid ""
@@ -365,6 +368,13 @@ msgid "BitPay ID successfully disconnected."
 msgstr ""
 
 msgid "BitPay does not receive and does not control miner fees."
+msgstr ""
+
+msgid ""
+"BitPay would also like to send you marketing and promotional communications "
+"about our products, services and special promotions. You can change your "
+"preferences at any time in “Settings” in our app or by contacting us as set "
+"forth in our"
 msgstr ""
 
 msgid "Bitcoin Address"
@@ -426,6 +436,11 @@ msgstr ""
 msgid ""
 "By giving my email address, I give explicit consent to BitPay to use it to "
 "contact me about payment issues."
+msgstr ""
+
+msgid ""
+"By giving my phone number, I give explicit consent to BitPay to use it to "
+"connect this card to Apple Pay or Google Pay."
 msgstr ""
 
 msgid ""
@@ -980,6 +995,9 @@ msgstr ""
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr ""
 
+msgid "Enable"
+msgstr ""
+
 msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
@@ -989,10 +1007,18 @@ msgstr ""
 msgid "Enable email notifications"
 msgstr ""
 
+msgid "Enable from settings"
+msgstr ""
+
 msgid "Enable push notifications"
 msgstr ""
 
 msgid "Enable the camera to get started."
+msgstr ""
+
+msgid ""
+"Enabling dark mode can prolong the battery life of your device. But let's "
+"be honest, dark mode just looks super amazing!"
 msgstr ""
 
 msgid ""
@@ -1034,6 +1060,14 @@ msgid "Enter encrypt password"
 msgstr ""
 
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid ""
+"Enter your recovery phrase (usually 12-words) in the correct order. "
+"Separate each word with a single space only (no commas or any other "
+"punctuation). For backup phrases in non-English languages: Some words may "
+"include special symbols (ñ, è, っ, etc.), so be sure to spell all the words "
+"correctly."
 msgstr ""
 
 msgid "Enter {coinName} address"
@@ -1434,6 +1468,11 @@ msgid ""
 "corresponding address in CashAddr format."
 msgstr ""
 
+msgid ""
+"If you would like to connect this card to Apple Pay or Google Pay, please "
+"provide your phone number."
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -1450,7 +1489,7 @@ msgid "Importing Wallet..."
 msgstr ""
 
 msgid ""
-"In order to create a token wallet, an Ethereum (ETH) wallet is required. "
+"In order to create a token wallet, an Ethereum (ETH) wallet is required.  "
 "Please create an ETH wallet first. Only one {{ params.token.name }} wallet "
 "is allowed per ETH wallet."
 msgstr ""
@@ -1569,6 +1608,9 @@ msgid "Join the waitlist and be the first to experience our new card."
 msgstr ""
 
 msgid "Joining Wallet..."
+msgstr ""
+
+msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
 msgstr ""
 
 msgid "Key Name"
@@ -1910,6 +1952,9 @@ msgstr ""
 msgid "On"
 msgstr ""
 
+msgid "Only a {name} phone number can be used for this purchase."
+msgstr ""
+
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
@@ -1962,6 +2007,9 @@ msgid "PRIMARY"
 msgstr ""
 
 msgid "Pair My BitPay Card"
+msgstr ""
+
+msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
 msgstr ""
 
 msgid "Password"
@@ -2368,6 +2416,9 @@ msgstr ""
 msgid "Search for a brand"
 msgstr ""
 
+msgid "Search for a country"
+msgstr ""
+
 msgid "Security"
 msgstr ""
 
@@ -2387,6 +2438,9 @@ msgid "Select Key"
 msgstr ""
 
 msgid "Select Key to add ETH Wallet to"
+msgstr ""
+
+msgid "Select Your Country"
 msgstr ""
 
 msgid "Select a wallet"
@@ -2491,9 +2545,6 @@ msgid "Server response could not be verified"
 msgstr ""
 
 msgid "Session Log"
-msgstr ""
-
-msgid "Session Logs. Be careful, this could contain sensitive private data"
 msgstr ""
 
 msgid "Set up a password"
@@ -2630,6 +2681,9 @@ msgstr ""
 msgid "Something goes wrong..."
 msgstr ""
 
+msgid "Something went wrong"
+msgstr ""
+
 msgid "Specify Amount"
 msgstr ""
 
@@ -2639,7 +2693,7 @@ msgstr ""
 msgid "Specify derivation path"
 msgstr ""
 
-msgid "Speed up successfully"
+msgid "Speed up successful"
 msgstr ""
 
 msgid "Speed up transaction"
@@ -2833,6 +2887,9 @@ msgid ""
 "your amount."
 msgstr ""
 
+msgid "The recovery phrase is invalid"
+msgstr ""
+
 msgid ""
 "The recovery phrase you entered do not match the wallet you are trying to "
 "re-import"
@@ -2907,6 +2964,9 @@ msgid ""
 "BIP44 compatible wallet from a 3rd party you can continue to recreate it. "
 "If you wallet is not BIP44 compatible, you will not be able to access its "
 "funds."
+msgstr ""
+
+msgid "There are no wallets with enough funds to make the payment"
 msgstr ""
 
 msgid "There is a new version available"
@@ -3031,6 +3091,11 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+msgid ""
+"To enable the dark mode, tap the gear icon at the bottom, tap Theme and "
+"select Dark Mode"
+msgstr ""
+
 msgid "To get started, you'll need to create a wallet and get some funds."
 msgstr ""
 
@@ -3135,13 +3200,16 @@ msgstr ""
 msgid "Try again in {{expires}}"
 msgstr ""
 
+msgid "Try dark mode"
+msgstr ""
+
 msgid "Try entering any passwords you may have set in the past"
 msgstr ""
 
 msgid "Turn crypto into dollars using our BitPay Card."
 msgstr ""
 
-msgid "Type the recovery phrase (usually 12 words)"
+msgid "Type the recovery phrase"
 msgstr ""
 
 msgid "Uh oh something went wrong! Please try again later."
@@ -3401,6 +3469,9 @@ msgid ""
 "anything we could do to improve your experience?"
 msgstr ""
 
+msgid "What could have happened?"
+msgstr ""
+
 msgid "What do you call this key?"
 msgstr ""
 
@@ -3411,6 +3482,9 @@ msgid "What is the status of my payment?"
 msgstr ""
 
 msgid "What service fees am I paying?"
+msgstr ""
+
+msgid "What's new"
 msgstr ""
 
 msgid ""
@@ -3467,9 +3541,6 @@ msgstr ""
 msgid "Write down each word."
 msgstr ""
 
-msgid "Wrong number of recovery words:"
-msgstr ""
-
 msgid "Wrong password"
 msgstr ""
 
@@ -3488,6 +3559,9 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+msgid "Yes, please use my email address to send me exclusive email offers."
+msgstr ""
+
 msgid ""
 "You are trying to send more funds than you have available. Make sure you do "
 "not have funds locked by pending transaction proposals."
@@ -3500,8 +3574,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You can always reset your encrypt password on your key settings using your "
-"12 words recovery phrase"
+"You can always reset your encrypt password on your key settings under the "
+"option"
 msgstr ""
 
 msgid "You can change the name displayed on this device below."
@@ -3551,6 +3625,19 @@ msgid ""
 msgstr ""
 
 msgid "You do not have wallets able to receive funds"
+msgstr ""
+
+msgid "You have entered the phrase without spaces"
+msgstr ""
+
+msgid ""
+"You have only entered {wordListLength} word, please follow the "
+"recommendations provided"
+msgstr ""
+
+msgid ""
+"You have only entered {wordListLength} words, please follow the "
+"recommendations provided"
 msgstr ""
 
 msgid "You need a minimum of 20 XRP to send funds."
@@ -3620,6 +3707,9 @@ msgid ""
 "string. Contact your wallet provider"
 msgstr ""
 
+msgid "Your wallet is testnet"
+msgstr ""
+
 msgid ""
 "Your wallet key will be encrypted. The encrypt password cannot be "
 "recovered. Be sure to write it down."
@@ -3653,6 +3743,9 @@ msgid "of total amount"
 msgstr ""
 
 msgid "preparing..."
+msgstr ""
+
+msgid "using your 12 words recovery phrase"
 msgstr ""
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
@@ -3692,6 +3785,9 @@ msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgstr ""
+
+msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr ""
 
 msgid "{{txpsSuccess}} proposal signed"
