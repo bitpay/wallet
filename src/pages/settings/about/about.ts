@@ -25,8 +25,8 @@ export class AboutPage {
   public commitHash: string;
   public title: string;
   private tapped = 0;
-  private headerTaps = 0;
   private releaseInfoTaps = 0;
+  private easterEggStatus;
   public pressed: number = 0;
   constructor(
     private navCtrl: NavController,
@@ -40,16 +40,16 @@ export class AboutPage {
     private events: Events
   ) {}
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     this.logger.info('Loaded: AboutPage');
     this.commitHash = this.appProvider.info.commitHash;
     this.version = this.appProvider.info.version;
-    this.headerTaps = 0;
     this.releaseInfoTaps = 0;
     this.title = this.replaceParametersProvider.replace(
       this.translate.instant('About {{appName}}'),
       { appName: this.appProvider.info.nameCase }
     );
+    this.easterEggStatus = await this.persistenceProvider.getTestingAdvertisments();
   }
 
   public openExternalLink(): void {
@@ -76,20 +76,17 @@ export class AboutPage {
     );
   }
 
-  public countReleaseInfoTaps() {
-    let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
+  public async countReleaseHeaderTaps() {
     this.releaseInfoTaps++;
-    if (easterEggStatus && this.releaseInfoTaps == 10) {
-      this.persistenceProvider.setTestingAdvertisements(false);
+    if (this.releaseInfoTaps !== 12) return;
+    this.releaseInfoTaps = 0;
+    if (this.easterEggStatus === 'enabled') {
+      this.easterEggStatus = undefined;
+      this.persistenceProvider.removeTestingAdvertisments();
       this.events.publish('Local/TestAdsToggle', false);
-    }
-  }
-
-  public countAboutHeaderTaps() {
-    this.headerTaps++;
-    let easterEggStatus = this.persistenceProvider.getTestingAdvertisments();
-    if (easterEggStatus && this.headerTaps == 12) {
-      this.persistenceProvider.setTestingAdvertisements(true);
+    } else {
+      this.easterEggStatus = 'enabled';
+      this.persistenceProvider.setTestingAdvertisements('enabled');
       this.events.publish('Local/TestAdsToggle', true);
     }
   }
