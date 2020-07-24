@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="sending-label" *ngIf="btx.amount === 0 && wallet.coin === 'eth'">
-            <span>{{'Fee for token transfer' | translate}}</span>
+            <span>{{'Interaction with contract' | translate}}</span>
           </div>
         </div>
       </ion-item>
@@ -165,7 +165,7 @@
 
       <div class="line-divider" *ngIf="actionList && actionList[0]"></div>
 
-      <div *ngIf="actionList && actionList[0]">
+      <div *ngIf="actionList && actionList[0] && !wallet.credentials.multisigEthInfo">
         <ion-item detail-none>
           <div>{{'Timeline' | translate}}</div>
         </ion-item>

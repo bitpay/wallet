@@ -52,8 +52,10 @@ export class CurrencyProvider {
     return !!this.coinOpts[coin].properties.isERCToken;
   }
 
-  getLinkedEthWallet(coin: Coin, walletId: string): string {
-    if (!this.coinOpts[coin].properties.isERCToken) return null;
+  getLinkedEthWallet(coin: Coin, walletId: string, m: number): string {
+    if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
+      return null;
+    if (coin === 'eth' && m === 1) return null;
     return walletId.replace(/-0x.*$/, '');
   }
 

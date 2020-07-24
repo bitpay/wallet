@@ -75,7 +75,7 @@
 
       <div class="line-divider" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired"></div>
 
-      <div padding class="proposal-rejection" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired">
+      <div padding class="proposal-rejection" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired && !tx.multisigContractAddress">
         <button ion-button clear color="danger" (click)="reject()" [disabled]="loading">
           {{'Reject Payment Proposal'| translate}}
         </button>
@@ -183,15 +183,15 @@
       <div *ngIf="actionList && actionList[0]">
         <ion-item>
           <span>{{'Timeline' | translate}}</span>
-          <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+          <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject' || a.type == 'failed'}" *ngFor="let a of actionList; let i = index">
             <div class="timeline-content">
               <div class="timeline-content-icon">
-                <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-                <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+                <div class="rejected" *ngIf="a.type === 'reject' || a.type == 'failed'">!</div>
+                <div class="line" *ngIf="a.type !== 'reject' && a.type !== 'failed'">{{actionList.length - i}}</div>
               </div>
               <div class="timeline-content-label">
                 <div class="action ellipsis">{{a.description}}</div>
-                <div class="name ellipsis">{{a.by}}</div>
+                <div *ngIf="tx.coin !== 'eth'" class="name ellipsis">{{a.by}}</div>
               </div>
               <ion-note class="ellipsis">
                 <time>{{ a.time * 1000 | amTimeAgo}}</time>
@@ -201,7 +201,7 @@
         </ion-item>
       </div>
 
-      <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
+      <div padding class="proposal-deletion" *ngIf="(((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)) && (!isShared || !tx.multisigContractAddress)">
         <div class="proposal-deletion-help" *ngIf="isShared" translate>
           * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created.
         </div>

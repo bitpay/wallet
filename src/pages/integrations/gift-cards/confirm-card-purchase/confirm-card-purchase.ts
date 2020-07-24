@@ -429,6 +429,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.tokenAddress = wallet.credentials.token.address;
     }
 
+    if (this.wallet.credentials.multisigEthInfo) {
+      txp.multisigContractAddress = this.wallet.credentials.multisigEthInfo.multisigContractAddress;
+    }
+
     if (details.requiredFeeRate) {
       const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
         ? details.requiredFeeRate

@@ -1,10 +1,43 @@
 <wide-header-page title="{{ 'Create {coinLabel} Wallet' | translate: {coinLabel: coin.toUpperCase()} }}">
   <ion-buttons right>
-    <button clear wide-header-bar-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid" ion-button>
+    <button clear wide-header-bar-button *ngIf="!isShared || (isShared && coin !== 'eth')" (click)="setOptsAndCreate()" [disabled]="!createForm.valid" ion-button>
       <span translate>Create</span>
+    </button>
+    <button clear wide-header-bar-button *ngIf="isShared && coin === 'eth'" (click)="goToCreateEthMultisig()" [disabled]="!createForm.valid" ion-button>
+      <span translate>Next</span>
     </button>
   </ion-buttons>
   <div page-content>
+    <button class="linked-wallet" *ngIf="isShared && coin === 'eth'" ion-item (click)="showPairedWalletSelector()">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Linked to</span>
+        </div>
+      </ion-label>
+
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+          <ion-col>
+            <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+          </ion-col>
+
+          <ion-col>
+            <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row align-items-center class="wallet" *ngIf="!pairedWallet">
+          <div translate>Select a wallet to link to</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
+        </ion-row>
+      </ion-note>
+    </button>
+
     <form [formGroup]="createForm">
       <ion-item>
         <ion-label floating>{{'Wallet name' | translate}}</ion-label>
@@ -12,7 +45,7 @@
       </ion-item>
 
       <div *ngIf="isShared">
-        <ion-item>
+        <ion-item *ngIf="coin != 'eth'">
           <ion-label floating>{{'Your name' | translate}}</ion-label>
           <ion-input type="text" formControlName="myName"></ion-input>
         </ion-item>
@@ -54,7 +87,7 @@
       </button>
 
       <div *ngIf="showAdvOpts" padding-bottom>
-        <ion-item>
+        <ion-item *ngIf="!(isShared && coin == 'eth')">
           <ion-label stacked>Wallet Service URL</ion-label>
           <ion-input type="text" formControlName="bwsURL"></ion-input>
         </ion-item>
@@ -73,7 +106,7 @@
 
         <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
           <ion-label><span *ngIf="coin === 'eth'">Kovan </span>Testnet</ion-label>
-          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
+          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()" [disabled]="isShared && coin == 'eth'"></ion-toggle>
         </ion-item>
 
         <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">

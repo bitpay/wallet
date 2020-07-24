@@ -1,32 +1,67 @@
-<wide-header-page title="{{'Shared Wallet' | translate}}">
+<wide-header-page title="{{'Join Shared Wallet' | translate}}">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="setOptsAndJoin()" [disabled]="!joinForm.valid" ion-button>
       <span translate>Join</span>
     </button>
   </ion-buttons>
   <div page-content>
+    <button class="linked-wallet" *ngIf="coin === 'eth'" ion-item (click)="showPairedWalletSelector()">
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Linked to</span>
+        </div>
+      </ion-label>
+
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+          <ion-col>
+            <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+          </ion-col>
+
+          <ion-col>
+            <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row align-items-center class="wallet" *ngIf="!pairedWallet">
+          <div translate>Select a wallet to link to</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
+        </ion-row>
+      </ion-note>
+    </button>
+
     <form [formGroup]="joinForm">
-      <ion-item>
+      <ion-item *ngIf="coin !== 'eth'">
         <ion-label floating>{{'Your name' | translate}}</ion-label>
         <ion-input type="text" formControlName="myName"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="coin === 'eth'">
+        <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+        <ion-input type="text" formControlName="walletName"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>{{'Wallet invitation' | translate}}</ion-label>
         <ion-input type="text" formControlName="invitationCode" (ionChange)="processInvitation(joinForm.value.invitationCode)"></ion-input>
 
-        <ion-icon *ngIf="joinForm.controls['invitationCode'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+        <ion-icon *ngIf="coin !== 'eth' && joinForm.controls['invitationCode'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
 
         <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
-      <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
+      <button *ngIf="coin !== 'eth'" ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
         <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
         <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
       </button>
 
       <div *ngIf="showAdvOpts" padding-bottom>
-        <ion-item>
+        <ion-item *ngIf="coin !== 'eth'">
           <ion-label floating>Wallet Service URL</ion-label>
           <ion-input type="text" formControlName="bwsURL"></ion-input>
         </ion-item>

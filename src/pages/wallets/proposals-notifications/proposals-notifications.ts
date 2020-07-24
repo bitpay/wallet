@@ -46,6 +46,7 @@ export class ProposalsNotificationsPage {
   private onPauseSubscription: Subscription;
   private isElectron: boolean;
   private walletId: string;
+  private multisigContractAddress: string;
 
   constructor(
     private plt: Platform,
@@ -67,6 +68,7 @@ export class ProposalsNotificationsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
     this.walletId = this.navParams.data.walletId;
+    this.multisigContractAddress = this.navParams.data.multisigContractAddress;
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign selected proposals');
 
@@ -154,6 +156,12 @@ export class ProposalsNotificationsPage {
             txpsData.txps = _.filter(txpsData.txps, txps => {
               return txps.walletId == this.walletId;
             });
+          } else if (this.multisigContractAddress) {
+            txpsData.txps = _.filter(txpsData.txps, txps => {
+              return (
+                txps.multisigContractAddress == this.multisigContractAddress
+              );
+            });
           }
 
           this.checkStatus(txpsData.txps);
@@ -198,7 +206,7 @@ export class ProposalsNotificationsPage {
         copayerId: txp.wallet.copayerId
       });
 
-      if (!action && txp.status == 'pending') {
+      if ((!action || action.type === 'failed') && txp.status == 'pending') {
         txp.pendingForUs = true;
       }
 
@@ -236,7 +244,8 @@ export class ProposalsNotificationsPage {
         walletId: txpsPerWallet[0],
         canSign: txpsPerWallet[1][0].wallet.canSign || false,
         txps: txpsPerWallet[1],
-        multipleSignAvailable: txpToBeSigned > 1
+        multipleSignAvailable:
+          txpToBeSigned > 1 && !txpsPerWallet[1][0].multisigContractAddress
       });
     });
     return txpsByWallet;

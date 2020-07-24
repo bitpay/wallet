@@ -80,6 +80,8 @@ export interface TransactionProposal {
   tokenAddress?: string;
   destinationTag?: string;
   invoiceID?: string;
+  multisigGnosisContractAddress?: string;
+  multisigContractAddress?: string;
 }
 
 @Injectable()
@@ -160,7 +162,7 @@ export class WalletProvider {
             copayerId: tx.wallet.copayerId
           });
 
-          if (!action && tx.status == 'pending') {
+          if ((!action || action.type === 'failed') && tx.status == 'pending') {
             tx.pendingForUs = true;
           }
 
@@ -362,10 +364,16 @@ export class WalletProvider {
           }
 
           tries = tries || 0;
-          const { token } = wallet.credentials;
+          const { token, multisigEthInfo } = wallet.credentials;
 
           wallet.getStatus(
-            { tokenAddress: token ? token.address : '' },
+            {
+              tokenAddress: token ? token.address : '',
+              multisigContractAddress: multisigEthInfo
+                ? multisigEthInfo.multisigContractAddress
+                : '',
+              network: wallet.network
+            },
             (err, status) => {
               if (err) {
                 if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -565,7 +573,10 @@ export class WalletProvider {
   public getAddress(wallet, forceNew: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       let walletId = wallet.id;
-      const { token } = wallet.credentials;
+      const { token, multisigEthInfo } = wallet.credentials;
+      if (multisigEthInfo && multisigEthInfo.multisigContractAddress) {
+        return resolve(multisigEthInfo.multisigContractAddress);
+      }
 
       if (token) {
         walletId = wallet.id.replace(`-${token.address}`, '');
@@ -691,13 +702,15 @@ export class WalletProvider {
         shouldContinue: res.length >= limit
       };
 
-      const { token } = wallet.credentials;
-
+      const { token, multisigEthInfo } = wallet.credentials;
       wallet.getTxHistory(
         {
           skip,
           limit,
-          tokenAddress: token ? token.address : ''
+          tokenAddress: token ? token.address : '',
+          multisigContractAddress: multisigEthInfo
+            ? multisigEthInfo.multisigContractAddress
+            : ''
         },
         (err: Error, txsFromServer) => {
           if (err) return reject(err);
@@ -1116,6 +1129,26 @@ export class WalletProvider {
     });
   }
 
+  public getMultisigContractInstantiationInfo(wallet, opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      opts = opts || {};
+      wallet.getMultisigContractInstantiationInfo(opts, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
+  }
+
+  public getMultisigContractInfo(wallet, opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      opts = opts || {};
+      wallet.getMultisigContractInfo(opts, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
+  }
+
   private isHistoryCached(wallet): boolean {
     return wallet.completeHistory && wallet.completeHistoryIsValid;
   }
@@ -1299,13 +1332,14 @@ export class WalletProvider {
         return reject('MISSING_PARAMETER');
 
       wallet.removeTxProposal(txp, err => {
+        if (err) return reject(this.bwcErrorProvider.msg(err));
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
         this.events.publish('Local/TxAction', {
           walletId: wallet.id
         });
-        return resolve(err);
+        return resolve();
       });
     });
   }

@@ -215,11 +215,6 @@ export class ConfirmPage {
 
     this.tx = {
       toAddress: this.navParams.data.toAddress,
-      sendMax: this.navParams.data.useSendMax ? true : false,
-      amount:
-        this.navParams.data.useSendMax && this.isChain()
-          ? 0
-          : parseInt(amount, 10),
       description: this.navParams.data.description,
       destinationTag: this.navParams.data.destinationTag, // xrp
       paypro: this.navParams.data.paypro,
@@ -238,11 +233,19 @@ export class ConfirmPage {
         : networkName,
       coin: this.navParams.data.coin,
       txp: {},
+      multisigContractAddress: this.navParams.data.multisigContractAddress,
       tokenAddress: this.navParams.data.tokenAddress,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
       inputs: this.navParams.data.inputs
     };
+
+    this.tx.sendMax = this.navParams.data.useSendMax ? true : false;
+
+    this.tx.amount =
+      this.navParams.data.useSendMax && this.shouldUseSendMax()
+        ? 0
+        : parseInt(amount, 10);
 
     this.tx.origToAddress = this.tx.toAddress;
 
@@ -318,9 +321,9 @@ export class ConfirmPage {
     }
   }
 
-  private isChain() {
+  private shouldUseSendMax() {
     const chain = this.currencyProvider.getAvailableChains();
-    return chain.includes(this.coin);
+    return chain.includes(this.coin) && !this.tx.multisigContractAddress;
   }
 
   public getChain(coin: Coin): string {
@@ -457,6 +460,13 @@ export class ConfirmPage {
         this.wallet.credentials.n == 1
           ? this.translate.instant('Payment Sent')
           : this.translate.instant('Proposal created');
+      if (
+        this.tx.multisigContractAddress &&
+        (this.navParams.data.isEthMultisigConfirm ||
+          this.navParams.data.isEthMultisigExecute)
+      ) {
+        this.successText = this.translate.instant('Proposal confirmed');
+      }
     } else if (isSpeedUp) {
       this.buttonText = this.isCordova
         ? this.translate.instant('Slide to speed up')
@@ -560,7 +570,7 @@ export class ConfirmPage {
           }
 
           // call getSendMaxInfo if was selected from amount view
-          if (tx.sendMax && this.isChain()) {
+          if (tx.sendMax && this.shouldUseSendMax()) {
             this.useSendMax(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -568,7 +578,7 @@ export class ConfirmPage {
               .catch(err => {
                 return reject(err);
               });
-          } else if (tx.speedUpTx && this.isChain()) {
+          } else if (tx.speedUpTx && this.shouldUseSendMax()) {
             this.speedUpTx(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -986,6 +996,92 @@ export class ConfirmPage {
         }
       }
 
+      if (
+        tx.multisigContractAddress &&
+        !this.navParams.data.isEthMultisigInstantiation &&
+        !this.navParams.data.isEthMultisigConfirm &&
+        !this.navParams.data.isEthMultisigExecute
+      ) {
+        txp.multisigContractAddress = tx.multisigContractAddress;
+        for (const output of txp.outputs) {
+          if (!output.data) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .submitEncodeData({
+                recipients: [
+                  { address: output.toAddress, amount: output.amount }
+                ],
+                multisigContractAddress: tx.multisigContractAddress,
+                data: '0x'
+              });
+          }
+        }
+      }
+
+      if (
+        tx.multisigContractAddress &&
+        !this.navParams.data.isEthMultisigInstantiation &&
+        this.navParams.data.isEthMultisigConfirm &&
+        !this.navParams.data.isEthMultisigExecute
+      ) {
+        txp.multisigContractAddress = tx.multisigContractAddress;
+        for (const output of txp.outputs) {
+          if (!output.data) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .confirmTransactionEncodeData({
+                multisigContractAddress: tx.multisigContractAddress,
+                transactionId: +this.navParams.data.transactionId
+              });
+          }
+        }
+      }
+
+      if (
+        tx.multisigContractAddress &&
+        !this.navParams.data.isEthMultisigInstantiation &&
+        !this.navParams.data.isEthMultisigConfirm &&
+        this.navParams.data.isEthMultisigExecute
+      ) {
+        txp.multisigContractAddress = tx.multisigContractAddress;
+        for (const output of txp.outputs) {
+          if (!output.data) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .executeTransactionEncodeData({
+                multisigContractAddress: tx.multisigContractAddress,
+                transactionId: +this.navParams.data.transactionId
+              });
+          }
+        }
+      }
+
+      if (
+        tx.multisigContractAddress &&
+        this.navParams.data.isEthMultisigInstantiation &&
+        !this.navParams.data.isEthMultisigConfirm &&
+        !this.navParams.data.isEthMultisigExecute
+      ) {
+        txp.multisigContractAddress = tx.multisigContractAddress;
+        for (const output of txp.outputs) {
+          if (!output.data) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .instantiateEncodeData({
+                addresses: this.navParams.data.multisigAddresses,
+                requiredConfirmations: this.navParams.data
+                  .requiredConfirmations,
+                multisigGnosisContractAddress: tx.multisigContractAddress,
+                dailyLimit: 0
+              });
+          }
+        }
+      }
+
       if (wallet.coin === 'xrp') {
         txp.invoiceID = tx.invoiceID;
         txp.destinationTag = tx.destinationTag;
@@ -1015,6 +1111,68 @@ export class ConfirmPage {
           return reject(err);
         });
     });
+  }
+
+  private instantiateMultisigContract: any = async (txp, n?: number) => {
+    let tryNumber = n ? n : 0;
+    if (tryNumber == 5) {
+      this.logger.error('Error getting multisig contract instantiation info');
+      return;
+    }
+
+    setTimeout(async () => {
+      let multisigContractInstantiationInfo: any[] = [];
+
+      const opts = {
+        sender: txp.from
+      };
+      multisigContractInstantiationInfo = await this.walletProvider.getMultisigContractInstantiationInfo(
+        this.wallet,
+        opts
+      );
+      if (multisigContractInstantiationInfo.length > 0) {
+        const multisigContract = multisigContractInstantiationInfo.filter(
+          multisigContract => {
+            return multisigContract.transactionHash === txp.txid;
+          }
+        );
+
+        if (!multisigContract[0]) {
+          return this.instantiateMultisigContract(txp, tryNumber++);
+        }
+
+        const multisigEthInfo = {
+          multisigContractAddress: multisigContract[0].instantiation,
+          walletName: this.navParams.data.walletName,
+          n: this.navParams.data.totalCopayers,
+          m: this.navParams.data.requiredConfirmations
+        };
+        const pairedWallet = this.wallet;
+        this.onGoingProcessProvider.clear();
+        return this.createAndBindEthMultisigWallet(
+          pairedWallet,
+          multisigEthInfo
+        );
+      } else {
+        return this.instantiateMultisigContract(txp, tryNumber++);
+      }
+    }, 10000);
+  };
+
+  public createAndBindEthMultisigWallet(pairedWallet, multisigEthInfo) {
+    if (!_.isEmpty(pairedWallet)) {
+      this.profileProvider
+        .createMultisigEthWallet(pairedWallet, multisigEthInfo)
+        .then(multisigWallet => {
+          // store preferences for the paired eth wallet
+          this.walletProvider.updateRemotePreferences(pairedWallet);
+          this.openFinishModal(false, { redir: null }, multisigWallet.id).then(
+            () => {
+              this.events.publish('Local/WalletListChange');
+            }
+          );
+        });
+    }
   }
 
   private getInput(wallet): Promise<any> {
@@ -1172,7 +1330,6 @@ export class ConfirmPage {
     return this.walletProvider
       .publishAndSign(wallet, txp)
       .then(txp => {
-        this.onGoingProcessProvider.clear();
         if (
           this.config.confirmedTxsNotifications &&
           this.config.confirmedTxsNotifications.enabled
@@ -1182,16 +1339,24 @@ export class ConfirmPage {
           });
         }
         let redir;
+
         if (txp.payProUrl && txp.payProUrl.includes('redir=wc')) {
           redir = 'wc';
         }
-        return this.openFinishModal(false, { redir });
+
+        if (this.navParams.data.isEthMultisigInstantiation) {
+          this.onGoingProcessProvider.set('creatingEthMultisigWallet');
+          return this.instantiateMultisigContract(txp);
+        } else {
+          this.onGoingProcessProvider.clear();
+          return this.openFinishModal(false, { redir });
+        }
       })
       .catch(err => {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
-        if (txp.payProUrl) {
+        if (txp.payProUrl || this.navParams.data.isEthMultisigInstantiation) {
           this.logger.warn('Paypro error: removing payment proposal');
           this.walletProvider.removeTx(wallet, txp).catch(() => {
             this.logger.warn('Could not delete payment proposal');
@@ -1222,7 +1387,8 @@ export class ConfirmPage {
 
   protected async openFinishModal(
     onlyPublish?: boolean,
-    redirectionParam?: { redir: string }
+    redirectionParam?: { redir: string },
+    walletId?: string
   ) {
     const { redir } = redirectionParam || { redir: '' };
 
@@ -1282,7 +1448,7 @@ export class ConfirmPage {
           }, 1000);
         } else {
           this.navCtrl.push(WalletDetailsPage, {
-            walletId: this.wallet.credentials.walletId
+            walletId: walletId ? walletId : this.wallet.credentials.walletId
           });
         }
       }

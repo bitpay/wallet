@@ -16,7 +16,6 @@ import { DomProvider } from '../../providers/dom/dom';
 export type InfoSheetType =
   | 'activation-fee-included'
   | 'address-copied'
-  | 'addTokenWallet'
   | 'archive-all-gift-cards'
   | 'archive-gift-card'
   | 'appreciate-review'
@@ -37,6 +36,7 @@ export type InfoSheetType =
   | 'above-maximum-gift-card-amount'
   | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
+  | 'linkEthWallet'
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'

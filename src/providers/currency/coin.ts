@@ -123,7 +123,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       unitCode: 'eth'
     },
     properties: {
-      hasMultiSig: false,
+      hasMultiSig: true,
       hasMultiSend: false,
       isUtxo: false,
       isERCToken: false,

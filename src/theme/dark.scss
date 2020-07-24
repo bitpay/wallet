@@ -943,7 +943,8 @@
   confirm-card-purchase-page,
   page-txp-details,
   page-tx-details,
-  page-bitpay-card-topup {
+  page-bitpay-card-topup,
+  page-create-eth-multisig {
     .payment-proposal-to {
       background-color: $bg-color-dark-theme-2;
       color: $text-color-dark-theme;
@@ -1506,10 +1507,34 @@
 
   page-import-wallet,
   page-create-wallet,
+  page-create-eth-multisig,
   page-bitpay-phase-one-card-intro {
     ion-item {
       background: $bg-color-dark-theme;
       color: $text-color-dark-theme;
+    }
+  }
+
+  page-create-wallet,
+  page-create-eth-multisig,
+  page-join-wallet {
+    .linked-wallet {
+      color: $text-color-dark-theme;
+      background-color: $bg-color-dark-theme;
+    }
+  }
+
+  page-create-eth-multisig {
+    .multisig-input {
+      background-color: $bg-color-dark-theme;
+      .search-wrapper {
+        background-color: $bg-color-dark-theme-2;
+        color: $text-color-dark-theme-2;
+        &.invalid {
+          border: 1px solid color($colors, error);
+          color: color($colors, error);
+        }
+      }
     }
   }
 

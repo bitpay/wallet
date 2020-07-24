@@ -27,4 +27,12 @@ page-create-wallet {
       }
     }
   }
+  .linked-wallet {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .last-item {
+    margin-left: auto !important;
+  }
 }
