@@ -5,12 +5,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Crowdin-Project: copay\n"
+"X-Crowdin-Project-ID: 115298\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: template.pot\n"
+"X-Crowdin-File-ID: 1\n"
 "Project-Id-Version: copay\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2020-04-29 17:46\n"
+"PO-Revision-Date: 2020-07-24 19:35\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -54,8 +56,8 @@ msgstr "Un total de {{fee}} {{coin}} a été exclu. La taille maximale autorisé
 msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "Un total de {{fee}} {{coin}} a été exclu. Ces fonds proviennent d'UTXOs plus petites que les frais de réseau fournis."
 
-msgid "A transaction using your delayed transaction inputs will be send to your own wallet with a higher miner fee to speed up the last confirmation time"
-msgstr "Une transaction utilisant les entrées de votre transaction retardée sera envoyée à votre propre portefeuille avec des frais miniers plus élevés pour accélérer la dernière confirmation"
+msgid "A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time."
+msgstr ""
 
 msgid "A wallet is like a vault stored on your device containing your crypto funds. Much like a vault, your wallet will only be accesible with the master key."
 msgstr "Un portefeuille est comme un coffre-fort stocké sur votre appareil contenant vos crypto-actifs. Tout comme un coffre-fort, votre portefeuille ne sera accessible qu'avec la clé maîtresse."
@@ -96,8 +98,8 @@ msgstr "Ajouter"
 msgid "Add BitPay Account?"
 msgstr "Ajouter un compte BitPay ?"
 
-msgid "Add BitPay Card"
-msgstr "Ajouter une BitPay Card"
+msgid "Add Me"
+msgstr ""
 
 msgid "Add Recipient"
 msgstr "Ajouter un destinataire"
@@ -114,6 +116,9 @@ msgstr "Ajouter un contact ou un portefeuille existant"
 msgid "Add as a contact"
 msgstr "Ajouter comme contact"
 
+msgid "Add copayers"
+msgstr ""
+
 msgid "Add funds"
 msgstr "Ajouter des fonds"
 
@@ -128,6 +133,9 @@ msgstr "Répertoire"
 
 msgid "Address Type"
 msgstr "Type d'adresse"
+
+msgid "Address already added"
+msgstr ""
 
 msgid "Addressbook is empty"
 msgstr "Le répertoire est vide"
@@ -180,8 +188,8 @@ msgstr "Montant en dessous du minimum autorisé"
 msgid "Amount too big"
 msgstr "Le montant est trop élevé"
 
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "Une mise à jour de cette application est disponible. Pour votre sécurité, veuillez mettre à jour vers la dernière version."
+msgid "An update to this app is available."
+msgstr ""
 
 msgid "Apply changes"
 msgstr "Appliquer les modifications"
@@ -270,11 +278,11 @@ msgstr "Sauvegarder le portefeuille"
 msgid "Bad wallet invitation"
 msgstr "Mauvaise invitation de portefeuille"
 
-msgid "Be careful. Some inputs of this transaction has no confirmations. Please wait until they are confirmed."
+msgid "Be careful. Some inputs of this transaction have no confirmations. Please wait until they are confirmed."
 msgstr ""
 
 msgid "Be careful. Until it confirms, the transaction could be replaced/redirected by the sender. You can try to speed it up by using a higher fee."
-msgstr ""
+msgstr "Attention. Jusqu'à confirmation, la transaction pourrait être remplacée/redirigée par l'expéditeur. Vous pouvez essayer de l'accélérer en utilisant des frais plus élevés."
 
 msgid "Be sure to store your recovery phrase in a safe and secure place"
 msgstr "Assurez-vous de stocker votre phrase de récupération dans un endroit sûr et sécurisé"
@@ -282,8 +290,8 @@ msgstr "Assurez-vous de stocker votre phrase de récupération dans un endroit s
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "N’oubliez pas de conserver votre phrase de récupération dans un endroit sûr. Si cette application est supprimée, votre argent ne peut pas être récupéré sans elle."
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
-msgstr "Étant donné que vous envoyez le montant maximal contenu dans ce portefeuille, les frais miniers {coinName} ({fee} {coin}) seront déduits du total. {msg}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total.  {msg}"
+msgstr ""
 
 msgid "Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total."
 msgstr "Comme vous accélérez cette transaction, les frais miniers {coinName} ({fee} {coin}) seront déduits du total."
@@ -320,6 +328,9 @@ msgstr "BitPay ID déconnecté avec succès."
 
 msgid "BitPay does not receive and does not control miner fees."
 msgstr "BitPay ne reçoit pas et ne contrôle pas les frais miniers."
+
+msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
+msgstr ""
 
 msgid "Bitcoin Address"
 msgstr "Adresse bitcoin"
@@ -378,6 +389,9 @@ msgstr "Achat d'une carte-cadeau..."
 msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
 msgstr "En donnant mon adresse e-mail, je donne explicitement mon consentement à BitPay pour l'utiliser afin de me contacter au sujet des problèmes de paiement."
 
+msgid "By giving my phone number, I give explicit consent to BitPay to use it to connect this card to Apple Pay or Google Pay."
+msgstr ""
+
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à BitPay d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
 
@@ -408,11 +422,14 @@ msgstr "Annulation de la carte-cadeau..."
 msgid "Cannot join the same wallet more that once"
 msgstr "Impossible de rejoindre le même portefeuille plus d'une fois"
 
+msgid "Cannot send XRP to the same wallet you are trying to send from. Please check the destination address and try it again."
+msgstr "Impossible d'envoyer des XRP vers le même portefeuille depuis lequel vous essayez d'envoyer. Veuillez vérifier l'adresse de destination et réessayer."
+
 msgid "Card Archived"
 msgstr "Carte archivée"
 
 msgid "Card Settings"
-msgstr "Paramètres de carte"
+msgstr "Paramètres de la carte"
 
 msgid "Cards"
 msgstr "Cartes"
@@ -427,7 +444,7 @@ msgid "Check the transaction on your wallet details"
 msgstr "Vérifiez la transaction dans les détails de votre portefeuille"
 
 msgid "Choose Assets"
-msgstr ""
+msgstr "Choisir des actifs"
 
 msgid "Choose a backup file from your computer"
 msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
@@ -580,7 +597,7 @@ msgid "Continue to Simplex"
 msgstr "Continuer vers Simplex"
 
 msgid "Continue to {storeName}"
-msgstr ""
+msgstr "Continuer vers {storeName}"
 
 msgid "Contribute translations"
 msgstr "Contribuer aux traductions"
@@ -593,6 +610,12 @@ msgstr "Le Copayer a déjà voté pour cette proposition de dépense"
 
 msgid "Copayer data mismatch"
 msgstr "Les données Copayer ne correspondent pas"
+
+msgid "Copayer {{idx+1}}"
+msgstr ""
+
+msgid "Copayers"
+msgstr ""
 
 msgid "Copied"
 msgstr "Copié"
@@ -653,9 +676,6 @@ msgstr "Impossible de supprimer la proposition de paiement"
 
 msgid "Could not encrypt wallet"
 msgstr "Impossible de chiffrer le portefeuille"
-
-msgid "Could not fetch payment details"
-msgstr "Impossible de récupérer les détails de paiement"
 
 msgid "Could not get claim code. Please contact BitPay support."
 msgstr "Impossible d'obtenir le code de réclamation. Veuillez contacter BitPay."
@@ -728,6 +748,9 @@ msgstr "Créée par"
 
 msgid "Created {cardDate}"
 msgstr "Créée le {cardDate}"
+
+msgid "Creating ETH multisig wallet. Please wait..."
+msgstr ""
 
 msgid "Creating Gift Card..."
 msgstr "Création de la carte-cadeau..."
@@ -856,7 +879,7 @@ msgid "Do this later?"
 msgstr "Remettre à plus tard ?"
 
 msgid "Do you want to reset all settings to default value?"
-msgstr ""
+msgstr "Voulez-vous réinitialiser tous les paramètres à la valeur par défaut ?"
 
 msgid "Do you want to verify your account now?"
 msgstr "Voulez-vous vérifier votre compte maintenant ?"
@@ -885,6 +908,12 @@ msgstr "Dupliquer vers BCH"
 msgid "Duplicating wallet..."
 msgstr "Duplication du portefeuille..."
 
+msgid "ETH Multisig"
+msgstr ""
+
+msgid "ETH Multisig Wallet creation"
+msgstr ""
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Chaque portefeuille bitcoin peut générer des milliards d’adresses depuis votre phrase de récupération. Une nouvelle adresse est automatiquement générée et affichée à chaque fois que vous recevez un paiement."
 
@@ -912,6 +941,9 @@ msgstr "Adresse e-mail"
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "La limite d'adresses vides a été atteinte. Les nouvelles adresses ne peuvent plus être générées."
 
+msgid "Enable"
+msgstr ""
+
 msgid "Enable camera access in your device settings to get started."
 msgstr "Autorisez l’accès à la caméra dans les réglages de votre appareil pour commencer."
 
@@ -921,11 +953,17 @@ msgstr "Activer les notifications de bureau"
 msgid "Enable email notifications"
 msgstr "Activer les notifications e-mail"
 
+msgid "Enable from settings"
+msgstr ""
+
 msgid "Enable push notifications"
 msgstr "Autoriser les notifications"
 
 msgid "Enable the camera to get started."
 msgstr "Autorisez la caméra pour commencer."
+
+msgid "Enabling dark mode can prolong the battery life of your device. But let's be honest, dark mode just looks super amazing!"
+msgstr ""
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "Le chiffrement peut protéger vos fonds si cet appareil est volé ou compromis par des logiciels malveillants."
@@ -965,6 +1003,9 @@ msgstr "Saisissez le code de chiffrement"
 
 msgid "Enter your encrypt password again to confirm"
 msgstr "Ressaisissez votre code de chiffrement pour confirmer"
+
+msgid "Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly."
+msgstr ""
 
 msgid "Enter {coinName} address"
 msgstr "Entrer l'adresse {coinName}"
@@ -1011,9 +1052,6 @@ msgstr "Erreur lors de l'obtention des informations d'accélération"
 msgid "Error getting fee rate"
 msgstr "Erreur d'obtention des frais"
 
-msgid "Error in Payment Protocol"
-msgstr "Erreur dans le protocole de paiement"
-
 msgid "Error pairing BitPay Account"
 msgstr "Erreur d'appariement du compte BitPay"
 
@@ -1043,6 +1081,9 @@ msgstr "Taux de change"
 
 msgid "Exchanges"
 msgstr "Achats d'actifs"
+
+msgid "Execution Failed"
+msgstr ""
 
 msgid "Expired"
 msgstr "Expiré"
@@ -1077,17 +1118,11 @@ msgstr "Échec"
 msgid "Failed to export"
 msgstr "Impossible d'exporter"
 
-msgid "Featured Brands"
-msgstr "Marques recommandées"
-
 msgid "Featured Currencies"
-msgstr "Devises principales"
+msgstr "Monnaies principales"
 
 msgid "Fee"
 msgstr "Frais"
-
-msgid "Fee for token transfer"
-msgstr "Frais pour le transfert de jeton"
 
 msgid "Fee level is not defined"
 msgstr "Le niveau de frais n'est pas défini"
@@ -1096,7 +1131,7 @@ msgid "Fee rate"
 msgstr "Frais"
 
 msgid "Feedback"
-msgstr ""
+msgstr "Commentaire"
 
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "Vos commentaires n'ont pas pu être envoyés. Veuillez réessayer plus tard."
@@ -1113,11 +1148,17 @@ msgstr "Récupération des BitPay Cards..."
 msgid "Fetching payment information..."
 msgstr "Récupération des informations de paiement..."
 
+msgid "Fetching payment options..."
+msgstr "Récupération des options de paiement..."
+
 msgid "File/Text"
 msgstr "Fichier / Texte"
 
 msgid "Flexibility"
 msgstr "Flexibilité"
+
+msgid "For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
+msgstr "Pour les factures BitPay et les cartes-cadeaux, le montant du sous-total est le montant du produit ou du service plus les coûts de réseau."
 
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
@@ -1184,6 +1225,9 @@ msgstr "Commencer"
 
 msgid "Get started by adding your first one."
 msgstr "Commencez par ajouter votre premier contact."
+
+msgid "Get the BitPay Card"
+msgstr "Obtenez la BitPay Card"
 
 msgid "Getting fee levels..."
 msgstr "Obtention des niveaux de frais..."
@@ -1258,10 +1302,10 @@ msgid "Home"
 msgstr "Accueil"
 
 msgid "How can we improve?"
-msgstr ""
+msgstr "Comment pouvons-nous nous améliorer ?"
 
 msgid "How satisfied are you with using {{appName}}?"
-msgstr ""
+msgstr "À quel point êtes-vous satisfait d'utiliser {{appName}} ?"
 
 msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
 msgstr "Cependant, les fonds non confirmés ne sont pas autorisés à être dépensés avec des marchands, pour recharger des BitPay Card ou pour acheter des cartes-cadeaux BitPay au sein de l'application."
@@ -1279,7 +1323,7 @@ msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "J'ai lu, compris et suis d'accord avec les conditions d'utilisation"
 
 msgid "I love it!"
-msgstr ""
+msgstr "Je l'adore !"
 
 msgid "I understand"
 msgstr "Je comprends"
@@ -1326,6 +1370,9 @@ msgstr "Si vous avez besoin de regagner l'accès à votre portefeuille parce que
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them to the corresponding address in CashAddr format."
 msgstr "Si vous avez besoin d'envoyer aux « anciennes » adresses (comme celle que vous venez de coller), et que vous êtes sûr qu'il s'agit d'adresses BCH, vous pouvez les « traduire » vers l’adresse correspondante au format CashAddr."
 
+msgid "If you would like to connect this card to Apple Pay or Google Pay, please provide your phone number."
+msgstr ""
+
 msgid "Import"
 msgstr "Importer"
 
@@ -1342,13 +1389,16 @@ msgid "Importing Wallet..."
 msgstr "Importation du portefeuille..."
 
 msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
-msgstr "Afin de créer un portefeuille de jeton, un portefeuille Ethereum (ETH) est nécessaire. Veuillez d'abord créer un portefeuille ETH. Un seul portefeuille {{ params.token.name }} est autorisé par portefeuille ETH."
+msgstr ""
+
+msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first."
+msgstr ""
 
 msgid "In order to finish the payment process you will be redirected to Simplex page"
 msgstr "Afin de terminer le processus de paiement, vous allez être redirigé vers la page Simplex."
 
-msgid "In order to protect your funds from being accessible to hackers and theives, the Master Key to your wallet must be kept somewhere safe and remain a secret."
-msgstr "Afin de protéger vos fonds des pirates informatiques, la clé maîtresse de votre portefeuille doit être gardée quelque part en sécurité et rester secrète."
+msgid "In order to protect your funds from being accessible to hackers and thieves, the Master Key to your wallet must be kept somewhere safe and remain a secret."
+msgstr "Afin de protéger vos fonds des pirates informatiques, la clé maîtresse de votre portefeuille doit être gardée dans un endroit sûr et rester secrète."
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
 msgstr "Afin de vérifier votre phrase de récupération, veuillez saisir votre mot de passe."
@@ -1382,6 +1432,9 @@ msgstr "Fonds insuffisants"
 
 msgid "Insufficient funds for fee"
 msgstr "Fonds insuffisants pour les frais"
+
+msgid "Interaction with contract"
+msgstr ""
 
 msgid "Invalid"
 msgstr "Invalide"
@@ -1432,7 +1485,7 @@ msgid "It's important that you write your recovery phrase down correctly. If som
 msgstr "Il est important d’écrire correctement votre phrase de récupération. Si quelque chose arrive à votre portefeuille, vous en aurez besoin afin de récupérer votre argent. Vérifiez votre sauvegarde et réessayez."
 
 msgid "It's ok for now"
-msgstr ""
+msgstr "C'est correct pour le moment"
 
 msgid "Join"
 msgstr "Rejoindre"
@@ -1440,8 +1493,8 @@ msgstr "Rejoindre"
 msgid "Join Shared Wallet"
 msgstr "Rejoindre un portefeuille partagé"
 
-msgid "Join the waitlist and be first"
-msgstr "Rejoignez la liste d'attente et soyez le premier"
+msgid "Join more Copayers"
+msgstr ""
 
 msgid "Join the waitlist and be first to experience the new card."
 msgstr "Rejoignez la liste d'attente et soyez le premier à découvrir la nouvelle carte."
@@ -1451,6 +1504,9 @@ msgstr "Rejoignez la liste d'attente et soyez le premier à découvrir notre nou
 
 msgid "Joining Wallet..."
 msgstr "Connexion au portefeuille..."
+
+msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
+msgstr ""
 
 msgid "Key Name"
 msgstr "Nom de la clé"
@@ -1503,11 +1559,14 @@ msgstr "Lié"
 msgid "Linked Ethereum Wallet"
 msgstr "Portefeuille Ethereum lié"
 
+msgid "Linked to"
+msgstr ""
+
+msgid "Linked to (Copayer 1)"
+msgstr ""
+
 msgid "Linked to wallet: {linkedEthWalletName}"
 msgstr "Liée au portefeuille : {linkedEthWalletName}"
-
-msgid "Live on crypto"
-msgstr ""
 
 msgid "Live on crypto."
 msgstr ""
@@ -1593,15 +1652,6 @@ msgstr "Mmm..."
 msgid "More"
 msgstr "Plus"
 
-msgid "More Brands"
-msgstr "Plus de marques"
-
-msgid "Moved"
-msgstr "Déplacés"
-
-msgid "Moved Funds"
-msgstr "Fonds déplacés"
-
 msgid "Moving"
 msgstr "Déplacement"
 
@@ -1619,6 +1669,9 @@ msgstr "Plusieurs destinataires ({recipientsCount})"
 
 msgid "Multisig and key encryption help you always keep your funds secure."
 msgstr "Le multisig et le chiffrement des clés vous aident à toujours garder vos fonds en sécurité."
+
+msgid "Multisig contract address not found."
+msgstr ""
 
 msgid "Name"
 msgstr "Nom"
@@ -1791,6 +1844,9 @@ msgstr "Ok"
 msgid "On"
 msgstr "Activé"
 
+msgid "Only a {name} phone number can be used for this purchase."
+msgstr ""
+
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr "Seulement utilisable sur Mercado Livre (Brazil)"
 
@@ -1844,6 +1900,9 @@ msgstr "PRINCIPAL"
 
 msgid "Pair My BitPay Card"
 msgstr "Associer ma BitPay Card"
+
+msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
+msgstr ""
 
 msgid "Password"
 msgstr "Mot de passe"
@@ -2016,6 +2075,9 @@ msgstr "Mises à jour du produit"
 msgid "Proposal Created"
 msgstr "Proposition créée"
 
+msgid "Proposal confirmed"
+msgstr ""
+
 msgid "Proposal created"
 msgstr "Proposition créée"
 
@@ -2032,7 +2094,7 @@ msgid "Quick and easy setup"
 msgstr "Configuration rapide et facile"
 
 msgid "RBF transaction"
-msgstr ""
+msgstr "Transaction RBF"
 
 msgid "Random"
 msgstr "Aléatoire"
@@ -2075,9 +2137,6 @@ msgstr "Recevoir"
 
 msgid "Received"
 msgstr "Reçus"
-
-msgid "Received Funds"
-msgstr "Fonds reçus"
 
 msgid "Receiving"
 msgstr "Réception"
@@ -2179,7 +2238,7 @@ msgid "Requires multiple devices (most secure)"
 msgstr "Nécessite plusieurs appareils (configuration très sécurisée)"
 
 msgid "Reset All Settings"
-msgstr ""
+msgstr "Réinitialiser tous les paramètres"
 
 msgid "Resolved"
 msgstr "Résolu"
@@ -2195,6 +2254,9 @@ msgstr "URI Ripple"
 
 msgid "START OVER"
 msgstr "RECOMMENCER"
+
+msgid "SUBTOTAL"
+msgstr "Sous-total"
 
 msgid "SUMMARY"
 msgstr "Résumé"
@@ -2220,9 +2282,6 @@ msgstr "Réanalyser"
 msgid "Scanning Wallet funds..."
 msgstr "Analyse des fonds du portefeuille..."
 
-msgid "Search Gift Cards"
-msgstr "Rechercher des cartes-cadeaux"
-
 msgid "Search Transactions"
 msgstr "Rechercher des transactions"
 
@@ -2238,6 +2297,12 @@ msgstr "Rechercher un contact ou entrer une adresse"
 msgid "Search currency"
 msgstr "Rechercher une devise"
 
+msgid "Search for a brand"
+msgstr "Rechercher une marque"
+
+msgid "Search for a country"
+msgstr ""
+
 msgid "Security"
 msgstr "Sécurité "
 
@@ -2248,7 +2313,7 @@ msgid "Select"
 msgstr "Sélectionner"
 
 msgid "Select Currencies"
-msgstr "Sélectionner des devises"
+msgstr "Sélectionner des monnaies"
 
 msgid "Select Currency"
 msgstr "Sélectionner une devise"
@@ -2259,8 +2324,14 @@ msgstr "Sélectionner la clé"
 msgid "Select Key to add ETH Wallet to"
 msgstr "Sélectionnez la clé à ajouter au portefeuille ETH"
 
+msgid "Select Your Country"
+msgstr ""
+
 msgid "Select a wallet"
 msgstr "Sélectionner un portefeuille"
+
+msgid "Select a wallet to link to"
+msgstr ""
 
 msgid "Select an Ethereum Wallet"
 msgstr "Choisissez un portefeuille Ethereum"
@@ -2349,8 +2420,8 @@ msgstr "Données sensibles"
 msgid "Sent"
 msgstr "Envoyés"
 
-msgid "Sent Funds"
-msgstr "Fonds envoyés"
+msgid "Sent to self"
+msgstr ""
 
 msgid "Sent to {walletName}"
 msgstr "Envoyé à {walletName}"
@@ -2360,9 +2431,6 @@ msgstr "La réponse du serveur n'a pas pu être vérifiée"
 
 msgid "Session Log"
 msgstr "Journal de session"
-
-msgid "Session Logs. Be careful, this could contain sensitive private data"
-msgstr "Journaux de sessions. Attention, ils peuvent contenir des données privées sensibles"
 
 msgid "Set up a password"
 msgstr "Spécifiez un mot de passe"
@@ -2400,11 +2468,14 @@ msgstr "Partagez ce QR code pour recevoir {amount} dans votre portefeuille {name
 msgid "Share this address with the devices joining this account."
 msgstr "Partagez cette adresse avec les appareils qui rejoignent ce compte."
 
+msgid "Share this invitation with the Copayers who join this wallet."
+msgstr ""
+
 msgid "Share this invitation with your copayers"
 msgstr "Partagez cette invitation avec vos copayers"
 
 msgid "Share with friends"
-msgstr ""
+msgstr "Partager avec des amis"
 
 msgid "Share {{appName}}"
 msgstr "Partager {{appName}}"
@@ -2436,17 +2507,20 @@ msgstr "Me montrer l'adresse obsolète"
 msgid "Show on wallet tab"
 msgstr "Afficher sur l'onglet portefeuille"
 
+msgid "Sign Up"
+msgstr "S'inscrire"
+
 msgid "Sign Up for Coinbase"
 msgstr "S'inscrire à Coinbase"
+
+msgid "Sign Up for Coinbase &rarr;"
+msgstr "S'inscrire sur Coinbase &rarr;"
 
 msgid "Sign Up for ShapeShift"
 msgstr "S'inscrire pour ShapeShift"
 
 msgid "Sign selected proposals"
 msgstr "Signer les propositions sélectionnées"
-
-msgid "Sign up"
-msgstr "S'inscrire"
 
 msgid "Signatures rejected by server"
 msgstr "Signatures rejetées par le serveur"
@@ -2493,6 +2567,9 @@ msgstr "Quelque chose de génial arrive"
 msgid "Something goes wrong..."
 msgstr "Il y a un problème..."
 
+msgid "Something went wrong"
+msgstr ""
+
 msgid "Specify Amount"
 msgstr "Spécifier un montant"
 
@@ -2502,14 +2579,14 @@ msgstr "Spécifier la phrase de récupération"
 msgid "Specify derivation path"
 msgstr "Spécifier le chemin de dérivation"
 
-msgid "Speed up successfully"
-msgstr "Accélérée avec succès"
+msgid "Speed up successful"
+msgstr ""
 
 msgid "Speed up transaction"
 msgstr "Accélérer la transaction"
 
 msgid "Spend and control your cryptocurrency by downloading the {{appName}} app."
-msgstr ""
+msgstr "Dépensez et contrôlez vos crypto-monnaies en téléchargeant l'application {{appName}}."
 
 msgid "Spend crypto at your favorite stores."
 msgstr "Dépensez des crypto-monnaies dans vos magasins préférés."
@@ -2534,6 +2611,9 @@ msgstr "Conservez cette clé séparément"
 
 msgid "Store, manage, and protect your crypto."
 msgstr "Stockez, organisez et protégez vos crypto-monnaies."
+
+msgid "Subtotal"
+msgstr "Sous-total"
 
 msgid "Super Economy"
 msgstr "Infimes"
@@ -2625,6 +2705,9 @@ msgstr "Les données de cette demande de paiement seront supprimées. Assurez-vo
 msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
 msgstr "Le portefeuille de destination n’est pas sauvegardé. Veuillez terminer le processus de sauvegarde avant de continuer."
 
+msgid "The ethereum paired wallet you choose does not belong to this contract"
+msgstr ""
+
 msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the BitPay App and spend in minutes."
 msgstr "La façon la plus rapide et la plus simple de transformer vos crypto-monnaies en dollars pour vos achats. Chargez des fonds dans l'application BitPay et dépensez en quelques minutes."
 
@@ -2639,6 +2722,9 @@ msgstr "Les informations que vous êtes sur le point de partager peuvent conteni
 
 msgid "The invoice is no available"
 msgstr "La facture n'est pas disponible."
+
+msgid "The maximum number of Copayers has already been reached"
+msgstr ""
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "Le paiement a été créé mais n'a pas pu être achevé. Veuillez réessayer depuis l'écran d'accueil"
@@ -2655,6 +2741,9 @@ msgstr "Le montant d'achat est limité à {maxAmount} {currency} par jour. Veuil
 msgid "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
 msgstr "Le montant d'achat doit être supérieur ou égal à {minAmount} {currency}. Veuillez modifier votre montant."
 
+msgid "The recovery phrase is invalid"
+msgstr ""
+
 msgid "The recovery phrase you entered do not match the wallet you are trying to re-import"
 msgstr "La phrase de récupération que vous avez saisie ne correspond pas au portefeuille que vous essayez de réimporter"
 
@@ -2669,6 +2758,9 @@ msgstr "La proposition de dépense n'est pas en attente"
 
 msgid "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
 msgstr "Le testnet est une blockchain {coinName} alternative qui est utilisée pour des tests. Les crypto-monnaies testnet sont séparées des {coinName} réels et n’ont aucune valeur. Cela permet aux développeurs d’applications d’expérimenter, sans devoir utiliser de vrais {coinName}."
+
+msgid "The total amount is the subtotal amount plus transaction fees."
+msgstr "Le montant total est le sous-total additionné des frais de transaction."
 
 msgid "The total amount of {coinName} stored in this wallet."
 msgstr "Le montant total de {coinName} stocké dans ce portefeuille."
@@ -2702,6 +2794,9 @@ msgstr "Thèmes"
 
 msgid "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
 msgstr "Il n'y a aucun enregistrement de votre portefeuille sur nos serveurs. Si vous importez un portefeuille compatible BIP44 depuis un tiers, vous pouvez continuer pour le recréer. Si votre portefeuille n'est pas compatible avec BIP44, vous ne pourrez pas accéder à ses fonds."
+
+msgid "There are no wallets with enough funds to make the payment"
+msgstr ""
 
 msgid "There is a new version available"
 msgstr "Une nouvelle version est disponible"
@@ -2793,6 +2888,9 @@ msgstr "Chronologie"
 msgid "To"
 msgstr "À"
 
+msgid "To enable the dark mode, tap the gear icon at the bottom, tap Theme and select Dark Mode"
+msgstr ""
+
 msgid "To get started, you'll need to create a wallet and get some funds."
 msgstr "Pour commencer, vous aurez besoin de créer un portefeuille et d'obtenir des fonds."
 
@@ -2825,6 +2923,9 @@ msgstr "Total des entrées sélectionnées"
 
 msgid "Total wallet inputs"
 msgstr "Entrées de portefeuille totales"
+
+msgid "Trade Crypto with ShapeShift"
+msgstr "Échangez des crypto-monnaies avec ShapeShift"
 
 msgid "Trade any leading blockchain asset for any other. Protection by Design."
 msgstr "Échangez n'importe quel actif blockchain contre un autre. Protection par conception sécurisée."
@@ -2892,14 +2993,17 @@ msgstr "Réessayer"
 msgid "Try again in {{expires}}"
 msgstr "Réessayez dans {{expires}}"
 
+msgid "Try dark mode"
+msgstr ""
+
 msgid "Try entering any passwords you may have set in the past"
 msgstr "Essayez de saisir un mot de passe que vous avez défini dans le passé"
 
 msgid "Turn crypto into dollars using our BitPay Card."
 msgstr "Convertissez des crypto-monnaies en dollars en utilisant notre BitPay Card."
 
-msgid "Type the recovery phrase (usually 12 words)"
-msgstr "Saisissez la phrase de récupération (généralement 12 mots)"
+msgid "Type the recovery phrase"
+msgstr ""
 
 msgid "Uh oh something went wrong! Please try again later."
 msgstr "Oh oh quelque chose s'est mal passé ! Veuillez réessayer plus tard."
@@ -2911,7 +3015,7 @@ msgid "Unconfirmed"
 msgstr "Non confirmée"
 
 msgid "Unconfirmed inputs"
-msgstr ""
+msgstr "Entrées non confirmées"
 
 msgid "Unlink account"
 msgstr "Dissocier le compte"
@@ -3008,6 +3112,9 @@ msgstr "Voir les détails"
 
 msgid "View on blockchain"
 msgstr "Voir sur la blockchain"
+
+msgid "Virtual"
+msgstr "Virtuel"
 
 msgid "Visit ShapeShift.io"
 msgstr "Visiter ShapeShift.io"
@@ -3127,13 +3234,16 @@ msgid "We'll notify you as soon as the card is ready."
 msgstr "Nous vous informerons dès que la carte sera prête."
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us 5 star review in the app store or share with your friends!"
-msgstr ""
+msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser une note de 5 étoiles dans le store ou à partager l'application avec vos amis !"
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
 msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser une évaluation dans la boutique d'applications ou à demander une nouvelle fonctionnalité. Dites-nous également si vous rencontrez des problèmes techniques."
 
 msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
 msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. Y a-t-il quelque chose que nous pourrions faire pour améliorer votre expérience ?"
+
+msgid "What could have happened?"
+msgstr ""
 
 msgid "What do you call this key?"
 msgstr "Comment voulez-vous appeler cette clé ?"
@@ -3147,6 +3257,9 @@ msgstr "Quel est le statut de mon paiement ?"
 msgid "What service fees am I paying?"
 msgstr "Quels sont les frais de service que je paie ?"
 
+msgid "What's new"
+msgstr ""
+
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "Lorsque ce portefeuille a été créé, il se nommait \"{{walletName}}\". Vous pouvez modifier ci-dessous le nom affiché sur cet appareil."
 
@@ -3155,6 +3268,9 @@ msgstr "Souhaitez-vous recevoir des notifications par e-mail à propos des paiem
 
 msgid "Where would you like to receive your Amazon gift card purchase receipts?"
 msgstr "Où aimeriez-vous recevoir vos reçus d’achat de cartes-cadeaux Amazon ?"
+
+msgid "Which Ethereum wallet would you like this multisig to use for transaction costs?"
+msgstr ""
 
 msgid "Which Ethereum wallet would you like this token to use for transaction costs?"
 msgstr "Quel portefeuille Ethereum voulez-vous que ce jeton utilise pour les frais de transaction ?"
@@ -3195,9 +3311,6 @@ msgstr "Écrire une évaluation"
 msgid "Write down each word."
 msgstr "Écrivez chaque mot."
 
-msgid "Wrong number of recovery words:"
-msgstr "Nombre incorrect de mots de récupération :"
-
 msgid "Wrong password"
 msgstr "Mauvais mot de passe"
 
@@ -3216,14 +3329,20 @@ msgstr "OUI"
 msgid "Yes"
 msgstr "Oui"
 
+msgid "Yes, please use my email address to send me exclusive email offers."
+msgstr ""
+
+msgid "You are creating a {m}-{n} wallet. And you need all {m} copayers addresses at creation time."
+msgstr ""
+
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
 msgstr "Vous essayez d'envoyer plus de fonds que vous n'en avez de disponible. Assurez-vous de ne pas avoir de fonds verrouillés par des propositions de transaction en attente."
 
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "Vous essayez d'envoyer plus de fonds que vous n'en avez de disponible. Assurez-vous de ne pas avoir de fonds verrouillés par des propositions de transaction en attente. Vous pouvez également essayer avec un montant inférieur ou envoyer le maximum."
 
-msgid "You can always reset your encrypt password on your key settings using your 12 words recovery phrase"
-msgstr "Vous pouvez toujours réinitialiser votre code de chiffrement dans vos paramètres de clé en utilisant votre phrase de récupération de 12 mots"
+msgid "You can always reset your encrypt password on your key settings under the option"
+msgstr ""
 
 msgid "You can change the name displayed on this device below."
 msgstr "Vous pouvez changer le nom affiché sur cet appareil ci-dessous."
@@ -3260,6 +3379,15 @@ msgstr "Vous n'avez pas assez de fonds confirmés pour effectuer ce paiement. At
 
 msgid "You do not have wallets able to receive funds"
 msgstr "Vous n'avez pas de portefeuilles en mesure de recevoir des fonds"
+
+msgid "You have entered the phrase without spaces"
+msgstr ""
+
+msgid "You have only entered {wordListLength} word, please follow the recommendations provided"
+msgstr ""
+
+msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
+msgstr ""
 
 msgid "You need a minimum of 20 XRP to send funds."
 msgstr "Vous avez besoin d'un minimum de 20 XRP pour envoyer des fonds."
@@ -3309,6 +3437,9 @@ msgstr "Votre demande n'a pas inclus de transaction. Veuillez réessayer ou cont
 msgid "Your transaction was an in an invalid format, it must be a hexadecimal string. Contact your wallet provider"
 msgstr "Votre transaction était un format invalide, elle doit être une chaîne hexadécimale. Contactez votre fournisseur de portefeuille."
 
+msgid "Your wallet is testnet"
+msgstr ""
+
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "La clé de votre portefeuille sera chiffrée. Le code de chiffrement ne peut pas être récupéré. N'oubliez pas de l'écrire."
 
@@ -3338,6 +3469,9 @@ msgstr "du montant total"
 
 msgid "preparing..."
 msgstr "préparation..."
+
+msgid "using your 12 words recovery phrase"
+msgstr ""
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "Les portefeuilles BCH de {appName} utilisent le format CashAddr par défaut"
@@ -3371,6 +3505,9 @@ msgstr "{{countInArray}} de vos portefeuilles existent déjà dans {{nameCase}}"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} seront déduits pour les frais de réseau Bitcoin."
+
+msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
+msgstr ""
 
 msgid "{{txpsSuccess}} proposal signed"
 msgstr "{{txpsSuccess}} proposition signée"
