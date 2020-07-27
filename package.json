@@ -196,7 +196,7 @@
     "@types/papaparse": "4.1.34",
     "@types/prismjs": "1.9.1",
     "adm-zip": "0.4.13",
-    "codecov": "3.6.5",
+    "codecov": "3.7.1",
     "core-js": "2.6.10",
     "electron": "7.2.4",
     "electron-builder": "22.2.0",
