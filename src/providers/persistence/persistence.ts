@@ -680,6 +680,18 @@ export class PersistenceProvider {
     return this.storage.remove('simplex-' + env);
   }
 
+  setWyre(env: string, paymentRequests) {
+    return this.storage.set('wyre-' + env, paymentRequests);
+  }
+
+  getWyre(env: string) {
+    return this.storage.get('wyre-' + env);
+  }
+
+  removeWyre(env: string) {
+    return this.storage.remove('wyre-' + env);
+  }
+
   setWalletOrder(walletId: string, order: number) {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   }

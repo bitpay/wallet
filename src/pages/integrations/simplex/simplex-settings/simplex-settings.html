@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title class="bp-title">
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <img width="110" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex">
+        <img width="110" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'" alt="Simplex">
       </div>
     </ion-title>
     <ng-content select="[right]"></ng-content>
@@ -14,7 +14,7 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
       <ion-toolbar class="wide-header__title">
         <expandable-header-primary>
-          <img margin-left width="130" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex">
+          <img margin-left width="130" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'" alt="Simplex">
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
@@ -25,5 +25,7 @@
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
     </ion-list>
+
+    <page-simplex></page-simplex>
   </div>
 </ion-content>

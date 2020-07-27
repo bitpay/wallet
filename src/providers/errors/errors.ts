@@ -43,4 +43,14 @@ export class ErrorsProvider {
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(dismissFunction);
   }
+
+  public showNoWalletError(coin: string, dismissFunction?) {
+    this.logger.warn('No wallets able to receive funds');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'no-wallets-error',
+      { coin }
+    );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(dismissFunction);
+  }
 }

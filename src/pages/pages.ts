@@ -8,6 +8,12 @@ import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
+import { CountrySelectorPage } from '../pages/buy-crypto/country-selector/country-selector';
+import { CryptoCoinSelectorPage } from '../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
+import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offers';
+import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
+import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
+import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { NewFeatureTourPage } from '../pages/new-feature-tour/new-feature-tour';
@@ -45,6 +51,10 @@ import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
 import { SimplexSettingsPage } from '../pages/integrations/simplex/simplex-settings/simplex-settings';
+
+// Integrations: Wyre
+import { WyrePage } from '../pages/integrations/wyre/wyre';
+import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-details';
 
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
@@ -164,6 +174,12 @@ export const PAGES = [
   CoinbaseTxDetailsPage,
   CoinbaseWithdrawPage,
   CopayersPage,
+  CountrySelectorPage,
+  CryptoPaymentMethodPage,
+  CryptoOrderSummaryPage,
+  CryptoOffersPage,
+  CryptoCoinSelectorPage,
+  CryptoSettingsPage,
   SelectInputsPage,
   FeedbackCardPage,
   SharePage,
@@ -209,6 +225,8 @@ export const PAGES = [
   SimplexBuyPage,
   SimplexDetailsPage,
   SimplexSettingsPage,
+  WyrePage,
+  WyreDetailsPage,
   NotificationsPage,
   FeePolicyPage,
   SearchTxModalPage,

@@ -1,0 +1,78 @@
+<wide-header-page title="{{'Offers' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item>
+        <ion-row>
+          <ion-col>
+            <div class="summary-title" translate>Amount</div>
+            <div class="summary-description"><span *ngIf="currency === 'USD'">$</span>{{amount}} <span *ngIf="currency !== 'USD'">{{currency}}</span></div>
+          </ion-col>
+          <ion-col>
+            <div class="summary-title" translate>Crypto</div>
+            <div class="summary-description"><img class="coin-icon" src="assets/img/currencies/{{coin}}.svg" /> {{coin | uppercase}}</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="summary-title" translate>Payment Method</div>
+            <div class="summary-description">{{paymentMethod?.label}}</div>
+          </ion-col>
+          <ion-col align-self-center>
+            <div class="edit-container" (click)="goToEdit()">
+              <div class="edit-label" translate>
+                Edit
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+
+      <action-card-v4 (click)="goToSimplexBuyPage()" tappable *ngIf="sShowOffer">
+        <div action-card-body *ngIf="!sFiatMoney && !sErrorMsg" class="loader">
+          <ion-spinner></ion-spinner>
+        </div>
+        <div action-card-body translate *ngIf="sFiatMoney || sErrorMsg">
+          <div *ngIf="sErrorMsg">
+            <div class="main-label">{{sErrorMsg}}</div>
+          </div>
+          <div *ngIf="sFiatMoney">
+            <div class="main-label">{{sAmountReceiving}} {{coin | uppercase}}</div>
+            <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{sFiatMoney | number:'1.2-2'}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span> *</div>
+          </div>
+          <div class="provider">
+            <span class="secondary-label">Provided by</span>
+            <img [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'">
+          </div>
+        </div>
+        <div action-card-button translate *ngIf="sFiatMoney">
+          View Offer
+        </div>
+      </action-card-v4>
+
+      <action-card-v4 (click)="goToWyreBuyPage()" tappable *ngIf="wShowOffer">
+        <div action-card-body *ngIf="!wFiatMoney && !wErrorMsg" class="loader">
+          <ion-spinner></ion-spinner>
+        </div>
+        <div action-card-body translate *ngIf="wFiatMoney || wErrorMsg">
+          <div *ngIf="wErrorMsg">
+            <div class="main-label">{{wErrorMsg}}</div>
+          </div>
+          <div *ngIf="wFiatMoney">
+            <div class="main-label">{{wAmountReceiving }} {{coin | uppercase}}</div>
+            <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{wFiatMoney | number:'1.2-2'}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span> *</div>
+          </div>
+          <div class="provider">
+            <span class="secondary-label">Provided by</span>
+            <img [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'">
+          </div>
+        </div>
+        <div action-card-button translate *ngIf="wFiatMoney">
+          View Offer
+        </div>
+      </action-card-v4>
+
+      <div class="card-terms">
+        <div translate>* fees included </div>
+        <div translate>Additional third-party fees may apply.</div>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

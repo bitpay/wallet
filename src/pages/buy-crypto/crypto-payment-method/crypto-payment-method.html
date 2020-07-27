@@ -1,0 +1,31 @@
+<wide-header-page title="{{'Select Payment Method' | translate}}">
+  <ion-buttons left *ngIf="useAsModal">
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected" (ionChange)="save()">
+      <div *ngFor="let method of methods | keys">
+        <ion-item>
+          <ion-label>
+            <div class="main-label">{{method.value.label}}</div>
+            <div class="secondary-label" translate>Supported by</div>
+            <div>
+              <img *ngIf="showExchange('simplex', method.value)" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'">
+              <img *ngIf="showExchange('wyre', method.value)" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'">
+            </div>
+          </ion-label>
+          <ion-radio item-left value="{{method?.key}}" checked="methodSelected"></ion-radio>
+          <ion-icon item-end class="item-img">
+            <img src="{{method.value.imgSrc}}">
+          </ion-icon>
+        </ion-item>
+        <div class="line-divider"></div>
+      </div>
+    </ion-list>
+    <button *ngIf="!useAsModal" ion-button class="button-standard button-primary" (click)="goToOrderSummary()">
+      <span>{{'View Order Summary' | translate}}</span>
+    </button>
+  </div>
+</wide-header-page>

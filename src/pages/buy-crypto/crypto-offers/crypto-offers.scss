@@ -1,0 +1,69 @@
+page-crypto-offers {
+  .bp-list {
+    .summary-title {
+      color: #757575;
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .summary-description {
+      line-height: 24px;
+      color: black;
+      font-weight: 500;
+      font-size: 16px;
+      .coin-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: text-bottom;
+      }
+    }
+    .edit-container {
+      color: color($colors, primary);
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19px;
+      white-space: nowrap;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      height: 35px;
+      border: 1px solid color($colors, primary);
+      margin: auto;
+      .edit-label {
+        padding: 0rem 1.2rem;
+        margin: auto;
+      }
+    }
+    .main-label {
+      font-size: 18px;
+    }
+
+    .provider {
+      margin-top: 15px;
+
+      img {
+        vertical-align: middle;
+        height: 20px;
+      }
+    }
+
+    .card-terms {
+      padding: 0 34px;
+      margin: 50px 0;
+      color: #757575;
+      font-size: 11px;
+    }
+    .loader {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      ion-spinner {
+        * {
+          stroke: color($colors, primary);
+        }
+      }
+    }
+  }
+}

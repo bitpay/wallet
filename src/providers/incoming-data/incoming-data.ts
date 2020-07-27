@@ -178,6 +178,15 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidWyreUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data &&
+      (data.indexOf(this.appProvider.info.name + '://wyre') === 0 ||
+        data.indexOf(this.appProvider.info.name + '://wyreError') === 0)
+    );
+  }
+
   private isValidInvoiceUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(
@@ -672,6 +681,37 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
+  private goToWyre(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Wyre URL');
+
+    const res = data.replace(new RegExp('&amp;', 'g'), '&');
+    const transferId = this.getParameterByName('transferId', res);
+    const orderId = this.getParameterByName('orderId', res);
+    const accountId = this.getParameterByName('accountId', res);
+    const dest = this.getParameterByName('dest', res);
+    const fees = this.getParameterByName('fees', res);
+    const destAmount = this.getParameterByName('destAmount', res);
+    const blockchainNetworkTx = this.getParameterByName(
+      'blockchainNetworkTx',
+      res
+    );
+
+    const stateParams = {
+      transferId,
+      orderId,
+      accountId,
+      dest,
+      fees,
+      destAmount,
+      blockchainNetworkTx
+    };
+    const nextView = {
+      name: 'WyrePage',
+      params: stateParams
+    };
+    this.incomingDataRedir(nextView);
+  }
+
   private goToInvoice(data: string): void {
     this.logger.debug('Incoming-data (redirect): Invoice URL');
 
@@ -765,6 +805,11 @@ export class IncomingDataProvider {
       // Simplex
     } else if (this.isValidSimplexUri(data)) {
       this.goToSimplex(data);
+      return true;
+
+      // Wyre
+    } else if (this.isValidWyreUri(data)) {
+      this.goToWyre(data);
       return true;
 
       // Invoice Intent

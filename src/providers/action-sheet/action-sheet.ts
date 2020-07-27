@@ -57,7 +57,8 @@ export type InfoSheetType =
   | 'total-amount'
   | 'subtotal-amount'
   | 'no-wallets-available'
-  | 'recovery-phrase-length';
+  | 'recovery-phrase-length'
+  | 'no-wallets-error';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -90,7 +91,7 @@ export interface ChooseFeeLevelParams {
 }
 @Injectable()
 export class ActionSheetProvider {
-  constructor(private domProvider: DomProvider) {}
+  constructor(private domProvider: DomProvider) { }
 
   public createOptionsSheet(
     type: OptionsSheetType,
@@ -170,7 +171,7 @@ export class ActionSheetProvider {
   }
 
   private setupSheet<T extends ActionSheetParent>(
-    componentType: { new (...args): T },
+    componentType: { new(...args): T },
     sheetType?: string,
     params?
   ): ComponentRef<T> {

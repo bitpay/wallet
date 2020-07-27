@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="37px" viewBox="0 0 48 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 2</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Choose-Payment-Method" transform="translate(-295.000000, -418.000000)">
+            <g id="Group-2" transform="translate(295.000000, 418.000000)">
+                <path d="M44.8695652,36.2850242 L3.13043478,36.2850242 C1.4013913,36.2850242 0,34.8517657 0,33.0834044 L0,3.20161978 C0,1.43325845 1.4013913,-2.84217094e-14 3.13043478,-2.84217094e-14 L44.8695652,-2.84217094e-14 C46.5986087,-2.84217094e-14 48,1.43325845 48,3.20161978 L48,33.0834044 C48,34.8517657 46.5986087,36.2850242 44.8695652,36.2850242 Z" id="Shape" fill="#E7E7E7"></path>
+                <g id="Group" transform="translate(6.000000, 26.000000)" fill="#FFFFFF">
+                    <polygon id="Rectangle-path" points="-6.06181771e-14 0 4 0 4 4 0 4"></polygon>
+                    <polygon id="Rectangle-path" points="5.6 0 9.6 0 9.6 4 5.6 4"></polygon>
+                    <polygon id="Rectangle-path" points="13.6 0 17.6 0 17.6 4 13.6 4"></polygon>
+                    <polygon id="Rectangle-path" points="19.2 0 23.2 0 23.2 4 19.2 4"></polygon>
+                    <polygon id="Rectangle-path" points="27.2 0 31.2 0 31.2 4 27.2 4"></polygon>
+                    <polygon id="Rectangle-path" points="32.8 0 36.8 0 36.8 4 32.8 4"></polygon>
+                </g>
+                <polygon id="Rectangle-path" fill="#9BA3AE" points="6 8 18 8 18 17 6 17"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

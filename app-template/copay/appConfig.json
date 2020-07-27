@@ -29,11 +29,11 @@
   "androidVersion": "91001003",
   "_extraCSS": null,
   "_enabledExtensions": {
+    "buycrypto": false,
     "coinbase": false,
     "glidera": false,
     "debitcard": false,
     "shapeshift": false,
-    "simplex": false,
     "giftcards": false
   }
 }

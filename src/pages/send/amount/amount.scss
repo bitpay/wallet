@@ -57,14 +57,16 @@ page-amount {
       border-radius: 25px;
       cursor: pointer;
 
-      &__icon {
+      &__icon,
+      .select-icon {
         margin-right: 2px;
         margin-top: 4px;
         float: left;
         color: #4f6ef7;
       }
 
-      &__label {
+      &__label,
+      .select-text {
         color: #4f6ef7;
         font-size: 18px;
         font-weight: bold;
@@ -73,6 +75,15 @@ page-amount {
           font-size: 14px;
         }
       }
+      &.select-options {
+        width: 80px;
+        .select-icon-inner {
+          left: 0;
+        }
+      }
+    }
+    .item-inner {
+      border-bottom: none !important;
     }
 
     &__label {
@@ -149,6 +160,15 @@ page-amount {
         margin-top: 15px;
       }
     }
+    &.amount-content-fixed {
+      padding-bottom: 80px;
+      @media (max-height: $short-screen) {
+        padding-bottom: 45px;
+      }
+    }
+  }
+  .form-margin {
+    padding-right: 0.8rem;
   }
 
   .bottom-absolute {

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title class="bp-title">
-      <img width="110" src="assets/img/simplex/logo-simplex-color.svg" alt="Simplex" class="simplex-logo">
+      <img width="110" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/simplex/logo-simplex-color.svg' : 'assets/img/simplex/logo-simplex-dm.png'" alt="Simplex" class="simplex-logo">
     </ion-title>
   </ion-navbar>
 </ion-header>

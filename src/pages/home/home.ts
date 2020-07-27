@@ -3,8 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { SimplexPage } from '../../pages/integrations/simplex/simplex';
-import { SimplexBuyPage } from '../../pages/integrations/simplex/simplex-buy/simplex-buy';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
@@ -12,10 +10,12 @@ import {
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
+  HomeIntegrationsProvider,
   Logger,
   MerchantProvider,
   PersistenceProvider,
-  SimplexProvider
+  PlatformProvider,
+  ReleaseProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
@@ -24,15 +24,14 @@ import {
   hasVisibleDiscount
 } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { ReleaseProvider } from '../../providers/release/release';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewFeatureTourPage } from '../new-feature-tour/new-feature-tour';
+
+import { CryptoCoinSelectorPage } from '../../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
 
 export interface Advertisement {
   name: string;
@@ -86,6 +85,10 @@ export class HomePage {
   private isCordova: boolean;
   private zone;
 
+  // Buy Crypto
+  public wallet;
+  public wallets: any[];
+
   constructor(
     private persistenceProvider: PersistenceProvider,
     private logger: Logger,
@@ -96,7 +99,6 @@ export class HomePage {
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
     private merchantProvider: MerchantProvider,
-    private simplexProvider: SimplexProvider,
     private feedbackProvider: FeedbackProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private translate: TranslateService,
@@ -335,7 +337,7 @@ export class HomePage {
 
     integrations.forEach(x => {
       switch (x.name) {
-        case 'simplex':
+        case 'buycrypto':
           this.showBuyCryptoOption = true;
           break;
         case 'giftcards':
@@ -628,15 +630,9 @@ export class HomePage {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public goToBuyCrypto() {
+  public goToCoinSelector(): void {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
-    this.simplexProvider.getSimplex().then(simplexData => {
-      if (simplexData && !_.isEmpty(simplexData)) {
-        this.navCtrl.push(SimplexPage);
-      } else {
-        this.navCtrl.push(SimplexBuyPage);
-      }
-    });
+    this.navCtrl.push(CryptoCoinSelectorPage);
   }
 
   private checkNewRelease() {

@@ -2,21 +2,35 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { FormatCurrencyPipe } from '../../../pipes/format-currency';
+
+// Components
 import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
-import { FormatCurrencyPipe } from '../../../pipes/format-currency';
-import { ConfigProvider, Logger, SimplexProvider } from '../../../providers';
+
+// Pages
+import { CryptoCoinSelectorPage } from '../../../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
+
+// Providers
+import {
+  AnalyticsProvider,
+  ConfigProvider,
+  Logger,
+  SimplexProvider
+} from '../../../providers';
 import {
   DateRanges,
   ExchangeRatesProvider
 } from '../../../providers/exchange-rates/exchange-rates';
-import { AmountPage } from '../../send/amount/amount';
 
 @Component({
   selector: 'price-page',
   templateUrl: 'price-page.html'
 })
 export class PricePage {
+  coin: any;
+  wallet: any;
+  wallets: any[];
   @ViewChild('canvas') canvas: PriceChart;
   private card: Card;
   public activeOption: string = '1D';
@@ -48,9 +62,11 @@ export class PricePage {
     private formatCurrencyPipe: FormatCurrencyPipe,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private simplexProvider: SimplexProvider
+    private simplexProvider: SimplexProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.card = _.clone(this.navParams.data.card);
+    this.coin = this.card.unitCode;
     this.setIsoCode();
   }
 
@@ -62,28 +78,20 @@ export class PricePage {
     }, 1000);
   }
 
-  public goToBuyCrypto() {
-    this.navCtrl.push(AmountPage, {
-      nextPage: 'SimplexBuyPage',
-      coin: this.card.unitCode,
-      currency: this.isIsoCodeSupported ? this.isoCode : 'USD'
-    });
-  }
-
   private getPrice(dateRange) {
     this.canvas.loading = true;
     this.exchangeRatesProvider
       .fetchHistoricalRates(this.isoCode, false, dateRange)
       .then(
-        response => {
-          this.card.historicalRates = response[this.card.unitCode];
-          this.updateValues();
-          this.setPrice();
-          this.redrawCanvas();
-        },
-        err => {
-          this.logger.error('Error getting rates:', err);
-        }
+      response => {
+        this.card.historicalRates = response[this.card.unitCode];
+        this.updateValues();
+        this.setPrice();
+        this.redrawCanvas();
+      },
+      err => {
+        this.logger.error('Error getting rates:', err);
+      }
       );
   }
 
@@ -198,5 +206,10 @@ export class PricePage {
       ? alternativeIsoCode
       : 'USD';
     this.isIsoCodeSupported = _.includes(this.fiatCodes, this.isoCode);
+  }
+
+  public goToCoinSelector(): void {
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.navCtrl.push(CryptoCoinSelectorPage, { coin: this.coin });
   }
 }

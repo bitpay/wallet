@@ -1,0 +1,21 @@
+page-crypto-coin-selector {
+  .bp-list {
+    .available-wallets {
+      &-container {
+        background-color: #f6f7fc;
+        cursor: pointer;
+        height: 36px;
+        white-space: nowrap;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+      }
+      &-label {
+        line-height: 19px;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 0rem 1.2rem;
+      }
+    }
+  }
+}
