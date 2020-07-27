@@ -1,30 +1,60 @@
-<wide-header-page title="Enable Mobile Payments?">
+<wide-header-page [title]="title">
   <div page-content>
     <div class="padding">
       <div class="sub-title">
-        <span translate>If you would like to connect this card to Apple Pay or Google Pay, please provide your phone number.</span>
+        <span translate
+          >If you would like to connect this card to
+          <span *ngIf="platformProvider.isIOS">Apple Pay</span
+          ><span *ngIf="platformProvider.isAndroid">Google Pay</span
+          ><span *ngIf="!platformProvider.isIOS && !platformProvider.isAndroid"
+            >Apple Pay or Google Pay</span
+          >, please provide your phone number.</span
+        >
       </div>
       <form [formGroup]="phoneForm">
         <div class="phone-input">
-          <div class="phone-input__country-code" tappable (click)="onCountryCodeClick()" *ngIf="country">
+          <div
+            class="phone-input__country-code"
+            tappable
+            (click)="onCountryCodeClick()"
+            *ngIf="country"
+          >
             <span class="phone-input__flag-emoji">{{country.emoji}}</span>
             +{{country.phone}} <img src="assets/img/chevron-down.svg" />
           </div>
-          <ion-input mode="md" formControlName="phone" type="tel" [ionMask]="phoneMask" placeholder="Phone Number">
+          <ion-input
+            mode="md"
+            formControlName="phone"
+            type="tel"
+            [ionMask]="phoneMask"
+            placeholder="Phone Number"
+          >
           </ion-input>
         </div>
-        <ion-item class="form__form-item form__form-toggle" style="padding-top: 10px" no-lines>
+        <ion-item
+          class="form__form-item form__form-toggle"
+          style="padding-top: 10px"
+          no-lines
+        >
           <ion-label class="form__form-toggle__label">
-            {{'By giving my phone number, I give explicit consent to BitPay to use it to connect this card to Apple Pay or Google Pay.' | translate}}
+            {{'By giving my phone number, I give explicit consent to BitPay to
+            use it to connect this card to Apple Pay or Google Pay.' |
+            translate}}
             <span class="form__form__link" (click)="openPolicy()" translate>
-              Privacy Policy</span>
+              Privacy Policy</span
+            >
           </ion-label>
           <ion-toggle formControlName="agreement" color="success"></ion-toggle>
         </ion-item>
       </form>
     </div>
     <div class="padding-bottom" style="padding-bottom: 40px">
-      <button ion-button class="button-standard" [disabled]="phoneForm.invalid" (click)="next()">
+      <button
+        ion-button
+        class="button-standard"
+        [disabled]="phoneForm.invalid"
+        (click)="next()"
+      >
         {{'Enable' | translate}}
       </button>
       <div tappable class="no-thanks" (click)="next(true)">No thanks</div>

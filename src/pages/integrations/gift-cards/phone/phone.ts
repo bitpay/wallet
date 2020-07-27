@@ -31,6 +31,7 @@ export class PhonePage {
   public phoneForm: FormGroup;
   public phoneMask;
   public cardConfig: CardConfig;
+  public title: string = 'Enable Mobile Payments?';
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -38,12 +39,14 @@ export class PhonePage {
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
     private navParams: NavParams,
-    private platformProvider: PlatformProvider
+    public platformProvider: PlatformProvider
   ) {
     this.phoneForm = new FormGroup({
-      phone: new FormControl(''),
+      phone: new FormControl('', Validators.requiredTrue),
       agreement: new FormControl(false, Validators.requiredTrue)
     });
+    if (this.platformProvider.isIOS) this.title = 'Enable Apple Pay?';
+    else if (this.platformProvider.isAndroid) this.title = 'Enable Google Pay?';
   }
 
   async ngOnInit() {
