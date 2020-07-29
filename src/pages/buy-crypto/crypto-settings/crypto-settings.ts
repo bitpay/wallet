@@ -7,11 +7,11 @@ import { SimplexPage } from '../../../pages/integrations/simplex/simplex';
 import { WyrePage } from '../../../pages/integrations/wyre/wyre';
 
 // Providers
+import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ConfigProvider } from '../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../providers/logger/logger';
 import { ThemeProvider } from '../../../providers/theme/theme';
-import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 
 @Component({
   selector: 'page-crypto-settings',

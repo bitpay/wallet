@@ -29,17 +29,7 @@ export class WyreProvider {
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.logger.debug('WyreProvider initialized - env: ' + this.env);
     this.uri = env.name == 'development' ? URI_DEV : URI_PROD;
-    this.supportedFiatAltCurrencies = [
-      'AUD',
-      // 'BRL',
-      'CAD',
-      // 'CNY',
-      'EUR',
-      'GBP',
-      // 'HKD',
-      // 'MXN',
-      'USD'
-    ];
+    this.supportedFiatAltCurrencies = ['AUD', 'CAD', 'EUR', 'GBP', 'USD'];
     this.supportedCoins = ['ETH', 'BTC'];
     this.fiatAmountLimits = {
       min: 1,
@@ -90,9 +80,21 @@ export class WyreProvider {
     });
   }
 
-  public getFiatCurrencyLimits(fiatCurrency: string, coin: string) {
-    this.fiatAmountLimits.min = this.calculateFiatRate(1, fiatCurrency, coin);
-    this.fiatAmountLimits.max = this.calculateFiatRate(500, fiatCurrency, coin);
+  public getFiatCurrencyLimits(
+    fiatCurrency: string,
+    coin: string,
+    country?: string
+  ) {
+    let min, max: number;
+    if (!country || country != 'US') {
+      min = 1;
+      max = 500;
+    } else {
+      min = 1;
+      max = 250;
+    }
+    this.fiatAmountLimits.min = this.calculateFiatRate(min, fiatCurrency, coin);
+    this.fiatAmountLimits.max = this.calculateFiatRate(max, fiatCurrency, coin);
 
     return this.fiatAmountLimits;
   }
@@ -156,7 +158,6 @@ export class WyreProvider {
       'Content-Type': 'application/json'
     };
 
-    console.log('Trying getTransfer: ', url);
     return new Promise((resolve, reject) => {
       this.http.get(url, { headers }).subscribe(
         data => {

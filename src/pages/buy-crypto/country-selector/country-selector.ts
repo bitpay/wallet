@@ -56,10 +56,6 @@ export class CountrySelectorPage {
     ];
 
     this.completeCountryList = this.navParams.data.countryList;
-    console.log(
-      '---------- this.completeCountryList1: ',
-      this.completeCountryList
-    );
   }
 
   ionViewDidLoad() {
@@ -69,11 +65,6 @@ export class CountrySelectorPage {
   ionViewWillEnter() {
     this.useAsModal = this.navParams.data.useAsModal;
     if (_.isEmpty(this.completeCountryList)) {
-      console.log(
-        '----------completeCountryList IS EMPTY',
-        this.completeCountryList
-      );
-
       this.bitPayProvider.get(
         '/countries',
         ({ data }) => {
@@ -85,7 +76,6 @@ export class CountrySelectorPage {
       );
     } else {
       this.countryList = this.completeCountryList.slice(0, 20);
-      console.log('----------countryList', this.countryList);
     }
   }
 
@@ -108,7 +98,7 @@ export class CountrySelectorPage {
   }
 
   public save(selectedCountry): void {
-    this.viewCtrl.dismiss({ selectedCountry: selectedCountry });
+    this.viewCtrl.dismiss({ selectedCountry });
   }
 
   public findCountry(): void {

@@ -75,7 +75,10 @@ export class OnGoingProcessProvider {
       buyingGiftCard: this.translate.instant('Buying Gift Card...'),
       topup: this.translate.instant('Top up in progress...'),
       duplicatingWallet: this.translate.instant('Duplicating wallet...'),
-      connectingBitPayId: this.translate.instant('Connecting BitPay ID...')
+      connectingBitPayId: this.translate.instant('Connecting BitPay ID...'),
+      processingOrderReservation: this.translate.instant(
+        'Processing order reservation...'
+      )
     };
     return processNames;
   }
