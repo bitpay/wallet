@@ -25,11 +25,7 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import {
-  ActionSheetProvider,
-  GiftCardProvider,
-  IABCardProvider
-} from '../../../providers';
+import { ActionSheetProvider, IABCardProvider } from '../../../providers';
 import { getActivationFee } from '../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -102,7 +98,6 @@ export class AmountPage {
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
-    private giftCardProvider: GiftCardProvider,
     private currencyProvider: CurrencyProvider,
     private logger: Logger,
     private navParams: NavParams,
@@ -163,6 +158,7 @@ export class AmountPage {
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.cardName = this.navParams.get('cardName');
+    this.cardConfig = this.navParams.get('cardConfig');
   }
 
   async ionViewDidLoad() {
@@ -174,9 +170,6 @@ export class AmountPage {
     };
     this.setAvailableUnits();
     this.updateUnitUI();
-    this.cardConfig =
-      this.cardName &&
-      (await this.giftCardProvider.getCardConfig(this.cardName));
   }
 
   ionViewWillEnter() {
@@ -576,6 +569,7 @@ export class AmountPage {
         coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
+        cardConfig: this.cardConfig,
         cardName: this.cardName,
         description: this.description
       };
