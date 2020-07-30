@@ -53,6 +53,7 @@ export class BuyCardPage {
   enterAmount() {
     this.nav.push(AmountPage, {
       nextPage: 'ConfirmCardPurchasePage',
+      cardConfig: this.cardConfig,
       cardName: this.cardConfig.name,
       currency: this.cardConfig.currency,
       fixedUnit: true,
@@ -75,8 +76,9 @@ export class BuyCardPage {
   continue() {
     const data = {
       amount: this.amount,
-      currency: this.cardConfig.currency,
-      cardName: this.cardConfig.name
+      cardConfig: this.cardConfig,
+      cardName: this.cardConfig.name,
+      currency: this.cardConfig.currency
     };
     const page = this.cardConfig.mobilePaymentsSupported
       ? PhonePage

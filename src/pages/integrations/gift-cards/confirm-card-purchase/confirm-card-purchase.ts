@@ -161,9 +161,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.phone = this.navParams.get('phone');
-    this.cardConfig = await this.giftCardProvider.getCardConfig(
-      this.navParams.get('cardName')
-    );
+    this.cardConfig = this.navParams.get('cardConfig');
     this.displayNameIncludesGiftCard = this.cardConfig.displayName
       .toLowerCase()
       .includes('gift card');

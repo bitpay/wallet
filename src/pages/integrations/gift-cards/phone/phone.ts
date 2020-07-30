@@ -50,9 +50,7 @@ export class PhonePage {
   }
 
   async ngOnInit() {
-    this.cardConfig = await this.giftCardProvider.getCardConfig(
-      this.navParams.get('cardName')
-    );
+    this.cardConfig = this.navParams.get('cardConfig');
     const {
       phone,
       phoneCountryInfo: { phoneCountryCode, countryIsoCode }
