@@ -9,7 +9,13 @@
     <div class="bitpay-title">
       <ng-container *ngIf="brand === 'Mastercard' else visa">
         <img src="assets/img/bitpay-card/bitpay-card-mc.svg">
-        <span>BitPay Card ({{lastFourDigits}})</span>
+        <span>BitPay Card</span>
+        <ion-note>
+          <span translate>Virtual</span>
+        </ion-note>
+        <ion-note>
+          <span translate>Physical</span>
+        </ion-note>
       </ng-container>
       <ng-template #visa>
         <img src="assets/img/bitpay-card/bitpay-card-visa.svg">

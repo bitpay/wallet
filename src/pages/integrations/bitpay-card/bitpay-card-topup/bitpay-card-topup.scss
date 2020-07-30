@@ -7,6 +7,15 @@ page-bitpay-card-topup {
       width: 3.5rem;
       margin-right: 1.5rem;
     }
+    ion-note.note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      margin: 0 5px;
+    }
   }
   .bp-list {
     .sub-title {
