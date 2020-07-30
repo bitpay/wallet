@@ -117,15 +117,15 @@
 
     <info-sheet-template *ngSwitchCase="'linkEthWallet'" type="{{ params.wallets[0] ? 'info' : 'warning' }}">
       <span *ngIf="params.wallets && params.wallets.length > 0" sheet-title-text translate>Select an Ethereum Wallet</span>
-      <span *ngIf="!params.wallets[0]" sheet-title-text translate>Ethereum wallet required</span>
+      <span *ngIf="!params.wallets[0]" sheet-title-text translate>Ethereum testnet wallet required</span>
       <span *ngIf="params.wallets && params.wallets.length > 0 && !params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
-      <span *ngIf="params.wallets && params.wallets.length > 0 && params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this multisig to use for transaction costs?</span>
+      <span *ngIf="params.wallets && params.wallets.length > 0 && params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this multisig to use for transaction costs? This feature is only available for the KOVAN TESTNET. ETH Multisig wallets for MAINNET are not yet allowed.</span>
 
       <span *ngIf="!params.wallets[0] && !params.isEthMultisig" sheet-text translate>
         In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
       <span *ngIf="!params.wallets[0] && params.isEthMultisig" sheet-text translate>
-        In order to create this multisig wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
+        In order to create this multisig wallet, an Ethereum (ETH) testnet wallet is required. This feature is only available for the KOVAN TESTNET. ETH Multisig wallets for MAINNET are not yet allowed.
       </span>
 
       <span sheet-text>
@@ -138,7 +138,8 @@
         </div>
       </span>
 
-      <span sheet-button-text translate [ngClass]="{'sheet-btn default': !params.wallets[0] }">Go Back</span>
+      <span sheet-button-text *ngIf="params.wallets[0]" translate>GO BACK</span>
+      <span sheet-button-text *ngIf="!params.wallets[0]" translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">

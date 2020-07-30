@@ -445,7 +445,7 @@ export class CreateWalletPage implements OnInit {
     walletSelector.present();
     walletSelector.onDidDismiss(pairedWallet => {
       this.isOpenSelector = false;
-      if (pairedWallet) {
+      if (!_.isEmpty(pairedWallet)) {
         this.pairedWallet = pairedWallet;
         this.createForm.controls['testnetEnabled'].setValue(
           this.pairedWallet.network == 'testnet' ? true : false
