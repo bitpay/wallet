@@ -29,5 +29,11 @@ export const TokenOpts = {
     symbol: 'BUSD',
     decimal: 18,
     address: '0x4fabb145d64652a948d72533023f6e7a623c7c53'
-  }
+  } /* ,  USD COIN TESTNET
+  '0x44d69d16C711BF966E3d00A46f96e02D16BDdf1f': {
+    name: 'USD Coin Testnet',
+    symbol: 'USDC',
+    decimal: 18,
+    address: '0x44d69d16C711BF966E3d00A46f96e02D16BDdf1f'
+  } */
 };
