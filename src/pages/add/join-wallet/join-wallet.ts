@@ -157,7 +157,7 @@ export class JoinWalletPage {
     walletSelector.present();
     walletSelector.onDidDismiss(pairedWallet => {
       this.isOpenSelector = false;
-      if (pairedWallet) {
+      if (!_.isEmpty(pairedWallet)) {
         this.pairedWallet = pairedWallet;
       }
     });
