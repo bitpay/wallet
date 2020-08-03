@@ -178,13 +178,30 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.navCtrl.swipeBackEnabled = false;
 
     this.network = this.giftCardProvider.getNetwork();
-    this.wallets = this.profileProvider.getWallets({
+
+    const walletOptions = {
       onlyComplete: true,
       network: this.network,
-      hasFunds: true,
+      hasFunds: true
+    };
+    this.wallets = this.profileProvider.getWallets({
+      ...walletOptions,
       minFiatCurrency: { amount: this.amount, currency: this.currency }
     });
-    if (_.isEmpty(this.wallets)) {
+
+    const pendingWallets = this.profileProvider.getWallets({
+      ...walletOptions,
+      minPendingAmount: { amount: this.amount, currency: this.currency }
+    });
+
+    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
+      const title = this.translate.instant(
+        'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
+      );
+      const subtitle = this.translate.instant('Not enough confirmed funds');
+      this.errorsProvider.showDefaultError(subtitle, title);
+      return;
+    } else if (_.isEmpty(this.wallets)) {
       this.errorsProvider.showNoWalletsAvailableInfo();
       return;
     }
