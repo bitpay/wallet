@@ -166,10 +166,10 @@ export class BitPayCardTopUpPage {
         });
 
         if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
-          const title = this.translate.instant(
+          const subtitle = this.translate.instant(
             'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
           );
-          const subtitle = this.translate.instant('Not enough confirmed funds');
+          const title = this.translate.instant('Not enough confirmed funds');
           this.errorsProvider.showDefaultError(subtitle, title);
           return;
         } else if (_.isEmpty(this.wallets)) {
