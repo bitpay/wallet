@@ -63,6 +63,15 @@ export class PlatformProvider {
     return window.navigator.userAgent;
   }
 
+  public isMacApp(): boolean {
+    return (
+      this.isElectronPlatform() &&
+      this.getUserAgent()
+        .toLowerCase()
+        .includes('macintosh')
+    );
+  }
+
   public isElectronPlatform(): boolean {
     const userAgent =
       navigator && navigator.userAgent

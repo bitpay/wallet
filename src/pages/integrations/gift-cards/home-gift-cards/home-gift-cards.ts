@@ -12,7 +12,8 @@ import { debounceTime } from 'rxjs/operators';
 import {
   ActionSheetProvider,
   AppProvider,
-  PersistenceProvider
+  PersistenceProvider,
+  PlatformProvider
 } from '../../../../providers';
 import {
   GiftCardProvider,
@@ -81,7 +82,8 @@ export class HomeGiftCards implements OnInit {
     private appProvider: AppProvider,
     private giftCardProvider: GiftCardProvider,
     private navCtrl: NavController,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    public platformProvider: PlatformProvider
   ) {}
 
   async ngOnInit() {
