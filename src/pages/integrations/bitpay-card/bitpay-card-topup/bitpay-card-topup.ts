@@ -167,7 +167,7 @@ export class BitPayCardTopUpPage {
 
         if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
           const subtitle = this.translate.instant(
-            'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
+            'You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm.'
           );
           const title = this.translate.instant('Not enough confirmed funds');
           this.errorsProvider.showDefaultError(subtitle, title);
