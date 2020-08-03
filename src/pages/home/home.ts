@@ -355,6 +355,7 @@ export class HomePage {
       a => a.name === 'amazon-gift-cards'
     );
     !alreadyVisible &&
+      !this.platformProvider.isMacApp() &&
       this.advertisements.unshift({
         name: 'amazon-gift-cards',
         title: this.translate.instant('Shop at Amazon'),
