@@ -194,7 +194,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       minPendingAmount: { amount: this.amount, currency: this.currency }
     });
 
-    if (!_.isEmpty(this.wallets) && _.isEmpty(pendingWallets)) {
+    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
       const subtitle = this.translate.instant(
         'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
       );
