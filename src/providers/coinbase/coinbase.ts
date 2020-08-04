@@ -652,14 +652,15 @@ export class CoinbaseProvider {
     });
   }
 
-  public updateExchangeRates(): void {
+  public updateExchangeRates(currency?: string): void {
     if (!this.coinbaseData || !this.coinbaseData['user']['native_currency'])
       return;
+
+    currency = currency
+      ? currency
+      : this.coinbaseData['user']['native_currency'];
     const url =
-      this.credentials.API +
-      '/v2/exchange-rates' +
-      '?currency=' +
-      this.coinbaseData['user']['native_currency'];
+      this.credentials.API + '/v2/exchange-rates' + '?currency=' + currency;
 
     this.logger.debug('Coinbase: Getting Exchange Rates...');
     this.http.get(url).subscribe(
@@ -759,6 +760,55 @@ export class CoinbaseProvider {
           type: 'exchange'
         });
       });
+    });
+  }
+
+  public payInvoice(invoiceId, currency, twoFactorCode?) {
+    return new Promise((resolve, reject) => {
+      const url = 'https://bitpay.com/oauth/coinbase/pay/' + invoiceId;
+      const data = {
+        currency,
+        token: this.accessToken,
+        twoFactorCode
+      };
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      });
+
+      this.logger.debug('Coinbase: Paying invoice...');
+      this.http.post(url, data, { headers }).subscribe(
+        data => {
+          this.logger.info('Coinbase: Pay Invoce SUCCESS ' + data);
+          return resolve();
+        },
+        data => {
+          if (this.isExpiredTokenError(data.error.errors)) {
+            this.doRefreshToken()
+              .then(_ => {
+                return this.payInvoice(invoiceId, currency, twoFactorCode);
+              })
+              .catch(e => {
+                this.logger.warn(e);
+                setTimeout(() => {
+                  return this.payInvoice(invoiceId, currency, twoFactorCode);
+                }, 5000);
+              });
+          } else if (
+            data.error &&
+            data.error.errors &&
+            data.error.errors[0].id == 'two_factor_required'
+          ) {
+            this.logger.error('Coinbase: 2FA is required ' + data.status);
+            return reject('2fa'); // return string to identify
+          } else {
+            this.logger.error(
+              'Coinbase: Send Transaction ERROR ' + data.status
+            );
+            return reject(this.parseErrorsAsString(data.error));
+          }
+        }
+      );
     });
   }
 }
