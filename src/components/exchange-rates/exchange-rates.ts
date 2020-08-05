@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { PricePage } from '../../pages/home/price-page/price-page';
-import {
-  ConfigProvider,
-  CurrencyProvider,
-  ExchangeRatesProvider,
-  Logger
-} from '../../providers';
+import { ConfigProvider, CurrencyProvider, Logger } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
+import { DateRanges, ExchangeRate, ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 
 export interface Card {
   unitCode: string;
@@ -82,50 +77,31 @@ export class ExchangeRates {
   public getPrices(force: boolean = false) {
     this.setIsoCode();
 
-    _.forEach(this.coins, (coin, index) => {
-      this.exchangeRatesProvider
-        .getHistoricalRates(coin.unitCode, this.isoCode, force)
-        .subscribe(response => {
-          this.coins[index].historicalRates = response;
-          this.updateValues(index);
+    // TODO: Add a new endpoint in BWS that
+    // provides JUST  the current prices and the delta.
+    this.exchangeRatesProvider
+      .fetchHistoricalRates(this.isoCode, force, DateRanges.Day)
+      .then(response => {
+        _.forEach(this.coins, (coin, index) => {
+          if (response[coin.unitCode])
+            this.update(index, response[coin.unitCode]);
         });
-      err => {
-        this.logger.error('Error getting rates:', err);
-      };
-    });
+        err => {
+          this.logger.error('Error getting rates:', err);
+        };
+      });
   }
 
-  public updateCurrentPrice() {
-    const lastRequest = this.coins[0].historicalRates[0].ts;
-    if (moment(lastRequest).isBefore(moment(), 'days')) {
-      this.getPrices();
+  private update(i: number, values: ExchangeRate[]) {
+    if (!values[0] || !_.last(values)) {
+      this.logger.warn('No exchange rate data');
       return;
     }
-    _.forEach(this.coins, (coin, i) => {
-      this.exchangeRatesProvider
-        .getCurrentRate(this.isoCode, coin.unitCode)
-        .subscribe(
-          response => {
-            this.coins[i].historicalRates.unshift(response);
-            this.updateValues(i);
-          },
-          err => {
-            this.logger.error('Error getting current rate:', err);
-          }
-        );
-    });
-  }
-
-  private updateValues(i: number) {
-    this.coins[i].currentPrice = this.coins[i].historicalRates[0].rate;
-    this.coins[i].averagePriceAmount =
-      this.coins[i].currentPrice -
-      this.coins[i].historicalRates[this.coins[i].historicalRates.length - 1]
-        .rate;
+    const lastRate = _.last(values).rate;
+    this.coins[i].currentPrice = values[0].rate;
+    this.coins[i].averagePriceAmount = this.coins[i].currentPrice - lastRate;
     this.coins[i].averagePrice =
-      (this.coins[i].averagePriceAmount * 100) /
-      this.coins[i].historicalRates[this.coins[i].historicalRates.length - 1]
-        .rate;
+      (this.coins[i].averagePriceAmount * 100) / lastRate;
   }
 
   private setIsoCode() {
