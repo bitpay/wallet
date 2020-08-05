@@ -5,12 +5,11 @@ import * as moment from 'moment';
 import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
 import { FormatCurrencyPipe } from '../../../pipes/format-currency';
+import { ConfigProvider, Logger, SimplexProvider } from '../../../providers';
 import {
-  ConfigProvider,
-  Logger,
-  SimplexProvider
-} from '../../../providers';
-import { DateRanges, ExchangeRatesProvider } from '../../../providers/exchange-rates/exchange-rates';
+  DateRanges,
+  ExchangeRatesProvider
+} from '../../../providers/exchange-rates/exchange-rates';
 import { AmountPage } from '../../send/amount/amount';
 
 @Component({

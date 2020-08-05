@@ -11,14 +11,13 @@ export interface ExchangeRate {
 
 export enum DateRanges {
   Day = 1,
-    Week = 7,
-    Month = 30,
+  Week = 7,
+  Month = 30
 }
 
 export interface HistoricalRates {
-  'btc': ExchangeRate[],
-};
-
+  btc: ExchangeRate[];
+}
 
 @Injectable()
 export class ExchangeRatesProvider {
@@ -34,32 +33,33 @@ export class ExchangeRatesProvider {
     const defaults = this.configProvider.getDefaults();
     this.bwsURL = defaults.bws.url;
     this.ratesCache = {
-      1:[], 
-      7:[], 
-      30:[], 
+      1: [],
+      7: [],
+      30: []
     };
   }
 
   public getLastDayRates(): Promise<HistoricalRates> {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    return  this.fetchHistoricalRates(
-      isoCode,
-    );
+    return this.fetchHistoricalRates(isoCode);
   }
 
   public fetchHistoricalRates(
     isoCode: string, // fiat Code
     force: boolean = false, // TODO: review
-    dateRange: DateRanges = DateRanges.Day,
+    dateRange: DateRanges = DateRanges.Day
   ): Promise<HistoricalRates> {
-    const firstDateTs = moment()
+    const firstDateTs =
+      moment()
         .subtract(dateRange, 'days')
         .startOf('hour')
         .unix() * 1000;
 
     if (_.isEmpty(this.ratesCache[dateRange]) || force) {
-      this.logger.debug(`Refreshing Exchange rates for ${isoCode} period ${dateRange}`);
+      this.logger.debug(
+        `Refreshing Exchange rates for ${isoCode} period ${dateRange}`
+      );
       // This pulls ALL coins in one query
       const req = this.httpClient.get<ExchangeRate[]>(
         `${this.bwsURL}/v2/fiatrates/${isoCode}?ts=${firstDateTs}`

@@ -4,7 +4,11 @@ import * as _ from 'lodash';
 import { PricePage } from '../../pages/home/price-page/price-page';
 import { ConfigProvider, CurrencyProvider, Logger } from '../../providers';
 import { Coin } from '../../providers/currency/currency';
-import { DateRanges, ExchangeRate, ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
+import {
+  DateRanges,
+  ExchangeRate,
+  ExchangeRatesProvider
+} from '../../providers/exchange-rates/exchange-rates';
 
 export interface Card {
   unitCode: string;
