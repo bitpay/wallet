@@ -5,12 +5,11 @@ import * as moment from 'moment';
 import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
 import { FormatCurrencyPipe } from '../../../pipes/format-currency';
+import { ConfigProvider, Logger, SimplexProvider } from '../../../providers';
 import {
-  ConfigProvider,
-  ExchangeRatesProvider,
-  Logger,
-  SimplexProvider
-} from '../../../providers';
+  DateRanges,
+  ExchangeRatesProvider
+} from '../../../providers/exchange-rates/exchange-rates';
 import { AmountPage } from '../../send/amount/amount';
 
 @Component({
@@ -23,9 +22,9 @@ export class PricePage {
   public activeOption: string = '1D';
   public availableOptions;
   public updateOptions = [
-    { label: '1D', lastDate: 1 },
-    { label: '1W', lastDate: 7 },
-    { label: '1M', lastDate: 31 }
+    { label: '1D', dateRange: DateRanges.Day },
+    { label: '1W', dateRange: DateRanges.Week },
+    { label: '1M', dateRange: DateRanges.Month }
   ];
   private supportedFiatCodes: string[] = [
     'USD',
@@ -52,12 +51,11 @@ export class PricePage {
     private simplexProvider: SimplexProvider
   ) {
     this.card = _.clone(this.navParams.data.card);
-    this.updateValues();
     this.setIsoCode();
   }
 
   ionViewDidLoad() {
-    this.setPrice();
+    this.getPrice(DateRanges.Day);
     this.drawCanvas();
   }
 
@@ -69,13 +67,13 @@ export class PricePage {
     });
   }
 
-  private getPrice(lastDate) {
+  private getPrice(dateRange) {
     this.canvas.loading = true;
     this.exchangeRatesProvider
-      .getHistoricalRates(this.card.unitCode, this.isoCode, false, lastDate)
-      .subscribe(
+      .fetchHistoricalRates(this.isoCode, false, dateRange)
+      .then(
         response => {
-          this.card.historicalRates = response;
+          this.card.historicalRates = response[this.card.unitCode];
           this.updateValues();
           this.setPrice();
           this.redrawCanvas();
@@ -135,6 +133,8 @@ export class PricePage {
 
   private redrawCanvas() {
     this.canvas.loading = false;
+    if (!this.canvas.chart) return;
+
     const data = this.card.historicalRates.map(rate => [rate.ts, rate.rate]);
     this.canvas.chart.updateOptions(
       {
@@ -172,9 +172,9 @@ export class PricePage {
   }
 
   public updateChart(option) {
-    const { label, lastDate } = option;
+    const { label, dateRange } = option;
     this.activeOption = label;
-    this.getPrice(lastDate);
+    this.getPrice(dateRange);
   }
 
   private updateValues() {

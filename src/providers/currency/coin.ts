@@ -63,7 +63,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
-      ratesApi: 'https://bitpay.com/api/rates',
+      ratesApi: 'https://bitpay.com/api/rates/btc',
       blockExplorerUrls: 'bitpay.com/insight/#/BTC/'
     },
     feeInfo: {
