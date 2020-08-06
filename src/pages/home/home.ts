@@ -276,7 +276,7 @@ export class HomePage {
       if (_.isString(data)) {
         data = JSON.parse(data);
       }
-      
+
       this.updateTotalBalance(data);
     });
   }

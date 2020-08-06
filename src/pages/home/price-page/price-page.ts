@@ -108,7 +108,8 @@ export class PricePage {
       this.card.historicalRates.length - 1
     ].rate;
     this.card.totalBalanceChangeAmount = price - minPrice;
-    this.card.totalBalanceChange = (this.card.totalBalanceChangeAmount * 100) / minPrice;
+    this.card.totalBalanceChange =
+      (this.card.totalBalanceChangeAmount * 100) / minPrice;
     const customPrecision = this.card.unitCode === 'xrp' ? 4 : 2;
     document.getElementById(
       'displayPrice'
@@ -186,7 +187,8 @@ export class PricePage {
       this.card.historicalRates.length - 1
     ].rate;
     this.card.totalBalanceChangeAmount = this.card.currentPrice - minPrice;
-    this.card.totalBalanceChange = (this.card.totalBalanceChangeAmount * 100) / minPrice;
+    this.card.totalBalanceChange =
+      (this.card.totalBalanceChangeAmount * 100) / minPrice;
   }
 
   private setIsoCode() {

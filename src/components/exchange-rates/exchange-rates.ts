@@ -103,7 +103,8 @@ export class ExchangeRates {
     }
     const lastRate = _.last(values).rate;
     this.coins[i].currentPrice = values[0].rate;
-    this.coins[i].totalBalanceChangeAmount = this.coins[i].currentPrice - lastRate;
+    this.coins[i].totalBalanceChangeAmount =
+      this.coins[i].currentPrice - lastRate;
     this.coins[i].totalBalanceChange =
       (this.coins[i].totalBalanceChangeAmount * 100) / lastRate;
   }

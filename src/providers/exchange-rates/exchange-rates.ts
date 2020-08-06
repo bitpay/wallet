@@ -4,8 +4,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ConfigProvider, Logger } from '../../providers';
 
-
-const EXPIRATION_TIME_MS = 5 * 60 *  1000 ;  // 5min
+const EXPIRATION_TIME_MS = 5 * 60 * 1000; // 5min
 
 export interface ExchangeRate {
   rate: number;
@@ -18,7 +17,6 @@ export enum DateRanges {
   Month = 30
 }
 
-
 export interface HistoricalRates {
   btc: ExchangeRate[];
   bch: ExchangeRate[];
@@ -27,8 +25,7 @@ export interface HistoricalRates {
 @Injectable()
 export class ExchangeRatesProvider {
   private bwsURL: string;
-  private ratesCache: any
-
+  private ratesCache: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -49,13 +46,13 @@ export class ExchangeRatesProvider {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
 
-    return this.fetchHistoricalRates(isoCode, false, DateRanges.Day).then(
-      x => {
-        let ret = {};
-        _.map(x,(v,k)=> {ret[k]=_.last(v).rate} );
-        return ret as HistoricalRates;
-      }
-    );
+    return this.fetchHistoricalRates(isoCode, false, DateRanges.Day).then(x => {
+      let ret = {};
+      _.map(x, (v, k) => {
+        ret[k] = _.last(v).rate;
+      });
+      return ret as HistoricalRates;
+    });
   }
 
   public fetchHistoricalRates(
@@ -69,11 +66,12 @@ export class ExchangeRatesProvider {
         .startOf('hour')
         .unix() * 1000;
 
-    const now = Date.now() ;
-    if (_.isEmpty(this.ratesCache[dateRange].data) 
-        || this.ratesCache[dateRange].expiration < now
-        || force) {
-
+    const now = Date.now();
+    if (
+      _.isEmpty(this.ratesCache[dateRange].data) ||
+      this.ratesCache[dateRange].expiration < now ||
+      force
+    ) {
       this.logger.debug(
         `Refreshing Exchange rates for ${isoCode} period ${dateRange}`
       );
@@ -84,7 +82,7 @@ export class ExchangeRatesProvider {
       );
 
       this.ratesCache[dateRange].data = req.first().toPromise();
-      this.ratesCache[dateRange].expiration = now  + EXPIRATION_TIME_MS;
+      this.ratesCache[dateRange].expiration = now + EXPIRATION_TIME_MS;
     }
     return this.ratesCache[dateRange].data;
   }
