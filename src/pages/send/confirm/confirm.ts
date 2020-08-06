@@ -323,7 +323,8 @@ export class ConfirmPage {
       );
     } else if (wallet && wallet.accounts) {
       // for payments with Coinbase accounts
-      this.totalAmount = tx.amount - this.navParams.data.minerFee;
+      this.tx.minerFee = this.navParams.data.minerFee;
+      this.totalAmount = tx.amount - this.tx.minerFee;
       this.totalAmountStr = this.decimalPipe.transform(
         this.totalAmount /
         this.currencyProvider.getPrecision(this.coin).unitToSatoshi,

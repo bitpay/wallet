@@ -58,7 +58,6 @@ export class CoinbaseProvider {
       user: {},
       txs: {}
     };
-    this.config = this.configProvider.get();
   }
 
   public setCredentials() {
@@ -655,7 +654,12 @@ export class CoinbaseProvider {
   }
 
   public updateExchangeRates(currency?: string): void {
-    if (!this.coinbaseData) return;
+    if (!this.coinbaseData || !this.coinbaseData['user']['native_currency'])
+      return;
+
+    currency = currency
+      ? currency
+      : this.coinbaseData['user']['native_currency'];
 
     currency = currency
       ? currency

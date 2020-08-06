@@ -195,7 +195,7 @@
 
       <div class="summary-line"></div>
 
-      <ion-item>
+      <ion-item *ngIf="!coinbaseAccount">
         <ion-label>
           <div class="main-label total-label" [ngClass]="{'subtotal-label': !wallet?.credentials.token}">
             <span class="title" translate>SUBTOTAL</span>
@@ -211,15 +211,12 @@
         </ion-note>
       </ion-item>
 
-      <div class="amount-details" padding-bottom>
+      <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           {{tx.amount | satToFiat: tx.coin}}
         </div>
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
-        </div>
-        <div class="total-amount-note subtotal-amount-note" *ngIf="coinbaseAccount">
-          <span translate>Miner fee not required for payments with Coinbase accounts</span>
         </div>
       </div>
 
@@ -243,6 +240,13 @@
       <div class="amount-details" *ngIf="totalAmount && !wallet?.credentials.token" padding-bottom>
         <div class="total-amount-note total-amount-note">
           {{totalAmount | satToFiat: tx.coin}}
+        </div>
+      </div>
+
+      <div class="amount-details" padding-bottom *ngIf="coinbaseAccount">
+        <div class="total-amount-note subtotal-amount-note">
+          <div translate>Miner fee not required for payments with Coinbase accounts</div>
+          <div translate>You are saving {{tx.minerFee | satToUnit: tx.coin}}</div>
         </div>
       </div>
 
