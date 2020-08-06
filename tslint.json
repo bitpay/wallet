@@ -1,7 +1,6 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    // "interface-name": [true, "never-prefix"],
     "no-submodule-imports": [
       true,
       "zone.js",
@@ -10,10 +9,6 @@
       "ts-md5/dist/md5",
       "ionic-angular/gestures/gesture"
     ],
-
-    // "no-any": true,
-
-    // Temporarily relax rules
     "member-ordering": false,
     "variable-name": false,
     "no-empty": false,
@@ -26,6 +21,7 @@
     "prefer-for-of": false,
     "forin": false,
     "prefer-const": false,
+    "no-console": false,
     "no-unused-expression": false,
     "no-eval": false,
     "no-object-literal-type-assertion": false,

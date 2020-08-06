@@ -464,7 +464,6 @@ export class WalletProvider {
     isoCode: string,
     lastDayRatesArray: any
   ): string {
-console.log('[wallet.ts.467]', coin, lastDayRatesArray[coin]); // TODO
     const balanceLastDay = this.rateProvider.toFiat(balanceSat, isoCode, coin, {
       customRate: lastDayRatesArray[coin]
     });

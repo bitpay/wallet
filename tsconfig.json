@@ -22,5 +22,8 @@
   "atom": {
     "rewriteTsconfig": false
   },
-  "types": ["lodash", "node", "chrome"]
+  "types": ["lodash", "node", "chrome"],
+  "rules": {
+    "no-console": false
+  }
 }
