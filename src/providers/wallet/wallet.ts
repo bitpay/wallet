@@ -503,7 +503,7 @@ export class WalletProvider {
       return {
         isoCode,
         totalBalanceAlternative: '0',
-        averagePrice: 0
+        totalBalanceChange: 0
       };
 
     const totalAmountArray = [];
@@ -530,14 +530,14 @@ export class WalletProvider {
     const difference =
       parseFloat(totalBalanceAlternative.replace(/,/g, '')) -
       parseFloat(totalBalanceAlternativeLastDay.replace(/,/g, ''));
-    const averagePrice =
+    const totalBalanceChange =
       (difference * 100) /
       parseFloat(totalBalanceAlternative.replace(/,/g, ''));
 
     return {
       totalBalanceAlternativeIsoCode: isoCode,
       totalBalanceAlternative,
-      averagePrice
+      totalBalanceChange
     };
   }
 

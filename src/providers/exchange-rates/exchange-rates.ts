@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ConfigProvider, Logger } from '../../providers';
 
+const EXPIRATION_TIME_MS = 5 * 60 * 1000; // 5min
+
 export interface ExchangeRate {
   rate: number;
   ts: number;
@@ -17,6 +19,7 @@ export enum DateRanges {
 
 export interface HistoricalRates {
   btc: ExchangeRate[];
+  bch: ExchangeRate[];
 }
 
 @Injectable()
@@ -42,7 +45,14 @@ export class ExchangeRatesProvider {
   public getLastDayRates(): Promise<HistoricalRates> {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    return this.fetchHistoricalRates(isoCode);
+
+    return this.fetchHistoricalRates(isoCode, false, DateRanges.Day).then(x => {
+      let ret = {};
+      _.map(x, (v, k) => {
+        ret[k] = _.last(v).rate;
+      });
+      return ret as HistoricalRates;
+    });
   }
 
   public fetchHistoricalRates(
@@ -56,17 +66,24 @@ export class ExchangeRatesProvider {
         .startOf('hour')
         .unix() * 1000;
 
-    if (_.isEmpty(this.ratesCache[dateRange]) || force) {
+    const now = Date.now();
+    if (
+      _.isEmpty(this.ratesCache[dateRange].data) ||
+      this.ratesCache[dateRange].expiration < now ||
+      force
+    ) {
       this.logger.debug(
         `Refreshing Exchange rates for ${isoCode} period ${dateRange}`
       );
+
       // This pulls ALL coins in one query
       const req = this.httpClient.get<ExchangeRate[]>(
         `${this.bwsURL}/v2/fiatrates/${isoCode}?ts=${firstDateTs}`
       );
 
-      this.ratesCache[dateRange] = req.first().toPromise();
+      this.ratesCache[dateRange].data = req.first().toPromise();
+      this.ratesCache[dateRange].expiration = now + EXPIRATION_TIME_MS;
     }
-    return this.ratesCache[dateRange];
+    return this.ratesCache[dateRange].data;
   }
 }

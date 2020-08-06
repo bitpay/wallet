@@ -14,8 +14,8 @@ export interface Card {
   unitCode: string;
   historicalRates: any;
   currentPrice: number;
-  averagePrice: number;
-  averagePriceAmount: number;
+  totalBalanceChange: number;
+  totalBalanceChangeAmount: number;
   backgroundColor: string;
   gradientBackgroundColor: string;
   name: string;
@@ -60,8 +60,8 @@ export class ExchangeRates {
         unitCode: coin,
         historicalRates: [],
         currentPrice: 0,
-        averagePrice: 0,
-        averagePriceAmount: 0,
+        totalBalanceChange: 0,
+        totalBalanceChangeAmount: 0,
         backgroundColor,
         gradientBackgroundColor,
         name: this.currencyProvider.getCoinName(coin as Coin)
@@ -103,9 +103,10 @@ export class ExchangeRates {
     }
     const lastRate = _.last(values).rate;
     this.coins[i].currentPrice = values[0].rate;
-    this.coins[i].averagePriceAmount = this.coins[i].currentPrice - lastRate;
-    this.coins[i].averagePrice =
-      (this.coins[i].averagePriceAmount * 100) / lastRate;
+    this.coins[i].totalBalanceChangeAmount =
+      this.coins[i].currentPrice - lastRate;
+    this.coins[i].totalBalanceChange =
+      (this.coins[i].totalBalanceChangeAmount * 100) / lastRate;
   }
 
   private setIsoCode() {

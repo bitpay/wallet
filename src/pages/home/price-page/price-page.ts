@@ -107,8 +107,9 @@ export class PricePage {
     const minPrice = this.card.historicalRates[
       this.card.historicalRates.length - 1
     ].rate;
-    this.card.averagePriceAmount = price - minPrice;
-    this.card.averagePrice = (this.card.averagePriceAmount * 100) / minPrice;
+    this.card.totalBalanceChangeAmount = price - minPrice;
+    this.card.totalBalanceChange =
+      (this.card.totalBalanceChangeAmount * 100) / minPrice;
     const customPrecision = this.card.unitCode === 'xrp' ? 4 : 2;
     document.getElementById(
       'displayPrice'
@@ -121,14 +122,14 @@ export class PricePage {
     document.getElementById(
       'averagePriceAmount'
     ).textContent = `${this.formatCurrencyPipe.transform(
-      this.card.averagePriceAmount,
+      this.card.totalBalanceChangeAmount,
       this.isoCode,
       customPrecision
     )}`;
     document.getElementById(
       'averagePricePercent'
     ).textContent = `${this.formatCurrencyPipe.transform(
-      this.card.averagePrice,
+      this.card.totalBalanceChange,
       '%',
       2
     )}`;
@@ -185,8 +186,9 @@ export class PricePage {
     const minPrice = this.card.historicalRates[
       this.card.historicalRates.length - 1
     ].rate;
-    this.card.averagePriceAmount = this.card.currentPrice - minPrice;
-    this.card.averagePrice = (this.card.averagePriceAmount * 100) / minPrice;
+    this.card.totalBalanceChangeAmount = this.card.currentPrice - minPrice;
+    this.card.totalBalanceChange =
+      (this.card.totalBalanceChangeAmount * 100) / minPrice;
   }
 
   private setIsoCode() {
