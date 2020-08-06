@@ -21,6 +21,7 @@ export enum DateRanges {
 
 export interface HistoricalRates {
   btc: ExchangeRate[];
+  bch: ExchangeRate[];
 }
 
 @Injectable()
@@ -47,7 +48,14 @@ export class ExchangeRatesProvider {
   public getLastDayRates(): Promise<HistoricalRates> {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    return this.fetchHistoricalRates(isoCode);
+
+    return this.fetchHistoricalRates(isoCode, false, DateRanges.Day).then(
+      x => {
+        let ret = {};
+        _.map(x,(v,k)=> {ret[k]=_.last(v).rate} );
+        return ret as HistoricalRates;
+      }
+    );
   }
 
   public fetchHistoricalRates(

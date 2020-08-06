@@ -70,7 +70,7 @@ export class HomePage {
   public testingAds: Advertisement[] = [];
   public totalBalanceAlternative: string = '0';
   public totalBalanceAlternativeIsoCode: string;
-  public averagePrice: number;
+  public totalBalanceChange: number;
   public showTotalBalance: boolean = true;
   public fetchingStatus: boolean;
   public showRateCard: boolean;
@@ -276,6 +276,7 @@ export class HomePage {
       if (_.isString(data)) {
         data = JSON.parse(data);
       }
+      
       this.updateTotalBalance(data);
     });
   }
@@ -283,7 +284,7 @@ export class HomePage {
   private updateTotalBalance(data) {
     this.zone.run(() => {
       this.totalBalanceAlternative = data.totalBalanceAlternative;
-      this.averagePrice = data.averagePrice;
+      this.totalBalanceChange = data.totalBalanceChange;
       this.totalBalanceAlternativeIsoCode = data.totalBalanceAlternativeIsoCode;
     });
   }

@@ -14,8 +14,8 @@
           <span class="unit" *ngIf="isoCode !== 'USD' && isIsoCodeSupported">{{ isoCode }}</span>
           <span class="unit" *ngIf="!isIsoCodeSupported">USD</span>
         </div>
-        <div class="average-container" [ngClass]="coin.averagePrice > 0 ? 'possitive-avg' : 'negative-avg'">
-          <span class="average"><span *ngIf="coin.averagePrice > 0">+</span>{{ coin.averagePrice | number:'1.2-2' }}%</span>
+        <div class="average-container" [ngClass]="coin.totalBalanceChange > 0 ? 'possitive-avg' : 'negative-avg'">
+          <span class="average"><span *ngIf="coin.totalBalanceChange > 0">+</span>{{ coin.totalBalanceChange | number:'1.2-2' }}%</span>
         </div>
       </ion-note>
     </button>

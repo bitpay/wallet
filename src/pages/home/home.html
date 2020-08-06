@@ -105,10 +105,10 @@
       </span>
     </div>
     <div class="average-container">
-      <div *ngIf="averagePrice || averagePrice === 0" [ngClass]="averagePrice >= 0 ? 'possitive-avg' : 'negative-avg'">
-        <span class="average"><span *ngIf="averagePrice > 0">+</span>{{ averagePrice | number: '1.2-2' }}%</span>
+      <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
+        <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
       </div>
-      <span *ngIf="averagePrice || averagePrice === 0" class="date" translate>Last day</span>
+      <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>Last day</span>
     </div>
   </div>
 
