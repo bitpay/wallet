@@ -83,15 +83,15 @@ export class PricePage {
     this.exchangeRatesProvider
       .fetchHistoricalRates(this.isoCode, false, dateRange)
       .then(
-      response => {
-        this.card.historicalRates = response[this.card.unitCode];
-        this.updateValues();
-        this.setPrice();
-        this.redrawCanvas();
-      },
-      err => {
-        this.logger.error('Error getting rates:', err);
-      }
+        response => {
+          this.card.historicalRates = response[this.card.unitCode];
+          this.updateValues();
+          this.setPrice();
+          this.redrawCanvas();
+        },
+        err => {
+          this.logger.error('Error getting rates:', err);
+        }
       );
   }
 
