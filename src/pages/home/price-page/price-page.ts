@@ -55,8 +55,11 @@ export class PricePage {
   }
 
   ionViewDidLoad() {
-    this.getPrice(DateRanges.Day);
     this.drawCanvas();
+    // Let the canvas settle
+    setTimeout(() => {
+      this.getPrice(DateRanges.Day);
+    }, 1000);
   }
 
   public goToBuyCrypto() {
