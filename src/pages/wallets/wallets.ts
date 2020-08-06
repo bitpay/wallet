@@ -70,6 +70,7 @@ export class WalletsPage {
   public showCoinbase: boolean;
   public coinbaseLinked: boolean;
   public coinbaseData: object = {};
+  public coinbaseAltCurrency: string;
 
   constructor(
     private plt: Platform,
@@ -122,9 +123,10 @@ export class WalletsPage {
     if (this.coinbaseLinked) {
       if (force || !this.coinbaseData) {
         const config = this.configProvider.get();
-        this.coinbaseProvider.updateExchangeRates(
-          config.wallet.settings.alternativeIsoCode
-        );
+        this.coinbaseAltCurrency = force
+          ? config.wallet.settings.alternativeIsoCode
+          : null;
+        this.coinbaseProvider.updateExchangeRates(this.coinbaseAltCurrency);
         this.coinbaseProvider.preFetchAllData(this.coinbaseData);
       } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
     }

@@ -8,7 +8,6 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
-import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -39,8 +38,7 @@ export class IncomingDataProvider {
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider,
-    private persistenceProvider: PersistenceProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -275,15 +273,11 @@ export class IncomingDataProvider {
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
-        const showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
-          'coinbase'
-        );
         for (const option of payProOptions.paymentOptions) {
           const fundedWallets = this.profileProvider.getWallets({
             coin: option.currency.toLowerCase(),
             network: option.network,
-            minAmount: option.estimatedAmount,
-            showCoinbase
+            minAmount: option.estimatedAmount
           });
           if (fundedWallets.length === 0) {
             option.disabled = true;

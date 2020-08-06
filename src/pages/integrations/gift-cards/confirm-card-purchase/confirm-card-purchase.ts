@@ -767,9 +767,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    const showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
-      'coinbase'
-    );
+    const showCoinbase =
+      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+      this.coinbaseProvider.isLinked();
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,

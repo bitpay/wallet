@@ -94,6 +94,7 @@ export class ConfirmPage {
   // Coinbase
   public fromCoinbase;
   public coinbaseAccount;
+  public showCoinbase;
 
   public mainTitle: string;
   public isSpeedUpTx: boolean;
@@ -149,6 +150,9 @@ export class ConfirmPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
+    this.showCoinbase =
+      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+      this.coinbaseProvider.isLinked();
     // this.isCardPurchase =
     //   this.navParams.data.payProUrl &&
     //   this.navParams.data.payProUrl.includes('redir=wc');
@@ -349,7 +353,7 @@ export class ConfirmPage {
       this.tx.network === this.wallet.network
     ) {
       this.setWallet(this.wallet);
-    } else if (this.wallets.length > 1) {
+    } else if (this.wallets.length > 1 || this.showCoinbase) {
       return this.showWallets();
     } else if (this.wallets.length) {
       this.setWallet(this.wallets[0]);
@@ -371,7 +375,7 @@ export class ConfirmPage {
       coin
     });
 
-    if (_.isEmpty(this.wallets)) {
+    if (_.isEmpty(this.wallets) && !this.showCoinbase) {
       const msg = this.translate.instant(
         'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
       );
@@ -1538,15 +1542,12 @@ export class ConfirmPage {
 
   public showWallets(): void {
     this.isOpenSelector = true;
-    const showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
-      'coinbase'
-    );
     const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
       title: this.walletSelectorTitle,
-      showCoinbase,
+      showCoinbase: this.showCoinbase,
       coin: this.coin
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
