@@ -73,6 +73,7 @@ export interface WalletSelectorParams {
   title: string;
   showCoinbase?: boolean;
   minFiatCurrency?: { amount: any; currency: string };
+  coin?: string;
 }
 
 export interface WalletReceiveParams {

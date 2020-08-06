@@ -30,6 +30,7 @@ import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -92,6 +93,7 @@ export class ConfirmPage {
 
   // Coinbase
   public fromCoinbase;
+  public coinbaseAccount;
 
   public mainTitle: string;
   public isSpeedUpTx: boolean;
@@ -129,7 +131,8 @@ export class ConfirmPage {
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    protected homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -305,7 +308,7 @@ export class ConfirmPage {
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(
       this.tx.amount /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+      this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
   }
@@ -315,7 +318,15 @@ export class ConfirmPage {
       this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
       this.totalAmountStr = this.decimalPipe.transform(
         (tx.amount + tx.txp[wallet.id].fee) /
-          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        '1.2-6'
+      );
+    } else if (wallet && wallet.accounts) {
+      // for payments with Coinbase accounts
+      this.totalAmount = tx.amount - this.navParams.data.minerFee;
+      this.totalAmountStr = this.decimalPipe.transform(
+        this.totalAmount /
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
         '1.2-6'
       );
     }
@@ -372,17 +383,25 @@ export class ConfirmPage {
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
   private setWallet(wallet): void {
-    this.wallet = wallet;
+    if (!wallet.accounts) {
+      this.wallet = wallet;
+      this.coinbaseAccount = null;
+    } else {
+      this.wallet = null;
+      this.coinbaseAccount = wallet;
+    }
 
     // If select another wallet
-    this.tx.coin = this.wallet.coin;
+    this.tx.coin = this.wallet
+      ? this.wallet.coin
+      : this.coinbaseAccount.accounts.currency.code.toLowerCase();
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     this.setButtonText(
-      this.wallet.credentials.m > 1,
+      this.wallet ? this.wallet.credentials.m > 1 : false,
       !!this.tx.paypro,
       !!this.fromCoinbase,
       this.isSpeedUpTx
@@ -422,6 +441,7 @@ export class ConfirmPage {
           this.showErrorInfoSheet(err);
           break;
       }
+      this.getTotalAmountDetails(this.tx, this.coinbaseAccount);
     });
   }
 
@@ -429,7 +449,7 @@ export class ConfirmPage {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-        this.tx.amount + this.tx.feeRate &&
+      this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -531,11 +551,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? this.currencyProvider.getMaxMerchantFee(wallet.coin)
+          : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -546,7 +566,7 @@ export class ConfirmPage {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-                tx.feeRate
+              tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
@@ -745,9 +765,9 @@ export class ConfirmPage {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-              wallet.id +
-              ' Txp:' +
-              txp.id
+            wallet.id +
+            ' Txp:' +
+            txp.id
           );
 
           this.getTotalAmountDetails(tx, wallet);
@@ -1265,7 +1285,7 @@ export class ConfirmPage {
   }
 
   public approve(tx, wallet): Promise<void> {
-    if (!tx || !wallet) return undefined;
+    if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
 
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
@@ -1275,22 +1295,29 @@ export class ConfirmPage {
     }
 
     this.onGoingProcessProvider.set('creatingTx');
-    return this.getTxp(_.clone(tx), wallet, false)
-      .then(txp => {
-        this.logger.debug('Transaction Fee:', txp.fee);
-        return this.confirmTx(txp, wallet).then((nok: boolean) => {
-          if (nok) {
-            if (this.isCordova) this.slideButton.isConfirmed(false);
-            this.onGoingProcessProvider.clear();
-            return;
-          }
-          this.publishAndSign(txp, wallet);
+    if (wallet) {
+      return this.getTxp(_.clone(tx), wallet, false)
+        .then(txp => {
+          this.logger.debug('Transaction Fee:', txp.fee);
+          return this.confirmTx(txp, wallet).then((nok: boolean) => {
+            if (nok) {
+              if (this.isCordova) this.slideButton.isConfirmed(false);
+              this.onGoingProcessProvider.clear();
+              return;
+            }
+            this.publishAndSign(txp, wallet);
+          });
+        })
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          this.logger.warn('Error getting transaction proposal', err);
         });
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this.logger.warn('Error getting transaction proposal', err);
-      });
+    } else {
+      return this.payWithCoinbaseAccount(
+        this.tx.paypro.invoiceId,
+        this.coinbaseAccount.accounts.currency.code
+      );
+    }
   }
 
   private confirmTx(txp, wallet) {
@@ -1397,9 +1424,9 @@ export class ConfirmPage {
       finishComment?: string;
       autoDismiss?: boolean;
     } = {
-      finishText: this.successText,
-      autoDismiss: !!redir
-    };
+        finishText: this.successText,
+        autoDismiss: !!redir
+      };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
@@ -1446,7 +1473,7 @@ export class ConfirmPage {
               }
             );
           }, 1000);
-        } else {
+        } else if (this.wallet) {
           this.navCtrl.push(WalletDetailsPage, {
             walletId: walletId ? walletId : this.wallet.credentials.walletId
           });
@@ -1510,11 +1537,16 @@ export class ConfirmPage {
 
   public showWallets(): void {
     this.isOpenSelector = true;
+    const showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
+      'coinbase'
+    );
     const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: this.walletSelectorTitle
+      title: this.walletSelectorTitle,
+      showCoinbase,
+      coin: this.coin
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -1544,5 +1576,43 @@ export class ConfirmPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromConfirm: true });
+  }
+
+  protected payWithCoinbaseAccount(invoiceId, coin, code?): Promise<any> {
+    this.onGoingProcessProvider.set('payingWithCoinbase');
+    return this.coinbaseProvider
+      .payInvoice(invoiceId, coin, code)
+      .then(() => {
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal();
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        if (err == '2fa') {
+          const message = this.translate.instant('Enter 2-step verification');
+          const opts = {
+            type: 'number',
+            enableBackdropDismiss: false
+          };
+          this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+            if (res === null) {
+              this.showErrorAndBack(
+                this.translate.instant('Missing 2-step verification')
+              );
+              return;
+            }
+            this.payWithCoinbaseAccount(invoiceId, coin, res);
+          });
+        } else {
+          this.showErrorAndBack(err);
+        }
+      });
+  }
+
+  protected showErrorAndBack(err): void {
+    if (this.isCordova) this.slideButton.isConfirmed(false);
+    this.logger.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 }

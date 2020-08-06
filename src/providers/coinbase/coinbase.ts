@@ -20,6 +20,7 @@ export class CoinbaseProvider {
   private environment: string = env.name;
   private linkedAccount: boolean = false;
   private credentials;
+  private config;
 
   // URLs
   public supportUrl: string = 'https://support.coinbase.com';
@@ -57,6 +58,7 @@ export class CoinbaseProvider {
       user: {},
       txs: {}
     };
+    this.config = this.configProvider.get();
   }
 
   public setCredentials() {
@@ -653,12 +655,11 @@ export class CoinbaseProvider {
   }
 
   public updateExchangeRates(currency?: string): void {
-    if (!this.coinbaseData || !this.coinbaseData['user']['native_currency'])
-      return;
+    if (!this.coinbaseData) return;
 
     currency = currency
       ? currency
-      : this.coinbaseData['user']['native_currency'];
+      : this.config.wallet.settings.alternativeIsoCode;
     const url =
       this.credentials.API + '/v2/exchange-rates' + '?currency=' + currency;
 

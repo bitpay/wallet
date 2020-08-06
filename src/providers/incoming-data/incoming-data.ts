@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -38,7 +39,8 @@ export class IncomingDataProvider {
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -273,11 +275,15 @@ export class IncomingDataProvider {
         // Select Invoice Currency - No selectedTransactionCurrency set
         let hasWallets = {};
         let availableWallets = [];
+        const showCoinbase = this.homeIntegrationsProvider.shouldShowInHome(
+          'coinbase'
+        );
         for (const option of payProOptions.paymentOptions) {
           const fundedWallets = this.profileProvider.getWallets({
             coin: option.currency.toLowerCase(),
             network: option.network,
-            minAmount: option.estimatedAmount
+            minAmount: option.estimatedAmount,
+            showCoinbase
           });
           if (fundedWallets.length === 0) {
             option.disabled = true;
@@ -1226,7 +1232,7 @@ export class IncomingDataProvider {
         payProOptions = await this.payproProvider.getPayProOptions(url);
       }
       const paymentOptions = payProOptions.paymentOptions;
-      const { estimatedAmount } = paymentOptions.find(
+      const { estimatedAmount, minerFee } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );
       const instructions = payProDetails.instructions[0];
@@ -1244,7 +1250,8 @@ export class IncomingDataProvider {
         coin,
         network,
         payProUrl: url,
-        requiredFeeRate
+        requiredFeeRate,
+        minerFee // needed for payments with Coinbase accounts
       };
       const nextView = {
         name: 'ConfirmPage',

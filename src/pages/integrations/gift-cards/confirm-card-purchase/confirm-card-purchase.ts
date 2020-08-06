@@ -125,7 +125,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     coinbaseProvider: CoinbaseProvider,
     appProvider: AppProvider,
     iabCardProvider: IABCardProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     super(
       addressProvider,
@@ -156,7 +156,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       events,
       coinbaseProvider,
       appProvider,
-      iabCardProvider
+      iabCardProvider,
+      homeIntegrationsProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -545,17 +546,18 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     throw new Error('email required');
   }
 
-  private async initialize(wallet, email, isCoinbase?: boolean) {
-    const COIN = isCoinbase
-      ? wallet.accounts.currency.code
-      : wallet.coin.toUpperCase();
+  private async initialize(wallet, email) {
+    const COIN = this.wallet
+      ? wallet.coin.toUpperCase()
+      : this.coinbaseAccount.accounts.currency.code;
+
     this.currencyIsoCode = this.currency;
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: this.amount,
       currency: this.currency,
       discounts: discount ? [discount.code] : [],
-      uuid: !isCoinbase ? wallet.id : wallet.user.id,
+      uuid: this.wallet ? wallet.id : this.coinbaseAccount.user.id,
       email,
       buyerSelectedTransactionCurrency: COIN,
       cardName: this.cardConfig.name,
@@ -597,7 +599,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     invoice['minerFees'][COIN]['totalFee'] =
       invoice.minerFees[COIN].totalFee || 0;
 
-    const invoiceFeeSat = !isCoinbase ? invoice.minerFees[COIN].totalFee : 0;
+    const invoiceFeeSat = this.wallet ? invoice.minerFees[COIN].totalFee : 0;
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(`{{amountUnitStr}} Gift Card`),
@@ -606,7 +608,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     let ctxp: any = {};
 
-    if (!isCoinbase) {
+    if (this.wallet) {
       ctxp = await this.createTx(wallet, invoice, this.message).catch(err => {
         this.onGoingProcessProvider.clear();
         this.resetValues();
@@ -639,14 +641,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
 
     // Warn: fee too high
-    if (!isCoinbase && this.currencyProvider.isUtxoCoin(COIN.toLowerCase())) {
+    if (this.wallet && this.currencyProvider.isUtxoCoin(COIN.toLowerCase())) {
       this.checkFeeHigh(
         Number(amountSat),
         Number(invoiceFeeSat) + Number(ctxp.fee)
       );
     }
 
-    const networkFeeSat = !isCoinbase ? ctxp.fee : 0;
+    const networkFeeSat = this.wallet ? ctxp.fee : 0;
 
     this.setTotalAmount(COIN.toLowerCase(), invoiceFeeSat, networkFeeSat);
 
@@ -676,11 +678,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         })
         .catch(async err => this.handlePurchaseError(err));
     } else {
-      return this.payWithCoinbase();
+      return this.payWithCoinbaseAccount();
     }
   }
 
-  private payWithCoinbase(code?): Promise<any> {
+  protected payWithCoinbaseAccount(code?): Promise<any> {
     this.onGoingProcessProvider.set('payingWithCoinbase');
     return this.coinbaseProvider
       .payInvoice(
@@ -712,7 +714,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
               );
               return;
             }
-            this.payWithCoinbase(res);
+            this.payWithCoinbaseAccount(res);
           });
         } else {
           this.showErrorAndBack(err);
@@ -720,7 +722,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       });
   }
 
-  private showErrorAndBack(err): void {
+  protected showErrorAndBack(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -758,7 +760,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.wallet = null;
       this.coinbaseAccount = wallet;
       const email = await this.promptEmail();
-      await this.initialize(this.coinbaseAccount, email, true).catch(() => {});
+      await this.initialize(this.coinbaseAccount, email).catch(() => {});
     }
   }
 
