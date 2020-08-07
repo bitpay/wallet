@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   ActionSheetProvider,
+  ExternalLinkProvider,
   PlatformProvider,
   ThemeProvider
 } from '../../../../providers';
@@ -56,6 +57,7 @@ export class CardCatalogPage extends WideHeaderPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    public externalLinkProvider: ExternalLinkProvider,
     public giftCardProvider: GiftCardProvider,
     private merchantProvider: MerchantProvider,
     platformProvider: PlatformProvider,
@@ -199,6 +201,12 @@ export class CardCatalogPage extends WideHeaderPage {
         cardConfig,
         this.category ? 'Gift Card List' : 'Shop Page Curation'
       )
+    );
+  }
+
+  public launchExtension() {
+    this.externalLinkProvider.open(
+      'https://bitpay.com/extension/?launchExtension=true'
     );
   }
 
