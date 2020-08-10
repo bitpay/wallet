@@ -179,12 +179,18 @@
       background-color: $bg-color-dark-theme;
     }
 
-    .tab-button {
-      opacity: 0.4;
-    }
-
     .tab-button[aria-selected='true'] {
       opacity: 1;
+    }
+    .tab-button[aria-selected='false'] {
+      ion-icon {
+        &[class*='tab-home'],
+        &[class*='tab-wallets'],
+        &[class*='tab-cards'],
+        &[class*='tab-settings'] {
+          opacity: 0.4;
+        }
+      }
     }
   }
 

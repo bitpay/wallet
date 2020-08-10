@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>6270A2E0-1428-40F4-B63C-8D262515EC7D</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.309804 0 0 0 0 0.431373 0 0 0 0 0.968627 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Template/Home-(DarkMode)" transform="translate(-170.000000, -1084.000000)">
+            <g id="Tabs/Wallets" transform="translate(0.000000, 1063.000000)">
+                <g id="Scan" transform="translate(170.000000, 21.000000)">
+                    <rect id="Rectangle" fill="#4F6EF7" opacity="0.300000012" x="0" y="0" width="36" height="36" rx="18"></rect>
+                    <g filter="url(#filter-1)" id="Interface/Medium/Scan">
+                        <g transform="translate(8.000000, 11.000000)">
+                            <g id="Tabs-(Scan)" transform="translate(0.000000, 0.333333)" fill="#9BA3AE">
+                                <line x1="0" y1="6.1845039" x2="20" y2="6.1845039" id="Line"></line>
+                            </g>
+                            <path d="M17.5,9.5 L17.5,14.5 L12.5,14.5 L12.5,12.5 L15.5,12.5 L15.5,9.5 L17.5,9.5 Z M4.5,9.5 L4.5,12.5 L7.5,12.5 L7.5,14.5 L2.5,14.5 L2.5,9.5 L4.5,9.5 Z M20,7 L20,7.83333333 L0,7.83333333 L0,7 L20,7 Z M7.5,0.333333333 L7.5,2 L4.166,1.99933333 L4.16666667,5.33333333 L2.5,5.33333333 L2.5,0.333333333 L7.5,0.333333333 Z M17.5,0.333333333 L17.5,5.33333333 L15.5,5.33333333 L15.5,2.33333333 L12.5,2.33333333 L12.5,0.333333333 L17.5,0.333333333 Z" id="Rectangle-Copy-2" fill="#9BA3AE"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

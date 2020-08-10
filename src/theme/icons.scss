@@ -81,7 +81,6 @@
   font-family: 'Roboto' !important;
 }
 
-@include makeIcon(tab-scan, '\e900', 16px);
 @include makeIcon(tab-button-back, '\e905', 17px);
 @include makeIcon(tab-receive, '\e902');
 @include makeIcon(tab-activity, '\e903');

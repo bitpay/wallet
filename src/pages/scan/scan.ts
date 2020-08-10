@@ -44,7 +44,6 @@ export class ScanPage {
   public scannerStates;
   public canOpenSettings: boolean;
   public currentState: string;
-  public tabBarElement;
   public isCordova: boolean;
   public isCameraSelected: boolean;
   public fromAddressbook: boolean;
@@ -55,6 +54,7 @@ export class ScanPage {
   public fromSelectInputs: boolean;
   public fromEthMultisig: boolean;
   public fromConfirm: boolean;
+  public canGoBack: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -86,17 +86,16 @@ export class ScanPage {
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ScanPage');
     this.navCtrl.swipeBackEnabled = false;
+    this.canGoBack = this.navCtrl.canGoBack();
   }
 
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
-    this.tabBarElement.style.display = 'flex';
     this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
     this.events.unsubscribe(
       'scannerServiceInitialized',
@@ -114,7 +113,6 @@ export class ScanPage {
   }
 
   ionViewWillEnter() {
-    this.tabBarElement.style.display = 'none';
     this.initializeBackButtonHandler();
     this.fromAddressbook = this.navParams.data.fromAddressbook;
     this.fromImport = this.navParams.data.fromImport;
