@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Button/Scan</title>
+    <title>Button/Scan (Selected)</title>
     <defs>
         <filter id="filter-1">
-            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.309804 0 0 0 0 0.431373 0 0 0 0 0.968627 0 0 0 1.000000 0"></feColorMatrix>
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
         </filter>
     </defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Button/Scan">
-            <rect id="Rectangle" fill="#4F6EF7" opacity="0.100000001" x="0" y="0" width="36" height="36" rx="18"></rect>
+        <g id="Button/Scan-(Selected)">
+            <rect id="Rectangle" fill="#4F6EF7" x="0" y="0" width="36" height="36" rx="18"></rect>
             <g id="Interface/Medium/Scan" transform="translate(8.000000, 8.000000)" filter="url(#filter-1)">
                 <g>
                     <g id="Tabs-(Scan)" transform="translate(0.000000, 3.333333)" fill="#9BA3AE">

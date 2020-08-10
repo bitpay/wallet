@@ -811,7 +811,9 @@ $wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
   50% 50%;
 $wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50%
   50%;
-$scan-active: url('../assets/img/tab-icons/tab-scan.svg') no-repeat 50% 50%;
+$scan-active: url('../assets/img/tab-icons/tab-scan-active.svg') no-repeat 50%
+  50%;
+$scan-inactive: url('../assets/img/tab-icons/tab-scan.svg') no-repeat 50% 50%;
 $copay-scan-active: url('../assets/img/scan-ico.svg') no-repeat 50% 50%;
 $copay-scan-inactive: url('../assets/img/tab-icons/tab-copay-scan.svg')
   no-repeat 50% 50%;
@@ -853,7 +855,7 @@ ion-icon {
   }
 
   &[class*='tab-scan'] {
-    background: $scan-active;
+    background: $scan-inactive;
     background-size: contain;
     width: 36px;
     height: 36px;

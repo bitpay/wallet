@@ -190,6 +190,10 @@
         &[class*='tab-settings'] {
           opacity: 0.4;
         }
+        &[class*='tab-scan'] {
+          background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat
+            50% 50%;
+        }
       }
     }
   }
