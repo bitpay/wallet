@@ -12,6 +12,7 @@ import { debounceTime } from 'rxjs/operators';
 import {
   ActionSheetProvider,
   AppProvider,
+  ExternalLinkProvider,
   PersistenceProvider,
   PlatformProvider
 } from '../../../../providers';
@@ -80,6 +81,7 @@ export class HomeGiftCards implements OnInit {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
+    private externalLinkProvider: ExternalLinkProvider,
     private giftCardProvider: GiftCardProvider,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider,
@@ -112,6 +114,12 @@ export class HomeGiftCards implements OnInit {
     event.action === 'view'
       ? this.viewGiftCards(event.cardName, purchasedCards)
       : this.showArchiveSheet(event);
+  }
+
+  public launchExtension() {
+    this.externalLinkProvider.open(
+      'https://bitpay.com/extension/?launchExtension=true'
+    );
   }
 
   private async viewGiftCards(cardName: string, cards: GiftCard[]) {
