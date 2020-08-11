@@ -43,6 +43,7 @@ export {
 } from '../providers/derivation-path-helper/derivation-path-helper';
 export { DomProvider } from '../providers/dom/dom';
 export { DownloadProvider } from '../providers/download/download';
+export { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
 export {
   EmailNotificationsProvider
 } from '../providers/email-notifications/email-notifications';
