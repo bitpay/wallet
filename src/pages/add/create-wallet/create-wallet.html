@@ -44,6 +44,11 @@
         <ion-input type="text" formControlName="walletName"></ion-input>
       </ion-item>
 
+      <ion-item no-lines *ngIf="coin === 'btc' && createForm.value.selectedSeed == 'new'">
+        <ion-label>Segwit</ion-label>
+        <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
+      </ion-item>
+
       <div *ngIf="isShared">
         <ion-item *ngIf="coin != 'eth'">
           <ion-label floating>{{'Your name' | translate}}</ion-label>
@@ -119,11 +124,6 @@
         <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !keyId">
           <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath"></ion-input>
-        </ion-item>
-
-        <ion-item [ngClass]="{'with-label': createForm.value.useNativeSegwit}" *ngIf="coin === 'btc' && createForm.value.selectedSeed == 'new'">
-          <ion-label>Segwit</ion-label>
-          <ion-toggle formControlName="useNativeSegwit"></ion-toggle>
         </ion-item>
 
         <ion-item *ngIf="!isSingleAddress()" [ngClass]="{'with-label': createForm.value.singleAddress}">
