@@ -267,7 +267,8 @@ export class ScanPage {
   }
 
   private handleSuccessfulScan(contents: string): void {
-    this.navCtrl.pop({ animate: false });
+    if (this.canGoBack) this.navCtrl.pop({ animate: false });
+
     if (this.fromAddressbook) {
       this.events.publish('Local/AddressScan', { value: contents });
     } else if (this.fromImport) {

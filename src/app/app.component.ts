@@ -516,18 +516,28 @@ export class CopayApp {
 
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
-      this.closeScannerFromWithinWallet();
-      // wait for wallets status
-      setTimeout(() => {
-        const globalNav = this.getGlobalTabs().getSelected();
-        globalNav
-          .push(this.pageMap[nextView.name], nextView.params)
-          .then(() => {
-            if (typeof nextView.callback === 'function') {
-              nextView.callback();
-            }
-          });
-      }, 300);
+      if (!nextView.name) {
+        setTimeout(() => {
+          this.getGlobalTabs()
+            .goToRoot()
+            .then(_ => {
+              this.getGlobalTabs().select(2);
+            });
+        }, 300);
+      } else {
+        this.closeScannerFromWithinWallet();
+        // wait for wallets status
+        setTimeout(() => {
+          const globalNav = this.getGlobalTabs().getSelected();
+          globalNav
+            .push(this.pageMap[nextView.name], nextView.params)
+            .then(() => {
+              if (typeof nextView.callback === 'function') {
+                nextView.callback();
+              }
+            });
+        }, 300);
+      }
     });
   }
 
