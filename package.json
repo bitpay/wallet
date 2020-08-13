@@ -250,7 +250,9 @@
         "ANDROID_HOST": "",
         "ANDROID_PATHPREFIX": ""
       },
-      "cordova-plugin-fcm-ng": {},
+      "cordova-plugin-fcm-ng": {
+        "PAGE_LINK_DOMAIN": "copay.page.link"
+      },
       "cordova-plugin-globalization": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-screen-orientation": {},
