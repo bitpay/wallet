@@ -161,6 +161,8 @@ package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
 package.cordova.plugins['cordova-plugin-customurlscheme-ng'].SECOND_URL_SCHEME =
   config.packageName;
+package.cordova.plugins['cordova-plugin-fcm-ng'].PAGE_LINK_DOMAIN =
+  config.dynamicLink;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
 fs.writeFileSync('../package.json', stringifiedNpmStyle);

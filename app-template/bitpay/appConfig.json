@@ -9,6 +9,7 @@
   "bundleName": "wallet",
   "appUri": "bitpay",
   "name": "bitpay",
+  "dynamicLink": "bitpayapp.page.link",
   "nameNoSpace": "bitpay",
   "nameCase": "BitPay",
   "nameCaseNoSpace": "BitPay",
