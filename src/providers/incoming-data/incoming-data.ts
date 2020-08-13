@@ -665,7 +665,7 @@ export class IncomingDataProvider {
   }
 
   private goToSimplex(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Simplex URL');
+    this.logger.debug('Incoming-data (redirect): Simplex URL: ' + data);
 
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const success = this.getParameterByName('success', res);
@@ -682,8 +682,13 @@ export class IncomingDataProvider {
   }
 
   private goToWyre(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Wyre URL');
+    this.logger.debug('Incoming-data (redirect): Wyre URL: ' + data);
 
+    if (
+      data === this.appProvider.info.name + '://wyre' ||
+      data.indexOf(this.appProvider.info.name + '://wyreError') === 0
+    )
+      return;
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const transferId = this.getParameterByName('transferId', res);
     const orderId = this.getParameterByName('orderId', res);
