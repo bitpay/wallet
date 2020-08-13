@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+<resources>
+    <string name="cancel">キャンセル</string>
+    <string name="use_backup">バックアップを使用</string>
+    <string name="fingerprint_auth_dialog_title">指紋認証</string>
+    <string name="ok">OK</string>
+    <string name="fingerprint_description">続行するには指紋を確認してください</string>
+    <string name="fingerprint_hint">タッチ・センサー</string>
+    <string name="fingerprint_not_recognized">指紋を認識できません。再試行してください</string>
+    <string name="fingerprint_success">指紋を認識しました</string>
+    <string name="new_fingerprint_enrolled_description">新しい指紋をこのデバイスに追加します。パスワードが必要になります</string>
+    <string name="secure_lock_screen_required">セキュア・ロック画面が必要です</string>
+    <string name="fingerprint_too_many_attempts">試行が多すぎます。後で再試行してください。</string>
+</resources>
