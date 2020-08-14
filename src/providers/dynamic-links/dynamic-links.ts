@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FCMNG } from 'fcm-ng';
-import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class DynamicLinksProvider {
-  constructor(
-    private FCMPlugin: FCMNG,
-    private platformProvider: PlatformProvider
-  ) {}
-  onDynamicLink() {
-    if (this.platformProvider.isCordova) this.FCMPlugin.onDynamicLink();
+  constructor(private FCMPlugin: FCMNG) {}
+  onDynamicLink(): Promise<any> {
+    return this.FCMPlugin.onDynamicLink();
   }
 
-  createDynamicLink(params: any) {
-    if (this.platformProvider.isCordova)
-      this.FCMPlugin.createDynamicLink(params);
+  createDynamicLink(params: any): Promise<any> {
+    return this.FCMPlugin.createDynamicLink(params);
   }
 }
