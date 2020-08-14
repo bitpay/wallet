@@ -54,7 +54,7 @@ export class IncomingDataProvider {
     if (data) {
       const stateParams = {
         addressbookEntry:
-          data.redirTo == 'AddressBookAddPage' ? data.value : null,
+          data.redirTo == 'AddressbookAddPage' ? data.value : null,
         toAddress: data.redirTo == 'AmountPage' ? data.value : null,
         coin: data.coin ? data.coin : 'btc',
         privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
