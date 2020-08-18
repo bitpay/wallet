@@ -932,7 +932,8 @@ export class ProfileProvider {
     return this.serverAssistedImport(opts).then(data => {
       // If the key already exists, bind the new wallets to it.
       const key = this.keyProvider.getMatchedKey(data.key);
-      if (key) {
+      // skip if re-importing to clear encrypt
+      if (key && !opts.keyId) {
         data.key = this.keyProvider.getKey(key.id);
         opts.keyId = key.id;
         data.walletClients.forEach(walletClient => {
@@ -953,7 +954,8 @@ export class ProfileProvider {
     return this.serverAssistedImport(opts).then(data => {
       // If the key already exists, bind the new wallets to it.
       const key = this.keyProvider.getMatchedKey(data.key);
-      if (key) {
+      // skip if re-importing to clear encrypt
+      if (key && !opts.keyId) {
         data.key = this.keyProvider.getKey(key.id);
         opts.keyId = key.id;
         data.walletClients.forEach(walletClient => {
@@ -1023,7 +1025,8 @@ export class ProfileProvider {
           // check if the key exists to just add the wallet
           if (data.key) {
             key = this.keyProvider.getMatchedKey(data.key);
-            if (key) {
+            // skip if re-importing to clear encrypt
+            if (key && !opts.keyId) {
               data.key = this.keyProvider.getKey(key.id);
               opts.keyId = null;
               data.credentials.keyId = key.id;
