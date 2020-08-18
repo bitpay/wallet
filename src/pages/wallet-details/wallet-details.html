@@ -273,7 +273,7 @@
               <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address])">{{'Received'
                     | translate}}</span>
               <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-              <span *ngIf="addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
+              <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
                 {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
               </span>
             </div>
