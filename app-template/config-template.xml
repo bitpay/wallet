@@ -102,7 +102,7 @@
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
-    <plugin name="cordova-plugin-fcm-ng" spec="8.0.0">
+    <plugin name="cordova-plugin-fcm-ng" spec="8.0.1">
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
     </plugin>
 
