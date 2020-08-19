@@ -42,11 +42,11 @@
 
           <ion-row align-items-center class="wallet" *ngIf="coinbaseAccount">
             <ion-col>
-              <coin-icon [coin]="coinbaseAccount.accounts.currency.code.toLowerCase()" [network]="livenet"></coin-icon>
+              <coin-icon [coin]="coinbaseAccount.currency.code.toLowerCase()" [network]="livenet"></coin-icon>
             </ion-col>
 
             <ion-col>
-              <span class="note-container ellipsis">{{coinbaseAccount.accounts.name}}</span>
+              <span class="note-container ellipsis">{{coinbaseAccount.name}}</span>
             </ion-col>
           </ion-row>
 

@@ -764,7 +764,7 @@ export class CoinbaseProvider {
     });
   }
 
-  public getAvailableAccounts(coin, minFiatCurrency?: { amount; currency }) {
+  public getAvailableAccounts(coin?, minFiatCurrency?: { amount; currency }) {
     let coinbaseData = _.cloneDeep(this.coinbaseData);
     let coinbaseAccounts = coinbaseData.accounts.filter(ac => {
       const accountCoin = ac.balance.currency.toLowerCase();
@@ -783,9 +783,9 @@ export class CoinbaseProvider {
               : null
           )
         );
-      } else {
+      } else if (coin) {
         return accountCoin == coin;
-      }
+      } else return ac;
     });
     return coinbaseAccounts;
   }
