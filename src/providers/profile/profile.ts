@@ -1984,6 +1984,20 @@ export class ProfileProvider {
       });
     }
 
+    if (opts.minPendingAmount) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
+        const availablePendingFiat = this.rateProvider.toFiat(
+          wallet.cachedStatus.pendingAmount,
+          opts.minPendingAmount.currency,
+          wallet.coin
+        );
+
+        return availablePendingFiat >= Number(opts.minPendingAmount.amount);
+      });
+    }
+
     return _.sortBy(ret, 'order');
   }
 
