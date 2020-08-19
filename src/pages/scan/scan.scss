@@ -157,37 +157,11 @@ page-scan {
     }
   }
 
-  .hide-div {
-    display: none;
-  }
-
-  .cameras-list {
-    .camera {
-      display: flex;
-      align-items: center;
-      margin-top: 1rem;
-
-      ion-icon {
-        margin-right: 1rem;
-      }
-    }
-  }
-
   .last-item {
     margin-left: auto !important;
   }
 
   .icon-wallet {
     background: transparent;
-  }
-  .ea-container {
-    height: 35px;
-    border-radius: 17.5px;
-    background-color: rgba(155, 163, 174, 0.2);
-    .ea-text {
-      font-size: 15px;
-      font-weight: 500;
-      color: color($colors, light);
-    }
   }
 }

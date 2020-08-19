@@ -1,18 +1,5 @@
 page-wallets,
 page-integrations {
-  ion-content {
-    &.content-md {
-      .margin-helper {
-        width: 100%;
-        padding-bottom: 7.5rem;
-      }
-    }
-
-    .scroll-content {
-      padding-bottom: 100px;
-    }
-  }
-
   .notifications-badge {
     border-radius: 9px;
     font-size: 15px;
@@ -181,24 +168,6 @@ page-integrations {
     margin: 15px auto;
     margin-top: 0;
     height: 73px;
-  }
-
-  .scan-button {
-    position: absolute;
-    z-index: 9;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 27px 22px 26px 19px;
-    border-radius: 30px;
-    box-shadow: 0 7px 31px 0 rgba(0, 0, 0, 0.17);
-    color: white;
-    font-weight: 500;
-
-    ion-avatar {
-      margin-top: -3px;
-      margin-right: 10px;
-    }
   }
 
   ion-fab {

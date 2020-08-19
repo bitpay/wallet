@@ -14,6 +14,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { CardsPage } from '../cards/cards';
 import { HomePage } from '../home/home';
+import { ScanPage } from '../scan/scan';
 import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
@@ -30,6 +31,7 @@ export class TabsPage {
 
   public txpsN: number;
   public cardNotificationBadgeText;
+  public scanIconType: string;
   private zone;
 
   private onResumeSubscription: Subscription;
@@ -52,6 +54,8 @@ export class TabsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
+    this.scanIconType =
+      this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
 
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
@@ -273,6 +277,7 @@ export class TabsPage {
 
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
+  scanRoot = ScanPage;
   cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
 }

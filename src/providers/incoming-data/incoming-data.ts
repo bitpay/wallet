@@ -50,18 +50,20 @@ export class IncomingDataProvider {
   }
 
   public finishIncomingData(data: any): void {
-    if (!data) return;
-    const stateParams = {
-      addressbookEntry:
-        data.redirTo == 'AddressBookAddPage' ? data.value : null,
-      toAddress: data.redirTo == 'AmountPage' ? data.value : null,
-      coin: data.coin ? data.coin : 'btc',
-      privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
-    };
-    const nextView = {
-      name: data.redirTo,
-      params: stateParams
-    };
+    let nextView = {};
+    if (data) {
+      const stateParams = {
+        addressbookEntry:
+          data.redirTo == 'AddressbookAddPage' ? data.value : null,
+        toAddress: data.redirTo == 'AmountPage' ? data.value : null,
+        coin: data.coin ? data.coin : 'btc',
+        privateKey: data.redirTo == 'PaperWalletPage' ? data.value : null
+      };
+      nextView = {
+        name: data.redirTo,
+        params: stateParams
+      };
+    }
     this.incomingDataRedir(nextView);
   }
 

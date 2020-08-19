@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header no-border *ngIf="canGoBack">
   <ion-navbar hideBackButton transparent>
     <ion-buttons left>
       <button class="close-container disable-hover" (click)="closeCam()" ion-button>

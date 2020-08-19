@@ -989,7 +989,7 @@ describe('Provider: Incoming Data Provider', () => {
       incomingDataProvider.finishIncomingData(data);
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
-    it('Should handle if there is data and redirTo is AddressBookAddPage', () => {
+    it('Should handle if there is data and redirTo is AddressbookAddPage', () => {
       const stateParams = {
         toAddress: null,
         coin: 'bch',
@@ -997,10 +997,10 @@ describe('Provider: Incoming Data Provider', () => {
         addressbookEntry: 'xxx'
       };
       const nextView = {
-        name: 'AddressBookAddPage',
+        name: 'AddressbookAddPage',
         params: stateParams
       };
-      const data = { redirTo: 'AddressBookAddPage', value: 'xxx', coin: 'bch' };
+      const data = { redirTo: 'AddressbookAddPage', value: 'xxx', coin: 'bch' };
       incomingDataProvider.finishIncomingData(data);
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
