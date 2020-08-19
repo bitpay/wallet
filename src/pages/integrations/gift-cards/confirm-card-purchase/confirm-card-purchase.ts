@@ -772,9 +772,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
   }
 
-  protected payWithCoinbaseAccount(code?): void {
+  protected payWithCoinbaseAccount(code?): Promise<void> {
     this.onGoingProcessProvider.set('payingWithCoinbase');
-    this.coinbaseProvider
+    return this.coinbaseProvider
       .payInvoice(
         this.tx.giftData.invoiceId,
         this.coinbaseAccount.currency.code,

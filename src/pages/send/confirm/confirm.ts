@@ -1308,7 +1308,7 @@ export class ConfirmPage {
     else this.setWallet(option);
   }
 
-  public approve(tx, wallet): void {
+  public approve(tx, wallet): Promise<void> {
     if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
 
     if (this.paymentExpired) {
@@ -1320,7 +1320,7 @@ export class ConfirmPage {
 
     if (wallet) {
       this.onGoingProcessProvider.set('creatingTx');
-      this.getTxp(_.clone(tx), wallet, false)
+      return this.getTxp(_.clone(tx), wallet, false)
         .then(txp => {
           this.logger.debug('Transaction Fee:', txp.fee);
           return this.confirmTx(txp, wallet).then((nok: boolean) => {
@@ -1337,7 +1337,7 @@ export class ConfirmPage {
           this.logger.warn('Error getting transaction proposal', err);
         });
     } else {
-      this.payWithCoinbaseAccount(
+      return this.payWithCoinbaseAccount(
         this.tx.paypro.invoiceId,
         this.coinbaseAccount.currency.code
       );
@@ -1607,9 +1607,9 @@ export class ConfirmPage {
     this.navCtrl.push(ScanPage, { fromConfirm: true });
   }
 
-  protected payWithCoinbaseAccount(invoiceId, coin, code?): void {
+  protected payWithCoinbaseAccount(invoiceId, coin, code?): Promise<void> {
     this.onGoingProcessProvider.set('payingWithCoinbase');
-    this.coinbaseProvider
+    return this.coinbaseProvider
       .payInvoice(invoiceId, coin, code)
       .then(() => {
         this.onGoingProcessProvider.clear();
