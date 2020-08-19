@@ -21,12 +21,12 @@
     <ion-list class="bp-list">
       <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
 
-      <button ion-item (click)="openThemePage()" *ngIf="appTheme">
+      <button ion-item (click)="openThemePage()">
         <ion-icon class="item-img icon-settings ionic-icon" name="ios-color-palette" item-start></ion-icon>
         <ion-label>
           <div class="main-label">{{ 'Theme' | translate }}</div>
         </ion-label>
-        <ion-note item-end>
+        <ion-note *ngIf="appTheme" item-end>
           {{ appTheme }}
         </ion-note>
       </button>

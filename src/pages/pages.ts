@@ -102,10 +102,10 @@ import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
+import { LocalThemePage } from '../pages/settings/local-theme/local-theme';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
-import { ThemePage } from '../pages/settings/theme/theme';
 
 /* Wallet Group Settings */
 import { ClearEncryptPasswordPage } from '../pages/settings/key-settings/clear-encrypt-password/clear-encrypt-password';
@@ -262,7 +262,7 @@ export const PAGES = [
   CardItemPage,
   CoinSelectorPage,
   SlideToAcceptPage,
-  ThemePage,
+  LocalThemePage,
   // Phases: card pages
   PhaseOneCardIntro
 ];

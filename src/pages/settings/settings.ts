@@ -43,10 +43,10 @@ import { BitPayIdPage } from './bitpay-id/bitpay-id';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
+import { LocalThemePage } from './local-theme/local-theme';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
-import { ThemePage } from './theme/theme';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -135,8 +135,6 @@ export class SettingsPage {
       .getBitpayIdPairingFlag()
       .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
 
-    this.appTheme = this.themeProvider.getCurrentAppTheme();
-
     if (this.iabCardProvider.ref) {
       // check for user info
       this.persistenceProvider
@@ -192,6 +190,9 @@ export class SettingsPage {
   ionViewDidEnter() {
     // Show integrations
     const integrations = this.homeIntegrationsProvider.get();
+
+    // Get Theme
+    this.appTheme = this.themeProvider.getCurrentAppTheme();
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -250,7 +251,7 @@ export class SettingsPage {
   }
 
   public openThemePage(): void {
-    this.navCtrl.push(ThemePage);
+    this.navCtrl.push(LocalThemePage);
   }
 
   public openLockPage(): void {

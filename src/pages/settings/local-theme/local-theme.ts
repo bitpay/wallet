@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
 import { Logger, ThemeProvider } from '../../../providers';
 
 @Component({
-  selector: 'page-theme',
-  templateUrl: 'theme.html'
+  selector: 'page-local-theme',
+  templateUrl: 'local-theme.html'
 })
-export class ThemePage {
+export class LocalThemePage {
   public availableThemes;
   public selectedTheme;
   private autoDetectedTheme: string;
@@ -17,7 +17,7 @@ export class ThemePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: ThemePage');
+    this.logger.info('Loaded: LocalThemePage');
     this.themeProvider.getDetectedSystemTheme().then(theme => {
       this.autoDetectedTheme = theme;
     });
