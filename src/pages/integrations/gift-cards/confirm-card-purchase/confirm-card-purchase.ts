@@ -183,7 +183,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   ionViewWillEnter() {
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
-    const minFiatCurrency = { amount: this.amount, currency: this.currency };
 
     this.network = this.giftCardProvider.getNetwork();
 
@@ -201,22 +200,26 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...walletOptions,
       minPendingAmount: { amount: this.amount, currency: this.currency }
     });
+
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
       this.coinbaseProvider.isLinked();
 
     this.coinbaseAccounts = this.showCoinbase
-      ? this.coinbaseProvider.getAvailableAccounts(null, minFiatCurrency)
+      ? this.coinbaseProvider.getAvailableAccounts(null, {
+          amount: this.amount,
+          currency: this.currency
+        })
       : [];
 
-    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets) && _.isEmpty(this.coinbaseAccounts)) {
+    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
       const subtitle = this.translate.instant(
         'You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm.'
       );
       const title = this.translate.instant('Not enough confirmed funds');
       this.errorsProvider.showDefaultError(subtitle, title);
       return;
-    } else if (_.isEmpty(this.wallets)) {
+    } else if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       this.errorsProvider.showNoWalletsAvailableInfo();
       return;
     }
@@ -356,7 +359,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-        this.cardConfig.displayName
+          this.cardConfig.displayName
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -657,7 +660,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
 
-  private async initializeWithCoinbase(account, email) {
+  private async initializeCoinbase(account, email) {
     const COIN = account.currency.code;
 
     this.currencyIsoCode = this.currency;
@@ -773,9 +776,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.onGoingProcessProvider.set('payingWithCoinbase');
     this.coinbaseProvider
       .payInvoice(
-      this.tx.giftData.invoiceId,
-      this.coinbaseAccount.currency.code,
-      code
+        this.tx.giftData.invoiceId,
+        this.coinbaseAccount.currency.code,
+        code
       )
       .then(() => {
         this.onGoingProcessProvider.clear();
@@ -841,15 +844,15 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.wallet = null;
       this.coinbaseAccount = option.accountSelected;
       const email = this.coinbaseProvider.coinbaseData.user.email;
-      await this.initializeWithCoinbase(option.accountSelected, email).catch(
-        () => { }
+      await this.initializeCoinbase(option.accountSelected, email).catch(
+        () => {}
       );
     } else {
       this.wallet = option;
       this.coinbaseAccount = null;
       this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
       const email = await this.promptEmail();
-      await this.initialize(option, email).catch(() => { });
+      await this.initialize(option, email).catch(() => {});
     }
   }
 
