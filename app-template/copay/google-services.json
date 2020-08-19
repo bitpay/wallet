@@ -15,26 +15,66 @@
       },
       "oauth_client": [
         {
-          "client_id":
-            "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
+          "client_id": "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ8nyjRBe-0Lyur0LjO-SOkjv32uNQKy0"
+          "current_key": "AIzaSyBiEzX0eX2gUm6nQfpkyIM34_4YZsuGDwo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "149194066736-e4k6hghiu36vnvsabij4tr39d9d4bc68.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bitpay.fakeapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149194066736:android:64dc8a200f13f9ee",
+        "android_client_info": {
+          "package_name": "com.bitpay.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiEzX0eX2gUm6nQfpkyIM34_4YZsuGDwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "149194066736-e4k6hghiu36vnvsabij4tr39d9d4bc68.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bitpay.fakeapp"
+              }
+            }
+          ]
         }
       }
     }
