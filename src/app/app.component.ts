@@ -28,6 +28,7 @@ import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { BuyCryptoProvider } from '../providers/buy-crypto/buy-crypto';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
+import { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
@@ -149,7 +150,8 @@ export class CopayApp {
     private bitpayProvider: BitPayProvider,
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
-    private logsProvider: LogsProvider
+    private logsProvider: LogsProvider,
+    private dynamicLinksProvider: DynamicLinksProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -299,6 +301,11 @@ export class CopayApp {
 
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
+
+      // Firebase Dynamic link
+      this.dynamicLinksProvider.onDynamicLink().then(data => {
+        this.logger.debug('Firebase Dynamic Link Data: ', JSON.stringify(data));
+      });
     }
 
     // Set Theme (light or dark mode)
