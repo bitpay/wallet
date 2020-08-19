@@ -71,7 +71,7 @@ export interface Config {
     amazon: boolean;
     mercadolibre: boolean;
     shapeshift: boolean;
-    simplex: boolean;
+    buycrypto: boolean;
     giftcards: boolean;
   };
 
@@ -213,7 +213,7 @@ export class ConfigProvider {
         amazon: true,
         mercadolibre: true,
         shapeshift: true,
-        simplex: true,
+        buycrypto: true,
         giftcards: true
       },
 
@@ -348,8 +348,8 @@ export class ConfigProvider {
       if (this.configCache.showIntegration.giftcards !== false) {
         this.configCache.showIntegration.giftcards = this.configDefault.showIntegration.giftcards;
       }
-      if (this.configCache.showIntegration.simplex !== false) {
-        this.configCache.showIntegration.simplex = this.configDefault.showIntegration.simplex;
+      if (this.configCache.showIntegration.buycrypto !== false) {
+        this.configCache.showIntegration.buycrypto = this.configDefault.showIntegration.buycrypto;
       }
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;

@@ -56,24 +56,49 @@ export class OrderByPipe implements PipeTransform {
             : propertyToCheck;
 
         return input.sort((a, b) => {
-          return !desc
-            ? OrderByPipe._orderByComparator(a[property], b[property])
-            : -OrderByPipe._orderByComparator(a[property], b[property]);
+          if (a[property] && b[property]) {
+            return !desc
+              ? OrderByPipe._orderByComparator(a[property], b[property])
+              : -OrderByPipe._orderByComparator(a[property], b[property]);
+          } else if (a.value[property] && b.value[property]) {
+            return !desc
+              ? OrderByPipe._orderByComparator(
+                  a.value[property],
+                  b.value[property]
+                )
+              : -OrderByPipe._orderByComparator(
+                  a.value[property],
+                  b.value[property]
+                );
+          } else return 0;
         });
       }
     } else {
       // Loop over property of the array in order and sort
       return input.sort((a, b) => {
         for (var i: number = 0; i < config.length; i++) {
+          let comparison = 0;
           var desc = config[i].substr(0, 1) == '-';
           var property =
             config[i].substr(0, 1) == '+' || config[i].substr(0, 1) == '-'
               ? config[i].substr(1)
               : config[i];
 
-          var comparison = !desc
-            ? OrderByPipe._orderByComparator(a[property], b[property])
-            : -OrderByPipe._orderByComparator(a[property], b[property]);
+          if (a[property] && b[property]) {
+            comparison = !desc
+              ? OrderByPipe._orderByComparator(a[property], b[property])
+              : -OrderByPipe._orderByComparator(a[property], b[property]);
+          } else if (a.value[property] && b.value[property]) {
+            comparison = !desc
+              ? OrderByPipe._orderByComparator(
+                  a.value[property],
+                  b.value[property]
+                )
+              : -OrderByPipe._orderByComparator(
+                  a.value[property],
+                  b.value[property]
+                );
+          }
 
           // Don't return 0 yet in case of needing to sort by next property
           if (comparison != 0) return comparison;

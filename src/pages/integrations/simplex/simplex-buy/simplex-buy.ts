@@ -19,6 +19,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { RateProvider } from '../../../../providers/rate/rate';
 import { SimplexProvider } from '../../../../providers/simplex/simplex';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
@@ -54,9 +55,10 @@ export class SimplexBuyPage {
   private createdOn: string;
 
   // Amount Page Params
-  private amount?: number;
-  private coin?: string;
-  private currency?: string;
+  public amount?: number;
+  public coin?: string;
+  public currency?: string;
+  public walletId?: any;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -76,12 +78,14 @@ export class SimplexBuyPage {
     private rateProvider: RateProvider,
     private simplexProvider: SimplexProvider,
     private translate: TranslateService,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    public themeProvider: ThemeProvider
   ) {
-    // Amount Page Params
+    // Crypto Offers Page Params
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
     this.amount = this.navParams.data.amount;
+    this.walletId = this.navParams.data.walletId;
 
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
@@ -115,7 +119,7 @@ export class SimplexBuyPage {
     this.wallets = this.profileProvider.getWallets({
       network: 'livenet',
       onlyComplete: true,
-      coin: this.coin || ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
+      coin: this.coin || this.simplexProvider.supportedCoins,
       backedUp: true
     });
     this.altCurrenciesToShow = ['USD', 'EUR'];
@@ -184,6 +188,11 @@ export class SimplexBuyPage {
   }
 
   public showWallets(): void {
+    if (this.walletId) {
+      const wallet = this.profileProvider.getWallet(this.walletId);
+      this.onWalletSelect(wallet);
+      return;
+    }
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {

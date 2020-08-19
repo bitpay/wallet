@@ -25,6 +25,7 @@ import {
 } from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+import { BuyCryptoProvider } from '../providers/buy-crypto/buy-crypto';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
@@ -38,7 +39,6 @@ import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
-import { SimplexProvider } from '../providers/simplex/simplex';
 import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
@@ -60,6 +60,7 @@ import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
+import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -107,10 +108,11 @@ export class CopayApp {
     AddWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
-    SimplexPage,
     SimplexBuyPage,
+    SimplexPage,
     SelectInvoicePage,
-    WalletDetailsPage
+    WalletDetailsPage,
+    WyrePage
   };
 
   constructor(
@@ -131,7 +133,7 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private shapeshiftProvider: ShapeshiftProvider,
-    private simplexProvider: SimplexProvider,
+    private buyCryptoProvider: BuyCryptoProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -492,15 +494,15 @@ export class CopayApp {
     if (this.appProvider.info._enabledExtensions.giftcards)
       this.giftCardProvider.register();
 
+    // Buy Crypto
+    if (this.appProvider.info._enabledExtensions.buycrypto) {
+      this.buyCryptoProvider.register();
+    }
+
     // ShapeShift
     if (this.appProvider.info._enabledExtensions.shapeshift) {
       this.shapeshiftProvider.setCredentials();
       this.shapeshiftProvider.register();
-    }
-
-    // Simplex
-    if (this.appProvider.info._enabledExtensions.simplex) {
-      this.simplexProvider.register();
     }
 
     // Coinbase

@@ -8,6 +8,7 @@ import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
+import { RateProvider } from '../rate/rate';
 
 const PASSTHROUGH_URI_DEV = 'https://cmgustavo.github.io/website/simplex/';
 const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/static/simplex/';
@@ -17,13 +18,17 @@ export class SimplexProvider {
   private env: string;
   public passthrough_uri: string;
   public supportedFiatAltCurrencies;
+  public supportedCoins;
+  public supportedPaymentMethods;
+  public fiatAmountLimits: { min: number; max: number };
 
   constructor(
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private rateProvider: RateProvider
   ) {
     this.logger.debug('SimplexProvider Provider initialized');
     this.env = env.name == 'development' ? 'sandbox' : 'production';
@@ -80,6 +85,11 @@ export class SimplexProvider {
       'VND',
       'ZAR'
     ];
+    this.supportedCoins = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
+    this.fiatAmountLimits = {
+      min: 50,
+      max: 20000
+    };
   }
 
   public getSupportedFiatAltCurrencies(): string[] {
@@ -111,7 +121,7 @@ export class SimplexProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'simplex',
-      title: this.translate.instant('Buy Crypto (Simplex)'),
+      title: this.translate.instant('Buy Crypto'),
       icon: 'assets/img/simplex/icon-simplex.png',
       showIcon: true,
       logo: 'assets/img/simplex/logo-simplex-color.svg',
@@ -152,5 +162,34 @@ export class SimplexProvider {
   public getSimplex(): Promise<any> {
     const env = this.env;
     return this.persistenceProvider.getSimplex(env);
+  }
+
+  public getFiatCurrencyLimits(fiatCurrency: string, coin: string) {
+    this.fiatAmountLimits.min = this.calculateFiatRate(50, fiatCurrency, coin);
+    this.fiatAmountLimits.max = this.calculateFiatRate(
+      20000,
+      fiatCurrency,
+      coin
+    );
+
+    return this.fiatAmountLimits;
+  }
+
+  private calculateFiatRate(
+    amount: number,
+    fiatCurrency: string,
+    cryptoCurrency: string
+  ): number {
+    if (_.includes(['USD', 'EUR'], fiatCurrency)) {
+      return amount;
+    }
+    const rateFromFiat = this.rateProvider.fromFiat(
+      amount,
+      'USD',
+      cryptoCurrency
+    );
+    return +this.rateProvider
+      .toFiat(rateFromFiat, fiatCurrency, cryptoCurrency)
+      .toFixed(2);
   }
 }

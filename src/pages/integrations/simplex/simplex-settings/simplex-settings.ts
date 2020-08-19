@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 
 @Component({
   selector: 'page-simplex-settings',
@@ -18,7 +19,8 @@ export class SimplexSettingsPage {
 
   constructor(
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    public themeProvider: ThemeProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName

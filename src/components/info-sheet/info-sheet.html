@@ -411,5 +411,13 @@
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+    <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
+      <span sheet-title-text translate>No wallet available</span>
+      <span sheet-text translate>
+        You do not have a {{params?.coin}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.
+      </span>
+      <span sheet-button-text translate>Create Wallet</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

@@ -180,6 +180,15 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidWyreUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data &&
+      (data.indexOf(this.appProvider.info.name + '://wyre') === 0 ||
+        data.indexOf(this.appProvider.info.name + '://wyreError') === 0)
+    );
+  }
+
   private isValidInvoiceUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(
@@ -658,7 +667,7 @@ export class IncomingDataProvider {
   }
 
   private goToSimplex(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Simplex URL');
+    this.logger.debug('Incoming-data (redirect): Simplex URL: ' + data);
 
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const success = this.getParameterByName('success', res);
@@ -669,6 +678,42 @@ export class IncomingDataProvider {
     const stateParams = { success, paymentId, quoteId, userId };
     const nextView = {
       name: 'SimplexPage',
+      params: stateParams
+    };
+    this.incomingDataRedir(nextView);
+  }
+
+  private goToWyre(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Wyre URL: ' + data);
+
+    if (
+      data === this.appProvider.info.name + '://wyre' ||
+      data.indexOf(this.appProvider.info.name + '://wyreError') === 0
+    )
+      return;
+    const res = data.replace(new RegExp('&amp;', 'g'), '&');
+    const transferId = this.getParameterByName('transferId', res);
+    const orderId = this.getParameterByName('orderId', res);
+    const accountId = this.getParameterByName('accountId', res);
+    const dest = this.getParameterByName('dest', res);
+    const fees = this.getParameterByName('fees', res);
+    const destAmount = this.getParameterByName('destAmount', res);
+    const blockchainNetworkTx = this.getParameterByName(
+      'blockchainNetworkTx',
+      res
+    );
+
+    const stateParams = {
+      transferId,
+      orderId,
+      accountId,
+      dest,
+      fees,
+      destAmount,
+      blockchainNetworkTx
+    };
+    const nextView = {
+      name: 'WyrePage',
       params: stateParams
     };
     this.incomingDataRedir(nextView);
@@ -767,6 +812,11 @@ export class IncomingDataProvider {
       // Simplex
     } else if (this.isValidSimplexUri(data)) {
       this.goToSimplex(data);
+      return true;
+
+      // Wyre
+    } else if (this.isValidWyreUri(data)) {
+      this.goToWyre(data);
       return true;
 
       // Invoice Intent

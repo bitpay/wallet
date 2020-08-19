@@ -15,7 +15,7 @@
 
 <ion-content class="add-bottom-safe-area" no-bounce>
   <div class="container">
-    <div class="amount-content">
+    <div class="amount-content" [ngClass]="{'amount-content-fixed': fromBuyCrypto}">
       <div class="expression-container">
         <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
           <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
@@ -29,14 +29,14 @@
         <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-      <div class="result">&asymp;
+      <div class="result" *ngIf="!fromBuyCrypto">&asymp;
         <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
         <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
         {{alternativeUnit}}
       </div>
     </div>
 
-    <div class="amount-switcher-margin">
+    <div class="amount-switcher-margin" *ngIf="!fromBuyCrypto">
       <div class="amount-switcher">
         <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
           <img class="switcher__icon" src="assets/img/icon-swap.svg">
@@ -45,11 +45,21 @@
       </div>
     </div>
 
+    <form class="amount-switcher-margin" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+      <div class="amount-switcher">
+        <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+        </ion-select>
+      </div>
+    </form>
+
     <div class="bottom-absolute">
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
 
       <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
-        <span>{{'Continue' | translate}}</span>
+        <span *ngIf="!fromBuyCrypto">{{'Continue' | translate}}</span>
+        <span *ngIf="fromBuyCrypto">{{'Select Payment Method' | translate}}</span>
       </button>
     </div>
   </div>

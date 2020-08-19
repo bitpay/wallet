@@ -31,6 +31,7 @@ export {
 export { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 export { BitPayIdProvider } from '../providers/bitpay-id/bitpay-id';
 export { BitPayProvider } from '../providers/bitpay/bitpay';
+export { BuyCryptoProvider } from '../providers/buy-crypto/buy-crypto';
 export { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 export { BwcProvider } from '../providers/bwc/bwc';
 export { ClipboardProvider } from '../providers/clipboard/clipboard';
@@ -100,6 +101,7 @@ export {
 } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
+export { WyreProvider } from '../providers/wyre/wyre';
 export { ReleaseProvider } from '../providers/release/release';
 
 export { CardPhasesProvider } from '../providers/card-phases/card-phases';

@@ -24,6 +24,8 @@
 5.4 - Tab Settings
 
 6 - Other Pages
+
+7 - Buy Crypto
 */
 
 .dark {
@@ -1377,6 +1379,7 @@
   }
 
   page-alt-currency,
+  page-country-selector,
   page-key-settings,
   page-wallet-information,
   page-wallet-addresses,
@@ -1477,8 +1480,8 @@
       background-color: $bg-color-dark-theme;
     }
   }
-
-  page-simplex {
+  page-simplex,
+  page-wyre {
     .buy-crypto-button {
       color: $text-color-dark-theme;
     }
@@ -1753,6 +1756,50 @@
     .filter-container {
       .labels {
         color: $text-color-dark-theme;
+      }
+    }
+  }
+
+  // Buy Crypto
+  page-crypto-order-summary {
+    .bp-list {
+      .card {
+        background: $bg-color-dark-theme;
+        .item {
+          &.item-ios,
+          &.item-md {
+            background-color: $bg-color-dark-theme-2;
+            ion-note {
+              img {
+                filter: brightness(0.5);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  page-crypto-payment-method {
+    .item-img img {
+      filter: brightness(0.5);
+    }
+  }
+  page-crypto-offers {
+    .bp-list {
+      .summary-description {
+        color: $text-color-dark-theme;
+      }
+    }
+  }
+  page-crypto-coin-selector {
+    .bp-list {
+      .available-wallets {
+        &-container {
+          background-color: $bg-color-dark-theme-2;
+        }
+        &-label {
+          color: $text-color-dark-theme-2;
+        }
       }
     }
   }

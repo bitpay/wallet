@@ -1,0 +1,58 @@
+<wide-header-page title="{{'Offers' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item>
+        <ion-row>
+          <ion-col>
+            <div class="summary-title" translate>Amount</div>
+            <div class="summary-description"><span *ngIf="currency === 'USD'">$</span>{{amount}} <span *ngIf="currency !== 'USD'">{{currency}}</span></div>
+          </ion-col>
+          <ion-col>
+            <div class="summary-title" translate>Crypto</div>
+            <div class="summary-description"><img class="coin-icon" src="assets/img/currencies/{{coin}}.svg" /> {{coin | uppercase}}</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="summary-title" translate>Payment Method</div>
+            <div class="summary-description">{{paymentMethod?.label}}</div>
+          </ion-col>
+          <ion-col align-self-center>
+            <div class="edit-container" (click)="goToEdit()">
+              <div class="edit-label" translate>
+                Edit
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+
+      <div *ngFor="let offer of (offers | keys) | orderBy : ['-amountReceiving']">
+        <action-card-v4 (click)="goTo(offer.key)" tappable *ngIf="offer.value.showOffer">
+          <div action-card-body *ngIf="!offer.value.fiatMoney && !offer.value.errorMsg" class="loader">
+            <ion-spinner></ion-spinner>
+          </div>
+          <div action-card-body translate *ngIf="offer.value.fiatMoney || offer.value.errorMsg">
+            <div *ngIf="offer.value.errorMsg">
+              <div class="main-label">{{offer.value.errorMsg}}</div>
+            </div>
+            <div *ngIf="offer.value.fiatMoney && !offer.value.errorMsg">
+              <div class="main-label">{{offer.value.amountReceiving }} {{coin | uppercase}}</div>
+              <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{offer.value.fiatMoney | number:'1.2-2'}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span> *</div>
+            </div>
+            <div class="provider">
+              <span class="secondary-label">Provided by</span>
+              <img [src]="themeProvider.currentAppTheme !== 'dark' ? offer.value.logoLight : offer.value.logoDark">
+            </div>
+          </div>
+          <div action-card-button translate *ngIf="offer.value.fiatMoney">
+            View Offer
+          </div>
+        </action-card-v4>
+      </div>
+
+      <div class="card-terms">
+        <div translate>* Fees included </div>
+        <div translate>Additional third-party fees may apply.</div>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>
