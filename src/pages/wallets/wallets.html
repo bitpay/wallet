@@ -115,7 +115,7 @@
             <ion-note item-end>
               <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
               <div class="secondary-note" *ngIf="getNativeBalance(ac.balance.amount, ac.balance.currency)">
-                {{ getNativeBalance(ac.balance.amount, ac.balance.currency) | currency:' ':' ' }} {{ coinbaseAltCurrency ? coinbaseAltCurrency : coinbaseData.user.native_currency }}
+                {{ getNativeBalance(ac.balance.amount, ac.balance.currency) | currency:' ':' ' }} {{ coinbaseData.user.native_currency }}
               </div>
             </ion-note>
           </button>

@@ -10,6 +10,7 @@ import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
+import { RateProvider } from '../rate/rate';
 
 import { CurrencyProvider } from '../currency/currency';
 
@@ -20,7 +21,6 @@ export class CoinbaseProvider {
   private environment: string = env.name;
   private linkedAccount: boolean = false;
   private credentials;
-  private config;
 
   // URLs
   public supportUrl: string = 'https://support.coinbase.com';
@@ -44,7 +44,8 @@ export class CoinbaseProvider {
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private rateProvider: RateProvider
   ) {
     /*
      * Development: Gustavo's Account
@@ -653,19 +654,14 @@ export class CoinbaseProvider {
     });
   }
 
-  public updateExchangeRates(currency?: string): void {
+  public updateExchangeRates(): void {
     if (!this.coinbaseData || !this.coinbaseData['user']['native_currency'])
       return;
-
-    currency = currency
-      ? currency
-      : this.coinbaseData['user']['native_currency'];
-
-    currency = currency
-      ? currency
-      : this.config.wallet.settings.alternativeIsoCode;
     const url =
-      this.credentials.API + '/v2/exchange-rates' + '?currency=' + currency;
+      this.credentials.API +
+      '/v2/exchange-rates' +
+      '?currency=' +
+      this.coinbaseData['user']['native_currency'];
 
     this.logger.debug('Coinbase: Getting Exchange Rates...');
     this.http.get(url).subscribe(
@@ -768,38 +764,65 @@ export class CoinbaseProvider {
     });
   }
 
-  public payInvoice(invoiceId, currency, twoFactorCode?) {
-    return new Promise((resolve, reject) => {
-      const url = 'https://bitpay.com/oauth/coinbase/pay/' + invoiceId;
-      const data = {
-        currency,
-        token: this.accessToken,
-        twoFactorCode
-      };
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      });
+  public getAvailableAccounts(coin, minFiatCurrency?: { amount; currency }) {
+    let coinbaseData = _.cloneDeep(this.coinbaseData);
+    let coinbaseAccounts = coinbaseData.accounts.filter(ac => {
+      const accountCoin = ac.balance.currency.toLowerCase();
+      if (minFiatCurrency) {
+        const availableBalanceFiat = this.rateProvider.toFiat(
+          this.currencyProvider.getPrecision(accountCoin).unitToSatoshi *
+            Number(ac.balance.amount),
+          minFiatCurrency.currency,
+          accountCoin
+        );
+        return (
+          availableBalanceFiat >=
+          Number(
+            minFiatCurrency && minFiatCurrency.amount
+              ? minFiatCurrency.amount
+              : null
+          )
+        );
+      } else {
+        return accountCoin == coin;
+      }
+    });
+    return coinbaseAccounts;
+  }
 
-      this.logger.debug('Coinbase: Paying invoice...');
+  public payInvoice(
+    invoiceId: string,
+    currency: string,
+    twoFactorCode?: string
+  ): Promise<any> {
+    return this.doRefreshToken().then(_ => {
+      return this._payInvoice(invoiceId, currency, twoFactorCode);
+    });
+  }
+
+  private _payInvoice(
+    invoiceId: string,
+    currency: string,
+    twoFactorCode?: string
+  ): Promise<any> {
+    const url = 'https://bitpay.com/oauth/coinbase/pay/' + invoiceId;
+    const data = {
+      currency,
+      token: this.accessToken,
+      twoFactorCode
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    });
+    return new Promise((resolve, reject) => {
       this.http.post(url, data, { headers }).subscribe(
         data => {
-          this.logger.info('Coinbase: Pay Invoce SUCCESS ' + data);
-          return resolve();
+          this.logger.info('Coinbase: Pay invoice SUCCESS');
+          return resolve(data);
         },
         data => {
-          if (this.isExpiredTokenError(data.error.errors)) {
-            this.doRefreshToken()
-              .then(_ => {
-                return this.payInvoice(invoiceId, currency, twoFactorCode);
-              })
-              .catch(e => {
-                this.logger.warn(e);
-                setTimeout(() => {
-                  return this.payInvoice(invoiceId, currency, twoFactorCode);
-                }, 5000);
-              });
-          } else if (
+          if (
             data.error &&
             data.error.errors &&
             data.error.errors[0].id == 'two_factor_required'

@@ -94,6 +94,7 @@ export class ConfirmPage {
   // Coinbase
   public fromCoinbase;
   public coinbaseAccount;
+  public coinbaseAccounts;
   public showCoinbase;
 
   public mainTitle: string;
@@ -325,15 +326,6 @@ export class ConfirmPage {
         this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
         '1.2-6'
       );
-    } else if (wallet && wallet.accounts) {
-      // for payments with Coinbase accounts
-      this.tx.minerFee = this.navParams.data.minerFee;
-      this.totalAmount = tx.amount - this.tx.minerFee;
-      this.totalAmountStr = this.decimalPipe.transform(
-        this.totalAmount /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
-        '1.2-6'
-      );
     }
   }
 
@@ -375,7 +367,11 @@ export class ConfirmPage {
       coin
     });
 
-    if (_.isEmpty(this.wallets) && !this.showCoinbase) {
+    this.coinbaseAccounts = this.showCoinbase
+      ? this.coinbaseProvider.getAvailableAccounts(coin)
+      : [];
+
+    if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       const msg = this.translate.instant(
         'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
       );
@@ -388,25 +384,18 @@ export class ConfirmPage {
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
   private setWallet(wallet): void {
-    if (!wallet.accounts) {
-      this.wallet = wallet;
-      this.coinbaseAccount = null;
-    } else {
-      this.wallet = null;
-      this.coinbaseAccount = wallet;
-    }
+    this.wallet = wallet;
+    this.coinbaseAccount = null;
 
     // If select another wallet
-    this.tx.coin = this.wallet
-      ? this.wallet.coin
-      : this.coinbaseAccount.accounts.currency.code.toLowerCase();
+    this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     this.setButtonText(
-      this.wallet ? this.wallet.credentials.m > 1 : false,
+      this.wallet.credentials.m > 1,
       !!this.tx.paypro,
       !!this.fromCoinbase,
       this.isSpeedUpTx
@@ -446,8 +435,37 @@ export class ConfirmPage {
           this.showErrorInfoSheet(err);
           break;
       }
-      this.getTotalAmountDetails(this.tx, this.coinbaseAccount);
     });
+  }
+
+  private setCoinbaseAccount(option): void {
+    this.wallet = null;
+    this.coinbaseAccount = option.accountSelected;
+
+    this.tx.coin = this.coinbaseAccount.currency.code.toLowerCase();
+
+    this.setButtonText(
+      false,
+      !!this.tx.paypro,
+      !!this.fromCoinbase,
+      this.isSpeedUpTx
+    );
+
+    if (this.tx.paypro) {
+      this.paymentTimeControl(this.tx.paypro.expires);
+      this.tx.paypro.host = new URL(this.tx.payProUrl).host;
+      this.tx.paypro.invoiceId = this.tx.payProUrl.replace(
+        'https://bitpay.com/i/',
+        ''
+      );
+      this.tx.minerFee = this.navParams.data.minerFee;
+      this.totalAmount = this.tx.amount - this.tx.minerFee;
+      this.totalAmountStr = this.decimalPipe.transform(
+        this.totalAmount /
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        '1.2-6'
+      );
+    }
   }
 
   private showUseUnconfirmedMsg(): boolean {
@@ -1285,11 +1303,12 @@ export class ConfirmPage {
     this.showAddress = !this.showAddress;
   }
 
-  public onWalletSelect(wallet): void {
-    this.setWallet(wallet);
+  public onWalletSelect(option): void {
+    if (option.isCoinbaseAccount) this.setCoinbaseAccount(option);
+    else this.setWallet(option);
   }
 
-  public approve(tx, wallet): Promise<void> {
+  public approve(tx, wallet): void {
     if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
 
     if (this.paymentExpired) {
@@ -1299,9 +1318,9 @@ export class ConfirmPage {
       return undefined;
     }
 
-    this.onGoingProcessProvider.set('creatingTx');
     if (wallet) {
-      return this.getTxp(_.clone(tx), wallet, false)
+      this.onGoingProcessProvider.set('creatingTx');
+      this.getTxp(_.clone(tx), wallet, false)
         .then(txp => {
           this.logger.debug('Transaction Fee:', txp.fee);
           return this.confirmTx(txp, wallet).then((nok: boolean) => {
@@ -1318,9 +1337,9 @@ export class ConfirmPage {
           this.logger.warn('Error getting transaction proposal', err);
         });
     } else {
-      return this.payWithCoinbaseAccount(
+      this.payWithCoinbaseAccount(
         this.tx.paypro.invoiceId,
-        this.coinbaseAccount.accounts.currency.code
+        this.coinbaseAccount.currency.code
       );
     }
   }
@@ -1543,24 +1562,32 @@ export class ConfirmPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
+
+    let coinbaseData = { user: [], availableAccounts: [] };
+    if (this.showCoinbase) {
+      coinbaseData = {
+        user: this.coinbaseProvider.coinbaseData.user,
+        availableAccounts: this.coinbaseAccounts
+      };
+    }
+
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
       title: this.walletSelectorTitle,
-      showCoinbase: this.showCoinbase,
-      coin: this.coin
+      coinbaseData
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
     );
     walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      this.onSelectWalletEvent(wallet);
+    walletSelector.onDidDismiss(option => {
+      this.onSelectWalletEvent(option);
     });
   }
 
-  private onSelectWalletEvent(wallet): void {
-    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+  private onSelectWalletEvent(option): void {
+    if (!_.isEmpty(option)) this.onWalletSelect(option);
     this.isOpenSelector = false;
   }
 
@@ -1580,9 +1607,9 @@ export class ConfirmPage {
     this.navCtrl.push(ScanPage, { fromConfirm: true });
   }
 
-  protected payWithCoinbaseAccount(invoiceId, coin, code?): Promise<any> {
+  protected payWithCoinbaseAccount(invoiceId, coin, code?): void {
     this.onGoingProcessProvider.set('payingWithCoinbase');
-    return this.coinbaseProvider
+    this.coinbaseProvider
       .payInvoice(invoiceId, coin, code)
       .then(() => {
         this.onGoingProcessProvider.clear();

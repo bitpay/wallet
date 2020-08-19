@@ -27,7 +27,6 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
-import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -70,7 +69,6 @@ export class WalletsPage {
   public showCoinbase: boolean;
   public coinbaseLinked: boolean;
   public coinbaseData: object = {};
-  public coinbaseAltCurrency: string;
 
   constructor(
     private plt: Platform,
@@ -92,8 +90,7 @@ export class WalletsPage {
     private simplexProvider: SimplexProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
-    private coinbaseProvider: CoinbaseProvider,
-    private configProvider: ConfigProvider
+    private coinbaseProvider: CoinbaseProvider
   ) {
     this.collapsedGroups = {};
     // Update Wallet on Focus
@@ -122,11 +119,7 @@ export class WalletsPage {
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
     if (this.coinbaseLinked) {
       if (force || !this.coinbaseData) {
-        const config = this.configProvider.get();
-        this.coinbaseAltCurrency = force
-          ? config.wallet.settings.alternativeIsoCode
-          : null;
-        this.coinbaseProvider.updateExchangeRates(this.coinbaseAltCurrency);
+        this.coinbaseProvider.updateExchangeRates();
         this.coinbaseProvider.preFetchAllData(this.coinbaseData);
       } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
     }

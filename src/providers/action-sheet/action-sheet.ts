@@ -71,9 +71,10 @@ export interface WalletSelectorParams {
   wallets: any[];
   selectedWalletId: string;
   title: string;
-  showCoinbase?: boolean;
-  minFiatCurrency?: { amount: any; currency: string };
-  coin?: string;
+  coinbaseData?: {
+    user: any[];
+    availableAccounts: any[];
+  };
 }
 
 export interface WalletReceiveParams {
