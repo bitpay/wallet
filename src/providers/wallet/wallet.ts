@@ -470,10 +470,15 @@ export class WalletProvider {
     return balanceLastDay ? balanceLastDay.toFixed(2) : '0.00';
   }
 
-  private calcTotalAmount(statusWallet, wallet, isoCode, lastDayRatesArray) {
+  private calcTotalAmount(wallet, isoCode, lastDayRatesArray) {
+    const statusWallet = wallet.cachedStatus;
     let walletTotalBalanceAlternative = 0;
     let walletTotalBalanceAlternativeLastDay = 0;
-    if (wallet.network === 'livenet' && !wallet.hidden) {
+    if (
+      wallet.network === 'livenet' &&
+      !wallet.hidden &&
+      !_.isEmpty(statusWallet)
+    ) {
       const balance =
         wallet.coin === 'xrp'
           ? statusWallet.availableBalanceSat
@@ -510,12 +515,7 @@ export class WalletProvider {
 
     _.each(wallets, wallet => {
       totalAmountArray.push(
-        this.calcTotalAmount(
-          wallet.cachedStatus,
-          wallet,
-          isoCode,
-          lastDayRatesArray
-        )
+        this.calcTotalAmount(wallet, isoCode, lastDayRatesArray)
       );
     });
 
