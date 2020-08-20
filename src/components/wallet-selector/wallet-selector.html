@@ -33,9 +33,9 @@
               </ion-label>
               <ion-note item-end>
                 <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
-                <!-- <div class="secondary-note" *ngIf="getNativeBalance(ac.balance.amount, ac.balance.currency)">
-                  {{ getNativeBalance(ac.balance.amount, ac.balance.currency) | currency:' ':' ' }} {{ coinbaseUser.native_currency }}
-                </div> -->
+                <div class="secondary-note" *ngIf="ac.nativeCurrencyStr">
+                  {{ ac.nativeCurrencyStr }}
+                </div>
               </ion-note>
             </button>
           </ion-list>

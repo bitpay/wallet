@@ -767,6 +767,10 @@ export class CoinbaseProvider {
   public getAvailableAccounts(coin?, minFiatCurrency?: { amount; currency }) {
     let coinbaseData = _.cloneDeep(this.coinbaseData);
     let coinbaseAccounts = coinbaseData.accounts.filter(ac => {
+      ac.nativeCurrencyStr =
+        this.getNativeCurrencyBalance(ac.balance.amount, ac.balance.currency) +
+        ' ' +
+        this.coinbaseData['user']['native_currency'];
       const accountCoin = ac.balance.currency.toLowerCase();
       if (minFiatCurrency) {
         const availableBalanceFiat = this.rateProvider.toFiat(
