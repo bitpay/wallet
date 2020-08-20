@@ -1124,7 +1124,8 @@ export class ConfirmPage {
       let multisigContractInstantiationInfo: any[] = [];
 
       const opts = {
-        sender: txp.from
+        sender: txp.from,
+        txId: txp.txid
       };
       multisigContractInstantiationInfo = await this.walletProvider.getMultisigContractInstantiationInfo(
         this.wallet,
