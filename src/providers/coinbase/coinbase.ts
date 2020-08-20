@@ -790,14 +790,19 @@ export class CoinbaseProvider {
     return coinbaseAccounts;
   }
 
-  public payInvoice(
+  public async payInvoice(
     invoiceId: string,
     currency: string,
     twoFactorCode?: string
   ): Promise<any> {
-    return this.doRefreshToken().then(_ => {
-      return this._payInvoice(invoiceId, currency, twoFactorCode);
-    });
+    if (!twoFactorCode) {
+      try {
+        await this.doRefreshToken();
+      } catch (error) {
+        this.logger.warn('Coinbase: the token could not be refreshed');
+      }
+    }
+    return this._payInvoice(invoiceId, currency, twoFactorCode);
   }
 
   private _payInvoice(
