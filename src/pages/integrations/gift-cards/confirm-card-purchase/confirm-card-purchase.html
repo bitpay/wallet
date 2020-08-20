@@ -42,7 +42,9 @@
 
           <ion-row align-items-center class="wallet" *ngIf="coinbaseAccount">
             <ion-col>
-              <coin-icon [coin]="coinbaseAccount.currency.code.toLowerCase()" [network]="livenet"></coin-icon>
+              <ion-icon item-start>
+                <img src="assets/img/coinbase/coinbase-icon.png" width="32">
+              </ion-icon>
             </ion-col>
 
             <ion-col>
