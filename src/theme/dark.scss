@@ -196,6 +196,10 @@
           background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat
             50% 50%;
         }
+        &[class*='tab-copay-scan'] {
+          filter: invert(0.4);
+          opacity: 1;
+        }
       }
     }
   }
