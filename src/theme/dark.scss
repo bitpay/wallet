@@ -78,7 +78,6 @@
   page-wallet-details .balance-alt-str,
   page-wallet-details .balance-spendable,
   page-wallet-details .tx-history .date,
-  .bp-list .secondary-label,
   .bp-list .secondary-note {
     opacity: 1;
   }
@@ -97,7 +96,7 @@
     }
   }
 
-  page-theme {
+  page-local-theme {
     ion-content.add-bottom-safe-area {
       .fixed-content,
       .scroll-content {
