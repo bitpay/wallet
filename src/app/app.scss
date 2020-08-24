@@ -858,7 +858,7 @@ ion-icon {
     background: $scan-inactive;
     background-size: contain;
     width: 36px;
-    height: 36px;
+    height: 36px !important;
 
     .tab-button[aria-selected='true'] & {
       background: $scan-active;
