@@ -32,6 +32,7 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { FeeProvider } from '../../../providers/fee/fee';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -129,6 +130,7 @@ export class ConfirmPage {
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider,
+    protected payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -371,7 +373,7 @@ export class ConfirmPage {
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
-  private setWallet(wallet): void {
+  private async setWallet(wallet) {
     this.wallet = wallet;
 
     // If select another wallet
@@ -388,7 +390,19 @@ export class ConfirmPage {
       this.isSpeedUpTx
     );
 
-    if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
+    if (this.tx.paypro) {
+      if (this.currencyProvider.isERCToken(wallet.coin)) {
+        const address = await this.walletProvider.getAddress(wallet, false);
+        this.tx.paypro = await this.payproProvider.getPayProDetails({
+          paymentUrl: this.tx.payProUrl,
+          coin: wallet.coin,
+          address,
+          disableLoader: true
+        });
+      }
+      this.paymentTimeControl(this.tx.paypro.expires);
+    }
+
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
     const feeOpts = this.feeProvider.getFeeOpts();

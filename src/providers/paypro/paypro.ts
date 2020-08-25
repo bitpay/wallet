@@ -45,19 +45,22 @@ export class PayproProvider {
     return payOpts;
   }
 
-  public async getPayProDetails(
-    paymentUrl,
-    coin,
-    disableLoader?: boolean,
-    attempt: number = 1
-  ): Promise<any> {
+  public async getPayProDetails(params: {
+    paymentUrl;
+    coin;
+    address?: string;
+    disableLoader?: boolean;
+    attempt?: number;
+  }): Promise<any> {
+    let { paymentUrl, coin, address, disableLoader, attempt = 1 } = params;
     this.logger.info('PayPro Details: try... ' + attempt);
     const bwc = this.bwcProvider.getPayProV2();
     const chain = this.currencyProvider.getChain(coin).toUpperCase();
     const options: any = {
       paymentUrl,
       chain,
-      currency: coin.toUpperCase()
+      currency: coin.toUpperCase(),
+      address
     };
     if (!disableLoader) {
       this.onGoingProcessProvider.set('fetchingPayPro');
@@ -69,12 +72,13 @@ export class PayproProvider {
         this.logger.error('PayPro Details: ERROR', JSON.stringify(err));
         if (attempt <= 5) {
           await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
-          return this.getPayProDetails(
+          return this.getPayProDetails({
             paymentUrl,
             coin,
+            address,
             disableLoader,
-            ++attempt
-          );
+            attempt: ++attempt
+          });
         } else {
           if (!disableLoader) this.onGoingProcessProvider.clear();
           throw err;

@@ -1186,7 +1186,7 @@ export class IncomingDataProvider {
     disableLoader?: boolean
   ): void {
     this.payproProvider
-      .getPayProDetails(url, coin, disableLoader)
+      .getPayProDetails({ paymentUrl: url, coin, disableLoader })
       .then(details => {
         this.onGoingProcessProvider.clear();
         this.handlePayPro(details, payProOptions, url, coin);
