@@ -344,7 +344,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-        this.cardConfig.displayName
+          this.cardConfig.displayName
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -684,7 +684,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.wallet = wallet;
     this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
     const email = await this.promptEmail();
-    await this.initialize(wallet, email).catch(() => { });
+    await this.initialize(wallet, email).catch(() => {});
   }
 
   public showWallets(): void {
