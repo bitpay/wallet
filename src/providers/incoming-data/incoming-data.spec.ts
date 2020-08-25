@@ -290,11 +290,11 @@ describe('Provider: Incoming Data Provider', () => {
           params: stateParams
         };
 
-        expect(getPayProDetailsSpy).toHaveBeenCalledWith(
-          element.payProUrl,
-          element.paymentOptions[2].currency.toLowerCase(),
-          true
-        );
+        expect(getPayProDetailsSpy).toHaveBeenCalledWith({
+          paymentUrl: element.payProUrl,
+          coin: element.paymentOptions[2].currency.toLowerCase(),
+          disableLoader: true
+        });
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     }));
