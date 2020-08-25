@@ -10,9 +10,9 @@
       </ion-label>
       <ion-note item-end>
         <div class="main-note">
-          <span *ngIf="isoCode === 'USD' && isIsoCodeSupported">$</span>{{ coin.currentPrice | number: getDigitsInfo(coin.unitCode) }}
-          <span class="unit" *ngIf="isoCode !== 'USD' && isIsoCodeSupported">{{ isoCode }}</span>
-          <span class="unit" *ngIf="!isIsoCodeSupported">USD</span>
+          <span *ngIf="fiatIsoCode === 'USD' && isFiatIsoCodeSupported">$</span>{{ coin.currentPrice | number: getDigitsInfo(coin.unitCode) }}
+          <span class="unit" *ngIf="fiatIsoCode !== 'USD' && isFiatIsoCodeSupported">{{ fiatIsoCode }}</span>
+          <span class="unit" *ngIf="!isFiatIsoCodeSupported">USD</span>
         </div>
         <div class="average-container" [ngClass]="coin.totalBalanceChange > 0 ? 'possitive-avg' : 'negative-avg'">
           <span class="average"><span *ngIf="coin.totalBalanceChange > 0">+</span>{{ coin.totalBalanceChange | number:'1.2-2' }}%</span>

@@ -1,9 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import env from '../../environments';
+import { ConfigProvider } from '../../providers/config/config';
 import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
+
+const EXPIRATION_TIME_MS = 5 * 60 * 1000; // 5min
+
+export interface ExchangeRate {
+  rate: number;
+  ts: number;
+}
+
+export enum DateRanges {
+  Day = 1,
+  Week = 7,
+  Month = 30
+}
+
+export interface HistoricalRates {
+  btc: ExchangeRate[];
+  bch: ExchangeRate[];
+}
 
 @Injectable()
 export class RateProvider {
@@ -12,12 +32,14 @@ export class RateProvider {
   private ratesAvailable = {} as CoinsMap<boolean>;
   private rateServiceUrl = {} as CoinsMap<string>;
 
-  private fiatRateAPIUrl = 'https://bws.bitpay.com/bws/api/v1/fiatrates';
+  private bwsURL: string;
+  private ratesCache: any;
 
   constructor(
     private currencyProvider: CurrencyProvider,
     private http: HttpClient,
-    private logger: Logger
+    private logger: Logger,
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
@@ -27,6 +49,14 @@ export class RateProvider {
       this.ratesAvailable[coin] = false;
       this.updateRates(coin);
     }
+
+    const defaults = this.configProvider.getDefaults();
+    this.bwsURL = defaults.bws.url;
+    this.ratesCache = {
+      1: [],
+      7: [],
+      30: []
+    };
   }
 
   public updateRates(chain: string): Promise<any> {
@@ -156,11 +186,59 @@ export class RateProvider {
     ts: string
   ): Promise<any> {
     return new Promise(resolve => {
-      const url =
-        this.fiatRateAPIUrl + '/' + currency + '?coin=' + coin + '&ts=' + ts;
+      const url = `${
+        this.bwsURL
+      }/v1/fiatrates/${currency}?coin=${coin}&ts=${ts}`;
       this.http.get(url).subscribe(data => {
         resolve(data);
       });
     });
+  }
+
+  public getLastDayRates(): Promise<HistoricalRates> {
+    const fiatIsoCode =
+      this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
+
+    return this.fetchHistoricalRates(fiatIsoCode, false, DateRanges.Day).then(
+      x => {
+        let ret = {};
+        _.map(x, (v, k) => {
+          ret[k] = _.last(v).rate;
+        });
+        return ret as HistoricalRates;
+      }
+    );
+  }
+
+  public fetchHistoricalRates(
+    fiatIsoCode: string,
+    force: boolean = false, // TODO: review
+    dateRange: DateRanges = DateRanges.Day
+  ): Promise<HistoricalRates> {
+    const firstDateTs =
+      moment()
+        .subtract(dateRange, 'days')
+        .startOf('hour')
+        .unix() * 1000;
+
+    const now = Date.now();
+    if (
+      _.isEmpty(this.ratesCache[dateRange].data) ||
+      this.ratesCache[dateRange].expiration < now ||
+      force
+    ) {
+      this.logger.debug(
+        `Refreshing Exchange rates for ${fiatIsoCode} period ${dateRange}`
+      );
+
+      // This pulls ALL coins in one query
+      const req = this.http.get<ExchangeRate[]>(
+        `${this.bwsURL}/v2/fiatrates/${fiatIsoCode}?ts=${firstDateTs}`
+      );
+
+      this.ratesCache[dateRange].data = req.first().toPromise();
+      this.ratesCache[dateRange].expiration = now + EXPIRATION_TIME_MS;
+    }
+    return this.ratesCache[dateRange].data;
   }
 }

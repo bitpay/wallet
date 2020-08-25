@@ -4,11 +4,11 @@ import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -48,7 +48,7 @@ export class TabsPage {
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
     private tabProvider: TabProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
+    private rateProvider: RateProvider,
     private platformProvider: PlatformProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -171,7 +171,7 @@ export class TabsPage {
   };
 
   private updateTotalBalance() {
-    this.exchangeRatesProvider.getLastDayRates().then(lastDayRatesArray => {
+    this.rateProvider.getLastDayRates().then(lastDayRatesArray => {
       this.walletProvider
         .getTotalAmount(this.profileProvider.wallet, lastDayRatesArray)
         .then(data => {

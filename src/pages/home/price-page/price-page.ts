@@ -18,10 +18,7 @@ import {
   Logger,
   SimplexProvider
 } from '../../../providers';
-import {
-  DateRanges,
-  ExchangeRatesProvider
-} from '../../../providers/exchange-rates/exchange-rates';
+import { DateRanges, RateProvider } from '../../../providers/rate/rate';
 
 @Component({
   selector: 'price-page',
@@ -52,13 +49,13 @@ export class PricePage {
     'ARS',
     'AUD'
   ];
-  public isIsoCodeSupported: boolean;
-  public isoCode: string;
+  public isFiatIsoCodeSupported: boolean;
+  public fiatIsoCode: string;
   public fiatCodes;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private exchangeRatesProvider: ExchangeRatesProvider,
+    private rateProvider: RateProvider,
     private formatCurrencyPipe: FormatCurrencyPipe,
     private configProvider: ConfigProvider,
     private logger: Logger,
@@ -67,7 +64,7 @@ export class PricePage {
   ) {
     this.card = _.clone(this.navParams.data.card);
     this.coin = this.card.unitCode;
-    this.setIsoCode();
+    this.setFiatIsoCode();
   }
 
   ionViewDidLoad() {
@@ -80,8 +77,8 @@ export class PricePage {
 
   private getPrice(dateRange) {
     this.canvas.loading = true;
-    this.exchangeRatesProvider
-      .fetchHistoricalRates(this.isoCode, false, dateRange)
+    this.rateProvider
+      .fetchHistoricalRates(this.fiatIsoCode, false, dateRange)
       .then(
         response => {
           this.card.historicalRates = response[this.card.unitCode];
@@ -123,7 +120,7 @@ export class PricePage {
       'displayPrice'
     ).textContent = `${this.formatCurrencyPipe.transform(
       price,
-      this.isoCode,
+      this.fiatIsoCode,
       customPrecision
     )}`;
     document.getElementById('displayDate').textContent = `${displayDate}`;
@@ -131,7 +128,7 @@ export class PricePage {
       'averagePriceAmount'
     ).textContent = `${this.formatCurrencyPipe.transform(
       this.card.totalBalanceChangeAmount,
-      this.isoCode,
+      this.fiatIsoCode,
       customPrecision
     )}`;
     document.getElementById(
@@ -199,13 +196,13 @@ export class PricePage {
       (this.card.totalBalanceChangeAmount * 100) / minPrice;
   }
 
-  private setIsoCode() {
+  private setFiatIsoCode() {
     this.fiatCodes = this.simplexProvider.getSupportedFiatAltCurrencies();
     const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
-    this.isoCode = this.supportedFiatCodes.includes(alternativeIsoCode)
+    this.fiatIsoCode = this.supportedFiatCodes.includes(alternativeIsoCode)
       ? alternativeIsoCode
       : 'USD';
-    this.isIsoCodeSupported = _.includes(this.fiatCodes, this.isoCode);
+    this.isFiatIsoCodeSupported = _.includes(this.fiatCodes, this.fiatIsoCode);
   }
 
   public goToCoinSelector(): void {
