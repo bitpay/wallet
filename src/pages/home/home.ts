@@ -235,7 +235,6 @@ export class HomePage {
     // link is of formate page:PAGE_TITLE or url e.g. https://google.com
 
     if (link.startsWith('page:')) {
-      console.log(link);
       let pageArray = link.split(':');
       let pageTitle = pageArray[1];
       if (pageTitle in this.pagesMap) {
