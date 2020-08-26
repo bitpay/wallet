@@ -399,9 +399,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     const address = await this.walletProvider.getAddress(wallet, false);
-
+    const payload = {
+      address
+    };
     const details = await this.payproProvider
-      .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, address })
+      .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, payload })
       .catch(err => {
         throw {
           title: this.translate.instant('Error fetching this invoice'),

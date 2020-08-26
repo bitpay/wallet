@@ -391,15 +391,18 @@ export class ConfirmPage {
     );
 
     if (this.tx.paypro) {
-      if (this.currencyProvider.isERCToken(wallet.coin)) {
-        const address = await this.walletProvider.getAddress(wallet, false);
-        this.tx.paypro = await this.payproProvider.getPayProDetails({
-          paymentUrl: this.tx.payProUrl,
-          coin: wallet.coin,
-          address,
-          disableLoader: true
-        });
-      }
+      const address = await this.walletProvider.getAddress(wallet, false);
+      const payload = {
+        address
+      };
+      this.tx.paypro = await this.payproProvider.getPayProDetails({
+        paymentUrl: this.tx.payProUrl,
+        coin: wallet.coin,
+        payload,
+        disableLoader: true
+      });
+      // Update Fees to most recent
+      this.tx.feeRate = this.tx.paypro.requiredFeeRate;
       this.paymentTimeControl(this.tx.paypro.expires);
     }
 

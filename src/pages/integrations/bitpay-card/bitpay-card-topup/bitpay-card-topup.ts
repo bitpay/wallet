@@ -323,11 +323,14 @@ export class BitPayCardTopUpPage {
       this.walletProvider
         .getAddress(wallet, false)
         .then(address => {
+          const payload = {
+            address
+          };
           this.payproProvider
             .getPayProDetails({
               paymentUrl: payProUrl,
               coin: wallet.coin,
-              address
+              payload
             })
             .then(details => {
               const { instructions } = details;
@@ -573,11 +576,14 @@ export class BitPayCardTopUpPage {
                 this.walletProvider
                   .getAddress(wallet, false)
                   .then(address => {
+                    const payload = {
+                      address
+                    };
                     this.payproProvider
                       .getPayProDetails({
                         paymentUrl: payProUrl,
                         coin: wallet.coin,
-                        address
+                        payload
                       })
                       .then(details => {
                         const payProFeeSat = !this.currencyProvider.isUtxoCoin(

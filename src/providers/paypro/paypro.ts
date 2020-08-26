@@ -48,11 +48,11 @@ export class PayproProvider {
   public async getPayProDetails(params: {
     paymentUrl;
     coin;
-    address?: string;
+    payload?: { address?: string };
     disableLoader?: boolean;
     attempt?: number;
   }): Promise<any> {
-    let { paymentUrl, coin, address, disableLoader, attempt = 1 } = params;
+    let { paymentUrl, coin, payload, disableLoader, attempt = 1 } = params;
     this.logger.info('PayPro Details: try... ' + attempt);
     const bwc = this.bwcProvider.getPayProV2();
     const chain = this.currencyProvider.getChain(coin).toUpperCase();
@@ -60,7 +60,7 @@ export class PayproProvider {
       paymentUrl,
       chain,
       currency: coin.toUpperCase(),
-      address
+      payload
     };
     if (!disableLoader) {
       this.onGoingProcessProvider.set('fetchingPayPro');
@@ -75,7 +75,7 @@ export class PayproProvider {
           return this.getPayProDetails({
             paymentUrl,
             coin,
-            address,
+            payload,
             disableLoader,
             attempt: ++attempt
           });

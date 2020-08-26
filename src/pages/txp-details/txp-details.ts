@@ -230,12 +230,15 @@ export class TxpDetailsPage {
       this.walletProvider
         .getAddress(this.wallet, false)
         .then(address => {
+          const payload = {
+            address
+          };
           const disableLoader = true;
           this.payproProvider
             .getPayProDetails({
               paymentUrl: this.tx.payProUrl,
               coin: this.tx.coin,
-              address,
+              payload,
               disableLoader
             })
             .then(payProDetails => {
