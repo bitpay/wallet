@@ -212,7 +212,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         })
       : [];
 
-    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
+    if (
+      _.isEmpty(this.wallets) &&
+      !_.isEmpty(pendingWallets) &&
+      _.isEmpty(this.coinbaseAccounts)
+    ) {
       const subtitle = this.translate.instant(
         'You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm.'
       );
