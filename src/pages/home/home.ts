@@ -232,7 +232,7 @@ export class HomePage {
 
   getAdPageOrLink(link) {
     let linkTo;
-    //link is of formate page:PAGE_TITLE or url e.g. https://google.com
+    // link is of formate page:PAGE_TITLE or url e.g. https://google.com
 
     if (link.startsWith('page:')) {
       console.log(link);
