@@ -64,6 +64,11 @@ export class CurrencyProvider {
     if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
       return null;
     if (coin === 'eth' && m === 1) return null;
+    if (this.coinOpts[coin].properties.isERCToken && m > 1) {
+      const regex = new RegExp(/(.*-0x.*)-/);
+      const multisigWalletId = regex.exec(walletId);
+      return multisigWalletId[1];
+    }
     return walletId.replace(/-0x.*$/, '');
   }
 

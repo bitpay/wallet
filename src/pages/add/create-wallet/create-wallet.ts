@@ -430,9 +430,7 @@ export class CreateWalletPage implements OnInit {
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.keyId,
           hasFunds: true,
-          coin: 'eth',
-          m: 1,
-          n: 1
+          coin: 'eth'
         })
       : [];
 

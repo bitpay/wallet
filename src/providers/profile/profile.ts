@@ -1690,11 +1690,30 @@ export class ProfileProvider {
     });
     walletClient.fromObj(tokenCredentials);
 
-    // Add the token info to the ethWallet.
-    ethWallet.preferences = ethWallet.preferences || {};
-    ethWallet.preferences.tokenAddresses =
-      ethWallet.preferences.tokenAddresses || [];
-    ethWallet.preferences.tokenAddresses.push(tokenObj.address);
+    if (ethWallet.credentials.multisigEthInfo) {
+      const linkedEthWallet = this.getWallet(ethWallet.linkedEthWallet);
+      // Add the token info to the linkedEthWallet.
+      if (linkedEthWallet && linkedEthWallet.cachedStatus.preferences) {
+        []
+          .concat(linkedEthWallet.cachedStatus.preferences.multisigEthInfo)
+          .forEach(m => {
+            if (
+              m &&
+              m.multisigContractAddress &&
+              ethWallet.credentials.multisigEthInfo.multisigContractAddress
+            ) {
+              m.tokenAddresses = m.tokenAddresses || [];
+              m.tokenAddresses.push(tokenObj.address);
+            }
+          });
+      }
+    } else {
+      // Add the token info to the ethWallet.
+      ethWallet.preferences = ethWallet.preferences || {};
+      ethWallet.preferences.tokenAddresses =
+        ethWallet.preferences.tokenAddresses || [];
+      ethWallet.preferences.tokenAddresses.push(tokenObj.address);
+    }
 
     return walletClient;
   }

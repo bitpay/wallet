@@ -209,8 +209,13 @@ export class SelectCurrencyPage {
   public createAndBindTokenWallet(pairedWallet, token) {
     if (!_.isEmpty(pairedWallet)) {
       this.profileProvider.createTokenWallet(pairedWallet, token).then(() => {
-        // store preferences for the paired eth wallet
-        this.walletProvider.updateRemotePreferences(pairedWallet);
+        // store preferences for the paired eth wallet | linked if ERC20 Multisig
+        const linkedEthWallet = this.profileProvider.getWallet(
+          pairedWallet.linkedEthWallet
+        );
+        if (linkedEthWallet) {
+          this.walletProvider.updateRemotePreferences(linkedEthWallet);
+        } else this.walletProvider.updateRemotePreferences(pairedWallet);
         this.endProcess();
       });
     }

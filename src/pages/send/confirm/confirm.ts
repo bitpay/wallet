@@ -1041,7 +1041,12 @@ export class ConfirmPage {
         };
       }
 
-      if (tx.tokenAddress) {
+      if (
+        tx.tokenAddress &&
+        !this.navParams.data.isEthMultisigInstantiation &&
+        !this.navParams.data.isEthMultisigConfirm &&
+        !this.navParams.data.isEthMultisigExecute
+      ) {
         txp.tokenAddress = tx.tokenAddress;
         if (!tx.paypro) {
           for (const output of txp.outputs) {
@@ -1069,16 +1074,27 @@ export class ConfirmPage {
         txp.multisigContractAddress = tx.multisigContractAddress;
         for (const output of txp.outputs) {
           const data = output.data ? output.data : '0x';
-          output.data = this.bwcProvider
-            .getCore()
-            .Transactions.get({ chain: 'ETHMULTISIG' })
-            .submitEncodeData({
-              recipients: [
-                { address: output.toAddress, amount: output.amount }
-              ],
-              multisigContractAddress: tx.multisigContractAddress,
-              data
-            });
+          if (txp.tokenAddress) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .submitEncodeData({
+                recipients: [{ address: txp.tokenAddress, amount: 0 }],
+                multisigContractAddress: tx.multisigContractAddress,
+                data
+              });
+          } else {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .submitEncodeData({
+                recipients: [
+                  { address: output.toAddress, amount: output.amount }
+                ],
+                multisigContractAddress: tx.multisigContractAddress,
+                data
+              });
+          }
         }
       }
 
@@ -1090,7 +1106,17 @@ export class ConfirmPage {
       ) {
         txp.multisigContractAddress = tx.multisigContractAddress;
         for (const output of txp.outputs) {
-          if (!output.data) {
+          const data = output.data ? output.data : '0x';
+          if (txp.tokenAddress) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .submitEncodeData({
+                recipients: [{ address: txp.tokenAddress, amount: 0 }],
+                multisigContractAddress: tx.multisigContractAddress,
+                data
+              });
+          } else {
             output.data = this.bwcProvider
               .getCore()
               .Transactions.get({ chain: 'ETHMULTISIG' })
