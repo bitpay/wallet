@@ -1,5 +1,8 @@
 page-crypto-order-summary {
   .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
     .item-label {
       width: 92%;
       margin: 0px auto;
@@ -33,6 +36,9 @@ page-crypto-order-summary {
       display: flex;
       flex-direction: column;
       height: 100%;
+      .warn-msg {
+        color: color($colors, warning);
+      }
     }
     .address-label {
       margin-right: 9px;

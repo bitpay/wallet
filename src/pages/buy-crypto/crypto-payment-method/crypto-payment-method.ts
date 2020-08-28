@@ -45,7 +45,23 @@ export class CryptoPaymentMethodPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CryptoPaymentMethodPage');
-    this.methods = _.pickBy(this.methods, m => m.enabled);
+    this.methods = _.pickBy(this.methods, m => {
+      return (
+        m.enabled &&
+        (this.buyCryptoProvider.isPaymentMethodSupported(
+          'simplex',
+          m,
+          this.coin,
+          this.currency
+        ) ||
+          this.buyCryptoProvider.isPaymentMethodSupported(
+            'wyre',
+            m,
+            this.coin,
+            this.currency
+          ))
+      );
+    });
   }
 
   ionViewWillEnter() {

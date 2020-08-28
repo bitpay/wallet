@@ -31,7 +31,7 @@ import { SimplexProvider } from '../../../providers/simplex/simplex';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { CryptoPaymentMethodPage } from '../../buy-crypto/crypto-payment-method/crypto-payment-method';
+import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/crypto-order-summary';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
@@ -327,8 +327,8 @@ export class AmountPage {
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
         break;
-      case 'CryptoPaymentMethodPage':
-        nextPage = CryptoPaymentMethodPage;
+      case 'CryptoOrderSummaryPage':
+        nextPage = CryptoOrderSummaryPage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = false; // Disabled for now
@@ -756,7 +756,7 @@ export class AmountPage {
 
     this.selectOptions = {
       title: this.translate.instant('Select Currency'),
-      cssClass: 'simplex-currency-' + (this.altCurrenciesToShow.length + 1)
+      cssClass: 'buy-crypto-currency-' + this.altCurrenciesToShow.length
     };
 
     this.supportedFiatAltCurrencies = this.simplexProvider.getSupportedFiatAltCurrencies();
@@ -781,7 +781,6 @@ export class AmountPage {
     this.logger.debug(
       'altCurrency changed to: ' + this.quoteForm.value.altCurrency
     );
-    if (!this.wallet) return;
     this.unit = this.quoteForm.value.altCurrency;
   }
 }

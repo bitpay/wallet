@@ -129,7 +129,7 @@ export class SimplexBuyPage {
 
     this.selectOptions = {
       title: this.translate.instant('Select Currency'),
-      cssClass: 'simplex-currency-' + (this.altCurrenciesToShow.length + 1)
+      cssClass: 'buy-crypto-currency-' + this.altCurrenciesToShow.length
     };
 
     this.supportedFiatAltCurrencies.forEach((currency: string) => {

@@ -41,6 +41,7 @@ export type InfoSheetType =
   | 'miner-fee-notice'
   | 'one-phone-country'
   | 'payment-request'
+  | 'payment-method-changed'
   | 'print-required'
   | 'sensitive-info'
   | 'in-app-notification'
