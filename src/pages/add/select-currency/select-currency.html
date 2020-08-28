@@ -47,14 +47,14 @@
           </ion-item>
         </div>
       </ion-list>
-      <div>
-        <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth && !coinsSelected.xrp" (click)="createWallets()">
-          {{'Create' | translate}}
-        </button>
-        <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
-          {{ 'Import existing wallet' | translate }}
-        </button>
-      </div>
     </div>
+  </div>
+  <div footer-content *ngIf="isZeroState">
+    <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth && !coinsSelected.xrp" (click)="createWallets()">
+      {{'Create' | translate}}
+    </button>
+    <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
+      {{ 'Import existing wallet' | translate }}
+    </button>
   </div>
 </wide-header-page>
