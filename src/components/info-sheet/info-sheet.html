@@ -241,6 +241,14 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning">
+      <span sheet-title-text translate>Payment method updated</span>
+      <span sheet-text translate>
+        {{'Only the payment methods supported to buy {coin} with {currency} will be shown.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'one-phone-country'" type="info">
       <span sheet-title-text translate>{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required</span>
       <span sheet-text>
@@ -414,7 +422,7 @@
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
       <span sheet-title-text translate>No wallet available</span>
       <span sheet-text translate>
-        You do not have a {{params?.coin}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.
+        You do not have a {{params.coin ? params.coin : ''}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.
       </span>
       <span sheet-button-text translate>Create Wallet</span>
       <span sheet-second-button-text translate>GOT IT</span>

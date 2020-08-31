@@ -21,17 +21,21 @@
       </ion-card>
 
       <div class="item-label" translate>Deposit to</div>
-      <ion-card class="item-card" (click)="showWallets(wallet?.coin)">
+      <ion-card class="item-card" (click)="openCryptoCoinSelectorModal()">
         <ion-item>
           <coin-icon item-start [coin]="wallet?.coin" [network]="wallet?.network"></coin-icon>
-          <div class="main-label">
+          <div *ngIf="wallet" class="main-label">
             {{wallet?.name}}
+          </div>
+          <div *ngIf="!wallet" class="main-label warn-msg" translate>
+            No wallet selected
           </div>
           <ion-note item-end>
             <ion-row align-items-center>
               <div class="secondary-note address-label">
                 <span>{{address | shortenedAddress}}</span>
               </div>
+              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
             </ion-row>
           </ion-note>
         </ion-item>
@@ -40,11 +44,11 @@
       <div class="item-label" translate>Country</div>
       <ion-card class="item-card" (click)="openCountrySelectorModal()">
         <ion-item>
-          <div class="main-label">{{'Selected Country' | translate}}</div>
+          <div class="main-label">{{selectedCountry?.name}}</div>
           <ion-note item-end>
             <ion-row align-items-center>
               <div class="secondary-note address-label">
-                <span>{{selectedCountry?.name}}</span>
+                <span>{{selectedCountry?.threeLetterCode}}</span>
               </div>
               <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
             </ion-row>
@@ -68,7 +72,7 @@
       </ion-card>
     </ion-list>
 
-    <button ion-button class="button-standard button-primary" (click)="goToCryptoOffersPage()">
+    <button ion-button class="button-standard button-primary" (click)="goToCryptoOffersPage()" [disabled]="!wallet">
       <span>{{'View Offers' | translate}}</span>
     </button>
   </div>

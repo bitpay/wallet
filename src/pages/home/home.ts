@@ -4,6 +4,8 @@ import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
+
+// Providers
 import {
   AppProvider,
   BwcProvider,
@@ -24,14 +26,15 @@ import {
   hasVisibleDiscount
 } from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
+
+// Pages
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { NewFeatureTourPage } from '../new-feature-tour/new-feature-tour';
-
-import { CryptoCoinSelectorPage } from '../../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
+import { AmountPage } from '../send/amount/amount';
 
 export interface Advertisement {
   name: string;
@@ -85,10 +88,6 @@ export class HomePage {
 
   private isCordova: boolean;
   private zone;
-
-  // Buy Crypto
-  public wallet;
-  public wallets: any[];
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -660,9 +659,13 @@ export class HomePage {
     this.navCtrl.push(CardCatalogPage);
   }
 
-  public goToCoinSelector(): void {
+  public goToAmountPage() {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
-    this.navCtrl.push(CryptoCoinSelectorPage);
+    this.navCtrl.push(AmountPage, {
+      fromBuyCrypto: true,
+      nextPage: 'CryptoOrderSummaryPage',
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
   }
 
   private checkNewRelease() {
