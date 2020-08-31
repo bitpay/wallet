@@ -30,6 +30,7 @@ import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -92,6 +93,9 @@ export class ConfirmPage {
 
   // Coinbase
   public fromCoinbase;
+  public coinbaseAccount;
+  public coinbaseAccounts;
+  public showCoinbase;
 
   public mainTitle: string;
   public isSpeedUpTx: boolean;
@@ -129,7 +133,8 @@ export class ConfirmPage {
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    protected homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -146,6 +151,9 @@ export class ConfirmPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
+    this.showCoinbase =
+      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+      this.coinbaseProvider.isLinked();
     // this.isCardPurchase =
     //   this.navParams.data.payProUrl &&
     //   this.navParams.data.payProUrl.includes('redir=wc');
@@ -337,7 +345,7 @@ export class ConfirmPage {
       this.tx.network === this.wallet.network
     ) {
       this.setWallet(this.wallet);
-    } else if (this.wallets.length > 1) {
+    } else if (this.wallets.length > 1 || this.showCoinbase) {
       return this.showWallets();
     } else if (this.wallets.length) {
       this.setWallet(this.wallets[0]);
@@ -359,7 +367,11 @@ export class ConfirmPage {
       coin
     });
 
-    if (_.isEmpty(this.wallets)) {
+    this.coinbaseAccounts = this.showCoinbase
+      ? this.coinbaseProvider.getAvailableAccounts(coin)
+      : [];
+
+    if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       const msg = this.translate.instant(
         'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
       );
@@ -373,6 +385,7 @@ export class ConfirmPage {
 
   private setWallet(wallet): void {
     this.wallet = wallet;
+    this.coinbaseAccount = null;
 
     // If select another wallet
     this.tx.coin = this.wallet.coin;
@@ -423,6 +436,36 @@ export class ConfirmPage {
           break;
       }
     });
+  }
+
+  private setCoinbaseAccount(option): void {
+    this.wallet = null;
+    this.coinbaseAccount = option.accountSelected;
+
+    this.tx.coin = this.coinbaseAccount.currency.code.toLowerCase();
+
+    this.setButtonText(
+      false,
+      !!this.tx.paypro,
+      !!this.fromCoinbase,
+      this.isSpeedUpTx
+    );
+
+    if (this.tx.paypro) {
+      this.paymentTimeControl(this.tx.paypro.expires);
+      this.tx.paypro.host = new URL(this.tx.payProUrl).host;
+      this.tx.paypro.invoiceId = this.tx.payProUrl.replace(
+        'https://bitpay.com/i/',
+        ''
+      );
+      this.tx.minerFee = this.navParams.data.minerFee;
+      this.totalAmount = this.tx.amount - this.tx.minerFee;
+      this.totalAmountStr = this.decimalPipe.transform(
+        this.totalAmount /
+          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        '1.2-6'
+      );
+    }
   }
 
   private showUseUnconfirmedMsg(): boolean {
@@ -1261,12 +1304,13 @@ export class ConfirmPage {
     this.showAddress = !this.showAddress;
   }
 
-  public onWalletSelect(wallet): void {
-    this.setWallet(wallet);
+  public onWalletSelect(option): void {
+    if (option.isCoinbaseAccount) this.setCoinbaseAccount(option);
+    else this.setWallet(option);
   }
 
   public approve(tx, wallet): Promise<void> {
-    if (!tx || !wallet) return undefined;
+    if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
 
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
@@ -1275,23 +1319,30 @@ export class ConfirmPage {
       return undefined;
     }
 
-    this.onGoingProcessProvider.set('creatingTx');
-    return this.getTxp(_.clone(tx), wallet, false)
-      .then(txp => {
-        this.logger.debug('Transaction Fee:', txp.fee);
-        return this.confirmTx(txp, wallet).then((nok: boolean) => {
-          if (nok) {
-            if (this.isCordova) this.slideButton.isConfirmed(false);
-            this.onGoingProcessProvider.clear();
-            return;
-          }
-          this.publishAndSign(txp, wallet);
+    if (wallet) {
+      this.onGoingProcessProvider.set('creatingTx');
+      return this.getTxp(_.clone(tx), wallet, false)
+        .then(txp => {
+          this.logger.debug('Transaction Fee:', txp.fee);
+          return this.confirmTx(txp, wallet).then((nok: boolean) => {
+            if (nok) {
+              if (this.isCordova) this.slideButton.isConfirmed(false);
+              this.onGoingProcessProvider.clear();
+              return;
+            }
+            this.publishAndSign(txp, wallet);
+          });
+        })
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          this.logger.warn('Error getting transaction proposal', err);
         });
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this.logger.warn('Error getting transaction proposal', err);
-      });
+    } else {
+      return this.payWithCoinbaseAccount(
+        this.tx.paypro.invoiceId,
+        this.coinbaseAccount.currency.code
+      );
+    }
   }
 
   private confirmTx(txp, wallet) {
@@ -1447,7 +1498,7 @@ export class ConfirmPage {
               }
             );
           }, 1000);
-        } else {
+        } else if (this.wallet) {
           this.navCtrl.push(WalletDetailsPage, {
             walletId: walletId ? walletId : this.wallet.credentials.walletId
           });
@@ -1512,22 +1563,32 @@ export class ConfirmPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
+
+    let coinbaseData = { user: [], availableAccounts: [] };
+    if (this.showCoinbase) {
+      coinbaseData = {
+        user: this.coinbaseProvider.coinbaseData.user,
+        availableAccounts: this.coinbaseAccounts
+      };
+    }
+
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: this.walletSelectorTitle
+      title: this.walletSelectorTitle,
+      coinbaseData
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
     );
     walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      this.onSelectWalletEvent(wallet);
+    walletSelector.onDidDismiss(option => {
+      this.onSelectWalletEvent(option);
     });
   }
 
-  private onSelectWalletEvent(wallet): void {
-    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+  private onSelectWalletEvent(option): void {
+    if (!_.isEmpty(option)) this.onWalletSelect(option);
     this.isOpenSelector = false;
   }
 
@@ -1545,5 +1606,43 @@ export class ConfirmPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromConfirm: true });
+  }
+
+  protected payWithCoinbaseAccount(invoiceId, coin, code?): Promise<void> {
+    this.onGoingProcessProvider.set('payingWithCoinbase');
+    return this.coinbaseProvider
+      .payInvoice(invoiceId, coin, code)
+      .then(() => {
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal();
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        if (err == '2fa') {
+          const message = this.translate.instant('Enter 2-step verification');
+          const opts = {
+            type: 'number',
+            enableBackdropDismiss: false
+          };
+          this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+            if (res === null) {
+              this.showErrorAndBack(
+                this.translate.instant('Missing 2-step verification')
+              );
+              return;
+            }
+            this.payWithCoinbaseAccount(invoiceId, coin, res);
+          });
+        } else {
+          this.showErrorAndBack(err);
+        }
+      });
+  }
+
+  protected showErrorAndBack(err): void {
+    if (this.isCordova) this.slideButton.isConfirmed(false);
+    this.logger.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 }

@@ -1226,7 +1226,7 @@ export class IncomingDataProvider {
         payProOptions = await this.payproProvider.getPayProOptions(url);
       }
       const paymentOptions = payProOptions.paymentOptions;
-      const { estimatedAmount } = paymentOptions.find(
+      const { estimatedAmount, minerFee } = paymentOptions.find(
         option => option.currency.toLowerCase() === coin
       );
       const instructions = payProDetails.instructions[0];
@@ -1244,7 +1244,8 @@ export class IncomingDataProvider {
         coin,
         network,
         payProUrl: url,
-        requiredFeeRate
+        requiredFeeRate,
+        minerFee // needed for payments with Coinbase accounts
       };
       const nextView = {
         name: 'ConfirmPage',

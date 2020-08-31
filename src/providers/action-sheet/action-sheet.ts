@@ -72,6 +72,10 @@ export interface WalletSelectorParams {
   wallets: any[];
   selectedWalletId: string;
   title: string;
+  coinbaseData?: {
+    user: any[];
+    availableAccounts: any[];
+  };
 }
 
 export interface WalletReceiveParams {
