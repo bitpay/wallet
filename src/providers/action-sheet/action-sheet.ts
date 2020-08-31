@@ -41,6 +41,7 @@ export type InfoSheetType =
   | 'miner-fee-notice'
   | 'one-phone-country'
   | 'payment-request'
+  | 'payment-method-changed'
   | 'print-required'
   | 'sensitive-info'
   | 'in-app-notification'
@@ -71,6 +72,10 @@ export interface WalletSelectorParams {
   wallets: any[];
   selectedWalletId: string;
   title: string;
+  coinbaseData?: {
+    user: any[];
+    availableAccounts: any[];
+  };
 }
 
 export interface WalletReceiveParams {

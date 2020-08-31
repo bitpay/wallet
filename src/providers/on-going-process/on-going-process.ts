@@ -78,6 +78,9 @@ export class OnGoingProcessProvider {
       connectingBitPayId: this.translate.instant('Connecting BitPay ID...'),
       processingOrderReservation: this.translate.instant(
         'Processing order reservation...'
+      ),
+      payingWithCoinbase: this.translate.instant(
+        'Paying with a Coinbase Account...'
       )
     };
     return processNames;

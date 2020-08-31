@@ -15,6 +15,7 @@ import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-car
 import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
 import {
   Coin,
@@ -23,6 +24,7 @@ import {
 import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -72,6 +74,11 @@ export class BitPayCardTopUpPage {
 
   public isOpenSelector: boolean;
 
+  // Coinbase
+  public coinbaseAccount;
+  public coinbaseAccounts;
+  public showCoinbase: boolean;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private bitPayCardProvider: BitPayCardProvider,
@@ -96,7 +103,9 @@ export class BitPayCardTopUpPage {
     private feeProvider: FeeProvider,
     private payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private coinbaseProvider: CoinbaseProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
@@ -165,14 +174,32 @@ export class BitPayCardTopUpPage {
           minPendingAmount: { amount: this.amount, currency: this.currency }
         });
 
-        if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
+        this.showCoinbase =
+          this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+          this.coinbaseProvider.isLinked();
+
+        this.coinbaseAccounts = this.showCoinbase
+          ? this.coinbaseProvider.getAvailableAccounts(null, {
+              amount: this.amount,
+              currency: this.currency
+            })
+          : [];
+
+        if (
+          _.isEmpty(this.wallets) &&
+          !_.isEmpty(pendingWallets) &&
+          _.isEmpty(this.coinbaseAccounts)
+        ) {
           const subtitle = this.translate.instant(
             'You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm.'
           );
           const title = this.translate.instant('Not enough confirmed funds');
           this.errorsProvider.showDefaultError(subtitle, title);
           return;
-        } else if (_.isEmpty(this.wallets)) {
+        } else if (
+          _.isEmpty(this.wallets) &&
+          _.isEmpty(this.coinbaseAccounts)
+        ) {
           this.errorsProvider.showNoWalletsAvailableInfo();
           return;
         }
@@ -255,13 +282,13 @@ export class BitPayCardTopUpPage {
   }
 
   private setTotalAmount(
-    wallet,
+    coin,
     amountSat: number,
-    invoiceFeeSat: number,
-    networkFeeSat: number
+    invoiceFeeSat: number = 0,
+    networkFeeSat: number = 0
   ) {
-    const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
-    this.satToFiat(this.isERCToken ? wallet.coin : chain, amountSat).then(
+    const chain = this.currencyProvider.getChain(coin).toLowerCase();
+    this.satToFiat(this.isERCToken ? coin : chain, amountSat).then(
       (a: string) => {
         this.amount = Number(a);
 
@@ -277,8 +304,8 @@ export class BitPayCardTopUpPage {
     );
   }
 
-  private isCryptoCurrencySupported(wallet, invoice) {
-    let COIN = wallet.coin.toUpperCase();
+  private isCryptoCurrencySupported(coin, invoice) {
+    let COIN = coin.toUpperCase();
     if (!invoice['supportedTransactionCurrencies'][COIN]) return false;
     return invoice['supportedTransactionCurrencies'][COIN].enabled;
   }
@@ -535,7 +562,7 @@ export class BitPayCardTopUpPage {
             })
               .then(inv => {
                 // Check if COIN is enabled in this account
-                if (!this.isCryptoCurrencySupported(wallet, inv)) {
+                if (!this.isCryptoCurrencySupported(wallet.coin, inv)) {
                   return reject({
                     message: this.translate.instant(
                       'Top-up with this cryptocurrency is not enabled'
@@ -663,15 +690,15 @@ export class BitPayCardTopUpPage {
     }
   }
 
-  logCardTopUpEvent(wallet, isConfirm) {
+  logCardTopUpEvent(coin, isConfirm) {
     let cardTopupEventInfo = {
       usdAmount: this.amount,
-      transactionCurrency: wallet.coin.toUpperCase()
+      transactionCurrency: coin.toUpperCase()
     };
 
     const cardTopUpEventInfo = {
       usdAmount: this.amount,
-      transactionCurrency: wallet.coin.toUpperCase()
+      transactionCurrency: coin.toUpperCase()
     };
 
     let cardTopupAmountEventName =
@@ -747,7 +774,7 @@ export class BitPayCardTopUpPage {
     }
     this.onGoingProcessProvider.set('loadingTxInfo');
 
-    this.logCardTopUpEvent(wallet, false);
+    this.logCardTopUpEvent(wallet.coin, false);
 
     this.logger.debug(
       `Creating invoice. amount: ${dataSrc.amount} - currency: ${
@@ -757,7 +784,7 @@ export class BitPayCardTopUpPage {
     this.createInvoice(dataSrc)
       .then(invoice => {
         // Check if BTC or BCH is enabled in this account
-        if (!this.isCryptoCurrencySupported(wallet, invoice)) {
+        if (!this.isCryptoCurrencySupported(wallet.coin, invoice)) {
           let msg = this.translate.instant(
             'Top-up with this cryptocurrency is not enabled'
           );
@@ -799,7 +826,7 @@ export class BitPayCardTopUpPage {
             }
 
             this.setTotalAmount(
-              wallet,
+              wallet.coin,
               parsedAmount.amountSat,
               Number(invoiceFeeSat),
               ctxp.fee
@@ -810,6 +837,73 @@ export class BitPayCardTopUpPage {
             this._resetValues();
             this.showError(err.title, err.message);
           });
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.showErrorAndBack(err.title, err.message);
+      });
+  }
+
+  private initializeCoinbaseTopUp(account, parsedAmount): void {
+    let COIN = account.currency.code.toUpperCase();
+    this.amountUnitStr = parsedAmount.amountUnitStr;
+
+    var dataSrc: any = {
+      amount: parsedAmount.amount,
+      currency: parsedAmount.currency
+    };
+
+    if (this.navParams.get('v2')) {
+      const { amount, currency, coin } = parsedAmount;
+
+      dataSrc = {
+        invoicePrice: amount,
+        invoiceCurrency: currency,
+        transactionCurrency: coin.toUpperCase(),
+        uuid: this.coinbaseProvider.coinbaseData.user.id,
+        v2: true
+      };
+    }
+    this.onGoingProcessProvider.set('loadingTxInfo');
+
+    this.logCardTopUpEvent(account.currency.code, false);
+
+    this.logger.debug(
+      `Creating invoice. amount: ${dataSrc.amount} - currency: ${
+        dataSrc.currency
+      }`
+    );
+    this.createInvoice(dataSrc)
+      .then(invoice => {
+        // Check if BTC or BCH is enabled in this account
+        if (!this.isCryptoCurrencySupported(account.currency.code, invoice)) {
+          let msg = this.translate.instant(
+            'Top-up with this cryptocurrency is not enabled'
+          );
+          this.showErrorAndBack(null, msg);
+          return;
+        }
+
+        // Sometimes API does not return this element;
+        invoice['minerFees'][COIN]['totalFee'] =
+          invoice.minerFees[COIN].totalFee || 0;
+
+        // Set expiration time for this invoice
+        if (invoice['expirationTime'])
+          this.paymentTimeControl(invoice['expirationTime']);
+
+        this.onGoingProcessProvider.clear();
+
+        // Save TX in memory
+        this.createdTx = {};
+        this.createdTx.invoiceId = invoice.id;
+
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          COIN.toLowerCase(),
+          parsedAmount.amountSat
+        );
+
+        this.setTotalAmount(COIN.toLowerCase(), parsedAmount.amountSat);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -850,21 +944,65 @@ export class BitPayCardTopUpPage {
         }
 
         this.onGoingProcessProvider.set('topup');
-        this.publishAndSign(this.wallet, this.createdTx)
-          .then(() => {
-            this.logCardTopUpEvent(this.wallet, true);
-            this.logCardPurchaseEvent();
-            this.onGoingProcessProvider.clear();
-            this.openFinishModal();
-          })
-          .catch(err => {
-            this.onGoingProcessProvider.clear();
-            this._resetValues();
-            this.showError(
-              this.translate.instant('Could not send transaction'),
-              this.bwcErrorProvider.msg(err)
-            );
+        if (this.wallet) {
+          this.publishAndSign(this.wallet, this.createdTx)
+            .then(() => {
+              this.logCardTopUpEvent(this.wallet.coin, true);
+              this.logCardPurchaseEvent();
+              this.onGoingProcessProvider.clear();
+              this.openFinishModal();
+            })
+            .catch(err => {
+              this.onGoingProcessProvider.clear();
+              this._resetValues();
+              this.showError(
+                this.translate.instant('Could not send transaction'),
+                this.bwcErrorProvider.msg(err)
+              );
+            });
+        } else {
+          this.topUpWithCoinbaseAccount();
+        }
+      });
+  }
+
+  protected topUpWithCoinbaseAccount(code?): void {
+    this.onGoingProcessProvider.set('payingWithCoinbase');
+    this.coinbaseProvider
+      .payInvoice(
+        this.createdTx.invoiceId,
+        this.coinbaseAccount.currency.code,
+        code
+      )
+      .then(() => {
+        this.onGoingProcessProvider.clear();
+        this.logCardTopUpEvent(this.coinbaseAccount.currency.code, true);
+        this.logCardPurchaseEvent();
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal();
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        if (err == '2fa') {
+          const message = this.translate.instant('Enter 2-step verification');
+          const opts = {
+            type: 'number',
+            enableBackdropDismiss: false
+          };
+          this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+            if (res === null) {
+              this.showError(
+                null,
+                this.translate.instant('Missing 2-step verification')
+              );
+              return;
+            }
+            this.topUpWithCoinbaseAccount(res);
           });
+        } else {
+          this.onGoingProcessProvider.clear();
+          this.showError(null, err);
+        }
       });
   }
 
@@ -908,51 +1046,79 @@ export class BitPayCardTopUpPage {
         });
   }
 
-  public onWalletSelect(wallet): void {
-    this.wallet = wallet;
-    this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
-    if (this.countDown) {
-      clearInterval(this.countDown);
-    }
-
-    if (!this.isERCToken) {
-      // Update Rates
-      this.updateRates(wallet.coin);
-    }
-
-    this.onGoingProcessProvider.set('retrievingInputs');
-    this.calculateAmount(wallet)
-      .then(val => {
-        let parsedAmount = this.txFormatProvider.parseAmount(
-          wallet.coin,
-          val.amount,
-          val.currency
-        );
-        this.initializeTopUp(wallet, { ...parsedAmount, coin: wallet.coin });
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this._resetValues();
-        this.showError(err.title, err.message).then(() => {
-          this.showWallets();
-        });
+  public onWalletSelect(option): void {
+    if (option.isCoinbaseAccount) {
+      this.wallet = null;
+      this.coinbaseAccount = option.accountSelected;
+      const parsedAmount = this.txFormatProvider.parseAmount(
+        option.accountSelected.currency.code.toLowerCase(),
+        this.amount,
+        this.currency
+      );
+      this.initializeCoinbaseTopUp(option.accountSelected, {
+        ...parsedAmount,
+        coin: option.accountSelected.currency.code
       });
+    } else {
+      this.coinbaseAccount = null;
+      const wallet = option;
+      this.wallet = wallet;
+      this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
+      if (this.countDown) {
+        clearInterval(this.countDown);
+      }
+
+      if (!this.isERCToken) {
+        // Update Rates
+        this.updateRates(wallet.coin);
+      }
+
+      this.onGoingProcessProvider.set('retrievingInputs');
+      this.calculateAmount(wallet)
+        .then(val => {
+          let parsedAmount = this.txFormatProvider.parseAmount(
+            wallet.coin,
+            val.amount,
+            val.currency
+          );
+          this.initializeTopUp(wallet, { ...parsedAmount, coin: wallet.coin });
+        })
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          this._resetValues();
+          this.showError(err.title, err.message).then(() => {
+            this.showWallets();
+          });
+        });
+    }
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
+    let coinbaseData = { user: [], availableAccounts: [] };
+    if (this.showCoinbase) {
+      const minFiatCurrency = { amount: this.amount, currency: this.currency };
+      coinbaseData = {
+        user: this.coinbaseProvider.coinbaseData.user,
+        availableAccounts: this.coinbaseProvider.getAvailableAccounts(
+          null,
+          minFiatCurrency
+        )
+      };
+    }
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: this.translate.instant('From')
+      title: this.translate.instant('From'),
+      coinbaseData
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
     );
     walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+    walletSelector.onDidDismiss(option => {
+      if (!_.isEmpty(option)) this.onWalletSelect(option);
       this.isOpenSelector = false;
     });
   }

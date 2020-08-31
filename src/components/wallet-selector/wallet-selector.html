@@ -2,7 +2,7 @@
   <div class="bp-header">
     <ion-title>{{ title }}</ion-title>
   </div>
-  <div *ngIf="walletsByKeys && walletsByKeys[0]; else noWallets">
+  <div *ngIf="(walletsByKeys && walletsByKeys[0]) || coinbaseData; else noWallets">
     <div *ngFor="let walletsByKey of walletsByKeys">
       <ion-list no-lines class="bp-list">
         <div class="key-divider">
@@ -13,6 +13,32 @@
         </div>
         <div *ngFor="let wallet of walletsByKey" (click)="optionClicked(wallet)">
           <wallet-item-content [wallet]="wallet"></wallet-item-content>
+        </div>
+      </ion-list>
+    </div>
+    <div *ngIf="coinbaseData && coinbaseData.availableAccounts && coinbaseData.availableAccounts.length">
+      <ion-list no-lines class="bp-list">
+        <div class="key-divider">
+          <ion-icon>
+            <img src="assets/img/coinbase/coinbase-icon.png" width="20" />
+          </ion-icon>
+          <span *ngIf="coinbaseData.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
+        </div>
+        <div *ngFor="let ac of coinbaseData.availableAccounts">
+          <ion-list no-lines class="bp-list">
+            <button ion-item detail-none (click)="optionClicked(ac.id, true)">
+              <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
+              <ion-label>
+                {{ac.name}}
+              </ion-label>
+              <ion-note item-end>
+                <div class="main-note">{{ac.balance.amount | number:'1.2-8'}}</div>
+                <div class="secondary-note" *ngIf="ac.nativeCurrencyStr">
+                  {{ ac.nativeCurrencyStr }}
+                </div>
+              </ion-note>
+            </button>
+          </ion-list>
         </div>
       </ion-list>
     </div>

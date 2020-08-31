@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="amount-switcher-margin" *ngIf="!fromBuyCrypto">
+    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto">
       <div class="amount-switcher">
         <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
           <img class="switcher__icon" src="assets/img/icon-swap.svg">
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <form class="amount-switcher-margin" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+    <form class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
       <div class="amount-switcher">
         <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
           <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>

@@ -282,7 +282,8 @@ describe('Provider: Incoming Data Provider', () => {
           coin: element.paymentOptions[2].currency.toLowerCase(),
           network: payProDetails.network,
           payProUrl: element.payProUrl,
-          requiredFeeRate: payProDetails.requiredFeeRate
+          requiredFeeRate: payProDetails.requiredFeeRate,
+          minerFee: element.paymentOptions[2].minerFee
         };
 
         let nextView = {

@@ -1,4 +1,9 @@
 <wide-header-page title="{{'Select Coin' | translate}}">
+  <ion-buttons left *ngIf="useAsModal">
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
   <div page-content>
     <ion-list class="bp-list">
       <div *ngFor="let coin of coins">

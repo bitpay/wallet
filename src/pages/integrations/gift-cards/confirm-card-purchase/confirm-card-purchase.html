@@ -40,7 +40,19 @@
             </ion-col>
           </ion-row>
 
-          <ion-row align-items-center class="wallet" *ngIf="!wallet">
+          <ion-row align-items-center class="wallet" *ngIf="coinbaseAccount">
+            <ion-col>
+              <ion-icon item-start>
+                <img src="assets/img/coinbase/coinbase-icon.png" width="32">
+              </ion-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="note-container ellipsis">{{coinbaseAccount.name}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="wallet" *ngIf="!wallet && !coinbaseAccount">
             <div translate>Select a wallet</div>
             <div class="last-item" item-end>
               <button ion-button clear color="grey" icon-only>
@@ -70,7 +82,7 @@
           </ion-note>
         </ion-item>
 
-        <div class="line-divider"></div>
+        <div *ngIf="!coinbaseAccount" class="line-divider"></div>
 
         <ion-item *ngIf="activationFee">
           <ion-label>
@@ -106,7 +118,7 @@
 
         <div *ngIf="totalDiscount" class="line-divider"></div>
 
-        <ion-item *ngIf="invoiceFee">
+        <ion-item *ngIf="invoiceFee && !coinbaseAccount">
           <ion-label>
             <div class="summary-item">
               <span translate>Network cost</span>
@@ -124,9 +136,9 @@
           </ion-note>
         </ion-item>
 
-        <div *ngIf="invoiceFee" class="line-divider"></div>
+        <div *ngIf="invoiceFee && !coinbaseAccount" class="line-divider"></div>
 
-        <ion-item>
+        <ion-item *ngIf="!coinbaseAccount">
           <ion-label>
             <div class="summary-item">
               <span translate>Miner fee</span>
@@ -178,10 +190,10 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!((wallet || coinbaseAccount) && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
+      <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!((wallet || coinbaseAccount) && totalAmountStr)">{{'Confirm
       purchase' | translate}}</button>
     </ion-toolbar>
   </div>

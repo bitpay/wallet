@@ -10,6 +10,7 @@ import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
+import { RateProvider } from '../rate/rate';
 
 import { CurrencyProvider } from '../currency/currency';
 
@@ -43,7 +44,8 @@ export class CoinbaseProvider {
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private rateProvider: RateProvider
   ) {
     /*
      * Development: Gustavo's Account
@@ -759,6 +761,91 @@ export class CoinbaseProvider {
           type: 'exchange'
         });
       });
+    });
+  }
+
+  public getAvailableAccounts(coin?, minFiatCurrency?: { amount; currency }) {
+    let coinbaseData = _.cloneDeep(this.coinbaseData);
+    let coinbaseAccounts = coinbaseData.accounts.filter(ac => {
+      ac.nativeCurrencyStr =
+        this.getNativeCurrencyBalance(ac.balance.amount, ac.balance.currency) +
+        ' ' +
+        this.coinbaseData['user']['native_currency'];
+      const accountCoin = ac.balance.currency.toLowerCase();
+      if (minFiatCurrency) {
+        const availableBalanceFiat = this.rateProvider.toFiat(
+          this.currencyProvider.getPrecision(accountCoin).unitToSatoshi *
+            Number(ac.balance.amount),
+          minFiatCurrency.currency,
+          accountCoin
+        );
+        return (
+          availableBalanceFiat >=
+          Number(
+            minFiatCurrency && minFiatCurrency.amount
+              ? minFiatCurrency.amount
+              : null
+          )
+        );
+      } else if (coin) {
+        return accountCoin == coin;
+      } else return ac;
+    });
+    return coinbaseAccounts;
+  }
+
+  public async payInvoice(
+    invoiceId: string,
+    currency: string,
+    twoFactorCode?: string
+  ): Promise<any> {
+    if (!twoFactorCode) {
+      try {
+        await this.doRefreshToken();
+      } catch (error) {
+        this.logger.warn('Coinbase: the token could not be refreshed');
+      }
+    }
+    return this._payInvoice(invoiceId, currency, twoFactorCode);
+  }
+
+  private _payInvoice(
+    invoiceId: string,
+    currency: string,
+    twoFactorCode?: string
+  ): Promise<any> {
+    const url = 'https://bitpay.com/oauth/coinbase/pay/' + invoiceId;
+    const data = {
+      currency,
+      token: this.accessToken,
+      twoFactorCode
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    });
+    return new Promise((resolve, reject) => {
+      this.http.post(url, data, { headers }).subscribe(
+        data => {
+          this.logger.info('Coinbase: Pay invoice SUCCESS');
+          return resolve(data);
+        },
+        data => {
+          if (
+            data.error &&
+            data.error.errors &&
+            data.error.errors[0].id == 'two_factor_required'
+          ) {
+            this.logger.error('Coinbase: 2FA is required ' + data.status);
+            return reject('2fa'); // return string to identify
+          } else {
+            this.logger.error(
+              'Coinbase: Send Transaction ERROR ' + data.status
+            );
+            return reject(this.parseErrorsAsString(data.error));
+          }
+        }
+      );
     });
   }
 }

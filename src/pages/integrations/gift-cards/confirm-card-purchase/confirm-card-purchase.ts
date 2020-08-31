@@ -48,6 +48,7 @@ import {
   CardConfig,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -88,6 +89,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public phone: string;
 
+  public coinbaseAccount;
+  public coinbaseAccounts;
+  public showCoinbase: boolean;
+
   constructor(
     addressProvider: AddressProvider,
     app: App,
@@ -121,7 +126,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     events: Events,
     coinbaseProvider: CoinbaseProvider,
     appProvider: AppProvider,
-    iabCardProvider: IABCardProvider
+    iabCardProvider: IABCardProvider,
+    homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     super(
       addressProvider,
@@ -153,7 +159,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       coinbaseProvider,
       appProvider,
       payproProvider,
-      iabCardProvider
+      iabCardProvider,
+      homeIntegrationsProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -195,14 +202,29 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       minPendingAmount: { amount: this.amount, currency: this.currency }
     });
 
-    if (_.isEmpty(this.wallets) && !_.isEmpty(pendingWallets)) {
+    this.showCoinbase =
+      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+      this.coinbaseProvider.isLinked();
+
+    this.coinbaseAccounts = this.showCoinbase
+      ? this.coinbaseProvider.getAvailableAccounts(null, {
+        amount: this.amount,
+        currency: this.currency
+      })
+      : [];
+
+    if (
+      _.isEmpty(this.wallets) &&
+      !_.isEmpty(pendingWallets) &&
+      _.isEmpty(this.coinbaseAccounts)
+    ) {
       const subtitle = this.translate.instant(
         'You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm.'
       );
       const title = this.translate.instant('Not enough confirmed funds');
       this.errorsProvider.showDefaultError(subtitle, title);
       return;
-    } else if (_.isEmpty(this.wallets)) {
+    } else if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       this.errorsProvider.showNoWalletsAvailableInfo();
       return;
     }
@@ -309,14 +331,13 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   private async setTotalAmount(
-    wallet,
-    invoiceFeeSat: number,
-    networkFeeSat: number
+    coin,
+    invoiceFeeSat: number = 0,
+    networkFeeSat: number = 0
   ) {
-    const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
+    const invoiceFee = await this.satToFiat(coin, invoiceFeeSat);
     this.invoiceFee = Number(invoiceFee);
-
-    const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+    const chain = this.currencyProvider.getChain(coin).toLowerCase();
     const networkFee = await this.satToFiat(chain, networkFeeSat);
     this.networkFee = Number(networkFee);
     this.totalAmount =
@@ -327,11 +348,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.networkFee;
   }
 
-  private isCryptoCurrencySupported(wallet, invoice) {
-    const COIN = wallet.coin.toUpperCase();
+  private isCryptoCurrencySupported(coin, invoice) {
     return (
-      (invoice['supportedTransactionCurrencies'][COIN] &&
-        invoice['supportedTransactionCurrencies'][COIN].enabled) ||
+      (invoice['supportedTransactionCurrencies'][coin] &&
+        invoice['supportedTransactionCurrencies'][coin].enabled) ||
       false
     );
   }
@@ -344,7 +364,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-          this.cardConfig.displayName
+        this.cardConfig.displayName
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -574,7 +594,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.totalDiscount = data.totalDiscount || 0;
     const amountSat = invoice.paymentSubtotals[COIN];
 
-    if (!this.isCryptoCurrencySupported(wallet, invoice)) {
+    if (!this.isCryptoCurrencySupported(COIN, invoice)) {
       this.onGoingProcessProvider.clear();
       let msg = this.translate.instant(
         'Purchases with this cryptocurrency are not enabled'
@@ -633,7 +653,92 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
-    this.setTotalAmount(wallet, invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(wallet.coin, invoiceFeeSat, ctxp.fee);
+
+    this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
+  }
+
+  private async initializeCoinbase(account, email) {
+    const COIN = account.currency.code;
+
+    this.currencyIsoCode = this.currency;
+    const discount = getVisibleDiscount(this.cardConfig);
+    const dataSrc = {
+      amount: this.amount,
+      currency: this.currency,
+      discounts: discount ? [discount.code] : [],
+      uuid: this.coinbaseProvider.coinbaseData.user.id,
+      email,
+      buyerSelectedTransactionCurrency: COIN,
+      cardName: this.cardConfig.name,
+      ...(this.phone && { phone: this.phone })
+    };
+
+    this.onGoingProcessProvider.set('loadingTxInfo');
+
+    const data = await this.createInvoice(dataSrc).catch(err => {
+      this.onGoingProcessProvider.clear();
+      throw this.showErrorInfoSheet(err.message, err.title, true);
+    });
+
+    this.invoiceRates = lowercaseKeys(data.invoice.exchangeRates);
+
+    const parsedAmount = this.txFormatProvider.parseAmount(
+      COIN.toLowerCase(),
+      this.amount,
+      this.currency,
+      { onlyIntegers: this.onlyIntegers, rates: this.invoiceRates }
+    );
+    this.amountUnitStr = parsedAmount.amountUnitStr;
+
+    const invoice = data.invoice;
+    const accessKey = data.accessKey;
+    this.totalDiscount = data.totalDiscount || 0;
+    const amountSat = invoice.paymentSubtotals[COIN];
+
+    if (!this.isCryptoCurrencySupported(COIN, invoice)) {
+      this.onGoingProcessProvider.clear();
+      let msg = this.translate.instant(
+        'Purchases with this cryptocurrency are not enabled'
+      );
+      this.showErrorInfoSheet(msg, null, true);
+      return;
+    }
+
+    // Sometimes API does not return this element;
+    invoice['minerFees'][COIN]['totalFee'] =
+      invoice.minerFees[COIN].totalFee || 0;
+
+    this.message = this.replaceParametersProvider.replace(
+      this.translate.instant(`{{amountUnitStr}} Gift Card`),
+      { amountUnitStr: this.amountUnitStr }
+    );
+
+    this.onGoingProcessProvider.clear();
+
+    // Save in memory
+    this.tx = {};
+    this.invoiceId = invoice.id;
+
+    const now = moment().unix() * 1000;
+
+    this.tx.giftData = {
+      currency: dataSrc.currency,
+      date: now,
+      amount: dataSrc.amount,
+      uuid: dataSrc.uuid,
+      accessKey,
+      invoiceId: invoice.id,
+      invoiceUrl: invoice.url,
+      invoiceTime: invoice.invoiceTime,
+      name: this.cardConfig.name
+    };
+    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+      COIN.toLowerCase(),
+      amountSat
+    );
+
+    this.setTotalAmount(COIN.toLowerCase());
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
@@ -649,17 +754,67 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
+    if (this.wallet) {
+      return this.publishAndSign(this.wallet, this.tx)
+        .then(() => {
+          this.redeemGiftCard(this.tx.giftData);
+          this.logGiftCardPurchaseEvent(
+            true,
+            this.wallet.coin.toUpperCase(),
+            this.tx.giftData
+          );
+        })
+        .catch(async err => this.handlePurchaseError(err));
+    } else {
+      return this.payWithCoinbaseAccount();
+    }
+  }
 
-    return this.publishAndSign(this.wallet, this.tx)
+  protected payWithCoinbaseAccount(code?): Promise<void> {
+    this.onGoingProcessProvider.set('payingWithCoinbase');
+    return this.coinbaseProvider
+      .payInvoice(
+        this.tx.giftData.invoiceId,
+        this.coinbaseAccount.currency.code,
+        code
+      )
       .then(() => {
+        this.onGoingProcessProvider.clear();
         this.redeemGiftCard(this.tx.giftData);
         this.logGiftCardPurchaseEvent(
           true,
-          this.wallet.coin.toUpperCase(),
+          this.coinbaseAccount.currency.code,
           this.tx.giftData
         );
       })
-      .catch(async err => this.handlePurchaseError(err));
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        if (err == '2fa') {
+          const message = this.translate.instant('Enter 2-step verification');
+          const opts = {
+            type: 'number',
+            enableBackdropDismiss: false
+          };
+          this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+            if (res === null) {
+              this.showErrorAndBack(
+                this.translate.instant('Missing 2-step verification')
+              );
+              return;
+            }
+            this.payWithCoinbaseAccount(res);
+          });
+        } else {
+          this.showErrorAndBack(err);
+        }
+      });
+  }
+
+  protected showErrorAndBack(err): void {
+    if (this.isCordova) this.slideButton.isConfirmed(false);
+    this.logger.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
   }
 
   public async handlePurchaseError(err) {
@@ -682,27 +837,51 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
   }
 
-  public async onWalletSelect(wallet) {
-    this.wallet = wallet;
-    this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
-    const email = await this.promptEmail();
-    await this.initialize(wallet, email).catch(() => {});
+  public async onWalletSelect(option) {
+    if (option.isCoinbaseAccount) {
+      this.wallet = null;
+      this.coinbaseAccount = option.accountSelected;
+      const email = this.coinbaseProvider.coinbaseData.user.email;
+      await this.initializeCoinbase(option.accountSelected, email).catch(
+        () => { }
+      );
+    } else {
+      this.wallet = option;
+      this.coinbaseAccount = null;
+      this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
+      const email = await this.promptEmail();
+      await this.initialize(option, email).catch(() => { });
+    }
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
+
+    let coinbaseData = { user: [], availableAccounts: [] };
+    if (this.showCoinbase) {
+      const minFiatCurrency = { amount: this.amount, currency: this.currency };
+      coinbaseData = {
+        user: this.coinbaseProvider.coinbaseData.user,
+        availableAccounts: this.coinbaseProvider.getAvailableAccounts(
+          null,
+          minFiatCurrency
+        )
+      };
+    }
+
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: this.translate.instant('Buy from')
+      title: this.translate.instant('Buy from'),
+      coinbaseData
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
     );
     walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+    walletSelector.onDidDismiss(option => {
+      if (!_.isEmpty(option)) this.onWalletSelect(option);
       this.isOpenSelector = false;
     });
   }

@@ -25,6 +25,14 @@ page-amount {
     @media (max-height: $short-screen) {
       margin: 1rem;
     }
+    &.fix-modal-switcher {
+      @media (min-width: 768px) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 224px;
+      }
+    }
   }
 
   .cancel-button {

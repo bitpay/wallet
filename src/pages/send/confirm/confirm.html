@@ -77,7 +77,7 @@
             </ion-col>
 
             <ion-col>
-              <span class="ellipsis">Coinbase: {{ fromCoinbase?.accountName }}</span>
+              <span class="ellipsis">{{ fromCoinbase?.accountName }}</span>
             </ion-col>
           </ion-row>
 
@@ -106,9 +106,9 @@
         </ion-item>
       </div>
 
-      <div class="line-divider"></div>
+      <div class="line-divider" *ngIf="!coinbaseAccount"></div>
 
-      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
+      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" *ngIf="!coinbaseAccount" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
         <ion-label>
           <div class="summary-item">
             <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
@@ -159,7 +159,19 @@
             </ion-col>
           </ion-row>
 
-          <ion-row align-items-center class="wallet" *ngIf="!wallet">
+          <ion-row align-items-center class="wallet" *ngIf="coinbaseAccount">
+            <ion-col>
+              <ion-icon item-start>
+                <img src="assets/img/coinbase/coinbase-icon.png" width="32">
+              </ion-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="note-container ellipsis">{{coinbaseAccount.name}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="wallet" *ngIf="!wallet && !coinbaseAccount">
             <div translate>Select a wallet</div>
             <div class="last-item" item-end>
               <button ion-button clear color="grey" icon-only>
@@ -171,8 +183,9 @@
         </ion-note>
       </button>
 
+      <div class="line-divider"></div>
 
-      <ion-item *ngIf="tx.paypro && wallet">
+      <ion-item *ngIf="tx.paypro && (wallet || coinbaseAccount)">
         <ion-label>
           <div class="summary-item">
             <span translate>Payment Expires</span>
@@ -184,7 +197,7 @@
 
       <div class="summary-line"></div>
 
-      <ion-item>
+      <ion-item *ngIf="!coinbaseAccount">
         <ion-label>
           <div class="main-label total-label" [ngClass]="{'subtotal-label': !wallet?.credentials.token}">
             <span class="title" translate>SUBTOTAL</span>
@@ -200,7 +213,7 @@
         </ion-note>
       </ion-item>
 
-      <div class="amount-details" padding-bottom>
+      <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           {{tx.amount | satToFiat: tx.coin}}
         </div>
@@ -208,6 +221,7 @@
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
         </div>
       </div>
+
 
       <ion-item *ngIf="totalAmountStr && !wallet?.credentials.token">
         <ion-label>
@@ -231,9 +245,16 @@
         </div>
       </div>
 
+      <div class="amount-details" padding-bottom *ngIf="coinbaseAccount">
+        <div class="total-amount-note subtotal-amount-note">
+          <div translate>Miner fee not required for payments with Coinbase accounts</div>
+          <div translate>You are saving {{tx.minerFee | satToUnit: tx.coin}}</div>
+        </div>
+      </div>
+
       <div class="line-divider"></div>
 
-      <ion-item *ngIf="wallet && wallet.coin !== 'xrp'; else destinationTag" (click)="editMemo(tx.description)">
+      <ion-item *ngIf="(wallet && wallet.coin !== 'xrp') || coinbaseAccount; else destinationTag" (click)="editMemo(tx.description)">
         <ion-label stacked>{{'Memo' | translate}}</ion-label>
         <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" [(ngModel)]="tx.description" name="tx.description" autocomplete="off" autocorrect="off" readonly disabled></ion-textarea>
       </ion-item>
@@ -256,10 +277,10 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx?.txp[wallet.id] || paymentExpired">{{buttonText}}</button>
+      <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired">{{buttonText}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>
