@@ -208,9 +208,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.coinbaseAccounts = this.showCoinbase
       ? this.coinbaseProvider.getAvailableAccounts(null, {
-        amount: this.amount,
-        currency: this.currency
-      })
+          amount: this.amount,
+          currency: this.currency
+        })
       : [];
 
     if (
@@ -364,7 +364,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-        this.cardConfig.displayName
+          this.cardConfig.displayName
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -843,14 +843,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.coinbaseAccount = option.accountSelected;
       const email = this.coinbaseProvider.coinbaseData.user.email;
       await this.initializeCoinbase(option.accountSelected, email).catch(
-        () => { }
+        () => {}
       );
     } else {
       this.wallet = option;
       this.coinbaseAccount = null;
       this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
       const email = await this.promptEmail();
-      await this.initialize(option, email).catch(() => { });
+      await this.initialize(option, email).catch(() => {});
     }
   }
 

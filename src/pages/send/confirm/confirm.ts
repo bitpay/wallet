@@ -315,7 +315,7 @@ export class ConfirmPage {
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(
       this.tx.amount /
-      this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
       '1.2-6'
     );
   }
@@ -325,7 +325,7 @@ export class ConfirmPage {
       this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
       this.totalAmountStr = this.decimalPipe.transform(
         (tx.amount + tx.txp[wallet.id].fee) /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
         '1.2-6'
       );
     }
@@ -479,7 +479,7 @@ export class ConfirmPage {
       this.totalAmount = this.tx.amount - this.tx.minerFee;
       this.totalAmountStr = this.decimalPipe.transform(
         this.totalAmount /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
+          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
         '1.2-6'
       );
     }
@@ -489,7 +489,7 @@ export class ConfirmPage {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-      this.tx.amount + this.tx.feeRate &&
+        this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -606,7 +606,7 @@ export class ConfirmPage {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-              tx.feeRate
+                tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
@@ -805,9 +805,9 @@ export class ConfirmPage {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-            wallet.id +
-            ' Txp:' +
-            txp.id
+              wallet.id +
+              ' Txp:' +
+              txp.id
           );
 
           this.getTotalAmountDetails(tx, wallet);
