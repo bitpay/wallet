@@ -28,7 +28,9 @@ function createWindow() {
     minHeight: 650,
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      worldSafeExecuteJavaScript: true,
+      enableRemoteModule: true
     }
   });
 
