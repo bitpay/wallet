@@ -81,6 +81,7 @@ export class HomePage {
   public showCoinbase: boolean = false;
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
+  private pagesMap: any;
 
   private isCordova: boolean;
   private zone;
@@ -119,6 +120,13 @@ export class HomePage {
       .getTestingAdvertisments()
       .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
+    this.pagesMap = {
+      BuyCardPage,
+      BitPayCardIntroPage,
+      CardCatalogPage,
+      CoinbasePage,
+      NewFeatureTourPage
+    };
   }
 
   async ionViewWillEnter() {
@@ -164,6 +172,8 @@ export class HomePage {
                   return;
                 }
 
+                let link = this.getAdPageOrLink(ad.linkUrl);
+
                 !alreadyVisible &&
                   this.verifySignature(ad) &&
                   ad.isTesting &&
@@ -175,7 +185,7 @@ export class HomePage {
                     body: ad.body,
                     app: ad.app,
                     linkText: ad.linkText,
-                    link: ad.linkUrl,
+                    link,
                     imgSrc: ad.imgUrl,
                     signature: ad.signature,
                     isTesting: ad.isTesting,
@@ -195,6 +205,8 @@ export class HomePage {
                   return;
                 }
 
+                let link = this.getAdPageOrLink(ad.linkUrl);
+
                 !alreadyVisible &&
                   this.verifySignature(ad) &&
                   this.advertisements.push({
@@ -205,7 +217,7 @@ export class HomePage {
                     body: ad.body,
                     app: ad.app,
                     linkText: ad.linkText,
-                    link: ad.linkUrl,
+                    link,
                     imgSrc: ad.imgUrl,
                     signature: ad.signature,
                     isTesting: ad.isTesting,
@@ -216,6 +228,24 @@ export class HomePage {
         }
       }
     );
+  }
+
+  getAdPageOrLink(link) {
+    let linkTo;
+    // link is of formate page:PAGE_TITLE or url e.g. https://google.com
+
+    if (link.startsWith('page:')) {
+      let pageArray = link.split(':');
+      let pageTitle = pageArray[1];
+      if (pageTitle in this.pagesMap) {
+        linkTo = this.pagesMap[pageTitle];
+        return linkTo;
+      }
+    } else if (link.startsWith('https://')) {
+      linkTo = link;
+    }
+
+    return linkTo;
   }
 
   private setMerchantDirectoryAdvertisement() {
