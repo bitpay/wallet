@@ -63,7 +63,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
-      ratesApi: 'https://bitpay.com/api/rates/btc',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
       blockExplorerUrls: 'bitpay.com/insight/#/BTC/'
     },
     feeInfo: {
@@ -98,7 +98,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
-      ratesApi: 'https://bitpay.com/api/rates/bch',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'bitpay.com/insight/#/BCH/'
     },
     feeInfo: {
@@ -133,7 +133,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/eth',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/eth',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
@@ -168,7 +168,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
-      ratesApi: 'https://bitpay.com/api/rates/xrp',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/xrp',
       blockExplorerUrls: 'xrpscan.com/'
     },
     feeInfo: {
@@ -203,7 +203,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/busd',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/busd',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
@@ -238,7 +238,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/pax',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/pax',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
@@ -273,7 +273,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/usdc',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/usdc',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
@@ -308,7 +308,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bitpay.com/api/rates/gusd',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd',
       blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
     },
     feeInfo: {
