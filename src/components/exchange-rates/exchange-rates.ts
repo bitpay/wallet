@@ -29,18 +29,6 @@ export class ExchangeRates {
   public isFiatIsoCodeSupported: boolean;
   public fiatIsoCode: string;
   public coins = [];
-  public fiatCodes = [
-    'USD',
-    'INR',
-    'GBP',
-    'EUR',
-    'CAD',
-    'COP',
-    'NGN',
-    'BRL',
-    'ARS',
-    'AUD'
-  ];
 
   constructor(
     private navCtrl: NavController,
@@ -112,8 +100,7 @@ export class ExchangeRates {
   private setIsoCode() {
     const alternativeIsoCode = this.configProvider.get().wallet.settings
       .alternativeIsoCode;
-    this.isFiatIsoCodeSupported = _.includes(
-      this.fiatCodes,
+    this.isFiatIsoCodeSupported = this.rateProvider.isAltCurrencyAvailable(
       alternativeIsoCode
     );
     this.fiatIsoCode = this.isFiatIsoCodeSupported ? alternativeIsoCode : 'USD';

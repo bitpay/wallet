@@ -37,18 +37,6 @@ export class PricePage {
     { label: '1W', dateRange: DateRanges.Week },
     { label: '1M', dateRange: DateRanges.Month }
   ];
-  private supportedFiatCodes: string[] = [
-    'USD',
-    'INR',
-    'GBP',
-    'EUR',
-    'CAD',
-    'COP',
-    'NGN',
-    'BRL',
-    'ARS',
-    'AUD'
-  ];
   public isFiatIsoCodeSupported: boolean;
   public fiatIsoCode: string;
   public fiatCodes;
@@ -199,7 +187,9 @@ export class PricePage {
   private setFiatIsoCode() {
     this.fiatCodes = this.simplexProvider.getSupportedFiatAltCurrencies();
     const { alternativeIsoCode } = this.configProvider.get().wallet.settings;
-    this.fiatIsoCode = this.supportedFiatCodes.includes(alternativeIsoCode)
+    this.fiatIsoCode = this.rateProvider.isAltCurrencyAvailable(
+      alternativeIsoCode
+    )
       ? alternativeIsoCode
       : 'USD';
     this.isFiatIsoCodeSupported = _.includes(this.fiatCodes, this.fiatIsoCode);

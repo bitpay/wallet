@@ -51,14 +51,14 @@ describe('RateProvider', () => {
     rate: 8427.66,
     fetchedOn: 1559315104699
   };
-  let btcUrl: string = 'https://bitpay.com/api/rates/btc';
-  let bchUrl: string = 'https://bitpay.com/api/rates/bch';
-  let ethUrl: string = 'https://bitpay.com/api/rates/eth';
-  let xrpUrl: string = 'https://bitpay.com/api/rates/xrp';
-  let paxUrl: string = 'https://bitpay.com/api/rates/pax';
-  let usdcUrl: string = 'https://bitpay.com/api/rates/usdc';
-  let gusdUrl: string = 'https://bitpay.com/api/rates/gusd';
-  let busdUrl: string = 'https://bitpay.com/api/rates/busd';
+  let btcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc';
+  let bchUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/bch';
+  let ethUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/eth';
+  let xrpUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/xrp';
+  let paxUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/pax';
+  let usdcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/usdc';
+  let gusdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd';
+  let busdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/busd';
 
   let fiatRateUrl: string =
     'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';

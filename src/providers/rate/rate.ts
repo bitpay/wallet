@@ -124,6 +124,10 @@ export class RateProvider {
     return this.ratesAvailable[chain];
   }
 
+  public isAltCurrencyAvailable(currency: string) {
+    return this.alternatives[currency];
+  }
+
   public toFiat(
     satoshis: number,
     code: string,
