@@ -8,10 +8,14 @@ import { BackupGamePage } from '../backup-game/backup-game';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
+import { LogsProvider } from '../../../providers/logs/logs';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
@@ -36,7 +40,11 @@ export class BackupKeyPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private popupProvider: PopupProvider,
+    private platformProvider: PlatformProvider,
+    private logsProvider: LogsProvider,
+    private appProvider: AppProvider
   ) {
     this.keyId = this.navParams.data.keyId;
     this.walletGroup = this.profileProvider.getWalletGroup(this.keyId);
@@ -52,7 +60,29 @@ export class BackupKeyPage {
     this.keyProvider
       .handleEncryptedWallet(this.keyId)
       .then((password: string) => {
-        const keys = this.keyProvider.get(this.keyId, password);
+        let keys;
+        try {
+          keys = this.keyProvider.get(this.keyId, password);
+        } catch (err) {
+          const title =
+            'Your wallet is in a corrupt state. Please contact support and share the logs provided.';
+          let message;
+          try {
+            message =
+              err instanceof Error ? err.toString() : JSON.stringify(err);
+          } catch (error) {
+            message = 'Unknown error';
+          }
+          this.popupProvider.ionicAlert(title, message).then(() => {
+            // Share logs
+            const platform = this.platformProvider.isCordova
+              ? this.platformProvider.isAndroid
+                ? 'android'
+                : 'ios'
+              : 'desktop';
+            this.logsProvider.get(this.appProvider.info.nameCase, platform);
+          });
+        }
         if (_.isEmpty(keys)) {
           this.logger.warn('Empty keys');
         }

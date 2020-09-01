@@ -26,17 +26,26 @@ export class KeyProvider {
   }
 
   public load(): Promise<any> {
+    this.logger.debug('loading keys');
     return this.persistenceProvider.getKeys().then(async keys => {
+      if (!keys) this.logger.debug('no keys found');
       this.keys = [];
       keys = keys ? keys : [];
+      this.logger.debug(`typeof keys: ${typeof keys}`);
       if (typeof keys === 'string') {
+        this.logger.debug('typeof keys = string. Trying to parse.');
         try {
           keys = JSON.parse(keys);
         } catch (_) {
           this.logger.warn('Could not parse');
         }
       }
-      keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
+
+      this.logger.debug(`keys length: ${keys.length}`);
+      keys.forEach(k => {
+        this.logger.debug(`storage keyid: ${k.id}`);
+        this.keys.push(this.Key.fromObj(k));
+      });
       return Promise.resolve();
     });
   }
