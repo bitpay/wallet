@@ -6,6 +6,7 @@ import encoding from 'text-encoding';
 
 // Providers
 import { AddressProvider } from '../address/address';
+import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
@@ -15,8 +16,10 @@ import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
+import { LogsProvider } from '../logs/logs';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { RateProvider } from '../rate/rate';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -124,7 +127,10 @@ export class WalletProvider {
     private translate: TranslateService,
     private addressProvider: AddressProvider,
     private languageProvider: LanguageProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private platformProvider: PlatformProvider,
+    private logsProvider: LogsProvider,
+    private appProvider: AppProvider
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
@@ -1265,12 +1271,34 @@ export class WalletProvider {
 
       const rootPath = wallet.getRootPath();
 
-      const signatures = this.keyProvider.sign(
-        wallet.credentials.keyId,
-        rootPath,
-        txp,
-        password
-      );
+      let signatures;
+
+      try {
+        signatures = this.keyProvider.sign(
+          wallet.credentials.keyId,
+          rootPath,
+          txp,
+          password
+        );
+      } catch (err) {
+        const title =
+          'Your wallet is in a corrupt state. Please contact support and share the logs provided';
+        let message;
+        try {
+          message = err instanceof Error ? err.toString() : JSON.stringify(err);
+        } catch (error) {
+          message = 'Unknown error';
+        }
+        this.popupProvider.ionicAlert(title, message).then(() => {
+          // Share logs
+          const platform = this.platformProvider.isCordova
+            ? this.platformProvider.isAndroid
+              ? 'android'
+              : 'ios'
+            : 'desktop';
+          this.logsProvider.get(this.appProvider.info.nameCase, platform);
+        });
+      }
 
       try {
         wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
