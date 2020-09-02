@@ -203,20 +203,17 @@ export class RateProvider {
     const fiatIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
 
-    return this.fetchHistoricalRates(fiatIsoCode, false, DateRanges.Day).then(
-      x => {
-        let ret = {};
-        _.map(x, (v, k) => {
-          ret[k] = _.last(v).rate;
-        });
-        return ret as HistoricalRates;
-      }
-    );
+    return this.fetchHistoricalRates(fiatIsoCode, DateRanges.Day).then(x => {
+      let ret = {};
+      _.map(x, (v, k) => {
+        ret[k] = _.last(v).rate;
+      });
+      return ret as HistoricalRates;
+    });
   }
 
   public fetchHistoricalRates(
     fiatIsoCode: string,
-    force: boolean = false, // TODO: review
     dateRange: DateRanges = DateRanges.Day
   ): Promise<HistoricalRates> {
     const firstDateTs =
@@ -228,8 +225,7 @@ export class RateProvider {
     const now = Date.now();
     if (
       _.isEmpty(this.ratesCache[dateRange].data) ||
-      this.ratesCache[dateRange].expiration < now ||
-      force
+      this.ratesCache[dateRange].expiration < now
     ) {
       this.logger.debug(
         `Refreshing Exchange rates for ${fiatIsoCode} period ${dateRange}`

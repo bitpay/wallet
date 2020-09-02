@@ -58,7 +58,7 @@ export class ExchangeRates {
     }
     this.getPrices();
     this.events.subscribe('Local/PriceUpdate', () => {
-      this.getPrices(true);
+      this.getPrices();
     });
   }
 
@@ -66,13 +66,13 @@ export class ExchangeRates {
     this.navCtrl.push(PricePage, { card });
   }
 
-  public getPrices(force: boolean = false) {
+  public getPrices() {
     this.setIsoCode();
 
     // TODO: Add a new endpoint in BWS that
     // provides JUST  the current prices and the delta.
     this.rateProvider
-      .fetchHistoricalRates(this.fiatIsoCode, force, DateRanges.Day)
+      .fetchHistoricalRates(this.fiatIsoCode, DateRanges.Day)
       .then(response => {
         _.forEach(this.coins, (coin, index) => {
           if (response[coin.unitCode])

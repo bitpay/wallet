@@ -65,19 +65,17 @@ export class PricePage {
 
   private getPrice(dateRange) {
     this.canvas.loading = true;
-    this.rateProvider
-      .fetchHistoricalRates(this.fiatIsoCode, false, dateRange)
-      .then(
-        response => {
-          this.card.historicalRates = response[this.card.unitCode];
-          this.updateValues();
-          this.setPrice();
-          this.redrawCanvas();
-        },
-        err => {
-          this.logger.error('Error getting rates:', err);
-        }
-      );
+    this.rateProvider.fetchHistoricalRates(this.fiatIsoCode, dateRange).then(
+      response => {
+        this.card.historicalRates = response[this.card.unitCode];
+        this.updateValues();
+        this.setPrice();
+        this.redrawCanvas();
+      },
+      err => {
+        this.logger.error('Error getting rates:', err);
+      }
+    );
   }
 
   private formatDate(date) {
