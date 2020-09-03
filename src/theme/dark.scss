@@ -1241,16 +1241,6 @@
   page-cards {
     .card-item {
       background: $bg-color-dark-theme;
-
-      &.light {
-        color: $text-color-dark-theme;
-
-        .card {
-          .funds {
-            color: $text-color-dark-theme;
-          }
-        }
-      }
     }
   }
 
