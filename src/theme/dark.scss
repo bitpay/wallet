@@ -276,6 +276,9 @@
     .alert-input {
       background: $bg-color-dark-theme;
     }
+    .alert-message {
+      color: $text-color-dark-theme;
+    }
   }
 
   .alert-ios .alert-button ion-action-sheet {
