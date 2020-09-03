@@ -276,6 +276,9 @@
     .alert-input {
       background: $bg-color-dark-theme;
     }
+    .alert-message {
+      color: $text-color-dark-theme;
+    }
   }
 
   .alert-ios .alert-button ion-action-sheet {
@@ -1238,16 +1241,6 @@
   page-cards {
     .card-item {
       background: $bg-color-dark-theme;
-
-      &.light {
-        color: $text-color-dark-theme;
-
-        .card {
-          .funds {
-            color: $text-color-dark-theme;
-          }
-        }
-      }
     }
   }
 
