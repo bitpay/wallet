@@ -4,11 +4,12 @@ import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ExchangeRatesProvider } from '../../providers/exchange-rates/exchange-rates';
+import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -48,8 +49,9 @@ export class TabsPage {
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
     private tabProvider: TabProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
-    private platformProvider: PlatformProvider
+    private rateProvider: RateProvider,
+    private platformProvider: PlatformProvider,
+    private configProvider: ConfigProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
@@ -171,7 +173,7 @@ export class TabsPage {
   };
 
   private updateTotalBalance() {
-    this.exchangeRatesProvider.getLastDayRates().then(lastDayRatesArray => {
+    this.rateProvider.getLastDayRates().then(lastDayRatesArray => {
       this.walletProvider
         .getTotalAmount(this.profileProvider.wallet, lastDayRatesArray)
         .then(data => {
@@ -216,7 +218,27 @@ export class TabsPage {
     }
   );
 
+  private checkAltCurrency(): void {
+    const altCurrencyIsoCode = this.configProvider.get().wallet.settings
+      .alternativeIsoCode;
+    if (this.rateProvider.isAltCurrencyAvailable(altCurrencyIsoCode)) return;
+
+    const defaults = this.configProvider.getDefaults();
+    var opts = {
+      wallet: {
+        settings: {
+          alternativeName: defaults.wallet.settings.alternativeName,
+          alternativeIsoCode: defaults.wallet.settings.alternativeIsoCode
+        }
+      }
+    };
+    this.configProvider.set(opts);
+  }
+
   private _fetchAllWallets() {
+    // Set the default alternative currency if the one setted is no longer supported
+    this.checkAltCurrency();
+
     let wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');

@@ -7,8 +7,8 @@ import { Coin } from '../../providers/currency/currency';
 import {
   DateRanges,
   ExchangeRate,
-  ExchangeRatesProvider
-} from '../../providers/exchange-rates/exchange-rates';
+  RateProvider
+} from '../../providers/rate/rate';
 
 export interface Card {
   unitCode: string;
@@ -26,26 +26,14 @@ export interface Card {
   templateUrl: 'exchange-rates.html'
 })
 export class ExchangeRates {
-  public isIsoCodeSupported: boolean;
-  public isoCode: string;
+  public isFiatIsoCodeSupported: boolean;
+  public fiatIsoCode: string;
   public coins = [];
-  public fiatCodes = [
-    'USD',
-    'INR',
-    'GBP',
-    'EUR',
-    'CAD',
-    'COP',
-    'NGN',
-    'BRL',
-    'ARS',
-    'AUD'
-  ];
 
   constructor(
     private navCtrl: NavController,
     private currencyProvider: CurrencyProvider,
-    private exchangeRatesProvider: ExchangeRatesProvider,
+    private rateProvider: RateProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
     private events: Events
@@ -70,7 +58,7 @@ export class ExchangeRates {
     }
     this.getPrices();
     this.events.subscribe('Local/PriceUpdate', () => {
-      this.getPrices(true);
+      this.getPrices();
     });
   }
 
@@ -78,13 +66,13 @@ export class ExchangeRates {
     this.navCtrl.push(PricePage, { card });
   }
 
-  public getPrices(force: boolean = false) {
+  public getPrices() {
     this.setIsoCode();
 
     // TODO: Add a new endpoint in BWS that
     // provides JUST  the current prices and the delta.
-    this.exchangeRatesProvider
-      .fetchHistoricalRates(this.isoCode, force, DateRanges.Day)
+    this.rateProvider
+      .fetchHistoricalRates(this.fiatIsoCode, DateRanges.Day)
       .then(response => {
         _.forEach(this.coins, (coin, index) => {
           if (response[coin.unitCode])
@@ -112,8 +100,10 @@ export class ExchangeRates {
   private setIsoCode() {
     const alternativeIsoCode = this.configProvider.get().wallet.settings
       .alternativeIsoCode;
-    this.isIsoCodeSupported = _.includes(this.fiatCodes, alternativeIsoCode);
-    this.isoCode = this.isIsoCodeSupported ? alternativeIsoCode : 'USD';
+    this.isFiatIsoCodeSupported = this.rateProvider.isAltCurrencyAvailable(
+      alternativeIsoCode
+    );
+    this.fiatIsoCode = this.isFiatIsoCodeSupported ? alternativeIsoCode : 'USD';
   }
 
   public getDigitsInfo(coin: string) {
