@@ -199,7 +199,7 @@
     "codecov": "3.7.2",
     "core-js": "2.6.10",
     "electron": "9.2.1",
-    "electron-builder": "22.2.0",
+    "electron-builder": "22.8.0",
     "fs-extra": "5.0.0",
     "ionic": "4.10.4",
     "ionic-mocks": "1.2.1",
