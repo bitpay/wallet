@@ -40,6 +40,8 @@ export type InfoSheetType =
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'
+  | 'pay-id-confirmation'
+  | 'pay-id-unsupported-coin'
   | 'payment-request'
   | 'payment-method-changed'
   | 'print-required'
