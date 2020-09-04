@@ -49,9 +49,17 @@ export class TxFormatProvider {
     return this.bwcProvider.getUtils().formatAmount(satoshis, coin, opts);
   }
 
-  public formatAmountStr(coin: string, satoshis: number): string {
+  public formatAmountStr(
+    coin: string,
+    satoshis: number,
+    fullPrecision?: boolean
+  ): string {
     if (isNaN(satoshis)) return undefined;
-    return this.formatAmount(coin, satoshis) + ' ' + coin.toUpperCase();
+    return (
+      this.formatAmount(coin, satoshis, fullPrecision) +
+      ' ' +
+      coin.toUpperCase()
+    );
   }
 
   public toFiat(

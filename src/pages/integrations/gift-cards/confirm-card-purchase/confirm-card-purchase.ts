@@ -18,7 +18,6 @@ import { CardDetailsPage } from '../../gift-cards/card-details/card-details';
 import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 // Provider
-import { DecimalPipe } from '@angular/common';
 import {
   AddressProvider,
   EmailNotificationsProvider,
@@ -101,7 +100,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
     currencyProvider: CurrencyProvider,
-    decimalPipe: DecimalPipe,
     errorsProvider: ErrorsProvider,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
@@ -137,7 +135,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       bwcProvider,
       configProvider,
       currencyProvider,
-      decimalPipe,
       errorsProvider,
       externalLinkProvider,
       feeProvider,

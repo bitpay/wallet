@@ -6,7 +6,6 @@ import {
   NavParams,
   ViewController
 } from 'ionic-angular';
-import { DecimalPipe } from '../../../node_modules/@angular/common';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -72,7 +71,6 @@ export class TxpDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private decimalPipe: DecimalPipe,
     private payproProvider: PayproProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider
@@ -120,10 +118,9 @@ export class TxpDetailsPage {
     this.checkPaypro();
     this.applyButtonText();
 
-    this.amount = this.decimalPipe.transform(
-      this.tx.amount /
-        this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-      '1.2-6'
+    this.amount = this.txFormatProvider.formatAmount(
+      this.wallet.coin,
+      this.tx.amount
     );
   }
 
