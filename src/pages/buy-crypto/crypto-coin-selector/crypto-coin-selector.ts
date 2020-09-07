@@ -38,13 +38,13 @@ export class CryptoCoinSelectorPage {
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams
   ) {
+    const exchangeCoinsSupported = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
-      coin: ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
+      coin: exchangeCoinsSupported,
       backedUp: true
     });
-    const exchangeCoinsSupported = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
     for (const coin of exchangeCoinsSupported) {
       const c = {
         unitCode: coin,

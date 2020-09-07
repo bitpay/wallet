@@ -9,7 +9,7 @@ import { Card } from '../../../components/exchange-rates/exchange-rates';
 import { PriceChart } from '../../../components/price-chart/price-chart';
 
 // Pages
-import { CryptoCoinSelectorPage } from '../../../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
+import { AmountPage } from '../../send/amount/amount';
 
 // Providers
 import {
@@ -25,7 +25,6 @@ import { DateRanges, RateProvider } from '../../../providers/rate/rate';
   templateUrl: 'price-page.html'
 })
 export class PricePage {
-  coin: any;
   wallet: any;
   wallets: any[];
   @ViewChild('canvas') canvas: PriceChart;
@@ -51,7 +50,6 @@ export class PricePage {
     private analyticsProvider: AnalyticsProvider
   ) {
     this.card = _.clone(this.navParams.data.card);
-    this.coin = this.card.unitCode;
     this.setFiatIsoCode();
   }
 
@@ -193,8 +191,13 @@ export class PricePage {
     this.isFiatIsoCodeSupported = _.includes(this.fiatCodes, this.fiatIsoCode);
   }
 
-  public goToCoinSelector(): void {
+  public goToAmountPage(): void {
     this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
-    this.navCtrl.push(CryptoCoinSelectorPage, { coin: this.coin });
+    this.navCtrl.push(AmountPage, {
+      coin: this.card.unitCode,
+      fromBuyCrypto: true,
+      nextPage: 'CryptoOrderSummaryPage',
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
   }
 }

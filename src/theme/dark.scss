@@ -511,6 +511,27 @@
     }
   }
 
+  .offer-card {
+    background: $bg-color-dark-theme-2;
+    .main-label {
+      color: $text-color-dark-theme;
+    }
+    .extended-info .bp-list {
+      .item {
+        background: $bg-color-dark-theme-2;
+        &:not(:last-child) {
+          border-top: 1px dashed #434d5a;
+        }
+      }
+      .total {
+        color: white;
+      }
+    }
+    .terms {
+      color: #8e8d8d;
+    }
+  }
+
   // 3.4 - Expandable header
   ion-content.add-padding-bottom,
   .add-padding-bottom ion-content {

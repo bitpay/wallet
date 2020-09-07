@@ -24,35 +24,123 @@
           </ion-col>
         </ion-row>
       </ion-item>
-
-      <div *ngFor="let offer of (offers | keys) | orderBy : ['-amountReceiving']">
-        <action-card-v4 (click)="goTo(offer.key)" tappable *ngIf="offer.value.showOffer">
-          <div action-card-body *ngIf="!offer.value.fiatMoney && !offer.value.errorMsg" class="loader">
-            <ion-spinner></ion-spinner>
-          </div>
-          <div action-card-body translate *ngIf="offer.value.fiatMoney || offer.value.errorMsg">
-            <div *ngIf="offer.value.errorMsg">
-              <div class="main-label">{{offer.value.errorMsg}}</div>
-            </div>
-            <div *ngIf="offer.value.fiatMoney && !offer.value.errorMsg">
-              <div class="main-label">{{offer.value.amountReceiving }} {{coin | uppercase}}</div>
-              <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{offer.value.fiatMoney | number:'1.2-2'}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span> *</div>
-            </div>
-            <div class="provider">
-              <span class="secondary-label">Provided by</span>
-              <img [src]="themeProvider.currentAppTheme !== 'dark' ? offer.value.logoLight : offer.value.logoDark">
-            </div>
-          </div>
-          <div action-card-button translate *ngIf="offer.value.fiatMoney">
-            View Offer
-          </div>
-        </action-card-v4>
-      </div>
-
-      <div class="card-terms">
-        <div translate>* Fees included </div>
-        <div translate>Additional third-party fees may apply.</div>
-      </div>
     </ion-list>
+
+    <div class="card-container" *ngFor="let offer of (offers | keys) | orderBy : ['-amountReceiving']">
+      <div translate class="offer-btn" *ngIf="offer.value.fiatMoney" (click)="goTo(offer.key)">
+        Buy
+      </div>
+      <div class="offer-card" (click)="expandCard(offer.key)" tappable *ngIf="offer.value.showOffer">
+        <div class="content" *ngIf="!offer.value.fiatMoney && !offer.value.errorMsg" class="loader">
+          <ion-spinner></ion-spinner>
+        </div>
+        <div class="content" translate *ngIf="offer.value.fiatMoney || offer.value.errorMsg">
+          <div *ngIf="offer.value.errorMsg">
+            <div class="main-label">{{offer.value.errorMsg}}</div>
+          </div>
+
+          <div class="visible-container">
+            <div class="visible-info">
+              <div *ngIf="offer.value.fiatMoney && !offer.value.errorMsg">
+                <div class="main-label">{{offer.value.amountReceiving }} {{coin | uppercase}}</div>
+                <div class="secondary-label">1 {{coin | uppercase}} = <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{offer.value.fiatMoney | number:'1.2-2'}} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span></div>
+              </div>
+              <div class="provider">
+                <span translate class="secondary-label">Provided by</span>
+                <img [src]="themeProvider.currentAppTheme !== 'dark' ? offer.value.logoLight : offer.value.logoDark">
+              </div>
+            </div>
+          </div>
+          <div class="extended-info" [ngClass]="{'expanded': offer.value.expanded}">
+            <ion-list class="bp-list">
+              <ion-item>
+                <ion-label>
+                  <div class="summary-item">
+                    <span>{{"Buy Amount" | translate}}</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                  <div class="summary-item-detail">
+                    <span>
+                      <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{ offer.value.buyAmount | number : '1.2-2' }} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span>
+                    </span>
+                  </div>
+                </ion-note>
+              </ion-item>
+              <div class="summary-item-detail-sec">
+                <span>{{ offer.value.amountReceiving }} {{coin | uppercase}}</span>
+              </div>
+              <ion-item>
+                <ion-label>
+                  <div class="summary-item">
+                    <span>{{"Fee" | translate}}</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                  <div class="summary-item-detail">
+                    <span>
+                      <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{ offer.value.fee | number : '1.2-2' }} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span>
+                    </span>
+                  </div>
+                </ion-note>
+              </ion-item>
+              <ion-item [ngStyle]="{'border-top': coinBorderColor}">
+                <ion-label>
+                  <div class="summary-item total">
+                    <span>{{"TOTAL" | translate}}</span>
+                  </div>
+                </ion-label>
+                <ion-note item-end>
+                  <div class="summary-item-detail total">
+                    <span>
+                      <span *ngIf="fiatCurrency?.toUpperCase() === 'USD'">$</span>{{ offer.value.amountCost | number : '1.2-2' }} <span *ngIf="fiatCurrency?.toUpperCase() !== 'USD'">{{fiatCurrency}}</span>
+                    </span>
+                  </div>
+                </ion-note>
+              </ion-item>
+            </ion-list>
+            <div class="terms">
+              <div *ngIf="offer.key == 'simplex'">
+                <div>
+                  <span translate>What service fees am I paying?</span>
+                  <br>
+                  <span translate>Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD).</span>
+                  <a (click)="openExternalLink('https://www.simplex.com/kb/what-service-fees-am-i-paying/')" translate>
+                    Read more
+                  </a>
+                </div>
+                <div>
+                  <span translate>This service is provided by a third party, and you are subject to their </span>
+                  <a (click)="openExternalLink('https://www.simplex.com/terms-of-use/')" translate>
+                    Terms of use
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="offer.key == 'wyre'">
+                <div>
+                  <span translate>What service fees am I paying?</span>
+                  <br>
+                  <span translate *ngIf="paymentMethod.method === 'debitCard'">3.9% of the amount + 0.30 USD per transactions</span>
+                  <span translate *ngIf="paymentMethod.method === 'applePay' && selectedCountry.shortCode == 'US'">2.9% of the amount + 0.30 USD per transactions</span>
+                  <span translate *ngIf="paymentMethod.method === 'applePay' && selectedCountry.shortCode != 'US'">3.9% of the amount + 0.30 USD per transactions</span>
+                </div>
+                <div>
+                  <span translate>This service is provided by a third party, and you are subject to their </span>
+                  <a (click)="openExternalLink('https://www.simplex.com/terms-of-use/')" translate>
+                    User Agreement
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="terms-general">
+      <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers.</div>
+      <div translate>Additional third-party fees may apply.</div>
+    </div>
   </div>
 </wide-header-page>

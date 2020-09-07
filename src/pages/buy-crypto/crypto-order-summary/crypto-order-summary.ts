@@ -60,11 +60,15 @@ export class CryptoOrderSummaryPage {
     if (this.navParams.data.walletId) {
       this.setWallet(this.navParams.data.walletId);
     } else {
+      const supportedCoins = ['btc', 'eth', 'bch', 'xrp', 'busd', 'pax'];
       // Select first available wallet
       this.wallets = this.profileProvider.getWallets({
         network: env.name == 'development' ? null : 'livenet',
         onlyComplete: true,
-        coin: ['btc', 'eth', 'bch', 'xrp', 'busd', 'pax'],
+        coin:
+          this.coin && supportedCoins.includes(this.coin)
+            ? this.coin
+            : supportedCoins,
         backedUp: true
       });
       if (this.wallets[0]) {
@@ -75,11 +79,14 @@ export class CryptoOrderSummaryPage {
         this.setWallet(this.wallets[0].credentials.walletId);
       } else {
         this.logger.debug('No wallets available to deposit funds.');
-        this.errorsProvider.showNoWalletError(null, option => {
-          if (option) {
-            this.navCtrl.push(SelectCurrencyPage);
+        this.errorsProvider.showNoWalletError(
+          this.coin ? this.coin.toUpperCase() : null,
+          option => {
+            if (option) {
+              this.navCtrl.push(SelectCurrencyPage);
+            }
           }
-        });
+        );
       }
     }
 
