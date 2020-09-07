@@ -1504,22 +1504,6 @@
     }
   }
 
-  page-simplex-buy {
-    .bp-list {
-      ion-note.note {
-        .note-container {
-          color: $text-color-dark-theme;
-        }
-      }
-
-      form {
-        .item-block .item-inner {
-          border-bottom: none;
-        }
-      }
-    }
-  }
-
   page-add,
   page-select-currency,
   page-coin-selector,

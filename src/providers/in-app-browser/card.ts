@@ -9,6 +9,7 @@ import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
+import { ConfigProvider } from '../../providers/config/config';
 import { InAppBrowserProvider } from '../../providers/in-app-browser/in-app-browser';
 import { Logger } from '../../providers/logger/logger';
 import { PayproProvider } from '../../providers/paypro/paypro';
@@ -23,7 +24,6 @@ import {
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { ThemeProvider } from '../../providers/theme/theme';
-import { SimplexProvider } from '../simplex/simplex';
 
 @Injectable()
 export class IABCardProvider {
@@ -44,13 +44,13 @@ export class IABCardProvider {
     private logger: Logger,
     private events: Events,
     private bitpayIdProvider: BitPayIdProvider,
+    private configProvider: ConfigProvider,
     private appIdentityProvider: AppIdentityProvider,
     private persistenceProvider: PersistenceProvider,
     private actionSheetProvider: ActionSheetProvider,
     private iab: InAppBrowserProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
-    private simplexProvider: SimplexProvider,
     private onGoingProcess: OnGoingProcessProvider,
     private http: HttpClient,
     private externalLinkProvider: ExternalLinkProvider,
@@ -212,18 +212,20 @@ export class IABCardProvider {
           break;
 
         case 'buyCrypto':
-          this.simplexProvider.getSimplex().then(simplexData => {
-            const hasData = simplexData && !_.isEmpty(simplexData);
-            const nextView = {
-              name: hasData ? 'SimplexPage' : 'SimplexBuyPage',
-              params: {},
-              callback: () => {
-                this.hide();
-              }
-            };
+          const nextView = {
+            name: 'AmountPage',
+            params: {
+              fromBuyCrypto: true,
+              nextPage: 'CryptoOrderSummaryPage',
+              currency: this.configProvider.get().wallet.settings
+                .alternativeIsoCode
+            },
+            callback: () => {
+              this.hide();
+            }
+          };
 
-            this.events.publish('IncomingDataRedir', nextView);
-          });
+          this.events.publish('IncomingDataRedir', nextView);
           break;
 
         case 'getAppVersion':
