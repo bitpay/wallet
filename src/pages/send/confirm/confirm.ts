@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -113,7 +112,6 @@ export class ConfirmPage {
     protected bwcProvider: BwcProvider,
     protected configProvider: ConfigProvider,
     protected currencyProvider: CurrencyProvider,
-    protected decimalPipe: DecimalPipe,
     protected errorsProvider: ErrorsProvider,
     protected externalLinkProvider: ExternalLinkProvider,
     protected feeProvider: FeeProvider,
@@ -313,20 +311,15 @@ export class ConfirmPage {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(
-      this.tx.amount /
-        this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
-      '1.2-6'
-    );
+    this.amount = this.txFormatProvider.formatAmount(this.coin, this.tx.amount);
   }
 
   private getTotalAmountDetails(tx, wallet) {
     if (wallet && wallet.credentials && !wallet.credentials.token) {
       this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
-      this.totalAmountStr = this.decimalPipe.transform(
-        (tx.amount + tx.txp[wallet.id].fee) /
-          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
-        '1.2-6'
+      this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+        this.coin,
+        tx.amount + tx.txp[wallet.id].fee
       );
     }
   }
@@ -477,10 +470,9 @@ export class ConfirmPage {
       );
       this.tx.minerFee = this.navParams.data.minerFee;
       this.totalAmount = this.tx.amount - this.tx.minerFee;
-      this.totalAmountStr = this.decimalPipe.transform(
-        this.totalAmount /
-          this.currencyProvider.getPrecision(this.coin).unitToSatoshi,
-        '1.2-6'
+      this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+        this.coin,
+        this.totalAmount
       );
     }
   }

@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -66,7 +65,6 @@ export class SelectInputsPage {
     private events: Events,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private decimalPipe: DecimalPipe,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider
   ) {
@@ -233,10 +231,9 @@ export class SelectInputsPage {
       item.altAmountStr = altAmountStr;
       item.fiatAmount = data.fiatAmount;
       item.fiatCode = data.fiatCode;
-      item.amountToShow = this.decimalPipe.transform(
-        data.amount /
-          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-        '1.2-6'
+      item.amountToShow = this.txFormatProvider.formatAmount(
+        this.wallet.coin,
+        data.amount
       );
       this.recipient = item;
     });
@@ -314,11 +311,7 @@ export class SelectInputsPage {
 
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
-      ? this.decimalPipe.transform(
-          +recipient.amount /
-            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-          '1.2-6'
-        )
+      ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(

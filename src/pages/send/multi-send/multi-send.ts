@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -67,7 +66,6 @@ export class MultiSendPage {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private decimalPipe: DecimalPipe,
     private txFormatProvider: TxFormatProvider,
     private bwcProvider: BwcProvider,
     private errorsProvider: ErrorsProvider
@@ -138,10 +136,9 @@ export class MultiSendPage {
       item.altAmountStr = altAmountStr;
       item.fiatAmount = data.fiatAmount;
       item.fiatCode = data.fiatCode;
-      item.amountToShow = this.decimalPipe.transform(
-        data.amount /
-          this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-        '1.2-6'
+      item.amountToShow = this.txFormatProvider.formatAmount(
+        this.wallet.coin,
+        data.amount
       );
       this.multiRecipients[index] = item;
       this.checkGoToConfirmButton();
@@ -150,11 +147,7 @@ export class MultiSendPage {
 
   public addRecipient(recipient): void {
     let amountToShow = +recipient.amount
-      ? this.decimalPipe.transform(
-          +recipient.amount /
-            this.currencyProvider.getPrecision(this.wallet.coin).unitToSatoshi,
-          '1.2-6'
-        )
+      ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(
