@@ -122,7 +122,7 @@ export class SelectInputsPage {
   }
 
   public openScanner(): void {
-    this.navCtrl.push(ScanPage, { fromMultiSend: true });
+    this.navCtrl.push(ScanPage, { fromSelectInputs: true });
   }
 
   public processInput(): void {
