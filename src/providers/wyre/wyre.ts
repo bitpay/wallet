@@ -16,7 +16,7 @@ export class WyreProvider {
   private env: string;
   public uri: string;
   public supportedFiatAltCurrencies;
-  public supportedCoins;
+  public supportedCoins: string[];
   public supportedPaymentMethods;
   public fiatAmountLimits: { min: number; max: number };
 
@@ -30,7 +30,7 @@ export class WyreProvider {
     this.logger.debug('WyreProvider initialized - env: ' + this.env);
     this.uri = env.name == 'development' ? URI_DEV : URI_PROD;
     this.supportedFiatAltCurrencies = ['AUD', 'CAD', 'EUR', 'GBP', 'USD'];
-    this.supportedCoins = ['ETH', 'BTC'];
+    this.supportedCoins = ['btc', 'eth', 'usdc', 'gusd', 'pax', 'busd'];
     this.fiatAmountLimits = {
       min: 1,
       max: 500

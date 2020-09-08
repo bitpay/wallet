@@ -43,7 +43,6 @@ export class CryptoOffersPage {
   public paymentMethod: any;
   public selectedCountry;
   public currency: string;
-  public currencies;
   public amount: any;
   public fiatCurrency: any;
   public coinBorderColor: string;
@@ -86,7 +85,6 @@ export class CryptoOffersPage {
     private popupProvider: PopupProvider,
     public themeProvider: ThemeProvider
   ) {
-    this.currencies = this.simplexProvider.supportedCoins;
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.paymentMethod = this.navParams.data.paymentMethod;

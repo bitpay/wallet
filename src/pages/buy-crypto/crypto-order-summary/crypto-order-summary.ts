@@ -10,7 +10,6 @@ import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { SimplexProvider } from '../../../providers/simplex/simplex';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
@@ -32,7 +31,6 @@ export class CryptoOrderSummaryPage {
   public paymentMethod: any;
   public country: string;
   public currency: string;
-  public currencies;
   public amount: any;
   public address: string;
   public countryList: any[] = [];
@@ -42,7 +40,6 @@ export class CryptoOrderSummaryPage {
     private logger: Logger,
     private navParams: NavParams,
     private modalCtrl: ModalController,
-    private simplexProvider: SimplexProvider,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider,
     private profileProvider: ProfileProvider,
@@ -52,7 +49,6 @@ export class CryptoOrderSummaryPage {
     private errorsProvider: ErrorsProvider,
     private actionSheetProvider: ActionSheetProvider
   ) {
-    this.currencies = this.simplexProvider.supportedCoins;
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
@@ -60,7 +56,7 @@ export class CryptoOrderSummaryPage {
     if (this.navParams.data.walletId) {
       this.setWallet(this.navParams.data.walletId);
     } else {
-      const supportedCoins = ['btc', 'eth', 'bch', 'xrp', 'busd', 'pax'];
+      const supportedCoins = this.buyCryptoProvider.exchangeCoinsSupported;
       // Select first available wallet
       this.wallets = this.profileProvider.getWallets({
         network: env.name == 'development' ? null : 'livenet',
