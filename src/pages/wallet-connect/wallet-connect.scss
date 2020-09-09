@@ -1,0 +1,54 @@
+page-wallet-connect {
+  .padding {
+    padding: 25px;
+  }
+  .title {
+    align-items: center;
+    color: black;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex;
+    justify-content: start;
+  }
+  .card-subtitle {
+    color: #666;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 4px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .card-title {
+    color: #000;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .card-content {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.4;
+    padding-left: unset;
+    padding-right: unset;
+    -webkit-padding-start: 20px;
+    padding-inline-start: 20px;
+    -webkit-padding-end: 20px;
+    padding-inline-end: 20px;
+    padding-bottom: 20px;
+  }
+}

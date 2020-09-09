@@ -1,0 +1,113 @@
+<wide-header-page title="{{'WalletConnect' | translate}}" hideBackButton="true">
+  <ion-buttons left>
+    <button class="close-container disable-hover" (click)="close()" ion-button>
+      <ion-icon ios="md-close" md="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+
+  <div page-content>
+    <ion-list class="bp-list">
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">{{ 'Network' | translate}}</div>
+        </ion-label>
+        <div class="last-item" item-end>
+          {{ getChainData(activeChainId).name }}
+        </div>
+      </ion-item>
+    </ion-list>
+
+      <div *ngIf="!connected">
+        <ion-card *ngIf="peerMeta && peerMeta.name">
+          <ion-card-content >
+            <ion-card-subtitle class="card-subtitle">{{ 'Session Request' | translate}}</ion-card-subtitle>
+            <ion-card-title class="card-title">{{ peerMeta.name | translate}}</ion-card-title>
+            <span class="card-content">{{ peerMeta.description | translate}} {{ peerMeta.url | translate}}</span>
+          </ion-card-content>
+
+          <ion-item>
+            <button ion-button icon-start clear item-start (click)="rejectSession()">
+              {{'Reject' | translate}}
+            </button>
+            <button ion-button icon-start clear item-end (click)="approveSession()">
+              {{'Approve' | translate}}
+            </button>
+          </ion-item>
+        </ion-card>
+
+        <ion-card *ngIf="!peerMeta || !peerMeta.name">
+          <ion-list class="bp-list">
+
+            <ion-item class="sub-title">
+              <ion-label>
+                <div class="main-label">{{ 'ACCOUNTS' | translate }}</div>
+              </ion-label>
+            </ion-item>
+
+            <button ion-item (click)="showWallets()">
+              <ion-label>
+                <div class="summary-item">
+                  <span translate>Accounts</span>
+                </div>
+              </ion-label>
+        
+              <ion-note item-end>
+                <ion-row align-items-center class="wallet" *ngIf="wallet">
+                  <ion-col>
+                    <coin-icon [coin]="'eth'" [network]="activeChainId === 1 ? 'livenet': 'testnet'"></coin-icon>
+                  </ion-col>
+        
+                  <ion-col>
+                    <span class="note-container ellipsis">{{wallet.address}}</span>
+                  </ion-col>
+                </ion-row>
+        
+                <ion-row align-items-center class="wallet" *ngIf="!wallet">
+                  <div translate>Select a wallet</div>
+                  <div class="last-item" item-end>
+                    <button ion-button clear color="grey" icon-only>
+                      <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+                      <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+                    </button>
+                  </div>
+                </ion-row>
+              </ion-note>
+            </button>
+          </ion-list>
+
+          <ion-item>
+            <button ion-button icon-start clear (click)="initWalletConnect()">
+              {{'Connect' | translate}}
+            </button>
+          </ion-item>
+        </ion-card>
+      </div>
+
+      <div *ngIf="connected">
+        <div *ngIf="!displayRequest">
+          <div *ngIf="peerMeta && peerMeta.name">
+            <h6>{{ 'Connected to'}} {{ peerMeta.name }}</h6>
+
+            <h6>{{ 'Pending Call Requests'}}</h6>
+            <div *ngFor="let request of requests">
+              <button ion-button class="button-standard" (click)="openRequest(request)">
+                {{ 'Open Request' | translate }} {{ request }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="displayRequest">
+          <div>
+            {{ displayRequest }} {{ peerMeta }}
+          </div>
+          <button ion-button class="button-standard" (click)="approveRequest()">
+            {{'Approve Request' | translate}}
+          </button>
+          <button ion-button clear class="button-standard" (click)="rejectRequest()">
+            {{'Reject Request' | translate}}
+          </button>
+        </div>
+      </div>
+  </div>
+</wide-header-page>

@@ -111,6 +111,10 @@ export class IncomingDataProvider {
     return !!this.bwcProvider.getCore().Validation.validateUri('XRP', data);
   }
 
+  private isValidWalletConnectUri(data: string): boolean {
+    return !!/^(wc)?:/.exec(data);
+  }
+
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider
@@ -434,6 +438,18 @@ export class IncomingDataProvider {
     } else {
       this.handleRippleAddress(address, redirParams);
     }
+  }
+
+  private handleWalletConnectUri(uri: string): void {
+    let stateParams = {
+      uri
+    };
+    let nextView = {
+      name: 'WalletConnectPage',
+      params: stateParams
+    };
+
+    this.incomingDataRedir(nextView);
   }
 
   private handleBitcoinCashUriLegacyAddress(data: string): void {
@@ -769,6 +785,11 @@ export class IncomingDataProvider {
       this.handleRippleUri(data, redirParams);
       return true;
 
+      // Wallet Connect URI
+    } else if (this.isValidWalletConnectUri(data)) {
+      this.handleWalletConnectUri(data);
+      return true;
+
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       this.handleBitcoinCashUriLegacyAddress(data);
@@ -971,6 +992,14 @@ export class IncomingDataProvider {
         data,
         type: 'RippleUri',
         title: this.translate.instant('Ripple URI')
+      };
+
+      // Wallet Connect URI
+    } else if (this.isValidWalletConnectUri(data)) {
+      return {
+        data,
+        type: 'WalletConnectUri',
+        title: this.translate.instant('WalletConnect URI')
       };
 
       // Bitcoin Cash URI using Bitcoin Core legacy address

@@ -119,6 +119,7 @@
     "@ionic-native/vibration": "4.14.0",
     "@ionic/storage": "2.1.3",
     "@ngx-translate/core": "9.1.1",
+    "@walletconnect/browser": "1.0.0-beta.42",
     "@zxing/library": "0.8.2",
     "@zxing/ngx-scanner": "1.2.1",
     "angular2-moment": "1.7.1",

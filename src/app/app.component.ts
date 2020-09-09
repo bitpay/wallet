@@ -70,6 +70,7 @@ import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
+import { WalletConnectPage } from '../pages/wallet-connect/wallet-connect';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
@@ -112,6 +113,7 @@ export class CopayApp {
     SimplexBuyPage,
     SimplexPage,
     SelectInvoicePage,
+    WalletConnectPage,
     WalletDetailsPage,
     WyrePage
   };
