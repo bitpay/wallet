@@ -362,9 +362,10 @@ export class ConfirmPage {
       coin
     });
 
-    this.coinbaseAccounts = this.showCoinbase
-      ? this.coinbaseProvider.getAvailableAccounts(coin)
-      : [];
+    this.coinbaseAccounts =
+      this.showCoinbase && network === 'livenet'
+        ? this.coinbaseProvider.getAvailableAccounts(coin)
+        : [];
 
     if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       const msg = this.translate.instant(

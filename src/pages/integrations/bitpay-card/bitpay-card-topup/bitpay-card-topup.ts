@@ -158,10 +158,12 @@ export class BitPayCardTopUpPage {
               transactionCurrency: 'USD'
             });
 
+        const network = this.bitPayProvider.getEnvironment().network;
+
         const walletOptions = {
           onlyComplete: true,
           coin,
-          network: this.bitPayProvider.getEnvironment().network,
+          network,
           hasFunds: true
         };
         this.wallets = this.profileProvider.getWallets({
@@ -178,12 +180,13 @@ export class BitPayCardTopUpPage {
           this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
           this.coinbaseProvider.isLinked();
 
-        this.coinbaseAccounts = this.showCoinbase
-          ? this.coinbaseProvider.getAvailableAccounts(null, {
-              amount: this.amount,
-              currency: this.currency
-            })
-          : [];
+        this.coinbaseAccounts =
+          this.showCoinbase && network === 'livenet'
+            ? this.coinbaseProvider.getAvailableAccounts(null, {
+                amount: this.amount,
+                currency: this.currency
+              })
+            : [];
 
         if (
           _.isEmpty(this.wallets) &&
