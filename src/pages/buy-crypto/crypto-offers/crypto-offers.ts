@@ -18,17 +18,19 @@ import { ThemeProvider } from '../../../providers/theme/theme';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { WyreProvider } from '../../../providers/wyre/wyre';
 
-// Pages
-import { SimplexBuyPage } from '../../../pages/integrations/simplex/simplex-buy/simplex-buy';
-
 interface CryptoOffer {
   showOffer: boolean;
   logoLight: string;
   logoDark: string;
-  fiatMoney?: string;
+  expanded: boolean;
+  amountCost?: number;
+  buyAmount?: number;
+  fee?: number;
+  fiatMoney?: string; // Rate without fees
   amountReceiving?: string;
   amountLimits?: any;
   errorMsg?: string;
+  quoteData?: any; // Simplex
 }
 @Component({
   selector: 'page-crypto-offers',
@@ -41,9 +43,9 @@ export class CryptoOffersPage {
   public paymentMethod: any;
   public selectedCountry;
   public currency: string;
-  public currencies;
   public amount: any;
   public fiatCurrency: any;
+  public coinBorderColor: string;
 
   public offers: {
     simplex: CryptoOffer;
@@ -53,13 +55,15 @@ export class CryptoOffersPage {
       amountReceiving: '0',
       showOffer: false,
       logoLight: 'assets/img/simplex/logo-simplex-color.svg',
-      logoDark: 'assets/img/simplex/logo-simplex-dm.png'
+      logoDark: 'assets/img/simplex/logo-simplex-dm.png',
+      expanded: false
     },
     wyre: {
       amountReceiving: '0',
       showOffer: false,
       logoLight: 'assets/img/wyre/logo-wyre.svg',
-      logoDark: 'assets/img/wyre/logo-wyre-dm.svg'
+      logoDark: 'assets/img/wyre/logo-wyre-dm.svg',
+      expanded: false
     }
   };
 
@@ -81,7 +85,16 @@ export class CryptoOffersPage {
     private popupProvider: PopupProvider,
     public themeProvider: ThemeProvider
   ) {
-    this.currencies = this.simplexProvider.supportedCoins;
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
+    this.paymentMethod = this.navParams.data.paymentMethod;
+    this.selectedCountry = this.navParams.data.selectedCountry;
+    this.coin = this.navParams.data.coin;
+    const coinColor =
+      this.currencyProvider.getTheme(this.coin as Coin).coinColor || '#e6f8e9';
+    this.coinBorderColor = `2px solid ${coinColor}`;
+    this.walletId = this.navParams.data.walletId;
+    this.wallet = this.profileProvider.getWallet(this.walletId);
   }
 
   ionViewDidLoad() {
@@ -89,13 +102,6 @@ export class CryptoOffersPage {
   }
 
   ionViewWillEnter() {
-    this.amount = this.navParams.data.amount;
-    this.currency = this.navParams.data.currency;
-    this.paymentMethod = this.navParams.data.paymentMethod;
-    this.selectedCountry = this.navParams.data.selectedCountry;
-    this.coin = this.navParams.data.coin;
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
     this.setFiatCurrency();
     this.offers.simplex.showOffer = this.buyCryptoProvider.isPaymentMethodSupported(
       'simplex',
@@ -113,6 +119,14 @@ export class CryptoOffersPage {
     if (this.offers.wyre.showOffer) this.getWyreQuote();
   }
 
+  // GENERAL FUNCTIONS
+
+  public expandCard(key: string) {
+    if (this.offers[key]) {
+      this.offers[key].expanded = this.offers[key].expanded ? false : true;
+    }
+  }
+
   public goTo(key: string) {
     switch (key) {
       case 'simplex':
@@ -125,73 +139,6 @@ export class CryptoOffersPage {
     }
   }
 
-  public goToSimplexBuyPage() {
-    if (this.offers.simplex.errorMsg) return;
-    const params = {
-      amount: this.amount,
-      currency: this.currency,
-      paymentMethod: this.paymentMethod,
-      coin: this.coin,
-      walletId: this.walletId
-    };
-    this.navCtrl.push(SimplexBuyPage, params);
-  }
-
-  public goToWyreBuyPage() {
-    if (this.offers.wyre.errorMsg) return;
-    this.onGoingProcessProvider.set('processingOrderReservation');
-    this.walletProvider
-      .getAddress(this.wallet, false)
-      .then(address => {
-        let paymentMethod: string;
-        switch (this.paymentMethod.method) {
-          case 'applePay':
-            paymentMethod = 'apple-pay';
-            break;
-          default:
-            paymentMethod = 'debit-card';
-            break;
-        }
-        const redirectUrl = this.appProvider.info.name + '://wyre';
-        const failureRedirectUrl = this.appProvider.info.name + '://wyreError';
-        const dest = this.setPrefix(address, this.coin, this.wallet.network);
-        const data = {
-          amount: this.amount.toString(),
-          dest,
-          destCurrency: this.coin.toUpperCase(),
-          lockFields: ['dest'],
-          paymentMethod,
-          sourceCurrency: this.currency.toUpperCase()
-        };
-
-        this.wyreProvider
-          .walletOrderReservation(this.wallet, data)
-          .then(data => {
-            if (
-              data &&
-              (data.exceptionId || (data.error && !_.isEmpty(data.error)))
-            ) {
-              this.showWyreError(data);
-              return;
-            }
-
-            const url =
-              data.url +
-              '&redirectUrl=' +
-              redirectUrl +
-              '&failureRedirectUrl=' +
-              failureRedirectUrl;
-            this.openWyrePopUpConfirmation(url);
-          })
-          .catch(err => {
-            this.showWyreError(err);
-          });
-      })
-      .catch(err => {
-        this.showWyreError(err);
-      });
-  }
-
   private setPrefix(address: string, coin: Coin, network: string): string {
     const prefix: string = this.currencyProvider.getProtocolPrefix(
       coin,
@@ -201,23 +148,160 @@ export class CryptoOffersPage {
     return addr;
   }
 
-  public openWyrePopUpConfirmation(url: string): void {
+  public openPopUpConfirmation(exchange: string, url?: string): void {
     this.onGoingProcessProvider.clear();
-    const title = this.translate.instant('Continue to Wyre');
-    const message = this.translate.instant(
-      'In order to finish the payment process you will be redirected to Wyre page'
-    );
+
+    let title, message;
+
+    switch (exchange) {
+      case 'simplex':
+        title = this.translate.instant('Continue to Simplex');
+        message = this.translate.instant(
+          "In order to finish the payment process you will be redirected to Simplex's page"
+        );
+        break;
+
+      case 'wyre':
+        title = this.translate.instant('Continue to Wyre');
+        message = this.translate.instant(
+          "In order to finish the payment process you will be redirected to Wyre's page"
+        );
+        break;
+
+      default:
+        title = this.translate.instant('Continue to the exchange page');
+        message = this.translate.instant(
+          'In order to finish the payment process you will be redirected to the exchange page'
+        );
+        break;
+    }
+
     const okText = this.translate.instant('Continue');
     const cancelText = this.translate.instant('Go back');
     this.popupProvider
       .ionicConfirm(title, message, okText, cancelText)
       .then((res: boolean) => {
         if (res) {
-          this.externalLinkProvider.open(url);
+          switch (exchange) {
+            case 'simplex':
+              this.continueToSimplex();
+              break;
+            case 'wyre':
+              this.externalLinkProvider.open(url);
+              break;
+
+            default:
+              this.externalLinkProvider.open(url);
+              break;
+          }
+
           setTimeout(() => {
             this.navCtrl.popToRoot();
           }, 2500);
         }
+      });
+  }
+
+  private setFiatCurrency() {
+    if (this.currency === this.coin.toUpperCase()) {
+      const config = this.configProvider.get();
+      this.fiatCurrency = _.includes(
+        this.simplexProvider.supportedFiatAltCurrencies,
+        config.wallet.settings.alternativeIsoCode
+      )
+        ? config.wallet.settings.alternativeIsoCode
+        : 'usd';
+    } else {
+      this.fiatCurrency = this.currency;
+    }
+  }
+
+  public goToEdit(): void {
+    this.navCtrl.pop();
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
+  }
+
+  // SIMPLEX
+
+  public goToSimplexBuyPage() {
+    if (this.offers.simplex.errorMsg) return;
+    this.openPopUpConfirmation('simplex');
+  }
+
+  public continueToSimplex(): void {
+    this.walletProvider
+      .getAddress(this.wallet, false)
+      .then(address => {
+        const quoteData = {
+          quoteId: this.offers.simplex.quoteData.quote_id,
+          currency: this.currency,
+          fiatTotalAmount: this.offers.simplex.quoteData.fiat_money
+            .total_amount,
+          cryptoAmount: this.offers.simplex.quoteData.digital_money.amount
+        };
+        this.simplexProvider
+          .simplexPaymentRequest(this.wallet, address, quoteData)
+          .then(req => {
+            if (req && req.error && !_.isEmpty(req.error)) {
+              this.showSimplexError(req.error);
+              return;
+            }
+
+            this.logger.debug('Simplex creating payment request: SUCCESS');
+
+            const remoteData: any = {
+              address,
+              api_host: req.api_host,
+              app_provider_id: req.app_provider_id,
+              order_id: req.order_id,
+              payment_id: req.payment_id
+            };
+
+            let newData = {
+              address,
+              created_on: Date.now(),
+              crypto_amount: this.offers.simplex.quoteData.digital_money.amount,
+              coin: this.wallet.coin.toUpperCase(),
+              fiat_base_amount: this.offers.simplex.quoteData.fiat_money
+                .base_amount,
+              fiat_total_amount: this.offers.simplex.quoteData.fiat_money
+                .total_amount,
+              fiat_total_amount_currency: this.currency,
+              order_id: req.order_id,
+              payment_id: req.payment_id,
+              status: 'paymentRequestSent',
+              user_id: this.wallet.id
+            };
+            this.simplexProvider
+              .saveSimplex(newData, null)
+              .then(() => {
+                this.logger.debug(
+                  'Saved Simplex with status: ' + newData.status
+                );
+                const paymentUrl: string = this.simplexProvider.getPaymentUrl(
+                  this.wallet,
+                  quoteData,
+                  remoteData
+                );
+                this.openExternalLink(paymentUrl);
+
+                setTimeout(() => {
+                  this.navCtrl.popToRoot();
+                }, 2500);
+              })
+              .catch(err => {
+                this.showSimplexError(err);
+              });
+          })
+          .catch(err => {
+            this.showSimplexError(err);
+          });
+      })
+      .catch(err => {
+        return this.showSimplexError(err);
       });
   }
 
@@ -251,21 +335,109 @@ export class CryptoOffersPage {
       this.simplexProvider
         .getQuote(this.wallet, data)
         .then(data => {
-          if (data) {
-            const totalAmount = data.fiat_money.total_amount;
+          if (data && data.quote_id) {
+            this.offers.simplex.quoteData = data;
+            this.offers.simplex.amountCost = data.fiat_money.total_amount;
+            this.offers.simplex.buyAmount = data.fiat_money.base_amount;
+            this.offers.simplex.fee =
+              data.fiat_money.total_amount - data.fiat_money.base_amount;
+
             this.offers.simplex.fiatMoney = Number(
-              totalAmount / data.digital_money.amount
+              this.offers.simplex.buyAmount / data.digital_money.amount
             ).toFixed(
               this.currencyProvider.getPrecision(this.coin).unitDecimals
             );
             this.offers.simplex.amountReceiving = data.digital_money.amount.toString();
             this.logger.debug('Simplex getting quote: SUCCESS');
+          } else {
+            const err = this.translate.instant(
+              "Can't get rates at this moment. Please try again later"
+            );
+            this.showSimplexError(err);
           }
         })
         .catch(err => {
-          this.logger.error('Simplex getting quote FAILED: ' + err);
+          this.logger.error('Simplex getting quote: FAILED');
+          this.showSimplexError(err);
         });
     }
+  }
+
+  private showSimplexError(err?) {
+    this.onGoingProcessProvider.clear();
+
+    let msg = this.translate.instant(
+      'Could not get crypto offer. Please, try again later.'
+    );
+    if (err) {
+      if (_.isString(err)) {
+        msg = err;
+      } else {
+        if (err.error && err.error.error) msg = err.error.error;
+        else if (err.message) msg = err.message;
+      }
+    }
+
+    this.logger.error('Simplex error: ' + msg);
+
+    this.offers.simplex.errorMsg = msg;
+  }
+
+  // WYRE
+
+  public goToWyreBuyPage() {
+    if (this.offers.wyre.errorMsg) return;
+    this.onGoingProcessProvider.set('processingOrderReservation');
+    this.walletProvider
+      .getAddress(this.wallet, false)
+      .then(address => {
+        let paymentMethod: string;
+        switch (this.paymentMethod.method) {
+          case 'applePay':
+            paymentMethod = 'apple-pay';
+            break;
+          default:
+            paymentMethod = 'debit-card';
+            break;
+        }
+        const redirectUrl = this.appProvider.info.name + '://wyre';
+        const failureRedirectUrl = this.appProvider.info.name + '://wyreError';
+        const dest = this.setPrefix(address, this.coin, this.wallet.network);
+        const data = {
+          amount: this.amount.toString(),
+          dest,
+          destCurrency: this.coin.toUpperCase(),
+          lockFields: ['dest', 'destCurrency'],
+          paymentMethod,
+          sourceCurrency: this.currency.toUpperCase()
+        };
+
+        this.wyreProvider
+          .walletOrderReservation(this.wallet, data)
+          .then(data => {
+            if (
+              data &&
+              (data.exceptionId || (data.error && !_.isEmpty(data.error)))
+            ) {
+              this.showWyreError(data);
+              return;
+            }
+
+            const url =
+              data.url +
+              '&redirectUrl=' +
+              redirectUrl +
+              '&failureRedirectUrl=' +
+              failureRedirectUrl;
+            this.openPopUpConfirmation('wyre', url);
+          })
+          .catch(err => {
+            this.showWyreError(err);
+          });
+      })
+      .catch(err => {
+        this.showWyreError(err);
+      });
   }
 
   private getWyreQuote(): void {
@@ -310,9 +482,13 @@ export class CryptoOffersPage {
                 return;
               }
 
+              this.offers.wyre.amountCost = data.sourceAmount; // sourceAmount = Total amount (including fees)
+              this.offers.wyre.buyAmount = this.amount;
+              this.offers.wyre.fee = data.sourceAmount - this.amount;
+
               this.offers.wyre.fiatMoney = Number(
-                data.sourceAmount / data.destAmount
-              ).toFixed(8); // sourceAmount = Total amount (including fees)
+                this.offers.wyre.buyAmount / data.destAmount
+              ).toFixed(8);
 
               this.offers.wyre.amountReceiving = data.destAmount.toFixed(8);
 
@@ -327,24 +503,6 @@ export class CryptoOffersPage {
           this.showWyreError(err);
         });
     }
-  }
-
-  private setFiatCurrency() {
-    if (this.currency === this.coin.toUpperCase()) {
-      const config = this.configProvider.get();
-      this.fiatCurrency = _.includes(
-        this.simplexProvider.supportedFiatAltCurrencies,
-        config.wallet.settings.alternativeIsoCode
-      )
-        ? config.wallet.settings.alternativeIsoCode
-        : 'usd';
-    } else {
-      this.fiatCurrency = this.currency;
-    }
-  }
-
-  public goToEdit(): void {
-    this.navCtrl.pop();
   }
 
   private showWyreError(err?) {

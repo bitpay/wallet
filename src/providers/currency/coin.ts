@@ -36,6 +36,7 @@ export interface CoinOpts {
     maxMerchantFee: string;
   };
   theme: {
+    coinColor: string;
     backgroundColor: string;
     gradientBackgroundColor: string;
   };
@@ -73,6 +74,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#f7931a',
       backgroundColor: '#f7921a',
       gradientBackgroundColor: '#f7921a'
     }
@@ -108,6 +110,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
+      coinColor: '#2fcf6e',
       backgroundColor: '#2fcf6e',
       gradientBackgroundColor: '#2fcf6e'
     }
@@ -143,6 +146,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#6b71d6',
       backgroundColor: '#1e90ff',
       gradientBackgroundColor: '#1e90ff'
     }
@@ -178,6 +182,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'normal'
     },
     theme: {
+      coinColor: '#000000',
       backgroundColor: '#565d6d',
       gradientBackgroundColor: '#565d6d'
     }
@@ -213,6 +218,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#f3ba2d',
       backgroundColor: 'rgba(135,206,250,1)',
       gradientBackgroundColor: 'rgba(30,144,255, 0.2)'
     }
@@ -248,6 +254,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#e6f3f9',
       backgroundColor: '#00845d',
       gradientBackgroundColor: '#00845d'
     }
@@ -283,6 +290,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#2775ca',
       backgroundColor: '#2775c9',
       gradientBackgroundColor: '#2775c9'
     }
@@ -318,6 +326,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
+      coinColor: '#00ddfa',
       backgroundColor: '#00dcfa',
       gradientBackgroundColor: '#00dcfa'
     }

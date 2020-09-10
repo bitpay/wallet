@@ -7,6 +7,7 @@ import env from '../../../environments';
 // Providers
 import {
   ActionSheetProvider,
+  BuyCryptoProvider,
   Coin,
   CurrencyProvider,
   ErrorsProvider,
@@ -29,6 +30,7 @@ export class CryptoCoinSelectorPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private buyCryptoProvider: BuyCryptoProvider,
     private logger: Logger,
     private navCtrl: NavController,
     private viewCtrl: ViewController,
@@ -38,14 +40,14 @@ export class CryptoCoinSelectorPage {
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams
   ) {
+    const supportedCoins = this.buyCryptoProvider.exchangeCoinsSupported;
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
-      coin: ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'],
+      coin: supportedCoins,
       backedUp: true
     });
-    const exchangeCoinsSupported = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
-    for (const coin of exchangeCoinsSupported) {
+    for (const coin of supportedCoins) {
       const c = {
         unitCode: coin,
         name: this.currencyProvider.getCoinName(coin as Coin),

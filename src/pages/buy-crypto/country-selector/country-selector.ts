@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-// import { NavController, NavParams } from 'ionic-angular';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
-
-// native
-// import { SplashScreen } from '@ionic-native/splash-screen';
 
 // Providers
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
-// import { ConfigProvider } from '../../../providers/config/config';
+import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-// import { PlatformProvider } from '../../../providers/platform/platform';
-// import { RateProvider } from '../../../providers/rate/rate';
 
 import * as _ from 'lodash';
 
@@ -23,22 +16,14 @@ export class CountrySelectorPage {
   public completeCountryList;
   public searchedCountry: string;
   public countryList;
-  public loading;
-  public currentCurrency;
   public commonCountriesList;
   public useAsModal;
 
   private PAGE_COUNTER: number = 3;
   private SHOW_LIMIT: number = 10;
-  // private unusedCurrencyList;
 
   constructor(
-    // private configProvider: ConfigProvider,
     private logger: Logger,
-    // private navCtrl: NavController,
-    // private rate: RateProvider,
-    // private splashScreen: SplashScreen,
-    // private platformProvider: PlatformProvider,
     private viewCtrl: ViewController,
     private persistenceProvider: PersistenceProvider,
     private navParams: NavParams,

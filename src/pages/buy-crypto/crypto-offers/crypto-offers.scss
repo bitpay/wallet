@@ -36,33 +36,150 @@ page-crypto-offers {
         margin: auto;
       }
     }
-    .main-label {
-      font-size: 18px;
+  }
+  .card-container {
+    position: relative;
+    .offer-btn {
+      position: absolute;
+      right: 42px;
+      top: 36px;
+      padding: 0rem 2.4rem;
+      color: map-get($colors, primary);
+      background-color: rgba(79, 110, 247, 0.15);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19px;
+      height: 36px;
+      white-space: nowrap;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
     }
+  }
+  .offer-card {
+    display: block;
+    margin: 2rem;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px 20px;
+    box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
 
-    .provider {
-      margin-top: 15px;
-
-      img {
-        vertical-align: middle;
-        height: 20px;
+    .content {
+      width: 100%;
+      .visible-container {
+        width: 100%;
+        .visible-info {
+          .provider {
+            margin-top: 15px;
+            img {
+              vertical-align: middle;
+              height: 20px;
+            }
+          }
+        }
       }
     }
 
-    .card-terms {
-      padding: 0 34px;
-      margin: 50px 0;
+    .main-label {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 20px;
+      color: black;
+    }
+
+    .secondary-label {
+      font-size: 14px;
+      color: #828991;
+      font-weight: 400;
+    }
+
+    .extended-info {
+      max-height: 0;
+      transition: max-height 0.15s ease-out;
+      overflow: hidden;
+      .bp-list {
+        .item {
+          padding-left: 0;
+          &:not(:last-child) {
+            border-top: 1px dashed #d2d3d4;
+          }
+          &:first-child {
+            margin-top: 4rem;
+            .item-inner {
+              .label {
+                margin-bottom: 0;
+              }
+              .note {
+                margin-bottom: 0;
+              }
+            }
+          }
+          .item-inner {
+            padding-right: 0;
+            .note {
+              margin-right: 0;
+            }
+          }
+        }
+        .summary-item {
+          color: #828991;
+        }
+
+        .summary-item-detail {
+          font-size: 16px;
+          &-sec {
+            margin-bottom: 1rem;
+            text-align: right;
+            font-size: 14px;
+            color: #828991;
+          }
+        }
+
+        .total {
+          font-size: 20px;
+          color: black;
+        }
+      }
+    }
+    .extended-info.expanded {
+      max-height: 100vh;
+      transition: max-height 0.25s ease-in;
+    }
+    .terms {
       color: #757575;
       font-size: 11px;
+      a {
+        cursor: pointer;
+      }
     }
-    .loader {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      ion-spinner {
-        * {
-          stroke: color($colors, primary);
-        }
+  }
+
+  .terms-general {
+    padding: 0 34px;
+    margin: 30px 0;
+    color: #757575;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 23px;
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .loader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    ion-spinner {
+      * {
+        stroke: color($colors, primary);
       }
     }
   }
