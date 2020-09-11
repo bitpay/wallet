@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Button/Scan</title>
-    <defs>
-        <filter id="filter-1">
-            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.309804 0 0 0 0 0.431373 0 0 0 0 0.968627 0 0 0 1.000000 0"></feColorMatrix>
-        </filter>
-    </defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Button/Scan">
-            <rect id="Rectangle" fill="#4F6EF7" opacity="0.100000001" x="0" y="0" width="36" height="36" rx="18"></rect>
-            <g id="Interface/Medium/Scan" transform="translate(8.000000, 8.000000)" filter="url(#filter-1)">
-                <g>
-                    <g id="Tabs-(Scan)" transform="translate(0.000000, 3.333333)" fill="#9BA3AE">
-                        <line x1="0" y1="6.1845039" x2="20" y2="6.1845039" id="Line"></line>
-                    </g>
-                    <path d="M17.5,12.5 L17.5,17.5 L12.5,17.5 L12.5,15.5 L15.5,15.5 L15.5,12.5 L17.5,12.5 Z M4.5,12.5 L4.5,15.5 L7.5,15.5 L7.5,17.5 L2.5,17.5 L2.5,12.5 L4.5,12.5 Z M20,10 L20,10.8333333 L0,10.8333333 L0,10 L20,10 Z M7.5,3.33333333 L7.5,5 L4.166,4.99933333 L4.16666667,8.33333333 L2.5,8.33333333 L2.5,3.33333333 L7.5,3.33333333 Z M17.5,3.33333333 L17.5,8.33333333 L15.5,8.33333333 L15.5,5.33333333 L12.5,5.33333333 L12.5,3.33333333 L17.5,3.33333333 Z" id="Rectangle-Copy-2" fill="#9BA3AE"></path>
-                </g>
-            </g>
+        <g id="Group">
+            <rect id="Rectangle" fill="#EDF0FE" x="0" y="0" width="36" height="36" rx="18"></rect>
+            <path d="M25.5,20.5 L25.5,25.5 L20.5,25.5 L20.5,23.5 L23.5,23.5 L23.5,20.5 L25.5,20.5 Z M12.5,20.5 L12.5,23.5 L15.5,23.5 L15.5,25.5 L10.5,25.5 L10.5,20.5 L12.5,20.5 Z M28,18 L28,18.8333333 L8,18.8333333 L8,18 L28,18 Z M15.5,11.3333333 L15.5,13 L12.166,12.9993333 L12.1666667,16.3333333 L10.5,16.3333333 L10.5,11.3333333 L15.5,11.3333333 Z M25.5,11.3333333 L25.5,16.3333333 L23.5,16.3333333 L23.5,13.3333333 L20.5,13.3333333 L20.5,11.3333333 L25.5,11.3333333 Z" id="Rectangle-Copy-2" fill="#4F6EF7"></path>
         </g>
     </g>
 </svg>
