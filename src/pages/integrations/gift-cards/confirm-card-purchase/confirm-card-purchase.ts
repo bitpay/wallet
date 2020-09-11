@@ -203,12 +203,13 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
       this.coinbaseProvider.isLinked();
 
-    this.coinbaseAccounts = this.showCoinbase
-      ? this.coinbaseProvider.getAvailableAccounts(null, {
-          amount: this.amount,
-          currency: this.currency
-        })
-      : [];
+    this.coinbaseAccounts =
+      this.showCoinbase && this.network === 'livenet'
+        ? this.coinbaseProvider.getAvailableAccounts(null, {
+            amount: this.amount,
+            currency: this.currency
+          })
+        : [];
 
     if (
       _.isEmpty(this.wallets) &&
