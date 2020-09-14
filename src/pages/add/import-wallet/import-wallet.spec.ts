@@ -59,6 +59,13 @@ describe('ImportWalletPage', () => {
   });
 
   describe('Function: importFromFile', () => {
+    beforeEach(() => {
+      const actionSheetProvider: ActionSheetProvider = testBed.get(
+        ActionSheetProvider
+      );
+      const modal = ModalMock.instance();
+      spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue(modal);
+    });
     it('should return if has not backupFile and backupText', () => {
       testBed.createComponent(ImportWalletPage);
       let info = {
@@ -102,6 +109,11 @@ describe('ImportWalletPage', () => {
     });
 
     it('should return if importForm is not valid', () => {
+      const actionSheetProvider: ActionSheetProvider = testBed.get(
+        ActionSheetProvider
+      );
+      const modal = ModalMock.instance();
+      spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue(modal);
       instance.importForm.controls['words'].setValue(null);
 
       const importMnemonicSpy = spyOn(instance, 'importMnemonic');

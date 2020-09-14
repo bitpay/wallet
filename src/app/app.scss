@@ -584,7 +584,7 @@ ion-alert .alert-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #9b9bab;
+  color: color($colors, light-grey);
   font-size: 16px;
   font-weight: 500;
   margin: 20px 16px 10px 20px;

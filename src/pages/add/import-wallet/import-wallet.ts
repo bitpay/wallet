@@ -10,6 +10,7 @@ import {
 
 // Pages
 import { CoinSelectorPage } from '../../includes/coin-selector/coin-selector';
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ScanPage } from '../../scan/scan';
 
 // Providers
@@ -53,6 +54,7 @@ export class ImportWalletPage {
   public cancelText: string;
   public showAdvOpts: boolean;
   public title: string;
+  public isOnboardingFlow: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -88,6 +90,7 @@ export class ImportWalletPage {
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
+    this.isOnboardingFlow = this.navParams.data.isOnboardingFlow;
 
     this.keyId = this.navParams.data.keyId; // re-import option
     this.title = !this.keyId
@@ -249,9 +252,15 @@ export class ImportWalletPage {
       this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
     }
 
-    this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/FetchWallets');
-    });
+    if (!this.isOnboardingFlow)
+      this.navCtrl.popToRoot().then(() => {
+        this.events.publish('Local/FetchWallets');
+      });
+    else {
+      this.navCtrl.push(DisclaimerPage, {
+        keyId: wallets[0].credentials.keyId
+      });
+    }
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {

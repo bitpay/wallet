@@ -6,7 +6,8 @@ export enum AlertType {
   success = 'success',
   warning = 'warning',
   danger = 'danger',
-  love = 'love'
+  love = 'love',
+  safeguard = 'safeguard'
 }
 
 @Component({

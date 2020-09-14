@@ -61,6 +61,7 @@ import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
+import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PinModalPage } from '../pages/pin/pin-modal/pin-modal';
@@ -89,7 +90,8 @@ export class CopayApp {
     | typeof AmountPage
     | typeof DisclaimerPage
     | typeof TabsPage
-    | typeof OnboardingPage;
+    | typeof OnboardingPage
+    | typeof FeatureEducationPage;
   private onResumeSubscription: Subscription;
   private isCopayerModalOpen: boolean;
   private copayerModal: any;
@@ -321,6 +323,10 @@ export class CopayApp {
               case 'NONAGREEDDISCLAIMER':
                 this.logger.warn('Non agreed disclaimer');
                 this.rootPage = DisclaimerPage;
+                break;
+              case 'UNFINISHEDONBOARDING':
+                this.logger.warn('Unfinished onboarding');
+                this.rootPage = FeatureEducationPage;
                 break;
               default:
                 this.popupProvider

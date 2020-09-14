@@ -26,6 +26,8 @@
 6 - Other Pages
 
 7 - Buy Crypto
+
+8 - Onboarding
 */
 
 .dark {
@@ -799,21 +801,19 @@
   page-pin {
     ion-header {
       .toolbar-background {
-        background-color: $bg-color-dark-theme-2;
+        background-color: $bg-color-dark-theme;
       }
     }
-
     ion-content {
       background-color: $bg-color-dark-theme !important;
     }
-
     .pin-header {
-      border-bottom: 1px solid $border-color-dark-theme;
-      background-color: $bg-color-dark-theme-2;
+      .title {
+        color: $text-color-dark-theme;
+      }
     }
-
     .content {
-      background-color: color($colors, blank);
+      background-color: $bg-color-dark-theme;
     }
   }
 
@@ -827,6 +827,62 @@
   incoming-data-menu {
     img {
       filter: invert(0.7);
+    }
+  }
+
+  page-finish {
+    .bg-none {
+      background-color: $bg-color-dark-theme;
+    }
+    .container {
+      .content {
+        .body {
+          &-text {
+            &.bg-none {
+              color: $text-color-dark-theme;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  encrypt-password {
+    action-sheet {
+      .action-sheet-bottom {
+        background: $bg-color-dark-theme;
+        .encrypt-password {
+          .encrypt-password-info {
+            .info {
+              .title {
+                color: $text-color-dark-theme;
+              }
+              .text {
+                color: $text-color-dark-theme-2;
+                b {
+                  color: $text-color-dark-theme;
+                }
+              }
+            }
+          }
+          .encrypt-password-form {
+            .slide-title {
+              color: $text-color-dark-theme;
+            }
+            form {
+              ion-item {
+                background-color: $bg-color-dark-theme;
+                color: $text-color-dark-theme;
+                &.no-lines {
+                  .item-inner {
+                    border-bottom: 0px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -1556,10 +1612,8 @@
     }
   }
 
-  page-key-onboarding,
-  page-disclaimer {
-    .key-onboarding-slides,
-    .onboarding-slides {
+  page-key-onboarding {
+    .key-onboarding-slides {
       ion-slide {
         background: linear-gradient(
           to bottom,
@@ -1748,6 +1802,74 @@
   ion-col {
     .ellipsis {
       color: $text-color-dark-theme;
+    }
+  }
+
+  // Onboarding
+  page-feature-education,
+  page-key-creation,
+  page-recovery-key,
+  page-lock-method {
+    .onboarding-slides ion-slide .slide-zoom .slide-info,
+    .key-creation-info,
+    .recovery-key-info,
+    .lock-method-info {
+      .info {
+        .title {
+          color: $text-color-dark-theme;
+        }
+        .text {
+          color: $text-color-dark-theme-2;
+        }
+        .note {
+          color: $text-color-dark-theme-3;
+        }
+      }
+    }
+  }
+  page-disclaimer {
+    .checkbox-list {
+      .term-container {
+        background-color: $bg-color-dark-theme-2;
+        .term {
+          &-title {
+            color: $text-color-dark-theme;
+          }
+          &-note {
+            color: $text-color-dark-theme-2;
+          }
+        }
+      }
+      .term-container.bg-none {
+        .term-note {
+          color: $text-color-dark-theme;
+        }
+      }
+      .checkbox-icon {
+        border-color: $bg-color-dark-theme-3;
+      }
+    }
+    .disclaimer-footer {
+      background-color: $bg-color-dark-theme;
+    }
+  }
+  page-add-funds {
+    ion-list {
+      .option-container {
+        background-color: $bg-color-dark-theme-2;
+        box-shadow: none;
+        .info {
+          .title {
+            color: $text-color-dark-theme;
+          }
+          .note {
+            color: $text-color-dark-theme-2;
+          }
+        }
+      }
+    }
+    .disclaimer-footer {
+      background-color: $bg-color-dark-theme;
     }
   }
 }

@@ -12,9 +12,12 @@ describe('Provider: External Link Provider', () => {
 
   describe('open', () => {
     it('should open browser without options', () => {
-      externalLinkProvider.open(url).then(() => {
-        expect().nothing();
-      });
+      externalLinkProvider
+        .open(url)
+        .then(() => {
+          expect().nothing();
+        })
+        .catch(err => expect(err).toBeNull);
     });
   });
 });

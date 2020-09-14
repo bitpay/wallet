@@ -8,6 +8,7 @@ import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
   selector: 'page-pin',
@@ -30,6 +31,7 @@ export class PinModalPage {
   public expires: string;
   public incorrect: boolean;
   public unregister;
+  public isCordova: boolean;
 
   @ViewChild(Animate)
   pinCode: Animate;
@@ -41,7 +43,8 @@ export class PinModalPage {
     private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
     private vibration: Vibration,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platformProvider: PlatformProvider
   ) {
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
@@ -57,6 +60,7 @@ export class PinModalPage {
     this.unregister = this.platform.registerBackButtonAction(() => {});
 
     this.action = this.navParams.get('action');
+    this.isCordova = this.platformProvider.isCordova;
 
     if (this.action === 'checkPin' || this.action === 'lockSetUp') {
       this.checkIfLocked();

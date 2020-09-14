@@ -13,9 +13,7 @@ page-pin {
     }
   }
   .pin-header {
-    border-bottom: 1px solid #eaeaea;
     position: relative;
-    background-color: color($colors, light);
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -30,11 +28,17 @@ page-pin {
       top: 1rem;
     }
     .title {
-      height: 100%;
-      display: flex;
-      justify-content: center;
+      color: #060606;
+      font-weight: 500;
+      font-size: 25px;
       align-items: center;
-      font-size: 22px;
+      text-align: center;
+      line-height: 34px;
+      margin-top: 20%;
+      @media (max-width: 350px) {
+        font-size: 17px;
+        line-height: 20px;
+      }
     }
     .icon-container {
       $app-icon-radius: 42;
@@ -59,7 +63,7 @@ page-pin {
     .code-wrapper {
       display: flex;
       flex-direction: column;
-      height: 60vh;
+      height: 65vh;
       min-height: 400px;
 
       @media (max-height: 500px) {

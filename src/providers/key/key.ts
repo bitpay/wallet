@@ -158,39 +158,6 @@ export class KeyProvider {
     });
   }
 
-  public encryptNewKey(key): Promise<any> {
-    let title = this.translate.instant(
-      'Enter a password to encrypt your wallet'
-    );
-    const warnMsg = this.translate.instant(
-      'This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.'
-    );
-    return this.askPassword(warnMsg, title).then((password: string) => {
-      if (!password) {
-        return this.showWarningNoEncrypt().then(res => {
-          if (res) return Promise.resolve();
-          return this.encryptNewKey(key);
-        });
-      } else {
-        title = this.translate.instant(
-          'Enter your encrypt password again to confirm'
-        );
-        return this.askPassword(warnMsg, title).then((password2: string) => {
-          if (!password2 || password != password2) {
-            return this.encryptNewKey(key);
-          } else {
-            try {
-              this.encryptPrivateKey(key, password);
-            } catch (error) {
-              return Promise.reject(error);
-            }
-            return Promise.resolve(password);
-          }
-        });
-      }
-    });
-  }
-
   public showWarningNoEncrypt(): Promise<any> {
     const title = this.translate.instant('Are you sure?');
     const msg = this.translate.instant(

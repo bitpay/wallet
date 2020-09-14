@@ -4,13 +4,20 @@ page-onboarding {
     background-position: top center;
     background-size: contain;
   }
-  .logo-tagline {
+  .tagline {
     height: 75%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     img {
       width: 15rem;
+    }
+    &-text {
+      color: color($colors, light-grey);
+      font-size: 18px;
+      text-align: center;
+      padding-top: 30px;
     }
   }
 }
