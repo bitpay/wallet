@@ -59,7 +59,8 @@ export type InfoSheetType =
   | 'subtotal-amount'
   | 'no-wallets-available'
   | 'recovery-phrase-length'
-  | 'no-wallets-error';
+  | 'no-wallets-error'
+  | 'wyre-error';
 
 export type OptionsSheetType =
   | 'wallet-options'

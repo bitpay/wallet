@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
+import { ExternalLinkProvider } from '../external-link/external-link';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -31,6 +32,7 @@ export class IncomingDataProvider {
     private events: Events,
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
+    private externalLinkProvider: ExternalLinkProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
     private appProvider: AppProvider,
@@ -685,12 +687,18 @@ export class IncomingDataProvider {
 
   private goToWyre(data: string): void {
     this.logger.debug('Incoming-data (redirect): Wyre URL: ' + data);
-
-    if (
-      data === this.appProvider.info.name + '://wyre' ||
-      data.indexOf(this.appProvider.info.name + '://wyreError') === 0
-    )
+    if (data.indexOf(this.appProvider.info.name + '://wyreError') >= 0) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet('wyre-error');
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        if (option) {
+          this.openExternalLink('https://support.sendwyre.com/');
+        }
+      });
       return;
+    }
+
+    if (data === this.appProvider.info.name + '://wyre') return;
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const transferId = this.getParameterByName('transferId', res);
     const orderId = this.getParameterByName('orderId', res);
@@ -717,6 +725,10 @@ export class IncomingDataProvider {
       params: stateParams
     };
     this.incomingDataRedir(nextView);
+  }
+
+  private openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 
   private goToInvoice(data: string): void {
