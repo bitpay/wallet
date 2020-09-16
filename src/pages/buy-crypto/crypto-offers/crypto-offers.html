@@ -30,7 +30,7 @@
       <div translate class="offer-btn" *ngIf="offer.value.fiatMoney" (click)="goTo(offer.key)">
         Buy
       </div>
-      <div class="offer-card" (click)="expandCard(offer.key)" tappable *ngIf="offer.value.showOffer">
+      <div class="offer-card" (click)="expandCard(offer)" tappable *ngIf="offer.value.showOffer">
         <div class="content" *ngIf="!offer.value.fiatMoney && !offer.value.errorMsg" class="loader">
           <ion-spinner></ion-spinner>
         </div>
@@ -120,9 +120,8 @@
                 <div>
                   <span translate>What service fees am I paying?</span>
                   <br>
-                  <span translate *ngIf="paymentMethod.method === 'debitCard'">3.9% of the amount + 0.30 USD per transactions</span>
-                  <span translate *ngIf="paymentMethod.method === 'applePay' && selectedCountry.shortCode == 'US'">2.9% of the amount + 0.30 USD per transactions</span>
-                  <span translate *ngIf="paymentMethod.method === 'applePay' && selectedCountry.shortCode != 'US'">3.9% of the amount + 0.30 USD per transactions</span>
+                  <span translate *ngIf="selectedCountry.shortCode == 'US'">2.9% of the amount + 0.30 USD per transactions</span>
+                  <span translate *ngIf="selectedCountry.shortCode != 'US'">3.9% of the amount + 0.30 USD per transactions</span>
                 </div>
                 <div>
                   <span translate>This service is provided by a third party, and you are subject to their </span>
