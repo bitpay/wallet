@@ -1102,7 +1102,7 @@ export class BitPayCardTopUpPage {
 
   private openFinishModal(): void {
     const finishComment =
-      this.wallet.credentials.m === 1
+      (this.wallet && this.wallet.credentials.m === 1) || this.coinbaseAccount
         ? this.translate.instant('Funds were added to debit card')
         : this.translate.instant('Transaction initiated');
     let finishText = '';
