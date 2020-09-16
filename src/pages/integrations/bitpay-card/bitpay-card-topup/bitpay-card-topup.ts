@@ -350,103 +350,94 @@ export class BitPayCardTopUpPage {
         });
       }
 
-      this.walletProvider
-        .getAddress(wallet, false)
-        .then(address => {
-          const payload = {
-            address
+      this.payproProvider
+        .getPayProDetails(payProUrl, wallet.coin)
+        .then(details => {
+          const { instructions } = details;
+
+          this.logger.debug(
+            `PayProDetails instructions amount ${_.sumBy(
+              instructions,
+              'amount'
+            )}`
+          );
+          let txp: Partial<TransactionProposal> = {
+            coin: wallet.coin,
+            amount: _.sumBy(instructions, 'amount'),
+            toAddress: instructions[0].toAddress,
+            outputs: [],
+            message,
+            customData: {
+              service: 'debitcard'
+            },
+            payProUrl,
+            excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
+              ? false
+              : true
           };
-          this.payproProvider
-            .getPayProDetails({
-              paymentUrl: payProUrl,
-              coin: wallet.coin,
-              payload
-            })
-            .then(details => {
-              const { instructions } = details;
 
-              this.logger.debug(
-                `PayProDetails instructions amount ${_.sumBy(
-                  instructions,
-                  'amount'
-                )}`
-              );
-              let txp: Partial<TransactionProposal> = {
-                coin: wallet.coin,
-                amount: _.sumBy(instructions, 'amount'),
-                from: address,
-                toAddress: instructions[0].toAddress,
-                outputs: [],
-                message,
-                customData: {
-                  service: 'debitcard'
-                },
-                payProUrl,
-                excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
-                  ? false
-                  : true
-              };
+          for (const instruction of instructions) {
+            txp.outputs.push({
+              toAddress: instruction.toAddress,
+              amount: instruction.amount,
+              message: instruction.message,
+              data: instruction.data
+            });
+          }
 
-              for (const instruction of instructions) {
-                txp.outputs.push({
-                  toAddress: instruction.toAddress,
-                  amount: instruction.amount,
-                  message: instruction.message,
-                  data: instruction.data
-                });
-              }
+          if (
+            wallet.coin === 'xrp' &&
+            instructions &&
+            instructions[0] &&
+            instructions[0].outputs &&
+            instructions[0].outputs[0] &&
+            instructions[0].outputs[0].invoiceID
+          ) {
+            txp.invoiceID = instructions[0].outputs[0].invoiceID;
+          }
 
-              if (
-                wallet.coin === 'xrp' &&
-                instructions &&
-                instructions[0] &&
-                instructions[0].outputs &&
-                instructions[0].outputs[0] &&
-                instructions[0].outputs[0].invoiceID
-              ) {
-                txp.invoiceID = instructions[0].outputs[0].invoiceID;
-              }
+          if (wallet.credentials.token) {
+            txp.tokenAddress = wallet.credentials.token.address;
+          }
 
-              if (wallet.credentials.token) {
-                txp.tokenAddress = wallet.credentials.token.address;
-              }
+          if (wallet.credentials.multisigEthInfo) {
+            txp.multisigContractAddress =
+              wallet.credentials.multisigEthInfo.multisigContractAddress;
+          }
 
-              if (wallet.credentials.multisigEthInfo) {
-                txp.multisigContractAddress =
-                  wallet.credentials.multisigEthInfo.multisigContractAddress;
-              }
+          if (details.requiredFeeRate) {
+            const requiredFeeRate = !this.currencyProvider.isUtxoCoin(
+              wallet.coin
+            )
+              ? details.requiredFeeRate
+              : Math.ceil(details.requiredFeeRate * 1024);
+            txp.feePerKb = requiredFeeRate;
+            this.logger.debug(
+              `PayProDetails requiredFeeRate: ${
+                details.requiredFeeRate
+              }. Txp feePerKb: ${txp.feePerKb}`
+            );
+            this.logger.debug(
+              'Using merchant fee rate (for debit card):' + txp.feePerKb
+            );
+          } else {
+            txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
+          }
 
-              if (details.requiredFeeRate) {
-                const requiredFeeRate = !this.currencyProvider.isUtxoCoin(
-                  wallet.coin
-                )
-                  ? details.requiredFeeRate
-                  : Math.ceil(details.requiredFeeRate * 1024);
-                txp.feePerKb = requiredFeeRate;
-                this.logger.debug(
-                  `PayProDetails requiredFeeRate: ${
-                    details.requiredFeeRate
-                  }. Txp feePerKb: ${txp.feePerKb}`
-                );
-                this.logger.debug(
-                  'Using merchant fee rate (for debit card):' + txp.feePerKb
-                );
-              } else {
-                txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(
-                  wallet.coin
-                );
-              }
+          txp['origToAddress'] = txp.toAddress;
 
-              txp['origToAddress'] = txp.toAddress;
+          if (wallet.coin && wallet.coin == 'bch') {
+            txp.toAddress = this.bitcoreCash
+              .Address(txp.toAddress)
+              .toString(true);
+            txp.outputs[0].toAddress = txp.toAddress;
+          }
 
-              if (wallet.coin && wallet.coin == 'bch') {
-                txp.toAddress = this.bitcoreCash
-                  .Address(txp.toAddress)
-                  .toString(true);
-                txp.outputs[0].toAddress = txp.toAddress;
-              }
-
-              return this.walletProvider
+          return this.walletProvider
+            .getAddress(this.wallet, false)
+            .then(address => {
+              txp.from = address;
+              this.walletProvider
                 .createTx(wallet, txp)
                 .then(ctxp => {
                   return resolve(ctxp);
@@ -603,67 +594,50 @@ export class BitPayCardTopUpPage {
 
                 this.logger.debug(`Getting paypro details`);
 
-                this.walletProvider
-                  .getAddress(wallet, false)
-                  .then(address => {
-                    const payload = {
-                      address
-                    };
-                    this.payproProvider
-                      .getPayProDetails({
-                        paymentUrl: payProUrl,
-                        coin: wallet.coin,
-                        payload
-                      })
-                      .then(details => {
-                        const payProFeeSat = !this.currencyProvider.isUtxoCoin(
-                          wallet.coin
+                this.payproProvider
+                  .getPayProDetails(payProUrl, wallet.coin)
+                  .then(details => {
+                    const payProFeeSat = !this.currencyProvider.isUtxoCoin(
+                      wallet.coin
+                    )
+                      ? details.requiredFeeRate
+                      : Math.ceil(details.requiredFeeRate * 1024);
+
+                    this.logger.debug(
+                      `getPayProDetails -> payProFeeSat: ${payProFeeSat}`
+                    );
+
+                    let transactionFee =
+                      payProFeeSat > maxAmountFeeSat
+                        ? payProFeeSat
+                        : maxAmountFeeSat;
+
+                    this.logger.debug(`transactionFee: ${transactionFee}`);
+
+                    let newAmountSat =
+                      maxAmountSat - invoiceFeeSat - transactionFee;
+
+                    if (newAmountSat <= 0) {
+                      return reject({
+                        message: this.translate.instant(
+                          'Insufficient funds for fee'
                         )
-                          ? details.requiredFeeRate
-                          : Math.ceil(details.requiredFeeRate * 1024);
-
-                        this.logger.debug(
-                          `getPayProDetails -> payProFeeSat: ${payProFeeSat}`
-                        );
-
-                        let transactionFee =
-                          payProFeeSat > maxAmountFeeSat
-                            ? payProFeeSat
-                            : maxAmountFeeSat;
-
-                        this.logger.debug(`transactionFee: ${transactionFee}`);
-
-                        let newAmountSat =
-                          maxAmountSat - invoiceFeeSat - transactionFee;
-
-                        if (newAmountSat <= 0) {
-                          return reject({
-                            message: this.translate.instant(
-                              'Insufficient funds for fee'
-                            )
-                          });
-                        }
-
-                        this.logger.debug(
-                          `Calculating newAmountSat (newAmountSat = maxAmountSat - invoiceFeeSat - transactionFee). newAmountSat: ${newAmountSat}`
-                        );
-
-                        return resolve({
-                          amount: newAmountSat,
-                          currency: 'sat'
-                        });
-                      })
-                      .catch(err => {
-                        throw {
-                          title: this.translate.instant(
-                            'Error fetching this invoice'
-                          ),
-                          message: this.bwcErrorProvider.msg(err)
-                        };
                       });
+                    }
+
+                    this.logger.debug(
+                      `Calculating newAmountSat (newAmountSat = maxAmountSat - invoiceFeeSat - transactionFee). newAmountSat: ${newAmountSat}`
+                    );
+
+                    return resolve({ amount: newAmountSat, currency: 'sat' });
                   })
                   .catch(err => {
-                    return reject(err);
+                    throw {
+                      title: this.translate.instant(
+                        'Error fetching this invoice'
+                      ),
+                      message: this.bwcErrorProvider.msg(err)
+                    };
                   });
               })
               .catch(err => {
