@@ -1195,8 +1195,10 @@ export class IncomingDataProvider {
     url: string,
     coin: Coin,
     payProOptions?,
-    disableLoader?: boolean
+    disableLoader?: boolean,
+    activePage?: string
   ): void {
+    if (activePage) this.activePage = activePage;
     this.payproProvider
       .getPayProDetails(url, coin, disableLoader)
       .then(details => {

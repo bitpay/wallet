@@ -248,13 +248,15 @@ export class SendPage {
               this.wallet.coin.toUpperCase() === option.currency
           );
           if (selected) {
+            const activePage = 'SendPage';
             const isValid = this.checkCoinAndNetwork(selected, true);
             if (isValid) {
               this.incomingDataProvider.goToPayPro(
                 payproOptions.payProUrl,
                 this.wallet.coin,
                 undefined,
-                true
+                true,
+                activePage
               );
             }
           } else {
