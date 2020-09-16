@@ -505,7 +505,11 @@ export class CopayApp {
     }
 
     // ShapeShift
-    if (this.appProvider.info._enabledExtensions.shapeshift) {
+    // Disabled for macOS
+    if (
+      this.appProvider.info._enabledExtensions.shapeshift &&
+      this.platformProvider.getOS().OSName != 'MacOS'
+    ) {
       this.shapeshiftProvider.setCredentials();
       this.shapeshiftProvider.register();
     }
