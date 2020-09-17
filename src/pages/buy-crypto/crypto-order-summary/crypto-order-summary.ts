@@ -9,6 +9,7 @@ import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -42,6 +43,7 @@ export class CryptoOrderSummaryPage {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private bitPayProvider: BitPayProvider,
@@ -90,7 +92,9 @@ export class CryptoOrderSummaryPage {
       this.paymentMethod = this.navParams.data.paymentMethod;
     } else {
       this.logger.debug('No payment method selected. Setting to default.');
-      this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+      this.paymentMethod = this.platformProvider.isIOS
+        ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
+        : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
     }
 
     this.selectedCountry = {
