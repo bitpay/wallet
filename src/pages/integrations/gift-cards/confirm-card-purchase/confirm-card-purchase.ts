@@ -118,7 +118,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txFormatProvider: TxFormatProvider,
     walletProvider: WalletProvider,
     translate: TranslateService,
-    private payproProvider: PayproProvider,
+    payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     clipboardProvider: ClipboardProvider,
     events: Events,
@@ -155,6 +155,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       events,
       coinbaseProvider,
       appProvider,
+      payproProvider,
       iabCardProvider,
       homeIntegrationsProvider
     );
@@ -415,8 +416,13 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       };
     }
 
+    const address = await this.walletProvider.getAddress(wallet, false);
+    const payload = {
+      address
+    };
+
     const details = await this.payproProvider
-      .getPayProDetails(payProUrl, wallet.coin)
+      .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, payload })
       .catch(err => {
         throw {
           title: this.translate.instant('Error fetching this invoice'),
@@ -427,6 +433,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const txp: Partial<TransactionProposal> = {
       coin: wallet.coin,
       amount: _.sumBy(instructions, 'amount'),
+      from: address,
       toAddress: instructions[0].toAddress,
       outputs: [],
       message,
@@ -483,18 +490,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
-    return this.walletProvider
-      .getAddress(this.wallet, false)
-      .then(address => {
-        txp.from = address;
-        return this.walletProvider.createTx(wallet, txp);
-      })
-      .catch(err => {
-        throw {
-          title: this.translate.instant('Could not create transaction'),
-          message: this.bwcErrorProvider.msg(err)
-        };
-      });
+    return this.walletProvider.createTx(wallet, txp);
   }
 
   private async redeemGiftCard(initialCard: GiftCard) {
