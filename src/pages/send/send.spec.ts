@@ -125,7 +125,8 @@ describe('SendPage', () => {
           'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
           'btc',
           undefined,
-          true
+          true,
+          'SendPage'
         );
       }));
 
@@ -329,7 +330,8 @@ describe('SendPage', () => {
           'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
           'btc',
           undefined,
-          true
+          true,
+          'SendPage'
         );
       }));
 
@@ -539,7 +541,8 @@ describe('SendPage', () => {
           'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           'bch',
           undefined,
-          true
+          true,
+          'SendPage'
         );
       }));
 
@@ -743,7 +746,8 @@ describe('SendPage', () => {
           'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           'bch',
           undefined,
-          true
+          true,
+          'SendPage'
         );
       }));
 

@@ -31,9 +31,9 @@ export class PayproProvider {
       this.onGoingProcessProvider.set('fetchingPayProOptions');
     }
     const payOpts = await bwc.getPaymentOptions(options).catch(async err => {
-      this.logger.error('PayPro Options: ERROR', JSON.stringify(err));
-      if (attempt <= 5) {
-        await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+      this.logger.error(`PayPro Options ERR: ${err.message}`);
+      if (attempt <= 3) {
+        await new Promise(resolve => setTimeout(resolve, 5000 * attempt));
         return this.getPayProOptions(paymentUrl, disableLoader, ++attempt);
       } else {
         if (!disableLoader) this.onGoingProcessProvider.clear();
@@ -66,9 +66,9 @@ export class PayproProvider {
     const payDetails = await bwc
       .selectPaymentOption(options)
       .catch(async err => {
-        this.logger.error('PayPro Details: ERROR', JSON.stringify(err));
-        if (attempt <= 5) {
-          await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
+        this.logger.error(`PayPro Details ERR: ${err.message}`);
+        if (attempt <= 3) {
+          await new Promise(resolve => setTimeout(resolve, 5000 * attempt));
           return this.getPayProDetails(
             paymentUrl,
             coin,
