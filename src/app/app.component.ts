@@ -276,9 +276,6 @@ export class CopayApp {
         this.statusBar.overlaysWebView(true);
       }
 
-      this.logger.debug('Hide Splash Screen');
-      this.splashScreen.hide();
-
       // Subscribe Resume
       this.logger.debug('On Resume Subscription');
       this.onResumeSubscription = this.platform.resume.subscribe(async () => {
@@ -316,6 +313,12 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
+
+    setTimeout(() => {
+      this.logger.debug('Hide Splash Screen');
+      this.splashScreen.hide();
+    }, 1000);
+
     this.keyProvider
       .load()
       .then(() => {
