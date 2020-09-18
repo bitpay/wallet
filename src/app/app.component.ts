@@ -47,7 +47,6 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { AdvertisingComponent } from '../components/advertising/advertising';
 
 // Pages
-import { HttpClient } from '@angular/common/http';
 import { CARD_IAB_CONFIG } from '../constants';
 import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
@@ -122,7 +121,6 @@ export class CopayApp {
     private splashScreen: SplashScreen,
     private events: Events,
     private logger: Logger,
-    private http: HttpClient,
     private appProvider: AppProvider,
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
@@ -238,19 +236,6 @@ export class CopayApp {
 
     if (this.platform.is('cordova')) {
       this.statusBar.show();
-
-      try {
-        this.logger.debug('BitPay: setting country');
-        const { country } = await this.http
-          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
-          .toPromise();
-        if (country === 'US') {
-          this.logger.debug('If US: Set Card Experiment Flag Enabled');
-          await this.persistenceProvider.setCardExperimentFlag('enabled');
-        }
-      } catch (err) {
-        this.logger.error('Error setting country: ', err);
-      }
 
       // Set User-Agent
       this.logger.debug('Setting User Agent');
