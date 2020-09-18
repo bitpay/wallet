@@ -233,7 +233,7 @@ export class SelectInputsPage {
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.txFormatProvider.formatAmount(
         this.wallet.coin,
-        data.amount
+        +data.amount
       );
       this.recipient = item;
     });
