@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { File } from '@ionic-native/file';
 
 // providers
@@ -48,6 +50,7 @@ interface App {
 export class AppProvider {
   public info: any = {};
   public servicesInfo;
+  public homeBalance: any;
   public isLockModalOpen: boolean;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
@@ -67,6 +70,16 @@ export class AppProvider {
 
   public async load() {
     await Promise.all([this.getInfo(), this.loadProviders()]);
+  }
+
+  public setTotalBalance() {
+    this.persistence.getTotalBalance().then(data => {
+      if (!data) return;
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      this.homeBalance = data;
+    });
   }
 
   private async getInfo() {

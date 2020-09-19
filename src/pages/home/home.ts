@@ -69,7 +69,7 @@ export class HomePage {
   public advertisements: Advertisement[] = [];
   public productionAds: Advertisement[] = [];
   public testingAds: Advertisement[] = [];
-  public totalBalanceAlternative: string = '0';
+  public totalBalanceAlternative: string;
   public totalBalanceAlternativeIsoCode: string;
   public totalBalanceChange: number;
   public showTotalBalance: boolean = true;
@@ -81,6 +81,7 @@ export class HomePage {
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
+  public connectionError: boolean = false;
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
@@ -132,7 +133,8 @@ export class HomePage {
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
-    if (this.showTotalBalance) this.getCachedTotalBalance();
+    if (this.showTotalBalance)
+      this.updateTotalBalance(this.appProvider.homeBalance);
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
@@ -297,18 +299,8 @@ export class HomePage {
     return verificationResult;
   }
 
-  private getCachedTotalBalance() {
-    this.persistenceProvider.getTotalBalance().then(data => {
-      if (!data) return;
-      if (_.isString(data)) {
-        data = JSON.parse(data);
-      }
-
-      this.updateTotalBalance(data);
-    });
-  }
-
   private updateTotalBalance(data) {
+    if (!data) return;
     this.zone.run(() => {
       this.totalBalanceAlternative = data.totalBalanceAlternative;
       this.totalBalanceChange = data.totalBalanceChange;
@@ -318,12 +310,16 @@ export class HomePage {
 
   private setTotalBalance(data) {
     this.updateTotalBalance(data);
+    this.appProvider.homeBalance = data;
     this.persistenceProvider.setTotalBalance(data);
   }
 
   private subscribeEvents() {
     this.events.subscribe('Local/HomeBalance', data => {
       if (data && this.showTotalBalance) this.setTotalBalance(data);
+      else {
+        this.totalBalanceAlternative = '0';
+      }
       this.fetchingStatus = false;
     });
     this.events.subscribe('Local/ServerMessages', data => {
@@ -344,6 +340,10 @@ export class HomePage {
     });
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
       this.testingAdsEnabled = testAdsStatus;
+    });
+    this.events.subscribe('Local/ConnectionError', () => {
+      this.connectionError = true;
+      this.fetchingStatus = false;
     });
   }
 
@@ -535,6 +535,7 @@ export class HomePage {
     this.fetchAdvertisements();
     this.preFetchWallets();
     setTimeout(() => {
+      this.connectionError = false;
       refresher.complete();
     }, 2000);
   }

@@ -510,13 +510,6 @@ export class WalletProvider {
   public async getTotalAmount(wallets, lastDayRatesArray) {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
-    if (_.isEmpty(wallets))
-      return {
-        isoCode,
-        totalBalanceAlternative: '0',
-        totalBalanceChange: 0
-      };
-
     const totalAmountArray = [];
 
     _.each(wallets, wallet => {
@@ -543,7 +536,7 @@ export class WalletProvider {
     return {
       totalBalanceAlternativeIsoCode: isoCode,
       totalBalanceAlternative,
-      totalBalanceChange
+      totalBalanceChange: totalBalanceChange || 0
     };
   }
 
