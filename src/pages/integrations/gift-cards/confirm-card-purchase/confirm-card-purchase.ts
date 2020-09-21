@@ -33,7 +33,10 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { CurrencyProvider } from '../../../../providers/currency/currency';
+import {
+  Coin,
+  CurrencyProvider
+} from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import {
@@ -183,15 +186,31 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.network = this.giftCardProvider.getNetwork();
 
+    const coin = Coin[this.currency] || null;
     const walletOptions = {
       onlyComplete: true,
+      coin,
       network: this.network,
       hasFunds: true
     };
-    this.wallets = this.profileProvider.getWallets({
-      ...walletOptions,
-      minFiatCurrency: { amount: this.amount, currency: this.currency }
-    });
+
+    if (coin) {
+      const { amountSat } = this.txFormatProvider.parseAmount(
+        coin,
+        this.amount,
+        this.currency
+      );
+
+      this.wallets = this.profileProvider.getWallets({
+        ...walletOptions,
+        minAmount: amountSat
+      });
+    } else {
+      this.wallets = this.profileProvider.getWallets({
+        ...walletOptions,
+        minFiatCurrency: { amount: this.amount, currency: this.currency }
+      });
+    }
 
     const pendingWallets = this.profileProvider.getWallets({
       ...walletOptions,

@@ -166,10 +166,9 @@ export class BitPayCardTopUpPage {
           network,
           hasFunds: true
         };
-
-        if (Coin[this.currency]) {
+        if (coin) {
           const { amountSat } = this.txFormatProvider.parseAmount(
-            Coin[this.currency],
+            coin,
             this.amount,
             this.currency
           );
