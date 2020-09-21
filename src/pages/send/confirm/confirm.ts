@@ -32,6 +32,7 @@ import { FeeProvider } from '../../../providers/fee/fee';
 import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -131,6 +132,7 @@ export class ConfirmPage {
     protected events: Events,
     protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider,
+    protected payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider,
     protected homeIntegrationsProvider: HomeIntegrationsProvider
   ) {

@@ -224,19 +224,41 @@ export class TxpDetailsPage {
 
   private checkPaypro(): void {
     if (this.tx.payProUrl) {
-      const disableLoader = true;
-      this.payproProvider
-        .getPayProDetails(this.tx.payProUrl, this.tx.coin, disableLoader)
-        .then(payProDetails => {
-          this.tx.paypro = payProDetails;
-          this.paymentTimeControl(this.tx.paypro.expires);
+      this.walletProvider
+        .getAddress(this.wallet, false)
+        .then(address => {
+          const payload = {
+            address
+          };
+          const disableLoader = true;
+          this.payproProvider
+            .getPayProDetails({
+              paymentUrl: this.tx.payProUrl,
+              coin: this.tx.coin,
+              payload,
+              disableLoader
+            })
+            .then(payProDetails => {
+              this.tx.paypro = payProDetails;
+              this.paymentTimeControl(this.tx.paypro.expires);
+            })
+            .catch(err => {
+              this.logger.warn(
+                'Error fetching this invoice: ',
+                this.bwcErrorProvider.msg(err)
+              );
+              this.paymentExpired = true;
+              this.showErrorInfoSheet(
+                this.bwcErrorProvider.msg(err),
+                this.translate.instant('Error fetching this invoice')
+              );
+            });
         })
         .catch(err => {
           this.logger.warn(
             'Error fetching this invoice: ',
             this.bwcErrorProvider.msg(err)
           );
-          this.paymentExpired = true;
           this.showErrorInfoSheet(
             this.bwcErrorProvider.msg(err),
             this.translate.instant('Error fetching this invoice')
