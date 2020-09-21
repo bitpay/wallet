@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, Platform } from 'ionic-angular';
@@ -51,7 +52,8 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private http: HttpClient
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
@@ -105,10 +107,27 @@ export class TabsPage {
   }
 
   ngOnInit() {
-    this.tabProvider.prefetchCards().then(data => {
+    this.tabProvider.prefetchCards().then(async data => {
+      let cardExperimentEnabled;
+      try {
+        this.logger.debug('BitPay: setting country');
+        const { country } = await this.http
+          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
+          .toPromise();
+        if (country === 'US') {
+          this.logger.debug('If US: Set Card Experiment Flag Enabled');
+          await this.persistenceProvider.setCardExperimentFlag('enabled');
+          cardExperimentEnabled = true;
+        }
+      } catch (err) {
+        this.logger.error('Error setting country: ', err);
+      }
       // [0] BitPay Cards
       // [1] Gift Cards
-      this.events.publish('Local/FetchCards', data[0]);
+      this.events.publish('Local/FetchCards', {
+        bpCards: data[0],
+        cardExperimentEnabled
+      });
     });
   }
 

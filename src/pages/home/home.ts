@@ -339,8 +339,9 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
-    this.events.subscribe('Local/FetchCards', bpCards => {
-      if (!bpCards) this.addBitPayCard();
+    this.events.subscribe('Local/FetchCards', data => {
+      this.cardExperimentEnabled = data.cardExperimentEnabled;
+      if (!data.bpCards) this.addBitPayCard();
     });
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
       this.testingAdsEnabled = testAdsStatus;
