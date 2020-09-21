@@ -46,21 +46,24 @@ export class InAppBrowserProvider {
     return new Promise((res, rej) => {
       const ref: InAppBrowserRef = window.open(url, '_blank', config);
       ref.postMessage = window.postMessage;
-      ref.addEventListener('loadstop', () => {
+
+      const initCb = () => {
         if (initScript) {
           // script that executes inside of inappbrowser when loaded
           ref.executeScript(
             {
               code: initScript
             },
-            () =>
+            () => {
+              ref.removeEventListener('loadstop', initCb);
               this.logger.debug(
                 `InAppBrowserProvider -> ${refName} executed init script`
-              )
+              );
+            }
           );
         }
-      });
-
+      };
+      ref.addEventListener('loadstop', initCb);
       ref.addEventListener('loaderror', err => {
         this.logger.debug(
           `InAppBrowserProvider -> ${refName} ${JSON.stringify(err)} load error`
