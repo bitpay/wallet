@@ -234,6 +234,9 @@ export class CopayApp {
     this.bitpayIdProvider.setNetwork(this.NETWORK);
     this.iabCardProvider.setNetwork(this.NETWORK);
 
+    this.logger.debug('Setting Cached Total Balance');
+    this.appProvider.setTotalBalance();
+
     if (this.platform.is('cordova')) {
       this.statusBar.show();
 

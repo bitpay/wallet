@@ -98,13 +98,18 @@
 
   <div *ngIf="showTotalBalance" class="total-amount-container">
     <div class="section-header" translate>Total cash value</div>
-    <div class="total-amount-value" *ngIf="totalBalanceAlternative">
-      {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
+    <div class="total-amount-value">
+      <span *ngIf="totalBalanceAlternative">
+        {{totalBalanceAlternative | number:'1.2-2'}} {{totalBalanceAlternativeIsoCode}}
+      </span>
       <span *ngIf="fetchingStatus">
         <ion-spinner></ion-spinner>
       </span>
     </div>
-    <div class="average-container">
+    <span ion-text color="warning" *ngIf="connectionError" translate>
+      Network error
+    </span>
+    <div class="average-container" *ngIf="!connectionError">
       <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
         <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
       </div>

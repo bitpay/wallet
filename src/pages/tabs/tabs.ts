@@ -218,6 +218,10 @@ export class TabsPage {
       wallet.error = this.translate.instant('Wallet not registered');
     } else {
       wallet.error = this.bwcErrorProvider.msg(err);
+
+      // TODO: Error code is needed
+      if (wallet.error == this.translate.instant('Network error'))
+        this.connectionError();
     }
     this.logger.warn(
       this.bwcErrorProvider.msg(
@@ -226,6 +230,16 @@ export class TabsPage {
       )
     );
   }
+
+  private connectionError = _.debounce(
+    async () => {
+      this.events.publish('Local/ConnectionError');
+    },
+    5000,
+    {
+      leading: false
+    }
+  );
 
   private fetchAllWalletsStatus = _.debounce(
     async () => {
@@ -258,6 +272,8 @@ export class TabsPage {
     // Set the default alternative currency if the one setted is no longer supported
     this.checkAltCurrency();
 
+    this.profileProvider.setLastKnownBalance();
+
     let wallets = this.profileProvider.wallet;
     if (_.isEmpty(wallets)) {
       this.events.publish('Local/HomeBalance');
@@ -274,8 +290,8 @@ export class TabsPage {
     const pr = wallet => {
       return this.walletProvider
         .fetchStatus(wallet, {})
-        .then(async status => {
-          wallet.cachedStatus = status;
+        .then(st => {
+          wallet.cachedStatus = st;
           wallet.error = wallet.errorObj = null;
           const balance =
             wallet.coin === 'xrp'
@@ -289,10 +305,10 @@ export class TabsPage {
             finished: true
           });
 
-          if (!foundMessage && !_.isEmpty(status.serverMessages)) {
+          if (!foundMessage && !_.isEmpty(st.serverMessages)) {
             foundMessage = true;
             this.events.publish('Local/ServerMessage', {
-              serverMessages: status.serverMessages
+              serverMessages: st.serverMessages
             });
           }
 
