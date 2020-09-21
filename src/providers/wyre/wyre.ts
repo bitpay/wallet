@@ -33,7 +33,7 @@ export class WyreProvider {
     this.supportedCoins = ['btc', 'eth', 'usdc', 'gusd', 'pax', 'busd'];
     this.fiatAmountLimits = {
       min: 1,
-      max: 500
+      max: 1000
     };
   }
 
@@ -88,10 +88,10 @@ export class WyreProvider {
     let min, max: number;
     if (!country || country != 'US') {
       min = 1;
-      max = 500;
+      max = 1000;
     } else {
       min = 1;
-      max = 250;
+      max = 500;
     }
     this.fiatAmountLimits.min = this.calculateFiatRate(min, fiatCurrency, coin);
     this.fiatAmountLimits.max = this.calculateFiatRate(max, fiatCurrency, coin);

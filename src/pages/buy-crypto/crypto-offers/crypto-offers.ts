@@ -121,7 +121,9 @@ export class CryptoOffersPage {
 
   // GENERAL FUNCTIONS
 
-  public expandCard(key: string) {
+  public expandCard(offer) {
+    const key: string = offer.key;
+    if (!offer.value || !offer.value.fiatMoney) return;
     if (this.offers[key]) {
       this.offers[key].expanded = this.offers[key].expanded ? false : true;
     }
