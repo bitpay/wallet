@@ -133,7 +133,7 @@ export class BitPayCardTopUpPage {
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount;
 
-    let coin = Coin[this.currency] ? Coin[this.currency] : null;
+    const coin = (Coin[this.currency] || null) as Coin;
 
     this.bitPayCardProvider
       .get({
@@ -166,6 +166,8 @@ export class BitPayCardTopUpPage {
           network,
           hasFunds: true
         };
+        let pendingWallets = [];
+
         if (coin) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             coin,
@@ -177,17 +179,25 @@ export class BitPayCardTopUpPage {
             ...walletOptions,
             minAmount: amountSat
           });
+
+          pendingWallets = this.profileProvider.getWallets({
+            ...walletOptions,
+            minPendingAmount: { amount: amountSat }
+          });
         } else {
           this.wallets = this.profileProvider.getWallets({
             ...walletOptions,
             minFiatCurrency: { amount: this.amount, currency: this.currency }
           });
-        }
 
-        const pendingWallets = this.profileProvider.getWallets({
-          ...walletOptions,
-          minPendingAmount: { amount: this.amount, currency: this.currency }
-        });
+          pendingWallets = this.profileProvider.getWallets({
+            ...walletOptions,
+            minPendingFiatAmount: {
+              amount: this.amount,
+              currency: this.currency
+            }
+          });
+        }
 
         this.showCoinbase =
           this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
