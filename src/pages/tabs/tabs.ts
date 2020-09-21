@@ -191,10 +191,10 @@ export class TabsPage {
     );
   };
 
-  private updateTotalBalance() {
+  private updateTotalBalance(wallets) {
     this.rateProvider.getLastDayRates().then(lastDayRatesArray => {
       this.walletProvider
-        .getTotalAmount(this.profileProvider.wallet, lastDayRatesArray)
+        .getTotalAmount(wallets, lastDayRatesArray)
         .then(data => {
           this.logger.debug('Total Balance and Price Updated');
           this.events.publish('Local/HomeBalance', data);
@@ -218,10 +218,6 @@ export class TabsPage {
       wallet.error = this.translate.instant('Wallet not registered');
     } else {
       wallet.error = this.bwcErrorProvider.msg(err);
-
-      // TODO: Error code is needed
-      if (wallet.error == this.translate.instant('Network error'))
-        this.connectionError();
     }
     this.logger.warn(
       this.bwcErrorProvider.msg(
@@ -269,6 +265,7 @@ export class TabsPage {
   }
 
   private _fetchAllWallets() {
+    let hasConnectionError: boolean = false;
     // Set the default alternative currency if the one setted is no longer supported
     this.checkAltCurrency();
 
@@ -316,6 +313,10 @@ export class TabsPage {
         })
         .catch(err => {
           this.processWalletError(wallet, err);
+          if (err && err.message == 'Wallet service connection error.') {
+            hasConnectionError = true;
+            this.connectionError();
+          }
           return Promise.resolve();
         });
     };
@@ -327,7 +328,7 @@ export class TabsPage {
     });
 
     Promise.all(promises).then(() => {
-      this.updateTotalBalance();
+      if (!hasConnectionError) this.updateTotalBalance(wallets);
       this.updateTxps();
     });
   }

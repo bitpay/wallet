@@ -81,7 +81,6 @@ export class HomePage {
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
-  public connectionError: boolean = false;
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
@@ -343,7 +342,6 @@ export class HomePage {
       this.testingAdsEnabled = testAdsStatus;
     });
     this.events.subscribe('Local/ConnectionError', () => {
-      this.connectionError = true;
       this.fetchingStatus = false;
     });
   }
@@ -536,7 +534,6 @@ export class HomePage {
     this.fetchAdvertisements();
     this.preFetchWallets();
     setTimeout(() => {
-      this.connectionError = false;
       refresher.complete();
     }, 2000);
   }
