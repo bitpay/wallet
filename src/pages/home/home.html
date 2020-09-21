@@ -106,10 +106,7 @@
         <ion-spinner></ion-spinner>
       </span>
     </div>
-    <span ion-text color="warning" *ngIf="connectionError" translate>
-      Network error
-    </span>
-    <div class="average-container" *ngIf="!connectionError">
+    <div class="average-container">
       <div *ngIf="totalBalanceChange || totalBalanceChange === 0" [ngClass]="totalBalanceChange >= 0 ? 'possitive-avg' : 'negative-avg'">
         <span class="average"><span *ngIf="totalBalanceChange > 0">+</span>{{ totalBalanceChange | number: '1.2-2' }}%</span>
       </div>
