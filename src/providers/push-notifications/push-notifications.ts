@@ -119,7 +119,7 @@ export class PushNotificationsProvider {
     }
 
     const opts = {
-      showHidden: true
+      showHidden: false
     };
     const wallets = this.profileProvider.getWallets(opts);
     _.forEach(wallets, walletClient => {
