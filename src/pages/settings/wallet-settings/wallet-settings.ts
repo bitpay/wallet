@@ -8,6 +8,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -48,7 +49,8 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -179,6 +181,9 @@ export class WalletSettingsPage {
   public hiddenWalletChange(walletId: string): void {
     if (!walletId) return;
     this.profileProvider.toggleHideWalletFlag(walletId);
+    if (!!this.wallet.hidden)
+      this.pushNotificationsProvider.unsubscribe(this.wallet);
+    else this.pushNotificationsProvider.updateSubscription(this.wallet);
   }
 
   public openWalletGroupDelete(): void {
