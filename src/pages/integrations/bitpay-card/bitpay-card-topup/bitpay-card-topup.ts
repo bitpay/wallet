@@ -166,10 +166,24 @@ export class BitPayCardTopUpPage {
           network,
           hasFunds: true
         };
-        this.wallets = this.profileProvider.getWallets({
-          ...walletOptions,
-          minFiatCurrency: { amount: this.amount, currency: this.currency }
-        });
+
+        if (Coin[this.currency]) {
+          const { amountSat } = this.txFormatProvider.parseAmount(
+            this.currency.toLowerCase(),
+            this.amount,
+            this.currency
+          );
+
+          this.wallets = this.profileProvider.getWallets({
+            ...walletOptions,
+            minAmount: amountSat
+          });
+        } else {
+          this.wallets = this.profileProvider.getWallets({
+            ...walletOptions,
+            minFiatCurrency: { amount: this.amount, currency: this.currency }
+          });
+        }
 
         const pendingWallets = this.profileProvider.getWallets({
           ...walletOptions,
