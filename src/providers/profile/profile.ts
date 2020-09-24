@@ -1935,7 +1935,7 @@ export class ProfileProvider {
         const { availableBalanceSat, pendingAmount } = w.cachedStatus;
 
         const walletBalance = !isPending ? availableBalanceSat : pendingAmount;
-        const coin = Coin[currency] ? Coin[currency] : null;
+        const coin = (Coin[currency] || null) as Coin;
 
         if (coin) {
           const { amountSat } = this.txFormatProvider.parseAmount(
