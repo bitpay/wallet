@@ -35,6 +35,7 @@ import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
+import { WalletConnectPage } from '../wallet-connect/wallet-connect';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
@@ -301,6 +302,9 @@ export class SettingsPage {
         break;
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);
+        break;
+      case 'walletConnect':
+        this.navCtrl.push(WalletConnectPage);
         break;
     }
   }
