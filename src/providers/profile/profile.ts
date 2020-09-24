@@ -11,7 +11,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { CurrencyProvider } from '../currency/currency';
+import { Coin, CurrencyProvider } from '../currency/currency';
 import { ErrorsProvider } from '../errors/errors';
 import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
@@ -1927,11 +1927,32 @@ export class ProfileProvider {
     }
 
     if (opts.minAmount) {
+      const { amount, currency, isPending = false } = opts.minAmount;
       ret = _.filter(ret, w => {
         // IF no cached Status => return true!
         if (_.isEmpty(w.cachedStatus)) return true;
 
-        return w.cachedStatus.availableBalanceSat > opts.minAmount;
+        const { availableBalanceSat, pendingAmount } = w.cachedStatus;
+
+        const walletBalance = !isPending ? availableBalanceSat : pendingAmount;
+        const coin = Coin[currency] ? Coin[currency] : null;
+
+        if (coin) {
+          const { amountSat } = this.txFormatProvider.parseAmount(
+            coin,
+            amount,
+            currency
+          );
+          return walletBalance > amountSat;
+        } else {
+          const fiatBalance = this.rateProvider.toFiat(
+            walletBalance,
+            currency,
+            w.coin
+          );
+
+          return fiatBalance > Number(amount);
+        }
       });
     }
 
@@ -1968,45 +1989,6 @@ export class ProfileProvider {
           !tokenWalletIds.includes(`${wallet.id}-${opts.pairFor.address}`) &&
           wallet.coin === 'eth'
       );
-    }
-
-    if (opts.minFiatCurrency) {
-      ret = ret.filter(wallet => {
-        if (_.isEmpty(wallet.cachedStatus)) return true;
-
-        const availableBalanceFiat = this.rateProvider.toFiat(
-          wallet.cachedStatus.availableBalanceSat,
-          opts.minFiatCurrency.currency,
-          wallet.coin
-        );
-
-        return availableBalanceFiat >= Number(opts.minFiatCurrency.amount);
-      });
-    }
-
-    if (opts.minPendingAmount) {
-      ret = ret.filter(wallet => {
-        if (_.isEmpty(wallet.cachedStatus)) return true;
-
-        return (
-          wallet.cachedStatus.pendingAmount >=
-          Number(opts.minPendingAmount.amount)
-        );
-      });
-    }
-
-    if (opts.minPendingFiatAmount) {
-      ret = ret.filter(wallet => {
-        if (_.isEmpty(wallet.cachedStatus)) return true;
-
-        const availablePendingFiat = this.rateProvider.toFiat(
-          wallet.cachedStatus.pendingAmount,
-          opts.minPendingFiatAmount.currency,
-          wallet.coin
-        );
-
-        return availablePendingFiat >= Number(opts.minPendingFiatAmount.amount);
-      });
     }
 
     return _.sortBy(ret, 'order');

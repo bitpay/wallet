@@ -150,54 +150,36 @@ export class BitPayCardTopUpPage {
 
         this.brand === 'Mastercard'
           ? this.bitPayCardProvider.logEvent('mastercard_topup_amount', {
-              usdAmount: this.amount,
-              transactionCurrency: 'USD'
-            })
+            usdAmount: this.amount,
+            transactionCurrency: 'USD'
+          })
           : this.bitPayCardProvider.logEvent('legacycard_topup_amount', {
-              usdAmount: this.amount,
-              transactionCurrency: 'USD'
-            });
+            usdAmount: this.amount,
+            transactionCurrency: 'USD'
+          });
 
         const network = this.bitPayProvider.getEnvironment().network;
 
         const walletOptions = {
           onlyComplete: true,
           coin,
-          network,
-          hasFunds: true
+          network
         };
-        let pendingWallets = [];
 
-        if (coin) {
-          const { amountSat } = this.txFormatProvider.parseAmount(
-            coin,
-            this.amount,
-            this.currency
-          );
+        this.wallets = this.profileProvider.getWallets({
+          ...walletOptions,
+          hasFunds: true,
+          minAmount: { amount: this.amount, currency: this.currency }
+        });
 
-          this.wallets = this.profileProvider.getWallets({
-            ...walletOptions,
-            minAmount: amountSat
-          });
-
-          pendingWallets = this.profileProvider.getWallets({
-            ...walletOptions,
-            minPendingAmount: { amount: amountSat }
-          });
-        } else {
-          this.wallets = this.profileProvider.getWallets({
-            ...walletOptions,
-            minFiatCurrency: { amount: this.amount, currency: this.currency }
-          });
-
-          pendingWallets = this.profileProvider.getWallets({
-            ...walletOptions,
-            minPendingFiatAmount: {
-              amount: this.amount,
-              currency: this.currency
-            }
-          });
-        }
+        const pendingWallets = this.profileProvider.getWallets({
+          ...walletOptions,
+          minAmount: {
+            amount: this.amount,
+            currency: this.currency,
+            isPending: true
+          }
+        });
 
         this.showCoinbase =
           this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
@@ -206,9 +188,9 @@ export class BitPayCardTopUpPage {
         this.coinbaseAccounts =
           this.showCoinbase && network === 'livenet'
             ? this.coinbaseProvider.getAvailableAccounts(null, {
-                amount: this.amount,
-                currency: this.currency
-              })
+              amount: this.amount,
+              currency: this.currency
+            })
             : [];
 
         if (
@@ -448,7 +430,7 @@ export class BitPayCardTopUpPage {
                 txp.feePerKb = requiredFeeRate;
                 this.logger.debug(
                   `PayProDetails requiredFeeRate: ${
-                    details.requiredFeeRate
+                  details.requiredFeeRate
                   }. Txp feePerKb: ${txp.feePerKb}`
                 );
                 this.logger.debug(
@@ -739,39 +721,39 @@ export class BitPayCardTopUpPage {
 
     !isConfirm
       ? this.bitPayCardProvider.logEvent(
-          cardTopupAmountEventName,
-          cardTopUpEventInfo
-        )
+        cardTopupAmountEventName,
+        cardTopUpEventInfo
+      )
       : this.bitPayCardProvider.logEvent(
-          cardTopupFinishEventName,
-          cardTopupEventInfo
-        );
+        cardTopupFinishEventName,
+        cardTopupEventInfo
+      );
   }
 
   logCardPurchaseEvent() {
     this.brand === 'Mastercard'
       ? this.bitPayCardProvider.logEvent('purchase', {
-          value: this.amount,
-          items: [
-            {
-              name: 'mastercard',
-              category: 'debitCard',
-              quantity: 1,
-              price: this.amount
-            }
-          ]
-        })
+        value: this.amount,
+        items: [
+          {
+            name: 'mastercard',
+            category: 'debitCard',
+            quantity: 1,
+            price: this.amount
+          }
+        ]
+      })
       : this.bitPayCardProvider.logEvent('purchase', {
-          value: this.amount,
-          items: [
-            {
-              name: 'legacyCard',
-              category: 'debitCard',
-              quantity: 1,
-              price: this.amount
-            }
-          ]
-        });
+        value: this.amount,
+        items: [
+          {
+            name: 'legacyCard',
+            category: 'debitCard',
+            quantity: 1,
+            price: this.amount
+          }
+        ]
+      });
   }
 
   private initializeTopUp(wallet, parsedAmount): void {
@@ -804,7 +786,7 @@ export class BitPayCardTopUpPage {
 
     this.logger.debug(
       `Creating invoice. amount: ${dataSrc.amount} - currency: ${
-        dataSrc.currency
+      dataSrc.currency
       }`
     );
     this.createInvoice(dataSrc)
@@ -896,7 +878,7 @@ export class BitPayCardTopUpPage {
 
     this.logger.debug(
       `Creating invoice. amount: ${dataSrc.amount} - currency: ${
-        dataSrc.currency
+      dataSrc.currency
       }`
     );
     this.createInvoice(dataSrc)
@@ -1063,13 +1045,13 @@ export class BitPayCardTopUpPage {
   logCardSetCheckoutOption(wallet) {
     this.brand === 'Mastercard'
       ? this.bitPayCardProvider.logEvent('mastercard_set_checkout_option', {
-          checkout_option: wallet.coin,
-          checkout_step: 1
-        })
+        checkout_option: wallet.coin,
+        checkout_step: 1
+      })
       : this.bitPayCardProvider.logEvent('legacycard_set_checkout_option', {
-          checkout_option: wallet.coin,
-          checkout_step: 1
-        });
+        checkout_option: wallet.coin,
+        checkout_step: 1
+      });
   }
 
   public onWalletSelect(option): void {
