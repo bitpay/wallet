@@ -2045,12 +2045,12 @@ export class ProfileProvider {
 
   // Checks to see if a wallet exists with minimim fiat amount's worth in it (to pay invoice, for example)
   public hasWalletWithFunds(fiatAmount: number, fiatCurrency: string): boolean {
-    const minFiatCurrency = {
+    const minAmount = {
       amount: fiatAmount,
       currency: fiatCurrency
     };
 
-    const wallets = this.getWalletsFromGroup({ minFiatCurrency });
+    const wallets = this.getWalletsFromGroup({ hasFunds: true, minAmount });
 
     return Boolean(wallets.length);
   }
