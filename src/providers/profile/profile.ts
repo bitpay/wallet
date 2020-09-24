@@ -1988,13 +1988,24 @@ export class ProfileProvider {
       ret = ret.filter(wallet => {
         if (_.isEmpty(wallet.cachedStatus)) return true;
 
+        return (
+          wallet.cachedStatus.pendingAmount >=
+          Number(opts.minPendingAmount.amount)
+        );
+      });
+    }
+
+    if (opts.minPendingFiatAmount) {
+      ret = ret.filter(wallet => {
+        if (_.isEmpty(wallet.cachedStatus)) return true;
+
         const availablePendingFiat = this.rateProvider.toFiat(
           wallet.cachedStatus.pendingAmount,
-          opts.minPendingAmount.currency,
+          opts.minPendingFiatAmount.currency,
           wallet.coin
         );
 
-        return availablePendingFiat >= Number(opts.minPendingAmount.amount);
+        return availablePendingFiat >= Number(opts.minPendingFiatAmount.amount);
       });
     }
 
