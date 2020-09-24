@@ -1943,7 +1943,7 @@ export class ProfileProvider {
             amount,
             currency
           );
-          return walletBalance > amountSat;
+          return walletBalance >= amountSat;
         } else {
           const fiatBalance = this.rateProvider.toFiat(
             walletBalance,
@@ -1951,7 +1951,7 @@ export class ProfileProvider {
             w.coin
           );
 
-          return fiatBalance > Number(amount);
+          return fiatBalance >= Number(amount);
         }
       });
     }
@@ -2050,7 +2050,7 @@ export class ProfileProvider {
       currency: fiatCurrency
     };
 
-    const wallets = this.getWalletsFromGroup({ hasFunds: true, minAmount });
+    const wallets = this.getWalletsFromGroup({ minAmount });
 
     return Boolean(wallets.length);
   }
