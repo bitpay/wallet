@@ -187,42 +187,27 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.network = this.giftCardProvider.getNetwork();
 
-    const coin = Coin[this.currency] || null;
+    const coin = (Coin[this.currency] || null) as Coin;
     const walletOptions = {
       onlyComplete: true,
       coin,
-      network: this.network,
-      hasFunds: true
+      network: this.network
     };
-    let pendingWallets = [];
 
-    if (coin) {
-      const { amountSat } = this.txFormatProvider.parseAmount(
-        coin,
-        this.amount,
-        this.currency
-      );
+    this.wallets = this.profileProvider.getWallets({
+      ...walletOptions,
+      hasFunds: true,
+      minAmount: { amount: this.amount, currency: this.currency }
+    });
 
-      this.wallets = this.profileProvider.getWallets({
-        ...walletOptions,
-        minAmount: amountSat
-      });
-
-      pendingWallets = this.profileProvider.getWallets({
-        ...walletOptions,
-        minPendingAmount: { amount: amountSat }
-      });
-    } else {
-      this.wallets = this.profileProvider.getWallets({
-        ...walletOptions,
-        minFiatCurrency: { amount: this.amount, currency: this.currency }
-      });
-
-      pendingWallets = this.profileProvider.getWallets({
-        ...walletOptions,
-        minPendingFiatAmount: { amount: this.amount, currency: this.currency }
-      });
-    }
+    const pendingWallets = this.profileProvider.getWallets({
+      ...walletOptions,
+      minAmount: {
+        amount: this.amount,
+        currency: this.currency,
+        isPending: true
+      }
+    });
 
     this.showCoinbase =
       this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
