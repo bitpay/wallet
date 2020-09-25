@@ -112,9 +112,10 @@ export class WalletsPage {
     if (!this.showCoinbase) return;
     this.coinbaseLinked = this.coinbaseProvider.isLinked();
     if (this.coinbaseLinked) {
-      if (force || !this.coinbaseData) {
-        this.coinbaseProvider.updateExchangeRates();
-        this.coinbaseProvider.preFetchAllData(this.coinbaseData);
+      if (force || _.isEmpty(this.coinbaseData)) {
+        this.zone.run(() => {
+          this.coinbaseProvider.preFetchAllData(this.coinbaseData);
+        });
       } else this.coinbaseData = this.coinbaseProvider.coinbaseData;
     }
   }
@@ -269,6 +270,7 @@ export class WalletsPage {
 
   private debounceSetCoinbase = _.debounce(
     async () => {
+      this.coinbaseProvider.updateExchangeRates();
       this.setCoinbase(true);
     },
     5000,
