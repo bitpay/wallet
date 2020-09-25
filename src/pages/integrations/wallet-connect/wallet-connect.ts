@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import WalletConnect from '@walletconnect/browser';
 import * as ethers from 'ethers';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -11,11 +11,13 @@ import {
   Logger,
   PersistenceProvider,
   ProfileProvider,
+  WalletConnectProvider,
   WalletProvider
 } from '../../../providers';
+
 import {
-  IProviderData,
-  supportedProviders
+  KOVAN_CHAIN_ID,
+  MAINNET_CHAIN_ID
 } from '../../../providers/wallet-connect/web3-providers/web3-providers';
 
 @Component({
@@ -52,13 +54,6 @@ export class WalletConnectPage {
   wallets;
   wallet: ethers.Wallet | null = null;
 
-  static ETH_STANDARD_PATH = "m/44'/60'/0'/0";
-  static MAINNET_CHAIN_ID = 1;
-  static ROPSTEN_CHAIN_ID = 3;
-  static RINKEBY_CHAIN_ID = 4;
-  static GOERLI_CHAIN_ID = 5;
-  static KOVAN_CHAIN_ID = 42;
-
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
@@ -66,19 +61,14 @@ export class WalletConnectPage {
     private persistenceProvider: PersistenceProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    private viewCtrl: ViewController,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {}
 
   ngOnInit(): void {
     this.accounts = this.getAccounts();
     this.address = this.accounts[this.activeIndex];
     this.initWallet();
-  }
-
-  close(): void {
-    this.killSession();
-    this.viewCtrl.dismiss();
   }
 
   ionViewWillEnter() {
@@ -92,7 +82,8 @@ export class WalletConnectPage {
 
   public onWalletSelect(wallet): void {
     this.activeIndex = this.wallets.indexOf(wallet);
-    this.activeChainId = wallet.network === 'livenet' ? 1 : 42;
+    this.activeChainId =
+      wallet.network === 'livenet' ? MAINNET_CHAIN_ID : KOVAN_CHAIN_ID;
     this.updateChain(this.activeChainId);
     this.updateAddress(this.activeIndex);
   }
@@ -128,6 +119,7 @@ export class WalletConnectPage {
 
     try {
       this.walletConnector = new WalletConnect({ uri: this.uri });
+      await this.persistenceProvider.setWalletConnect(this.walletConnector);
 
       if (!this.walletConnector.connected) {
         await this.walletConnector.createSession();
@@ -147,7 +139,7 @@ export class WalletConnectPage {
     const params = {
       wallets: this.wallets,
       selectedWalletId: null,
-      title: this.translate.instant('Select an account')
+      title: this.translate.instant('Select a wallet')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -371,37 +363,10 @@ export class WalletConnectPage {
     this.activeIndex = index;
     this.activeChainId = chainId;
     const rpcUrl = this.getChainData(chainId).rpc_url;
-    this.wallet = this.generateWallet(index);
+    this.wallet = this.walletConnectProvider.generateWallet(index);
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
     this.wallet.connect(provider);
     return this.wallet;
-  }
-
-  public getChainData(chainId: number): IProviderData {
-    const chainData = supportedProviders.filter(
-      (chain: any) => chain.chain_id === chainId
-    )[0];
-
-    if (!chainData) {
-      throw new Error('ChainId missing or not supported');
-    }
-
-    const API_KEY = 'f73d326fec924c34abc4d16233920356';
-
-    if (
-      chainData.rpc_url.includes('infura.io') &&
-      chainData.rpc_url.includes('%API_KEY%') &&
-      API_KEY
-    ) {
-      const rpcUrl = chainData.rpc_url.replace('%API_KEY%', API_KEY);
-
-      return {
-        ...chainData,
-        rpc_url: rpcUrl
-      };
-    }
-
-    return chainData;
   }
 
   public getWallet(index?: number, chainId?: number): ethers.Wallet {
@@ -416,22 +381,15 @@ export class WalletConnectPage {
     return _wallet;
   }
 
-  public generateWallet(account: number) {
-    /* TODO wrap wallet private key or mnemonic with ethers wallet.
-     * Move this function to key.ts in BWC and use that function here.
-     */
-    const newWallet = ethers.Wallet.fromMnemonic(
-      'rhythm egg tube lunar father cattle breeze laugh ask witness real curtain',
-      `m/44'/60'/${account}'/0/0`
-    );
-    return newWallet;
+  public getChainData(chainId) {
+    return this.walletConnectProvider.getChainData(chainId);
   }
 
   public getAccounts() {
     const accounts = [];
     let wallet = null;
     for (let i = 0; i < 1; i++) {
-      wallet = this.generateWallet(i);
+      wallet = this.walletConnectProvider.generateWallet(i);
       accounts.push(wallet.address);
     }
     return accounts;
