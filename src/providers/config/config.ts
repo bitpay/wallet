@@ -73,6 +73,7 @@ export interface Config {
     shapeshift: boolean;
     buycrypto: boolean;
     giftcards: boolean;
+    walletConnect: boolean;
   };
 
   pushNotifications: {
@@ -214,7 +215,8 @@ export class ConfigProvider {
         mercadolibre: true,
         shapeshift: true,
         buycrypto: true,
-        giftcards: true
+        giftcards: true,
+        walletConnect: true
       },
 
       pushNotifications: {

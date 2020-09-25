@@ -1,28 +1,16 @@
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import WalletConnect from '@walletconnect/browser';
 import * as ethers from 'ethers';
-import { NavParams, ViewController } from 'ionic-angular';
-import * as _ from 'lodash';
 
-// Providers
-import {
-  ActionSheetProvider,
-  Logger,
-  PersistenceProvider,
-  ProfileProvider,
-  WalletProvider
-} from '../../providers';
-import {
-  IProviderData,
-  supportedProviders
-} from '../../providers/wallet-connect/eth-providers';
+import { ConfigProvider, HomeIntegrationsProvider } from '../../providers';
+import { Logger } from '../../providers/logger/logger';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { WalletProvider } from '../../providers/wallet/wallet';
+import { IProviderData, supportedProviders } from './eth-providers';
 
-@Component({
-  selector: 'page-wallet-connect',
-  templateUrl: 'wallet-connect.html'
-})
-export class WalletConnectPage {
+@Injectable()
+export class WalletConnectProvider {
   isOpenSelector: boolean = false;
   loading: boolean = false;
   scanner: boolean = false;
@@ -61,17 +49,17 @@ export class WalletConnectPage {
   static KOVAN_CHAIN_ID = 42;
 
   constructor(
-    private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
-    private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
-    private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    private viewCtrl: ViewController,
-    private walletProvider: WalletProvider
-  ) { }
+    private walletProvider: WalletProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private configProvider: ConfigProvider
+  ) {
+    this.logger.debug('WalletConnect Provider initialized');
+  }
 
-  ngOnInit(): void {
+  startWalletConnect(): void {
     this.accounts = this.getAccounts();
     this.address = this.accounts[this.activeIndex];
     this.initWallet();
@@ -79,24 +67,22 @@ export class WalletConnectPage {
 
   close(): void {
     this.killSession();
-    this.viewCtrl.dismiss();
   }
 
-  ionViewWillEnter() {
-    this.wallets = this.profileProvider.getWallets({ coin: 'eth' });
-    if (_.isEmpty(this.wallets)) {
-      return;
-    } else {
-      if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
-      else this.showWallets();
-    }
-  }
-
-  public onWalletSelect(wallet): void {
-    this.activeIndex = this.wallets.indexOf(wallet);
-    this.activeChainId = wallet.network === 'livenet' ? 1 : 42;
-    this.updateChain(this.activeChainId);
-    this.updateAddress(this.activeIndex);
+  public register(): void {
+    this.homeIntegrationsProvider.register({
+      name: 'walletConnect',
+      title: this.translate.instant('Wallet Connect'),
+      icon: 'assets/img/wallet-connect.svg',
+      showIcon: true,
+      logo: null,
+      logoWidth: '110',
+      background:
+        'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(45, 47, 51, 1) 100%)',
+      page: 'WalletConnectPage',
+      show: !!this.configProvider.get().showIntegration['walletConnect'],
+      type: 'exchange'
+    });
   }
 
   public async initWallet() {
@@ -124,8 +110,8 @@ export class WalletConnectPage {
     }
   }
 
-  public async initWalletConnect() {
-    this.uri = this.navParams.data.uri;
+  public async initWalletConnect(uri) {
+    this.uri = uri;
     this.loading = true;
 
     try {
@@ -142,27 +128,6 @@ export class WalletConnectPage {
       this.loading = false;
       throw error;
     }
-  }
-
-  public showWallets(): void {
-    this.isOpenSelector = true;
-    const params = {
-      wallets: this.wallets,
-      selectedWalletId: null,
-      title: this.translate.instant('Select an account')
-    };
-    const walletSelector = this.actionSheetProvider.createWalletSelector(
-      params
-    );
-    walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      this.onSelectWalletEvent(wallet);
-    });
-  }
-
-  private onSelectWalletEvent(wallet): void {
-    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-    this.isOpenSelector = false;
   }
 
   public approveSession() {
@@ -423,7 +388,7 @@ export class WalletConnectPage {
      * Move this function to key.ts in BWC and use that function here.
      */
     const newWallet = ethers.Wallet.fromMnemonic(
-      'rhythm egg tube lunar father cattle breeze laugh ask witness real curtain',
+      'input your mnemonic here for testing',
       `m/44'/60'/${account}'/0/0`
     );
     return newWallet;

@@ -25,7 +25,6 @@ import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsModal } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
-import { WalletConnectPage } from '../pages/wallet-connect/wallet-connect';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
@@ -56,6 +55,9 @@ import { SimplexSettingsPage } from '../pages/integrations/simplex/simplex-setti
 // Integrations: Wyre
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-details';
+
+// Integrations: Wallet Connect
+import { WalletConnectPage } from '../pages/wallet-connect/wallet-connect';
 
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
