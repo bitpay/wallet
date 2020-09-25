@@ -57,7 +57,7 @@ import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-details';
 
 // Integrations: Wallet Connect
-import { WalletConnectPage } from '../pages/wallet-connect/wallet-connect';
+import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
 
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';

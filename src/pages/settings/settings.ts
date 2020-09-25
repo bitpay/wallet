@@ -34,8 +34,8 @@ import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
-import { WalletConnectPage } from '../wallet-connect/wallet-connect';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';

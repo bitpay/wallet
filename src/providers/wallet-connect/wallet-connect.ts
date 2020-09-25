@@ -7,7 +7,10 @@ import { ConfigProvider, HomeIntegrationsProvider } from '../../providers';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { IProviderData, supportedProviders } from './eth-providers';
+import {
+  IProviderData,
+  supportedProviders
+} from './web3-providers/web3-providers';
 
 @Injectable()
 export class WalletConnectProvider {

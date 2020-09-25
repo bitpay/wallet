@@ -12,11 +12,11 @@ import {
   PersistenceProvider,
   ProfileProvider,
   WalletProvider
-} from '../../providers';
+} from '../../../providers';
 import {
   IProviderData,
   supportedProviders
-} from '../../providers/wallet-connect/eth-providers';
+} from '../../../providers/wallet-connect/web3-providers/web3-providers';
 
 @Component({
   selector: 'page-wallet-connect',
@@ -35,14 +35,13 @@ export class WalletConnectPage {
     name: string;
     ssl?: boolean;
   } = {
-      description: '',
-      url: '',
-      icons: [],
-      name: '',
-      ssl: false
-    };
+    description: '',
+    url: '',
+    icons: [],
+    name: '',
+    ssl: false
+  };
   connected: boolean = false;
-  chainId: number = 1;
   accounts: string[];
   address: string;
   requests: any[] = [];
@@ -69,7 +68,7 @@ export class WalletConnectPage {
     private translate: TranslateService,
     private viewCtrl: ViewController,
     private walletProvider: WalletProvider
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.accounts = this.getAccounts();
@@ -87,8 +86,7 @@ export class WalletConnectPage {
     if (_.isEmpty(this.wallets)) {
       return;
     } else {
-      if (this.wallets.length == 1) this.onWalletSelect(this.wallets[0]);
-      else this.showWallets();
+      this.onWalletSelect(this.wallets[0]);
     }
   }
 
@@ -103,7 +101,7 @@ export class WalletConnectPage {
     const session = await this.persistenceProvider.getWalletConnect();
 
     if (!session) {
-      await this.updateWallet(this.activeIndex, this.chainId);
+      await this.updateWallet(this.activeIndex, this.activeChainId);
     } else {
       this.walletConnector = new WalletConnect({ session });
 
@@ -112,9 +110,9 @@ export class WalletConnectPage {
       this.address = accounts[0];
 
       this.activeIndex = accounts.indexOf(this.address);
-      this.chainId = this.walletConnector.chainId;
+      this.activeChainId = this.walletConnector.chainId;
 
-      await this.updateWallet(this.activeIndex, this.chainId);
+      await this.updateWallet(this.activeIndex, this.activeChainId);
 
       this.connected = connected;
       this.accounts = accounts;
@@ -168,7 +166,7 @@ export class WalletConnectPage {
   public approveSession() {
     if (this.walletConnector) {
       this.walletConnector.approveSession({
-        chainId: this.chainId,
+        chainId: this.activeChainId,
         accounts: [this.address]
       });
     }
@@ -243,7 +241,7 @@ export class WalletConnectPage {
         this.address = accounts[index];
         this.updateWallet(index, chainId);
         this.connected = true;
-        this.chainId = chainId;
+        this.activeChainId = chainId;
       }
     }
   }
@@ -252,7 +250,7 @@ export class WalletConnectPage {
     chainId?: number;
     activeIndex?: number;
   }) {
-    const _chainId = sessionParams.chainId || this.chainId;
+    const _chainId = sessionParams.chainId || this.activeChainId;
     const _activeIndex = sessionParams.activeIndex || this.activeIndex;
     const address = this.accounts[_activeIndex];
     if (this.walletConnector) {
@@ -270,7 +268,7 @@ export class WalletConnectPage {
   }
 
   public async updateAddress(activeIndex: number) {
-    await this.updateWallet(activeIndex, this.chainId);
+    await this.updateWallet(activeIndex, this.activeChainId);
     await this.updateSession({ activeIndex });
   }
 
@@ -305,7 +303,7 @@ export class WalletConnectPage {
 
       if (this.walletConnector) {
         if (!this.getWallet()) {
-          await this.updateWallet(this.activeIndex, this.chainId);
+          await this.updateWallet(this.activeIndex, this.activeChainId);
         }
 
         let transaction = null;

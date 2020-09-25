@@ -62,6 +62,7 @@ import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { SimplexBuyPage } from '../pages/integrations/simplex/simplex-buy/simplex-buy';
+import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -71,7 +72,6 @@ import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
-import { WalletConnectPage } from '../pages/wallet-connect/wallet-connect';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
