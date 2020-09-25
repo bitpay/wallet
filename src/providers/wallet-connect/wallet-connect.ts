@@ -75,7 +75,7 @@ export class WalletConnectProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'walletConnect',
-      title: this.translate.instant('Wallet Connect'),
+      title: this.translate.instant('WalletConnect'),
       icon: 'assets/img/wallet-connect.svg',
       showIcon: true,
       logo: null,
