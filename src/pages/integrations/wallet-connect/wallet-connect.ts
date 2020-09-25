@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import WalletConnect from '@walletconnect/browser';
+import { convertHexToNumber } from "@walletconnect/utils";
 import * as ethers from 'ethers';
 import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -37,12 +38,12 @@ export class WalletConnectPage {
     name: string;
     ssl?: boolean;
   } = {
-    description: '',
-    url: '',
-    icons: [],
-    name: '',
-    ssl: false
-  };
+      description: '',
+      url: '',
+      icons: [],
+      name: '',
+      ssl: false
+    };
   connected: boolean = false;
   accounts: string[];
   address: string;
@@ -63,7 +64,7 @@ export class WalletConnectPage {
     private translate: TranslateService,
     private walletProvider: WalletProvider,
     private walletConnectProvider: WalletConnectProvider
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.accounts = this.getAccounts();
@@ -114,12 +115,13 @@ export class WalletConnectPage {
   }
 
   public async initWalletConnect() {
-    this.uri = this.navParams.data.uri;
+    // this.uri = this.navParams.data.uri;
+    this.uri =
+      'wc:506b0a55-aab8-4753-93bd-ccdc0f6d65f8@1?bridge=https://bridge.walletconnect.org&key=f43f276ad4d14a68b0e7f542dc7cb63a2a27f5773d2fc508a9e6abeb3c210186';
     this.loading = true;
 
     try {
       this.walletConnector = new WalletConnect({ uri: this.uri });
-      await this.persistenceProvider.setWalletConnect(this.walletConnector);
 
       if (!this.walletConnector.connected) {
         await this.walletConnector.createSession();
@@ -155,12 +157,15 @@ export class WalletConnectPage {
     this.isOpenSelector = false;
   }
 
-  public approveSession() {
+  public async approveSession() {
     if (this.walletConnector) {
       this.walletConnector.approveSession({
         chainId: this.activeChainId,
         accounts: [this.address]
       });
+      await this.persistenceProvider.setWalletConnect(
+        this.walletConnector.session
+      );
     }
   }
 
@@ -170,11 +175,11 @@ export class WalletConnectPage {
     }
   }
 
-  public killSession() {
+  public async killSession() {
     if (this.walletConnector) {
       this.walletConnector.killSession();
+      await this.persistenceProvider.removeWalletConnect();
     }
-    this.initWallet();
   }
 
   public subscribeToEvents() {
@@ -204,8 +209,22 @@ export class WalletConnectPage {
           throw error;
         }
         const requests = this.requests;
+
+        // Sample Request
+        // {
+        // id: 1601004477618457
+        // jsonrpc: "2.0"
+        // method: "eth_sendTransaction"
+        // params: Array(1)
+        // 0:
+        // data: "0x095ea7b30000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        // from: "0xf4e3dfd2c9a951928f8fd53a782e364945047d11"
+        // gas: "0xd78d"
+        // to: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+        // }
         requests.push(payload);
         this.requests = requests;
+        this.renderEthereumRequests(payload);
       });
 
       this.walletConnector.on('connect', (error, _payload) => {
@@ -224,7 +243,7 @@ export class WalletConnectPage {
           throw error;
         }
 
-        this.initWallet();
+        this.connected = false;
       });
 
       if (this.walletConnector.connected) {
@@ -298,32 +317,52 @@ export class WalletConnectPage {
           await this.updateWallet(this.activeIndex, this.activeChainId);
         }
 
-        let transaction = null;
         let addressRequested = null;
+        let dataToSign = null;
+        let txOpts = this.displayRequest.params[0];
+        addressRequested = this.displayRequest.params[0].from;
+        const txProposal = txOpts;
 
         switch (this.displayRequest.method) {
           case 'eth_sendTransaction':
-            transaction = this.displayRequest.params[0];
-            addressRequested = transaction.from;
             if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
+              // redirect to confirm page with navParams
               result = await this.walletProvider.broadcastTx(
                 this.wallet,
-                transaction
+                txProposal
               );
             } else {
               errorMsg = 'Address requested does not match active account';
             }
             break;
           case 'eth_signTransaction':
-            transaction = this.displayRequest.params[0];
-            addressRequested = transaction.from;
             if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
-              result = await this.walletProvider.publishAndSign(
+              const password = ''; // this.walletProvider.prepare implement getpassword here
+              result = await this.walletProvider.signTx(
                 this.wallet,
-                transaction
+                txProposal,
+                password
               );
             } else {
               errorMsg = 'Address requested does not match active account';
+            }
+            break;
+          case "eth_sign":
+            dataToSign = this.displayRequest.params[1];
+            addressRequested = this.displayRequest.params[0];
+            if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
+              result = ''; // await this.walletProvider.signMessage(dataToSign);
+            } else {
+              errorMsg = "Address requested does not match active account";
+            }
+            break;
+          case "personal_sign":
+            dataToSign = this.displayRequest.params[0];
+            addressRequested = this.displayRequest.params[1];
+            if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
+              result = ''; // await this.walletProvider.signPersonalMessage(dataToSign); 
+            } else {
+              errorMsg = "Address requested does not match active account";
             }
             break;
           default:
@@ -357,6 +396,70 @@ export class WalletConnectPage {
     }
 
     this.closeRequest();
+  }
+
+  private renderEthereumRequests(payload) {
+    let params = [{ label: "Method", value: payload.method }];
+
+    switch (payload.method) {
+      case "eth_sendTransaction":
+      case "eth_signTransaction":
+        params = [
+          ...params,
+          { label: "From", value: payload.params[0].from },
+          { label: "To", value: payload.params[0].to },
+          {
+            label: "Gas Limit",
+            value: payload.params[0].gas
+              ? convertHexToNumber(payload.params[0].gas)
+              : payload.params[0].gasLimit
+                ? convertHexToNumber(payload.params[0].gasLimit)
+                : "",
+          },
+          {
+            label: "Gas Price",
+            value: convertHexToNumber(payload.params[0].gasPrice),
+          },
+          {
+            label: "Nonce",
+            value: convertHexToNumber(payload.params[0].nonce),
+          },
+          {
+            label: "Value",
+            value: convertHexToNumber(payload.params[0].value),
+          },
+          { label: "Data", value: payload.params[0].data },
+        ];
+        break;
+
+      case "eth_sign":
+        params = [
+          ...params,
+          { label: "Address", value: payload.params[0] },
+          { label: "Message", value: payload.params[1] },
+        ];
+        break;
+      case "personal_sign":
+        params = [
+          ...params,
+          { label: "Address", value: payload.params[1] },
+          {
+            label: "Message",
+            value: convertHexToUtf8IfPossible(payload.params[0]),
+          },
+        ];
+        break;
+      default:
+        params = [
+          ...params,
+          {
+            label: "params",
+            value: JSON.stringify(payload.params, null, "\t"),
+          },
+        ];
+        break;
+    }
+    return params;
   }
 
   public updateWallet(index: number, chainId: number) {

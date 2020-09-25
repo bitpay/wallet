@@ -854,11 +854,15 @@ export class PersistenceProvider {
   }
 
   getWalletConnect() {
-    return this.storage.get('WalletConnect');
+    return this.storage.get('walletConnectSession');
   }
 
   setWalletConnect(session) {
-    return this.storage.set('WalletConnect', session);
+    return this.storage.set('walletConnectSession', session);
+  }
+
+  removeWalletConnect() {
+    return this.storage.remove('walletConnectSession');
   }
 
   setWaitingListStatus(onList: string) {
