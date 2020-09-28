@@ -2,6 +2,7 @@
 
 /* Native modules */
 export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+export { AppleWallet } from '@ionic-native/apple-wallet';
 export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
 export { FCMNG } from 'fcm-ng';
@@ -24,6 +25,7 @@ export { AddressProvider } from '../providers/address/address';
 export { AnalyticsProvider } from '../providers/analytics/analytics';
 export { AppIdentityProvider } from '../providers/app-identity/app-identity';
 export { AppProvider } from '../providers/app/app';
+export { AppleWalletProvider } from '../providers/apple-wallet/apple-wallet';
 export { BackupProvider } from '../providers/backup/backup';
 export {
   BitPayAccountProvider

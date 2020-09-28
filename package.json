@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "11.0.4",
+  "version": "11.0.5",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -103,6 +103,7 @@
     "@angular/platform-browser-dynamic": "5.2.10",
     "@angular/tsc-wrapped": "4.4.6",
     "@ionic-native/android-fingerprint-auth": "4.14.0",
+    "@ionic-native/apple-wallet": "4.20.0",
     "@ionic-native/clipboard": "4.14.0",
     "@ionic-native/core": "4.14.0",
     "@ionic-native/device": "4.14.0",
@@ -130,6 +131,7 @@
     "chart.js": "2.8.0",
     "cordova": "9.0.0",
     "cordova-android": "9.0.0",
+    "cordova-apple-wallet": "1.0.2",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "5.1.0",
     "cordova-ios": "5.1.1",
@@ -262,7 +264,8 @@
       "cordova-launch-review": {},
       "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-advanced-http": {},
-      "cordova-plugin-theme-detection": {}
+      "cordova-plugin-theme-detection": {},
+      "cordova-apple-wallet": {}
     },
     "platforms": [
       "android",
