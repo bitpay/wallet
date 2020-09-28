@@ -16,7 +16,6 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
-  AppleWalletProvider,
   BitPayIdProvider,
   BitPayProvider,
   GiftCardProvider,
@@ -148,8 +147,7 @@ export class CopayApp {
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
-    private dynamicLinksProvider: DynamicLinksProvider,
-    private appleWalletProvider: AppleWalletProvider
+    private dynamicLinksProvider: DynamicLinksProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -264,16 +262,6 @@ export class CopayApp {
       // Only for iOS
       if (this.platform.is('ios')) {
         this.statusBar.overlaysWebView(true);
-
-        // Apple Pay
-        this.appleWalletProvider
-          .isAvailable()
-          .then(res => {
-            this.logger.debug('Apple Wallet is available? ', res);
-          })
-          .catch(e => {
-            this.logger.error('Apple Wallet has an error', e);
-          });
       }
 
       // Subscribe Resume
