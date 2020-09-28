@@ -131,7 +131,7 @@
     "chart.js": "2.8.0",
     "cordova": "9.0.0",
     "cordova-android": "9.0.0",
-    "cordova-apple-wallet": "3.4.0",
+    "cordova-apple-wallet": "1.0.2",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "5.1.0",
     "cordova-ios": "5.1.1",
