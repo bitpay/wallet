@@ -856,6 +856,9 @@ export class IABCardProvider {
      * data - cardholderName, primaryAccountSuffix
      * id - card Id
      * */
+    this.logger.log(
+      `appleWallet - startAddPaymentPass - ${JSON.stringify(event)}`
+    );
     const { data, id } = event.data.params;
 
     // ios handler
@@ -863,10 +866,13 @@ export class IABCardProvider {
       try {
         // check if current ios version supports apple wallet
         const isAvailable = await this.appleWalletProvider.isAvailable();
+
         if (!isAvailable) {
+          this.logger.log('appleWallet - startAddPaymentPass - not available');
           this.sendMessage({
             message: 'addPaymentPass',
             payload: {
+              id,
               error: `ios version (${
                 this.device.version
               }) does not support apple wallet`
@@ -879,7 +885,7 @@ export class IABCardProvider {
         const {
           data: certs
         } = await this.appleWalletProvider.startAddPaymentPass(data);
-
+        this.logger.log('appleWallet - startAddPaymentPass - success');
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
         this.sendMessage({
           message: 'addPaymentPass',
@@ -889,7 +895,7 @@ export class IABCardProvider {
           }
         });
       } catch (err) {
-        this.logger.error(err);
+        this.logger.error(`appleWallet - startAddPaymentPass - ${err}`);
         this.sendMessage({
           message: 'addPaymentPass',
           payload: {
@@ -914,6 +920,9 @@ export class IABCardProvider {
      * data - activationData, encryptedPassData, wrappedKey
      * id - card Id
      * */
+    this.logger.log(
+      `appleWallet - completeAddPaymentPass - ${JSON.stringify(event)}`
+    );
     const { data, id } = event.data.params;
 
     try {
@@ -930,6 +939,7 @@ export class IABCardProvider {
         payload
       });
     } catch (err) {
+      this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
       this.sendMessage({
         message: 'addPaymentPass',
         payload: {
