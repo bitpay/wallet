@@ -262,6 +262,10 @@ export class IABCardProvider {
           });
           break;
 
+        case 'checkProvisioningAvailability':
+          this.checkProvisioningAvailability();
+          break;
+
         case 'startAddPaymentPass':
           this.startAddPaymentPass(event);
           break;
@@ -851,6 +855,41 @@ export class IABCardProvider {
     });
   }
 
+  async checkProvisioningAvailability() {
+    try {
+      // check if current ios version supports apple wallet
+      const isAvailable = await this.appleWalletProvider.isAvailable();
+
+      let payload: { isAvailable: boolean; error?: string } = {
+        isAvailable
+      };
+
+      if (!isAvailable) {
+        this.logger.log('appleWallet - startAddPaymentPass - not available');
+        payload = {
+          ...payload,
+          error: `ios version (${
+            this.device.version
+          }) does not support apple wallet`
+        };
+      }
+
+      this.sendMessage({
+        message: 'setProvisioningAvailability',
+        payload
+      });
+    } catch (err) {
+      this.logger.error(`appleWallet - checkProvisioningAvailability - ${err}`);
+      this.sendMessage({
+        message: 'setProvisioningAvailability',
+        payload: {
+          isAvailable: false,
+          error: err
+        }
+      });
+    }
+  }
+
   async startAddPaymentPass(event) {
     /* FROM CARD IAB
      * data - cardholderName, primaryAccountSuffix
@@ -864,23 +903,6 @@ export class IABCardProvider {
     // ios handler
     if (this.platform.is('ios')) {
       try {
-        // check if current ios version supports apple wallet
-        const isAvailable = await this.appleWalletProvider.isAvailable();
-
-        if (!isAvailable) {
-          this.logger.log('appleWallet - startAddPaymentPass - not available');
-          this.sendMessage({
-            message: 'addPaymentPass',
-            payload: {
-              id,
-              error: `ios version (${
-                this.device.version
-              }) does not support apple wallet`
-            }
-          });
-          return;
-        }
-
         // get certs
         const {
           data: certs
