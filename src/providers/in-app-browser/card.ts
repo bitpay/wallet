@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Device } from '@ionic-native/device';
 import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
-import { Events } from 'ionic-angular';
+import { Events, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
+import { AppleWalletProvider } from '../../providers/apple-wallet/apple-wallet';
 import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
 import { ConfigProvider } from '../../providers/config/config';
 import { InAppBrowserProvider } from '../../providers/in-app-browser/in-app-browser';
@@ -55,7 +57,10 @@ export class IABCardProvider {
     private http: HttpClient,
     private externalLinkProvider: ExternalLinkProvider,
     private themeProvider: ThemeProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private appleWalletProvider: AppleWalletProvider,
+    private platform: Platform,
+    private device: Device
   ) {}
 
   public setNetwork(network: string) {
@@ -255,6 +260,18 @@ export class IABCardProvider {
             message: 'hasWalletWithFunds',
             payload: hasWalletWithFunds
           });
+          break;
+
+        case 'checkProvisioningAvailability':
+          this.checkProvisioningAvailability();
+          break;
+
+        case 'startAddPaymentPass':
+          this.startAddPaymentPass(event);
+          break;
+
+        case 'completeAddPaymentPass':
+          this.completeAddPaymentPass(event);
           break;
 
         default:
@@ -836,5 +853,122 @@ export class IABCardProvider {
         force: true
       });
     });
+  }
+
+  async checkProvisioningAvailability() {
+    try {
+      // check if current ios version supports apple wallet
+      const isAvailable = await this.appleWalletProvider.isAvailable();
+
+      let payload: { isAvailable: boolean; error?: string } = {
+        isAvailable
+      };
+
+      if (!isAvailable) {
+        this.logger.log('appleWallet - startAddPaymentPass - not available');
+        payload = {
+          ...payload,
+          error: `ios version (${
+            this.device.version
+          }) does not support apple wallet`
+        };
+      }
+
+      this.sendMessage({
+        message: 'setProvisioningAvailability',
+        payload
+      });
+    } catch (err) {
+      this.logger.error(`appleWallet - checkProvisioningAvailability - ${err}`);
+      this.sendMessage({
+        message: 'setProvisioningAvailability',
+        payload: {
+          isAvailable: false,
+          error: err
+        }
+      });
+    }
+  }
+
+  async startAddPaymentPass(event) {
+    /* FROM CARD IAB
+     * data - cardholderName, primaryAccountSuffix
+     * id - card Id
+     * */
+    this.logger.log(
+      `appleWallet - startAddPaymentPass - ${JSON.stringify(event)}`
+    );
+    const { data, id } = event.data.params;
+
+    // ios handler
+    if (this.platform.is('ios')) {
+      try {
+        // get certs
+        const {
+          data: certs
+        } = await this.appleWalletProvider.startAddPaymentPass(data);
+        this.logger.log('appleWallet - startAddPaymentPass - success');
+        // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
+        this.sendMessage({
+          message: 'addPaymentPass',
+          payload: {
+            id,
+            certs
+          }
+        });
+      } catch (err) {
+        this.logger.error(`appleWallet - startAddPaymentPass - ${err}`);
+        this.sendMessage({
+          message: 'addPaymentPass',
+          payload: {
+            id,
+            error: 'add payment pass failed'
+          }
+        });
+      }
+    } else {
+      this.sendMessage({
+        message: 'addPaymentPass',
+        payload: {
+          id,
+          error: 'platform not supported'
+        }
+      });
+    }
+  }
+
+  async completeAddPaymentPass(event) {
+    /* FROM CARD IAB
+     * data - activationData, encryptedPassData, wrappedKey
+     * id - card Id
+     * */
+    this.logger.log(
+      `appleWallet - completeAddPaymentPass - ${JSON.stringify(event)}`
+    );
+    const { data, id } = event.data.params;
+
+    try {
+      const res = await this.appleWalletProvider.completeAddPaymentPass(data);
+      let payload: { error?: string; paired?: boolean; id: string } = { id };
+
+      payload =
+        res === 'success'
+          ? { ...payload, paired: true }
+          : { ...payload, error: 'completeAddPaymentPass failed' };
+
+      this.sendMessage({
+        message: 'addPaymentPass',
+        payload
+      });
+    } catch (err) {
+      this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
+      this.sendMessage({
+        message: 'addPaymentPass',
+        payload: {
+          id,
+          error: 'completeAddPaymentPass failed'
+        }
+      });
+    }
   }
 }
