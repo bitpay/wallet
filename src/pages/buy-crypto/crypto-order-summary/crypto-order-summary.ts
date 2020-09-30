@@ -92,9 +92,7 @@ export class CryptoOrderSummaryPage {
       this.paymentMethod = this.navParams.data.paymentMethod;
     } else {
       this.logger.debug('No payment method selected. Setting to default.');
-      this.paymentMethod = this.platformProvider.isIOS
-        ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
-        : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+      this.setDefaultPaymentMethod();
     }
 
     this.selectedCountry = {
@@ -196,11 +194,26 @@ export class CryptoOrderSummaryPage {
     modal.onDidDismiss(data => {
       if (data) {
         this.selectedCountry = data.selectedCountry;
+        this.checkPaymentMethod();
       }
     });
   }
 
+  private setDefaultPaymentMethod() {
+    this.paymentMethod = this.platformProvider.isIOS
+      ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
+      : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+  }
+
   private checkPaymentMethod() {
+    if (
+      this.paymentMethod.method == 'sepaBankTransfer' &&
+      !this.selectedCountry.EUCountry
+    ) {
+      this.setDefaultPaymentMethod();
+      this.showPaymentMethodWarning('country');
+      return;
+    }
     if (
       this.buyCryptoProvider.isPaymentMethodSupported(
         'simplex',
@@ -225,17 +238,18 @@ export class CryptoOrderSummaryPage {
           this.currency
         }. Show warning.`
       );
-      this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
-      this.showPaymentMethodWarning();
+      this.setDefaultPaymentMethod();
+      this.showPaymentMethodWarning('coin');
     }
   }
 
-  private showPaymentMethodWarning(): void {
+  private showPaymentMethodWarning(reason: string): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'payment-method-changed',
       {
         coin: this.coin,
-        currency: this.currency
+        currency: this.currency,
+        reason
       }
     );
     infoSheet.present();
@@ -248,6 +262,7 @@ export class CryptoOrderSummaryPage {
         paymentMethod: this.paymentMethod.method,
         useAsModal: true,
         coin: this.coin,
+        selectedCountry: this.selectedCountry,
         currency: this.currency
       },
       {

@@ -41,6 +41,16 @@ export class BuyCryptoProvider {
         },
         enabled: this.platformProvider.isIOS
       },
+      sepaBankTransfer: {
+        label: this.translate.instant('SEPA Bank Transfer'),
+        method: 'sepaBankTransfer',
+        imgSrc: 'assets/img/buy-crypto/icon-bank.svg',
+        supportedExchanges: {
+          simplex: true, // EU Only
+          wyre: false
+        },
+        enabled: true
+      },
       creditCard: {
         label: this.translate.instant('Credit Card'),
         method: 'creditCard',
