@@ -128,6 +128,11 @@
         </array>
       </config-file>
 
+      <!-- Apple Pay Support -->
+      <config-file mode="add" parent="com.apple.developer.payment-pass-provisioning" target="Entitlements-Release.plist">
+        <true />
+      </config-file>
+
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60.png" width="60" height="60" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@2x.png" width="120" height="120" />
