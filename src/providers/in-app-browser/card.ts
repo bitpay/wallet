@@ -895,7 +895,7 @@ export class IABCardProvider {
      * data - cardholderName, primaryAccountSuffix
      * id - card Id
      * */
-    this.logger.log(
+    this.logger.debug(
       `appleWallet - startAddPaymentPass - ${JSON.stringify(event)}`
     );
     const { data, id } = event.data.params;
@@ -907,7 +907,12 @@ export class IABCardProvider {
         const {
           data: certs
         } = await this.appleWalletProvider.startAddPaymentPass(data);
-        this.logger.log('appleWallet - startAddPaymentPass - success');
+
+        this.sendMessage({
+          message: 'close'
+        });
+
+        this.logger.debug('appleWallet - startAddPaymentPass - success');
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
         this.sendMessage({
           message: 'addPaymentPass',
@@ -925,6 +930,7 @@ export class IABCardProvider {
             error: 'add payment pass failed'
           }
         });
+        this.show();
       }
     } else {
       this.sendMessage({
@@ -934,6 +940,7 @@ export class IABCardProvider {
           error: 'platform not supported'
         }
       });
+      this.show();
     }
   }
 
@@ -942,7 +949,7 @@ export class IABCardProvider {
      * data - activationData, encryptedPassData, wrappedKey
      * id - card Id
      * */
-    this.logger.log(
+    this.logger.debug(
       `appleWallet - completeAddPaymentPass - ${JSON.stringify(event)}`
     );
     const { data, id } = event.data.params;
@@ -955,11 +962,11 @@ export class IABCardProvider {
         res === 'success'
           ? { ...payload, paired: true }
           : { ...payload, error: 'completeAddPaymentPass failed' };
-
       this.sendMessage({
         message: 'addPaymentPass',
         payload
       });
+      this.show();
     } catch (err) {
       this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
       this.sendMessage({
@@ -969,6 +976,7 @@ export class IABCardProvider {
           error: 'completeAddPaymentPass failed'
         }
       });
+      this.show();
     }
   }
 }
