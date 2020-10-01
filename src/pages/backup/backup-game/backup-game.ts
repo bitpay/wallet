@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 
 // pages
 import { FinishModalPage } from '../../finish/finish';
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -195,7 +196,9 @@ export class BackupGamePage {
     });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      this.navParams.data.isOnboardingFlow
+        ? this.navCtrl.push(DisclaimerPage, { keyId: this.keyId })
+        : this.navCtrl.popToRoot();
     });
   }
 

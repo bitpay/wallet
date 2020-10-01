@@ -516,26 +516,6 @@ describe('KeyProvider', () => {
     });
   });
 
-  describe('Function: encrypt new key', () => {
-    it('Should call askPassword to encrypt key', async () => {
-      await persistenceProvider.setKeys([
-        {
-          id: 'id1',
-          xPrivKey: 'xPrivKey',
-          version: 1
-        }
-      ]);
-      await keyProvider.load();
-      let spyAskPassword = spyOn<any>(keyProvider, 'askPassword');
-      spyAskPassword.and.returnValue(Promise.resolve('password1'));
-      const key = keyProvider.getKey('id1');
-      keyProvider.encryptNewKey(key).catch(err => {
-        expect(err).toBeUndefined();
-      });
-      expect(spyAskPassword).toHaveBeenCalled();
-    });
-  });
-
   describe('Function: encrypt', () => {
     it('Should call askPassword to encrypt key', async () => {
       await persistenceProvider.setKeys([

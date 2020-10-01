@@ -2,6 +2,7 @@ import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
 import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
 import { EmailComponent } from '../../components/email-component/email-component';
+import { EncryptPasswordComponent } from '../../components/encrypt-password/encrypt-password';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
@@ -60,7 +61,11 @@ export type InfoSheetType =
   | 'no-wallets-available'
   | 'recovery-phrase-length'
   | 'no-wallets-error'
-  | 'wyre-error';
+  | 'wyre-error'
+  | 'protect-money'
+  | 'pincode-info'
+  | 'key-verification-required'
+  | 'encrypt-password-warning';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -174,6 +179,11 @@ export class ActionSheetProvider {
       null,
       params
     ).instance;
+  }
+
+  public createEncryptPasswordComponent(): EncryptPasswordComponent {
+    return this.setupSheet<EncryptPasswordComponent>(EncryptPasswordComponent)
+      .instance;
   }
 
   private setupSheet<T extends ActionSheetParent>(

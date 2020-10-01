@@ -1,42 +1,45 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Slides } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
-import { TabsPage } from '../../tabs/tabs';
-
-import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
+// Providers
+import { AppProvider } from '../../../providers/app/app';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
+import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+
+// Pages
+import { AddFundsPage } from '../../../pages/onboarding/add-funds/add-funds';
+import { TabsPage } from '../../../pages/tabs/tabs';
 
 @Component({
   selector: 'page-disclaimer',
   templateUrl: 'disclaimer.html'
 })
 export class DisclaimerPage {
-  @ViewChild('walletGroupOnboardingSlides')
-  walletGroupOnboardingSlides: Slides;
-
+  private unregisterBackButtonAction;
   public accepted;
   public terms;
-  public hasEmail: boolean;
+  public appName: string;
 
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
-    private emailProvider: EmailNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private iabCardProvider: IABCardProvider,
-    private events: Events
+    private events: Events,
+    private navParams: NavParams,
+    private platform: Platform,
+    private appProvider: AppProvider
   ) {
-    this.hasEmail = this.emailProvider.getEmailIfEnabled() ? true : false;
+    this.appName = this.appProvider.info.nameCase;
+
     this.accepted = {
       first: false,
-      second: false,
-      third: this.hasEmail ? false : true
+      second: false
     };
     this.terms = {
       accepted: false
@@ -45,27 +48,10 @@ export class DisclaimerPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: DisclaimerPage');
+    this.initializeBackButtonHandler();
   }
-
-  ionViewWillLoad() {
-    this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
-  }
-
-  public slideChanged() {
-    // Disable first and last slides bounce
-    let currentIndex = this.walletGroupOnboardingSlides.getActiveIndex();
-    if (currentIndex == 0)
-      this.walletGroupOnboardingSlides.lockSwipeToPrev(true);
-    if (currentIndex > 0)
-      this.walletGroupOnboardingSlides.lockSwipeToPrev(false);
-    if (currentIndex >= 3)
-      this.walletGroupOnboardingSlides.lockSwipeToNext(true);
-    if (currentIndex < 3)
-      this.walletGroupOnboardingSlides.lockSwipeToNext(false);
-  }
-
-  public nextSlide(): void {
-    this.walletGroupOnboardingSlides.slideNext();
+  ionViewWillLeave() {
+    this.unregisterBackButtonAction && this.unregisterBackButtonAction();
   }
 
   selectTerms() {
@@ -77,23 +63,6 @@ export class DisclaimerPage {
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Wallet Terms of Use');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
-  }
-
-  openPrivacyPolicy() {
-    let url = 'https://bitpay.com/about/privacy';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Privacy Policy');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
@@ -127,8 +96,18 @@ export class DisclaimerPage {
         }, 400);
       }
     });
+    this.appName == 'Copay'
+      ? this.goToHomePage()
+      : this.navCtrl.push(AddFundsPage, { keyId: this.navParams.data.keyId });
+  }
 
-    this.navCtrl.setRoot(TabsPage);
-    this.navCtrl.popToRoot({ animate: false });
+  private goToHomePage(): void {
+    this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
+  }
+
+  private initializeBackButtonHandler(): void {
+    this.unregisterBackButtonAction = this.platform.registerBackButtonAction(
+      () => {}
+    );
   }
 }

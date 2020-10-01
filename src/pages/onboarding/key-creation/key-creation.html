@@ -1,0 +1,32 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="key-creation">
+    <div class="key-creation-info">
+      <div class="img-container">
+        <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
+      </div>
+      <div class="info">
+        <div class="title" translate>Take control of your money</div>
+        <div class="text">
+          {{'Unlike bank accounts and crypto exchanges, with {appName} your crypto funds are accesible only by knowledge of a unique secret key phrase' | translate:{appName: appName} }}
+        </div>
+        <div class="text">
+          {{'Not even {appName} can access your money.' | translate:{appName: appName} }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer no-border>
+  <ion-toolbar>
+    <button ion-button class="button-standard" (click)="goToLockMethodPage('SelectCurrencyPage')">
+      {{'Create new key' | translate}}
+    </button>
+    <button ion-button clear color="primary" class="button-standard" (click)="goToLockMethodPage('ImportWalletPage')">
+      {{'Import from backup' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

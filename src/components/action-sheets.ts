@@ -1,6 +1,7 @@
 import { ActionSheetComponent } from './action-sheet/action-sheet';
 import { ChooseFeeLevelComponent } from './choose-fee-level/choose-fee-level';
 import { EmailComponent } from './email-component/email-component';
+import { EncryptPasswordComponent } from './encrypt-password/encrypt-password';
 import { IncomingDataMenuComponent } from './incoming-data-menu/incoming-data-menu';
 import { INFO_SHEET_COMPONENTS } from './info-sheet/info-sheet';
 import { MemoComponent } from './memo-component/memo-component';
@@ -21,5 +22,6 @@ export const ACTION_SHEET_COMPONENTS = [
   ChooseFeeLevelComponent,
   EmailComponent,
   PhoneSheet,
-  WalletTabOptionsComponent
+  WalletTabOptionsComponent,
+  EncryptPasswordComponent
 ];

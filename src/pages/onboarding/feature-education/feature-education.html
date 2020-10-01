@@ -1,0 +1,57 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!isCopay" class="onboarding-slides">
+    <ion-slide>
+      <div class="slide-info">
+        <div class="img-container">
+          <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
+        </div>
+        <div class="info">
+          <div class="title" translate>Store, manage, and protect your crypto.</div>
+          <div class="text" translate>
+            Multisig and key encryption help you always keep your funds secure.
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="slide-info">
+        <div class="img-container">
+          <img src="assets/img/onboarding-tour2.svg" />
+        </div>
+        <div class="info">
+          <div class="title" translate>Turn crypto into dollars using our BitPay Card.</div>
+          <div class="text" translate>
+            Load dollars and spend crypto with our Debit card in seconds.
+            <div class="note">
+              *Currently only available in the US
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="slide-info">
+        <div class="img-container">
+          <img class="tour-3" src="assets/img/onboarding-tour3.svg" />
+        </div>
+        <div class="info">
+          <div class="title" translate>Spend crypto at your favorite stores.</div>
+          <div class="text" translate>
+            Use crypto to buy store credit at places like Amazon, Uber, and Spotify.
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+<ion-footer no-border>
+  <ion-toolbar>
+    <button ion-button class="button-standard" (click)="nextSlide()">
+      {{featureEducationSlides.getActiveIndex() === 2 || (featureEducationSlides.getActiveIndex() === 0 && isCopay) ? 'Start' : 'Continue' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar transparent>
     <ion-buttons right>
-      <button (click)="close(true)" ion-button color="primary" *ngIf="action === 'pinSetUp' || action === 'lockSetUp'">
+      <button (click)="close(true)" ion-button color="primary" *ngIf="(action === 'pinSetUp' || action === 'lockSetUp') && isCordova">
         {{'Cancel' | translate}}
       </button>
     </ion-buttons>
@@ -19,11 +19,6 @@
       <div *ngIf="disableButtons">
         <span class="message" *ngIf="expires" translate>Try again in {{expires}}</span>
       </div>
-    </div>
-    <div class="icon-container">
-      <ion-icon class="app-icon">
-        <img src="assets/img/app/icon-flat.svg" />
-      </ion-icon>
     </div>
   </div>
   <div class="code-wrapper">

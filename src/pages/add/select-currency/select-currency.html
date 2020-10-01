@@ -1,4 +1,4 @@
-<wide-header-page title="{{title}}">
+<wide-header-page title="{{title}}" [hideBackButton]="isOnboardingFlow">
   <div page-content *ngIf="!isZeroState">
     <span class="list-subtitle" translate>Featured Currencies</span>
     <ion-list class="settings-list bp-list">
@@ -53,7 +53,7 @@
     <button ion-button class="button-standard" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth && !coinsSelected.xrp" (click)="createWallets()">
       {{'Create' | translate}}
     </button>
-    <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="isOnboardingFlow">
+    <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="!isOnboardingFlow">
       {{ 'Import existing wallet' | translate }}
     </button>
   </div>

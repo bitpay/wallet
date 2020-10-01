@@ -68,12 +68,12 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-later-warning'" type="warning">
-      <span sheet-title-text translate>Do this later?</span>
+      <span sheet-title-text translate>Are you sure?</span>
       <span sheet-text translate>
-        Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings.
+        Receiving funds will be temporarly disabled until you can verify your key has been stored away securely. You can always complete this later from your wallet settings.
       </span>
-      <span sheet-button-text translate>Ok</span>
-      <span sheet-second-button-text translate>Continue Backup</span>
+      <span sheet-button-text translate>I'M SURE</span>
+      <span sheet-second-button-text translate>GO BACK</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
@@ -420,6 +420,7 @@
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
       <span sheet-title-text translate>No wallet available</span>
       <span sheet-text translate>
@@ -438,6 +439,40 @@
       </span>
       <span sheet-button-text translate>Visit Help Center</span>
       <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'protect-money'" type="safeguard">
+      <span sheet-title-text translate>Protect your money</span>
+      <span sheet-text translate>
+        Let's ensure no one can easily access your crypto funds when you're away from your device by adding biometric security.
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'pincode-info'" type="safeguard">
+      <span sheet-title-text translate>Maybe a pincode instead?</span>
+      <span sheet-text translate>
+        A pincode will ensure no one can easily access your crypto funds when you're away from your device.
+      </span>
+      <span sheet-button-text translate>Continue</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'key-verification-required'" type="info">
+      <span sheet-title-text translate>Key verification required</span>
+      <span sheet-text translate>
+        In order to begin purchasing and receiving cryptocurrencies you will need to verify your key. This could take up to 3 minutes long to complete.
+      </span>
+      <span sheet-button-text translate>VERIFY NOW</span>
+      <span sheet-second-button-text translate>DO THIS LATER</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'encrypt-password-warning'" type="warning">
+      <span sheet-title-text translate>Are you sure?</span>
+      <span sheet-text translate>
+        Without encryption, a thief or another application on this device may be able to access your funds.
+      </span>
+      <span sheet-button-text translate>I'M SURE</span>
+      <span sheet-second-button-text translate>GO BACK</span>
     </info-sheet-template>
   </div>
 </action-sheet>
