@@ -903,14 +903,11 @@ export class IABCardProvider {
     // ios handler
     if (this.platform.is('ios')) {
       try {
+        this.hide();
         // get certs
         const {
           data: certs
         } = await this.appleWalletProvider.startAddPaymentPass(data);
-
-        this.sendMessage({
-          message: 'close'
-        });
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
@@ -930,7 +927,8 @@ export class IABCardProvider {
             error: 'add payment pass failed'
           }
         });
-        this.show();
+        await new Promise(res => setTimeout(res, 300));
+        this.cardIAB_Ref.show();
       }
     } else {
       this.sendMessage({
@@ -940,7 +938,8 @@ export class IABCardProvider {
           error: 'platform not supported'
         }
       });
-      this.show();
+      await new Promise(res => setTimeout(res, 300));
+      this.cardIAB_Ref.show();
     }
   }
 
@@ -966,7 +965,8 @@ export class IABCardProvider {
         message: 'addPaymentPass',
         payload
       });
-      this.show();
+      await new Promise(res => setTimeout(res, 300));
+      this.cardIAB_Ref.show();
     } catch (err) {
       this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
       this.sendMessage({
@@ -976,7 +976,8 @@ export class IABCardProvider {
           error: 'completeAddPaymentPass failed'
         }
       });
-      this.show();
+      await new Promise(res => setTimeout(res, 300));
+      this.cardIAB_Ref.show();
     }
   }
 }
