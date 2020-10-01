@@ -356,7 +356,10 @@ export class CopayApp {
     ) {
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
-      this.logger.log(`IAB host -> ${host}`);
+
+      const experimentHost = await this.persistenceProvider.getCardExperimentHost();
+      this.logger.log(`IAB host -> ${experimentHost || host}`);
+
       // preloading the view
 
       setTimeout(() => {
@@ -365,7 +368,7 @@ export class CopayApp {
           .createIABInstance(
             'card',
             `${CARD_IAB_CONFIG},OverrideUserAgent=${this.platformProvider.getUserAgent()}`,
-            `https://${host}/wallet-card?context=bpa`,
+            `https://${experimentHost || host}/wallet-card?context=bpa`,
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 
               sessionStorage.setItem('cards', ${JSON.stringify(

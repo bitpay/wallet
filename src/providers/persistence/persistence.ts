@@ -82,7 +82,8 @@ const Keys = {
   APP_THEME: 'app-theme',
   USER_LOCATION: 'user-location',
   COUNTRIES: 'countries',
-  CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled'
+  CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
+  CARD_EXPERIMENT_HOST: 'cardExperimentHost'
 };
 
 interface Storage {
@@ -882,6 +883,14 @@ export class PersistenceProvider {
 
   getCardFastTrackEnabled() {
     return this.storage.get(Keys.CARD_FAST_TRACK_ENABLED);
+  }
+
+  getCardExperimentHost() {
+    return this.storage.get(Keys.CARD_EXPERIMENT_HOST);
+  }
+
+  setCardExperimentHost(host: string) {
+    return this.storage.set(Keys.CARD_EXPERIMENT_HOST, host);
   }
 }
 

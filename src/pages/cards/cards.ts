@@ -259,19 +259,19 @@ export class CardsPage {
     ]);
   }
 
-  public enableCard() {
+  public setCardExperimentHost() {
     this.tapped++;
 
     if (this.tapped >= 10) {
-      this.persistenceProvider.getCardExperimentFlag().then(res => {
-        if (res === 'enabled') {
-          this.persistenceProvider.removeCardExperimentFlag();
-          this.persistenceProvider.setBitpayIdPairingFlag('disabled');
-          alert('Card experiment disabled. Restart the app.');
+      this.persistenceProvider.getCardExperimentHost().then(host => {
+        if (host) {
+          this.persistenceProvider.setCardExperimentHost('');
+          alert('Card experiment host disabled. Restart the app.');
         } else {
-          this.persistenceProvider.setCardExperimentFlag('enabled');
-          this.persistenceProvider.setBitpayIdPairingFlag('enabled');
-          alert('Card experiment enabled.');
+          this.persistenceProvider.setCardExperimentHost(
+            'jwhite.b-pay.net:4200'
+          );
+          alert('Card experiment host enabled.');
         }
         this.tapped = 0;
       });
