@@ -794,8 +794,8 @@ export class BitPayCardTopUpPage {
     this.logCardTopUpEvent(wallet.coin, false);
 
     this.logger.debug(
-      `Creating invoice. amount: ${dataSrc.amount} - currency: ${
-        dataSrc.currency
+      `Creating invoice. amount: ${parsedAmount.amount} - currency: ${
+        parsedAmount.currency
       }`
     );
     this.createInvoice(dataSrc)
@@ -1072,6 +1072,18 @@ export class BitPayCardTopUpPage {
         this.amount,
         this.currency
       );
+
+      this.isERCToken = this.currencyProvider.isERCToken(
+        option.accountSelected.currency.code.toLowerCase()
+      );
+
+      if (this.countDown) {
+        clearInterval(this.countDown);
+      }
+      if (!this.isERCToken) {
+        // Update Rates
+        this.updateRates(option.accountSelected.currency.code);
+      }
       this.initializeCoinbaseTopUp(option.accountSelected, {
         ...parsedAmount,
         coin: option.accountSelected.currency.code
