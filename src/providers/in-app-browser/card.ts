@@ -910,6 +910,7 @@ export class IABCardProvider {
         } = await this.appleWalletProvider.startAddPaymentPass(data);
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
+        this.logger.debug(`appleWallet - certs ${JSON.stringify(certs)}`);
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
         this.sendMessage({
           message: 'addPaymentPass',
