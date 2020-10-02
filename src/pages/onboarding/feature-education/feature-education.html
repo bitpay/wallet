@@ -4,44 +4,44 @@
 
 <ion-content no-bounce>
   <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!isCopay" class="onboarding-slides">
-    <ion-slide>
+    <ion-slide *ngIf="!isCopay">
       <div class="slide-info">
         <div class="img-container">
-          <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
-        </div>
-        <div class="info">
-          <div class="title" translate>Store, manage, and protect your crypto.</div>
-          <div class="text" translate>
-            Multisig and key encryption help you always keep your funds secure.
-          </div>
-        </div>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <div class="slide-info">
-        <div class="img-container">
-          <img src="assets/img/onboarding-tour2.svg" />
+          <img src="assets/img/onboarding/feature-education-1.svg" />
         </div>
         <div class="info">
           <div class="title" translate>Turn crypto into dollars using our BitPay Card.</div>
           <div class="text" translate>
-            Load dollars and spend crypto with our Debit card in seconds.
+            Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates.
             <div class="note">
-              *Currently only available in the US
+              *Currently available in the USA. More countries coming soon.
             </div>
           </div>
         </div>
       </div>
     </ion-slide>
+    <ion-slide *ngIf="!isCopay">
+      <div class="slide-info">
+        <div class="img-container">
+          <img class="tour-2" src="assets/img/onboarding/feature-education-2.svg" />
+        </div>
+        <div class="info">
+          <div class="title" translate>Spend crypto at your favorite places.</div>
+          <div class="text" translate>
+            Discover a curated list of places you can spend your crypto. Purchase, manage & spend store credits instantly.
+          </div>
+        </div>
+      </div>
+    </ion-slide>
     <ion-slide>
       <div class="slide-info">
         <div class="img-container">
-          <img class="tour-3" src="assets/img/onboarding-tour3.svg" />
+          <img src="assets/img/onboarding/feature-education-3.svg" />
         </div>
         <div class="info">
-          <div class="title" translate>Spend crypto at your favorite stores.</div>
+          <div class="title" translate>Leverage multi-factor security</div>
           <div class="text" translate>
-            Use crypto to buy store credit at places like Amazon, Uber, and Spotify.
+            Use multi-factor wallets to split payment authorization across up to 6 devices or trusted copayers for enhanced security.
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
 <ion-footer no-border>
   <ion-toolbar>
     <button ion-button class="button-standard" (click)="nextSlide()">
-      {{featureEducationSlides.getActiveIndex() === 2 || (featureEducationSlides.getActiveIndex() === 0 && isCopay) ? 'Start' : 'Continue' | translate}}
+      {{'Continue' | translate}}
     </button>
   </ion-toolbar>
 </ion-footer>
