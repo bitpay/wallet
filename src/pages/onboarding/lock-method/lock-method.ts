@@ -50,8 +50,7 @@ export class LockMethodPage {
     this.logger.info('Loaded: LockMethodPage');
   }
 
-  async ionViewWillLoad() {
-    // TODO: check Face Id -> this.biometricMethod = 'faceId';
+  async ionViewWillEnter() {
     await this.checkLockOptions();
     this.showInfoSheet('protect-money');
   }
@@ -59,17 +58,25 @@ export class LockMethodPage {
   private checkLockOptions() {
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       if (isAvailable) {
-        this.biometricMethod = 'fingerprint';
+        this.biometricMethod =
+          this.touchIdProvider.getIosBiometricMethod() === 'face'
+            ? 'faceId'
+            : 'fingerprint';
       }
     });
   }
 
   public verifyBiometricLockMethod() {
-    if (this.biometricMethod === 'fingerprint') {
+    if (
+      this.biometricMethod === 'fingerprint' ||
+      this.biometricMethod === 'faceId'
+    ) {
       this.touchIdProvider.check().then(() => {
         let lock = { method: 'fingerprint', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
-        this.openFinishModal('Fingerprint');
+        const lockMethod =
+          this.biometricMethod === 'faceId' ? 'Face ID' : 'Fingerprint';
+        this.openFinishModal(lockMethod);
       });
     }
   }
@@ -90,9 +97,9 @@ export class LockMethodPage {
     });
   }
 
-  private openFinishModal(finishText: string) {
+  private openFinishModal(lockMethod: string) {
     const params = {
-      finishText: `${finishText} set successfully!`,
+      finishText: `${lockMethod} set successfully!`,
       autoDismiss: true,
       cssClass: 'bg-none'
     };
