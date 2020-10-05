@@ -777,8 +777,7 @@ page-bitpay-card {
   transform: translate3d(0, 0, 0);
 
   .tab-button {
-    max-width: 15vw;
-    min-width: 80px; // Prevent the names of the tabs from disappearing
+    max-width: 80px;
 
     .tab-button-text {
       display: block;
