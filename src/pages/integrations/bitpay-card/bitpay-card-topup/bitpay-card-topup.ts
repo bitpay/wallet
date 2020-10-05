@@ -190,17 +190,7 @@ export class BitPayCardTopUpPage {
           minPendingAmount: { amount: this.amount, currency: this.currency }
         });
 
-        this.showCoinbase =
-          this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-          this.coinbaseProvider.isLinked();
-
-        this.coinbaseAccounts =
-          this.showCoinbase && network === 'livenet'
-            ? this.coinbaseProvider.getAvailableAccounts(null, {
-                amount: this.amount,
-                currency: this.currency
-              })
-            : [];
+        this.setCoinbase(network);
 
         if (
           _.isEmpty(this.wallets) &&
@@ -223,6 +213,17 @@ export class BitPayCardTopUpPage {
 
         this.showWallets(); // Show wallet selector
       });
+  }
+
+  private setCoinbase(network) {
+    this.showCoinbase =
+      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
+      this.coinbaseProvider.isLinked();
+    if (!this.showCoinbase && network != 'livenet') return;
+    this.coinbaseProvider.preFetchAllData();
+    this.coinbaseAccounts = this.coinbaseProvider.coinbaseData
+      ? this.coinbaseProvider.coinbaseData.accounts
+      : [];
   }
 
   private updateRates(coin: string) {
