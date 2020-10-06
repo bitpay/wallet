@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 // Providers
@@ -16,6 +17,7 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
@@ -46,6 +48,7 @@ export class SendPage {
   public hasWallets: boolean;
   public invalidAddress: boolean;
   public validDataFromClipboard;
+  private onResumeSubscription: Subscription;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -89,14 +92,25 @@ export class SendPage {
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private bwcErrorProvider: BwcErrorProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private plt: Platform,
+    private platformProvider: PlatformProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
-    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
-      this.validDataFromClipboard = data;
-    });
+
+    this.setDataFromClipboard();
+    if (this.platformProvider.isElectron) {
+      this.events.subscribe('Desktop/onFocus', () => {
+        this.setDataFromClipboard();
+      });
+    }
+    if (this.platformProvider.isCordova) {
+      this.onResumeSubscription = this.plt.resume.subscribe(() => {
+        this.setDataFromClipboard();
+      });
+    }
   }
 
   @ViewChild('transferTo')
@@ -115,6 +129,16 @@ export class SendPage {
   ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    if (this.platformProvider.isElectron)
+      this.events.unsubscribe('Desktop/onFocus');
+    if (this.platformProvider.isCordova)
+      this.onResumeSubscription.unsubscribe();
+  }
+
+  private setDataFromClipboard() {
+    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+      this.validDataFromClipboard = data;
+    });
   }
 
   private SendPageRedirEventHandler: any = nextView => {
