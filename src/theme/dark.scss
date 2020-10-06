@@ -817,64 +817,6 @@
     }
   }
 
-  .clipboard-card {
-    background: $bg-color-dark-theme-message;
-
-    .item-divider {
-      background: $bg-color-dark-theme-message;
-      border-bottom: 1px solid $bg-color-dark-theme-2;
-    }
-
-    page-clipboard-card {
-      .clipboard-paypro-container {
-        background: $bg-color-dark-theme-message;
-        color: $text-color-dark-theme;
-
-        .item-inner {
-          background: $bg-color-dark-theme-message;
-          color: $text-color-dark-theme;
-          border-bottom: 1px solid $bg-color-dark-theme-2;
-        }
-
-        ion-note {
-          .amount {
-            color: $text-color-dark-theme;
-          }
-        }
-
-        .loader {
-          background-color: #666;
-
-          &:after {
-            background-color: #2b2a2a;
-          }
-
-          &.gradient {
-            background-image: linear-gradient(to right, #666, #2b2a2a);
-
-            &:after {
-              background-color: #2a2929;
-            }
-          }
-        }
-      }
-
-      .clipboard {
-        background: $bg-color-dark-theme-message;
-        color: $text-color-dark-theme;
-
-        ion-label {
-          background: $bg-color-dark-theme-2;
-          color: $text-color-dark-theme;
-        }
-
-        img {
-          border-right: 1px solid $bg-color-dark-theme-message;
-        }
-      }
-    }
-  }
-
   page-feedback-card {
     ion-card.card {
       background-color: $bg-color-dark-theme-2;
