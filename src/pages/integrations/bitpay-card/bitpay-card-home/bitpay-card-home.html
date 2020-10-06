@@ -91,7 +91,7 @@
                 <span *ngIf="card.cardBalance">
                   {{ card.cardBalance | formatCurrency: card?.currency: 'minimal' }}
                 </span>
-                <span *ngIf="!card.cardBalance" class="funds--cta">
+                <span *ngIf="!card.cardBalance && card.brand === 'Mastercard'" class="funds--cta">
                   {{ 'Add funds' | translate }}
                 </span>
               </div>
