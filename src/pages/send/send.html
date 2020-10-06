@@ -39,6 +39,12 @@
           </ion-item>
         </div>
 
+        <div text-center *ngIf="validDataFromClipboard">
+          <button ion-button item-end clear (click)="pasteFromClipboard()" translate>
+            Paste from Clipboard
+          </button>
+        </div>
+
         <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
 
       </div>

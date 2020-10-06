@@ -9,6 +9,7 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -44,6 +45,7 @@ export class SendPage {
   public search: string = '';
   public hasWallets: boolean;
   public invalidAddress: boolean;
+  public validDataFromClipboard;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -86,11 +88,15 @@ export class SendPage {
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+      this.validDataFromClipboard = data;
+    });
   }
 
   @ViewChild('transferTo')
@@ -328,5 +334,12 @@ export class SendPage {
           wallet: this.wallet
         });
     });
+  }
+
+  public pasteFromClipboard() {
+    this.search = this.validDataFromClipboard;
+    this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
+    this.processInput();
   }
 }
