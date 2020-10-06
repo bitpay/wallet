@@ -95,14 +95,22 @@
       </ion-item>
 
       <div *ngIf="tx && fromMultiSend && showMultiplesOutputs">
-        <ion-item *ngFor="let recipient of recipients" copy-to-clipboard="{{recipient.toAddress}}">
-          <ion-note class="secondary-note" item-right text-end>
-            <span>{{recipient.addressToShow || recipient.toAddress || recipient.address}}</span>
-            <br>
-            <span>{{recipient.amountToShow}} {{coin | uppercase}}
-              <span *ngIf="recipient.altAmountStr">({{recipient.altAmountStr}})</span>
-            </span>
-          </ion-note>
+        <ion-item *ngFor="let recipient of recipients; let i = index" copy-to-clipboard="{{recipient.toAddress}}">
+          <ion-label>
+            <div class="summary-item">
+              <span translate>Recipient {{ i + 1 }}</span>
+            </div>
+          </ion-label>
+          <div item-end>
+            <div class="payment-proposal-to align-right">
+              <div class="background-content">
+                <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+                <span>{{(recipient.addressToShow || recipient.toAddress || recipient.address) | shortenedAddress}}</span>
+              </div>
+            </div>
+            <div class="multi-amount">{{recipient.amountToShow}} {{coin | uppercase}}</div>
+            <div class="secondary-note" *ngIf="recipient.altAmountStr">{{recipient.altAmountStr}}</div>
+          </div>
         </ion-item>
       </div>
 
