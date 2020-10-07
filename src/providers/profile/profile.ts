@@ -1453,6 +1453,7 @@ export class ProfileProvider {
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
       if (showOpts.password) showOpts.password = '[hidden]';
+      if (showOpts.key) showOpts.key = '[hidden]';
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
