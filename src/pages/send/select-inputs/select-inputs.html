@@ -1,7 +1,7 @@
 <wide-header-page title="{{'Select inputs' | translate}}">
   <ion-buttons right>
-    <button [disabled]="canContinue()" clear wide-header-bar-button (click)="goToConfirm()" ion-button icon-only>
-      <span translation>Continue</span>
+    <button *ngIf="!recipient" clear wide-header-bar-button (click)="openTransferToModal()" ion-button icon-only>
+      <span translation>Add Contact</span>
     </button>
   </ion-buttons>
   <div page-content>
@@ -90,9 +90,12 @@
     </div>
     <div *ngIf="!recipient" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
-      <button clear (click)="openTransferToModal()" ion-button>
-        {{'Add an existent contact or wallet' | translate}}
-      </button>
     </div>
+  </div>
+
+  <div footer-content>
+    <ion-toolbar>
+      <button ion-button full class="button-footer" (click)="goToConfirm()" [disabled]="canContinue()">{{'Continue' | translate}}</button>
+    </ion-toolbar>
   </div>
 </wide-header-page>
