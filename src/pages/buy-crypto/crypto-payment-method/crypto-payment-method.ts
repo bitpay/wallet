@@ -28,6 +28,7 @@ export class CryptoPaymentMethodPage {
   public useAsModal: boolean;
   public isIOS: boolean;
   private coin: string;
+  private country;
   private currency: string;
 
   constructor(
@@ -39,6 +40,7 @@ export class CryptoPaymentMethodPage {
     public themeProvider: ThemeProvider
   ) {
     this.coin = this.navParams.data.coin;
+    this.country = this.navParams.data.selectedCountry;
     this.currency = this.navParams.data.currency;
     this.methods = this.buyCryptoProvider.paymentMethodsAvailable;
   }
@@ -59,7 +61,9 @@ export class CryptoPaymentMethodPage {
             m,
             this.coin,
             this.currency
-          ))
+          )) &&
+        (m.method != 'sepaBankTransfer' ||
+          (m.method == 'sepaBankTransfer' && this.country.EUCountry))
       );
     });
   }

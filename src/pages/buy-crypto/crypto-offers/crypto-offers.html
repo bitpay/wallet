@@ -104,10 +104,15 @@
                 <div>
                   <span translate>What service fees am I paying?</span>
                   <br>
-                  <span translate>Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD).</span>
-                  <a (click)="openExternalLink('https://www.simplex.com/kb/what-service-fees-am-i-paying/')" translate>
-                    Read more
-                  </a>
+                  <span *ngIf="paymentMethod.method == 'sepaBankTransfer'" translate>
+                    1.5% of the amount.
+                  </span>
+                  <span *ngIf="paymentMethod.method != 'sepaBankTransfer'">
+                    <span translate>Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD).</span>
+                    <a (click)="openExternalLink('https://www.simplex.com/kb/what-service-fees-am-i-paying/')" translate>
+                      Read more
+                    </a>
+                  </span>
                 </div>
                 <div>
                   <span translate>This service is provided by a third party, and you are subject to their </span>

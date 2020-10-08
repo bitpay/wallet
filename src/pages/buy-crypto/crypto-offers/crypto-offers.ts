@@ -326,12 +326,22 @@ export class CryptoOffersPage {
       }`;
       return;
     } else {
+      let paymentMethod: string[] = [];
+      switch (this.paymentMethod.method) {
+        case 'sepaBankTransfer':
+          paymentMethod.push('simplex_account');
+          break;
+        default:
+          paymentMethod.push('credit_card');
+          break;
+      }
       const data = {
         digital_currency: this.wallet.coin.toUpperCase(),
         fiat_currency: this.fiatCurrency,
         requested_currency: this.fiatCurrency,
         requested_amount: this.amount,
-        end_user_id: this.walletId
+        end_user_id: this.walletId,
+        payment_methods: paymentMethod
       };
 
       this.simplexProvider
@@ -352,6 +362,9 @@ export class CryptoOffersPage {
             this.offers.simplex.amountReceiving = data.digital_money.amount.toString();
             this.logger.debug('Simplex getting quote: SUCCESS');
           } else {
+            if (data.message && _.isString(data.message)) {
+              this.logger.error(data.message);
+            }
             const err = this.translate.instant(
               "Can't get rates at this moment. Please try again later"
             );

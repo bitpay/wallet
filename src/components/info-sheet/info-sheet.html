@@ -244,8 +244,11 @@
 
     <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning">
       <span sheet-title-text translate>Payment method updated</span>
-      <span sheet-text translate>
+      <span *ngIf="params.reason == 'coin'" sheet-text translate>
         {{'Only the payment methods supported to buy {coin} with {currency} will be shown.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
+      </span>
+      <span *ngIf="params.reason == 'country'" sheet-text translate>
+        {{'SEPA Bank Transfer purchases are not supported outside the European Union.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
