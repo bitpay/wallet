@@ -8,6 +8,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { Events, Platform } from 'ionic-angular';
@@ -24,7 +25,7 @@ import { DomProvider } from '../../providers/dom/dom';
 export class WalletReceiveComponent extends ActionSheetParent {
   public protocolHandler: string;
   public address: string;
-  public qrAddress: string;
+  public plainAddress: string;
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
@@ -34,6 +35,11 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public bchAddrFormat: string;
   public disclaimerAccepted: boolean;
   public useLegacyQrCode: boolean;
+  public valueFiat: string;
+  public valueCrypto: string;
+  public fiatIsoCode: string;
+  private lockedFiat: boolean = false;
+  private lockedCrypto: boolean = false;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -47,14 +53,17 @@ export class WalletReceiveComponent extends ActionSheetParent {
     public currencyProvider: CurrencyProvider,
     private addressProvider: AddressProvider,
     private domProvider: DomProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     super();
   }
 
   ngOnInit() {
+    const config = this.configProvider.get();
+    this.fiatIsoCode = config.wallet.settings.alternativeIsoCode;
     this.wallet = this.params.wallet;
-    this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
+    this.useLegacyQrCode = config.legacyQrCode.show;
     this.bchAddrFormat = 'cashAddress';
     this.disclaimerAccepted = false;
     this.setAddress();
@@ -146,7 +155,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
     if (newAddr) {
       await Observable.timer(400).toPromise();
     }
-    this.address = address;
+    this.address = this.plainAddress = address;
 
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
@@ -204,5 +213,79 @@ export class WalletReceiveComponent extends ActionSheetParent {
         this.bchAddrFormat = 'cashAddress';
       }
     });
+  }
+
+  public lockFiatInput() {
+    this.lockedFiat = !this.lockedFiat;
+  }
+
+  public lockCryptoInput() {
+    this.lockedCrypto = !this.lockedCrypto;
+  }
+
+  public onValueChange = _.debounce(
+    e => {
+      this._valueChanged(e);
+    },
+    500,
+    {
+      leading: false
+    }
+  );
+
+  private _valueChanged(e) {
+    const isNumber = /^-?[\d.]+(?:e-?\d+)?$/.test(e.value);
+    if (e.value == '' || e.value == 0 || !e.value || !isNumber) {
+      this.valueFiat = this.valueCrypto = '';
+      this.address = this.plainAddress;
+      return;
+    }
+
+    const parsedAmount = this.txFormatProvider.parseAmount(
+      this.wallet.coin,
+      e.value,
+      e.value == this.valueFiat ? 'USD' : this.wallet.coin.toUpperCase()
+    );
+
+    if (!this.lockedFiat && this.valueFiat == e.value) {
+      const _valueFiat = this.txFormatProvider.satToUnit(
+        parsedAmount.amountSat,
+        this.wallet.coin
+      );
+      const cryptoParsedAmount = this.txFormatProvider.parseAmount(
+        this.wallet.coin,
+        _valueFiat,
+        this.wallet.coin.toUpperCase()
+      );
+      this.valueCrypto = cryptoParsedAmount.amount;
+    }
+
+    if (!this.lockedCrypto && this.valueCrypto == e.value) {
+      const fiatParsedAmount = this.txFormatProvider.formatAlternative(
+        this.wallet.coin,
+        parsedAmount.amountSat
+      );
+      this.valueFiat = fiatParsedAmount;
+    }
+
+    // Process address
+    let protoAddr;
+    if (this.wallet.coin != 'bch') {
+      protoAddr = this.walletProvider.getProtoAddress(
+        this.wallet.coin,
+        this.wallet.network,
+        this.plainAddress
+      );
+    }
+    const valueStr =
+      this.currencyProvider.isUtxoCoin(this.wallet.coin) ||
+      this.wallet.coin === 'xrp'
+        ? '?amount='
+        : '?value=';
+
+    this.address =
+      (this.wallet.coin == 'bch' ? this.plainAddress : protoAddr) +
+      valueStr +
+      this.valueCrypto;
   }
 }

@@ -46,12 +46,12 @@
     <div class="addr-content" [ngClass]="{'blur': bchAddrFormat === 'legacy' && !disclaimerAccepted}">
       <div class="addr-container">
         <div class="text-address ellipsis">
-          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <img *ngIf="address" class="copy-to-clip" copy-to-clipboard="{{ plainAddress }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
             <span class="address-placeholder" translate>Generating new address...</span>
           </div>
           <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
-            <span copy-to-clipboard="{{ address }}">{{ address }}</span>
+            <span>{{ plainAddress }}</span>
           </div>
         </div>
       </div>
@@ -68,14 +68,33 @@
           {{'Generate New Address' | translate}}
         </button>
       </div>
-      <bp-qr-code *ngIf="address && !newAddressError  && !useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}" contents="{{ address }}" mask-x-to-y-ratio="1">
+      <bp-qr-code *ngIf="address && !newAddressError  && !useLegacyQrCode" class="card qr-card" contents="{{ address }}" mask-x-to-y-ratio="1">
         <img [ngClass]="{'testnet': wallet.network === 'testnet', 'background_xrp': wallet.coin === 'xrp'}" src="assets/img/currencies/{{ wallet.coin }}.svg" slot="icon" />
       </bp-qr-code>
-      <div *ngIf="address && useLegacyQrCode" class="card qr-card" copy-to-clipboard="{{ address }}">
+      <div *ngIf="address && useLegacyQrCode" class="card qr-card">
         <ngx-qrcode hide-toast="true" qrc-value="{{ address }}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
     </div>
-    <div class="line-divider"></div>
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col col-4>
+        <ion-input item-start type="tel" name="fiatInput" placeholder="0.00" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockCryptoInput()" (ionBlur)="lockCryptoInput()" [(ngModel)]="valueFiat"></ion-input>
+        </ion-col>
+        <ion-col col-2>
+          <span ion-text color="primary">
+            {{ fiatIsoCode }}
+          </span>
+        </ion-col>
+        <ion-col col-4>
+          <ion-input item-end type="tel" name="cryptoInput" placeholder="0" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockFiatInput()" (ionBlur)="lockFiatInput()" [(ngModel)]="valueCrypto"></ion-input>
+        </ion-col>
+        <ion-col col-2>
+          <span ion-text color="primary">
+            {{ wallet.coin.toUpperCase() }}
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <div text-center>
       <button ion-button clear class="safe-area" (click)="dismiss()">
         {{ 'CLOSE' | translate }}

@@ -133,4 +133,8 @@ page-choose-fee-level {
     margin-bottom: calc(1.5rem + env(safe-area-inset-bottom));
     margin-bottom: -webkit-calc(1.5rem + env(safe-area-inset-bottom));
   }
+  input[type=tel] {
+    color: color($colors, grey);
+    text-align: right;
+  }
 }
