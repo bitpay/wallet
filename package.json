@@ -1,6 +1,6 @@
 {
-  "name": "copay",
-  "description": "A Secure Bitcoin Wallet",
+  "name": "bitpay",
+  "description": "Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "11.0.7",
   "keywords": [
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "Copay",
+  "title": "BitPay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://copay.io",
+  "homepage": "https://bitpay.com",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -221,7 +221,12 @@
     "tslint": "5.8.0",
     "tslint-config-prettier": "1.7.0",
     "typescript": "2.6.2",
-    "webpack": "3.12.0"
+    "webpack": "3.12.0",
+    "webpack-obfuscator": "^0.17.3"
+  },
+  "config": {
+    "ionic_uglifyjs": "./config/uglifyjs.config.js",
+    "ionic_webpack": "./config/webpack.config.js"
   },
   "cordova": {
     "plugins": {
@@ -243,7 +248,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme-ng": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "copay",
+        "SECOND_URL_SCHEME": "bitpay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",
@@ -253,7 +258,7 @@
         "ANDROID_PATHPREFIX": ""
       },
       "cordova-plugin-fcm-ng": {
-        "PAGE_LINK_DOMAIN": "copay.page.link"
+        "PAGE_LINK_DOMAIN": "bitpayapp.page.link"
       },
       "cordova-plugin-globalization": {},
       "cordova-plugin-inappbrowser": {},
@@ -265,7 +270,8 @@
       "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-theme-detection": {},
-      "cordova-apple-wallet": {}
+      "cordova-apple-wallet": {},
+      "cordova-plugin-add-swift-support": {}
     },
     "platforms": [
       "android",
