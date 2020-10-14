@@ -16,13 +16,15 @@ const Dotenv = require('dotenv-webpack');
 var ModuleConcatPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 var PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
 
-var optimizedProdLoaders = [{
+var optimizedProdLoaders = [
+  {
     test: /\.json$/,
     loader: 'json-loader'
   },
   {
     test: /\.js$/,
-    loader: [{
+    loader: [
+      {
         loader: process.env.IONIC_CACHE_LOADER
       },
 
@@ -36,7 +38,8 @@ var optimizedProdLoaders = [{
   },
   {
     test: /\.ts$/,
-    loader: [{
+    loader: [
+      {
         loader: process.env.IONIC_CACHE_LOADER
       },
 
@@ -77,7 +80,8 @@ var devConfig = {
   },
 
   module: {
-    loaders: [{
+    loaders: [
+      {
         test: /\.json$/,
         loader: 'json-loader'
       },
@@ -94,8 +98,10 @@ var devConfig = {
       systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
       silent: true // hide any errors
     }),
-    new JavaScriptObfuscator({
+    new JavaScriptObfuscator(
+      {
         compact: true,
+        seed: 0, // set to 0, automatically uses random seed generator
         controlFlowFlattening: false,
         deadCodeInjection: false,
         debugProtection: false,
@@ -119,10 +125,7 @@ var devConfig = {
         unicodeEscapeSequence: false,
         transformObjectKeys: true
       },
-      [
-        'vendor.js',
-        'polyfills.js'
-      ]
+      ['vendor.js', 'polyfills.js']
     ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
     ionicWebpackFactory.getCommonChunksPlugin()
@@ -162,8 +165,10 @@ var prodConfig = {
       systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
       silent: true // hide any errors
     }),
-    new JavaScriptObfuscator({
+    new JavaScriptObfuscator(
+      {
         compact: true,
+        seed: 0, // set to 0, automatically uses random seed generator
         controlFlowFlattening: false,
         deadCodeInjection: false,
         debugProtection: false,
@@ -187,10 +192,7 @@ var prodConfig = {
         unicodeEscapeSequence: false,
         transformObjectKeys: true
       },
-      [
-        'vendor.js',
-        'polyfills.js'
-      ]
+      ['vendor.js', 'polyfills.js']
     ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
     ionicWebpackFactory.getCommonChunksPlugin(),
