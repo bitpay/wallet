@@ -105,7 +105,7 @@ var devConfig = {
         deadCodeInjection: false,
         debugProtection: false,
         debugProtectionInterval: false,
-        disableConsoleOutput: true,
+        disableConsoleOutput: false,
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
@@ -124,6 +124,7 @@ var devConfig = {
         unicodeEscapeSequence: false
       },
       [
+        '0.js',
         '1.js',
         '2.js',
         '3.js',
@@ -136,7 +137,8 @@ var devConfig = {
       ]
     ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
-    ionicWebpackFactory.getCommonChunksPlugin()
+    ionicWebpackFactory.getCommonChunksPlugin(),
+    new ModuleConcatPlugin()
   ],
 
   // Some libraries import Node modules but don't use them in the browser.
@@ -180,7 +182,7 @@ var prodConfig = {
         deadCodeInjection: false,
         debugProtection: false,
         debugProtectionInterval: false,
-        disableConsoleOutput: true,
+        disableConsoleOutput: false,
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
@@ -199,6 +201,7 @@ var prodConfig = {
         unicodeEscapeSequence: false
       },
       [
+        '0.js',
         '1.js',
         '2.js',
         '3.js',
