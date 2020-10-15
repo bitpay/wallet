@@ -73,7 +73,10 @@ export class KeyProvider {
     if (keyIndex >= 0) {
       // only for encrypt/decrypt
       if (replaceKey) this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
-      else return Promise.resolve();
+      else {
+        this.logger.debug('NO adding key (duplicate): ', keyToAdd.id);
+        return Promise.resolve();
+      }
     } else {
       this.keys.push(this.Key.fromObj(keyToAdd));
     }
@@ -284,7 +287,10 @@ export class KeyProvider {
     }
 
     const key = this.getKey(keyId);
-
+    if (!key) {
+      this.logger.warn(`Can't sign. The  key ${keyId} was no found.`);
+      throw new Error(`Key ${keyId} not found on this device`);
+    }
     return key.sign(rootPath, txp, password);
   }
 
