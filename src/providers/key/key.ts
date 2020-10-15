@@ -74,7 +74,7 @@ export class KeyProvider {
       // only for encrypt/decrypt
       if (replaceKey) this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
       else {
-        this.logger.debug("NO adding key (duplicate): ", keyToAdd.id);
+        this.logger.debug('NO adding key (duplicate): ', keyToAdd.id);
         return Promise.resolve();
       }
     } else {
