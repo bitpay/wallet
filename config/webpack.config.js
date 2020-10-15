@@ -101,7 +101,6 @@ var devConfig = {
     new JavaScriptObfuscator(
       {
         compact: true,
-        seed: 0, // set to 0, automatically uses random seed generator
         controlFlowFlattening: false,
         deadCodeInjection: false,
         debugProtection: false,
@@ -117,13 +116,12 @@ var devConfig = {
         simplify: true,
         splitStrings: false,
         stringArray: true,
-        stringArrayEncoding: true,
+        stringArrayEncoding: false,
         stringArrayWrappersCount: 1,
         stringArrayWrappersChainedCalls: true,
         stringArrayWrappersType: 'variable',
         stringArrayThreshold: 0.75,
-        unicodeEscapeSequence: false,
-        transformObjectKeys: true
+        unicodeEscapeSequence: false
       },
       ['vendor.js', 'polyfills.js']
     ),
@@ -168,7 +166,6 @@ var prodConfig = {
     new JavaScriptObfuscator(
       {
         compact: true,
-        seed: 0, // set to 0, automatically uses random seed generator
         controlFlowFlattening: false,
         deadCodeInjection: false,
         debugProtection: false,
@@ -177,20 +174,19 @@ var prodConfig = {
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
-        renameGlobals: true,
+        renameGlobals: false,
         rotateStringArray: true,
         selfDefending: false,
         shuffleStringArray: true,
         simplify: true,
         splitStrings: false,
         stringArray: true,
-        stringArrayEncoding: true,
+        stringArrayEncoding: false,
         stringArrayWrappersCount: 1,
         stringArrayWrappersChainedCalls: true,
         stringArrayWrappersType: 'variable',
         stringArrayThreshold: 0.75,
-        unicodeEscapeSequence: false,
-        transformObjectKeys: true
+        unicodeEscapeSequence: false
       },
       ['vendor.js', 'polyfills.js']
     ),
