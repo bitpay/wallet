@@ -123,8 +123,10 @@ export class WalletDuplicatePage {
 
     this.walletProvider
       .getKeys(wallet)
-      .then(keys => {
-        opts.extendedPrivateKey = keys.xPrivKey;
+      .then(key => {
+        opts.extendedPrivateKey = key.xPrivKey;
+        opts.duplicateKeyId = wallet.credentials.keyId;
+        this.logger.debug('Duplicating Wallet. using key :', opts.duplicateKeyId);
         this.onGoingProcessProvider.set('duplicatingWallet');
         this.importOrCreate(wallet, opts)
           .then(result => {

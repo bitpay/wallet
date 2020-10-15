@@ -1390,9 +1390,15 @@ export class ProfileProvider {
               coin: opts.coin,
               network,
               account: opts.account || 0,
-              n: opts.n || 1
+              n: opts.n || 1,
             })
           );
+          if (opts.duplicateKeyId) {
+            walletClient.credentials.keyId = opts.duplicateKeyId;
+
+            this.logger.debug(`Reusing ${opts.duplicateKeyId} on the duplicated wallet`);
+
+          }
         } catch (ex) {
           this.logger.warn(
             'Could not get seed from Extended Private Key: ',
