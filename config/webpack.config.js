@@ -105,7 +105,7 @@ var devConfig = {
         deadCodeInjection: false,
         debugProtection: false,
         debugProtectionInterval: false,
-        disableConsoleOutput: false,
+        disableConsoleOutput: true,
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
@@ -116,14 +116,24 @@ var devConfig = {
         simplify: true,
         splitStrings: false,
         stringArray: true,
-        stringArrayEncoding: false,
+        stringArrayEncoding: true,
         stringArrayWrappersCount: 1,
         stringArrayWrappersChainedCalls: true,
         stringArrayWrappersType: 'variable',
         stringArrayThreshold: 0.75,
         unicodeEscapeSequence: false
       },
-      ['vendor.js', 'polyfills.js']
+      [
+        '1.js',
+        '2.js',
+        '3.js',
+        '4.js',
+        '5.js',
+        '6.js',
+        '7.js',
+        'vendor.js',
+        'polyfills.js'
+      ]
     ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
     ionicWebpackFactory.getCommonChunksPlugin()
@@ -170,7 +180,7 @@ var prodConfig = {
         deadCodeInjection: false,
         debugProtection: false,
         debugProtectionInterval: false,
-        disableConsoleOutput: false,
+        disableConsoleOutput: true,
         identifierNamesGenerator: 'hexadecimal',
         log: false,
         numbersToExpressions: false,
@@ -181,14 +191,24 @@ var prodConfig = {
         simplify: true,
         splitStrings: false,
         stringArray: true,
-        stringArrayEncoding: false,
+        stringArrayEncoding: true,
         stringArrayWrappersCount: 1,
         stringArrayWrappersChainedCalls: true,
         stringArrayWrappersType: 'variable',
         stringArrayThreshold: 0.75,
         unicodeEscapeSequence: false
       },
-      ['vendor.js', 'polyfills.js']
+      [
+        '1.js',
+        '2.js',
+        '3.js',
+        '4.js',
+        '5.js',
+        '6.js',
+        '7.js',
+        'vendor.js',
+        'polyfills.js'
+      ]
     ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
     ionicWebpackFactory.getCommonChunksPlugin(),
