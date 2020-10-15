@@ -1645,6 +1645,7 @@ export class ProfileProvider {
     return this.storeProfileIfDirty();
   }
 
+
   private getDefaultWalletOpts(coin): Partial<WalletOptions> {
     const defaults = this.configProvider.getDefaults();
     return {
