@@ -14,10 +14,18 @@ import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import {
+  getAddressFromPayId,
+  getPayIdUrl,
+  isPayId,
+  PayIdDetails
+} from '../../providers/pay-id/pay-id';
 import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
+import { HttpClient } from '@angular/common/http';
+import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { CopayersPage } from '../add/copayers/copayers';
 import { ImportWalletPage } from '../add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../add/join-wallet/join-wallet';
@@ -44,6 +52,7 @@ export class SendPage {
   public search: string = '';
   public hasWallets: boolean;
   public invalidAddress: boolean;
+  public confirmPayIdSheet: InfoSheetComponent;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -73,6 +82,7 @@ export class SendPage {
 
   constructor(
     private currencyProvider: CurrencyProvider,
+    private http: HttpClient,
     private navCtrl: NavController,
     private navParams: NavParams,
     private payproProvider: PayproProvider,
@@ -183,8 +193,8 @@ export class SendPage {
     return false;
   }
 
-  private redir() {
-    this.incomingDataProvider.redir(this.search, {
+  private redir(search?: string) {
+    this.incomingDataProvider.redir(search || this.search, {
       activePage: 'SendPage',
       amount: this.navParams.data.amount,
       coin: this.navParams.data.coin // TODO ???? what is this for ?
@@ -226,8 +236,33 @@ export class SendPage {
     this.invalidAddress = false;
   }
 
+  public async handlePayId() {
+    if (this.confirmPayIdSheet) {
+      this.confirmPayIdSheet.onDidDismiss(() => {});
+      await this.confirmPayIdSheet.dismiss();
+    }
+    this.invalidAddress = false;
+    const payIdDetails = await this.fetchPayIdDetails(this.search);
+    const address = getAddressFromPayId(payIdDetails, {
+      coin: this.wallet.coin,
+      network: this.wallet.network
+    });
+    return address
+      ? this.showConfirmPayIdSheet({ payIdDetails })
+      : this.showPayIdUnsupportedCoinSheet({
+          payId: this.search,
+          coin: this.wallet.coin.toUpperCase(),
+          network: this.wallet.network
+        });
+  }
+
   public async processInput() {
     if (this.search == '') this.invalidAddress = false;
+    if (isPayId(this.search)) {
+      return this.handlePayId().catch(() => {
+        this.invalidAddress = true;
+      });
+    }
     const hasContacts = await this.checkIfContact();
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
@@ -278,7 +313,6 @@ export class SendPage {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
       } else if (parsedData && parsedData.type == 'BitPayCard') {
-        // this.close();
         this.incomingDataProvider.redir(this.search, {
           activePage: 'SendPage'
         });
@@ -306,6 +340,47 @@ export class SendPage {
         this.search
       )
     );
+  }
+
+  public async fetchPayIdDetails(payId: string): Promise<PayIdDetails> {
+    const url = getPayIdUrl(payId);
+    return this.http
+      .get(url, {
+        headers: {
+          'PayID-Version': '1.0',
+          Accept: 'application/payid+json'
+        }
+      })
+      .toPromise() as Promise<PayIdDetails>;
+  }
+
+  public showPayIdUnsupportedCoinSheet(params: {
+    payId: string;
+    coin: string;
+    network: string;
+  }): void {
+    this.invalidAddress = true;
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'pay-id-unsupported-coin',
+      params
+    );
+    infoSheet.present();
+  }
+
+  public showConfirmPayIdSheet(params: { payIdDetails: PayIdDetails }): void {
+    this.confirmPayIdSheet = this.actionSheetProvider.createInfoSheet(
+      'pay-id-confirmation',
+      params
+    );
+    this.confirmPayIdSheet.present();
+    this.confirmPayIdSheet.onDidDismiss(option => {
+      this.confirmPayIdSheet = undefined;
+      if (option) {
+        this.redir(getAddressFromPayId(params.payIdDetails, this.wallet));
+      } else {
+        this.search = '';
+      }
+    });
   }
 
   public showMoreOptions(): void {
