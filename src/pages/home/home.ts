@@ -31,6 +31,7 @@ import {
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
+import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
@@ -63,6 +64,7 @@ export interface Advertisement {
 export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
+  showExchangeCryptoOption: boolean;
   showShoppingOption: boolean;
   @ViewChild('showCard')
   showCard;
@@ -382,6 +384,7 @@ export class HomePage {
   private setIntegrations() {
     // Show integrations
     this.showBuyCryptoOption = false;
+    this.showExchangeCryptoOption = false;
     this.showShoppingOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
@@ -391,6 +394,9 @@ export class HomePage {
       switch (x.name) {
         case 'buycrypto':
           this.showBuyCryptoOption = true;
+          break;
+        case 'exchangecrypto':
+          this.showExchangeCryptoOption = true;
           break;
         case 'giftcards':
           this.showShoppingOption = true;
@@ -686,6 +692,13 @@ export class HomePage {
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
+  }
+
+  public goToExchangeCryptoPage() {
+    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+    this.navCtrl.push(ExchangeCryptoPage, {
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
   }

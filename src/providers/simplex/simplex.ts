@@ -38,7 +38,7 @@ export class SimplexProvider {
     private rateProvider: RateProvider,
     private currencyProvider: CurrencyProvider
   ) {
-    this.logger.debug('SimplexProvider Provider initialized');
+    this.logger.debug('Simplex Provider initialized');
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.passthrough_uri =
       env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;

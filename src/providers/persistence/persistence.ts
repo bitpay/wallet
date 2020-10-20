@@ -670,6 +670,18 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
+  setChangelly(env: string, tx) {
+    return this.storage.set('changelly-' + env, tx);
+  }
+
+  getChangelly(env: string) {
+    return this.storage.get('changelly-' + env);
+  }
+
+  removeChangelly(env: string) {
+    return this.storage.remove('changelly-' + env);
+  }
+
   setSimplex(env: string, paymentRequests) {
     return this.storage.set('simplex-' + env, paymentRequests);
   }

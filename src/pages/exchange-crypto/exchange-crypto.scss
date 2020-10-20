@@ -1,0 +1,62 @@
+page-exchange-crypto {
+  .wallet {
+    display: flex;
+    align-items: center;
+    coin-icon {
+      ion-icon.item-img.icon {
+        padding: 5px;
+        img {
+          width: 24px;
+        }
+      }
+    }
+  }
+  .amount {
+    text-align: end;
+    .amount-container {
+      background-color: color($colors, light);
+      min-width: 10rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 2rem;
+      cursor: pointer;
+    }
+  }
+  .divider {
+    height: 2px;
+    border-bottom: 1px solid color($colors, light);
+    margin: 4rem 1.8rem;
+    .arrow {
+      text-align: center;
+      img {
+        margin-top: -20px;
+      }
+    }
+  }
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+    .item-label {
+      width: 92%;
+      margin: 0px auto;
+      color: #9ba3ae;
+      line-height: 18px;
+    }
+  }
+  .rate {
+    width: 100%;
+    color: color($colors, light-grey);
+    text-align: right;
+  }
+  .partner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      margin-left: 7px;
+    }
+  }
+}

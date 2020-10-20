@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">
+      {{'Details' | translate}}
+    </ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="header-modal" *ngIf="swapTxData">
+    <div class="title-modal" translate>
+      Receiving amount
+    </div>
+
+    <div class="subtitle-modal">
+      <img class="icon-service" src="assets/img/exchange-crypto/changelly-icon.svg" alt="Changelly" width="40">
+      {{ swapTxData.amountTo | number:'1.0-6'}}
+      <span class="amount-unit">{{ swapTxData.cointTo }}</span>
+    </div>
+  </div>
+
+  <ion-list class="bp-list" *ngIf="swapTxData">
+    <ion-item-divider></ion-item-divider>
+    <ion-item>
+      {{'Paying' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!swapTxData.amountFrom">...</span>
+        <span *ngIf="swapTxData.amountFrom">
+          {{ swapTxData.amountFrom }} {{ swapTxData.coinFrom }}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <!-- <label-tip type="warn" header="no-header">
+      <div label-tip-body>
+        <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Changelly's exchange rate.</div>
+      </div>
+    </label-tip> -->
+
+
+
+    <ion-item>
+      {{'Created' | translate}}
+      <ion-note item-end>
+        <span *ngIf="!swapTxData.date">...</span>
+        <span *ngIf="swapTxData.date">
+          {{ swapTxData.date | amDateFormat:'MM/DD/YYYY hh:mm a'}}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="swapTxData.status">
+      {{'Status' | translate}}
+      <ion-note item-end>
+        <span class="balanced" translate>{{ swapTxData.status }}</span>
+      </ion-note>
+    </ion-item>
+
+    <!-- <label-tip type="info" header="no-header" *ngIf="swapTxData.status == 'swapTxDataSent' || swapTxData.status == 'success'">
+      <div label-tip-body>
+        <span translate>If you have successfully completed the entire payment process, remember that receiving crypto usually takes up to 1 hour.</span>
+        <br>
+        <br>
+        <a class="pointer" (click)="openExternalLink('https://payment-status.changelly.com/#/')" translate>What is the status of my payment?</a>
+      </div>
+    </label-tip> -->
+
+    <ion-item>
+      {{'Exchange address' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!swapTxData.payinAddress">...</span>
+          <span *ngIf="swapTxData.payinAddress" copy-to-clipboard="{{swapTxData.payinAddress}}">
+            {{ swapTxData.payinAddress }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      {{'Deposit address' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!swapTxData.addressTo">...</span>
+          <span *ngIf="swapTxData.addressTo" copy-to-clipboard="{{swapTxData.addressTo}}">
+            {{ swapTxData.addressTo }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      {{'Refund address' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!swapTxData.refundAddress">...</span>
+          <span *ngIf="swapTxData.refundAddress" copy-to-clipboard="{{swapTxData.refundAddress}}">
+            {{ swapTxData.refundAddress }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      {{'Exchange Transaction ID' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!swapTxData.exchangeTxId">...</span>
+          <span *ngIf="swapTxData.exchangeTxId" copy-to-clipboard="{{swapTxData.exchangeTxId}}">
+            {{ swapTxData.exchangeTxId }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item class="no-border">
+      {{'Rate' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!swapTxData.rate">...</span>
+          <span *ngIf="swapTxData.rate" copy-to-clipboard="{{swapTxData.rate}}">
+            {{ swapTxData.rate }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+    <button class="assertive" ion-item detail-none text-center (click)="remove()">
+      {{'Remove' | translate}}
+    </button>
+
+  </ion-list>
+</ion-content>

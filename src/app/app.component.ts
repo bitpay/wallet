@@ -30,6 +30,7 @@ import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+import { ExchangeCryptoProvider } from '../providers/exchange-crypto/exchange-crypto';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
@@ -138,6 +139,7 @@ export class CopayApp {
     private shapeshiftProvider: ShapeshiftProvider,
     private buyCryptoProvider: BuyCryptoProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
@@ -508,6 +510,11 @@ export class CopayApp {
     // Buy Crypto
     if (this.appProvider.info._enabledExtensions.buycrypto) {
       this.buyCryptoProvider.register();
+    }
+
+    // Exchange Crypto
+    if (this.appProvider.info._enabledExtensions.exchangecrypto) {
+      this.exchangeCryptoProvider.register();
     }
 
     // ShapeShift

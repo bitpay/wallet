@@ -72,6 +72,7 @@ export interface Config {
     mercadolibre: boolean;
     shapeshift: boolean;
     buycrypto: boolean;
+    exchangecrypto: boolean;
     giftcards: boolean;
     walletConnect: boolean;
   };
@@ -217,6 +218,7 @@ export class ConfigProvider {
         mercadolibre: true,
         shapeshift: true,
         buycrypto: true,
+        exchangecrypto: true,
         giftcards: true,
         walletConnect: true
       },
@@ -356,6 +358,9 @@ export class ConfigProvider {
       }
       if (this.configCache.showIntegration.buycrypto !== false) {
         this.configCache.showIntegration.buycrypto = this.configDefault.showIntegration.buycrypto;
+      }
+      if (this.configCache.showIntegration.exchangecrypto !== false) {
+        this.configCache.showIntegration.exchangecrypto = this.configDefault.showIntegration.exchangecrypto;
       }
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;

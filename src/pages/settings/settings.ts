@@ -30,6 +30,7 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
 import { CryptoSettingsPage } from '../buy-crypto/crypto-settings/crypto-settings';
+import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
@@ -340,6 +341,9 @@ export class SettingsPage {
         break;
       case 'buycrypto':
         this.navCtrl.push(CryptoSettingsPage);
+        break;
+      case 'exchangecrypto':
+        this.navCtrl.push(ExchangeCryptoSettingsPage);
         break;
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);
