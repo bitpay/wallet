@@ -9,7 +9,7 @@
         <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
       </div>
       <div class="info">
-        <div class="title" translate>Control your money without an account.</div>
+        <h3 class="title" translate>Control your money without an account.</h3>
         <div class="text">
           {{'Websites and exchanges get hacked. {appName} allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange.' | translate:{appName: appName} }}
         </div>
@@ -19,10 +19,10 @@
 </ion-content>
 <ion-footer no-border>
   <ion-toolbar>
-    <button ion-button class="button-standard" (click)="goToLockMethodPage('SelectCurrencyPage')">
+    <button ion-button class="button-standard no-margin-bottom" (click)="showInfoSheet('SelectCurrencyPage')">
       {{'Start' | translate}}
     </button>
-    <button ion-button clear color="primary" class="button-standard" (click)="goToLockMethodPage('ImportWalletPage')">
+    <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet('ImportWalletPage')">
       {{'Import from backup' | translate}}
     </button>
   </ion-toolbar>

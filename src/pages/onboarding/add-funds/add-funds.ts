@@ -80,7 +80,7 @@ export class AddFundsPage {
       if (option) {
         this.navCtrl.push(RecoveryKeyPage, {
           keyId: this.keyId,
-          isOnboardingFlow: false
+          isOnboardingFlow: true
         });
       }
     });

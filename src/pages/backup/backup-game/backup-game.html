@@ -26,7 +26,7 @@
         </div>
         <div *ngIf="selectComplete" class="confirm-container">
           <div translate>Is this correct?</div>
-          <button *ngIf="selectComplete" ion-button class="button-standard" (click)="finalStep()">
+          <button *ngIf="selectComplete" ion-button class="button-standard no-margin-bottom" (click)="finalStep()">
             {{'Confirm' | translate}}
           </button>
           <button ion-button clear class="button-standard" (click)="clear()">

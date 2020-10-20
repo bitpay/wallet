@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet';
 import { LockMethodPage } from '../../../pages/onboarding/lock-method/lock-method';
 
 @Component({
@@ -19,7 +19,8 @@ export class KeyCreationPage {
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.appName = this.appProvider.info.nameCase;
   }
@@ -28,14 +29,15 @@ export class KeyCreationPage {
     this.logger.info('Loaded: KeyCreationPage');
   }
 
-  public goToImportWallet(): void {
-    this.navCtrl.push(ImportWalletPage, {
-      isOnboardingFlow: true,
-      isZeroState: true
+  public showInfoSheet(nextViewName: string): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('protect-money');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) this.goToLockMethodPage(nextViewName);
     });
   }
 
-  public goToLockMethodPage(name: string): void {
+  private goToLockMethodPage(name: string): void {
     let nextView = {
       name,
       params: {

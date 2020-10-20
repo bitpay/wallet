@@ -873,10 +873,26 @@
               ion-item {
                 background-color: $bg-color-dark-theme;
                 color: $text-color-dark-theme;
-                &.no-lines {
-                  .item-inner {
-                    border-bottom: 0px;
+                ion-label {
+                  &.label-ios,
+                  &.label-md {
+                    color: $text-color-dark-theme-2;
                   }
+                }
+                ion-input {
+                  input[type='password'],
+                  input[type='text'] {
+                    color: $text-color-dark-theme;
+                  }
+                }
+              }
+              .item-inner {
+                border-bottom-color: $border-color-dark-theme !important;
+              }
+              button {
+                .ion-md-eye:before,
+                .ion-md-eye-off:before {
+                  color: $text-color-dark-theme-2;
                 }
               }
             }

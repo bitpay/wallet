@@ -9,10 +9,9 @@
         <img src="assets/img/onboarding/backup-key.svg" />
       </div>
       <div class="info">
-        <div class="title" translate>Don't lose your key!</div>
+        <h3 class="title" translate>How to recover your funds if you lose your device?</h3>
         <div class="text">
-          {{'Your recovery key is composed of 12 randomly selected words. If you delete the {appName} app or lose your device,' | translate:{appName: appName} }}
-          <b translate> you will NOT recover your money without your recovery key.</b>
+          {{'If you delete the {appName} app or lose your device, you’ll need your recovery key regain access to your funds.' | translate:{appName: appName} }}
         </div>
       </div>
     </div>
@@ -20,8 +19,8 @@
 </ion-content>
 <ion-footer no-border>
   <ion-toolbar>
-    <button ion-button class="button-standard" (click)="goToBackupKey()">
-      {{'View my key' | translate}}
+    <button ion-button class="button-standard no-margin-bottom" (click)="goToBackupKey()">
+      {{'View my recovery key' | translate}}
     </button>
     <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet()">
       {{"I’ll do this later" | translate}}

@@ -50,9 +50,8 @@ export class LockMethodPage {
     this.logger.info('Loaded: LockMethodPage');
   }
 
-  async ionViewWillEnter() {
-    await this.checkLockOptions();
-    this.showInfoSheet('protect-money');
+  ionViewWillEnter() {
+    this.checkLockOptions();
   }
 
   private checkLockOptions() {
@@ -62,6 +61,9 @@ export class LockMethodPage {
           this.touchIdProvider.getIosBiometricMethod() === 'face'
             ? 'faceId'
             : 'fingerprint';
+      } else {
+        this.pinMethodSelected = true;
+        this.openPinModal();
       }
     });
   }
@@ -91,9 +93,12 @@ export class LockMethodPage {
     );
     modal.present();
     modal.onDidDismiss(cancelClicked => {
-      !cancelClicked
-        ? this.openFinishModal('PIN')
-        : (this.pinMethodSelected = false);
+      if (cancelClicked) this.pinMethodSelected = false;
+      else
+        this.navCtrl.push(
+          this.pageMap[this.nextView.name],
+          this.nextView.params
+        );
     });
   }
 
@@ -107,20 +112,19 @@ export class LockMethodPage {
       showBackdrop: true,
       enableBackdropDismiss: false
     });
-    modal.present();
+    modal.present().then(() => {
+      this.biometricMethod = '';
+    });
     modal.onDidDismiss(() => {
       this.navCtrl.push(this.pageMap[this.nextView.name], this.nextView.params);
     });
   }
 
-  private showInfoSheet(infoSheetType: InfoSheetType): void {
+  public showInfoSheet(infoSheetType: InfoSheetType): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
-      if (
-        (option && infoSheetType === 'pincode-info') ||
-        (option && infoSheetType === 'protect-money' && !this.biometricMethod)
-      ) {
+      if (option) {
         this.pinMethodSelected = true;
         this.openPinModal();
       }

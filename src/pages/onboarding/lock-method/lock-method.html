@@ -9,7 +9,7 @@
         <img src="assets/img/onboarding/faceId.svg" />
       </div>
       <div class="info">
-        <div class="title" translate>Use facial recognition to unlock?</div>
+        <h3 class="title" translate>Use facial recognition to unlock?</h3>
         <div class="text">
           {{' Unlock {appName} faster by setting up facial recognition.' | translate:{appName: appName} }}
         </div>
@@ -22,7 +22,7 @@
         <img src="assets/img/onboarding/touchId.svg" />
       </div>
       <div class="info">
-        <div class="title" translate>Use fingerprint authentication to unlock?</div>
+        <h3 class="title" translate>Use fingerprint authentication to unlock?</h3>
         <div class="text">
           {{' Unlock {appName} faster by setting up fingerprint authentication.' | translate:{appName: appName} }}
         </div>
@@ -32,7 +32,7 @@
 </ion-content>
 <ion-footer no-border *ngIf="biometricMethod && !pinMethodSelected">
   <ion-toolbar>
-    <button ion-button class="button-standard" (click)="verifyBiometricLockMethod()">
+    <button ion-button class="button-standard no-margin-bottom" (click)="verifyBiometricLockMethod()">
       {{'Continue' | translate}}
     </button>
     <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet('pincode-info')">
