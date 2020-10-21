@@ -161,6 +161,7 @@ export class TabsPage {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
+      this.events.publish('Desktop/onFocus');
       setTimeout(() => {
         this.updateTxps();
         this.fetchAllWalletsStatus();

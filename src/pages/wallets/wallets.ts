@@ -21,15 +21,11 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
-import { PayproProvider } from '../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -50,14 +46,10 @@ export class WalletsPage {
   public wallets;
   public walletsGroups;
   public txpsN: number;
-  public validDataFromClipboard = null;
-  public payProDetailsData;
-  public remainingTimeStr: string;
 
   public collapsedGroups;
 
   private zone;
-  private countDown;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
 
@@ -74,23 +66,15 @@ export class WalletsPage {
     private logger: Logger,
     private events: Events,
     private popupProvider: PopupProvider,
-    private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private payproProvider: PayproProvider,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
-    private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
     private coinbaseProvider: CoinbaseProvider
   ) {
     this.collapsedGroups = {};
-    // Update Wallet on Focus
-    if (this.platformProvider.isElectron) {
-      this.updateDesktopOnFocus();
-    }
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
@@ -121,7 +105,6 @@ export class WalletsPage {
   }
 
   private _didEnter() {
-    this.checkClipboard();
     this.updateTxps();
   }
 
@@ -162,7 +145,6 @@ export class WalletsPage {
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.checkClipboard();
       subscribeEvents();
     });
 
@@ -209,19 +191,6 @@ export class WalletsPage {
     this.walletProvider.invalidateCache(wallet);
     this.debounceFetchWalletStatus(walletId, alsoUpdateHistory);
   };
-
-  private updateDesktopOnFocus() {
-    const { remote } = (window as any).require('electron');
-    const win = remote.getCurrentWindow();
-    win.on('focus', () => {
-      if (
-        this.navCtrl.getActive() &&
-        this.navCtrl.getActive().name == 'WalletsPage'
-      ) {
-        this.checkClipboard();
-      }
-    });
-  }
 
   private openEmailDisclaimer() {
     const message = this.translate.instant(
@@ -278,97 +247,6 @@ export class WalletsPage {
       leading: true
     }
   );
-
-  private checkClipboard() {
-    return this.clipboardProvider
-      .getData()
-      .then(data => {
-        if (_.isEmpty(data)) return;
-        const dataFromClipboard = this.incomingDataProvider.parseData(data);
-        if (!dataFromClipboard) return;
-        const dataToIgnore = [
-          'BitcoinAddress',
-          'BitcoinCashAddress',
-          'EthereumAddress',
-          'PlainUrl'
-        ];
-        if (dataToIgnore.indexOf(dataFromClipboard.type) > -1) return;
-        if (
-          dataFromClipboard.type === 'PayPro' ||
-          dataFromClipboard.type === 'InvoiceUri'
-        ) {
-          const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
-          this.payproProvider
-            .getPayProOptions(invoiceUrl, true)
-            .then(payproOptions => {
-              if (!payproOptions) return;
-              const { expires, paymentOptions, payProUrl } = payproOptions;
-              let selected = paymentOptions.filter(option => option.selected);
-              if (selected.length === 0) {
-                // No Currency Selected default to BTC
-                selected.push(payproOptions.paymentOptions[0]); // BTC
-              }
-              const [{ currency, estimatedAmount }] = selected;
-              this.payProDetailsData = payproOptions;
-              this.payProDetailsData.coin = currency.toLowerCase();
-              this.payProDetailsData.amount = estimatedAmount;
-              this.payProDetailsData.host = new URL(payProUrl).host;
-              this.validDataFromClipboard = dataFromClipboard;
-              this.clearCountDownInterval();
-              this.paymentTimeControl(expires);
-            })
-            .catch(err => {
-              this.hideClipboardCard();
-              this.payProDetailsData = {};
-              this.payProDetailsData.error = this.bwcErrorProvider.msg(err);
-              this.logger.warn(
-                'Error fetching this invoice',
-                this.bwcErrorProvider.msg(err)
-              );
-            });
-        }
-      })
-      .catch(err => {
-        this.logger.warn('Paste from clipboard: ', err);
-      });
-  }
-
-  public hideClipboardCard() {
-    this.validDataFromClipboard = null;
-    this.clipboardProvider.clear();
-  }
-
-  public processClipboardData(data): void {
-    this.clearCountDownInterval();
-    this.hideClipboardCard();
-    this.incomingDataProvider.redir(data, { fromHomeCard: true });
-  }
-
-  private clearCountDownInterval(): void {
-    if (this.countDown) clearInterval(this.countDown);
-  }
-
-  private paymentTimeControl(expires): void {
-    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
-    const setExpirationTime = (): void => {
-      const now = Math.floor(Date.now() / 1000);
-      if (now > expirationTime) {
-        this.remainingTimeStr = this.translate.instant('Expired');
-        this.clearCountDownInterval();
-        return;
-      }
-      const totalSecs = expirationTime - now;
-      const m = Math.floor(totalSecs / 60);
-      const s = totalSecs % 60;
-      this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
-    };
-
-    setExpirationTime();
-
-    this.countDown = setInterval(() => {
-      setExpirationTime();
-    }, 1000);
-  }
 
   private fetchTxHistory(opts: UpdateWalletOptsI) {
     if (!opts.walletId) {

@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 // Providers
@@ -9,6 +10,7 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -44,6 +46,8 @@ export class SendPage {
   public search: string = '';
   public hasWallets: boolean;
   public invalidAddress: boolean;
+  public validDataFromClipboard;
+  private onResumeSubscription: Subscription;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
@@ -86,11 +90,19 @@ export class SendPage {
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private plt: Platform,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.subscribe('Desktop/onFocus', () => {
+      this.setDataFromClipboard();
+    });
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setDataFromClipboard();
+    });
   }
 
   @ViewChild('transferTo')
@@ -104,11 +116,20 @@ export class SendPage {
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
+    this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.unsubscribe('Desktop/onFocus');
+    this.onResumeSubscription.unsubscribe();
+  }
+
+  private setDataFromClipboard() {
+    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+      this.validDataFromClipboard = data;
+    });
   }
 
   private SendPageRedirEventHandler: any = nextView => {
@@ -328,5 +349,12 @@ export class SendPage {
           wallet: this.wallet
         });
     });
+  }
+
+  public pasteFromClipboard() {
+    this.search = this.validDataFromClipboard;
+    this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
+    this.processInput();
   }
 }

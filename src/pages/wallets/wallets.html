@@ -29,22 +29,6 @@
       </ion-toolbar>
     </expandable-header>
 
-    <div class="card clipboard-card" *ngIf="validDataFromClipboard">
-      <ion-item-divider>
-        <div class="title" item-start>
-          <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
-          <span>{{ 'Copied' | translate }} {{ validDataFromClipboard?.title }}</span>
-        </div>
-        <div item-end>
-          <button ion-button clear icon-only color="grey" (click)="hideClipboardCard()">
-            <ion-icon name="close"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
-      </page-clipboard-card>
-    </div>
-
     <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">

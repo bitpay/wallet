@@ -6,7 +6,6 @@ import { AdvertisingComponent } from './advertising/advertising';
 import { AmountPickerComponent } from './amount-picker/amount-picker';
 import { BalanceToShowComponent } from './balance-to-show/balance-to-show';
 import { ChartComponent } from './chart-component/chart-component';
-import { ClipboardCardPage } from './clipboard-card/clipboard-card';
 import { CoinIconComponent } from './coin-icon/coin-icon';
 import { ExchangeRates } from './exchange-rates/exchange-rates';
 import { EXPANDABLE_HEADER_COMPONENTS } from './expandable-header/expandable-header';
@@ -27,7 +26,6 @@ export const COMPONENTS = [
   GiftCardDiscountText,
   LabelTip,
   WalletItemContent,
-  ClipboardCardPage,
   SearchBarComponent,
   ExchangeRates,
   CoinIconComponent,
