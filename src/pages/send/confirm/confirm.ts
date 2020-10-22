@@ -1073,17 +1073,7 @@ export class ConfirmPage {
       ) {
         txp.multisigContractAddress = tx.multisigContractAddress;
         for (const output of txp.outputs) {
-          const data = output.data ? output.data : '0x';
-          if (txp.tokenAddress) {
-            output.data = this.bwcProvider
-              .getCore()
-              .Transactions.get({ chain: 'ETHMULTISIG' })
-              .submitEncodeData({
-                recipients: [{ address: txp.tokenAddress, amount: 0 }],
-                multisigContractAddress: tx.multisigContractAddress,
-                data
-              });
-          } else {
+          if (!output.data) {
             output.data = this.bwcProvider
               .getCore()
               .Transactions.get({ chain: 'ETHMULTISIG' })
@@ -1136,7 +1126,17 @@ export class ConfirmPage {
       ) {
         txp.multisigContractAddress = tx.multisigContractAddress;
         for (const output of txp.outputs) {
-          if (!output.data) {
+          const data = output.data ? output.data : '0x';
+          if (txp.tokenAddress) {
+            output.data = this.bwcProvider
+              .getCore()
+              .Transactions.get({ chain: 'ETHMULTISIG' })
+              .submitEncodeData({
+                recipients: [{ address: txp.tokenAddress, amount: 0 }],
+                multisigContractAddress: tx.multisigContractAddress,
+                data
+              });
+          } else {
             output.data = this.bwcProvider
               .getCore()
               .Transactions.get({ chain: 'ETHMULTISIG' })
