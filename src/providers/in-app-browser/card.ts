@@ -385,9 +385,10 @@ export class IABCardProvider {
                   currentCard => currentCard.eid === c.id
                 ) || {};
 
-              const hideCardStatuses = ['lost', 'stolen', 'canceled'];
-
-              if (c.status && hideCardStatuses.includes(c.status)) {
+              if (
+                c.disabled ||
+                ['lost', 'stolen', 'canceled'].includes(c.status)
+              ) {
                 hide = true;
               }
 

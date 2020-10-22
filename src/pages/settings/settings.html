@@ -176,15 +176,17 @@
 
       <div *ngIf="isCordova && !isCopay && showBitPayCard && bitpayCardItems?.length">
         <ion-list>
-          <button ion-item *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy" (click)="openCardSettings(card.id)" @fade>
-            <ion-icon class="item-img" item-start>
-              <img src="assets/img/bitpay-card/bitpay-card-icon-list.svg" />
-            </ion-icon>
-            <div class="main-label">BitPay {{card.brand === 'Mastercard'? 'Mastercard&reg;' : 'Visa&reg; Card'}} ({{card.lastFourDigits}})</div>
-            <ion-note item-end *ngIf="card.cardType === 'virtual'">
-              <span translate>Virtual</span>
-            </ion-note>
-          </button>
+          <ng-container *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy">
+            <button ion-item (click)="openCardSettings(card.id)" @fade *ngIf="!card.hide">
+              <ion-icon class="item-img" item-start>
+                <img src="assets/img/bitpay-card/bitpay-card-icon-list.svg" />
+              </ion-icon>
+              <div class="main-label">BitPay {{card.brand === 'Mastercard'? 'Mastercard&reg;' : 'Visa&reg; Card'}} ({{card.lastFourDigits}})</div>
+              <ion-note item-end *ngIf="card.cardType === 'virtual'">
+                <span translate>Virtual</span>
+              </ion-note>
+            </button>
+          </ng-container>
         </ion-list>
       </div>
 
