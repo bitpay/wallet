@@ -35,7 +35,6 @@ import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/cr
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
-import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -85,7 +84,6 @@ export class AmountPage {
   public config: Config;
   public toWalletId: string;
   private _id: string;
-  public requestingAmount: boolean;
   public wallet;
   any;
 
@@ -165,8 +163,6 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
 
-    this.requestingAmount =
-      this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
     // BitPay Card ID or Wallet ID or Coinbase Account ID
@@ -324,9 +320,6 @@ export class AmountPage {
       case 'ConfirmCardPurchasePage':
         nextPage = ConfirmCardPurchasePage;
         break;
-      case 'CustomAmountPage':
-        nextPage = CustomAmountPage;
-        break;
       case 'CryptoOrderSummaryPage':
         nextPage = CryptoOrderSummaryPage;
         break;
@@ -377,7 +370,6 @@ export class AmountPage {
     return (
       this.navParams.get('card') !== 'v2' &&
       this.showSendMax &&
-      !this.requestingAmount &&
       !this.useAsModal
     );
   }

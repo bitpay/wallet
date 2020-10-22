@@ -25,10 +25,13 @@
       </ion-col>
       <div class="addr-buttons">
         <button *ngIf="!(wallet?.cachedStatus && wallet?.cachedStatus.wallet && wallet?.cachedStatus.wallet.singleAddress)" ion-button clear icon-only color="primary" class="addr-update" (click)="setAddress(true)">
-          <span ion-text color="primary" translate>
+          <span ion-text color="primary">
             <img *ngIf="!loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="12" />
             <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
           </span>
+        </button>
+        <button ion-button clear icon-only class="addr-update" (click)="share()" *ngIf="isCordova">
+          <img class="spin-icon" src="assets/img/icon-share.svg">
         </button>
       </div>
     </ion-row>
@@ -50,7 +53,7 @@
           <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
             <span class="address-placeholder" translate>Generating new address...</span>
           </div>
-          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text ellipsis">
+          <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" copy-to-clipboard="{{ plainAddress }}" class="address-text ellipsis">
             <span>{{ plainAddress }}</span>
           </div>
         </div>
@@ -76,20 +79,20 @@
       </div>
     </div>
     <ion-grid>
-      <ion-row align-items-center>
-        <ion-col col-4>
-        <ion-input item-start type="tel" name="fiatInput" placeholder="0.00" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockCryptoInput()" (ionBlur)="lockCryptoInput()" [(ngModel)]="valueFiat"></ion-input>
+      <ion-row align-items-center justify-content-center>
+        <ion-col col-3>
+        <ion-input type="tel" name="fiatInput" placeholder="0.00" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockCryptoInput()" (ionBlur)="lockCryptoInput()" [(ngModel)]="valueFiat"></ion-input>
         </ion-col>
         <ion-col col-2>
-          <span ion-text color="primary">
+          <span ion-text color="grey">
             {{ fiatIsoCode }}
           </span>
         </ion-col>
-        <ion-col col-4>
-          <ion-input item-end type="tel" name="cryptoInput" placeholder="0" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockFiatInput()" (ionBlur)="lockFiatInput()" [(ngModel)]="valueCrypto"></ion-input>
+        <ion-col col-3>
+          <ion-input type="tel" name="cryptoInput" placeholder="0" enterkeyhint="done" (ionChange)="onValueChange($event)" (ionFocus)="lockFiatInput()" (ionBlur)="lockFiatInput()" [(ngModel)]="valueCrypto"></ion-input>
         </ion-col>
         <ion-col col-2>
-          <span ion-text color="primary">
+          <span ion-text color="grey">
             {{ wallet.coin.toUpperCase() }}
           </span>
         </ion-col>

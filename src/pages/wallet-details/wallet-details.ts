@@ -1,5 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import { SocialSharing } from '@ionic-native/social-sharing';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -25,7 +24,6 @@ import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { TimeProvider } from '../../providers/time/time';
@@ -37,7 +35,6 @@ import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
 import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifications/proposals-notifications';
-import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from './wallet-balance/wallet-balance';
 
@@ -79,7 +76,6 @@ export class WalletDetailsPage {
   public lowUtxosWarning: boolean;
   public associatedWallet: string;
   public backgroundColor: string;
-  private isCordova: boolean;
   public useLegacyQrCode: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
@@ -101,15 +97,12 @@ export class WalletDetailsPage {
     private platform: Platform,
     private profileProvider: ProfileProvider,
     private viewCtrl: ViewController,
-    private platformProvider: PlatformProvider,
-    private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
-    this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
@@ -643,44 +636,6 @@ export class WalletDetailsPage {
   public goToSendPage() {
     this.navCtrl.push(SendPage, {
       wallet: this.wallet
-    });
-  }
-
-  public showMoreOptions(): void {
-    const showRequest =
-      this.wallet && this.wallet.isComplete() && !this.wallet.needsBackup;
-    const showShare = showRequest && this.isCordova;
-    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
-      'wallet-options',
-      { showShare, showRequest }
-    );
-    optionsSheet.present();
-
-    optionsSheet.onDidDismiss(option => {
-      if (option == 'request-amount') this.requestSpecificAmount();
-      if (option == 'share-address') this.shareAddress();
-    });
-  }
-
-  private requestSpecificAmount(): void {
-    this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.navCtrl.push(AmountPage, {
-        toAddress: addr,
-        id: this.wallet.credentials.walletId,
-        recipientType: 'wallet',
-        name: this.wallet.name,
-        color: this.wallet.color,
-        coin: this.wallet.coin,
-        nextPage: 'CustomAmountPage',
-        network: this.wallet.network
-      });
-    });
-  }
-
-  private shareAddress(): void {
-    if (!this.isCordova) return;
-    this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.socialSharing.share(addr);
     });
   }
 

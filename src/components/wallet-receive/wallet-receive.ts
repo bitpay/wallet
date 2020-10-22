@@ -1,4 +1,5 @@
 import { Component, ComponentRef } from '@angular/core';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { Subscription } from 'rxjs';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
@@ -8,6 +9,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -38,6 +40,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public valueFiat: string;
   public valueCrypto: string;
   public fiatIsoCode: string;
+  public isCordova: boolean;
   private lockedFiat: boolean = false;
   private lockedCrypto: boolean = false;
 
@@ -54,7 +57,9 @@ export class WalletReceiveComponent extends ActionSheetParent {
     private addressProvider: AddressProvider,
     private domProvider: DomProvider,
     private configProvider: ConfigProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private socialSharing: SocialSharing,
+    private platformProvider: PlatformProvider
   ) {
     super();
   }
@@ -67,6 +72,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
     this.bchAddrFormat = 'cashAddress';
     this.disclaimerAccepted = false;
     this.setAddress();
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   ionViewWillLeave() {
@@ -287,5 +293,10 @@ export class WalletReceiveComponent extends ActionSheetParent {
       (this.wallet.coin == 'bch' ? this.plainAddress : protoAddr) +
       valueStr +
       this.valueCrypto;
+  }
+
+  public share(): void {
+    if (!this.isCordova) return;
+    this.socialSharing.share(this.address);
   }
 }

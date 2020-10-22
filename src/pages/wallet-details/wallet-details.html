@@ -6,9 +6,6 @@
       </div>
     </ion-title>
     <ion-buttons right class="settings-button">
-      <button class="option-button disable-hover" clear *ngIf="wallet?.isComplete() && !wallet?.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
-        <ion-icon name="ios-more" md="ios-more"></ion-icon>
-      </button>
       <button ion-button *ngIf="wallet && wallet?.completeHistory && wallet?.completeHistory.length > 4" class="search-button disable-hover" (click)="openSearchModal()">
         <img src="assets/img/search.svg">
       </button>

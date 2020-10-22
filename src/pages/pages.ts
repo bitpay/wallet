@@ -139,7 +139,6 @@ import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to
 import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
 /* Receive */
-import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
@@ -189,7 +188,6 @@ export const PAGES = [
   MultiSendPage,
   TransferToModalPage,
   TransferToPage,
-  CustomAmountPage,
   DisclaimerPage,
   CollectEmailPage,
   ...GIFT_CARD_PAGES,
