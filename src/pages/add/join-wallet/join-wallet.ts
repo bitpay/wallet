@@ -141,7 +141,6 @@ export class JoinWalletPage {
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.keyId,
           coin: 'eth',
-          network: 'testnet', // TODO livenet
           m: 1,
           n: 1
         })

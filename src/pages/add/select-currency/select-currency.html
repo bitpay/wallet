@@ -7,7 +7,7 @@
           <ion-icon item-start>
             <img src="assets/img/currencies/{{coin}}.svg" />
           </ion-icon>
-          <div class="item-title">{{ getCoinName(coin) }} ({{ coin.toUpperCase() }}) <span *ngIf="(navParam.data.isShared || navParam.data.isJoin) && coin === 'eth'">(Testnet ONLY)</span></div>
+          <div class="item-title">{{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</div>
         </button>
       </div>
       <div *ngIf="!navParam.data.isShared && !navParam.data.isJoin">
