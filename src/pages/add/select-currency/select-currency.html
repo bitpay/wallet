@@ -12,7 +12,7 @@
           <div class="item-note" *ngIf="coin === 'eth' && (isShared || isJoin) && !keyId" translate>Try "create new wallet" option instead</div>
         </button>
       </div>
-      <div *ngIf="!isShared && !isJoin">
+      <div *ngIf="!navParam.data.isJoin">
         <span class="list-subtitle">Tokens</span>
         <button *ngFor="let token of availableTokens" class="list-button" [disabled]="tokenDisabled[token.symbol]" ion-item (click)="showPairedWalletSelector(token)">
           <ion-icon item-start>

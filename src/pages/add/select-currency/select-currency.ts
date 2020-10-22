@@ -222,13 +222,25 @@ export class SelectCurrencyPage {
   }
 
   public showPairedWalletSelector(token) {
-    const eligibleWallets = this.keyId
+    let eligibleWallets = this.keyId
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.keyId,
           network: 'livenet',
           pairFor: token
         })
       : [];
+
+    if (!this.navParam.data.isShared) {
+      eligibleWallets = eligibleWallets.filter(wallet => {
+        console.log(wallet);
+        return wallet.m === 1;
+      });
+    } else {
+      eligibleWallets = eligibleWallets.filter(wallet => {
+        console.log(wallet);
+        return wallet.m > 1;
+      });
+    }
 
     const walletSelector = this.actionSheetProvider.createInfoSheet(
       'linkEthWallet',
