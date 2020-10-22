@@ -197,7 +197,8 @@ export class SettingsPage {
     // Hide BitPay if linked
     setTimeout(() => {
       this.integrationServices = _.remove(_.clone(integrations), x => {
-        if (x.type == 'card') return false;
+        if (x.type == 'card' || (this.platformProvider.isMacApp() && !x.linked))
+          return false;
         else return x;
       });
       this.cardServices = _.remove(_.clone(integrations), x => {

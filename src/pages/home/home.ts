@@ -369,7 +369,8 @@ export class HomePage {
           this.setGiftCardAdvertisement();
           break;
         case 'coinbase':
-          this.showCoinbase = x.linked == false;
+          this.showCoinbase =
+            x.linked == false && !this.platformProvider.isMacApp();
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
           break;
