@@ -34,6 +34,7 @@ export class TabsPage {
   public txpsN: number;
   public cardNotificationBadgeText;
   public scanIconType: string;
+  public isCordova: boolean;
   private zone;
 
   private onResumeSubscription: Subscription;
@@ -58,6 +59,7 @@ export class TabsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
+    this.isCordova = this.platformProvider.isCordova;
     this.scanIconType =
       this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
 
