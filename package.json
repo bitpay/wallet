@@ -225,8 +225,7 @@
   "config": {
     "ionic_uglifyjs": "./config/uglifyjs.config.js",
     "ionic_bundler": "webpack",
-    "ionic_webpack": "./config/webpack.config.js",
-    "ionic_generate_source_map": "true"
+    "ionic_webpack": "./config/webpack.config.js"
   },
   "cordova": {
     "plugins": {
