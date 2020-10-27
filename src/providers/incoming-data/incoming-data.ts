@@ -887,7 +887,11 @@ export class IncomingDataProvider {
             params['code'] = payload.split('&code=')[1];
           }
 
-          this.iabCardProvider.pairing(params);
+          if (payload.includes('dashboardRedirect')) {
+            params['dashboardRedirect'] = true;
+          }
+
+          this.iabCardProvider.pairing({ data: { params } });
           break;
 
         case 'order-now':

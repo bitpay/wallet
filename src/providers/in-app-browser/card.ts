@@ -673,7 +673,7 @@ export class IABCardProvider {
   async pairing(event) {
     const {
       params,
-      params: { withNotification }
+      params: { withNotification, dashboardRedirect }
     } = event.data;
     // set the overall app loading state
     this.onGoingProcess.set('connectingBitPayId');
@@ -719,6 +719,13 @@ export class IABCardProvider {
             await infoSheet.present();
             // close in app browser
             this.hide();
+
+            if (dashboardRedirect) {
+              this.sendMessage({ message: 'loadDashboard' });
+              infoSheet.onDidDismiss(() => {
+                this.cardIAB_Ref.show();
+              });
+            }
           }
 
           // publish new user
