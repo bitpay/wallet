@@ -42,32 +42,37 @@ export class CountrySelectorPage {
     ];
 
     this.EUCountries = [
-      'DE',
-      'AT',
-      'BE',
-      'BG',
-      'CY',
-      'HR',
-      'DK',
-      'SK',
-      'SI',
-      'ES',
-      'EE',
-      'FI',
-      'FR',
-      'EL',
-      'HU',
-      'IE',
-      'IT',
-      'LV',
-      'LU',
-      'MT',
-      'NL',
-      'PL',
-      'PT',
-      'CZ',
-      'RO',
-      'SE'
+      'AT', // Austria
+      'BE', // Belgium
+      'BG', // Bulgaria
+      'HR', // Croatia
+      'CY', // Cyprus
+      'CZ', // Czech Republic
+      'DK', // Denmark
+      'EE', // Estonia
+      'FI', // Finland
+      'FR', // France
+      'DE', // Germany
+      'GR', // Greece
+      'HU', // Hungary
+      'IS', // Iceland
+      'IE', // Ireland, Republic of (EIRE)
+      'IT', // Italy
+      'LV', // Latvia
+      'LT', // Lithuania
+      'LU', // Luxembourg
+      'MT', // Malta
+      'NL', // Netherlands
+      'NO', // Norway
+      'PL', // Poland
+      'PT', // Portugal
+      'RO', // Romania
+      'SK', // Slovakia
+      'SI', // Slovenia
+      'ES', // Spain
+      'SE', // Sweden
+      'CH', // Switzerland
+      'GB' // United Kingdom (Great Britain)
     ];
 
     this.completeCountryList = this.navParams.data.countryList;
