@@ -2,11 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { KeyCreationPage } from '../../../pages/onboarding/key-creation/key-creation';
+import { LockMethodPage } from '../../../pages/onboarding/lock-method/lock-method';
 
 @Component({
   selector: 'page-feature-education',
@@ -15,14 +16,15 @@ import { KeyCreationPage } from '../../../pages/onboarding/key-creation/key-crea
 export class FeatureEducationPage {
   @ViewChild('featureEducationSlides')
   featureEducationSlides: Slides;
-  public isCopay: boolean;
+  public appName: string;
 
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
-    this.isCopay = this.appProvider.info.name === 'copay';
+    this.appName = this.appProvider.info.nameCase;
   }
 
   ionViewDidLoad() {
@@ -41,14 +43,22 @@ export class FeatureEducationPage {
       : this.featureEducationSlides.lockSwipeToPrev(false);
   }
 
-  public nextSlide(): void {
-    let currentIndex = this.featureEducationSlides.getActiveIndex();
-    currentIndex < 2 && !this.isCopay
-      ? this.featureEducationSlides.slideNext()
-      : this.goToKeyCreation();
+  public showInfoSheet(nextViewName: string): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('protect-money');
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) this.goToLockMethodPage(nextViewName);
+    });
   }
 
-  private goToKeyCreation(): void {
-    this.navCtrl.push(KeyCreationPage);
+  private goToLockMethodPage(name: string): void {
+    let nextView = {
+      name,
+      params: {
+        isOnboardingFlow: true,
+        isZeroState: true
+      }
+    };
+    this.navCtrl.push(LockMethodPage, { nextView });
   }
 }

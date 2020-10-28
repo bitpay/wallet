@@ -3,8 +3,8 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!isCopay" class="onboarding-slides">
-    <ion-slide *ngIf="!isCopay">
+  <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!featureEducationSlides.isEnd()" class="onboarding-slides">
+    <ion-slide *ngIf="appName !== 'Copay'">
       <div class="slide-info">
         <div class="img-container">
           <img src="assets/img/onboarding/feature-education-1.svg" />
@@ -20,7 +20,7 @@
         </div>
       </div>
     </ion-slide>
-    <ion-slide *ngIf="!isCopay">
+    <ion-slide *ngIf="appName !== 'Copay'">
       <div class="slide-info">
         <div class="img-container">
           <img class="tour-2" src="assets/img/onboarding/feature-education-2.svg" />
@@ -46,12 +46,26 @@
         </div>
       </div>
     </ion-slide>
+    <ion-slide class="key-creation">
+      <div class="slide-info">
+        <div class="img-container">
+          <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
+        </div>
+        <div class="info">
+          <h3 class="title" translate>Control your money without an account.</h3>
+          <div class="text">
+            {{'Websites and exchanges get hacked. {appName} allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange.' | translate:{appName: appName} }}
+          </div>
+        </div>
+        <div class="footer">
+          <button ion-button class="button-standard no-margin-bottom" (click)="showInfoSheet('SelectCurrencyPage')">
+            {{'Start' | translate}}
+          </button>
+          <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet('ImportWalletPage')">
+            {{'Import from backup' | translate}}
+          </button>
+        </div>
+      </div>
+    </ion-slide>
   </ion-slides>
 </ion-content>
-<ion-footer no-border>
-  <ion-toolbar>
-    <button ion-button class="button-standard" (click)="nextSlide()">
-      {{'Continue' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>

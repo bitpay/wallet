@@ -62,7 +62,6 @@ import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
-import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PinModalPage } from '../pages/pin/pin-modal/pin-modal';
 import { AmountPage } from '../pages/send/amount/amount';
@@ -90,7 +89,6 @@ export class CopayApp {
     | typeof AmountPage
     | typeof DisclaimerPage
     | typeof TabsPage
-    | typeof OnboardingPage
     | typeof FeatureEducationPage;
   private onResumeSubscription: Subscription;
   private isCopayerModalOpen: boolean;
@@ -429,7 +427,7 @@ export class CopayApp {
 
       this.logger.info('No profile exists.');
       this.profile.createProfile();
-      this.rootPage = OnboardingPage;
+      this.rootPage = FeatureEducationPage;
     }
   }
 

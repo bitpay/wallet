@@ -20,9 +20,7 @@ import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
-import { KeyCreationPage } from '../pages/onboarding/key-creation/key-creation';
 import { LockMethodPage } from '../pages/onboarding/lock-method/lock-method';
-import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { RecoveryKeyPage } from '../pages/onboarding/recovery-key/recovery-key';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
@@ -199,7 +197,6 @@ export const PAGES = [
   AddFundsPage,
   FeatureEducationPage,
   LockMethodPage,
-  KeyCreationPage,
   RecoveryKeyPage,
   CollectEmailPage,
   ...GIFT_CARD_PAGES,
@@ -212,7 +209,6 @@ export const PAGES = [
   LockPage,
   MerchantPage,
   MultipleOutputsPage,
-  OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
   PricePage,

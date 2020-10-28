@@ -1,6 +1,9 @@
 page-feature-education {
   .onboarding-slides {
     ion-slide {
+      &.swiper-slide {
+        overflow-y: scroll;
+      }
       .slide-zoom {
         height: 100%;
         .slide-info {
@@ -15,6 +18,12 @@ page-feature-education {
               max-height: 23rem;
               @media (max-width: 350px) {
                 max-height: 10rem;
+              }
+            }
+            .tour-1 {
+              padding-left: 8rem;
+              @media (max-width: 350px) {
+                padding-left: 4rem;
               }
             }
             .tour-2 {
@@ -64,6 +73,16 @@ page-feature-education {
                   line-height: 15px;
                 }
               }
+            }
+          }
+        }
+      }
+      &.key-creation {
+        .slide-zoom {
+          .slide-info {
+            grid-template-rows: auto auto max-content;
+            .footer {
+              align-self: end;
             }
           }
         }
