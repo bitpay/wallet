@@ -721,10 +721,10 @@ export class IABCardProvider {
             this.hide();
 
             if (dashboardRedirect) {
-              this.sendMessage({ message: 'loadDashboard' });
-              infoSheet.onDidDismiss(() => {
-                this.cardIAB_Ref.show();
+              this.events.publish('IncomingDataRedir', {
+                name: 'CardsPage'
               });
+              this.sendMessage({ message: 'loadDashboard' });
             }
           }
 
