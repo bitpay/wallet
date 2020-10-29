@@ -390,6 +390,13 @@ export class ConfirmPage {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
+    if (
+      this.wallet.credentials.token &&
+      this.wallet.credentials.token.address
+    ) {
+      this.tx.tokenAddress = this.wallet.credentials.token.address;
+    }
+
     this.setButtonText(
       this.wallet.credentials.m > 1,
       !!this.tx.paypro,
@@ -1019,17 +1026,19 @@ export class ConfirmPage {
 
       if (tx.tokenAddress) {
         txp.tokenAddress = tx.tokenAddress;
-        for (const output of txp.outputs) {
-          if (!output.data) {
-            output.data = this.bwcProvider
-              .getCore()
-              .Transactions.get({ chain: 'ERC20' })
-              .encodeData({
-                recipients: [
-                  { address: output.toAddress, amount: output.amount }
-                ],
-                tokenAddress: tx.tokenAddress
-              });
+        if (!tx.paypro) {
+          for (const output of txp.outputs) {
+            if (!output.data) {
+              output.data = this.bwcProvider
+                .getCore()
+                .Transactions.get({ chain: 'ERC20' })
+                .encodeData({
+                  recipients: [
+                    { address: output.toAddress, amount: output.amount }
+                  ],
+                  tokenAddress: tx.tokenAddress
+                });
+            }
           }
         }
       }
