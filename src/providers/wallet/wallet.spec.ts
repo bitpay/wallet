@@ -1165,7 +1165,8 @@ describe('Provider: Wallet Provider', () => {
       const keys = walletProvider.getKeysWithPassword(wallet, pass);
       expect(keys).toEqual({
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
-        xPrivKey: 'xPrivKey1'
+        xPrivKey: 'xPrivKey1',
+        mnemonicHasPassphrase: false
       });
     });
   });
@@ -1205,7 +1206,8 @@ describe('Provider: Wallet Provider', () => {
         .then(keys => {
           expect(keys).toEqual({
             mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
-            xPrivKey: 'xPrivKey1'
+            xPrivKey: 'xPrivKey1',
+            mnemonicHasPassphrase: false
           });
         })
         .catch(err => {

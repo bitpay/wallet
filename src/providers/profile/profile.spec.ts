@@ -130,11 +130,13 @@ describe('Profile Provider', () => {
   };
 
   const walletToImport = {
-    walletId: 'id1',
-    xPrivKey: 'xPrivKey1',
-    xPrivKeyEncrypted: 'xPrivKeyEncrypted1',
-    mnemonicEncrypted: 'mnemonicEncrypted1',
-    n: 1
+    toObj: () => ({
+      walletId: 'id1',
+      xPrivKey: 'xPrivKey1',
+      xPrivKeyEncrypted: 'xPrivKeyEncrypted1',
+      mnemonicEncrypted: 'mnemonicEncrypted1',
+      n: 1
+    })
   };
 
   const walletClientMock = {
@@ -255,7 +257,7 @@ describe('Profile Provider', () => {
 
   let genericKey = {
     id: 'keyId',
-    xPrivKey: 'xPrivKey',
+    //    xPrivKey: 'xPrivKey',  // xxPrivKey is no longer available directly as for BWC 9.4
     encrypt: () => {
       return true;
     },
@@ -301,25 +303,31 @@ describe('Profile Provider', () => {
       return _.clone(walletClientMock);
     }
     getKey(_walletData, _opts) {
-      return {
-        create: _opts => {
-          return genericKey;
-        },
-        fromExtendedPrivateKey: (_extendedPrivateKey: string, _opts) => {
-          return genericKey;
-        },
-        fromMnemonic: (_mnemonic: string, _opts) => {
-          return genericKey;
-        },
-        fromObj: _key => {
-          let key = genericKey;
-          return key;
-        },
-        match: (_key1, _key2) => {
+      class Key2 {
+        id: string;
+
+        constructor() {
+          this.id = 'keyId';
+        }
+        match(_key1, _key2) {
           return false;
         }
-      };
+        encrypt() {
+          return true;
+        }
+        createCredentials(_, _opts) {
+          return true;
+        }
+        isPrivKeyEncrypted() {
+          return false;
+        }
+        toObj() {
+          return keysArrayFromStorage[0];
+        }
+      }
+      return Key2;
     }
+
     upgradeCredentialsV1(_data) {
       const migrated = {
         credentials: {

@@ -152,7 +152,9 @@ export class BackupGamePage {
       let key;
 
       try {
-        key = keyClient.fromMnemonic(customSentence, {
+        key = new keyClient({
+          seedType: 'mnemonic',
+          seedData: customSentence,
           useLegacyCoinType: false,
           useLegacyPurpose: false,
           passphrase: password
@@ -162,7 +164,7 @@ export class BackupGamePage {
         return;
       }
 
-      if (key.xPrivKey != this.keys.xPrivKey) {
+      if (key.get().xPrivKey != this.keys.xPrivKey) {
         this.showErrorInfoSheet('Private key mismatch');
         return;
       }
