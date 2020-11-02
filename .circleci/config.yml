@@ -4,7 +4,7 @@ version: 2
 jobs:
   copay:
     docker:
-      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+      - image: circleci/node:10.16.2-browsers
     working_directory: ~/copay
     steps:
       - checkout
@@ -30,7 +30,7 @@ jobs:
 
   bitpay:
     docker:
-      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+      - image: circleci/node:10.16.2-browsers
     working_directory: ~/copay
     steps:
       - checkout
