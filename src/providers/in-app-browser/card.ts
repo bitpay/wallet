@@ -18,6 +18,7 @@ import { PayproProvider } from '../../providers/paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 
 import { HttpClient } from '@angular/common/http';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -60,7 +61,8 @@ export class IABCardProvider {
     private appProvider: AppProvider,
     private appleWalletProvider: AppleWalletProvider,
     private platform: Platform,
-    private device: Device
+    private device: Device,
+    private analyticsProvider: AnalyticsProvider
   ) {}
 
   public setNetwork(network: string) {
@@ -274,10 +276,19 @@ export class IABCardProvider {
           this.completeAddPaymentPass(event);
           break;
 
+        case 'fbLogEvent':
+          this.logEvent(event);
+          break;
+
         default:
           break;
       }
     });
+  }
+
+  logEvent(event) {
+    const { eventName, params } = event.data.params;
+    this.analyticsProvider.logEvent(eventName, params);
   }
 
   getCards() {
