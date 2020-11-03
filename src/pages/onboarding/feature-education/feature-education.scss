@@ -9,7 +9,7 @@ page-feature-education {
         .slide-info {
           height: 100%;
           display: grid;
-          grid-template-rows: 50% 50%;
+          grid-template-rows: 50% 1fr 30px;
           justify-content: center;
           .img-container {
             align-self: end;
@@ -36,7 +36,7 @@ page-feature-education {
           .info {
             align-self: start;
             display: grid;
-            grid-template-rows: max-content auto;
+            grid-template-rows: max-content max-content;
             height: 100%;
             padding: 4rem;
             .title {
@@ -80,9 +80,9 @@ page-feature-education {
       &.key-creation {
         .slide-zoom {
           .slide-info {
-            grid-template-rows: auto auto max-content;
-            .footer {
-              align-self: end;
+            grid-template-rows: 1fr 1fr 150px;
+            .info {
+              margin-bottom: 30px;
             }
           }
         }

@@ -39,7 +39,6 @@ import { Token } from '../../../providers/currency/token';
   templateUrl: 'select-currency.html'
 })
 export class SelectCurrencyPage {
-  private unregisterBackButtonAction;
   private showKeyOnboarding: boolean;
 
   public title: string;
@@ -82,9 +81,11 @@ export class SelectCurrencyPage {
     this.setTokens();
   }
 
-  ionViewWillLeave() {
-    if (this.isOnboardingFlow)
-      this.unregisterBackButtonAction && this.unregisterBackButtonAction();
+  ionViewWillEnter() {
+    const previousView = this.navCtrl.getPrevious();
+    if (this.isOnboardingFlow && previousView.name === 'LockMethodPage') {
+      this.navCtrl.removeView(previousView);
+    }
   }
 
   ionViewDidLoad() {

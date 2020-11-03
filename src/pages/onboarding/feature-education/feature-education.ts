@@ -4,9 +4,13 @@ import { NavController, Slides } from 'ionic-angular';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 // Pages
+import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet';
+import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
 import { LockMethodPage } from '../../../pages/onboarding/lock-method/lock-method';
 
 @Component({
@@ -17,14 +21,27 @@ export class FeatureEducationPage {
   @ViewChild('featureEducationSlides')
   featureEducationSlides: Slides;
   public appName: string;
+  public isCordova: boolean;
+
+  private pageMap = {
+    SelectCurrencyPage,
+    ImportWalletPage
+  };
+  private params = {
+    isOnboardingFlow: true,
+    isZeroState: true
+  };
 
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
     private appProvider: AppProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private configProvider: ConfigProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.appName = this.appProvider.info.nameCase;
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
@@ -43,7 +60,14 @@ export class FeatureEducationPage {
       : this.featureEducationSlides.lockSwipeToPrev(false);
   }
 
-  public showInfoSheet(nextViewName: string): void {
+  public goToNextPage(nextViewName: string): void {
+    const config = this.configProvider.get();
+    if ((config.lock && config.lock.method) || !this.isCordova)
+      this.navCtrl.push(this.pageMap[nextViewName], this.params);
+    else this.showInfoSheet(nextViewName);
+  }
+
+  private showInfoSheet(nextViewName: string): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet('protect-money');
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
@@ -54,10 +78,7 @@ export class FeatureEducationPage {
   private goToLockMethodPage(name: string): void {
     let nextView = {
       name,
-      params: {
-        isOnboardingFlow: true,
-        isZeroState: true
-      }
+      params: this.params
     };
     this.navCtrl.push(LockMethodPage, { nextView });
   }

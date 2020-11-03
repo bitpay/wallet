@@ -114,6 +114,13 @@ export class ImportWalletPage {
     this.setForm();
   }
 
+  ionViewWillEnter() {
+    const previousView = this.navCtrl.getPrevious();
+    if (this.isOnboardingFlow && previousView.name === 'LockMethodPage') {
+      this.navCtrl.removeView(previousView);
+    }
+  }
+
   ngOnDestroy() {
     this.events.unsubscribe('Local/BackupScan', this.updateWordsHandler);
   }

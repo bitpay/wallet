@@ -1,5 +1,8 @@
 page-disclaimer {
   padding-bottom: calc(env(safe-area-inset-bottom));
+  .disclaimer-wrapper {
+    padding-bottom: 210px;
+  }
   .checkbox-list {
     padding: 30px 15px 15px 15px;
     &-terms {
