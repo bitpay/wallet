@@ -526,6 +526,12 @@ export class CopayApp {
               this.getGlobalTabs().select(2);
             });
         }, 300);
+      } else if (nextView.name === 'CardsPage') {
+        this.getGlobalTabs()
+          .goToRoot()
+          .then(_ => {
+            this.getGlobalTabs().select(3);
+          });
       } else {
         this.closeScannerFromWithinWallet();
         // wait for wallets status
