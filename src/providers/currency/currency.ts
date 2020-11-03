@@ -21,6 +21,7 @@ export class CurrencyProvider {
   public coinOpts: CoinsMap<CoinOpts>;
   public ratesApi = {} as CoinsMap<string>;
   public blockExplorerUrls = {} as CoinsMap<string>;
+  public blockExplorerUrlsTestnet = {} as CoinsMap<string>;
   public availableCoins: Coin[];
   public availableTokens: Token[];
 
@@ -30,8 +31,13 @@ export class CurrencyProvider {
     this.availableCoins = Object.keys(this.coinOpts) as Coin[];
     for (const opts of Object.values(this.coinOpts)) {
       const { paymentInfo, coin } = opts;
-      const { blockExplorerUrls, ratesApi } = paymentInfo;
+      const {
+        blockExplorerUrls,
+        blockExplorerUrlsTestnet,
+        ratesApi
+      } = paymentInfo;
       this.blockExplorerUrls[coin] = blockExplorerUrls;
+      this.blockExplorerUrlsTestnet[coin] = blockExplorerUrlsTestnet;
       this.ratesApi[coin] = ratesApi;
     }
   }
@@ -97,6 +103,10 @@ export class CurrencyProvider {
 
   getBlockExplorerUrls() {
     return this.blockExplorerUrls;
+  }
+
+  getBlockExplorerUrlsTestnet() {
+    return this.blockExplorerUrlsTestnet;
   }
 
   getPaymentCode(coin: Coin): string {

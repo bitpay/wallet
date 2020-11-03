@@ -27,6 +27,7 @@ export interface CoinOpts {
     // Urls
     ratesApi: string;
     blockExplorerUrls: string;
+    blockExplorerUrlsTestnet: string;
   };
   feeInfo: {
     // Fee Units
@@ -65,7 +66,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
-      blockExplorerUrls: 'bitpay.com/insight/#/BTC/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BTC/',
+      blockExplorerUrlsTestnet: 'bitpay.com/testnet/insight/#/BTC/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -101,7 +103,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/bch',
-      blockExplorerUrls: 'bitpay.com/insight/#/BCH/'
+      blockExplorerUrls: 'bitpay.com/insight/#/BCH/',
+      blockExplorerUrlsTestnet: 'bitpay.com/testnet/insight/#/BCH/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -137,7 +140,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/eth',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -173,7 +177,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/xrp',
-      blockExplorerUrls: 'xrpscan.com/'
+      blockExplorerUrls: 'xrpscan.com/',
+      blockExplorerUrlsTestnet: 'test.bithomp.com/explorer/'
     },
     feeInfo: {
       feeUnit: 'drops',
@@ -209,7 +214,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/busd',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -245,7 +251,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/pax',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -281,7 +288,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/usdc',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
@@ -317,7 +325,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd',
-      blockExplorerUrls: 'bitpay.com/insight/#/ETH/'
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
     feeInfo: {
       feeUnit: 'Gwei',
