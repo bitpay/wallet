@@ -22,7 +22,6 @@ import {
   TranslateModule,
   TranslateParser
 } from '@ngx-translate/core';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
@@ -134,8 +133,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
         provide: TranslateLoader,
         useClass: LanguageLoader
       }
-    }),
-    ZXingScannerModule.forRoot()
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],

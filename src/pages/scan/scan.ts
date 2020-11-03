@@ -1,6 +1,5 @@
-import { Component, VERSION, ViewChild } from '@angular/core';
+import { Component, VERSION } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
@@ -20,9 +19,6 @@ import env from '../../environments';
 })
 export class ScanPage {
   ngVersion = VERSION.full;
-
-  @ViewChild('scanner')
-  scanner: ZXingScannerComponent;
 
   hasCameras = false;
   hasPermission: boolean;
@@ -101,14 +97,11 @@ export class ScanPage {
       'scannerServiceInitialized',
       this.scannerServiceInitializedHandler
     );
-    if (!this.isCordova) {
-      this.scanner.resetScan();
-    } else {
-      this.cameraToggleActive = false;
-      this.lightActive = false;
-      this.scanProvider.frontCameraEnabled = false;
-      this.scanProvider.deactivate();
-    }
+
+    this.cameraToggleActive = false;
+    this.lightActive = false;
+    this.scanProvider.frontCameraEnabled = false;
+    this.scanProvider.deactivate();
     this.unregisterBackButtonAction && this.unregisterBackButtonAction();
   }
 
@@ -132,30 +125,22 @@ export class ScanPage {
 
     this.events.subscribe('incomingDataError', this.incomingDataErrorHandler);
 
-    if (!this.isCordova) {
-      if (!this.isCameraSelected) {
-        this.loadCamera();
-      } else {
-        this.scanner.startScan(this.selectedDevice);
-      }
+    // try initializing and refreshing status any time the view is entered
+    if (this.scannerHasPermission) {
+      this.activate();
     } else {
-      // try initializing and refreshing status any time the view is entered
-      if (this.scannerHasPermission) {
-        this.activate();
-      } else {
-        if (!this.scanProvider.isInitialized()) {
-          this.scanProvider.gentleInitialize().then(() => {
-            this.authorize();
-          });
-        } else {
+      if (!this.scanProvider.isInitialized()) {
+        this.scanProvider.gentleInitialize().then(() => {
           this.authorize();
-        }
+        });
+      } else {
+        this.authorize();
       }
-      this.events.subscribe(
-        'scannerServiceInitialized',
-        this.scannerServiceInitializedHandler
-      );
     }
+    this.events.subscribe(
+      'scannerServiceInitialized',
+      this.scannerServiceInitializedHandler
+    );
   }
 
   private incomingDataErrorHandler: any = err => {
@@ -175,11 +160,7 @@ export class ScanPage {
       this.bwcErrorProvider.msg(error),
       infoSheetTitle,
       () => {
-        if (this.isCordova) {
-          this.activate();
-        } else if (this.isCameraSelected) {
-          this.scanner.startScan(this.selectedDevice);
-        }
+        this.activate();
       }
     );
   }
@@ -190,23 +171,6 @@ export class ScanPage {
         this.closeCam();
       }
     );
-  }
-
-  public loadCamera() {
-    this.scanner.camerasFound.subscribe((devices: MediaDeviceInfo[]) => {
-      this.hasCameras = true;
-      this.availableDevices = devices;
-      this.onDeviceSelectChange();
-    });
-
-    this.scanner.camerasNotFound.subscribe(() => {
-      this.logger.error(
-        'An error has occurred when trying to enumerate your video-stream-enabled devices.'
-      );
-    });
-    this.scanner.askForPermission().then((answer: boolean) => {
-      this.hasPermission = answer;
-    });
   }
 
   private updateCapabilities(): void {
@@ -326,25 +290,6 @@ export class ScanPage {
       .catch(error => {
         this.logger.warn('scanner error: ' + JSON.stringify(error));
       });
-  }
-
-  handleQrCodeResult(resultString: string) {
-    this.scanner.resetScan();
-    setTimeout(() => {
-      this.handleSuccessfulScan(resultString);
-    }, 0);
-  }
-
-  onDeviceSelectChange() {
-    if (!this.isCameraSelected) {
-      for (const device of this.availableDevices) {
-        if (device.kind == 'videoinput') {
-          this.selectedDevice = this.scanner.getDeviceById(device.deviceId);
-          this.isCameraSelected = true;
-          break;
-        }
-      }
-    }
   }
 
   public closeCam() {

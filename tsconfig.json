@@ -22,7 +22,6 @@
   "atom": {
     "rewriteTsconfig": false
   },
-  "types": ["lodash", "node", "chrome"],
   "rules": {
     "no-console": false
   }
