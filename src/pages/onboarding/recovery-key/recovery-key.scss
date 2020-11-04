@@ -4,7 +4,7 @@ page-recovery-key {
     &-info {
       height: 100%;
       display: grid;
-      grid-template-rows: 50% 50%;
+      grid-template-rows: 1fr 1fr;
       justify-content: center;
       .img-container {
         align-self: end;

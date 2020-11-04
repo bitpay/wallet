@@ -50,7 +50,7 @@ export class AddFundsPage {
   }
 
   public goToCoinbase(): void {
-    this.navCtrl.push(CoinbasePage);
+    this.navCtrl.push(CoinbasePage, { isOnboardingFlow: true });
   }
 
   public goToAmountPage() {
@@ -63,7 +63,8 @@ export class AddFundsPage {
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
-      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
+      isOnboardingFlow: true
     });
   }
 
