@@ -6,6 +6,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 // Pages
@@ -22,6 +23,7 @@ import { TabsPage } from '../../../pages/tabs/tabs';
 export class AddFundsPage {
   private keyId;
   public needsBackup: boolean;
+  public showCoinbase: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -30,10 +32,12 @@ export class AddFundsPage {
     private profileProvider: ProfileProvider,
     private analyticsProvider: AnalyticsProvider,
     private configProvider: ConfigProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.keyId = this.navParams.data.keyId;
     this.needsBackup = this.keyId ? this.checkIfNeedsBackup() : false;
+    this.showCoinbase = !this.platformProvider.isMacApp();
   }
 
   ionViewDidLoad() {

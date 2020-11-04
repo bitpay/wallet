@@ -1,7 +1,7 @@
 <wide-header-page title="{{ 'Let’s add some funds' | translate }}" hideBackButton="true">
   <div page-content>
     <ion-list no-lines>
-      <div class="option-container" (click)="goToCoinbase()">
+      <div class="option-container" (click)="goToCoinbase()" *ngIf="showCoinbase">
         <ion-item>
           <img src="assets/img/coinbase/coinbase-icon.png" class="coinbase-icon" />
         </ion-item>
