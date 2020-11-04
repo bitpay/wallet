@@ -93,8 +93,10 @@ export class LockMethodPage {
     );
     modal.present();
     modal.onDidDismiss(cancelClicked => {
-      if (cancelClicked) this.pinMethodSelected = false;
-      else
+      if (cancelClicked) {
+        this.pinMethodSelected = false;
+        if (!this.biometricMethod) this.navCtrl.pop();
+      } else
         this.navCtrl.push(
           this.pageMap[this.nextView.name],
           this.nextView.params
