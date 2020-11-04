@@ -390,6 +390,20 @@ export class ConfirmPage {
       this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
+    if (
+      this.wallet.credentials.token &&
+      this.wallet.credentials.token.address
+    ) {
+      this.tx.tokenAddress = this.wallet.credentials.token.address;
+    }
+
+    if (
+      this.wallet.credentials.multisigEthInfo &&
+      this.wallet.credentials.multisigEthInfo.multisigContractAddress
+    ) {
+      this.tx.multisigContractAddress = this.wallet.credentials.multisigEthInfo.multisigContractAddress;
+    }
+
     this.setButtonText(
       this.wallet.credentials.m > 1,
       !!this.tx.paypro,
@@ -1019,17 +1033,19 @@ export class ConfirmPage {
 
       if (tx.tokenAddress) {
         txp.tokenAddress = tx.tokenAddress;
-        for (const output of txp.outputs) {
-          if (!output.data) {
-            output.data = this.bwcProvider
-              .getCore()
-              .Transactions.get({ chain: 'ERC20' })
-              .encodeData({
-                recipients: [
-                  { address: output.toAddress, amount: output.amount }
-                ],
-                tokenAddress: tx.tokenAddress
-              });
+        if (!tx.paypro) {
+          for (const output of txp.outputs) {
+            if (!output.data) {
+              output.data = this.bwcProvider
+                .getCore()
+                .Transactions.get({ chain: 'ERC20' })
+                .encodeData({
+                  recipients: [
+                    { address: output.toAddress, amount: output.amount }
+                  ],
+                  tokenAddress: tx.tokenAddress
+                });
+            }
           }
         }
       }
@@ -1042,18 +1058,17 @@ export class ConfirmPage {
       ) {
         txp.multisigContractAddress = tx.multisigContractAddress;
         for (const output of txp.outputs) {
-          if (!output.data) {
-            output.data = this.bwcProvider
-              .getCore()
-              .Transactions.get({ chain: 'ETHMULTISIG' })
-              .submitEncodeData({
-                recipients: [
-                  { address: output.toAddress, amount: output.amount }
-                ],
-                multisigContractAddress: tx.multisigContractAddress,
-                data: '0x'
-              });
-          }
+          const data = output.data ? output.data : '0x';
+          output.data = this.bwcProvider
+            .getCore()
+            .Transactions.get({ chain: 'ETHMULTISIG' })
+            .submitEncodeData({
+              recipients: [
+                { address: output.toAddress, amount: output.amount }
+              ],
+              multisigContractAddress: tx.multisigContractAddress,
+              data
+            });
         }
       }
 
