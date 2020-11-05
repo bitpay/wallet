@@ -129,7 +129,7 @@
     "chart.js": "2.8.0",
     "cordova": "9.0.0",
     "cordova-android": "9.0.0",
-    "cordova-apple-wallet": "1.0.2",
+    "cordova-apple-wallet-ng": "1.0.3",
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "5.1.0",
     "cordova-ios": "5.1.1",
@@ -269,7 +269,7 @@
       "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-theme-detection": {},
-      "cordova-apple-wallet": {},
+      "cordova-apple-wallet-ng": {},
       "cordova-plugin-add-swift-support": {}
     },
     "platforms": [
