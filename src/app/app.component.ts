@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  AnalyticsProvider,
   BitPayIdProvider,
   BitPayProvider,
   GiftCardProvider,
@@ -116,6 +117,7 @@ export class CopayApp {
   constructor(
     private config: Config,
     private platform: Platform,
+    private analyticsProvider: AnalyticsProvider,
     private platformProvider: PlatformProvider,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -381,6 +383,7 @@ export class CopayApp {
             this.logger.debug('Error creating IAB instance: ', e.message);
           });
       });
+      this.analyticsProvider.logEvent('adsupport_test_event', {});
     }
   }
 
