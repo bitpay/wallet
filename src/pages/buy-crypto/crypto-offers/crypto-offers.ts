@@ -18,6 +18,9 @@ import { ThemeProvider } from '../../../providers/theme/theme';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { WyreProvider } from '../../../providers/wyre/wyre';
 
+// Pages
+import { TabsPage } from '../../../pages/tabs/tabs';
+
 interface CryptoOffer {
   showOffer: boolean;
   logoLight: string;
@@ -198,7 +201,7 @@ export class CryptoOffersPage {
           }
 
           setTimeout(() => {
-            this.navCtrl.popToRoot();
+            this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
           }, 2500);
         }
       });
@@ -291,7 +294,9 @@ export class CryptoOffersPage {
                 this.openExternalLink(paymentUrl);
 
                 setTimeout(() => {
-                  this.navCtrl.popToRoot();
+                  this.navCtrl
+                    .setRoot(TabsPage)
+                    .then(_ => this.navCtrl.popToRoot());
                 }, 2500);
               })
               .catch(err => {
