@@ -54,12 +54,15 @@ export class CoinbasePage {
   }
 
   private backToWalletTabs() {
-    if (this.navParams.data.isOnboardingFlow) this.navCtrl.setRoot(TabsPage);
-    setTimeout(() => {
-      this.navCtrl.popToRoot().then(_ => {
-        this.navCtrl.parent.select(1);
-      });
-    }, 600);
+    if (this.navParams.data.isOnboardingFlow) {
+      this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
+    } else {
+      setTimeout(() => {
+        this.navCtrl.popToRoot().then(_ => {
+          this.navCtrl.parent.select(1);
+        });
+      }, 600);
+    }
   }
 
   public openAuthenticateWindow(): void {
