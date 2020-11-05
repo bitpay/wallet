@@ -383,7 +383,6 @@ export class CopayApp {
             this.logger.debug('Error creating IAB instance: ', e.message);
           });
       });
-      this.analyticsProvider.logEvent('adsupport_test_event', {});
     }
   }
 
