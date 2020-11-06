@@ -16,7 +16,6 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
-  AnalyticsProvider,
   BitPayIdProvider,
   BitPayProvider,
   GiftCardProvider,
@@ -117,7 +116,6 @@ export class CopayApp {
   constructor(
     private config: Config,
     private platform: Platform,
-    private analyticsProvider: AnalyticsProvider,
     private platformProvider: PlatformProvider,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
