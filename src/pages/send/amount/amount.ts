@@ -637,10 +637,6 @@ export class AmountPage {
       data.fromWalletDetails = true;
     }
 
-    if (this.navParams.data.isOnboardingFlow) {
-      data.isOnboardingFlow = true;
-    }
-
     if (this.cardName && !skipActivationFeeAlert) {
       const activationFee = getActivationFee(data.amount, this.cardConfig);
       if (activationFee) {

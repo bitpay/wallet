@@ -300,8 +300,6 @@ export class CryptoOrderSummaryPage {
   }
 
   public cancelOrder() {
-    this.navParams.data.isOnboardingFlow
-      ? this.navCtrl.pop()
-      : this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot();
   }
 }

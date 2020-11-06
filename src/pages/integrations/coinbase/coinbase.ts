@@ -9,9 +9,6 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
-
-// Pages
-import { TabsPage } from '../../../pages/tabs/tabs';
 @Component({
   selector: 'page-coinbase',
   templateUrl: 'coinbase.html'
@@ -54,15 +51,11 @@ export class CoinbasePage {
   }
 
   private backToWalletTabs() {
-    if (this.navParams.data.isOnboardingFlow) {
-      this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
-    } else {
-      setTimeout(() => {
-        this.navCtrl.popToRoot().then(_ => {
-          this.navCtrl.parent.select(1);
-        });
-      }, 600);
-    }
+    setTimeout(() => {
+      this.navCtrl.popToRoot().then(_ => {
+        this.navCtrl.parent.select(1);
+      });
+    }, 600);
   }
 
   public openAuthenticateWindow(): void {

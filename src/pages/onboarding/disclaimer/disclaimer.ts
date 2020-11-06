@@ -10,8 +10,8 @@ import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 
 // Pages
-import { AddFundsPage } from '../../../pages/onboarding/add-funds/add-funds';
 import { TabsPage } from '../../../pages/tabs/tabs';
+import { AddFundsPage } from '../add-funds/add-funds';
 
 @Component({
   selector: 'page-disclaimer',
@@ -96,13 +96,15 @@ export class DisclaimerPage {
         }, 400);
       }
     });
-    this.appName == 'Copay'
-      ? this.goToHomePage()
-      : this.navCtrl.push(AddFundsPage, { keyId: this.navParams.data.keyId });
-  }
-
-  private goToHomePage(): void {
-    this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
+    this.navCtrl.setRoot(TabsPage).then(_ => {
+      if (this.appName == 'Copay') {
+        this.navCtrl.popToRoot();
+      } else {
+        setTimeout(() => {
+          this.navCtrl.push(AddFundsPage, { keyId: this.navParams.data.keyId });
+        }, 2500);
+      }
+    });
   }
 
   private initializeBackButtonHandler(): void {

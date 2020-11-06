@@ -14,7 +14,6 @@ import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet
 import { CoinbasePage } from '../../../pages/integrations/coinbase/coinbase';
 import { RecoveryKeyPage } from '../../../pages/onboarding/recovery-key/recovery-key';
 import { AmountPage } from '../../../pages/send/amount/amount';
-import { TabsPage } from '../../../pages/tabs/tabs';
 
 @Component({
   selector: 'page-add-funds',
@@ -50,7 +49,7 @@ export class AddFundsPage {
   }
 
   public goToCoinbase(): void {
-    this.navCtrl.push(CoinbasePage, { isOnboardingFlow: true });
+    this.navCtrl.push(CoinbasePage);
   }
 
   public goToAmountPage() {
@@ -63,13 +62,12 @@ export class AddFundsPage {
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
-      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
-      isOnboardingFlow: true
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
   }
 
   public goToHomePage(): void {
-    this.navCtrl.setRoot(TabsPage).then(_ => this.navCtrl.popToRoot());
+    this.navCtrl.popToRoot();
   }
 
   public goToImportWallet(): void {
