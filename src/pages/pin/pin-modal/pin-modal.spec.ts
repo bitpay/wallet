@@ -26,7 +26,7 @@ describe('PinModalPage', () => {
         instance.close();
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
-        instance.ionViewDidLoad();
+        instance.ionViewWillEnter();
         expect(unregisterSpy).toHaveBeenCalled();
         expect(instance.viewCtrl.dismiss).toHaveBeenCalled();
       });
@@ -36,7 +36,7 @@ describe('PinModalPage', () => {
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
         instance.close();
-        instance.ionViewDidLoad();
+        instance.ionViewWillEnter();
         expect(spy).toHaveBeenCalledWith(instance.countDown);
       });
     });
