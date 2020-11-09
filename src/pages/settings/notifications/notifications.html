@@ -56,11 +56,11 @@
           <ion-label>{{ 'Confirmed transactions' | translate }}</ion-label>
           <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="!isCopay">
           <ion-label>{{ 'Product updates' | translate }}</ion-label>
           <ion-toggle [(ngModel)]="productsUpdates" (ionChange)="productsUpdatesChange()"></ion-toggle>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="!isCopay">
           <ion-label>{{ 'Offers & promotions' | translate }}</ion-label>
           <ion-toggle [(ngModel)]="offersAndPromotions" (ionChange)="offersAndPromotionsChange()"></ion-toggle>
         </ion-item>

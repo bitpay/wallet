@@ -22,6 +22,7 @@ import { EmailValidator } from '../../../validators/email';
 })
 export class NotificationsPage {
   public emailForm: FormGroup;
+  public isCopay: boolean;
 
   public appName: string;
   public usePushNotifications: boolean;
@@ -58,6 +59,7 @@ export class NotificationsPage {
         ])
       ]
     });
+    this.isCopay = this.appProvider.info.name == 'copay' ? true : false;
   }
 
   ionViewDidLoad() {

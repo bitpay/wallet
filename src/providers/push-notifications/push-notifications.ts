@@ -58,6 +58,7 @@ export class PushNotificationsProvider {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
         this.enable();
+        if (this.appProvider.info.name == 'copay') return;
         // enabling topics
         this.handlePushNotifications();
         if (config.offersAndPromotions.enabled)
