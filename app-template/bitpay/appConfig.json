@@ -9,6 +9,7 @@
   "bundleName": "wallet",
   "appUri": "bitpay",
   "name": "bitpay",
+  "applePay": "<config-file mode=\"add\" parent=\"com.apple.developer.payment-pass-provisioning\" target=\"Entitlements-Release.plist\"><true /></config-file>",
   "dynamicLink": "bitpayapp.page.link",
   "nameNoSpace": "bitpay",
   "nameCase": "BitPay",
