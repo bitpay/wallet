@@ -406,10 +406,6 @@ export class TxpDetailsPage {
       });
   }
 
-  public getShortNetworkName(): string {
-    return this.wallet.credentials.networkName.substring(0, 4);
-  }
-
   private updateTxInfo(eventName: string): void {
     this.walletProvider
       .getTxp(this.wallet, this.tx.id)

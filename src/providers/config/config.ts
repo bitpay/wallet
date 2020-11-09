@@ -112,6 +112,8 @@ export interface Config {
 
   blockExplorerUrl: CoinsMap<string>;
 
+  blockExplorerUrlTestnet: CoinsMap<string>;
+
   allowMultiplePrimaryWallets: boolean;
 
   legacyQrCode: {
@@ -247,6 +249,8 @@ export class ConfigProvider {
       },
 
       blockExplorerUrl: this.currencyProvider.getBlockExplorerUrls(),
+
+      blockExplorerUrlTestnet: this.currencyProvider.getBlockExplorerUrlsTestnet(),
 
       allowMultiplePrimaryWallets: false,
 

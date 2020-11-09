@@ -31,6 +31,7 @@ export class TxDetailsModal {
   private txId: string;
   private config;
   private blockexplorerUrl: string;
+  private blockexplorerUrlTestnet: string;
 
   public wallet;
   public btx;
@@ -80,6 +81,8 @@ export class TxDetailsModal {
 
     let defaults = this.configProvider.getDefaults();
     this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
+    this.blockexplorerUrlTestnet =
+      defaults.blockExplorerUrlTestnet[this.wallet.coin];
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then(res => {
       this.txNotification = {
@@ -291,16 +294,14 @@ export class TxDetailsModal {
 
   public viewOnBlockchain(): void {
     let btx = this.btx;
-    const network =
-      this.getShortNetworkName() == 'test' ? 'testnet/' : 'mainnet/';
-    let url =
-      this.wallet.coin !== 'xrp'
-        ? `https://${this.blockexplorerUrl}${network}tx/${btx.txid}`
-        : this.getXRPBlockexplorerUrl() + btx.txid;
+    const url =
+      this.wallet.credentials.network === 'livenet'
+        ? `https://${this.blockexplorerUrl}tx/${btx.txid}`
+        : `https://${this.blockexplorerUrlTestnet}tx/${btx.txid}`;
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
+    let message = this.translate.instant('View Transaction');
+    let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
@@ -310,19 +311,6 @@ export class TxDetailsModal {
       okText,
       cancelText
     );
-  }
-
-  private getXRPBlockexplorerUrl(): string {
-    let url =
-      this.getShortNetworkName() == 'test'
-        ? 'https://test.bithomp.com/explorer/'
-        : `https://${this.blockexplorerUrl}tx/`;
-    return url;
-  }
-
-  public getShortNetworkName(): string {
-    let n: string = this.wallet.credentials.network;
-    return n.substring(0, 4);
   }
 
   public txConfirmNotificationChange(): void {

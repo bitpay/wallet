@@ -32,8 +32,8 @@ export class CoinbaseTxDetailsPage {
     const url = `https://${blockexplorerUrl}${network}tx/${btx.network.hash}`;
     const optIn = true;
     const title = null;
-    const message = this.translate.instant('View Transaction on Insight');
-    const okText = this.translate.instant('Open Insight');
+    const message = this.translate.instant('View Transaction');
+    const okText = this.translate.instant('Open');
     const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
