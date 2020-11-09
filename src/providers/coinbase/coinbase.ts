@@ -16,6 +16,8 @@ import { Coin, CurrencyProvider } from '../currency/currency';
 
 import * as _ from 'lodash';
 
+const LIMIT: number = 100;
+
 @Injectable()
 export class CoinbaseProvider {
   private environment: string = env.name;
@@ -411,7 +413,7 @@ export class CoinbaseProvider {
   }
 
   private _getAccounts(): Promise<any> {
-    const url = this.credentials.API + '/v2' + '/accounts';
+    const url = this.credentials.API + '/v2' + '/accounts?&limit=' + LIMIT;
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
