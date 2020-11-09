@@ -1648,7 +1648,7 @@ export class ProfileProvider {
 
   private getDefaultWalletOpts(coin): Partial<WalletOptions> {
     const defaults = this.configProvider.getDefaults();
-    return {
+    const opts: Partial<WalletOptions> = {
       name: this.currencyProvider.getCoinName(coin),
       m: 1,
       n: 1,
@@ -1658,6 +1658,8 @@ export class ProfileProvider {
       singleAddress: this.currencyProvider.isSingleAddress(coin) || false,
       coin
     };
+    if (coin === 'btc') opts.useNativeSegwit = true;
+    return opts;
   }
 
   private _createTokenWallet(ethWallet, tokenObj) {
