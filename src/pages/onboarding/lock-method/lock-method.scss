@@ -1,0 +1,52 @@
+page-lock-method {
+  .lock-method {
+    height: 100%;
+    &-info {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 50% 50%;
+      justify-content: center;
+      .img-container {
+        align-self: end;
+        justify-self: center;
+        img {
+          margin: auto;
+          max-height: 23rem;
+          @media (max-width: 350px) {
+            max-height: 10rem;
+          }
+        }
+      }
+      .info {
+        align-self: start;
+        display: grid;
+        grid-template-rows: max-content max-content;
+        height: 100%;
+        padding: 4rem;
+        .title {
+          color: #060606;
+          font-weight: 600;
+          align-items: center;
+          text-align: center;
+          line-height: 34px;
+          @media (max-width: 350px) {
+            font-size: 17px;
+            line-height: 20px;
+          }
+        }
+        .text {
+          font-size: 16px;
+          text-align: center;
+          color: rgb(46, 46, 46);
+          font-weight: 300;
+          padding-top: 15px;
+          line-height: 25px;
+          @media (max-width: 350px) {
+            font-size: 12px;
+            line-height: 15px;
+          }
+        }
+      }
+    }
+  }
+}

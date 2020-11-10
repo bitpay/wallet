@@ -14,10 +14,19 @@ page-finish {
           padding: 3rem;
         }
         &-text {
-          font-size: 2.8rem;
-          line-height: 35px;
           color: #ffffff;
-          margin: 0 1rem 0 1rem;
+          font-weight: 500;
+          font-size: 25px;
+          align-items: center;
+          text-align: center;
+          line-height: 34px;
+          @media (max-width: 350px) {
+            font-size: 17px;
+            line-height: 20px;
+          }
+          &.bg-none {
+            color: #060606;
+          }
         }
         &-comment {
           margin: auto;
@@ -69,5 +78,8 @@ page-finish {
   }
   .danger {
     background-color: color($colors, danger);
+  }
+  .bg-none {
+    background-color: #ffffff;
   }
 }

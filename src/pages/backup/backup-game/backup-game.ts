@@ -10,12 +10,15 @@ import * as _ from 'lodash';
 
 // pages
 import { FinishModalPage } from '../../finish/finish';
+import { AddFundsPage } from '../../onboarding/add-funds/add-funds';
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
@@ -47,7 +50,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
@@ -195,7 +199,15 @@ export class BackupGamePage {
     });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      if (this.navParams.data.isOnboardingFlow) {
+        this.persistenceProvider
+          .getCopayDisclaimerFlag()
+          .then(disclaimerAgreed => {
+            disclaimerAgreed
+              ? this.navCtrl.push(AddFundsPage, { keyId: this.keyId })
+              : this.navCtrl.push(DisclaimerPage, { keyId: this.keyId });
+          });
+      } else this.navCtrl.popToRoot();
     });
   }
 

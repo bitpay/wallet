@@ -19,7 +19,6 @@ import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
 import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
@@ -69,7 +68,6 @@ export class ProfileProvider {
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
     private events: Events,
-    private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     private txFormatProvider: TxFormatProvider,
@@ -731,26 +729,26 @@ export class ProfileProvider {
     const wallets = this.getWalletsFromGroup({ keyId: key.id });
     if (!key.isPrivKeyEncrypted() && wallets && wallets.length)
       return Promise.resolve();
-
-    const title = this.translate.instant(
-      'Would you like to protect this wallet with a password?'
-    );
-    const message = this.translate.instant(
-      'Encryption can protect your funds if this device is stolen or compromised by malicious software.'
-    );
-    const okText = this.translate.instant('Yes');
-    const cancelText = this.translate.instant('No');
-    return this.popupProvider
-      .ionicConfirm(title, message, okText, cancelText)
-      .then(res => {
-        if (!res) {
-          return this.keyProvider.showWarningNoEncrypt().then(res => {
-            if (res) return Promise.resolve();
-            return this.keyProvider.encryptNewKey(key);
-          });
+    return this.showEncryptPasswordInfoModal().then((password: string) => {
+      if (!password) {
+        return Promise.resolve();
+      } else {
+        try {
+          this.keyProvider.encryptPrivateKey(key, password);
+        } catch (error) {
+          return Promise.reject(error);
         }
-        return this.keyProvider.encryptNewKey(key);
-      });
+        return Promise.resolve();
+      }
+    });
+  }
+
+  private showEncryptPasswordInfoModal(): Promise<any> {
+    const encryptPasswordModal = this.actionSheetProvider.createEncryptPasswordComponent();
+    encryptPasswordModal.present({ maxHeight: '100%', minHeight: '100%' });
+    return new Promise(resolve => {
+      encryptPasswordModal.onDidDismiss(password => resolve(password));
+    });
   }
 
   private async addAndBindWalletClients(
@@ -1153,7 +1151,9 @@ export class ProfileProvider {
 
     return bindWallets().then(() => {
       return this.isDisclaimerAccepted().catch(() => {
-        return Promise.reject(new Error('NONAGREEDDISCLAIMER'));
+        return profile.credentials.length
+          ? Promise.reject(new Error('NONAGREEDDISCLAIMER'))
+          : Promise.reject(new Error('UNFINISHEDONBOARDING'));
       });
     });
   }

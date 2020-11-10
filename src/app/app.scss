@@ -491,14 +491,11 @@ ion-app,
 }
 
 .button-standard {
-  width: 90%;
+  width: 85%;
   max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 5px auto 25px auto;
   display: flex;
   min-height: 60px;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
   border-radius: 5px;
   box-shadow: none;
   font-weight: 400;
@@ -510,6 +507,9 @@ ion-app,
 
   span {
     @extend .two-lines;
+  }
+  &.no-margin-bottom {
+    margin-bottom: 0px;
   }
 }
 
@@ -584,7 +584,7 @@ ion-alert .alert-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #9b9bab;
+  color: color($colors, light-grey);
   font-size: 16px;
   font-weight: 500;
   margin: 20px 16px 10px 20px;

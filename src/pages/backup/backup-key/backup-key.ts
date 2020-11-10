@@ -137,7 +137,8 @@ export class BackupKeyPage {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
       keys: this.keys,
-      keyId: this.keyId
+      keyId: this.keyId,
+      isOnboardingFlow: this.navParams.data.isOnboardingFlow
     });
   }
 
@@ -155,18 +156,6 @@ export class BackupKeyPage {
       'backup-safeguard-warning'
     );
     infoSheet.present();
-  }
-
-  public showDoThisLaterMessage(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'backup-later-warning'
-    );
-    infoSheet.present();
-    infoSheet.onDidDismiss(option => {
-      if (option) {
-        this.navCtrl.pop();
-      }
-    });
   }
 
   public nextWord() {

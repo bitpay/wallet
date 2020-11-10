@@ -1,94 +1,77 @@
 page-disclaimer {
-  .onboarding-slides {
-    ion-slide {
-      background: linear-gradient(to bottom, #ffffff, #ebedf8 80%);
-      .img-container {
-        display: flex;
-        padding-top: 10vh;
-        @media (max-width: 350px) {
-          padding-top: 0;
-        }
-        img {
-          margin: auto;
-          max-height: 23rem;
-          @media (max-width: 350px) {
-            max-height: 10rem;
-          }
-        }
-        .tour-1 {
-          padding-left: 8rem;
-          @media (max-width: 350px) {
-            padding-left: 4rem;
-          }
-        }
-        .tour-3 {
-          padding-right: 8rem;
-          @media (max-width: 350px) {
-            padding-left: 4rem;
-          }
-        }
-      }
-      .slide-info {
-        height: 100%;
-        .title {
-          color: #060606;
-          font-weight: 500;
-          font-size: 25px;
-          text-align: left;
-          padding-left: 3rem;
-          @media (max-width: 350px) {
-            font-size: 17px;
-          }
-        }
-        .info {
-          padding: 4rem;
-          .title {
-            align-items: center;
-            text-align: center;
-            line-height: 34px;
-            padding-left: 0;
-            @media (max-width: 350px) {
-              line-height: 20px;
-            }
-          }
-          .text {
-            font-size: 16px;
-            text-align: center;
-            color: rgb(46, 46, 46);
-            font-weight: 300;
-            padding-top: 15px;
-            line-height: 25px;
-            @media (max-width: 350px) {
-              font-size: 12px;
-              line-height: 15px;
-            }
-          }
-        }
-      }
-    }
-  }
-  .toolbar {
-    .toolbar-background {
-      background: #ebedf8;
-    }
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  background-color: #ffffff;
+  .disclaimer-wrapper {
+    padding-bottom: 210px;
   }
   .checkbox-list {
     padding: 30px 15px 15px 15px;
-    text-align: center;
-    ion-item {
-      line-height: 25px;
-      background: none;
+    &-terms {
+      padding: 0 15px;
+    }
+    .term-container {
+      border-radius: 11px;
+      background-color: #f9f9f9;
+      display: grid;
+      grid-template-columns: 65px auto;
+      padding: 20px 32px 20px 0;
+      margin-top: 15px;
+      ion-item {
+        background: none;
+        justify-self: center;
+        align-self: start;
+      }
+      .term {
+        justify-self: start;
+        text-align: start;
+        &-title {
+          align-self: center;
+          color: #000000;
+          font-size: 18px;
+          font-weight: 500;
+          letter-spacing: 0;
+          line-height: 25px;
+          @media (max-width: 350px) {
+            font-size: 12px;
+            line-height: 15px;
+          }
+        }
+        &-note {
+          grid-column-start: 2;
+          font-size: 16px;
+          color: color($colors, light-grey);
+          font-weight: 300;
+          line-height: 25px;
+          padding-top: 12px;
+          @media (max-width: 350px) {
+            font-size: 10px;
+            line-height: 15px;
+          }
+        }
+      }
+    }
+    .term-container.bg-none {
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      ion-item {
+        align-self: center;
+      }
+      .term-note {
+        color: #000000;
+        font-weight: normal;
+      }
     }
     .checkbox-icon {
       border-radius: 50%;
       border-width: 1px;
       border-style: solid;
-      border-color: color($colors, secondary);
+      border-color: color($colors, primary);
       width: 30px;
       height: 30px;
       .checkbox-inner {
-        left: 11px;
-        top: 5px;
+        left: 12px;
+        top: 6px;
         width: 7px;
         height: 15px;
       }
@@ -98,13 +81,8 @@ page-disclaimer {
       background-color: color($colors, success);
       border-width: 0px;
     }
-    .external-link {
-      cursor: pointer;
-      color: color($colors, secondary);
-    }
-    .text {
-      font-size: 13px;
-      line-height: 15px;
-    }
+  }
+  .disclaimer-footer {
+    background-color: #ffffff;
   }
 }

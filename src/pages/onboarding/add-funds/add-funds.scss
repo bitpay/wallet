@@ -1,0 +1,66 @@
+page-add-funds {
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  background-color: #ffffff;
+  ion-list {
+    padding: 30px 15px 15px 15px;
+    &-terms {
+      padding: 0 15px;
+    }
+    .option-container {
+      border-radius: 9px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 23px 0 rgba(0, 0, 0, 0.14);
+      display: grid;
+      grid-template-columns: max-content auto;
+      padding: 20px 32px 20px 0;
+      margin-top: 24px;
+      ion-item {
+        background: none;
+        justify-self: center;
+        align-self: center;
+        img {
+          width: 50px;
+          height: 50px;
+          @media (max-width: 350px) {
+            width: 30px;
+            height: 30px;
+          }
+          &.coinbase-icon {
+            border-radius: 50%;
+          }
+        }
+      }
+      .info {
+        margin-right: 21px;
+        display: grid;
+        grid-template-rows: auto auto;
+        .title {
+          align-self: center;
+          color: #000000;
+          font-size: 20px;
+          font-weight: 500;
+          letter-spacing: 0;
+          line-height: 25px;
+          @media (max-width: 350px) {
+            font-size: 15px;
+            line-height: 15px;
+          }
+        }
+        .note {
+          align-self: start;
+          font-size: 16px;
+          color: color($colors, grey);
+          font-weight: 300;
+          line-height: 25px;
+          @media (max-width: 350px) {
+            font-size: 12px;
+            line-height: 15px;
+          }
+        }
+      }
+    }
+  }
+  .disclaimer-footer {
+    background-color: #ffffff;
+  }
+}

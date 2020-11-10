@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 
 // pages
 import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
+import { RecoveryKeyPage } from '../../onboarding/recovery-key/recovery-key';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 import { JoinWalletPage } from '../join-wallet/join-wallet';
@@ -78,6 +79,13 @@ export class SelectCurrencyPage {
     }
     this.shouldShowKeyOnboarding();
     this.setTokens();
+  }
+
+  ionViewWillEnter() {
+    const previousView = this.navCtrl.getPrevious();
+    if (this.isOnboardingFlow && previousView.name === 'LockMethodPage') {
+      this.navCtrl.removeView(previousView);
+    }
   }
 
   ionViewDidLoad() {
@@ -156,7 +164,7 @@ export class SelectCurrencyPage {
         this.profileProvider.setNewWalletGroupOrder(
           wallets[0].credentials.keyId
         );
-        this.endProcess();
+        this.endProcess(wallets[0].credentials.keyId);
       })
       .catch(e => {
         this.showError(e);
@@ -164,10 +172,7 @@ export class SelectCurrencyPage {
   }
 
   public createWallets(coins: Coin[]): void {
-    if (this.showKeyOnboarding) {
-      this.showKeyOnboardingSlides(coins);
-      return;
-    } else if (this.isZeroState) {
+    if (this.isZeroState && !this.isOnboardingFlow) {
       this.showInfoSheet(coins);
       return;
     }
@@ -182,11 +187,17 @@ export class SelectCurrencyPage {
     this.errorsProvider.showDefaultError(err, title);
   }
 
-  private endProcess() {
+  private endProcess(keyId?: string) {
     this.onGoingProcessProvider.clear();
-    this.navCtrl.popToRoot().then(() => {
-      this.events.publish('Local/FetchWallets');
-    });
+    if (this.isOnboardingFlow) {
+      this.navCtrl.push(RecoveryKeyPage, {
+        keyId,
+        isOnboardingFlow: this.isOnboardingFlow
+      });
+    } else
+      this.navCtrl.popToRoot().then(() => {
+        this.events.publish('Local/FetchWallets');
+      });
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {

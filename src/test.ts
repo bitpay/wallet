@@ -89,6 +89,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { ImageLoader, IonicImageLoader } from 'ionic-image-loader';
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
 import { ActionSheetComponent } from './components/action-sheet/action-sheet';
+import { EncryptPasswordComponent } from './components/encrypt-password/encrypt-password';
 import { InfoSheetComponent } from './components/info-sheet/info-sheet';
 import { DomProviderMock } from './providers/dom/dom.mock';
 import { LoggerMock } from './providers/logger/logger.mock';
@@ -291,10 +292,27 @@ export class TestUtils {
       useFactory?: (...args) => any;
     }> = []
   ) {
-    return TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [...baseImports, ProvidersModule],
-      providers: [...baseProviders, ...providerOverrides]
-    });
+      providers: [...baseProviders, ...providerOverrides],
+      declarations: [
+        EncryptPasswordComponent,
+        InfoSheetComponent,
+        ActionSheetComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [
+            EncryptPasswordComponent,
+            ActionSheetComponent,
+            InfoSheetComponent
+          ]
+        }
+      })
+      .compileComponents();
+    return TestBed;
   }
 
   // http://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript

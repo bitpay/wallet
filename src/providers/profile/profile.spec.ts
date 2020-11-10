@@ -12,7 +12,6 @@ import { Profile } from '../../models/profile/profile.model';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
 import { ProfileProvider } from '../profile/profile';
 import { RateProvider } from '../rate/rate';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
@@ -27,7 +26,6 @@ describe('Profile Provider', () => {
   let actionSheetProvider: ActionSheetProvider;
   let configProvider: ConfigProvider;
   let keyProvider: KeyProvider;
-  let popupProvider: PopupProvider;
   let replaceParametersProvider: ReplaceParametersProvider;
   let platformProvider: PlatformProvider;
   let txFormatProvider: TxFormatProvider;
@@ -395,7 +393,6 @@ describe('Profile Provider', () => {
     actionSheetProvider = testBed.get(ActionSheetProvider);
     configProvider = testBed.get(ConfigProvider);
     keyProvider = testBed.get(KeyProvider);
-    popupProvider = testBed.get(PopupProvider);
     replaceParametersProvider = testBed.get(ReplaceParametersProvider);
     platformProvider = testBed.get(PlatformProvider);
     txFormatProvider = testBed.get(TxFormatProvider);
@@ -801,6 +798,13 @@ describe('Profile Provider', () => {
       handleEncryptedWalletSpy.and.returnValue(Promise.resolve());
       spyOn(keyProvider, 'addKey').and.returnValue(Promise.resolve());
       configProvider.set({ bwsFor: 'id1' });
+      spyOn(
+        actionSheetProvider,
+        'createEncryptPasswordComponent'
+      ).and.returnValue({
+        present: () => {},
+        dismiss: () => {}
+      });
     });
     it('should create wallet using seed from mnemonic', () => {
       const opts = {
@@ -886,10 +890,6 @@ describe('Profile Provider', () => {
         coin: 'btc'
       };
 
-      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
-        Promise.resolve(true)
-      );
-
       profileProvider
         .createWallet(opts)
         .then(walletClient => {
@@ -904,10 +904,7 @@ describe('Profile Provider', () => {
 
   describe('joinWallet', () => {
     beforeEach(() => {
-      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
-        Promise.resolve(true)
-      );
-      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
+      spyOn<any>(profileProvider, 'askToEncryptKey').and.returnValue(
         Promise.resolve(true)
       );
       spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
@@ -1203,13 +1200,6 @@ describe('Profile Provider', () => {
         };
       };
 
-      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
-        Promise.resolve(true)
-      );
-      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
-        Promise.resolve(true)
-      );
-
       spyOn(configProvider, 'get').and.returnValue({
         bwsFor: 'id1',
         desktopNotifications: { enabled: true },
@@ -1224,6 +1214,10 @@ describe('Profile Provider', () => {
           return true;
         }
       });
+
+      spyOn<any>(profileProvider, 'askToEncryptKey').and.returnValue(
+        Promise.resolve(true)
+      );
 
       spyOn(Observable, 'timer').and.returnValue({
         toPromise: () => {

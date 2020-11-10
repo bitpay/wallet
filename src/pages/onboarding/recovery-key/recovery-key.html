@@ -1,0 +1,29 @@
+<ion-header no-border>
+  <ion-navbar [hideBackButton]="isOnboardingFlow" transparent></ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="recovery-key">
+    <div class="recovery-key-info">
+      <div class="img-container">
+        <img src="assets/img/onboarding/backup-key.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>How to recover your funds if you lose your device?</h3>
+        <div class="text">
+          {{'If you delete the {appName} app or lose your device, you’ll need your recovery key regain access to your funds.' | translate:{appName: appName} }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer no-border>
+  <ion-toolbar>
+    <button ion-button class="button-standard no-margin-bottom" (click)="goToBackupKey()">
+      {{'View my recovery key' | translate}}
+    </button>
+    <button ion-button clear color="primary" class="button-standard" (click)="showInfoSheet()">
+      {{"I’ll do this later" | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

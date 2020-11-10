@@ -16,9 +16,12 @@ import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-meth
 import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
-import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
+import { LockMethodPage } from '../pages/onboarding/lock-method/lock-method';
+import { RecoveryKeyPage } from '../pages/onboarding/recovery-key/recovery-key';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -191,6 +194,10 @@ export const PAGES = [
   TransferToPage,
   CustomAmountPage,
   DisclaimerPage,
+  AddFundsPage,
+  FeatureEducationPage,
+  LockMethodPage,
+  RecoveryKeyPage,
   CollectEmailPage,
   ...GIFT_CARD_PAGES,
   GravatarPage,
@@ -202,7 +209,6 @@ export const PAGES = [
   LockPage,
   MerchantPage,
   MultipleOutputsPage,
-  OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
   PricePage,

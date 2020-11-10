@@ -13,6 +13,8 @@ export enum TouchIdErrors {
 }
 @Injectable()
 export class TouchIdProvider {
+  public iosBiometricMethod: string;
+
   constructor(
     private app: AppProvider,
     private touchId: TouchID,
@@ -41,7 +43,8 @@ export class TouchIdProvider {
   private checkIOS(): Promise<any> {
     return new Promise(resolve => {
       this.touchId.isAvailable().then(
-        () => {
+        type => {
+          this.iosBiometricMethod = type;
           return resolve(true);
         },
         () => {
@@ -50,6 +53,10 @@ export class TouchIdProvider {
         }
       );
     });
+  }
+
+  public getIosBiometricMethod(): string {
+    return this.iosBiometricMethod;
   }
 
   private checkAndroid() {

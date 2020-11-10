@@ -1,98 +1,46 @@
-<ion-header no-border>
-  <ion-navbar hideBackButton transparent></ion-navbar>
-</ion-header>
-
-<ion-content no-bounce>
-    <ion-slides (ionSlideDidChange)="slideChanged()" #walletGroupOnboardingSlides [pager]="!walletGroupOnboardingSlides.isEnd()" class="onboarding-slides">
-      <ion-slide>
-        <div class="slide-info">
-          <div class="img-container">
-            <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
-          </div>
-          <div class="info">
-            <div class="title" translate>Store, manage, and protect your crypto.</div>
-            <div class="text" translate>
-              Multisig and key encryption help you always keep your funds secure.
-            </div>
-          </div>
-        </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="slide-info">
-          <div class="img-container">
-            <img src="assets/img/onboarding-tour2.svg" />
-          </div>
-          <div class="info">
-            <div class="title" translate>Turn crypto into dollars using our BitPay Card.</div>
-            <div class="text" translate>
-              Load dollars and spend crypto with our Visa Debit card in seconds.
-            </div>
-          </div>
-        </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="slide-info">
-          <div class="img-container">
-            <img class="tour-3" src="assets/img/onboarding-tour3.svg" />
-          </div>
-          <div class="info">
-            <div class="title" translate>Spend crypto at your favorite stores.</div>
-            <div class="text" translate>
-              Use crypto to buy store credit at places like Amazon, Uber, and Spotify.
-            </div>
-          </div>
-        </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="slide-info">
-          <div class="title">
-            {{ 'Please Review' | translate }}
-          </div>
-          <ion-list class="checkbox-list" no-lines>
-            <ion-item>
-              <ion-label class="text">
-                {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
-              </ion-label>
-              <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label class="text">
-                {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase' | translate}}.
-              </ion-label>
-              <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
-            </ion-item>
-            <div *ngIf="hasEmail">
-              <ion-item>
-                <ion-label class="text">
-                  <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
-                </ion-label>
-                <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
-              </ion-item>
-              <a class="external-link" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
-            </div>
-          </ion-list>
-        </div>
-      </ion-slide>
-    </ion-slides>
-</ion-content>
-<ion-footer no-border>
-  <ion-toolbar>
-    <div *ngIf="walletGroupOnboardingSlides.getActiveIndex() == 3">
-      <ion-list class="checkbox-list" *ngIf="accepted.first && accepted.second && accepted.third" no-lines>
+<wide-header-page title="{{ 'Two things you should know' | translate }}" hideBackButton="true">
+  <div page-content class="disclaimer-wrapper">
+    <ion-list class="checkbox-list" no-lines>
+      <div class="term-container">
         <ion-item>
-          <ion-label class="text">
-            {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-          </ion-label>
+          <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
+        </ion-item>
+        <div class="term-title">
+          {{'Your funds are in your custody' | translate}}
+        </div>
+        <div class="term-note">
+          {{'I understand that my funds are held and controled securely on this device, not by a company.' | translate}}
+        </div>
+      </div>
+      <div class="term-container" *ngIf="accepted.first">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
+        </ion-item>
+        <div class="term-title">
+          {{'{appName} cannot recover your funds for you if you lose your recovery key' | translate:{appName: appName} }}
+        </div>
+        <div class="term-note">
+          {{'I understand that if this app is moved to another device or deleted, my crypto funds can only be recovered with the recovery phrase.' | translate}}
+        </div>
+      </div>
+    </ion-list>
+  </div>
+  <div footer-content *ngIf="accepted.first && accepted.second" class="disclaimer-footer">
+    <ion-list class="checkbox-list checkbox-list-terms" no-lines>
+      <div class="term-container bg-none">
+        <ion-item>
           <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
         </ion-item>
-        <a class="external-link" (click)="openDisclaimer()" translate>View complete Terms of Use</a>
-      </ion-list>
-      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
-        <span translate>I understand</span>
-      </button>
-    </div>
-    <button ion-button class="button-standard" (click)="nextSlide()" *ngIf="walletGroupOnboardingSlides.getActiveIndex() < 3">
-      {{'Continue' | translate}}
+        <div class="term-note">
+          {{'I have read, understood, and agree with the Terms of Use.' | translate}}
+        </div>
+      </div>
+    </ion-list>
+    <button ion-button clear color="primary" class="button-standard no-margin-bottom" (click)="openDisclaimer()">
+      {{'View complete Terms of Use' | translate}}
     </button>
-  </ion-toolbar>
-</ion-footer>
+    <button ion-button class="button-standard" (click)="confirm()" [disabled]="!accepted.first || !accepted.second || !terms.accepted">
+      {{'Confirm & Finish' | translate}}
+    </button>
+  </div>
+</wide-header-page>
