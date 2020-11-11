@@ -192,7 +192,7 @@ export class BitPayIdProvider {
     const res: any = await this.http
       .post(`${url}${token}`, json, { headers })
       .toPromise();
-    this.logger.log(JSON.stringify(res));
+
     if (res && res.error) {
       throw new Error(res.error);
     }
