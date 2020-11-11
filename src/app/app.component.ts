@@ -405,26 +405,18 @@ export class CopayApp {
     this.emailNotificationsProvider.init(); // Update email subscription if necessary
     this.initPushNotifications();
 
+    if (this.platform.is('cordova')) {
+      this.handleDeepLinks();
+    }
+
+    if (this.platformProvider.isElectron) {
+      this.handleDeepLinksElectron();
+    }
+
     if (profile) {
       this.logger.info('Profile exists.');
-
       this.rootPage = TabsPage;
-
-      if (this.platform.is('cordova')) {
-        this.handleDeepLinks();
-      }
-
-      if (this.platformProvider.isElectron) {
-        this.handleDeepLinksElectron();
-      }
     } else {
-      (window as any).handleOpenURL = (url: string) => {
-        if (url.includes('wallet-card/order-now')) {
-          const context = url.includes('new') ? 'new' : 'fv';
-          this.persistenceProvider.setCardFastTrackEnabled(context);
-        }
-      };
-
       this.logger.info('No profile exists.');
       this.profile.createProfile();
       this.rootPage = FeatureEducationPage;
@@ -637,6 +629,10 @@ export class CopayApp {
   }
 
   private handleOpenUrl(url: string) {
+    if (url.includes('wallet-card/order-now')) {
+      const context = url.includes('new') ? 'new' : 'fv';
+      this.persistenceProvider.setCardFastTrackEnabled(context);
+    }
     if (!this.incomingDataProvider.redir(url)) {
       this.logger.warn('Unknown URL! : ' + url);
     }

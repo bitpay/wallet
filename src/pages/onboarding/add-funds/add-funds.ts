@@ -49,7 +49,7 @@ export class AddFundsPage {
   }
 
   public goToCoinbase(): void {
-    this.navCtrl.push(CoinbasePage);
+    this.navCtrl.push(CoinbasePage, { isOnboardingFlow: true });
   }
 
   public goToAmountPage() {
