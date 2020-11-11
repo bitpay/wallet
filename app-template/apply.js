@@ -136,12 +136,29 @@ function copyDir(from, to, noRemove) {
   fs.copySync(from, to);
 }
 
-// Push Notification
-fs.copySync(
-  configDir + '/GoogleService-Info.plist',
-  '../GoogleService-Info.plist'
-);
-fs.copySync(configDir + '/google-services.json', '../google-services.json');
+// Firebase configuration
+try {
+  const confName = configDir.toUpperCase();
+  const externalServices = confName + '_EXTERNAL_SERVICES';
+  console.log('Looking Firebase Config on ' + externalServices + '...');
+  let path = process.env[externalServices];
+  if (typeof path !== 'undefined') {
+    if (path.charAt(0) === '~') {
+      path = path.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
+    }
+    console.log('Found Firebase Path at: ' + path);
+    fs.copySync(
+      path + '/GoogleService-Info.plist',
+      '../GoogleService-Info.plist'
+    );
+    fs.copySync(path + '/google-services.json', '../google-services.json');
+    console.log('Copied Firebase Configuration.');
+  } else {
+    throw 'ENV variable not set for Firebase Config';
+  }
+} catch (err) {
+  console.log(err);
+}
 
 copyDir(configDir + '/img', '../src/assets/img/app');
 copyDir(configDir + '/sass', '../src/theme', true);
