@@ -61,7 +61,7 @@ export class CoinbasePage {
   public openAuthenticateWindow(): void {
     this.showOauthForm = true;
     if (!this.isElectron) {
-      if (this.navParams.data.fromOnboarding) this.backToWalletTabs();
+      if (this.navParams.data.isOnboardingFlow) this.backToWalletTabs();
       this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
     } else {
       const { remote } = (window as any).require('electron');
