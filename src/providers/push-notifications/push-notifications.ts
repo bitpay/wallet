@@ -58,11 +58,17 @@ export class PushNotificationsProvider {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
         this.enable();
-        // enabling topics
         this.handlePushNotifications();
-        if (config.offersAndPromotions.enabled)
+        // enabling topics
+        if (
+          this.appProvider.info.name != 'copay' &&
+          config.offersAndPromotions.enabled
+        )
           this.subscribeToTopic('offersandpromotions');
-        if (config.productsUpdates.enabled)
+        if (
+          this.appProvider.info.name != 'copay' &&
+          config.productsUpdates.enabled
+        )
           this.subscribeToTopic('productsupdates');
       });
     });
