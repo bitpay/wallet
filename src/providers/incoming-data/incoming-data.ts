@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 // providers
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
+import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
@@ -40,7 +41,8 @@ export class IncomingDataProvider {
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private bitPayIdProvider: BitPayIdProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -755,6 +757,9 @@ export class IncomingDataProvider {
     if (this.isValidBitPayInvoice(data)) {
       this.handleBitPayInvoice(data);
       return true;
+    } else if (data.includes('unlock')) {
+      this.handleUnlock(data);
+      return true;
 
       // Payment Protocol with non-backwards-compatible request
     } else if (this.isValidPayProNonBackwardsCompatible(data)) {
@@ -1281,6 +1286,48 @@ export class IncomingDataProvider {
       this.events.publish('SendPageRedir', nextView);
     } else {
       this.events.publish('IncomingDataRedir', nextView);
+    }
+  }
+
+  private async handleUnlock(data) {
+    try {
+      const paymentUrl = await this.bitPayIdProvider.unlockInvoice(data);
+      await this.handleBitPayInvoice(paymentUrl);
+    } catch (err) {
+      this.logger.error(err);
+
+      switch (err) {
+        case 'pairingRequired':
+          this.iabCardProvider.show();
+          setTimeout(() => {
+            this.iabCardProvider.sendMessage(
+              {
+                message: 'pairingOnly',
+                payload: { context: 'unlock' }
+              },
+              () => {}
+            );
+          }, 100);
+          break;
+
+        case 'tierNotMet':
+          // TODO
+          break;
+
+        case 'userShopperNotFound':
+          // TODO
+          break;
+
+        default:
+          await this.actionSheetProvider
+            .createInfoSheet('default-error', {
+              msg: this.translate.instant(
+                'Uh oh something went wrong! Please try again later.'
+              ),
+              title: this.translate.instant('Error')
+            })
+            .present();
+      }
     }
   }
 }

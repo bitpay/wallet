@@ -165,11 +165,17 @@ export class BitPayIdProvider {
     });
   }
 
-  public async apiCall(method: string, params: any = {}) {
+  public async apiCall(
+    method: string,
+    params: any = {},
+    userShopperToken?: string
+  ) {
     const url = `${this.BITPAY_API_URL}/api/v2/`;
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(
-      Network[this.NETWORK]
-    );
+    let token =
+      userShopperToken ||
+      (await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      ));
     const json = {
       method,
       params: JSON.stringify(params),
@@ -186,11 +192,36 @@ export class BitPayIdProvider {
     const res: any = await this.http
       .post(`${url}${token}`, json, { headers })
       .toPromise();
-
+    this.logger.log(JSON.stringify(res));
     if (res && res.error) {
       throw new Error(res.error);
     }
-    return res && res.data;
+    return (res && res.data) || res;
+  }
+
+  public async unlockInvoice(data: string): Promise<string> {
+    const isPaired = !!(await this.persistenceProvider.getBitPayIdPairingToken(
+      Network[this.NETWORK]
+    ));
+
+    if (!isPaired) return Promise.reject('pairingRequired');
+
+    const url = data.split('?')[1];
+    const invoiceId = url.split('i/')[1];
+
+    const tokens = await this.apiCall('getProductTokens');
+    const { token } = tokens.find(t => t.facade === 'userShopper');
+
+    if (!token) return Promise.reject('userShopperNotFound');
+
+    const {
+      data: { meetsRequiredTier, message }
+    } = await this.apiCall('unlockInvoice', { invoiceId }, token);
+    this.logger.log(message);
+
+    if (!meetsRequiredTier) return Promise.reject('tierNotMet');
+
+    return Promise.resolve(`unlock:?${url}`);
   }
 
   getAppIdentity() {
