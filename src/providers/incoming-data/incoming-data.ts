@@ -1291,43 +1291,48 @@ export class IncomingDataProvider {
 
   private async handleUnlock(data) {
     try {
-      const paymentUrl = await this.bitPayIdProvider.unlockInvoice(data);
-      await this.handleBitPayInvoice(paymentUrl);
-    } catch (err) {
-      this.logger.error(err);
+      const url = data.split('?')[1];
+      const invoiceId = url.split('i/')[1];
 
-      switch (err) {
+      const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
+
+      switch (result) {
+        case 'unlockSuccess':
+          await this.handleBitPayInvoice(`unlock:?${url}`);
+          break;
+
+        // call IAB and attempt pairing
         case 'pairingRequired':
           this.iabCardProvider.show();
           setTimeout(() => {
             this.iabCardProvider.sendMessage(
               {
                 message: 'pairingOnly',
-                payload: { context: 'unlock' }
+                payload: { context: 'unlock', invoiceId }
               },
               () => {}
             );
           }, 100);
           break;
 
-        case 'tierNotMet':
-          // TODO
-          break;
-
+        // needs verification - send to bitpay id verify
         case 'userShopperNotFound':
-          // TODO
-          break;
-
-        default:
-          await this.actionSheetProvider
-            .createInfoSheet('default-error', {
-              msg: this.translate.instant(
-                'Uh oh something went wrong! Please try again later.'
-              ),
-              title: this.translate.instant('Error')
-            })
-            .present();
+        case 'tierNotMet':
+          const host = url.includes('test') ? 'test.bitpay.com' : 'bitpay.com';
+          await this.externalLinkProvider.open(
+            `https://${host}/id/verify?context=unlock&id=${invoiceId}`
+          );
       }
+    } catch (err) {
+      this.logger.error(err);
+      await this.actionSheetProvider
+        .createInfoSheet('default-error', {
+          msg: this.translate.instant(
+            'Uh oh something went wrong! Please try again later.'
+          ),
+          title: this.translate.instant('Error')
+        })
+        .present();
     }
   }
 }

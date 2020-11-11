@@ -199,29 +199,24 @@ export class BitPayIdProvider {
     return (res && res.data) || res;
   }
 
-  public async unlockInvoice(data: string): Promise<string> {
+  public async unlockInvoice(invoiceId: string): Promise<string> {
     const isPaired = !!(await this.persistenceProvider.getBitPayIdPairingToken(
       Network[this.NETWORK]
     ));
-
-    if (!isPaired) return Promise.reject('pairingRequired');
-
-    const url = data.split('?')[1];
-    const invoiceId = url.split('i/')[1];
+    if (!isPaired) return Promise.resolve('pairingRequired');
 
     const tokens = await this.apiCall('getProductTokens');
     const { token } = tokens.find(t => t.facade === 'userShopper');
+    if (!token) return Promise.resolve('userShopperNotFound');
 
-    if (!token) return Promise.reject('userShopperNotFound');
+    const { meetsRequiredTier } = await this.apiCall(
+      'unlockInvoice',
+      { invoiceId },
+      token
+    );
+    if (!meetsRequiredTier) return Promise.resolve('tierNotMet');
 
-    const {
-      data: { meetsRequiredTier, message }
-    } = await this.apiCall('unlockInvoice', { invoiceId }, token);
-    this.logger.log(message);
-
-    if (!meetsRequiredTier) return Promise.reject('tierNotMet');
-
-    return Promise.resolve(`unlock:?${url}`);
+    return Promise.resolve('unlockSuccess');
   }
 
   getAppIdentity() {
