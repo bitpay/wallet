@@ -89,8 +89,13 @@ export class PushNotificationsProvider {
           } else {
             const walletIdHashed = data.walletId;
             const tokenAddress = data.tokenAddress;
+            const multisigContractAddress = data.multisigContractAddress;
             if (!walletIdHashed) return;
-            this._openWallet(walletIdHashed, tokenAddress);
+            this._openWallet(
+              walletIdHashed,
+              tokenAddress,
+              multisigContractAddress
+            );
           }
         }
       });
@@ -195,8 +200,16 @@ export class PushNotificationsProvider {
     });
   }
 
-  private async _openWallet(walletIdHashed, tokenAddress) {
-    const wallet = this.findWallet(walletIdHashed, tokenAddress);
+  private async _openWallet(
+    walletIdHashed,
+    tokenAddress,
+    multisigContractAddress
+  ) {
+    const wallet = this.findWallet(
+      walletIdHashed,
+      tokenAddress,
+      multisigContractAddress
+    );
 
     if (!wallet) return;
 
@@ -205,13 +218,13 @@ export class PushNotificationsProvider {
     this.events.publish('OpenWallet', wallet);
   }
 
-  private findWallet(walletIdHashed, tokenAddress) {
+  private findWallet(walletIdHashed, tokenAddress, multisigContractAddress) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
     const wallets = this.profileProvider.getWallets();
     const wallet = _.find(wallets, w => {
-      if (tokenAddress) {
+      if (tokenAddress || multisigContractAddress) {
         const walletId = w.credentials.walletId;
         const lastHyphenPosition = walletId.lastIndexOf('-');
         const walletIdWithoutTokenAddress = walletId.substring(

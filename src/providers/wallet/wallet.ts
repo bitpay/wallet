@@ -1407,7 +1407,11 @@ export class WalletProvider {
 
     let updates = [];
     clients.forEach(c => {
-      if (this.currencyProvider.isERCToken(c.credentials.coin)) return;
+      if (
+        this.currencyProvider.isERCToken(c.credentials.coin) ||
+        c.credentials.multisigEthInfo
+      )
+        return;
 
       updates.push(this.updateRemotePreferencesFor(c, prefs));
     });

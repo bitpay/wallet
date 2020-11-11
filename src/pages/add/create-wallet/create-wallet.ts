@@ -429,7 +429,6 @@ export class CreateWalletPage implements OnInit {
           keyId: this.keyId,
           hasFunds: true,
           coin: 'eth',
-          network: 'testnet', // TODO livenet
           m: 1,
           n: 1
         })
