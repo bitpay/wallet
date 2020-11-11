@@ -126,9 +126,7 @@
       </config-file>
 
       <!-- Apple Pay Support -->
-      <config-file mode="add" parent="com.apple.developer.payment-pass-provisioning" target="Entitlements-Release.plist">
-        <true />
-      </config-file>
+      *APPLEPAY*
 
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60.png" width="60" height="60" />

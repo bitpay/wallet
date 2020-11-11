@@ -9,6 +9,7 @@
   "bundleName": "copay",
   "appUri": "copay",
   "name": "copay",
+  "applePay": "",
   "dynamicLink": "copay.page.link",
   "nameNoSpace": "copay",
   "nameCase": "Copay",
