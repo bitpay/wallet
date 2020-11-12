@@ -203,20 +203,20 @@ export class BitPayIdProvider {
     const isPaired = !!(await this.persistenceProvider.getBitPayIdPairingToken(
       Network[this.NETWORK]
     ));
-    if (!isPaired) return Promise.resolve('pairingRequired');
+    if (!isPaired) return 'pairingRequired';
 
     const tokens = await this.apiCall('getProductTokens');
     const { token } = tokens.find(t => t.facade === 'userShopper');
-    if (!token) return Promise.resolve('userShopperNotFound');
+    if (!token) return 'userShopperNotFound';
 
     const { meetsRequiredTier } = await this.apiCall(
       'unlockInvoice',
       { invoiceId },
       token
     );
-    if (!meetsRequiredTier) return Promise.resolve('tierNotMet');
+    if (!meetsRequiredTier) return 'tierNotMet';
 
-    return Promise.resolve('unlockSuccess');
+    return 'unlockSuccess';
   }
 
   getAppIdentity() {
