@@ -477,5 +477,22 @@
       <span sheet-button-text translate>I'M SURE</span>
       <span sheet-second-button-text translate>GO BACK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'auth-required'" type="warning">
+      <span sheet-title-text translate>Connect Your BitPay ID</span>
+      <span sheet-text>
+        To complete this payment, please login with your BitPay ID.
+      </span>
+      <span sheet-button-text translate>CONTINUE</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'verification-required'" type="warning">
+      <span sheet-title-text translate>Verification Required</span>
+      <span sheet-text>
+        To complete this payment, a verified account is required.
+      </span>
+      <span sheet-button-text translate>CONTINUE</span>
+    </info-sheet-template>
+
   </div>
 </action-sheet>

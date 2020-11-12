@@ -45,6 +45,9 @@ export class IncomingDataProvider {
     private bitPayIdProvider: BitPayIdProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
+    this.events.subscribe('unlockInvoice', paymentUrl =>
+      this.handleUnlock(paymentUrl)
+    );
   }
 
   public showMenu(data): void {
@@ -1303,25 +1306,39 @@ export class IncomingDataProvider {
 
         // call IAB and attempt pairing
         case 'pairingRequired':
-          this.iabCardProvider.show();
-          setTimeout(() => {
-            this.iabCardProvider.sendMessage(
-              {
-                message: 'pairingOnly',
-                payload: { context: 'unlock', invoiceId }
-              },
-              () => {}
-            );
-          }, 100);
+          const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
+            'auth-required'
+          );
+          await authRequiredInfoSheet.present();
+          authRequiredInfoSheet.onDidDismiss(() => {
+            this.iabCardProvider.show();
+            setTimeout(() => {
+              this.iabCardProvider.sendMessage(
+                {
+                  message: 'pairingOnly',
+                  payload: { paymentUrl: data }
+                },
+                () => {}
+              );
+            }, 100);
+          });
           break;
 
         // needs verification - send to bitpay id verify
         case 'userShopperNotFound':
         case 'tierNotMet':
-          const host = url.includes('test') ? 'test.bitpay.com' : 'bitpay.com';
-          await this.externalLinkProvider.open(
-            `https://${host}/id/verify?context=unlock&id=${invoiceId}`
+          const verificationRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
+            'auth-required'
           );
+          await verificationRequiredInfoSheet.present();
+          verificationRequiredInfoSheet.onDidDismiss(async () => {
+            const host = url.includes('test')
+              ? 'test.bitpay.com'
+              : 'bitpay.com';
+            await this.externalLinkProvider.open(
+              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
+            );
+          });
       }
     } catch (err) {
       this.logger.error(err);

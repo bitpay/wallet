@@ -65,7 +65,9 @@ export type InfoSheetType =
   | 'protect-money'
   | 'pincode-info'
   | 'key-verification-required'
-  | 'encrypt-password-warning';
+  | 'encrypt-password-warning'
+  | 'auth-required'
+  | 'verification-required';
 
 export type OptionsSheetType =
   | 'wallet-options'
