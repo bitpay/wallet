@@ -449,10 +449,7 @@ export class IncomingDataProvider {
     if (!oldAddr)
       this.logger.error('Could not parse Bitcoin Cash legacy address');
 
-    let a = this.bwcProvider
-      .getBitcore()
-      .Address(oldAddr)
-      .toObject();
+    let a = this.bwcProvider.getBitcore().Address(oldAddr).toObject();
     let address = this.bwcProvider
       .getBitcoreCash()
       .Address.fromObject(a)

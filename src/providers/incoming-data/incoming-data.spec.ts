@@ -713,14 +713,8 @@ describe('Provider: Incoming Data Provider', () => {
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
 
-      let a = bwcProvider
-        .getBitcore()
-        .Address(oldAddr)
-        .toObject();
-      let addr = bwcProvider
-        .getBitcoreCash()
-        .Address.fromObject(a)
-        .toString();
+      let a = bwcProvider.getBitcore().Address(oldAddr).toObject();
+      let addr = bwcProvider.getBitcoreCash().Address.fromObject(a).toString();
 
       let stateParams = {
         toAddress: addr,
@@ -749,14 +743,8 @@ describe('Provider: Incoming Data Provider', () => {
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
 
-      let a = bwcProvider
-        .getBitcore()
-        .Address(oldAddr)
-        .toObject();
-      let addr = bwcProvider
-        .getBitcoreCash()
-        .Address.fromObject(a)
-        .toString();
+      let a = bwcProvider.getBitcore().Address(oldAddr).toObject();
+      let addr = bwcProvider.getBitcoreCash().Address.fromObject(a).toString();
 
       let stateParams = {
         toAddress: addr,

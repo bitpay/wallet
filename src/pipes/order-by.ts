@@ -17,7 +17,8 @@ export class OrderByPipe implements PipeTransform {
     if (
       isNaN(parseFloat(a)) ||
       !isFinite(a) ||
-      (isNaN(parseFloat(b)) || !isFinite(b))
+      isNaN(parseFloat(b)) ||
+      !isFinite(b)
     ) {
       // Isn't a number so lowercase the string to properly compare
       if (a.toLowerCase() < b.toLowerCase()) return -1;

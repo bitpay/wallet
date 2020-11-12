@@ -439,9 +439,7 @@ export class BitPayCardTopUpPage {
                   : Math.ceil(details.requiredFeeRate * 1024);
                 txp.feePerKb = requiredFeeRate;
                 this.logger.debug(
-                  `PayProDetails requiredFeeRate: ${
-                    details.requiredFeeRate
-                  }. Txp feePerKb: ${txp.feePerKb}`
+                  `PayProDetails requiredFeeRate: ${details.requiredFeeRate}. Txp feePerKb: ${txp.feePerKb}`
                 );
                 this.logger.debug(
                   'Using merchant fee rate (for debit card):' + txp.feePerKb
@@ -795,9 +793,7 @@ export class BitPayCardTopUpPage {
     this.logCardTopUpEvent(wallet.coin, false);
 
     this.logger.debug(
-      `Creating invoice. amount: ${parsedAmount.amount} - currency: ${
-        parsedAmount.currency
-      }`
+      `Creating invoice. amount: ${parsedAmount.amount} - currency: ${parsedAmount.currency}`
     );
     this.createInvoice(dataSrc)
       .then(invoice => {
@@ -887,9 +883,7 @@ export class BitPayCardTopUpPage {
     this.logCardTopUpEvent(account.currency.code, false);
 
     this.logger.debug(
-      `Creating invoice. amount: ${dataSrc.amount} - currency: ${
-        dataSrc.currency
-      }`
+      `Creating invoice. amount: ${dataSrc.amount} - currency: ${dataSrc.currency}`
     );
     this.createInvoice(dataSrc)
       .then(invoice => {

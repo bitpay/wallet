@@ -190,9 +190,7 @@ export class RateProvider {
     ts: string
   ): Promise<any> {
     return new Promise(resolve => {
-      const url = `${
-        this.bwsURL
-      }/v1/fiatrates/${currency}?coin=${coin}&ts=${ts}`;
+      const url = `${this.bwsURL}/v1/fiatrates/${currency}?coin=${coin}&ts=${ts}`;
       this.http.get(url).subscribe(data => {
         resolve(data);
       });
@@ -217,10 +215,7 @@ export class RateProvider {
     dateRange: DateRanges = DateRanges.Day
   ): Promise<HistoricalRates> {
     const firstDateTs =
-      moment()
-        .subtract(dateRange, 'days')
-        .startOf('hour')
-        .unix() * 1000;
+      moment().subtract(dateRange, 'days').startOf('hour').unix() * 1000;
 
     const now = Date.now();
     if (

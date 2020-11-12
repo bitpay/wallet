@@ -149,7 +149,8 @@ export class BitPayCardProvider {
           if (
             ['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >=
               0 ||
-            (invoices[i].status === 'invalid' || isInvoiceUnderpaid)
+            invoices[i].status === 'invalid' ||
+            isInvoiceUnderpaid
           ) {
             activityList.unshift(
               this._getMerchantInfo({

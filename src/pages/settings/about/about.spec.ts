@@ -43,10 +43,9 @@ describe('AboutPage', () => {
         expect(instance.translate.instant).toHaveBeenCalledWith(
           'About {{appName}}'
         );
-        expect(instance.replaceParametersProvider.replace).toHaveBeenCalledWith(
-          'testVal',
-          { appName: 'testName' }
-        );
+        expect(
+          instance.replaceParametersProvider.replace
+        ).toHaveBeenCalledWith('testVal', { appName: 'testName' });
         expect(instance.title).toEqual('testTitle');
       });
     });

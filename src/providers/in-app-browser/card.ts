@@ -887,9 +887,7 @@ export class IABCardProvider {
         this.logger.log('appleWallet - startAddPaymentPass - not available');
         payload = {
           ...payload,
-          error: `ios version (${
-            this.device.version
-          }) does not support apple wallet`
+          error: `ios version (${this.device.version}) does not support apple wallet`
         };
       }
 

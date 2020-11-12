@@ -66,9 +66,7 @@ export class PlatformProvider {
   public isMacApp(): boolean {
     return (
       this.isElectronPlatform() &&
-      this.getUserAgent()
-        .toLowerCase()
-        .includes('macintosh')
+      this.getUserAgent().toLowerCase().includes('macintosh')
     );
   }
 

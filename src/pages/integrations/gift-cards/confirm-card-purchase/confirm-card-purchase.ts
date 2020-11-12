@@ -361,9 +361,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (errMessage && errMessage.match(/suspended/i)) {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
-        `${
-          this.cardConfig.displayName
-        } gift card purchases are not available at this time. Please try again later.`
+        `${this.cardConfig.displayName} gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
       err_msg = errMessage;
@@ -842,9 +840,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.wallet = null;
       this.coinbaseAccount = option.accountSelected;
       const email = this.coinbaseProvider.coinbaseData.user.email;
-      await this.initializeCoinbase(option.accountSelected, email).catch(
-        () => {}
-      );
+      await this.initializeCoinbase(
+        option.accountSelected,
+        email
+      ).catch(() => {});
     } else {
       this.wallet = option;
       this.coinbaseAccount = null;

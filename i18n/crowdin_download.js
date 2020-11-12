@@ -49,16 +49,16 @@ https.get(
     crowdin_identifier +
     '/download/all.zip?key=' +
     crowdin_api_key,
-  function(res) {
+  function (res) {
     var data = [],
       dataLen = 0;
 
     res
-      .on('data', function(chunk) {
+      .on('data', function (chunk) {
         data.push(chunk);
         dataLen += chunk.length;
       })
-      .on('end', function() {
+      .on('end', function () {
         var buf = new Buffer.alloc(dataLen);
         for (var i = 0, len = data.length, pos = 0; i < len; i++) {
           data[i].copy(buf, pos);

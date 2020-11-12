@@ -319,11 +319,7 @@ export class CryptoOffersPage {
       this.amount < this.offers.simplex.amountLimits.min ||
       this.amount > this.offers.simplex.amountLimits.max
     ) {
-      this.offers.simplex.errorMsg = `The ${
-        this.fiatCurrency
-      } amount must be between ${this.offers.simplex.amountLimits.min} and ${
-        this.offers.simplex.amountLimits.max
-      }`;
+      this.offers.simplex.errorMsg = `The ${this.fiatCurrency} amount must be between ${this.offers.simplex.amountLimits.min} and ${this.offers.simplex.amountLimits.max}`;
       return;
     } else {
       let paymentMethod: string[] = [];
@@ -467,11 +463,7 @@ export class CryptoOffersPage {
       this.amount < this.offers.wyre.amountLimits.min ||
       this.amount > this.offers.wyre.amountLimits.max
     ) {
-      this.offers.wyre.errorMsg = `The ${
-        this.fiatCurrency
-      } daily amount must be between ${this.offers.wyre.amountLimits.min} and ${
-        this.offers.wyre.amountLimits.max
-      }`;
+      this.offers.wyre.errorMsg = `The ${this.fiatCurrency} daily amount must be between ${this.offers.wyre.amountLimits.min} and ${this.offers.wyre.amountLimits.max}`;
       return;
     } else {
       this.walletProvider
