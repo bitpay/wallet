@@ -94,6 +94,11 @@ export class IABCardProvider {
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
+
+        case 'log':
+          this.logger.debug(event.data.log);
+          break;
+
         /*
          *
          * Handles paying for the card. The IAB generates the invoice id and passes it back here. This method then launches the payment experience.
