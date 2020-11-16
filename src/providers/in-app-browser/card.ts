@@ -94,7 +94,6 @@ export class IABCardProvider {
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
-
         case 'log':
           this.logger.debug(event.data.log);
           break;

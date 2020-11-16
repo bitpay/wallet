@@ -1,9 +1,9 @@
 <wide-header-page title="{{ 'Two things you should know' | translate }}" hideBackButton="true">
   <div page-content class="disclaimer-wrapper">
     <ion-list class="checkbox-list" no-lines>
-      <div class="term-container">
+      <div class="term-container" (click)="acceptTerm('first')">
         <ion-item>
-          <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
+          <ion-checkbox (click)="acceptTerm('first')" [(ngModel)]="accepted.first"></ion-checkbox>
         </ion-item>
         <div class="term-title">
           {{'Your funds are in your custody' | translate}}
@@ -12,9 +12,9 @@
           {{'I understand that my funds are held and controled securely on this device, not by a company.' | translate}}
         </div>
       </div>
-      <div class="term-container" *ngIf="accepted.first">
+      <div class="term-container" (click)="acceptTerm('second')" *ngIf="accepted.first">
         <ion-item>
-          <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
+          <ion-checkbox (click)="acceptTerm('second')" [(ngModel)]="accepted.second"></ion-checkbox>
         </ion-item>
         <div class="term-title">
           {{'{appName} cannot recover your funds for you if you lose your recovery key' | translate:{appName: appName} }}
@@ -27,9 +27,9 @@
   </div>
   <div footer-content *ngIf="accepted.first && accepted.second" class="disclaimer-footer">
     <ion-list class="checkbox-list checkbox-list-terms" no-lines>
-      <div class="term-container bg-none">
+      <div class="term-container bg-none" (click)="selectTerms()">
         <ion-item>
-          <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+          <ion-checkbox (click)="selectTerms()" [(ngModel)]="terms.accepted"></ion-checkbox>
         </ion-item>
         <div class="term-note">
           {{'I have read, understood, and agree with the Terms of Use.' | translate}}
