@@ -121,9 +121,7 @@ export class BitPayCardPage {
     preset = preset || 'last30Days';
     switch (preset) {
       case 'last30Days':
-        startDate = moment()
-          .subtract(30, 'days')
-          .toISOString();
+        startDate = moment().subtract(30, 'days').toISOString();
         endDate = moment().toISOString();
         break;
       case 'lastMonth':
@@ -131,9 +129,7 @@ export class BitPayCardPage {
           .startOf('month')
           .subtract(1, 'month')
           .toISOString();
-        endDate = moment()
-          .startOf('month')
-          .toISOString();
+        endDate = moment().startOf('month').toISOString();
         break;
       case 'all':
         startDate = null;
@@ -244,9 +240,7 @@ export class BitPayCardPage {
       let amTime = this.createdWithinPastDay(txs[i]);
       newDate = amTime
         ? moment(txDateUtc).fromNow()
-        : moment(txDate)
-            .utc()
-            .format('MMM D, YYYY');
+        : moment(txDate).utc().format('MMM D, YYYY');
       txs[i].date = newDate;
     }
   }

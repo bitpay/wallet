@@ -234,9 +234,7 @@ export class CryptoOrderSummaryPage {
       return;
     } else {
       this.logger.debug(
-        `No payment methods available for ${this.coin} and ${
-          this.currency
-        }. Show warning.`
+        `No payment methods available for ${this.coin} and ${this.currency}. Show warning.`
       );
       this.setDefaultPaymentMethod();
       this.showPaymentMethodWarning('coin');

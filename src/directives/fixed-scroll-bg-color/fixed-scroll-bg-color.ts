@@ -40,11 +40,7 @@ export class FixedScrollBgColor {
       'wrapper'
     )[0];
 
-    const linearGradient = `linear-gradient(to bottom, ${this.color}, ${
-      this.color
-    } 50%, ${this.bottomColor} 50%, ${this.bottomColor} 50%, ${
-      this.bottomColor
-    } 50%)`;
+    const linearGradient = `linear-gradient(to bottom, ${this.color}, ${this.color} 50%, ${this.bottomColor} 50%, ${this.bottomColor} 50%, ${this.bottomColor} 50%)`;
 
     if (color) {
       scrollContent.style.setProperty('background-image', linearGradient);

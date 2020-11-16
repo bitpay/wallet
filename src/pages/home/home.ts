@@ -476,9 +476,7 @@ export class HomePage {
       this.advertisements.unshift({
         name: advertisementName,
         title: `${discountText} off ${discountedCard.displayName}`,
-        body: `Save ${discountText} off ${
-          discountedCard.displayName
-        } gift cards. Limited time offer.`,
+        body: `Save ${discountText} off ${discountedCard.displayName} gift cards. Limited time offer.`,
         app: 'bitpay',
         linkText: 'Buy Now',
         link: BuyCardPage,
@@ -737,7 +735,5 @@ export class HomePage {
 }
 
 function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
-  return `${discountedCard.discounts[0].code}-${
-    discountedCard.name
-  }-gift-card-discount`;
+  return `${discountedCard.discounts[0].code}-${discountedCard.name}-gift-card-discount`;
 }

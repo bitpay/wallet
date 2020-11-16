@@ -27,9 +27,7 @@ export { AppIdentityProvider } from '../providers/app-identity/app-identity';
 export { AppProvider } from '../providers/app/app';
 export { AppleWalletProvider } from '../providers/apple-wallet/apple-wallet';
 export { BackupProvider } from '../providers/backup/backup';
-export {
-  BitPayAccountProvider
-} from '../providers/bitpay-account/bitpay-account';
+export { BitPayAccountProvider } from '../providers/bitpay-account/bitpay-account';
 export { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 export { BitPayIdProvider } from '../providers/bitpay-id/bitpay-id';
 export { BitPayProvider } from '../providers/bitpay/bitpay';
@@ -41,28 +39,20 @@ export { CoinbaseProvider } from '../providers/coinbase/coinbase';
 export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
 export { CurrencyProvider, Coin } from '../providers/currency/currency';
-export {
-  DerivationPathHelperProvider
-} from '../providers/derivation-path-helper/derivation-path-helper';
+export { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 export { DomProvider } from '../providers/dom/dom';
 export { DownloadProvider } from '../providers/download/download';
 export { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
-export {
-  EmailNotificationsProvider
-} from '../providers/email-notifications/email-notifications';
+export { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 export { ErrorsProvider } from '../providers/errors/errors';
 export { ExternalLinkProvider } from '../providers/external-link/external-link';
 export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';
 export { FilterProvider } from '../providers/filter/filter';
 export { GiftCardProvider } from '../providers/gift-card/gift-card';
-export {
-  HomeIntegrationsProvider
-} from '../providers/home-integrations/home-integrations';
+export { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
-export {
-  InAppBrowserProvider
-} from '../providers/in-app-browser/in-app-browser';
+export { InAppBrowserProvider } from '../providers/in-app-browser/in-app-browser';
 export { IABCardProvider } from '../providers/in-app-browser/card';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export { InvoiceProvider } from '../providers/invoice/invoice';
@@ -73,21 +63,15 @@ export { Logger } from '../providers/logger/logger';
 export { LogsProvider } from '../providers/logs/logs';
 export { ElectronProvider } from '../providers/electron/electron';
 export { MerchantProvider } from '../providers/merchant/merchant';
-export {
-  OnGoingProcessProvider
-} from '../providers/on-going-process/on-going-process';
+export { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 export { PayproProvider } from '../providers/paypro/paypro';
 export { PersistenceProvider } from '../providers/persistence/persistence';
 export { PlatformProvider } from '../providers/platform/platform';
 export { PopupProvider } from '../providers/popup/popup';
 export { ProfileProvider } from '../providers/profile/profile';
-export {
-  PushNotificationsProvider
-} from '../providers/push-notifications/push-notifications';
+export { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 export { RateProvider } from '../providers/rate/rate';
-export {
-  ReplaceParametersProvider
-} from '../providers/replace-parameters/replace-parameters';
+export { ReplaceParametersProvider } from '../providers/replace-parameters/replace-parameters';
 export { ScanProvider } from '../providers/scan/scan';
 export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 export { SimplexProvider } from '../providers/simplex/simplex';
@@ -95,9 +79,7 @@ export { TabProvider } from '../providers/tab/tab';
 export { ThemeProvider } from '../providers/theme/theme';
 export { TimeProvider } from '../providers/time/time';
 export { TouchIdProvider } from '../providers/touchid/touchid';
-export {
-  TxConfirmNotificationProvider
-} from '../providers/tx-confirm-notification/tx-confirm-notification';
+export { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
 export { WyreProvider } from '../providers/wyre/wyre';

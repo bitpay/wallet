@@ -26,7 +26,7 @@ const jsonHeader = `{
 
 console.log(`Applying templates for: ${config.nameCase}`);
 
-Object.keys(templates).forEach(function(k) {
+Object.keys(templates).forEach(function (k) {
   const targetDir = templates[k];
   console.log(' #    ' + k + ' => ' + targetDir);
 
@@ -38,7 +38,7 @@ Object.keys(templates).forEach(function(k) {
     content = MakefileHeader + content;
   }
 
-  Object.keys(config).forEach(function(k) {
+  Object.keys(config).forEach(function (k) {
     if (k.indexOf('_') == 0) return;
 
     const r = new RegExp('\\*' + k.toUpperCase() + '\\*', 'g');
@@ -87,7 +87,7 @@ Object.keys(templates).forEach(function(k) {
 });
 
 // Get latest commit hash
-const getCommitHash = function() {
+const getCommitHash = function () {
   //exec git command to get the hash of the current commit
   const hash = shell
     .exec('git rev-parse HEAD', {

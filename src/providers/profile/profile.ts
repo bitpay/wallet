@@ -501,7 +501,8 @@ export class ProfileProvider {
         wallet.n == 1 &&
         wallet.credentials.addressType == 'P2PKH' &&
         derivationStrategy == 'BIP44' &&
-        (chain == 'eth' && coinCode == "60'")
+        chain == 'eth' &&
+        coinCode == "60'"
       ) {
         return true;
       }
@@ -509,7 +510,8 @@ export class ProfileProvider {
         wallet.n == 1 &&
         wallet.credentials.addressType == 'P2PKH' &&
         derivationStrategy == 'BIP44' &&
-        (chain == 'xrp' && coinCode == "144'")
+        chain == 'xrp' &&
+        coinCode == "144'"
       ) {
         return true;
       }
@@ -1697,9 +1699,7 @@ export class ProfileProvider {
 
   private _createMultisigEthWallet(ethWallet, multisigEthInfo) {
     this.logger.debug(
-      `Creating ETH multisig wallet ${multisigEthInfo.walletName} for ${
-        ethWallet.id
-      }:`
+      `Creating ETH multisig wallet ${multisigEthInfo.walletName} for ${ethWallet.id}:`
     );
     const multisigEthCredentials = ethWallet.credentials.getMultisigEthCredentials(
       multisigEthInfo

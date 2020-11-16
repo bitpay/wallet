@@ -157,9 +157,7 @@ export class AltCurrencyPage {
 
   private showErrorAndRemoveAltCurrency(altCurrency): void {
     const title = this.translate.instant('Error');
-    const msg = `${altCurrency.name} (${
-      altCurrency.isoCode
-    }) is no longer supported. Please select another alternative currency`;
+    const msg = `${altCurrency.name} (${altCurrency.isoCode}) is no longer supported. Please select another alternative currency`;
     this.errorsProvider.showDefaultError(msg, title, () => {
       this.lastUsedAltCurrencyList = _.reject(this.lastUsedAltCurrencyList, [
         'isoCode',
