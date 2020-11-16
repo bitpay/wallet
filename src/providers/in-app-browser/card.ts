@@ -685,7 +685,7 @@ export class IABCardProvider {
   async pairing(event) {
     const {
       params,
-      params: { withNotification, dashboardRedirect }
+      params: { withNotification, dashboardRedirect, paymentUrl }
     } = event.data;
     // set the overall app loading state
     this.onGoingProcess.set('connectingBitPayId');
@@ -732,6 +732,13 @@ export class IABCardProvider {
             // close in app browser
             this.hide();
 
+            // paymentUrl - so pass to unlock context
+            if (paymentUrl) {
+              infoSheet.onDidDismiss(() => {
+                this.events.publish('unlockInvoice', paymentUrl);
+              });
+            }
+
             if (dashboardRedirect) {
               this.events.publish('IncomingDataRedir', {
                 name: 'CardsPage'
@@ -743,10 +750,11 @@ export class IABCardProvider {
           // publish new user
           this.user.next(user);
 
-          // fetch new cards
-          await this.getCards();
-
-          this.events.publish('updateCards');
+          if (!paymentUrl) {
+            // fetch new cards
+            await this.getCards();
+            this.events.publish('updateCards');
+          }
 
           // clear out loading state
           setTimeout(() => {

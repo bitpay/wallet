@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 // providers
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
+import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
@@ -40,9 +41,13 @@ export class IncomingDataProvider {
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private iabCardProvider: IABCardProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private bitPayIdProvider: BitPayIdProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
+    this.events.subscribe('unlockInvoice', paymentUrl =>
+      this.handleUnlock(paymentUrl)
+    );
   }
 
   public showMenu(data): void {
@@ -755,6 +760,9 @@ export class IncomingDataProvider {
     if (this.isValidBitPayInvoice(data)) {
       this.handleBitPayInvoice(data);
       return true;
+    } else if (data.includes('unlock')) {
+      this.handleUnlock(data);
+      return true;
 
       // Payment Protocol with non-backwards-compatible request
     } else if (this.isValidPayProNonBackwardsCompatible(data)) {
@@ -1281,6 +1289,67 @@ export class IncomingDataProvider {
       this.events.publish('SendPageRedir', nextView);
     } else {
       this.events.publish('IncomingDataRedir', nextView);
+    }
+  }
+
+  private async handleUnlock(data) {
+    try {
+      const url = data.split('?')[1];
+      const invoiceId = url.split('i/')[1];
+
+      const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
+
+      switch (result) {
+        case 'unlockSuccess':
+          await this.handleBitPayInvoice(`unlock:?${url}`);
+          break;
+
+        // call IAB and attempt pairing
+        case 'pairingRequired':
+          const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
+            'auth-required'
+          );
+          await authRequiredInfoSheet.present();
+          authRequiredInfoSheet.onDidDismiss(() => {
+            this.iabCardProvider.show();
+            setTimeout(() => {
+              this.iabCardProvider.sendMessage(
+                {
+                  message: 'pairingOnly',
+                  payload: { paymentUrl: data }
+                },
+                () => {}
+              );
+            }, 100);
+          });
+          break;
+
+        // needs verification - send to bitpay id verify
+        case 'userShopperNotFound':
+        case 'tierNotMet':
+          const verificationRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
+            'auth-required'
+          );
+          await verificationRequiredInfoSheet.present();
+          verificationRequiredInfoSheet.onDidDismiss(async () => {
+            const host = url.includes('test')
+              ? 'test.bitpay.com'
+              : 'bitpay.com';
+            await this.externalLinkProvider.open(
+              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
+            );
+          });
+      }
+    } catch (err) {
+      this.logger.error(err);
+      await this.actionSheetProvider
+        .createInfoSheet('default-error', {
+          msg: this.translate.instant(
+            'Uh oh something went wrong! Please try again later.'
+          ),
+          title: this.translate.instant('Error')
+        })
+        .present();
     }
   }
 }
