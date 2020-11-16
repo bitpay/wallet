@@ -112,4 +112,8 @@ export class DisclaimerPage {
       () => {}
     );
   }
+
+  public acceptTerm(term) {
+    this.accepted[term] = !this.accepted[term];
+  }
 }
