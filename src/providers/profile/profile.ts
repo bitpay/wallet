@@ -1029,7 +1029,10 @@ export class ProfileProvider {
               opts.keyId = null;
               data.credentials.keyId = key.id;
             } else {
-              key = Key.fromObj(data.key);
+              key = new Key({
+                seedType: 'object',
+                seedData: data.key
+              });
             }
           }
           addressBook = data.addressBook;
@@ -1357,7 +1360,10 @@ export class ProfileProvider {
       if (opts.mnemonic) {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
-          key = Key.fromMnemonic(opts.mnemonic, {
+          // new BWC 8.23 api
+          key = new Key({
+            seedType: 'mnemonic',
+            seedData: opts.mnemonic,
             useLegacyCoinType: opts.useLegacyCoinType,
             useLegacyPurpose: opts.useLegacyPurpose,
             passphrase: opts.passphrase
@@ -1372,7 +1378,7 @@ export class ProfileProvider {
             })
           );
         } catch (ex) {
-          this.logger.info('Invalid wallet recovery phrase: ', ex);
+          this.logger.info('Invalid wallet recovery phrase: ' + ex);
           return reject(
             this.translate.instant(
               'Could not create: Invalid wallet recovery phrase'
@@ -1381,7 +1387,9 @@ export class ProfileProvider {
         }
       } else if (opts.extendedPrivateKey) {
         try {
-          key = Key.fromExtendedPrivateKey(opts.extendedPrivateKey, {
+          key = new Key({
+            seedType: 'extendedPrivateKey',
+            seedData: opts.extendedPrivateKey,
             useLegacyCoinType: opts.useLegacyCoinType,
             useLegacyPurpose: opts.useLegacyPurpose
           });
@@ -1415,8 +1423,9 @@ export class ProfileProvider {
         const lang = this.languageProvider.getCurrent();
         try {
           if (!opts.key && !opts.keyId) {
-            key = Key.create({
-              lang
+            key = new Key({
+              seedType: 'new',
+              language: lang
             });
           } else if (opts.key) {
             key = opts.key;
@@ -1435,7 +1444,7 @@ export class ProfileProvider {
           this.logger.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
-            key = Key.create({});
+            key = new Key({ seedType: 'new' });
             walletClient.fromString(
               key.createCredentials(opts.password, {
                 coin: opts.coin,
@@ -1738,7 +1747,6 @@ export class ProfileProvider {
       this._createWallet(defaultOpts).then(data => {
         const key = data.key;
         const firstWalletData = data;
-
         const create2ndWallets = [];
         coins.slice(1).forEach(coin => {
           const newOpts: any = {};

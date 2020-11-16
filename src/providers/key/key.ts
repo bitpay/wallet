@@ -44,7 +44,12 @@ export class KeyProvider {
       this.logger.debug(`keys length: ${keys.length}`);
       keys.forEach(k => {
         this.logger.debug(`storage keyid: ${k.id}`);
-        this.keys.push(this.Key.fromObj(k));
+        this.keys.push(
+          new this.Key({
+            seedType: 'object',
+            seedData: k
+          })
+        );
       });
       return Promise.resolve();
     });
@@ -68,17 +73,32 @@ export class KeyProvider {
 
   public addKey(keyToAdd, replaceKey?: boolean): Promise<any> {
     if (!keyToAdd) return Promise.resolve();
+
+    const keyObject = keyToAdd.toObj();
     const keyIndex = this.keys.findIndex(k => this.isMatch(keyToAdd, k));
 
     if (keyIndex >= 0) {
       // only for encrypt/decrypt
-      if (replaceKey) this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
+      if (replaceKey)
+        this.keys.splice(
+          keyIndex,
+          1,
+          new this.Key({
+            seedType: 'object',
+            seedData: keyObject
+          })
+        );
       else {
         this.logger.debug('NO adding key (duplicate): ', keyToAdd.id);
         return Promise.resolve();
       }
     } else {
-      this.keys.push(this.Key.fromObj(keyToAdd));
+      this.keys.push(
+        new this.Key({
+          seedType: 'object',
+          seedData: keyObject
+        })
+      );
     }
     this.isDirty = true;
     return this.storeKeysIfDirty();
@@ -87,7 +107,12 @@ export class KeyProvider {
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
       if (!this.keys.find(k => this.isMatch(keyToAdd, k))) {
-        this.keys.push(this.Key.fromObj(keyToAdd));
+        this.keys.push(
+          new this.Key({
+            seedType: 'object',
+            seedData: keyToAdd
+          })
+        );
         this.isDirty = true;
       } else {
         this.logger.warn('Key already added');
@@ -225,7 +250,7 @@ export class KeyProvider {
 
   public mnemonicHasPassphrase(keyId: string): boolean {
     if (!keyId) return false;
-    const key = this.getKey(keyId);
+    const key = this.getKey(keyId).get();
     return key.mnemonicHasPassphrase;
   }
 

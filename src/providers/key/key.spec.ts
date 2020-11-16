@@ -23,11 +23,12 @@ describe('KeyProvider', () => {
 
   describe('addKey', () => {
     it('should add provided key to storage for the first time', async () => {
-      key = {
+      key = {};
+      key.toObj = () => ({
         id: 'id1',
         xPrivKey: 'xPrivKey1',
         version: 1
-      };
+      });
       await keyProvider.load();
       keyProvider
         .addKey(key)
@@ -62,12 +63,12 @@ describe('KeyProvider', () => {
       ]);
 
       await keyProvider.load();
-
-      key = {
+      key = {};
+      key.toObj = () => ({
         id: 'id3',
         xPrivKey: 'xPrivKey3',
         version: 1
-      };
+      });
 
       keyProvider
         .addKey(key)
@@ -113,11 +114,12 @@ describe('KeyProvider', () => {
 
       await keyProvider.load();
 
-      key = {
+      key = {};
+      key.toObj = () => ({
         id: 'id1',
         xPrivKeyEncrypted: 'xPrivKeyEncrypted',
         version: 1
-      };
+      });
 
       keyProvider
         .addKey(key)
