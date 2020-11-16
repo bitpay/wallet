@@ -8,7 +8,7 @@ export interface CoinOpts {
   unitInfo: {
     // Config/Precision
     unitName: string;
-    unitToSatoshi: number;
+    unitToSatoshi: bigint;
     unitDecimals: number;
     unitCode: string;
   };
@@ -50,7 +50,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'btc',
     unitInfo: {
       unitName: 'BTC',
-      unitToSatoshi: 100000000,
+      unitToSatoshi: BigInt(100000000),
       unitDecimals: 8,
       unitCode: 'btc'
     },
@@ -87,7 +87,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'bch',
     unitInfo: {
       unitName: 'BCH',
-      unitToSatoshi: 100000000,
+      unitToSatoshi: BigInt(100000000),
       unitDecimals: 8,
       unitCode: 'bch'
     },
@@ -124,7 +124,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'eth',
     unitInfo: {
       unitName: 'ETH',
-      unitToSatoshi: 1e18,
+      unitToSatoshi: BigInt(1000000000000000000),
       unitDecimals: 18,
       unitCode: 'eth'
     },
@@ -161,7 +161,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'xrp',
     unitInfo: {
       unitName: 'XRP',
-      unitToSatoshi: 1e6,
+      unitToSatoshi: BigInt(1000000),
       unitDecimals: 6,
       unitCode: 'xrp'
     },
@@ -198,7 +198,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'busd',
     unitInfo: {
       unitName: 'BUSD',
-      unitToSatoshi: 1e18,
+      unitToSatoshi: BigInt(100000000000000000),
       unitDecimals: 18,
       unitCode: 'busd'
     },
@@ -235,7 +235,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'pax',
     unitInfo: {
       unitName: 'PAX',
-      unitToSatoshi: 1e18,
+      unitToSatoshi: BigInt(100000000000000000),
       unitDecimals: 18,
       unitCode: 'pax'
     },
@@ -272,7 +272,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'usdc',
     unitInfo: {
       unitName: 'USDC',
-      unitToSatoshi: 1e6,
+      unitToSatoshi: BigInt(1000000),
       unitDecimals: 6,
       unitCode: 'usdc'
     },
@@ -309,7 +309,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'gusd',
     unitInfo: {
       unitName: 'GUSD',
-      unitToSatoshi: 1e2,
+      unitToSatoshi: BigInt(100),
       unitDecimals: 2,
       unitCode: 'gusd'
     },
