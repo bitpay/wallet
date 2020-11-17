@@ -403,24 +403,26 @@ export class ProfileProvider {
       this.logger.info('BWC Report:' + n);
     });
 
-    wallet.on('notification', n => {
-      if (this.platformProvider.isElectron) {
-        this.showDesktopNotifications(n, wallet);
-      }
+    if (!this.configProvider.get().pushNotifications.enabled) {
+      wallet.on('notification', n => {
+        if (this.platformProvider.isElectron) {
+          this.showDesktopNotifications(n, wallet);
+        }
 
-      if (
-        (n.data.network && n.data.network != wallet.network) ||
-        (n.data.coin && n.data.coin != wallet.coin)
-      )
-        return;
+        if (
+          (n.data.network && n.data.network != wallet.network) ||
+          (n.data.coin && n.data.coin != wallet.coin)
+        )
+          return;
 
-      // TODO many NewBlocks notifications...if many blocks
-      if (n.type == 'NewBlock' && n.data.network == 'testnet') {
-        this.throttledBwsEvent(n, wallet);
-      } else {
-        this.newBwsEvent(n, wallet);
-      }
-    });
+        // TODO many NewBlocks notifications...if many blocks
+        if (n.type == 'NewBlock' && n.data.network == 'testnet') {
+          this.throttledBwsEvent(n, wallet);
+        } else {
+          this.newBwsEvent(n, wallet);
+        }
+      });
+    }
 
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
