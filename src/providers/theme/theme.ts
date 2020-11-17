@@ -28,6 +28,7 @@ export class ThemeProvider {
     this.availableThemes = {
       light: {
         name: this.translate.instant('Light Mode'),
+        bodyColor: 'initial',
         backgroundColor: '#ffffff',
         fixedScrollBgColor: '#f8f8f9',
         walletDetailsBackgroundStart: '#ffffff',
@@ -35,6 +36,7 @@ export class ThemeProvider {
       },
       dark: {
         name: this.translate.instant('Dark Mode'),
+        bodyColor: '#121212',
         backgroundColor: '#121212',
         fixedScrollBgColor: '#121212',
         walletDetailsBackgroundStart: '#121212',
@@ -104,9 +106,10 @@ export class ThemeProvider {
 
   public apply() {
     if (!this.isEnabled()) return;
+    const isDarkMode = this.isDarkModeEnabled();
     if (this.platformProvider.isCordova) {
       setTimeout(() => {
-        if (this.isDarkModeEnabled()) {
+        if (isDarkMode) {
           this.useDarkStatusBar();
         } else {
           this.useLightStatusBar();
@@ -114,12 +117,16 @@ export class ThemeProvider {
       }, 100);
     }
 
+    // Force body background
+    document.body.style.backgroundColor = this.availableThemes[
+      this.currentAppTheme
+    ].bodyColor;
     document
       .getElementsByTagName('ion-app')[0]
       .classList.remove('dark', 'light');
     document
       .getElementsByTagName('ion-app')[0]
-      .classList.add(this.isDarkModeEnabled() ? 'dark' : 'light');
+      .classList.add(isDarkMode ? 'dark' : 'light');
     this.logger.debug('Apply Theme: ' + this.currentAppTheme);
   }
 
