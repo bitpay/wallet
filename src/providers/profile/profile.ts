@@ -207,6 +207,7 @@ export class ProfileProvider {
   private requiresGroupBackup(keyId: string) {
     let k = this.keyProvider.getKey(keyId);
     if (!k) return false;
+    else k = k.get();
     if (!k.mnemonic && !k.mnemonicEncrypted) return false;
     return true;
   }
@@ -214,6 +215,7 @@ export class ProfileProvider {
   private requiresBackup(wallet) {
     let k = this.keyProvider.getKey(wallet.credentials.keyId);
     if (!k) return false;
+    else k = k.get();
     if (!k.mnemonic && !k.mnemonicEncrypted) return false;
     return true;
   }
