@@ -363,12 +363,13 @@ export class CopayApp {
       this.logger.log(`IAB host -> ${host}`);
       // preloading the view
 
-      setTimeout(() => {
+      setTimeout(async () => {
+        const agent = await this.userAgent.get();
         this.logger.debug('BitPay: create IAB Instance');
-        this.iab
-          .createIABInstance(
+        try {
+          this.cardIAB_Ref = await this.iab.createIABInstance(
             'card',
-            `${CARD_IAB_CONFIG},OverrideUserAgent=${this.platformProvider.getUserAgent()}`,
+            `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
             `(() => {
               sessionStorage.setItem('isPaired', ${!!token}); 
@@ -376,14 +377,11 @@ export class CopayApp {
                 JSON.stringify(cards)
               )});
               })()`
-          )
-          .then(ref => {
-            this.cardIAB_Ref = ref;
-            this.iabCardProvider.init();
-          })
-          .catch(e => {
-            this.logger.debug('Error creating IAB instance: ', e.message);
-          });
+          );
+          this.iabCardProvider.init();
+        } catch (err) {
+          this.logger.debug('Error creating IAB instance: ', err.message);
+        }
       });
     }
   }
