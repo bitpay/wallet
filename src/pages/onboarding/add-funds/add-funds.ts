@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -32,15 +32,19 @@ export class AddFundsPage {
     private analyticsProvider: AnalyticsProvider,
     private configProvider: ConfigProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private viewCtrl: ViewController
   ) {
     this.keyId = this.navParams.data.keyId;
-    this.needsBackup = this.keyId ? this.checkIfNeedsBackup() : false;
     this.showCoinbase = !this.platformProvider.isMacApp();
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AddFundsPage');
+  }
+
+  ionViewWillEnter() {
+    this.needsBackup = this.keyId ? this.checkIfNeedsBackup() : false;
   }
 
   private checkIfNeedsBackup(): boolean {
@@ -66,8 +70,8 @@ export class AddFundsPage {
     });
   }
 
-  public goToHomePage(): void {
-    this.navCtrl.popToRoot();
+  public close(): void {
+    this.viewCtrl.dismiss();
   }
 
   public goToImportWallet(): void {
@@ -82,8 +86,7 @@ export class AddFundsPage {
     infoSheet.onDidDismiss(option => {
       if (option) {
         this.navCtrl.push(RecoveryKeyPage, {
-          keyId: this.keyId,
-          isOnboardingFlow: true
+          keyId: this.keyId
         });
       }
     });

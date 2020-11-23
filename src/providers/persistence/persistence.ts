@@ -883,6 +883,14 @@ export class PersistenceProvider {
   getCardFastTrackEnabled() {
     return this.storage.get(Keys.CARD_FAST_TRACK_ENABLED);
   }
+
+  setOnboardingFlowFlag(value: string) {
+    return this.storage.set('onboardingFlowFlag', value);
+  }
+
+  getOnboardingFlowFlag() {
+    return this.storage.get('onboardingFlowFlag');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {

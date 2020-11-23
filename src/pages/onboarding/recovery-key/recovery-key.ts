@@ -8,7 +8,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { BackupKeyPage } from '../../../pages/backup/backup-key/backup-key';
-import { AddFundsPage } from '../../../pages/onboarding/add-funds/add-funds';
 import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer';
 
 @Component({
@@ -62,9 +61,7 @@ export class RecoveryKeyPage {
           ? this.navCtrl.push(DisclaimerPage, {
               keyId: this.navParams.data.keyId
             })
-          : this.navCtrl.push(AddFundsPage, {
-              keyId: this.navParams.data.keyId
-            });
+          : this.navCtrl.pop();
       }
     });
   }

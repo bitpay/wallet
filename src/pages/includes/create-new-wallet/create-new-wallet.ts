@@ -13,7 +13,6 @@ export class CreateNewWalletPage {
 
   public goToAddWalletPage() {
     this.navCtrl.push(SelectCurrencyPage, {
-      isOnboardingFlow: true,
       isZeroState: true
     });
   }
