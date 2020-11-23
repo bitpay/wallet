@@ -7,6 +7,7 @@ import {
   Directory,
   DirectoryCategory,
   DirectoryCuration,
+  DirectoryProvider,
   fetchDirectIntegrations,
   fetchDirectory
 } from '../directory/directory';
@@ -26,6 +27,7 @@ export interface Merchant extends DirectIntegration {
 export class MerchantProvider {
   merchantPromise: Promise<Merchant[]>;
   constructor(
+    private directoryProvider: DirectoryProvider,
     private events: Events,
     private giftCardProvider: GiftCardProvider
   ) {
@@ -48,9 +50,9 @@ export class MerchantProvider {
   }
   fetchMerchants() {
     this.merchantPromise = Promise.all([
-      fetchDirectIntegrations(),
+      this.directoryProvider.fetchDirectIntegrations(),
       this.giftCardProvider.getAvailableCards(),
-      fetchDirectory(),
+      this.directoryProvider.fetchDirectory(),
       this.giftCardProvider.getRecentlyPurchasedBrandNames()
     ]).then(
       ([

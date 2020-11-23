@@ -40,6 +40,7 @@ export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
 export { CurrencyProvider, Coin } from '../providers/currency/currency';
 export { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
+export { DirectoryProvider } from '../providers/directory/directory';
 export { DomProvider } from '../providers/dom/dom';
 export { DownloadProvider } from '../providers/download/download';
 export { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';

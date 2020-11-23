@@ -240,6 +240,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
     const purchasedBrands = await this.getPurchasedBrands();
+    this.logger.debug('got purchased brands')
     const recentlyPurchasedBrands = purchasedBrands
       .map(cards => cards.sort(sortByDescendingDate))
       .sort((a, b) => sortByDescendingDate(a[0], b[0]));
@@ -250,11 +251,13 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getPurchasedBrands(): Promise<GiftCard[][]> {
     const supportedCards = await this.getSupportedCards();
+    this.logger.debug('got supportedCards in getPurchasedBrands');
     const supportedCardNames = supportedCards.map(c => c.name);
     const purchasedCardPromises = supportedCardNames.map(cardName =>
       this.getPurchasedCards(cardName)
     );
     const purchasedCards = await Promise.all(purchasedCardPromises);
+    this.logger.debug('got purchasedCards in getPurchasedBrands');
     return purchasedCards
       .filter(brand => brand.length)
       .sort((a, b) => sortByDisplayName(a[0], b[0]));
@@ -490,7 +493,8 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getSupportedCards(): Promise<CardConfig[]> {
     const [availableCards, cachedApiCardConfig] = await Promise.all([
-      this.getAvailableCards().catch(_ => {
+      this.getAvailableCards().catch(err => {
+        this.logger.error('Error calling getAvailableCards in getSupportedCards', err);
         this.clearCardConfigCache();
         return [] as CardConfig[];
       }),
@@ -552,6 +556,7 @@ export class GiftCardProvider extends InvoiceProvider {
       ? await this.fetchAuthenticatedAvailableCardMap()
       : await this.fetchPublicAvailableCardMap();
     this.cacheApiCardConfig(availableCardMap);
+    this.logger.debug('fetched available card map', shouldSync ? 'synced' : 'unsynced')
     return availableCardMap;
   }
 
@@ -607,6 +612,7 @@ export class GiftCardProvider extends InvoiceProvider {
     const config = this.cachedApiCardConfigPromise
       ? await this.cachedApiCardConfigPromise
       : await this.fetchCachedApiCardConfig();
+    this.logger.debug('got cached api card config');
     return config || {};
   }
 
