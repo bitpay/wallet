@@ -80,7 +80,6 @@ ion-label {
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
   line-clamp: 2;
   -webkit-line-clamp: 2;
   box-orient: vertical;
@@ -493,7 +492,7 @@ ion-app,
 .button-standard {
   width: 85%;
   max-width: 300px;
-  margin: 5px auto 25px auto;
+  margin: 1.4rem auto 0.3rem auto;
   display: flex;
   min-height: 60px;
   border-radius: 5px;
