@@ -12,6 +12,9 @@ page-recovery-key {
         img {
           margin: auto;
           max-height: 23rem;
+          @media (max-width: 768px) {
+            max-height: 18rem;
+          }
           @media (max-width: 350px) {
             max-height: 10rem;
           }
@@ -29,6 +32,10 @@ page-recovery-key {
           align-items: center;
           text-align: center;
           line-height: 34px;
+          @media (max-width: 768px) {
+            font-size: 20px;
+            line-height: 20px;
+          }
           @media (max-width: 350px) {
             font-size: 17px;
             line-height: 20px;
@@ -41,6 +48,10 @@ page-recovery-key {
           font-weight: 300;
           padding-top: 15px;
           line-height: 25px;
+          @media (max-width: 768px) {
+            font-size: 14px;
+            line-height: 20px;
+          }
           @media (max-width: 350px) {
             font-size: 12px;
             line-height: 15px;

@@ -83,12 +83,14 @@ page-disclaimer {
     }
   }
   ion-footer {
-    padding-top: 25px;
-    border-radius: 15px 15px 0 0;
-    box-shadow: 0 0 22px 0 rgba(67, 77, 90, 0.16);
-    background-color: #ffffff;
     &.footer-md::before {
       background-image: none;
     }
+  }
+  .disclaimer-footer {
+    padding-top: 25px;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 -15px 22px -10px rgba(67, 77, 90, 0.16);
+    background-color: #ffffff;
   }
 }

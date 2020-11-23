@@ -9,15 +9,18 @@ page-feature-education {
         .slide-info {
           height: 100%;
           display: grid;
-          grid-template-rows: 50% 1fr 30px;
+          grid-template-rows: 1fr 1fr 30px;
           justify-content: center;
           .img-container {
             align-self: end;
             img {
               margin: auto;
               max-height: 23rem;
+              @media (max-width: 768px) {
+                max-height: 18rem;
+              }
               @media (max-width: 350px) {
-                max-height: 10rem;
+                max-height: 14rem;
               }
             }
             .tour-1 {
@@ -45,6 +48,10 @@ page-feature-education {
               align-items: center;
               text-align: center;
               line-height: 34px;
+              @media (max-width: 768px) {
+                font-size: 20px;
+                line-height: 20px;
+              }
               @media (max-width: 350px) {
                 font-size: 17px;
                 line-height: 20px;
@@ -57,6 +64,10 @@ page-feature-education {
               font-weight: 300;
               padding-top: 15px;
               line-height: 25px;
+              @media (max-width: 768px) {
+                font-size: 14px;
+                line-height: 20px;
+              }
               @media (max-width: 350px) {
                 font-size: 12px;
                 line-height: 15px;
@@ -68,6 +79,10 @@ page-feature-education {
                 font-weight: 300;
                 padding-top: 15px;
                 line-height: 25px;
+                @media (max-width: 768px) {
+                  font-size: 11px;
+                  line-height: 20px;
+                }
                 @media (max-width: 350px) {
                   font-size: 8px;
                   line-height: 15px;
@@ -80,10 +95,7 @@ page-feature-education {
       &.key-creation {
         .slide-zoom {
           .slide-info {
-            grid-template-rows: 1fr 1fr 150px;
-            .info {
-              margin-bottom: 30px;
-            }
+            grid-template-rows: 1fr 1fr 160px;
           }
         }
       }
