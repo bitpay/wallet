@@ -322,12 +322,6 @@ describe('Profile Provider', () => {
         toObj() {
           return keysArrayFromStorage[0];
         }
-        get() {
-          return {
-            mnemonic: 'mnemonic',
-            mnemonicEncrypted: 'mnemonicEncrypted'
-          };
-        }
       }
       return Key2;
     }
