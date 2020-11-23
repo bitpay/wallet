@@ -1,15 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  ModalController,
-  NavController,
-  NavParams,
-  Slides
-} from 'ionic-angular';
+import { NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
-import { FinishModalPage } from '../../finish/finish';
 import { AddFundsPage } from '../../onboarding/add-funds/add-funds';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
@@ -42,14 +35,12 @@ export class BackupGamePage {
   public keyId: string;
 
   constructor(
-    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private bwcProvider: BwcProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService,
     private keyProvider: KeyProvider,
     private persistenceProvider: PersistenceProvider
   ) {
@@ -182,25 +173,15 @@ export class BackupGamePage {
     wallets.forEach(w => {
       this.profileProvider.setWalletBackup(w.credentials.walletId);
     });
-    this.showSuccessModal();
+    this.showSuccessInfoSheet();
   }
 
-  private showSuccessModal() {
-    const finishText = this.translate.instant(
-      'Your recovery phrase is verified'
+  private showSuccessInfoSheet() {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'correct-recovery-prhase'
     );
-    const finishComment = this.translate.instant(
-      'Be sure to store your recovery phrase in a safe and secure place'
-    );
-    const cssClass = 'primary';
-    const params = { finishText, finishComment, cssClass };
-    const modal = this.modalCtrl.create(FinishModalPage, params, {
-      showBackdrop: true,
-      enableBackdropDismiss: false,
-      cssClass: 'finish-modal'
-    });
-    modal.present();
-    modal.onDidDismiss(() => {
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
       if (this.navParams.data.isOnboardingFlow) {
         this.persistenceProvider
           .getCopayDisclaimerFlag()
@@ -215,7 +196,9 @@ export class BackupGamePage {
 
   private showErrorInfoSheet(err) {
     this.logger.warn('Failed to verify backup: ', err);
-    const infoSheet = this.actionSheetProvider.createInfoSheet('backup-failed');
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'incorrect-recovery-prhase'
+    );
     infoSheet.present();
     infoSheet.onDidDismiss(() => {
       this.clear();

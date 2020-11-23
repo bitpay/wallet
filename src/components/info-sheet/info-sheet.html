@@ -225,14 +225,6 @@
         }}</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'backup-failed'" type="danger">
-      <span sheet-title-text translate>Incorrect backup phrase</span>
-      <span sheet-text translate>
-        It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again.
-      </span>
-      <span sheet-button-text translate>START OVER</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'payment-request'" type="info">
       <span sheet-title-text translate>Payment Request info</span>
       <span sheet-text>
@@ -446,7 +438,7 @@
     <info-sheet-template *ngSwitchCase="'protect-money'" type="safeguard">
       <span sheet-title-text translate>Protect your money</span>
       <span sheet-text translate>
-        First, let's ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security.
+        First, lets ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security.
       </span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
@@ -493,5 +485,20 @@
       <span sheet-button-text translate>CONTINUE</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'incorrect-recovery-prhase'" type="danger">
+      <span sheet-title-text translate>Incorrect Recovery Phrase</span>
+      <span sheet-text>
+        The recovery phrase you provided was incorrect. Lets review that you have written down the correct words in the correct order.
+      </span>
+      <span sheet-button-text translate>TRY AGAIN</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'correct-recovery-prhase'" type="success">
+      <span sheet-title-text translate>Perfect!</span>
+      <span sheet-text>
+        In order to protect your funds from being accessible to hackers and theives, store this recovery phrase in a safe and secure place.
+      </span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

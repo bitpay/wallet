@@ -20,7 +20,6 @@ export type InfoSheetType =
   | 'archive-all-gift-cards'
   | 'archive-gift-card'
   | 'appreciate-review'
-  | 'backup-failed'
   | 'backup-needed-with-activity'
   | 'backup-ready'
   | 'backup-later-warning'
@@ -67,7 +66,9 @@ export type InfoSheetType =
   | 'key-verification-required'
   | 'encrypt-password-warning'
   | 'auth-required'
-  | 'verification-required';
+  | 'verification-required'
+  | 'incorrect-recovery-prhase'
+  | 'correct-recovery-prhase';
 
 export type OptionsSheetType =
   | 'wallet-options'
