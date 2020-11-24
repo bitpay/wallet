@@ -244,8 +244,7 @@ export class KeyProvider {
 
   public isDeletedSeed(keyId: string): boolean {
     if (!keyId) return true;
-    let key = this.getKey(keyId);
-    if (key) key = key.get();
+    const key = this.getKey(keyId);
     return !key || (!key.mnemonic && !key.mnemonicEncrypted);
   }
 
