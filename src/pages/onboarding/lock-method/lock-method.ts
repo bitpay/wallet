@@ -14,7 +14,6 @@ import { TouchIdProvider } from '../../../providers/touchid/touchid';
 // Pages
 import { ImportWalletPage } from '../../../pages/add/import-wallet/import-wallet';
 import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
-import { FinishModalPage } from '../../../pages/finish/finish';
 import { PinModalPage } from '../../../pages/pin/pin-modal/pin-modal';
 
 @Component({
@@ -76,9 +75,10 @@ export class LockMethodPage {
       this.touchIdProvider.check().then(() => {
         let lock = { method: 'fingerprint', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
-        const lockMethod =
-          this.biometricMethod === 'faceId' ? 'Face ID' : 'Fingerprint';
-        this.openFinishModal(lockMethod);
+        this.navCtrl.push(
+          this.pageMap[this.nextView.name],
+          this.nextView.params
+        );
       });
     }
   }
@@ -101,24 +101,6 @@ export class LockMethodPage {
           this.pageMap[this.nextView.name],
           this.nextView.params
         );
-    });
-  }
-
-  private openFinishModal(lockMethod: string) {
-    const params = {
-      finishText: `${lockMethod} set successfully!`,
-      autoDismiss: true,
-      cssClass: 'bg-none'
-    };
-    let modal = this.modalCtrl.create(FinishModalPage, params, {
-      showBackdrop: true,
-      enableBackdropDismiss: false
-    });
-    modal.present().then(() => {
-      this.biometricMethod = '';
-    });
-    modal.onDidDismiss(() => {
-      this.navCtrl.push(this.pageMap[this.nextView.name], this.nextView.params);
     });
   }
 

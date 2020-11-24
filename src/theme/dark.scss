@@ -1864,8 +1864,12 @@
         border-color: $bg-color-dark-theme-3;
       }
     }
+    ion-footer {
+      background-color: $bg-color-dark-theme;
+    }
     .disclaimer-footer {
       background-color: $bg-color-dark-theme;
+      box-shadow: 0 -15px 22px -10px $bg-color-dark-theme-3;
     }
   }
   page-add-funds {

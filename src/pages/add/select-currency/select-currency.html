@@ -51,7 +51,7 @@
   </div>
   <div footer-content *ngIf="isZeroState">
     <button ion-button class="button-standard" [ngClass]="{'no-margin-bottom': !isOnboardingFlow}" [disabled]="!coinsSelected.btc && !coinsSelected.bch && !coinsSelected.eth && !coinsSelected.xrp" (click)="createWallets()">
-      {{'Create' | translate}}
+      {{isOnboardingFlow ? 'Continue' : 'Create' | translate}}
     </button>
     <button ion-button clear class="button-standard" (click)="goToImportWallet()" *ngIf="!isOnboardingFlow">
       {{ 'Import existing wallet' | translate }}
