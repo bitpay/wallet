@@ -98,44 +98,6 @@ var devConfig = {
       systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
       silent: true // hide any errors
     }),
-    new JavaScriptObfuscator(
-      {
-        compact: true,
-        controlFlowFlattening: false,
-        deadCodeInjection: false,
-        debugProtection: false,
-        debugProtectionInterval: false,
-        disableConsoleOutput: false,
-        identifierNamesGenerator: 'hexadecimal',
-        log: false,
-        numbersToExpressions: false,
-        renameGlobals: false,
-        rotateStringArray: true,
-        selfDefending: false,
-        shuffleStringArray: true,
-        simplify: true,
-        splitStrings: false,
-        stringArray: true,
-        stringArrayEncoding: true,
-        stringArrayWrappersCount: 1,
-        stringArrayWrappersChainedCalls: true,
-        stringArrayWrappersType: 'variable',
-        stringArrayThreshold: 0.75,
-        unicodeEscapeSequence: false
-      },
-      [
-        '0.js',
-        '1.js',
-        '2.js',
-        '3.js',
-        '4.js',
-        '5.js',
-        '6.js',
-        '7.js',
-        'vendor.js',
-        'polyfills.js'
-      ]
-    ),
     ionicWebpackFactory.getIonicEnvironmentPlugin(),
     ionicWebpackFactory.getCommonChunksPlugin(),
     new ModuleConcatPlugin()
