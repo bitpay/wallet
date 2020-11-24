@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams, Platform } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 
 // Providers
 import { AppProvider } from '../../../providers/app/app';
@@ -11,7 +11,6 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 
 // Pages
 import { TabsPage } from '../../../pages/tabs/tabs';
-import { AddFundsPage } from '../add-funds/add-funds';
 
 @Component({
   selector: 'page-disclaimer',
@@ -31,7 +30,6 @@ export class DisclaimerPage {
     private translate: TranslateService,
     private iabCardProvider: IABCardProvider,
     private events: Events,
-    private navParams: NavParams,
     private platform: Platform,
     private appProvider: AppProvider
   ) {
@@ -78,6 +76,7 @@ export class DisclaimerPage {
   confirm() {
     this.persistenceProvider.setEmailLawCompliance('accepted');
     this.persistenceProvider.setDisclaimerAccepted();
+    this.persistenceProvider.setOnboardingFlowFlag('enabled');
     this.persistenceProvider.getCardFastTrackEnabled().then(context => {
       if (context) {
         setTimeout(() => {
@@ -97,13 +96,7 @@ export class DisclaimerPage {
       }
     });
     this.navCtrl.setRoot(TabsPage).then(_ => {
-      if (this.appName == 'Copay') {
-        this.navCtrl.popToRoot();
-      } else {
-        setTimeout(() => {
-          this.navCtrl.push(AddFundsPage, { keyId: this.navParams.data.keyId });
-        }, 2500);
-      }
+      this.navCtrl.popToRoot();
     });
   }
 

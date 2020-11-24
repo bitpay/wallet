@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Slides } from 'ionic-angular';
+import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
@@ -17,6 +17,7 @@ import {
   MerchantProvider,
   PersistenceProvider,
   PlatformProvider,
+  ProfileProvider,
   ReleaseProvider
 } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
@@ -33,6 +34,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 
 export interface Advertisement {
@@ -105,7 +107,9 @@ export class HomePage {
     private events: Events,
     private releaseProvider: ReleaseProvider,
     private bwcProvider: BwcProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private modalCtrl: ModalController,
+    private profileProvider: ProfileProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -140,6 +144,9 @@ export class HomePage {
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
+    this.persistenceProvider.getOnboardingFlowFlag().then((value: string) => {
+      if (value === 'enabled') this.openAddFunds();
+    });
   }
 
   ionViewDidLoad() {
@@ -731,6 +738,16 @@ export class HomePage {
         this.tapped = 0;
       });
     }
+  }
+
+  private openAddFunds(): void {
+    const wallets = this.profileProvider.getWallets();
+    const modal = this.modalCtrl.create(AddFundsPage, {
+      keyId: wallets[0].credentials.keyId
+    });
+    modal.present().then(() => {
+      this.persistenceProvider.setOnboardingFlowFlag('disabled');
+    });
   }
 }
 

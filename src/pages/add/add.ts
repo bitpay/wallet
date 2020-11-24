@@ -15,7 +15,6 @@ import { Logger } from '../../providers';
 })
 export class AddPage {
   public keyId: string;
-  public isOnboardingFlow: boolean;
   public isZeroState: boolean;
 
   constructor(
@@ -27,7 +26,6 @@ export class AddPage {
   ionViewDidLoad() {
     this.logger.info('Loaded: AddPage');
     this.keyId = this.navParams.data.keyId;
-    this.isOnboardingFlow = this.navParams.data.isOnboardingFlow;
     this.isZeroState = this.navParams.data.isZeroState;
   }
 
@@ -43,7 +41,6 @@ export class AddPage {
       this.navCtrl.push(SelectCurrencyPage, {
         isShared,
         isJoin,
-        isOnboardingFlow: this.isOnboardingFlow,
         isZeroState: this.isZeroState && !isShared,
         keyId: this.keyId,
         url: this.navParams.data.url

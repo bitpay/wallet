@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
@@ -30,7 +30,8 @@ export class CoinbasePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private navParams: NavParams,
     private translate: TranslateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private viewCtrl: ViewController
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -61,7 +62,11 @@ export class CoinbasePage {
   public openAuthenticateWindow(): void {
     this.showOauthForm = true;
     if (!this.isElectron) {
-      if (this.navParams.data.isOnboardingFlow) this.backToWalletTabs();
+      if (this.navParams.data.isOnboardingFlow) {
+        this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
+          this.viewCtrl.dismiss();
+        });
+      }
       this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
     } else {
       const { remote } = (window as any).require('electron');
