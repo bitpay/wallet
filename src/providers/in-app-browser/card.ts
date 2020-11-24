@@ -941,13 +941,13 @@ export class IABCardProvider {
         this.logger.debug('appleWallet - startAddPaymentPass - success');
         this.logger.debug(`appleWallet - certs ${JSON.stringify(certs)}`);
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
-        this.sendMessage({
-          message: 'addPaymentPass',
-          payload: {
-            id,
-            certs
-          }
-        });
+        // this.sendMessage({
+        //   message: 'addPaymentPass',
+        //   payload: {
+        //     id,
+        //     certs
+        //   }
+        // });
       } catch (err) {
         this.logger.error(`appleWallet - startAddPaymentPass - ${err}`);
         this.sendMessage({
