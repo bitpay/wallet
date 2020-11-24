@@ -1,3 +1,6 @@
+import { Injectable } from '@angular/core';
+import { Logger } from '../logger/logger';
+
 export interface DirectoryCurationApiObject {
   displayName: string;
   merchants: string[];
@@ -74,7 +77,7 @@ export const getDirectIntegrations = (
 ): DirectIntegration[] =>
   Object.keys(res).map(name => ({ ...res[name], name }));
 
-export function fetchDirectIntegrations(): Promise<DirectIntegration[]> {
+export async function fetchDirectIntegrations(): Promise<DirectIntegration[]> {
   return fetch(`https://bitpay.com/merchant-directory/integrations`)
     .then(res => res.json())
     .then((merchantMap: DirectIntegrationMap) =>
@@ -104,4 +107,21 @@ export async function fetchDirectory(): Promise<Directory> {
   ).then(res => res.json());
   const newDirectory: Directory = convertObjectsToArrays(directory);
   return newDirectory;
+}
+
+@Injectable()
+export class DirectoryProvider {
+  constructor(private logger: Logger) {}
+
+  async fetchDirectIntegrations(): Promise<DirectIntegration[]> {
+    const directIntegrations = await fetchDirectIntegrations();
+    this.logger.debug('fetched Direct Integrations');
+    return directIntegrations;
+  }
+
+  async fetchDirectory(): Promise<Directory> {
+    const directory = await fetchDirectory();
+    this.logger.debug('fetched Directory');
+    return directory;
+  }
 }
