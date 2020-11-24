@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-import {
-  AppleWallet,
-  CardData,
-} from '@ionic-native/apple-wallet';
+import { AppleWallet, CardData } from '@ionic-native/apple-wallet';
 
 @Injectable()
 export class AppleWalletProvider {
