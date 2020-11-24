@@ -983,8 +983,13 @@ export class IABCardProvider {
     );
     const { data, id } = event.data.params;
 
+    const { wrappedKey, activationData, encryptedPassData } = data;
     try {
-      const res = await this.appleWalletProvider.completeAddPaymentPass(data);
+      const res = await this.appleWalletProvider.completeAddPaymentPass({
+        activationData,
+        encryptedPassData,
+        ephemeralPublicKey: wrappedKey
+      });
       let payload: { error?: string; paired?: boolean; id: string } = { id };
 
       payload =

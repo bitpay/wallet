@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-import {
-  AppleWallet,
-  CardData,
-  EncryptedCardData
-} from '@ionic-native/apple-wallet';
+import { AppleWallet, CardData } from '@ionic-native/apple-wallet';
 
 @Injectable()
 export class AppleWalletProvider {
@@ -21,7 +17,7 @@ export class AppleWalletProvider {
     return this.appleWallet.startAddPaymentPass(params);
   }
 
-  completeAddPaymentPass(params: EncryptedCardData): Promise<any> {
+  completeAddPaymentPass(params: any): Promise<any> {
     return this.appleWallet.completeAddPaymentPass(params);
   }
 }
