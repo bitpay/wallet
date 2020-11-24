@@ -78,7 +78,7 @@ export const getDirectIntegrations = (
   Object.keys(res).map(name => ({ ...res[name], name }));
 
 export async function fetchDirectIntegrations(): Promise<DirectIntegration[]> {
-   return fetch(`https://bitpay.com/merchant-directory/integrations`)
+  return fetch(`https://bitpay.com/merchant-directory/integrations`)
     .then(res => res.json())
     .then((merchantMap: DirectIntegrationMap) =>
       getDirectIntegrations(merchantMap)
@@ -111,9 +111,7 @@ export async function fetchDirectory(): Promise<Directory> {
 
 @Injectable()
 export class DirectoryProvider {
-  constructor(private logger: Logger) {
-
-  }
+  constructor(private logger: Logger) {}
 
   async fetchDirectIntegrations(): Promise<DirectIntegration[]> {
     const directIntegrations = await fetchDirectIntegrations();
@@ -126,5 +124,4 @@ export class DirectoryProvider {
     this.logger.debug('fetched Directory');
     return directory;
   }
-
 }

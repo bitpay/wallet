@@ -7,9 +7,7 @@ import {
   Directory,
   DirectoryCategory,
   DirectoryCuration,
-  DirectoryProvider,
-  fetchDirectIntegrations,
-  fetchDirectory
+  DirectoryProvider
 } from '../directory/directory';
 import { GiftCardProvider, sortByDisplayName } from '../gift-card/gift-card';
 import { CardConfig, GiftCardDiscount } from '../gift-card/gift-card.types';
@@ -52,22 +50,17 @@ export class MerchantProvider {
     this.merchantPromise = Promise.all([
       this.directoryProvider.fetchDirectIntegrations(),
       this.giftCardProvider.getAvailableCards(),
-      this.directoryProvider.fetchDirectory(),
+      this.directoryProvider.fetchDirectory()
       // this.giftCardProvider.getRecentlyPurchasedBrandNames()
-    ]).then(
-      ([
+    ]).then(([directIntegrations, availableGiftCardBrands, directory]) =>
+      // recentlyPurchasedBrandNames
+      buildMerchants(
         directIntegrations,
         availableGiftCardBrands,
         directory,
+        []
         // recentlyPurchasedBrandNames
-      ]) =>
-        buildMerchants(
-          directIntegrations,
-          availableGiftCardBrands,
-          directory,
-          []
-          // recentlyPurchasedBrandNames
-        )
+      )
     );
     return this.merchantPromise;
   }

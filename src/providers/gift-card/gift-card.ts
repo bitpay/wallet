@@ -240,7 +240,7 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
     const purchasedBrands = await this.getPurchasedBrands();
-    this.logger.debug('got purchased brands')
+    this.logger.debug('got purchased brands');
     const recentlyPurchasedBrands = purchasedBrands
       .map(cards => cards.sort(sortByDescendingDate))
       .sort((a, b) => sortByDescendingDate(a[0], b[0]));
@@ -494,7 +494,10 @@ export class GiftCardProvider extends InvoiceProvider {
   async getSupportedCards(): Promise<CardConfig[]> {
     const [availableCards, cachedApiCardConfig] = await Promise.all([
       this.getAvailableCards().catch(err => {
-        this.logger.error('Error calling getAvailableCards in getSupportedCards', err);
+        this.logger.error(
+          'Error calling getAvailableCards in getSupportedCards',
+          err
+        );
         this.clearCardConfigCache();
         return [] as CardConfig[];
       }),
@@ -556,7 +559,10 @@ export class GiftCardProvider extends InvoiceProvider {
       ? await this.fetchAuthenticatedAvailableCardMap()
       : await this.fetchPublicAvailableCardMap();
     this.cacheApiCardConfig(availableCardMap);
-    this.logger.debug('fetched available card map', shouldSync ? 'synced' : 'unsynced')
+    this.logger.debug(
+      'fetched available card map',
+      shouldSync ? 'synced' : 'unsynced'
+    );
     return availableCardMap;
   }
 
