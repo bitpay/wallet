@@ -243,9 +243,11 @@ export class KeyProvider {
   }
 
   public isDeletedSeed(keyId: string): boolean {
-    if (!keyId) return true;
     const key = this.getKey(keyId);
-    return !key || (!key.mnemonic && !key.mnemonicEncrypted);
+    if (!key) return true;
+
+    const keyObj = key.toObj();
+    return !keyObj.mnemonic && !keyObj.mnemonicEncrypted;
   }
 
   public mnemonicHasPassphrase(keyId: string): boolean {
