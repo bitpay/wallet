@@ -207,14 +207,18 @@ export class ProfileProvider {
   private requiresGroupBackup(keyId: string) {
     let k = this.keyProvider.getKey(keyId);
     if (!k) return false;
-    if (!k.mnemonic && !k.mnemonicEncrypted) return false;
+
+    const keyObj = k.toObj();
+    if (!keyObj.mnemonic && !keyObj.mnemonicEncrypted) return false;
     return true;
   }
 
   private requiresBackup(wallet) {
     let k = this.keyProvider.getKey(wallet.credentials.keyId);
     if (!k) return false;
-    if (!k.mnemonic && !k.mnemonicEncrypted) return false;
+
+    const keyObj = k.toObj();
+    if (!keyObj.mnemonic && !keyObj.mnemonicEncrypted) return false;
     return true;
   }
 
