@@ -1135,35 +1135,31 @@ export class ProfileProvider {
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
-  private bindProfile(profile): Promise<any> {
-    const bindWallets = (): Promise<any> => {
-      const profileLength = profile.credentials.length;
+  private bindWallets(profile): Promise<any> {
+    const profileLength = profile.credentials.length;
 
-      if (!profileLength) {
+    if (!profileLength) {
+      return Promise.resolve();
+    }
+
+    const promises = [];
+
+    return this.upgradeMultipleCredentials(profile).then(() => {
+      _.each(profile.credentials, credentials => {
+        promises.push(this.bindWallet(credentials));
+      });
+
+      return Promise.all(promises).then(() => {
+        this.logger.info(`Bound ${profileLength} wallets`);
+        this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
         return Promise.resolve();
-      }
-
-      const promises = [];
-
-      return this.upgradeMultipleCredentials(profile).then(() => {
-        _.each(profile.credentials, credentials => {
-          promises.push(this.bindWallet(credentials));
-        });
-
-        return Promise.all(promises).then(() => {
-          this.logger.info(`Bound ${profileLength} wallets`);
-          this.setOrderedWalletsByGroup(); // Update Ordered Wallet List When App Start
-          return Promise.resolve();
-        });
       });
-    };
+    });
+  }
 
-    return bindWallets().then(() => {
-      return this.isDisclaimerAccepted().catch(() => {
-        return profile.credentials.length
-          ? Promise.reject(new Error('NONAGREEDDISCLAIMER'))
-          : Promise.reject(new Error('UNFINISHEDONBOARDING'));
-      });
+  private bindProfile(profile): Promise<any> {
+    return this.bindWallets(profile).then(() => {
+      return this.isDisclaimerAccepted();
     });
   }
 
@@ -1197,22 +1193,23 @@ export class ProfileProvider {
     }
   }
 
-  public isDisclaimerAccepted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const disclaimerAccepted =
-        this.profile && this.profile.disclaimerAccepted;
-      if (disclaimerAccepted) return resolve();
-
-      // OLD flag
-      this.persistenceProvider.getCopayDisclaimerFlag().then(val => {
-        if (val) {
-          this.profile.disclaimerAccepted = true;
-          return resolve();
-        } else {
-          return reject();
-        }
-      });
-    });
+  public async isDisclaimerAccepted(): Promise<any> {
+    const disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
+    if (disclaimerAccepted) return Promise.resolve();
+    // OLD flag
+    let disclaimerFlag;
+    try {
+      disclaimerFlag = await this.persistenceProvider.getCopayDisclaimerFlag();
+    } catch (error) {}
+    if (disclaimerFlag) {
+      this.profile.disclaimerAccepted = true;
+      return Promise.resolve();
+    } else {
+      const onboardingState = this.profile.credentials.length
+        ? 'NONAGREEDDISCLAIMER'
+        : 'UNFINISHEDONBOARDING';
+      return Promise.resolve(onboardingState);
+    }
   }
 
   private getBWSURL(walletId: string) {
@@ -1259,30 +1256,17 @@ export class ProfileProvider {
   }
 
   public loadAndBindProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .getProfile()
-        .then(profile => {
-          if (!profile) {
-            return resolve();
-          }
+    return this.persistenceProvider.getProfile().then(profile => {
+      if (!profile) {
+        return Promise.resolve();
+      }
 
-          this.profile = Profile.fromObj(profile);
+      this.profile = Profile.fromObj(profile);
 
-          // Deprecated: storageService.tryToMigrate
-          this.logger.info('Profile loaded');
+      // Deprecated: storageService.tryToMigrate
+      this.logger.info('Profile loaded');
 
-          this.bindProfile(this.profile)
-            .then(() => {
-              return resolve(this.profile);
-            })
-            .catch(err => {
-              return reject(err);
-            });
-        })
-        .catch(err => {
-          return reject(err);
-        });
+      return this.bindProfile(this.profile);
     });
   }
 

@@ -94,10 +94,10 @@ export class AppProvider {
   }
 
   private async loadProviders() {
-    this.persistence.load();
+    await this.persistence.load();
     await this.config.load();
     await this.themeProvider.load();
-    this.language.load();
+    await this.language.load();
   }
 
   private getAppInfo() {
