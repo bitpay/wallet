@@ -116,45 +116,6 @@ try {
   console.error(err);
 }
 
-/*
- * Android -Adds camera permission request for first time user - added this to enable camera permission before IAB is interacted with
- * */
-
-try {
-  const file = `${__dirname}/../platforms/android/app/src/main/java/com/bitpay/wallet/MainActivity.java`;
-  let content = fs
-    .readFileSync(file, 'utf8')
-    .split('super.onCreate(savedInstanceState);');
-
-  const head = content[0].split('import org.apache.cordova.*;');
-
-  if (!head[1].includes('import android.support.v4.app.ActivityCompat;')) {
-    content[0] =
-      head[0] +
-      'import org.apache.cordova.*;\n' +
-      'import android.content.pm.PackageManager;\n' +
-      'import android.Manifest;\n' +
-      'import android.support.v4.app.ActivityCompat;\n' +
-      head[1];
-  }
-
-  if (!content[1].includes('ActivityCompat.requestPermissions')) {
-    const result =
-      content[0] +
-      `
-      super.onCreate(savedInstanceState);
-      if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 3);
-      }
-      ` +
-      content[1];
-    fs.writeFileSync(file, result);
-    console.log('successfully patched MainActivity.java');
-  }
-} catch (err) {
-  console.error(err);
-}
-
 /**
  * Android - patches the IAB to allow overriding the User-Agent via the key 'OverrideUserAgent'
  */
