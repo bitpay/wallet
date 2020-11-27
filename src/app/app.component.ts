@@ -475,7 +475,7 @@ export class CopayApp {
 
   private onLockDidDismiss(): void {
     this.appProvider.isLockModalOpen = false;
-    this.events.publish('Home/reloadStatus');
+    this.events.publish('Local/FetchWallets');
     this.iabCardProvider.resume();
   }
 
