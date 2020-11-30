@@ -354,6 +354,8 @@ export class HomePage {
   }
 
   private preFetchWallets() {
+    // Avoid heavy tasks that can slow down the unlocking experience
+    if (this.appProvider.isLockModalOpen) return;
     this.fetchingStatus = true;
     this.events.publish('Local/FetchWallets');
   }
