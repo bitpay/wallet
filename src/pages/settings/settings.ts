@@ -92,7 +92,8 @@ export class SettingsPage {
   public showTotalBalance: boolean;
   public appTheme: string;
   public useLegacyQrCode: boolean;
-
+  public tapped = 0;
+  public certOnlyTapped = 0;
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
@@ -238,6 +239,40 @@ export class SettingsPage {
           () => {}
         );
       }, 100);
+    }
+  }
+
+  public mdesFlag() {
+    // adding this for testing purposes
+    this.tapped++;
+    if (this.tapped >= 10) {
+      this.persistenceProvider.getTempMdesFlag().then(flag => {
+        if (flag === 'bypassed') {
+          this.persistenceProvider.setTempMdesFlag('disabled');
+          alert('MDES bypass -> disabled');
+        } else {
+          this.persistenceProvider.setTempMdesFlag('bypassed');
+          alert('MDES bypass -> bypassed');
+        }
+        this.tapped = 0;
+      });
+    }
+  }
+
+  public mdesCertOnlyFlag() {
+    // adding this for testing purposes
+    this.certOnlyTapped++;
+    if (this.certOnlyTapped >= 10) {
+      this.persistenceProvider.getTempMdesCertOnlyFlag().then(flag => {
+        if (flag === 'bypassed') {
+          this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
+          alert('MDES cert only bypass -> disabled');
+        } else {
+          this.persistenceProvider.setTempMdesCertOnlyFlag('bypassed');
+          alert('MDES cert only bypass -> bypassed');
+        }
+        this.certOnlyTapped = 0;
+      });
     }
   }
 

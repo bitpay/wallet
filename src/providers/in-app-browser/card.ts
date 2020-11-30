@@ -940,6 +940,9 @@ export class IABCardProvider {
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
         this.logger.debug(`appleWallet - certs ${JSON.stringify(certs)}`);
+
+        const mdesCertOnlyFlag = await this.persistenceProvider.getTempMdesCertOnlyFlag();
+        if (mdesCertOnlyFlag === 'bypassed') return;
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
         this.sendMessage({
           message: 'addPaymentPass',
@@ -984,6 +987,10 @@ export class IABCardProvider {
     const { data, id } = event.data.params;
 
     const { wrappedKey, activationData, encryptedPassData } = data;
+
+    const mdesFlag = await this.persistenceProvider.getTempMdesFlag();
+    if (mdesFlag === 'bypassed') return;
+
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({
         activationData,

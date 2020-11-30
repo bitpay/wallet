@@ -204,7 +204,7 @@
       </button>
 
       <ng-container *ngIf="isCordova && !isCopay">
-        <ion-item-divider>
+        <ion-item-divider tappable (click)="mdesFlag()">
           {{'BitPay Account' | translate}}
         </ion-item-divider>
 
@@ -238,7 +238,7 @@
         </ion-note>
       </button>
 
-      <ion-item-divider>{{ 'More' | translate }}</ion-item-divider>
+      <ion-item-divider tappable (click)="mdesCertOnlyFlag()">{{ 'More' | translate }}</ion-item-divider>
 
       <button ion-item (click)="openAdvancedPage()">
         <ion-icon class="item-img icon-settings" item-start>
