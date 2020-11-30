@@ -66,6 +66,7 @@ import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PinModalPage } from '../pages/pin/pin-modal/pin-modal';
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { AboutPage } from '../pages/settings/about/about';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
@@ -95,6 +96,7 @@ export class CopayApp {
   private copayerModal: any;
 
   private pageMap = {
+    AboutPage,
     AddressbookAddPage,
     AmountPage,
     BitPayCardIntroPage,
@@ -276,6 +278,9 @@ export class CopayApp {
 
         // Clear all notifications
         this.pushNotificationsProvider.clearAllNotifications();
+
+        // Firebase Dynamic link
+        this.dynamicLinksProvider.onDynamicLink();
       });
 
       // Check PIN or Fingerprint
@@ -286,9 +291,7 @@ export class CopayApp {
       this.pushNotificationsProvider.clearAllNotifications();
 
       // Firebase Dynamic link
-      this.dynamicLinksProvider.onDynamicLink().then(data => {
-        this.logger.debug('Firebase Dynamic Link Data: ', JSON.stringify(data));
-      });
+      this.dynamicLinksProvider.onDynamicLink();
     }
 
     // Set Theme (light or dark mode)
@@ -525,6 +528,18 @@ export class CopayApp {
             this.getGlobalTabs().select(3);
           });
       } else {
+        if (nextView.params && nextView.params.deepLink) {
+          // From deepLink
+          setTimeout(() => {
+            this.getGlobalTabs()
+              .goToRoot()
+              .then(_ => {
+                this.getGlobalTabs().select(0);
+                this.nav.push(this.pageMap[nextView.name]);
+              });
+          }, 1000);
+          return;
+        }
         this.closeScannerFromWithinWallet();
         // wait for wallets status
         setTimeout(() => {

@@ -1124,7 +1124,7 @@ export class IncomingDataProvider {
     );
   }
 
-  private getParameterByName(name: string, url: string): string {
+  public getParameterByName(name: string, url: string): string {
     if (!url) return undefined;
     name = name.replace(/[\[\]]/g, '\\$&');
     let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
