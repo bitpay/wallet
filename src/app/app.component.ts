@@ -122,7 +122,7 @@ export class CopayApp {
     private events: Events,
     private logger: Logger,
     private appProvider: AppProvider,
-    private profile: ProfileProvider,
+    private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private giftCardProvider: GiftCardProvider,
     private imageLoaderConfig: ImageLoaderConfig,
@@ -311,13 +311,10 @@ export class CopayApp {
       .load()
       .then(() => {
         // Check Profile
-        this.profile
+        this.profileProvider
           .loadAndBindProfile()
-          .then(profile => {
-            this.onProfileLoad(profile);
-          })
-          .catch((err: Error) => {
-            switch (err.message) {
+          .then(onboardingState => {
+            switch (onboardingState) {
               case 'NONAGREEDDISCLAIMER':
                 this.logger.warn('Non agreed disclaimer');
                 this.rootPage = DisclaimerPage;
@@ -327,21 +324,22 @@ export class CopayApp {
                 this.rootPage = FeatureEducationPage;
                 break;
               default:
-                this.popupProvider
-                  .ionicAlert('Could not load the profile', err.message)
-                  .then(() => {
-                    // Share logs
-                    const platform = this.platformProvider.isCordova
-                      ? this.platformProvider.isAndroid
-                        ? 'android'
-                        : 'ios'
-                      : 'desktop';
-                    this.logsProvider.get(
-                      this.appProvider.info.nameCase,
-                      platform
-                    );
-                  });
+                const profile = this.profileProvider.profile;
+                this.onProfileLoad(profile);
             }
+          })
+          .catch(err => {
+            this.popupProvider
+              .ionicAlert('Could not load the profile', err.message)
+              .then(() => {
+                // Share logs
+                const platform = this.platformProvider.isCordova
+                  ? this.platformProvider.isAndroid
+                    ? 'android'
+                    : 'ios'
+                  : 'desktop';
+                this.logsProvider.get(this.appProvider.info.nameCase, platform);
+              });
           });
       })
       .catch(err => {
@@ -416,7 +414,7 @@ export class CopayApp {
       this.rootPage = TabsPage;
     } else {
       this.logger.info('No profile exists.');
-      this.profile.createProfile();
+      this.profileProvider.createProfile();
       this.rootPage = FeatureEducationPage;
     }
   }

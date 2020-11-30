@@ -685,13 +685,13 @@ describe('Profile Provider', () => {
       spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
       profileProvider.profile.disclaimerAccepted = true;
     });
-    it('should get, bind and return profile with migrated credentials and keys', () => {
+    it('should get and bind profile with migrated credentials and keys', () => {
       getProfileSpy.and.returnValue(Promise.resolve(profileProvider.profile));
 
       profileProvider
         .loadAndBindProfile()
-        .then(profile => {
-          expect(profile).toBeDefined();
+        .then(onbordingState => {
+          expect(onbordingState).toBeUndefined();
           expect(storeProfileSpy).toHaveBeenCalledWith(profileProvider.profile);
         })
         .catch(err => {
@@ -699,7 +699,7 @@ describe('Profile Provider', () => {
         });
     });
 
-    it('should get, bind and return profile with migrated credentials', () => {
+    it('should get and bind profile with migrated credentials', () => {
       BwcProviderMock.prototype.upgradeMultipleCredentialsV1 = (
         _oldCredentials: any
       ) => {
@@ -721,8 +721,8 @@ describe('Profile Provider', () => {
 
       profileProvider
         .loadAndBindProfile()
-        .then(profile => {
-          expect(profile).toBeDefined();
+        .then(onbordingState => {
+          expect(onbordingState).toBeUndefined();
           expect(storeProfileSpy).toHaveBeenCalledWith(profileProvider.profile);
         })
         .catch(err => {
@@ -745,8 +745,8 @@ describe('Profile Provider', () => {
 
       profileProvider
         .loadAndBindProfile()
-        .then(profile => {
-          expect(profile).toBeDefined();
+        .then(onbordingState => {
+          expect(onbordingState).toBeUndefined();
           expect(storeProfileSpy).toHaveBeenCalledWith(profileProvider.profile);
         })
         .catch(err => {
