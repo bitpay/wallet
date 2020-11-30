@@ -82,7 +82,8 @@ const Keys = {
   APP_THEME: 'app-theme',
   USER_LOCATION: 'user-location',
   COUNTRIES: 'countries',
-  CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled'
+  CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
+  TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag'
 };
 
 interface Storage {
@@ -902,6 +903,14 @@ export class PersistenceProvider {
 
   getOnboardingFlowFlag() {
     return this.storage.get('onboardingFlowFlag');
+  }
+
+  setTempMdesFlag(value: string) {
+    return this.storage.set(Keys.TEMP_MDES_DEBUG_FLAG, value);
+  }
+
+  getTempMdesFlag() {
+    return this.storage.get(Keys.TEMP_MDES_DEBUG_FLAG);
   }
 }
 

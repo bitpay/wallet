@@ -204,7 +204,7 @@
       </button>
 
       <ng-container *ngIf="isCordova && !isCopay">
-        <ion-item-divider>
+        <ion-item-divider tappable (click)="mdesFlag()">
           {{'BitPay Account' | translate}}
         </ion-item-divider>
 

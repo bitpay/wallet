@@ -984,6 +984,10 @@ export class IABCardProvider {
     const { data, id } = event.data.params;
 
     const { wrappedKey, activationData, encryptedPassData } = data;
+
+    const mdesFlag = await this.persistenceProvider.getTempMdesFlag();
+    if(mdesFlag === 'bypassed') return;
+
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({
         activationData,

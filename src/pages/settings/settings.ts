@@ -92,7 +92,7 @@ export class SettingsPage {
   public showTotalBalance: boolean;
   public appTheme: string;
   public useLegacyQrCode: boolean;
-
+  public tapped = 0;
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
@@ -238,6 +238,23 @@ export class SettingsPage {
           () => {}
         );
       }, 100);
+    }
+  }
+
+  public mdesFlag() {
+    // adding this for testing purposes
+    this.tapped++;
+    if (this.tapped >= 10) {
+      this.persistenceProvider.getTempMdesFlag().then(flag => {
+        if (flag === 'bypassed') {
+          this.persistenceProvider.setTempMdesFlag('disabled');
+          alert('MDES bypass -> disabled');
+        } else {
+          this.persistenceProvider.setTempMdesFlag('bypassed');
+          alert('MDES bypass -> bypassed');
+        }
+        this.tapped = 0;
+      });
     }
   }
 
