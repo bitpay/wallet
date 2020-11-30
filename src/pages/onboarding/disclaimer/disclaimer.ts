@@ -57,7 +57,7 @@ export class DisclaimerPage {
   }
 
   openDisclaimer() {
-    let url = 'https://bitpay.com/about/terms#wallet';
+    let url = 'https://bitpay.com/legal/terms-of-use/#wallet-terms-of-use';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Wallet Terms of Use');
