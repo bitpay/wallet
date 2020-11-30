@@ -940,6 +940,9 @@ export class IABCardProvider {
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
         this.logger.debug(`appleWallet - certs ${JSON.stringify(certs)}`);
+
+        const mdesCertOnlyFlag = await this.persistenceProvider.getTempMdesCertOnlyFlag();
+        if (mdesCertOnlyFlag === 'bypassed') return;
         // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
         this.sendMessage({
           message: 'addPaymentPass',

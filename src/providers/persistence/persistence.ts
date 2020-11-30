@@ -83,7 +83,8 @@ const Keys = {
   USER_LOCATION: 'user-location',
   COUNTRIES: 'countries',
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
-  TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag'
+  TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
+  TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag'
 };
 
 interface Storage {
@@ -911,6 +912,14 @@ export class PersistenceProvider {
 
   getTempMdesFlag() {
     return this.storage.get(Keys.TEMP_MDES_DEBUG_FLAG);
+  }
+
+  setTempMdesCertOnlyFlag(value: string) {
+    return this.storage.set(Keys.TEMP_MDES_CERT_ONLY_DEBUG_FLAG, value);
+  }
+
+  getTempMdesCertOnlyFlag() {
+    return this.storage.get(Keys.TEMP_MDES_CERT_ONLY_DEBUG_FLAG);
   }
 }
 
