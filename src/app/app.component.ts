@@ -42,6 +42,7 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
+import { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
 
 // Components
 import { AdvertisingComponent } from '../components/advertising/advertising';
@@ -59,6 +60,7 @@ import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
+import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
@@ -111,6 +113,7 @@ export class CopayApp {
     ShapeshiftPage,
     SimplexPage,
     SelectInvoicePage,
+    WalletConnectPage,
     WalletDetailsPage,
     WyrePage
   };
@@ -130,6 +133,7 @@ export class CopayApp {
     private imageLoaderConfig: ImageLoaderConfig,
     private modalCtrl: ModalController,
     private coinbaseProvider: CoinbaseProvider,
+    private walletConnectProvider: WalletConnectProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private buyCryptoProvider: BuyCryptoProvider,
@@ -504,6 +508,11 @@ export class CopayApp {
     if (this.appProvider.info._enabledExtensions.coinbase) {
       this.coinbaseProvider.setCredentials();
       this.coinbaseProvider.register();
+    }
+
+    // Wallet Connect
+    if (this.appProvider.info._enabledExtensions.walletConnect) {
+      this.walletConnectProvider.register();
     }
 
     // BitPay Card

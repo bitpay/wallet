@@ -83,6 +83,7 @@ export { TouchIdProvider } from '../providers/touchid/touchid';
 export { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
+export { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
 export { WyreProvider } from '../providers/wyre/wyre';
 export { ReleaseProvider } from '../providers/release/release';
 

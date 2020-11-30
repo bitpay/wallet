@@ -323,6 +323,9 @@ export class ProfileProvider {
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
     wallet.hidden = await this.isWalletHidden(wallet);
+    wallet.lastAddress = await this.persistenceProvider.getLastAddress(
+      walletId
+    );
     wallet.canSign = keyId ? true : false;
     wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
@@ -2001,6 +2004,12 @@ export class ProfileProvider {
         );
 
         return availablePendingFiat >= Number(opts.minPendingAmount.amount);
+      });
+    }
+
+    if (opts.lastAddress) {
+      ret = _.filter(ret, w => {
+        return w.lastAddress == opts.lastAddress;
       });
     }
 

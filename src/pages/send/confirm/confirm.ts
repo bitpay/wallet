@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import WalletConnect from '@walletconnect/client';
 import {
   App,
   Events,
@@ -8,7 +9,6 @@ import {
   NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
@@ -31,8 +31,10 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { FeeProvider } from '../../../providers/fee/fee';
 import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 import { IABCardProvider } from '../../../providers/in-app-browser/card';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../providers/paypro/paypro';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -43,6 +45,7 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
+
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
@@ -134,7 +137,8 @@ export class ConfirmPage {
     protected appProvider: AppProvider,
     protected payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider,
-    protected homeIntegrationsProvider: HomeIntegrationsProvider
+    protected homeIntegrationsProvider: HomeIntegrationsProvider,
+    protected persistenceProvider: PersistenceProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -243,6 +247,7 @@ export class ConfirmPage {
       txp: {},
       multisigContractAddress: this.navParams.data.multisigContractAddress,
       tokenAddress: this.navParams.data.tokenAddress,
+      gasLimit: this.navParams.data.gasLimit,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
       inputs: this.navParams.data.inputs
@@ -989,7 +994,8 @@ export class ConfirmPage {
             toAddress: tx.toAddress,
             amount: tx.amount,
             message: tx.description,
-            data: tx.data
+            data: tx.data,
+            gasLimit: tx.gasLimit // wallet connect needs exact gasLimit value
           }
         ];
       }
@@ -1408,6 +1414,18 @@ export class ConfirmPage {
         if (this.navParams.data.isEthMultisigInstantiation) {
           this.onGoingProcessProvider.set('creatingEthMultisigWallet');
           return this.instantiateMultisigContract(txp);
+        } else if (this.navParams.data.walletConnectRequestId) {
+          this.persistenceProvider.getWalletConnect().then(session => {
+            if (session) {
+              const walletConnector = new WalletConnect({ session });
+              walletConnector.approveRequest({
+                id: this.navParams.data.walletConnectRequestId,
+                result: txp.txid
+              });
+            }
+            this.onGoingProcessProvider.clear();
+            return this.openFinishModal(false, { redir });
+          });
         } else {
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });

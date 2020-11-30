@@ -24,6 +24,7 @@ import {
   FeeProvider,
   IABCardProvider,
   IncomingDataProvider,
+  PersistenceProvider,
   TxConfirmNotificationProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
@@ -125,7 +126,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     coinbaseProvider: CoinbaseProvider,
     appProvider: AppProvider,
     iabCardProvider: IABCardProvider,
-    homeIntegrationsProvider: HomeIntegrationsProvider
+    homeIntegrationsProvider: HomeIntegrationsProvider,
+    persistenceProvider: PersistenceProvider
   ) {
     super(
       addressProvider,
@@ -157,7 +159,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       appProvider,
       payproProvider,
       iabCardProvider,
-      homeIntegrationsProvider
+      homeIntegrationsProvider,
+      persistenceProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }

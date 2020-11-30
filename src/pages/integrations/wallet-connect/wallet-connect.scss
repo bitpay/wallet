@@ -1,0 +1,45 @@
+page-wallet-connect {
+  .card {
+    padding: 10px;
+  }
+  .item {
+    margin-top: 10px;
+  }
+  .uri-header-wrapper {
+    padding: 1rem;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrapper {
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+    .scan-icon {
+      margin: 0;
+      border-left: 1px solid rgba(151, 151, 151, 0.2);
+      padding: 0rem 1rem 0.8rem 1.4rem;
+      z-index: 999;
+    }
+    .backspace-icon {
+      z-index: 999;
+    }
+  }
+  .peer-meta-name {
+    color: #4f6ef7;
+  }
+  .address {
+    font-size: 12px;
+    font-weight: 100;
+  }
+  action-card {
+    .main-label {
+      display: flex;
+      justify-content: space-between;
+    }
+    .action-card__body {
+      text-align: left !important;
+    }
+  }
+}
