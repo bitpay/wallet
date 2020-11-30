@@ -841,6 +841,18 @@ export class PersistenceProvider {
     return this.storage.remove('BitpayIdPairingFlag');
   }
 
+  getWalletConnect() {
+    return this.storage.get('walletConnectSession');
+  }
+
+  setWalletConnect(session) {
+    return this.storage.set('walletConnectSession', session);
+  }
+
+  removeWalletConnect() {
+    return this.storage.remove('walletConnectSession');
+  }
+
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }

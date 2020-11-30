@@ -50,6 +50,7 @@ export class ScanPage {
   public fromSelectInputs: boolean;
   public fromEthMultisig: boolean;
   public fromConfirm: boolean;
+  public fromWalletConnect: boolean;
   public canGoBack: boolean;
 
   constructor(
@@ -115,6 +116,7 @@ export class ScanPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.fromEthMultisig = this.navParams.data.fromEthMultisig;
     this.fromConfirm = this.navParams.data.fromConfirm;
+    this.fromWalletConnect = this.navParams.data.fromWalletConnect;
 
     if (!env.activateScanner) {
       // test scanner visibility in E2E mode
@@ -249,6 +251,8 @@ export class ScanPage {
       this.events.publish('Local/AddressScanEthMultisig', { value: contents });
     } else if (this.fromConfirm) {
       this.events.publish('Local/TagScan', { value: contents });
+    } else if (this.fromWalletConnect) {
+      this.events.publish('Local/UriScan', { value: contents });
     } else {
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);

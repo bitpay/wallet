@@ -84,6 +84,7 @@ import {
   TxFormatProvider,
   UserAgent,
   Vibration,
+  WalletConnectProvider,
   WalletProvider,
   WyreProvider
 } from './index';
@@ -168,6 +169,7 @@ import {
     TxFormatProvider,
     UserAgent,
     WalletProvider,
+    WalletConnectProvider,
     WyreProvider,
     EmailNotificationsProvider,
     DecimalPipe,

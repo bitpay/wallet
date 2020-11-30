@@ -1,0 +1,186 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">Wallet Connect</ion-title>
+    <ion-buttons *ngIf="connected" right>
+      <button (click)="killSession()" ion-button>
+        {{'Kill Session' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-bounce>
+  <div *ngIf="!connected">
+    <label-tip type="info" header="no-header" class="no-arrowhead">
+      <div label-tip-body>
+        <span translate>WalletConnect is an open source protocol for connecting decentralised applications to mobile wallets with QR code scanning or deep linking.</span>
+        <br>
+        <br>
+        <a class="pointer" (click)="openExternalLink('https://walletconnect.org/')" translate>Read more</a>
+      </div>
+    </label-tip>
+
+    <div class="uri-header-wrapper">
+      <ion-item class="search-wrapper">
+        <ion-input placeholder="{{'Enter the wallet connect uri' | translate}}" [(ngModel)]="uri"></ion-input>
+        <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
+          <img src="assets/img/scan-ico.svg">
+        </ion-icon>
+      </ion-item>
+    </div>
+
+    <ion-list *ngIf="wallet" class="bp-list">
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">{{ 'Select a wallet' | translate }}</div>
+        </ion-label>
+      </ion-item>
+      <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+    </ion-list>
+
+    <button *ngIf="!peerMeta || !peerMeta.name || !uri" ion-button class="button-standard" (click)="initWalletConnect()">
+      {{'Connect' | translate}}
+    </button>
+  </div>
+
+  <div *ngIf="connected">
+
+    <ion-list class="bp-list">
+      <ion-item *ngIf="peerMeta && peerMeta.name" class="sub-title">
+        <ion-label>
+          <div class="main-label">
+            <span class="peer-meta-name">{{ peerMeta.name | uppercase }} </span>
+          </div>
+        </ion-label>
+        <div class="last-item" item-end>
+          {{ getChainData(activeChainId).name }}
+        </div>
+      </ion-item>
+
+      <ion-item *ngIf="peerMeta && peerMeta.name" class="sub-title">
+        <ion-label>
+          <div class="main-label">
+            {{ 'Connected with' | translate}}
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <ion-row align-items-center class="wallet" *ngIf="wallet">
+            <ion-col>
+              <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
+            </ion-col>
+
+            <ion-col>
+              <span class="note-container ellipsis">{{wallet.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">{{ 'Pending Call Requests' | translate }}</div>
+        </ion-label>
+      </ion-item>
+
+      <action-card *ngIf="requests.length === 0" class='zero-state'>
+        <div action-card-title class="main-label">
+          {{'No pending call requests' | translate}}
+        </div>
+      </action-card>
+
+      <div *ngFor="let request of requests">
+        <action-card>
+          <div action-card-title class="main-label">
+            <div>
+              {{ 'Id' }}
+              <ion-note item-end>
+                {{ request.id }}
+              </ion-note>
+            </div>
+            <div (click)="rejectRequest(request)">
+              <ion-icon ios="md-close" md="md-close"></ion-icon>
+            </div>
+          </div>
+          <div action-card-body>
+            <div class="item" *ngIf="request.method">{{ 'Method' | translate }}</div>
+            <ion-note *ngIf="request.method" item-end>
+              {{ request.method }}
+            </ion-note>
+            <div *ngFor="let param of request.params; let i = index;">
+              <div *ngIf="request.method === 'eth_signTransaction' || request.method === 'eth_sendTransaction'">
+                <div class="item" *ngIf="param.to">
+                  <div>{{ 'To' | translate }}</div>
+                  <ion-note class="ellipsis" item-end>
+                    {{ param.to }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="param.gas">
+                  <div>{{ 'Gas Limit' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param.gas }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="param.gasLimit">
+                  <div>{{ 'Gas Limit' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param.gasLimit }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="param.gasPrice">
+                  <div>{{ 'Gas Price' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param.gasPrice | satToUnit: wallet.coin }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="param.nonce">
+                  <div>{{ 'Nonce' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param.nonce }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="param.value">
+                  <div>{{ 'Value' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param.value | satToUnit: wallet.coin }}
+                  </ion-note>
+                </div>
+              </div>
+              <div *ngIf="request.method === 'eth_sign'">
+                <div class="item" *ngIf="i === 0 && param">
+                  <div>{{ 'Address' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="i === 1 && param">
+                  <div>{{ 'Message' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+              </div>
+              <div *ngIf="request.method === 'personal_sign'">
+                <div class="item" *ngIf="i === 1 && param">
+                  <div>{{ 'Address' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="i === 1 && param">
+                  <div>{{ 'Message' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div action-card-button (click)="approveRequest(request)">
+            {{'Continue' | translate }}
+          </div>
+        </action-card>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

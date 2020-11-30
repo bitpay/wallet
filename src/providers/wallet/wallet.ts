@@ -65,6 +65,7 @@ export interface TransactionProposal {
     amount: any;
     message: string;
     data?: string;
+    gasLimit?: number;
   }>;
   inputs: any;
   fee: any;
