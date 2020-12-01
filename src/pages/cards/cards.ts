@@ -141,11 +141,24 @@ export class CardsPage {
     await this.fetchAllCards();
   }
 
-  private pingIAB() {
+  private async pingIAB() {
     this.IABPingLock = true;
     let attempts = 0;
+
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network[this.NETWORK]
+    );
+
+    const hasGalileo = cards.some(c => c.provider === 'galileo');
+
+    if (hasGalileo) {
+      await this.persistenceProvider.setCardExperimentFlag('enabled');
+    }
+
+    const cardExperiment = await this.persistenceProvider.getCardExperimentFlag();
+
     this.IABPingInterval = setInterval(() => {
-      if (attempts >= 10) {
+      if (attempts >= 25) {
         clearInterval(this.IABPingInterval);
         this.showBitPayCard = false;
         return;
@@ -155,11 +168,12 @@ export class CardsPage {
         message: 'IABReadyPing',
         payload: {
           appVersion: this.appProvider.info.version,
-          theme: this.themeProvider.isDarkModeEnabled()
+          theme: this.themeProvider.isDarkModeEnabled(),
+          countryCheckRequired: cardExperiment !== 'enabled'
         }
       });
       attempts++;
-    }, 5000);
+    }, 3000);
   }
 
   private async prepareDebitCards() {
@@ -187,8 +201,7 @@ export class CardsPage {
           'provider'
         );
 
-        const hasGalileo =
-          cards.findIndex(c => c.provider === 'galileo') !== -1;
+        const hasGalileo = cards.some(c => c.provider === 'galileo');
 
         // if all cards are hidden
         if (cards.every(c => !!c.hide)) {
