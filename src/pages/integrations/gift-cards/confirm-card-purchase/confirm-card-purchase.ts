@@ -20,6 +20,7 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 // Provider
 import {
   AddressProvider,
+  AnalyticsProvider,
   EmailNotificationsProvider,
   FeeProvider,
   IABCardProvider,
@@ -94,6 +95,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public showCoinbase: boolean;
 
   constructor(
+    analyticsProvider: AnalyticsProvider,
     addressProvider: AddressProvider,
     app: App,
     actionSheetProvider: ActionSheetProvider,
@@ -131,6 +133,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   ) {
     super(
       addressProvider,
+      analyticsProvider,
       app,
       actionSheetProvider,
       bwcErrorProvider,

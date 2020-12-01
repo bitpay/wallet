@@ -19,6 +19,7 @@ import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../../providers/address/address';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -109,6 +110,7 @@ export class ConfirmPage {
 
   constructor(
     protected addressProvider: AddressProvider,
+    protected analyticsProvider: AnalyticsProvider,
     protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
     protected bwcErrorProvider: BwcErrorProvider,
@@ -1422,6 +1424,10 @@ export class ConfirmPage {
                 id: this.navParams.data.walletConnectRequestId,
                 result: txp.txid
               });
+              this.analyticsProvider.logEvent(
+                'wallet_connect_action_completed',
+                {}
+              );
             }
             this.onGoingProcessProvider.clear();
             return this.openFinishModal(false, { redir });

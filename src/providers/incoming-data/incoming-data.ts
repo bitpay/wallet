@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 
 // providers
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
+import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
@@ -36,6 +37,7 @@ export class IncomingDataProvider {
     private externalLinkProvider: ExternalLinkProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
+    private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
@@ -456,6 +458,7 @@ export class IncomingDataProvider {
       params: stateParams
     };
 
+    this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.incomingDataRedir(nextView);
   }
 
