@@ -392,6 +392,7 @@ export class CopayApp {
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
             `(() => {
+              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
               sessionStorage.setItem('isPaired', ${!!token}); 
               sessionStorage.setItem('cards', ${JSON.stringify(
                 JSON.stringify(cards)

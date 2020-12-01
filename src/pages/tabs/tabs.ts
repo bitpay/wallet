@@ -7,7 +7,10 @@ import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
@@ -30,7 +33,7 @@ export class TabsPage {
   appName: string;
   @ViewChild('tabs')
   tabs;
-
+  NETWORK = 'livenet';
   public txpsN: number;
   public cardNotificationBadgeText;
   public scanIconType: string;
@@ -108,9 +111,32 @@ export class TabsPage {
     });
   }
 
-  ngOnInit() {
-    this.tabProvider.prefetchCards().then(async data => {
-      let cardExperimentEnabled;
+  async ngOnInit() {
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network[this.NETWORK]
+    );
+
+    const hasGalileo = cards.some(c => c.provider === 'galileo');
+
+    if (hasGalileo) {
+      await this.persistenceProvider.setCardExperimentFlag('enabled');
+    }
+
+    let cardExperimentEnabled = await this.isCardEnabled();
+
+    await this.tabProvider.prefetchCards();
+
+    this.events.publish('Local/FetchCards', {
+      hasGalileo,
+      cardExperimentEnabled
+    });
+  }
+
+  private async isCardEnabled() {
+    let cardExperimentEnabled =
+      (await this.persistenceProvider.getCardExperimentFlag()) === 'enabled';
+
+    if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
         const { country } = await this.http
@@ -124,13 +150,9 @@ export class TabsPage {
       } catch (err) {
         this.logger.error('Error setting country: ', err);
       }
-      // [0] BitPay Cards
-      // [1] Gift Cards
-      this.events.publish('Local/FetchCards', {
-        bpCards: data[0],
-        cardExperimentEnabled
-      });
-    });
+    }
+
+    return cardExperimentEnabled;
   }
 
   ngOnDestroy() {

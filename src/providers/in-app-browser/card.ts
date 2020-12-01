@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -41,6 +41,9 @@ export class IABCardProvider {
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
+
+  private _IABLoaded = new ReplaySubject();
+  public IABLoaded$ = this._IABLoaded.asObservable();
 
   constructor(
     private payproProvider: PayproProvider,
@@ -89,11 +92,14 @@ export class IABCardProvider {
   init(): void {
     this.logger.debug('IABCardProvider initialized');
     this.cardIAB_Ref = this.iab.refs.card;
-
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
+        case 'IABLoaded':
+          this._IABLoaded.next(true);
+          break;
+
         case 'log':
           this.logger.debug(event.data.log);
           break;
