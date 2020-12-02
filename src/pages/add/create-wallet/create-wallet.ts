@@ -131,11 +131,13 @@ export class CreateWalletPage implements OnInit {
       recoveryPhrase: [null],
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
-      useNativeSegwit: [true],
+      useNativeSegwit: [false],
       singleAddress: [false],
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
+    if (this.coin === 'btc')
+      this.createForm.controls['useNativeSegwit'].setValue(true);
     this.showKeyOnboarding = this.navParams.data.showKeyOnboarding;
 
     this.setTotalCopayers(this.tc);

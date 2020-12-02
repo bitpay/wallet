@@ -1465,6 +1465,11 @@ export class ProfileProvider {
       if (showOpts.key) showOpts.key = '[hidden]';
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
+
+      if (opts.useNativeSegwit && opts.coin !== 'btc') {
+        const err = 'Wrong useNativeSegwit opt for non btc wallet';
+        return reject(err);
+      }
       setTimeout(() => {
         this.seedWallet(opts)
           .then(data => {
