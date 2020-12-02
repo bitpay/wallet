@@ -11,6 +11,7 @@ import { ConfirmPage } from '../../send/confirm/confirm';
 // Providers
 import {
   ActionSheetProvider,
+  AnalyticsProvider,
   ErrorsProvider,
   ExternalLinkProvider,
   Logger,
@@ -70,6 +71,7 @@ export class WalletConnectPage {
     private walletConnectProvider: WalletConnectProvider,
     private errorsProvider: ErrorsProvider,
     private popupProvider: PopupProvider,
+    private analyticsProvider: AnalyticsProvider,
     private navCtrl: NavController,
     private events: Events,
     private platformProvider: PlatformProvider,
@@ -89,6 +91,7 @@ export class WalletConnectPage {
   }
 
   private updateAddressHandler: any = data => {
+    this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.uri = data.value;
   };
 
@@ -252,6 +255,8 @@ export class WalletConnectPage {
       // gas: "0xd78d"
       // to: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
       // }
+
+      this.analyticsProvider.logEvent('wallet_connect_call_request', {});
       const _payload = this.refEthereumRequests(payload);
       this.requests.push(_payload);
     });
@@ -261,6 +266,8 @@ export class WalletConnectPage {
       if (error) {
         throw error;
       }
+
+      this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
     });
 
