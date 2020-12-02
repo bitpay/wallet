@@ -9,6 +9,7 @@ import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitp
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { ScanProvider } from '../../../../providers/scan/scan';
 
 // pages
 import {
@@ -20,9 +21,11 @@ import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
   selector: 'page-bitpay-card-intro',
-  templateUrl: 'bitpay-card-intro.html'
+  templateUrl: 'bitpay-card-intro.html',
+  providers: [ScanProvider]
 })
 export class BitPayCardIntroPage {
+  private scannerHasPermission: boolean;
   public accounts;
   public cardExperimentEnabled: boolean;
   constructor(
@@ -36,8 +39,11 @@ export class BitPayCardIntroPage {
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
     private iabCardProvider: IABCardProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private scanProvider: ScanProvider
   ) {
+    this.scannerHasPermission = false;
+    this.updateCapabilities();
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
@@ -102,11 +108,36 @@ export class BitPayCardIntroPage {
       }
       this.accounts = accounts;
     });
+
+    if (!this.scannerHasPermission) {
+      this.authorizeCamera();
+    } else {
+      this.activateCamera();
+    }
   }
 
   ionViewDidEnter() {
     this.iabCardProvider.updateWalletStatus();
     this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
+  }
+
+  private updateCapabilities(): void {
+    const capabilities = this.scanProvider.getCapabilities();
+    this.scannerHasPermission = capabilities.hasPermission;
+  }
+
+  private authorizeCamera(): void {
+    this.scanProvider.initialize().then(() => {
+      this.activateCamera();
+    });
+  }
+
+  private activateCamera(): void {
+    this.scanProvider.activate().then(() => {
+      this.updateCapabilities();
+      // resume preview if paused
+      this.scanProvider.resumePreview();
+    });
   }
 
   public openExchangeRates() {
