@@ -20,6 +20,7 @@ import {
   ProfileProvider,
   ReleaseProvider
 } from '../../providers';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
 import {
@@ -36,6 +37,7 @@ import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
+import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 
 export interface Advertisement {
   name: string;
@@ -109,7 +111,8 @@ export class HomePage {
     private bwcProvider: BwcProvider,
     private platformProvider: PlatformProvider,
     private modalCtrl: ModalController,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -350,6 +353,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/ConnectionError', () => {
       this.fetchingStatus = false;
+    });
+    this.events.subscribe('Local/UnsupportedAltCurrency', params => {
+      this.showInfoSheet(params);
     });
   }
 
@@ -749,6 +755,21 @@ export class HomePage {
     });
     modal.present().then(() => {
       this.persistenceProvider.setOnboardingFlowFlag('disabled');
+    });
+  }
+
+  private showInfoSheet(params): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'unsupported-alt-currency',
+      params.altCurrency
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      this.events.unsubscribe('Local/UnsupportedAltCurrency');
+      if (option) {
+        this.navCtrl.parent.select(params.tabIndex);
+        this.navCtrl.push(AltCurrencyPage);
+      }
     });
   }
 }

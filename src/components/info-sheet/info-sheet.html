@@ -500,5 +500,15 @@
       </span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'unsupported-alt-currency'" type="{{ params.error ? 'danger' : 'warning' }}">
+      <span sheet-title-text translate>{{ params.error ? 'Error' : 'Warning!' }}</span>
+      <span sheet-text translate>
+        {{params.name}} ({{params.isoCode}}) is no longer supported. Please select another alternative currency.
+      </span>
+      <span sheet-button-text translate *ngIf="params.error">GOT IT</span>
+      <span sheet-button-text translate *ngIf="!params.error">CONTINUE</span>
+      <span sheet-second-button-text translate *ngIf="!params.error">DO THIS LATER</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

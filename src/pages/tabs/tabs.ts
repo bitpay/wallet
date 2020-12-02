@@ -251,26 +251,24 @@ export class TabsPage {
   );
 
   private checkAltCurrency(): void {
-    const altCurrencyIsoCode = this.configProvider.get().wallet.settings
+    const alternativeIsoCode = this.configProvider.get().wallet.settings
       .alternativeIsoCode;
-    if (this.rateProvider.isAltCurrencyAvailable(altCurrencyIsoCode)) return;
 
-    const defaults = this.configProvider.getDefaults();
-    var opts = {
-      wallet: {
-        settings: {
-          alternativeName: defaults.wallet.settings.alternativeName,
-          alternativeIsoCode: defaults.wallet.settings.alternativeIsoCode
-        }
-      }
-    };
-    this.configProvider.set(opts);
+    if (!this.rateProvider.isAltCurrencyAvailable(alternativeIsoCode)) {
+      const altCurrency = {
+        name: this.configProvider.get().wallet.settings.alternativeName,
+        isoCode: alternativeIsoCode
+      };
+      const params = {
+        altCurrency,
+        tabIndex: this.tabs._tabs.length - 1 // The index of SettingsPage tab depends on the platform and distribution
+      };
+      this.events.publish('Local/UnsupportedAltCurrency', params);
+    }
   }
 
   private _fetchAllWallets() {
     let hasConnectionError: boolean = false;
-    // Set the default alternative currency if the one setted is no longer supported
-    this.checkAltCurrency();
 
     this.profileProvider.setLastKnownBalance();
 
@@ -331,7 +329,10 @@ export class TabsPage {
     });
 
     Promise.all(promises).then(() => {
-      if (!hasConnectionError) this.updateTotalBalance(wallets);
+      if (!hasConnectionError) {
+        this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
+        this.updateTotalBalance(wallets);
+      }
       this.updateTxps();
     });
   }
