@@ -450,6 +450,12 @@ export class IncomingDataProvider {
   }
 
   private handleWalletConnectUri(uri: string): void {
+    // Disable Wallet Connect
+    if (!this.appProvider.info._enabledExtensions.walletConnect) {
+      this.logger.warn('Wallet Connect has been disabled for this build');
+      return;
+    }
+
     let stateParams = {
       uri
     };
