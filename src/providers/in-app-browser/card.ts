@@ -578,6 +578,43 @@ export class IABCardProvider {
     } catch (err) {}
   }
 
+  async graphRequest(request): Promise<any> {
+    try {
+      request = {
+        ...request,
+        query: request.query.replace(/\r?\n|\r/g, '')
+      };
+
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+
+      const { query, variables } = request;
+
+      const json = {
+        query,
+        variables: { ...variables, token }
+      };
+
+      const { priv, pub } = await this.bitpayIdProvider.getAppIdentity();
+
+      const url = `${this.BITPAY_API_URL}/`;
+      const dataToSign = `${url}${JSON.stringify(json)}`;
+      const signedData = bitauthService.sign(dataToSign, priv);
+
+      const headers = {
+        'x-identity': pub,
+        'x-signature': signedData
+      };
+
+      return this.http
+        .post(url + 'api/v2/graphql', json, { headers })
+        .toPromise();
+    } catch (err) {
+      this.logger.log(`graph request failed ${err}`);
+    }
+  }
+
   async purchaseAttempt(event) {
     const { invoiceId } = event.data.params;
 
@@ -933,76 +970,94 @@ export class IABCardProvider {
     if (this.platform.is('ios')) {
       try {
         this.hide();
-        // get certs
+
         const {
           data: certs
         } = await this.appleWalletProvider.startAddPaymentPass(data);
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
-        this.logger.debug(`appleWallet - certs ${JSON.stringify(certs)}`);
 
-        const mdesCertOnlyFlag = await this.persistenceProvider.getTempMdesCertOnlyFlag();
-        if (mdesCertOnlyFlag === 'bypassed') return;
-        // send to card IAB - card passes to galileo and receives payload which then sends completeAddPaymentPass event below
-        this.sendMessage({
-          message: 'addPaymentPass',
-          payload: {
-            id,
-            certs
+        const {
+          certificateLeaf: cert1,
+          certificateSubCA: cert2,
+          nonce,
+          nonceSignature
+        } = certs || {};
+
+        const request = {
+          query: `
+            mutation START_CREATE_PROVISIONING_REQUEST($token:String!, $csrf:String, $cardId:String!, $input:ProvisionInputType!) {
+              user:bitpayUser(token:$token, csrf:$csrf) {
+                card:debitCard(cardId:$cardId) {
+                  provisioningData:createProvisioningRequest(input:$input) {
+                    activationData,
+                    encryptedPassData,
+                    wrappedKey
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            cardId: id,
+            input: {
+              walletProvider: 'apple',
+              cert1,
+              cert2,
+              nonce,
+              nonceSignature
+            }
           }
-        });
+        };
+
+        this.logger.debug(`appleWallet - start token graph call`);
+
+        const res = await this.graphRequest(request);
+
+        await this.completeAddPaymentPass({ res, id });
       } catch (err) {
-        this.logger.error(`appleWallet - startAddPaymentPass - ${err}`);
-        this.sendMessage({
-          message: 'addPaymentPass',
-          payload: {
-            id,
-            error: 'add payment pass failed'
-          }
-        });
+        this.logger.error(
+          `appleWallet - startAddPaymentPassError - ${JSON.stringify(err)}`
+        );
         await new Promise(res => setTimeout(res, 300));
         this.cardIAB_Ref.show();
       }
-    } else {
-      this.sendMessage({
-        message: 'addPaymentPass',
-        payload: {
-          id,
-          error: 'platform not supported'
-        }
-      });
-      await new Promise(res => setTimeout(res, 300));
-      this.cardIAB_Ref.show();
     }
   }
 
-  async completeAddPaymentPass(event) {
+  async completeAddPaymentPass({ res, id }) {
     /* FROM CARD IAB
      * data - activationData, encryptedPassData, wrappedKey
      * id - card Id
      * */
     this.logger.debug(
-      `appleWallet - completeAddPaymentPass - ${JSON.stringify(event)}`
+      `appleWallet - completeAddPaymentPass - ${JSON.stringify(res)}`
     );
-    const { data, id } = event.data.params;
 
-    const { wrappedKey, activationData, encryptedPassData } = data;
+    const {
+      user: {
+        card: { provisioningData }
+      }
+    } = res.data;
 
-    const mdesFlag = await this.persistenceProvider.getTempMdesFlag();
-    if (mdesFlag === 'bypassed') return;
+    const {
+      wrappedKey: ephemeralPublicKey,
+      activationData,
+      encryptedPassData
+    } = provisioningData || {};
 
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({
         activationData,
         encryptedPassData,
-        ephemeralPublicKey: wrappedKey
+        ephemeralPublicKey
       });
-      let payload: { error?: string; paired?: boolean; id: string } = { id };
 
-      payload =
+      const payload =
         res === 'success'
-          ? { ...payload, paired: true }
-          : { ...payload, error: 'completeAddPaymentPass failed' };
+          ? { id, paired: true }
+          : { id, error: 'completeAddPaymentPass failed' };
+
       this.sendMessage({
         message: 'addPaymentPass',
         payload
