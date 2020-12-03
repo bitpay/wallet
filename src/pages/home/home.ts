@@ -152,6 +152,7 @@ export class HomePage {
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
       if (deepLink) {
         this.persistenceProvider.setOnboardingFlowFlag('disabled');
+        this.persistenceProvider.removeDynamicLink();
         this.dynamicLinkProvider.processDeepLink(deepLink);
       } else {
         this.persistenceProvider
