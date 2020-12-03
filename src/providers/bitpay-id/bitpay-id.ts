@@ -219,7 +219,7 @@ export class BitPayIdProvider {
     return 'unlockSuccess';
   }
 
-  getAppIdentity() {
+  getAppIdentity(): Promise<{ pub: string; priv: string }> {
     const network = Network[this.getEnvironment().network];
     return new Promise((resolve, reject) => {
       this.appIdentityProvider.getIdentity(network, (err, appIdentity) => {
