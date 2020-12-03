@@ -9,6 +9,7 @@ import { FormatCurrencyPipe } from '../../pipes/format-currency';
 import {
   AppProvider,
   BwcProvider,
+  DynamicLinksProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
@@ -112,7 +113,8 @@ export class HomePage {
     private platformProvider: PlatformProvider,
     private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private dynamicLinkProvider: DynamicLinksProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -147,8 +149,17 @@ export class HomePage {
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
-    this.persistenceProvider.getOnboardingFlowFlag().then((value: string) => {
-      if (value === 'enabled') this.openAddFunds();
+    this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
+      if (deepLink) {
+        this.persistenceProvider.setOnboardingFlowFlag('disabled');
+        this.dynamicLinkProvider.processDeepLink(deepLink);
+      } else {
+        this.persistenceProvider
+          .getOnboardingFlowFlag()
+          .then((value: string) => {
+            if (value === 'enabled') this.openAddFunds();
+          });
+      }
     });
   }
 
