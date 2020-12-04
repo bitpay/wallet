@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -7,8 +6,8 @@ import { Logger } from '../../../providers/logger/logger';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
-import { ErrorsProvider } from '../../../providers/errors/errors';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
@@ -39,8 +38,7 @@ export class AltCurrencyPage {
     private splashScreen: SplashScreen,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider,
-    private translate: TranslateService
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.completeAlternativeList = [];
     this.altCurrencyList = [];
@@ -156,9 +154,17 @@ export class AltCurrencyPage {
   }
 
   private showErrorAndRemoveAltCurrency(altCurrency): void {
-    const title = this.translate.instant('Error');
-    const msg = `${altCurrency.name} (${altCurrency.isoCode}) is no longer supported. Please select another alternative currency`;
-    this.errorsProvider.showDefaultError(msg, title, () => {
+    const params = {
+      name: altCurrency.name,
+      isoCode: altCurrency.isoCode,
+      error: true
+    };
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'unsupported-alt-currency',
+      params
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
       this.lastUsedAltCurrencyList = _.reject(this.lastUsedAltCurrencyList, [
         'isoCode',
         altCurrency.isoCode
