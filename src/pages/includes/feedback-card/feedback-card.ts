@@ -22,6 +22,7 @@ export class FeedbackCardPage {
   public button_title: string;
   public feedbackCardTitle: string;
   public isShowRateCard: boolean;
+  public surveyCardShown: boolean;
 
   constructor(
     private appProvider: AppProvider,
@@ -35,6 +36,7 @@ export class FeedbackCardPage {
   ) {
     this.score = 0;
     this.isShowRateCard = false;
+    this.surveyCardShown = false;
   }
 
   public setShowRateCard(value) {
@@ -49,6 +51,10 @@ export class FeedbackCardPage {
     }
   }
 
+  public setShowSurveyCard(value: boolean = false) {
+    this.surveyCardShown = value;
+  }
+
   public hideCard(): void {
     this.isShowRateCard = false;
     this.logger.debug('Feedback card dismissed.');
@@ -57,6 +63,21 @@ export class FeedbackCardPage {
       feedbackInfo.sent = true;
       this.persistenceProvider.setFeedbackInfo(feedbackInfo);
     });
+  }
+
+  public hideSurvey(): void {
+    this.surveyCardShown = false;
+    this.logger.debug('Survey card dismissed.');
+    this.persistenceProvider.getFeedbackInfo().then(info => {
+      let feedbackInfo = info;
+      feedbackInfo.surveyTaken = true;
+      this.persistenceProvider.setFeedbackInfo(feedbackInfo);
+    });
+  }
+
+  public takeSurvey(): void {
+    this.externalLinkProvider.open('https://payux.typeform.com/to/DWIC0Kky');
+    this.hideSurvey();
   }
 
   public setScore(score: number) {

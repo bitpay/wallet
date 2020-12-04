@@ -706,6 +706,9 @@ export class HomePage {
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
+        this.showCard.setShowSurveyCard(
+          timeExceeded && !feedbackInfo.surveyTaken
+        );
       }
     });
   }

@@ -1,4 +1,19 @@
 page-feedback-card {
+  .message-background--survey {
+    margin-bottom: 40px;
+    .message-icon {
+      img {
+        margin-left: 7px;
+      }
+    }
+    .message-body {
+      padding-top: 20px;
+    }
+  }
+
+  .message-header {
+    margin-bottom: -15px;
+  }
   .message-content {
     .title-container {
       align-items: center;

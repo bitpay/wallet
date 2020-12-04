@@ -239,7 +239,15 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
-    const purchasedBrands = await this.getPurchasedBrands();
+    const purchasedBrands = await Promise.race([
+      this.getPurchasedBrands(),
+      Observable.timer(1000)
+        .toPromise()
+        .then(() => {
+          this.logger.debug('Purchased brands took longer than 1s to load');
+          return [];
+        })
+    ]);
     this.logger.debug('got purchased brands');
     const recentlyPurchasedBrands = purchasedBrands
       .map(cards => cards.sort(sortByDescendingDate))
@@ -329,7 +337,11 @@ export class GiftCardProvider extends InvoiceProvider {
     if (_.isString(gc)) {
       gc = JSON.parse(gc);
     }
-    let newMap = oldGiftCards || {};
+    const isValidMap = gcMap =>
+      Object.keys(gcMap || {}).every(
+        invoiceId => invoiceId.length > 15 && oldGiftCards[invoiceId].currency
+      );
+    let newMap = isValidMap(oldGiftCards) ? oldGiftCards : {};
     newMap[gc.invoiceId] = gc;
     if (opts && (opts.error || opts.status)) {
       newMap[gc.invoiceId] = _.assign(newMap[gc.invoiceId], opts);
