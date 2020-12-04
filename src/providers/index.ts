@@ -2,7 +2,7 @@
 
 /* Native modules */
 export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-export { AppleWallet } from '@ionic-native/apple-wallet';
+export { AppleWalletNg } from 'apple-wallet-ng';
 export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
 export { FCMNG } from 'fcm-ng';
