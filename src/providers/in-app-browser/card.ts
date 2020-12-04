@@ -22,10 +22,7 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import {
-  Network,
-  PersistenceProvider
-} from '../../providers/persistence/persistence';
+import { Network, PersistenceProvider } from '../../providers/persistence/persistence';
 import { ThemeProvider } from '../../providers/theme/theme';
 
 @Injectable()
@@ -598,7 +595,7 @@ export class IABCardProvider {
 
       const { priv, pub } = await this.bitpayIdProvider.getAppIdentity();
 
-      const url = `${this.BITPAY_API_URL}/`;
+      let url = `${this.BITPAY_API_URL}/`;
       const dataToSign = `${url}${JSON.stringify(json)}`;
       const signedData = bitauthService.sign(dataToSign, priv);
 
@@ -607,9 +604,14 @@ export class IABCardProvider {
         'x-signature': signedData
       };
 
-      return this.http
-        .post(url + 'api/v2/graphql', json, { headers })
+      url = url + 'api/v2/graphql';
+
+      this.logger.log(`MDES ${url}`);
+
+      return await this.http
+        .post(url, json, { headers })
         .toPromise();
+
     } catch (err) {
       this.logger.log(`graph request failed ${err}`);
     }
@@ -926,7 +928,7 @@ export class IABCardProvider {
   async checkProvisioningAvailability() {
     try {
       // check if current ios version supports apple wallet
-      const isAvailable = await this.appleWalletProvider.isAvailable();
+      const isAvailable = await this.appleWalletProvider.available();
 
       let payload: { isAvailable: boolean; error?: string } = {
         isAvailable
@@ -965,6 +967,14 @@ export class IABCardProvider {
       `appleWallet - startAddPaymentPass - ${JSON.stringify(event)}`
     );
     const { data, id } = event.data.params;
+
+    // for testing purposes
+    try {
+      const result = await this.appleWalletProvider.checkPairedDevicesBySuffix(data.cardSuffix);
+      this.logger.log(`MDES ${JSON.stringify(result)}`);
+    } catch(err) {
+      this.logger.log(`MDES checkCard${JSON.stringify(err)}`);
+    }
 
     // ios handler
     if (this.platform.is('ios')) {
@@ -1055,11 +1065,11 @@ export class IABCardProvider {
 
       const payload =
         res === 'success'
-          ? { id, paired: true }
+          ? { id }
           : { id, error: 'completeAddPaymentPass failed' };
 
       this.sendMessage({
-        message: 'addPaymentPass',
+        message: 'completeAddPaymentPass',
         payload
       });
       await new Promise(res => setTimeout(res, 300));
@@ -1067,7 +1077,7 @@ export class IABCardProvider {
     } catch (err) {
       this.logger.error(`appleWallet - completeAddPaymentPass - ${err}`);
       this.sendMessage({
-        message: 'addPaymentPass',
+        message: 'completeAddPaymentPass',
         payload: {
           id,
           error: 'completeAddPaymentPass failed'

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-import { AppleWallet, CardData } from '@ionic-native/apple-wallet';
+import { AppleWallet, CardData } from 'apple-wallet-ng';
 
 @Injectable()
 export class AppleWalletProvider {
@@ -9,7 +9,7 @@ export class AppleWalletProvider {
     this.logger.debug('AppleWalletProvider initialized');
   }
 
-  isAvailable(): Promise<any> {
+  available(): Promise<any> {
     return this.appleWallet.available();
   }
 
@@ -20,4 +20,9 @@ export class AppleWalletProvider {
   completeAddPaymentPass(params: any): Promise<any> {
     return this.appleWallet.completeAddPaymentPass(params);
   }
+
+  checkPairedDevicesBySuffix(cardSuffix: string): Promise<any> {
+    return this.appleWallet.checkPairedDevicesBySuffix(cardSuffix);
+  }
+
 }
