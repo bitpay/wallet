@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-import { AppleWallet, CardData } from 'apple-wallet-ng';
+import { AppleWalletNg, CardData } from 'apple-wallet-ng';
 
 @Injectable()
 export class AppleWalletProvider {
-  constructor(private logger: Logger, private appleWallet: AppleWallet) {
+  constructor(private logger: Logger, private appleWallet: AppleWalletNg) {
     this.logger.debug('AppleWalletProvider initialized');
   }
 
