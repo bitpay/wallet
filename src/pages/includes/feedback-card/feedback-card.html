@@ -37,3 +37,23 @@
     </div>
   </div>
 </div>
+<div class="message-background message-background--survey" *ngIf="!isShowRateCard && surveyCardShown">
+  <div class="message-header">
+    <ion-row justify-content-end>
+      <button float-right ion-button clear icon-only color="grey" (click)="hideSurvey()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-row>
+  </div>
+  <div class="message-content">
+    <ion-row class="title-container">
+      <div class="message-icon"><img src="assets/img/icon-heart-pink.svg" /></div>
+      <div class="message-title" translate>Help BitPay improve</div>
+    </ion-row>
+    <div class="message-body">Take a 2 minute survey to help us learn how we can improve your experience.</div>
+    <div>
+      <div class="line-divider"></div>
+      <span class="message-button" (click)="takeSurvey()">Take the survey</span>
+    </div>
+  </div>
+</div>

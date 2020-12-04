@@ -50,17 +50,21 @@ export class MerchantProvider {
     this.merchantPromise = Promise.all([
       this.directoryProvider.fetchDirectIntegrations(),
       this.giftCardProvider.getAvailableCards(),
-      this.directoryProvider.fetchDirectory()
-      // this.giftCardProvider.getRecentlyPurchasedBrandNames()
-    ]).then(([directIntegrations, availableGiftCardBrands, directory]) =>
-      // recentlyPurchasedBrandNames
-      buildMerchants(
+      this.directoryProvider.fetchDirectory(),
+      this.giftCardProvider.getRecentlyPurchasedBrandNames()
+    ]).then(
+      ([
         directIntegrations,
         availableGiftCardBrands,
         directory,
-        []
-        // recentlyPurchasedBrandNames
-      )
+        recentlyPurchasedBrandNames
+      ]) =>
+        buildMerchants(
+          directIntegrations,
+          availableGiftCardBrands,
+          directory,
+          recentlyPurchasedBrandNames
+        )
     );
     return this.merchantPromise;
   }
