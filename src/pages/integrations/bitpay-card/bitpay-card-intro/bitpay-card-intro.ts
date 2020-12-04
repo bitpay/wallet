@@ -111,8 +111,6 @@ export class BitPayCardIntroPage {
 
     if (!this.scannerHasPermission) {
       this.authorizeCamera();
-    } else {
-      this.activateCamera();
     }
   }
 
@@ -127,17 +125,10 @@ export class BitPayCardIntroPage {
   }
 
   private authorizeCamera(): void {
-    this.scanProvider.initialize().then(() => {
-      this.activateCamera();
-    });
-  }
-
-  private activateCamera(): void {
-    this.scanProvider.activate().then(() => {
-      this.updateCapabilities();
-      // resume preview if paused
-      this.scanProvider.resumePreview();
-    });
+    this.scanProvider
+      .initialize() // prompt for authorization by initializing scanner
+      .then(() => this.scanProvider.pausePreview()) // release camera resources from scanner
+      .then(() => this.updateCapabilities()); // update component state
   }
 
   public openExchangeRates() {
