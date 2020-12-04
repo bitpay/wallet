@@ -22,7 +22,10 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { Network, PersistenceProvider } from '../../providers/persistence/persistence';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
 import { ThemeProvider } from '../../providers/theme/theme';
 
 @Injectable()
@@ -608,10 +611,7 @@ export class IABCardProvider {
 
       this.logger.log(`MDES ${url}`);
 
-      return await this.http
-        .post(url, json, { headers })
-        .toPromise();
-
+      return await this.http.post(url, json, { headers }).toPromise();
     } catch (err) {
       this.logger.log(`graph request failed ${err}`);
     }
@@ -970,9 +970,11 @@ export class IABCardProvider {
 
     // for testing purposes
     try {
-      const result = await this.appleWalletProvider.checkPairedDevicesBySuffix(data.cardSuffix);
+      const result = await this.appleWalletProvider.checkPairedDevicesBySuffix(
+        data.cardSuffix
+      );
       this.logger.log(`MDES ${JSON.stringify(result)}`);
-    } catch(err) {
+    } catch (err) {
       this.logger.log(`MDES checkCard${JSON.stringify(err)}`);
     }
 

@@ -24,5 +24,4 @@ export class AppleWalletProvider {
   checkPairedDevicesBySuffix(cardSuffix: string): Promise<any> {
     return this.appleWallet.checkPairedDevicesBySuffix(cardSuffix);
   }
-
 }
