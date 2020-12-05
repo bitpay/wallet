@@ -290,6 +290,29 @@ export class IABCardProvider {
     });
   }
 
+  async checkAppleWallet(cards) {
+    return Promise.all(
+      cards.map(async card => {
+        if (card.cardType === 'virtual') {
+          const {
+            isInWallet,
+            isInWatch
+          } = await this.appleWalletProvider.checkPairedDevicesBySuffix(
+            card.lastFourDigits
+          );
+
+          return {
+            ...card,
+            isInWallet,
+            isInWatch
+          };
+        }
+
+        return card;
+      })
+    );
+  }
+
   logEvent(event) {
     const { eventName, params } = event.data.params;
     this.analyticsProvider.logEvent(eventName, params);
@@ -419,6 +442,10 @@ export class IABCardProvider {
             if (cards.length < 1) {
               this.fetchLock = false;
               return res();
+            }
+
+            if (this.platform.is('ios')) {
+              cards = this.checkAppleWallet(cards);
             }
 
             this.sortCards(cards, ['virtual', 'physical'], 'cardType');
