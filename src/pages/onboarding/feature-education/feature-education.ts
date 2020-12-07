@@ -3,7 +3,6 @@ import { NavController, Slides } from 'ionic-angular';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -20,7 +19,6 @@ import { LockMethodPage } from '../../../pages/onboarding/lock-method/lock-metho
 export class FeatureEducationPage {
   @ViewChild('featureEducationSlides')
   featureEducationSlides: Slides;
-  public appName: string;
   public isCordova: boolean;
 
   private pageMap = {
@@ -35,12 +33,10 @@ export class FeatureEducationPage {
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
-    private appProvider: AppProvider,
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private platformProvider: PlatformProvider
   ) {
-    this.appName = this.appProvider.info.nameCase;
     this.isCordova = this.platformProvider.isCordova;
   }
 

@@ -6,7 +6,6 @@ import {
   ActionSheetProvider,
   InfoSheetType
 } from '../../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
@@ -21,7 +20,6 @@ import { PinModalPage } from '../../../pages/pin/pin-modal/pin-modal';
   templateUrl: 'lock-method.html'
 })
 export class LockMethodPage {
-  public appName: string;
   public biometricMethod: string;
   public pinMethodSelected: boolean = false;
   private nextView;
@@ -38,11 +36,9 @@ export class LockMethodPage {
     private modalCtrl: ModalController,
     private touchIdProvider: TouchIdProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private configProvider: ConfigProvider,
-    private appProvider: AppProvider
+    private configProvider: ConfigProvider
   ) {
     this.nextView = this.navParams.data.nextView;
-    this.appName = this.appProvider.info.nameCase;
   }
 
   ionViewDidLoad() {
