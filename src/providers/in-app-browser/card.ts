@@ -290,6 +290,29 @@ export class IABCardProvider {
     });
   }
 
+  async checkAppleWallet(cards) {
+    return Promise.all(
+      cards.map(async card => {
+        if (card.cardType === 'virtual') {
+          const {
+            isInWallet,
+            isInWatch
+          } = await this.appleWalletProvider.checkPairedDevicesBySuffix(
+            card.lastFourDigits
+          );
+
+          return {
+            ...card,
+            isInWallet,
+            isInWatch
+          };
+        }
+
+        return card;
+      })
+    );
+  }
+
   logEvent(event) {
     const { eventName, params } = event.data.params;
     this.analyticsProvider.logEvent(eventName, params);
@@ -419,6 +442,10 @@ export class IABCardProvider {
             if (cards.length < 1) {
               this.fetchLock = false;
               return res();
+            }
+
+            if (this.platform.is('ios')) {
+              cards = this.checkAppleWallet(cards);
             }
 
             this.sortCards(cards, ['virtual', 'physical'], 'cardType');
@@ -598,7 +625,7 @@ export class IABCardProvider {
 
       const { priv, pub } = await this.bitpayIdProvider.getAppIdentity();
 
-      let url = `${this.BITPAY_API_URL}/`;
+      let url = `https://bitpay.com/`;
       const dataToSign = `${url}${JSON.stringify(json)}`;
       const signedData = bitauthService.sign(dataToSign, priv);
 
@@ -609,7 +636,8 @@ export class IABCardProvider {
 
       url = url + 'api/v2/graphql';
 
-      this.logger.log(`MDES ${url}`);
+      this.logger.debug(`MDES GRAPH REQ ${url}`);
+      this.logger.debug(`MDES GRAPH REQ ${JSON.stringify(json)}`);
 
       return await this.http.post(url, json, { headers }).toPromise();
     } catch (err) {
@@ -1026,13 +1054,14 @@ export class IABCardProvider {
 
         const res = await this.graphRequest(request);
 
+        this.logger.debug(JSON.stringify(res));
+
         await this.completeAddPaymentPass({ res, id });
       } catch (err) {
         this.logger.error(
           `appleWallet - startAddPaymentPassError - ${JSON.stringify(err)}`
         );
-        await new Promise(res => setTimeout(res, 300));
-        this.cardIAB_Ref.show();
+        this.logger.error(JSON.stringify(err, Object.getOwnPropertyNames(err)));
       }
     }
   }
