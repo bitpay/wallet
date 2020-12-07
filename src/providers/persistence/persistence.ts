@@ -921,6 +921,18 @@ export class PersistenceProvider {
   getTempMdesCertOnlyFlag() {
     return this.storage.get(Keys.TEMP_MDES_CERT_ONLY_DEBUG_FLAG);
   }
+
+  setDynamicLink(deepLink: string) {
+    return this.storage.set('BitPay-DynamicLink', deepLink);
+  }
+
+  getDynamicLink() {
+    return this.storage.get('BitPay-DynamicLink');
+  }
+
+  removeDynamicLink() {
+    return this.storage.remove('BitPay-DynamicLink');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {

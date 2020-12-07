@@ -219,6 +219,11 @@ export class IncomingDataProvider {
     return !!(data && data.indexOf('bitpay://landing') === 0);
   }
 
+  private isValidBitPayDynamicLink(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(data && data.indexOf('com.bitpay.wallet://google/link') === 0);
+  }
+
   private isValidJoinCode(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/));
@@ -325,6 +330,11 @@ export class IncomingDataProvider {
       this.events.publish('incomingDataError', err);
       this.logger.error(err);
     }
+  }
+
+  private handleDynamicLink(deepLink: string): void {
+    this.logger.debug('Incoming-data: Dynamic Link ' + deepLink);
+    this.persistenceProvider.setDynamicLink(deepLink);
   }
 
   private handleBitPayUri(data: string, redirParams?: RedirParams): void {
@@ -962,6 +972,10 @@ export class IncomingDataProvider {
 
       return true;
       // Anything else
+    } else if (this.isValidBitPayDynamicLink(data)) {
+      const deepLink = this.getParameterByName('deep_link_id', data);
+      this.handleDynamicLink(deepLink);
+      return true;
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {
         this.logger.debug('Incoming-data: Plain text');
