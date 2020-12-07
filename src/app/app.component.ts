@@ -328,7 +328,10 @@ export class CopayApp {
                 break;
               case 'UNFINISHEDONBOARDING':
                 this.logger.warn('Unfinished onboarding');
-                this.rootPage = FeatureEducationPage;
+                this.rootPage =
+                  this.appProvider.info.nameCase === 'Copay'
+                    ? DisclaimerPage
+                    : FeatureEducationPage;
                 break;
               default:
                 const profile = this.profileProvider.profile;
@@ -422,7 +425,10 @@ export class CopayApp {
     } else {
       this.logger.info('No profile exists.');
       this.profileProvider.createProfile();
-      this.rootPage = FeatureEducationPage;
+      this.rootPage =
+        this.appProvider.info.nameCase === 'Copay'
+          ? DisclaimerPage
+          : FeatureEducationPage;
     }
   }
 

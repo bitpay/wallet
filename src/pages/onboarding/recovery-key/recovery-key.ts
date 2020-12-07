@@ -3,7 +3,6 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../../providers/app/app';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
@@ -17,17 +16,14 @@ import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer'
 export class RecoveryKeyPage {
   private unregisterBackButtonAction;
   public isOnboardingFlow: boolean;
-  public appName: string;
 
   constructor(
     public navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform,
-    private appProvider: AppProvider
+    private platform: Platform
   ) {
-    this.appName = this.appProvider.info.nameCase;
     this.isOnboardingFlow = this.navParams.data.isOnboardingFlow;
   }
 

@@ -158,7 +158,8 @@ export class HomePage {
         this.persistenceProvider
           .getOnboardingFlowFlag()
           .then((value: string) => {
-            if (value === 'enabled') this.openAddFunds();
+            if (value === 'enabled' && this.appProvider.info.name !== 'copay')
+              this.openAddFunds();
           });
       }
     });
