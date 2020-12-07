@@ -370,8 +370,13 @@ export class CopayApp {
 
       setTimeout(async () => {
         if (cards && this.platform.is('ios')) {
-          cards = await this.iabCardProvider.checkAppleWallet(cards);
+          try {
+            cards = await this.iabCardProvider.checkAppleWallet(cards);
+          } catch(err) {
+            this.logger.error('apple wallet checkPairedDevices error', err);
+          }
         }
+
 
         const agent = await this.userAgent.get();
         this.logger.debug('BitPay: create IAB Instance');
