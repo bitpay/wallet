@@ -53,7 +53,7 @@
 </div>
 
 <div *ngIf="tx.misunderstoodOutputs">
-  <ion-item class="misunderstood-msg" (click)="viewOnBlockchain()">
+    <a class="misunderstood-msg" (click)="viewOnBlockchain()">
       {{misunderstoodOutputsMsg}}
-  </ion-item>
+    </a>
 </div>
