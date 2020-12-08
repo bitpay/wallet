@@ -629,12 +629,12 @@ export class IABCardProvider {
       const dataToSign = `${url}${JSON.stringify(json)}`;
       const signedData = bitauthService.sign(dataToSign, priv);
 
-      const headers = [
-        signedData,
-        pub
-      ];
+      const headers = [signedData, pub];
 
-      return await this.appleWalletProvider.graphRequest(headers, JSON.stringify(json));
+      return await this.appleWalletProvider.graphRequest(
+        headers,
+        JSON.stringify(json)
+      );
     } catch (err) {
       this.logger.log(`graph request failed ${err}`);
     }
