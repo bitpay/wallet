@@ -51,3 +51,9 @@
     </ion-note>
   </ion-item>
 </div>
+
+<div *ngIf="tx.misunderstoodOutputs">
+  <ion-item class="misunderstood-msg" (click)="viewOnBlockchain()">
+      {{misunderstoodOutputsMsg}}
+  </ion-item>
+</div>
