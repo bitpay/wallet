@@ -33,7 +33,9 @@ export class MultipleOutputsPage {
   @Input()
   set tx(tx) {
     this._tx = tx;
-    this._misunderstoodOutputsMsg = tx.misunderstoodOutputs ? "There are some misunderstood outputs, please view on blockchain." : undefined;
+    this._misunderstoodOutputsMsg = tx.misunderstoodOutputs
+      ? 'There are some misunderstood outputs, please view on blockchain.'
+      : undefined;
     this.tx.outputs.forEach(output => {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
       this.coin = this._tx.coin
@@ -57,14 +59,14 @@ export class MultipleOutputsPage {
     return this._tx;
   }
 
-  get misunderstoodOutputsMsg(){
+  get misunderstoodOutputsMsg() {
     return this._misunderstoodOutputsMsg;
   }
 
   viewOnBlockchain(): void {
     this.openBlockChainEvent.next();
   }
-  
+
   private contact(): void {
     const addr = this._tx.toAddress;
     this.addressBookProvider
