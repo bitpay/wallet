@@ -24,4 +24,8 @@ export class AppleWalletProvider {
   checkPairedDevicesBySuffix(cardSuffix: string): Promise<any> {
     return this.appleWallet.checkPairedDevicesBySuffix(cardSuffix);
   }
+
+  graphRequest(headers, json): Promise<any> {
+    return this.appleWallet.graphRequest(headers, json);
+  }
 }
