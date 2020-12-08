@@ -444,9 +444,9 @@ export class IABCardProvider {
               return res();
             }
 
-            if (this.platform.is('ios')) {
-              cards = this.checkAppleWallet(cards);
-            }
+            // if (this.platform.is('ios')) {
+            //   cards = this.checkAppleWallet(cards);
+            // }
 
             this.sortCards(cards, ['virtual', 'physical'], 'cardType');
             this.sortCards(cards, ['galileo', 'firstView'], 'provider');
@@ -629,17 +629,12 @@ export class IABCardProvider {
       const dataToSign = `${url}${JSON.stringify(json)}`;
       const signedData = bitauthService.sign(dataToSign, priv);
 
-      const headers = {
-        'x-identity': pub,
-        'x-signature': signedData
-      };
+      const headers = [
+        signedData,
+        pub
+      ];
 
-      url = url + 'api/v2/graphql';
-
-      this.logger.debug(`MDES GRAPH REQ ${url}`);
-      this.logger.debug(`MDES GRAPH REQ ${JSON.stringify(json)}`);
-
-      return await this.http.post(url, json, { headers }).toPromise();
+      return await this.appleWalletProvider.graphRequest(headers, JSON.stringify(json));
     } catch (err) {
       this.logger.log(`graph request failed ${err}`);
     }
