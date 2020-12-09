@@ -377,4 +377,41 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: '#00dcfa'
     }
   },
+  wbtc: {
+    name: 'Wrapped Bitcoin',
+    chain: 'ETH',
+    coin: 'wbtc',
+    unitInfo: {
+      unitName: 'WBTC',
+      unitToSatoshi: 1e9,
+      unitDecimals: 9,
+      unitCode: 'wbtc'
+    },
+    properties: {
+      hasMultiSig: false,
+      hasMultiSend: false,
+      isUtxo: false,
+      isERCToken: true,
+      isStableCoin: true,
+      singleAddress: true
+    },
+    paymentInfo: {
+      paymentCode: 'EIP681b',
+      protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/wbtc',
+      blockExplorerUrls: 'etherscan.io/',
+      blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
+    },
+    feeInfo: {
+      feeUnit: 'Gwei',
+      feeUnitAmount: 1e9,
+      blockTime: 0.2,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      coinColor: '#00ddfa',
+      backgroundColor: '#00dcfa',
+      gradientBackgroundColor: '#00dcfa'
+    }
+  }
 };

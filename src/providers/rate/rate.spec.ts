@@ -45,6 +45,12 @@ describe('RateProvider', () => {
   ];
   const busdResponse = [
     { code: 'BUSD', name: 'Binance USD Coin', rate: 9371.93 }
+
+  // const daiResponse = [
+  //     { code: 'DAI', name: 'Dai Coin', rate: 9371.93 }
+
+  // const wbtResponse = [
+  //     { code: 'WBTC', name: 'WBTC', rate: 9371.93 }
   ];
   const fiatResponse = {
     ts: 1559315523000,
@@ -59,6 +65,8 @@ describe('RateProvider', () => {
   let usdcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/usdc';
   let gusdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd';
   let busdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/busd';
+  // let daiUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/dai';
+  // let wbtcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/wbtc';
 
   let fiatRateUrl: string =
     'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';
@@ -81,6 +89,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(busdUrl)[0].flush(daiResponse);
     httpMock.verify();
   });
 

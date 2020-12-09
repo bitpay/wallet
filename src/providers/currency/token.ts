@@ -36,4 +36,10 @@ export const TokenOpts = {
     decimal: 18,
     address: '0x6b175474e89094c44da98b954eedeac495271d0f'
   },
+  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': {
+    name: 'Wrapped Bitcoin',
+    symbol: 'WBTC',
+    decimal: 9,
+    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
+  },
 };
