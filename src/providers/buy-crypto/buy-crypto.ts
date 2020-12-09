@@ -49,7 +49,7 @@ export class BuyCryptoProvider {
           simplex: true, // EU Only
           wyre: false
         },
-        enabled: false // TODO: Enable again once successfully tested from the simplex website
+        enabled: true
       },
       creditCard: {
         label: this.translate.instant('Credit Card'),
