@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 // Providers
@@ -24,6 +25,7 @@ export class MultipleOutputsPage {
     private addressBookProvider: AddressBookProvider,
     private addressProvider: AddressProvider,
     private logger: Logger,
+    private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
     this.showMultiplesOutputs = false;
@@ -34,7 +36,9 @@ export class MultipleOutputsPage {
   set tx(tx) {
     this._tx = tx;
     this._misunderstoodOutputsMsg = tx.misunderstoodOutputs
-      ? 'There are some misunderstood outputs, please view on blockchain.'
+      ? this.translate.instant(
+          'There are some misunderstood outputs, please view on blockchain.'
+        )
       : undefined;
     this.tx.outputs.forEach(output => {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
