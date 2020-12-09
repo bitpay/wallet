@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   Output,
-  Renderer,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
@@ -80,7 +80,7 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public renderer: Renderer
+    public renderer: Renderer2
   ) {}
 
   ngAfterViewInit() {
@@ -132,22 +132,34 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         this.isPressed
       ) {
         // Set element styles
-        this.renderer.setElementStyle(
+        this.renderer.setStyle(
           this.htmlButtonElem,
           'transform',
           posCss['transform']
         );
-        this.renderer.setElementStyle(
+        // this.renderer.setElementStyle(
+        //   this.htmlButtonElem,
+        //   'transform',
+        //   posCss['transform']
+        // );
+        this.renderer.setStyle(
           this.htmlButtonElem,
           '-webkit-transform',
           posCss['-webkit-transform']
         );
-        this.renderer.setElementStyle(this.htmlTextElem, 'opacity', opacityCss);
-        this.renderer.setElementStyle(
-          this.htmlArrowElem,
-          'opacity',
-          opacityCss
-        );
+        // this.renderer.setElementStyle(
+        //   this.htmlButtonElem,
+        //   '-webkit-transform',
+        //   posCss['-webkit-transform']
+        // );
+        this.renderer.setStyle(this.htmlTextElem, 'opacity', opacityCss);
+        // this.renderer.setElementStyle(this.htmlTextElem, 'opacity', opacityCss);
+        this.renderer.setStyle(this.htmlArrowElem, 'opacity', opacityCss);
+        // this.renderer.setElementStyle(
+        //   this.htmlArrowElem,
+        //   'opacity',
+        //   opacityCss
+        // );
       }
 
       // If the max displacement position is reached
@@ -166,18 +178,30 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         transform: 'translateX(0px)',
         '-webkit-transform': 'translateX(0px)'
       };
-      this.renderer.setElementStyle(
+      this.renderer.setStyle(
         this.htmlButtonElem,
         'transform',
         posCss['transform']
       );
-      this.renderer.setElementStyle(
+      // this.renderer.setElementStyle(
+      //   this.htmlButtonElem,
+      //   'transform',
+      //   posCss['transform']
+      // );
+      this.renderer.setStyle(
         this.htmlButtonElem,
         '-webkit-transform',
         posCss['-webkit-transform']
       );
-      this.renderer.setElementStyle(this.htmlTextElem, 'opacity', '1');
-      this.renderer.setElementStyle(this.htmlArrowElem, 'opacity', '1');
+      // this.renderer.setElementStyle(
+      //   this.htmlButtonElem,
+      //   '-webkit-transform',
+      //   posCss['-webkit-transform']
+      // );
+      this.renderer.setStyle(this.htmlTextElem, 'opacity', '1');
+      // this.renderer.setElementStyle(this.htmlTextElem, 'opacity', '1');
+      this.renderer.setStyle(this.htmlArrowElem, 'opacity', '1');
+      // this.renderer.setElementStyle(this.htmlArrowElem, 'opacity', '1');
       this.ngAfterViewInit();
     } else if (this.slideButtonDone && !this.isDisabled) {
       this.isConfirm = true;

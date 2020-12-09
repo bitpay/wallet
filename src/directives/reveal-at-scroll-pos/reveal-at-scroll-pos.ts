@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 import { Content } from 'ionic-angular';
 
 @Directive({
@@ -13,7 +13,7 @@ export class RevealAtScrollPosition {
   scrollPositionOfLastStyleUpdate: number = 0;
   animationDistance: number = 28;
 
-  constructor(private element: ElementRef, private renderer: Renderer) {}
+  constructor(private element: ElementRef, private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     this.setInitialStyles();
@@ -34,7 +34,8 @@ export class RevealAtScrollPosition {
 
   setInitialStyles() {
     this.setOpacity(0);
-    this.renderer.setElementClass(this.element.nativeElement, 'ellipsis', true);
+    this.renderer.addClass(this.element.nativeElement, 'ellipsis');
+    // this.renderer.setElementClass(this.element.nativeElement, 'ellipsis', true);
   }
 
   updateStyling(scrollTop: number) {
@@ -46,19 +47,29 @@ export class RevealAtScrollPosition {
   }
 
   setOpacity(opacity: number) {
-    this.renderer.setElementStyle(
+    this.renderer.setStyle(
       this.element.nativeElement,
       'opacity',
       opacity.toFixed(3)
     );
+    // this.renderer.setElementStyle(
+    //   this.element.nativeElement,
+    //   'opacity',
+    //   opacity.toFixed(3)
+    // );
   }
 
   setTransform(translateX: number) {
-    this.renderer.setElementStyle(
+    this.renderer.setStyle(
       this.element.nativeElement,
       'transform',
       `translateX(${translateX}px)`
     );
+    // this.renderer.setElementStyle(
+    //   this.element.nativeElement,
+    //   'transform',
+    //   `translateX(${translateX}px)`
+    // );
   }
 
   getOpacity(scrollTop: number) {
