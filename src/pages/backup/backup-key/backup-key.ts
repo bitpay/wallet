@@ -30,6 +30,7 @@ export class BackupKeyPage {
   public keys;
 
   private keyId: string;
+  private password: string;
 
   constructor(
     private navCtrl: NavController,
@@ -63,6 +64,7 @@ export class BackupKeyPage {
         let keys;
         try {
           keys = this.keyProvider.get(this.keyId, password);
+          this.password = password;
         } catch (err) {
           const title =
             'Your wallet is in a corrupt state. Please contact support and share the logs provided.';
@@ -138,7 +140,8 @@ export class BackupKeyPage {
       words: this.mnemonicWords,
       keys: this.keys,
       keyId: this.keyId,
-      isOnboardingFlow: this.navParams.data.isOnboardingFlow
+      isOnboardingFlow: this.navParams.data.isOnboardingFlow,
+      encryptPass: this.password
     });
   }
 

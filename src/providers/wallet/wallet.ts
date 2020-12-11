@@ -1767,7 +1767,8 @@ export class WalletProvider {
       }
 
       const mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
-        wallet.credentials.keyId
+        wallet.credentials.keyId,
+        password
       );
 
       return resolve(

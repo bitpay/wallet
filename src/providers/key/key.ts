@@ -123,7 +123,6 @@ export class KeyProvider {
 
   public getKey(keyId: string) {
     let selectedKey = this.keys.find(k => k.id == keyId);
-
     if (selectedKey) {
       return selectedKey;
     } else {
@@ -250,9 +249,9 @@ export class KeyProvider {
     return !keyObj.mnemonic && !keyObj.mnemonicEncrypted;
   }
 
-  public mnemonicHasPassphrase(keyId: string): boolean {
+  public mnemonicHasPassphrase(keyId: string, pass: string): boolean {
     if (!keyId) return false;
-    const key = this.getKey(keyId).get();
+    const key = this.getKey(keyId).get(pass);
     return key.mnemonicHasPassphrase;
   }
 

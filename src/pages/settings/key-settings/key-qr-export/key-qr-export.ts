@@ -21,6 +21,7 @@ export class KeyQrExportPage {
   public appName: string;
 
   private keyId;
+  private password: string;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -49,6 +50,7 @@ export class KeyQrExportPage {
     this.keyProvider
       .handleEncryptedWallet(this.keyId)
       .then((password: string) => {
+        this.password = password;
         const keys = this.keyProvider.get(this.keyId, password);
         this.keysEncrypted = false;
         this.generateQrCode(keys);
@@ -77,7 +79,8 @@ export class KeyQrExportPage {
     }
 
     const mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
-      this.keyId
+      this.keyId,
+      this.password
     );
     this.code =
       '1|' + keys.mnemonic + '|null|null|' + mnemonicHasPassphrase + '|null';

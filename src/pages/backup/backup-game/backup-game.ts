@@ -123,7 +123,8 @@ export class BackupGamePage {
 
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
     this.mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
-      this.keyId
+      this.keyId,
+      this.navParams.data.encryptPass
     );
     this.useIdeograms = this.mnemonicWords.indexOf('\u3000') >= 0;
     this.password = '';
