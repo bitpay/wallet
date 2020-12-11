@@ -29,7 +29,7 @@
         <ion-label>
           <div class="ellipsis">{{swapTx.amountFrom }} {{ swapTx.coinFrom }}</div>
           <div class="status">
-            <span [ngClass]="{assertive: swapTx.status == 'waiting', balanced: swapTx.status == 'finished', royal: swapTx.status == 'failed'}" *ngIf="swapTx.status" translate>{{ swapTx.status }}</span>
+            <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTx.status), assertive: ['failed', 'expired'].includes(swapTx.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTx.status)}" *ngIf="swapTx.status" translate>{{ swapTx.status | titlecase }}</span>
           </div>
         </ion-label>
         <div item-content text-end>

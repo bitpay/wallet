@@ -159,7 +159,7 @@ export class ExchangeCheckoutPage {
                 this.exchangeTxId = data.result.id;
                 this.amountFrom = data.result.amountExpectedFrom;
                 this.amountTo = data.result.amountTo;
-                this.status = data.result[0].status;
+                this.status = data.result.status;
 
                 this.fiatAmountTo = this.rateProvider.toFiat(
                   Number(this.amountTo) *

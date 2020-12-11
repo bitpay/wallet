@@ -371,16 +371,4 @@ export class ExchangeCryptoPage {
 
     this.navCtrl.push(ExchangeCheckoutPage, data);
   }
-
-  public testGetStatus() {
-    const txid_here = { exchangeTxId: 'innglze9t2t89uns' };
-    this.changellyProvider
-      .getStatus(txid_here)
-      .then(data => {
-        console.log('++++++++++++++++getStatus data: ', data);
-      })
-      .catch(err => {
-        console.log('++++++++++++++++getStatus err: ', err);
-      });
-  }
 }

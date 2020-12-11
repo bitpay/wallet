@@ -61,12 +61,34 @@ export class ChangellyPage {
         const swapTxs: any = {};
         Object.assign(swapTxs, changellyData);
         this.swapTxs = Object.values(swapTxs);
+        console.log('===============this.swapTxs: ', this.swapTxs);
+
+        this.updateStatus()
+          .then(data => {
+            console.log('===============this.updateStatus data: ', data);
+          })
+          .catch(err => {
+            console.log('===============this.updateStatus err: ', err);
+          });
+
         this.loading = false;
       })
       .catch(err => {
         this.loading = false;
         if (err) this.logger.error(err);
       });
+  }
+
+  public updateStatus() {
+    let updates = [];
+    this.swapTxs.forEach(tx => {
+      if (['finished', 'failed', 'refunded', 'expired'].includes(tx.status))
+        return;
+
+      updates.push(this.changellyProvider.getStatus(tx.exchangeTxId));
+    });
+
+    return Promise.all(updates);
   }
 
   public openChangellyModal(swapTxData) {

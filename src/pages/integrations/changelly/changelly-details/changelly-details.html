@@ -57,18 +57,15 @@
     <ion-item *ngIf="swapTxData.status">
       {{'Status' | translate}}
       <ion-note item-end>
-        <span class="balanced" translate>{{ swapTxData.status }}</span>
+        <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTxData.status), assertive: ['failed', 'expired'].includes(swapTxData.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTxData.status)}" translate>{{ swapTxData.status | titlecase }}</span>
       </ion-note>
     </ion-item>
 
-    <!-- <label-tip type="info" header="no-header" *ngIf="swapTxData.status == 'swapTxDataSent' || swapTxData.status == 'success'">
+    <label-tip type="info" header="no-header" *ngIf="swapTxData.status && statusDescription">
       <div label-tip-body>
-        <span translate>If you have successfully completed the entire payment process, remember that receiving crypto usually takes up to 1 hour.</span>
-        <br>
-        <br>
-        <a class="pointer" (click)="openExternalLink('https://payment-status.changelly.com/#/')" translate>What is the status of my payment?</a>
+        <span translate>{{ statusDescription }}</span>
       </div>
-    </label-tip> -->
+    </label-tip>
 
     <ion-item>
       {{'Exchange address' | translate}}

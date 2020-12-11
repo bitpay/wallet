@@ -114,17 +114,26 @@ export class ChangellyProvider {
     return this.doChangellyRequest(message);
   }
 
-  public getStatus(data): Promise<any> {
-    const message = {
-      jsonrpc: '2.0',
-      id: 'test',
-      method: 'getStatus',
-      params: {
-        id: data.exchangeTxId
-      }
-    };
+  public getStatus(exchangeTxId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const message = {
+        jsonrpc: '2.0',
+        id: 'test',
+        method: 'getStatus',
+        params: {
+          id: exchangeTxId
+        }
+      };
 
-    return this.doChangellyRequest(message);
+      this.doChangellyRequest(message)
+        .then(data => {
+          data.id = exchangeTxId;
+          return resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   }
 
   private doChangellyRequest(message): Promise<any> {
