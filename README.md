@@ -1,4 +1,12 @@
-<img src="https://raw.githubusercontent.com/bitpay/copay/master/resources/copay/windows/icon/Wide310x150Logo.scale-100.png" alt="Copay">
+[](https://e.pcloud.link/publink/show?code=XZlOs7Z59O1k4feIzfNP2PeUnXIazokQBnX)
+
+- team work from develop branch​
+- developer create feature branch: fb-[fb name]: eg: fb-login, fb-AP1234, ​
+- for personal branches, should have dev name in front, e.g. fb-nghiacc-xxxx​
+- fetch from develop branch daily​
+- once done —> Pull request to maintaners
+- on release date, the develop branch will be branched into a release branch
+- release branch will be merged into master branch after integration test is done ​
 
 [![CircleCI](https://img.shields.io/circleci/project/github/bitpay/copay/master.svg)](https://circleci.com/gh/bitpay/copay/)
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/copay.svg)](https://codecov.io/gh/bitpay/copay/)
