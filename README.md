@@ -1,6 +1,4 @@
-[](https://e.pcloud.link/publink/show?code=XZlOs7Z59O1k4feIzfNP2PeUnXIazokQBnX)(Development Workflow)
-[Development Workflow](https://photos.app.goo.gl/UUYrRa88qs9BQmwy5)
-<img src="https://e.pcloud.link/publink/show?code=XZlOs7Z59O1k4feIzfNP2PeUnXIazokQBnX" alt="AbcPay">
+<img src="https://photos.app.goo.gl/UUYrRa88qs9BQmwy5" alt="AbcPay">
 
 - team work from develop branch​
 - developer create feature branch: fb-[fb name]: eg: fb-login, fb-AP1234, ​
