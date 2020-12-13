@@ -32,6 +32,22 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Multiple languages supported
 - Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.wallet&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
 
+### Coin specific features
+
+#### Bitcoin
+- Segwit and native segwit addresses (BECH32) for sending and receiving
+- CPFP (Child pays for parent) transaction acceleration (available after 4 hours of unconfirmed TXs).
+- Transaction fee adjustmenet using 4 preset levels (using bitcoin-core estimations) OR custom  fee-rate setting.
+
+#### Bitcoin Cash
+- Schnorr signature support
+
+#### Ethereum 
+- Wallet connect
+- Multisig wallet (using consensys contract)
+- Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas pricee setting.
+
+
 ## Testing in a Browser
 
 > **Note:** This method should only be used for development purposes. When running Copay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
