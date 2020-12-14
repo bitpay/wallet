@@ -114,7 +114,7 @@ export class ChangellyProvider {
     return this.doChangellyRequest(message);
   }
 
-  public getStatus(exchangeTxId: string): Promise<any> {
+  public getStatus(exchangeTxId: string, oldStatus: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const message = {
         jsonrpc: '2.0',
@@ -128,6 +128,7 @@ export class ChangellyProvider {
       this.doChangellyRequest(message)
         .then(data => {
           data.id = exchangeTxId;
+          data.oldStatus = oldStatus;
           return resolve(data);
         })
         .catch(err => {
@@ -142,17 +143,19 @@ export class ChangellyProvider {
         'Content-Type': 'application/json'
       });
 
+      this.logger.debug(
+        'Making a Changelly request: ' + JSON.stringify(message)
+      );
+
       this.http
         .post(this.uri + '/v1/service/changelly/makeRequest', message, {
           headers
         })
         .subscribe(
           data => {
-            console.log('===== copay getRates data success: ', data);
             return resolve(data);
           },
           err => {
-            console.log('===== copay getRates err: ', err);
             return reject(err);
           }
         );

@@ -46,7 +46,7 @@ export class ChangellyDetailsPage {
         break;
       case 'confirming':
         this.statusDescription = this.translate.instant(
-          'We have received payin and are waiting for certain amount of confirmations depending of incoming currency.'
+          'Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency.'
         );
         break;
       case 'exchanging':
@@ -89,10 +89,18 @@ export class ChangellyDetailsPage {
     }
   }
 
+  public doRefresh(refresher) {
+    this.getStatus(true);
+
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
+  }
+
   public getStatus(force?: boolean) {
     if (this.swapTxData.status == 'finished' && !force) return;
     this.changellyProvider
-      .getStatus(this.swapTxData.exchangeTxId)
+      .getStatus(this.swapTxData.exchangeTxId, this.swapTxData.status)
       .then(data => {
         if (data.error) {
           this.logger.error('Changelly error: ' + data.error.message);
@@ -113,9 +121,9 @@ export class ChangellyDetailsPage {
   }
 
   public remove() {
-    const title = this.translate.instant('Removing Payment Request Data');
+    const title = this.translate.instant('Removing Transaction Data');
     const message = this.translate.instant(
-      "The data of this payment request will be deleted. Make sure you don't need it"
+      "The data of this exchange transaction will be deleted from your device. Make sure you don't need it"
     );
     const okText = this.translate.instant('Remove');
     const cancelText = this.translate.instant('Cancel');

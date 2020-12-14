@@ -42,12 +42,10 @@ page-exchange-checkout {
     color: color($colors, light-grey);
     text-align: right;
   }
-  .partner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    img {
-      margin-left: 7px;
+  .terms {
+    color: color($colors, primary);
+    &-checkbox {
+      color: color($colors, light-grey);
     }
   }
 }

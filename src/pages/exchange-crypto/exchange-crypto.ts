@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Pages
@@ -11,7 +11,6 @@ import { AmountPage } from '../../pages/send/amount/amount';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ChangellyProvider } from '../../providers/changelly/changelly';
 import { CurrencyProvider } from '../../providers/currency/currency';
-// import { ErrorsProvider } from '../../providers/errors/errors';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -47,20 +46,16 @@ export class ExchangeCryptoPage {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private logger: Logger,
-    private navParams: NavParams,
     private modalCtrl: ModalController,
     private changellyProvider: ChangellyProvider,
     private navCtrl: NavController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    // private errorsProvider: ErrorsProvider,
     private currencyProvider: CurrencyProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private txFormatProvider: TxFormatProvider
   ) {
-    console.log('exchangeCryptoPage navParams: ', this.navParams);
-    // this.loading = true;
     this.allWallets = [];
     this.toWallets = [];
     this.fromWallets = [];
@@ -75,11 +70,18 @@ export class ExchangeCryptoPage {
     this.changellyProvider
       .getCurrencies()
       .then(data => {
-        console.log('===== getCurrencies data: ', data);
-        console.log(
-          '==== this.currencyProvider.getAvailableCoins(): ',
-          this.currencyProvider.getAvailableCoins()
-        );
+        if (data.error) {
+          this.logger.error(
+            'Changelly getCurrencies Error: ' + data.error.message
+          );
+          this.showErrorAndBack(
+            null,
+            this.translate.instant(
+              'Changelly is not available at this moment. Please, try again later.'
+            )
+          );
+          return;
+        }
 
         if (
           data &&
@@ -93,7 +95,7 @@ export class ExchangeCryptoPage {
           );
         }
 
-        console.log('====== this.supportedCoins: ', this.supportedCoins);
+        this.logger.debug('Changelly supportedCoins: ' + this.supportedCoins);
 
         this.allWallets = this.profileProvider.getWallets({
           network: 'livenet',
@@ -102,7 +104,6 @@ export class ExchangeCryptoPage {
           backedUp: true
         });
 
-        // this.loading = false;
         this.onGoingProcessProvider.clear();
 
         if (_.isEmpty(this.allWallets)) {
@@ -126,11 +127,11 @@ export class ExchangeCryptoPage {
         }
       })
       .catch(err => {
-        console.log('========== getCurrencies err: ', err);
+        this.logger.error('Changelly getCurrencies Error: ', err);
         this.showErrorAndBack(
           null,
           this.translate.instant(
-            'Changelly is not available now. Please try later.'
+            'Changelly is not available at this moment. Please, try again later.'
           )
         );
       });
@@ -199,8 +200,6 @@ export class ExchangeCryptoPage {
   }
 
   public onWalletSelect(wallet, selector: string): void {
-    console.log('selected wallet: ', wallet, selector);
-
     if (selector == 'from') {
       this.onFromWalletSelect(wallet);
     } else if (selector == 'to') {
@@ -224,12 +223,12 @@ export class ExchangeCryptoPage {
 
   private updateMaxAndMin() {
     this.amountTo = null;
+    this.rate = null;
     if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
       return;
-    let msg = this.translate.instant(
-      'Changelly is not available at this moment. Please, try again later.'
-    );
+
     let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
+    this.logger.debug('Updating max and min with pair: ' + pair);
 
     const data = {
       coinFrom: this.fromWalletSelected.coin,
@@ -238,7 +237,12 @@ export class ExchangeCryptoPage {
     this.changellyProvider
       .getPairsParams(data)
       .then(data => {
-        console.log('========== updateMaxAndMin data: ', pair, data);
+        if (data.error) {
+          const msg = 'Changelly getPairsParams Error: ' + data.error.message;
+          this.showErrorAndBack(null, msg, true);
+          return;
+        }
+
         this.minAmount = Number(data.result[0].minAmountFixed);
         this.maxAmount = Number(data.result[0].maxAmountFixed);
         this.logger.debug(
@@ -247,7 +251,7 @@ export class ExchangeCryptoPage {
         if (this.amountFrom > this.maxAmount) {
           const msg = this.replaceParametersProvider.replace(
             this.translate.instant(
-              'The amount entered is greater than the maximum allowed ({{maxAmount}} {{coin}})'
+              'The amount entered is greater than the maximum allowed: ({{maxAmount}} {{coin}})'
             ),
             { maxAmount: this.maxAmount, coin: this.fromWalletSelected.coin }
           );
@@ -257,7 +261,7 @@ export class ExchangeCryptoPage {
         if (this.amountFrom < this.minAmount) {
           const msg = this.replaceParametersProvider.replace(
             this.translate.instant(
-              'The amount entered is lower than the minimum allowed ({{minAmount}} {{coin}})'
+              'The amount entered is lower than the minimum allowed: ({{minAmount}} {{coin}})'
             ),
             { minAmount: this.minAmount, coin: this.fromWalletSelected.coin }
           );
@@ -267,7 +271,13 @@ export class ExchangeCryptoPage {
         this.updateReceivingAmount();
       })
       .catch(err => {
-        console.log('========== updateMaxAndMin err: ', msg, err);
+        this.logger.error('Changelly getPairsParams Error: ', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'Changelly is not available at this moment. Please, try again later.'
+          )
+        );
       });
   }
 
@@ -310,7 +320,6 @@ export class ExchangeCryptoPage {
           data.amount,
           data.coin
         );
-        console.log('from Amount modal data: ', data, this.amountFrom);
         this.updateMaxAndMin();
       }
     });
@@ -319,6 +328,11 @@ export class ExchangeCryptoPage {
   private updateReceivingAmount() {
     if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
       return;
+
+    const pair =
+      this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
+    this.logger.debug('Updating receiving amount with pair: ' + pair);
+
     const data = {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
@@ -328,21 +342,24 @@ export class ExchangeCryptoPage {
       .getFixRateForAmount(data)
       .then(data => {
         if (data.error) {
-          this.logger.error('Changelly error: ' + data.error.message);
+          const msg =
+            'Changelly getFixRateForAmount Error: ' + data.error.message;
+          this.showErrorAndBack(null, msg, true);
           return;
         }
-        let pair =
-          this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
-        console.log('========== updateReceivingAmount data: ', pair, data);
+
         this.fixedRateId = data.result[0].id;
         this.amountTo = Number(data.result[0].amountTo);
         this.rate = Number(data.result[0].result); // result == rate
       })
       .catch(err => {
-        let msg = this.translate.instant(
-          'Changelly is not available at this moment. Please, try again later.'
+        this.logger.error('Changelly getFixRateForAmount Error: ', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'Changelly is not available at this moment. Please, try again later.'
+          )
         );
-        console.log('========== updateReceivingAmount err: ', msg, err);
       });
   }
 

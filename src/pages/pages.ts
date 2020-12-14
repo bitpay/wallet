@@ -40,6 +40,7 @@ import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/
 // Integrations: Changelly
 import { ChangellyPage } from '../pages/integrations/changelly/changelly';
 import { ChangellyDetailsPage } from '../pages/integrations/changelly/changelly-details/changelly-details';
+import { ChangellyTermsPage } from '../pages/integrations/changelly/changelly-terms/changelly-terms';
 
 // Integrations: Coinbase
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
@@ -179,6 +180,7 @@ export const PAGES = [
   CardCatalogPage,
   ChangellyDetailsPage,
   ChangellyPage,
+  ChangellyTermsPage,
   CreateWalletPage,
   CreateNewWalletPage,
   CoinbaseAccountPage,

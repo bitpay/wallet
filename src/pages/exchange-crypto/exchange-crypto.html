@@ -5,8 +5,6 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
-
     <ion-list class="bp-list" *ngIf="!loading">
       <div class="item-label" translate>Source</div>
       <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showWallets('from')">
@@ -55,28 +53,27 @@
         </ion-col>
 
         <ion-col col-5 class="amount">
-          <div class="amount-container" *ngIf="amountTo">{{amountTo}} {{toWalletSelected.coin.toUpperCase()}}</div>
+          <ion-spinner name="crescent" *ngIf="toWalletSelected && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+          <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</div>
         </ion-col>
         <div *ngIf="rate" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate}} {{toWalletSelected.coin.toUpperCase()}}</span>
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
         </div>
         <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{amountTo / amountFrom}} {{toWalletSelected.coin.toUpperCase()}}</span>
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
         </div>
       </ion-row>
     </ion-list>
 
-    <button ion-button class="button-standard button-primary" (click)="goToExchangeCheckoutPage()" [disabled]="!canContinue()">
-      <span>{{'Continue' | translate}}</span>
-    </button>
+    <div class="bottom-absolute">
+      <button ion-button class="button-standard button-primary" (click)="goToExchangeCheckoutPage()" [disabled]="!canContinue()">
+        <span>{{'Continue' | translate}}</span>
+      </button>
 
-    <button ion-button class="button-standard button-primary" (click)="testGetStatus()">
-      <span>{{'testGetStatus' | translate}}</span>
-    </button>
-
-    <div class="partner">
-      <span>{{'Powered by' | translate}}</span>
-      <img src="assets/img/exchange-crypto/changelly-vector-logo.svg" width="120">
+      <div class="partner">
+        <span>{{'Powered by' | translate}}</span>
+        <img src="assets/img/exchange-crypto/changelly-vector-logo.svg" width="120">
+      </div>
     </div>
   </div>
 </wide-header-page>

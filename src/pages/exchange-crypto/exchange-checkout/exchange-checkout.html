@@ -14,7 +14,7 @@
         </ion-label>
       </ion-item>
 
-      <ion-item ion-item (click)="showWallets()">
+      <ion-item ion-item>
         <ion-label>
           <div class="summary-item">
             <span translate>Receiving</span>
@@ -35,7 +35,7 @@
 
       <div class="line-divider"></div>
 
-      <ion-item ion-item (click)="showWallets()">
+      <ion-item ion-item>
         <ion-label>
           <div class="summary-item">
             <span translate>Selling</span>
@@ -76,7 +76,7 @@
       <ion-item>
         <ion-label>
           <div class="summary-item">
-            <span>{{"Network Cost" | translate}}</span>
+            <span>{{"Miner Fee" | translate}}</span>
           </div>
         </ion-label>
         <ion-note item-end>
@@ -137,23 +137,26 @@
       <div class="amount-details">
         <div class="secondary-note">
           <span>
-            {{ fiatAmountTo | number : '1.2-2' }} {{ alternativeIsoCode }}
+            ~{{ fiatAmountTo | number : '1.2-2' }} {{ alternativeIsoCode }}
           </span>
         </div>
       </div>
 
       <ion-item>
-        <ion-label>
+        <ion-label class="terms-checkbox">
           <span translate>Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC</span>
         </ion-label>
         <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
       </ion-item>
+      <ion-item (click)="openTermsModal()">
+        <ion-label class="terms">
+          <span translate>Review Changelly policies</span>
+        </ion-label>
+        <ion-note item-end>
+          <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+        </ion-note>
+      </ion-item>
     </ion-list>
-
-    <div class="partner">
-      <span>{{'Powered by' | translate}}</span>
-      <img src="assets/img/exchange-crypto/changelly-vector-logo.svg" width="120">
-    </div>
   </div>
 
   <div footer-content>

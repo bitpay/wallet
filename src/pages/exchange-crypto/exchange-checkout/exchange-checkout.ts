@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
-// import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { ChangellyPage } from '../../integrations/changelly/changelly';
+import { ChangellyTermsPage } from '../../integrations/changelly/changelly-terms/changelly-terms';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -14,10 +14,8 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
 import { ConfigProvider } from '../../../providers/config/config';
 import { CurrencyProvider } from '../../../providers/currency/currency';
-// import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-// import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import {
@@ -67,8 +65,6 @@ export class ExchangeCheckoutPage {
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    // private errorsProvider: ErrorsProvider,
-    // private popupProvider: PopupProvider,
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider,
@@ -76,6 +72,9 @@ export class ExchangeCheckoutPage {
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {
+    this.onGoingProcessProvider.set(
+      this.translate.instant('Getting data from the exchange...')
+    );
     this.fromWalletSelected = this.profileProvider.getWallet(
       this.navParams.data.fromWalletSelectedId
     );
@@ -94,8 +93,6 @@ export class ExchangeCheckoutPage {
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCheckoutPage');
   }
-
-  ionViewWillEnter() {}
 
   private createFixTransaction() {
     this.walletProvider
@@ -137,7 +134,7 @@ export class ExchangeCheckoutPage {
                   Number(data.result.changellyFee) > 0 ||
                   Number(data.result.apiExtraFee > 0)
                 ) {
-                  // changellyFee and apiExtraFee (bitpay fee) are in percents
+                  // changellyFee and apiExtraFee (Bitpay fee) are in percents
                   const receivingPercentage =
                     100 -
                     Number(data.result.changellyFee) -
@@ -209,6 +206,7 @@ export class ExchangeCheckoutPage {
                   });
               })
               .catch(err => {
+                this.onGoingProcessProvider.clear();
                 let msg = this.translate.instant(
                   'Changelly is not available at this moment. Please, try again later.'
                 );
@@ -216,11 +214,13 @@ export class ExchangeCheckoutPage {
               });
           })
           .catch(err => {
+            this.onGoingProcessProvider.clear();
             console.log('Could not get returnAddress address', err);
             return;
           });
       })
       .catch(err => {
+        this.onGoingProcessProvider.clear();
         console.log('Could not get withdrawalAddress address', err);
         return;
       });
@@ -424,6 +424,18 @@ export class ExchangeCheckoutPage {
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
       await this.navCtrl.push(ChangellyPage, null, { animate: false });
+    });
+  }
+
+  public openTermsModal(): void {
+    this.logger.debug('Changelly Terms modal opened');
+    let modal = this.modalCtrl.create(ChangellyTermsPage, null, {
+      showBackdrop: true,
+      enableBackdropDismiss: false
+    });
+    modal.present();
+    modal.onDidDismiss(async () => {
+      this.logger.debug('Changelly Terms modal closed');
     });
   }
 

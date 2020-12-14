@@ -20,7 +20,7 @@ page-exchange-crypto {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding: 0 2rem;
+      padding: 0 1.6rem;
       cursor: pointer;
     }
   }
@@ -48,6 +48,7 @@ page-exchange-crypto {
   }
   .rate {
     width: 100%;
+    padding: 0 0.5rem;
     color: color($colors, light-grey);
     text-align: right;
   }
