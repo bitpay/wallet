@@ -362,6 +362,8 @@ export class CopayApp {
       this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
     ]);
 
+    await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
+
     if (
       this.platformProvider.isCordova &&
       this.appProvider.info.name === 'bitpay'

@@ -631,12 +631,15 @@ export class IABCardProvider {
 
       const headers = [signedData, pub];
 
+      this.logger.debug(`MDES headers ${JSON.stringify(headers)}`);
+      this.logger.debug(`MDES json ${JSON.stringify(json)}`);
+
       return await this.appleWalletProvider.graphRequest(
         headers,
         JSON.stringify(json)
       );
     } catch (err) {
-      this.logger.log(`graph request failed ${err}`);
+      this.logger.error(`graph request failed ${err}`);
     }
   }
 
@@ -996,9 +999,9 @@ export class IABCardProvider {
       const result = await this.appleWalletProvider.checkPairedDevicesBySuffix(
         data.cardSuffix
       );
-      this.logger.log(`MDES ${JSON.stringify(result)}`);
+      this.logger.debug(`MDES ${JSON.stringify(result)}`);
     } catch (err) {
-      this.logger.log(`MDES checkCard${JSON.stringify(err)}`);
+      this.logger.error(`MDES checkCard${JSON.stringify(err)}`);
     }
 
     // ios handler
@@ -1011,6 +1014,10 @@ export class IABCardProvider {
         } = await this.appleWalletProvider.startAddPaymentPass(data);
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
+        this.logger.debug(JSON.stringify(certs));
+
+        const mdesCertOnlyFlag = await this.persistenceProvider.getTempMdesCertOnlyFlag();
+        if (mdesCertOnlyFlag === 'bypassed') return;
 
         const {
           certificateLeaf: cert1,
@@ -1046,6 +1053,7 @@ export class IABCardProvider {
         };
 
         this.logger.debug(`appleWallet - start token graph call`);
+        this.logger.debug(`MDES- req ${JSON.stringify(request)}`);
 
         const res = await this.graphRequest(request);
 
