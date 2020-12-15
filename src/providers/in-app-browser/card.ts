@@ -964,7 +964,9 @@ export class IABCardProvider {
         this.logger.log('appleWallet - startAddPaymentPass - not available');
         payload = {
           ...payload,
-          error: `ios version (${this.device.version}) does not support apple wallet`
+          error: `ios version (${
+            this.device.version
+          }) does not support apple wallet`
         };
       }
 
@@ -1024,7 +1026,7 @@ export class IABCardProvider {
           certificateSubCA: cert2,
           nonce,
           nonceSignature
-        } = certs || {};
+        }: any = certs || {};
 
         const request = {
           query: `
@@ -1088,7 +1090,7 @@ export class IABCardProvider {
       wrappedKey: ephemeralPublicKey,
       activationData,
       encryptedPassData
-    } = provisioningData || {};
+    }: any = provisioningData || {};
 
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({
