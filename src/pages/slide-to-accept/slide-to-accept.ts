@@ -167,7 +167,7 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         'transform',
         posCss['transform']
       );
-       this.renderer.setStyle(
+      this.renderer.setStyle(
         this.htmlButtonElem,
         '-webkit-transform',
         posCss['-webkit-transform']
