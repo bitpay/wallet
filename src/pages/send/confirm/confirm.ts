@@ -604,9 +604,7 @@ export class ConfirmPage {
           } else if (this.usingMerchantFee) {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
-              `Using Merchant Fee: ${
-                tx.feeRate
-              } vs. referent level (5 * feeRate) ${maxAllowedFee}`
+              `Using Merchant Fee: ${tx.feeRate} vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
             if (
