@@ -4,6 +4,7 @@ import { ViewController } from 'ionic-angular';
 // Proviers
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { Logger } from '../../../../providers/logger/logger';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 
 @Component({
   selector: 'page-changelly-terms',
@@ -13,7 +14,8 @@ export class ChangellyTermsPage {
   constructor(
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    public themeProvider: ThemeProvider
   ) {}
 
   ionViewDidLoad() {

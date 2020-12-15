@@ -15,6 +15,7 @@ import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 
 @Component({
@@ -54,7 +55,8 @@ export class ExchangeCryptoPage {
     private translate: TranslateService,
     private currencyProvider: CurrencyProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    public themeProvider: ThemeProvider
   ) {
     this.allWallets = [];
     this.toWallets = [];

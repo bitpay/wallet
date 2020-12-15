@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
-import * as _ from 'lodash';
 
 // Pages
 import { ChangellyDetailsPage } from './changelly-details/changelly-details';
@@ -25,7 +24,6 @@ export class ChangellyPage {
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private modalCtrl: ModalController,
-    // private navParams: NavParams,
     private changellyProvider: ChangellyProvider,
     public themeProvider: ThemeProvider
   ) {}
@@ -44,25 +42,9 @@ export class ChangellyPage {
     this.changellyProvider
       .getChangelly()
       .then(changellyData => {
-        // if (
-        //   !_.isEmpty(this.navParams.data) &&
-        //   this.navParams.data.paymentId &&
-        //   changellyData[this.navParams.data.paymentId]
-        // ) {
-        //   changellyData[this.navParams.data.paymentId].status =
-        //     this.navParams.data.success === 'true' ? 'success' : 'failed';
-        //   this.changellyProvider
-        //     .saveChangelly(changellyData[this.navParams.data.paymentId], null)
-        //     .catch(() => {
-        //       this.logger.warn('Could not update payment request status');
-        //     });
-        // }
-
         const swapTxs: any = {};
         Object.assign(swapTxs, changellyData);
         this.swapTxs = Object.values(swapTxs);
-        console.log('===============this.swapTxs: ', this.swapTxs);
-
         this.loading = false;
       })
       .catch(err => {

@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content text-center class="add-bottom-safe-area" no-bounce>
-  <ion-list>
+  <ion-list class="bp-list">
     <ion-item (click)="openExternalLink('https://changelly.com/privacy-policy')">
       <ion-label translate>{{ 'Privacy Policy' | translate}}</ion-label>
       <ion-note item-end>
@@ -36,7 +36,7 @@
   <div class="bottom-absolute">
     <div class="partner">
       <span>{{'Powered by' | translate}}</span>
-      <img src="assets/img/exchange-crypto/changelly-vector-logo.svg" width="120">
+      <img src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
     </div>
   </div>
 </ion-content>

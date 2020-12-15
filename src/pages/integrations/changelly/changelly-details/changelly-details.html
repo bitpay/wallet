@@ -23,7 +23,7 @@
     <div class="subtitle-modal">
       <img class="icon-service" src="assets/img/exchange-crypto/changelly-icon.svg" alt="Changelly" width="40">
       {{ swapTxData.amountTo | number:'1.0-6'}}
-      <span class="amount-unit">{{ swapTxData.cointTo }}</span>
+      <span class="amount-unit">{{ swapTxData.cointTo | uppercase }}</span>
     </div>
   </div>
 
@@ -47,7 +47,7 @@
       <ion-note item-end>
         <span *ngIf="!swapTxData.amountFrom">...</span>
         <span *ngIf="swapTxData.amountFrom">
-          {{ swapTxData.amountFrom }} {{ swapTxData.coinFrom }}
+          {{ swapTxData.amountFrom | number:'1.0-6' }} {{ swapTxData.coinFrom | uppercase }}
         </span>
       </ion-note>
     </ion-item>
@@ -77,7 +77,7 @@
       </ion-note>
     </ion-item>
 
-    <label-tip type="info" header="no-header" *ngIf="swapTxData.status && statusDescription">
+    <label-tip class="right-arrow" type="info" header="no-header" *ngIf="swapTxData.status && statusDescription">
       <div label-tip-body>
         <span translate>{{ statusDescription }}</span>
       </div>

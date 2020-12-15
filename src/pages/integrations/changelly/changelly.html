@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title class="bp-title">
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <img width="110" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/exchange-crypto/changelly-vector-logo.svg' : 'assets/img/exchange-crypto/changelly-vector-logo.svg'" alt="Changelly" class="changelly-logo">
+        <img width="110" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" alt="Changelly" class="changelly-logo">
       </div>
     </ion-title>
     <ng-content select="[right]"></ng-content>
@@ -15,26 +15,26 @@
       <ion-toolbar class="wide-header__title">
         <div>
           <expandable-header-primary>
-            <img margin-left width="130" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/exchange-crypto/changelly-vector-logo.svg' : 'assets/img/exchange-crypto/changelly-vector-logo.svg'" alt="Changelly">
+            <img margin-left width="130" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" alt="Changelly">
           </expandable-header-primary>
         </div>
       </ion-toolbar>
     </expandable-header>
 
     <ion-list class="bp-list" *ngIf="swapTxs && swapTxs.length > 0">
-      <ion-item-divider>{{'Payment Requests' | translate}}
+      <ion-item-divider>{{'Transactions' | translate}}
         <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
       </ion-item-divider>
       <button ion-item *ngFor="let swapTx of swapTxs | orderBy : ['-date']" (click)="openChangellyModal(swapTx)">
         <ion-label>
-          <div class="ellipsis">{{swapTx.amountFrom }} {{ swapTx.coinFrom }}</div>
+          <div class="ellipsis">{{swapTx.amountFrom  | number:'1.0-6' }} {{ swapTx.coinFrom | uppercase }}</div>
           <div class="status">
             <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTx.status), assertive: ['failed', 'expired'].includes(swapTx.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTx.status)}" *ngIf="swapTx.status" translate>{{ swapTx.status | titlecase }}</span>
           </div>
         </ion-label>
         <div item-content text-end>
-          <div class="text-bold">{{ swapTx.amountTo | number:'1.0-6'}} {{ swapTx.cointTo }}</div>
-          <div class="date calm">{{swapTx.date | amTimeAgo}}</div>
+          <div class="text-bold">{{ swapTx.amountTo | number:'1.0-6'}} {{ swapTx.cointTo | uppercase }}</div>
+          <div class="date calm">{{ swapTx.date | amTimeAgo }}</div>
         </div>
       </button>
     </ion-list>

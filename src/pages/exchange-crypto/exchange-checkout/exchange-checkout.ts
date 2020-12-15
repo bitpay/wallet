@@ -118,11 +118,18 @@ export class ExchangeCheckoutPage {
               .createFixTransaction(data)
               .then(data => {
                 if (data.error) {
-                  this.logger.error('Changelly error: ' + data.error.message);
+                  this.logger.error(
+                    'Changelly createFixTransaction Error: ' +
+                      data.error.message
+                  );
+
                   if (
                     Math.abs(data.error.code) == 32602 ||
                     Math.abs(data.error.code) == 32603
                   ) {
+                    this.logger.debug(
+                      'Changelly rateId was expired or already used. Generating a new one'
+                    );
                     this.updateReceivingAmount();
                   } else {
                     this.showErrorAndBack(null, data.error.message);
@@ -152,7 +159,7 @@ export class ExchangeCheckoutPage {
                 }
 
                 this.payinAddress = data.result.payinAddress;
-                this.payinExtraId = data.result.payinExtraId; // Used for coins like: XRP, XLM, EOS, IGNIS, BNB, XMR, ARDOR, DCT, XEM
+                this.payinExtraId = data.result.payinExtraId; // (destinationTag) Used for coins like: XRP, XLM, EOS, IGNIS, BNB, XMR, ARDOR, DCT, XEM
                 this.exchangeTxId = data.result.id;
                 this.amountFrom = data.result.amountExpectedFrom;
                 this.amountTo = data.result.amountTo;
@@ -189,7 +196,8 @@ export class ExchangeCheckoutPage {
                 this.createTx(
                   this.fromWalletSelected,
                   this.payinAddress,
-                  depositSat
+                  depositSat,
+                  this.payinExtraId
                 )
                   .then(ctxp => {
                     this.onGoingProcessProvider.clear();
@@ -207,21 +215,40 @@ export class ExchangeCheckoutPage {
               })
               .catch(err => {
                 this.onGoingProcessProvider.clear();
-                let msg = this.translate.instant(
-                  'Changelly is not available at this moment. Please, try again later.'
+                this.logger.error(
+                  'Changelly createFixTransaction Error: ',
+                  err
                 );
-                console.log('========== createFixTransaction err: ', msg, err);
+                this.showErrorAndBack(
+                  null,
+                  this.translate.instant(
+                    'Changelly is not available at this moment. Please, try again later.'
+                  )
+                );
+                return;
               });
           })
           .catch(err => {
             this.onGoingProcessProvider.clear();
-            console.log('Could not get returnAddress address', err);
+            this.logger.error('Could not get returnAddress address', err);
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'There was a problem retrieving the returnAddress. Please, try again later.'
+              )
+            );
             return;
           });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        console.log('Could not get withdrawalAddress address', err);
+        this.logger.error('Could not get withdrawalAddress address', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'There was a problem retrieving the withdrawalAddress. Please, try again later.'
+          )
+        );
         return;
       });
   }
@@ -238,7 +265,9 @@ export class ExchangeCheckoutPage {
       .getFixRateForAmount(data)
       .then(data => {
         if (data.error) {
-          this.showErrorAndBack(null, data.error.message);
+          const msg =
+            'Changelly getFixRateForAmount Error: ' + data.error.message;
+          this.showErrorAndBack(null, msg);
           return;
         }
         let pair =

@@ -1,4 +1,9 @@
 page-exchange-checkout {
+  ion-spinner {
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
   .wallet {
     display: flex;
     align-items: center;
@@ -45,7 +50,9 @@ page-exchange-checkout {
   .terms {
     color: color($colors, primary);
     &-checkbox {
-      color: color($colors, light-grey);
+      color: #757575;
+      font-size: 11px;
+      font-weight: 300;
     }
   }
 }

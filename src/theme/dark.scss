@@ -5,6 +5,8 @@
 1.3 - Messages
 1.4 - Borders
 1.5 - Slides
+1.6 - Toggles
+1.7 - Overriding Ionic Variables
 
 2 - Transition between themes
 
@@ -27,7 +29,9 @@
 
 7 - Buy Crypto
 
-8 - Onboarding
+8 - Exchange Crypto
+
+9 - Onboarding
 */
 
 .dark {
@@ -60,6 +64,9 @@
 
   // 1.6 - Toggles
   $toggle-color-dark-theme: #afafaf;
+
+  // 1.7 - Overriding Ionic Variables
+  $background-color: $bg-color-dark-theme;
 
   // 2 - Transition between themes
   // This is just to make a smooth transition between themes
@@ -1776,7 +1783,7 @@
     }
   }
 
-  // Buy Crypto
+  // 7 - Buy Crypto
   page-crypto-order-summary {
     .bp-list {
       .card {
@@ -1825,7 +1832,25 @@
     }
   }
 
-  // Onboarding
+  // 8 - Exchange Crypto
+
+  page-exchange-crypto {
+    .amount .amount-container {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+    }
+    .divider {
+      border-bottom: 1px solid $border-color-dark-theme;
+      .arrow img {
+        filter: brightness(0.6);
+      }
+    }
+    .partner {
+      color: $text-color-dark-theme-2;
+    }
+  }
+
+  // 9 - Onboarding
   page-feature-education,
   page-recovery-key,
   page-lock-method {
@@ -1896,6 +1921,4 @@
       background-color: $bg-color-dark-theme;
     }
   }
-  // Overriding Ionic Variable
-  $background-color: $bg-color-dark-theme;
 }

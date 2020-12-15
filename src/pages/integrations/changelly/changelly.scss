@@ -1,4 +1,9 @@
 page-changelly {
+  ion-spinner {
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
   ion-title .toolbar-title {
     color: white;
   }

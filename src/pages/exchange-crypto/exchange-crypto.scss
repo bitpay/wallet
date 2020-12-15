@@ -1,4 +1,9 @@
 page-exchange-crypto {
+  ion-spinner {
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
   .wallet {
     display: flex;
     align-items: center;

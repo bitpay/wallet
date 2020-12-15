@@ -66,12 +66,12 @@ export class ChangellyDetailsPage {
         break;
       case 'failed':
         this.statusDescription = this.translate.instant(
-          'Transaction has failed. In most cases, the amount was less than the minimum. Please contact support and provide a transaction id.'
+          `Transaction has failed. In most cases, the amount was less than the minimum. Please contact Changelly support and provide the transaction id: ${this.swapTxData.exchangeTxId}`
         );
         break;
       case 'refunded':
         this.statusDescription = this.translate.instant(
-          "Exchange failed and coins were refunded to user's wallet. The wallet address should be provided by user."
+          "Exchange failed and coins were refunded to user's wallet."
         );
         break;
       case 'hold':
@@ -81,15 +81,17 @@ export class ChangellyDetailsPage {
         break;
       case 'expired':
         this.statusDescription = this.translate.instant(
-          'In case payin was not sent within the indicated timeframe'
+          'Payin was not sent within the indicated timeframe'
         );
         break;
       default:
+        this.statusDescription = null;
         break;
     }
   }
 
   public doRefresh(refresher) {
+    this.logger.info('Forcing status query');
     this.getStatus(true);
 
     setTimeout(() => {
@@ -103,11 +105,11 @@ export class ChangellyDetailsPage {
       .getStatus(this.swapTxData.exchangeTxId, this.swapTxData.status)
       .then(data => {
         if (data.error) {
-          this.logger.error('Changelly error: ' + data.error.message);
+          this.logger.error('Changelly getStatus Error: ' + data.error.message);
           return;
         }
-        console.log('++++++++++++++++getStatus data: ', data);
         if (data.result != this.swapTxData.status) {
+          this.logger.debug('Updating status to: ' + data.result);
           this.swapTxData.status = data.result;
           this.updateStatusDescription();
           this.changellyProvider.saveChangelly(this.swapTxData, {
@@ -116,14 +118,14 @@ export class ChangellyDetailsPage {
         }
       })
       .catch(err => {
-        console.log('++++++++++++++++getStatus err: ', err);
+        this.logger.error('Changelly getStatus Error: ', err);
       });
   }
 
   public remove() {
     const title = this.translate.instant('Removing Transaction Data');
     const message = this.translate.instant(
-      "The data of this exchange transaction will be deleted from your device. Make sure you don't need it"
+      "The data of this exchange will be deleted from your device. Make sure you don't need it"
     );
     const okText = this.translate.instant('Remove');
     const cancelText = this.translate.instant('Cancel');
