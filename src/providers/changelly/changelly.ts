@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 // providers
-import env from '../../environments';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -11,6 +10,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 export class ChangellyProvider {
   private env: string;
   private uri: string;
+  private jsonrpc: string;
 
   constructor(
     private http: HttpClient,
@@ -18,14 +18,22 @@ export class ChangellyProvider {
     private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('ChangellyProvider initialized');
-    this.env = env.name == 'development' ? 'sandbox' : 'production';
-    this.uri = 'http://localhost:3232/bws/api'; // https://bws.bitpay.com/bws/api
+    this.env = 'production';
+    this.uri = 'https://bws.bitpay.com/bws/api';
+    this.jsonrpc = '2.0';
+  }
+
+  private generateMessageId(walletId?: string) {
+    const now = Date.now();
+    if (walletId) return `${walletId}-${now}`;
+    const randomInt = Math.floor(1e8 * Math.random());
+    return `${randomInt}-${now}`;
   }
 
   public getCurrencies(full?: boolean) {
     const message = {
-      jsonrpc: '2.0',
-      id: 'test',
+      jsonrpc: this.jsonrpc,
+      id: this.generateMessageId(),
       method: full ? 'getCurrenciesFull' : 'getCurrencies',
       params: {}
     };
@@ -33,40 +41,10 @@ export class ChangellyProvider {
     return this.doChangellyRequest(message);
   }
 
-  public getMinAmount(data): Promise<any> {
-    const message = {
-      jsonrpc: '2.0',
-      id: 'test',
-      method: 'getMinAmount',
-      params: {
-        from: data.coinFrom,
-        to: data.coinTo
-      }
-    };
-
-    return this.doChangellyRequest(message);
-  }
-
-  public getFixRate(data): Promise<any> {
-    const message = {
-      id: 'test',
-      jsonrpc: '2.0',
-      method: 'getFixRate',
-      params: [
-        {
-          from: data.coinFrom,
-          to: data.coinTo
-        }
-      ]
-    };
-
-    return this.doChangellyRequest(message);
-  }
-
   public getPairsParams(data): Promise<any> {
     const message = {
-      id: 'test',
-      jsonrpc: '2.0',
+      id: this.generateMessageId(data.walletId),
+      jsonrpc: this.jsonrpc,
       method: 'getPairsParams',
       params: [
         {
@@ -81,8 +59,8 @@ export class ChangellyProvider {
 
   public getFixRateForAmount(data): Promise<any> {
     const message = {
-      id: 'test',
-      jsonrpc: '2.0',
+      id: this.generateMessageId(data.walletId),
+      jsonrpc: this.jsonrpc,
       method: 'getFixRateForAmount',
       params: [
         {
@@ -98,8 +76,8 @@ export class ChangellyProvider {
 
   public createFixTransaction(data): Promise<any> {
     const message = {
-      id: 'test',
-      jsonrpc: '2.0',
+      id: this.generateMessageId(data.walletId),
+      jsonrpc: this.jsonrpc,
       method: 'createFixTransaction',
       params: {
         from: data.coinFrom,
@@ -117,8 +95,8 @@ export class ChangellyProvider {
   public getStatus(exchangeTxId: string, oldStatus: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const message = {
-        jsonrpc: '2.0',
-        id: 'test',
+        jsonrpc: this.jsonrpc,
+        id: this.generateMessageId(),
         method: 'getStatus',
         params: {
           id: exchangeTxId
@@ -127,8 +105,10 @@ export class ChangellyProvider {
 
       this.doChangellyRequest(message)
         .then(data => {
-          data.id = exchangeTxId;
+          console.log('data: ', data);
+          data.exchangeTxId = exchangeTxId;
           data.oldStatus = oldStatus;
+          console.log('data: ', data);
           return resolve(data);
         })
         .catch(err => {
@@ -152,7 +132,11 @@ export class ChangellyProvider {
           headers
         })
         .subscribe(
-          data => {
+          (data: any) => {
+            if (data.id && data.id != message.id)
+              return reject(
+                'The response does not match the origin of the request'
+              );
             return resolve(data);
           },
           err => {

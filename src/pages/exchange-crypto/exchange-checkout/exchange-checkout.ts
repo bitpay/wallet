@@ -111,7 +111,8 @@ export class ExchangeCheckoutPage {
               coinTo: this.toWalletSelected.coin,
               addressTo: this.addressTo,
               refundAddress: this.addressFrom,
-              fixedRateId: this.fixedRateId
+              fixedRateId: this.fixedRateId,
+              walletId: this.fromWalletSelected.id
             };
 
             this.changellyProvider
@@ -174,13 +175,7 @@ export class ExchangeCheckoutPage {
                   this.toWalletSelected.coin
                 );
 
-                console.log('-------- this.fiatAmountTo: ', this.fiatAmountTo);
-
-                console.log(new Date(data.result.createdAt));
-                console.log(new Date(data.result.payTill));
                 this.paymentTimeControl(data.result.payTill);
-
-                console.log('========== createFixTransaction data: ', data);
 
                 // To Sat
                 const depositSat = Number(
@@ -201,14 +196,12 @@ export class ExchangeCheckoutPage {
                 )
                   .then(ctxp => {
                     this.onGoingProcessProvider.clear();
-                    console.log('========== ctxp', ctxp);
                     this.ctxp = ctxp;
                     this.fee = this.ctxp.fee;
                     return;
                   })
                   .catch(err => {
                     this.onGoingProcessProvider.clear();
-                    console.log(err);
                     this.showErrorAndBack(err.title, err.message);
                     return;
                   });
@@ -259,7 +252,8 @@ export class ExchangeCheckoutPage {
     const data = {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin
+      coinTo: this.toWalletSelected.coin,
+      walletId: this.fromWalletSelected.id
     };
     this.changellyProvider
       .getFixRateForAmount(data)
@@ -270,9 +264,6 @@ export class ExchangeCheckoutPage {
           this.showErrorAndBack(null, msg);
           return;
         }
-        let pair =
-          this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
-        console.log('========== updateReceivingAmount data: ', pair, data);
         this.fixedRateId = data.result[0].id;
         this.amountTo = Number(data.result[0].amountTo);
         this.rate = Number(data.result[0].result); // result == rate
@@ -280,10 +271,11 @@ export class ExchangeCheckoutPage {
         this.createFixTransaction();
       })
       .catch(err => {
+        this.logger.error(err);
         let msg = this.translate.instant(
           'Changelly is not available at this moment. Please, try again later.'
         );
-        console.log('========== updateReceivingAmount err: ', msg, err);
+        this.showErrorAndBack(null, msg);
       });
   }
 
@@ -357,8 +349,6 @@ export class ExchangeCheckoutPage {
 
       if (destTag) txp.destinationTag = destTag;
 
-      console.log('============== txp: ', txp);
-
       this.walletProvider
         .createTx(wallet, txp)
         .then(ctxp => {
@@ -377,8 +367,7 @@ export class ExchangeCheckoutPage {
     this.onGoingProcessProvider.set('broadcastingTx');
 
     this.publishAndSign(this.fromWalletSelected, this.ctxp)
-      .then(txSent => {
-        console.log('========== txSent', txSent);
+      .then(_txSent => {
         this.onGoingProcessProvider.clear();
         this.saveChangellyData();
       })

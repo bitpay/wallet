@@ -1,4 +1,9 @@
 page-changelly-terms {
+  .bp-list {
+    ion-item {
+      cursor: pointer;
+    }
+  }
   .partner {
     display: flex;
     align-items: center;

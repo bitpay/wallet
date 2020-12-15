@@ -234,7 +234,8 @@ export class ExchangeCryptoPage {
 
     const data = {
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin
+      coinTo: this.toWalletSelected.coin,
+      walletId: this.fromWalletSelected.id
     };
     this.changellyProvider
       .getPairsParams(data)
@@ -338,7 +339,8 @@ export class ExchangeCryptoPage {
     const data = {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin
+      coinTo: this.toWalletSelected.coin,
+      walletId: this.fromWalletSelected.id
     };
     this.changellyProvider
       .getFixRateForAmount(data)
