@@ -1024,7 +1024,7 @@ export class IABCardProvider {
           certificateSubCA: cert2,
           nonce,
           nonceSignature
-        } = certs || {};
+        }: any = certs || {};
 
         const request = {
           query: `
@@ -1088,7 +1088,7 @@ export class IABCardProvider {
       wrappedKey: ephemeralPublicKey,
       activationData,
       encryptedPassData
-    } = provisioningData || {};
+    }: any = provisioningData || {};
 
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({

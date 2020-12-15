@@ -559,14 +559,6 @@ ion-alert .alert-message {
   overflow-y: auto;
 }
 
-.mdToastAfterHeader {
-  top: $toolbar-md-height;
-}
-
-.iosToastAfterHeader {
-  top: $toolbar-ios-height;
-}
-
 .header-extend {
   background: $toolbar-background;
   height: 180px;

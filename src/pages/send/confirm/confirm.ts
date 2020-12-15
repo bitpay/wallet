@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import WalletConnect from '@walletconnect/client';
 import {
   App,
   Events,
@@ -1419,11 +1418,6 @@ export class ConfirmPage {
         } else if (this.navParams.data.walletConnectRequestId) {
           this.persistenceProvider.getWalletConnect().then(session => {
             if (session) {
-              const walletConnector = new WalletConnect({ session });
-              walletConnector.approveRequest({
-                id: this.navParams.data.walletConnectRequestId,
-                result: txp.txid
-              });
               this.analyticsProvider.logEvent(
                 'wallet_connect_action_completed',
                 {}
