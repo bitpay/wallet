@@ -8,7 +8,7 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <button class="linked-wallet" *ngIf="isShared && coin === 'eth'" ion-item (click)="showPairedWalletSelector()">
+    <button class="linked-wallet" *ngIf="isShared && coin === 'eth'" ion-item (click)="showPairedWalletSelector()" detail-none>
       <ion-label>
         <div class="summary-item">
           <span translate>Linked to</span>
@@ -27,7 +27,6 @@
         </ion-row>
 
         <ion-row align-items-center class="wallet" *ngIf="!pairedWallet">
-          <div translate>Select a wallet to link to</div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
