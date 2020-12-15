@@ -634,7 +634,6 @@ export class CopayApp {
     visible
       ? this.renderer.addClass(walletDetailsModal, 'scanning')
       : this.renderer.removeClass(walletDetailsModal, 'scanning');
-    // this.renderer.setElementClass(walletDetailsModal, 'scanning', visible);
     return Observable.timer(transitionDuration).toPromise();
   }
 

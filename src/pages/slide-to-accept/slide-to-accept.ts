@@ -137,29 +137,13 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
           'transform',
           posCss['transform']
         );
-        // this.renderer.setElementStyle(
-        //   this.htmlButtonElem,
-        //   'transform',
-        //   posCss['transform']
-        // );
         this.renderer.setStyle(
           this.htmlButtonElem,
           '-webkit-transform',
           posCss['-webkit-transform']
         );
-        // this.renderer.setElementStyle(
-        //   this.htmlButtonElem,
-        //   '-webkit-transform',
-        //   posCss['-webkit-transform']
-        // );
         this.renderer.setStyle(this.htmlTextElem, 'opacity', opacityCss);
-        // this.renderer.setElementStyle(this.htmlTextElem, 'opacity', opacityCss);
         this.renderer.setStyle(this.htmlArrowElem, 'opacity', opacityCss);
-        // this.renderer.setElementStyle(
-        //   this.htmlArrowElem,
-        //   'opacity',
-        //   opacityCss
-        // );
       }
 
       // If the max displacement position is reached
@@ -183,25 +167,13 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
         'transform',
         posCss['transform']
       );
-      // this.renderer.setElementStyle(
-      //   this.htmlButtonElem,
-      //   'transform',
-      //   posCss['transform']
-      // );
-      this.renderer.setStyle(
+       this.renderer.setStyle(
         this.htmlButtonElem,
         '-webkit-transform',
         posCss['-webkit-transform']
       );
-      // this.renderer.setElementStyle(
-      //   this.htmlButtonElem,
-      //   '-webkit-transform',
-      //   posCss['-webkit-transform']
-      // );
       this.renderer.setStyle(this.htmlTextElem, 'opacity', '1');
-      // this.renderer.setElementStyle(this.htmlTextElem, 'opacity', '1');
       this.renderer.setStyle(this.htmlArrowElem, 'opacity', '1');
-      // this.renderer.setElementStyle(this.htmlArrowElem, 'opacity', '1');
       this.ngAfterViewInit();
     } else if (this.slideButtonDone && !this.isDisabled) {
       this.isConfirm = true;

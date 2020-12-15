@@ -114,17 +114,6 @@ export class ExpandableHeaderComponent {
       'opacity',
       `${opacity}`
     );
-
-    //     this.renderer.setElementStyle(
-    //   this.primaryContent.element.nativeElement,
-    //   'opacity',
-    //   `${opacity}`
-    // );
-    // this.renderer.setElementStyle(
-    //   this.footerContent.element.nativeElement,
-    //   'opacity',
-    //   `${opacity}`
-    // );
   }
 }
 

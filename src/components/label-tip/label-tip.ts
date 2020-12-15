@@ -43,6 +43,5 @@ export class LabelTip {
 
   ngOnChanges() {
     this.renderer.addClass(this.element.nativeElement, this.type);
-    // this.renderer.setElementClass(this.element.nativeElement, this.type, true);
   }
 }

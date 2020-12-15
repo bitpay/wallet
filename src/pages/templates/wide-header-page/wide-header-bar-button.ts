@@ -27,6 +27,5 @@ export class WideHeaderBarButton implements AfterViewInit {
 
   addClass(cssClass: string) {
     this.renderer.addClass(this.element.nativeElement, cssClass);
-    // this.renderer.setElementClass(this.element.nativeElement, cssClass, true);
   }
 }

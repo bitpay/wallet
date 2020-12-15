@@ -35,7 +35,6 @@ export class RevealAtScrollPosition {
   setInitialStyles() {
     this.setOpacity(0);
     this.renderer.addClass(this.element.nativeElement, 'ellipsis');
-    // this.renderer.setElementClass(this.element.nativeElement, 'ellipsis', true);
   }
 
   updateStyling(scrollTop: number) {
@@ -52,11 +51,6 @@ export class RevealAtScrollPosition {
       'opacity',
       opacity.toFixed(3)
     );
-    // this.renderer.setElementStyle(
-    //   this.element.nativeElement,
-    //   'opacity',
-    //   opacity.toFixed(3)
-    // );
   }
 
   setTransform(translateX: number) {
@@ -65,11 +59,6 @@ export class RevealAtScrollPosition {
       'transform',
       `translateX(${translateX}px)`
     );
-    // this.renderer.setElementStyle(
-    //   this.element.nativeElement,
-    //   'transform',
-    //   `translateX(${translateX}px)`
-    // );
   }
 
   getOpacity(scrollTop: number) {

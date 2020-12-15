@@ -80,11 +80,6 @@ export class GiftCardItem {
       cssProperty,
       this.cardConfig.logoBackgroundColor
     );
-    // this.renderer.setElementStyle(
-    //   this.card.nativeElement,
-    //   cssProperty,
-    //   this.cardConfig.logoBackgroundColor
-    // );
   }
 }
 

@@ -8,14 +8,8 @@ export class Animate {
 
   animate(animationName: string) {
     this.renderer.addClass(this.el.nativeElement, animationName);
-    // this.renderer.setElementClass(this.el.nativeElement, animationName, true);
     setTimeout(() => {
       this.renderer.removeClass(this.el.nativeElement, animationName);
-      // this.renderer.setElementClass(
-      //   this.el.nativeElement,
-      //   animationName,
-      //   false
-      // );
     }, 600);
   }
 }
