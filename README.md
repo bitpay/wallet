@@ -35,18 +35,20 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 ### Coin specific features
 
 #### Bitcoin
+
 - Segwit and native segwit addresses (BECH32) for sending and receiving
 - CPFP (Child pays for parent) transaction acceleration (available after 4 hours of unconfirmed TXs).
-- Transaction fee adjustmenet using 4 preset levels (using bitcoin-core estimations) OR custom  fee-rate setting.
+- Transaction fee adjustmenet using 4 preset levels (using bitcoin-core estimations) OR custom fee-rate setting.
 
 #### Bitcoin Cash
+
 - Schnorr signature support
 
-#### Ethereum 
+#### Ethereum
+
 - Wallet connect
 - Multisig wallet (using consensys contract)
 - Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas pricee setting.
-
 
 ## Testing in a Browser
 
