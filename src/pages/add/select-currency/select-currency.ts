@@ -51,6 +51,7 @@ export class SelectCurrencyPage {
   public availableTokens: Token[];
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;
+  public keyId;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -77,6 +78,7 @@ export class SelectCurrencyPage {
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
     }
+    this.keyId = this.navParam.data.keyId;
     this.shouldShowKeyOnboarding();
     this.setTokens();
   }

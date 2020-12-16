@@ -3,11 +3,13 @@
     <span class="list-subtitle" translate>Featured Currencies</span>
     <ion-list class="settings-list bp-list">
       <div *ngFor="let coin of availableChains">
-        <button class="list-button" ion-item (click)="goToCreateWallet(coin)">
+        <button class="list-button" [disabled]="coin === 'eth' && !keyId" ion-item (click)="goToCreateWallet(coin)">
           <ion-icon item-start>
             <img src="assets/img/currencies/{{coin}}.svg" />
           </ion-icon>
           <div class="item-title">{{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</div>
+          <div class="item-note" *ngIf="coin === 'eth' && !keyId" translate>Only available for already created keys</div>
+          <div class="item-note" *ngIf="coin === 'eth' && !keyId" translate>Try "create new wallet" option instead</div>
         </button>
       </div>
       <div *ngIf="!navParam.data.isShared && !navParam.data.isJoin">
