@@ -1557,7 +1557,9 @@ export class ConfirmPage {
     );
     chooseFeeLevelAction.present();
     chooseFeeLevelAction.onDidDismiss(data => {
-      this.onFeeModalDismiss(data);
+      data && data.showMinWarning
+        ? this.showCustomFeeWarningSheet(data)
+        : this.onFeeModalDismiss(data);
     });
   }
 
@@ -1671,5 +1673,15 @@ export class ConfirmPage {
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+  }
+
+  private showCustomFeeWarningSheet(data) {
+    const warningSheet = this.actionSheetProvider.createInfoSheet(
+      'custom-fee-warning'
+    );
+    warningSheet.present();
+    warningSheet.onDidDismiss(option => {
+      option ? this.chooseFeeLevel() : this.onFeeModalDismiss(data);
+    });
   }
 }

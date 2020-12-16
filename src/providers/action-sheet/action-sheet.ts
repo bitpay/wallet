@@ -69,7 +69,8 @@ export type InfoSheetType =
   | 'verification-required'
   | 'incorrect-recovery-prhase'
   | 'correct-recovery-prhase'
-  | 'unsupported-alt-currency';
+  | 'unsupported-alt-currency'
+  | 'custom-fee-warning';
 
 export type OptionsSheetType =
   | 'wallet-options'
