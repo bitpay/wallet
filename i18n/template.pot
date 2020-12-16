@@ -91,7 +91,7 @@ msgstr ""
 
 msgid ""
 "A wallet is like a vault stored on your device containing your crypto "
-"funds. Much like a vault, your wallet will only be accesible with the "
+"funds. Much like a vault, your wallet will only be accessible with the "
 "master key."
 msgstr ""
 
@@ -128,10 +128,10 @@ msgstr ""
 msgid "Add BitPay Account?"
 msgstr ""
 
-msgid "Add Encryption?"
+msgid "Add Encryption"
 msgstr ""
 
-msgid "Add Enryption"
+msgid "Add Encryption?"
 msgstr ""
 
 msgid "Add Me"
@@ -841,6 +841,9 @@ msgid "Could not update wallet"
 msgstr ""
 
 msgid "Country"
+msgstr ""
+
+msgid "Country not supported: "
 msgstr ""
 
 msgid "Country selector"
@@ -1935,7 +1938,7 @@ msgid "Moving"
 msgstr ""
 
 msgid ""
-"Multi-user wallet require multiple devices to setup. It takes longer to "
+"Multi-user wallet require multiple devices to set up. It takes longer to "
 "complete but it's recommended security configuration for long term storage."
 msgstr ""
 
@@ -3743,7 +3746,7 @@ msgid "WalletConnect URI"
 msgstr ""
 
 msgid ""
-"WalletConnect is an open source protocol for connecting decentralised "
+"WalletConnect is an open source protocol for connecting decentralized "
 "applications to mobile wallets with QR code scanning or deep linking."
 msgstr ""
 

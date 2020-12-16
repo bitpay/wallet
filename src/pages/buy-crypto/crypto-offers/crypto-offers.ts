@@ -526,9 +526,9 @@ export class CryptoOffersPage {
         if (err.errorCode) {
           switch (err.errorCode) {
             case 'validation.unsupportedCountry':
-              msg = this.translate.instant(
-                `Country not supported: ${this.selectedCountry.name}`
-              );
+              msg =
+                this.translate.instant('Country not supported: ') +
+                this.selectedCountry.name;
               break;
             default:
               msg = err.message;
