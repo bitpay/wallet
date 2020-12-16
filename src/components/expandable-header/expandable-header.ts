@@ -3,7 +3,7 @@ import {
   ContentChild,
   ElementRef,
   Input,
-  Renderer
+  Renderer2
 } from '@angular/core';
 import { Content } from 'ionic-angular';
 @Component({
@@ -52,7 +52,7 @@ export class ExpandableHeaderComponent {
    */
   headerHeight: number;
 
-  constructor(public element: ElementRef, public renderer: Renderer) {}
+  constructor(public element: ElementRef, public renderer: Renderer2) {}
 
   ngOnInit() {
     if (this.disableFade) {
@@ -104,13 +104,12 @@ export class ExpandableHeaderComponent {
 
   private transformContent(transformations: number[]): void {
     const [opacity] = transformations;
-
-    this.renderer.setElementStyle(
+    this.renderer.setStyle(
       this.primaryContent.element.nativeElement,
       'opacity',
       `${opacity}`
     );
-    this.renderer.setElementStyle(
+    this.renderer.setStyle(
       this.footerContent.element.nativeElement,
       'opacity',
       `${opacity}`

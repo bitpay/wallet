@@ -1,4 +1,4 @@
-import { Component, Renderer, ViewChild } from '@angular/core';
+import { Component, Renderer2, ViewChild } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -142,7 +142,7 @@ export class CopayApp {
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private userAgent: UserAgent,
     private device: Device,
     private keyProvider: KeyProvider,
@@ -633,7 +633,9 @@ export class CopayApp {
     transitionDuration: number
   ): Promise<number> {
     const walletDetailsModal = this.getWalletDetailsModal();
-    this.renderer.setElementClass(walletDetailsModal, 'scanning', visible);
+    visible
+      ? this.renderer.addClass(walletDetailsModal, 'scanning')
+      : this.renderer.removeClass(walletDetailsModal, 'scanning');
     return Observable.timer(transitionDuration).toPromise();
   }
 
