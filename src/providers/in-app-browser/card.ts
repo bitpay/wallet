@@ -631,10 +631,7 @@ export class IABCardProvider {
 
       const headers = [signedData, pub];
 
-      this.logger.debug(`MDES headers ${JSON.stringify(headers)}`);
-      this.logger.debug(`MDES json ${JSON.stringify(json)}`);
-
-      return await this.appleWalletProvider.graphRequest(
+      return this.appleWalletProvider.graphRequest(
         headers,
         JSON.stringify(json)
       );
@@ -1083,6 +1080,8 @@ export class IABCardProvider {
         card: { provisioningData }
       }
     } = res.data;
+
+    if (!provisioningData) return;
 
     const {
       wrappedKey: ephemeralPublicKey,
