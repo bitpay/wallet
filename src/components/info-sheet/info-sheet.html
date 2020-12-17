@@ -510,5 +510,14 @@
       <span sheet-button-text translate *ngIf="!params.error">CONTINUE</span>
       <span sheet-second-button-text translate *ngIf="!params.error">DO THIS LATER</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'custom-fee-warning'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text>
+        The fee you are using is lower than the Super Economy level, we do not recommend doing this as the transaction will take very long to confirm or may never do it. You can continue at your own responsibility.
+      </span>
+      <span sheet-button-text translate>Change Miner Fee</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
