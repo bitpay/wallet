@@ -61,6 +61,7 @@ export class ExchangeCryptoPage {
     this.allWallets = [];
     this.toWallets = [];
     this.fromWallets = [];
+    this.loading = false;
     this.fromWalletSelectorTitle = this.translate.instant(
       'Select Source Wallet'
     );
@@ -229,16 +230,16 @@ export class ExchangeCryptoPage {
     if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
       return;
 
+    this.loading = true;
     let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
     this.logger.debug('Updating max and min with pair: ' + pair);
 
     const data = {
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin,
-      walletId: this.fromWalletSelected.id
+      coinTo: this.toWalletSelected.coin
     };
     this.changellyProvider
-      .getPairsParams(data)
+      .getPairsParams(this.fromWalletSelected, data)
       .then(data => {
         if (data.error) {
           const msg = 'Changelly getPairsParams Error: ' + data.error.message;
@@ -256,7 +257,10 @@ export class ExchangeCryptoPage {
             this.translate.instant(
               'The amount entered is greater than the maximum allowed: ({{maxAmount}} {{coin}})'
             ),
-            { maxAmount: this.maxAmount, coin: this.fromWalletSelected.coin }
+            {
+              maxAmount: this.maxAmount,
+              coin: this.fromWalletSelected.coin.toUpperCase()
+            }
           );
           this.showErrorAndBack(null, msg, true);
           return;
@@ -266,7 +270,10 @@ export class ExchangeCryptoPage {
             this.translate.instant(
               'The amount entered is lower than the minimum allowed: ({{minAmount}} {{coin}})'
             ),
-            { minAmount: this.minAmount, coin: this.fromWalletSelected.coin }
+            {
+              minAmount: this.minAmount,
+              coin: this.fromWalletSelected.coin.toUpperCase()
+            }
           );
           this.showErrorAndBack(null, msg, true);
           return;
@@ -285,6 +292,8 @@ export class ExchangeCryptoPage {
   }
 
   private showErrorAndBack(title: string, msg, noExit?: boolean): void {
+    this.onGoingProcessProvider.clear();
+    this.loading = false;
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = msg && msg.error && msg.error.message ? msg.error.message : msg;
@@ -329,8 +338,14 @@ export class ExchangeCryptoPage {
   }
 
   private updateReceivingAmount() {
-    if (!this.fromWalletSelected || !this.toWalletSelected || !this.amountFrom)
+    if (
+      !this.fromWalletSelected ||
+      !this.toWalletSelected ||
+      !this.amountFrom
+    ) {
+      this.loading = false;
       return;
+    }
 
     const pair =
       this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
@@ -339,11 +354,10 @@ export class ExchangeCryptoPage {
     const data = {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin,
-      walletId: this.fromWalletSelected.id
+      coinTo: this.toWalletSelected.coin
     };
     this.changellyProvider
-      .getFixRateForAmount(data)
+      .getFixRateForAmount(this.fromWalletSelected, data)
       .then(data => {
         if (data.error) {
           const msg =
@@ -355,6 +369,7 @@ export class ExchangeCryptoPage {
         this.fixedRateId = data.result[0].id;
         this.amountTo = Number(data.result[0].amountTo);
         this.rate = Number(data.result[0].result); // result == rate
+        this.loading = false;
       })
       .catch(err => {
         this.logger.error('Changelly getFixRateForAmount Error: ', err);

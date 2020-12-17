@@ -23,7 +23,7 @@
     <div class="subtitle-modal">
       <img class="icon-service" src="assets/img/exchange-crypto/changelly-icon.svg" alt="Changelly" width="40">
       {{ swapTxData.amountTo | number:'1.0-6'}}
-      <span class="amount-unit">{{ swapTxData.cointTo | uppercase }}</span>
+      <span class="amount-unit">{{ swapTxData.coinTo | uppercase }}</span>
     </div>
   </div>
 
@@ -51,14 +51,6 @@
         </span>
       </ion-note>
     </ion-item>
-
-    <!-- <label-tip type="warn" header="no-header">
-      <div label-tip-body>
-        <div translate>The final crypto amount you receive when the transaction is complete may differ because it is based on Changelly's exchange rate.</div>
-      </div>
-    </label-tip> -->
-
-
 
     <ion-item>
       {{'Created' | translate}}
@@ -119,17 +111,6 @@
       </div>
     </ion-item>
 
-    <ion-item class="no-border">
-      {{'Rate' | translate}}
-      <div padding-top>
-        <ion-note text-wrap>
-          <span *ngIf="!swapTxData.rate">...</span>
-          <span *ngIf="swapTxData.rate" copy-to-clipboard="{{swapTxData.rate}}">
-            {{ swapTxData.rate }}
-          </span>
-        </ion-note>
-      </div>
-    </ion-item>
 
     <ion-item-divider></ion-item-divider>
     <button class="assertive" ion-item detail-none text-center (click)="remove()">

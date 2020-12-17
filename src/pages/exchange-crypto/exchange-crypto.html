@@ -5,7 +5,7 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <ion-list class="bp-list" *ngIf="!loading">
+    <ion-list class="bp-list">
       <div class="item-label" translate>Source</div>
       <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showWallets('from')">
         <div translate>Select Source Wallet</div>
@@ -20,7 +20,10 @@
       <ion-row padding align-items-center *ngIf="fromWalletSelected">
         <ion-col class="wallet" (click)="showWallets('from')">
           <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
-          <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+          <div>
+            <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>            
+            <span class="note-container ellipsis balance">{{fromWalletSelected.lastKnownBalance}}</span>
+          </div>
         </ion-col>
 
         <ion-col col-5 class="amount">
@@ -49,11 +52,14 @@
       <ion-row padding align-items-center *ngIf="toWalletSelected">
         <ion-col class="wallet" (click)="showWallets('to')">
           <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
-          <span class="note-container ellipsis">{{toWalletSelected.name}}</span>
+          <div>
+            <span class="note-container ellipsis">{{toWalletSelected.name}}</span>            
+            <span class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
+          </div>
         </ion-col>
 
         <ion-col col-5 class="amount">
-          <ion-spinner name="crescent" *ngIf="toWalletSelected && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+          <ion-spinner name="crescent" *ngIf="loading && toWalletSelected && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
           <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</div>
         </ion-col>
         <div *ngIf="rate" class="rate">

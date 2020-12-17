@@ -111,12 +111,11 @@ export class ExchangeCheckoutPage {
               coinTo: this.toWalletSelected.coin,
               addressTo: this.addressTo,
               refundAddress: this.addressFrom,
-              fixedRateId: this.fixedRateId,
-              walletId: this.fromWalletSelected.id
+              fixedRateId: this.fixedRateId
             };
 
             this.changellyProvider
-              .createFixTransaction(data)
+              .createFixTransaction(this.fromWalletSelected, data)
               .then(data => {
                 if (data.error) {
                   this.logger.error(
@@ -252,11 +251,10 @@ export class ExchangeCheckoutPage {
     const data = {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
-      coinTo: this.toWalletSelected.coin,
-      walletId: this.fromWalletSelected.id
+      coinTo: this.toWalletSelected.coin
     };
     this.changellyProvider
-      .getFixRateForAmount(data)
+      .getFixRateForAmount(this.fromWalletSelected, data)
       .then(data => {
         if (data.error) {
           const msg =
@@ -409,9 +407,8 @@ export class ExchangeCheckoutPage {
     let newData = {
       exchangeTxId: this.exchangeTxId,
       date: now,
-      rate: this.rate, // rate = amountTo/amountFrom
       amountTo: this.amountTo,
-      cointTo: this.toWalletSelected.coin,
+      coinTo: this.toWalletSelected.coin,
       addressTo: this.addressTo,
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
