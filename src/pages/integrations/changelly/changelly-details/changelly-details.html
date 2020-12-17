@@ -62,26 +62,43 @@
       </ion-note>
     </ion-item>
 
-    <ion-item *ngIf="swapTxData.status">
+    <ion-item *ngIf="swapTxData.status && status?.statusTitle">
       {{'Status' | translate}}
       <ion-note item-end>
-        <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTxData.status), assertive: ['failed', 'expired'].includes(swapTxData.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTxData.status)}" translate>{{ swapTxData.status | titlecase }}</span>
+        <span [ngClass]="{balanced: ['finished', 'refunded'].includes(swapTxData.status), assertive: ['failed', 'expired'].includes(swapTxData.status), energized: ['waiting', 'confirming', 'exchanging', 'sending', 'hold'].includes(swapTxData.status)}" translate>{{ status.statusTitle }}</span>
       </ion-note>
     </ion-item>
 
-    <label-tip class="right-arrow" type="info" header="no-header" *ngIf="swapTxData.status && statusDescription">
+    <label-tip class="right-arrow" type="info" header="no-header" *ngIf="swapTxData.status && status?.statusDescription">
       <div label-tip-body>
-        <span translate>{{ statusDescription }}</span>
+        <span>{{ status.statusDescription }}</span>
+        <br>
+        <div *ngIf="['failed', 'hold'].includes(swapTxData.status)">
+          <span translate>Please contact Changelly support:</span><b class="pointer" copy-to-clipboard="security@changelly.com"> security@changelly.com</b>
+          <br><br>
+          <span translate>Provide the transaction id:</span><b class="pointer" copy-to-clipboard="{{swapTxData.exchangeTxId}}"> {{swapTxData.exchangeTxId}}</b>
+        </div>
       </div>
     </label-tip>
 
     <ion-item>
-      {{'Exchange address' | translate}}
+      {{'Exchange address (Payin)' | translate}}
       <div padding-top>
         <ion-note text-wrap>
           <span *ngIf="!swapTxData.payinAddress">...</span>
           <span *ngIf="swapTxData.payinAddress" copy-to-clipboard="{{swapTxData.payinAddress}}">
             {{ swapTxData.payinAddress }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="swapTxData.payinExtraId">
+      {{'Destination Tag (Payin Extra Id)' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="swapTxData.payinExtraId" copy-to-clipboard="{{swapTxData.payinExtraId}}">
+            {{ swapTxData.payinExtraId }}
           </span>
         </ion-note>
       </div>

@@ -14,7 +14,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class ChangellyDetailsPage {
   public swapTxData;
-  public statusDescription: string;
+  public status;
 
   constructor(
     private externalLinkProvider: ExternalLinkProvider,
@@ -38,56 +38,9 @@ export class ChangellyDetailsPage {
   }
 
   private updateStatusDescription() {
-    switch (this.swapTxData.status) {
-      case 'waiting':
-        this.statusDescription = this.translate.instant(
-          'Transaction is waiting for an incoming payment.'
-        );
-        break;
-      case 'confirming':
-        this.statusDescription = this.translate.instant(
-          'Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency.'
-        );
-        break;
-      case 'exchanging':
-        this.statusDescription = this.translate.instant(
-          'Payment was confirmed and is being exchanged.'
-        );
-        break;
-      case 'sending':
-        this.statusDescription = this.translate.instant(
-          'Coins are being sent to the recipient address.'
-        );
-        break;
-      case 'finished':
-        this.statusDescription = this.translate.instant(
-          'Coins were successfully sent to the recipient address.'
-        );
-        break;
-      case 'failed':
-        this.statusDescription = this.translate.instant(
-          `Transaction has failed. In most cases, the amount was less than the minimum. Please contact Changelly support and provide the transaction id: ${this.swapTxData.exchangeTxId}`
-        );
-        break;
-      case 'refunded':
-        this.statusDescription = this.translate.instant(
-          "Exchange failed and coins were refunded to user's wallet."
-        );
-        break;
-      case 'hold':
-        this.statusDescription = this.translate.instant(
-          'Due to AML/KYC procedure, exchange may be delayed'
-        );
-        break;
-      case 'expired':
-        this.statusDescription = this.translate.instant(
-          'Payin was not sent within the indicated timeframe'
-        );
-        break;
-      default:
-        this.statusDescription = null;
-        break;
-    }
+    this.status = this.changellyProvider.getStatusDetails(
+      this.swapTxData.status
+    );
   }
 
   public doRefresh(refresher) {

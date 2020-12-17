@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 // providers
@@ -14,7 +15,8 @@ export class ChangellyProvider {
   constructor(
     private http: HttpClient,
     private logger: Logger,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private translate: TranslateService
   ) {
     this.logger.debug('ChangellyProvider initialized');
     this.env = 'production';
@@ -170,6 +172,80 @@ export class ChangellyProvider {
           }
         );
     });
+  }
+
+  public getStatusDetails(status: string) {
+    let statusDescription: string, statusTitle: string;
+    switch (status) {
+      case 'new':
+        statusTitle = this.translate.instant('New');
+        statusDescription = this.translate.instant(
+          'Transaction is waiting for an incoming payment.'
+        );
+        break;
+      case 'waiting':
+        statusTitle = this.translate.instant('Waiting');
+        statusDescription = this.translate.instant(
+          'Transaction is waiting for an incoming payment.'
+        );
+        break;
+      case 'confirming':
+        statusTitle = this.translate.instant('Confirming');
+        statusDescription = this.translate.instant(
+          'Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency.'
+        );
+        break;
+      case 'exchanging':
+        statusTitle = this.translate.instant('Exchanging');
+        statusDescription = this.translate.instant(
+          'Payment was confirmed and is being exchanged.'
+        );
+        break;
+      case 'sending':
+        statusTitle = this.translate.instant('Sending');
+        statusDescription = this.translate.instant(
+          'Coins are being sent to the recipient address.'
+        );
+        break;
+      case 'finished':
+        statusTitle = this.translate.instant('Finished');
+        statusDescription = this.translate.instant(
+          'Coins were successfully sent to the recipient address.'
+        );
+        break;
+      case 'failed':
+        statusTitle = this.translate.instant('Failed');
+        statusDescription = this.translate.instant(
+          `Transaction has failed. In most cases, the amount was less than the minimum.`
+        );
+        break;
+      case 'refunded':
+        statusTitle = this.translate.instant('Failed');
+        statusDescription = this.translate.instant(
+          "Exchange failed and coins were refunded to user's wallet."
+        );
+        break;
+      case 'hold':
+        statusTitle = this.translate.instant('Hold');
+        statusDescription = this.translate.instant(
+          'Due to AML/KYC procedure, exchange may be delayed.'
+        );
+        break;
+      case 'expired':
+        statusTitle = this.translate.instant('Expired');
+        statusDescription = this.translate.instant(
+          'Payin was not sent within the indicated timeframe.'
+        );
+        break;
+      default:
+        statusTitle = null;
+        statusDescription = null;
+        break;
+    }
+    return {
+      statusTitle,
+      statusDescription
+    };
   }
 
   public saveChangelly(data, opts): Promise<any> {
