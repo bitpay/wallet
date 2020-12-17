@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FCMNG } from 'fcm-ng';
 import { Events } from 'ionic-angular';
-import { Observable } from 'rxjs';
 
 import { IncomingDataProvider } from '../incoming-data/incoming-data';
 import { Logger } from '../logger/logger';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class DynamicLinksProvider {
@@ -12,19 +13,34 @@ export class DynamicLinksProvider {
     private logger: Logger,
     private events: Events,
     private FCMPlugin: FCMNG,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private platformProvider: PlatformProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('DynamicLinksProvider initialized');
   }
-  onDynamicLink() {
-    this.FCMPlugin.onDynamicLink().then(data => {
-      this.logger.debug('Firebase Dynamic Link Data: ', JSON.stringify(data));
-      if (data && data.deepLink) this.processDeepLink(data.deepLink);
+
+  async init() {
+    let dynLink;
+    dynLink = this.platformProvider.isIOS
+      ? await this.onDynamicLink()
+      : await this.getDynamicLink();
+    this.logger.debug('Firebase Dynamic Link Data: ', JSON.stringify(dynLink));
+    if (dynLink && dynLink.deepLink) this.processDeepLink(dynLink.deepLink);
+  }
+
+  private getDynamicLink(): Promise<any> {
+    return new Promise(resolve => {
+      this.FCMPlugin.getDynamicLink().subscribe(data => {
+        if (data && data.deepLink && data.newInstall)
+          this.persistenceProvider.setDynamicLink(data.deepLink);
+        resolve(data);
+      });
     });
   }
 
-  getDynamicLink(): Observable<any> {
-    return this.FCMPlugin.getDynamicLink();
+  private onDynamicLink(): Promise<any> {
+    return this.FCMPlugin.onDynamicLink();
   }
 
   createDynamicLink(params: any): Promise<any> {

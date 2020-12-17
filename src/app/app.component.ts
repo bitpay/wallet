@@ -284,7 +284,7 @@ export class CopayApp {
         this.pushNotificationsProvider.clearAllNotifications();
 
         // Firebase Dynamic link
-        this.dynamicLinksProvider.onDynamicLink();
+        this.dynamicLinksProvider.init();
       });
 
       // Check PIN or Fingerprint
@@ -295,7 +295,7 @@ export class CopayApp {
       this.pushNotificationsProvider.clearAllNotifications();
 
       // Firebase Dynamic link
-      this.dynamicLinksProvider.onDynamicLink();
+      this.dynamicLinksProvider.init();
     }
 
     // Set Theme (light or dark mode)
