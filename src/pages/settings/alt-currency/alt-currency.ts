@@ -74,6 +74,9 @@ export class AltCurrencyPage {
       },
       {
         isoCode: 'DAI'
+      },
+      {
+        isoCode: 'WBTC'
       }
     ];
   }
