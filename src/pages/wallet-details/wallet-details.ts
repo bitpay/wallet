@@ -44,6 +44,7 @@ import { WalletBalanceModal } from './wallet-balance/wallet-balance';
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -59,6 +60,8 @@ export class WalletDetailsPage {
   private onResumeSubscription: Subscription;
   private analyzeUtxosDone: boolean;
   private zone;
+  private blockexplorerUrl: string;
+  private blockexplorerUrlTestnet: string;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -137,6 +140,11 @@ export class WalletDetailsPage {
       .catch(err => {
         this.logger.error(err);
       });
+
+    let defaults = this.configProvider.getDefaults();
+    this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
+    this.blockexplorerUrlTestnet =
+      defaults.blockExplorerUrlTestnet[this.wallet.coin];
   }
 
   subscribeEvents() {
@@ -724,5 +732,47 @@ export class WalletDetailsPage {
         this.wallet.cachedStatus.totalBalanceAlternative;
       return totalBalanceAlternative;
     }
+  }
+
+  public async viewOnBlockchain() {
+    if (
+      this.wallet.coin !== 'eth' &&
+      this.wallet.coin !== 'xrp' &&
+      !this.currencyProvider.isERCToken(this.wallet.coin)
+    )
+      return;
+    const address = await this.walletProvider.getAddress(this.wallet, false);
+    let url;
+    if (this.wallet.coin === 'xrp') {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}account/${address}`
+          : `https://${this.blockexplorerUrlTestnet}account/${address}`;
+    }
+    if (this.wallet.coin === 'eth') {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}address/${address}`
+          : `https://${this.blockexplorerUrlTestnet}address/${address}`;
+    }
+    if (this.currencyProvider.isERCToken(this.wallet.coin)) {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}address/${address}#tokentxns`
+          : `https://${this.blockexplorerUrlTestnet}address/${address}#tokentxns`;
+    }
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('View History');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }
