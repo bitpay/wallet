@@ -176,9 +176,6 @@ msgstr ""
 msgid "Address already added"
 msgstr ""
 
-msgid "Address requested does not match active account"
-msgstr ""
-
 msgid "Addressbook is empty"
 msgstr ""
 
@@ -243,9 +240,6 @@ msgid "Apple Pay"
 msgstr ""
 
 msgid "Apply changes"
-msgstr ""
-
-msgid "Approve"
 msgstr ""
 
 msgid ""
@@ -1201,9 +1195,6 @@ msgstr ""
 msgid "Error getting Speed Up information"
 msgstr ""
 
-msgid "Error getting address"
-msgstr ""
-
 msgid "Error getting fee rate"
 msgstr ""
 
@@ -2153,6 +2144,9 @@ msgstr ""
 msgid "Only a {name} phone number can be used for this purchase."
 msgstr ""
 
+msgid "Only available for already created keys"
+msgstr ""
+
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
@@ -2535,9 +2529,6 @@ msgstr ""
 msgid "Redeem Now"
 msgstr ""
 
-msgid "Reject"
-msgstr ""
-
 msgid "Reject Payment Proposal"
 msgstr ""
 
@@ -2708,9 +2699,6 @@ msgstr ""
 msgid "Select a wallet"
 msgstr ""
 
-msgid "Select a wallet to link to"
-msgstr ""
-
 msgid "Select an Ethereum Wallet"
 msgstr ""
 
@@ -2810,9 +2798,6 @@ msgid "Server response could not be verified"
 msgstr ""
 
 msgid "Session Log"
-msgstr ""
-
-msgid "Session Request"
 msgstr ""
 
 msgid "Set up a password"
@@ -3260,6 +3245,9 @@ msgstr ""
 msgid "There are no wallets with enough funds to make the payment"
 msgstr ""
 
+msgid "There are some misunderstood outputs, please view on blockchain."
+msgstr ""
+
 msgid "There is a new version available"
 msgstr ""
 
@@ -3479,6 +3467,9 @@ msgid "Transfer to Multiple Recipients"
 msgstr ""
 
 msgid "Translate address"
+msgstr ""
+
+msgid "Try \"create new wallet\" option instead"
 msgstr ""
 
 msgid "Try again"
