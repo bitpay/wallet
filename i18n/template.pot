@@ -531,6 +531,9 @@ msgstr ""
 msgid "Change Amount"
 msgstr ""
 
+msgid "Change Miner Fee"
+msgstr ""
+
 msgid "Check the app camera permissions under your phone settings"
 msgstr ""
 
