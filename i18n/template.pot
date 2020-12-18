@@ -427,9 +427,6 @@ msgid ""
 "https://status.bitpay.com/."
 msgstr ""
 
-msgid "Blockchain Network Tx"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr ""
 
@@ -3451,9 +3448,6 @@ msgstr ""
 msgid "Transactions without fee are not supported."
 msgstr ""
 
-msgid "Transfer ID"
-msgstr ""
-
 msgid "Transfer from"
 msgstr ""
 
@@ -4136,18 +4130,6 @@ msgid "{walletsGroupLength} Wallets"
 msgstr ""
 
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
-msgstr ""
-
-msgid ""
-"{{'Only the payment methods supported to buy {coin} with {currency} will be "
-"shown.' | translate: {coin: params.coin | uppercase, "
-"currency:params.currency | uppercase} }}"
-msgstr ""
-
-msgid ""
-"{{'SEPA Bank Transfer purchases are not supported outside the European "
-"Union.' | translate: {coin: params.coin | uppercase, "
-"currency:params.currency | uppercase} }}"
 msgstr ""
 
 msgid ""
