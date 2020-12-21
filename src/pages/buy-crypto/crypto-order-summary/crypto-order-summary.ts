@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import env from '../../../environments';
 
 // Providers
@@ -95,12 +96,18 @@ export class CryptoOrderSummaryPage {
       this.setDefaultPaymentMethod();
     }
 
-    this.selectedCountry = {
-      name: 'United States',
-      phonePrefix: '+1',
-      shortCode: 'US',
-      threeLetterCode: 'USA'
-    };
+    this.persistenceProvider.getLastCountryUsed().then(lastUsedCountry => {
+      if (lastUsedCountry && _.isObject(lastUsedCountry)) {
+        this.selectedCountry = lastUsedCountry;
+      } else {
+        this.selectedCountry = {
+          name: 'United States',
+          phonePrefix: '+1',
+          shortCode: 'US',
+          threeLetterCode: 'USA'
+        };
+      }
+    });
   }
 
   ionViewDidLoad() {
