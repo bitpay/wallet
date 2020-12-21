@@ -722,7 +722,7 @@ export class AmountPage {
   }
 
   public closeModal(item): void {
-    if (this.viewCtrl.name === 'AmountPage') {
+    if (this.navParams.data.fromMultiSend) {
       if (item) this.events.publish('addRecipient', item);
       this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
         this.viewCtrl.dismiss();
