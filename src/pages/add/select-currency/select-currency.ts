@@ -51,6 +51,8 @@ export class SelectCurrencyPage {
   public availableTokens: Token[];
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;
+  public isJoin: boolean;
+  public isShared: boolean;
   public keyId;
 
   constructor(
@@ -70,15 +72,17 @@ export class SelectCurrencyPage {
     private errorsProvider: ErrorsProvider,
     private events: Events
   ) {
+    this.isJoin = this.navParam.data.isJoin;
+    this.isShared = this.navParam.data.isShared;
+    this.keyId = this.navParam.data.keyId;
     this.availableChains =
-      this.navParam.data.isShared || this.navParam.data.isJoin
+      this.isShared || this.isJoin
         ? this.currencyProvider.getMultiSigCoins()
         : this.currencyProvider.getAvailableChains();
     this.availableTokens = this.currencyProvider.getAvailableTokens();
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
     }
-    this.keyId = this.navParam.data.keyId;
     this.shouldShowKeyOnboarding();
     this.setTokens();
   }
@@ -128,17 +132,17 @@ export class SelectCurrencyPage {
   }
 
   public goToCreateWallet(coin: string): void {
-    if (this.navParam.data.isJoin) {
+    if (this.isJoin) {
       this.navCtrl.push(JoinWalletPage, {
-        keyId: this.navParam.data.keyId,
+        keyId: this.keyId,
         url: this.navParam.data.url,
         coin
       });
     } else {
       this.navCtrl.push(CreateWalletPage, {
-        isShared: this.navParam.data.isShared,
+        isShared: this.isShared,
         coin,
-        keyId: this.navParam.data.keyId,
+        keyId: this.keyId,
         showKeyOnboarding: this.showKeyOnboarding
       });
     }
@@ -213,9 +217,9 @@ export class SelectCurrencyPage {
   }
 
   public showPairedWalletSelector(token) {
-    const eligibleWallets = this.navParam.data.keyId
+    const eligibleWallets = this.keyId
       ? this.profileProvider.getWalletsFromGroup({
-          keyId: this.navParam.data.keyId,
+          keyId: this.keyId,
           network: 'livenet',
           pairFor: token
         })
@@ -241,7 +245,7 @@ export class SelectCurrencyPage {
         } else {
           let canCreateit = _.isEmpty(
             this.profileProvider.getWalletsFromGroup({
-              keyId: this.navParam.data.keyId,
+              keyId: this.keyId,
               network: 'livenet',
               pairFor: token
             })

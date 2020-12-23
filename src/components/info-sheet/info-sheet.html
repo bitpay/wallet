@@ -125,7 +125,7 @@
         In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
       <span *ngIf="!params.wallets[0] && params.isEthMultisig" sheet-text translate>
-        In order to create this multisig wallet, an Ethereum (ETH) wallet is required.
+        In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required.
       </span>
 
       <span sheet-text>
@@ -417,8 +417,8 @@
 
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
       <span sheet-title-text translate>No wallet available</span>
-      <span sheet-text translate>
-        You do not have a {{params.coin ? params.coin : ''}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.
+      <span sheet-text>
+        {{'You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.' | translate: {coin: params.coin ? params.coin : ''} }}
       </span>
       <span sheet-button-text translate>Create Wallet</span>
       <span sheet-second-button-text translate>GOT IT</span>

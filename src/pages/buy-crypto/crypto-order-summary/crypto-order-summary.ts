@@ -77,11 +77,21 @@ export class CryptoOrderSummaryPage {
         this.setWallet(this.wallets[0].credentials.walletId);
       } else {
         this.logger.debug('No wallets available to deposit funds.');
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+
         this.errorsProvider.showNoWalletError(
           this.coin ? this.coin.toUpperCase() : null,
           option => {
+            // Single seed case:
+            let data;
+            if (walletsGroups.length == 1 && walletsGroups[0][0]) {
+              data = {
+                keyId: walletsGroups[0][0].credentials.keyId
+              };
+            }
+
             if (option) {
-              this.navCtrl.push(SelectCurrencyPage);
+              this.navCtrl.push(SelectCurrencyPage, data);
             }
           }
         );
