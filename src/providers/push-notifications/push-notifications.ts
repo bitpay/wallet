@@ -212,7 +212,8 @@ export class PushNotificationsProvider {
     const opts = {
       token: this._token,
       platform: this.isIOS ? 'ios' : this.isAndroid ? 'android' : null,
-      packageName: this.appProvider.info.packageNameId
+      packageName: this.appProvider.info.packageNameId,
+      walletId: walletClient.credentials.walletId
     };
     walletClient.pushNotificationsSubscribe(opts, err => {
       if (err)
