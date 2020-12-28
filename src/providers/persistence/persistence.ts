@@ -62,6 +62,7 @@ const Keys = {
   KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  LAST_COUNTRY_USED: 'buyCryptoLastCountry',
   PHONE: 'phone',
   PHONE_COUNTRY_INFO: 'phoneCountryInfo',
   PROFILE: 'profile',
@@ -374,6 +375,14 @@ export class PersistenceProvider {
 
   getLastCurrencyUsed() {
     return this.storage.get(Keys.LAST_CURRENCY_USED);
+  }
+
+  setLastCountryUsed(lastCountryUsed) {
+    return this.storage.set(Keys.LAST_COUNTRY_USED, lastCountryUsed);
+  }
+
+  getLastCountryUsed() {
+    return this.storage.get(Keys.LAST_COUNTRY_USED);
   }
 
   checkQuota() {

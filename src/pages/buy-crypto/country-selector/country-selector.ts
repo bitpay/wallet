@@ -41,6 +41,16 @@ export class CountrySelectorPage {
       }
     ];
 
+    this.persistenceProvider.getLastCountryUsed().then(lastUsedCountry => {
+      if (
+        lastUsedCountry &&
+        _.isObject(lastUsedCountry) &&
+        lastUsedCountry.threeLetterCode != 'USA'
+      ) {
+        this.commonCountriesList.unshift(lastUsedCountry);
+      }
+    });
+
     this.EUCountries = [
       'AT', // Austria
       'BE', // Belgium
@@ -120,6 +130,7 @@ export class CountrySelectorPage {
   }
 
   public save(selectedCountry): void {
+    this.persistenceProvider.setLastCountryUsed(selectedCountry);
     this.viewCtrl.dismiss({ selectedCountry });
   }
 
