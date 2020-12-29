@@ -37,6 +37,6 @@
     "debitcard": true,
     "shapeshift": true,
     "giftcards": true,
-    "walletConnect": false
+    "walletConnect": true
   }
 }
