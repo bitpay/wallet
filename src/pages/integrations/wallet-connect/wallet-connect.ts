@@ -513,7 +513,7 @@ export class WalletConnectPage {
     const title = this.translate.instant('Confirm Request');
     const message = this.replaceParametersProvider.replace(
       this.translate.instant(
-        `Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount are correct before proceeding to the confirmation step`
+        `Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount is correct before proceeding to the confirmation step`
       ),
       { peerMetaName: peerMeta.name }
     );
