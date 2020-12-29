@@ -4,10 +4,9 @@
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/wallet.svg)](https://codecov.io/gh/bitpay/wallet/)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
-Bitpay Wallet (formelly Copay) is a secure Bitcoin, Bitcoin Cash, Ethereum and ERC20 wallet platform for both desktop and mobile devices. Bitpay Wallet  uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
+Bitpay Wallet (formelly Copay) is a secure Bitcoin, Bitcoin Cash, Ethereum and ERC20 wallet platform for both desktop and mobile devices. Bitpay Wallet uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of Bitpay Wallet are available for download at  
-
+Binary versions of Bitpay Wallet are available for download at
 
 This project was created by BitPay Inc, and it is maintained by BitPay and hundreds of contributors. There is a BitPay branded version of Copay at mobile phone stores, BitPay Wallet, which features integration with the BitPay Visa Debit Card, as its main difference.
 
@@ -48,7 +47,9 @@ For a list of frequently asked questions please visit the [Bitpay Wallet FAQ](ht
 #### Ethereum
 
 - Wallet connect
-- Multisig wallet (using consensys contract)
+- Multisig wallet (using gnosis multisig contract)
+  - mainnet contract address: 0x6e95C8E8557AbC08b46F3c347bA06F8dC012763f
+  - kovan testnet contract address: 0x2C992817e0152A65937527B774c7A99a84603045
 - Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas pricee setting.
 
 ## Testing in a Browser
