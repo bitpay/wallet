@@ -361,7 +361,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/dai',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
       blockExplorerUrls: 'etherscan.io/',
       blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
@@ -372,9 +372,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      coinColor: '#00ddfa',
-      backgroundColor: '#00dcfa',
-      gradientBackgroundColor: '#00dcfa'
+      coinColor: '#00ddfa', // TODO: change to proper color after beta
+      backgroundColor: '#00dcfa', // TODO: change to proper color after beta
+      gradientBackgroundColor: '#00dcfa' // TODO: change to proper color after beta
     }
   },
   wbtc: {
@@ -383,8 +383,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     coin: 'wbtc',
     unitInfo: {
       unitName: 'WBTC',
-      unitToSatoshi: 1e9,
-      unitDecimals: 9,
+      unitToSatoshi: 1e8,
+      unitDecimals: 8,
       unitCode: 'wbtc'
     },
     properties: {
@@ -398,7 +398,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/wbtc',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
       blockExplorerUrls: 'etherscan.io/',
       blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
@@ -409,9 +409,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       maxMerchantFee: 'urgent'
     },
     theme: {
-      coinColor: '#00ddfa',
-      backgroundColor: '#00dcfa',
-      gradientBackgroundColor: '#00dcfa'
+      coinColor: '#00ddfa', // TODO: change to proper color after beta
+      backgroundColor: '#00dcfa', // TODO: change to proper color after beta
+      gradientBackgroundColor: '#00dcfa' // TODO: change to proper color after beta
     }
   }
 };

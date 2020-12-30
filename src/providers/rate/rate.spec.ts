@@ -45,13 +45,12 @@ describe('RateProvider', () => {
   ];
   const busdResponse = [
     { code: 'BUSD', name: 'Binance USD Coin', rate: 9371.93 }
-
-  // const daiResponse = [
-  //     { code: 'DAI', name: 'Dai Coin', rate: 9371.93 }
-
-  // const wbtResponse = [
-  //     { code: 'WBTC', name: 'WBTC', rate: 9371.93 }
   ];
+  // const daiResponse = [{ code: 'DAI', name: 'Dai Coin', rate: 9371.93 }];
+  // const wbtcResponse = [
+  //   { code: 'WBTC', name: 'WBTC', rate: 9371.93 } // TODO update tests after beta and market monintor implemented
+  
+
   const fiatResponse = {
     ts: 1559315523000,
     rate: 8427.66,
@@ -89,7 +88,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
-    // httpMock.match(busdUrl)[0].flush(daiResponse);
+    // httpMock.match(daiUrl)[0].flush(daiResponse);
+    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
@@ -111,6 +111,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(daiUrl)[0].flush(daiResponse);
+    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
@@ -132,6 +134,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(daiUrl)[0].flush(daiResponse);
+    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
@@ -153,6 +157,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(daiUrl)[0].flush(daiResponse);
+    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
@@ -171,6 +177,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(daiUrl)[0].flush(daiResponse);
+    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
@@ -246,6 +254,8 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    // httpMock.match(busdUrl)[0].flush(daiResponse);
+    // httpMock.match(busdUrl)[0].flush(wbtcResponse);
     httpMock.verify();
   });
 
