@@ -107,10 +107,11 @@ export class KeyProvider {
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
       if (!this.keys.find(k => this.isMatch(keyToAdd, k))) {
+        const keyObject = keyToAdd.toObj();
         this.keys.push(
           new this.Key({
             seedType: 'object',
-            seedData: keyToAdd
+            seedData: keyObject
           })
         );
         this.isDirty = true;
