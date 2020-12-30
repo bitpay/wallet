@@ -49,7 +49,6 @@ describe('RateProvider', () => {
   // const daiResponse = [{ code: 'DAI', name: 'Dai Coin', rate: 9371.93 }];
   // const wbtcResponse = [
   //   { code: 'WBTC', name: 'WBTC', rate: 9371.93 } // TODO update tests after beta and market monintor implemented
-  
 
   const fiatResponse = {
     ts: 1559315523000,

@@ -361,7 +361,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'EIP681b',
       protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
+      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd',
       blockExplorerUrls: 'etherscan.io/',
       blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
     },
