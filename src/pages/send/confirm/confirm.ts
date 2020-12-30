@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import WalletConnect from '@walletconnect/client';
 import {
   App,
   Events,
@@ -93,6 +94,7 @@ export class ConfirmPage {
 
   public isOpenSelector: boolean;
   public fromWalletDetails: boolean;
+  public walletConnectRequestId: number;
 
   // Coinbase
   public fromCoinbase;
@@ -143,6 +145,7 @@ export class ConfirmPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
+    this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -1415,17 +1418,25 @@ export class ConfirmPage {
         if (this.navParams.data.isEthMultisigInstantiation) {
           this.onGoingProcessProvider.set('creatingEthMultisigWallet');
           return this.instantiateMultisigContract(txp);
-        } else if (this.navParams.data.walletConnectRequestId) {
-          this.persistenceProvider.getWalletConnect().then(session => {
-            if (session) {
-              this.analyticsProvider.logEvent(
-                'wallet_connect_action_completed',
-                {}
-              );
-            }
-            this.onGoingProcessProvider.clear();
-            return this.openFinishModal(false, { redir });
-          });
+        } else if (this.walletConnectRequestId) {
+          this.persistenceProvider
+            .getWalletConnect()
+            .then(walletConnectData => {
+              if (walletConnectData) {
+                const session = walletConnectData.session;
+                const walletConnector = new WalletConnect({ session });
+                walletConnector.approveRequest({
+                  id: this.walletConnectRequestId,
+                  result: txp.txid
+                });
+                this.analyticsProvider.logEvent(
+                  'wallet_connect_action_completed',
+                  {}
+                );
+              }
+            });
+          this.onGoingProcessProvider.clear();
+          return this.openFinishModal(false, { redir });
         } else {
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });
