@@ -21,6 +21,7 @@ export class PushNotificationsProvider {
   private isAndroid: boolean;
   private usePushNotifications: boolean;
   private _token = null;
+  private fcmInterval;
 
   constructor(
     public http: HttpClient,
@@ -70,8 +71,25 @@ export class PushNotificationsProvider {
           config.productsUpdates.enabled
         )
           this.subscribeToTopic('productsupdates');
+
+        this.fcmInterval = setInterval(() => {
+          this.renewSubscription();
+        }, 5 * 60 * 1000); // 5 min
       });
     });
+  }
+
+  private renewSubscription(): void {
+    const opts = {
+      showHidden: false
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    _.forEach(wallets, walletClient => {
+      this._unsubscribe(walletClient);
+    });
+    setTimeout(() => {
+      this.updateSubscription(wallets);
+    }, 1000);
   }
 
   public handlePushNotifications(): void {
@@ -103,9 +121,27 @@ export class PushNotificationsProvider {
               multisigContractAddress
             );
           }
+        } else {
+          const wallet = this.findWallet(data.walletId, data.tokenAddress);
+          if (!wallet) return;
+          this.newBwsEvent(data, wallet.credentials.walletId);
         }
       });
     }
+  }
+
+  private newBwsEvent(notification, walletId): void {
+    let id = walletId;
+    if (notification.tokenAddress) {
+      id = walletId + '-' + notification.tokenAddress.toLowerCase();
+      this.logger.debug(`event for token wallet: ${id}`);
+    }
+    this.events.publish(
+      'bwsEvent',
+      id,
+      notification.notification_type,
+      notification
+    );
   }
 
   public updateSubscription(walletClient): void {
@@ -158,6 +194,8 @@ export class PushNotificationsProvider {
       this._unsubscribe(walletClient);
     });
     this._token = null;
+
+    clearInterval(this.fcmInterval);
   }
 
   public unsubscribe(walletClient): void {
@@ -177,7 +215,8 @@ export class PushNotificationsProvider {
     const opts = {
       token: this._token,
       platform: this.isIOS ? 'ios' : this.isAndroid ? 'android' : null,
-      packageName: this.appProvider.info.packageNameId
+      packageName: this.appProvider.info.packageNameId,
+      walletId: walletClient.credentials.walletId
     };
     walletClient.pushNotificationsSubscribe(opts, err => {
       if (err)
@@ -224,7 +263,7 @@ export class PushNotificationsProvider {
     this.events.publish('OpenWallet', wallet);
   }
 
-  private findWallet(walletIdHashed, tokenAddress, multisigContractAddress) {
+  private findWallet(walletIdHashed, tokenAddress, multisigContractAddress?) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
