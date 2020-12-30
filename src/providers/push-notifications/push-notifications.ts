@@ -21,6 +21,7 @@ export class PushNotificationsProvider {
   private isAndroid: boolean;
   private usePushNotifications: boolean;
   private _token = null;
+  private fcmInterval;
 
   constructor(
     public http: HttpClient,
@@ -71,7 +72,7 @@ export class PushNotificationsProvider {
         )
           this.subscribeToTopic('productsupdates');
 
-        setInterval(() => {
+        this.fcmInterval = setInterval(() => {
           this.renewSubscription();
         }, 5 * 60 * 1000); // 5 min
       });
@@ -193,6 +194,8 @@ export class PushNotificationsProvider {
       this._unsubscribe(walletClient);
     });
     this._token = null;
+
+    clearInterval(this.fcmInterval);
   }
 
   public unsubscribe(walletClient): void {
