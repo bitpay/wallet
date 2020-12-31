@@ -49,7 +49,7 @@
     "test": "npm run env:dev && npm run test:lint && npm run test:ci",
     "test:coverage": "ng test --code-coverage",
     "test:ci": "ng test --watch=false --code-coverage --no-progress",
-    "test:lint": "tslint --project . --format codeFrame && tslint '{test,electron,src}/**/*.ts' --format codeFrame && prettier '{*,**/*}.{js,ts,md,json,scss}' --list-different",
+    "test:lint": "tslint --project . --format codeFrame && tslint '{test,electron,src}/**/*.ts' --format codeFrame && prettier '{*,**/*}.{js,ts,scss}' --list-different",
     "fix:tslint": "tslint --fix --project . && tslint --fix '{test,electron,src}/**/*.ts'",
     "fix:prettier": "prettier --write '{*,**/*}.{js,ts,md,json,scss}'",
     "fix": "npm run fix:tslint && npm run fix:prettier",
