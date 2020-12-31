@@ -221,10 +221,9 @@
     <ion-list *ngIf="history && history[0]" class="tx-history">
       <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
 
-        <ion-item-divider sticky class="tx-history-header">
-          <span translate *ngIf="isDateInCurrentMonth(getDate(group[0].time))">Recent</span>
-          <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) |
-                amDateFormat:'MMMM'}}</span>
+        <ion-item-divider (click)="viewOnBlockchain()" sticky class="tx-history-header">
+          <span *ngIf="isDateInCurrentMonth(getDate(group[0].time))">{{ 'Recent' | translate }} </span>
+          <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) | amDateFormat:'MMMM'}}</span>
         </ion-item-divider>
 
         <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
