@@ -35,7 +35,7 @@
     "coinbase": true,
     "glidera": false,
     "debitcard": true,
-    "shapeshift": true,
+    "shapeshift": false,
     "giftcards": true,
     "walletConnect": true
   }
