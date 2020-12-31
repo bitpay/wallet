@@ -1,0 +1,20 @@
+<wide-header-page title="{{'Exchange Crypto Settings' | translate}}">
+  <div page-content>
+    <ion-list class="bp-list top-padding">
+      <ion-item>
+        <ion-label>{{'Show "Exchange Crypto"' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+      </ion-item>
+      <div *ngIf="changellySwapTxs?.length">
+        <ion-item-divider>{{'Used Exchanges' | translate}}</ion-item-divider>
+        <ion-list class="bp-list">
+          <button *ngIf="changellySwapTxs?.length" ion-item (click)="goToChangellyPage()">
+            <ion-icon class="item-img" item-start>
+              <img src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg">
+            </ion-icon>
+          </button>
+        </ion-list>
+      </div>
+    </ion-list>
+  </div>
+</wide-header-page>

@@ -33,6 +33,7 @@
   "_enabledExtensions": {
     "buycrypto": true,
     "coinbase": true,
+    "exchangecrypto": true,
     "glidera": false,
     "debitcard": true,
     "shapeshift": false,

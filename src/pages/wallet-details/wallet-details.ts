@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -33,6 +34,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
+import { ExchangeCryptoPage } from '../../pages/exchange-crypto/exchange-crypto';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -84,6 +86,7 @@ export class WalletDetailsPage {
   public backgroundColor: string;
   private isCordova: boolean;
   public useLegacyQrCode: boolean;
+  public isDarkModeEnabled: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
@@ -109,7 +112,8 @@ export class WalletDetailsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
     private themeProvider: ThemeProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -117,6 +121,7 @@ export class WalletDetailsPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
+    this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
@@ -650,6 +655,24 @@ export class WalletDetailsPage {
 
   public goToSendPage() {
     this.navCtrl.push(SendPage, {
+      wallet: this.wallet
+    });
+  }
+
+  public goToExchangeCryptoPage() {
+    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+    this.navCtrl.push(ExchangeCryptoPage, {
+      wallet: this.wallet
+    });
+  }
+
+  public goToBuyCryptoPage() {
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.navCtrl.push(AmountPage, {
+      coin: this.wallet.coin,
+      fromBuyCrypto: true,
+      nextPage: 'CryptoOrderSummaryPage',
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
       wallet: this.wallet
     });
   }

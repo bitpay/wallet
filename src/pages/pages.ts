@@ -14,6 +14,9 @@ import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offer
 import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
 import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
+import { ExchangeCheckoutPage } from '../pages/exchange-crypto/exchange-checkout/exchange-checkout';
+import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
+import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
@@ -33,6 +36,11 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Invoice
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
+
+// Integrations: Changelly
+import { ChangellyPage } from '../pages/integrations/changelly/changelly';
+import { ChangellyDetailsPage } from '../pages/integrations/changelly/changelly-details/changelly-details';
+import { ChangellyTermsPage } from '../pages/integrations/changelly/changelly-terms/changelly-terms';
 
 // Integrations: Coinbase
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
@@ -170,6 +178,9 @@ export const PAGES = [
   BitPayCardTopUpPage,
   BitPayIdPage,
   CardCatalogPage,
+  ChangellyDetailsPage,
+  ChangellyPage,
+  ChangellyTermsPage,
   CreateWalletPage,
   CreateNewWalletPage,
   CoinbaseAccountPage,
@@ -183,6 +194,9 @@ export const PAGES = [
   CryptoOffersPage,
   CryptoCoinSelectorPage,
   CryptoSettingsPage,
+  ExchangeCheckoutPage,
+  ExchangeCryptoPage,
+  ExchangeCryptoSettingsPage,
   SelectInputsPage,
   FeedbackCardPage,
   SharePage,

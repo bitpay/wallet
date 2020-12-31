@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>buy-dm</title>
+    <g id="V2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Wallet---Activity-(Bitcoin)-" transform="translate(-301.000000, -277.000000)" fill="#4F6EF7">
+            <g id="buy-dm" transform="translate(301.000000, 277.000000)">
+                <circle id="Oval" opacity="0.324986049" cx="25" cy="25" r="25"></circle>
+                <text id="$" font-family="Heebo-Medium, Heebo" font-size="22" font-weight="400">
+                    <tspan x="19.2373047" y="32">$</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
