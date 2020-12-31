@@ -11,9 +11,10 @@ import { ChangellyTermsPage } from '../../integrations/changelly/changelly-terms
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
 import { ConfigProvider } from '../../../providers/config/config';
-import { CurrencyProvider } from '../../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -70,6 +71,7 @@ export class ExchangeCheckoutPage {
     private rateProvider: RateProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
+    private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.onGoingProcessProvider.set(
@@ -337,11 +339,35 @@ export class ExchangeCheckoutPage {
         }
       };
 
+      if (this.currencyProvider.isERCToken(wallet.coin)) {
+        let tokenAddress;
+        let tokens = this.currencyProvider.getAvailableTokens();
+        const token = tokens.find(x => x.symbol == wallet.coin.toUpperCase());
+
+        tokenAddress = token.address;
+
+        if (tokenAddress) {
+          txp.tokenAddress = tokenAddress;
+          for (const output of txp.outputs) {
+            if (!output.data) {
+              output.data = this.bwcProvider
+                .getCore()
+                .Transactions.get({ chain: 'ERC20' })
+                .encodeData({
+                  recipients: [
+                    { address: output.toAddress, amount: output.amount }
+                  ],
+                  tokenAddress
+                });
+            }
+          }
+        }
+      }
       // if (this.sendMaxInfo) {
       //   txp.inputs = this.sendMaxInfo.inputs;
       //   txp.fee = this.sendMaxInfo.fee;
       // } else {
-      if (wallet.coin != 'bch' && wallet.coin != 'xrp')
+      if (wallet.coin == 'btc' || this.getChain(wallet.coin) == 'eth')
         txp.feeLevel = 'priority'; // Avoid expired order due to slow TX confirmation
       // }
 
@@ -359,6 +385,10 @@ export class ExchangeCheckoutPage {
           });
         });
     });
+  }
+
+  public getChain(coin: Coin): string {
+    return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
   public makePayment() {
