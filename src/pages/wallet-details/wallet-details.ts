@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { BuyCryptoProvider } from '../../providers/buy-crypto/buy-crypto';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -87,6 +88,7 @@ export class WalletDetailsPage {
   private isCordova: boolean;
   public useLegacyQrCode: boolean;
   public isDarkModeEnabled: boolean;
+  public showBuyCrypto: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
@@ -113,7 +115,8 @@ export class WalletDetailsPage {
     private errorsProvider: ErrorsProvider,
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private buyCryptoProvider: BuyCryptoProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -122,6 +125,10 @@ export class WalletDetailsPage {
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
+    this.showBuyCrypto = _.includes(
+      this.buyCryptoProvider.exchangeCoinsSupported,
+      this.wallet.coin
+    );
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
@@ -662,7 +669,7 @@ export class WalletDetailsPage {
   public goToExchangeCryptoPage() {
     this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
     this.navCtrl.push(ExchangeCryptoPage, {
-      wallet: this.wallet
+      walletId: this.wallet.id
     });
   }
 
@@ -673,7 +680,7 @@ export class WalletDetailsPage {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
-      wallet: this.wallet
+      walletId: this.wallet.id
     });
   }
 

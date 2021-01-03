@@ -29,9 +29,10 @@ import {
   templateUrl: 'exchange-checkout.html'
 })
 export class ExchangeCheckoutPage {
+  protected bitcoreCash;
+
   public fromWalletSelected;
   public toWalletSelected;
-
   public amountFrom: number;
   public amountTo: number;
   public alternativeIsoCode: string;
@@ -88,6 +89,7 @@ export class ExchangeCheckoutPage {
     this.rate = this.navParams.data.rate;
     this.alternativeIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
+    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.termsAccepted = false;
     this.createFixTransaction();
   }
@@ -105,7 +107,15 @@ export class ExchangeCheckoutPage {
         this.walletProvider
           .getAddress(this.fromWalletSelected, false)
           .then((refundAddress: string) => {
-            this.addressFrom = refundAddress;
+            if (this.fromWalletSelected.coin == 'bch') {
+              this.addressFrom = this.walletProvider.getProtoAddress(
+                this.fromWalletSelected.coin,
+                this.fromWalletSelected.network,
+                refundAddress
+              );
+            } else {
+              this.addressFrom = refundAddress;
+            }
 
             const data = {
               amountFrom: this.amountFrom,
@@ -160,7 +170,14 @@ export class ExchangeCheckoutPage {
                   );
                 }
 
-                this.payinAddress = data.result.payinAddress;
+                if (this.fromWalletSelected.coin == 'bch') {
+                  this.payinAddress = this.bitcoreCash
+                    .Address(data.result.payinAddress)
+                    .toString(true);
+                } else {
+                  this.payinAddress = data.result.payinAddress;
+                }
+
                 this.payinExtraId = data.result.payinExtraId; // (destinationTag) Used for coins like: XRP, XLM, EOS, IGNIS, BNB, XMR, ARDOR, DCT, XEM
                 this.exchangeTxId = data.result.id;
                 this.amountFrom = data.result.amountExpectedFrom;

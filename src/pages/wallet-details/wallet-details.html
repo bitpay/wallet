@@ -149,7 +149,7 @@
             <div class="ellipsis">{{ 'Exchange' | translate }}</div>
           </div>
 
-          <div class="action-btn" (click)="goToBuyCryptoPage()">
+          <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-buy-dm.svg' : 'assets/img/wallet-details/wd-buy.svg'" width="40">
             <div class="ellipsis">{{ 'Buy' | translate }}</div>
           </div>
