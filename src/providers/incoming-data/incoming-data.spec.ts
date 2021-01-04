@@ -890,24 +890,6 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-    it('Should handle Shapeshift URI', () => {
-      let data = ['bitpay://shapeshift', 'copay://shapeshift'];
-      data.forEach(element => {
-        let stateParams = { code: null };
-        let nextView = {
-          name: 'ShapeshiftPage',
-          params: stateParams
-        };
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data (redirect): ShapeShift URL'
-        );
-        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
-        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
-      });
-    });
     xit('Should handle BitPay Card URI', () => {
       let data = 'bitpay://bitpay.com?secret=xxxxx&email=xxx@xx.com';
       let stateParams = { secret: 'xxxxx', email: 'xxx@xx.com', otp: null };

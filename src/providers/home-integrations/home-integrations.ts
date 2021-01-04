@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 
 const exchangeList: object[] = [
   { name: 'coinbase' },
-  { name: 'shapeshift' },
   { name: 'walletConnect' }
 ];
 

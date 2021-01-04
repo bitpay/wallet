@@ -34,7 +34,6 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/crypto-order-summary';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
-import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
@@ -172,7 +171,7 @@ export class AmountPage {
     // BitPay Card ID or Wallet ID or Coinbase Account ID
     this._id = this.navParams.data.id;
 
-    // Use only with ShapeShift and Coinbase Withdraw
+    // Use only with Coinbase Withdraw
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.cardName = this.navParams.get('cardName');
@@ -329,10 +328,6 @@ export class AmountPage {
         break;
       case 'CryptoOrderSummaryPage':
         nextPage = CryptoOrderSummaryPage;
-        break;
-      case 'ShapeshiftConfirmPage':
-        this.showSendMax = false; // Disabled for now
-        nextPage = ShapeshiftConfirmPage;
         break;
       case 'CoinbaseWithdrawPage':
         this.showSendMax = false;

@@ -36,7 +36,6 @@
     "exchangecrypto": true,
     "glidera": false,
     "debitcard": true,
-    "shapeshift": false,
     "giftcards": true,
     "walletConnect": true
   }
