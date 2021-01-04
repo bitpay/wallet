@@ -361,7 +361,10 @@ export class CryptoOffersPage {
             if (data.message && _.isString(data.message)) {
               this.logger.error(data.message);
             }
-            const err = this.translate.instant(
+            if (data.error && _.isString(data.error)) {
+              this.logger.error(data.error);
+            }
+            let err = this.translate.instant(
               "Can't get rates at this moment. Please try again later"
             );
             this.showSimplexError(err);
