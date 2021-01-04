@@ -112,29 +112,21 @@ export class TabsPage {
   }
 
   async ngOnInit() {
+    await this.checkCardEnabled();
+    await this.tabProvider.prefetchCards();
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
+  private async checkCardEnabled() {
+    let cardExperimentEnabled = await this.persistenceProvider.getCardExperimentFlag();
+
     const cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
     );
-
-    const hasGalileo = cards.some(c => c.provider === 'galileo');
-
-    if (hasGalileo) {
-      await this.persistenceProvider.setCardExperimentFlag('enabled');
-    }
-
-    let cardExperimentEnabled = await this.isCardEnabled();
-
-    await this.tabProvider.prefetchCards();
-
-    this.events.publish('Local/FetchCards', {
-      hasGalileo,
-      cardExperimentEnabled
-    });
-  }
-
-  private async isCardEnabled() {
-    let cardExperimentEnabled =
-      (await this.persistenceProvider.getCardExperimentFlag()) === 'enabled';
 
     if (!cardExperimentEnabled) {
       try {
@@ -152,12 +144,11 @@ export class TabsPage {
       }
     }
 
-    return cardExperimentEnabled;
-  }
-
-  ngOnDestroy() {
-    this.onResumeSubscription.unsubscribe();
-    this.onPauseSubscription.unsubscribe();
+    // set banner advertisement in home.ts
+    this.events.publish('Local/FetchCards', {
+      cards,
+      cardExperimentEnabled
+    });
   }
 
   disableCardNotificationBadge() {

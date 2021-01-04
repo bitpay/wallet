@@ -361,9 +361,9 @@ export class HomePage {
     });
     this.events.subscribe(
       'Local/FetchCards',
-      ({ cardExperimentEnabled, hasGalileo }) => {
+      ({ cardExperimentEnabled, cards }) => {
         this.cardExperimentEnabled = cardExperimentEnabled;
-        if (!hasGalileo) this.addBitPayCard();
+        if (!cards) this.addBitPayCard();
       }
     );
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
