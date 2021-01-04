@@ -82,7 +82,7 @@
         <ion-note item-end>
           <div class="summary-item-detail">
             <span>
-              {{ fee | satToUnit: fromWalletSelected.coin }}
+              {{ fee | satToUnit: getChain(fromWalletSelected.coin) }}
             </span>
           </div>
         </ion-note>

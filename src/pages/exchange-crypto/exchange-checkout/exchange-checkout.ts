@@ -11,9 +11,10 @@ import { ChangellyTermsPage } from '../../integrations/changelly/changelly-terms
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
 import { ConfigProvider } from '../../../providers/config/config';
-import { CurrencyProvider } from '../../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -28,9 +29,10 @@ import {
   templateUrl: 'exchange-checkout.html'
 })
 export class ExchangeCheckoutPage {
+  protected bitcoreCash;
+
   public fromWalletSelected;
   public toWalletSelected;
-
   public amountFrom: number;
   public amountTo: number;
   public alternativeIsoCode: string;
@@ -70,6 +72,7 @@ export class ExchangeCheckoutPage {
     private rateProvider: RateProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
+    private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.onGoingProcessProvider.set(
@@ -86,6 +89,7 @@ export class ExchangeCheckoutPage {
     this.rate = this.navParams.data.rate;
     this.alternativeIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
+    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.termsAccepted = false;
     this.createFixTransaction();
   }
@@ -103,7 +107,15 @@ export class ExchangeCheckoutPage {
         this.walletProvider
           .getAddress(this.fromWalletSelected, false)
           .then((refundAddress: string) => {
-            this.addressFrom = refundAddress;
+            if (this.fromWalletSelected.coin == 'bch') {
+              this.addressFrom = this.walletProvider.getProtoAddress(
+                this.fromWalletSelected.coin,
+                this.fromWalletSelected.network,
+                refundAddress
+              );
+            } else {
+              this.addressFrom = refundAddress;
+            }
 
             const data = {
               amountFrom: this.amountFrom,
@@ -158,7 +170,14 @@ export class ExchangeCheckoutPage {
                   );
                 }
 
-                this.payinAddress = data.result.payinAddress;
+                if (this.fromWalletSelected.coin == 'bch') {
+                  this.payinAddress = this.bitcoreCash
+                    .Address(data.result.payinAddress)
+                    .toString(true);
+                } else {
+                  this.payinAddress = data.result.payinAddress;
+                }
+
                 this.payinExtraId = data.result.payinExtraId; // (destinationTag) Used for coins like: XRP, XLM, EOS, IGNIS, BNB, XMR, ARDOR, DCT, XEM
                 this.exchangeTxId = data.result.id;
                 this.amountFrom = data.result.amountExpectedFrom;
@@ -337,11 +356,35 @@ export class ExchangeCheckoutPage {
         }
       };
 
+      if (this.currencyProvider.isERCToken(wallet.coin)) {
+        let tokenAddress;
+        let tokens = this.currencyProvider.getAvailableTokens();
+        const token = tokens.find(x => x.symbol == wallet.coin.toUpperCase());
+
+        tokenAddress = token.address;
+
+        if (tokenAddress) {
+          txp.tokenAddress = tokenAddress;
+          for (const output of txp.outputs) {
+            if (!output.data) {
+              output.data = this.bwcProvider
+                .getCore()
+                .Transactions.get({ chain: 'ERC20' })
+                .encodeData({
+                  recipients: [
+                    { address: output.toAddress, amount: output.amount }
+                  ],
+                  tokenAddress
+                });
+            }
+          }
+        }
+      }
       // if (this.sendMaxInfo) {
       //   txp.inputs = this.sendMaxInfo.inputs;
       //   txp.fee = this.sendMaxInfo.fee;
       // } else {
-      if (wallet.coin != 'bch' && wallet.coin != 'xrp')
+      if (wallet.coin == 'btc' || this.getChain(wallet.coin) == 'eth')
         txp.feeLevel = 'priority'; // Avoid expired order due to slow TX confirmation
       // }
 
@@ -359,6 +402,10 @@ export class ExchangeCheckoutPage {
           });
         });
     });
+  }
+
+  public getChain(coin: Coin): string {
+    return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
   public makePayment() {
