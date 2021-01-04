@@ -729,7 +729,9 @@ export class IncomingDataProvider {
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
         if (option) {
-          this.openExternalLink('https://support.sendwyre.com/');
+          this.openExternalLink(
+            'https://wyre-support.zendesk.com/hc/en-us/requests/new'
+          );
         }
       });
       return;
