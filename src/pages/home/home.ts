@@ -16,6 +16,7 @@ import {
   HomeIntegrationsProvider,
   Logger,
   MerchantProvider,
+  NewFeatureData,
   PersistenceProvider,
   PlatformProvider,
   ProfileProvider,
@@ -37,6 +38,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
@@ -116,7 +118,8 @@ export class HomePage {
     private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private dynamicLinkProvider: DynamicLinksProvider
+    private dynamicLinkProvider: DynamicLinksProvider,
+    private newFeatureData: NewFeatureData
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -136,10 +139,54 @@ export class HomePage {
     };
   }
 
+  private async showNewFeatureSlides() {
+    if (this.appProvider.isLockModalOpen) return;
+    const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
+    // console.log(`>>> Disclaimer Accepted ${disclaimerAccepted}`);
+    // const onboardingState = await this.persistenceProvider.getOnboardingFlowFlag();
+    if (!disclaimerAccepted) {
+      // first time using the App -> don't show
+      this.persistenceProvider.setNewFeatureSlidesFlag(
+        this.appProvider.info.version
+      );
+      return;
+    }
+    this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
+      if (!value || value !== this.appProvider.info.version) {
+        const feature_list = this.newFeatureData.get();
+        if (feature_list && feature_list.features.length > 0) {
+          const modal = this.modalCtrl.create(
+            NewFeaturePage,
+            {
+              featureList: feature_list
+            },
+            {
+              showBackdrop: false,
+              enableBackdropDismiss: false
+            }
+          );
+          modal.present();
+          modal.onDidDismiss(data => {
+            if (data && data === true) {
+              this.persistenceProvider.setNewFeatureSlidesFlag(
+                this.appProvider.info.version
+              );
+            }
+          });
+        } else {
+          this.persistenceProvider.setNewFeatureSlidesFlag(
+            this.appProvider.info.version
+          );
+        }
+      }
+    });
+  }
+
   async ionViewWillEnter() {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
+    await this.showNewFeatureSlides();
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;

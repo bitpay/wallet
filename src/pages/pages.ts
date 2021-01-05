@@ -19,6 +19,7 @@ import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
 import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { NewFeaturePage } from '../pages/new-feature/new-feature';
 import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -281,6 +282,7 @@ export const PAGES = [
   CoinSelectorPage,
   SlideToAcceptPage,
   LocalThemePage,
+  NewFeaturePage,
   // Phases: card pages
   PhaseOneCardIntro
 ];

@@ -17,6 +17,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
+import { NewFeatureData } from '../../providers/new-feature-data/new-feature-data';
 import {
   Network,
   PersistenceProvider
@@ -36,6 +37,7 @@ import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
+import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
@@ -95,6 +97,7 @@ export class SettingsPage {
   public useLegacyQrCode: boolean;
   public tapped = 0;
   public certOnlyTapped = 0;
+  public appVersion: string;
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
@@ -115,9 +118,11 @@ export class SettingsPage {
     private changeRef: ChangeDetectorRef,
     private iabCardProvider: IABCardProvider,
     private themeProvider: ThemeProvider,
-    private events: Events
+    private events: Events,
+    private newFeatureData: NewFeatureData
   ) {
     this.appName = this.app.info.nameCase;
+    this.appVersion = this.app.info.version;
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
@@ -283,6 +288,23 @@ export class SettingsPage {
 
   public openLanguagePage(): void {
     this.navCtrl.push(LanguagePage);
+  }
+
+  public openWhatsNew(): void {
+    const feature_list = this.newFeatureData.get();
+    if (feature_list) {
+      const modal = this.modalCtrl.create(
+        NewFeaturePage,
+        {
+          featureList: feature_list
+        },
+        {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        }
+      );
+      modal.present();
+    }
   }
 
   public openAdvancedPage(): void {
