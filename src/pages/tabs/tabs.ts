@@ -145,9 +145,9 @@ export class TabsPage {
     }
 
     // set banner advertisement in home.ts
-    this.events.publish('Local/FetchCards', {
-      cards,
-      cardExperimentEnabled
+    this.events.publish('CardAdvertisementUpdate', {
+      cardExperimentEnabled,
+      cards
     });
   }
 

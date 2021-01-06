@@ -481,7 +481,7 @@ export class IABCardProvider {
             this.events.publish('updateCards', cards);
             this.logger.log('CARD - success retrieved cards');
 
-            res();
+            res(cards);
           }
         }
       );
@@ -824,8 +824,12 @@ export class IABCardProvider {
 
           if (!paymentUrl) {
             // fetch new cards
-            await this.getCards();
+            const cards = await this.getCards();
             this.events.publish('updateCards');
+            this.events.publish('CardAdvertisementUpdate', {
+              status: 'connected',
+              cards
+            });
           }
 
           // clear out loading state
