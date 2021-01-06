@@ -243,9 +243,7 @@ export class CopayApp {
       this.bitpayIdProvider,
       this.iabCardProvider,
       this.giftCardProvider
-    ].forEach(
-      provider => provider.setNetwork(this.NETWORK)
-    );
+    ].forEach(provider => provider.setNetwork(this.NETWORK));
 
     this.logger.debug('Setting Cached Total Balance');
     this.appProvider.setTotalBalance();
@@ -396,13 +394,14 @@ export class CopayApp {
             'card',
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
-            `(() => {
+            `( async () => {
               window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}});
-              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
+              await new Promise((res) => setTimeout(res, 300));
               sessionStorage.setItem('isPaired', ${!!token}); 
               sessionStorage.setItem('cards', ${JSON.stringify(
                 JSON.stringify(cards)
               )});
+              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
               })()`
           );
           this.iabCardProvider.init();
