@@ -8,10 +8,10 @@ import { NavParams, Slides, ViewController } from 'ionic-angular';
 export class NewFeaturePage {
   @ViewChild('newFeatureSlides') slider: Slides;
   endSlide: boolean = false;
-  showFeatureList: any = [];
+  featureList: any = [];
   constructor(private viewCtrl: ViewController, private navParams: NavParams) {
-    this.showFeatureList.push(...this.navParams.data.featureList.features);
-    this.endSlide = this.showFeatureList.length == 1;
+    this.featureList.push(...this.navParams.data.featureList.features);
+    this.endSlide = this.featureList.length == 1;
   }
 
   slideChanged() {

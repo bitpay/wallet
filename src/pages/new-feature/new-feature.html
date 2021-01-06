@@ -1,5 +1,5 @@
-<ion-slides #newFeatureSlides pager="true" class="new-feature-slides" *ngIf="showFeatureList && showFeatureList.length>0" (ionSlideWillChange)="slideChanged()">
-  <ion-slide *ngFor="let newfeature of showFeatureList">
+<ion-slides #newFeatureSlides pager="{{featureList && featureList.length>1}}" class="new-feature-slides" *ngIf="featureList && featureList.length>0" (ionSlideWillChange)="slideChanged()">
+  <ion-slide *ngFor="let newfeature of featureList">
     <div class="page-title" translate>What's new</div>
     <div *ngIf="newfeature.image" class="img-container">
       <img src="{{newfeature.image}}" />
