@@ -5,12 +5,14 @@ import * as _ from 'lodash';
 
 // Pages
 import { ExchangeCheckoutPage } from '../../pages/exchange-crypto/exchange-checkout/exchange-checkout';
+import { ChangellyPage } from '../../pages/integrations/changelly/changelly';
 import { AmountPage } from '../../pages/send/amount/amount';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ChangellyProvider } from '../../providers/changelly/changelly';
 import { CurrencyProvider } from '../../providers/currency/currency';
+import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -29,6 +31,7 @@ export class ExchangeCryptoPage {
   public toWallets;
   public fromWallets;
   public loading: boolean;
+  public changellySwapTxs: any[];
 
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -56,6 +59,7 @@ export class ExchangeCryptoPage {
     private currencyProvider: CurrencyProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private txFormatProvider: TxFormatProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     public themeProvider: ThemeProvider
   ) {
     this.allWallets = [];
@@ -69,6 +73,10 @@ export class ExchangeCryptoPage {
       'Select Destination Wallet'
     );
     this.onGoingProcessProvider.set('connectingChangelly');
+
+    this.exchangeCryptoProvider.getSwapTxs().then(res => {
+      this.changellySwapTxs = res.changellySwapTxs;
+    });
 
     this.changellyProvider
       .getCurrencies()
@@ -142,10 +150,6 @@ export class ExchangeCryptoPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCryptoPage');
-  }
-
-  public cancelExchange() {
-    this.navCtrl.popToRoot();
   }
 
   public showWallets(selector: string): void {
@@ -406,5 +410,9 @@ export class ExchangeCryptoPage {
     };
 
     this.navCtrl.push(ExchangeCheckoutPage, data);
+  }
+
+  public goToExchangeHistory() {
+    this.navCtrl.push(ChangellyPage);
   }
 }

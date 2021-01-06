@@ -133,15 +133,9 @@
         </div>
         <div class="action-buttons">
 
-          <div class="action-btn" (click)="goToSendPage()">
-            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-send-dm.svg' : 'assets/img/wallet-details/wd-send.svg'" width="40">
-            <div class="ellipsis">{{ 'Send' | translate }}</div>
-          </div>
-
-
-          <div class="action-btn" (click)="goToReceivePage()">
-            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-receive-dm.svg' : 'assets/img/wallet-details/wd-receive.svg'" width="40">
-            <div class="ellipsis">{{ 'Receive' | translate }}</div>
+          <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
+            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-buy-dm.svg' : 'assets/img/wallet-details/wd-buy.svg'" width="40">
+            <div class="ellipsis">{{ 'Buy' | translate }}</div>
           </div>
 
           <div class="action-btn" (click)="goToExchangeCryptoPage()">
@@ -149,20 +143,15 @@
             <div class="ellipsis">{{ 'Exchange' | translate }}</div>
           </div>
 
-          <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
-            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-buy-dm.svg' : 'assets/img/wallet-details/wd-buy.svg'" width="40">
-            <div class="ellipsis">{{ 'Buy' | translate }}</div>
+          <div class="action-btn" (click)="goToReceivePage()">
+            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-receive-dm.svg' : 'assets/img/wallet-details/wd-receive.svg'" width="40">
+            <div class="ellipsis">{{ 'Receive' | translate }}</div>
           </div>
 
-          <!-- <button class="button-standard disable-hover" (click)="goToReceivePage()" ion-button>
-            {{ 'Receive' | translate }}
-          </button>
-          <button class="button-standard disable-hover" (click)="goToSendPage()" ion-button>
-            {{ 'Send' | translate }}
-          </button> -->
-
-
-
+          <div class="action-btn" (click)="goToSendPage()">
+            <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-send-dm.svg' : 'assets/img/wallet-details/wd-send.svg'" width="40">
+            <div class="ellipsis">{{ 'Send' | translate }}</div>
+          </div>
 
         </div>
       </expandable-header-footer>
