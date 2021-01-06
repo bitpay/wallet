@@ -155,22 +155,19 @@ export class HomePage {
       if (!value || value !== this.appProvider.info.version) {
         const feature_list = this.newFeatureData.get();
         if (feature_list && feature_list.features.length > 0) {
-          const modal = this.modalCtrl.create(
-            NewFeaturePage,
-            {
-              featureList: feature_list
-            },
-            {
-              showBackdrop: false,
-              enableBackdropDismiss: false
-            }
-          );
+          const modal = this.modalCtrl.create(NewFeaturePage, {
+            featureList: feature_list
+          });
           modal.present();
           modal.onDidDismiss(data => {
-            if (data && data === true) {
-              this.persistenceProvider.setNewFeatureSlidesFlag(
-                this.appProvider.info.version
-              );
+            if (data) {
+              if (typeof data === 'boolean' && data === true) {
+                this.persistenceProvider.setNewFeatureSlidesFlag(
+                  this.appProvider.info.version
+                );
+              } else if (typeof data !== 'boolean') {
+                this.events.publish('IncomingDataRedir', data);
+              }
             }
           });
         } else {

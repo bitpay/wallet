@@ -22,7 +22,7 @@ export class NewFeaturePage {
     this.slider.slideNext();
   }
 
-  public close(): void {
-    this.viewCtrl.dismiss(true);
+  public close(data: any): void {
+    this.viewCtrl.dismiss(data);
   }
 }

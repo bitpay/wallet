@@ -98,6 +98,7 @@ export class SettingsPage {
   public tapped = 0;
   public certOnlyTapped = 0;
   public appVersion: string;
+  private featureList: any;
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
@@ -193,6 +194,8 @@ export class SettingsPage {
     this.useLegacyQrCode = this.config.legacyQrCode.show;
 
     this.showTotalBalance = this.config.totalBalance.show;
+
+    this.featureList = this.newFeatureData.get();
   }
 
   ionViewDidEnter() {
@@ -291,12 +294,11 @@ export class SettingsPage {
   }
 
   public openWhatsNew(): void {
-    const feature_list = this.newFeatureData.get();
-    if (feature_list) {
+    if (this.featureList) {
       const modal = this.modalCtrl.create(
         NewFeaturePage,
         {
-          featureList: feature_list
+          featureList: this.featureList
         },
         {
           showBackdrop: false,

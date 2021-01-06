@@ -8,6 +8,11 @@
       <div class="info">
         <div class="title">{{newfeature.title}}</div>
         <div class="text">{{newfeature.details}}</div>
+        <div *ngIf="newfeature.tryit">
+        <button ion-button clear class="try-it-button" (click)="close(newfeature.tryit)">
+          {{'Try it' | translate }}
+        </button>
+      </div>    
       </div>
     </div>
   </ion-slide>
@@ -16,7 +21,7 @@
   <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="!endSlide">
     {{ 'Next' | translate }}
   </button>
-  <button ion-button clear class="next-slide-button" (click)="close()" *ngIf="endSlide">
+  <button ion-button clear class="next-slide-button" (click)="close(true)" *ngIf="endSlide">
     {{'Done' | translate }}
   </button>
 </div>

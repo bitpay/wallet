@@ -21,7 +21,7 @@
     <ion-list class="bp-list">
       <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
 
-      <button ion-item (click)="openWhatsNew()">
+      <button ion-item (click)="openWhatsNew()" *ngIf="featureList">
         <ion-icon class="item-img icon-settings" item-start>
           <img src="assets/img/settings-icons/icon-info.svg" />
         </ion-icon>

@@ -32,7 +32,7 @@ page-new-feature {
 
       img {
         box-shadow: 0 0px 50px 0 #eceffd;
-        width: auto;
+        width: 60%;
         height: 100%;
         justify-content: center;
         align-self: center;
@@ -89,6 +89,12 @@ page-new-feature {
     bottom: calc(1.5rem + env(safe-area-inset-bottom));
     bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
     right: 0;
+    color: color($colors, primary);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .try-it-button {
     color: color($colors, primary);
     cursor: pointer;
     text-transform: uppercase;
