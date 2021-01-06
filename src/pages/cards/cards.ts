@@ -94,7 +94,7 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('bitpayIdDisconnected', async () => {
+    this.events.subscribe('BitPayId/Disconnected', async () => {
       this.hasCards = false;
     });
 
