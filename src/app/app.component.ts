@@ -238,9 +238,14 @@ export class CopayApp {
     });
 
     this.logger.debug('BitPay: setting network');
-    this.bitpayProvider.setNetwork(this.NETWORK);
-    this.bitpayIdProvider.setNetwork(this.NETWORK);
-    this.iabCardProvider.setNetwork(this.NETWORK);
+    [
+      this.bitpayProvider,
+      this.bitpayIdProvider,
+      this.iabCardProvider,
+      this.giftCardProvider
+    ].forEach(
+      provider => provider.setNetwork(this.NETWORK)
+    );
 
     this.logger.debug('Setting Cached Total Balance');
     this.appProvider.setTotalBalance();

@@ -67,7 +67,6 @@ export class GiftCardProvider extends InvoiceProvider {
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
-    this.setCredentials();
     this.listenForAuthChanges();
   }
 
