@@ -93,7 +93,7 @@ export class SimplexProvider {
       'VND',
       'ZAR'
     ];
-    this.supportedCoins = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
+    this.supportedCoins = ['btc', 'bch', 'eth', 'pax', 'busd'];
     this.fiatAmountLimits = {
       min: 50,
       max: 20000
