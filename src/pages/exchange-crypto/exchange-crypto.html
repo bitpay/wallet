@@ -1,7 +1,9 @@
-<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true">
-  <ion-buttons right>
-    <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
-      <span translate>Cancel</span>
+<wide-header-page title="{{'Exchange Crypto' | translate}}">
+  <ion-buttons right *ngIf="changellySwapTxs?.length">
+    <button class="history-btn" clear wide-header-bar-button (click)="goToExchangeHistory()" ion-button>
+      <ion-icon>
+        <img src="assets/img/icon-history.svg" />
+      </ion-icon>
     </button>
   </ion-buttons>
   <div page-content>
