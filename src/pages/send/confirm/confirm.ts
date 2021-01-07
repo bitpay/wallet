@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import WalletConnect from '@walletconnect/client';
 import {
   App,
   Events,
@@ -42,6 +41,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { WalletConnectProvider } from '../../../providers/wallet-connect/wallet-connect';
 import {
   TransactionProposal,
   WalletProvider
@@ -141,7 +141,8 @@ export class ConfirmPage {
     protected payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider,
     protected homeIntegrationsProvider: HomeIntegrationsProvider,
-    protected persistenceProvider: PersistenceProvider
+    protected persistenceProvider: PersistenceProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
@@ -1419,22 +1420,10 @@ export class ConfirmPage {
           this.onGoingProcessProvider.set('creatingEthMultisigWallet');
           return this.instantiateMultisigContract(txp);
         } else if (this.walletConnectRequestId) {
-          this.persistenceProvider
-            .getWalletConnect()
-            .then(walletConnectData => {
-              if (walletConnectData) {
-                const session = walletConnectData.session;
-                const walletConnector = new WalletConnect({ session });
-                walletConnector.approveRequest({
-                  id: this.walletConnectRequestId,
-                  result: txp.txid
-                });
-                this.analyticsProvider.logEvent(
-                  'wallet_connect_action_completed',
-                  {}
-                );
-              }
-            });
+          this.walletConnectProvider.approveRequest(
+            this.walletConnectRequestId,
+            txp.txid
+          );
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });
         } else {
