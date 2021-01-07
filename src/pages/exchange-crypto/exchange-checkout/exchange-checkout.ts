@@ -219,13 +219,11 @@ export class ExchangeCheckoutPage {
                     return;
                   })
                   .catch(err => {
-                    this.onGoingProcessProvider.clear();
                     this.showErrorAndBack(err.title, err.message);
                     return;
                   });
               })
               .catch(err => {
-                this.onGoingProcessProvider.clear();
                 this.logger.error(
                   'Changelly createFixTransaction Error: ',
                   err
@@ -240,7 +238,6 @@ export class ExchangeCheckoutPage {
               });
           })
           .catch(err => {
-            this.onGoingProcessProvider.clear();
             this.logger.error('Could not get returnAddress address', err);
             this.showErrorAndBack(
               null,
@@ -252,7 +249,6 @@ export class ExchangeCheckoutPage {
           });
       })
       .catch(err => {
-        this.onGoingProcessProvider.clear();
         this.logger.error('Could not get withdrawalAddress address', err);
         this.showErrorAndBack(
           null,
@@ -514,7 +510,10 @@ export class ExchangeCheckoutPage {
     );
     errorActionSheet.present();
     errorActionSheet.onDidDismiss(_option => {
-      if (!noExit) this.navCtrl.pop();
+      if (!noExit) {
+        this.onGoingProcessProvider.clear();
+        this.navCtrl.pop();
+      }
     });
   }
 
