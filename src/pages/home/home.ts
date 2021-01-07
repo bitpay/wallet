@@ -139,11 +139,9 @@ export class HomePage {
     };
   }
 
-  private async showNewFeatureSlides() {
+  private showNewFeatureSlides() {
     if (this.appProvider.isLockModalOpen) return;
     const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
-    // console.log(`>>> Disclaimer Accepted ${disclaimerAccepted}`);
-    // const onboardingState = await this.persistenceProvider.getOnboardingFlowFlag();
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
       this.persistenceProvider.setNewFeatureSlidesFlag(
@@ -183,7 +181,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
-    await this.showNewFeatureSlides();
+    this.showNewFeatureSlides();
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
