@@ -21,6 +21,18 @@
     <ion-list class="bp-list">
       <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
 
+      <button ion-item (click)="openWhatsNew()" *ngIf="featureList">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-info.svg" />
+        </ion-icon>
+        <ion-label>
+          <span class="main-label" translate>What's new</span>
+        </ion-label>
+        <ion-note item-end>
+          {{appVersion}}
+        </ion-note>
+      </button>
+      
       <button ion-item (click)="openThemePage()">
         <ion-icon class="item-img icon-settings ionic-icon" name="ios-color-palette" item-start></ion-icon>
         <ion-label>

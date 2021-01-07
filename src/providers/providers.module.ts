@@ -58,6 +58,7 @@ import {
   Logger,
   LogsProvider,
   MerchantProvider,
+  NewFeatureData,
   OnGoingProcessProvider,
   PayproProvider,
   PersistenceProvider,
@@ -179,7 +180,8 @@ import {
     DecimalPipe,
     PersistenceProvider,
     File,
-    CardPhasesProvider
+    CardPhasesProvider,
+    NewFeatureData
   ]
 })
 export class ProvidersModule {}

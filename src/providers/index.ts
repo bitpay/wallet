@@ -88,5 +88,6 @@ export { WalletProvider } from '../providers/wallet/wallet';
 export { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
 export { WyreProvider } from '../providers/wyre/wyre';
 export { ReleaseProvider } from '../providers/release/release';
+export { NewFeatureData } from '../providers/new-feature-data/new-feature-data';
 
 export { CardPhasesProvider } from '../providers/card-phases/card-phases';

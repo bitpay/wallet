@@ -751,6 +751,18 @@ export class PersistenceProvider {
     return this.storage.remove('lockStatus');
   }
 
+  setNewFeatureSlidesFlag(value: string) {
+    return this.storage.set('newFeatureSlides', value);
+  }
+
+  getNewFeatureSlidesFlag() {
+    return this.storage.get('newFeatureSlides');
+  }
+
+  removeNewFeatureSlidesFlag() {
+    return this.storage.remove('newFeatureSlides');
+  }
+
   setEmailLawCompliance(value: string) {
     return this.storage.set('emailLawCompliance', value);
   }

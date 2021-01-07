@@ -1,0 +1,106 @@
+page-new-feature {
+  .new-feature-slides {
+    .slide-zoom {
+      height: 100%;
+    }
+    ion-slide {
+      background: linear-gradient(to bottom, #ffffff, #eceffd 90%);
+      .page-title {
+        text-align: center;
+        width: 100%;
+        font-weight: 500;
+        position: absolute;
+        color: color($colors, primary);
+        top: 6%;
+      }
+      .img-container {
+        padding-top: 9.5rem;
+        height: 65%;
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 60%;
+          padding-top: 8.5rem;
+        }
+        @media (max-height: 600px) and (max-width: 768px) {
+          height: 55%;
+          padding-top: 7.5rem;
+        }
+        @media (max-height: 550px) and (max-width: 768px) {
+          height: 50%;
+          padding-top: 6.5rem;
+        }
+      }
+
+      img {
+        box-shadow: 0 0px 50px 0 #eceffd;
+        width: 60%;
+        height: 100%;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+      }
+
+      .gif-container {
+        padding-bottom: 9.5rem;
+        height: 65%;
+        padding-top: calc(env(safe-area-inset-top));
+        @media (max-height: 650px) and (max-width: 768px) {
+          height: 60%;
+          padding-bottom: 8.5rem;
+        }
+        @media (max-height: 600px) and (max-width: 768px) {
+          height: 55%;
+          padding-bottom: 7.5rem;
+        }
+        @media (max-height: 550px) and (max-width: 768px) {
+          height: 50%;
+          padding-bottom: 6.5rem;
+        }
+      }
+      .slide-info {
+        background: rgb(236, 239, 253);
+        height: 100%;
+        box-shadow: 0 -60px 50px 0 rgba(0, 0, 0, 0.05);
+        position: relative;
+        .info {
+          padding: 4rem;
+          .title {
+            font-size: 18px;
+            align-items: center;
+            color: #060606;
+            font-weight: 500;
+            text-align: center;
+          }
+          .text {
+            font-size: 16px;
+            text-align: center;
+            color: rgb(46, 46, 46);
+            font-weight: 300;
+            padding-top: 15px;
+            line-height: 25px;
+          }
+        }
+      }
+    }
+  }
+  .next-slide-button {
+    z-index: 1;
+    position: absolute;
+    bottom: 2rem;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
+    right: 0;
+    color: color($colors, primary);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .try-it-button {
+    color: color($colors, primary);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 3rem;
+  }
+}
