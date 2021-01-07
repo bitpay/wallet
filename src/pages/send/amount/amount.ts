@@ -455,6 +455,8 @@ export class AmountPage {
         ? '= ' + this.processResult(result)
         : '';
 
+      if (this.fromBuyCrypto) return;
+
       if (this.availableUnits[this.unitIndex].isFiat) {
         let a = this.fromFiat(result);
         if (a) {
