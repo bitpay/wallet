@@ -11,7 +11,7 @@ interface Feature {
   title: string;
   details: string;
   image?: string;
-  tryit: TryIt;
+  tryit?: TryIt;
 }
 interface TryIt {
   name: string;
