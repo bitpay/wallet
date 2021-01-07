@@ -44,7 +44,7 @@
     </button>
   </div>
 
-  <div *ngIf="connected">
+  <div *ngIf="connected && wallet">
     <ion-list class="bp-list">
       <ion-item *ngIf="peerMeta && peerMeta.name">
         <ion-label>

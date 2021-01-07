@@ -536,6 +536,9 @@ export class CopayApp {
     // Wallet Connect
     if (this.appProvider.info._enabledExtensions.walletConnect) {
       this.walletConnectProvider.register();
+      this.persistenceProvider.getWalletConnect().then(walletConnectData => {
+        this.walletConnectProvider.retrieveWalletConnector(walletConnectData);
+      });
     }
 
     // BitPay Card
@@ -559,6 +562,23 @@ export class CopayApp {
           .then(_ => {
             this.getGlobalTabs().select(3);
           });
+      } else if (nextView.name === 'WalletConnectPage') {
+        const currentIndex = this.nav.getActive().index;
+        const currentView = this.nav.getViews();
+        const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
+        if (
+          (views[views.length - 1].name !== 'WalletConnectPage' &&
+            currentView[currentIndex].name !== 'WalletConnectPage') ||
+          nextView.params.uri.indexOf('bridge') !== -1
+        ) {
+          this.getGlobalTabs()
+            .goToRoot()
+            .then(_ => {
+              this.getGlobalTabs().select(4);
+              this.nav.push(this.pageMap[nextView.name], nextView.params);
+            });
+        }
+        return;
       } else {
         if (nextView.params && nextView.params.deepLink) {
           // From deepLink
