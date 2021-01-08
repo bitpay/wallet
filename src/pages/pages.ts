@@ -50,13 +50,6 @@ import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-se
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { CoinbaseWithdrawPage } from '../pages/integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 
-// Integrations: ShapeShift
-import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
-import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
-import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshift-details/shapeshift-details';
-import { ShapeshiftSettingsPage } from '../pages/integrations/shapeshift/shapeshift-settings/shapeshift-settings';
-import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
-
 // Integrations: Simplex
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
@@ -237,11 +230,6 @@ export const PAGES = [
   SelectCurrencyPage,
   SelectInvoicePage,
   CoinbaseSettingsPage,
-  ShapeshiftConfirmPage,
-  ShapeshiftDetailsPage,
-  ShapeshiftSettingsPage,
-  ShapeshiftPage,
-  ShapeshiftShiftPage,
   SimplexPage,
   SimplexDetailsPage,
   WyrePage,

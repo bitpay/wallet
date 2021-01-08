@@ -629,9 +629,7 @@
     }
   }
 
-  page-shapeshift,
-  page-bitpay-card,
-  page-shapeshift-settings {
+  page-bitpay-card {
     .toolbar {
       &.toolbar-md,
       &.toolbar-ios {
@@ -644,16 +642,6 @@
     ion-spinner {
       * {
         stroke: $text-color-dark-theme !important;
-      }
-    }
-  }
-
-  page-shapeshift-details {
-    .header-modal {
-      background-color: $bg-color-dark-theme;
-
-      .title-modal {
-        color: $text-color-dark-theme-2;
       }
     }
   }

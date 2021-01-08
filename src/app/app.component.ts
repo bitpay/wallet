@@ -40,7 +40,6 @@ import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
-import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
@@ -59,7 +58,6 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
-import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
@@ -111,7 +109,6 @@ export class CopayApp {
     JoinWalletPage,
     AddWalletPage,
     PaperWalletPage,
-    ShapeshiftPage,
     SimplexPage,
     SelectInvoicePage,
     WalletConnectPage,
@@ -136,7 +133,6 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private walletConnectProvider: WalletConnectProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private shapeshiftProvider: ShapeshiftProvider,
     private buyCryptoProvider: BuyCryptoProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
@@ -515,16 +511,6 @@ export class CopayApp {
     // Exchange Crypto
     if (this.appProvider.info._enabledExtensions.exchangecrypto) {
       this.exchangeCryptoProvider.register();
-    }
-
-    // ShapeShift
-    // Disabled for macOS
-    if (
-      this.appProvider.info._enabledExtensions.shapeshift &&
-      this.platformProvider.getOS().OSName != 'MacOS'
-    ) {
-      this.shapeshiftProvider.setCredentials();
-      this.shapeshiftProvider.register();
     }
 
     // Coinbase

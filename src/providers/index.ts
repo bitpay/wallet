@@ -76,7 +76,6 @@ export { PushNotificationsProvider } from '../providers/push-notifications/push-
 export { RateProvider } from '../providers/rate/rate';
 export { ReplaceParametersProvider } from '../providers/replace-parameters/replace-parameters';
 export { ScanProvider } from '../providers/scan/scan';
-export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 export { SimplexProvider } from '../providers/simplex/simplex';
 export { TabProvider } from '../providers/tab/tab';
 export { ThemeProvider } from '../providers/theme/theme';

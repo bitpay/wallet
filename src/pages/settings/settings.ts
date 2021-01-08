@@ -35,7 +35,6 @@ import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-s
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
@@ -359,9 +358,6 @@ export class SettingsPage {
         break;
       case 'debitcard':
         this.navCtrl.push(BitPaySettingsPage);
-        break;
-      case 'shapeshift':
-        this.navCtrl.push(ShapeshiftPage);
         break;
       case 'buycrypto':
         this.navCtrl.push(CryptoSettingsPage);

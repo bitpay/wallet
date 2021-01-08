@@ -75,7 +75,6 @@ const Keys = {
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   RELEASE_MESSAGE_DISMISSED: 'releaseMessageDismissed',
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
@@ -653,30 +652,6 @@ export class PersistenceProvider {
 
   removeAdvertisementDismissed(name) {
     return this.storage.remove(Keys.ADVERTISEMENT_DISMISSED(name));
-  }
-
-  setShapeshift(network: string, gcs) {
-    return this.storage.set('shapeShift-' + network, gcs);
-  }
-
-  getShapeshift(network: string) {
-    return this.storage.get('shapeShift-' + network);
-  }
-
-  removeShapeshift(network: string) {
-    return this.storage.remove('shapeShift-' + network);
-  }
-
-  setShapeshiftToken(network: string, token: string) {
-    return this.storage.set(Keys.SHAPESHIFT_TOKEN(network), token);
-  }
-
-  getShapeshiftToken(network: string) {
-    return this.storage.get(Keys.SHAPESHIFT_TOKEN(network));
-  }
-
-  removeShapeshiftToken(network: string) {
-    return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
   setChangelly(env: string, tx) {

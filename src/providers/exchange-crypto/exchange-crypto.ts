@@ -40,14 +40,11 @@ export class ExchangeCryptoProvider {
   }
 
   public async getSwapTxs(): Promise<any> {
-    const [changellySwapTxs]: // shapeshiftSwapTxs
-    any = await Promise.all([
+    const [changellySwapTxs]: any = await Promise.all([
       this.changellyProvider.getChangelly()
-      // this.shapeshiftProvider.getShapeshift() // TODO: unify with shapeshift?
     ]);
     return {
       changellySwapTxs: _.values(changellySwapTxs)
-      // shapeshiftSwapTxs: _.values(shapeshiftSwapTxs) // TODO: unify with shapeshift?
     };
   }
 }
