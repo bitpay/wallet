@@ -381,6 +381,13 @@
     }
   }
 
+  .toast-bg {
+    .toast-wrapper {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+    }
+  }
+
   // 3.1 Lists
   .bp-list {
     .item {

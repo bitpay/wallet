@@ -498,7 +498,7 @@ export class IncomingDataProvider {
     let amount = parsed.amount ? parsed.amount : '';
 
     // Translate address
-    this.logger.warn('Legacy Bitcoin Address transalated to: ' + address);
+    this.logger.warn('Legacy Bitcoin Address translated to: ' + address);
     if (parsed.r) {
       const payProUrl = this.getPayProUrl(parsed.r);
       this.goToPayPro(payProUrl, coin);

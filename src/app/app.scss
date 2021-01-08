@@ -906,3 +906,12 @@ ion-icon {
     border-bottom: 1px solid #dedede;
   }
 }
+.toast-bg {
+  .toast-wrapper {
+    background-color: color($colors, primary);
+    color: white;
+  }
+  .toast-message {
+    white-space: pre-line;
+  }
+}
