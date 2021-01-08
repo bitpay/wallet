@@ -21,6 +21,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
+import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -89,6 +90,7 @@ export class WalletDetailsPage {
   public useLegacyQrCode: boolean;
   public isDarkModeEnabled: boolean;
   public showBuyCrypto: boolean;
+  public showExchangeCrypto: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
@@ -116,7 +118,8 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private buyCryptoProvider: BuyCryptoProvider
+    private buyCryptoProvider: BuyCryptoProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -127,6 +130,10 @@ export class WalletDetailsPage {
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto = _.includes(
       this.buyCryptoProvider.exchangeCoinsSupported,
+      this.wallet.coin
+    );
+    this.showExchangeCrypto = _.includes(
+      this.exchangeCryptoProvider.exchangeCoinsSupported,
       this.wallet.coin
     );
 
@@ -649,15 +656,22 @@ export class WalletDetailsPage {
   }
 
   public goToReceivePage() {
-    const params = {
-      wallet: this.wallet
-    };
-    const receive = this.actionSheetProvider.createWalletReceive(params);
-    receive.present();
-    receive.onDidDismiss(data => {
-      if (data === 'goToBackup') this.goToBackup();
-      else if (data) this.showErrorInfoSheet(data);
-    });
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      const params = {
+        wallet: this.wallet
+      };
+      const receive = this.actionSheetProvider.createWalletReceive(params);
+      receive.present();
+      receive.onDidDismiss(data => {
+        if (data) this.showErrorInfoSheet(data);
+      });
+    }
   }
 
   public goToSendPage() {
@@ -667,21 +681,37 @@ export class WalletDetailsPage {
   }
 
   public goToExchangeCryptoPage() {
-    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
-    this.navCtrl.push(ExchangeCryptoPage, {
-      walletId: this.wallet.id
-    });
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+      this.navCtrl.push(ExchangeCryptoPage, {
+        walletId: this.wallet.id
+      });
+    }
   }
 
   public goToBuyCryptoPage() {
-    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
-    this.navCtrl.push(AmountPage, {
-      coin: this.wallet.coin,
-      fromBuyCrypto: true,
-      nextPage: 'CryptoOrderSummaryPage',
-      currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
-      walletId: this.wallet.id
-    });
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+      this.navCtrl.push(AmountPage, {
+        coin: this.wallet.coin,
+        fromBuyCrypto: true,
+        nextPage: 'CryptoOrderSummaryPage',
+        currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
+        walletId: this.wallet.id
+      });
+    }
   }
 
   public showMoreOptions(): void {

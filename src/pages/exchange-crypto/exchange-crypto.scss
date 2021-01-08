@@ -7,6 +7,9 @@ page-exchange-crypto {
       stroke: color($colors, primary) !important;
     }
   }
+  .bp-list {
+    margin-top: 40px;
+  }
   .wallet {
     display: flex;
     align-items: center;

@@ -17,7 +17,7 @@ import {
 
 // Pages
 import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
-
+import { RecoveryKeyPage } from '../../../pages/onboarding/recovery-key/recovery-key';
 @Component({
   selector: 'page-crypto-coin-selector',
   templateUrl: 'crypto-coin-selector.html'
@@ -44,8 +44,7 @@ export class CryptoCoinSelectorPage {
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
-      coin: supportedCoins,
-      backedUp: true
+      coin: supportedCoins
     });
     for (const coin of supportedCoins) {
       const c = {
@@ -91,7 +90,21 @@ export class CryptoCoinSelectorPage {
       );
       walletSelector.present();
       walletSelector.onDidDismiss(wallet => {
-        this.onWalletSelect(wallet);
+        if (wallet.needsBackup) {
+          const infoSheet = this.actionSheetProvider.createInfoSheet(
+            'key-verification-required'
+          );
+          infoSheet.present();
+          infoSheet.onDidDismiss(option => {
+            if (option) {
+              this.navCtrl.push(RecoveryKeyPage, {
+                keyId: wallet.keyId
+              });
+            }
+          });
+        } else {
+          this.onWalletSelect(wallet);
+        }
       });
     }
   }

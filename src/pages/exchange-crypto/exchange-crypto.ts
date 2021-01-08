@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Pages
@@ -52,6 +52,7 @@ export class ExchangeCryptoPage {
     private modalCtrl: ModalController,
     private changellyProvider: ChangellyProvider,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
@@ -102,6 +103,11 @@ export class ExchangeCryptoPage {
             this.currencyProvider.getAvailableCoins(),
             data.result
           );
+          const index = this.supportedCoins.indexOf('xrp');
+          if (index > -1) {
+            this.logger.debug('Removing XRP from supported coins');
+            this.supportedCoins.splice(index, 1);
+          }
         }
 
         this.logger.debug('Changelly supportedCoins: ' + this.supportedCoins);
@@ -133,6 +139,31 @@ export class ExchangeCryptoPage {
             this.translate.instant('No wallets with funds')
           );
           return;
+        }
+
+        if (this.navParams.data.walletId) {
+          const wallet = this.profileProvider.getWallet(
+            this.navParams.data.walletId
+          );
+          if (!wallet.coin || !this.supportedCoins.includes(wallet.coin)) {
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'Currently our partner does not support exchanges with the selected coin'
+              )
+            );
+            return;
+          } else {
+            if (
+              wallet.cachedStatus &&
+              wallet.cachedStatus.spendableAmount &&
+              wallet.cachedStatus.spendableAmount > 0
+            ) {
+              this.onWalletSelect(wallet, 'from');
+            } else {
+              this.onWalletSelect(wallet, 'to');
+            }
+          }
         }
       })
       .catch(err => {
@@ -324,7 +355,7 @@ export class ExchangeCryptoPage {
     let modal = this.modalCtrl.create(
       AmountPage,
       {
-        fixedUnit: true,
+        fixedUnit: false,
         fromExchangeCrypto: true,
         walletId: this.fromWalletSelected.id,
         coin: this.fromWalletSelected.coin,

@@ -88,6 +88,9 @@ page-wallet-details {
     justify-content: space-between;
     width: 100%;
     padding: 2rem 1rem;
+    &.two-actions {
+      justify-content: space-around;
+    }
     .action-btn {
       text-align: center;
       min-width: 7rem;
