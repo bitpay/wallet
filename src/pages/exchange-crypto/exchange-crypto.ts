@@ -16,7 +16,6 @@ import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 
@@ -57,7 +56,6 @@ export class ExchangeCryptoPage {
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private currencyProvider: CurrencyProvider,
-    private replaceParametersProvider: ReplaceParametersProvider,
     private txFormatProvider: TxFormatProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     public themeProvider: ThemeProvider
@@ -257,29 +255,37 @@ export class ExchangeCryptoPage {
           `Min amount: ${this.minAmount} - Max amount: ${this.maxAmount}`
         );
         if (this.amountFrom > this.maxAmount) {
-          const msg = this.replaceParametersProvider.replace(
-            this.translate.instant(
-              'The amount entered is greater than the maximum allowed: ({{maxAmount}} {{coin}})'
-            ),
+          const errorActionSheet = this.actionSheetProvider.createInfoSheet(
+            'max-amount-allowed',
             {
               maxAmount: this.maxAmount,
               coin: this.fromWalletSelected.coin.toUpperCase()
             }
           );
-          this.showErrorAndBack(null, msg, true);
+          errorActionSheet.present();
+          errorActionSheet.onDidDismiss(option => {
+            if (option) {
+              this.amountFrom = this.maxAmount;
+              this.updateReceivingAmount();
+            }
+          });
           return;
         }
         if (this.amountFrom < this.minAmount) {
-          const msg = this.replaceParametersProvider.replace(
-            this.translate.instant(
-              'The amount entered is lower than the minimum allowed: ({{minAmount}} {{coin}})'
-            ),
+          const errorActionSheet = this.actionSheetProvider.createInfoSheet(
+            'min-amount-allowed',
             {
               minAmount: this.minAmount,
               coin: this.fromWalletSelected.coin.toUpperCase()
             }
           );
-          this.showErrorAndBack(null, msg, true);
+          errorActionSheet.present();
+          errorActionSheet.onDidDismiss(option => {
+            if (option) {
+              this.amountFrom = this.minAmount;
+              this.updateReceivingAmount();
+            }
+          });
           return;
         }
         this.updateReceivingAmount();

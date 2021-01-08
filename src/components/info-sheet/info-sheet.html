@@ -517,5 +517,23 @@
       <span sheet-button-text translate>Change Miner Fee</span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'min-amount-allowed'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>The amount entered is lower than the minimum allowed: {{params.minAmount}} {{params.coin}}</span>
+      </span>
+      <span sheet-button-text translate>Use Min Amount</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'max-amount-allowed'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}</span>
+      </span>
+      <span sheet-button-text translate>Use Max Amount</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

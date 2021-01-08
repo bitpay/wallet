@@ -37,6 +37,8 @@ export type InfoSheetType =
   | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
   | 'linkEthWallet'
+  | 'max-amount-allowed'
+  | 'min-amount-allowed'
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'
