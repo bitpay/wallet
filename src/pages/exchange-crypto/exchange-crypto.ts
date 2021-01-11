@@ -31,6 +31,7 @@ export class ExchangeCryptoPage {
   public fromWallets;
   public loading: boolean;
   public changellySwapTxs: any[];
+  public useSendMax: boolean;
 
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -373,6 +374,7 @@ export class ExchangeCryptoPage {
           data.amount,
           data.coin
         );
+        this.useSendMax = data.useSendMax;
         this.updateMaxAndMin();
       }
     });
@@ -386,6 +388,28 @@ export class ExchangeCryptoPage {
     ) {
       this.loading = false;
       return;
+    }
+
+    if (
+      this.fromWalletSelected.cachedStatus &&
+      this.fromWalletSelected.cachedStatus.spendableAmount
+    ) {
+      const spendableAmount = this.txFormatProvider.satToUnit(
+        this.fromWalletSelected.cachedStatus.spendableAmount,
+        this.fromWalletSelected.coin
+      );
+
+      if (spendableAmount < this.amountFrom) {
+        this.loading = false;
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount.'
+          ),
+          true
+        );
+        return;
+      }
     }
 
     const pair =
@@ -443,7 +467,8 @@ export class ExchangeCryptoPage {
       amountFrom: this.amountFrom,
       coinFrom: this.fromWalletSelected.coin,
       coinTo: this.toWalletSelected.coin,
-      rate: this.rate
+      rate: this.rate,
+      useSendMax: this.useSendMax
     };
 
     this.navCtrl.push(ExchangeCheckoutPage, data);

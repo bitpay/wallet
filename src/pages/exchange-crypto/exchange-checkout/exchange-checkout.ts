@@ -36,6 +36,7 @@ export class ExchangeCheckoutPage {
   public amountFrom: number;
   public amountTo: number;
   public alternativeIsoCode: string;
+  public useSendMax: boolean;
   public fixedRateId: string;
   public rate: number;
   public termsAccepted: boolean;
@@ -84,6 +85,7 @@ export class ExchangeCheckoutPage {
     this.toWalletSelected = this.profileProvider.getWallet(
       this.navParams.data.toWalletSelectedId
     );
+    this.useSendMax = this.navParams.data.useSendMax; // TODO: implement send max feature
     this.amountFrom = this.navParams.data.amountFrom;
     this.fixedRateId = this.navParams.data.fixedRateId;
     this.rate = this.navParams.data.rate;

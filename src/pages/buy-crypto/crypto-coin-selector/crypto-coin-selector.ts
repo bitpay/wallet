@@ -44,7 +44,8 @@ export class CryptoCoinSelectorPage {
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
-      coin: supportedCoins
+      coin: supportedCoins,
+      backedUp: true
     });
     for (const coin of supportedCoins) {
       const c = {

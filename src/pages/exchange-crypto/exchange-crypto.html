@@ -30,7 +30,7 @@
 
         <ion-col col-5 class="amount">
           <div class="amount-container" *ngIf="!amountFrom" (click)="openAmountModal()">{{'Enter Amount' | translate}}</div>
-          <div class="amount-container" *ngIf="amountFrom" (click)="openAmountModal()">{{amountFrom}} {{fromWalletSelected.coin.toUpperCase()}}</div>
+          <div class="amount-container" *ngIf="amountFrom" (click)="openAmountModal()">{{amountFrom | number:'1.0-8'}} {{fromWalletSelected.coin.toUpperCase()}}</div>
         </ion-col>
       </ion-row>
 
