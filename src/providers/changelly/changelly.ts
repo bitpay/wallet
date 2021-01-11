@@ -12,6 +12,8 @@ export class ChangellyProvider {
   private env: string;
   private uri: string;
 
+  public supportedCoins: string[];
+
   constructor(
     private http: HttpClient,
     private logger: Logger,
@@ -21,6 +23,16 @@ export class ChangellyProvider {
     this.logger.debug('ChangellyProvider initialized');
     this.env = 'production';
     this.uri = 'https://bws.bitpay.com/bws/api';
+    this.supportedCoins = [
+      'btc',
+      'bch',
+      'eth',
+      'busd',
+      'pax',
+      'usdc',
+      'gusd',
+      'dai'
+    ];
   }
 
   private generateMessageId(walletId?: string) {

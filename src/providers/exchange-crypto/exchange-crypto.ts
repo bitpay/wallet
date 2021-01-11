@@ -21,6 +21,9 @@ export class ExchangeCryptoProvider {
     private translate: TranslateService
   ) {
     this.logger.debug('ExchangeCrypto Provider initialized');
+    this.exchangeCoinsSupported = _.union(
+      this.changellyProvider.supportedCoins
+    );
   }
 
   public register(): void {

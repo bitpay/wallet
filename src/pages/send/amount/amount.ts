@@ -94,6 +94,7 @@ export class AmountPage {
   private fromCoinbase;
   private alternativeCurrency;
   public fromBuyCrypto: boolean;
+  public fromExchangeCrypto: boolean;
   public quoteForm: FormGroup;
   public supportedFiatAltCurrencies: string[];
   public altCurrenciesToShow: string[];
@@ -147,6 +148,7 @@ export class AmountPage {
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.alternativeCurrency = this.navParams.data.alternativeCurrency;
     this.fromBuyCrypto = this.navParams.data.fromBuyCrypto;
+    this.fromExchangeCrypto = this.navParams.data.fromExchangeCrypto;
 
     this.showSendMax = false;
     this.useSendMax = false;
@@ -374,6 +376,8 @@ export class AmountPage {
       this.showSendMax &&
       !this.requestingAmount &&
       !this.useAsModal
+      // ||
+      // this.fromExchangeCrypto // TODO: implement send max
     );
   }
 
