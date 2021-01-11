@@ -21,6 +21,8 @@ import { CryptoCoinSelectorPage } from '../../../pages/buy-crypto/crypto-coin-se
 import { CryptoOffersPage } from '../../../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoPaymentMethodPage } from '../../../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { AmountPage } from '../../../pages/send/amount/amount';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
+
 @Component({
   selector: 'page-crypto-order-summary',
   templateUrl: 'crypto-order-summary.html'
@@ -315,6 +317,11 @@ export class CryptoOrderSummaryPage {
   }
 
   public cancelOrder() {
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(_ => {
+      if (!this.navParams.data.walletId) return;
+      this.navCtrl.push(WalletDetailsPage, {
+        walletId: this.wallet.credentials.walletId
+      });
+    });
   }
 }
