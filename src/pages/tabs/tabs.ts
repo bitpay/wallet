@@ -7,7 +7,10 @@ import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import {
+  Network,
+  PersistenceProvider
+} from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
@@ -30,7 +33,7 @@ export class TabsPage {
   appName: string;
   @ViewChild('tabs')
   tabs;
-
+  NETWORK = 'livenet';
   public txpsN: number;
   public cardNotificationBadgeText;
   public scanIconType: string;
@@ -108,9 +111,24 @@ export class TabsPage {
     });
   }
 
-  ngOnInit() {
-    this.tabProvider.prefetchCards().then(async data => {
-      let cardExperimentEnabled;
+  async ngOnInit() {
+    await this.checkCardEnabled();
+    await this.tabProvider.prefetchCards();
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
+  private async checkCardEnabled() {
+    let cardExperimentEnabled = await this.persistenceProvider.getCardExperimentFlag();
+
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      Network[this.NETWORK]
+    );
+
+    if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
         const { country } = await this.http
@@ -124,18 +142,13 @@ export class TabsPage {
       } catch (err) {
         this.logger.error('Error setting country: ', err);
       }
-      // [0] BitPay Cards
-      // [1] Gift Cards
-      this.events.publish('Local/FetchCards', {
-        bpCards: data[0],
-        cardExperimentEnabled
-      });
-    });
-  }
+    }
 
-  ngOnDestroy() {
-    this.onResumeSubscription.unsubscribe();
-    this.onPauseSubscription.unsubscribe();
+    // set banner advertisement in home.ts
+    this.events.publish('CardAdvertisementUpdate', {
+      cardExperimentEnabled,
+      cards
+    });
   }
 
   disableCardNotificationBadge() {

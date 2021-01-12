@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -28,6 +28,10 @@ import {
 } from '../../providers/persistence/persistence';
 import { ThemeProvider } from '../../providers/theme/theme';
 
+const LOADING_WRAPPER_TIMEOUT = 0;
+const IAB_LOADING_INTERVAL = 1000;
+const IAB_LOADING_ATTEMPTS = 20;
+
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
@@ -42,6 +46,9 @@ export class IABCardProvider {
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
 
+  private _IABLoaded = new ReplaySubject();
+  public IABLoaded$ = this._IABLoaded.asObservable();
+  private IABReady: boolean;
   constructor(
     private payproProvider: PayproProvider,
     private logger: Logger,
@@ -89,11 +96,15 @@ export class IABCardProvider {
   init(): void {
     this.logger.debug('IABCardProvider initialized');
     this.cardIAB_Ref = this.iab.refs.card;
-
+    this.IABLoaded$.subscribe(() => (this.IABReady = true));
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
+        case 'IABLoaded':
+          this._IABLoaded.next(true);
+          break;
+
         case 'log':
           this.logger.debug(event.data.log);
           break;
@@ -475,7 +486,7 @@ export class IABCardProvider {
             this.events.publish('updateCards', cards);
             this.logger.log('CARD - success retrieved cards');
 
-            res();
+            res(cards);
           }
         }
       );
@@ -818,8 +829,12 @@ export class IABCardProvider {
 
           if (!paymentUrl) {
             // fetch new cards
-            await this.getCards();
+            const cards = await this.getCards();
             this.events.publish('updateCards');
+            this.events.publish('CardAdvertisementUpdate', {
+              status: 'connected',
+              cards
+            });
           }
 
           // clear out loading state
@@ -888,6 +903,43 @@ export class IABCardProvider {
       this.sendMessage({ message });
       this.cardIAB_Ref.show();
       this._isHidden = false;
+    }
+  }
+
+  loadingWrapper(cb) {
+    // wrapping in a setTimeout to smooth out initial iab animation
+    const wrappedCb = () => setTimeout(cb, LOADING_WRAPPER_TIMEOUT);
+
+    if (this.IABReady) {
+      wrappedCb();
+    } else {
+      this.onGoingProcess.set('generalAwaiting');
+
+      let attempts = 0;
+      const interval = setInterval(() => {
+        if (attempts >= IAB_LOADING_ATTEMPTS) {
+          clear();
+
+          this.actionSheetProvider
+            .createInfoSheet('default-error', {
+              title: 'BitPay Card',
+              msg: 'Uh oh, something went wrong please try again later.'
+            })
+            .present();
+        }
+        attempts++;
+      }, IAB_LOADING_INTERVAL);
+
+      const subscription = this.IABLoaded$.subscribe(() => {
+        wrappedCb();
+        clear();
+      });
+
+      const clear = () => {
+        clearInterval(interval);
+        this.onGoingProcess.clear();
+        subscription && subscription.unsubscribe();
+      };
     }
   }
 

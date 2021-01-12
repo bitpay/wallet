@@ -103,6 +103,9 @@ export class BitPayIdPage {
                 }
               );
               this.events.publish('BitPayId/Disconnected');
+              this.events.publish('CardAdvertisementUpdate', {
+                status: 'disconnected'
+              });
             },
             err => {
               this.logger.log(err);

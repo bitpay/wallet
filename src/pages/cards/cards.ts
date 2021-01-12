@@ -47,8 +47,6 @@ export class CardsPage {
   public waitList = true;
   public IABReady: boolean;
   public hasCards: boolean;
-  private IABPingLock: boolean;
-  private IABPingInterval: any;
 
   constructor(
     private appProvider: AppProvider,
@@ -96,24 +94,34 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('bitpayIdDisconnected', async () => {
+    this.events.subscribe('BitPayId/Disconnected', async () => {
       this.hasCards = false;
     });
 
-    this.events.subscribe('IABReady', country => {
-      clearInterval(this.IABPingInterval);
-      this.logger.log(`cards - IAB ready ${country}`);
+    this.iabCardProvider.IABLoaded$.subscribe(async () => {
+      this.logger.log('IAB Loaded and ready');
 
-      this.persistenceProvider.getCardExperimentFlag().then(status => {
-        if (country === 'US' || status === 'enabled') {
-          this.persistenceProvider.setCardExperimentFlag('enabled');
-          this.cardExperimentEnabled = true;
-          this.waitList = false;
+      this.iabCardProvider.sendMessage({
+        message: 'isDarkModeEnabled',
+        payload: {
+          theme: this.themeProvider.isDarkModeEnabled()
         }
-
-        this.initialized = this.IABReady = true;
-        this.changeRef.detectChanges();
       });
+
+      this.iabCardProvider.sendMessage({
+        message: 'getAppVersion',
+        payload: this.appProvider.info.version
+      });
+
+      const cardEnabled = this.persistenceProvider.getCardExperimentFlag();
+
+      if (cardEnabled) {
+        this.cardExperimentEnabled = true;
+        this.waitList = false;
+      }
+
+      this.initialized = this.IABReady = true;
+      this.changeRef.detectChanges();
     });
   }
 
@@ -129,37 +137,8 @@ export class CardsPage {
       !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
       this.platformProvider.isCordova;
 
-    if (
-      !this.IABReady &&
-      !this.IABPingLock &&
-      this.platformProvider.isCordova
-    ) {
-      this.pingIAB();
-    }
-
     this.bitpayCardItems = await this.prepareDebitCards();
     await this.fetchAllCards();
-  }
-
-  private pingIAB() {
-    this.IABPingLock = true;
-    let attempts = 0;
-    this.IABPingInterval = setInterval(() => {
-      if (attempts >= 10) {
-        clearInterval(this.IABPingInterval);
-        this.showBitPayCard = false;
-        return;
-      }
-      this.logger.log(`PINGING IAB attempt ${attempts}`);
-      this.iabCardProvider.sendMessage({
-        message: 'IABReadyPing',
-        payload: {
-          appVersion: this.appProvider.info.version,
-          theme: this.themeProvider.isDarkModeEnabled()
-        }
-      });
-      attempts++;
-    }, 5000);
   }
 
   private async prepareDebitCards() {
@@ -187,8 +166,7 @@ export class CardsPage {
           'provider'
         );
 
-        const hasGalileo =
-          cards.findIndex(c => c.provider === 'galileo') !== -1;
+        const hasGalileo = cards.some(c => c.provider === 'galileo');
 
         // if all cards are hidden
         if (cards.every(c => !!c.hide)) {

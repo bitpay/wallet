@@ -401,10 +401,25 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
-    this.events.subscribe('Local/FetchCards', data => {
-      this.cardExperimentEnabled = data.cardExperimentEnabled;
-      if (!data.bpCards) this.addBitPayCard();
-    });
+    this.events.subscribe(
+      'CardAdvertisementUpdate',
+      ({ status, cards, cardExperimentEnabled }) => {
+        const hasGalileo = cards && cards.some(c => c.provider === 'galileo');
+        switch (status) {
+          case 'connected':
+            hasGalileo
+              ? this.removeAdvertisement('bitpay-card')
+              : this.addBitPayCard();
+            break;
+          case 'disconnected':
+            this.addBitPayCard();
+            break;
+          default:
+            this.cardExperimentEnabled = cardExperimentEnabled;
+            if (!hasGalileo) this.addBitPayCard();
+        }
+      }
+    );
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
       this.testingAdsEnabled = testAdsStatus;
     });

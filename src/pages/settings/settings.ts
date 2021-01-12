@@ -237,16 +237,18 @@ export class SettingsPage {
     if (this.bitPayIdUserInfo) {
       this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
     } else {
-      this.logger.log('settings - pairing');
-      this.iabCardProvider.show();
-      setTimeout(() => {
-        this.iabCardProvider.sendMessage(
-          {
-            message: 'pairingOnly'
-          },
-          () => {}
-        );
-      }, 100);
+      this.iabCardProvider.loadingWrapper(() => {
+        this.logger.log('settings - pairing');
+        this.iabCardProvider.show();
+        setTimeout(() => {
+          this.iabCardProvider.sendMessage(
+            {
+              message: 'pairingOnly'
+            },
+            () => {}
+          );
+        }, 100);
+      });
     }
   }
 
@@ -375,15 +377,17 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    const message = `openSettings?${id}`;
-    this.iabCardProvider.show();
-    setTimeout(() => {
-      this.iabCardProvider.sendMessage(
-        {
-          message
-        },
-        () => {}
-      );
+    this.iabCardProvider.loadingWrapper(() => {
+      const message = `openSettings?${id}`;
+      this.iabCardProvider.show();
+      setTimeout(() => {
+        this.iabCardProvider.sendMessage(
+          {
+            message
+          },
+          () => {}
+        );
+      });
     });
   }
 

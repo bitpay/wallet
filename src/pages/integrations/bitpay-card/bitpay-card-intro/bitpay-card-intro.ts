@@ -142,34 +142,36 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard() {
-    const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
-      12,
-      'USD'
-    );
+    this.iabCardProvider.loadingWrapper(async () => {
+      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+        12,
+        'USD'
+      );
 
-    const hasFirstView = await this.iabCardProvider.hasFirstView();
+      const hasFirstView = await this.iabCardProvider.hasFirstView();
 
-    if (!hasWalletWithFunds && !hasFirstView) {
+      if (!hasWalletWithFunds && !hasFirstView) {
+        this.iabCardProvider.show();
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'needFunds'
+          },
+          () => {}
+        );
+        return;
+      }
+
       this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
-          message: 'needFunds'
+          message: 'orderCard'
         },
         () => {}
       );
-      return;
-    }
-
-    this.iabCardProvider.show();
-    this.iabCardProvider.sendMessage(
-      {
-        message: 'orderCard'
-      },
-      () => {}
-    );
-    setTimeout(() => {
-      this.navCtrl.pop();
-    }, 300);
+      setTimeout(() => {
+        this.navCtrl.pop();
+      }, 300);
+    });
   }
 
   public connectBitPayCard() {
