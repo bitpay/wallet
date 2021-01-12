@@ -125,7 +125,7 @@
         In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
       </span>
       <span *ngIf="!params.wallets[0] && params.isEthMultisig" sheet-text translate>
-        In order to create this multisig wallet, an Ethereum (ETH) wallet is required.
+        In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required.
       </span>
 
       <span sheet-text>
@@ -235,10 +235,10 @@
 
     <info-sheet-template *ngSwitchCase="'payment-method-changed'" type="warning">
       <span sheet-title-text translate>Payment method updated</span>
-      <span *ngIf="params.reason == 'coin'" sheet-text translate>
+      <span *ngIf="params.reason == 'coin'" sheet-text>
         {{'Only the payment methods supported to buy {coin} with {currency} will be shown.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
       </span>
-      <span *ngIf="params.reason == 'country'" sheet-text translate>
+      <span *ngIf="params.reason == 'country'" sheet-text>
         {{'SEPA Bank Transfer purchases are not supported outside the European Union.' | translate: {coin: params.coin | uppercase, currency:params.currency | uppercase} }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
@@ -417,8 +417,8 @@
 
     <info-sheet-template *ngSwitchCase="'no-wallets-error'" type="warning">
       <span sheet-title-text translate>No wallet available</span>
-      <span sheet-text translate>
-        You do not have a {{params.coin ? params.coin : ''}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.
+      <span sheet-text>
+        {{'You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up.' | translate: {coin: params.coin ? params.coin : ''} }}
       </span>
       <span sheet-button-text translate>Create Wallet</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -428,8 +428,6 @@
       <span sheet-title-text translate>Payment Error</span>
       <span sheet-text>
         <span translate>There was an error with the payment process through Wyre.</span>
-        <br>
-        <span translate>You can describe the problem to Wyre's support team: support@sendwyre.com</span>
       </span>
       <span sheet-button-text translate>Visit Help Center</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -509,6 +507,33 @@
       <span sheet-button-text translate *ngIf="params.error">GOT IT</span>
       <span sheet-button-text translate *ngIf="!params.error">CONTINUE</span>
       <span sheet-second-button-text translate *ngIf="!params.error">DO THIS LATER</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'custom-fee-warning'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text>
+        The fee you are using is lower than the Super Economy level, we do not recommend doing this as the transaction will take very long to confirm or may never do it. You can continue at your own responsibility.
+      </span>
+      <span sheet-button-text translate>Change Miner Fee</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'min-amount-allowed'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>The amount entered is lower than the minimum allowed: {{params.minAmount}} {{params.coin}}</span>
+      </span>
+      <span sheet-button-text translate>Use Min Amount</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'max-amount-allowed'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}</span>
+      </span>
+      <span sheet-button-text translate>Use Max Amount</span>
+      <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
   </div>
 </action-sheet>

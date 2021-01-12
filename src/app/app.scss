@@ -559,14 +559,6 @@ ion-alert .alert-message {
   overflow-y: auto;
 }
 
-.mdToastAfterHeader {
-  top: $toolbar-md-height;
-}
-
-.iosToastAfterHeader {
-  top: $toolbar-ios-height;
-}
-
 .header-extend {
   background: $toolbar-background;
   height: 180px;
@@ -912,5 +904,14 @@ ion-icon {
 .buy-crypto-currency-3 .alert-radio-group {
   button:nth-child(3) {
     border-bottom: 1px solid #dedede;
+  }
+}
+.toast-bg {
+  .toast-wrapper {
+    background-color: color($colors, primary);
+    color: white;
+  }
+  .toast-message {
+    white-space: pre-line;
   }
 }

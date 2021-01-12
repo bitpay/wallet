@@ -106,11 +106,12 @@ export class KeyProvider {
 
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
-      if (!this.keys.find(k => this.isMatch(keyToAdd, k))) {
+      const keyObject = keyToAdd.toObj();
+      if (!this.keys.find(k => this.isMatch(keyObject, k))) {
         this.keys.push(
           new this.Key({
             seedType: 'object',
-            seedData: keyToAdd
+            seedData: keyObject
           })
         );
         this.isDirty = true;
@@ -252,7 +253,7 @@ export class KeyProvider {
 
   public mnemonicHasPassphrase(keyId: string): boolean {
     if (!keyId) return false;
-    const key = this.getKey(keyId).get();
+    const key = this.getKey(keyId).toObj();
     return key.mnemonicHasPassphrase;
   }
 

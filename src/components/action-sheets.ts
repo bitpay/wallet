@@ -5,6 +5,7 @@ import { EncryptPasswordComponent } from './encrypt-password/encrypt-password';
 import { IncomingDataMenuComponent } from './incoming-data-menu/incoming-data-menu';
 import { INFO_SHEET_COMPONENTS } from './info-sheet/info-sheet';
 import { MemoComponent } from './memo-component/memo-component';
+import { NeedsBackupComponent } from './needs-backup/needs-backup';
 import { OptionsSheetComponent } from './options-sheet/options-sheet';
 import { PhoneSheet } from './phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from './wallet-receive/wallet-receive';
@@ -17,6 +18,7 @@ export const ACTION_SHEET_COMPONENTS = [
   OptionsSheetComponent,
   IncomingDataMenuComponent,
   MemoComponent,
+  NeedsBackupComponent,
   WalletSelectorComponent,
   WalletReceiveComponent,
   ChooseFeeLevelComponent,

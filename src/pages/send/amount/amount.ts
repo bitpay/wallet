@@ -34,7 +34,6 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/crypto-order-summary';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
-import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
@@ -95,6 +94,7 @@ export class AmountPage {
   private fromCoinbase;
   private alternativeCurrency;
   public fromBuyCrypto: boolean;
+  public fromExchangeCrypto: boolean;
   public quoteForm: FormGroup;
   public supportedFiatAltCurrencies: string[];
   public altCurrenciesToShow: string[];
@@ -148,6 +148,7 @@ export class AmountPage {
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.alternativeCurrency = this.navParams.data.alternativeCurrency;
     this.fromBuyCrypto = this.navParams.data.fromBuyCrypto;
+    this.fromExchangeCrypto = this.navParams.data.fromExchangeCrypto;
 
     this.showSendMax = false;
     this.useSendMax = false;
@@ -172,7 +173,7 @@ export class AmountPage {
     // BitPay Card ID or Wallet ID or Coinbase Account ID
     this._id = this.navParams.data.id;
 
-    // Use only with ShapeShift and Coinbase Withdraw
+    // Use only with Coinbase Withdraw
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.cardName = this.navParams.get('cardName');
@@ -330,10 +331,6 @@ export class AmountPage {
       case 'CryptoOrderSummaryPage':
         nextPage = CryptoOrderSummaryPage;
         break;
-      case 'ShapeshiftConfirmPage':
-        this.showSendMax = false; // Disabled for now
-        nextPage = ShapeshiftConfirmPage;
-        break;
       case 'CoinbaseWithdrawPage':
         this.showSendMax = false;
         nextPage = CoinbaseWithdrawPage;
@@ -379,6 +376,8 @@ export class AmountPage {
       this.showSendMax &&
       !this.requestingAmount &&
       !this.useAsModal
+      // ||
+      // this.fromExchangeCrypto // TODO: implement send max
     );
   }
 
@@ -454,6 +453,8 @@ export class AmountPage {
       this.globalResult = this.isExpression(this.expression)
         ? '= ' + this.processResult(result)
         : '';
+
+      if (this.fromBuyCrypto) return;
 
       if (this.availableUnits[this.unitIndex].isFiat) {
         let a = this.fromFiat(result);
@@ -722,7 +723,7 @@ export class AmountPage {
   }
 
   public closeModal(item): void {
-    if (this.viewCtrl.name === 'AmountPage') {
+    if (this.navParams.data.fromMultiSend) {
       if (item) this.events.publish('addRecipient', item);
       this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
         this.viewCtrl.dismiss();

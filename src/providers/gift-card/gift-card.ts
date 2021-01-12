@@ -239,7 +239,7 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
-    const purchasedBrands = await Promise.race([
+    const purchasedBrands: any = await Promise.race([
       this.getPurchasedBrands(),
       Observable.timer(1000)
         .toPromise()

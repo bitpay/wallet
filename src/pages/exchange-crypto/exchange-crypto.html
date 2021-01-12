@@ -1,0 +1,87 @@
+<wide-header-page title="{{'Exchange Crypto' | translate}}">
+  <ion-buttons right *ngIf="changellySwapTxs?.length">
+    <button class="history-btn" clear wide-header-bar-button (click)="goToExchangeHistory()" ion-button>
+      <ion-icon>
+        <img src="assets/img/icon-history.svg" />
+      </ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-list class="bp-list">
+      <div class="item-label" translate>Source</div>
+      <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showWallets('from')">
+        <div translate>Select Source Wallet</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelectorFrom" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelectorFrom" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-row padding align-items-center *ngIf="fromWalletSelected">
+        <ion-col class="wallet" (click)="showWallets('from')">
+          <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
+          <div>
+            <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>            
+            <span class="note-container ellipsis balance">{{fromWalletSelected.lastKnownBalance}}</span>
+          </div>
+        </ion-col>
+
+        <ion-col col-5 class="amount">
+          <div class="amount-container" *ngIf="!amountFrom" (click)="openAmountModal()">{{'Enter Amount' | translate}}</div>
+          <div class="amount-container" *ngIf="amountFrom" (click)="openAmountModal()">{{amountFrom | number:'1.0-8'}} {{fromWalletSelected.coin.toUpperCase()}}</div>
+        </ion-col>
+      </ion-row>
+
+      <div class="divider">
+        <div class="arrow">
+          <img src="assets/img/exchange-crypto/down-arrow.svg" width="40">
+        </div>
+      </div>
+
+      <div class="item-label" translate>Destination</div>
+      <ion-row padding align-items-center *ngIf="!toWalletSelected" (click)="showWallets('to')">
+        <div translate>Select Destination Wallet</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-row padding align-items-center *ngIf="toWalletSelected">
+        <ion-col class="wallet" (click)="showWallets('to')">
+          <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+          <div>
+            <span class="note-container ellipsis">{{toWalletSelected.name}}</span>            
+            <span class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
+          </div>
+        </ion-col>
+
+        <ion-col col-5 class="amount">
+          <ion-spinner name="crescent" *ngIf="loading && toWalletSelected && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+          <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</div>
+        </ion-col>
+        <div *ngIf="rate" class="rate">
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
+        </div>
+        <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
+        </div>
+      </ion-row>
+    </ion-list>
+
+    <div class="bottom-absolute">
+      <button ion-button class="button-standard button-primary" (click)="goToExchangeCheckoutPage()" [disabled]="!canContinue()">
+        <span>{{'Continue' | translate}}</span>
+      </button>
+
+      <div class="partner">
+        <span>{{'Powered by' | translate}}</span>
+        <img src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
+      </div>
+    </div>
+  </div>
+</wide-header-page>

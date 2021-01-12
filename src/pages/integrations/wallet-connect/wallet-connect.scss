@@ -29,10 +29,6 @@ page-wallet-connect {
   .peer-meta-name {
     color: #4f6ef7;
   }
-  .address {
-    font-size: 12px;
-    font-weight: 100;
-  }
   action-card {
     .main-label {
       display: flex;
@@ -41,5 +37,21 @@ page-wallet-connect {
     .action-card__body {
       text-align: left !important;
     }
+  }
+  .item-label {
+    width: 92%;
+    margin: 30px auto 0px auto;
+    color: #9ba3ae;
+    line-height: 18px;
+  }
+  .interface-img {
+    width: 50px;
+    img {
+      border-radius: 50%;
+    }
+  }
+  .description {
+    margin: 0px 20px 20px 20px;
+    font-size: 12px;
   }
 }

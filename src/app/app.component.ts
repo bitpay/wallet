@@ -1,4 +1,4 @@
-import { Component, Renderer, ViewChild } from '@angular/core';
+import { Component, Renderer2, ViewChild } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,6 +30,7 @@ import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+import { ExchangeCryptoProvider } from '../providers/exchange-crypto/exchange-crypto';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
@@ -39,7 +40,6 @@ import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
-import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { ThemeProvider } from '../providers/theme/theme';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
@@ -58,7 +58,6 @@ import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-ca
 import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
-import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
@@ -110,7 +109,6 @@ export class CopayApp {
     JoinWalletPage,
     AddWalletPage,
     PaperWalletPage,
-    ShapeshiftPage,
     SimplexPage,
     SelectInvoicePage,
     WalletConnectPage,
@@ -135,14 +133,14 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private walletConnectProvider: WalletConnectProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private shapeshiftProvider: ShapeshiftProvider,
     private buyCryptoProvider: BuyCryptoProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private userAgent: UserAgent,
     private device: Device,
     private keyProvider: KeyProvider,
@@ -284,7 +282,7 @@ export class CopayApp {
         this.pushNotificationsProvider.clearAllNotifications();
 
         // Firebase Dynamic link
-        this.dynamicLinksProvider.onDynamicLink();
+        this.dynamicLinksProvider.init();
       });
 
       // Check PIN or Fingerprint
@@ -295,7 +293,7 @@ export class CopayApp {
       this.pushNotificationsProvider.clearAllNotifications();
 
       // Firebase Dynamic link
-      this.dynamicLinksProvider.onDynamicLink();
+      this.dynamicLinksProvider.init();
     }
 
     // Set Theme (light or dark mode)
@@ -361,6 +359,8 @@ export class CopayApp {
       this.persistenceProvider.getBitPayIdPairingToken(Network[this.NETWORK]),
       this.persistenceProvider.getBitpayDebitCards(Network[this.NETWORK])
     ]);
+
+    await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
 
     if (
       this.platformProvider.isCordova &&
@@ -508,14 +508,9 @@ export class CopayApp {
       this.buyCryptoProvider.register();
     }
 
-    // ShapeShift
-    // Disabled for macOS
-    if (
-      this.appProvider.info._enabledExtensions.shapeshift &&
-      this.platformProvider.getOS().OSName != 'MacOS'
-    ) {
-      this.shapeshiftProvider.setCredentials();
-      this.shapeshiftProvider.register();
+    // Exchange Crypto
+    if (this.appProvider.info._enabledExtensions.exchangecrypto) {
+      this.exchangeCryptoProvider.register();
     }
 
     // Coinbase
@@ -527,6 +522,9 @@ export class CopayApp {
     // Wallet Connect
     if (this.appProvider.info._enabledExtensions.walletConnect) {
       this.walletConnectProvider.register();
+      this.persistenceProvider.getWalletConnect().then(walletConnectData => {
+        this.walletConnectProvider.retrieveWalletConnector(walletConnectData);
+      });
     }
 
     // BitPay Card
@@ -550,6 +548,23 @@ export class CopayApp {
           .then(_ => {
             this.getGlobalTabs().select(3);
           });
+      } else if (nextView.name === 'WalletConnectPage') {
+        const currentIndex = this.nav.getActive().index;
+        const currentView = this.nav.getViews();
+        const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
+        if (
+          (views[views.length - 1].name !== 'WalletConnectPage' &&
+            currentView[currentIndex].name !== 'WalletConnectPage') ||
+          nextView.params.uri.indexOf('bridge') !== -1
+        ) {
+          this.getGlobalTabs()
+            .goToRoot()
+            .then(_ => {
+              this.getGlobalTabs().select(4);
+              this.nav.push(this.pageMap[nextView.name], nextView.params);
+            });
+        }
+        return;
       } else {
         if (nextView.params && nextView.params.deepLink) {
           // From deepLink
@@ -631,7 +646,9 @@ export class CopayApp {
     transitionDuration: number
   ): Promise<number> {
     const walletDetailsModal = this.getWalletDetailsModal();
-    this.renderer.setElementClass(walletDetailsModal, 'scanning', visible);
+    visible
+      ? this.renderer.addClass(walletDetailsModal, 'scanning')
+      : this.renderer.removeClass(walletDetailsModal, 'scanning');
     return Observable.timer(transitionDuration).toPromise();
   }
 

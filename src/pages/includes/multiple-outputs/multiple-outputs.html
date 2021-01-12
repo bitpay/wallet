@@ -5,7 +5,10 @@
     </div>
   </ion-label>
   <ion-note item-end>
-    <div class="payment-proposal-to" *ngIf="!tx.hasMultiplesOutputs">
+    <div *ngIf="tx.misunderstoodOutputs" class="summary-item-detail">
+      <span translate>Multiple recipients</span>
+    </div>
+    <div class="payment-proposal-to" *ngIf="!tx.hasMultiplesOutputs && !tx.misunderstoodOutputs">
       <div class="background-content" copy-to-clipboard="{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}">
         <img class="coin-img" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard') || true" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
@@ -15,7 +18,7 @@
       </div>
     </div>
 
-    <ion-row align-items-center class="wallet" *ngIf="tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
+    <ion-row align-items-center class="wallet" *ngIf="tx.hasMultiplesOutputs && !tx.misunderstoodOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
       <ion-col>
         <ion-icon item-start>
           <img class="coin-img" src="assets/img/icon-{{tx.coin}}-small.svg" alt="Coin" />
@@ -51,3 +54,11 @@
     </ion-note>
   </ion-item>
 </div>
+
+<ion-item *ngIf="tx.misunderstoodOutputs">
+<div>
+    <a class="misunderstood-msg" (click)="viewOnBlockchain()">
+      {{misunderstoodOutputsMsg}}
+    </a>
+</div>
+</ion-item>

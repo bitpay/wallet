@@ -25,10 +25,8 @@ export class OnGoingProcessProvider {
       broadcastingTx: this.translate.instant('Broadcasting transaction...'),
       calculatingFee: this.translate.instant('Calculating fee...'),
       calculatingSendMax: this.translate.instant('Calculating send max...'),
+      connectingChangelly: this.translate.instant('Connecting to Changelly...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
-      connectingShapeshift: this.translate.instant(
-        'Connecting to ShapeShift...'
-      ),
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       creatingEthMultisigWallet: this.translate.instant(

@@ -16,6 +16,7 @@ import {
   HomeIntegrationsProvider,
   Logger,
   MerchantProvider,
+  NewFeatureData,
   PersistenceProvider,
   PlatformProvider,
   ProfileProvider,
@@ -31,11 +32,13 @@ import {
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
+import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
@@ -63,6 +66,7 @@ export interface Advertisement {
 export class HomePage {
   public tapped = 0;
   showBuyCryptoOption: boolean;
+  showExchangeCryptoOption: boolean;
   showShoppingOption: boolean;
   @ViewChild('showCard')
   showCard;
@@ -114,7 +118,8 @@ export class HomePage {
     private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private dynamicLinkProvider: DynamicLinksProvider
+    private dynamicLinkProvider: DynamicLinksProvider,
+    private newFeatureData: NewFeatureData
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -134,10 +139,49 @@ export class HomePage {
     };
   }
 
+  private showNewFeatureSlides() {
+    if (this.appProvider.isLockModalOpen) return;
+    const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
+    if (!disclaimerAccepted) {
+      // first time using the App -> don't show
+      this.persistenceProvider.setNewFeatureSlidesFlag(
+        this.appProvider.info.version
+      );
+      return;
+    }
+    this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
+      if (!value || value !== this.appProvider.info.version) {
+        const feature_list = this.newFeatureData.get();
+        if (feature_list && feature_list.features.length > 0) {
+          const modal = this.modalCtrl.create(NewFeaturePage, {
+            featureList: feature_list
+          });
+          modal.present();
+          modal.onDidDismiss(data => {
+            if (data) {
+              if (typeof data === 'boolean' && data === true) {
+                this.persistenceProvider.setNewFeatureSlidesFlag(
+                  this.appProvider.info.version
+                );
+              } else if (typeof data !== 'boolean') {
+                this.events.publish('IncomingDataRedir', data);
+              }
+            }
+          });
+        } else {
+          this.persistenceProvider.setNewFeatureSlidesFlag(
+            this.appProvider.info.version
+          );
+        }
+      }
+    });
+  }
+
   async ionViewWillEnter() {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
+    this.showNewFeatureSlides();
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
@@ -382,6 +426,7 @@ export class HomePage {
   private setIntegrations() {
     // Show integrations
     this.showBuyCryptoOption = false;
+    this.showExchangeCryptoOption = false;
     this.showShoppingOption = false;
     const integrations = this.homeIntegrationsProvider
       .get()
@@ -391,6 +436,9 @@ export class HomePage {
       switch (x.name) {
         case 'buycrypto':
           this.showBuyCryptoOption = true;
+          break;
+        case 'exchangecrypto':
+          this.showExchangeCryptoOption = true;
           break;
         case 'giftcards':
           this.showShoppingOption = true;
@@ -686,6 +734,13 @@ export class HomePage {
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
+      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
+  }
+
+  public goToExchangeCryptoPage() {
+    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+    this.navCtrl.push(ExchangeCryptoPage, {
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
   }

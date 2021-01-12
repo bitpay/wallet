@@ -9,11 +9,9 @@
       <div class="item-label" translate>Amount</div>
       <ion-card class="item-card" (click)="openAmountModal()">
         <ion-item>
-          <coin-icon item-start [coin]="currency === coin?.toUpperCase() ? coin : 'default'"></coin-icon>
-          <div class="main-label">{{currency}}</div>
+          <div class="main-label"> <span *ngIf="currency == 'USD'">$</span>{{amount | number : getDigitsInfo(currency)}}<span *ngIf="currency != 'USD'"> {{currency}}</span></div>
           <ion-note item-end>
             <ion-row align-items-center>
-              <div class="secondary-note" item-start> <span *ngIf="currency !== coin?.toUpperCase()">$</span>{{amount | number : getDigitsInfo(currency)}}</div>
               <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
             </ion-row>
           </ion-note>

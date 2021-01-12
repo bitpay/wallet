@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Renderer } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Renderer2 } from '@angular/core';
 import { PlatformProvider } from '../../../providers';
 
 @Directive({
@@ -10,7 +10,7 @@ export class WideHeaderBarButton implements AfterViewInit {
   constructor(
     private element: ElementRef,
     private platformProvider: PlatformProvider,
-    private renderer: Renderer
+    private renderer: Renderer2
   ) {
     this.platformName = this.platformProvider.isIOS ? 'ios' : 'md';
   }
@@ -26,6 +26,6 @@ export class WideHeaderBarButton implements AfterViewInit {
   }
 
   addClass(cssClass: string) {
-    this.renderer.setElementClass(this.element.nativeElement, cssClass, true);
+    this.renderer.addClass(this.element.nativeElement, cssClass);
   }
 }

@@ -23,6 +23,11 @@ label-tip {
     left: 25px;
   }
 
+  &.right-arrow:before {
+    right: 25px;
+    left: unset;
+  }
+
   // Remove arrowhead from label
   &.info.no-arrowhead:before,
   &.warn.no-arrowhead:before,

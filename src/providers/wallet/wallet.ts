@@ -73,6 +73,7 @@ export interface TransactionProposal {
   customData?: {
     service?: string;
     giftCardName?: string;
+    changelly?: string;
     shapeShift?: string;
     toWalletName?: any;
   };

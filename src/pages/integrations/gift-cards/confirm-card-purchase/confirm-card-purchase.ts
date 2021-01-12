@@ -57,6 +57,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletConnectProvider } from '../../../../providers/wallet-connect/wallet-connect';
 import {
   TransactionProposal,
   WalletProvider
@@ -129,7 +130,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     appProvider: AppProvider,
     iabCardProvider: IABCardProvider,
     homeIntegrationsProvider: HomeIntegrationsProvider,
-    persistenceProvider: PersistenceProvider
+    persistenceProvider: PersistenceProvider,
+    WalletConnectProvider: WalletConnectProvider
   ) {
     super(
       addressProvider,
@@ -163,7 +165,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       payproProvider,
       iabCardProvider,
       homeIntegrationsProvider,
-      persistenceProvider
+      persistenceProvider,
+      WalletConnectProvider
     );
     this.configWallet = this.configProvider.get().wallet;
   }
