@@ -25,24 +25,32 @@ export class NewFeatureData {
       {
         majorversion: 12,
         dummy: this.translate.instant('dummy'),
-        features: [{
-          title: "Trading now supported!",
-          details: "Now you can quickly and safely exchange funds from one crypto wallet to another.",
-          image: "assets/img/new-feature/12/12-1.png"
-        },{
-          title: "Exchange directly from your wallets",
-          details: "Now you can quickly and safely exchange funds from one crypto wallet to another.",
-          image: "assets/img/new-feature/12/12-2.png"
-        },{
-          title: "DAI and WBTC added",
-          details: "Store, Send, and Receive some of the top crypto assets used in Decentralized Finance (DeFi). DAI is a USD pegged stable coin and WBTC is an ERC20 token pegged to Bitcoin.",
-          image: "assets/img/new-feature/12/12-3.png"
-        },{
-          title: "Interact with DeFi and other DApps",
-          details: "Try it out by selecting WalletConnect from settings, then scanning a DApp or DeFi QR code.",
-          image: "assets/img/new-feature/12/12-4.png"
-        }
-      ]
+        features: [
+          {
+            title: 'Trading now supported!',
+            details:
+              'Now you can quickly and safely exchange funds from one crypto wallet to another.',
+            image: 'assets/img/new-feature/12/12-1.png'
+          },
+          {
+            title: 'Exchange directly from your wallets',
+            details:
+              'Now you can quickly and safely exchange funds from one crypto wallet to another.',
+            image: 'assets/img/new-feature/12/12-2.png'
+          },
+          {
+            title: 'DAI and WBTC added',
+            details:
+              'Store, Send, and Receive some of the top crypto assets used in Decentralized Finance (DeFi). DAI is a USD pegged stable coin and WBTC is an ERC20 token pegged to Bitcoin.',
+            image: 'assets/img/new-feature/12/12-3.png'
+          },
+          {
+            title: 'Interact with DeFi and other DApps',
+            details:
+              'Try it out by selecting WalletConnect from settings, then scanning a DApp or DeFi QR code.',
+            image: 'assets/img/new-feature/12/12-4.png'
+          }
+        ]
       }
     ];
   }

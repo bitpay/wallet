@@ -45,7 +45,7 @@ interface App {
   _extraCSS: string;
   _enabledExtensions;
 }*/
-export interface Version{
+export interface Version {
   major: number;
   minor: number;
   patch: number;
@@ -99,7 +99,7 @@ export class AppProvider {
     }
   }
 
-  private formatVersionString(version: string):Version {
+  private formatVersionString(version: string): Version {
     var formattedNumber = version.replace(/^v/i, '').split('.');
     return {
       major: +formattedNumber[0],

@@ -1,29 +1,30 @@
 page-new-feature {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   .new-feature-slides {
     .slide-zoom {
       height: 100%;
     }
     .swiper-pagination-bullet {
       background: grey;
-      opacity: .2;
-    }  
+      opacity: 0.2;
+    }
     .swiper-pagination-bullet-active {
-      background: #4f6ef7; 
+      background: #4f6ef7;
       opacity: 1;
     }
     ion-slide {
       .supperior-container {
         position: relative;
         height: 64%;
-        background: linear-gradient(180deg, #D8DEFD 0%, #F3F4F9 100%);
+        background: linear-gradient(180deg, #d8defd 0%, #f3f4f9 100%);
         .page-title {
           text-align: center;
           width: 100%;
           line-height: 30px;
           font-size: 18px;
           font-weight: 500;
-          color: #1A3B8B;
+          color: #1a3b8b;
           top: 2em;
           padding: 2em 0 2em 0;
         }
@@ -41,7 +42,7 @@ page-new-feature {
       .slide-info {
         background-color: #ffffff;
         height: 100%;
-        box-shadow: 0 -3px 20px 0 rgba(0,0,0,0.05);
+        box-shadow: 0 -3px 20px 0 rgba(0, 0, 0, 0.05);
         position: relative;
         .title {
           text-align: center;
@@ -54,7 +55,7 @@ page-new-feature {
         .text {
           text-align: center;
           font-size: 16px;
-          color: #6D7386;
+          color: #6d7386;
           line-height: 25px;
           width: 67%;
           position: absolute;
@@ -71,7 +72,7 @@ page-new-feature {
     bottom: calc(1.5rem + env(safe-area-inset-bottom));
     bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
     right: 0;
-    color: #4F6EF7;
+    color: #4f6ef7;
     cursor: pointer;
     text-transform: uppercase;
   }

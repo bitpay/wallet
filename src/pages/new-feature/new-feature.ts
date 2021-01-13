@@ -10,22 +10,30 @@ export class NewFeaturePage {
   endSlide: boolean = false;
   featureList: any = [];
   isDarkMode: boolean;
-  constructor(private viewCtrl: ViewController, private navParams: NavParams, private themeProvider: ThemeProvider) {
+  constructor(
+    private viewCtrl: ViewController,
+    private navParams: NavParams,
+    private themeProvider: ThemeProvider
+  ) {
     this.featureList.push(...this.navParams.data.featureList.features);
     this.endSlide = this.featureList.length == 1;
     this.isDarkMode = this.themeProvider.isDarkModeEnabled();
   }
 
-  getImage(imagePath:string):string{
-    if(this.isDarkMode){
+  getImage(imagePath: string): string {
+    if (this.isDarkMode) {
       var pointIndex = imagePath.lastIndexOf('.');
-      var output = [imagePath.slice(0, pointIndex), '-dark', imagePath.slice(pointIndex)].join('');
+      var output = [
+        imagePath.slice(0, pointIndex),
+        '-dark',
+        imagePath.slice(pointIndex)
+      ].join('');
       return output;
-    }else {
+    } else {
       return imagePath;
     }
   }
-  
+
   slideChanged() {
     this.endSlide = this.slider.isEnd();
   }
