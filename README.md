@@ -1,4 +1,4 @@
-<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet-pay.png" width="512" height="256" alt="AbcPay">
+<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet-pay.png" width="256" height="128" alt="AbcPay">
 
 - team work from develop branch​
 - developer create feature branch: fb-[fb name]: eg: fb-login, fb-AP1234, ​
