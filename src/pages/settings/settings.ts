@@ -298,10 +298,6 @@ export class SettingsPage {
         NewFeaturePage,
         {
           featureList: this.featureList
-        },
-        {
-          showBackdrop: false,
-          enableBackdropDismiss: false
         }
       );
       modal.present();
