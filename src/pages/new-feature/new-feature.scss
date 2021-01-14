@@ -35,6 +35,10 @@ page-new-feature {
             bottom: 0;
             margin: 0 auto;
             transform: translateY(0);
+            @media screen and (min-width: 768px){
+              transform: translateY(-20px);
+              max-width: 220px;
+            }
           }
         }
       }
