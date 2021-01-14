@@ -166,6 +166,7 @@ export class HomePage {
               } else if (typeof data !== 'boolean') {
                 this.events.publish('IncomingDataRedir', data);
               }
+              this.events.unsubscribe('Local/showNewFeaturesSlides');
             }
           });
         } else {
@@ -181,7 +182,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
-    this.showNewFeatureSlides();
+    this.events.publish('Local/showNewFeaturesSlides');
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
@@ -413,6 +414,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/UnsupportedAltCurrency', params => {
       this.showInfoSheet(params);
+    });
+    this.events.subscribe('Local/showNewFeaturesSlides', () => {
+      this.showNewFeatureSlides();
     });
   }
 
