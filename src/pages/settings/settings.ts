@@ -294,12 +294,9 @@ export class SettingsPage {
 
   public openWhatsNew(): void {
     if (this.featureList) {
-      const modal = this.modalCtrl.create(
-        NewFeaturePage,
-        {
-          featureList: this.featureList
-        }
-      );
+      const modal = this.modalCtrl.create(NewFeaturePage, {
+        featureList: this.featureList
+      });
       modal.present();
     }
   }
