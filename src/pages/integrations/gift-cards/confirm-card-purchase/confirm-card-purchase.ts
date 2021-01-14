@@ -483,7 +483,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (details.requiredFeeRate) {
       const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
         ? details.requiredFeeRate
-        : Math.ceil(details.requiredFeeRate * 1024);
+        : Math.ceil(details.requiredFeeRate * 1000);
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {

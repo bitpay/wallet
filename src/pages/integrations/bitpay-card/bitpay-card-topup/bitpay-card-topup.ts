@@ -436,7 +436,7 @@ export class BitPayCardTopUpPage {
                   wallet.coin
                 )
                   ? details.requiredFeeRate
-                  : Math.ceil(details.requiredFeeRate * 1024);
+                  : Math.ceil(details.requiredFeeRate * 1000);
                 txp.feePerKb = requiredFeeRate;
                 this.logger.debug(
                   `PayProDetails requiredFeeRate: ${details.requiredFeeRate}. Txp feePerKb: ${txp.feePerKb}`
@@ -633,7 +633,7 @@ export class BitPayCardTopUpPage {
                           wallet.coin
                         )
                           ? details.requiredFeeRate
-                          : Math.ceil(details.requiredFeeRate * 1024);
+                          : Math.ceil(details.requiredFeeRate * 1000);
 
                         this.logger.debug(
                           `getPayProDetails -> payProFeeSat: ${payProFeeSat}`
