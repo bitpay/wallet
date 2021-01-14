@@ -10,6 +10,7 @@ import {
   AppProvider,
   BwcProvider,
   DynamicLinksProvider,
+  EmailNotificationsProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
@@ -19,6 +20,7 @@ import {
   NewFeatureData,
   PersistenceProvider,
   PlatformProvider,
+  PopupProvider,
   ProfileProvider,
   ReleaseProvider
 } from '../../providers';
@@ -119,7 +121,9 @@ export class HomePage {
     private profileProvider: ProfileProvider,
     private actionSheetProvider: ActionSheetProvider,
     private dynamicLinkProvider: DynamicLinksProvider,
-    private newFeatureData: NewFeatureData
+    private newFeatureData: NewFeatureData,
+    private emailProvider: EmailNotificationsProvider,
+    private popupProvider: PopupProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -213,6 +217,11 @@ export class HomePage {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
     this.giftCardProvider.getCountry();
+
+    // Required delay to improve performance loading
+    setTimeout(() => {
+      this.checkEmailLawCompliance();
+    }, 2000);
   }
 
   private async loadAds() {
@@ -857,6 +866,40 @@ export class HomePage {
         this.navCtrl.push(AltCurrencyPage);
       }
     });
+  }
+
+  private openEmailDisclaimer() {
+    const message = this.translate.instant(
+      'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
+    );
+    const title = this.translate.instant('Privacy Policy update');
+    const okText = this.translate.instant('Accept');
+    const cancelText = this.translate.instant('Disable notifications');
+    this.popupProvider
+      .ionicConfirm(title, message, okText, cancelText)
+      .then(ok => {
+        if (ok) {
+          // Accept new Privacy Policy
+          this.persistenceProvider.setEmailLawCompliance('accepted');
+        } else {
+          // Disable email notifications
+          this.persistenceProvider.setEmailLawCompliance('rejected');
+          this.emailProvider.updateEmail({
+            enabled: false,
+            email: 'null@email'
+          });
+        }
+      });
+  }
+
+  private checkEmailLawCompliance(): void {
+    setTimeout(() => {
+      if (this.emailProvider.getEmailIfEnabled()) {
+        this.persistenceProvider.getEmailLawCompliance().then(value => {
+          if (!value) this.openEmailDisclaimer();
+        });
+      }
+    }, 2000);
   }
 }
 
