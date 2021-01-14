@@ -27,10 +27,10 @@ describe('AboutPage', () => {
       });
       it('should set correct commit hash and version', () => {
         instance.appProvider.info.commitHash = 'testHash';
-        instance.appProvider.info.version = 21;
+        instance.appProvider.info.version = '21.0.0';
         instance.ionViewDidLoad();
         expect(instance.commitHash).toEqual('testHash');
-        expect(instance.version).toEqual(21);
+        expect(instance.version).toEqual('21.0.0');
       });
       it('should set correct title', () => {
         spyOn(instance.replaceParametersProvider, 'replace').and.returnValue(

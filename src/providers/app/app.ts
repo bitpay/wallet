@@ -92,15 +92,15 @@ export class AppProvider {
       this.getServicesInfo(),
       this.getAppInfo()
     ]);
-    this.version = this.formatVersionString(this.info.version);
     if (this.platformProvider.isCordova) {
       this.info = JSON.parse(this.info);
       this.servicesInfo = JSON.parse(this.servicesInfo);
     }
+    this.version = this.formatVersionString();
   }
 
-  private formatVersionString(version: string): Version {
-    var formattedNumber = version.replace(/^v/i, '').split('.');
+  private formatVersionString(): Version {
+    var formattedNumber = this.info.version.replace(/^v/i, '').split('.');
     return {
       major: +formattedNumber[0],
       minor: +formattedNumber[1],
