@@ -1,92 +1,90 @@
-<div *ngIf="ready" @fadeUp>
-
-  <ng-container *ngIf="!hasCards else cards">
-    <div @fade>
-      <action-card-v4>
-        <div action-card-header>
-          <div class="bitpay-card-header">
-            <ng-container *ngIf="!initialized else headerInitialized">
-              <div class="card-loader__tile" style="width: 100%"></div>
-            </ng-container>
-            <ng-template #headerInitialized>
-              <ng-container *ngIf="waitList else mc">
-                <div class="bitpay-card-image" style="background: #062150">
-                  <img @fade src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg"
-                       style="transform: scale(1.3)">
-                </div>
-              </ng-container>
-              <ng-template #mc>
-                <div class="bitpay-card-image bitpay-card-image--mc">
-                  <img @fade src="assets/img/bitpay-card/bitpay-card-mc-peek.svg">
-                </div>
-              </ng-template>
-            </ng-template>
-          </div>
-        </div>
-        <div action-card-title>
-          <ng-container *ngIf="!initialized else titleInitialized">
-            <div class="loading--line" style="width: 55%"></div>
+<ng-container *ngIf="!hasCards else cards">
+  <div @fade>
+    <action-card-v4>
+      <div action-card-header>
+        <div class="bitpay-card-header">
+          <ng-container *ngIf="!initialized else headerInitialized">
+            <div class="card-loader__tile" style="width: 100%"></div>
           </ng-container>
-          <ng-template #titleInitialized>
+          <ng-template #headerInitialized>
             <ng-container *ngIf="waitList else mc">
-              <div @fade translate>Something exciting is arriving</div>
+              <div class="bitpay-card-image" style="background: #062150">
+                <img @fade src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg"
+                     style="transform: scale(1.3)">
+              </div>
             </ng-container>
             <ng-template #mc>
-              <div @fade translate>Fund it. Spend it. Live on crypto.</div>
+              <div class="bitpay-card-image bitpay-card-image--mc">
+                <img @fade src="assets/img/bitpay-card/bitpay-card-mc-peek.svg">
+              </div>
             </ng-template>
           </ng-template>
         </div>
-
-        <div *ngIf="!initialized" action-card-body style="width: 100%">
-          <div class="loading--line" style="width: 30%"></div>
-          <div class="loading--line" style="width: 50%"></div>
-        </div>
-
-        <div *ngIf="initialized && waitList" action-card-body [clamp]="2" translate>
-          Join the waitlist and be first to experience the new card.
-        </div>
-
-        <div *ngIf="initialized && !waitList" action-card-body [clamp]="3" translate>
-          Instantly reload your card with no conversion fee!*
-        </div>
-
-        <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
+      </div>
+      <div action-card-title>
+        <ng-container *ngIf="!initialized else titleInitialized">
+          <div class="loading--line" style="width: 55%"></div>
+        </ng-container>
+        <ng-template #titleInitialized>
           <ng-container *ngIf="waitList else mc">
-            <div translate>Notify Me</div>
+            <div @fade translate>Something exciting is arriving</div>
           </ng-container>
           <ng-template #mc>
-            <div translate>Sign Up</div>
+            <div @fade translate>Fund it. Spend it. Live on crypto.</div>
           </ng-template>
-        </div>
-      </action-card-v4>
-    </div>
-  </ng-container>
+        </ng-template>
+      </div>
 
-  <ng-template #cards>
-    <div class="section-header" translate>
-      Debit Cards
-    </div>
-    <ng-container *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy">
+      <div *ngIf="!initialized" action-card-body style="width: 100%">
+        <div class="loading--line" style="width: 30%"></div>
+        <div class="loading--line" style="width: 50%"></div>
+      </div>
 
-      <div class="card-item" *ngIf="!card.hide">
-        <div class="card-container">
+      <div *ngIf="initialized && waitList" action-card-body [clamp]="2" translate>
+        Join the waitlist and be first to experience the new card.
+      </div>
 
-          <ng-container *ngIf="!initialized else cardsInitialized">
-            <div @fadeUp class="card-loader__drawer">
-              <div class="loading--line" style="width: 25%"></div>
-              <div class="loading--line" style="width: 40%"></div>
+      <div *ngIf="initialized && !waitList" action-card-body [clamp]="3" translate>
+        Instantly reload your card with no conversion fee!*
+      </div>
+
+      <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
+        <ng-container *ngIf="waitList else mc">
+          <div translate>Notify Me</div>
+        </ng-container>
+        <ng-template #mc>
+          <div translate>Sign Up</div>
+        </ng-template>
+      </div>
+    </action-card-v4>
+  </div>
+</ng-container>
+
+<ng-template #cards>
+  <div class="section-header" translate>
+    Debit Cards
+  </div>
+  <ng-container *ngFor="let card of bitpayCardItems; let i = index; trackBy: trackBy">
+
+    <div class="card-item" *ngIf="!card.hide">
+      <div class="card-container">
+
+        <ng-container *ngIf="!initialized else cardsInitialized">
+          <div @fadeUp class="card-loader__drawer">
+            <div class="loading--line" style="width: 25%"></div>
+            <div class="loading--line" style="width: 40%"></div>
+          </div>
+          <div class="slit card-loader--box-shadow"></div>
+        </ng-container>
+
+        <ng-template #cardsInitialized>
+          <div @fadeUp class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)"
+               tappable>
+            <div class="number ellipsis">
+              <img
+                  [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
             </div>
-            <div class="slit card-loader--box-shadow"></div>
-          </ng-container>
-
-          <ng-template #cardsInitialized>
-            <div @fadeUp class="card" [ngClass]="{dark: bitpayCardItems?.length === 2 && i === 1}" (click)="goToCard(card.id)"
-                 tappable>
-              <div class="number ellipsis">
-                <img
-                    [src]="card.brand === 'Mastercard' ? 'assets/img/bitpay-card/mc-logo.svg' : 'assets/img/bitpay-card/visa-logo.svg'">
-              </div>
-              <span class="ellipsis" item-end>
+            <span class="ellipsis" item-end>
               <div class="funds ellipsis" style="position: relative;">
                 <span *ngIf="card.cardBalance">
                   {{ card.cardBalance | formatCurrency: card?.currency: 'minimal' }}
@@ -96,93 +94,91 @@
                 </span>
               </div>
             </span>
-            </div>
-            <div class="slit"></div>
-          </ng-template>
+          </div>
+          <div class="slit"></div>
+        </ng-template>
 
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="waitList && !alreadyOnWaitList && bitpayCardItems?.length && !disableAddCard" @fade>
+    <div @fade>
+      <action-card-v4>
+        <div action-card-header>
+          <div class="bitpay-card-header">
+            <ng-container *ngIf="!initialized else headerInitialized">
+              <div class="card-loader__tile" style="width: 100%"></div>
+            </ng-container>
+            <ng-template #headerInitialized>
+              <div class="bitpay-card-image" style="background: #062150">
+                <img @fade src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg"
+                     style="transform: scale(1.3)">
+              </div>
+            </ng-template>
+          </div>
         </div>
-      </div>
-    </ng-container>
+        <div action-card-title>
+          <ng-container *ngIf="!initialized else titleInitialized">
+            <div class="loading--line" style="width: 60%"></div>
+          </ng-container>
+          <ng-template #titleInitialized>
+            <div @fade translate>Something exciting is arriving</div>
+          </ng-template>
+        </div>
+        <div *ngIf="!initialized" action-card-body style="width: 100%">
+          <div class="loading--line" style="width: 30%"></div>
+          <div class="loading--line" style="width: 50%"></div>
+        </div>
+        <div *ngIf="initialized" action-card-body [clamp]="3" translate>
+          Join the waitlist and be first to experience the new card.
+        </div>
+        <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
+          <div translate>Notify Me</div>
+        </div>
+      </action-card-v4>
+    </div>
 
+  </ng-container>
 
-    <ng-container *ngIf="waitList && !alreadyOnWaitList && bitpayCardItems?.length && !disableAddCard" @fade>
-      <div @fade>
-        <action-card-v4>
-          <div action-card-header>
-            <div class="bitpay-card-header">
-              <ng-container *ngIf="!initialized else headerInitialized">
-                <div class="card-loader__tile" style="width: 100%"></div>
-              </ng-container>
-              <ng-template #headerInitialized>
-                <div class="bitpay-card-image" style="background: #062150">
-                  <img @fade src="assets/img/card-phase-release/bitpay-card-spaceman-discover-block.svg"
-                       style="transform: scale(1.3)">
-                </div>
-              </ng-template>
-            </div>
-          </div>
-          <div action-card-title>
-            <ng-container *ngIf="!initialized else titleInitialized">
-              <div class="loading--line" style="width: 60%"></div>
+  <ng-container *ngIf="cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
+    <div @fade>
+      <action-card-v4>
+        <div action-card-header>
+          <div class="bitpay-card-header">
+            <ng-container *ngIf="!initialized else headerInitialized">
+              <div class="card-loader__tile" style="width: 100%"></div>
             </ng-container>
-            <ng-template #titleInitialized>
-              <div @fade translate>Something exciting is arriving</div>
+            <ng-template #headerInitialized>
+              <div class="bitpay-card-image bitpay-card-image--mc">
+                <img @fade src="assets/img/bitpay-card/bitpay-card-mc-peek.svg">
+              </div>
             </ng-template>
           </div>
-          <div *ngIf="!initialized" action-card-body style="width: 100%">
-            <div class="loading--line" style="width: 30%"></div>
-            <div class="loading--line" style="width: 50%"></div>
-          </div>
-          <div *ngIf="initialized" action-card-body [clamp]="3" translate>
-            Join the waitlist and be first to experience the new card.
-          </div>
-          <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
-            <div translate>Notify Me</div>
-          </div>
-        </action-card-v4>
-      </div>
+        </div>
+        <div action-card-title>
+          <ng-container *ngIf="!initialized else titleInitialized">
+            <div class="loading--line" style="width: 60%"></div>
+          </ng-container>
+          <ng-template #titleInitialized>
+            <div @fade translate>Fund it. Spend it. Live on crypto.</div>
+          </ng-template>
+        </div>
+        <div *ngIf="!initialized" action-card-body style="width: 100%">
+          <div class="loading--line" style="width: 30%"></div>
+          <div class="loading--line" style="width: 50%"></div>
+        </div>
+        <div *ngIf="initialized" action-card-body [clamp]="3" translate>
+          Instantly reload your card with no conversion fee!*
+        </div>
+        <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
+          <div translate>Sign Up</div>
+        </div>
+      </action-card-v4>
+    </div>
 
-    </ng-container>
-
-    <ng-container *ngIf="cardExperimentEnabled && bitpayCardItems?.length && !disableAddCard" @fade>
-      <div @fade>
-        <action-card-v4>
-          <div action-card-header>
-            <div class="bitpay-card-header">
-              <ng-container *ngIf="!initialized else headerInitialized">
-                <div class="card-loader__tile" style="width: 100%"></div>
-              </ng-container>
-              <ng-template #headerInitialized>
-                <div class="bitpay-card-image bitpay-card-image--mc">
-                  <img @fade src="assets/img/bitpay-card/bitpay-card-mc-peek.svg">
-                </div>
-              </ng-template>
-            </div>
-          </div>
-          <div action-card-title>
-            <ng-container *ngIf="!initialized else titleInitialized">
-              <div class="loading--line" style="width: 60%"></div>
-            </ng-container>
-            <ng-template #titleInitialized>
-              <div @fade translate>Fund it. Spend it. Live on crypto.</div>
-            </ng-template>
-          </div>
-          <div *ngIf="!initialized" action-card-body style="width: 100%">
-            <div class="loading--line" style="width: 30%"></div>
-            <div class="loading--line" style="width: 50%"></div>
-          </div>
-          <div *ngIf="initialized" action-card-body [clamp]="3" translate>
-            Instantly reload your card with no conversion fee!*
-          </div>
-          <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">
-            <div translate>Sign Up</div>
-          </div>
-        </action-card-v4>
-      </div>
-
-    </ng-container>
+  </ng-container>
 
 
-  </ng-template>
-
-</div>
+</ng-template>

@@ -122,7 +122,8 @@ export class TabsPage {
   }
 
   private async checkCardEnabled() {
-    let cardExperimentEnabled = await this.persistenceProvider.getCardExperimentFlag();
+    let cardExperimentEnabled =
+      (await this.persistenceProvider.getCardExperimentFlag()) === 'enabled';
 
     const cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
