@@ -11,18 +11,12 @@
   </ion-label>
   <ion-note item-end>
     <div>
-      <div *ngIf="!hasZeroBalance(wallet, wallet?.coin.toUpperCase()) && !wallet?.balanceHidden">
+      <div *ngIf="!wallet?.balanceHidden">
         <div class="main-note">{{ getBalance(wallet, wallet?.coin.toUpperCase()) }}</div>
         <div class="secondary-note" *ngIf="wallet?.cachedStatus">
           {{ getAlternativeBalance(wallet, wallet?.coin.toUpperCase()) }}
           {{ wallet?.cachedStatus.alternativeIsoCode }}
         </div>
-      </div>
-    </div>
-    <div *ngIf="hasZeroBalance(wallet, wallet?.coin.toUpperCase()) && !wallet?.balanceHidden">
-      <div class="main-note">0</div>
-      <div class="secondary-note" *ngIf="wallet?.cachedStatus">
-        0 {{ wallet?.cachedStatus.alternativeIsoCode }}
       </div>
     </div>
     <div *ngIf="wallet?.balanceHidden">
