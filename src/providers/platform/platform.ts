@@ -41,12 +41,18 @@ export class PlatformProvider {
     this.logger.debug('PlatformProvider initialized');
   }
 
-  public getPlatform():string{
-    return this.isAndroid?'android':
-      this.isIOS?'ios':
-      this.isCordova?'cordova':
-      this.isElectron?'electron':
-      this.isMobile?'mobile':undefined;
+  public getPlatform(): string {
+    return this.isAndroid
+      ? 'android'
+      : this.isIOS
+      ? 'ios'
+      : this.isCordova
+      ? 'cordova'
+      : this.isElectron
+      ? 'electron'
+      : this.isMobile
+      ? 'mobile'
+      : undefined;
   }
 
   public getBrowserName(): string {
