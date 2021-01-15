@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppProvider } from '../app/app';
+import { PlatformProvider } from '../platform/platform';
 
 interface FeatureList {
+  app: string[];
+  platform: string[];
   majorversion: number;
   dummy: string;
   features: Feature[];
@@ -20,10 +23,12 @@ interface TryIt {
 @Injectable()
 export class NewFeatureData {
   private feature_list: FeatureList[];
-  constructor(private app: AppProvider, private translate: TranslateService) {
+  constructor(private appProv: AppProvider, private platProv: PlatformProvider, private translate: TranslateService) {
     this.feature_list = [
       {
         majorversion: 12,
+        app: ['bitpay'],
+        platform: ['*'],
         dummy: this.translate.instant('dummy'),
         features: [
           {
@@ -57,7 +62,10 @@ export class NewFeatureData {
 
   get() {
     const list = this.feature_list.filter(
-      vs => vs.majorversion === this.app.version.major && vs.features.length > 0
+      vs => vs.majorversion === this.appProv.version.major 
+      && (vs.app.length == 0 || vs.app[0]==='*' || vs.app.find( (app) => app === String(this.appProv.info.name).toLocaleLowerCase()))
+      && (vs.platform.length == 0 || vs.platform[0]==='*' || vs.platform.find( (plat) => this.platProv.getPlatform() === plat))
+      && vs.features.length > 0
     );
     return list && list.length > 0 ? list[0] : undefined;
   }
