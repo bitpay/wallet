@@ -70,22 +70,42 @@ export class TabsPage {
       this.updateDesktopOnFocus();
     }
 
-    const subscribeEvents = () => {
-      this.events.subscribe('experimentUpdateStart', () => {
-        this.tabs.select(2);
-      });
-      this.events.subscribe('bwsEvent', this.bwsEventHandler);
-      this.events.subscribe('Local/UpdateTxps', data => {
-        this.setTxps(data);
-      });
-      this.events.subscribe('Local/FetchWallets', () => {
-        this.fetchAllWalletsStatus();
-      });
-    };
+    this.persistenceProvider.getCardExperimentFlag().then(status => {
+      if (status === 'enabled') {
+        this.persistenceProvider
+          .getCardNotificationBadge()
+          .then(badgeStatus => {
+            this.cardNotificationBadgeText =
+              badgeStatus === 'disabled' ? null : 'New';
+          });
+      }
+    });
+  }
 
-    subscribeEvents();
+  private subscribeEvents() {
+    this.events.subscribe('experimentUpdateStart', () => {
+      this.tabs.select(2);
+    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.events.subscribe('Local/UpdateTxps', data => {
+      this.setTxps(data);
+    });
+    this.events.subscribe('Local/FetchWallets', () => {
+      this.fetchAllWalletsStatus();
+    });
+  }
+
+  private unsubscribeEvents() {
+    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Local/UpdateTxps');
+    this.events.unsubscribe('Local/FetchWallets');
+    this.events.unsubscribe('experimentUpdateStart');
+  }
+
+  async ngOnInit() {
+    this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      subscribeEvents();
+      this.subscribeEvents();
       setTimeout(() => {
         this.updateTxps();
         this.fetchAllWalletsStatus();
@@ -99,19 +119,6 @@ export class TabsPage {
       this.events.unsubscribe('experimentUpdateStart');
     });
 
-    this.persistenceProvider.getCardExperimentFlag().then(status => {
-      if (status === 'enabled') {
-        this.persistenceProvider
-          .getCardNotificationBadge()
-          .then(badgeStatus => {
-            this.cardNotificationBadgeText =
-              badgeStatus === 'disabled' ? null : 'New';
-          });
-      }
-    });
-  }
-
-  async ngOnInit() {
     await this.checkCardEnabled();
     await this.tabProvider.prefetchCards();
   }
@@ -119,6 +126,7 @@ export class TabsPage {
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
+    this.unsubscribeEvents();
   }
 
   private async checkCardEnabled() {
