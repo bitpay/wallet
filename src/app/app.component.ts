@@ -392,6 +392,9 @@ export class CopayApp {
             `https://${host}/wallet-card?context=bpa`,
             `( async () => {
               window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}});
+              window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
+                this.appProvider.info.version
+              )}});
               await new Promise((res) => setTimeout(res, 300));
               sessionStorage.setItem('isPaired', ${!!token}); 
               sessionStorage.setItem('cards', ${JSON.stringify(
