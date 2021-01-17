@@ -62,6 +62,7 @@ const Keys = {
   KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  LAST_COUNTRY_USED: 'buyCryptoLastCountry',
   PHONE: 'phone',
   PHONE_COUNTRY_INFO: 'phoneCountryInfo',
   PROFILE: 'profile',
@@ -74,7 +75,6 @@ const Keys = {
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   RELEASE_MESSAGE_DISMISSED: 'releaseMessageDismissed',
   ADVERTISEMENT_DISMISSED: name => 'advertisementDismissed-' + name,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   WALLET_GROUP_NAME: keyId => `Key-${keyId}`,
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
@@ -376,6 +376,14 @@ export class PersistenceProvider {
     return this.storage.get(Keys.LAST_CURRENCY_USED);
   }
 
+  setLastCountryUsed(lastCountryUsed) {
+    return this.storage.set(Keys.LAST_COUNTRY_USED, lastCountryUsed);
+  }
+
+  getLastCountryUsed() {
+    return this.storage.get(Keys.LAST_COUNTRY_USED);
+  }
+
   checkQuota() {
     let block = '';
     // 50MB
@@ -646,28 +654,16 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.ADVERTISEMENT_DISMISSED(name));
   }
 
-  setShapeshift(network: string, gcs) {
-    return this.storage.set('shapeShift-' + network, gcs);
+  setChangelly(env: string, tx) {
+    return this.storage.set('changelly-' + env, tx);
   }
 
-  getShapeshift(network: string) {
-    return this.storage.get('shapeShift-' + network);
+  getChangelly(env: string) {
+    return this.storage.get('changelly-' + env);
   }
 
-  removeShapeshift(network: string) {
-    return this.storage.remove('shapeShift-' + network);
-  }
-
-  setShapeshiftToken(network: string, token: string) {
-    return this.storage.set(Keys.SHAPESHIFT_TOKEN(network), token);
-  }
-
-  getShapeshiftToken(network: string) {
-    return this.storage.get(Keys.SHAPESHIFT_TOKEN(network));
-  }
-
-  removeShapeshiftToken(network: string) {
-    return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
+  removeChangelly(env: string) {
+    return this.storage.remove('changelly-' + env);
   }
 
   setSimplex(env: string, paymentRequests) {
@@ -728,6 +724,18 @@ export class PersistenceProvider {
 
   removeLockStatus() {
     return this.storage.remove('lockStatus');
+  }
+
+  setNewFeatureSlidesFlag(value: string) {
+    return this.storage.set('newFeatureSlides', value);
+  }
+
+  getNewFeatureSlidesFlag() {
+    return this.storage.get('newFeatureSlides');
+  }
+
+  removeNewFeatureSlidesFlag() {
+    return this.storage.remove('newFeatureSlides');
   }
 
   setEmailLawCompliance(value: string) {

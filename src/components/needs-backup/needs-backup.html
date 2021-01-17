@@ -1,0 +1,18 @@
+<action-sheet>
+  <div class="prompt-user-fullscreen-container">
+    <div class="prompt-user">
+      <div class="title-icon">
+        <img src="assets/img/single-folded-content.svg" />
+      </div>
+      <div class="title-info">
+        <span translate>Needs Backup 2</span>
+      </div>
+      <div class="subtitle-info">
+        <span translate>Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
+      </div>
+      <button ion-button class="button-standard safe-area" (click)="dismiss('goToBackup')">
+        {{'Write Down Recovery Phrase' | translate}}
+      </button>
+    </div>
+  </div>
+</action-sheet>

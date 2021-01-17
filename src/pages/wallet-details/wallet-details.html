@@ -131,13 +131,28 @@
           </div>
           <ion-spinner name="crescent" *ngIf="shouldShowSpinner()"></ion-spinner>
         </div>
-        <div class="action-buttons">
-          <button class="button-standard disable-hover" (click)="goToReceivePage()" ion-button>
-            {{ 'Receive' | translate }}
-          </button>
-          <button class="button-standard disable-hover" (click)="goToSendPage()" ion-button>
-            {{ 'Send' | translate }}
-          </button>
+        <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
+
+          <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
+            <img [src]="'assets/img/wallet-details/wd-buy.svg'" width="50">
+            <div class="ellipsis">{{ 'Buy' | translate }}</div>
+          </div>
+
+          <div class="action-btn" *ngIf="showExchangeCrypto" (click)="goToExchangeCryptoPage()">
+            <img [src]="'assets/img/wallet-details/wd-exchange.svg'" width="50">
+            <div class="ellipsis">{{ 'Exchange' | translate }}</div>
+          </div>
+
+          <div class="action-btn" (click)="goToReceivePage()">
+            <img [src]="'assets/img/wallet-details/wd-receive.svg'" width="50">
+            <div class="ellipsis">{{ 'Receive' | translate }}</div>
+          </div>
+
+          <div class="action-btn" (click)="goToSendPage()">
+            <img [src]="'assets/img/wallet-details/wd-send.svg'" width="50">
+            <div class="ellipsis">{{ 'Send' | translate }}</div>
+          </div>
+
         </div>
       </expandable-header-footer>
     </expandable-header>
@@ -221,10 +236,9 @@
     <ion-list *ngIf="history && history[0]" class="tx-history">
       <ion-item-group *ngFor="let group of groupedHistory; trackBy: trackByFn; let i = index;">
 
-        <ion-item-divider sticky class="tx-history-header">
-          <span translate *ngIf="isDateInCurrentMonth(getDate(group[0].time))">Recent</span>
-          <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) |
-                amDateFormat:'MMMM'}}</span>
+        <ion-item-divider (click)="viewOnBlockchain()" sticky class="tx-history-header">
+          <span *ngIf="isDateInCurrentMonth(getDate(group[0].time))">{{ 'Recent' | translate }} </span>
+          <span *ngIf="!isDateInCurrentMonth(getDate(group[0].time))">{{getDate(group[0].time) | amDateFormat:'MMMM'}}</span>
         </ion-item-divider>
 
         <div class="item-wrapper" *ngFor="let tx of group; trackBy: trackByFn; let i = index">
@@ -237,6 +251,7 @@
               <div *ngIf="tx.confirmations > 0">
                 <span *ngIf="tx.customData && tx.customData.service">
                   <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                  <img class="icon-services" src="assets/img/exchange-crypto/changelly-icon.svg" *ngIf="tx.customData.service == 'changelly'" width="40">
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>

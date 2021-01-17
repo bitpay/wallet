@@ -631,12 +631,12 @@ export class IABCardProvider {
 
       const headers = [signedData, pub];
 
-      return await this.appleWalletProvider.graphRequest(
+      return this.appleWalletProvider.graphRequest(
         headers,
         JSON.stringify(json)
       );
     } catch (err) {
-      this.logger.log(`graph request failed ${err}`);
+      this.logger.error(`graph request failed ${err}`);
     }
   }
 
@@ -996,9 +996,9 @@ export class IABCardProvider {
       const result = await this.appleWalletProvider.checkPairedDevicesBySuffix(
         data.cardSuffix
       );
-      this.logger.log(`MDES ${JSON.stringify(result)}`);
+      this.logger.debug(`MDES ${JSON.stringify(result)}`);
     } catch (err) {
-      this.logger.log(`MDES checkCard${JSON.stringify(err)}`);
+      this.logger.error(`MDES checkCard${JSON.stringify(err)}`);
     }
 
     // ios handler
@@ -1011,13 +1011,17 @@ export class IABCardProvider {
         } = await this.appleWalletProvider.startAddPaymentPass(data);
 
         this.logger.debug('appleWallet - startAddPaymentPass - success');
+        this.logger.debug(JSON.stringify(certs));
+
+        const mdesCertOnlyFlag = await this.persistenceProvider.getTempMdesCertOnlyFlag();
+        if (mdesCertOnlyFlag === 'bypassed') return;
 
         const {
           certificateLeaf: cert1,
           certificateSubCA: cert2,
           nonce,
           nonceSignature
-        } = certs || {};
+        }: any = certs || {};
 
         const request = {
           query: `
@@ -1046,6 +1050,7 @@ export class IABCardProvider {
         };
 
         this.logger.debug(`appleWallet - start token graph call`);
+        this.logger.debug(`MDES- req ${JSON.stringify(request)}`);
 
         const res = await this.graphRequest(request);
 
@@ -1076,11 +1081,13 @@ export class IABCardProvider {
       }
     } = res.data;
 
+    if (!provisioningData) return;
+
     const {
       wrappedKey: ephemeralPublicKey,
       activationData,
       encryptedPassData
-    } = provisioningData || {};
+    }: any = provisioningData || {};
 
     try {
       const res = await this.appleWalletProvider.completeAddPaymentPass({

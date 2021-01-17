@@ -6,6 +6,7 @@ import { EncryptPasswordComponent } from '../../components/encrypt-password/encr
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
+import { NeedsBackupComponent } from '../../components/needs-backup/needs-backup';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { PhoneSheet } from '../../components/phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
@@ -37,6 +38,8 @@ export type InfoSheetType =
   | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
   | 'linkEthWallet'
+  | 'max-amount-allowed'
+  | 'min-amount-allowed'
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'
@@ -69,7 +72,8 @@ export type InfoSheetType =
   | 'verification-required'
   | 'incorrect-recovery-prhase'
   | 'correct-recovery-prhase'
-  | 'unsupported-alt-currency';
+  | 'unsupported-alt-currency'
+  | 'custom-fee-warning';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -163,6 +167,11 @@ export class ActionSheetProvider {
       null,
       params
     ).instance;
+  }
+
+  public createNeedsBackup(): NeedsBackupComponent {
+    return this.setupSheet<NeedsBackupComponent>(NeedsBackupComponent, null)
+      .instance;
   }
 
   public createChooseFeeLevel(

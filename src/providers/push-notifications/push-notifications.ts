@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { FCMNG } from 'fcm-ng';
-import { Events } from 'ionic-angular';
+import { Events, Toast, ToastController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
@@ -21,6 +22,10 @@ export class PushNotificationsProvider {
   private isAndroid: boolean;
   private usePushNotifications: boolean;
   private _token = null;
+  private fcmInterval;
+  private toasts = [];
+  private currentToast: Toast;
+  private openWalletId;
 
   constructor(
     public http: HttpClient,
@@ -31,7 +36,9 @@ export class PushNotificationsProvider {
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
     private FCMPlugin: FCMNG,
-    private events: Events
+    private events: Events,
+    private toastCtrl: ToastController,
+    private translate: TranslateService
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
     this.isIOS = this.platformProvider.isIOS;
@@ -70,8 +77,25 @@ export class PushNotificationsProvider {
           config.productsUpdates.enabled
         )
           this.subscribeToTopic('productsupdates');
+
+        this.fcmInterval = setInterval(() => {
+          this.renewSubscription();
+        }, 5 * 60 * 1000); // 5 min
       });
     });
+  }
+
+  private renewSubscription(): void {
+    const opts = {
+      showHidden: false
+    };
+    const wallets = this.profileProvider.getWallets(opts);
+    _.forEach(wallets, walletClient => {
+      this._unsubscribe(walletClient);
+    });
+    setTimeout(() => {
+      this.updateSubscription(wallets);
+    }, 1000);
   }
 
   public handlePushNotifications(): void {
@@ -93,19 +117,30 @@ export class PushNotificationsProvider {
             if (!this.verifySignature(data)) return;
             this.events.publish('ShowAdvertising', data);
           } else {
-            const walletIdHashed = data.walletId;
-            const tokenAddress = data.tokenAddress;
-            const multisigContractAddress = data.multisigContractAddress;
-            if (!walletIdHashed) return;
-            this._openWallet(
-              walletIdHashed,
-              tokenAddress,
-              multisigContractAddress
-            );
+            this._openWallet(data);
           }
+        } else {
+          const wallet = this.findWallet(data.walletId, data.tokenAddress);
+          if (!wallet) return;
+          this.newBwsEvent(data, wallet.credentials.walletId);
+          this.showToastNotification(data);
         }
       });
     }
+  }
+
+  private newBwsEvent(notification, walletId): void {
+    let id = walletId;
+    if (notification.tokenAddress) {
+      id = walletId + '-' + notification.tokenAddress.toLowerCase();
+      this.logger.debug(`event for token wallet: ${id}`);
+    }
+    this.events.publish(
+      'bwsEvent',
+      id,
+      notification.notification_type,
+      notification
+    );
   }
 
   public updateSubscription(walletClient): void {
@@ -158,6 +193,8 @@ export class PushNotificationsProvider {
       this._unsubscribe(walletClient);
     });
     this._token = null;
+
+    clearInterval(this.fcmInterval);
   }
 
   public unsubscribe(walletClient): void {
@@ -177,7 +214,8 @@ export class PushNotificationsProvider {
     const opts = {
       token: this._token,
       platform: this.isIOS ? 'ios' : this.isAndroid ? 'android' : null,
-      packageName: this.appProvider.info.packageNameId
+      packageName: this.appProvider.info.packageNameId,
+      walletId: walletClient.credentials.walletId
     };
     walletClient.pushNotificationsSubscribe(opts, err => {
       if (err)
@@ -206,25 +244,28 @@ export class PushNotificationsProvider {
     });
   }
 
-  private async _openWallet(
-    walletIdHashed,
-    tokenAddress,
-    multisigContractAddress
-  ) {
+  private async _openWallet(data) {
+    const walletIdHashed = data.walletId;
+    const tokenAddress = data.tokenAddress;
+    const multisigContractAddress = data.multisigContractAddress;
+    if (!walletIdHashed) return;
+
     const wallet = this.findWallet(
       walletIdHashed,
       tokenAddress,
       multisigContractAddress
     );
 
-    if (!wallet) return;
+    if (!wallet || this.openWalletId === wallet.credentials.walletId) return;
+
+    this.openWalletId = wallet.credentials.walletId; // avoid opening the same wallet many times
 
     await Observable.timer(1000).toPromise(); // wait for subscription to OpenWallet event
 
     this.events.publish('OpenWallet', wallet);
   }
 
-  private findWallet(walletIdHashed, tokenAddress, multisigContractAddress) {
+  private findWallet(walletIdHashed, tokenAddress, multisigContractAddress?) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
@@ -275,5 +316,42 @@ export class PushNotificationsProvider {
       'little'
     );
     return verificationResult;
+  }
+
+  private showToastNotification(data) {
+    if (!data.body || data.notification_type === 'NewOutgoingTx') return;
+
+    this.toasts.unshift(data);
+    this.runToastQueue();
+  }
+
+  private runToastQueue() {
+    if (this.currentToast) return;
+
+    this.toasts.some(data => {
+      if (!data.showDone) {
+        this.currentToast = this.toastCtrl.create({
+          message: `${data.title}\n${data.body}`,
+          duration: 5000,
+          position: 'top',
+          showCloseButton: true,
+          closeButtonText: this.translate.instant('Open Wallet'),
+          cssClass: 'toast-bg'
+        });
+
+        this.currentToast.onDidDismiss((_opt, role) => {
+          if (role === 'close') this._openWallet(data);
+
+          this.currentToast = null;
+          this.runToastQueue();
+        });
+
+        this.currentToast.present();
+        data.showDone = true;
+        return true;
+      }
+
+      return false;
+    });
   }
 }

@@ -1,0 +1,29 @@
+page-changelly-details {
+  .header-modal {
+    padding: 40px 16px 0px 16px;
+    .title-modal {
+      color: color($colors, light-grey);
+    }
+    .subtitle-modal {
+      font-size: 3.5rem;
+      .amount-unit {
+        font-size: 1.5rem;
+        vertical-align: text-top;
+      }
+      .icon-service {
+        border-radius: 50%;
+        border: 1px solid #12d077;
+        padding: 4px;
+        width: 40px;
+        height: 40px;
+        box-shadow: none;
+      }
+      img {
+        float: right;
+      }
+    }
+  }
+  .no-border .item-inner {
+    border-bottom: none !important;
+  }
+}

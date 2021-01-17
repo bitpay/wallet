@@ -105,7 +105,8 @@ export class MultiSendPage {
 
   public openTransferToModal(): void {
     this.navCtrl.push(TransferToModalPage, {
-      wallet: this.wallet
+      wallet: this.wallet,
+      fromMultiSend: true
     });
   }
 

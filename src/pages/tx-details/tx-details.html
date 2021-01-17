@@ -71,7 +71,7 @@
 
       <div class="line-divider" *ngIf="btx.action === 'sent'"></div>
 
-      <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
+      <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx" (openBlockChainEvent)="viewOnBlockchain()"></page-multiple-outputs>
 
       <div class="line-divider" *ngIf="btx.creatorName && isShared"></div>
 

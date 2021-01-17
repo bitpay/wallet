@@ -69,6 +69,12 @@ export class AltCurrencyPage {
       },
       {
         isoCode: 'BUSD'
+      },
+      {
+        isoCode: 'DAI'
+      },
+      {
+        isoCode: 'WBTC'
       }
     ];
   }

@@ -65,6 +65,8 @@ export class TransferToPage {
   public hasContactsOrWallets: boolean;
 
   private _fromSelectInputs: boolean;
+  private _fromMultiSend: boolean;
+
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
 
@@ -142,6 +144,15 @@ export class TransferToPage {
 
   get fromSelectInputs() {
     return this._fromSelectInputs;
+  }
+
+  @Input()
+  set fromMultiSend(fromMultiSend: boolean) {
+    this._fromMultiSend = fromMultiSend;
+  }
+
+  get fromMultiSend() {
+    return this._fromMultiSend;
   }
 
   public getCoinName(coin: Coin) {
@@ -303,6 +314,7 @@ export class TransferToPage {
             network: item.network,
             useAsModal: this._useAsModal,
             fromWalletDetails: this._fromWalletDetails,
+            fromMultiSend: this._fromMultiSend,
             destinationTag: item.destinationTag
           });
         }

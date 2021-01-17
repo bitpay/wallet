@@ -3,7 +3,7 @@
     <ion-title class="bp-title">Wallet Connect</ion-title>
     <ion-buttons *ngIf="connected" right>
       <button (click)="killSession()" ion-button>
-        {{'Kill Session' | translate }}
+        {{'Disconnect' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -14,7 +14,7 @@
   <div *ngIf="!connected">
     <label-tip type="info" header="no-header" class="no-arrowhead">
       <div label-tip-body>
-        <span translate>WalletConnect is an open source protocol for connecting decentralised applications to mobile wallets with QR code scanning or deep linking.</span>
+        <span translate>WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking.</span>
         <br>
         <br>
         <a class="pointer" (click)="openExternalLink('https://walletconnect.org/')" translate>Read more</a>
@@ -39,50 +39,41 @@
       <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
     </ion-list>
 
-    <button *ngIf="!peerMeta || !peerMeta.name || !uri" ion-button class="button-standard" (click)="initWalletConnect()">
+    <button ion-button class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
       {{'Connect' | translate}}
     </button>
   </div>
 
-  <div *ngIf="connected">
-
+  <div *ngIf="connected && wallet">
     <ion-list class="bp-list">
-      <ion-item *ngIf="peerMeta && peerMeta.name" class="sub-title">
+      <ion-item *ngIf="peerMeta && peerMeta.name">
         <ion-label>
           <div class="main-label">
-            <span class="peer-meta-name">{{ peerMeta.name | uppercase }} </span>
+            <div class="main-label">
+              {{ 'Connected with' | translate}}
+              <span class="peer-meta-name">{{ peerMeta.name | uppercase }}</span>
+            </div>
+            <div class="secondary-label">{{ peerMeta.url }}</div>
           </div>
         </ion-label>
-        <div class="last-item" item-end>
-          {{ getChainData(activeChainId).name }}
-        </div>
       </ion-item>
 
-      <ion-item *ngIf="peerMeta && peerMeta.name" class="sub-title">
+      <div class="description" *ngIf="peerMeta && peerMeta.description">
+        {{ peerMeta.description }}
+      </div>
+      
+      <div class="item-label" translate>{{ 'Linked wallet' | translate }}</div>
+      <ion-item *ngIf="peerMeta && peerMeta.name">
+        <coin-icon item-start [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
         <ion-label>
           <div class="main-label">
-            {{ 'Connected with' | translate}}
+              <span>{{wallet.name}}</span>
+            <div class="secondary-label">{{address | shortenedAddress}}</div>
           </div>
         </ion-label>
-        <ion-note item-end>
-          <ion-row align-items-center class="wallet" *ngIf="wallet">
-            <ion-col>
-              <coin-icon [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
-            </ion-col>
-
-            <ion-col>
-              <span class="note-container ellipsis">{{wallet.name}}</span>
-            </ion-col>
-          </ion-row>
-        </ion-note>
       </ion-item>
-
-      <ion-item class="sub-title">
-        <ion-label>
-          <div class="main-label">{{ 'Pending Call Requests' | translate }}</div>
-        </ion-label>
-      </ion-item>
-
+      
+      <div class="item-label" translate>{{ 'Pending Call Requests' | translate }}</div>
       <action-card *ngIf="requests.length === 0" class='zero-state'>
         <div action-card-title class="main-label">
           {{'No pending call requests' | translate}}
@@ -140,7 +131,7 @@
                   </ion-note>
                 </div>
                 <div class="item" *ngIf="param.value">
-                  <div>{{ 'Value' | translate }}</div>
+                  <div>{{ 'Amount' | translate }}</div>
                   <ion-note item-end>
                     {{ param.value | satToUnit: wallet.coin }}
                   </ion-note>
