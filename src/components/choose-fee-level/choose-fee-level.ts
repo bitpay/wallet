@@ -212,7 +212,8 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
 
     this.dismiss({
       newFeeLevel: this.feeLevel,
-      customFeePerKB: this.customFeePerKB
+      customFeePerKB: this.customFeePerKB,
+      showMinWarning: this.showMinWarning
     });
   }
 

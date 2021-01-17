@@ -1,19 +1,15 @@
-import { Directive, ElementRef, Renderer } from '@angular/core';
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[animate]'
 })
 export class Animate {
-  constructor(public el: ElementRef, public renderer: Renderer) {}
+  constructor(public el: ElementRef, public renderer: Renderer2) {}
 
   animate(animationName: string) {
-    this.renderer.setElementClass(this.el.nativeElement, animationName, true);
+    this.renderer.addClass(this.el.nativeElement, animationName);
     setTimeout(() => {
-      this.renderer.setElementClass(
-        this.el.nativeElement,
-        animationName,
-        false
-      );
+      this.renderer.removeClass(this.el.nativeElement, animationName);
     }, 600);
   }
 }

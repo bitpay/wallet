@@ -1,0 +1,169 @@
+<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
+      <span translate>Cancel</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+
+    <ion-list class="bp-list" *ngIf="!loading">
+      <ion-item class="sub-title">
+        <ion-label>
+          <div class="main-label">SUMMARY</div>
+        </ion-label>
+      </ion-item>
+
+      <ion-item ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Receiving</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end text-left>
+          <ion-row align-items-center class="wallet" *ngIf="toWalletSelected">
+            <ion-col>
+              <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{toWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Selling</span>
+          </div>
+        </ion-label>
+
+        <ion-note item-end text-left>
+          <ion-row align-items-center class="wallet" *ngIf="fromWalletSelected">
+            <ion-col>
+              <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Paying" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              {{ amountFrom | number:'1.0-6'}} {{ fromWalletSelected.coin | uppercase }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Miner Fee" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              {{ fee | satToUnit: getChain(fromWalletSelected.coin) }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Exchange Fee" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span>
+              {{ totalExchangeFee | number:'1.0-6'}} {{ toWalletSelected.coin | uppercase }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Expires" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            <span *ngIf="!paymentExpired">{{remainingTimeStr}}</span>
+            <span *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}">{{'Expired' | translate}}</span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="summary-line"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="main-label total-label">{{'TOTAL TO RECEIVE' | translate}}</div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="total-amount">
+            <span>{{ amountTo }} {{ toWalletSelected.coin | uppercase }}</span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="amount-details">
+        <div class="secondary-note">
+          <span>
+            ~{{ fiatAmountTo | number : '1.2-2' }} {{ alternativeIsoCode }}
+          </span>
+        </div>
+      </div>
+
+      <ion-item>
+        <ion-label class="terms-checkbox">
+          <span translate>Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC</span>
+        </ion-label>
+        <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
+      </ion-item>
+      <ion-item (click)="openTermsModal()">
+        <ion-label class="terms">
+          <span translate>Review Changelly policies</span>
+        </ion-label>
+        <ion-note item-end>
+          <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+        </ion-note>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div footer-content>
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" (slideDone)="makePayment()">
+    </page-slide-to-accept>
+    <ion-toolbar *ngIf="!isCordova">
+      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Continue & Make Payment' | translate}}</button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

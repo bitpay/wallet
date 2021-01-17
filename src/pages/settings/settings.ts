@@ -17,6 +17,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
+import { NewFeatureData } from '../../providers/new-feature-data/new-feature-data';
 import {
   Network,
   PersistenceProvider
@@ -30,11 +31,12 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
 import { CryptoSettingsPage } from '../buy-crypto/crypto-settings/crypto-settings';
+import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
+import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
@@ -94,6 +96,8 @@ export class SettingsPage {
   public useLegacyQrCode: boolean;
   public tapped = 0;
   public certOnlyTapped = 0;
+  public appVersion: string;
+  private featureList: any;
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
@@ -114,9 +118,11 @@ export class SettingsPage {
     private changeRef: ChangeDetectorRef,
     private iabCardProvider: IABCardProvider,
     private themeProvider: ThemeProvider,
-    private events: Events
+    private events: Events,
+    private newFeatureData: NewFeatureData
   ) {
     this.appName = this.app.info.nameCase;
+    this.appVersion = this.app.info.version;
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
@@ -187,6 +193,8 @@ export class SettingsPage {
     this.useLegacyQrCode = this.config.legacyQrCode.show;
 
     this.showTotalBalance = this.config.totalBalance.show;
+
+    this.featureList = this.newFeatureData.get();
   }
 
   ionViewDidEnter() {
@@ -284,6 +292,22 @@ export class SettingsPage {
     this.navCtrl.push(LanguagePage);
   }
 
+  public openWhatsNew(): void {
+    if (this.featureList) {
+      const modal = this.modalCtrl.create(
+        NewFeaturePage,
+        {
+          featureList: this.featureList
+        },
+        {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        }
+      );
+      modal.present();
+    }
+  }
+
   public openAdvancedPage(): void {
     this.navCtrl.push(AdvancedPage);
   }
@@ -335,11 +359,11 @@ export class SettingsPage {
       case 'debitcard':
         this.navCtrl.push(BitPaySettingsPage);
         break;
-      case 'shapeshift':
-        this.navCtrl.push(ShapeshiftPage);
-        break;
       case 'buycrypto':
         this.navCtrl.push(CryptoSettingsPage);
+        break;
+      case 'exchangecrypto':
+        this.navCtrl.push(ExchangeCryptoSettingsPage);
         break;
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);

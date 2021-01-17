@@ -1,0 +1,14 @@
+page-exchange-crypto-settings {
+  .bp-list {
+    ion-icon.item-img.icon,
+    ion-note ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        img {
+          width: auto;
+          height: 25px;
+        }
+      }
+    }
+  }
+}

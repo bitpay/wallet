@@ -15,10 +15,13 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
+import { BuyCryptoProvider } from '../../providers/buy-crypto/buy-crypto';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
+import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -33,6 +36,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
+import { ExchangeCryptoPage } from '../../pages/exchange-crypto/exchange-crypto';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -44,6 +48,7 @@ import { WalletBalanceModal } from './wallet-balance/wallet-balance';
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
 const TIMEOUT_FOR_REFRESHER = 1000;
+
 interface UpdateWalletOptsI {
   walletId: string;
   force?: boolean;
@@ -59,6 +64,8 @@ export class WalletDetailsPage {
   private onResumeSubscription: Subscription;
   private analyzeUtxosDone: boolean;
   private zone;
+  private blockexplorerUrl: string;
+  private blockexplorerUrlTestnet: string;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -81,6 +88,9 @@ export class WalletDetailsPage {
   public backgroundColor: string;
   private isCordova: boolean;
   public useLegacyQrCode: boolean;
+  public isDarkModeEnabled: boolean;
+  public showBuyCrypto: boolean;
+  public showExchangeCrypto: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
@@ -106,7 +116,10 @@ export class WalletDetailsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider,
     private themeProvider: ThemeProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private analyticsProvider: AnalyticsProvider,
+    private buyCryptoProvider: BuyCryptoProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -114,6 +127,15 @@ export class WalletDetailsPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
+    this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
+    this.showBuyCrypto = _.includes(
+      this.buyCryptoProvider.exchangeCoinsSupported,
+      this.wallet.coin
+    );
+    this.showExchangeCrypto = _.includes(
+      this.exchangeCryptoProvider.exchangeCoinsSupported,
+      this.wallet.coin
+    );
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {
@@ -137,6 +159,11 @@ export class WalletDetailsPage {
       .catch(err => {
         this.logger.error(err);
       });
+
+    let defaults = this.configProvider.getDefaults();
+    this.blockexplorerUrl = defaults.blockExplorerUrl[this.wallet.coin];
+    this.blockexplorerUrlTestnet =
+      defaults.blockExplorerUrlTestnet[this.wallet.coin];
   }
 
   subscribeEvents() {
@@ -629,21 +656,62 @@ export class WalletDetailsPage {
   }
 
   public goToReceivePage() {
-    const params = {
-      wallet: this.wallet
-    };
-    const receive = this.actionSheetProvider.createWalletReceive(params);
-    receive.present();
-    receive.onDidDismiss(data => {
-      if (data === 'goToBackup') this.goToBackup();
-      else if (data) this.showErrorInfoSheet(data);
-    });
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      const params = {
+        wallet: this.wallet
+      };
+      const receive = this.actionSheetProvider.createWalletReceive(params);
+      receive.present();
+      receive.onDidDismiss(data => {
+        if (data) this.showErrorInfoSheet(data);
+      });
+    }
   }
 
   public goToSendPage() {
     this.navCtrl.push(SendPage, {
       wallet: this.wallet
     });
+  }
+
+  public goToExchangeCryptoPage() {
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+      this.navCtrl.push(ExchangeCryptoPage, {
+        walletId: this.wallet.id
+      });
+    }
+  }
+
+  public goToBuyCryptoPage() {
+    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
+      const needsBackup = this.actionSheetProvider.createNeedsBackup();
+      needsBackup.present();
+      needsBackup.onDidDismiss(data => {
+        if (data === 'goToBackup') this.goToBackup();
+      });
+    } else {
+      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+      this.navCtrl.push(AmountPage, {
+        coin: this.wallet.coin,
+        fromBuyCrypto: true,
+        nextPage: 'CryptoOrderSummaryPage',
+        currency: this.configProvider.get().wallet.settings.alternativeIsoCode,
+        walletId: this.wallet.id
+      });
+    }
   }
 
   public showMoreOptions(): void {
@@ -724,5 +792,47 @@ export class WalletDetailsPage {
         this.wallet.cachedStatus.totalBalanceAlternative;
       return totalBalanceAlternative;
     }
+  }
+
+  public async viewOnBlockchain() {
+    if (
+      this.wallet.coin !== 'eth' &&
+      this.wallet.coin !== 'xrp' &&
+      !this.currencyProvider.isERCToken(this.wallet.coin)
+    )
+      return;
+    const address = await this.walletProvider.getAddress(this.wallet, false);
+    let url;
+    if (this.wallet.coin === 'xrp') {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}account/${address}`
+          : `https://${this.blockexplorerUrlTestnet}account/${address}`;
+    }
+    if (this.wallet.coin === 'eth') {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}address/${address}`
+          : `https://${this.blockexplorerUrlTestnet}address/${address}`;
+    }
+    if (this.currencyProvider.isERCToken(this.wallet.coin)) {
+      url =
+        this.wallet.credentials.network === 'livenet'
+          ? `https://${this.blockexplorerUrl}address/${address}#tokentxns`
+          : `https://${this.blockexplorerUrlTestnet}address/${address}#tokentxns`;
+    }
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('View History');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

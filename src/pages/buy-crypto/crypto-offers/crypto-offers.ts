@@ -361,7 +361,10 @@ export class CryptoOffersPage {
             if (data.message && _.isString(data.message)) {
               this.logger.error(data.message);
             }
-            const err = this.translate.instant(
+            if (data.error && _.isString(data.error)) {
+              this.logger.error(data.error);
+            }
+            let err = this.translate.instant(
               "Can't get rates at this moment. Please try again later"
             );
             this.showSimplexError(err);
@@ -526,9 +529,9 @@ export class CryptoOffersPage {
         if (err.errorCode) {
           switch (err.errorCode) {
             case 'validation.unsupportedCountry':
-              msg = this.translate.instant(
-                `Country not supported: ${this.selectedCountry.name}`
-              );
+              msg =
+                this.translate.instant('Country not supported: ') +
+                this.selectedCountry.name;
               break;
             default:
               msg = err.message;

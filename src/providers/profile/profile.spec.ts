@@ -681,8 +681,12 @@ describe('Profile Provider', () => {
       ];
 
       profileProvider.profile.dirty = true;
+      const opts = {
+        pushNotifications: { enabled: true },
+        bwsFor: 'id1'
+      };
 
-      spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
+      spyOn(configProvider, 'get').and.returnValue(opts);
       profileProvider.profile.disclaimerAccepted = true;
     });
     it('should get and bind profile with migrated credentials and keys', () => {
@@ -915,7 +919,12 @@ describe('Profile Provider', () => {
       spyOn<any>(profileProvider, 'askToEncryptKey').and.returnValue(
         Promise.resolve(true)
       );
-      spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
+      const opts = {
+        pushNotifications: { enabled: true },
+        bwsFor: 'id1'
+      };
+
+      spyOn(configProvider, 'get').and.returnValue(opts);
       spyOn(profileProvider.profile, 'hasWallet').and.returnValue(false);
     });
 
@@ -1211,7 +1220,8 @@ describe('Profile Provider', () => {
       spyOn(configProvider, 'get').and.returnValue({
         bwsFor: 'id1',
         desktopNotifications: { enabled: true },
-        emailNotifications: { email: 'test@test.com' }
+        emailNotifications: { email: 'test@test.com' },
+        pushNotifications: { enabled: false }
       });
 
       spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue({

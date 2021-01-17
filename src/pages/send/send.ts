@@ -26,7 +26,6 @@ import { JoinWalletPage } from '../add/join-wallet/join-wallet';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../integrations/invoice/select-invoice/select-invoice';
-import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { SimplexPage } from '../integrations/simplex/simplex';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { ScanPage } from '../scan/scan';
@@ -69,7 +68,6 @@ export class SendPage {
     ImportWalletPage,
     JoinWalletPage,
     PaperWalletPage,
-    ShapeshiftPage,
     SimplexPage,
     SelectInvoicePage,
     WalletDetailsPage

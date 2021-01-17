@@ -21,6 +21,7 @@ import {
   BwcErrorProvider,
   BwcProvider,
   CardPhasesProvider,
+  ChangellyProvider,
   Clipboard,
   ClipboardProvider,
   CoinbaseProvider,
@@ -36,6 +37,7 @@ import {
   ElectronProvider,
   EmailNotificationsProvider,
   ErrorsProvider,
+  ExchangeCryptoProvider,
   ExternalLinkProvider,
   FCMNG,
   FeedbackProvider,
@@ -56,6 +58,7 @@ import {
   Logger,
   LogsProvider,
   MerchantProvider,
+  NewFeatureData,
   OnGoingProcessProvider,
   PayproProvider,
   PersistenceProvider,
@@ -69,7 +72,6 @@ import {
   ReplaceParametersProvider,
   ScanProvider,
   ScreenOrientation,
-  ShapeshiftProvider,
   SimplexProvider,
   SocialSharing,
   SplashScreen,
@@ -108,6 +110,7 @@ import {
     BuyCryptoProvider,
     BwcProvider,
     BwcErrorProvider,
+    ChangellyProvider,
     ConfettiProvider,
     ConfigProvider,
     CoinbaseProvider,
@@ -121,6 +124,7 @@ import {
     DownloadProvider,
     DynamicLinksProvider,
     ErrorsProvider,
+    ExchangeCryptoProvider,
     ExternalLinkProvider,
     FeedbackProvider,
     FCMNG,
@@ -150,7 +154,6 @@ import {
     RateProvider,
     ReplaceParametersProvider,
     ReleaseProvider,
-    ShapeshiftProvider,
     SimplexProvider,
     StatusBar,
     SplashScreen,
@@ -175,7 +178,8 @@ import {
     DecimalPipe,
     PersistenceProvider,
     File,
-    CardPhasesProvider
+    CardPhasesProvider,
+    NewFeatureData
   ]
 })
 export class ProvidersModule {}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import env from '../../../environments';
 
 // Providers
@@ -20,6 +21,8 @@ import { CryptoCoinSelectorPage } from '../../../pages/buy-crypto/crypto-coin-se
 import { CryptoOffersPage } from '../../../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoPaymentMethodPage } from '../../../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { AmountPage } from '../../../pages/send/amount/amount';
+import { WalletDetailsPage } from '../../wallet-details/wallet-details';
+
 @Component({
   selector: 'page-crypto-order-summary',
   templateUrl: 'crypto-order-summary.html'
@@ -77,11 +80,21 @@ export class CryptoOrderSummaryPage {
         this.setWallet(this.wallets[0].credentials.walletId);
       } else {
         this.logger.debug('No wallets available to deposit funds.');
+        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+
         this.errorsProvider.showNoWalletError(
           this.coin ? this.coin.toUpperCase() : null,
           option => {
+            // Single seed case:
+            let data;
+            if (walletsGroups.length == 1 && walletsGroups[0][0]) {
+              data = {
+                keyId: walletsGroups[0][0].credentials.keyId
+              };
+            }
+
             if (option) {
-              this.navCtrl.push(SelectCurrencyPage);
+              this.navCtrl.push(SelectCurrencyPage, data);
             }
           }
         );
@@ -95,12 +108,18 @@ export class CryptoOrderSummaryPage {
       this.setDefaultPaymentMethod();
     }
 
-    this.selectedCountry = {
-      name: 'United States',
-      phonePrefix: '+1',
-      shortCode: 'US',
-      threeLetterCode: 'USA'
-    };
+    this.persistenceProvider.getLastCountryUsed().then(lastUsedCountry => {
+      if (lastUsedCountry && _.isObject(lastUsedCountry)) {
+        this.selectedCountry = lastUsedCountry;
+      } else {
+        this.selectedCountry = {
+          name: 'United States',
+          phonePrefix: '+1',
+          shortCode: 'US',
+          threeLetterCode: 'USA'
+        };
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -298,6 +317,11 @@ export class CryptoOrderSummaryPage {
   }
 
   public cancelOrder() {
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot().then(_ => {
+      if (!this.navParams.data.walletId) return;
+      this.navCtrl.push(WalletDetailsPage, {
+        walletId: this.wallet.credentials.walletId
+      });
+    });
   }
 }

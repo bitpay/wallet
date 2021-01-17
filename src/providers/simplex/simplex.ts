@@ -38,7 +38,7 @@ export class SimplexProvider {
     private rateProvider: RateProvider,
     private currencyProvider: CurrencyProvider
   ) {
-    this.logger.debug('SimplexProvider Provider initialized');
+    this.logger.debug('Simplex Provider initialized');
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.passthrough_uri =
       env.name == 'development' ? PASSTHROUGH_URI_DEV : PASSTHROUGH_URI_PROD;
@@ -93,7 +93,7 @@ export class SimplexProvider {
       'VND',
       'ZAR'
     ];
-    this.supportedCoins = ['btc', 'bch', 'eth', 'xrp', 'pax', 'busd'];
+    this.supportedCoins = ['btc', 'bch', 'eth', 'pax', 'busd'];
     this.fiatAmountLimits = {
       min: 50,
       max: 20000

@@ -16,6 +16,11 @@ page-select-currency {
       font-size: 18px;
       font-weight: 500;
     }
+    .item-note {
+      font-size: 12.5px;
+      padding-top: 4px;
+      color: color($colors, light-grey);
+    }
   }
   .list-subtitle {
     padding-left: 20px;

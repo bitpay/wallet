@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  Renderer,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 import * as _ from 'lodash';
@@ -45,7 +45,7 @@ export class GiftCardItem {
 
   constructor(
     private giftCardProvider: GiftCardProvider,
-    private renderer: Renderer
+    private renderer: Renderer2
   ) {}
 
   async ngAfterViewInit() {
@@ -75,7 +75,7 @@ export class GiftCardItem {
     const isGradient =
       this.cardConfig.logoBackgroundColor.indexOf('gradient') > -1;
     const cssProperty = isGradient ? 'background-image' : 'background-color';
-    this.renderer.setElementStyle(
+    this.renderer.setStyle(
       this.card.nativeElement,
       cssProperty,
       this.cardConfig.logoBackgroundColor

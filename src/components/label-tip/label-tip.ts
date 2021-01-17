@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { AlertType } from '../info-sheet/info-sheet-template';
 
 @Component({
@@ -39,9 +39,9 @@ export class LabelTip {
   @Input()
   header: string;
 
-  constructor(private element: ElementRef, private renderer: Renderer) {}
+  constructor(private element: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges() {
-    this.renderer.setElementClass(this.element.nativeElement, this.type, true);
+    this.renderer.addClass(this.element.nativeElement, this.type);
   }
 }

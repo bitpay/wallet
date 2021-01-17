@@ -1,7 +1,7 @@
 <ion-item [ngClass]="{'wallet-disabled': !wallet?.isComplete() || wallet?.needsBackup}">
   <coin-icon [coin]="wallet.coin" [network]="wallet.network" item-left></coin-icon>
   <ion-label>
-    <div class="main-label" [clamp]="18">{{ wallet?.name }}</div>
+    <div class="main-label">{{ wallet?.name }}</div>
     <div *ngIf="wallet?.credentials?.n > 1 || (!wallet?.credentials?.n && wallet?.n > 1) || !wallet?.isComplete() || (wallet?.isComplete() && wallet?.needsBackup)" class="secondary-label">
       <span *ngIf="wallet?.credentials?.n > 1">({{ wallet?.credentials?.m }}/{{ wallet?.credentials?.n }})</span>
       <span *ngIf="!wallet?.credentials?.n && wallet?.n > 1">({{ wallet?.m }}/{{ wallet?.n }})</span>

@@ -13,8 +13,8 @@ npm-debug.log*
 yarn.lock
 
 # Firebase
-/GoogleService-Info.plist
-/google-services.json
+GoogleService-Info.plist
+google-services.json
 
 # Desktop electron
 cache

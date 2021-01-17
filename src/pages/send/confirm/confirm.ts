@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import WalletConnect from '@walletconnect/client';
 import {
   App,
   Events,
@@ -42,6 +41,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { WalletConnectProvider } from '../../../providers/wallet-connect/wallet-connect';
 import {
   TransactionProposal,
   WalletProvider
@@ -94,6 +94,7 @@ export class ConfirmPage {
 
   public isOpenSelector: boolean;
   public fromWalletDetails: boolean;
+  public walletConnectRequestId: number;
 
   // Coinbase
   public fromCoinbase;
@@ -140,10 +141,12 @@ export class ConfirmPage {
     protected payproProvider: PayproProvider,
     private iabCardProvider: IABCardProvider,
     protected homeIntegrationsProvider: HomeIntegrationsProvider,
-    protected persistenceProvider: PersistenceProvider
+    protected persistenceProvider: PersistenceProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
+    this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -1416,22 +1419,13 @@ export class ConfirmPage {
         if (this.navParams.data.isEthMultisigInstantiation) {
           this.onGoingProcessProvider.set('creatingEthMultisigWallet');
           return this.instantiateMultisigContract(txp);
-        } else if (this.navParams.data.walletConnectRequestId) {
-          this.persistenceProvider.getWalletConnect().then(session => {
-            if (session) {
-              const walletConnector = new WalletConnect({ session });
-              walletConnector.approveRequest({
-                id: this.navParams.data.walletConnectRequestId,
-                result: txp.txid
-              });
-              this.analyticsProvider.logEvent(
-                'wallet_connect_action_completed',
-                {}
-              );
-            }
-            this.onGoingProcessProvider.clear();
-            return this.openFinishModal(false, { redir });
-          });
+        } else if (this.walletConnectRequestId) {
+          this.walletConnectProvider.approveRequest(
+            this.walletConnectRequestId,
+            txp.txid
+          );
+          this.onGoingProcessProvider.clear();
+          return this.openFinishModal(false, { redir });
         } else {
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });
@@ -1563,7 +1557,9 @@ export class ConfirmPage {
     );
     chooseFeeLevelAction.present();
     chooseFeeLevelAction.onDidDismiss(data => {
-      this.onFeeModalDismiss(data);
+      data && data.showMinWarning
+        ? this.showCustomFeeWarningSheet(data)
+        : this.onFeeModalDismiss(data);
     });
   }
 
@@ -1677,5 +1673,15 @@ export class ConfirmPage {
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+  }
+
+  private showCustomFeeWarningSheet(data) {
+    const warningSheet = this.actionSheetProvider.createInfoSheet(
+      'custom-fee-warning'
+    );
+    warningSheet.present();
+    warningSheet.onDidDismiss(option => {
+      option ? this.chooseFeeLevel() : this.onFeeModalDismiss(data);
+    });
   }
 }

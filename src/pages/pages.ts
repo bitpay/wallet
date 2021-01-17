@@ -14,8 +14,12 @@ import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offer
 import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
 import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
+import { ExchangeCheckoutPage } from '../pages/exchange-crypto/exchange-checkout/exchange-checkout';
+import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
+import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { NewFeaturePage } from '../pages/new-feature/new-feature';
 import { AddFundsPage } from '../pages/onboarding/add-funds/add-funds';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -34,19 +38,17 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 // Integrations: Invoice
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 
+// Integrations: Changelly
+import { ChangellyPage } from '../pages/integrations/changelly/changelly';
+import { ChangellyDetailsPage } from '../pages/integrations/changelly/changelly-details/changelly-details';
+import { ChangellyTermsPage } from '../pages/integrations/changelly/changelly-terms/changelly-terms';
+
 // Integrations: Coinbase
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { CoinbaseAccountPage } from '../pages/integrations/coinbase/coinbase-account/coinbase-account';
 import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { CoinbaseWithdrawPage } from '../pages/integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
-
-// Integrations: ShapeShift
-import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
-import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
-import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshift-details/shapeshift-details';
-import { ShapeshiftSettingsPage } from '../pages/integrations/shapeshift/shapeshift-settings/shapeshift-settings';
-import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
 // Integrations: Simplex
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
@@ -170,6 +172,9 @@ export const PAGES = [
   BitPayCardTopUpPage,
   BitPayIdPage,
   CardCatalogPage,
+  ChangellyDetailsPage,
+  ChangellyPage,
+  ChangellyTermsPage,
   CreateWalletPage,
   CreateNewWalletPage,
   CoinbaseAccountPage,
@@ -183,6 +188,9 @@ export const PAGES = [
   CryptoOffersPage,
   CryptoCoinSelectorPage,
   CryptoSettingsPage,
+  ExchangeCheckoutPage,
+  ExchangeCryptoPage,
+  ExchangeCryptoSettingsPage,
   SelectInputsPage,
   FeedbackCardPage,
   SharePage,
@@ -222,11 +230,6 @@ export const PAGES = [
   SelectCurrencyPage,
   SelectInvoicePage,
   CoinbaseSettingsPage,
-  ShapeshiftConfirmPage,
-  ShapeshiftDetailsPage,
-  ShapeshiftSettingsPage,
-  ShapeshiftPage,
-  ShapeshiftShiftPage,
   SimplexPage,
   SimplexDetailsPage,
   WyrePage,
@@ -267,6 +270,7 @@ export const PAGES = [
   CoinSelectorPage,
   SlideToAcceptPage,
   LocalThemePage,
+  NewFeaturePage,
   // Phases: card pages
   PhaseOneCardIntro
 ];
