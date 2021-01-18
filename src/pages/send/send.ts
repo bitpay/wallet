@@ -121,7 +121,7 @@ export class SendPage {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
-    this.onResumeSubscription.unsubscribe();
+    if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
   }
 
   private setDataFromClipboard() {
