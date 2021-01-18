@@ -580,7 +580,6 @@ export class IABCardProvider {
   }
 
   async balanceUpdate(event) {
-
     let cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
     );
