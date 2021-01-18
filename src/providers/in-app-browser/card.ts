@@ -341,7 +341,6 @@ export class IABCardProvider {
     return new Promise(async (resolve, reject) => {
       try {
         const { priv, pub } = await this.getAppIdentity();
-        this.logger.log(`PUB ${priv} ${pub}`);
 
         const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
         const dataToSign = `${url}${JSON.stringify(json)}`;
@@ -653,13 +652,27 @@ export class IABCardProvider {
   }
 
   async syncCardState(event) {
-    const { cards } = event.data.params;
+    let { cards } = event.data.params;
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
 
     if (!cards.length) {
       return;
+    }
+
+    // safety for cardBalance
+    if (!cards.some(c => c.cardBalance)) {
+      const currentCards = await this.persistenceProvider.getBitpayDebitCards(
+        Network[this.NETWORK]
+      );
+      cards = cards.map(c => {
+        const currentCard = currentCards.find(cc => cc.id === c.id);
+        return {
+          ...c,
+          cardBalance: currentCard && currentCard.cardBalance
+        };
+      });
     }
 
     await this.persistenceProvider.setBitpayDebitCards(

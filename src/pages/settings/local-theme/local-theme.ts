@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
 // providers
-import { IABCardProvider, Logger, PlatformProvider, ThemeProvider } from '../../../providers';
+import {
+  IABCardProvider,
+  Logger,
+  PlatformProvider,
+  ThemeProvider
+} from '../../../providers';
 
 @Component({
   selector: 'page-local-theme',

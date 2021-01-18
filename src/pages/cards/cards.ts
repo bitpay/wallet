@@ -89,18 +89,14 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('updateCards', async () => {
-      this.bitpayCardItems = await this.prepareDebitCards();
+    this.events.subscribe('updateCards', async (cards?) => {
+      this.bitpayCardItems = await this.prepareDebitCards(cards);
       this.changeRef.detectChanges();
     });
 
     this.events.subscribe('BitPayId/Disconnected', async () => {
       this.hasCards = false;
     });
-  }
-
-  async ngOnInit() {
-    await this.throttledFetchAllCards();
   }
 
   async ionViewWillEnter() {
@@ -110,9 +106,6 @@ export class CardsPage {
     if (this.cardExperimentEnabled) {
       this.waitList = false;
     }
-
-    this.initialized = this.IABReady = true;
-    this.changeRef.detectChanges();
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
@@ -126,7 +119,13 @@ export class CardsPage {
       this.platformProvider.isCordova;
 
     this.bitpayCardItems = await this.prepareDebitCards();
-    this.tabReady = true;
+
+    if (!this.tabReady) {
+      this.throttledFetchAllCards();
+    }
+
+    this.tabReady = this.initialized = this.IABReady = true;
+    this.changeRef.detectChanges();
   }
 
   public refresh(refresher): void {
@@ -137,16 +136,18 @@ export class CardsPage {
     this.throttledFetchAllCards();
   }
 
-  private async prepareDebitCards() {
+  private async prepareDebitCards(force?) {
     this.logger.log('prepare called');
     return new Promise(async res => {
       if (!this.platformProvider.isCordova) {
         return res();
       }
       // retrieve cards from storage
-      let cards = await this.persistenceProvider.getBitpayDebitCards(
-        Network[this.NETWORK]
-      );
+      let cards =
+        force ||
+        (await this.persistenceProvider.getBitpayDebitCards(
+          Network[this.NETWORK]
+        ));
 
       /*
         Adding this check as a safety - intermittently, when storage is getting updated with cards
@@ -192,7 +193,7 @@ export class CardsPage {
             c.status === 'active'
         );
 
-        this.waitList = false;
+        this.showBitpayCardGetStarted = this.waitList = false;
 
         this.showDisclaimer = !!cards
           .filter(c => !c.hide)
