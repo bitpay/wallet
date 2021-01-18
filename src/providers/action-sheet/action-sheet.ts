@@ -46,6 +46,7 @@ export type InfoSheetType =
   | 'payment-request'
   | 'payment-method-changed'
   | 'print-required'
+  | 'send-max-min-amount'
   | 'sensitive-info'
   | 'in-app-notification'
   | 'request-feature'

@@ -11,13 +11,15 @@ import { AmountPage } from '../../pages/send/amount/amount';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ChangellyProvider } from '../../providers/changelly/changelly';
-import { CurrencyProvider } from '../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
+import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-exchange-crypto',
@@ -32,6 +34,7 @@ export class ExchangeCryptoPage {
   public loading: boolean;
   public changellySwapTxs: any[];
   public useSendMax: boolean;
+  public sendMaxInfo;
 
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -44,6 +47,7 @@ export class ExchangeCryptoPage {
   public maxAmount: number;
   public fixedRateId: string;
   public rate: number;
+  public estimatedFee: number;
 
   private supportedCoins: string[];
 
@@ -60,6 +64,8 @@ export class ExchangeCryptoPage {
     private currencyProvider: CurrencyProvider,
     private txFormatProvider: TxFormatProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
+    private feeProvider: FeeProvider,
+    private walletProvider: WalletProvider,
     public themeProvider: ThemeProvider
   ) {
     this.allWallets = [];
@@ -274,7 +280,7 @@ export class ExchangeCryptoPage {
     };
     this.changellyProvider
       .getPairsParams(this.fromWalletSelected, data)
-      .then(data => {
+      .then(async data => {
         if (data.error) {
           const msg = 'Changelly getPairsParams Error: ' + data.error.message;
           this.showErrorAndBack(null, msg, true);
@@ -286,6 +292,24 @@ export class ExchangeCryptoPage {
         this.logger.debug(
           `Min amount: ${this.minAmount} - Max amount: ${this.maxAmount}`
         );
+
+        if (this.useSendMax && this.shouldUseSendMax()) {
+          this.onGoingProcessProvider.set('calculatingSendMax');
+          this.sendMaxInfo = await this.getSendMaxInfo();
+          if (this.sendMaxInfo) {
+            this.logger.debug('Send max info', this.sendMaxInfo);
+            this.amountFrom = this.txFormatProvider.satToUnit(
+              this.sendMaxInfo.amount,
+              this.fromWalletSelected.coin
+            );
+            this.estimatedFee = this.txFormatProvider.satToUnit(
+              this.sendMaxInfo.fee,
+              this.fromWalletSelected.coin
+            );
+          }
+        }
+        this.onGoingProcessProvider.clear();
+
         if (this.amountFrom > this.maxAmount) {
           const errorActionSheet = this.actionSheetProvider.createInfoSheet(
             'max-amount-allowed',
@@ -298,27 +322,62 @@ export class ExchangeCryptoPage {
           errorActionSheet.onDidDismiss(option => {
             if (option) {
               this.amountFrom = this.maxAmount;
+              this.useSendMax = null;
               this.updateReceivingAmount();
             }
           });
           return;
         }
         if (this.amountFrom < this.minAmount) {
-          const errorActionSheet = this.actionSheetProvider.createInfoSheet(
-            'min-amount-allowed',
-            {
-              minAmount: this.minAmount,
-              coin: this.fromWalletSelected.coin.toUpperCase()
+          if (this.useSendMax && this.shouldUseSendMax()) {
+            let msg;
+            if (this.sendMaxInfo) {
+              const warningMsg = this.exchangeCryptoProvider.verifyExcludedUtxos(
+                this.fromWalletSelected.coin,
+                this.sendMaxInfo
+              );
+              msg = !_.isEmpty(warningMsg) ? warningMsg : '';
             }
-          );
-          errorActionSheet.present();
-          errorActionSheet.onDidDismiss(option => {
-            if (option) {
-              this.amountFrom = this.minAmount;
-              this.updateReceivingAmount();
-            }
-          });
-          return;
+
+            const errorActionSheet = this.actionSheetProvider.createInfoSheet(
+              'send-max-min-amount',
+              {
+                amount: this.amountFrom,
+                fee: this.estimatedFee,
+                minAmount: this.minAmount,
+                coin: this.fromWalletSelected.coin.toUpperCase(),
+                msg
+              }
+            );
+            errorActionSheet.present();
+            errorActionSheet.onDidDismiss(() => {
+              this.useSendMax = null;
+              this.amountFrom = null;
+              this.estimatedFee = null;
+              this.sendMaxInfo = null;
+              this.rate = null;
+              this.fixedRateId = null;
+            });
+            return;
+          } else {
+            const errorActionSheet = this.actionSheetProvider.createInfoSheet(
+              'min-amount-allowed',
+              {
+                minAmount: this.minAmount,
+                coin: this.fromWalletSelected.coin.toUpperCase()
+              }
+            );
+            errorActionSheet.present();
+            errorActionSheet.onDidDismiss(option => {
+              if (option) {
+                this.amountFrom = this.minAmount;
+                this.useSendMax = null;
+                this.sendMaxInfo = null;
+                this.updateReceivingAmount();
+              }
+            });
+            return;
+          }
         }
         this.updateReceivingAmount();
       })
@@ -331,6 +390,11 @@ export class ExchangeCryptoPage {
           )
         );
       });
+  }
+
+  private shouldUseSendMax() {
+    const chain = this.currencyProvider.getAvailableChains();
+    return chain.includes(this.fromWalletSelected.coin);
   }
 
   private showErrorAndBack(title: string, msg, noExit?: boolean): void {
@@ -447,6 +511,45 @@ export class ExchangeCryptoPage {
       });
   }
 
+  private getChain(coin: Coin): string {
+    return this.currencyProvider.getChain(coin).toLowerCase();
+  }
+
+  private getSendMaxInfo(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const feeLevel =
+        this.fromWalletSelected.coin == 'btc' ||
+        this.getChain(this.fromWalletSelected.coin) == 'eth'
+          ? 'priority'
+          : this.feeProvider.getCoinCurrentFeeLevel(
+              this.fromWalletSelected.coin
+            );
+
+      this.feeProvider
+        .getFeeRate(
+          this.fromWalletSelected.coin,
+          this.fromWalletSelected.network,
+          feeLevel
+        )
+        .then(feeRate => {
+          this.walletProvider
+            .getSendMaxInfo(this.fromWalletSelected, {
+              feePerKb: feeRate,
+              excludeUnconfirmedUtxos: true, // Do not use unconfirmed UTXOs
+              returnInputs: true
+            })
+            .then(res => {
+              this.onGoingProcessProvider.clear();
+              return resolve(res);
+            })
+            .catch(err => {
+              this.onGoingProcessProvider.clear();
+              return reject(err);
+            });
+        });
+    });
+  }
+
   public canContinue(): boolean {
     return (
       this.toWalletSelected &&
@@ -468,7 +571,8 @@ export class ExchangeCryptoPage {
       coinFrom: this.fromWalletSelected.coin,
       coinTo: this.toWalletSelected.coin,
       rate: this.rate,
-      useSendMax: this.useSendMax
+      useSendMax: this.useSendMax,
+      sendMaxInfo: this.sendMaxInfo
     };
 
     this.navCtrl.push(ExchangeCheckoutPage, data);

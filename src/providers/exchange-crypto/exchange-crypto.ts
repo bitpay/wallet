@@ -5,8 +5,10 @@ import * as _ from 'lodash';
 // providers
 import { ChangellyProvider } from '../changelly/changelly';
 import { ConfigProvider } from '../config/config';
+import { CurrencyProvider } from '../currency/currency';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 
 @Injectable()
 export class ExchangeCryptoProvider {
@@ -16,8 +18,10 @@ export class ExchangeCryptoProvider {
   constructor(
     private changellyProvider: ChangellyProvider,
     private configProvider: ConfigProvider,
+    private currencyProvider: CurrencyProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private logger: Logger,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService
   ) {
     this.logger.debug('ExchangeCrypto Provider initialized');
@@ -49,5 +53,35 @@ export class ExchangeCryptoProvider {
     return {
       changellySwapTxs: _.values(changellySwapTxs)
     };
+  }
+
+  public verifyExcludedUtxos(coin, sendMaxInfo) {
+    const warningMsg = [];
+    if (sendMaxInfo.utxosBelowFee > 0) {
+      const amountBelowFeeStr =
+        sendMaxInfo.amountBelowFee /
+        this.currencyProvider.getPrecision(coin).unitToSatoshi;
+      const message = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
+        ),
+        { amountBelowFeeStr, coin: coin.toUpperCase() }
+      );
+      warningMsg.push(message);
+    }
+
+    if (sendMaxInfo.utxosAboveMaxSize > 0) {
+      const amountAboveMaxSizeStr =
+        sendMaxInfo.amountAboveMaxSize /
+        this.currencyProvider.getPrecision(coin).unitToSatoshi;
+      const message = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
+        ),
+        { amountAboveMaxSizeStr, coin: coin.toUpperCase() }
+      );
+      warningMsg.push(message);
+    }
+    return warningMsg.join('\n');
   }
 }
