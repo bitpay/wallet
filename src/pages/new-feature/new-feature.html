@@ -1,18 +1,18 @@
 <ion-slides #newFeatureSlides pager="{{featureList && featureList.length>1}}" class="new-feature-slides" *ngIf="featureList && featureList.length>0" (ionSlideWillChange)="slideChanged()">
   <ion-slide *ngFor="let newfeature of featureList">
-    <div class="page-title" translate>What's new</div>
-    <div *ngIf="newfeature.image" class="img-container">
-      <img src="{{newfeature.image}}" />
+    <div class="supperior-container">
+      <div class="page-title" translate>Recently added</div>
+      <div *ngIf="newfeature.image" class="img-container">
+        <img src="{{getImage(newfeature.image)}}" />
+      </div>
     </div>
     <div class="slide-info">
-      <div class="info">
-        <div class="title">{{newfeature.title}}</div>
-        <div class="text">{{newfeature.details}}</div>
-        <div *ngIf="newfeature.tryit">
+      <div class="title">{{newfeature.title}}</div>
+      <div class="text">{{newfeature.details}}</div>
+      <div *ngIf="newfeature.tryit">
         <button ion-button clear class="try-it-button" (click)="close(newfeature.tryit)">
           {{'Try it' | translate }}
         </button>
-      </div>    
       </div>
     </div>
   </ion-slide>

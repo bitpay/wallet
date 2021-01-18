@@ -1,82 +1,77 @@
 page-new-feature {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   .new-feature-slides {
     .slide-zoom {
       height: 100%;
     }
+    .swiper-pagination-bullet {
+      background: grey;
+      opacity: 0.2;
+    }
+    .swiper-pagination-bullet-active {
+      background: #4f6ef7;
+      opacity: 1;
+    }
     ion-slide {
-      background: linear-gradient(to bottom, #ffffff, #eceffd 90%);
-      .page-title {
-        text-align: center;
-        width: 100%;
-        font-weight: 500;
-        position: absolute;
-        color: color($colors, primary);
-        top: 6%;
-      }
-      .img-container {
-        padding-top: 9.5rem;
-        height: 65%;
-        @media (max-height: 650px) and (max-width: 768px) {
-          height: 60%;
-          padding-top: 8.5rem;
-        }
-        @media (max-height: 600px) and (max-width: 768px) {
-          height: 55%;
-          padding-top: 7.5rem;
-        }
-        @media (max-height: 550px) and (max-width: 768px) {
-          height: 50%;
-          padding-top: 6.5rem;
-        }
-      }
-
-      img {
-        box-shadow: 0 0px 50px 0 #eceffd;
-        width: 60%;
-        height: 100%;
-        justify-content: center;
-        align-self: center;
-        margin: 0 auto;
-      }
-
-      .gif-container {
-        padding-bottom: 9.5rem;
-        height: 65%;
-        padding-top: calc(env(safe-area-inset-top));
-        @media (max-height: 650px) and (max-width: 768px) {
-          height: 60%;
-          padding-bottom: 8.5rem;
-        }
-        @media (max-height: 600px) and (max-width: 768px) {
-          height: 55%;
-          padding-bottom: 7.5rem;
-        }
-        @media (max-height: 550px) and (max-width: 768px) {
-          height: 50%;
-          padding-bottom: 6.5rem;
-        }
-      }
-      .slide-info {
-        background: rgb(236, 239, 253);
-        height: 100%;
-        box-shadow: 0 -60px 50px 0 rgba(0, 0, 0, 0.05);
+      .supperior-container {
         position: relative;
-        .info {
-          padding: 4rem;
-          .title {
-            font-size: 18px;
-            align-items: center;
-            color: #060606;
-            font-weight: 500;
-            text-align: center;
+        height: 64%;
+        background: linear-gradient(180deg, #d8defd 0%, #f3f4f9 100%);
+        .page-title {
+          text-align: center;
+          width: 100%;
+          line-height: 30px;
+          font-size: 18px;
+          font-weight: 500;
+          color: #1a3b8b;
+          top: 2em;
+          padding: 2em 0 2em 0;
+        }
+        .img-container {
+          img {
+            display: block;
+            width: 80%;
+            bottom: 0;
+            margin: 0 auto;
+            transform: translateY(0);
+            @media screen and (min-width: 768px) {
+              transform: translateY(-20px);
+              max-width: 220px;
+            }
           }
-          .text {
-            font-size: 16px;
-            text-align: center;
-            color: rgb(46, 46, 46);
-            font-weight: 300;
-            padding-top: 15px;
-            line-height: 25px;
+        }
+      }
+
+      .slide-info {
+        background-color: #ffffff;
+        height: 100%;
+        box-shadow: 0 -3px 20px 0 rgba(0, 0, 0, 0.05);
+        position: relative;
+        .title {
+          text-align: center;
+          font-size: 18px;
+          color: #000000;
+          font-weight: 500;
+          line-height: 30px;
+          padding-top: 2em;
+          @media only screen and (min-width: 320px) and (max-width: 440px) and (max-height: 667px) {
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+        .text {
+          text-align: center;
+          font-size: 16px;
+          color: #6d7386;
+          line-height: 25px;
+          width: 67%;
+          position: absolute;
+          left: 15%;
+          padding-top: 0.1em;
+          @media only screen and (min-width: 320px) and (max-width: 440px) and (max-height: 667px) {
+            font-size: 12px;
+            line-height: 15px;
           }
         }
       }
@@ -89,7 +84,7 @@ page-new-feature {
     bottom: calc(1.5rem + env(safe-area-inset-bottom));
     bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
     right: 0;
-    color: color($colors, primary);
+    color: #4f6ef7;
     cursor: pointer;
     text-transform: uppercase;
   }

@@ -32,6 +32,8 @@
 8 - Exchange Crypto
 
 9 - Onboarding
+
+10 - New Features Slides
 */
 
 .dark {
@@ -1914,6 +1916,27 @@
     }
     .disclaimer-footer {
       background-color: $bg-color-dark-theme;
+    }
+  }
+
+  // 10 - New Features Slides
+  page-new-feature {
+    .new-feature-slides ion-slide {
+      .supperior-container {
+        background: linear-gradient(180deg, #606060 0%, #202124 100%);
+        .page-title {
+          color: #ffffff;
+        }
+      }
+      .slide-info {
+        background-color: #000000;
+        .title {
+          color: #ffffff;
+        }
+        .text {
+          color: #ffffff;
+        }
+      }
     }
   }
 }

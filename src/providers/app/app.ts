@@ -45,10 +45,15 @@ interface App {
   _extraCSS: string;
   _enabledExtensions;
 }*/
-
+export interface Version {
+  major: number;
+  minor: number;
+  patch: number;
+}
 @Injectable()
 export class AppProvider {
   public info: any = {};
+  public version: Version;
   public servicesInfo;
   public homeBalance: any;
   public isLockModalOpen: boolean;
@@ -91,6 +96,16 @@ export class AppProvider {
       this.info = JSON.parse(this.info);
       this.servicesInfo = JSON.parse(this.servicesInfo);
     }
+    this.version = this.formatVersionString();
+  }
+
+  private formatVersionString(): Version {
+    var formattedNumber = this.info.version.replace(/^v/i, '').split('.');
+    return {
+      major: +formattedNumber[0],
+      minor: +formattedNumber[1],
+      patch: +formattedNumber[2]
+    };
   }
 
   private async loadProviders() {

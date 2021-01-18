@@ -296,16 +296,9 @@ export class SettingsPage {
 
   public openWhatsNew(): void {
     if (this.featureList) {
-      const modal = this.modalCtrl.create(
-        NewFeaturePage,
-        {
-          featureList: this.featureList
-        },
-        {
-          showBackdrop: false,
-          enableBackdropDismiss: false
-        }
-      );
+      const modal = this.modalCtrl.create(NewFeaturePage, {
+        featureList: this.featureList
+      });
       modal.present();
     }
   }

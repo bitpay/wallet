@@ -149,12 +149,12 @@ export class HomePage {
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
       this.persistenceProvider.setNewFeatureSlidesFlag(
-        this.appProvider.info.version
+        this.appProvider.version.major
       );
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== this.appProvider.info.version) {
+      if (!value || value !== this.appProvider.version.major) {
         const feature_list = this.newFeatureData.get();
         if (feature_list && feature_list.features.length > 0) {
           const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -165,11 +165,12 @@ export class HomePage {
             if (data) {
               if (typeof data === 'boolean' && data === true) {
                 this.persistenceProvider.setNewFeatureSlidesFlag(
-                  this.appProvider.info.version
+                  this.appProvider.version.major
                 );
               } else if (typeof data !== 'boolean') {
                 this.events.publish('IncomingDataRedir', data);
               }
+              this.events.unsubscribe('Local/showNewFeaturesSlides');
             }
           });
         } else {
@@ -185,7 +186,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
-    this.showNewFeatureSlides();
+    this.events.publish('Local/showNewFeaturesSlides');
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
@@ -437,6 +438,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/UnsupportedAltCurrency', params => {
       this.showInfoSheet(params);
+    });
+    this.events.subscribe('Local/showNewFeaturesSlides', () => {
+      this.showNewFeatureSlides();
     });
   }
 
