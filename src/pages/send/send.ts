@@ -93,14 +93,6 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
-    this.events.subscribe('Desktop/onFocus', () => {
-      this.setDataFromClipboard();
-    });
-    this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setDataFromClipboard();
-    });
   }
 
   @ViewChild('transferTo')
@@ -111,6 +103,14 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.subscribe('Desktop/onFocus', () => {
+      this.setDataFromClipboard();
+    });
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setDataFromClipboard();
+    });
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
@@ -350,7 +350,7 @@ export class SendPage {
   }
 
   public pasteFromClipboard() {
-    this.search = this.validDataFromClipboard;
+    this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
