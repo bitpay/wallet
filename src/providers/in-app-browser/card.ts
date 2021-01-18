@@ -34,11 +34,9 @@ export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
   private NETWORK: string;
   private BITPAY_API_URL: string;
-  private fetchLock: boolean;
   public hasCards: boolean;
   private _isHidden = true;
   private _pausedState = false;
-  private _balanceUpdateLock: boolean;
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
@@ -357,7 +355,6 @@ export class IABCardProvider {
           .toPromise()
           .catch(err => {
             this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
-            this.fetchLock = false;
             return reject(err);
           });
 
@@ -371,14 +368,7 @@ export class IABCardProvider {
 
   getCards() {
     return new Promise(async resolve => {
-      if (this.fetchLock) {
-        this.logger.log(`CARD - Get cards already in progress`);
-        return resolve();
-      }
-
       this.logger.log(`CARD - start get cards from network - ${this.NETWORK}`);
-
-      this.fetchLock = true;
       this.events.publish('isFetchingDebitCards', true);
 
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
@@ -386,7 +376,6 @@ export class IABCardProvider {
       );
 
       if (!token) {
-        this.fetchLock = false;
         return resolve();
       }
 
@@ -465,7 +454,6 @@ export class IABCardProvider {
         });
 
         if (cards.length < 1) {
-          this.fetchLock = false;
           return resolve();
         }
 
@@ -491,7 +479,6 @@ export class IABCardProvider {
           this.logger.log(JSON.stringify(err));
         }
 
-        this.fetchLock = false;
         this.events.publish('isFetchingDebitCards', false);
         this.events.publish('updateCards', cards);
         this.logger.log('CARD - success retrieved cards');
@@ -503,14 +490,7 @@ export class IABCardProvider {
 
   getBalances() {
     return new Promise(async resolve => {
-      if (this.fetchLock) {
-        this.logger.log(`CARD - getBalance already in progress`);
-        return resolve();
-      }
-
       this.logger.log(`CARD - start getBalance from network - ${this.NETWORK}`);
-
-      this.fetchLock = true;
       this.events.publish('isFetchingDebitCards', true);
 
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
@@ -518,7 +498,6 @@ export class IABCardProvider {
       );
 
       if (!token) {
-        this.fetchLock = false;
         return resolve();
       }
 
@@ -579,7 +558,6 @@ export class IABCardProvider {
           this.logger.log(JSON.stringify(err));
         }
 
-        this.fetchLock = false;
         this.events.publish('updateCards', updatedCards);
         this.logger.log('CARD - success updated card balances');
 
@@ -602,12 +580,6 @@ export class IABCardProvider {
   }
 
   async balanceUpdate(event) {
-    if (this._balanceUpdateLock) {
-      this.logger.log('CARD - balance update already in progress');
-      return;
-    }
-
-    this._balanceUpdateLock = true;
 
     let cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
@@ -631,7 +603,6 @@ export class IABCardProvider {
 
     // adding this for possible race conditions
     if (cards.length < 1) {
-      this._balanceUpdateLock = false;
       return;
     }
 
@@ -640,8 +611,8 @@ export class IABCardProvider {
       user.email,
       cards
     );
-    this.events.publish('updateCards');
-    this._balanceUpdateLock = false;
+
+    this.events.publish('updateCards', cards);
   }
 
   async updateCards() {
