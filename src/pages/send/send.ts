@@ -111,10 +111,13 @@ export class SendPage {
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setDataFromClipboard();
     });
+  }
+
+  async ionViewDidEnter() {
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
-    this.setDataFromClipboard();
+    await this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
@@ -124,8 +127,8 @@ export class SendPage {
     if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
   }
 
-  private setDataFromClipboard() {
-    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private async setDataFromClipboard() {
+    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }
