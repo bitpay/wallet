@@ -125,6 +125,7 @@ export class RateProvider {
   }
 
   public isAltCurrencyAvailable(currency: string) {
+    if (_.isEmpty(this.alternatives)) return true;
     return this.alternatives[currency];
   }
 
