@@ -516,7 +516,10 @@ export class CopayApp {
     }
 
     // Exchange Crypto
-    if (this.appProvider.info._enabledExtensions.exchangecrypto) {
+    if (
+      this.appProvider.info._enabledExtensions.exchangecrypto &&
+      this.platformProvider.getOS().OSName != 'MacOS'
+    ) {
       this.exchangeCryptoProvider.register();
     }
 
