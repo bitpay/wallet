@@ -14,7 +14,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 // pages
 import { SendPage } from './send';
 
-fdescribe('SendPage', () => {
+describe('SendPage', () => {
   let fixture: ComponentFixture<SendPage>;
   let instance;
   let testBed: typeof TestBed;
