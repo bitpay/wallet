@@ -64,7 +64,7 @@ fdescribe('SendPage', () => {
         );
         const subscribeSpy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
-
+        instance.ionViewDidEnter();
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
         expect(subscribeSpy).toHaveBeenCalledWith(
           'Local/AddressScan',
