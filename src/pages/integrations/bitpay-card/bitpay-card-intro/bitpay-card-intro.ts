@@ -28,6 +28,7 @@ export class BitPayCardIntroPage {
   private scannerHasPermission: boolean;
   public accounts;
   public cardExperimentEnabled: boolean;
+  public ready: boolean;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -117,6 +118,7 @@ export class BitPayCardIntroPage {
   ionViewDidEnter() {
     this.iabCardProvider.updateWalletStatus();
     this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
+    this.ready = true;
   }
 
   private updateCapabilities(): void {

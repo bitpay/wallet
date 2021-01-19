@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
 // providers
-import { IABCardProvider, Logger, ThemeProvider } from '../../../providers';
+import {
+  IABCardProvider,
+  Logger,
+  PlatformProvider,
+  ThemeProvider
+} from '../../../providers';
 
 @Component({
   selector: 'page-local-theme',
@@ -14,7 +19,8 @@ export class LocalThemePage {
   constructor(
     private logger: Logger,
     private themeProvider: ThemeProvider,
-    private iabCardProvider: IABCardProvider
+    private iabCardProvider: IABCardProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.selectedTheme = this.themeProvider.getSelectedTheme();
     this.availableThemes = this.themeProvider.availableThemes;
@@ -29,6 +35,8 @@ export class LocalThemePage {
 
   public save(theme: string) {
     this.themeProvider.setActiveTheme(theme, this.autoDetectedTheme);
-    this.iabCardProvider.setTheme();
+    if (this.platformProvider.isCordova) {
+      this.iabCardProvider.setTheme();
+    }
   }
 }

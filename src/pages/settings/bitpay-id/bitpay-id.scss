@@ -9,6 +9,9 @@
   }
 
   &__container {
+    ion-label {
+      margin: 0;
+    }
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,7 +19,6 @@
     margin: 20px;
     box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.08);
     border-radius: 5px;
-    color: #434d5a;
   }
 
   &__disconnect-button {
