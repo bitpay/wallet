@@ -514,14 +514,17 @@ export class CopayApp {
       this.giftCardProvider.register();
 
     // Buy Crypto
-    if (this.appProvider.info._enabledExtensions.buycrypto) {
+    if (
+      this.appProvider.info._enabledExtensions.buycrypto &&
+      !this.platformProvider.isMacApp()
+    ) {
       this.buyCryptoProvider.register();
     }
 
     // Exchange Crypto
     if (
       this.appProvider.info._enabledExtensions.exchangecrypto &&
-      this.platformProvider.isMacApp()
+      !this.platformProvider.isMacApp()
     ) {
       this.exchangeCryptoProvider.register();
     }
@@ -533,7 +536,10 @@ export class CopayApp {
     }
 
     // Wallet Connect
-    if (this.appProvider.info._enabledExtensions.walletConnect) {
+    if (
+      this.appProvider.info._enabledExtensions.walletConnect &&
+      !this.platformProvider.isMacApp()
+    ) {
       this.walletConnectProvider.register();
       this.persistenceProvider.getWalletConnect().then(walletConnectData => {
         this.walletConnectProvider.retrieveWalletConnector(walletConnectData);
