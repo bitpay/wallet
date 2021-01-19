@@ -32,7 +32,7 @@ export class NewFeatureData {
       {
         majorversion: 12,
         app: ['bitpay'],
-        platform: ['*'],
+        platform: ['cordova'],
         dummy: this.translate.instant('dummy'),
         features: [
           {
