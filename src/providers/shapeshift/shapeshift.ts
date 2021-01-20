@@ -116,45 +116,45 @@ export class ShapeshiftProvider {
     );
   }
 
-  public saveShapeshift(data, opts, cb): void {
-    this.persistenceProvider
-      .getShapeshift(this.credentials.NETWORK)
-      .then(oldData => {
-        if (_.isString(oldData)) {
-          oldData = JSON.parse(oldData);
-        }
-        if (_.isString(data)) {
-          data = JSON.parse(data);
-        }
-        let inv = oldData ? oldData : {};
-        inv[data.address] = data;
-        if (opts && (opts.error || opts.status)) {
-          inv[data.address] = _.assign(inv[data.address], opts);
-        }
-        if (opts && opts.remove) {
-          delete inv[data.address];
-        }
+  // public saveShapeshift(data, opts, cb): void {
+  //   this.persistenceProvider
+  //     .getShapeshift(this.credentials.NETWORK)
+  //     .then(oldData => {
+  //       if (_.isString(oldData)) {
+  //         oldData = JSON.parse(oldData);
+  //       }
+  //       if (_.isString(data)) {
+  //         data = JSON.parse(data);
+  //       }
+  //       let inv = oldData ? oldData : {};
+  //       inv[data.address] = data;
+  //       if (opts && (opts.error || opts.status)) {
+  //         inv[data.address] = _.assign(inv[data.address], opts);
+  //       }
+  //       if (opts && opts.remove) {
+  //         delete inv[data.address];
+  //       }
 
-        inv = JSON.stringify(inv);
+  //       inv = JSON.stringify(inv);
 
-        this.persistenceProvider.setShapeshift(this.credentials.NETWORK, inv);
-        return cb(null);
-      })
-      .catch(err => {
-        return cb(err);
-      });
-  }
+  //       this.persistenceProvider.setShapeshift(this.credentials.NETWORK, inv);
+  //       return cb(null);
+  //     })
+  //     .catch(err => {
+  //       return cb(err);
+  //     });
+  // }
 
-  public getShapeshift(cb) {
-    this.persistenceProvider
-      .getShapeshift(this.credentials.NETWORK)
-      .then(ss => {
-        return cb(null, ss);
-      })
-      .catch(err => {
-        return cb(err, null);
-      });
-  }
+  // public getShapeshift(cb) {
+  //   this.persistenceProvider
+  //     .getShapeshift(this.credentials.NETWORK)
+  //     .then(ss => {
+  //       return cb(null, ss);
+  //     })
+  //     .catch(err => {
+  //       return cb(err, null);
+  //     });
+  // }
 
   public getRate(pair: string, cb) {
     this.httpNative.get(this.credentials.API_URL + '/rate/' + pair).subscribe(
@@ -242,32 +242,32 @@ export class ShapeshiftProvider {
       );
   }
 
-  private isActive(cb) {
-    if (_.isEmpty(this.credentials.CLIENT_ID)) return cb(false);
+  // private isActive(cb) {
+  //   if (_.isEmpty(this.credentials.CLIENT_ID)) return cb(false);
 
-    this.persistenceProvider
-      .getShapeshiftToken(this.credentials.NETWORK)
-      .then(accessToken => {
-        return cb(!!accessToken);
-      });
-  }
+  //   this.persistenceProvider
+  //     .getShapeshiftToken(this.credentials.NETWORK)
+  //     .then(accessToken => {
+  //       return cb(!!accessToken);
+  //     });
+  // }
 
-  public register(): void {
-    this.isActive(isActive => {
-      this.homeIntegrationsProvider.register({
-        name: 'shapeshift',
-        title: 'ShapeShift',
-        icon: 'assets/img/shapeshift/icon-shapeshift.svg',
-        logo: 'assets/img/shapeshift/logo-white-shapeshift.svg',
-        background:
-          'linear-gradient(to bottom,rgba(13,23,44,1) 0,rgba(16,29,58,1) 100%)',
-        page: 'ShapeshiftPage',
-        show: !!this.configProvider.get().showIntegration['shapeshift'],
-        linked: isActive,
-        type: 'exchange'
-      });
-    });
-  }
+  // public register(): void {
+  //   this.isActive(isActive => {
+  //     this.homeIntegrationsProvider.register({
+  //       name: 'shapeshift',
+  //       title: 'ShapeShift',
+  //       icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+  //       logo: 'assets/img/shapeshift/logo-white-shapeshift.svg',
+  //       background:
+  //         'linear-gradient(to bottom,rgba(13,23,44,1) 0,rgba(16,29,58,1) 100%)',
+  //       page: 'ShapeshiftPage',
+  //       show: !!this.configProvider.get().showIntegration['shapeshift'],
+  //       linked: isActive,
+  //       type: 'exchange'
+  //     });
+  //   });
+  // }
 
   public getOauthCodeUrl() {
     return (
@@ -283,17 +283,17 @@ export class ShapeshiftProvider {
     return this.credentials.HOST + '/signup';
   }
 
-  public getStoredToken(cb) {
-    this.persistenceProvider
-      .getShapeshiftToken(this.credentials.NETWORK)
-      .then(accessToken => {
-        if (!accessToken) return cb();
-        return cb(accessToken);
-      })
-      .catch(() => {
-        return cb();
-      });
-  }
+  // public getStoredToken(cb) {
+  //   this.persistenceProvider
+  //     .getShapeshiftToken(this.credentials.NETWORK)
+  //     .then(accessToken => {
+  //       if (!accessToken) return cb();
+  //       return cb(accessToken);
+  //     })
+  //     .catch(() => {
+  //       return cb();
+  //     });
+  // }
 
   public getToken(code, cb) {
     const url = this.credentials.HOST + '/oauth/token';
@@ -309,63 +309,63 @@ export class ShapeshiftProvider {
       Accept: 'application/json'
     };
 
-    this.httpNative.post(url, data, headers).subscribe(
-      data => {
-        this.logger.info('ShapeShift: GET Access Token: SUCCESS');
-        // Show pending task from the UI
-        this._afterTokenReceived(data, cb);
-      },
-      data => {
-        const error = this.parseError(data);
-        this.logger.error(
-          'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
-        );
-        return cb(error);
-      }
-    );
+    // this.httpNative.post(url, data, headers).subscribe(
+    //   data => {
+    //     this.logger.info('ShapeShift: GET Access Token: SUCCESS');
+    //     // Show pending task from the UI
+    //     this._afterTokenReceived(data, cb);
+    //   },
+    //   data => {
+    //     const error = this.parseError(data);
+    //     this.logger.error(
+    //       'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
+    //     );
+    //     return cb(error);
+    //   }
+    // );
   }
 
-  private _afterTokenReceived(data, cb) {
-    if (data && data.access_token) {
-      this.persistenceProvider.setShapeshiftToken(
-        this.credentials.NETWORK,
-        data.access_token
-      );
-      this.homeIntegrationsProvider.updateLink('shapeshift', data.access_token); // Name, Token
-      return cb(null, data.access_token);
-    } else {
-      return cb('Could not get the access token');
-    }
-  }
+  // private _afterTokenReceived(data, cb) {
+  //   if (data && data.access_token) {
+  //     this.persistenceProvider.setShapeshiftToken(
+  //       this.credentials.NETWORK,
+  //       data.access_token
+  //     );
+  //     this.homeIntegrationsProvider.updateLink('shapeshift', data.access_token); // Name, Token
+  //     return cb(null, data.access_token);
+  //   } else {
+  //     return cb('Could not get the access token');
+  //   }
+  // }
 
-  public init = _.throttle(cb => {
-    if (_.isEmpty(this.credentials.CLIENT_ID)) {
-      return cb('ShapeShift is Disabled. Missing credentials.');
-    }
-    this.logger.debug('Trying to initialize ShapeShift...');
+  // public init = _.throttle(cb => {
+  //   if (_.isEmpty(this.credentials.CLIENT_ID)) {
+  //     return cb('ShapeShift is Disabled. Missing credentials.');
+  //   }
+  //   this.logger.debug('Trying to initialize ShapeShift...');
 
-    this.getStoredToken(accessToken => {
-      if (!accessToken) {
-        this.logger.debug('ShapeShift not linked');
-        return cb();
-      }
-      this.logger.debug('ShapeShift already has Token.');
-      this.getAccessTokenDetails(accessToken, (err, data) => {
-        if (err) {
-          this.logout(accessToken);
-          return cb(err);
-        }
-        if (data.user.verificationStatus == 'NONE') {
-          return cb('unverified_account');
-        } else {
-          return cb(null, {
-            accessToken,
-            user: data.user
-          });
-        }
-      });
-    });
-  }, 10000);
+  //   this.getStoredToken(accessToken => {
+  //     if (!accessToken) {
+  //       this.logger.debug('ShapeShift not linked');
+  //       return cb();
+  //     }
+  //     this.logger.debug('ShapeShift already has Token.');
+  //     this.getAccessTokenDetails(accessToken, (err, data) => {
+  //       if (err) {
+  //         this.logout(accessToken);
+  //         return cb(err);
+  //       }
+  //       if (data.user.verificationStatus == 'NONE') {
+  //         return cb('unverified_account');
+  //       } else {
+  //         return cb(null, {
+  //           accessToken,
+  //           user: data.user
+  //         });
+  //       }
+  //     });
+  //   });
+  // }, 10000);
 
   private getAccessTokenDetails(token, cb) {
     if (!token) return cb('Invalid Token');

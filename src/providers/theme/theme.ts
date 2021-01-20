@@ -63,7 +63,7 @@ export class ThemeProvider {
         // Auto-detect theme
         this.useSystemTheme = true;
         this.getDetectedSystemTheme().then(theme => {
-          this.currentAppTheme = theme;
+          this.currentAppTheme = "dark";
           this.logger.debug('Set System App Theme to: ' + this.currentAppTheme);
           return resolve();
         });
