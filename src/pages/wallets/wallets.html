@@ -72,24 +72,24 @@
       </label-tip>
     </div>
 
-    <div *ngIf="showCoinbase && coinbaseLinked && coinbaseData">
+    <div *ngIf="showCoinbase && coinbaseLinked">
       <div class="section-header">
         <ion-icon class="item-img" item-start>
           <img src="assets/img/coinbase/coinbase-icon.png" width="20" />
         </ion-icon>
         <ion-label class="key-name">
-          <span *ngIf="!coinbaseData.user">...</span>
-          <span *ngIf="coinbaseData.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
+          <span *ngIf="!coinbaseData?.user">...</span>
+          <span *ngIf="coinbaseData?.user">{{ coinbaseData.user.name }}'s Coinbase Account</span>
         </ion-label>
         <div class="collapse">
-          <div class="collapse-btn" *ngIf="coinbaseData.accounts.length > 1" (click)="collapsedAccounts = !collapsedAccounts">
+          <div class="collapse-btn" *ngIf="coinbaseData?.accounts.length > 1" (click)="collapsedAccounts = !collapsedAccounts">
             <ion-icon *ngIf="!collapsedAccounts" name="ios-arrow-down"></ion-icon>
             <ion-icon *ngIf="collapsedAccounts" name="ios-arrow-up"></ion-icon>
           </div>
         </div>
       </div>
-      <div *ngIf="!coinbaseData.accounts" translate>Loading accounts...</div>
-      <div *ngFor="let ac of coinbaseData.accounts">
+      <div *ngIf="!coinbaseData?.accounts" translate>Loading accounts...</div>
+      <div *ngFor="let ac of coinbaseData?.accounts">
         <ion-list no-lines class="bp-list" [hidden]="collapsedAccounts">
           <button ion-item detail-none (click)="goToCoinbaseAccount(ac.id)">
             <coin-icon [coin]="ac.currency.code.toLowerCase()" [network]="livenet" item-left></coin-icon>
