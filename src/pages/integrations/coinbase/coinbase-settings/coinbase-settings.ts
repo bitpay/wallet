@@ -23,6 +23,7 @@ export class CoinbaseSettingsPage {
 
   public data: object = {};
   public linkedAccount: boolean;
+  public hasCredentials: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -38,6 +39,7 @@ export class CoinbaseSettingsPage {
   }
 
   ionViewWillEnter() {
+    this.hasCredentials = !!this.coinbaseProvider.oauthUrl;
     this.linkedAccount = this.coinbaseProvider.isLinked();
     if (this.linkedAccount) this.coinbaseProvider.getCurrentUser(this.data);
   }
