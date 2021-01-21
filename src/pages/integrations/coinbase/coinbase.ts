@@ -18,6 +18,7 @@ export class CoinbasePage {
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
   public linkedAccount: boolean;
+  public hasCredentials: boolean;
 
   private isElectron: boolean;
 
@@ -44,6 +45,8 @@ export class CoinbasePage {
   }
 
   ionViewWillEnter() {
+    this.hasCredentials = !!this.coinbaseProvider.oauthUrl;
+    if (!this.hasCredentials) return;
     if (this.navParams.data.code) {
       this.submitOauthCode(this.navParams.data.code);
     } else if (this.coinbaseProvider.isLinked()) {
