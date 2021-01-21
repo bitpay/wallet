@@ -3,19 +3,19 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 // Providers
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Events } from 'ionic-angular';
-import { AppProvider } from '../../providers/app/app';
-import { BitPayProvider } from '../../providers/bitpay/bitpay';
-import { GiftCardProvider } from '../../providers/gift-card/gift-card';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { IABCardProvider } from '../../providers/in-app-browser/card';
-import { Logger } from '../../providers/logger/logger';
+
 import {
-  Network,
-  PersistenceProvider
-} from '../../providers/persistence/persistence';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { TabProvider } from '../../providers/tab/tab';
-import { ThemeProvider } from '../../providers/theme/theme';
+  AppProvider,
+  BitPayProvider,
+  GiftCardProvider,
+  HomeIntegrationsProvider,
+  IABCardProvider,
+  Logger,
+  PersistenceProvider,
+  PlatformProvider,
+  TabProvider
+} from '../../providers';
+import { Network } from '../../providers/persistence/persistence';
 
 @Component({
   selector: 'page-cards',
@@ -47,9 +47,8 @@ export class CardsPage {
   public waitList = true;
   public IABReady: boolean;
   public hasCards: boolean;
-  private IABPingLock: boolean;
-  private IABPingInterval: any;
-
+  public tabReady: boolean;
+  private fetchLock: boolean;
   constructor(
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
@@ -61,8 +60,7 @@ export class CardsPage {
     private events: Events,
     private iabCardProvider: IABCardProvider,
     private changeRef: ChangeDetectorRef,
-    private logger: Logger,
-    private themeProvider: ThemeProvider
+    private logger: Logger
   ) {
     this.NETWORK = this.bitPayProvider.getEnvironment().network;
 
@@ -91,33 +89,24 @@ export class CardsPage {
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('updateCards', async () => {
-      this.bitpayCardItems = await this.prepareDebitCards();
+    this.events.subscribe('updateCards', async (cards?) => {
+      this.bitpayCardItems = await this.prepareDebitCards(cards);
       this.changeRef.detectChanges();
     });
 
-    this.events.subscribe('bitpayIdDisconnected', async () => {
+    this.events.subscribe('BitPayId/Disconnected', async () => {
       this.hasCards = false;
-    });
-
-    this.events.subscribe('IABReady', country => {
-      clearInterval(this.IABPingInterval);
-      this.logger.log(`cards - IAB ready ${country}`);
-
-      this.persistenceProvider.getCardExperimentFlag().then(status => {
-        if (country === 'US' || status === 'enabled') {
-          this.persistenceProvider.setCardExperimentFlag('enabled');
-          this.cardExperimentEnabled = true;
-          this.waitList = false;
-        }
-
-        this.initialized = this.IABReady = true;
-        this.changeRef.detectChanges();
-      });
     });
   }
 
   async ionViewWillEnter() {
+    this.cardExperimentEnabled =
+      (await this.persistenceProvider.getCardExperimentFlag()) === 'enabled';
+
+    if (this.cardExperimentEnabled) {
+      this.waitList = false;
+    }
+
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
     );
@@ -129,119 +118,103 @@ export class CardsPage {
       !(this.appProvider.info._enabledExtensions.debitcard == 'false') &&
       this.platformProvider.isCordova;
 
-    if (
-      !this.IABReady &&
-      !this.IABPingLock &&
-      this.platformProvider.isCordova
-    ) {
-      this.pingIAB();
+    this.bitpayCardItems = await this.prepareDebitCards();
+
+    if (!this.tabReady) {
+      this.throttledFetchAllCards();
     }
 
-    this.bitpayCardItems = await this.prepareDebitCards();
-    await this.fetchAllCards();
+    this.tabReady = this.initialized = this.IABReady = true;
+    this.changeRef.detectChanges();
   }
 
-  private pingIAB() {
-    this.IABPingLock = true;
-    let attempts = 0;
-    this.IABPingInterval = setInterval(() => {
-      if (attempts >= 10) {
-        clearInterval(this.IABPingInterval);
-        this.showBitPayCard = false;
-        return;
-      }
-      this.logger.log(`PINGING IAB attempt ${attempts}`);
-      this.iabCardProvider.sendMessage({
-        message: 'IABReadyPing',
-        payload: {
-          appVersion: this.appProvider.info.version,
-          theme: this.themeProvider.isDarkModeEnabled()
-        }
-      });
-      attempts++;
-    }, 5000);
+  public refresh(refresher): void {
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
+
+    this.throttledFetchAllCards();
   }
 
-  private async prepareDebitCards() {
-    return new Promise(res => {
+  private async prepareDebitCards(force?) {
+    this.logger.log('prepare called');
+    return new Promise(async res => {
       if (!this.platformProvider.isCordova) {
         return res();
       }
-
-      setTimeout(async () => {
-        // retrieve cards from storage
-        let cards = await this.persistenceProvider.getBitpayDebitCards(
+      // retrieve cards from storage
+      let cards =
+        force ||
+        (await this.persistenceProvider.getBitpayDebitCards(
           Network[this.NETWORK]
-        );
+        ));
 
-        this.hasCards = cards.length > 0;
+      /*
+        Adding this check as a safety - intermittently, when storage is getting updated with cards
+        a race condition can happen where cards returns an empty array.
+      */
+      if (this.bitpayCardItems && this.bitpayCardItems.length && !cards.length)
+        return res(this.bitpayCardItems);
 
-        if (!this.hasCards) {
-          return res();
-        }
+      this.hasCards = cards.length > 0;
 
-        // sort by provider
-        this.iabCardProvider.sortCards(
-          cards,
-          ['galileo', 'firstView'],
-          'provider'
-        );
+      if (!this.hasCards) {
+        return res();
+      }
 
-        const hasGalileo =
-          cards.findIndex(c => c.provider === 'galileo') !== -1;
+      // sort by provider
+      this.iabCardProvider.sortCards(
+        cards,
+        ['galileo', 'firstView'],
+        'provider'
+      );
 
-        // if all cards are hidden
-        if (cards.every(c => !!c.hide)) {
-          // if galileo not found then show order card else hide it
-          if (!hasGalileo) {
-            this.showBitPayCard = true;
-            setTimeout(() => {
-              this.showDisclaimer = true;
-            }, 300);
-          } else {
-            this.showBitPayCard = this.showDisclaimer = false;
-          }
+      const hasGalileo = cards.some(c => c.provider === 'galileo');
 
-          return res(cards);
-        }
-
-        // if galileo then show disclaimer and remove add card ability
-        if (hasGalileo) {
-          // only show cards that are active and if galileo only show virtual
-          cards = cards.filter(
-            c =>
-              (c.provider === 'firstView' || c.cardType === 'virtual') &&
-              c.status === 'active'
-          );
-
-          this.waitList = false;
-
-          if (cards.filter(c => !c.hide).find(c => c.provider === 'galileo')) {
-            setTimeout(() => {
-              this.showDisclaimer = true;
-            }, 300);
-          } else {
-            this.showDisclaimer = false;
-          }
-
-          await this.persistenceProvider.setReachedCardLimit(true);
-          this.events.publish('reachedCardLimit');
+      // if all cards are hidden
+      if (cards.every(c => !!c.hide)) {
+        // if galileo not found then show order card else hide it
+        if (!hasGalileo) {
+          this.showBitPayCard = true;
+          this.showDisclaimer = true;
         } else {
-          if (this.waitList) {
-            // no MC so hide disclaimer
-            this.showDisclaimer = false;
-          }
+          this.showBitPayCard = this.showDisclaimer = false;
         }
 
-        this.showBitPayCard = true;
-        res(cards);
-      }, 200);
+        return res(cards);
+      }
+
+      // if galileo then show disclaimer and remove add card ability
+      if (hasGalileo) {
+        // only show cards that are active and if galileo only show virtual
+        cards = cards.filter(
+          c =>
+            (c.provider === 'firstView' || c.cardType === 'virtual') &&
+            c.status === 'active'
+        );
+
+        this.showBitpayCardGetStarted = this.waitList = false;
+
+        this.showDisclaimer = !!cards
+          .filter(c => !c.hide)
+          .find(c => c.provider === 'galileo');
+        await this.persistenceProvider.setReachedCardLimit(true);
+        this.events.publish('reachedCardLimit');
+      } else {
+        if (this.waitList) {
+          // no MC so hide disclaimer
+          this.showDisclaimer = false;
+        }
+      }
+
+      this.showBitPayCard = true;
+      res(cards);
     });
   }
 
   private async fetchBitpayCardItems() {
     if (this.hasCards && this.platformProvider.isCordova) {
-      await this.iabCardProvider.getCards();
+      await this.iabCardProvider.getBalances();
     }
   }
 
@@ -257,6 +230,20 @@ export class CardsPage {
       this.fetchBitpayCardItems(),
       this.fetchActiveGiftCards()
     ]);
+  }
+
+  private async throttledFetchAllCards() {
+    if (this.fetchLock) {
+      this.logger.log('CARD - fetch already in progress');
+      return;
+    }
+    this.logger.log('CARD - fetch started');
+    this.fetchLock = true;
+    await this.fetchAllCards();
+    this.logger.log('CARD - fetch complete');
+    await new Promise(res => setTimeout(res, 30000));
+    this.fetchLock = false;
+    this.logger.log('CARD - fetchLock reset');
   }
 
   public enableCard() {

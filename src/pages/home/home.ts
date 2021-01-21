@@ -10,6 +10,7 @@ import {
   AppProvider,
   BwcProvider,
   DynamicLinksProvider,
+  EmailNotificationsProvider,
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
@@ -19,6 +20,7 @@ import {
   NewFeatureData,
   PersistenceProvider,
   PlatformProvider,
+  PopupProvider,
   ProfileProvider,
   ReleaseProvider
 } from '../../providers';
@@ -119,7 +121,9 @@ export class HomePage {
     private profileProvider: ProfileProvider,
     private actionSheetProvider: ActionSheetProvider,
     private dynamicLinkProvider: DynamicLinksProvider,
-    private newFeatureData: NewFeatureData
+    private newFeatureData: NewFeatureData,
+    private emailProvider: EmailNotificationsProvider,
+    private popupProvider: PopupProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -145,12 +149,12 @@ export class HomePage {
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
       this.persistenceProvider.setNewFeatureSlidesFlag(
-        this.appProvider.info.version
+        this.appProvider.version.major
       );
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== this.appProvider.info.version) {
+      if (!value || value !== this.appProvider.version.major) {
         const feature_list = this.newFeatureData.get();
         if (feature_list && feature_list.features.length > 0) {
           const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -161,11 +165,12 @@ export class HomePage {
             if (data) {
               if (typeof data === 'boolean' && data === true) {
                 this.persistenceProvider.setNewFeatureSlidesFlag(
-                  this.appProvider.info.version
+                  this.appProvider.version.major
                 );
               } else if (typeof data !== 'boolean') {
                 this.events.publish('IncomingDataRedir', data);
               }
+              this.events.unsubscribe('Local/showNewFeaturesSlides');
             }
           });
         } else {
@@ -181,7 +186,7 @@ export class HomePage {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
-    this.showNewFeatureSlides();
+    this.events.publish('Local/showNewFeaturesSlides');
     this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
@@ -213,6 +218,11 @@ export class HomePage {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
     this.giftCardProvider.getCountry();
+
+    // Required delay to improve performance loading
+    setTimeout(() => {
+      this.checkEmailLawCompliance();
+    }, 2000);
   }
 
   private async loadAds() {
@@ -401,10 +411,25 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
-    this.events.subscribe('Local/FetchCards', data => {
-      this.cardExperimentEnabled = data.cardExperimentEnabled;
-      if (!data.bpCards) this.addBitPayCard();
-    });
+    this.events.subscribe(
+      'CardAdvertisementUpdate',
+      ({ status, cards, cardExperimentEnabled }) => {
+        const hasGalileo = cards && cards.some(c => c.provider === 'galileo');
+        switch (status) {
+          case 'connected':
+            hasGalileo
+              ? this.removeAdvertisement('bitpay-card')
+              : this.addBitPayCard();
+            break;
+          case 'disconnected':
+            this.addBitPayCard();
+            break;
+          default:
+            this.cardExperimentEnabled = cardExperimentEnabled;
+            if (!hasGalileo) this.addBitPayCard();
+        }
+      }
+    );
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
       this.testingAdsEnabled = testAdsStatus;
     });
@@ -413,6 +438,9 @@ export class HomePage {
     });
     this.events.subscribe('Local/UnsupportedAltCurrency', params => {
       this.showInfoSheet(params);
+    });
+    this.events.subscribe('Local/showNewFeaturesSlides', () => {
+      this.showNewFeatureSlides();
     });
   }
 
@@ -842,6 +870,40 @@ export class HomePage {
         this.navCtrl.push(AltCurrencyPage);
       }
     });
+  }
+
+  private openEmailDisclaimer() {
+    const message = this.translate.instant(
+      'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
+    );
+    const title = this.translate.instant('Privacy Policy update');
+    const okText = this.translate.instant('Accept');
+    const cancelText = this.translate.instant('Disable notifications');
+    this.popupProvider
+      .ionicConfirm(title, message, okText, cancelText)
+      .then(ok => {
+        if (ok) {
+          // Accept new Privacy Policy
+          this.persistenceProvider.setEmailLawCompliance('accepted');
+        } else {
+          // Disable email notifications
+          this.persistenceProvider.setEmailLawCompliance('rejected');
+          this.emailProvider.updateEmail({
+            enabled: false,
+            email: 'null@email'
+          });
+        }
+      });
+  }
+
+  private checkEmailLawCompliance(): void {
+    setTimeout(() => {
+      if (this.emailProvider.getEmailIfEnabled()) {
+        this.persistenceProvider.getEmailLawCompliance().then(value => {
+          if (!value) this.openEmailDisclaimer();
+        });
+      }
+    }, 2000);
   }
 }
 

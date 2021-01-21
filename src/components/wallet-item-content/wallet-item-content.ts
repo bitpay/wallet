@@ -21,6 +21,13 @@ export class WalletItemContent {
         wallet.cachedStatus &&
         wallet.cachedStatus.totalBalanceStr &&
         wallet.cachedStatus.totalBalanceStr.replace(` ${currency}`, '');
+
+      // New created wallet does not have "lastkKnownBalance"
+      if (
+        totalBalanceStr == '0.00' &&
+        (lastKnownBalance == '0.00' || !lastKnownBalance)
+      )
+        return '0';
       return totalBalanceStr || lastKnownBalance;
     }
   }
@@ -33,6 +40,7 @@ export class WalletItemContent {
     } else {
       const totalBalanceAlternative =
         wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative;
+      if (totalBalanceAlternative == '0.00') return '0';
       return totalBalanceAlternative;
     }
   }
@@ -41,14 +49,6 @@ export class WalletItemContent {
     return (
       wallet.lastKnownBalance &&
       wallet.lastKnownBalance.replace(` ${currency}`, '')
-    );
-  }
-
-  hasZeroBalance(wallet, currency) {
-    return (
-      (wallet.cachedStatus &&
-        wallet.cachedStatus.totalBalanceAlternative === 0) ||
-      this.getLastKownBalance(wallet, currency) === '0.00'
     );
   }
 }

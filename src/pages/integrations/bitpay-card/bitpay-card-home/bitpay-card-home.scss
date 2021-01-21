@@ -73,9 +73,9 @@ bitpay-card-home {
 .card-spinner {
   width: 25px;
   height: 25px;
-  display: inline-block;
-  margin-right: 10px;
-  animation: spin 1500ms cubic-bezier(0.5, 0, 0.25, 1) infinite;
+  position: absolute;
+  left: 0;
+  animation: spin 1000ms cubic-bezier(0.5, 0, 0.25, 1) infinite;
   user-select: none;
   @keyframes spin {
     to {

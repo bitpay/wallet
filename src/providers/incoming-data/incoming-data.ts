@@ -1270,7 +1270,7 @@ export class IncomingDataProvider {
     if (payProDetails.requiredFeeRate) {
       requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
         ? payProDetails.requiredFeeRate
-        : Math.ceil(payProDetails.requiredFeeRate * 1024);
+        : Math.ceil(payProDetails.requiredFeeRate * 1000);
     }
 
     try {
