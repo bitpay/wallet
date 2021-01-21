@@ -67,7 +67,6 @@ export class GiftCardProvider extends InvoiceProvider {
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
-    this.setCredentials();
     this.listenForAuthChanges();
   }
 
@@ -241,10 +240,10 @@ export class GiftCardProvider extends InvoiceProvider {
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
     const purchasedBrands: any = await Promise.race([
       this.getPurchasedBrands(),
-      Observable.timer(1000)
+      Observable.timer(3000)
         .toPromise()
         .then(() => {
-          this.logger.debug('Purchased brands took longer than 1s to load');
+          this.logger.debug('Purchased brands took longer than 3s to load');
           return [];
         })
     ]);

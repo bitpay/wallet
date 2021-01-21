@@ -142,6 +142,7 @@ export class CoinbaseProvider {
 
   public getNativeCurrencyBalance(amount, currency): string {
     if (!this.coinbaseExchange) return null;
+    if (!this.coinbaseExchange.rates[currency]) return null; // Coin rate has been removed from Coinbase
     return (amount / this.coinbaseExchange.rates[currency]).toFixed(2) || '0';
   }
 

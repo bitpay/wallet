@@ -93,14 +93,6 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
-    this.events.subscribe('Desktop/onFocus', () => {
-      this.setDataFromClipboard();
-    });
-    this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setDataFromClipboard();
-    });
   }
 
   @ViewChild('transferTo')
@@ -111,21 +103,32 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.subscribe('Desktop/onFocus', () => {
+      this.setDataFromClipboard();
+    });
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setDataFromClipboard();
+    });
+  }
+
+  async ionViewDidEnter() {
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
-    this.setDataFromClipboard();
+    await this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
-    this.onResumeSubscription.unsubscribe();
+    if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
   }
 
-  private setDataFromClipboard() {
-    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private async setDataFromClipboard() {
+    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }
@@ -350,7 +353,7 @@ export class SendPage {
   }
 
   public pasteFromClipboard() {
-    this.search = this.validDataFromClipboard;
+    this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();

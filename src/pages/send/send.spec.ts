@@ -62,18 +62,17 @@ describe('SendPage', () => {
           instance.profileProvider,
           'getWallets'
         );
+        const subscribeSpy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
-
+        instance.ionViewDidEnter();
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
-      });
-    });
-    describe('ionViewWillLeave', () => {
-      it('should unsubscribe from events', () => {
-        const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ngOnDestroy();
-        expect(spy).toHaveBeenCalledWith(
+        expect(subscribeSpy).toHaveBeenCalledWith(
           'Local/AddressScan',
           instance.updateAddressHandler
+        );
+        expect(subscribeSpy).toHaveBeenCalledWith(
+          'SendPageRedir',
+          instance.SendPageRedirEventHandler
         );
       });
     });
@@ -942,6 +941,21 @@ describe('SendPage', () => {
       instance.search = 'Contact';
       await instance.processInput();
       expect(instance.invalidAddress).toBeFalsy();
+    });
+  });
+
+  describe('End of Lifecycle', () => {
+    it('should call unsubscribe events', () => {
+      const unsubscribeSpy = spyOn(instance.events, 'unsubscribe');
+      instance.ngOnDestroy();
+      expect(unsubscribeSpy).toHaveBeenCalledWith(
+        'Local/AddressScan',
+        instance.updateAddressHandler
+      );
+      expect(unsubscribeSpy).toHaveBeenCalledWith(
+        'SendPageRedir',
+        instance.SendPageRedirEventHandler
+      );
     });
   });
 
