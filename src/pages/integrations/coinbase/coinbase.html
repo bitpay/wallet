@@ -19,7 +19,7 @@
       </ion-toolbar>
     </expandable-header>
 
-    <div class="center-header">
+    <div *ngIf="hasCredentials" class="center-header">
       <div padding text-center>
         <div *ngIf="!showOauthForm" translate>Manage your Coinbase account, check balances, deposit and withdraw funds between wallets.</div>
         <div *ngIf="showOauthForm" translate>If you have trouble, contact Coinbase support for direct assistance.</div>
@@ -36,6 +36,9 @@
           <span translate>Coinbase Support</span> &rarr;
         </button>
       </div>
+    </div>
+    <div *ngIf="!hasCredentials" text-center translate>
+      Missing Credentials
     </div>
   </div>
 </ion-content>

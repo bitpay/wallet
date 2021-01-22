@@ -394,7 +394,7 @@ export class BitPayCardProvider {
                 return cb(res.error);
               } else {
                 this.logger.info('BitPay TopUp: SUCCESS');
-                return cb(null, opts.v2 ? res.data : res.data.invoice);
+                return cb(null, res.data);
               }
             },
             res => {

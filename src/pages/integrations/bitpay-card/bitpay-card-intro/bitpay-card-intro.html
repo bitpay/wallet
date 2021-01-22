@@ -61,7 +61,7 @@
   </div>
 </ion-content>
 
-  <ion-footer>
+  <ion-footer *ngIf="ready">
     <ion-toolbar>
       <button ion-button class="button-standard" (click)="orderBitPayCard()">
         {{'Order Now' | translate}}

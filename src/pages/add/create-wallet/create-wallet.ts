@@ -136,7 +136,6 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    if (this.coin === 'btc')
       this.createForm.controls['useNativeSegwit'].setValue(true);
     this.showKeyOnboarding = this.navParams.data.showKeyOnboarding;
 

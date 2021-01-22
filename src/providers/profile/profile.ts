@@ -403,7 +403,11 @@ export class ProfileProvider {
       this.logger.info('BWC Report:' + n);
     });
 
-    if (!this.configProvider.get().pushNotifications.enabled) {
+    // Desktop: uses this event 'notification'
+    // Mobile: uses 'bwsEvent'
+    //
+    // Disabled on mobile to avoid duplicate notifications
+    if (!this.platformProvider.isCordova) {
       wallet.on('notification', n => {
         if (this.platformProvider.isElectron) {
           this.showDesktopNotifications(n, wallet);

@@ -50,7 +50,6 @@ export class BitPayCardHome implements OnInit {
   public isFetching: boolean;
   public ready: boolean;
   public alreadyOnWaitList: boolean;
-
   @Input() showBitpayCardGetStarted: boolean;
   @Input() bitpayCardItems: any;
   @Input() cardExperimentEnabled: boolean;
@@ -73,19 +72,13 @@ export class BitPayCardHome implements OnInit {
     this.events.subscribe('reachedCardLimit', () => {
       this.disableAddCard = true;
     });
-    this.events.subscribe('isFetchingDebitCards', status => {
-      this.isFetching = status;
-    });
   }
 
   ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    setTimeout(() => {
-      this.ready = true;
-      this.disableAddCard =
-        this.bitpayCardItems &&
-        this.bitpayCardItems.find(c => c.provider === 'galileo');
-    }, 200);
+    this.disableAddCard =
+      this.bitpayCardItems &&
+      this.bitpayCardItems.find(c => c.provider === 'galileo');
   }
 
   public goToBitPayCardIntroPage() {
@@ -97,23 +90,25 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async goToCard(cardId) {
-    const token = await this.persistenceProvider.getBitPayIdPairingToken(
-      this.network
-    );
-    const email = this.bitpayCardItems[0].email;
-
-    const message = !token
-      ? `loadDashboard?${cardId}&${email}`
-      : `loadDashboard?${cardId}`;
-
-    this.iabCardProvider.show();
-    setTimeout(() => {
-      this.iabCardProvider.sendMessage(
-        {
-          message
-        },
-        () => {}
+    this.iabCardProvider.loadingWrapper(async () => {
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        this.network
       );
+      const email = this.bitpayCardItems[0].email;
+
+      const message = !token
+        ? `loadDashboard?${cardId}&${email}`
+        : `loadDashboard?${cardId}`;
+
+      this.iabCardProvider.show();
+      setTimeout(() => {
+        this.iabCardProvider.sendMessage(
+          {
+            message
+          },
+          () => {}
+        );
+      });
     });
   }
 }
