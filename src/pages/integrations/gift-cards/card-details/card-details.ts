@@ -8,7 +8,8 @@ import {
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Events, NavController, NavParams } from 'ionic-angular';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import {
   ActionSheetProvider,
   InfoSheetType
@@ -48,6 +49,7 @@ export class CardDetailsPage {
   public barcodeData: string;
   public barcodeFormat: string;
   ClaimCodeType = ClaimCodeType;
+  private updateGiftCardsSubject: Subject<void> = new Subject();
 
   @ViewChild(PrintableCardComponent)
   printableCard: PrintableCardComponent;
@@ -77,6 +79,14 @@ export class CardDetailsPage {
   ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
     this.navParams.get('showConfetti') && this.showConfetti();
+    this.updateGiftCardsSubject
+      .pipe(
+        debounceTime(1000),
+        switchMap(() =>
+          this.giftCardProvider.updatePendingGiftCards([this.card])
+        )
+      )
+      .subscribe(card => (this.card = card));
   }
 
   showConfetti() {
@@ -85,6 +95,7 @@ export class CardDetailsPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+    this.updateGiftCardsSubject.unsubscribe();
   }
 
   private bwsEventHandler: any = (_, type: string) => {
@@ -94,10 +105,7 @@ export class CardDetailsPage {
   };
 
   updateGiftCard() {
-    this.giftCardProvider
-      .updatePendingGiftCards([this.card])
-      .pipe(take(1))
-      .subscribe(card => (this.card = card));
+    this.updateGiftCardsSubject.next();
   }
 
   doRefresh(refresher) {
