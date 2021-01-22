@@ -217,23 +217,6 @@ export class JoinWalletPage {
     }
   }
 
-  private createAndBindMultisigWallet(pairedWallet, multisigEthInfo) {
-    this.profileProvider
-      .createMultisigEthWallet(pairedWallet, multisigEthInfo)
-      .then(multisigWallet => {
-        // store preferences for the paired eth wallet
-        this.walletProvider.updateRemotePreferences(pairedWallet);
-        this.navCtrl.popToRoot({ animate: false }).then(() => {
-          if (multisigWallet) {
-            setTimeout(() => {
-              this.navCtrl.push(WalletDetailsPage, {
-                walletId: multisigWallet.credentials.walletId
-              });
-            }, 1000);
-          }
-        });
-      });
-  }
 
   public async setOptsAndJoin() {
     
