@@ -1,5 +1,5 @@
 {
-  "packageName": "bitpay",
+  "packageName": "abcpay",
   "packageDescription": "Secure Bitcoin Wallet",
   "packageNameId": "com.bitpay.wallet",
   "packageNameIdDesktop": "com.bitpay.wallet.desktop",

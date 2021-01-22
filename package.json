@@ -1,8 +1,8 @@
 {
-  "name": "bitpay",
+  "name": "abcpay",
   "description": "Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "12.0.6",
+  "version": "12.0.2",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -256,7 +256,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme-ng": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "bitpay",
+        "SECOND_URL_SCHEME": "abcpay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",
