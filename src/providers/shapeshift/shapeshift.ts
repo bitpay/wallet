@@ -118,42 +118,42 @@ export class ShapeshiftProvider {
 
   public saveShapeshift(data, opts, cb): void {
     this.persistenceProvider
-      .getShapeshift(this.credentials.NETWORK)
-      .then(oldData => {
-        if (_.isString(oldData)) {
-          oldData = JSON.parse(oldData);
-        }
-        if (_.isString(data)) {
-          data = JSON.parse(data);
-        }
-        let inv = oldData ? oldData : {};
-        inv[data.address] = data;
-        if (opts && (opts.error || opts.status)) {
-          inv[data.address] = _.assign(inv[data.address], opts);
-        }
-        if (opts && opts.remove) {
-          delete inv[data.address];
-        }
+      // .getShapeshift(this.credentials.NETWORK)
+      // .then(oldData => {
+      //   if (_.isString(oldData)) {
+      //     oldData = JSON.parse(oldData);
+      //   }
+      //   if (_.isString(data)) {
+      //     data = JSON.parse(data);
+      //   }
+      //   let inv = oldData ? oldData : {};
+      //   inv[data.address] = data;
+      //   if (opts && (opts.error || opts.status)) {
+      //     inv[data.address] = _.assign(inv[data.address], opts);
+      //   }
+      //   if (opts && opts.remove) {
+      //     delete inv[data.address];
+      //   }
 
-        inv = JSON.stringify(inv);
+      //   inv = JSON.stringify(inv);
 
-        this.persistenceProvider.setShapeshift(this.credentials.NETWORK, inv);
-        return cb(null);
-      })
-      .catch(err => {
-        return cb(err);
-      });
+      //   this.persistenceProvider.setShapeshift(this.credentials.NETWORK, inv);
+      //   return cb(null);
+      // })
+      // .catch(err => {
+      //   return cb(err);
+      // });
   }
 
   public getShapeshift(cb) {
-    this.persistenceProvider
-      .getShapeshift(this.credentials.NETWORK)
-      .then(ss => {
-        return cb(null, ss);
-      })
-      .catch(err => {
-        return cb(err, null);
-      });
+    // this.persistenceProvider
+    //   .getShapeshift(this.credentials.NETWORK)
+    //   .then(ss => {
+    //     return cb(null, ss);
+    //   })
+    //   .catch(err => {
+    //     return cb(err, null);
+    //   });
   }
 
   public getRate(pair: string, cb) {
@@ -245,11 +245,11 @@ export class ShapeshiftProvider {
   private isActive(cb) {
     if (_.isEmpty(this.credentials.CLIENT_ID)) return cb(false);
 
-    this.persistenceProvider
-      .getShapeshiftToken(this.credentials.NETWORK)
-      .then(accessToken => {
-        return cb(!!accessToken);
-      });
+    // this.persistenceProvider
+    //   .getShapeshiftToken(this.credentials.NETWORK)
+    //   .then(accessToken => {
+    //     return cb(!!accessToken);
+    //   });
   }
 
   public register(): void {
@@ -284,15 +284,15 @@ export class ShapeshiftProvider {
   }
 
   public getStoredToken(cb) {
-    this.persistenceProvider
-      .getShapeshiftToken(this.credentials.NETWORK)
-      .then(accessToken => {
-        if (!accessToken) return cb();
-        return cb(accessToken);
-      })
-      .catch(() => {
-        return cb();
-      });
+    // this.persistenceProvider
+    //   .getShapeshiftToken(this.credentials.NETWORK)
+    //   .then(accessToken => {
+    //     if (!accessToken) return cb();
+    //     return cb(accessToken);
+    //   })
+    //   .catch(() => {
+    //     return cb();
+    //   });
   }
 
   public getToken(code, cb) {
@@ -327,10 +327,10 @@ export class ShapeshiftProvider {
 
   private _afterTokenReceived(data, cb) {
     if (data && data.access_token) {
-      this.persistenceProvider.setShapeshiftToken(
-        this.credentials.NETWORK,
-        data.access_token
-      );
+      // this.persistenceProvider.setShapeshiftToken(
+      //   this.credentials.NETWORK,
+      //   data.access_token
+      // );
       this.homeIntegrationsProvider.updateLink('shapeshift', data.access_token); // Name, Token
       return cb(null, data.access_token);
     } else {
@@ -445,7 +445,7 @@ export class ShapeshiftProvider {
 
   public logout(token) {
     this.revokeAccessToken(token);
-    this.persistenceProvider.removeShapeshiftToken(this.credentials.NETWORK);
+    // this.persistenceProvider.removeShapeshiftToken(this.credentials.NETWORK);
     this.homeIntegrationsProvider.updateLink('shapeshift', null); // Name, Token
   }
 

@@ -81,7 +81,7 @@ export class SelectCurrencyPage {
         : this.currencyProvider.getAvailableChains();
     this.availableTokens = this.currencyProvider.getAvailableTokens();
     for (const chain of this.availableChains) {
-      this.coinsSelected[chain] = true;
+      this.coinsSelected[chain] = false;
     }
     this.shouldShowKeyOnboarding();
     this.setTokens();
