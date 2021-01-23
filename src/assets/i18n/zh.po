@@ -35,7 +35,7 @@ msgstr ""
 msgid "3.9% of the amount + 0.30 USD per transactions"
 msgstr ""
 
-msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get AbcPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
@@ -107,8 +107,8 @@ msgstr "活动"
 msgid "Add"
 msgstr "添加"
 
-msgid "Add BitPay Account?"
-msgstr "添加 BitPay 帐户？"
+msgid "Add AbcPay Account?"
+msgstr "添加 AbcPay 帐户？"
 
 msgid "Add Encryption"
 msgstr ""
@@ -137,8 +137,8 @@ msgstr "添加资金"
 msgid "Add funds from an existing wallet."
 msgstr ""
 
-msgid "Add this BitPay account ({{email}})?"
-msgstr "添加该BitPay账户({{email}})?"
+msgid "Add this AbcPay account ({{email}})?"
+msgstr "添加该AbcPay账户({{email}})?"
 
 msgid "Add {coinName} address"
 msgstr ""
@@ -257,7 +257,7 @@ msgstr "确定拒绝这笔交易？"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "确定要删除这项交易吗？"
 
-msgid "Are you sure you would like to disconnect your BitPay ID?"
+msgid "Are you sure you would like to disconnect your AbcPay ID?"
 msgstr ""
 
 msgid "Are you sure?"
@@ -314,7 +314,7 @@ msgstr ""
 msgid "Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total."
 msgstr ""
 
-msgid "Because your encrypted password is not stored by BitPay, there is no way to reset it."
+msgid "Because your encrypted password is not stored by AbcPay, there is no way to reset it."
 msgstr ""
 
 msgid "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
@@ -332,22 +332,22 @@ msgstr "En dessous du montant minimal"
 msgid "Biometric"
 msgstr ""
 
-msgid "BitPay Account"
+msgid "AbcPay Account"
 msgstr ""
 
-msgid "BitPay ID"
+msgid "AbcPay ID"
 msgstr ""
 
-msgid "BitPay ID successfully connected."
+msgid "AbcPay ID successfully connected."
 msgstr ""
 
-msgid "BitPay ID successfully disconnected."
+msgid "AbcPay ID successfully disconnected."
 msgstr ""
 
-msgid "BitPay does not receive and does not control miner fees."
+msgid "AbcPay does not receive and does not control miner fees."
 msgstr ""
 
-msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
+msgid "AbcPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
 msgstr ""
 
 msgid "Bitcoin Address"
@@ -368,7 +368,7 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "比特币交易包括在网络上被矿工所收取的费用。"
 
-msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.AbcPay.com/."
 msgstr ""
 
 msgid "Broadcast Payment"
@@ -413,11 +413,11 @@ msgstr "正在发送 比特币..."
 msgid "Buying Gift Card..."
 msgstr "正在购买礼品卡..."
 
-msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
+msgid "By giving my email address, I give explicit consent to AbcPay to use it to contact me about payment issues."
 msgstr ""
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "通过提供您的电子邮件地址，您已明确同意BitPay使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
+msgid "By providing your email address, you give explicit consent to AbcPay to use your email address to send you email notifications about payments."
+msgstr "通过提供您的电子邮件地址，您已明确同意AbcPay使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
 
 msgid "CLOSE"
 msgstr ""
@@ -587,7 +587,7 @@ msgstr ""
 msgid "Connect Coinbase Account"
 msgstr ""
 
-msgid "Connect Your BitPay ID"
+msgid "Connect Your AbcPay ID"
 msgstr ""
 
 msgid "Connect to ShapeShift Account"
@@ -596,7 +596,7 @@ msgstr "连接到形状转换帐户"
 msgid "Connect with Coinbase"
 msgstr ""
 
-msgid "Connect your BitPay ID"
+msgid "Connect your AbcPay ID"
 msgstr ""
 
 msgid "Connect your Coinbase!"
@@ -605,7 +605,7 @@ msgstr ""
 msgid "Connected with"
 msgstr ""
 
-msgid "Connecting BitPay ID..."
+msgid "Connecting AbcPay ID..."
 msgstr ""
 
 msgid "Connecting to Coinbase..."
@@ -725,7 +725,7 @@ msgstr "无法删除支付提议"
 msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
 
-msgid "Could not get claim code. Please contact BitPay support."
+msgid "Could not get claim code. Please contact AbcPay support."
 msgstr "无法获取索赔代码。请联系比特卡支持。"
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -914,7 +914,7 @@ msgstr ""
 msgid "Designed for people who want to live life on crypto."
 msgstr ""
 
-msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
+msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the AbcPay App."
 msgstr ""
 
 msgid "Destination Tag"
@@ -935,7 +935,7 @@ msgstr "已禁用"
 msgid "Disconnect"
 msgstr ""
 
-msgid "Disconnect BitPay ID"
+msgid "Disconnect AbcPay ID"
 msgstr ""
 
 msgid "Discount"
@@ -1040,8 +1040,8 @@ msgstr ""
 msgid "Enter Amount"
 msgstr "Inserisci importo"
 
-msgid "Enter Two Factor for your BitPay account"
-msgstr "为您的BitPay帐户输入双重认证码"
+msgid "Enter Two Factor for your AbcPay account"
+msgstr "为您的AbcPay帐户输入双重认证码"
 
 msgid "Enter a destination tag"
 msgstr ""
@@ -1115,8 +1115,8 @@ msgstr ""
 msgid "Error getting fee rate"
 msgstr "Error getting fee rate"
 
-msgid "Error pairing BitPay Account"
-msgstr "错误配对 BitPay 帐户"
+msgid "Error pairing AbcPay Account"
+msgstr "错误配对 AbcPay 帐户"
 
 msgid "Error scanning funds:"
 msgstr "错误扫描资金︰"
@@ -1202,11 +1202,11 @@ msgstr "无法提交反馈。请稍后再试。"
 msgid "Feedback!"
 msgstr "反馈！"
 
-msgid "Fetching BitPay Account..."
-msgstr "正在获取 BitPay 帐户..."
+msgid "Fetching AbcPay Account..."
+msgstr "正在获取 AbcPay 帐户..."
 
-msgid "Fetching BitPay Cards..."
-msgstr "BitPay卡获取中..."
+msgid "Fetching AbcPay Cards..."
+msgstr "AbcPay卡获取中..."
 
 msgid "Fetching payment information..."
 msgstr "正在获取支付信息..."
@@ -1223,10 +1223,10 @@ msgstr ""
 msgid "Flexibility"
 msgstr ""
 
-msgid "For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
+msgid "For AbcPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
 msgstr ""
 
-msgid "For best security this should not match your BitPay ID password."
+msgid "For best security this should not match your AbcPay ID password."
 msgstr ""
 
 msgid "Forgot your password?"
@@ -1238,8 +1238,8 @@ msgstr ""
 msgid "From"
 msgstr "来自"
 
-msgid "From BitPay account"
-msgstr "从 BitPay 帐户"
+msgid "From AbcPay account"
+msgstr "从 AbcPay 帐户"
 
 msgid "Fund it. Spend it."
 msgstr ""
@@ -1295,8 +1295,8 @@ msgstr "马上体验"
 msgid "Get help"
 msgstr "获得帮助"
 
-msgid "Get news and updates from BitPay"
-msgstr "从 BitPay 获取新闻和更新"
+msgid "Get news and updates from AbcPay"
+msgstr "从 AbcPay 获取新闻和更新"
 
 msgid "Get on Chrome"
 msgstr ""
@@ -1307,7 +1307,7 @@ msgstr "马上体验"
 msgid "Get started by adding your first one."
 msgstr "通过添加您的第一个开始。"
 
-msgid "Get the BitPay Card"
+msgid "Get the AbcPay Card"
 msgstr ""
 
 msgid "Getting fee levels..."
@@ -1358,7 +1358,7 @@ msgstr ""
 msgid "Help & support"
 msgstr "帮助和支持"
 
-msgid "Help BitPay improve"
+msgid "Help AbcPay improve"
 msgstr ""
 
 msgid "Help and support information is available at the website"
@@ -1397,7 +1397,7 @@ msgstr ""
 msgid "How to recover your funds if you lose this device?"
 msgstr ""
 
-msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
+msgid "However, unconfirmed funds are not allowed for spending with merchants, AbcPay Card loads, or AbcPay in-app gift card purchases."
 msgstr ""
 
 msgid "I Understand"
@@ -1436,10 +1436,10 @@ msgstr ""
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "如果启用，钱包将尝试支出未经验证的资金。"
 
-msgid "If enabled, your gift card purchases will be associated with your BitPay ID, allowing you to keep track of your gift card purchases even if this device is lost."
+msgid "If enabled, your gift card purchases will be associated with your AbcPay ID, allowing you to keep track of your gift card purchases even if this device is lost."
 msgstr ""
 
-msgid "If you delete the BitPay app or lose this device, you’ll need a recovery key to regain access to your funds."
+msgid "If you delete the AbcPay app or lose this device, you’ll need a recovery key to regain access to your funds."
 msgstr ""
 
 msgid "If you do not have the recovery phrase, you will not be able to regain access to your wallet."
@@ -2054,7 +2054,7 @@ msgstr "PIN 码"
 msgid "PRIMARY"
 msgstr ""
 
-msgid "Pair My BitPay Card"
+msgid "Pair My AbcPay Card"
 msgstr ""
 
 msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
@@ -2921,7 +2921,7 @@ msgstr "目标钱包没有备份。请在继续之前完成备份。"
 msgid "The ethereum paired wallet you choose does not belong to this contract"
 msgstr ""
 
-msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the BitPay App and spend in minutes."
+msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the AbcPay App and spend in minutes."
 msgstr ""
 
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate."
@@ -3113,8 +3113,8 @@ msgstr ""
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr ""
 
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "到{{reason}}首先你要添加你的BitPay账户—{{email}}"
+msgid "To {{reason}} you must first add your AbcPay account - {{email}}"
+msgstr "到{{reason}}首先你要添加你的AbcPay账户—{{email}}"
 
 msgid "Top up in progress..."
 msgstr "在进展充值..."
@@ -3188,13 +3188,13 @@ msgstr "不支持无率交易"
 msgid "Transfer from"
 msgstr ""
 
-msgid "Transfer from BitPay"
+msgid "Transfer from AbcPay"
 msgstr ""
 
 msgid "Transfer to"
 msgstr ""
 
-msgid "Transfer to BitPay"
+msgid "Transfer to AbcPay"
 msgstr ""
 
 msgid "Transfer to Multiple Recipients"
@@ -3215,7 +3215,7 @@ msgstr "在 {{expires}} 中再试一次"
 msgid "Try entering any passwords you may have set in the past"
 msgstr ""
 
-msgid "Turn crypto into dollars using our BitPay Card."
+msgid "Turn crypto into dollars using our AbcPay Card."
 msgstr ""
 
 msgid "Two things you should know"
@@ -3251,10 +3251,10 @@ msgstr "解除关联的卡将会从该设备中移除它。"
 msgid "Unlock App"
 msgstr ""
 
-msgid "Unlock BitPay faster by setting up facial recognition."
+msgid "Unlock AbcPay faster by setting up facial recognition."
 msgstr ""
 
-msgid "Unlock BitPay faster by setting up fingerprint authentication."
+msgid "Unlock AbcPay faster by setting up fingerprint authentication."
 msgstr ""
 
 msgid "Unsent transactions"
@@ -3494,7 +3494,7 @@ msgstr ""
 msgid "We were unable to parse your payment. Please try again or contact your wallet provider"
 msgstr ""
 
-msgid "We'll let you know as soon as the BitPay Card"
+msgid "We'll let you know as soon as the AbcPay Card"
 msgstr ""
 
 msgid "We'll notify you as soon as the card is ready."
@@ -3509,7 +3509,7 @@ msgstr ""
 msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
 msgstr ""
 
-msgid "Websites and exchanges get hacked. BitPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange."
+msgid "Websites and exchanges get hacked. AbcPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange."
 msgstr ""
 
 msgid "What could have happened?"
@@ -3677,16 +3677,16 @@ msgstr ""
 msgid "You're on the list!"
 msgstr ""
 
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
+msgid "Your AbcPay Card is ready. Add funds to your card to start using it at stores."
 msgstr ""
 
 msgid "Your ETH linked wallet funds are locked by pending spend proposals"
 msgstr ""
 
-msgid "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. BitPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
+msgid "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. AbcPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
 msgstr ""
 
-msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. AbcPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
 
 msgid "Your fee is lower than recommended."
@@ -3734,8 +3734,8 @@ msgstr "[隐藏余额]"
 msgid "[Scanning Funds]"
 msgstr "[正在掃描資金]"
 
-msgid "add your BitPay Visa card(s)"
-msgstr "添加您的 BitPay 签证卡"
+msgid "add your AbcPay Visa card(s)"
+msgstr "添加您的 AbcPay 签证卡"
 
 msgid "me"
 msgstr "我"

@@ -74,9 +74,9 @@ export class BitPaySettingsPage {
   }
 
   public unlinkCard(card) {
-    let title = 'Unlink BitPay Card?';
+    let title = 'Unlink AbcPay Card?';
     let msg =
-      'Are you sure you would like to remove your BitPay Card (' +
+      'Are you sure you would like to remove your AbcPay Card (' +
       card.lastFourDigits +
       ') from this device?';
     this.popupProvider.ionicConfirm(title, msg).then(res => {
@@ -93,9 +93,9 @@ export class BitPaySettingsPage {
   }
 
   public unlinkAccount(card) {
-    let title = 'Unlink BitPay Account?';
+    let title = 'Unlink AbcPay Account?';
     let msg =
-      'Are you sure you would like to remove your BitPay Account (' +
+      'Are you sure you would like to remove your AbcPay Account (' +
       card.email +
       ') and all associated cards from this device?';
     this.popupProvider.ionicConfirm(title, msg).then(res => {
@@ -147,7 +147,7 @@ export class BitPaySettingsPage {
     });
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: this.translate.instant('From BitPay account'),
+      title: this.translate.instant('From AbcPay account'),
       buttons: options
     });
     actionSheet.present();

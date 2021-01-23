@@ -58,7 +58,7 @@ export class BitPayCardIntroPage {
         otp: this.navParams.data.otp
       };
       let pairingReason = this.translate.instant(
-        'add your BitPay Visa card(s)'
+        'add your AbcPay Visa card(s)'
       );
       this.bitPayAccountProvider.pair(
         pairData,
@@ -66,7 +66,7 @@ export class BitPayCardIntroPage {
         (err: string, paired: boolean, apiContext) => {
           if (err) {
             this.popupProvider.ionicAlert(
-              this.translate.instant('Error pairing BitPay Account'),
+              this.translate.instant('Error pairing AbcPay Account'),
               err
             );
             return;

@@ -145,7 +145,7 @@ export class CoinbaseAccountPage {
       this.coinbase
         .getAddress(
           this.id,
-          this.translate.instant('Transfer from BitPay') +
+          this.translate.instant('Transfer from AbcPay') +
             ': ' +
             fromWallet.name
         )
@@ -210,7 +210,7 @@ export class CoinbaseAccountPage {
         coin,
         nextPage: 'CoinbaseWithdrawPage',
         description:
-          this.translate.instant('Transfer to BitPay') + ': ' + toWallet.name
+          this.translate.instant('Transfer to AbcPay') + ': ' + toWallet.name
       });
     });
   }
