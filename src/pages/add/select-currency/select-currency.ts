@@ -83,6 +83,7 @@ export class SelectCurrencyPage {
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = false;
     }
+    this.coinsSelected.bch = true;
     this.shouldShowKeyOnboarding();
     this.setTokens();
   }
