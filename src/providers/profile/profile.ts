@@ -127,11 +127,11 @@ export class ProfileProvider {
     wallet.email = config.emailFor && config.emailFor[wallet.id];
 
     // for token wallets
-    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
-      wallet.coin,
-      wallet.id,
-      wallet.n
-    );
+    // wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+    //   wallet.coin,
+    //   wallet.id,
+    //   wallet.n
+    // );
 
     if (wallet.linkedEthWallet) {
       this.trySetName(wallet);

@@ -1164,7 +1164,7 @@ export class IncomingDataProvider {
         option => option.currency.toLowerCase() === coin
       );
       const instructions = payProDetails.instructions[0];
-      const { outputs, toAddress, data } = instructions;
+      const { toAddress, data } = instructions;
  
       const stateParams = {
         amount: estimatedAmount,

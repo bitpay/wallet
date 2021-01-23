@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { availableCoins, CoinOpts } from './abc-coin';
-import { Token, TokenOpts } from './token';
+import { Token } from './token';
 
 export enum Coin {
   ABC = 'abc',
@@ -52,12 +52,12 @@ export class CurrencyProvider {
     return !!this.coinOpts[coin].properties.isERCToken;
   }
 
-  getLinkedEthWallet(coin: Coin, walletId: string, m: number): string {
-    if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
-      return null;
-    if (coin === 'eth' && m === 1) return null;
-    return walletId.replace(/-0x.*$/, '');
-  }
+  // getLinkedEthWallet(coin: Coin, walletId: string, m: number): string {
+  //   if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
+  //     return null;
+  //   if (coin === 'eth' && m === 1) return null;
+  //   return walletId.replace(/-0x.*$/, '');
+  // }
 
   isMultiSend(coin: Coin): boolean {
     return !!this.coinOpts[coin].properties.hasMultiSend;
