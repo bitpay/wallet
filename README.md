@@ -21,10 +21,10 @@ Roadmap
 
 AbcPay Wallet is a secure Bitcoin ABC and Bitcoin Cash wallet platform for both web and mobile devices. AbcPay Wallet uses [Bitcore Wallet Service](https://gitlab.com/abcpros/internal/bitcore) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of Bitpay Wallet are available for download at:
-https://abcpay.cc/wallet/
+Binary versions of AbcPay Wallet are available for download at:
+https://abcpay.cc/
 
-This project was created by bcPro Foundation, and it is maintained by bcPro's contributors.
+This project was created by bcPro Foundation as a fork from Bitpay (https://github.com/bitpay/wallet), and it is maintained by bcPro's contributors.
 
 ## Main Features
 
