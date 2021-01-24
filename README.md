@@ -1,4 +1,4 @@
-<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet-cap.png" height="256" width="256" alt="AbcPay">
+<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet.png" height="128" width="128" alt="AbcPay">
 
 Roadmap
 - [ ] iOS Support
