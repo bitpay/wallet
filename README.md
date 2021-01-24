@@ -110,7 +110,7 @@ npm run prepare:abcpay
 npm run start:ios
 ```
 
-## Build Bitpay Wallet App Bundles
+## Build AbcPay Wallet App Bundles
 
 Before building the release version for a platform, run the `clean-all` command to delete any untracked files in your current working directory. (Be sure to stash any uncommitted changes you've made.) This guarantees consistency across builds for the current state of this repository.
 
