@@ -1,4 +1,19 @@
-<img src="https://github.com/bitpay/wallet/blob/master/resources/bitpay/windows/icon/Wide310x150Logo.scale-100.png" alt="Bitpay Wallet">
+<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet-cap.png" height="256" width="256" alt="AbcPay">
+
+Roadmap
+- [ ] iOS Support
+- [ ] Claim code
+- [ ] Progressive Web App
+- [ ] Support tokenization
+- [ ] 2FA for Multi-Sig
+- [ ] Registration verification
+- [ ] Avalanche Support
+- [ ] Fee Schedules
+- [ ] Refactor and restructure AbcPay
+- [ ] BCHA Support
+- [ ] AbcPay BWS for BCH
+- [ ] Rebranding 
+- [x] Build web and Android app on tBCH (BitPay BWS) https://gitlab.com/abcpros/internal/abc-pay/-/issues/1 
 
 [![CircleCI](https://img.shields.io/circleci/project/github/bitpay/wallet/master.svg)](https://circleci.com/gh/bitpay/wallet/)
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/wallet.svg)](https://codecov.io/gh/bitpay/wallet/)
