@@ -43,7 +43,7 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
-  public hasWallets: boolean;
+  public hasWallets: boolean = true;
   public invalidAddress: boolean;
   public validDataFromClipboard;
   private onResumeSubscription: Subscription;
