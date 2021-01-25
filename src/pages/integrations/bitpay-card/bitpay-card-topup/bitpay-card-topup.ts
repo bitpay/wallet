@@ -496,7 +496,8 @@ export class BitPayCardTopUpPage {
             .getSendMaxInfo(wallet, {
               feePerKb,
               excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
-              returnInputs: true
+              returnInputs: true,
+              usePayPro: true // Get fee value more precise
             })
             .then(async resp => {
               let tokenAddress, multisigContractAddress;
