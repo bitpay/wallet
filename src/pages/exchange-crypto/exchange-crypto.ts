@@ -146,6 +146,13 @@ export class ExchangeCryptoPage {
           const wallet = this.profileProvider.getWallet(
             this.navParams.data.walletId
           );
+          if (wallet.network != 'livenet') {
+            this.showErrorAndBack(
+              null,
+              this.translate.instant('Unsupported network')
+            );
+            return;
+          }
           if (!wallet.coin || !this.supportedCoins.includes(wallet.coin)) {
             this.showErrorAndBack(
               null,
