@@ -58,14 +58,9 @@ describe('SendPage', () => {
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
       it('should call get functions and subscribe to events', () => {
-        const profileProviderSpy = spyOn(
-          instance.profileProvider,
-          'getWallets'
-        );
         const subscribeSpy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
         instance.ionViewDidEnter();
-        expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
         expect(subscribeSpy).toHaveBeenCalledWith(
           'Local/AddressScan',
           instance.updateAddressHandler
