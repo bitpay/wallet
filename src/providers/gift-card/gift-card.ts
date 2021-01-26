@@ -8,7 +8,7 @@ import { from } from 'rxjs/observable/from';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { timer } from 'rxjs/observable/timer';
-import { mergeMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
@@ -438,14 +438,14 @@ export class GiftCardProvider extends InvoiceProvider {
       this.checkIfCardNeedsUpdate(card)
     );
     return from(cardsNeedingUpdate).pipe(
-      mergeMap(card =>
+      switchMap(card =>
         fromPromise(this.createGiftCard(card)).catch(err => {
           this.logger.error('Error creating gift card:', err);
           this.logger.error('Gift card: ', JSON.stringify(card, null, 4));
           return of({ ...card, status: 'FAILURE' });
         })
       ),
-      mergeMap(card =>
+      switchMap(card =>
         card.status === 'UNREDEEMED' || card.status === 'PENDING'
           ? fromPromise(
               this.getBitPayInvoice(card.invoiceId).then(invoice => ({
@@ -462,8 +462,8 @@ export class GiftCardProvider extends InvoiceProvider {
             )
           : of(card)
       ),
-      mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard)),
-      mergeMap(updatedCard => {
+      switchMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard)),
+      switchMap(updatedCard => {
         this.logger.debug('Gift card updated');
         return of(updatedCard);
       })
