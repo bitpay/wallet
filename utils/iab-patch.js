@@ -4,14 +4,14 @@
 
 const fs = require('fs');
 
-
 try {
   const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVWKInAppBrowser.m`;
-  const content = fs
-    .readFileSync(file, 'utf8');
+  const content = fs.readFileSync(file, 'utf8');
   if (content.includes('(float) getStatusBarOffset')) {
-    const result =
-      content.replace(/\(float\) IsAtLeastiOSVersion\(@"7.0"\) \? \[\[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;/g, '0.0;');
+    const result = content.replace(
+      /\(float\) IsAtLeastiOSVersion\(@"7.0"\) \? \[\[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;/g,
+      '0.0;'
+    );
     fs.writeFileSync(file, result);
     console.log('successfully patched WK status bar height');
   }

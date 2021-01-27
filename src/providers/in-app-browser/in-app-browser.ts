@@ -46,7 +46,11 @@ export class InAppBrowserProvider {
     initScript?: string
   ): Promise<InAppBrowserRef> {
     return new Promise((res, rej) => {
-      const ref: InAppBrowserRef = cordova.InAppBrowser.open(url, '_blank', config);
+      const ref: InAppBrowserRef = cordova.InAppBrowser.open(
+        url,
+        '_blank',
+        config
+      );
 
       const initCb = () => {
         if (initScript) {

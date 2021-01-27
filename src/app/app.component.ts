@@ -480,7 +480,7 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
-    modal.onWillDismiss( () => {
+    modal.onWillDismiss(() => {
       this.iabCardProvider.resume();
     });
     modal.onDidDismiss(() => {
@@ -499,7 +499,7 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
-    modal.onWillDismiss( () => {
+    modal.onWillDismiss(() => {
       this.iabCardProvider.resume();
     });
     modal.onDidDismiss(() => {
