@@ -481,7 +481,7 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onWillDismiss(() => {
-      this.iabCardProvider.resume();
+      this.onLockWillDismiss();
     });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
@@ -500,7 +500,7 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onWillDismiss(() => {
-      this.iabCardProvider.resume();
+      this.onLockWillDismiss();
     });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
@@ -511,6 +511,10 @@ export class CopayApp {
     this.appProvider.isLockModalOpen = false;
     this.events.publish('Local/FetchWallets');
     this.events.publish('Local/showNewFeaturesSlides');
+  }
+
+  private onLockWillDismiss(): void {
+    this.iabCardProvider.resume();
   }
 
   private registerIntegrations(): void {
