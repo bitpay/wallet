@@ -230,7 +230,6 @@ export class CopayApp {
       if (!lockMethod || lockMethod === 'disabled') {
         return;
       }
-      this.iabCardProvider.pause();
     });
 
     this.logger.debug('BitPay: setting network');
@@ -467,6 +466,7 @@ export class CopayApp {
     } else if (lockMethod == 'fingerprint') {
       this.openFingerprintModal();
     }
+    this.iabCardProvider.pause();
   }
 
   private openPINModal(action): void {
@@ -480,6 +480,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss( () => {
+      this.iabCardProvider.resume();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -496,6 +499,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss( () => {
+      this.iabCardProvider.resume();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -505,7 +511,6 @@ export class CopayApp {
     this.appProvider.isLockModalOpen = false;
     this.events.publish('Local/FetchWallets');
     this.events.publish('Local/showNewFeaturesSlides');
-    this.iabCardProvider.resume();
   }
 
   private registerIntegrations(): void {
