@@ -145,7 +145,7 @@
     "cordova-plugin-customurlscheme-ng": "9.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.2",
-    "cordova-plugin-fcm-ng": "8.2.0",
+    "cordova-plugin-fcm-ng": "8.3.0",
     "cordova-plugin-file": "6.0.2",
     "cordova-plugin-globalization": "1.0.9",
     "cordova-plugin-inappbrowser": "4.1.0",
