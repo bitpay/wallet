@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import env from '../../environments';
@@ -39,7 +40,8 @@ export class RateProvider {
     private currencyProvider: CurrencyProvider,
     private http: HttpClient,
     private logger: Logger,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private events: Events
   ) {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
@@ -47,7 +49,6 @@ export class RateProvider {
       this.rateServiceUrl[coin] = env.ratesAPI[coin];
       this.rates[coin] = { USD: 1 };
       this.ratesAvailable[coin] = false;
-      this.updateRates(coin);
     }
 
     const defaults = this.configProvider.getDefaults();
@@ -57,6 +58,19 @@ export class RateProvider {
       7: [],
       30: []
     };
+
+    this.fetchRates().then(res => {
+      const fiatRates = res[Object.keys(res)[0]];
+      this.setAltCurrencyList(fiatRates);
+    });
+  }
+
+  private fetchRates(): Promise<any> {
+    return new Promise(resolve => {
+      this.http.get(`${this.bwsURL}/v3/fiatrates/`).subscribe(res => {
+        resolve(res);
+      });
+    });
   }
 
   public updateRates(chain: string): Promise<any> {
@@ -66,8 +80,6 @@ export class RateProvider {
           _.each(dataCoin, currency => {
             if (currency && currency.code && currency.rate) {
               this.rates[chain][currency.code] = currency.rate;
-              if (currency.name)
-                this.alternatives[currency.code] = { name: currency.name };
             }
           });
           this.ratesAvailable[chain] = true;
@@ -112,6 +124,27 @@ export class RateProvider {
     return undefined;
   }
 
+  private setAltCurrencyList(fiatRates) {
+    _.each(fiatRates, currency => {
+      if (currency.name)
+        this.alternatives[currency.code] = { name: currency.name };
+    });
+    this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
+  }
+
+  private checkAltCurrency(): void {
+    const alternativeIsoCode = this.configProvider.get().wallet.settings
+      .alternativeIsoCode;
+
+    if (!this.isAltCurrencyAvailable(alternativeIsoCode)) {
+      const altCurrency = {
+        name: this.configProvider.get().wallet.settings.alternativeName,
+        isoCode: alternativeIsoCode
+      };
+      this.events.publish('Local/UnsupportedAltCurrency', altCurrency);
+    }
+  }
+
   private getAlternatives(): any[] {
     const alternatives: any[] = [];
     for (let key in this.alternatives) {
@@ -125,7 +158,6 @@ export class RateProvider {
   }
 
   public isAltCurrencyAvailable(currency: string) {
-    if (_.isEmpty(this.alternatives)) return true;
     return this.alternatives[currency];
   }
 

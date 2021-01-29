@@ -437,8 +437,8 @@ export class HomePage {
     this.events.subscribe('Local/ConnectionError', () => {
       this.fetchingStatus = false;
     });
-    this.events.subscribe('Local/UnsupportedAltCurrency', params => {
-      this.showInfoSheet(params);
+    this.events.subscribe('Local/UnsupportedAltCurrency', altCurrency => {
+      this.showInfoSheet(altCurrency);
     });
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
@@ -874,16 +874,17 @@ export class HomePage {
     });
   }
 
-  private showInfoSheet(params): void {
+  private showInfoSheet(altCurrency): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'unsupported-alt-currency',
-      params.altCurrency
+      altCurrency
     );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       this.events.unsubscribe('Local/UnsupportedAltCurrency');
       if (option) {
-        this.navCtrl.parent.select(params.tabIndex);
+        const settingsTabIndex = this.navCtrl.parent._tabs.length - 1; // The index of SettingsPage tab depends on the platform and distribution
+        this.navCtrl.parent.select(settingsTabIndex);
         this.navCtrl.push(AltCurrencyPage);
       }
     });
