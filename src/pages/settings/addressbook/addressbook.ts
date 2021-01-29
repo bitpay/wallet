@@ -42,14 +42,16 @@ export class AddressbookPage {
         let contacts: object[] = [];
         _.each(addressBook, (contact, k: string) => {
           const coinInfo = this.getCoinAndNetwork(k);
-          contacts.push({
-            name: _.isObject(contact) ? contact.name : contact,
-            address: k,
-            email: _.isObject(contact) ? contact.email : null,
-            tag: _.isObject(contact) ? contact.tag : null,
-            coin: coinInfo.coin,
-            network: coinInfo.network
-          });
+          if (coinInfo) {
+            contacts.push({
+              name: _.isObject(contact) ? contact.name : contact,
+              address: k,
+              email: _.isObject(contact) ? contact.email : null,
+              tag: _.isObject(contact) ? contact.tag : null,
+              coin: coinInfo.coin,
+              network: coinInfo.network
+            });
+          }
         });
         this.addressbook = _.clone(contacts);
         this.filteredAddressbook = _.clone(this.addressbook);

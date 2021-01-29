@@ -1,4 +1,9 @@
-<div class="wallets-container" *ngIf="filteredContactsList && filteredContactsList[0]">
+<div class="wallets-container" *ngIf="!(filteredContactsListPromise | async)">
+  <div class="section-header">
+    <ion-spinner name="crescent" *ngIf="!(filteredContactsListPromise | async)"></ion-spinner>
+  </div>
+</div>
+<div class="wallets-container" *ngIf="(filteredContactsListPromise | async)?.length > 0">
   <div class="section-header">
     <ion-label class="key-name">
       <span translate>Contacts</span>
@@ -6,7 +11,7 @@
   </div>
   <div class="line-divider"></div>
   <ion-list no-lines class="bp-list">
-    <button ion-item *ngFor="let item of filteredContactsList" (click)="close(item)">
+    <button ion-item *ngFor="let item of (filteredContactsListPromise | async)" (click)="close(item)">
       <ion-icon class="item-img" item-start>
         <gravatar [name]="item.name" [height]="40" [width]="40" [email]="item.email" [coin]="item.coin" [network]="item.network"></gravatar>
       </ion-icon>

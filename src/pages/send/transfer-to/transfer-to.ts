@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   Events,
   NavController,
@@ -39,17 +39,24 @@ export interface FlatWallet {
   getAddress: () => Promise<string>;
 }
 
+interface Contact {
+  name: string;
+  email: string;
+  address: string;
+  tag: string;
+}
 @Component({
   selector: 'page-transfer-to',
   templateUrl: 'transfer-to.html'
 })
-export class TransferToPage {
+export class TransferToPage implements OnInit {
   public search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
   public contactsList = [];
+  public filteredContactsListPromise: Promise<any[]>;
   public filteredContactsList = [];
   public filteredWallets = [];
   public walletsByKeys = [];
@@ -101,8 +108,6 @@ export class TransferToPage {
     this.walletsByKeys = _.values(
       _.groupBy(this.walletList[this._wallet.coin], 'keyId')
     );
-
-    this.updateContactsList();
   }
 
   get wallet() {
@@ -112,7 +117,6 @@ export class TransferToPage {
   @Input()
   set searchInput(search) {
     this.search = search;
-    this.processInput();
   }
 
   get searchInput() {
@@ -155,6 +159,23 @@ export class TransferToPage {
     return this._fromMultiSend;
   }
 
+  ngOnInit() {
+    if (this._wallet) {
+      this.filteredContactsListPromise = this.updateContactsList();
+      this.filteredContactsListPromise.then(data => {
+        this.filteredContactsList = _.clone(data);
+        this.processInput();
+      });
+    }
+  }
+
+  updateFilteredContactsList() {
+    this.filteredContactsListPromise = this.updateContactsList();
+    this.filteredContactsListPromise.then(data => {
+      this.filteredContactsList = _.clone(data);
+    });
+  }
+
   public getCoinName(coin: Coin) {
     return this.currencyProvider.getCoinName(coin);
   }
@@ -171,38 +192,59 @@ export class TransferToPage {
       .filter(wallet => this.filterIrrelevantRecipients(wallet));
   }
 
-  private updateContactsList(): void {
-    this.addressBookProvider.list().then(ab => {
-      this.hasContacts = _.isEmpty(ab) ? false : true;
-      if (!this.hasContacts) return;
+  async processAddressBook() {
+    const contacts = await this.addressBookProvider.list();
+    const contactsList = await this.processEachContact(contacts);
+    return contactsList;
+  }
 
-      let contactsList = [];
-      _.each(ab, (v, k: string) => {
-        const addrData = this.addressProvider.getCoinAndNetwork(k);
-        contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: addrData.network,
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: addrData.coin,
-          getAddress: () => Promise.resolve(k),
-          destinationTag: v.tag
-        });
+  processEachContact(contacts: [Contact]): Promise<any[]> {
+    return new Promise(resolve => {
+      const contactsList = [];
+      _.each(contacts, (v, k: string) => {
+        if (k) {
+          const addrData = this.addressProvider.getCoinAndNetwork(k);
+          if (addrData) {
+            contactsList.push({
+              name: _.isObject(v) ? v.name : v,
+              address: k,
+              network: addrData.network,
+              email: _.isObject(v) ? v.email : null,
+              recipientType: 'contact',
+              coin: addrData.coin,
+              getAddress: () => Promise.resolve(k),
+              destinationTag: v.tag
+            });
+          }
+        }
       });
-      contactsList = _.orderBy(contactsList, 'name');
-      this.contactsList = contactsList.filter(c =>
-        this.filterIrrelevantRecipients(c)
-      );
-      let shortContactsList = _.clone(
-        this.contactsList.slice(
-          0,
-          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
-        )
-      );
-      this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore =
-        this.contactsList.length > shortContactsList.length;
+      return resolve(contactsList);
+    });
+  }
+
+  updateContactsList(): Promise<any[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.processAddressBook()
+          .then(list => {
+            const contactsList = _.orderBy(list, 'name');
+            this.contactsList = contactsList.filter(c =>
+              this.filterIrrelevantRecipients(c)
+            );
+            let shortContactsList = _.clone(
+              this.contactsList.slice(
+                0,
+                (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+              )
+            );
+            this.contactsShowMore =
+              this.contactsList.length > shortContactsList.length;
+            resolve(_.clone(shortContactsList));
+          })
+          .catch(() => {
+            resolve([{}]);
+          });
+      }, 500);
     });
   }
 
@@ -238,7 +280,7 @@ export class TransferToPage {
 
   public showMore(): void {
     this.currentContactsPage++;
-    this.updateContactsList();
+    this.updateFilteredContactsList();
   }
 
   public processInput(): void {
@@ -252,7 +294,7 @@ export class TransferToPage {
           ? false
           : true;
     } else {
-      this.updateContactsList();
+      this.updateFilteredContactsList();
       this.filteredWallets = [];
       this.filteredWalletsByKeys = [];
     }
