@@ -65,7 +65,7 @@ export class RateProvider {
     });
   }
 
-  private fetchRates(): Promise<any> {
+  public fetchRates(): Promise<any> {
     return new Promise(resolve => {
       this.http.get(`${this.bwsURL}/v3/fiatrates/`).subscribe(res => {
         resolve(res);
