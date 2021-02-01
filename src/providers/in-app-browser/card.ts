@@ -100,6 +100,7 @@ export class IABCardProvider {
           this._IABLoaded.next(true);
           break;
 
+        case 'IABError':
         case 'log':
           this.logger.debug(event.data.log);
           break;

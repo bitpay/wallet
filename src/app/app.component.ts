@@ -390,16 +390,21 @@ export class CopayApp {
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
             `( async () => {
-              window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}});
-              window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
-                this.appProvider.info.version
-              )}});
-              await new Promise((res) => setTimeout(res, 300));
-              sessionStorage.setItem('isPaired', ${!!token}); 
-              sessionStorage.setItem('cards', ${JSON.stringify(
-                JSON.stringify(cards)
-              )});
-              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
+              const sendMessageToWallet = (message) => webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+              try {
+                window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}},'*');
+                window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
+                  this.appProvider.info.version
+                )}},'*');
+                await new Promise((res) => setTimeout(res, 300));
+                sessionStorage.setItem('isPaired', ${!!token}); 
+                sessionStorage.setItem('cards', ${JSON.stringify(
+                  JSON.stringify(cards)
+                )});
+                sendMessageToWallet({message: 'IABLoaded'});
+              } catch(err) {
+                sendMessageToWallet({message: 'IABError', log: err});
+              }   
               })()`
           );
           this.iabCardProvider.init();
