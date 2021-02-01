@@ -5,6 +5,7 @@ import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -55,7 +56,8 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private http: HttpClient
+    private http: HttpClient,
+    private configProvider: ConfigProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -137,6 +139,7 @@ export class TabsPage {
 
     await this.checkCardEnabled();
     await this.tabProvider.prefetchCards();
+    this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
   }
 
   ngOnDestroy() {
@@ -352,6 +355,17 @@ export class TabsPage {
       }
       this.updateTxps();
     });
+  }
+
+  private checkAltCurrency(): void {
+    const config = this.configProvider.get();
+    const altCurrency = {
+      name: config.wallet.settings.alternativeName,
+      isoCode: config.wallet.settings.alternativeIsoCode
+    };
+    if (!this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode)) {
+      this.events.publish('Local/UnsupportedAltCurrency', altCurrency);
+    }
   }
 
   homeRoot = HomePage;

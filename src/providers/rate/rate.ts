@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import env from '../../environments';
@@ -40,8 +39,7 @@ export class RateProvider {
     private currencyProvider: CurrencyProvider,
     private http: HttpClient,
     private logger: Logger,
-    private configProvider: ConfigProvider,
-    private events: Events
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
@@ -58,37 +56,59 @@ export class RateProvider {
       7: [],
       30: []
     };
+    this.updateRates();
+  }
 
-    this.fetchRates().then(res => {
-      const fiatRates = res[Object.keys(res)[0]];
-      this.setAltCurrencyList(fiatRates);
+  public updateRates(chain?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (chain) {
+        this.getCoin(chain)
+          .then(dataCoin => {
+            _.each(dataCoin, currency => {
+              if (currency && currency.code && currency.rate) {
+                this.rates[chain][currency.code] = currency.rate;
+              }
+            });
+            resolve();
+          })
+          .catch(errorCoin => {
+            this.logger.error(errorCoin);
+            reject(errorCoin);
+          });
+      } else {
+        this.getRates()
+          .then(res => {
+            _.map(res, (rates, coin) => {
+              const coinRates = {};
+              _.each(rates, r => {
+                if (r.code && r.rate) {
+                  const rate = { [r.code]: r.rate };
+                  Object.assign(coinRates, rate);
+                }
+
+                // set alternative currency list
+                if (r.code && r.name) {
+                  this.alternatives[r.code] = { name: r.name };
+                }
+              });
+              this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
+              this.ratesAvailable[coin] = true;
+            });
+            resolve();
+          })
+          .catch(err => {
+            this.logger.error(err);
+            reject(err);
+          });
+      }
     });
   }
 
-  public fetchRates(): Promise<any> {
+  public getRates(): Promise<any> {
     return new Promise(resolve => {
       this.http.get(`${this.bwsURL}/v3/fiatrates/`).subscribe(res => {
         resolve(res);
       });
-    });
-  }
-
-  public updateRates(chain: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getCoin(chain)
-        .then(dataCoin => {
-          _.each(dataCoin, currency => {
-            if (currency && currency.code && currency.rate) {
-              this.rates[chain][currency.code] = currency.rate;
-            }
-          });
-          this.ratesAvailable[chain] = true;
-          resolve();
-        })
-        .catch(errorCoin => {
-          this.logger.error(errorCoin);
-          reject(errorCoin);
-        });
     });
   }
 
@@ -122,27 +142,6 @@ export class RateProvider {
       'There are no rates for chain: ' + chain + ' - code: ' + code
     );
     return undefined;
-  }
-
-  private setAltCurrencyList(fiatRates) {
-    _.each(fiatRates, currency => {
-      if (currency.name)
-        this.alternatives[currency.code] = { name: currency.name };
-    });
-    this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
-  }
-
-  private checkAltCurrency(): void {
-    const alternativeIsoCode = this.configProvider.get().wallet.settings
-      .alternativeIsoCode;
-
-    if (!this.isAltCurrencyAvailable(alternativeIsoCode)) {
-      const altCurrency = {
-        name: this.configProvider.get().wallet.settings.alternativeName,
-        isoCode: alternativeIsoCode
-      };
-      this.events.publish('Local/UnsupportedAltCurrency', altCurrency);
-    }
   }
 
   private getAlternatives(): any[] {

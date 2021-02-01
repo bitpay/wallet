@@ -89,7 +89,7 @@ describe('RateProvider', () => {
   });
 
   it('should see if rates are available', () => {
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       service.updateRates('btc').then(() => {
         expect(service.isCoinAvailable('btc')).toBe(true);
       });
@@ -273,7 +273,7 @@ describe('RateProvider', () => {
     expect(service.toFiat(0.25 * 1e8, 'USD', 'bch')).toBeNull();
 
     // after we have rates
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       service.updateRates('bch').then(() => {
         expect(service.isCoinAvailable('bch')).toBe(true);
         expect(service.toFiat(1 * 1e8, 'USD', 'bch')).toEqual(1503.3);
@@ -299,7 +299,7 @@ describe('RateProvider', () => {
     // before we have rates
     expect(service.fromFiat(0.25 * 1e8, 'USD', 'bch')).toBeNull();
 
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('bch').then(() => {
         expect(service.isCoinAvailable('bch')).toBe(true);
@@ -323,7 +323,7 @@ describe('RateProvider', () => {
   it('should covert BTC satoshis to fiat', () => {
     // before we have rates
     expect(service.toFiat(0.25 * 1e8, 'USD', 'btc')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
         expect(service.isCoinAvailable('btc')).toBe(true);
@@ -358,7 +358,7 @@ describe('RateProvider', () => {
   it('should covert fiat to BTC satoshis', () => {
     // before we have rates
     expect(service.fromFiat(0.25 * 1e8, 'USD', 'btc')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
         expect(service.isCoinAvailable('btc')).toBe(true);
@@ -393,7 +393,7 @@ describe('RateProvider', () => {
   it('should covert ETH satoshis to fiat', () => {
     // before we have rates
     expect(service.toFiat(0.25 * 1e8, 'USD', 'eth')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('eth').then(() => {
         expect(service.isCoinAvailable('eth')).toBe(true);
@@ -428,7 +428,7 @@ describe('RateProvider', () => {
   it('should covert fiat to ETH satoshis', () => {
     // before we have rates
     expect(service.fromFiat(0.25 * 1e8, 'USD', 'eth')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('eth').then(() => {
         expect(service.isCoinAvailable('eth')).toBe(true);
@@ -463,7 +463,7 @@ describe('RateProvider', () => {
   it('should covert XRP drops to fiat', () => {
     // before we have rates
     expect(service.toFiat(0.25 * 1e8, 'USD', 'xrp')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('xrp').then(() => {
         expect(service.isCoinAvailable('xrp')).toBe(true);
@@ -498,7 +498,7 @@ describe('RateProvider', () => {
   it('should covert fiat to XRP drops', () => {
     // before we have rates
     expect(service.fromFiat(0.25 * 1e8, 'USD', 'xrp')).toBeNull();
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('xrp').then(() => {
         expect(service.isCoinAvailable('xrp')).toBe(true);
@@ -534,7 +534,7 @@ describe('RateProvider', () => {
     // before we have rates
     expect(service.listAlternatives(false)).toEqual([]);
     expect(service.listAlternatives(true)).toEqual([]);
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
         expect(service.isCoinAvailable('btc')).toBe(true);
@@ -588,7 +588,7 @@ describe('RateProvider', () => {
   it('should resolve when rates are available', () => {
     // before we have rates
     expect(service.isCoinAvailable('btc')).toBe(false);
-    service.fetchRates().then(() => {
+    service.updateRates().then(() => {
       service.whenRatesAvailable('btc').then(() => {
         // after we have rates
         expect(service.isCoinAvailable('btc')).toBe(true);
