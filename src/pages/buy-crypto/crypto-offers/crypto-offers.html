@@ -36,7 +36,12 @@
         </div>
         <div class="content" translate *ngIf="offer.value.fiatMoney || offer.value.errorMsg">
           <div *ngIf="offer.value.errorMsg">
-            <div class="main-label">{{offer.value.errorMsg}}</div>
+            <div class="main-label error-label">
+              <span class="error-title">Error: </span>
+              <span class="error-msg">
+                {{offer.value.errorMsg}}
+              </span>
+            </div>
           </div>
 
           <div class="visible-container">
@@ -108,8 +113,8 @@
                     1.5% of the amount.
                   </span>
                   <span *ngIf="paymentMethod.method != 'sepaBankTransfer'">
-                    <span translate>Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD).</span>
-                    <a (click)="openExternalLink('https://www.simplex.com/kb/what-service-fees-am-i-paying/')" translate>
+                    <span translate>Can range from 2.5% to 5% of the transaction, depending on the volume of traffic (with a minimum of 10 USD or its equivalent in any other fiat currency) + 1% of the transaction.</span>
+                    <a (click)="openExternalLink('https://support.simplex.com/hc/en-gb/articles/360014078420-What-fees-am-I-paying-')" translate>
                       Read more
                     </a>
                   </span>
@@ -125,8 +130,13 @@
                 <div>
                   <span translate>What service fees am I paying?</span>
                   <br>
-                  <span translate *ngIf="selectedCountry.shortCode == 'US'">2.9% of the amount + 0.30 USD per transactions</span>
-                  <span translate *ngIf="selectedCountry.shortCode != 'US'">3.9% of the amount + 0.30 USD per transactions</span>
+                  <span translate *ngIf="selectedCountry.shortCode == 'US'">5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee.</span>
+                  <span translate *ngIf="selectedCountry.shortCode != 'US'">5 USD minimum fee or 3.9% of the amount + 0.30 USD, whichever is greater + Required miners fee.</span>
+                  <span translate *ngIf="fiatCurrency?.toUpperCase() != 'USD'">Or its equivalent in {{ fiatCurrency?.toUpperCase() }}.</span>
+                  &nbsp;
+                  <a (click)="openExternalLink('https://support.sendwyre.com/en/articles/3359160-wyre-card-processing-fees')" translate>
+                    Read more
+                  </a>
                 </div>
                 <div>
                   <span translate>This service is provided by a third party, and you are subject to their </span>

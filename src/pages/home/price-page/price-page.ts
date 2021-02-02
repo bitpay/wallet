@@ -192,7 +192,9 @@ export class PricePage {
   }
 
   public goToAmountPage(): void {
-    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {
+      from: 'priceChartsPage'
+    });
     this.navCtrl.push(AmountPage, {
       coin: this.card.unitCode,
       fromBuyCrypto: true,

@@ -721,6 +721,7 @@ export class IncomingDataProvider {
     if (data === this.appProvider.info.name + '://wyre') return;
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const transferId = this.getParameterByName('transferId', res);
+    const referenceId = this.getParameterByName('referenceId', res);
     const orderId = this.getParameterByName('orderId', res);
     const accountId = this.getParameterByName('accountId', res);
     const dest = this.getParameterByName('dest', res);
@@ -733,6 +734,7 @@ export class IncomingDataProvider {
 
     const stateParams = {
       transferId,
+      referenceId,
       orderId,
       accountId,
       dest,

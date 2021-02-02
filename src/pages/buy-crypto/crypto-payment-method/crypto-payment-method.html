@@ -5,7 +5,7 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected" (ionChange)="save()">
+    <ion-list class="bp-list" radio-group [(ngModel)]="methodSelected">
       <div *ngFor="let method of methods | keys">
         <ion-item>
           <ion-label>
@@ -16,7 +16,7 @@
               <img *ngIf="showExchange('wyre', method.value)" [src]="themeProvider.currentAppTheme !== 'dark' ? 'assets/img/wyre/logo-wyre.svg' : 'assets/img/wyre/logo-wyre-dm.svg'">
             </div>
           </ion-label>
-          <ion-radio item-left value="{{method?.key}}" checked="methodSelected"></ion-radio>
+          <ion-radio (click)="save()" item-left value="{{method?.key}}" checked="methodSelected"></ion-radio>
           <ion-icon item-end class="item-img">
             <img src="{{method.value.imgSrc}}">
           </ion-icon>
