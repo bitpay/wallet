@@ -16,9 +16,9 @@
         {{'New contact' | translate}}
       </button>
     </div>
-
+    <ion-spinner name="crescent" *ngIf="!(filteredAddressbookPromise | async)"></ion-spinner>
     <ion-list class="bp-list" margin-top>
-      <button ion-item *ngFor="let entry of filteredAddressbook | orderBy : ['name']" (click)="viewEntry(entry)">
+      <button ion-item *ngFor="let entry of filteredAddressbookPromise | async | orderBy : ['name']" (click)="viewEntry(entry)">
         <ion-icon item-start>
           <gravatar [name]="entry.name" [height]="40" [width]="40" [email]="entry.email" [coin]="entry.coin" [network]="entry.network"></gravatar>
         </ion-icon>

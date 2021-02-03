@@ -154,32 +154,36 @@ describe('TransferToPage', () => {
         }
       ];
 
-      instance.contactsList = [
+      instance.contactsListPromise = Promise.resolve([
         {
           name: 'test contact'
         },
         {
           name: 'contact2'
         }
-      ];
+      ]);
     });
-    it('should filter BTC wallets and Contacts when search something', () => {
+    it('should filter BTC wallets and Contacts when search something', async () => {
       instance.hasWallets.btc = true;
       instance.wallet.coin = 'btc';
       instance.search = 'test';
-      instance.processInput();
+      await instance.processInput();
       expect(instance.filteredWallets.length).toEqual(2);
-      expect(instance.filteredContactsList.length).toEqual(1);
+      await instance.filteredContactsListPromise.then(data => {
+        expect(data.length).toEqual(1);
+      });
       expect(instance.invalidAddress).toBeFalsy();
     });
 
-    it('should filter ETH wallets and Contacts when search something', () => {
+    it('should filter ETH wallets and Contacts when search something', async () => {
       instance.hasWallets.eth = true;
       instance.wallet.coin = 'eth';
       instance.search = 'test';
-      instance.processInput();
+      await instance.processInput();
       expect(instance.filteredWallets.length).toEqual(2);
-      expect(instance.filteredContactsList.length).toEqual(1);
+      await instance.filteredContactsListPromise.then(data => {
+        expect(data.length).toEqual(1);
+      });
       expect(instance.invalidAddress).toBeFalsy();
     });
   });

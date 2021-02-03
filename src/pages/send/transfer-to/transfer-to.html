@@ -1,14 +1,11 @@
-<div class="wallets-container" *ngIf="!(filteredContactsListPromise | async)">
+<div class="wallets-container">
   <div class="section-header">
     <ion-spinner name="crescent" *ngIf="!(filteredContactsListPromise | async)"></ion-spinner>
-  </div>
-</div>
-<div class="wallets-container" *ngIf="(filteredContactsListPromise | async)?.length > 0">
-  <div class="section-header">
-    <ion-label class="key-name">
+    <ion-label class="key-name" *ngIf="(filteredContactsListPromise | async)?.length > 0">
       <span translate>Contacts</span>
     </ion-label>
   </div>
+  <div *ngIf="(filteredContactsListPromise | async)?.length > 0">
   <div class="line-divider"></div>
   <ion-list no-lines class="bp-list">
     <button ion-item *ngFor="let item of (filteredContactsListPromise | async)" (click)="close(item)">
@@ -18,17 +15,18 @@
       <div class="main-label">{{ item.name }}</div>
     </button>
   </ion-list>
+  </div>
 </div>
 
 <div *ngFor="let coin of availableCoins">
-  <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0]">
+  <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0] && filteredWalletsByKeys?.length>0">
     <div class="section-header">
       <ion-label class="key-name">
         <span>{{'{coinName} Wallets' | translate: { coinName: getCoinName(coin) } }}</span>
       </ion-label>
     </div>
     <ion-list no-lines class="bp-list">
-      <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
+      <div *ngFor="let walletsByKey of filteredWalletsByKeys">
         <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
           <ion-icon>
             <img src="assets/img/settings-icons/icon-key.svg" width="15">

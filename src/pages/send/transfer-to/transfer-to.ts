@@ -6,6 +6,7 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
@@ -21,6 +22,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
+import { Contact } from '../../settings/addressbook/addressbook';
 import { AmountPage } from '../amount/amount';
 
 export interface FlatWallet {
@@ -39,29 +41,22 @@ export interface FlatWallet {
   getAddress: () => Promise<string>;
 }
 
-interface Contact {
-  name: string;
-  email: string;
-  address: string;
-  tag: string;
-}
 @Component({
   selector: 'page-transfer-to',
   templateUrl: 'transfer-to.html'
 })
 export class TransferToPage implements OnInit {
-  public search: string = '';
+  public searchSubject: Subject<string> = new Subject();
+  private search: string = '';
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
-  public contactsList = [];
+  public contactsListPromise: Promise<any[]>;
   public filteredContactsListPromise: Promise<any[]>;
-  public filteredContactsList = [];
   public filteredWallets = [];
   public walletsByKeys = [];
   public filteredWalletsByKeys = [];
-  public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
   public fiatAmount: number;
@@ -115,8 +110,9 @@ export class TransferToPage implements OnInit {
   }
 
   @Input()
-  set searchInput(search) {
+  set searchInput(search: string) {
     this.search = search;
+    this.searchSubject.next(search);
   }
 
   get searchInput() {
@@ -161,18 +157,25 @@ export class TransferToPage implements OnInit {
 
   ngOnInit() {
     if (this._wallet) {
-      this.filteredContactsListPromise = this.updateContactsList();
-      this.filteredContactsListPromise.then(data => {
-        this.filteredContactsList = _.clone(data);
+      this.contactsListPromise = this.updateContactsList();
+      this.processInput();
+      this.searchSubject.subscribe(value => {
+        this.search = value;
         this.processInput();
       });
     }
   }
 
+  ngOnDestroy() {
+    if (this._wallet) {
+    }
+  }
+
   updateFilteredContactsList() {
-    this.filteredContactsListPromise = this.updateContactsList();
-    this.filteredContactsListPromise.then(data => {
-      this.filteredContactsList = _.clone(data);
+    this.updateContactsList().then(data => {
+      this.contactsListPromise = Promise.resolve(data);
+      this.filteredContactsListPromise = Promise.resolve(_.clone(data));
+      this.hasContactsOrWallets = data.length > 0;
     });
   }
 
@@ -194,8 +197,12 @@ export class TransferToPage implements OnInit {
 
   async processAddressBook() {
     const contacts = await this.addressBookProvider.list();
-    const contactsList = await this.processEachContact(contacts);
-    return contactsList;
+    if (contacts) {
+      const contactsList = await this.processEachContact(contacts);
+      return contactsList;
+    } else {
+      return [{}];
+    }
   }
 
   processEachContact(contacts: [Contact]): Promise<any[]> {
@@ -228,23 +235,22 @@ export class TransferToPage implements OnInit {
         this.processAddressBook()
           .then(list => {
             const contactsList = _.orderBy(list, 'name');
-            this.contactsList = contactsList.filter(c =>
+            const filtered = contactsList.filter(c =>
               this.filterIrrelevantRecipients(c)
             );
             let shortContactsList = _.clone(
-              this.contactsList.slice(
+              filtered.slice(
                 0,
                 (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
               )
             );
-            this.contactsShowMore =
-              this.contactsList.length > shortContactsList.length;
+            this.contactsShowMore = filtered.length > shortContactsList.length;
             resolve(_.clone(shortContactsList));
           })
           .catch(() => {
             resolve([{}]);
           });
-      }, 500);
+      }, 700); // Delay time for page transition animation
     });
   }
 
@@ -283,32 +289,35 @@ export class TransferToPage implements OnInit {
     this.updateFilteredContactsList();
   }
 
-  public processInput(): void {
+  public async processInput(): Promise<void> {
+    let hasContacts = false;
+    this.searchWallets();
     if (this.search && this.search.trim() != '') {
-      this.searchWallets();
-      this.searchContacts();
-
-      this.hasContactsOrWallets =
-        this.filteredContactsList.length === 0 &&
-        this.filteredWallets.length === 0
-          ? false
-          : true;
+      await this.searchContacts().then(res => {
+        hasContacts = res;
+      });
     } else {
-      this.updateFilteredContactsList();
-      this.filteredWallets = [];
-      this.filteredWalletsByKeys = [];
+      this.filteredContactsListPromise = this.contactsListPromise;
+      await this.filteredContactsListPromise.then(data => {
+        hasContacts = data.length > 0;
+      });
     }
+    this.hasContactsOrWallets =
+      hasContacts || (this.filteredWallets.length === 0 ? false : true);
   }
 
   public searchWallets(): void {
     for (const coin of this.availableCoins) {
       if (this.hasWallets[coin] && this._wallet.coin === coin) {
-        this.filteredWallets = this.walletList[coin].filter(wallet => {
-          return _.includes(
-            wallet.name.toLowerCase(),
-            this.search.toLowerCase()
-          );
-        });
+        this.filteredWallets =
+          this.search && this.search.trim() != ''
+            ? this.walletList[coin].filter(wallet => {
+                return _.includes(
+                  wallet.name.toLowerCase(),
+                  this.search.toLowerCase()
+                );
+              })
+            : this.walletList[coin];
         this.filteredWalletsByKeys = _.values(
           _.groupBy(this.filteredWallets, 'keyId')
         );
@@ -316,10 +325,17 @@ export class TransferToPage implements OnInit {
     }
   }
 
-  public searchContacts(): void {
-    this.filteredContactsList = _.filter(this.contactsList, item => {
-      let val = item.name;
-      return _.includes(val.toLowerCase(), this.search.toLowerCase());
+  public searchContacts(): Promise<boolean> {
+    return new Promise(resolve => {
+      let exists = [];
+      this.contactsListPromise.then(data => {
+        exists = _.filter(data, item => {
+          let val = item.name;
+          return _.includes(val.toLowerCase(), this.search.toLowerCase());
+        });
+        this.filteredContactsListPromise = Promise.resolve(exists);
+        return resolve(exists.length > 0);
+      });
     });
   }
 

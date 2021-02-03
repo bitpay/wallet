@@ -2,8 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
