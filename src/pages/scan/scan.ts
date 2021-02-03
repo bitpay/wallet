@@ -258,10 +258,10 @@ export class ScanPage {
       this.events.publish('Local/TagScan', { value: contents });
     } else if (this.fromWalletConnect) {
       this.events.publish('Local/UriScan', { value: contents });
-    } else if (this.fromSend) {
+    } else {
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
-    } else return;
+    }
   }
 
   public authorize(): void {
