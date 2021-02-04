@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
@@ -7,14 +7,20 @@ import { Logger } from '../../../providers/logger/logger';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
 
+export interface Contact {
+  name: string;
+  email: string;
+  address: string;
+  tag: string;
+}
 @Component({
   selector: 'page-addressbook',
   templateUrl: 'addressbook.html'
 })
-export class AddressbookPage {
+export class AddressbookPage implements OnInit {
   private cache: boolean = false;
   public addressbook: object[] = [];
-  public filteredAddressbook: object[] = [];
+  public filteredAddressbookPromise: Promise<object[]>;
 
   public isEmptyList: boolean;
 
@@ -24,25 +30,43 @@ export class AddressbookPage {
     private logger: Logger,
     private addressbookProvider: AddressBookProvider,
     private addressProvider: AddressProvider
-  ) {
-    this.initAddressbook();
+  ) {}
+  ngOnInit() {
+    this.filteredAddressbookPromise = this.updateContactsList();
+    this.filteredAddressbookPromise.then(addressBook => {
+      this.addressbook = _.clone(addressBook);
+    });
   }
 
   ionViewDidEnter() {
-    if (this.cache) this.initAddressbook();
+    if (this.cache) this.filteredAddressbookPromise = this.updateContactsList();
     this.cache = true;
   }
 
-  private initAddressbook(): void {
-    this.addressbookProvider
-      .list()
-      .then(addressBook => {
-        this.isEmptyList = _.isEmpty(addressBook);
+  updateContactsList(): Promise<object[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.initAddressbook().then(list => {
+          this.logger.info(`Finish getting Contacts List`);
+          resolve(list);
+        });
+      }, 700); // Delay for page transition
+    });
+  }
 
-        let contacts: object[] = [];
-        _.each(addressBook, (contact, k: string) => {
-          const coinInfo = this.getCoinAndNetwork(k);
-          contacts.push({
+  async initAddressbook() {
+    const contacts = await this.addressbookProvider.list();
+    const contactsList = await this.processEachContact(contacts);
+    return contactsList;
+  }
+
+  processEachContact(contacts: [Contact]): Promise<any[]> {
+    return new Promise(resolve => {
+      const contactsList = [];
+      _.each(contacts, (contact, k: string) => {
+        const coinInfo = this.getCoinAndNetwork(k);
+        if (coinInfo) {
+          contactsList.push({
             name: _.isObject(contact) ? contact.name : contact,
             address: k,
             email: _.isObject(contact) ? contact.email : null,
@@ -50,13 +74,10 @@ export class AddressbookPage {
             coin: coinInfo.coin,
             network: coinInfo.network
           });
-        });
-        this.addressbook = _.clone(contacts);
-        this.filteredAddressbook = _.clone(this.addressbook);
-      })
-      .catch(err => {
-        this.logger.error(err);
+        }
       });
+      return resolve(contactsList);
+    });
   }
 
   public addEntry(): void {
@@ -70,17 +91,16 @@ export class AddressbookPage {
   public getItems(event): void {
     // set val to the value of the searchbar
     let val = event.target.value;
-
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
       let result = _.filter(this.addressbook, item => {
         let name = item['name'];
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });
-      this.filteredAddressbook = result;
+      this.filteredAddressbookPromise = Promise.resolve(result);
     } else {
       // Reset items back to all of the items
-      this.initAddressbook();
+      this.filteredAddressbookPromise = Promise.resolve(this.addressbook);
     }
   }
 

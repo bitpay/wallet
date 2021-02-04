@@ -42,11 +42,11 @@ export class AddressProvider {
     try {
       network = this.bitcore.Address(address).network.name;
       return { coin: 'btc', network };
-    } catch (e) {
+    } catch {
       try {
-        network = this.bitcoreCash.Address(address).network.name;
+        network = this.bitcoreCash.Address(address).network.name; // delay the first time
         return { coin: 'bch', network };
-      } catch (e) {
+      } catch {
         try {
           const isValidEthAddress = this.core.Validation.validateAddress(
             'ETH',
@@ -58,7 +58,7 @@ export class AddressProvider {
           } else {
             throw isValidEthAddress;
           }
-        } catch (e) {
+        } catch {
           try {
             const isValidXrpAddress = this.core.Validation.validateAddress(
               'XRP',
@@ -70,7 +70,7 @@ export class AddressProvider {
             } else {
               return null;
             }
-          } catch (e) {
+          } catch {
             return null;
           }
         }

@@ -2,8 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -17,7 +16,6 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
-import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
 import { CopayersPage } from '../add/copayers/copayers';
@@ -43,9 +41,9 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
-  public hasWallets: boolean;
   public invalidAddress: boolean;
   public validDataFromClipboard;
+  private searchSubject: Subject<string> = new Subject<string>();
   private onResumeSubscription: Subscription;
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
@@ -78,7 +76,6 @@ export class SendPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private payproProvider: PayproProvider,
-    private profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
@@ -93,6 +90,17 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
+    this.events.subscribe('Desktop/onFocus', () => {
+      this.setDataFromClipboard();
+    });
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setDataFromClipboard();
+    });
+    this.searchSubject.subscribe(data => {
+      this.processInput(data);
+    });
   }
 
   @ViewChild('transferTo')
@@ -103,32 +111,19 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
-    this.events.subscribe('Desktop/onFocus', () => {
-      this.setDataFromClipboard();
-    });
-    this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setDataFromClipboard();
-    });
-  }
-
-  async ionViewDidEnter() {
-    this.hasWallets = !_.isEmpty(
-      this.profileProvider.getWallets({ coin: this.wallet.coin })
-    );
-    await this.setDataFromClipboard();
+    this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
+    this.logger.warn(`SendPage Unsubscribers`);
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
     if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
   }
 
-  private async setDataFromClipboard() {
-    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private setDataFromClipboard() {
+    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }
@@ -148,7 +143,7 @@ export class SendPage {
 
   private updateAddressHandler: any = data => {
     this.search = data.value;
-    this.processInput();
+    this.searchSubject.next(this.search);
   };
 
   public shouldShowZeroState() {
@@ -238,7 +233,7 @@ export class SendPage {
           legacyAddr
         );
         this.search = cashAddr;
-        this.processInput();
+        this.searchSubject.next(this.search);
       }
     });
   }
@@ -248,76 +243,77 @@ export class SendPage {
     this.invalidAddress = false;
   }
 
-  public async processInput() {
-    if (this.search == '') this.invalidAddress = false;
-    const hasContacts = await this.checkIfContact();
-    if (!hasContacts) {
-      const parsedData = this.incomingDataProvider.parseData(this.search);
-      if (
-        (parsedData && parsedData.type == 'PayPro') ||
-        (parsedData && parsedData.type == 'InvoiceUri')
-      ) {
-        try {
-          const invoiceUrl = this.incomingDataProvider.getPayProUrl(
-            this.search
-          );
-          const payproOptions = await this.payproProvider.getPayProOptions(
-            invoiceUrl
-          );
-          const selected = payproOptions.paymentOptions.find(
-            option =>
-              option.selected &&
-              this.wallet.coin.toUpperCase() === option.currency
-          );
-          if (selected) {
-            const activePage = 'SendPage';
-            const isValid = this.checkCoinAndNetwork(selected, true);
-            if (isValid) {
-              this.incomingDataProvider.goToPayPro(
-                payproOptions.payProUrl,
-                this.wallet.coin,
-                undefined,
-                true,
-                activePage
+  public processInput(data: string) {
+    if (data == '') this.invalidAddress = false;
+
+    this.checkIfContact().then(hasContacts => {
+      if (!hasContacts) {
+        const parsedData = this.incomingDataProvider.parseData(data);
+        if (
+          (parsedData && parsedData.type == 'PayPro') ||
+          (parsedData && parsedData.type == 'InvoiceUri')
+        ) {
+          try {
+            const invoiceUrl = this.incomingDataProvider.getPayProUrl(data);
+            let payproOptions;
+            this.payproProvider.getPayProOptions(invoiceUrl).then(data => {
+              payproOptions = data;
+              const selected = payproOptions.paymentOptions.find(
+                option =>
+                  option.selected &&
+                  this.wallet.coin.toUpperCase() === option.currency
               );
-            }
-          } else {
-            this.redir();
+              if (selected) {
+                const activePage = 'SendPage';
+                const isValid = this.checkCoinAndNetwork(selected, true);
+                if (isValid) {
+                  this.incomingDataProvider.goToPayPro(
+                    payproOptions.payProUrl,
+                    this.wallet.coin,
+                    undefined,
+                    true,
+                    activePage
+                  );
+                }
+              } else {
+                this.redir();
+              }
+            });
+          } catch (err) {
+            this.onGoingProcessProvider.clear();
+            this.invalidAddress = true;
+            this.logger.warn(this.bwcErrorProvider.msg(err));
+            this.errorsProvider.showDefaultError(
+              this.bwcErrorProvider.msg(err),
+              this.translate.instant('Error')
+            );
           }
-        } catch (err) {
-          this.onGoingProcessProvider.clear();
+        } else if (
+          parsedData &&
+          _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+        ) {
+          const isValid = this.checkCoinAndNetwork(data);
+          if (isValid) this.redir();
+        } else if (parsedData && parsedData.type == 'BitPayCard') {
+          // this.close();
+          this.incomingDataProvider.redir(data, {
+            activePage: 'SendPage'
+          });
+        } else if (parsedData && parsedData.type == 'PrivateKey') {
+          this.incomingDataProvider.redir(data, {
+            activePage: 'SendPage'
+          });
+        } else {
           this.invalidAddress = true;
-          this.logger.warn(this.bwcErrorProvider.msg(err));
-          this.errorsProvider.showDefaultError(
-            this.bwcErrorProvider.msg(err),
-            this.translate.instant('Error')
-          );
         }
-      } else if (
-        parsedData &&
-        _.indexOf(this.validDataTypeMap, parsedData.type) != -1
-      ) {
-        const isValid = this.checkCoinAndNetwork(this.search);
-        if (isValid) this.redir();
-      } else if (parsedData && parsedData.type == 'BitPayCard') {
-        // this.close();
-        this.incomingDataProvider.redir(this.search, {
-          activePage: 'SendPage'
-        });
-      } else if (parsedData && parsedData.type == 'PrivateKey') {
-        this.incomingDataProvider.redir(this.search, {
-          activePage: 'SendPage'
-        });
       } else {
-        this.invalidAddress = true;
+        this.invalidAddress = false;
       }
-    } else {
-      this.invalidAddress = false;
-    }
+    });
   }
 
   public async checkIfContact() {
-    await Observable.timer(50).toPromise();
+    await Observable.timer(100).toPromise();
     return this.transferTo.hasContactsOrWallets;
   }
 
@@ -356,6 +352,6 @@ export class SendPage {
     this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
-    this.processInput();
+    this.searchSubject.next(this.search);
   }
 }

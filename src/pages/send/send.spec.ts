@@ -56,23 +56,13 @@ describe('SendPage', () => {
   });
 
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
-      it('should call get functions and subscribe to events', () => {
-        const profileProviderSpy = spyOn(
-          instance.profileProvider,
-          'getWallets'
-        );
-        const subscribeSpy = spyOn(instance.events, 'subscribe');
-        instance.ionViewWillEnter();
-        instance.ionViewDidEnter();
-        expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
-        expect(subscribeSpy).toHaveBeenCalledWith(
+    describe('ionViewWillLeave', () => {
+      it('should unsubscribe from events', () => {
+        const spy = spyOn(instance.events, 'unsubscribe');
+        instance.ngOnDestroy();
+        expect(spy).toHaveBeenCalledWith(
           'Local/AddressScan',
           instance.updateAddressHandler
-        );
-        expect(subscribeSpy).toHaveBeenCalledWith(
-          'SendPageRedir',
-          instance.SendPageRedirEventHandler
         );
       });
     });
@@ -119,7 +109,7 @@ describe('SendPage', () => {
       it('should handle addresses btc livenet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
         instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
           '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG',
@@ -131,7 +121,7 @@ describe('SendPage', () => {
         );
       });
 
-      it('should handle btc livenet paypro and call to redir function', fakeAsync(() => {
+      it('should handle btc livenet paypro and call to redir function', fakeAsync(async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'goToPayPro');
         const mockPayPro = Promise.resolve({
           expires: '2019-11-05T16:29:31.754Z',
@@ -160,7 +150,7 @@ describe('SendPage', () => {
         instance.navParams.data.coin = undefined;
         instance.search =
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
+        await instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
@@ -175,7 +165,7 @@ describe('SendPage', () => {
       it('should handle addresses btc testnet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -183,7 +173,7 @@ describe('SendPage', () => {
       it('should handle address bch livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -191,7 +181,7 @@ describe('SendPage', () => {
       it('should handle address bch testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -230,7 +220,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -270,7 +260,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -303,7 +293,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -324,7 +314,7 @@ describe('SendPage', () => {
       it('should handle addresses btc testnet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
         instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
           'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT',
@@ -365,7 +355,7 @@ describe('SendPage', () => {
         instance.navParams.data.coin = undefined;
         instance.search =
           'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
@@ -380,7 +370,7 @@ describe('SendPage', () => {
       it('should handle addresses btc livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -388,7 +378,7 @@ describe('SendPage', () => {
       it('should handle address bch livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -396,7 +386,7 @@ describe('SendPage', () => {
       it('should handle address bch testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -434,7 +424,7 @@ describe('SendPage', () => {
         );
         instance.search =
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -474,7 +464,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -514,7 +504,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -535,7 +525,7 @@ describe('SendPage', () => {
       it('should handle addresses bch livenet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
         instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
           'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7',
@@ -576,7 +566,7 @@ describe('SendPage', () => {
         instance.navParams.data.coin = undefined;
         instance.search =
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
@@ -591,7 +581,7 @@ describe('SendPage', () => {
       it('should handle addresses btc livenet and call to legacy address info modal', async () => {
         const legacyAddrModalSpy = spyOn(instance, 'showLegacyAddrMessage');
         instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(legacyAddrModalSpy).toHaveBeenCalled();
       });
@@ -599,7 +589,7 @@ describe('SendPage', () => {
       it('should handle address bch testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -607,7 +597,7 @@ describe('SendPage', () => {
       it('should handle address btc testnet and call error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -646,7 +636,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -679,7 +669,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -719,7 +709,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -740,7 +730,7 @@ describe('SendPage', () => {
       it('should handle addresses bch testnet and call to redir function', async () => {
         const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
         instance.search = 'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
           'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
@@ -781,7 +771,7 @@ describe('SendPage', () => {
         instance.navParams.data.coin = undefined;
         instance.search =
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeFalsy();
         expect(redirSpy).toHaveBeenCalledWith(
@@ -797,7 +787,7 @@ describe('SendPage', () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search =
           'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -805,7 +795,7 @@ describe('SendPage', () => {
       it('should handle address btc livenet and call to error modal', async () => {
         const errorModalSpy = spyOn(instance, 'showErrorMessage');
         instance.search = '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
       });
@@ -816,7 +806,7 @@ describe('SendPage', () => {
           'showLegacyAddrMessage'
         );
         instance.search = 'n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY';
-        await instance.processInput();
+        await instance.processInput(instance.search);
         expect(instance.invalidAddress).toBeTruthy();
         expect(showLegacyAddrMessageSpy).toHaveBeenCalled();
       });
@@ -855,7 +845,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -895,7 +885,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -928,7 +918,7 @@ describe('SendPage', () => {
 
         instance.search =
           'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
-        instance.processInput();
+        instance.processInput(instance.search);
         tick();
         expect(instance.invalidAddress).toBeTruthy();
         expect(errorModalSpy).toHaveBeenCalled();
@@ -939,23 +929,8 @@ describe('SendPage', () => {
       const checkIfContact = Promise.resolve(true);
       spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
       instance.search = 'Contact';
-      await instance.processInput();
+      await instance.processInput(instance.search);
       expect(instance.invalidAddress).toBeFalsy();
-    });
-  });
-
-  describe('End of Lifecycle', () => {
-    it('should call unsubscribe events', () => {
-      const unsubscribeSpy = spyOn(instance.events, 'unsubscribe');
-      instance.ngOnDestroy();
-      expect(unsubscribeSpy).toHaveBeenCalledWith(
-        'Local/AddressScan',
-        instance.updateAddressHandler
-      );
-      expect(unsubscribeSpy).toHaveBeenCalledWith(
-        'SendPageRedir',
-        instance.SendPageRedirEventHandler
-      );
     });
   });
 

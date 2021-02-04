@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   Events,
   NavController,
@@ -6,6 +6,7 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
@@ -21,6 +22,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
+import { Contact } from '../../settings/addressbook/addressbook';
 import { AmountPage } from '../amount/amount';
 
 export interface FlatWallet {
@@ -43,18 +45,19 @@ export interface FlatWallet {
   selector: 'page-transfer-to',
   templateUrl: 'transfer-to.html'
 })
-export class TransferToPage {
-  public search: string = '';
+export class TransferToPage implements OnInit {
+  public searchSubject: Subject<string> = new Subject();
+  private search: string = '';
+  public processingInput: boolean = false;
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public walletList = {} as CoinsMap<FlatWallet[]>;
   public availableCoins: Coin[];
-  public contactsList = [];
-  public filteredContactsList = [];
+  public contactsListPromise: Promise<any[]>;
+  public filteredContactsListPromise: Promise<any[]>;
   public filteredWallets = [];
   public walletsByKeys = [];
   public filteredWalletsByKeys = [];
-  public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
   public fiatAmount: number;
@@ -101,8 +104,6 @@ export class TransferToPage {
     this.walletsByKeys = _.values(
       _.groupBy(this.walletList[this._wallet.coin], 'keyId')
     );
-
-    this.updateContactsList();
   }
 
   get wallet() {
@@ -110,9 +111,8 @@ export class TransferToPage {
   }
 
   @Input()
-  set searchInput(search) {
-    this.search = search;
-    this.processInput();
+  set searchInput(search: string) {
+    this.searchSubject.next(search);
   }
 
   get searchInput() {
@@ -155,6 +155,33 @@ export class TransferToPage {
     return this._fromMultiSend;
   }
 
+  ngOnInit() {
+    if (this._wallet) {
+      this.updateContactsList().then(data => {
+        this.contactsListPromise = Promise.resolve(data);
+        this.processInput();
+      });
+      this.searchSubject.subscribe(value => {
+        this.search = value;
+        this.processInput();
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._wallet) {
+      this.searchSubject.unsubscribe();
+    }
+  }
+
+  updateFilteredContactsList() {
+    this.updateContactsList().then(data => {
+      this.contactsListPromise = Promise.resolve(data);
+      this.filteredContactsListPromise = Promise.resolve(_.clone(data));
+      this.hasContactsOrWallets = data.length > 0;
+    });
+  }
+
   public getCoinName(coin: Coin) {
     return this.currencyProvider.getCoinName(coin);
   }
@@ -171,38 +198,62 @@ export class TransferToPage {
       .filter(wallet => this.filterIrrelevantRecipients(wallet));
   }
 
-  private updateContactsList(): void {
-    this.addressBookProvider.list().then(ab => {
-      this.hasContacts = _.isEmpty(ab) ? false : true;
-      if (!this.hasContacts) return;
+  async processAddressBook() {
+    const contacts = await this.addressBookProvider.list();
+    if (contacts) {
+      const contactsList = await this.processEachContact(contacts);
+      return contactsList;
+    } else {
+      return [{}];
+    }
+  }
 
-      let contactsList = [];
-      _.each(ab, (v, k: string) => {
-        const addrData = this.addressProvider.getCoinAndNetwork(k);
-        contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: addrData.network,
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: addrData.coin,
-          getAddress: () => Promise.resolve(k),
-          destinationTag: v.tag
-        });
+  processEachContact(contacts: [Contact]): Promise<any[]> {
+    return new Promise(resolve => {
+      const contactsList = [];
+      _.each(contacts, (v, k: string) => {
+        if (k) {
+          const addrData = this.addressProvider.getCoinAndNetwork(k);
+          if (addrData) {
+            contactsList.push({
+              name: _.isObject(v) ? v.name : v,
+              address: k,
+              network: addrData.network,
+              email: _.isObject(v) ? v.email : null,
+              recipientType: 'contact',
+              coin: addrData.coin,
+              getAddress: () => Promise.resolve(k),
+              destinationTag: v.tag
+            });
+          }
+        }
       });
-      contactsList = _.orderBy(contactsList, 'name');
-      this.contactsList = contactsList.filter(c =>
-        this.filterIrrelevantRecipients(c)
-      );
-      let shortContactsList = _.clone(
-        this.contactsList.slice(
-          0,
-          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
-        )
-      );
-      this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore =
-        this.contactsList.length > shortContactsList.length;
+      return resolve(contactsList);
+    });
+  }
+
+  updateContactsList(): Promise<any[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.processAddressBook()
+          .then(list => {
+            const contactsList = _.orderBy(list, 'name');
+            const filtered = contactsList.filter(c =>
+              this.filterIrrelevantRecipients(c)
+            );
+            let shortContactsList = _.clone(
+              filtered.slice(
+                0,
+                (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+              )
+            );
+            this.contactsShowMore = filtered.length > shortContactsList.length;
+            resolve(_.clone(shortContactsList));
+          })
+          .catch(() => {
+            resolve([{}]);
+          });
+      }, 700); // Delay time for page transition animation
     });
   }
 
@@ -238,35 +289,37 @@ export class TransferToPage {
 
   public showMore(): void {
     this.currentContactsPage++;
-    this.updateContactsList();
+    this.updateFilteredContactsList();
   }
 
-  public processInput(): void {
+  public processInput() {
+    let hasContacts = false;
+    this.searchWallets();
     if (this.search && this.search.trim() != '') {
-      this.searchWallets();
-      this.searchContacts();
-
-      this.hasContactsOrWallets =
-        this.filteredContactsList.length === 0 &&
-        this.filteredWallets.length === 0
-          ? false
-          : true;
+      this.searchContacts().then(res => {
+        hasContacts = res;
+      });
     } else {
-      this.updateContactsList();
-      this.filteredWallets = [];
-      this.filteredWalletsByKeys = [];
+      this.contactsListPromise.then(data => {
+        this.filteredContactsListPromise = Promise.resolve(data);
+        hasContacts = data.length > 0;
+      });
     }
+    this.hasContactsOrWallets = hasContacts || this.filteredWallets.length > 0;
   }
 
   public searchWallets(): void {
     for (const coin of this.availableCoins) {
       if (this.hasWallets[coin] && this._wallet.coin === coin) {
-        this.filteredWallets = this.walletList[coin].filter(wallet => {
-          return _.includes(
-            wallet.name.toLowerCase(),
-            this.search.toLowerCase()
-          );
-        });
+        this.filteredWallets =
+          this.search && this.search.trim() != ''
+            ? this.walletList[coin].filter(wallet => {
+                return _.includes(
+                  wallet.name.toLowerCase(),
+                  this.search.toLowerCase()
+                );
+              })
+            : this.walletList[coin];
         this.filteredWalletsByKeys = _.values(
           _.groupBy(this.filteredWallets, 'keyId')
         );
@@ -274,10 +327,17 @@ export class TransferToPage {
     }
   }
 
-  public searchContacts(): void {
-    this.filteredContactsList = _.filter(this.contactsList, item => {
-      let val = item.name;
-      return _.includes(val.toLowerCase(), this.search.toLowerCase());
+  public searchContacts(): Promise<boolean> {
+    return new Promise(resolve => {
+      let exists = [];
+      this.contactsListPromise.then(data => {
+        exists = _.filter(data, item => {
+          let val = item.name;
+          return _.includes(val.toLowerCase(), this.search.toLowerCase());
+        });
+        this.filteredContactsListPromise = Promise.resolve(exists);
+        return resolve(exists.length > 0);
+      });
     });
   }
 
