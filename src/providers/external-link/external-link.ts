@@ -65,7 +65,9 @@ export class ExternalLinkProvider {
         this.electronProvider.openExternalLink(url);
       } else {
         // workaround for an existing cordova inappbrowser plugin issue - redirecting events back to the iab ref
-        const w = cordova.InAppBrowser.open(url, '_system');
+        const w = this.platformProvider.isCordova
+          ? cordova.InAppBrowser.open(url, '_system')
+          : window.open(url, '_system');
         Observable.fromEvent(w, 'message').subscribe(e =>
           this.events.publish('iab_message_update', e)
         );
