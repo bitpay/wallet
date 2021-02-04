@@ -518,6 +518,15 @@
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'send-max-min-amount'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}</span>
+        <span *ngIf="params.msg">{{params.msg}}</span>
+      </span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'min-amount-allowed'" type="danger">
       <span sheet-title-text translate>Error</span>
       <span sheet-text>

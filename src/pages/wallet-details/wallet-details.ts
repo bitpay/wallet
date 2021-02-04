@@ -12,6 +12,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import env from '../../environments';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -128,14 +129,18 @@ export class WalletDetailsPage {
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
-    this.showBuyCrypto = _.includes(
-      this.buyCryptoProvider.exchangeCoinsSupported,
-      this.wallet.coin
-    );
-    this.showExchangeCrypto = _.includes(
-      this.exchangeCryptoProvider.exchangeCoinsSupported,
-      this.wallet.coin
-    );
+    this.showBuyCrypto =
+      _.includes(
+        this.buyCryptoProvider.exchangeCoinsSupported,
+        this.wallet.coin
+      ) &&
+      (this.wallet.network == 'livenet' ||
+        (this.wallet.network == 'testnet' && env.name == 'development'));
+    this.showExchangeCrypto =
+      _.includes(
+        this.exchangeCryptoProvider.exchangeCoinsSupported,
+        this.wallet.coin
+      ) && this.wallet.network == 'livenet';
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {

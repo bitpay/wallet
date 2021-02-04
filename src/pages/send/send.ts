@@ -119,7 +119,7 @@ export class SendPage {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
-    if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
   }
 
   private setDataFromClipboard() {
@@ -349,7 +349,7 @@ export class SendPage {
   }
 
   public pasteFromClipboard() {
-    this.search = this.validDataFromClipboard || '';
+    this.search = this.validDataFromClipboard;
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.searchSubject.next(this.search);
