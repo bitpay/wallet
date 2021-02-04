@@ -144,4 +144,16 @@ export class BuyCryptoProvider {
       wyrePaymentRequests: _.values(wyrePaymentRequests)
     };
   }
+
+  public getExchangeCoinsSupported(exchange?: string): string[] {
+    switch (exchange) {
+      case 'simplex':
+        return this.simplexProvider.supportedCoins;
+      case 'wyre':
+        return this.wyreProvider.supportedCoins;
+      default:
+        // return all supported coins
+        return this.exchangeCoinsSupported;
+    }
+  }
 }
