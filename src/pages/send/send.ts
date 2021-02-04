@@ -93,16 +93,7 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
-  }
-
-  @ViewChild('transferTo')
-  transferTo;
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: SendPage');
-  }
-
-  ionViewWillEnter() {
+    // Subscribers here to avoid multi-subscribes when back from Camera
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.subscribe('Desktop/onFocus', () => {
@@ -111,6 +102,13 @@ export class SendPage {
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setDataFromClipboard();
     });
+  }
+
+  @ViewChild('transferTo')
+  transferTo;
+
+  ionViewDidLoad() {
+    this.logger.info('Loaded: SendPage');
   }
 
   async ionViewDidEnter() {

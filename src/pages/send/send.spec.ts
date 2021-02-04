@@ -14,7 +14,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 // pages
 import { SendPage } from './send';
 
-describe('SendPage', () => {
+fdescribe('SendPage', () => {
   let fixture: ComponentFixture<SendPage>;
   let instance;
   let testBed: typeof TestBed;
@@ -57,23 +57,13 @@ describe('SendPage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should call get functions and subscribe to events', () => {
+      it('should call getWallets function', () => {
         const profileProviderSpy = spyOn(
           instance.profileProvider,
           'getWallets'
         );
-        const subscribeSpy = spyOn(instance.events, 'subscribe');
-        instance.ionViewWillEnter();
         instance.ionViewDidEnter();
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
-        expect(subscribeSpy).toHaveBeenCalledWith(
-          'Local/AddressScan',
-          instance.updateAddressHandler
-        );
-        expect(subscribeSpy).toHaveBeenCalledWith(
-          'SendPageRedir',
-          instance.SendPageRedirEventHandler
-        );
       });
     });
   });
