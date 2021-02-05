@@ -202,7 +202,7 @@
     "adm-zip": "0.4.13",
     "codecov": "3.7.2",
     "core-js": "2.6.10",
-    "electron": "9.3.5",
+    "electron": "9.4.0",
     "fs-extra": "9.0.1",
     "ionic": "4.10.4",
     "ionic-mocks": "1.2.1",
