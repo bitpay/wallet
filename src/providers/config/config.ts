@@ -216,7 +216,7 @@ export class ConfigProvider {
         debitcard: true,
         amazon: true,
         mercadolibre: true,
-        shapeshift: true,
+        shapeshift: false,
         buycrypto: true,
         exchangecrypto: true,
         giftcards: true,

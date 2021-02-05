@@ -88,18 +88,11 @@ export class JoinWalletPage {
       derivationPath: [null]
     });
 
-    if (this.coin === 'eth') {
-      this.joinForm.get('walletName').setValidators([Validators.required]);
-      this.joinForm.controls['walletName'].setValue(
-        this.translate.instant('ETH Multisig')
-      );
-      this.joinForm.get('invitationCode').setValidators([Validators.required]);
-    } else {
+
       this.joinForm.get('myName').setValidators([Validators.required]);
       this.joinForm
         .get('invitationCode')
         .setValidators([Validators.required, Validators.pattern(this.regex)]);
-    }
 
     this.seedOptions = [
       {
@@ -224,70 +217,9 @@ export class JoinWalletPage {
     }
   }
 
-  private createAndBindMultisigWallet(pairedWallet, multisigEthInfo) {
-    this.profileProvider
-      .createMultisigEthWallet(pairedWallet, multisigEthInfo)
-      .then(multisigWallet => {
-        // store preferences for the paired eth wallet
-        this.walletProvider.updateRemotePreferences(pairedWallet);
-        this.navCtrl.popToRoot({ animate: false }).then(() => {
-          if (multisigWallet) {
-            setTimeout(() => {
-              this.navCtrl.push(WalletDetailsPage, {
-                walletId: multisigWallet.credentials.walletId
-              });
-            }, 1000);
-          }
-        });
-      });
-  }
 
   public async setOptsAndJoin() {
-    if (this.coin === 'eth') {
-      const multisigContractAddress = this.joinForm.value.invitationCode;
-      const walletName = this.joinForm.value.walletName;
-      const ownerAddress = await this.walletProvider.getAddress(
-        this.pairedWallet,
-        false
-      );
-      let contractInfo;
-      try {
-        contractInfo = await this.walletProvider.getMultisigContractInfo(
-          this.pairedWallet,
-          {
-            multisigContractAddress
-          }
-        );
-      } catch (error) {
-        this.logger.error('Multisig contract address not found', error.message);
-      }
-      if (!contractInfo) {
-        // show error multisig contract not found
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant(
-          'Multisig contract address not found.'
-        );
-        this.errorsProvider.showDefaultError(subtitle, title);
-      } else if (!_.includes(contractInfo.owners, ownerAddress)) {
-        // show error multisig contract wrong owner
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant(
-          'The ethereum paired wallet you choose does not belong to this contract'
-        );
-        this.errorsProvider.showDefaultError(subtitle, title);
-      } else {
-        const m = contractInfo.owners.length;
-        const n = Number(contractInfo.required);
-        this.createAndBindMultisigWallet(this.pairedWallet, {
-          multisigContractAddress,
-          walletName,
-          n,
-          m
-        });
-      }
-      return;
-    }
-
+    
     const opts: Partial<WalletOptions> = {
       keyId: this.keyId,
       secret: this.joinForm.value.invitationCode,
