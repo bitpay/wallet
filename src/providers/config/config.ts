@@ -264,8 +264,8 @@ export class ConfigProvider {
 
       theme: {
         enabled: true,
-        system: true,
-        name: 'light'
+        system: false,
+        name: 'dark'
       },
 
       totalBalance: {
