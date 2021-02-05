@@ -66,6 +66,7 @@ export class TransferToPage implements OnInit {
   public _useAsModal: boolean;
   public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
+  public itemTapped: boolean = false;
 
   private _fromSelectInputs: boolean;
   private _fromMultiSend: boolean;
@@ -342,6 +343,7 @@ export class TransferToPage implements OnInit {
   }
 
   public close(item): void {
+    this.itemTapped = true;
     item
       .getAddress()
       .then((addr: string) => {
@@ -382,5 +384,6 @@ export class TransferToPage implements OnInit {
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
+    this.itemTapped = false;
   }
 }

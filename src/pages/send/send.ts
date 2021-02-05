@@ -110,20 +110,20 @@ export class SendPage {
     this.logger.info('Loaded: SendPage');
   }
 
-  ionViewWillEnter() {
-    this.setDataFromClipboard();
+  async ionViewDidEnter() {
+    await this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
-    this.logger.warn(`SendPage Unsubscribers`);
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
     this.onResumeSubscription.unsubscribe();
+    this.searchSubject.unsubscribe();
   }
 
-  private setDataFromClipboard() {
-    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private async setDataFromClipboard() {
+    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }

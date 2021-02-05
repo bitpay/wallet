@@ -5,7 +5,7 @@
       <span translate>Contacts</span>
     </ion-label>
   </div>
-  <div *ngIf="(filteredContactsListPromise | async)?.length > 0">
+  <div *ngIf="(filteredContactsListPromise | async)?.length > 0" ng-class="{ 'disabled':itemTapped}">
   <div class="line-divider"></div>
   <ion-list no-lines class="bp-list">
     <button ion-item *ngFor="let item of (filteredContactsListPromise | async)" (click)="close(item)">
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div *ngFor="let coin of availableCoins">
+<div *ngFor="let coin of availableCoins" ng-class="{ 'disabled':itemTapped}">
   <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0] && filteredWalletsByKeys?.length>0">
     <div class="section-header">
       <ion-label class="key-name">
