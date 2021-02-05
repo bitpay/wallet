@@ -56,7 +56,7 @@ export class BwcProvider {
 
     // note opts use `bwsurl` all lowercase;
     let bwc = new BWC({
-      baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api', // 'http://localhost:3232/bws/api', uncmment for local testing
+      baseUrl: opts.bwsurl || 'http://localhost:3232/bws/api', // 'http://localhost:3232/bws/api', uncmment for local testing
       verbose: opts.verbose,
       timeout: 100000,
       transports: ['polling'],

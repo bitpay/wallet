@@ -172,7 +172,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://bws.bitpay.com/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
+        url: 'http://localhost:3232/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
       },
 
       adPubKey: {
@@ -264,8 +264,8 @@ export class ConfigProvider {
 
       theme: {
         enabled: true,
-        system: true,
-        name: 'light'
+        system: false,
+        name: 'dark'
       },
 
       totalBalance: {
