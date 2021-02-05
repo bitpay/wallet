@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
@@ -15,8 +16,10 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { ExchangeCryptoProvider } from '../../../providers/exchange-crypto/exchange-crypto';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import {
@@ -31,12 +34,14 @@ import {
 export class ExchangeCheckoutPage {
   protected bitcoreCash;
 
+  public isCordova: boolean;
   public fromWalletSelected;
   public toWalletSelected;
   public amountFrom: number;
   public amountTo: number;
   public alternativeIsoCode: string;
   public useSendMax: boolean;
+  public sendMaxInfo;
   public fixedRateId: string;
   public rate: number;
   public termsAccepted: boolean;
@@ -66,11 +71,13 @@ export class ExchangeCheckoutPage {
     private modalCtrl: ModalController,
     private changellyProvider: ChangellyProvider,
     private navCtrl: NavController,
+    private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
     private rateProvider: RateProvider,
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
@@ -79,13 +86,15 @@ export class ExchangeCheckoutPage {
     this.onGoingProcessProvider.set(
       this.translate.instant('Getting data from the exchange...')
     );
+    this.isCordova = this.platformProvider.isCordova;
     this.fromWalletSelected = this.profileProvider.getWallet(
       this.navParams.data.fromWalletSelectedId
     );
     this.toWalletSelected = this.profileProvider.getWallet(
       this.navParams.data.toWalletSelectedId
     );
-    this.useSendMax = this.navParams.data.useSendMax; // TODO: implement send max feature
+    this.useSendMax = this.navParams.data.useSendMax;
+    this.sendMaxInfo = this.navParams.data.sendMaxInfo;
     this.amountFrom = this.navParams.data.amountFrom;
     this.fixedRateId = this.navParams.data.fixedRateId;
     this.rate = this.navParams.data.rate;
@@ -218,6 +227,9 @@ export class ExchangeCheckoutPage {
                     this.onGoingProcessProvider.clear();
                     this.ctxp = ctxp;
                     this.fee = this.ctxp.fee;
+                    if (this.useSendMax) {
+                      this.showWarningSheet();
+                    }
                     return;
                   })
                   .catch(err => {
@@ -378,13 +390,13 @@ export class ExchangeCheckoutPage {
           }
         }
       }
-      // if (this.sendMaxInfo) {
-      //   txp.inputs = this.sendMaxInfo.inputs;
-      //   txp.fee = this.sendMaxInfo.fee;
-      // } else {
-      if (wallet.coin == 'btc' || this.getChain(wallet.coin) == 'eth')
-        txp.feeLevel = 'priority'; // Avoid expired order due to slow TX confirmation
-      // }
+      if (this.useSendMax && this.sendMaxInfo) {
+        txp.inputs = this.sendMaxInfo.inputs;
+        txp.fee = this.sendMaxInfo.fee;
+      } else {
+        if (wallet.coin == 'btc' || this.getChain(wallet.coin) == 'eth')
+          txp.feeLevel = 'priority'; // Avoid expired order due to slow TX confirmation
+      }
 
       if (destTag) txp.destinationTag = destTag;
 
@@ -400,6 +412,42 @@ export class ExchangeCheckoutPage {
           });
         });
     });
+  }
+
+  private showWarningSheet(): void {
+    if (!this.sendMaxInfo || !this.ctxp) return;
+
+    let msg, infoSheetType;
+
+    if (this.useSendMax) {
+      const warningMsg = this.exchangeCryptoProvider.verifyExcludedUtxos(
+        this.ctxp.coin,
+        this.sendMaxInfo
+      );
+      msg = !_.isEmpty(warningMsg) ? warningMsg : '';
+      infoSheetType = 'miner-fee-notice';
+    }
+
+    const coinName = this.currencyProvider.getCoinName(
+      this.fromWalletSelected.coin
+    );
+
+    const { unitToSatoshi } = this.currencyProvider.getPrecision(
+      this.ctxp.coin
+    );
+
+    const fee = this.sendMaxInfo.fee / unitToSatoshi;
+
+    const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
+      infoSheetType,
+      {
+        coinName,
+        fee,
+        coin: this.ctxp.coin.toUpperCase(),
+        msg
+      }
+    );
+    minerFeeNoticeInfoSheet.present();
   }
 
   public getChain(coin: Coin): string {

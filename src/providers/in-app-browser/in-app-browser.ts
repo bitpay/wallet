@@ -7,6 +7,8 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
+declare var cordova: any;
+
 @Injectable()
 export class InAppBrowserProvider {
   // add new refs here
@@ -44,8 +46,11 @@ export class InAppBrowserProvider {
     initScript?: string
   ): Promise<InAppBrowserRef> {
     return new Promise((res, rej) => {
-      const ref: InAppBrowserRef = window.open(url, '_blank', config);
-      ref.postMessage = window.postMessage;
+      const ref: InAppBrowserRef = cordova.InAppBrowser.open(
+        url,
+        '_blank',
+        config
+      );
 
       const initCb = () => {
         if (initScript) {

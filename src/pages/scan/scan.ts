@@ -259,6 +259,7 @@ export class ScanPage {
     } else if (this.fromWalletConnect) {
       this.events.publish('Local/UriScan', { value: contents });
     } else {
+      this.navCtrl.parent.select(1); // Workaround to avoid keep camera active
       const redirParms = { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
     }

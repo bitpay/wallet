@@ -230,7 +230,6 @@ export class CopayApp {
       if (!lockMethod || lockMethod === 'disabled') {
         return;
       }
-      this.iabCardProvider.pause();
     });
 
     this.logger.debug('BitPay: setting network');
@@ -391,16 +390,21 @@ export class CopayApp {
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
             `( async () => {
-              window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}});
-              window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
-                this.appProvider.info.version
-              )}});
-              await new Promise((res) => setTimeout(res, 300));
-              sessionStorage.setItem('isPaired', ${!!token}); 
-              sessionStorage.setItem('cards', ${JSON.stringify(
-                JSON.stringify(cards)
-              )});
-              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
+              const sendMessageToWallet = (message) => webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+              try {
+                window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}},'*');
+                window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
+                  this.appProvider.info.version
+                )}},'*');
+                await new Promise((res) => setTimeout(res, 300));
+                sessionStorage.setItem('isPaired', ${!!token}); 
+                sessionStorage.setItem('cards', ${JSON.stringify(
+                  JSON.stringify(cards)
+                )});
+                sendMessageToWallet({message: 'IABLoaded'});
+              } catch(err) {
+                sendMessageToWallet({message: 'IABError', log: err});
+              }   
               })()`
           );
           this.iabCardProvider.init();
@@ -467,6 +471,7 @@ export class CopayApp {
     } else if (lockMethod == 'fingerprint') {
       this.openFingerprintModal();
     }
+    this.iabCardProvider.pause();
   }
 
   private openPINModal(action): void {
@@ -480,6 +485,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -496,6 +504,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -505,6 +516,9 @@ export class CopayApp {
     this.appProvider.isLockModalOpen = false;
     this.events.publish('Local/FetchWallets');
     this.events.publish('Local/showNewFeaturesSlides');
+  }
+
+  private onLockWillDismiss(): void {
     this.iabCardProvider.resume();
   }
 

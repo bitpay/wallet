@@ -93,16 +93,6 @@ export class SendPage {
     private clipboardProvider: ClipboardProvider
   ) {
     this.wallet = this.navParams.data.wallet;
-  }
-
-  @ViewChild('transferTo')
-  transferTo;
-
-  ionViewDidLoad() {
-    this.logger.info('Loaded: SendPage');
-  }
-
-  ionViewWillEnter() {
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.subscribe('Desktop/onFocus', () => {
@@ -113,22 +103,29 @@ export class SendPage {
     });
   }
 
-  async ionViewDidEnter() {
+  @ViewChild('transferTo')
+  transferTo;
+
+  ionViewDidLoad() {
+    this.logger.info('Loaded: SendPage');
+  }
+
+  ionViewWillEnter() {
     this.hasWallets = !_.isEmpty(
       this.profileProvider.getWallets({ coin: this.wallet.coin })
     );
-    await this.setDataFromClipboard();
+    this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.unsubscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.unsubscribe('Desktop/onFocus');
-    if (this.onResumeSubscription) this.onResumeSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
   }
 
-  private async setDataFromClipboard() {
-    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private setDataFromClipboard() {
+    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }
@@ -353,7 +350,7 @@ export class SendPage {
   }
 
   public pasteFromClipboard() {
-    this.search = this.validDataFromClipboard || '';
+    this.search = this.validDataFromClipboard;
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
