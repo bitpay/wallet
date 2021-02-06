@@ -29,7 +29,7 @@ msgid "3.9% of the amount + 0.30 USD per transactions"
 msgstr ""
 
 msgid ""
-"5-star ratings help us get BitPay Wallet into more hands, and more users "
+"5-star ratings help us get AbcPay Wallet into more hands, and more users "
 "means more resources can be committed to the app!"
 msgstr ""
 
@@ -125,7 +125,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "Add BitPay Account?"
+msgid "Add AbcPay Account?"
 msgstr ""
 
 msgid "Add Encryption"
@@ -155,7 +155,7 @@ msgstr ""
 msgid "Add funds from an existing wallet."
 msgstr ""
 
-msgid "Add this BitPay account ({{email}})?"
+msgid "Add this AbcPay account ({{email}})?"
 msgstr ""
 
 msgid "Add {coinName} address"
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Are you sure you want to remove this transaction?"
 msgstr ""
 
-msgid "Are you sure you would like to disconnect your BitPay ID?"
+msgid "Are you sure you would like to disconnect your AbcPay ID?"
 msgstr ""
 
 msgid "Are you sure?"
@@ -354,7 +354,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Because your encrypted password is not stored by BitPay, there is no way to "
+"Because your encrypted password is not stored by AbcPay, there is no way to "
 "reset it."
 msgstr ""
 
@@ -382,23 +382,23 @@ msgstr ""
 msgid "Biometric"
 msgstr ""
 
-msgid "BitPay Account"
+msgid "AbcPay Account"
 msgstr ""
 
-msgid "BitPay ID"
+msgid "AbcPay ID"
 msgstr ""
 
-msgid "BitPay ID successfully connected."
+msgid "AbcPay ID successfully connected."
 msgstr ""
 
-msgid "BitPay ID successfully disconnected."
+msgid "AbcPay ID successfully disconnected."
 msgstr ""
 
-msgid "BitPay does not receive and does not control miner fees."
+msgid "AbcPay does not receive and does not control miner fees."
 msgstr ""
 
 msgid ""
-"BitPay would also like to send you marketing and promotional communications "
+"AbcPay would also like to send you marketing and promotional communications "
 "about our products, services and special promotions. You can change your "
 "preferences at any time in “Settings” in our app or by contacting us as set "
 "forth in our"
@@ -424,7 +424,7 @@ msgstr ""
 
 msgid ""
 "Bitcore Wallet Service is under maintenance. Please check "
-"https://status.bitpay.com/."
+"https://status.AbcPay.com/."
 msgstr ""
 
 msgid "Broadcast Payment"
@@ -470,12 +470,12 @@ msgid "Buying Gift Card..."
 msgstr ""
 
 msgid ""
-"By giving my email address, I give explicit consent to BitPay to use it to "
+"By giving my email address, I give explicit consent to AbcPay to use it to "
 "contact me about payment issues."
 msgstr ""
 
 msgid ""
-"By providing your email address, you give explicit consent to BitPay to use "
+"By providing your email address, you give explicit consent to AbcPay to use "
 "your email address to send you email notifications about payments."
 msgstr ""
 
@@ -654,7 +654,7 @@ msgstr ""
 msgid "Connect Coinbase Account"
 msgstr ""
 
-msgid "Connect Your BitPay ID"
+msgid "Connect Your AbcPay ID"
 msgstr ""
 
 msgid "Connect to ShapeShift Account"
@@ -663,7 +663,7 @@ msgstr ""
 msgid "Connect with Coinbase"
 msgstr ""
 
-msgid "Connect your BitPay ID"
+msgid "Connect your AbcPay ID"
 msgstr ""
 
 msgid "Connect your Coinbase!"
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Connected with"
 msgstr ""
 
-msgid "Connecting BitPay ID..."
+msgid "Connecting AbcPay ID..."
 msgstr ""
 
 msgid "Connecting to Coinbase..."
@@ -792,7 +792,7 @@ msgstr ""
 msgid "Could not encrypt wallet"
 msgstr ""
 
-msgid "Could not get claim code. Please contact BitPay support."
+msgid "Could not get claim code. Please contact AbcPay support."
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -983,7 +983,7 @@ msgstr ""
 
 msgid ""
 "Designed for people who want to live life on crypto. View your balance, "
-"request a new PIN, and reload instantly all within the BitPay App."
+"request a new PIN, and reload instantly all within the AbcPay App."
 msgstr ""
 
 msgid "Destination Tag"
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "Disconnect"
 msgstr ""
 
-msgid "Disconnect BitPay ID"
+msgid "Disconnect AbcPay ID"
 msgstr ""
 
 msgid "Discount"
@@ -1118,7 +1118,7 @@ msgstr ""
 msgid "Enter Amount"
 msgstr ""
 
-msgid "Enter Two Factor for your BitPay account"
+msgid "Enter Two Factor for your AbcPay account"
 msgstr ""
 
 msgid "Enter a destination tag"
@@ -1198,7 +1198,7 @@ msgstr ""
 msgid "Error getting fee rate"
 msgstr ""
 
-msgid "Error pairing BitPay Account"
+msgid "Error pairing AbcPay Account"
 msgstr ""
 
 msgid "Error scanning funds:"
@@ -1285,10 +1285,10 @@ msgstr ""
 msgid "Feedback!"
 msgstr ""
 
-msgid "Fetching BitPay Account..."
+msgid "Fetching AbcPay Account..."
 msgstr ""
 
-msgid "Fetching BitPay Cards..."
+msgid "Fetching AbcPay Cards..."
 msgstr ""
 
 msgid "Fetching payment information..."
@@ -1309,11 +1309,11 @@ msgid "Flexibility"
 msgstr ""
 
 msgid ""
-"For BitPay invoices and gift cards the subtotal amount is the product or "
+"For AbcPay invoices and gift cards the subtotal amount is the product or "
 "service amount plus network costs."
 msgstr ""
 
-msgid "For best security this should not match your BitPay ID password."
+msgid "For best security this should not match your AbcPay ID password."
 msgstr ""
 
 msgid "Forgot your password?"
@@ -1328,7 +1328,7 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-msgid "From BitPay account"
+msgid "From AbcPay account"
 msgstr ""
 
 msgid "Fund it. Spend it."
@@ -1385,7 +1385,7 @@ msgstr ""
 msgid "Get help"
 msgstr ""
 
-msgid "Get news and updates from BitPay"
+msgid "Get news and updates from AbcPay"
 msgstr ""
 
 msgid "Get on Chrome"
@@ -1397,7 +1397,7 @@ msgstr ""
 msgid "Get started by adding your first one."
 msgstr ""
 
-msgid "Get the BitPay Card"
+msgid "Get the AbcPay Card"
 msgstr ""
 
 msgid "Getting fee levels..."
@@ -1450,7 +1450,7 @@ msgstr ""
 msgid "Help & support"
 msgstr ""
 
-msgid "Help BitPay improve"
+msgid "Help AbcPay improve"
 msgstr ""
 
 msgid "Help and support information is available at the website"
@@ -1491,7 +1491,7 @@ msgstr ""
 
 msgid ""
 "However, unconfirmed funds are not allowed for spending with merchants, "
-"BitPay Card loads, or BitPay in-app gift card purchases."
+"AbcPay Card loads, or AbcPay in-app gift card purchases."
 msgstr ""
 
 msgid "I Understand"
@@ -1537,13 +1537,13 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
 
 msgid ""
-"If enabled, your gift card purchases will be associated with your BitPay "
+"If enabled, your gift card purchases will be associated with your AbcPay "
 "ID, allowing you to keep track of your gift card purchases even if this "
 "device is lost."
 msgstr ""
 
 msgid ""
-"If you delete the BitPay app or lose this device, you’ll need a recovery "
+"If you delete the AbcPay app or lose this device, you’ll need a recovery "
 "key to regain access to your funds."
 msgstr ""
 
@@ -2206,7 +2206,7 @@ msgstr ""
 msgid "PRIMARY"
 msgstr ""
 
-msgid "Pair My BitPay Card"
+msgid "Pair My AbcPay Card"
 msgstr ""
 
 msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
@@ -3107,7 +3107,7 @@ msgstr ""
 
 msgid ""
 "The fastest, easiest way to turn your crypto into dollars for shopping. "
-"Load funds in the BitPay App and spend in minutes."
+"Load funds in the AbcPay App and spend in minutes."
 msgstr ""
 
 msgid ""
@@ -3376,7 +3376,7 @@ msgid ""
 "contact or wallet."
 msgstr ""
 
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgid "To {{reason}} you must first add your AbcPay account - {{email}}"
 msgstr ""
 
 msgid "Top up in progress..."
@@ -3451,13 +3451,13 @@ msgstr ""
 msgid "Transfer from"
 msgstr ""
 
-msgid "Transfer from BitPay"
+msgid "Transfer from AbcPay"
 msgstr ""
 
 msgid "Transfer to"
 msgstr ""
 
-msgid "Transfer to BitPay"
+msgid "Transfer to AbcPay"
 msgstr ""
 
 msgid "Transfer to Multiple Recipients"
@@ -3478,7 +3478,7 @@ msgstr ""
 msgid "Try entering any passwords you may have set in the past"
 msgstr ""
 
-msgid "Turn crypto into dollars using our BitPay Card."
+msgid "Turn crypto into dollars using our AbcPay Card."
 msgstr ""
 
 msgid "Two things you should know"
@@ -3514,10 +3514,10 @@ msgstr ""
 msgid "Unlock App"
 msgstr ""
 
-msgid "Unlock BitPay faster by setting up facial recognition."
+msgid "Unlock AbcPay faster by setting up facial recognition."
 msgstr ""
 
-msgid "Unlock BitPay faster by setting up fingerprint authentication."
+msgid "Unlock AbcPay faster by setting up fingerprint authentication."
 msgstr ""
 
 msgid "Unsent transactions"
@@ -3774,7 +3774,7 @@ msgid ""
 "wallet provider"
 msgstr ""
 
-msgid "We'll let you know as soon as the BitPay Card"
+msgid "We'll let you know as soon as the AbcPay Card"
 msgstr ""
 
 msgid "We'll notify you as soon as the card is ready."
@@ -3797,7 +3797,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Websites and exchanges get hacked. BitPay allows you to privately store, "
+"Websites and exchanges get hacked. AbcPay allows you to privately store, "
 "manage, and use your crypto funds without having to trust a centralized "
 "bank or exchange."
 msgstr ""
@@ -4008,7 +4008,7 @@ msgid "You're on the list!"
 msgstr ""
 
 msgid ""
-"Your BitPay Card is ready. Add funds to your card to start using it at "
+"Your AbcPay Card is ready. Add funds to your card to start using it at "
 "stores."
 msgstr ""
 
@@ -4017,7 +4017,7 @@ msgstr ""
 
 msgid ""
 "Your Key is all that is needed to access your funds. Be sure to protect "
-"your key and store it only on secure devices. BitPay does not have access "
+"your key and store it only on secure devices. AbcPay does not have access "
 "to your keys, so you alone are responsible for your keys. If you share key "
 "access with external services, you take responsibility for the risk of "
 "theft or breach."
@@ -4026,7 +4026,7 @@ msgstr ""
 msgid ""
 "Your extended private keys are all that is needed to access your funds. Be "
 "sure to protect your private keys and store them only on secure devices. "
-"BitPay does not have access to your private keys, so you alone are "
+"AbcPay does not have access to your private keys, so you alone are "
 "responsible for your keys. If you share key access with external services, "
 "you take responsibility for the risk of theft or breach. Only advanced "
 "users should handle extended private keys directly."
@@ -4088,7 +4088,7 @@ msgstr ""
 msgid "[Scanning Funds]"
 msgstr ""
 
-msgid "add your BitPay Visa card(s)"
+msgid "add your AbcPay Visa card(s)"
 msgstr ""
 
 msgid "me"
@@ -4135,7 +4135,7 @@ msgstr ""
 msgid ""
 "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
 "information, networking and Copayer synchronization. The default "
-"configuration points to https://bws.bitpay.com (BitPay's public BWS "
+"configuration points to https://bws.AbcPay.com (AbcPay's public BWS "
 "instance)."
 msgstr ""
 

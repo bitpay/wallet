@@ -225,7 +225,7 @@ export class BitPayCardProvider {
           this.onGoingProcessProvider.clear();
           return cb(data.error);
         }
-        this.logger.info('BitPay Get Debit Cards: SUCCESS');
+        this.logger.info('AbcPay Get Debit Cards: SUCCESS');
 
         var cards = [];
 
@@ -233,7 +233,7 @@ export class BitPayCardProvider {
           var n: any = {};
 
           if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
-            this.logger.warn('BAD data from BitPay card' + JSON.stringify(x));
+            this.logger.warn('BAD data from AbcPay card' + JSON.stringify(x));
             return;
           }
 
@@ -260,7 +260,7 @@ export class BitPayCardProvider {
       },
       data => {
         this.onGoingProcessProvider.clear();
-        return cb(this._setError('BitPay Card Error: Get Debit Cards', data));
+        return cb(this._setError('AbcPay Card Error: Get Debit Cards', data));
       }
     );
   }
@@ -305,7 +305,7 @@ export class BitPayCardProvider {
             '/api/v2/' + card.token,
             json,
             data => {
-              this.logger.info('BitPay Get Invoices: SUCCESS');
+              this.logger.info('AbcPay Get Invoices: SUCCESS');
               invoices = data.data || [];
 
               if (_.isEmpty(invoices)) this.logger.info('No invoices');
@@ -319,7 +319,7 @@ export class BitPayCardProvider {
                 '/api/v2/' + card.token,
                 json,
                 data => {
-                  this.logger.info('BitPay Get History: SUCCESS');
+                  this.logger.info('AbcPay Get History: SUCCESS');
                   history = data.data || {};
                   history['txs'] = this._processTransactions(invoices, history);
 
@@ -337,28 +337,28 @@ export class BitPayCardProvider {
                 },
                 data => {
                   this.logger.info(
-                    'Error loading BitPay Card transaction history for ',
+                    'Error loading AbcPay Card transaction history for ',
                     'card id: ',
                     cardId,
                     'Message: ',
                     data.error
                   );
                   return cb(
-                    this._setError('BitPay Card Error: Get History', data)
+                    this._setError('AbcPay Card Error: Get History', data)
                   );
                 }
               );
             },
             data => {
               this.logger.info(
-                'Error loading BitPay Card invoice history for ',
+                'Error loading AbcPay Card invoice history for ',
                 'card id: ',
                 cardId,
                 'Message: ',
                 data.error
               );
               return cb(
-                this._setError('BitPay Card Error: Get Invoices', data)
+                this._setError('AbcPay Card Error: Get Invoices', data)
               );
             }
           );
@@ -390,15 +390,15 @@ export class BitPayCardProvider {
             json,
             res => {
               if (res.error) {
-                this.logger.error('BitPay TopUp: With Errors');
+                this.logger.error('AbcPay TopUp: With Errors');
                 return cb(res.error);
               } else {
-                this.logger.info('BitPay TopUp: SUCCESS');
+                this.logger.info('AbcPay TopUp: SUCCESS');
                 return cb(null, res.data);
               }
             },
             res => {
-              return cb(this._setError('BitPay Card Error: TopUp', res));
+              return cb(this._setError('AbcPay Card Error: TopUp', res));
             }
           );
         });
@@ -410,11 +410,11 @@ export class BitPayCardProvider {
     this.bitPayProvider.get(
       '/invoices/' + id,
       res => {
-        this.logger.info('BitPay Get Invoice: SUCCESS');
+        this.logger.info('AbcPay Get Invoice: SUCCESS');
         return cb(res.error, res.data);
       },
       res => {
-        return cb(this._setError('BitPay Card Error: Get Invoice', res));
+        return cb(this._setError('AbcPay Card Error: Get Invoice', res));
       }
     );
   }
@@ -439,7 +439,7 @@ export class BitPayCardProvider {
         return cb();
       })
       .catch(err => {
-        this.logger.error('Error removing BitPay debit card: ' + err);
+        this.logger.error('Error removing AbcPay debit card: ' + err);
         return cb(err);
       });
   }
@@ -448,11 +448,11 @@ export class BitPayCardProvider {
     this.bitPayProvider.get(
       '/rates/' + currency,
       data => {
-        this.logger.info('BitPay Get Rates: SUCCESS');
+        this.logger.info('AbcPay Get Rates: SUCCESS');
         return cb(data.error, data.data);
       },
       data => {
-        return cb(this._setError('BitPay Error: Get Rates', data));
+        return cb(this._setError('AbcPay Error: Get Rates', data));
       }
     );
   }
@@ -461,11 +461,11 @@ export class BitPayCardProvider {
     this.bitPayProvider.get(
       '/rates/' + coin + '/' + currency,
       data => {
-        this.logger.info('BitPay Get Rates: SUCCESS');
+        this.logger.info('AbcPay Get Rates: SUCCESS');
         return cb(data.error, data.data);
       },
       data => {
-        return cb(this._setError('BitPay Error: Get Rates', data));
+        return cb(this._setError('AbcPay Error: Get Rates', data));
       }
     );
   }
@@ -523,7 +523,7 @@ export class BitPayCardProvider {
     this.isActive(isActive => {
       this.homeIntegrationsProvider.register({
         name: 'debitcard',
-        title: 'BitPay Visa® Card',
+        title: 'AbcPay Visa® Card',
         icon: 'assets/img/bitpay-card/icon-bitpay.svg',
         page: 'BitPayCardIntroPage',
         show: !!this.configProvider.get().showIntegration['debitcard'],
@@ -547,7 +547,7 @@ const currencySymbols = {
 const bpTranCodes = {
   '00611': {
     merchant: {
-      name: 'BitPay',
+      name: 'AbcPay',
       city: 'Atlanta',
       state: 'GA'
     },
@@ -605,7 +605,7 @@ const bpTranCodes = {
   },
   load: {
     merchant: {
-      name: 'BitPay',
+      name: 'AbcPay',
       city: 'Atlanta',
       state: 'GA'
     },

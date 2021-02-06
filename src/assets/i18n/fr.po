@@ -35,8 +35,8 @@ msgstr "2,9% du montant + 0,30 USD par transaction"
 msgid "3.9% of the amount + 0.30 USD per transactions"
 msgstr "3,9% du montant + 0,30 USD par transaction"
 
-msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr "Une note de 5 étoiles permet à BitPay Wallet de gagner en popularité et nous encourage à améliorer l'application !"
+msgid "5-star ratings help us get AbcPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr "Une note de 5 étoiles permet à AbcPay Wallet de gagner en popularité et nous encourage à améliorer l'application !"
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
 msgstr "Un « Destination Tag » est un numéro optionnel qui correspond à une facture ou à un compte XRP sur une bourse."
@@ -107,8 +107,8 @@ msgstr "Activité"
 msgid "Add"
 msgstr "Ajouter"
 
-msgid "Add BitPay Account?"
-msgstr "Ajouter un compte BitPay ?"
+msgid "Add AbcPay Account?"
+msgstr "Ajouter un compte AbcPay ?"
 
 msgid "Add Encryption"
 msgstr ""
@@ -137,8 +137,8 @@ msgstr "Ajouter des fonds"
 msgid "Add funds from an existing wallet."
 msgstr "Ajouter des fonds depuis un portefeuille existant."
 
-msgid "Add this BitPay account ({{email}})?"
-msgstr "Voulez-vous ajouter ce compte BitPay ({{email}}) ?"
+msgid "Add this AbcPay account ({{email}})?"
+msgstr "Voulez-vous ajouter ce compte AbcPay ({{email}}) ?"
 
 msgid "Add {coinName} address"
 msgstr ""
@@ -257,8 +257,8 @@ msgstr "Êtes-vous certain(e) de vouloir rejeter cette transaction ?"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "Êtes-vous certain(e) de vouloir supprimer cette transaction ?"
 
-msgid "Are you sure you would like to disconnect your BitPay ID?"
-msgstr "Êtes-vous sûr de vouloir déconnecter votre BitPay ID ?"
+msgid "Are you sure you would like to disconnect your AbcPay ID?"
+msgstr "Êtes-vous sûr de vouloir déconnecter votre AbcPay ID ?"
 
 msgid "Are you sure?"
 msgstr "Êtes-vous sûr ?"
@@ -314,8 +314,8 @@ msgstr "Étant donné que vous envoyez le montant maximal contenu dans ce portef
 msgid "Because you are speeding up this transaction, the {coinName} miner fee ({fee} {coin}) will be deducted from the total."
 msgstr "Comme vous accélérez cette transaction, les frais miniers {coinName} ({fee} {coin}) seront déduits du total."
 
-msgid "Because your encrypted password is not stored by BitPay, there is no way to reset it."
-msgstr "Parce que votre code de chiffrement n'est pas stocké par BitPay, il n'y a aucun moyen de le réinitialiser."
+msgid "Because your encrypted password is not stored by AbcPay, there is no way to reset it."
+msgstr "Parce que votre code de chiffrement n'est pas stocké par AbcPay, il n'y a aucun moyen de le réinitialiser."
 
 msgid "Before duplicating your wallet, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
 msgstr "Avant de dupliquer votre portefeuille, il est recommandé de noter d'abord votre phrase de récupération et de la stocker de manière sécurisée afin que votre portefeuille puisse être récupéré en cas de perte ou de vol de votre appareil."
@@ -332,23 +332,23 @@ msgstr "En dessous du montant minimal"
 msgid "Biometric"
 msgstr "Empreinte digitale"
 
-msgid "BitPay Account"
-msgstr "Compte BitPay"
+msgid "AbcPay Account"
+msgstr "Compte AbcPay"
 
-msgid "BitPay ID"
-msgstr "BitPay ID"
+msgid "AbcPay ID"
+msgstr "AbcPay ID"
 
-msgid "BitPay ID successfully connected."
-msgstr "BitPay ID connecté avec succès."
+msgid "AbcPay ID successfully connected."
+msgstr "AbcPay ID connecté avec succès."
 
-msgid "BitPay ID successfully disconnected."
-msgstr "BitPay ID déconnecté avec succès."
+msgid "AbcPay ID successfully disconnected."
+msgstr "AbcPay ID déconnecté avec succès."
 
-msgid "BitPay does not receive and does not control miner fees."
-msgstr "BitPay ne reçoit pas et ne contrôle pas les frais miniers."
+msgid "AbcPay does not receive and does not control miner fees."
+msgstr "AbcPay ne reçoit pas et ne contrôle pas les frais miniers."
 
-msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
-msgstr "BitPay souhaite également vous envoyer des communications marketing et promotionnelles sur nos produits, nos services et nos promotions spéciales. Vous pouvez modifier vos préférences à tout moment dans« Paramètres » depuis notre application ou en nous contactant comme indiqué dans notre"
+msgid "AbcPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
+msgstr "AbcPay souhaite également vous envoyer des communications marketing et promotionnelles sur nos produits, nos services et nos promotions spéciales. Vous pouvez modifier vos préférences à tout moment dans« Paramètres » depuis notre application ou en nous contactant comme indiqué dans notre"
 
 msgid "Bitcoin Address"
 msgstr "Adresse bitcoin"
@@ -368,8 +368,8 @@ msgstr "URI Bitcoin"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Les transactions Bitcoin incluent des frais collectés par les mineurs du réseau."
 
-msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
-msgstr "Bitcore Wallet Service est en maintenance. Veuillez vérifier sur https://status.bitpay.com/."
+msgid "Bitcore Wallet Service is under maintenance. Please check https://status.AbcPay.com/."
+msgstr "Bitcore Wallet Service est en maintenance. Veuillez vérifier sur https://status.AbcPay.com/."
 
 msgid "Broadcast Payment"
 msgstr "Diffuser le paiement"
@@ -413,11 +413,11 @@ msgstr "Achat de bitcoins..."
 msgid "Buying Gift Card..."
 msgstr "Achat d'une carte-cadeau..."
 
-msgid "By giving my email address, I give explicit consent to BitPay to use it to contact me about payment issues."
-msgstr "En donnant mon adresse e-mail, je donne explicitement mon consentement à BitPay pour l'utiliser afin de me contacter au sujet des problèmes de paiement."
+msgid "By giving my email address, I give explicit consent to AbcPay to use it to contact me about payment issues."
+msgstr "En donnant mon adresse e-mail, je donne explicitement mon consentement à AbcPay pour l'utiliser afin de me contacter au sujet des problèmes de paiement."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à BitPay d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
+msgid "By providing your email address, you give explicit consent to AbcPay to use your email address to send you email notifications about payments."
+msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à AbcPay d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
 
 msgid "CLOSE"
 msgstr "FERMER"
@@ -587,7 +587,7 @@ msgstr "Connecter un compte"
 msgid "Connect Coinbase Account"
 msgstr "Connecter un compte Coinbase"
 
-msgid "Connect Your BitPay ID"
+msgid "Connect Your AbcPay ID"
 msgstr ""
 
 msgid "Connect to ShapeShift Account"
@@ -596,8 +596,8 @@ msgstr "Se connecter au compte ShapeShift"
 msgid "Connect with Coinbase"
 msgstr ""
 
-msgid "Connect your BitPay ID"
-msgstr "Connectez votre BitPay ID"
+msgid "Connect your AbcPay ID"
+msgstr "Connectez votre AbcPay ID"
 
 msgid "Connect your Coinbase!"
 msgstr "Connectez votre Coinbase !"
@@ -605,8 +605,8 @@ msgstr "Connectez votre Coinbase !"
 msgid "Connected with"
 msgstr ""
 
-msgid "Connecting BitPay ID..."
-msgstr "Connexion de BitPay ID..."
+msgid "Connecting AbcPay ID..."
+msgstr "Connexion de AbcPay ID..."
 
 msgid "Connecting to Coinbase..."
 msgstr "Connexion à Coinbase..."
@@ -725,8 +725,8 @@ msgstr "Impossible de supprimer la proposition de paiement"
 msgid "Could not encrypt wallet"
 msgstr "Impossible de chiffrer le portefeuille"
 
-msgid "Could not get claim code. Please contact BitPay support."
-msgstr "Impossible d'obtenir le code de réclamation. Veuillez contacter BitPay."
+msgid "Could not get claim code. Please contact AbcPay support."
+msgstr "Impossible d'obtenir le code de réclamation. Veuillez contacter AbcPay."
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr ""
@@ -914,8 +914,8 @@ msgstr "Description"
 msgid "Designed for people who want to live life on crypto."
 msgstr "Conçu pour les personnes qui veulent utiliser les crypto quotidiennement."
 
-msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
-msgstr "Conçu pour les personnes qui veulent utiliser les crypto quotidiennement. Visualisez votre solde, demandez un nouveau code PIN, et rechargez instantanément au sein de l'application BitPay."
+msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the AbcPay App."
+msgstr "Conçu pour les personnes qui veulent utiliser les crypto quotidiennement. Visualisez votre solde, demandez un nouveau code PIN, et rechargez instantanément au sein de l'application AbcPay."
 
 msgid "Destination Tag"
 msgstr "Destination Tag"
@@ -935,8 +935,8 @@ msgstr "Désactivé"
 msgid "Disconnect"
 msgstr "Déconnecter"
 
-msgid "Disconnect BitPay ID"
-msgstr "Déconnecter BitPay ID"
+msgid "Disconnect AbcPay ID"
+msgstr "Déconnecter AbcPay ID"
 
 msgid "Discount"
 msgstr "Remise"
@@ -1040,8 +1040,8 @@ msgstr "Entrez la vérification en 2 étapes"
 msgid "Enter Amount"
 msgstr "Saisissez un montant"
 
-msgid "Enter Two Factor for your BitPay account"
-msgstr "Saisissez le code 2FA pour votre compte BitPay"
+msgid "Enter Two Factor for your AbcPay account"
+msgstr "Saisissez le code 2FA pour votre compte AbcPay"
 
 msgid "Enter a destination tag"
 msgstr "Saisissez un Destination Tag"
@@ -1115,8 +1115,8 @@ msgstr "Erreur lors de l'obtention des informations d'accélération"
 msgid "Error getting fee rate"
 msgstr "Erreur d'obtention des frais"
 
-msgid "Error pairing BitPay Account"
-msgstr "Erreur d'appariement du compte BitPay"
+msgid "Error pairing AbcPay Account"
+msgstr "Erreur d'appariement du compte AbcPay"
 
 msgid "Error scanning funds:"
 msgstr "Erreur de numérisation des fonds :"
@@ -1202,11 +1202,11 @@ msgstr "Vos commentaires n'ont pas pu être envoyés. Veuillez réessayer plus t
 msgid "Feedback!"
 msgstr "Votre avis compte !"
 
-msgid "Fetching BitPay Account..."
-msgstr "Récupération du compte BitPay..."
+msgid "Fetching AbcPay Account..."
+msgstr "Récupération du compte AbcPay..."
 
-msgid "Fetching BitPay Cards..."
-msgstr "Récupération des BitPay Cards..."
+msgid "Fetching AbcPay Cards..."
+msgstr "Récupération des AbcPay Cards..."
 
 msgid "Fetching payment information..."
 msgstr "Récupération des informations de paiement..."
@@ -1223,10 +1223,10 @@ msgstr ""
 msgid "Flexibility"
 msgstr "Flexibilité"
 
-msgid "For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
-msgstr "Pour les factures BitPay et les cartes-cadeaux, le montant du sous-total est le montant du produit ou du service plus les coûts de réseau."
+msgid "For AbcPay invoices and gift cards the subtotal amount is the product or service amount plus network costs."
+msgstr "Pour les factures AbcPay et les cartes-cadeaux, le montant du sous-total est le montant du produit ou du service plus les coûts de réseau."
 
-msgid "For best security this should not match your BitPay ID password."
+msgid "For best security this should not match your AbcPay ID password."
 msgstr ""
 
 msgid "Forgot your password?"
@@ -1238,8 +1238,8 @@ msgstr "Vous avez trouvé quelque chose de défectueux ? Veuillez le signaler co
 msgid "From"
 msgstr "De"
 
-msgid "From BitPay account"
-msgstr "Depuis un compte BitPay"
+msgid "From AbcPay account"
+msgstr "Depuis un compte AbcPay"
 
 msgid "Fund it. Spend it."
 msgstr ""
@@ -1295,8 +1295,8 @@ msgstr "Commencer"
 msgid "Get help"
 msgstr "Obtenir de l'aide"
 
-msgid "Get news and updates from BitPay"
-msgstr "Obtenir les actualités et mises à jour de BitPay"
+msgid "Get news and updates from AbcPay"
+msgstr "Obtenir les actualités et mises à jour de AbcPay"
 
 msgid "Get on Chrome"
 msgstr ""
@@ -1307,8 +1307,8 @@ msgstr "Commencer"
 msgid "Get started by adding your first one."
 msgstr "Commencez par ajouter votre premier contact."
 
-msgid "Get the BitPay Card"
-msgstr "Obtenez la BitPay Card"
+msgid "Get the AbcPay Card"
+msgstr "Obtenez la AbcPay Card"
 
 msgid "Getting fee levels..."
 msgstr "Obtention des niveaux de frais..."
@@ -1358,7 +1358,7 @@ msgstr "Aide et support"
 msgid "Help & support"
 msgstr "Aide & Support"
 
-msgid "Help BitPay improve"
+msgid "Help AbcPay improve"
 msgstr ""
 
 msgid "Help and support information is available at the website"
@@ -1397,8 +1397,8 @@ msgstr "À quel point êtes-vous satisfait d'utiliser {{appName}} ?"
 msgid "How to recover your funds if you lose this device?"
 msgstr ""
 
-msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
-msgstr "Cependant, les fonds non confirmés ne sont pas autorisés à être dépensés avec des marchands, pour recharger des BitPay Card ou pour acheter des cartes-cadeaux BitPay au sein de l'application."
+msgid "However, unconfirmed funds are not allowed for spending with merchants, AbcPay Card loads, or AbcPay in-app gift card purchases."
+msgstr "Cependant, les fonds non confirmés ne sont pas autorisés à être dépensés avec des marchands, pour recharger des AbcPay Card ou pour acheter des cartes-cadeaux AbcPay au sein de l'application."
 
 msgid "I Understand"
 msgstr "Je comprends"
@@ -1436,10 +1436,10 @@ msgstr "J’ai utilisé cette carte"
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Si l’option est activée, les portefeuilles essaieront de dépenser des fonds non confirmés."
 
-msgid "If enabled, your gift card purchases will be associated with your BitPay ID, allowing you to keep track of your gift card purchases even if this device is lost."
-msgstr "Si activé, vos achats de cartes-cadeaux seront associés à votre ID BitPay, vous permettant de garder une trace de ces achats même si cet appareil est perdu."
+msgid "If enabled, your gift card purchases will be associated with your AbcPay ID, allowing you to keep track of your gift card purchases even if this device is lost."
+msgstr "Si activé, vos achats de cartes-cadeaux seront associés à votre ID AbcPay, vous permettant de garder une trace de ces achats même si cet appareil est perdu."
 
-msgid "If you delete the BitPay app or lose this device, you’ll need a recovery key to regain access to your funds."
+msgid "If you delete the AbcPay app or lose this device, you’ll need a recovery key to regain access to your funds."
 msgstr ""
 
 msgid "If you do not have the recovery phrase, you will not be able to regain access to your wallet."
@@ -2054,8 +2054,8 @@ msgstr "PIN"
 msgid "PRIMARY"
 msgstr "PRINCIPAL"
 
-msgid "Pair My BitPay Card"
-msgstr "Associer ma BitPay Card"
+msgid "Pair My AbcPay Card"
+msgstr "Associer ma AbcPay Card"
 
 msgid "Part or the entirety of the funds in your wallet/s are unconfirmed"
 msgstr "Une partie ou l'intégralité des fonds d'un ou de plusieurs de vos portefeuilles ne sont pas confirmés"
@@ -2921,8 +2921,8 @@ msgstr "Le portefeuille de destination n’est pas sauvegardé. Veuillez termine
 msgid "The ethereum paired wallet you choose does not belong to this contract"
 msgstr "Le portefeuille Ethereum jumelé que vous avez choisi n'appartient pas à ce contrat"
 
-msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the BitPay App and spend in minutes."
-msgstr "La façon la plus rapide et la plus simple de transformer vos crypto-monnaies en dollars pour vos achats. Chargez des fonds dans l'application BitPay et dépensez en quelques minutes."
+msgid "The fastest, easiest way to turn your crypto into dollars for shopping. Load funds in the AbcPay App and spend in minutes."
+msgstr "La façon la plus rapide et la plus simple de transformer vos crypto-monnaies en dollars pour vos achats. Chargez des fonds dans l'application AbcPay et dépensez en quelques minutes."
 
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on Simplex's exchange rate."
 msgstr "Le montant final de crypto-monnaie que vous recevez lorsque la transaction est terminée peut différer car le montant est basé sur le taux de change de Simplex."
@@ -3113,8 +3113,8 @@ msgstr "Pour commencer, vous aurez besoin de créer un portefeuille et d'obtenir
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr "Pour commencer, vous devrez entrer une adresse valide ou sélectionner un contact ou un portefeuille existant."
 
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "Pour {{reason}} vous devez d'abord ajouter votre compte BitPay - {{email}}"
+msgid "To {{reason}} you must first add your AbcPay account - {{email}}"
+msgstr "Pour {{reason}} vous devez d'abord ajouter votre compte AbcPay - {{email}}"
 
 msgid "Top up in progress..."
 msgstr "Rechargement en cours..."
@@ -3188,14 +3188,14 @@ msgstr "Les transactions sans frais ne sont pas supportées."
 msgid "Transfer from"
 msgstr "Transférer depuis"
 
-msgid "Transfer from BitPay"
-msgstr "Transfert depuis BitPay"
+msgid "Transfer from AbcPay"
+msgstr "Transfert depuis AbcPay"
 
 msgid "Transfer to"
 msgstr "Transférer à"
 
-msgid "Transfer to BitPay"
-msgstr "Transfert vers BitPay"
+msgid "Transfer to AbcPay"
+msgstr "Transfert vers AbcPay"
 
 msgid "Transfer to Multiple Recipients"
 msgstr "Transférer à plusieurs destinataires"
@@ -3215,8 +3215,8 @@ msgstr "Réessayez dans {{expires}}"
 msgid "Try entering any passwords you may have set in the past"
 msgstr "Essayez de saisir un mot de passe que vous avez défini dans le passé"
 
-msgid "Turn crypto into dollars using our BitPay Card."
-msgstr "Convertissez des crypto-monnaies en dollars en utilisant notre BitPay Card."
+msgid "Turn crypto into dollars using our AbcPay Card."
+msgstr "Convertissez des crypto-monnaies en dollars en utilisant notre AbcPay Card."
 
 msgid "Two things you should know"
 msgstr ""
@@ -3251,10 +3251,10 @@ msgstr "Dissocier la carte l'enlèvera de cet appareil."
 msgid "Unlock App"
 msgstr "Déverrouiller l'application"
 
-msgid "Unlock BitPay faster by setting up facial recognition."
+msgid "Unlock AbcPay faster by setting up facial recognition."
 msgstr ""
 
-msgid "Unlock BitPay faster by setting up fingerprint authentication."
+msgid "Unlock AbcPay faster by setting up fingerprint authentication."
 msgstr ""
 
 msgid "Unsent transactions"
@@ -3494,8 +3494,8 @@ msgstr "Nous n'avons pas pu analyser la transaction que vous avez envoyée. Veui
 msgid "We were unable to parse your payment. Please try again or contact your wallet provider"
 msgstr "Nous n'avons pas pu analyser votre paiement. Veuillez réessayer ou contacter votre fournisseur de portefeuille."
 
-msgid "We'll let you know as soon as the BitPay Card"
-msgstr "Nous vous informerons dès que la BitPay Card"
+msgid "We'll let you know as soon as the AbcPay Card"
+msgstr "Nous vous informerons dès que la AbcPay Card"
 
 msgid "We'll notify you as soon as the card is ready."
 msgstr "Nous vous informerons dès que la carte sera prête."
@@ -3509,7 +3509,7 @@ msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience.
 msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
 msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. Y a-t-il quelque chose que nous pourrions faire pour améliorer votre expérience ?"
 
-msgid "Websites and exchanges get hacked. BitPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange."
+msgid "Websites and exchanges get hacked. AbcPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange."
 msgstr ""
 
 msgid "What could have happened?"
@@ -3677,17 +3677,17 @@ msgstr "Vous ne devriez pas définir des frais plus élevés que {{maxFeeRecomme
 msgid "You're on the list!"
 msgstr "Vous êtes sur la liste !"
 
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
-msgstr "Votre BitPay Card est prête. Ajoutez des fonds sur votre carte pour commencer à l'utiliser dans des magasins."
+msgid "Your AbcPay Card is ready. Add funds to your card to start using it at stores."
+msgstr "Votre AbcPay Card est prête. Ajoutez des fonds sur votre carte pour commencer à l'utiliser dans des magasins."
 
 msgid "Your ETH linked wallet funds are locked by pending spend proposals"
 msgstr "Les fonds de votre portefeuille lié à ETH sont verrouillés par des propositions de dépenses en attente."
 
-msgid "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. BitPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
-msgstr "Votre clé est ce dont vous avez besoin pour accéder à vos fonds. Assurez-vous de protéger votre clé et de la stocker uniquement sur des appareils sécurisés. BitPay n'a pas accès à vos clés, vous êtes donc seul responsable de vos clés. Si vous partagez l'accès de vos clés avec des services externes, vous assumez la responsabilité du risque de vol ou de brèche informatique."
+msgid "Your Key is all that is needed to access your funds. Be sure to protect your key and store it only on secure devices. AbcPay does not have access to your keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach."
+msgstr "Votre clé est ce dont vous avez besoin pour accéder à vos fonds. Assurez-vous de protéger votre clé et de la stocker uniquement sur des appareils sécurisés. AbcPay n'a pas accès à vos clés, vous êtes donc seul responsable de vos clés. Si vous partagez l'accès de vos clés avec des services externes, vous assumez la responsabilité du risque de vol ou de brèche informatique."
 
-msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "Vos clés privées étendues permettent un accès direct et intégral à vos fonds. Veillez à protéger vos clés privées et à ne les stocker que sur des appareils sécurisés. BitPay n'a pas accès à vos clés privées et vous êtes seul responsable de vos clés. Si vous partagez l'accès à une clé avec des services externes, vous assumez la responsabilité du risque de vol ou d'accès non autorisé. Seuls les utilisateurs avertis doivent gérer les clés privées étendues."
+msgid "Your extended private keys are all that is needed to access your funds. Be sure to protect your private keys and store them only on secure devices. AbcPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "Vos clés privées étendues permettent un accès direct et intégral à vos fonds. Veillez à protéger vos clés privées et à ne les stocker que sur des appareils sécurisés. AbcPay n'a pas accès à vos clés privées et vous êtes seul responsable de vos clés. Si vous partagez l'accès à une clé avec des services externes, vous assumez la responsabilité du risque de vol ou d'accès non autorisé. Seuls les utilisateurs avertis doivent gérer les clés privées étendues."
 
 msgid "Your fee is lower than recommended."
 msgstr "Vos frais sont inférieurs au niveau recommandé."
@@ -3734,8 +3734,8 @@ msgstr "[Solde masqué]"
 msgid "[Scanning Funds]"
 msgstr "[Analyse des fonds]"
 
-msgid "add your BitPay Visa card(s)"
-msgstr "ajouter vos cartes BitPay Visa"
+msgid "add your AbcPay Visa card(s)"
+msgstr "ajouter vos cartes AbcPay Visa"
 
 msgid "me"
 msgstr "moi"

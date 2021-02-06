@@ -193,7 +193,7 @@
               <ion-icon class="item-img" item-start>
                 <img src="assets/img/bitpay-card/bitpay-card-icon-list.svg" />
               </ion-icon>
-              <div class="main-label">BitPay {{card.brand === 'Mastercard'? 'Mastercard&reg;' : 'Visa&reg; Card'}} ({{card.lastFourDigits}})</div>
+              <div class="main-label">AbcPay {{card.brand === 'Mastercard'? 'Mastercard&reg;' : 'Visa&reg; Card'}} ({{card.lastFourDigits}})</div>
               <ion-note item-end *ngIf="card.cardType === 'virtual'">
                 <span translate>Virtual</span>
               </ion-note>
@@ -217,14 +217,14 @@
 
       <ng-container *ngIf="isCordova && !isCopay">
         <ion-item-divider tappable (click)="mdesFlag()">
-          {{'BitPay Account' | translate}}
+          {{'AbcPay Account' | translate}}
         </ion-item-divider>
 
         <button ion-item (click)="openBitPayIdPage()">
           <ion-icon class="item-img" item-start>
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
           </ion-icon>
-          <span class="main-label">{{ bitPayIdUserInfo ? bitPayIdUserInfo.email : 'Connect your BitPay ID' | translate}}</span>
+          <span class="main-label">{{ bitPayIdUserInfo ? bitPayIdUserInfo.email : 'Connect your AbcPay ID' | translate}}</span>
           <ion-note item-end *ngIf="bitPayIdUserInfo">
             <span translate>Linked</span>
           </ion-note>

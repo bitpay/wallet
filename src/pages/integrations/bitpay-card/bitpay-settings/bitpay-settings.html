@@ -7,7 +7,7 @@
           <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
         </ion-item>
         <button ion-item class="pairButton" (click)="connectBitPayCard()">
-          <span class="main-label">{{'Pair My BitPay Card' | translate}}</span>
+          <span class="main-label">{{'Pair My AbcPay Card' | translate}}</span>
         </button>
       </ng-container>
 
@@ -18,7 +18,7 @@
           <ion-icon item-start>
             <img width="60" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
           </ion-icon>
-          <h2>BitPay Visa&reg; Card</h2>
+          <h2>AbcPay Visa&reg; Card</h2>
           <p *ngIf="bitpayCard.email">{{bitpayCard.email}}</p>
         </ion-item>
         <ion-item>
