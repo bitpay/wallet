@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "BitPay",
+  "title": "AbcPay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
