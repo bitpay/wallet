@@ -13,7 +13,7 @@
         </button>
       </div>
       <div *ngIf="!isShared && !isJoin">
-        <span class="list-subtitle">Tokens</span>
+        <span class="list-subtitle" *ngIf="availableTokens?.length>0">Tokens</span>
         <button *ngFor="let token of availableTokens" class="list-button" [disabled]="tokenDisabled[token.symbol]" ion-item (click)="showPairedWalletSelector(token)">
           <ion-icon item-start>
             <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
