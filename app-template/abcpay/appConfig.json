@@ -8,7 +8,7 @@
   "purposeLine": "Secure Bitcoin Wallet",
   "bundleName": "wallet",
   "appUri": "bitpay",
-  "name": "AbcPay",
+  "name": "abcpay",
   "applePay": "<config-file mode=\"add\" parent=\"com.apple.developer.payment-pass-provisioning\" target=\"Entitlements-Release.plist\"><true /></config-file>",
   "dynamicLink": "bitpayapp.page.link",
   "nameNoSpace": "bitpay",
