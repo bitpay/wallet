@@ -372,12 +372,8 @@ export class AmountPage {
 
   public isSendMaxButtonShown() {
     return (
-      this.navParams.get('card') !== 'v2' &&
-      this.showSendMax &&
-      !this.requestingAmount &&
-      !this.useAsModal
-      // ||
-      // this.fromExchangeCrypto // TODO: implement send max
+      (this.showSendMax && !this.requestingAmount && !this.useAsModal) ||
+      this.fromExchangeCrypto
     );
   }
 

@@ -79,6 +79,9 @@ export class OnGoingProcessProvider {
       ),
       payingWithCoinbase: this.translate.instant(
         'Paying with a Coinbase Account...'
+      ),
+      generalAwaiting: this.translate.instant(
+        "Just a second, we're setting a few things up."
       )
     };
     return processNames;

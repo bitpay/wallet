@@ -436,7 +436,7 @@ export class BitPayCardTopUpPage {
                   wallet.coin
                 )
                   ? details.requiredFeeRate
-                  : Math.ceil(details.requiredFeeRate * 1024);
+                  : Math.ceil(details.requiredFeeRate * 1000);
                 txp.feePerKb = requiredFeeRate;
                 this.logger.debug(
                   `PayProDetails requiredFeeRate: ${details.requiredFeeRate}. Txp feePerKb: ${txp.feePerKb}`
@@ -573,8 +573,9 @@ export class BitPayCardTopUpPage {
             this.logger.debug(`Creating 1usd invoice`);
 
             this.createInvoice({
-              amount: 1,
-              currency: 'USD'
+              invoicePrice: 1,
+              invoiceCurrency: 'USD',
+              transactionCurrency: COIN
             })
               .then(inv => {
                 // Check if COIN is enabled in this account
@@ -633,7 +634,7 @@ export class BitPayCardTopUpPage {
                           wallet.coin
                         )
                           ? details.requiredFeeRate
-                          : Math.ceil(details.requiredFeeRate * 1024);
+                          : Math.ceil(details.requiredFeeRate * 1000);
 
                         this.logger.debug(
                           `getPayProDetails -> payProFeeSat: ${payProFeeSat}`
@@ -774,7 +775,7 @@ export class BitPayCardTopUpPage {
     };
 
     if (this.navParams.get('v2')) {
-      const { amount, currency, coin } = parsedAmount;
+      const { amount, currency } = parsedAmount;
 
       let walletId;
       if (wallet && wallet.request && wallet.request.credentials) {
@@ -783,9 +784,8 @@ export class BitPayCardTopUpPage {
       dataSrc = {
         invoicePrice: amount,
         invoiceCurrency: currency,
-        transactionCurrency: coin.toUpperCase(),
-        walletId,
-        v2: true
+        transactionCurrency: COIN,
+        walletId
       };
     }
     this.onGoingProcessProvider.set('loadingTxInfo');

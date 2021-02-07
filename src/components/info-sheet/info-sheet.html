@@ -37,7 +37,7 @@
       <span sheet-text>
         {{ 'This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion.' | translate }}
         <p>
-          {{ 'BitPay does not receive and does not control miner fees.' | translate }}
+          {{ 'AbcPay does not receive and does not control miner fees.' | translate }}
         </p></span>
 
       <span sheet-button-text translate>GOT IT</span>
@@ -219,7 +219,7 @@
     <info-sheet-template *ngSwitchCase="'appreciate-review'" type="love">
       <span sheet-title-text translate>We appreciate your review</span>
       <span sheet-text translate>
-        5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
+        5-star ratings help us get AbcPay Wallet into more hands, and more users means more resources can be committed to the app!
       </span>
       <span sheet-button-text>{{'Continue to {storeName}' | translate: {storeName: params?.storeName}
         }}</span>
@@ -365,7 +365,7 @@
     <info-sheet-template *ngSwitchCase="'subtotal-amount'" type="info">
       <span sheet-title-text>{{ 'Subtotal' | translate }}</span>
       <span sheet-text>
-        {{ 'For BitPay invoices and gift cards the subtotal amount is the product or service amount plus network costs.' | translate }}
+        {{ 'For AbcPay invoices and gift cards the subtotal amount is the product or service amount plus network costs.' | translate }}
         <a class="label-tip-link" (click)="openInBrowser('https://support.bitpay.com/hc/en-us/articles/115002990803-What-is-the-Network-Cost-fee-on-BitPay-invoices-and-why-is-BitPay-charging-it')" translate>Read more</a>
       </span>
       <span sheet-button-text translate>GOT IT</span>
@@ -468,9 +468,9 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'auth-required'" type="warning">
-      <span sheet-title-text translate>Connect Your BitPay ID</span>
+      <span sheet-title-text translate>Connect Your AbcPay ID</span>
       <span sheet-text>
-        To complete this payment, please login with your BitPay ID.
+        To complete this payment, please login with your AbcPay ID.
       </span>
       <span sheet-button-text translate>CONTINUE</span>
     </info-sheet-template>
@@ -515,6 +515,15 @@
         The fee you are using is lower than the Super Economy level, we do not recommend doing this as the transaction will take very long to confirm or may never do it. You can continue at your own responsibility.
       </span>
       <span sheet-button-text translate>Change Miner Fee</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'send-max-min-amount'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}</span>
+        <span *ngIf="params.msg">{{params.msg}}</span>
+      </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 

@@ -367,7 +367,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     let err_title = this.translate.instant('Error creating the invoice');
     let err_msg;
     const errMessage = err && ((err.error && err.error.message) || err.message);
-    if (errMessage && errMessage.match(/suspended/i)) {
+    if (
+      (errMessage && errMessage.match(/suspended/i)) ||
+      errMessage === 'Gift card currently unavailable'
+    ) {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${this.cardConfig.displayName} gift card purchases are not available at this time. Please try again later.`
@@ -483,7 +486,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (details.requiredFeeRate) {
       const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
         ? details.requiredFeeRate
-        : Math.ceil(details.requiredFeeRate * 1024);
+        : Math.ceil(details.requiredFeeRate * 1000);
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
     } else {

@@ -22,11 +22,9 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
-import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -65,11 +63,9 @@ export class WalletsPage {
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
     private events: Events,
-    private popupProvider: PopupProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
-    private emailProvider: EmailNotificationsProvider,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
     private coinbaseProvider: CoinbaseProvider
@@ -124,11 +120,6 @@ export class WalletsPage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletsPage');
-
-    // Required delay to improve performance loading
-    setTimeout(() => {
-      this.checkEmailLawCompliance();
-    }, 2000);
 
     const subscribeEvents = () => {
       // BWS Events: Update Status per Wallet -> Update txps
@@ -191,40 +182,6 @@ export class WalletsPage {
     this.walletProvider.invalidateCache(wallet);
     this.debounceFetchWalletStatus(walletId, alsoUpdateHistory);
   };
-
-  private openEmailDisclaimer() {
-    const message = this.translate.instant(
-      'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
-    );
-    const title = this.translate.instant('Privacy Policy update');
-    const okText = this.translate.instant('Accept');
-    const cancelText = this.translate.instant('Disable notifications');
-    this.popupProvider
-      .ionicConfirm(title, message, okText, cancelText)
-      .then(ok => {
-        if (ok) {
-          // Accept new Privacy Policy
-          this.persistenceProvider.setEmailLawCompliance('accepted');
-        } else {
-          // Disable email notifications
-          this.persistenceProvider.setEmailLawCompliance('rejected');
-          this.emailProvider.updateEmail({
-            enabled: false,
-            email: 'null@email'
-          });
-        }
-      });
-  }
-
-  private checkEmailLawCompliance(): void {
-    setTimeout(() => {
-      if (this.emailProvider.getEmailIfEnabled()) {
-        this.persistenceProvider.getEmailLawCompliance().then(value => {
-          if (!value) this.openEmailDisclaimer();
-        });
-      }
-    }, 2000);
-  }
 
   private debounceSetWallets = _.debounce(
     async () => {

@@ -99,12 +99,12 @@ export class BitPayAccountProvider {
             pairData,
             appIdentity: data.appIdentity
           };
-          this.logger.info('BitPay service BitAuth create token: SUCCESS');
+          this.logger.info('AbcPay service BitAuth create token: SUCCESS');
 
           this.fetchBasicInfo(apiContext, (err, basicInfo) => {
             this.onGoingProcessProvider.clear();
             if (err) return cb(err);
-            let title = this.translate.instant('Add BitPay Account?');
+            let title = this.translate.instant('Add AbcPay Account?');
             let msg;
 
             if (pairingReason) {
@@ -113,14 +113,14 @@ export class BitPayAccountProvider {
 
               msg = this.replaceParametersProvider.replace(
                 this.translate.instant(
-                  'To {{reason}} you must first add your BitPay account - {{email}}'
+                  'To {{reason}} you must first add your AbcPay account - {{email}}'
                 ),
                 { reason, email }
               );
             } else {
               let email = pairData.email;
               msg = this.replaceParametersProvider.replace(
-                this.translate.instant('Add this BitPay account ({{email}})?'),
+                this.translate.instant('Add this AbcPay account ({{email}})?'),
                 { email }
               );
             }
@@ -140,7 +140,7 @@ export class BitPayAccountProvider {
                   this.setBitpayAccount(acctData);
                   return cb(null, true, apiContext);
                 } else {
-                  this.logger.info('User cancelled BitPay pairing process');
+                  this.logger.info('User cancelled AbcPay pairing process');
                   return cb(null, false);
                 }
               });
@@ -148,7 +148,7 @@ export class BitPayAccountProvider {
         },
         data => {
           return cb(
-            this._setError('BitPay service BitAuth create token: ERROR ', data)
+            this._setError('AbcPay service BitAuth create token: ERROR ', data)
           );
         }
       );
@@ -158,7 +158,7 @@ export class BitPayAccountProvider {
   private checkOtp(pairData, cb: (otp?) => any) {
     if (pairData.otp) {
       let msg = this.translate.instant(
-        'Enter Two Factor for your BitPay account'
+        'Enter Two Factor for your AbcPay account'
       );
       this.popupProvider.ionicPrompt(null, msg, null).then(res => {
         cb(res);
@@ -178,11 +178,11 @@ export class BitPayAccountProvider {
       json,
       data => {
         if (data && data.error) return cb(data.error);
-        this.logger.info('BitPay Account Get Basic Info: SUCCESS');
+        this.logger.info('AbcPay Account Get Basic Info: SUCCESS');
         return cb(null, data.data);
       },
       data => {
-        return cb(this._setError('BitPay Account Error: Get Basic Info', data));
+        return cb(this._setError('AbcPay Account Error: Get Basic Info', data));
       }
     );
   }

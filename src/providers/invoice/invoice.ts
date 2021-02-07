@@ -21,17 +21,19 @@ export class InvoiceProvider {
     public persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('InvoiceProvider initialized');
-    this.setCredentials();
   }
 
-  getNetwork() {
+  public setNetwork(network: string) {
+    this.credentials.NETWORK = Network[network];
+    this.credentials.BITPAY_API_URL =
+      network === Network.livenet
+        ? 'https://bitpay.com'
+        : 'https://test.bitpay.com';
+    this.logger.log(`invoice provider initialized with ${network}`);
+  }
+
+  public getNetwork() {
     return this.credentials.NETWORK;
-  }
-
-  setCredentials() {
-    if (this.getNetwork() === Network.testnet) {
-      this.credentials.BITPAY_API_URL = 'https://test.bitpay.com';
-    }
   }
 
   getApiPath() {

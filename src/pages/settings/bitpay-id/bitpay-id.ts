@@ -44,14 +44,14 @@ export class BitPayIdPage {
       (await this.persistenceProvider.getBitPayIdSettings(this.network)) ||
       this.getDefaultBitPayIdSettings();
     this.originalBitpayIdSettings = JSON.stringify(this.bitpayIdSettings);
-    this.logger.info('Loaded: BitPayID page');
+    this.logger.info('Loaded: AbcPayID page');
   }
 
   ionViewWillLeave() {
     const settingsChanged =
       this.originalBitpayIdSettings !== JSON.stringify(this.bitpayIdSettings);
     if (settingsChanged) {
-      this.events.publish('BitPayId/SettingsChanged');
+      this.events.publish('AbcPayId/SettingsChanged');
     }
   }
 
@@ -71,9 +71,9 @@ export class BitPayIdPage {
   disconnectBitPayID() {
     this.popupProvider
       .ionicConfirm(
-        this.translate.instant('Disconnect BitPay ID'),
+        this.translate.instant('Disconnect AbcPay ID'),
         this.translate.instant(
-          'Are you sure you would like to disconnect your BitPay ID?'
+          'Are you sure you would like to disconnect your AbcPay ID?'
         )
       )
       .then(res => {
@@ -83,16 +83,16 @@ export class BitPayIdPage {
               const infoSheet = this.actionSheetProvider.createInfoSheet(
                 'in-app-notification',
                 {
-                  title: 'BitPay ID',
+                  title: 'AbcPay ID',
                   body: this.translate.instant(
-                    'BitPay ID successfully disconnected.'
+                    'AbcPay ID successfully disconnected.'
                   )
                 }
               );
               this.iab.refs.card.executeScript(
                 {
                   code: `window.postMessage(${JSON.stringify({
-                    message: 'bitPayIdDisconnected'
+                    message: 'AbcPayIdDisconnected'
                   })}, '*')`
                 },
                 () => {
@@ -102,7 +102,10 @@ export class BitPayIdPage {
                   }, 400);
                 }
               );
-              this.events.publish('BitPayId/Disconnected');
+              this.events.publish('AbcPayId/Disconnected');
+              this.events.publish('CardAdvertisementUpdate', {
+                status: 'disconnected'
+              });
             },
             err => {
               this.logger.log(err);

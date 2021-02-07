@@ -9,6 +9,15 @@ page-exchange-crypto {
   }
   .bp-list {
     margin-top: 40px;
+    @media (max-height: 620px) {
+      margin-top: 20px;
+    }
+    @media (max-height: 580px) {
+      margin-top: 10px;
+    }
+    .row {
+      flex-wrap: nowrap;
+    }
   }
   .wallet {
     display: flex;
@@ -17,12 +26,21 @@ page-exchange-crypto {
       ion-icon.item-img.icon {
         padding: 5px;
         img {
-          width: 24px;
+          min-width: 24px;
         }
       }
     }
-    .balance {
-      opacity: 0.5;
+    .name-balance {
+      max-width: 300px;
+      @media (max-width: 480px) {
+        max-width: 220px;
+      }
+      @media (max-width: 380px) {
+        max-width: 120px;
+      }
+      .balance {
+        opacity: 0.5;
+      }
     }
   }
   .amount {
@@ -30,7 +48,8 @@ page-exchange-crypto {
     .amount-container {
       background-color: color($colors, light);
       min-width: 10rem;
-      height: 4rem;
+      height: 4.5rem;
+      line-height: 18px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -48,6 +67,12 @@ page-exchange-crypto {
         margin-top: -20px;
       }
     }
+    @media (max-height: 620px) {
+      margin: 3rem 1.8rem;
+    }
+    @media (max-height: 580) {
+      margin: 2rem 1.8rem;
+    }
   }
   .bp-list {
     ion-item {
@@ -60,11 +85,13 @@ page-exchange-crypto {
       line-height: 18px;
     }
   }
-  .rate {
-    width: 100%;
-    padding: 0 0.5rem;
-    color: color($colors, light-grey);
-    text-align: right;
+  .rate-container {
+    justify-content: flex-end;
+    margin-top: -20px;
+    margin-right: 20px;
+    .rate {
+      color: color($colors, light-grey);
+    }
   }
   .partner {
     display: flex;

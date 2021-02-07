@@ -4,44 +4,46 @@ import { TranslateService } from '@ngx-translate/core';
 import * as bitauthService from 'bitauth';
 import { Events, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 import { User } from '../../models/user/user.model';
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
-import { AppleWalletProvider } from '../../providers/apple-wallet/apple-wallet';
-import { BitPayIdProvider } from '../../providers/bitpay-id/bitpay-id';
-import { ConfigProvider } from '../../providers/config/config';
-import { InAppBrowserProvider } from '../../providers/in-app-browser/in-app-browser';
-import { Logger } from '../../providers/logger/logger';
-import { PayproProvider } from '../../providers/paypro/paypro';
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
+import { AppIdentityProvider } from '../app-identity/app-identity';
+import { AppleWalletProvider } from '../apple-wallet/apple-wallet';
+import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
+import { ConfigProvider } from '../config/config';
+import { Logger } from '../logger/logger';
+import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
+import { InAppBrowserProvider } from './in-app-browser';
 
 import { HttpClient } from '@angular/common/http';
-import { AnalyticsProvider } from '../../providers/analytics/analytics';
-import { AppProvider } from '../../providers/app/app';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import {
-  Network,
-  PersistenceProvider
-} from '../../providers/persistence/persistence';
-import { ThemeProvider } from '../../providers/theme/theme';
+import { AnalyticsProvider } from '../analytics/analytics';
+import { AppProvider } from '../app/app';
+import { ExternalLinkProvider } from '../external-link/external-link';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { Network, PersistenceProvider } from '../persistence/persistence';
+import { ThemeProvider } from '../theme/theme';
+
+const LOADING_WRAPPER_TIMEOUT = 0;
+const IAB_LOADING_INTERVAL = 1000;
+const IAB_LOADING_ATTEMPTS = 20;
 
 @Injectable()
 export class IABCardProvider {
   private cardIAB_Ref: InAppBrowserRef;
   private NETWORK: string;
   private BITPAY_API_URL: string;
-  private fetchLock: boolean;
   public hasCards: boolean;
   private _isHidden = true;
   private _pausedState = false;
-  private _balanceUpdateLock: boolean;
 
   public user = new BehaviorSubject({});
   public user$ = this.user.asObservable();
 
+  private _IABLoaded = new ReplaySubject();
+  public IABLoaded$ = this._IABLoaded.asObservable();
+  private IABReady: boolean;
   constructor(
     private payproProvider: PayproProvider,
     private logger: Logger,
@@ -89,11 +91,16 @@ export class IABCardProvider {
   init(): void {
     this.logger.debug('IABCardProvider initialized');
     this.cardIAB_Ref = this.iab.refs.card;
-
+    this.IABLoaded$.subscribe(() => (this.IABReady = true));
     this.cardIAB_Ref.events$.subscribe(async (event: any) => {
       this.logger.log(`EVENT FIRED ${JSON.stringify(event.data.message)}`);
 
       switch (event.data.message) {
+        case 'IABLoaded':
+          this._IABLoaded.next(true);
+          break;
+
+        case 'IABError':
         case 'log':
           this.logger.debug(event.data.log);
           break;
@@ -318,16 +325,51 @@ export class IABCardProvider {
     this.analyticsProvider.logEvent(eventName, params);
   }
 
-  getCards() {
-    return new Promise(async (res, rej) => {
-      if (this.fetchLock) {
-        this.logger.log(`CARD - Get cards already in progress`);
-        return res();
+  getAppIdentity(): Promise<{ priv: string; pub: string }> {
+    return new Promise((resolve, reject) => {
+      this.appIdentityProvider.getIdentity(this.NETWORK, (err, appIdentity) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(appIdentity);
+      });
+    });
+  }
+
+  apiCall(json): any {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { priv, pub } = await this.getAppIdentity();
+
+        const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
+        const dataToSign = `${url}${JSON.stringify(json)}`;
+        const signedData = bitauthService.sign(dataToSign, priv);
+
+        const headers = {
+          'x-identity': pub,
+          'x-signature': signedData
+        };
+
+        // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
+        const { data }: any = await this.http
+          .post(`${url}/api/v2/graphql`, json, { headers })
+          .toPromise()
+          .catch(err => {
+            this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
+            return reject(err);
+          });
+
+        resolve(data);
+      } catch (err) {
+        this.logger.error(err);
+        reject(err);
       }
+    });
+  }
 
+  getCards() {
+    return new Promise(async resolve => {
       this.logger.log(`CARD - start get cards from network - ${this.NETWORK}`);
-
-      this.fetchLock = true;
       this.events.publish('isFetchingDebitCards', true);
 
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
@@ -335,150 +377,193 @@ export class IABCardProvider {
       );
 
       if (!token) {
-        this.fetchLock = false;
-        return res();
+        return resolve();
       }
 
       const query = `
-      query START_GET_CARDS($token:String!) {
-        user:bitpayUser(token:$token) {
-          cards:debitCards {
-            token,
-            id,
-            nickname,
-            pagingSupport,
-            currency {
-              name
-              code
-              symbol
-              precision
-              decimals
-            },
-            lastFourDigits,
-            provider,
-            brand,
-            status,
-            disabled,
-            activationDate,
-            cardType,
-            cardBalance,
-            lockedByUser
+        query START_GET_CARDS($token:String!) {
+          user:bitpayUser(token:$token) {
+            cards:debitCards {
+              token,
+              id,
+              nickname,
+              pagingSupport,
+              currency {
+                name
+                code
+                symbol
+                precision
+                decimals
+              },
+              lastFourDigits,
+              provider,
+              brand,
+              status,
+              disabled,
+              activationDate,
+              cardType,
+              cardBalance,
+              lockedByUser
+            }
           }
         }
-      }
-    `;
+      `;
 
       const json = {
         query,
         variables: { token }
       };
 
-      this.appIdentityProvider.getIdentity(
-        this.NETWORK,
-        async (err, appIdentity) => {
-          if (err) {
-            return;
+      const data = await this.apiCall(json);
+
+      if (data && data.user && data.user.cards) {
+        let cards = data.user.cards;
+        const user = await this.persistenceProvider.getBitPayIdUserInfo(
+          Network[this.NETWORK]
+        );
+
+        for (let card of cards) {
+          if (card.provider === 'galileo') {
+            await this.persistenceProvider.setReachedCardLimit(true);
+            this.events.publish('reachedCardLimit');
+            break;
+          }
+        }
+
+        let currentCards = await this.persistenceProvider.getBitpayDebitCards(
+          Network[this.NETWORK]
+        );
+
+        cards = cards.map(c => {
+          // @ts-ignore
+          let { hide } =
+            (currentCards || []).find(
+              currentCard => currentCard.eid === c.id
+            ) || {};
+
+          if (c.disabled || ['lost', 'stolen', 'canceled'].includes(c.status)) {
+            hide = true;
           }
 
-          const url = `${this.BITPAY_API_URL}/api/v2/graphql`;
-          const dataToSign = `${url}${JSON.stringify(json)}`;
-          const signedData = bitauthService.sign(dataToSign, appIdentity.priv);
-
-          const headers = {
-            'x-identity': appIdentity.pub,
-            'x-signature': signedData
+          return {
+            ...c,
+            hide,
+            currencyMeta: c.currency,
+            currency: c.currency.code,
+            eid: c.id
           };
-          // appending the double /api/v2/graphql here is required as theres a quirk around using the api v2 middleware to reprocess graph requests
-          const { data }: any = await this.http
-            .post(`${url}/api/v2/graphql`, json, { headers })
-            .toPromise()
-            .catch(err => {
-              this.logger.error(`CARD FETCH ERROR  ${JSON.stringify(err)}`);
-              this.fetchLock = false;
-              return rej(err);
-            });
+        });
 
-          if (data && data.user && data.user.cards) {
-            let cards = data.user.cards;
-            const user = await this.persistenceProvider.getBitPayIdUserInfo(
-              Network[this.NETWORK]
-            );
+        if (cards.length < 1) {
+          return resolve();
+        }
 
-            for (let card of cards) {
-              if (card.provider === 'galileo') {
-                this.persistenceProvider.setReachedCardLimit(true);
-                this.events.publish('reachedCardLimit');
-                break;
-              }
-            }
+        this.sortCards(cards, ['virtual', 'physical'], 'cardType');
+        this.sortCards(cards, ['galileo', 'firstView'], 'provider');
 
-            let currentCards = await this.persistenceProvider.getBitpayDebitCards(
-              Network[this.NETWORK]
-            );
-
-            cards = cards.map(c => {
-              // @ts-ignore
-              let { hide } =
-                (currentCards || []).find(
-                  currentCard => currentCard.eid === c.id
-                ) || {};
-
-              if (
-                c.disabled ||
-                ['lost', 'stolen', 'canceled'].includes(c.status)
-              ) {
-                hide = true;
-              }
-
-              return {
-                ...c,
-                hide,
-                currencyMeta: c.currency,
-                currency: c.currency.code,
-                eid: c.id
-              };
-            });
-
-            if (cards.length < 1) {
-              this.fetchLock = false;
-              return res();
-            }
-
-            // if (this.platform.is('ios')) {
-            //   cards = this.checkAppleWallet(cards);
-            // }
-
-            this.sortCards(cards, ['virtual', 'physical'], 'cardType');
-            this.sortCards(cards, ['galileo', 'firstView'], 'provider');
-
-            await this.persistenceProvider.setBitpayDebitCards(
-              Network[this.NETWORK],
-              user.email,
-              cards
-            );
-            try {
-              this.ref.executeScript(
-                {
-                  code: `sessionStorage.setItem(
+        await this.persistenceProvider.setBitpayDebitCards(
+          Network[this.NETWORK],
+          user.email,
+          cards
+        );
+        try {
+          this.ref.executeScript(
+            {
+              code: `sessionStorage.setItem(
                   'cards',
                   ${JSON.stringify(JSON.stringify(cards))}
                   )`
-                },
-                () => this.logger.log('added cards')
-              );
-            } catch (err) {
-              this.logger.log(JSON.stringify(err));
+            },
+            () => this.logger.log('added cards')
+          );
+        } catch (err) {
+          this.logger.log(JSON.stringify(err));
+        }
+
+        this.events.publish('isFetchingDebitCards', false);
+        this.events.publish('updateCards', cards);
+        this.logger.log('CARD - success retrieved cards');
+
+        resolve(cards);
+      }
+    });
+  }
+
+  getBalances() {
+    return new Promise(async resolve => {
+      this.logger.log(`CARD - start getBalance from network - ${this.NETWORK}`);
+      this.events.publish('isFetchingDebitCards', true);
+
+      const token = await this.persistenceProvider.getBitPayIdPairingToken(
+        Network[this.NETWORK]
+      );
+
+      if (!token) {
+        return resolve();
+      }
+
+      const query = `
+        query START_GET_CARDS($token:String!) {
+          user:bitpayUser(token:$token) {
+            cards:debitCards {
+              id,
+              cardBalance,
             }
-
-            this.fetchLock = false;
-            this.events.publish('isFetchingDebitCards', false);
-            this.events.publish('updateCards', cards);
-            this.logger.log('CARD - success retrieved cards');
-
-            res();
           }
         }
-      );
+      `;
+
+      const json = {
+        query,
+        variables: { token }
+      };
+
+      const data = await this.apiCall(json);
+
+      if (data && data.user && data.user.cards) {
+        const updatedCardBalances = data.user.cards;
+        const currentCards = await this.persistenceProvider.getBitpayDebitCards(
+          Network[this.NETWORK]
+        );
+
+        const user = await this.persistenceProvider.getBitPayIdUserInfo(
+          Network[this.NETWORK]
+        );
+
+        const updatedCards = currentCards.map(card => {
+          const { cardBalance } = updatedCardBalances.find(
+            cb => cb.id === card.id
+          );
+
+          return cardBalance ? { ...card, cardBalance } : card;
+        });
+
+        await this.persistenceProvider.setBitpayDebitCards(
+          Network[this.NETWORK],
+          user.email,
+          updatedCards
+        );
+        try {
+          this.ref.executeScript(
+            {
+              code: `sessionStorage.setItem(
+                  'cards',
+                  ${JSON.stringify(JSON.stringify(updatedCards))}
+                  )`
+            },
+            () => {
+              this.sendMessage({ message: 'updatedBalances' });
+            }
+          );
+        } catch (err) {
+          this.logger.log(JSON.stringify(err));
+        }
+
+        this.events.publish('updateCards', updatedCards);
+        this.logger.log('CARD - success updated card balances');
+
+        resolve(updatedCards);
+      }
     });
   }
 
@@ -496,13 +581,6 @@ export class IABCardProvider {
   }
 
   async balanceUpdate(event) {
-    if (this._balanceUpdateLock) {
-      this.logger.log('CARD - balance update already in progress');
-      return;
-    }
-
-    this._balanceUpdateLock = true;
-
     let cards = await this.persistenceProvider.getBitpayDebitCards(
       Network[this.NETWORK]
     );
@@ -525,7 +603,6 @@ export class IABCardProvider {
 
     // adding this for possible race conditions
     if (cards.length < 1) {
-      this._balanceUpdateLock = false;
       return;
     }
 
@@ -534,8 +611,8 @@ export class IABCardProvider {
       user.email,
       cards
     );
-    this.events.publish('updateCards');
-    this._balanceUpdateLock = false;
+
+    this.events.publish('updateCards', cards);
   }
 
   async updateCards() {
@@ -546,13 +623,27 @@ export class IABCardProvider {
   }
 
   async syncCardState(event) {
-    const { cards } = event.data.params;
+    let { cards } = event.data.params;
     const user = await this.persistenceProvider.getBitPayIdUserInfo(
       Network[this.NETWORK]
     );
 
-    if (cards.length < 1) {
+    if (!cards.length) {
       return;
+    }
+
+    // safety for cardBalance
+    if (!cards.some(c => c.cardBalance)) {
+      const currentCards = await this.persistenceProvider.getBitpayDebitCards(
+        Network[this.NETWORK]
+      );
+      cards = cards.map(c => {
+        const currentCard = currentCards.find(cc => cc.id === c.id);
+        return {
+          ...c,
+          cardBalance: currentCard && currentCard.cardBalance
+        };
+      });
     }
 
     await this.persistenceProvider.setBitpayDebitCards(
@@ -818,8 +909,12 @@ export class IABCardProvider {
 
           if (!paymentUrl) {
             // fetch new cards
-            await this.getCards();
+            const cards = await this.getCards();
             this.events.publish('updateCards');
+            this.events.publish('CardAdvertisementUpdate', {
+              status: 'connected',
+              cards
+            });
           }
 
           // clear out loading state
@@ -888,6 +983,43 @@ export class IABCardProvider {
       this.sendMessage({ message });
       this.cardIAB_Ref.show();
       this._isHidden = false;
+    }
+  }
+
+  loadingWrapper(cb) {
+    // wrapping in a setTimeout to smooth out initial iab animation
+    const wrappedCb = () => setTimeout(cb, LOADING_WRAPPER_TIMEOUT);
+
+    if (this.IABReady) {
+      wrappedCb();
+    } else {
+      this.onGoingProcess.set('generalAwaiting');
+
+      let attempts = 0;
+      const interval = setInterval(() => {
+        if (attempts >= IAB_LOADING_ATTEMPTS) {
+          clear();
+
+          this.actionSheetProvider
+            .createInfoSheet('default-error', {
+              title: 'BitPay Card',
+              msg: 'Uh oh, something went wrong please try again later.'
+            })
+            .present();
+        }
+        attempts++;
+      }, IAB_LOADING_INTERVAL);
+
+      const subscription = this.IABLoaded$.subscribe(() => {
+        wrappedCb();
+        clear();
+      });
+
+      const clear = () => {
+        clearInterval(interval);
+        this.onGoingProcess.clear();
+        subscription && subscription.unsubscribe();
+      };
     }
   }
 

@@ -28,6 +28,7 @@ export class BitPayCardIntroPage {
   private scannerHasPermission: boolean;
   public accounts;
   public cardExperimentEnabled: boolean;
+  public ready: boolean;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -57,7 +58,7 @@ export class BitPayCardIntroPage {
         otp: this.navParams.data.otp
       };
       let pairingReason = this.translate.instant(
-        'add your BitPay Visa card(s)'
+        'add your AbcPay Visa card(s)'
       );
       this.bitPayAccountProvider.pair(
         pairData,
@@ -65,7 +66,7 @@ export class BitPayCardIntroPage {
         (err: string, paired: boolean, apiContext) => {
           if (err) {
             this.popupProvider.ionicAlert(
-              this.translate.instant('Error pairing BitPay Account'),
+              this.translate.instant('Error pairing AbcPay Account'),
               err
             );
             return;
@@ -117,6 +118,7 @@ export class BitPayCardIntroPage {
   ionViewDidEnter() {
     this.iabCardProvider.updateWalletStatus();
     this.bitPayCardProvider.logEvent('legacycard_view_setup', {});
+    this.ready = true;
   }
 
   private updateCapabilities(): void {
@@ -142,34 +144,36 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard() {
-    const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
-      12,
-      'USD'
-    );
+    this.iabCardProvider.loadingWrapper(async () => {
+      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+        12,
+        'USD'
+      );
 
-    const hasFirstView = await this.iabCardProvider.hasFirstView();
+      const hasFirstView = await this.iabCardProvider.hasFirstView();
 
-    if (!hasWalletWithFunds && !hasFirstView) {
+      if (!hasWalletWithFunds && !hasFirstView) {
+        this.iabCardProvider.show();
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'needFunds'
+          },
+          () => {}
+        );
+        return;
+      }
+
       this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
-          message: 'needFunds'
+          message: 'orderCard'
         },
         () => {}
       );
-      return;
-    }
-
-    this.iabCardProvider.show();
-    this.iabCardProvider.sendMessage(
-      {
-        message: 'orderCard'
-      },
-      () => {}
-    );
-    setTimeout(() => {
-      this.navCtrl.pop();
-    }, 300);
+      setTimeout(() => {
+        this.navCtrl.pop();
+      }, 300);
+    });
   }
 
   public connectBitPayCard() {

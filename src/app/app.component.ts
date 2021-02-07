@@ -230,13 +230,15 @@ export class CopayApp {
       if (!lockMethod || lockMethod === 'disabled') {
         return;
       }
-      this.iabCardProvider.pause();
     });
 
     this.logger.debug('BitPay: setting network');
-    this.bitpayProvider.setNetwork(this.NETWORK);
-    this.bitpayIdProvider.setNetwork(this.NETWORK);
-    this.iabCardProvider.setNetwork(this.NETWORK);
+    [
+      this.bitpayProvider,
+      this.bitpayIdProvider,
+      this.iabCardProvider,
+      this.giftCardProvider
+    ].forEach(provider => provider.setNetwork(this.NETWORK));
 
     this.logger.debug('Setting Cached Total Balance');
     this.appProvider.setTotalBalance();
@@ -387,11 +389,22 @@ export class CopayApp {
             'card',
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
-            `(() => {
-              sessionStorage.setItem('isPaired', ${!!token}); 
-              sessionStorage.setItem('cards', ${JSON.stringify(
-                JSON.stringify(cards)
-              )});
+            `( async () => {
+              const sendMessageToWallet = (message) => webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+              try {
+                window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}},'*');
+                window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
+                  this.appProvider.info.version
+                )}},'*');
+                await new Promise((res) => setTimeout(res, 300));
+                sessionStorage.setItem('isPaired', ${!!token}); 
+                sessionStorage.setItem('cards', ${JSON.stringify(
+                  JSON.stringify(cards)
+                )});
+                sendMessageToWallet({message: 'IABLoaded'});
+              } catch(err) {
+                sendMessageToWallet({message: 'IABError', log: err});
+              }   
               })()`
           );
           this.iabCardProvider.init();
@@ -458,6 +471,7 @@ export class CopayApp {
     } else if (lockMethod == 'fingerprint') {
       this.openFingerprintModal();
     }
+    this.iabCardProvider.pause();
   }
 
   private openPINModal(action): void {
@@ -471,6 +485,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -487,6 +504,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -495,6 +515,10 @@ export class CopayApp {
   private onLockDidDismiss(): void {
     this.appProvider.isLockModalOpen = false;
     this.events.publish('Local/FetchWallets');
+    this.events.publish('Local/showNewFeaturesSlides');
+  }
+
+  private onLockWillDismiss(): void {
     this.iabCardProvider.resume();
   }
 
@@ -504,12 +528,18 @@ export class CopayApp {
       this.giftCardProvider.register();
 
     // Buy Crypto
-    if (this.appProvider.info._enabledExtensions.buycrypto) {
+    if (
+      this.appProvider.info._enabledExtensions.buycrypto &&
+      !this.platformProvider.isMacApp()
+    ) {
       this.buyCryptoProvider.register();
     }
 
     // Exchange Crypto
-    if (this.appProvider.info._enabledExtensions.exchangecrypto) {
+    if (
+      this.appProvider.info._enabledExtensions.exchangecrypto &&
+      !this.platformProvider.isMacApp()
+    ) {
       this.exchangeCryptoProvider.register();
     }
 
@@ -520,7 +550,10 @@ export class CopayApp {
     }
 
     // Wallet Connect
-    if (this.appProvider.info._enabledExtensions.walletConnect) {
+    if (
+      this.appProvider.info._enabledExtensions.walletConnect &&
+      !this.platformProvider.isMacApp()
+    ) {
       this.walletConnectProvider.register();
       this.persistenceProvider.getWalletConnect().then(walletConnectData => {
         this.walletConnectProvider.retrieveWalletConnector(walletConnectData);

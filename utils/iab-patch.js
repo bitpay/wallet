@@ -5,28 +5,13 @@
 const fs = require('fs');
 
 try {
-  const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVInAppBrowserNavigationController.m`;
-  const content = fs.readFileSync(file, 'utf8');
-
-  if (content.includes('20.0')) {
-    const result = content.replace(/20.0/g, '0');
-    fs.writeFileSync(file, result);
-    console.log('successfully patched ios status bar height');
-  }
-} catch (err) {
-  console.error(err);
-}
-
-try {
   const file = `${__dirname}/../platforms/ios/BitPay/Plugins/cordova-plugin-inappbrowser/CDVWKInAppBrowser.m`;
-  const content = fs
-    .readFileSync(file, 'utf8')
-    .split('#define    LOCATIONBAR_HEIGHT 21.0');
-  if (content[0].includes('20.0')) {
-    const result =
-      content[0].replace(/20.0/g, '0') +
-      '#define    LOCATIONBAR_HEIGHT 21.0' +
-      content[1];
+  const content = fs.readFileSync(file, 'utf8');
+  if (content.includes('(float) getStatusBarOffset')) {
+    const result = content.replace(
+      /\(float\) IsAtLeastiOSVersion\(@"7.0"\) \? \[\[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;/g,
+      '0.0;'
+    );
     fs.writeFileSync(file, result);
     console.log('successfully patched WK status bar height');
   }

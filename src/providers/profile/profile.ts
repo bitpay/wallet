@@ -127,11 +127,11 @@ export class ProfileProvider {
     wallet.email = config.emailFor && config.emailFor[wallet.id];
 
     // for token wallets
-    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
-      wallet.coin,
-      wallet.id,
-      wallet.n
-    );
+    // wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
+    //   wallet.coin,
+    //   wallet.id,
+    //   wallet.n
+    // );
 
     if (wallet.linkedEthWallet) {
       this.trySetName(wallet);
@@ -403,7 +403,11 @@ export class ProfileProvider {
       this.logger.info('BWC Report:' + n);
     });
 
-    if (!this.configProvider.get().pushNotifications.enabled) {
+    // Desktop: uses this event 'notification'
+    // Mobile: uses 'bwsEvent'
+    //
+    // Disabled on mobile to avoid duplicate notifications
+    if (!this.platformProvider.isCordova) {
       wallet.on('notification', n => {
         if (this.platformProvider.isElectron) {
           this.showDesktopNotifications(n, wallet);

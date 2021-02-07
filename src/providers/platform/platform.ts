@@ -11,6 +11,9 @@ export class PlatformProvider {
   public isSafari: boolean;
   public isCordova: boolean;
   public isElectron: boolean;
+  public isMac: boolean;
+  public isWindows: boolean;
+  public isLinux: boolean;
   public ua: string;
   public isMobile: boolean;
   public isDevel: boolean;
@@ -37,8 +40,29 @@ export class PlatformProvider {
     this.isElectron = this.isElectronPlatform();
     this.isMobile = this.platform.is('mobile');
     this.isDevel = !this.isMobile && !this.isElectron;
+    this.isMac = this.isMacApp();
+    this.isWindows = this.isWindowsApp();
+    this.isLinux = this.isLinuxApp();
 
     this.logger.debug('PlatformProvider initialized');
+  }
+
+  public getPlatform(): string {
+    return this.isAndroid
+      ? 'android'
+      : this.isIOS
+      ? 'ios'
+      : this.isCordova
+      ? 'cordova'
+      : this.isMac
+      ? 'macintosh'
+      : this.isWindows
+      ? 'windows'
+      : this.isLinux
+      ? 'linux'
+      : this.isMobile
+      ? 'mobile'
+      : undefined;
   }
 
   public getBrowserName(): string {
@@ -67,6 +91,20 @@ export class PlatformProvider {
     return (
       this.isElectronPlatform() &&
       this.getUserAgent().toLowerCase().includes('macintosh')
+    );
+  }
+
+  public isWindowsApp(): boolean {
+    return (
+      this.isElectronPlatform() &&
+      this.getUserAgent().toLowerCase().includes('windows')
+    );
+  }
+
+  public isLinuxApp(): boolean {
+    return (
+      this.isElectronPlatform() &&
+      this.getUserAgent().toLowerCase().includes('linux')
     );
   }
 

@@ -91,7 +91,7 @@ export class CryptoCoinSelectorPage {
       );
       walletSelector.present();
       walletSelector.onDidDismiss(wallet => {
-        if (wallet.needsBackup) {
+        if (wallet && wallet.needsBackup) {
           const infoSheet = this.actionSheetProvider.createInfoSheet(
             'key-verification-required'
           );

@@ -215,7 +215,7 @@ export class PhaseOneCardIntro {
     });
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: this.translate.instant('From BitPay account'),
+      title: this.translate.instant('From AbcPay account'),
       buttons: options
     });
     actionSheet.present();

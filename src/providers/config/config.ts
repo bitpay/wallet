@@ -172,7 +172,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://bws.bitpay.com/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
+        url: 'http://aws.abcpay.cash:3232/bws/api' // Uncomment and replace w/ http://localhost:3232/bws/api for testing
       },
 
       adPubKey: {
@@ -216,7 +216,7 @@ export class ConfigProvider {
         debitcard: true,
         amazon: true,
         mercadolibre: true,
-        shapeshift: true,
+        shapeshift: false,
         buycrypto: true,
         exchangecrypto: true,
         giftcards: true,
@@ -264,8 +264,8 @@ export class ConfigProvider {
 
       theme: {
         enabled: true,
-        system: true,
-        name: 'light'
+        system: false,
+        name: 'dark'
       },
 
       totalBalance: {

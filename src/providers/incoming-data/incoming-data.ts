@@ -354,20 +354,6 @@ export class IncomingDataProvider {
     }
   }
 
-  private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: Bitcoin URI');
-    let amountFromRedirParams =
-      redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.BTC;
-    let parsed = this.bwcProvider.getBitcore().URI(data);
-    let address = parsed.address ? parsed.address.toString() : '';
-    let message = parsed.message;
-    let amount = parsed.amount || amountFromRedirParams;
-    if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
-    } else this.goSend(address, amount, message, coin);
-  }
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
@@ -391,66 +377,9 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
-  private handleEthereumUri(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: Ethereum URI');
-    let amountFromRedirParams =
-      redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.ETH;
-    const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
-    const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
-    let parsedAmount;
-    let requiredFeeParam;
-    if (value.exec(data)) {
-      parsedAmount = value.exec(data)[1];
-    }
-    if (gasPrice.exec(data)) {
-      requiredFeeParam = gasPrice.exec(data)[1];
-    }
-    const address = this.extractAddress(data);
-    const message = '';
-    const amount = parsedAmount || amountFromRedirParams;
-    if (amount) {
-      this.goSend(address, amount, message, coin, requiredFeeParam);
-    } else {
-      this.handleEthereumAddress(address, redirParams);
-    }
-  }
 
-  private handleRippleUri(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: Ripple URI');
-    let amountFromRedirParams =
-      redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.XRP;
-    const amountParam = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
-    const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
-    let parsedAmount;
-    let destinationTag;
-    let requiredFeeRate;
-    if (amountParam.exec(data)) {
-      const { unitToSatoshi } = this.currencyProvider.getPrecision(coin);
-      parsedAmount = (
-        Number(amountParam.exec(data)[1]) * unitToSatoshi
-      ).toString();
-    }
-    if (tagParam.exec(data)) {
-      destinationTag = tagParam.exec(data)[1];
-    }
-    const address = this.extractAddress(data);
-    const message = '';
-    const amount = parsedAmount || amountFromRedirParams;
-    if (amount) {
-      this.goSend(
-        address,
-        amount,
-        message,
-        coin,
-        requiredFeeRate,
-        destinationTag
-      );
-    } else {
-      this.handleRippleAddress(address, redirParams);
-    }
-  }
+
+
 
   private handleWalletConnectUri(uri: string): void {
     // Disable Wallet Connect
@@ -509,24 +438,6 @@ export class IncomingDataProvider {
     // });
   }
 
-  private handlePlainBitcoinAddress(
-    data: string,
-    redirParams?: RedirParams
-  ): void {
-    this.logger.debug('Incoming-data: Bitcoin plain address');
-    const coin = Coin.BTC;
-    if (redirParams && redirParams.activePage === 'ScanPage') {
-      this.showMenu({
-        data,
-        type: 'bitcoinAddress',
-        coin
-      });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
-    } else {
-      this.goToAmountPage(data, coin);
-    }
-  }
 
   private handlePlainBitcoinCashAddress(
     data: string,
@@ -547,37 +458,8 @@ export class IncomingDataProvider {
     }
   }
 
-  private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: Ethereum address');
-    const coin = Coin.ETH;
-    if (redirParams && redirParams.activePage === 'ScanPage') {
-      this.showMenu({
-        data,
-        type: 'ethereumAddress',
-        coin
-      });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
-    } else {
-      this.goToAmountPage(data, coin);
-    }
-  }
 
-  private handleRippleAddress(data: string, redirParams?: RedirParams): void {
-    this.logger.debug('Incoming-data: Ripple address');
-    const coin = Coin.XRP;
-    if (redirParams && redirParams.activePage === 'ScanPage') {
-      this.showMenu({
-        data,
-        type: 'rippleAddress',
-        coin
-      });
-    } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin);
-    } else {
-      this.goToAmountPage(data, coin);
-    }
-  }
+
 
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
@@ -786,7 +668,7 @@ export class IncomingDataProvider {
 
       // Bitcoin  URI
     } else if (this.isValidBitcoinUri(data)) {
-      this.handleBitcoinUri(data, redirParams);
+      // this.handleBitcoinUri(data, redirParams);
       return true;
 
       // Bitcoin Cash URI
@@ -796,12 +678,11 @@ export class IncomingDataProvider {
 
       // Ethereum URI
     } else if (this.isValidEthereumUri(data)) {
-      this.handleEthereumUri(data, redirParams);
+      // this.handleEthereumUri(data, redirParams);
       return true;
 
       // Ripple URI
     } else if (this.isValidRippleUri(data)) {
-      this.handleRippleUri(data, redirParams);
       return true;
 
       // Wallet Connect URI
@@ -821,7 +702,7 @@ export class IncomingDataProvider {
 
       // Plain Address (Bitcoin)
     } else if (this.isValidBitcoinAddress(data)) {
-      this.handlePlainBitcoinAddress(data, redirParams);
+      // this.handlePlainBitcoinAddress(data, redirParams);
       return true;
 
       // Plain Address (Bitcoin Cash)
@@ -831,12 +712,12 @@ export class IncomingDataProvider {
 
       // Address (Ethereum)
     } else if (this.isValidEthereumAddress(data)) {
-      this.handleEthereumAddress(data, redirParams);
+      // this.handleEthereumAddress(data, redirParams);
       return true;
 
       // Address (Ripple)
     } else if (this.isValidRippleAddress(data)) {
-      this.handleRippleAddress(data, redirParams);
+      // this.handleRippleAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -1270,7 +1151,7 @@ export class IncomingDataProvider {
     if (payProDetails.requiredFeeRate) {
       requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
         ? payProDetails.requiredFeeRate
-        : Math.ceil(payProDetails.requiredFeeRate * 1024);
+        : Math.ceil(payProDetails.requiredFeeRate * 1000);
     }
 
     try {
@@ -1283,10 +1164,8 @@ export class IncomingDataProvider {
         option => option.currency.toLowerCase() === coin
       );
       const instructions = payProDetails.instructions[0];
-      const { outputs, toAddress, data } = instructions;
-      if (coin === 'xrp' && outputs) {
-        invoiceID = outputs[0].invoiceID;
-      }
+      const { toAddress, data } = instructions;
+ 
       const stateParams = {
         amount: estimatedAmount,
         toAddress,
