@@ -12,6 +12,7 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
+    <access origin="http://aws.abcpay.cash" />
     <access origin="https://bws.bitpay.com" />
     <access origin="https://bitpay.com" />
     <access origin="https://test.bitpay.com" />
@@ -156,7 +157,7 @@
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-        <application android:icon="@mipmap/ic_launcher" />
+        <application android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true" />
       </edit-config>
       <!-- Adaptive Icons -->
       <icon background="resources/*PACKAGENAME*/android/icon/new/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="resources/*PACKAGENAME*/android/icon/new/mipmap-mdpi/ic_launcher_foreground.png" />
