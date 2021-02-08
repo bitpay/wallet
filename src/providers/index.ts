@@ -62,6 +62,7 @@ export { InvoiceProvider } from '../providers/invoice/invoice';
 export { KeyProvider } from '../providers/key/key';
 export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
+export { LocationProvider } from '../providers/location/location';
 export { Logger } from '../providers/logger/logger';
 export { LogsProvider } from '../providers/logs/logs';
 export { ElectronProvider } from '../providers/electron/electron';

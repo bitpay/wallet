@@ -149,12 +149,16 @@ export class HomePage {
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
       this.persistenceProvider.setNewFeatureSlidesFlag(
-        this.appProvider.version.major
+        this.appProvider.version.major + '.' + this.appProvider.version.minor
       );
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (!value || value !== this.appProvider.version.major) {
+      if (
+        !value ||
+        String(value) !==
+          this.appProvider.version.major + '.' + this.appProvider.version.minor
+      ) {
         const feature_list = this.newFeatureData.get();
         if (feature_list && feature_list.features.length > 0) {
           const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -165,7 +169,9 @@ export class HomePage {
             if (data) {
               if (typeof data === 'boolean' && data === true) {
                 this.persistenceProvider.setNewFeatureSlidesFlag(
-                  this.appProvider.version.major
+                  this.appProvider.version.major +
+                    '.' +
+                    this.appProvider.version.minor
                 );
               } else if (typeof data !== 'boolean') {
                 this.events.publish('IncomingDataRedir', data);

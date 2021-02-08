@@ -300,6 +300,11 @@ export class SettingsPage {
         featureList: this.featureList
       });
       modal.present();
+      modal.onDidDismiss(data => {
+        if (data && typeof data !== 'boolean') {
+          this.events.publish('IncomingDataRedir', data);
+        }
+      });
     }
   }
 
