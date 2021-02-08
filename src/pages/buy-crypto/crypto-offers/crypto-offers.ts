@@ -290,7 +290,8 @@ export class CryptoOffersPage {
                   userId: this.wallet.id,
                   fiatAmount: this.amount,
                   fiatCurrency: this.currency.toUpperCase(),
-                  paymentMethod: this.paymentMethod.method
+                  paymentMethod: this.paymentMethod.method,
+                  coin: this.wallet.coin
                 });
                 const paymentUrl: string = this.simplexProvider.getPaymentUrl(
                   this.wallet,
@@ -423,22 +424,25 @@ export class CryptoOffersPage {
             paymentMethod = 'debit-card';
             break;
         }
-        const redirectUrl = this.appProvider.info.name + '://wyre';
+        const redirectUrl =
+          this.appProvider.info.name +
+          '://wyre?walletId=' +
+          this.wallet.id +
+          '&destAmount=' +
+          this.offers.wyre.amountReceiving;
         const failureRedirectUrl = this.appProvider.info.name + '://wyreError';
         const dest = this.setPrefix(address, this.coin, this.wallet.network);
         const data = {
-          amount: null, // TODO: remove amount if amountIncludeFees is true. In this case use sourceAmount
           sourceAmount: this.amount.toString(),
           dest,
           destCurrency: this.coin.toUpperCase(),
-          lockFields: ['dest', 'destCurrency'],
+          lockFields: ['dest', 'destCurrency', 'country'],
           paymentMethod,
-          referenceId: this.wallet.id,
           sourceCurrency: this.currency.toUpperCase(),
           country: this.selectedCountry.shortCode,
-          amountIncludeFees: true
-          // redirectUrl, // TODO: ask to Wyre if app schemes were fixed
-          // failureRedirectUrl
+          amountIncludeFees: true, // If amountIncludeFees is true, use sourceAmount instead of amount
+          redirectUrl,
+          failureRedirectUrl
         };
 
         this.wyreProvider
@@ -452,12 +456,7 @@ export class CryptoOffersPage {
               return;
             }
 
-            const url =
-              data.url +
-              '&redirectUrl=' +
-              redirectUrl +
-              '&failureRedirectUrl=' +
-              failureRedirectUrl;
+            const url = data.url;
             this.openPopUpConfirmation('wyre', url);
           })
           .catch(err => {
@@ -475,7 +474,8 @@ export class CryptoOffersPage {
       userId: this.wallet.id,
       fiatAmount: this.amount,
       fiatCurrency: this.currency.toUpperCase(),
-      paymentMethod: this.paymentMethod.method
+      paymentMethod: this.paymentMethod.method,
+      coin: this.wallet.coin
     });
     this.externalLinkProvider.open(url);
   }
@@ -509,13 +509,12 @@ export class CryptoOffersPage {
               break;
           }
           const data = {
-            amount: null, // TODO: remove amount if amountIncludeFees is true. In this case use sourceAmount
             sourceAmount: this.amount.toString(),
             sourceCurrency: this.currency.toUpperCase(),
             destCurrency: this.coin.toUpperCase(),
             dest,
             country: this.selectedCountry.shortCode,
-            amountIncludeFees: true,
+            amountIncludeFees: true, // If amountIncludeFees is true, use sourceAmount instead of amount
             walletType
           };
 
@@ -533,7 +532,15 @@ export class CryptoOffersPage {
               this.offers.wyre.amountCost = data.sourceAmount; // sourceAmount = Total amount (including fees)
               this.offers.wyre.buyAmount = data.sourceAmountWithoutFees;
               this.offers.wyre.fee =
-                data.sourceAmount - data.sourceAmountWithoutFees; // TODO: check if fee is < 0. Then throw an error
+                data.sourceAmount - data.sourceAmountWithoutFees;
+
+              if (this.offers.wyre.fee < 0) {
+                const err = this.translate.instant(
+                  `Wyre has returned a wrong value for the fee. Fee: ${this.offers.wyre.fee}`
+                );
+                this.showWyreError(err);
+                return;
+              }
 
               this.offers.wyre.fiatMoney = Number(
                 this.offers.wyre.buyAmount / data.destAmount

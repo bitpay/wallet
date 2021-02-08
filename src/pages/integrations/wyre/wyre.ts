@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { WyreDetailsPage } from './wyre-details/wyre-details';
 
 // Proviers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { ThemeProvider } from '../../../providers/theme/theme';
@@ -21,6 +22,7 @@ export class WyrePage {
   public service;
 
   constructor(
+    private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private modalCtrl: ModalController,
@@ -44,77 +46,119 @@ export class WyrePage {
       .getWyre()
       .then(wyreData => {
         if (!wyreData || _.isEmpty(wyreData)) wyreData = {};
-        if (!_.isEmpty(this.navParams.data) && this.navParams.data.transferId) {
-          wyreData[this.navParams.data.transferId] = this.navParams.data;
-          this.logger.debug('Wyre trying get transfer');
 
+        if (!_.isEmpty(this.navParams.data) && this.navParams.data.orderId) {
+          wyreData[this.navParams.data.orderId] = this.navParams.data;
+          this.logger.debug('Wyre trying to get order details');
           this.wyreProvider
-            .getTransfer(this.navParams.data.transferId)
-            .then((transferData: any) => {
-              this.logger.debug('Wyre get transfer: SUCCESS');
-              if (transferData && !_.isEmpty(transferData)) {
-                wyreData[this.navParams.data.transferId].status = 'success';
+            .getWalletOrderDetails(this.navParams.data.orderId)
+            .then((orderData: any) => {
+              this.logger.debug('Wyre get order details: SUCCESS');
+              if (orderData && !_.isEmpty(orderData)) {
+                switch (orderData.status) {
+                  case 'RUNNING_CHECKS':
+                    wyreData[this.navParams.data.orderId].status =
+                      'paymentRequestSent';
+                    break;
+                  case 'PROCESSING':
+                    wyreData[this.navParams.data.orderId].status =
+                      'paymentRequestSent';
+                    break;
+                  case 'FAILED':
+                    wyreData[this.navParams.data.orderId].status = 'failed';
+                    break;
+                  case 'COMPLETE':
+                    wyreData[this.navParams.data.orderId].status = 'success';
+                    break;
+                  default:
+                    wyreData[this.navParams.data.orderId].status =
+                      'paymentRequestSent';
+                    break;
+                }
                 wyreData[
-                  this.navParams.data.transferId
-                ].sourceAmount = transferData.sourceAmount
-                  ? transferData.sourceAmount
+                  this.navParams.data.orderId
+                ].sourceAmount = orderData.sourceAmount
+                  ? orderData.sourceAmount
                   : '';
-                wyreData[this.navParams.data.transferId].fee = transferData.fee
-                  ? transferData.fee
-                  : ''; // Total fee (crypto fee + Wyre fee)
-                wyreData[
-                  this.navParams.data.transferId
-                ].destCurrency = transferData.destCurrency
-                  ? transferData.destCurrency
+                wyreData[this.navParams.data.orderId].destAmount = this
+                  .navParams.data.destAmount
+                  ? this.navParams.data.destAmount
                   : '';
                 wyreData[
-                  this.navParams.data.transferId
-                ].sourceCurrency = transferData.sourceCurrency
-                  ? transferData.sourceCurrency
+                  this.navParams.data.orderId
+                ].purchaseAmount = orderData.purchaseAmount
+                  ? orderData.purchaseAmount
+                  : '';
+                wyreData[this.navParams.data.orderId].fee =
+                  orderData.sourceAmount &&
+                  orderData.purchaseAmount &&
+                  orderData.sourceAmount - orderData.purchaseAmount >= 0
+                    ? orderData.sourceAmount - orderData.purchaseAmount
+                    : ''; // Total fee (crypto fee + Wyre fee)
+                wyreData[
+                  this.navParams.data.orderId
+                ].destCurrency = orderData.destCurrency
+                  ? orderData.destCurrency
                   : '';
                 wyreData[
-                  this.navParams.data.transferId
-                ].blockchainNetworkTx = transferData.blockchainNetworkTx
-                  ? transferData.blockchainNetworkTx
+                  this.navParams.data.orderId
+                ].sourceCurrency = orderData.sourceCurrency
+                  ? orderData.sourceCurrency
                   : '';
 
-                this.setWyrePaymentRequests(wyreData);
+                if (orderData.transferId) {
+                  wyreData[this.navParams.data.orderId].transferId =
+                    orderData.transferId;
+                  this.logger.debug('Wyre trying get transfer');
+                  this.wyreProvider
+                    .getTransfer(orderData.transferId)
+                    .then((transferData: any) => {
+                      this.logger.debug('Wyre get transfer: SUCCESS');
+                      if (transferData && !_.isEmpty(transferData)) {
+                        wyreData[
+                          this.navParams.data.orderId
+                        ].blockchainNetworkTx = transferData.blockchainNetworkTx
+                          ? transferData.blockchainNetworkTx
+                          : '';
+                        wyreData[
+                          this.navParams.data.orderId
+                        ].destAmount = transferData.destAmount
+                          ? transferData.destAmount
+                          : '';
 
-                this.wyreProvider
-                  .saveWyre(wyreData[this.navParams.data.transferId], null)
-                  .then(() => {
-                    this.logger.debug(
-                      'Saved Wyre with transferId: ' +
-                        this.navParams.data.transferId
-                    );
-                  })
-                  .catch(() => {
-                    this.logger.warn('Could not update payment request status');
-                  });
+                        this.setWyrePaymentRequests(wyreData);
+                        this.saveWyre(
+                          wyreData[this.navParams.data.orderId],
+                          true
+                        );
+                      }
+                    })
+                    .catch(_err => {
+                      this.logger.warn(
+                        'Could not get transfer for transferId: ' +
+                          orderData.transferId
+                      );
+
+                      this.setWyrePaymentRequests(wyreData);
+                      this.saveWyre(
+                        wyreData[this.navParams.data.orderId],
+                        true
+                      );
+                    });
+                } else {
+                  this.setWyrePaymentRequests(wyreData);
+                  this.saveWyre(wyreData[this.navParams.data.orderId], true);
+                }
               }
             })
             .catch(_err => {
               this.logger.warn(
-                'Could not get transfer for transferId: ' +
-                  this.navParams.data.transferId
+                'Could not get order details for orderId: ' +
+                  this.navParams.data.orderId
               );
 
               this.setWyrePaymentRequests(wyreData);
-
-              wyreData[this.navParams.data.transferId].status =
-                'paymentRequestSent';
-
-              this.wyreProvider
-                .saveWyre(wyreData[this.navParams.data.transferId], null)
-                .then(() => {
-                  this.logger.debug(
-                    'Saved Wyre with transferId: ' +
-                      this.navParams.data.transferId
-                  );
-                })
-                .catch(() => {
-                  this.logger.warn('Could not update payment request status');
-                });
+              this.saveWyre(wyreData[this.navParams.data.orderId], false);
             });
         } else {
           this.setWyrePaymentRequests(wyreData);
@@ -133,6 +177,23 @@ export class WyrePage {
     this.loading = false;
   }
 
+  private saveWyre(wyreOrderData: any, addToAnalytics?: boolean) {
+    this.wyreProvider
+      .saveWyre(wyreOrderData, null)
+      .then(() => {
+        this.logger.debug('Saved Wyre with orderId: ' + wyreOrderData.orderId);
+        if (addToAnalytics && wyreOrderData.walletId) {
+          this.analyticsProvider.logEvent('buy_crypto_payment_success', {
+            exchange: 'wyre',
+            userId: wyreOrderData.walletId
+          });
+        }
+      })
+      .catch(() => {
+        this.logger.warn('Could not update payment request status');
+      });
+  }
+
   public openWyreModal(paymentRequestData) {
     const modal = this.modalCtrl.create(WyreDetailsPage, {
       paymentRequestData
@@ -140,7 +201,14 @@ export class WyrePage {
 
     modal.present();
 
-    modal.onDidDismiss(() => {
+    modal.onDidDismiss(data => {
+      if (
+        data &&
+        this.navParams.data &&
+        data.removedPaymentRequest == this.navParams.data.orderId
+      ) {
+        delete this.navParams.data;
+      }
       this.init();
     });
   }

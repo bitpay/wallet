@@ -209,12 +209,13 @@ export class WyreProvider {
         data = JSON.parse(data);
       }
       let inv = oldData ? oldData : {};
-      inv[data.transferId] = data;
+      inv[data.orderId] = data;
       if (opts && (opts.error || opts.status)) {
-        inv[data.transferId] = _.assign(inv[data.transferId], opts);
+        inv[data.orderId] = _.assign(inv[data.orderId], opts);
       }
       if (opts && opts.remove) {
-        delete inv[data.transferId];
+        if (inv[data.transferId]) delete inv[data.transferId];
+        if (inv[data.orderId]) delete inv[data.orderId];
       }
 
       inv = JSON.stringify(inv);

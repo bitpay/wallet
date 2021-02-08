@@ -721,25 +721,43 @@ export class IncomingDataProvider {
     if (data === this.appProvider.info.name + '://wyre') return;
     const res = data.replace(new RegExp('&amp;', 'g'), '&');
     const transferId = this.getParameterByName('transferId', res);
-    const referenceId = this.getParameterByName('referenceId', res);
-    const orderId = this.getParameterByName('orderId', res);
+    const walletId = this.getParameterByName('walletId', res);
+    const owner = this.getParameterByName('owner', res);
+    const orderId = this.getParameterByName('id', res);
     const accountId = this.getParameterByName('accountId', res);
     const dest = this.getParameterByName('dest', res);
-    const fees = this.getParameterByName('fees', res);
     const destAmount = this.getParameterByName('destAmount', res);
+    const destCurrency = this.getParameterByName('destCurrency', res);
+    const purchaseAmount = this.getParameterByName('purchaseAmount', res);
+    const sourceAmount = this.getParameterByName('sourceAmount', res);
+    const sourceCurrency = this.getParameterByName('sourceCurrency', res);
+    const status = this.getParameterByName('status', res);
+    const createdAt = this.getParameterByName('createdAt', res);
+    const paymentMethodName = this.getParameterByName('paymentMethodName', res);
     const blockchainNetworkTx = this.getParameterByName(
       'blockchainNetworkTx',
       res
     );
+    if (!orderId) {
+      this.logger.debug('No orderId present. Do not redir');
+      return;
+    }
 
     const stateParams = {
       transferId,
-      referenceId,
+      walletId,
+      owner,
       orderId,
       accountId,
       dest,
-      fees,
       destAmount,
+      destCurrency,
+      purchaseAmount,
+      sourceAmount,
+      sourceCurrency,
+      status,
+      createdAt,
+      paymentMethodName,
       blockchainNetworkTx
     };
     const nextView = {
