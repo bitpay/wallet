@@ -2,8 +2,12 @@
  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
 
  <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="602" width="802" y="-1" x="-1"/>
+ </g>
+ <g>
   <title>Layer 1</title>
-  <text font-weight="bold" stroke="#000" xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="52" id="svg_1" y="241.45313" x="228" stroke-width="0" fill="#ffffff">A</text>
-  <text stroke="#000" transform="matrix(1.1322560279889728,0,0,1.037735819816589,-59.59109378084882,-26.017098268494006) " font-weight="normal" xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="69" id="svg_2" y="91.41676" x="70.03277" stroke-opacity="null" stroke-width="0" fill="#ffffff">A</text>
+  <text fill="#ffffff" stroke-width="0" x="228" y="241.45313" id="svg_1" font-size="52" font-family="sans-serif" text-anchor="start" xml:space="preserve" stroke="#000" font-weight="bold">A</text>
+  <text opacity="0.8" fill="#ffffff" stroke-width="0" stroke-opacity="null" x="71.79915" y="89.48949" id="svg_2" font-size="75" font-family="sans-serif" text-anchor="start" xml:space="preserve" font-weight="normal" transform="matrix(1.1322560279889728,0,0,1.037735819816589,-59.59109378084882,-26.017098268494006) " stroke="#000">a</text>
  </g>
 </svg>
