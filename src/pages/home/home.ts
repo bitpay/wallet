@@ -159,31 +159,32 @@ export class HomePage {
         String(value) !==
           this.appProvider.version.major + '.' + this.appProvider.version.minor
       ) {
-        const feature_list = this.newFeatureData.get();
-        if (feature_list && feature_list.features.length > 0) {
-          const modal = this.modalCtrl.create(NewFeaturePage, {
-            featureList: feature_list
-          });
-          modal.present();
-          modal.onDidDismiss(data => {
-            if (data) {
-              if (typeof data === 'boolean' && data === true) {
-                this.persistenceProvider.setNewFeatureSlidesFlag(
-                  this.appProvider.version.major +
-                    '.' +
-                    this.appProvider.version.minor
-                );
-              } else if (typeof data !== 'boolean') {
-                this.events.publish('IncomingDataRedir', data);
+        this.newFeatureData.get().then(feature_list => {
+          if (feature_list && feature_list.features.length > 0) {
+            const modal = this.modalCtrl.create(NewFeaturePage, {
+              featureList: feature_list
+            });
+            modal.present();
+            modal.onDidDismiss(data => {
+              if (data) {
+                if (typeof data === 'boolean' && data === true) {
+                  this.persistenceProvider.setNewFeatureSlidesFlag(
+                    this.appProvider.version.major +
+                      '.' +
+                      this.appProvider.version.minor
+                  );
+                } else if (typeof data !== 'boolean') {
+                  this.events.publish('IncomingDataRedir', data);
+                }
+                this.events.unsubscribe('Local/showNewFeaturesSlides');
               }
-              this.events.unsubscribe('Local/showNewFeaturesSlides');
-            }
-          });
-        } else {
-          this.persistenceProvider.setNewFeatureSlidesFlag(
-            this.appProvider.info.version
-          );
-        }
+            });
+          } else {
+            this.persistenceProvider.setNewFeatureSlidesFlag(
+              this.appProvider.info.version
+            );
+          }
+        });
       }
     });
   }

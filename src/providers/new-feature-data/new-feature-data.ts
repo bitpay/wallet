@@ -34,7 +34,6 @@ export class NewFeatureData {
     private platProv: PlatformProvider,
     private translate: TranslateService
   ) {
-    this.locationProv.countryPromise.then(data => (this.country = data));
     this.feature_list = [
       {
         majorversion: 12,
@@ -97,7 +96,8 @@ export class NewFeatureData {
     ];
   }
 
-  get() {
+  async get() {
+    await this.locationProv.countryPromise.then(data => (this.country = data));
     const list = this.feature_list.filter(
       vs =>
         vs.majorversion === this.appProv.version.major &&
