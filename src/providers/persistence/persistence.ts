@@ -726,7 +726,7 @@ export class PersistenceProvider {
     return this.storage.remove('lockStatus');
   }
 
-  setNewFeatureSlidesFlag(value: number) {
+  setNewFeatureSlidesFlag(value: string) {
     return this.storage.set('newFeatureSlides', value);
   }
 

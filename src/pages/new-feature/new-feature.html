@@ -1,4 +1,4 @@
-<ion-slides #newFeatureSlides pager="{{featureList && featureList.length>1}}" class="new-feature-slides" *ngIf="featureList && featureList.length>0" (ionSlideWillChange)="slideChanged()">
+<ion-slides #newFeatureSlides pager="{{featureList && featureList.length>1}}" class="new-feature-slides" *ngIf="featureList && featureList.length>0" (ionSlideDidChange)="slideChanged()">
   <ion-slide *ngFor="let newfeature of featureList">
     <div class="supperior-container">
       <div class="page-title" translate>Recently added</div>
@@ -9,15 +9,13 @@
     <div class="slide-info">
       <div class="title">{{newfeature.title}}</div>
       <div class="text">{{newfeature.details}}</div>
-      <div *ngIf="newfeature.tryit">
-        <button ion-button clear class="try-it-button" (click)="close(newfeature.tryit)">
-          {{'Try it' | translate }}
-        </button>
-      </div>
     </div>
   </ion-slide>
 </ion-slides>
 <div padding>
+  <button ion-button clear class="try-it-button" (click)="close(tryit)" *ngIf="tryit">
+    {{'Try it' | translate }}
+  </button>
   <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="!endSlide">
     {{ 'Next' | translate }}
   </button>

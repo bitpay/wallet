@@ -90,9 +90,19 @@ page-new-feature {
   }
 
   .try-it-button {
-    color: color($colors, primary);
+    z-index: 1;
+    position: absolute;
+    bottom: 2rem;
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    bottom: -webkit-calc(2rem + env(safe-area-inset-bottom));
+    color: #ffffff;
+    background-color: color($colors, primary);
     cursor: pointer;
     text-transform: uppercase;
+    width: 25%;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
   }
 
   .swiper-container-horizontal > .swiper-pagination-bullets {

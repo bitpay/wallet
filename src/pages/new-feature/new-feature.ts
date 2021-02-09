@@ -8,6 +8,8 @@ import { ThemeProvider } from '../../providers/theme/theme';
 export class NewFeaturePage {
   @ViewChild('newFeatureSlides') slider: Slides;
   endSlide: boolean = false;
+  firstSlide: boolean = true;
+  tryit: any;
   featureList: any = [];
   isDarkMode: boolean;
   constructor(
@@ -36,6 +38,16 @@ export class NewFeaturePage {
 
   slideChanged() {
     this.endSlide = this.slider.isEnd();
+    this.firstSlide = this.slider.isBeginning();
+    this.slider.lockSwipeToNext(this.endSlide);
+    this.slider.lockSwipeToPrev(this.firstSlide);
+    this.tryit = null;
+    if (
+      this.slider._activeIndex &&
+      this.featureList[this.slider._activeIndex]
+    ) {
+      this.tryit = this.featureList[this.slider._activeIndex].tryit;
+    }
   }
 
   public nextSlide(): void {
