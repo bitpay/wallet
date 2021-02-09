@@ -100,12 +100,7 @@ export class CryptoPaymentMethodPage {
   }
 
   public save() {
-    if (
-      !this.useAsModal ||
-      !this.methodSelected ||
-      this.navParams.data.paymentMethod == this.methodSelected
-    )
-      return;
+    if (!this.useAsModal || !this.methodSelected) return;
     this.viewCtrl.dismiss({ paymentMethod: this.methods[this.methodSelected] });
   }
 }

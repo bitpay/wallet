@@ -693,7 +693,10 @@ export class WalletDetailsPage {
         if (data === 'goToBackup') this.goToBackup();
       });
     } else {
-      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
+        from: 'walletDetails',
+        coin: this.wallet.coin
+      });
       this.navCtrl.push(ExchangeCryptoPage, {
         walletId: this.wallet.id
       });
@@ -708,7 +711,10 @@ export class WalletDetailsPage {
         if (data === 'goToBackup') this.goToBackup();
       });
     } else {
-      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {
+        from: 'walletDetails',
+        coin: this.wallet.coin
+      });
       this.navCtrl.push(AmountPage, {
         coin: this.wallet.coin,
         fromBuyCrypto: true,

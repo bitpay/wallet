@@ -219,9 +219,25 @@ export class CryptoOrderSummaryPage {
   }
 
   private setDefaultPaymentMethod() {
-    this.paymentMethod = this.platformProvider.isIOS
-      ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
-      : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+    if (this.platformProvider.isIOS) {
+      this.paymentMethod =
+        this.buyCryptoProvider.isPaymentMethodSupported(
+          'simplex',
+          this.buyCryptoProvider.paymentMethodsAvailable.applePay,
+          this.coin,
+          this.currency
+        ) ||
+        this.buyCryptoProvider.isPaymentMethodSupported(
+          'wyre',
+          this.buyCryptoProvider.paymentMethodsAvailable.applePay,
+          this.coin,
+          this.currency
+        )
+          ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
+          : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+    } else {
+      this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+    }
   }
 
   private checkPaymentMethod() {

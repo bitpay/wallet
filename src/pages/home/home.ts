@@ -758,7 +758,9 @@ export class HomePage {
   }
 
   public goToAmountPage() {
-    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {
+      from: 'homePage'
+    });
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
@@ -767,7 +769,9 @@ export class HomePage {
   }
 
   public goToExchangeCryptoPage() {
-    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
+      from: 'homePage'
+    });
     this.navCtrl.push(ExchangeCryptoPage, {
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
