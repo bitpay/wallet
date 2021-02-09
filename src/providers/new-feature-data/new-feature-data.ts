@@ -73,7 +73,7 @@ export class NewFeatureData {
         majorversion: 12,
         minorversion: 1,
         app: ['bitpay'],
-        platform: ['*'],
+        platform: ['ios'],
         dummy: this.translate.instant('dummy'),
         country: ['US'],
         features: [
