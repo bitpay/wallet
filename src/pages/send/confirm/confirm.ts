@@ -1407,7 +1407,8 @@ export class ConfirmPage {
           this.config.confirmedTxsNotifications.enabled
         ) {
           this.txConfirmNotificationProvider.subscribe(wallet, {
-            txid: txp.txid
+            txid: txp.txid,
+            amount: txp.amount
           });
         }
         let redir;
