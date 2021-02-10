@@ -10,6 +10,7 @@ import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -40,6 +41,7 @@ export class CryptoOrderSummaryPage {
   public address: string;
   public countryList: any[] = [];
   public selectedCountry;
+  public isSimplexPromotionActive: boolean;
 
   constructor(
     private logger: Logger,
@@ -54,40 +56,56 @@ export class CryptoOrderSummaryPage {
     private buyCryptoProvider: BuyCryptoProvider,
     private errorsProvider: ErrorsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
-
-    this.persistenceProvider.getLastCountryUsed().then(lastUsedCountry => {
-      if (lastUsedCountry && _.isObject(lastUsedCountry)) {
-        this.selectedCountry = lastUsedCountry;
-      } else {
-        this.selectedCountry = {
-          name: 'United States',
-          phonePrefix: '+1',
-          shortCode: 'US',
-          threeLetterCode: 'USA'
-        };
-      }
-      if (this.navParams.data.walletId) {
-        this.setWallet(this.navParams.data.walletId);
-      } else {
-        this.selectFirstAvailableWallet();
-      }
-
-      if (this.navParams.data.paymentMethod) {
-        this.paymentMethod = this.navParams.data.paymentMethod;
-      } else {
-        this.logger.debug('No payment method selected. Setting to default.');
-        this.setDefaultPaymentMethod();
-      }
-    });
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CryptoOrderSummaryPage');
+    this.onGoingProcessProvider.set(
+      this.translate.instant('Setting parameters...')
+    );
+
+    this.persistenceProvider
+      .getLastCountryUsed()
+      .then(async lastUsedCountry => {
+        if (lastUsedCountry && _.isObject(lastUsedCountry)) {
+          this.selectedCountry = lastUsedCountry;
+        } else {
+          this.selectedCountry = {
+            name: 'United States',
+            phonePrefix: '+1',
+            shortCode: 'US',
+            threeLetterCode: 'USA'
+          };
+        }
+
+        this.isSimplexPromotionActive = await this.buyCryptoProvider.isPromotionActive(
+          'simplexPromotion202002'
+        );
+        this.logger.debug(
+          'Is promotion active from the server: ' +
+            this.isSimplexPromotionActive
+        );
+        this.onGoingProcessProvider.clear();
+
+        if (this.navParams.data.walletId) {
+          this.setWallet(this.navParams.data.walletId);
+        } else {
+          this.selectFirstAvailableWallet();
+        }
+
+        if (this.navParams.data.paymentMethod) {
+          this.paymentMethod = this.navParams.data.paymentMethod;
+        } else {
+          this.logger.debug('No payment method selected. Setting to default.');
+          this.setDefaultPaymentMethod();
+        }
+      });
   }
 
   ionViewWillEnter() {
@@ -107,13 +125,22 @@ export class CryptoOrderSummaryPage {
     });
   }
 
+  public isPromotionActiveForCountry(country) {
+    if (
+      this.isSimplexPromotionActive &&
+      country &&
+      (country.EUCountry || country.threeLetterCode == 'CAN')
+    )
+      return true;
+    return false;
+  }
+
   private selectFirstAvailableWallet() {
-    const supportedCoins =
-      this.navParams.data.country &&
-      (this.navParams.data.country.EUCountry ||
-        this.navParams.data.country.threeLetterCode == 'CAN')
-        ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
-        : this.buyCryptoProvider.getExchangeCoinsSupported();
+    const supportedCoins = this.isPromotionActiveForCountry(
+      this.navParams.data.country
+    )
+      ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
+      : this.buyCryptoProvider.getExchangeCoinsSupported();
     // Select first available wallet
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
@@ -196,7 +223,10 @@ export class CryptoOrderSummaryPage {
       CryptoCoinSelectorPage,
       {
         useAsModal: true,
-        country: this.selectedCountry
+        country: this.selectedCountry,
+        isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+          this.selectedCountry
+        )
       },
       {
         showBackdrop: true,
@@ -240,6 +270,7 @@ export class CryptoOrderSummaryPage {
 
   private setDefaultPaymentMethod() {
     if (
+      this.isPromotionActiveForCountry(this.selectedCountry) &&
       this.buyCryptoProvider.isPaymentMethodSupported(
         'simplex',
         this.buyCryptoProvider.paymentMethodsAvailable.creditCard,
@@ -310,8 +341,7 @@ export class CryptoOrderSummaryPage {
 
   private isCoinSupportedByCountry(): boolean {
     if (
-      (this.selectedCountry.EUCountry ||
-        this.selectedCountry.threeLetterCode == 'CAN') &&
+      this.isPromotionActiveForCountry(this.selectedCountry) &&
       !_.includes(
         this.buyCryptoProvider.getExchangeCoinsSupported('simplex'),
         this.coin
@@ -366,7 +396,10 @@ export class CryptoOrderSummaryPage {
         useAsModal: true,
         coin: this.coin,
         selectedCountry: this.selectedCountry,
-        currency: this.currency
+        currency: this.currency,
+        isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+          this.selectedCountry
+        )
       },
       {
         showBackdrop: true,
@@ -388,7 +421,10 @@ export class CryptoOrderSummaryPage {
       paymentMethod: this.paymentMethod,
       coin: this.coin,
       walletId: this.walletId,
-      selectedCountry: this.selectedCountry
+      selectedCountry: this.selectedCountry,
+      isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+        this.selectedCountry
+      )
     };
     this.navCtrl.push(CryptoOffersPage, params);
   }
@@ -400,7 +436,10 @@ export class CryptoOrderSummaryPage {
 
   public goToCoinSelector(): void {
     this.navCtrl.push(CryptoCoinSelectorPage, {
-      country: this.selectedCountry
+      country: this.selectedCountry,
+      isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+        this.selectedCountry
+      )
     });
   }
 

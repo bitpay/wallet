@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -15,7 +16,11 @@ export class BuyCryptoProvider {
   public paymentMethodsAvailable;
   public exchangeCoinsSupported: string[];
 
+  // private baseUrl: string = 'http://localhost:3232/bws/api'; // testing
+  private baseUrl: string = 'https://bws.bitpay.com/bws/api';
+
   constructor(
+    private http: HttpClient,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private logger: Logger,
@@ -155,5 +160,52 @@ export class BuyCryptoProvider {
         // return all supported coins
         return this.exchangeCoinsSupported;
     }
+  }
+
+  public isPromotionActive(promo: string): Promise<boolean> {
+    return new Promise(resolve => {
+      this.getActiveBuyCryptoPromotions()
+        .then(data => {
+          if (!data) return resolve(false);
+          switch (promo) {
+            case 'simplexPromotion202002':
+              return resolve(data.simplexPromotion202002);
+            default:
+              return resolve(false);
+          }
+        })
+        .catch(err => {
+          this.logger.error(
+            `Error trying isPromotionActive: ${promo}. Setting false.`
+          );
+          this.logger.error(err);
+          return resolve(false);
+        });
+    });
+  }
+
+  public getActiveBuyCryptoPromotions(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+
+      this.logger.debug('Asking BWS for active promotions');
+
+      this.http
+        .get(this.baseUrl + '/v1/services', {
+          headers
+        })
+        .subscribe(
+          (data: any) => {
+            this.logger.debug('Active promotions: ', data);
+            if (data && data.buyCrypto) return resolve(data.buyCrypto);
+            return reject('No active promotions for buy crypto');
+          },
+          err => {
+            return reject(err);
+          }
+        );
+    });
   }
 }

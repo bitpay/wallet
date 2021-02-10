@@ -62,8 +62,7 @@ export class CryptoPaymentMethodPage {
             this.coin,
             this.currency
           ) &&
-            !this.country.EUCountry &&
-            this.country.threeLetterCode != 'CAN')) && // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
+            !this.navParams.data.isPromotionActiveForCountry)) && // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
         (m.method != 'sepaBankTransfer' ||
           (m.method == 'sepaBankTransfer' && this.country.EUCountry))
       );
@@ -77,10 +76,7 @@ export class CryptoPaymentMethodPage {
   }
 
   public showExchange(exchange: string, paymentMethod) {
-    if (
-      (this.country.EUCountry || this.country.threeLetterCode == 'CAN') &&
-      exchange == 'wyre'
-    ) {
+    if (this.navParams.data.isPromotionActiveForCountry && exchange == 'wyre') {
       // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
       return false;
     }
