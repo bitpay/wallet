@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavParams, Slides, ViewController } from 'ionic-angular';
+import { TryItType } from '../../providers/new-feature-data/new-feature-data';
 import { ThemeProvider } from '../../providers/theme/theme';
 @Component({
   selector: 'page-new-feature',
@@ -54,7 +55,9 @@ export class NewFeaturePage {
     this.slider.slideNext();
   }
 
-  public close(data: any): void {
-    this.viewCtrl.dismiss(data);
+  public close(data: TryItType): void {
+    typeof data === 'function'
+      ? data(this.viewCtrl)
+      : this.viewCtrl.dismiss(data);
   }
 }
