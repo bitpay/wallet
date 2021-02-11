@@ -21,6 +21,7 @@ import {
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
+  NewFeatureData,
   PersistenceProvider
 } from '../providers';
 import { AppProvider } from '../providers/app/app';
@@ -151,7 +152,8 @@ export class CopayApp {
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
-    private dynamicLinksProvider: DynamicLinksProvider
+    private dynamicLinksProvider: DynamicLinksProvider,
+    private newFeatureDataProvider: NewFeatureData
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -237,7 +239,8 @@ export class CopayApp {
       this.bitpayProvider,
       this.bitpayIdProvider,
       this.iabCardProvider,
-      this.giftCardProvider
+      this.giftCardProvider,
+      this.newFeatureDataProvider
     ].forEach(provider => provider.setNetwork(this.NETWORK));
 
     this.logger.debug('Setting Cached Total Balance');

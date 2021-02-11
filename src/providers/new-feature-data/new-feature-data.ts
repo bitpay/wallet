@@ -96,6 +96,11 @@ export class NewFeatureData {
     ];
   }
 
+  public setNetwork(network: string) {
+    this.NETWORK = network;
+    this.logger.log(`bitpay id provider initialized with ${this.NETWORK}`);
+  }
+
   async get() {
     await this.locationProv.countryPromise.then(data => (this.country = data));
     const list = this.feature_list.filter(
