@@ -146,19 +146,15 @@ export class HomePage {
   private showNewFeatureSlides() {
     if (this.appProvider.isLockModalOpen) return;
     const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
+    const currentVs =
+      this.appProvider.version.major + '.' + this.appProvider.version.minor;
     if (!disclaimerAccepted) {
       // first time using the App -> don't show
-      this.persistenceProvider.setNewFeatureSlidesFlag(
-        this.appProvider.version.major + '.' + this.appProvider.version.minor
-      );
+      this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (
-        !value ||
-        String(value) !==
-          this.appProvider.version.major + '.' + this.appProvider.version.minor
-      ) {
+      if (!value || String(value) !== currentVs) {
         this.newFeatureData.get().then(feature_list => {
           if (feature_list && feature_list.features.length > 0) {
             const modal = this.modalCtrl.create(NewFeaturePage, {
@@ -167,22 +163,17 @@ export class HomePage {
             modal.present();
             modal.onDidDismiss(data => {
               if (data) {
-                if (typeof data === 'boolean' && data === true) {
-                  this.persistenceProvider.setNewFeatureSlidesFlag(
-                    this.appProvider.version.major +
-                      '.' +
-                      this.appProvider.version.minor
-                  );
-                } else if (typeof data !== 'boolean') {
-                  this.events.publish('IncomingDataRedir', data);
+                if (typeof data.done === 'boolean' && data.done === true) {
+                  this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
+                }
+                if (typeof data.data !== 'boolean') {
+                  this.events.publish('IncomingDataRedir', data.data);
                 }
                 this.events.unsubscribe('Local/showNewFeaturesSlides');
               }
             });
           } else {
-            this.persistenceProvider.setNewFeatureSlidesFlag(
-              this.appProvider.info.version
-            );
+            this.persistenceProvider.setNewFeatureSlidesFlag(currentVs);
           }
         });
       }
