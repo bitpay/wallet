@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ViewController } from 'ionic-angular';
 import _ from 'lodash';
 import { AppProvider } from '../app/app';
+import { IABCardProvider } from '../in-app-browser/card';
 import { LocationProvider } from '../location/location';
+import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
 interface FeatureList {
@@ -24,15 +27,21 @@ interface TryIt {
   name: string;
   params?: any;
 }
+export type TryItType = ((viewCtrl?: ViewController) => void) | TryIt | boolean;
+
 @Injectable()
 export class NewFeatureData {
   private feature_list: FeatureList[];
   private country: string;
+  private NETWORK = 'livenet';
   constructor(
     private appProv: AppProvider,
     private locationProv: LocationProvider,
     private platProv: PlatformProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private persistenceProvider: PersistenceProvider,
+    private iabCardProvider: IABCardProvider,
+    private events: Events
   ) {
     this.feature_list = [
       {
@@ -79,7 +88,7 @@ export class NewFeatureData {
           {
             title: 'Connect to Apple Pay',
             details:
-              "Now it's easy to use your BitPay MasterCard with Apple Pay making payments in stores, in apps, and online even easier.",
+              "Now it's easy to use your BitPay Mastercard with Apple Pay making payments in stores, in apps, and online even easier.",
             image: 'assets/img/new-feature/12.1/12.1-1.png'
           },
           {
@@ -87,8 +96,33 @@ export class NewFeatureData {
             details:
               'To get started, go to your card settings and select “Add to Apple Wallet”',
             image: 'assets/img/new-feature/12.1/12.1-2.png',
-            tryit: {
-              name: 'CardsPage'
+            tryit: async (viewCtrl: ViewController) => {
+              await viewCtrl.dismiss({ done: true });
+              const cards = await this.persistenceProvider.getBitpayDebitCards(
+                this.NETWORK
+              );
+              const virtualCard = cards.find(
+                c => c.provider === 'galileo' && c.cardType === 'virtual'
+              );
+              if (virtualCard) {
+                // go to card settings directly
+                this.iabCardProvider.loadingWrapper(() => {
+                  this.iabCardProvider.show();
+                  setTimeout(() => {
+                    this.iabCardProvider.sendMessage(
+                      {
+                        message: `openSettings?${virtualCard.id}`
+                      },
+                      () => {}
+                    );
+                  });
+                });
+              } else {
+                // new signup - * using events over navCtrl due to dependency issue
+                this.events.publish('IncomingDataRedir', {
+                  name: 'BitPayCardIntroPage'
+                });
+              }
             }
           }
         ]
