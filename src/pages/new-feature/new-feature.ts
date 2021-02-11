@@ -55,6 +55,6 @@ export class NewFeaturePage {
   }
 
   public close(data: any): void {
-    this.viewCtrl.dismiss(data);
+    this.viewCtrl.dismiss({ data, done: this.endSlide });
   }
 }
