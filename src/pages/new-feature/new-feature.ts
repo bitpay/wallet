@@ -79,6 +79,6 @@ export class NewFeaturePage {
   public close(data: TryItType): void {
     typeof data === 'function'
       ? data(this.viewCtrl)
-      : this.viewCtrl.dismiss(data);
+      : this.viewCtrl.dismiss({ data, done: this.endSlide });
   }
 }

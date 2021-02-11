@@ -13,7 +13,7 @@
   </ion-slide>
 </ion-slides>
 <div padding>
-  <button ion-button clear class="try-it-button" (click)="close(tryit)" *ngIf="tryit">
+  <button @fade ion-button clear class="try-it-button" (click)="close(tryit)" *ngIf="tryit">
     {{ 'Try it' | translate }}
   </button>
   <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="!endSlide">
