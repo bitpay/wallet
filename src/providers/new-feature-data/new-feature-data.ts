@@ -88,7 +88,7 @@ export class NewFeatureData {
           {
             title: 'Connect to Apple Pay',
             details:
-              "Now it's easy to use your BitPay MasterCard with Apple Pay making payments in stores, in apps, and online even easier.",
+              "Now it's easy to use your BitPay Mastercard with Apple Pay making payments in stores, in apps, and online even easier.",
             image: 'assets/img/new-feature/12.1/12.1-1.png'
           },
           {
