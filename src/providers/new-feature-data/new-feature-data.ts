@@ -120,7 +120,6 @@ export class NewFeatureData {
                   });
                 });
               } else {
-                this.logger.log('hit here');
                 // new signup - * using events over navCtrl due to dependency issue
                 this.events.publish('IncomingDataRedir', {
                   name: 'BitPayCardIntroPage'

@@ -301,8 +301,8 @@ export class SettingsPage {
       });
       modal.present();
       modal.onDidDismiss(data => {
-        if (data && typeof data !== 'boolean') {
-          this.events.publish('IncomingDataRedir', data);
+        if (data && data.data && typeof data.data !== 'boolean') {
+          this.events.publish('IncomingDataRedir', data.data);
         }
       });
     }
