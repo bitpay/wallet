@@ -1,5 +1,6 @@
 import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
+import { KeyEncryptProvider } from '../key-encrypt/key-encrypt';
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from './persistence';
 
@@ -7,6 +8,7 @@ class FileMock extends File {}
 
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;
+  let keyEncryptProvider: KeyEncryptProvider;
   let logs;
 
   const loggerMock = {
@@ -28,7 +30,8 @@ describe('Persistence Provider', () => {
     persistenceProvider = new PersistenceProvider(
       loggerMock,
       platformMock,
-      fileMock
+      fileMock,
+      keyEncryptProvider
     );
     persistenceProvider.load();
   }

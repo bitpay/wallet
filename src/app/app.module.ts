@@ -4,7 +4,13 @@ import { IonicImageLoader } from 'ionic-image-loader';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxTextOverflowClampModule } from 'ngx-text-overflow-clamp';
 
-import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ErrorHandler,
+  NgModule
+} from '@angular/core';
+
 import { BrowserModule } from '@angular/platform-browser';
 import {
   Config,
@@ -59,6 +65,7 @@ import { WideHeaderBarButton } from '../pages/templates/wide-header-page/wide-he
 import { COMPONENTS } from '../components/components';
 
 /* Providers */
+import { KeyEncryptProvider } from '../providers/key-encrypt/key-encrypt';
 import { LanguageLoader } from '../providers/language-loader/language-loader';
 import { ProvidersModule } from '../providers/providers.module';
 
@@ -142,7 +149,15 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
     },
-    FormatCurrencyPipe
+    FormatCurrencyPipe,
+    KeyEncryptProvider,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (KeyEncryptProvider: KeyEncryptProvider) => () =>
+        KeyEncryptProvider.init(),
+      deps: [KeyEncryptProvider],
+      multi: true
+    }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

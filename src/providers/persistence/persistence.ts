@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
 import { GiftCard } from '../gift-card/gift-card.types';
+import { KeyEncryptProvider } from '../key-encrypt/key-encrypt';
 import { PlatformProvider } from '../platform/platform';
 import { FileStorage } from './storage/file-storage';
 import { LocalStorage } from './storage/local-storage';
@@ -88,7 +89,7 @@ const Keys = {
   NETWORK: 'network'
 };
 
-interface Storage {
+export interface Storage {
   get(k: string): Promise<any>;
   set(k: string, v): Promise<void>;
   remove(k: string): Promise<void>;
@@ -102,15 +103,17 @@ export class PersistenceProvider {
   constructor(
     private logger: Logger,
     private platform: PlatformProvider,
-    private file: File
+    private file: File,
+    private keyEncryptProvider: KeyEncryptProvider
   ) {
     this.logger.debug('PersistenceProvider initialized');
   }
 
   public load() {
-    this.storage = this.platform.isCordova
-      ? new FileStorage(this.file, this.logger)
-      : new LocalStorage(this.logger);
+    if (!this.storage)
+      this.storage = this.platform.isCordova
+        ? new FileStorage(this.file, this.logger)
+        : new LocalStorage(this.logger);
   }
 
   storeProfileLegacy(profileOld) {
@@ -142,11 +145,16 @@ export class PersistenceProvider {
   }
 
   setKeys(keys: any[]) {
-    return this.storage.set(Keys.KEYS, keys);
+    const encryptedKeys = this.keyEncryptProvider.encryptKeys(keys);
+    return this.storage.set(Keys.KEYS, JSON.parse(encryptedKeys));
   }
 
   getKeys() {
-    return this.storage.get(Keys.KEYS);
+    return this.storage.get(Keys.KEYS).then(encryptedKeys => {
+      if (!encryptedKeys) return Promise.resolve();
+      const keys = this.keyEncryptProvider.decryptKeys(encryptedKeys);
+      return Promise.resolve(JSON.parse(keys));
+    });
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {

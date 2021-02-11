@@ -10,6 +10,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { KeyEncryptProvider } from '../key-encrypt/key-encrypt';
 import { PlatformProvider } from '../platform/platform';
 import { ThemeProvider } from '../theme/theme';
 
@@ -58,6 +59,7 @@ export class AppProvider {
   public homeBalance: any;
   public isLockModalOpen: boolean;
   public skipLockModal: boolean;
+  public keyEncryptionErr;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
 
@@ -69,13 +71,25 @@ export class AppProvider {
     private persistence: PersistenceProvider,
     private file: File,
     private platformProvider: PlatformProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private keyEncryptProvider: KeyEncryptProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
 
   public async load() {
-    await Promise.all([this.getInfo(), this.loadProviders()]);
+    await Promise.all([
+      this.getInfo(),
+      this.loadProviders(),
+      this.checkKeysEncryptionErrors()
+    ]);
+  }
+
+  private checkKeysEncryptionErrors() {
+    if (this.keyEncryptProvider.keyEncryptionErr) {
+      return Promise.reject(this.keyEncryptProvider.keyEncryptionErr);
+    }
+    return Promise.resolve();
   }
 
   public setTotalBalance() {

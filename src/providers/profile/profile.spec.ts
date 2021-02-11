@@ -23,6 +23,7 @@ describe('Profile Provider', () => {
   let eventsPublishSpy;
   let onEventNotificationType: string;
   let profileProvider: ProfileProvider;
+  let bwcProvider: BwcProvider;
   let actionSheetProvider: ActionSheetProvider;
   let configProvider: ConfigProvider;
   let keyProvider: KeyProvider;
@@ -282,30 +283,36 @@ describe('Profile Provider', () => {
     genericKey
   ];
 
-  class BwcProviderMock {
-    constructor() {}
-    getErrors() {
-      return {
-        NOT_AUTHORIZED: Error,
-        ERROR: Error,
-        COPAYER_REGISTERED: Error
-      };
-    }
-    getBitcore() {
-      return true;
-    }
-    getBitcoreCash() {
-      return true;
-    }
-    getClient(_walletData, _opts) {
-      return _.clone(walletClientMock);
-    }
-    getKey(_walletData, _opts) {
+  beforeEach(async () => {
+    testBed = TestUtils.configureProviderTestingModule();
+    bwcProvider = testBed.get(BwcProvider);
+
+    spyOn(bwcProvider, 'getErrors').and.returnValue({
+      NOT_AUTHORIZED: Error,
+      ERROR: Error,
+      COPAYER_REGISTERED: Error
+    });
+    spyOn(bwcProvider, 'getBitcore').and.returnValue(true);
+    spyOn(bwcProvider, 'getBitcoreCash').and.returnValue(true);
+
+    let newWalletClient = _.clone(walletClientMock);
+    newWalletClient.copayerId = 'copayerId1';
+    newWalletClient.credentials.m = 2;
+    newWalletClient.credentials.n = 2;
+
+    spyOn<any>(bwcProvider, 'getClient').and.returnValues(
+      _.clone(walletClientMock),
+      newWalletClient
+    );
+
+    spyOn(bwcProvider, 'getKey').and.callFake(() => {
       class Key2 {
         id: string;
+        version: number;
 
         constructor() {
           this.id = 'keyId';
+          this.version = 1;
         }
         match(_key1, _key2) {
           return false;
@@ -324,31 +331,28 @@ describe('Profile Provider', () => {
         }
       }
       return Key2;
-    }
-
-    upgradeCredentialsV1(_data) {
-      const migrated = {
-        credentials: {
-          walletId: 'id1',
-          keyId: 'keyId1',
-          m: 1,
-          n: 1
+    });
+    spyOn(bwcProvider, 'upgradeCredentialsV1').and.returnValue({
+      credentials: {
+        walletId: 'id1',
+        keyId: 'keyId1',
+        m: 1,
+        n: 1
+      },
+      key: {
+        mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+        xPrivKey: 'xPrivKey1',
+        isPrivKeyEncrypted: () => {
+          return false;
         },
-        key: {
-          mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
-          xPrivKey: 'xPrivKey1',
-          isPrivKeyEncrypted: () => {
-            return false;
-          },
-          toObj: () => {
-            return false;
-          }
+        toObj: () => {
+          return false;
         }
-      };
-      return migrated;
-    }
-    upgradeMultipleCredentialsV1(_oldCredentials) {
-      const migrated = {
+      }
+    });
+
+    spyOn(bwcProvider, 'upgradeMultipleCredentialsV1').and.returnValues(
+      {
         credentials: [
           {
             walletId: 'id1',
@@ -369,10 +373,25 @@ describe('Profile Provider', () => {
             }
           }
         ]
-      };
-      return migrated;
-    }
-    parseSecret(_secret) {
+      },
+      {
+        credentials: [
+          {
+            walletId: 'id1',
+            keyId: 'keyId1',
+            m: 1,
+            n: 1
+          }
+        ],
+        keys: []
+      },
+      {
+        credentials: [],
+        keys: []
+      }
+    );
+
+    spyOn(bwcProvider, 'parseSecret').and.callFake(_secret => {
       let walletData;
       switch (_secret) {
         case 'secret1':
@@ -390,13 +409,8 @@ describe('Profile Provider', () => {
           break;
       }
       return walletData;
-    }
-  }
+    });
 
-  beforeEach(async () => {
-    testBed = TestUtils.configureProviderTestingModule([
-      { provide: BwcProvider, useClass: BwcProviderMock }
-    ]);
     profileProvider = testBed.get(ProfileProvider);
     actionSheetProvider = testBed.get(ActionSheetProvider);
     configProvider = testBed.get(ConfigProvider);
@@ -704,23 +718,6 @@ describe('Profile Provider', () => {
     });
 
     it('should get and bind profile with migrated credentials', () => {
-      BwcProviderMock.prototype.upgradeMultipleCredentialsV1 = (
-        _oldCredentials: any
-      ) => {
-        const migrated = {
-          credentials: [
-            {
-              walletId: 'id1',
-              keyId: 'keyId1',
-              m: 1,
-              n: 1
-            }
-          ],
-          keys: []
-        };
-        return migrated;
-      };
-
       getProfileSpy.and.returnValue(Promise.resolve(profileProvider.profile));
 
       profileProvider
@@ -735,16 +732,6 @@ describe('Profile Provider', () => {
     });
 
     it('should get, bind and return profile without migrated credentials or keys', () => {
-      BwcProviderMock.prototype.upgradeMultipleCredentialsV1 = (
-        _oldCredentials: any
-      ) => {
-        const migrated = {
-          credentials: [],
-          keys: []
-        };
-        return migrated;
-      };
-
       getProfileSpy.and.returnValue(Promise.resolve(profileProvider.profile));
 
       profileProvider
@@ -806,6 +793,8 @@ describe('Profile Provider', () => {
   describe('createWallet', () => {
     let handleEncryptedWalletSpy;
     beforeEach(() => {
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
       handleEncryptedWalletSpy = spyOn(keyProvider, 'handleEncryptedWallet');
       handleEncryptedWalletSpy.and.returnValue(Promise.resolve());
       spyOn(keyProvider, 'addKey').and.returnValue(Promise.resolve());
@@ -815,8 +804,11 @@ describe('Profile Provider', () => {
         'createEncryptPasswordComponent'
       ).and.returnValue({
         present: () => {},
-        dismiss: () => {}
+        onDidDismiss: () => {}
       });
+    });
+    afterAll(() => {
+      jasmine.clock().uninstall();
     });
     it('should create wallet using seed from mnemonic', () => {
       const opts = {
@@ -834,10 +826,12 @@ describe('Profile Provider', () => {
       profileProvider
         .createWallet(opts)
         .then(walletClient => {
+          jasmine.clock().tick(1000);
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
         })
         .catch(err => {
+          jasmine.clock().tick(1000);
           expect(err).not.toBeDefined();
         });
     });
@@ -858,10 +852,12 @@ describe('Profile Provider', () => {
       profileProvider
         .createWallet(opts)
         .then(walletClient => {
+          jasmine.clock().tick(1000);
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
         })
         .catch(err => {
+          jasmine.clock().tick(1000);
           expect(err).not.toBeDefined();
         });
     });
@@ -882,10 +878,12 @@ describe('Profile Provider', () => {
       profileProvider
         .createWallet(opts)
         .then(walletClient => {
+          jasmine.clock().tick(1000);
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
         })
         .catch(err => {
+          jasmine.clock().tick(1000);
           expect(err).not.toBeDefined();
         });
     });
@@ -905,10 +903,12 @@ describe('Profile Provider', () => {
       profileProvider
         .createWallet(opts)
         .then(walletClient => {
+          jasmine.clock().tick(1000);
           expect(walletClient).toBeDefined();
           expect(walletClient.credentials.walletId).toEqual('id1');
         })
         .catch(err => {
+          jasmine.clock().tick(1000);
           expect(err).not.toBeDefined();
         });
     });
@@ -1312,15 +1312,6 @@ describe('Profile Provider', () => {
     });
 
     it('should call showDesktopNotifications and go through NewTxProposal path', async () => {
-      let newWalletClient = _.clone(walletClientMock);
-      newWalletClient.copayerId = 'copayerId1';
-      newWalletClient.credentials.m = 2;
-      newWalletClient.credentials.n = 2;
-
-      spyOn(BwcProviderMock.prototype, 'getClient').and.returnValue(
-        newWalletClient
-      );
-
       onEventNotificationType = 'NewTxProposal';
       const replaceSpy = spyOn(
         replaceParametersProvider,
