@@ -250,6 +250,18 @@
         </ion-note>
       </button>
 
+      <ion-item-divider *ngIf="externalServices && externalServices[0]">
+        {{ 'External Services' | translate }}
+      </ion-item-divider>
+
+      <button ion-item *ngFor="let externalService of (externalServices | orderBy: ['title'])" (click)="openSettingIntegration(externalService.name)">
+        <ion-icon class="item-img" item-start>
+          <img src="{{externalService.icon}}" />
+        </ion-icon>
+        <span class="main-label">{{ externalService.title }}</span>
+      </button>
+
+
       <ion-item-divider tappable (click)="mdesCertOnlyFlag()">{{ 'More' | translate }}</ion-item-divider>
 
       <button ion-item (click)="openAdvancedPage()">
