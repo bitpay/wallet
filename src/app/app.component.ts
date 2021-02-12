@@ -451,7 +451,7 @@ export class CopayApp {
         ? config.lock.method.toLowerCase()
         : null;
 
-    if (!lockMethod) {
+    if (!lockMethod || lockMethod === 'disabled') {
       return;
     }
 
