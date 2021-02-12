@@ -8,11 +8,12 @@ import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PopupProvider } from '../popup/popup';
 
+// https://medium.com/javascript-in-plain-english/private-member-in-javascript-class-2359ef666aaf
+const privateProps = new WeakMap();
 @Injectable()
 export class KeyProvider {
   private isDirty: boolean;
   private Key = this.bwcProvider.getKey();
-  private keys: any[];
 
   constructor(
     private logger: Logger,
@@ -29,7 +30,9 @@ export class KeyProvider {
     this.logger.debug('loading keys');
     return this.persistenceProvider.getKeys().then(async keys => {
       if (!keys) this.logger.debug('no keys found');
-      this.keys = [];
+      privateProps.set(this, {
+        KEYS: []
+      });
       keys = keys ? keys : [];
       this.logger.debug(`typeof keys: ${typeof keys}`);
       if (typeof keys === 'string') {
@@ -44,7 +47,7 @@ export class KeyProvider {
       this.logger.debug(`keys length: ${keys.length}`);
       keys.forEach(k => {
         this.logger.debug(`storage keyid: ${k.id}`);
-        this.keys.push(
+        privateProps.get(this).KEYS.push(
           new this.Key({
             seedType: 'object',
             seedData: k
@@ -62,7 +65,7 @@ export class KeyProvider {
     }
 
     const keysToAdd = [];
-    this.keys.forEach(k => {
+    privateProps.get(this).KEYS.forEach(k => {
       keysToAdd.push(k.toObj(k));
     });
     return this.persistenceProvider.setKeys(keysToAdd).then(() => {
@@ -75,12 +78,14 @@ export class KeyProvider {
     if (!keyToAdd) return Promise.resolve();
 
     const keyObject = keyToAdd.toObj();
-    const keyIndex = this.keys.findIndex(k => this.isMatch(keyToAdd, k));
+    const keyIndex = privateProps
+      .get(this)
+      .KEYS.findIndex(k => this.isMatch(keyToAdd, k));
 
     if (keyIndex >= 0) {
       // only for encrypt/decrypt
       if (replaceKey)
-        this.keys.splice(
+        privateProps.get(this).KEYS.splice(
           keyIndex,
           1,
           new this.Key({
@@ -93,7 +98,7 @@ export class KeyProvider {
         return Promise.resolve();
       }
     } else {
-      this.keys.push(
+      privateProps.get(this).KEYS.push(
         new this.Key({
           seedType: 'object',
           seedData: keyObject
@@ -107,8 +112,8 @@ export class KeyProvider {
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
       const keyObject = keyToAdd.toObj();
-      if (!this.keys.find(k => this.isMatch(keyObject, k))) {
-        this.keys.push(
+      if (!privateProps.get(this).KEYS.find(k => this.isMatch(keyObject, k))) {
+        privateProps.get(this).KEYS.push(
           new this.Key({
             seedType: 'object',
             seedData: keyObject
@@ -123,7 +128,7 @@ export class KeyProvider {
   }
 
   public getKey(keyId: string) {
-    let selectedKey = this.keys.find(k => k.id == keyId);
+    let selectedKey = privateProps.get(this).KEYS.find(k => k.id == keyId);
 
     if (selectedKey) {
       return selectedKey;
@@ -137,10 +142,12 @@ export class KeyProvider {
     this.logger.debug('Removing key: ' + keyId);
     if (keyId === 'read-only') return Promise.resolve();
 
-    const selectedKey = this.keys.findIndex(k => k.id == keyId);
+    const selectedKey = privateProps
+      .get(this)
+      .KEYS.findIndex(k => k.id == keyId);
 
     if (selectedKey >= 0) {
-      this.keys.splice(selectedKey, 1);
+      privateProps.get(this).KEYS.splice(selectedKey, 1);
       this.isDirty = true;
       return this.storeKeysIfDirty();
     } else {
@@ -297,6 +304,6 @@ export class KeyProvider {
   }
 
   public getMatchedKey(key) {
-    return this.keys.find(k => this.isMatch(key, k));
+    return privateProps.get(this).KEYS.find(k => this.isMatch(key, k));
   }
 }
