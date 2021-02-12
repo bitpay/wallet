@@ -221,17 +221,6 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.platform.pause.subscribe(() => {
-      const config = this.configProvider.get();
-      const lockMethod =
-        config && config.lock && config.lock.method
-          ? config.lock.method.toLowerCase()
-          : null;
-      if (!lockMethod || lockMethod === 'disabled') {
-        return;
-      }
-    });
-
     this.logger.debug('BitPay: setting network');
     [
       this.bitpayProvider,
