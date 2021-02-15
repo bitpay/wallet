@@ -205,7 +205,7 @@ export class ConfirmPage {
       try {
         networkName = this.addressProvider.getCoinAndNetwork(
           this.navParams.data.toAddress,
-          this.navParams.data.network || 'livenet'
+          this.navParams.data.network || ''
         ).network;
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
