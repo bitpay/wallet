@@ -126,8 +126,15 @@ npm run start:desktop
 
 Before building the release version for a platform, run the `clean-all` command to delete any untracked files in your current working directory. (Be sure to stash any uncommitted changes you've made.) This guarantees consistency across builds for the current state of this repository.
 
-The `final` commands build the production version of the app, and bundle it with the release version of the platform being built.
+You still need to follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment. Specifically, you will need to set the `ANDROID_HOME` environment variable, include the Android SDK's tools, tools/bin, and platform-tools directories to your PATH:
+```
+export ANDROID_HOME=/Development/android-sdk
+export PATH=${PATH}:/Development/android-sdk/platform-tools:/Development/android-sdk/tools
+```
 
+You may also need to install `gradle` independently in your distribution (e.g. `sudo apt install gradle` for Ubuntu).
+
+The `final` commands build the production version of the app, and bundle it with the release version of the platform being built. The build will fail if no `copay.keystore` in the `..\copay` directory is provided. Produce a new android keystore named `copay.keystore` and include a signed key named `copay_play` to finish the build.
 ### Android
 
 ```sh
