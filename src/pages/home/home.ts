@@ -145,6 +145,7 @@ export class HomePage {
 
   private showNewFeatureSlides() {
     if (this.appProvider.isLockModalOpen) return;
+    this.events.unsubscribe('Local/showNewFeaturesSlides');
     const disclaimerAccepted = this.profileProvider.profile.disclaimerAccepted;
     const currentVs =
       this.appProvider.version.major + '.' + this.appProvider.version.minor;
@@ -169,7 +170,6 @@ export class HomePage {
                 if (typeof data.data !== 'boolean') {
                   this.events.publish('IncomingDataRedir', data.data);
                 }
-                this.events.unsubscribe('Local/showNewFeaturesSlides');
               }
             });
           } else {
