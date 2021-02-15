@@ -316,7 +316,8 @@ export class TxDetailsModal {
   public txConfirmNotificationChange(): void {
     if (this.txNotification.value) {
       this.txConfirmNotificationProvider.subscribe(this.wallet, {
-        txid: this.txId
+        txid: this.txId,
+        amount: this.btx.amount
       });
     } else {
       this.txConfirmNotificationProvider.unsubscribe(this.wallet, this.txId);
