@@ -28,29 +28,24 @@
     </div>
 
     <div *ngIf="!shouldShowZeroState()">
-      <div *ngIf="hasWallets">
-        <div class="send-header-wrapper">
-          <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-            <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
-            <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
-            <ion-icon item-end class="scan-icon" (click)="openScanner()">
-              <img src="assets/img/scan-ico.svg">
-            </ion-icon>
-          </ion-item>
-        </div>
-
-        <div text-center *ngIf="validDataFromClipboard">
-          <button ion-button item-end clear (click)="pasteFromClipboard()" translate>
-            Paste from Clipboard
-          </button>
-        </div>
-
-        <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
-
+      <div class="send-header-wrapper">
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Search contact or enter address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+          <ion-icon item-end class="scan-icon" (click)="openScanner()">
+            <img src="assets/img/scan-ico.svg">
+          </ion-icon>
+        </ion-item>
       </div>
-      <div *ngIf="!hasWallets" class="no-wallet-message">
-        <span translate>To get started, you'll need to create a wallet and get some funds.</span>
+
+      <div text-center *ngIf="validDataFromClipboard">
+        <button ion-button item-end clear (click)="pasteFromClipboard()" translate>
+          Paste from Clipboard
+        </button>
       </div>
+
+      <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" [fromWalletDetails]="true" #transferTo></page-transfer-to>
+
     </div>
   </div>
 </wide-header-page>

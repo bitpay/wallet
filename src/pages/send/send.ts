@@ -17,7 +17,6 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
-import { ProfileProvider } from '../../providers/profile/profile';
 
 // Pages
 import { CopayersPage } from '../add/copayers/copayers';
@@ -43,7 +42,6 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
-  public hasWallets: boolean;
   public invalidAddress: boolean;
   public validDataFromClipboard;
   private onResumeSubscription: Subscription;
@@ -78,7 +76,6 @@ export class SendPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private payproProvider: PayproProvider,
-    private profileProvider: ProfileProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
@@ -110,11 +107,8 @@ export class SendPage {
     this.logger.info('Loaded: SendPage');
   }
 
-  ionViewWillEnter() {
-    this.hasWallets = !_.isEmpty(
-      this.profileProvider.getWallets({ coin: this.wallet.coin })
-    );
-    this.setDataFromClipboard();
+  async ionViewWillEnter() {
+    await this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
@@ -124,8 +118,8 @@ export class SendPage {
     this.onResumeSubscription.unsubscribe();
   }
 
-  private setDataFromClipboard() {
-    this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
+  private async setDataFromClipboard() {
+    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
       this.validDataFromClipboard = data;
     });
   }
@@ -350,7 +344,7 @@ export class SendPage {
   }
 
   public pasteFromClipboard() {
-    this.search = this.validDataFromClipboard;
+    this.search = this.validDataFromClipboard || '';
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.processInput();
