@@ -20,4 +20,13 @@ page-transfer-to {
       margin-left: 10px;
     }
   }
+  ion-spinner {
+    margin-left: 20px;
+    width: 20px;
+    height: 20px;
+
+    * {
+      stroke: color($colors, primary) !important;
+    }
+  }
 }
