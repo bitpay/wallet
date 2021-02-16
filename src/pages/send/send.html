@@ -38,8 +38,8 @@
         </ion-item>
       </div>
 
-      <div text-center *ngIf="validDataFromClipboard">
-        <button ion-button item-end clear (click)="pasteFromClipboard()" translate>
+      <div text-center>
+        <button [disabled]="!validDataFromClipboard" ion-button item-end clear (click)="pasteFromClipboard()" translate>
           Paste from Clipboard
         </button>
       </div>

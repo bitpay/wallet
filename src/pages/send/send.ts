@@ -107,8 +107,8 @@ export class SendPage {
     this.logger.info('Loaded: SendPage');
   }
 
-  async ionViewDidEnter() {
-    await this.setDataFromClipboard();
+  ionViewDidEnter() {
+    this.setDataFromClipboard();
   }
 
   ngOnDestroy() {
@@ -119,9 +119,9 @@ export class SendPage {
   }
 
   private async setDataFromClipboard() {
-    await this.clipboardProvider.getValidData(this.wallet.coin).then(data => {
-      this.validDataFromClipboard = data;
-    });
+    this.validDataFromClipboard = await this.clipboardProvider.getValidData(
+      this.wallet.coin
+    );
   }
 
   private SendPageRedirEventHandler: any = nextView => {
