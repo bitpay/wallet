@@ -444,7 +444,11 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.appProvider.isLockModalOpen) return;
-
+    if (this.appProvider.skipLockModal && this.platformProvider.isAndroid) {
+      // workaround for android devices that execute pause for system actions
+      this.appProvider.skipLockModal = false;
+      return;
+    }
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
