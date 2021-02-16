@@ -107,7 +107,7 @@ export class SendPage {
     this.logger.info('Loaded: SendPage');
   }
 
-  async ionViewWillEnter() {
+  async ionViewDidEnter() {
     await this.setDataFromClipboard();
   }
 

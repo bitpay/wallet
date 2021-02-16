@@ -6,7 +6,7 @@
     </ion-label>
   </div>
   <div class="line-divider"></div>
-  <ion-list no-lines class="bp-list">
+  <ion-list no-lines class="bp-list" ng-class="{ 'disabled':itemTapped}">
     <button ion-item *ngFor="let item of filteredContactsList" (click)="close(item)">
       <ion-icon class="item-img" item-start>
         <gravatar [name]="item.name" [height]="40" [width]="40" [email]="item.email" [coin]="item.coin" [network]="item.network"></gravatar>
@@ -16,7 +16,7 @@
   </ion-list>
 </div>
 
-<div *ngFor="let coin of availableCoins">
+<div *ngFor="let coin of availableCoins" ng-class="{ 'disabled':itemTapped}">
   <div class="wallets-container" *ngIf="walletList[coin] && walletList[coin][0]">
     <div class="section-header">
       <ion-label class="key-name">

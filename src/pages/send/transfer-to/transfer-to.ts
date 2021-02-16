@@ -65,6 +65,7 @@ export class TransferToPage {
   public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
   public updatingContactsList: boolean = false;
+  public itemTapped: boolean = false;
 
   private _delayTimeOut: number = 700;
   private _fromSelectInputs: boolean;
@@ -299,6 +300,7 @@ export class TransferToPage {
   }
 
   public close(item): void {
+    this.itemTapped = true;
     item
       .getAddress()
       .then((addr: string) => {
@@ -339,5 +341,6 @@ export class TransferToPage {
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
+    this.itemTapped = false;
   }
 }
