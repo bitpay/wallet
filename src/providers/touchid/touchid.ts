@@ -39,6 +39,7 @@ export class TouchIdProvider {
 
   public check(): Promise<any> {
     if (!this.platform.isCordova) return undefined;
+    if (this.platform.isAndroid) this.app.skipLockModal = true;
     return this.faio
       .show({
         clientId: this.app.info.name

@@ -57,6 +57,7 @@ export class AppProvider {
   public servicesInfo;
   public homeBalance: any;
   public isLockModalOpen: boolean;
+  public skipLockModal: boolean;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
 
