@@ -12,7 +12,6 @@ import { AddressbookViewPage } from './view/view';
   templateUrl: 'addressbook.html'
 })
 export class AddressbookPage {
-  private cache: boolean = false;
   public addressbook: object[] = [];
   public filteredAddressbook: object[] = [];
 
@@ -24,13 +23,10 @@ export class AddressbookPage {
     private logger: Logger,
     private addressbookProvider: AddressBookProvider,
     private addressProvider: AddressProvider
-  ) {
-    this.initAddressbook();
-  }
+  ) {}
 
   ionViewDidEnter() {
-    if (this.cache) this.initAddressbook();
-    this.cache = true;
+    this.initAddressbook();
   }
 
   private initAddressbook(): void {
@@ -38,21 +34,22 @@ export class AddressbookPage {
       .list()
       .then(addressBook => {
         this.isEmptyList = _.isEmpty(addressBook);
-
-        let contacts: object[] = [];
-        _.each(addressBook, (contact, k: string) => {
-          const coinInfo = this.getCoinAndNetwork(k);
-          contacts.push({
-            name: _.isObject(contact) ? contact.name : contact,
-            address: k,
-            email: _.isObject(contact) ? contact.email : null,
-            tag: _.isObject(contact) ? contact.tag : null,
-            coin: coinInfo.coin,
-            network: coinInfo.network
+        setTimeout(() => {
+          let contacts: object[] = [];
+          _.each(addressBook, (contact, k: string) => {
+            const coinInfo = this.getCoinAndNetwork(k);
+            contacts.push({
+              name: _.isObject(contact) ? contact.name : contact,
+              address: k,
+              email: _.isObject(contact) ? contact.email : null,
+              tag: _.isObject(contact) ? contact.tag : null,
+              coin: coinInfo.coin,
+              network: coinInfo.network
+            });
           });
-        });
-        this.addressbook = _.clone(contacts);
-        this.filteredAddressbook = _.clone(this.addressbook);
+          this.addressbook = _.clone(contacts);
+          this.filteredAddressbook = _.clone(this.addressbook);
+        }, 100);
       })
       .catch(err => {
         this.logger.error(err);
