@@ -21,6 +21,7 @@ import {
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
+  NewFeatureData,
   PersistenceProvider
 } from '../providers';
 import { AppProvider } from '../providers/app/app';
@@ -151,7 +152,8 @@ export class CopayApp {
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
-    private dynamicLinksProvider: DynamicLinksProvider
+    private dynamicLinksProvider: DynamicLinksProvider,
+    private newFeatureDataProvider: NewFeatureData
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -221,8 +223,16 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.logger.debug('BitPay: setting network');
+    const network = await this.persistenceProvider.getNetwork();
+
+    if (network) {
+      this.NETWORK = network;
+    }
+
+    this.logger.debug('BitPay: setting network', this.NETWORK);
+
     [
+      this.newFeatureDataProvider,
       this.bitpayProvider,
       this.bitpayIdProvider,
       this.iabCardProvider,
@@ -357,6 +367,13 @@ export class CopayApp {
       this.platformProvider.isCordova &&
       this.appProvider.info.name === 'bitpay'
     ) {
+      if (cards) {
+        this.events.publish('CardAdvertisementUpdate', {
+          status: 'connected',
+          cards
+        });
+      }
+
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
       this.logger.log(`IAB host -> ${host}`);
