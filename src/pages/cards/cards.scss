@@ -179,22 +179,6 @@ page-cards {
   }
 }
 
-.fade-in {
-  animation: fadeInX 400ms;
-}
-
-@keyframes fadeInX {
-  from {
-    transform: translateX(25px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .card-terms {
   padding: 0 34px;
   margin: 50px 0;
