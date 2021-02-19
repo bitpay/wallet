@@ -27,10 +27,6 @@ import {
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import {
-  hasPromotion,
-  hasVisibleDiscount
-} from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
@@ -183,7 +179,7 @@ export class HomePage {
     });
   }
 
-  async ionViewWillEnter() {
+  ionViewWillEnter() {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
@@ -198,7 +194,6 @@ export class HomePage {
     this.setIntegrations();
     this.loadAds();
     this.fetchAdvertisements();
-    this.fetchGiftCardAdvertisement();
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
       if (deepLink) {
         this.persistenceProvider.setOnboardingFlowFlag('disabled');
@@ -218,7 +213,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-    this.giftCardProvider.getCountry();
 
     // Required delay to improve performance loading
     setTimeout(() => {
@@ -226,7 +220,7 @@ export class HomePage {
     }, 2000);
   }
 
-  private async loadAds() {
+  private loadAds() {
     const client = this.bwcProvider.getClient(null, {});
 
     client.getAdvertisements(
@@ -443,6 +437,14 @@ export class HomePage {
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
     });
+
+    this.events.subscribe('Local/GiftCardDiscount', disc => {
+      this.addGiftCardDiscount(disc);
+    });
+
+    this.events.subscribe('Local/GiftCardPromotion', prom => {
+      this.addGiftCardPromotion(prom);
+    });
   }
 
   private preFetchWallets() {
@@ -613,19 +615,6 @@ export class HomePage {
       });
   }
 
-  private async fetchGiftCardAdvertisement() {
-    const availableCards = await this.giftCardProvider.getAvailableCards();
-    const discountedCard = availableCards.find(cardConfig =>
-      hasVisibleDiscount(cardConfig)
-    );
-    const promotedCard = availableCards.find(card => hasPromotion(card));
-    if (discountedCard) {
-      this.addGiftCardDiscount(discountedCard);
-    } else if (promotedCard) {
-      this.addGiftCardPromotion(promotedCard);
-    }
-  }
-
   slideChanged() {
     const slideIndex = this.slides && this.slides.getActiveIndex();
     const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
@@ -686,11 +675,13 @@ export class HomePage {
 
   private fetchAdvertisements(): void {
     this.advertisements.forEach(advertisement => {
+      this.logger.debug('Add advertisement: ', advertisement.name);
       if (
         advertisement.app &&
         advertisement.app != this.appProvider.info.name
       ) {
         this.removeAdvertisement(advertisement.name);
+        this.logger.debug('Removed advertisement: ', advertisement.name);
         return;
       }
       this.persistenceProvider
@@ -701,11 +692,11 @@ export class HomePage {
             (!this.showCoinbase && advertisement.name == 'coinbase')
           ) {
             this.removeAdvertisement(advertisement.name);
+            this.logger.debug('Removed advertisement: ', advertisement.name);
             return;
           }
           this.showAdvertisements = true;
         });
-      this.logger.debug('fetchAdvertisements');
     });
   }
 

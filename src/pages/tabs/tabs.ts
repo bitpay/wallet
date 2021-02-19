@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, Platform } from 'ionic-angular';
@@ -6,6 +5,7 @@ import { Events, Platform } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
+import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -57,7 +57,7 @@ export class TabsPage {
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
     private configProvider: ConfigProvider,
-    private http: HttpClient
+    private locationProvider: LocationProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -109,7 +109,7 @@ export class TabsPage {
     this.events.unsubscribe('experimentUpdateStart');
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
@@ -137,8 +137,9 @@ export class TabsPage {
       this.events.unsubscribe('experimentUpdateStart');
     });
 
-    await this.checkCardEnabled();
-    await this.tabProvider.prefetchCards();
+    this.checkCardEnabled();
+    this.tabProvider.prefetchGiftCards();
+    this.tabProvider.fetchGiftCardAdvertisement();
   }
 
   ngOnDestroy() {
@@ -158,9 +159,7 @@ export class TabsPage {
     if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
-        const { country } = await this.http
-          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
-          .toPromise();
+        const country = await this.locationProvider.getCountry();
         if (country === 'US') {
           this.logger.debug('If US: Set Card Experiment Flag Enabled');
           await this.persistenceProvider.setCardExperimentFlag('enabled');

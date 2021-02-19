@@ -670,17 +670,6 @@ export class GiftCardProvider extends InvoiceProvider {
     };
   }
 
-  async getCountry(): Promise<string> {
-    this.countryPromise = this.countryPromise
-      ? this.countryPromise
-      : this.http
-          .get('https://bitpay.com/wallet-card/location')
-          .map((res: { country: string }) => res.country)
-          .toPromise()
-          .catch(_ => 'US');
-    return this.countryPromise;
-  }
-
   async getAvailableCards(): Promise<CardConfig[]> {
     return this.availableCardsPromise
       ? this.availableCardsPromise
