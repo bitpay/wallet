@@ -21,7 +21,6 @@ import {
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
-  NewFeatureData,
   PersistenceProvider
 } from '../providers';
 import { AppProvider } from '../providers/app/app';
@@ -152,8 +151,7 @@ export class CopayApp {
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
-    private dynamicLinksProvider: DynamicLinksProvider,
-    private newFeatureDataProvider: NewFeatureData
+    private dynamicLinksProvider: DynamicLinksProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -232,7 +230,6 @@ export class CopayApp {
     this.logger.debug('BitPay: setting network', this.NETWORK);
 
     [
-      this.newFeatureDataProvider,
       this.bitpayProvider,
       this.bitpayIdProvider,
       this.iabCardProvider,

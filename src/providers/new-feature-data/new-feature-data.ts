@@ -45,6 +45,13 @@ export class NewFeatureData {
     private events: Events,
     private logger: Logger
   ) {
+    this.persistenceProvider.getNetwork().then((network: string) => {
+      if (network) {
+        this.NETWORK = network;
+      }
+      this.logger.log(`persistence initialized with ${this.NETWORK}`);
+    });
+
     this.feature_list = [
       {
         majorversion: 12,
@@ -130,11 +137,6 @@ export class NewFeatureData {
         ]
       }
     ];
-  }
-
-  public setNetwork(network: string) {
-    this.NETWORK = network;
-    this.logger.log(`new feature data initialized with ${this.NETWORK}`);
   }
 
   async get() {
