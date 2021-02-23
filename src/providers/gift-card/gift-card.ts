@@ -116,9 +116,24 @@ export class GiftCardProvider extends InvoiceProvider {
     return this.supportedCardMapPromise;
   }
 
-  async getCardMap(cardName: string) {
+  async getCardMap(cardName: string, fetchTimeout: number = 6000) {
     const network = this.getNetwork();
-    const map = await this.persistenceProvider.getGiftCards(cardName, network);
+    const map = await Promise.race([
+      this.persistenceProvider.getGiftCards(cardName, network),
+      Observable.timer(fetchTimeout)
+        .toPromise()
+        .then(() => {
+          throw new Error('timeout');
+        })
+    ]).catch(err => {
+      if (err && err.message === 'timeout') {
+        this.logger.debug(
+          `${cardName} gift cards took longer than ${fetchTimeout}ms to load`
+        );
+        return {};
+      }
+      throw err;
+    });
     return map || {};
   }
 
@@ -211,12 +226,22 @@ export class GiftCardProvider extends InvoiceProvider {
       : getCardsFromInvoiceMap(giftCardMap, configMap);
   }
 
-  async getPurchasedCards(cardName: string): Promise<GiftCard[]> {
+  async getPurchasedCards(
+    cardName: string,
+    fetchTimeout: number = 3000
+  ): Promise<GiftCard[]> {
     const [configMap, giftCardMap] = await Promise.all([
       this.getSupportedCardConfigMap(),
-      this.getCardMap(cardName)
+      this.getCardMap(cardName, fetchTimeout)
     ]);
     return getCardsFromInvoiceMap(giftCardMap, configMap);
+  }
+
+  async saveCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
+    const oldGiftCards = await this.getCardMap(giftCard.name);
+    const newMap = this.getNewSaveableGiftCardMap(oldGiftCards, giftCard, opts);
+    const savePromise = this.persistCards(giftCard.name, newMap);
+    await Promise.all([savePromise, this.updateActiveCards([giftCard], opts)]);
   }
 
   async hideDiscountItem() {
@@ -238,15 +263,7 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 
   async getRecentlyPurchasedBrandNames(): Promise<string[]> {
-    const purchasedBrands: any = await Promise.race([
-      this.getPurchasedBrands(),
-      Observable.timer(3000)
-        .toPromise()
-        .then(() => {
-          this.logger.debug('Purchased brands took longer than 3s to load');
-          return [];
-        })
-    ]);
+    const purchasedBrands: any = await this.getPurchasedBrands();
     this.logger.debug('got purchased brands');
     const recentlyPurchasedBrands = purchasedBrands
       .map(cards => cards.sort(sortByDescendingDate))
@@ -268,13 +285,6 @@ export class GiftCardProvider extends InvoiceProvider {
     return purchasedCards
       .filter(brand => brand.length)
       .sort((a, b) => sortByDisplayName(a[0], b[0]));
-  }
-
-  async saveCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
-    const oldGiftCards = await this.getCardMap(giftCard.name);
-    const newMap = this.getNewSaveableGiftCardMap(oldGiftCards, giftCard, opts);
-    const savePromise = this.persistCards(giftCard.name, newMap);
-    await Promise.all([savePromise, this.updateActiveCards([giftCard], opts)]);
   }
 
   async updateActiveCards(
