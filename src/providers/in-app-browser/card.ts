@@ -416,7 +416,6 @@ export class IABCardProvider {
             cards:debitCards {
               token,
               id,
-              nickname,
               pagingSupport,
               currency {
                 name
@@ -433,7 +432,6 @@ export class IABCardProvider {
               activationDate,
               cardType,
               cardBalance,
-              lockedByUser
             }
           }
         }
