@@ -28,6 +28,7 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
+declare var cordova: any;
 
 @Injectable()
 export class IABCardProvider {
@@ -290,6 +291,35 @@ export class IABCardProvider {
         case 'fbLogEvent':
           this.logEvent(event);
           break;
+
+        case 'getVirtualImage': {
+          const { url, id } = event.data.params;
+
+          cordova.plugin.http.sendRequest(
+            url,
+            {
+              method: 'get',
+              headers: { responseType: 'arraybuffer' }
+            },
+            ({ data }) => {
+              const base64Image = Buffer.from(data, 'binary').toString(
+                'base64'
+              );
+              const fullImageString = `data:image/jpg;base64, ${base64Image}`;
+              this.sendMessage({
+                message: 'virtualImageFetchComplete',
+                payload: { id, fullImageString }
+              });
+            },
+            ({ error }) => {
+              this.sendMessage({
+                message: 'virtualImageFetchComplete',
+                payload: { id, error }
+              });
+            }
+          );
+          break;
+        }
 
         default:
           break;
