@@ -222,7 +222,7 @@ export class GiftCardProvider extends InvoiceProvider {
     const validSchema =
       giftCardMap && Object.keys(giftCardMap).every(key => key !== 'undefined');
     return !giftCardMap || !validSchema
-      ? this.migrateAndFetchActiveCards()
+      ? this.refreshActiveGiftCards()
       : getCardsFromInvoiceMap(giftCardMap, configMap);
   }
 
@@ -558,7 +558,7 @@ export class GiftCardProvider extends InvoiceProvider {
     );
   }
 
-  async migrateAndFetchActiveCards(): Promise<GiftCard[]> {
+  async refreshActiveGiftCards(): Promise<GiftCard[]> {
     await this.clearActiveGiftCards();
     const purchasedBrands = await this.getPurchasedBrands();
     const activeCardsGroupedByBrand = purchasedBrands.filter(
