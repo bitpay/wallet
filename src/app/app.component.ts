@@ -221,7 +221,14 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.logger.debug('BitPay: setting network');
+    const network = await this.persistenceProvider.getNetwork();
+
+    if (network) {
+      this.NETWORK = network;
+    }
+
+    this.logger.debug('BitPay: setting network', this.NETWORK);
+
     [
       this.bitpayProvider,
       this.bitpayIdProvider,
