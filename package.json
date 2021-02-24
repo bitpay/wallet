@@ -138,7 +138,7 @@
     "cordova-ios": "5.1.1",
     "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "2.0.2",
-    "cordova-plugin-advanced-http": "2.0.8",
+    "cordova-plugin-advanced-http": "2.1.0",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-customurlscheme-ng": "9.0.0",
     "cordova-plugin-device": "2.0.1",
