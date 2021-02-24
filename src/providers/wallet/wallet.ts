@@ -1424,6 +1424,7 @@ export class WalletProvider {
   public recreate(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Recreating wallet:', wallet.id);
+      this.clearTxHistory(wallet);
       wallet.recreateWallet(err => {
         wallet.notAuthorized = false;
         if (err) return reject(err);
