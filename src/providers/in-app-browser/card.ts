@@ -302,6 +302,11 @@ export class IABCardProvider {
               headers: { responseType: 'arraybuffer' }
             },
             ({ data }) => {
+              // adding this to fix a bug with the advanced http plugin
+              if (data.charAt(0) !== 'ÿ') {
+                data = 'ÿ' + data;
+              }
+
               const base64Image = Buffer.from(data, 'binary').toString(
                 'base64'
               );
