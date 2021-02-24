@@ -1685,4 +1685,8 @@ export class ConfirmPage {
       option ? this.chooseFeeLevel() : this.onFeeModalDismiss(data);
     });
   }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
+  }
 }

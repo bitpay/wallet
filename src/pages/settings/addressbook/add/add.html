@@ -36,6 +36,11 @@
 
         <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
+      <label-tip type="info" header="no-header" *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
+        <div label-tip-body>
+          <span translate>BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds.</span>
+        </div>
+      </label-tip>
 
       <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
         <div label-tip-body>
