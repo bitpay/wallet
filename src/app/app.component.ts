@@ -364,13 +364,6 @@ export class CopayApp {
       this.platformProvider.isCordova &&
       this.appProvider.info.name === 'bitpay'
     ) {
-      if (cards) {
-        this.events.publish('CardAdvertisementUpdate', {
-          status: 'connected',
-          cards
-        });
-      }
-
       const host =
         this.NETWORK === 'testnet' ? 'test.bitpay.com' : 'bitpay.com';
       this.logger.log(`IAB host -> ${host}`);
