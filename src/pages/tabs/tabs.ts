@@ -59,6 +59,13 @@ export class TabsPage {
     private configProvider: ConfigProvider,
     private http: HttpClient
   ) {
+    this.persistenceProvider.getNetwork().then((network: string) => {
+      if (network) {
+        this.NETWORK = network;
+      }
+      this.logger.log(`tabs initialized with ${this.NETWORK}`);
+    });
+
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
@@ -111,6 +118,17 @@ export class TabsPage {
         this.fetchAllWalletsStatus();
       }, 1000);
     });
+
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      this.NETWORK
+    );
+
+    if (cards) {
+      this.events.publish('CardAdvertisementUpdate', {
+        status: 'connected',
+        cards
+      });
+    }
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');

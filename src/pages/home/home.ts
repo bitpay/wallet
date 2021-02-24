@@ -34,6 +34,8 @@ import {
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { Network } from '../../providers/persistence/persistence';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
@@ -123,7 +125,8 @@ export class HomePage {
     private dynamicLinkProvider: DynamicLinksProvider,
     private newFeatureData: NewFeatureData,
     private emailProvider: EmailNotificationsProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private splashScreen: SplashScreen
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -832,20 +835,32 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  public enableBitPayIdPairing() {
+  public toggleTestnet() {
     this.tapped++;
-
     if (this.tapped >= 10) {
-      this.persistenceProvider.getBitpayIdPairingFlag().then(res => {
-        res === 'enabled'
-          ? this.persistenceProvider.removeBitpayIdPairingFlag()
-          : this.persistenceProvider.setBitpayIdPairingFlag('enabled');
+      this.persistenceProvider
+        .getNetwork()
+        .then((currentNetwork: Network | undefined) => {
+          const newNetwork =
+            !currentNetwork || currentNetwork === Network.livenet
+              ? Network.testnet
+              : Network.livenet;
+          this.persistenceProvider.setNetwork(newNetwork);
+          const infoSheet = this.actionSheetProvider.createInfoSheet(
+            'in-app-notification',
+            {
+              title: 'Network Changed',
+              body: `Network changed to ${newNetwork}. Restarting app.`
+            }
+          );
+          infoSheet.present();
+          infoSheet.onDidDismiss(() => {
+            window.location.reload();
+            if (this.platformProvider.isCordova) this.splashScreen.show();
+          });
 
-        alert(
-          `BitPay ID pairing feature ${res === 'enabled' ? res : 'disabled'}`
-        );
-        this.tapped = 0;
-      });
+          this.tapped = 0;
+        });
     }
   }
 

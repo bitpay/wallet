@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { AppProvider } from '../app/app';
 import { IABCardProvider } from '../in-app-browser/card';
 import { LocationProvider } from '../location/location';
+import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
@@ -41,8 +42,16 @@ export class NewFeatureData {
     private translate: TranslateService,
     private persistenceProvider: PersistenceProvider,
     private iabCardProvider: IABCardProvider,
-    private events: Events
+    private events: Events,
+    private logger: Logger
   ) {
+    this.persistenceProvider.getNetwork().then((network: string) => {
+      if (network) {
+        this.NETWORK = network;
+      }
+      this.logger.log(`persistence initialized with ${this.NETWORK}`);
+    });
+
     this.feature_list = [
       {
         majorversion: 12,

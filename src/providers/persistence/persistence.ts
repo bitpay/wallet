@@ -84,7 +84,8 @@ const Keys = {
   COUNTRIES: 'countries',
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
   TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
-  TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag'
+  TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
+  NETWORK: 'network'
 };
 
 interface Storage {
@@ -940,6 +941,14 @@ export class PersistenceProvider {
 
   removeDynamicLink() {
     return this.storage.remove('BitPay-DynamicLink');
+  }
+
+  setNetwork(network: 'livenet' | 'testnet' | undefined) {
+    return this.storage.set(Keys.NETWORK, network);
+  }
+
+  getNetwork() {
+    return this.storage.get(Keys.NETWORK);
   }
 }
 
