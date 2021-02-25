@@ -56,12 +56,13 @@ export class CryptoPaymentMethodPage {
           this.coin,
           this.currency
         ) ||
-          this.buyCryptoProvider.isPaymentMethodSupported(
+          (this.buyCryptoProvider.isPaymentMethodSupported(
             'wyre',
             m,
             this.coin,
             this.currency
-          )) &&
+          ) &&
+            !this.navParams.data.isPromotionActiveForCountry)) && // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
         (m.method != 'sepaBankTransfer' ||
           (m.method == 'sepaBankTransfer' && this.country.EUCountry))
       );
@@ -75,6 +76,10 @@ export class CryptoPaymentMethodPage {
   }
 
   public showExchange(exchange: string, paymentMethod) {
+    if (this.navParams.data.isPromotionActiveForCountry && exchange == 'wyre') {
+      // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
+      return false;
+    }
     return this.buyCryptoProvider.isPaymentMethodSupported(
       exchange,
       paymentMethod,
@@ -100,12 +105,7 @@ export class CryptoPaymentMethodPage {
   }
 
   public save() {
-    if (
-      !this.useAsModal ||
-      !this.methodSelected ||
-      this.navParams.data.paymentMethod == this.methodSelected
-    )
-      return;
+    if (!this.useAsModal || !this.methodSelected) return;
     this.viewCtrl.dismiss({ paymentMethod: this.methods[this.methodSelected] });
   }
 }

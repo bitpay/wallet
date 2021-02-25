@@ -58,8 +58,7 @@
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
 
       <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
-        <span *ngIf="!fromBuyCrypto">{{'Continue' | translate}}</span>
-        <span *ngIf="fromBuyCrypto">{{'Select Payment Method' | translate}}</span>
+        <span>{{'Continue' | translate}}</span>
       </button>
     </div>
   </div>

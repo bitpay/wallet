@@ -191,7 +191,7 @@ For more information regarding how addresses are generated using this procedure,
 
 Since v1.2 Bitpay Wallet uses BIP39 mnemonics for backing up wallets. The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
 
-Information about backup and recovery procedures is available at: https://github.com/bitpay/copay/blob/master/backupRecovery.md
+Information about backup and recovery procedures is available at: https://github.com/bitpay/wallet/blob/master/backupRecovery.md
 
 Previous versions of Bitpay Wallet used files as backups. See the following section.
 

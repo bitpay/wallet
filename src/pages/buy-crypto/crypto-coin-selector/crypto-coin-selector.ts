@@ -40,7 +40,10 @@ export class CryptoCoinSelectorPage {
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams
   ) {
-    const supportedCoins = this.buyCryptoProvider.exchangeCoinsSupported;
+    // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
+    const supportedCoins = this.navParams.data.isPromotionActiveForCountry
+      ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
+      : this.buyCryptoProvider.getExchangeCoinsSupported();
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
@@ -91,7 +94,7 @@ export class CryptoCoinSelectorPage {
       );
       walletSelector.present();
       walletSelector.onDidDismiss(wallet => {
-        if (wallet.needsBackup) {
+        if (wallet && wallet.needsBackup) {
           const infoSheet = this.actionSheetProvider.createInfoSheet(
             'key-verification-required'
           );

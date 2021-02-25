@@ -28,7 +28,7 @@ export class AddressbookAddPage {
 
   public isCordova: boolean;
   public appName: string;
-  private regex: RegExp;
+  private destinationTagregex: RegExp;
 
   constructor(
     private navCtrl: NavController,
@@ -41,7 +41,7 @@ export class AddressbookAddPage {
     private logger: Logger,
     private popupProvider: PopupProvider
   ) {
-    this.regex = /^[0-9]{9,}$/;
+    this.destinationTagregex = /^[0-9]{1,}$/;
     this.addressBookAdd = this.formBuilder.group({
       name: [
         '',
@@ -55,7 +55,7 @@ export class AddressbookAddPage {
           new AddressValidator(this.addressProvider).isValid
         ])
       ],
-      tag: ['', Validators.pattern(this.regex)]
+      tag: ['', Validators.pattern(this.destinationTagregex)]
     });
     if (this.navParams.data.addressbookEntry) {
       this.addressBookAdd.controls['address'].setValue(
@@ -76,7 +76,7 @@ export class AddressbookAddPage {
 
   private updateAddressHandler: any = data => {
     if (
-      this.regex.test(data.value) &&
+      this.destinationTagregex.test(data.value) &&
       this.addressBookAdd.value.address &&
       this.getCoinAndNetwork() &&
       this.getCoinAndNetwork().coin === 'xrp'

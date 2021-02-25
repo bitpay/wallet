@@ -205,7 +205,7 @@ export class ConfirmPage {
       try {
         networkName = this.addressProvider.getCoinAndNetwork(
           this.navParams.data.toAddress,
-          this.navParams.data.network || 'livenet'
+          this.navParams.data.network || ''
         ).network;
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
@@ -1407,7 +1407,8 @@ export class ConfirmPage {
           this.config.confirmedTxsNotifications.enabled
         ) {
           this.txConfirmNotificationProvider.subscribe(wallet, {
-            txid: txp.txid
+            txid: txp.txid,
+            amount: txp.amount
           });
         }
         let redir;
@@ -1683,5 +1684,9 @@ export class ConfirmPage {
     warningSheet.onDidDismiss(option => {
       option ? this.chooseFeeLevel() : this.onFeeModalDismiss(data);
     });
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 }

@@ -494,7 +494,7 @@
     <info-sheet-template *ngSwitchCase="'correct-recovery-prhase'" type="success">
       <span sheet-title-text translate>Perfect!</span>
       <span sheet-text>
-        In order to protect your funds from being accessible to hackers and theives, store this recovery phrase in a safe and secure place.
+        In order to protect your funds from being accessible to hackers and thieves, store this recovery phrase in a safe and secure place.
       </span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
@@ -515,6 +515,15 @@
         The fee you are using is lower than the Super Economy level, we do not recommend doing this as the transaction will take very long to confirm or may never do it. You can continue at your own responsibility.
       </span>
       <span sheet-button-text translate>Change Miner Fee</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'send-max-min-amount'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}</span>
+        <span *ngIf="params.msg">{{params.msg}}</span>
+      </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
 

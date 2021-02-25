@@ -41,7 +41,7 @@ export class WyreProvider {
       'wbtc'
     ];
     this.fiatAmountLimits = {
-      min: 1,
+      min: 20,
       max: 1000
     };
   }
@@ -96,10 +96,10 @@ export class WyreProvider {
   ) {
     let min, max: number;
     if (!country || country != 'US') {
-      min = 1;
+      min = 20;
       max = 1000;
     } else {
-      min = 1;
+      min = 20;
       max = 500;
     }
     this.fiatAmountLimits.min = this.calculateFiatRate(min, fiatCurrency, coin);
@@ -161,6 +161,24 @@ export class WyreProvider {
     return wallet.wyreUrlParams(data);
   }
 
+  public getWalletOrderDetails(orderId: string) {
+    const url = this.uri + '/v3/orders/' + orderId;
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { headers }).subscribe(
+        data => {
+          return resolve(data);
+        },
+        err => {
+          return reject(err);
+        }
+      );
+    });
+  }
+
   public getTransfer(transferId: string) {
     const url = this.uri + '/v2/transfer/' + transferId + '/track';
     const headers = {
@@ -191,12 +209,13 @@ export class WyreProvider {
         data = JSON.parse(data);
       }
       let inv = oldData ? oldData : {};
-      inv[data.transferId] = data;
+      inv[data.orderId] = data;
       if (opts && (opts.error || opts.status)) {
-        inv[data.transferId] = _.assign(inv[data.transferId], opts);
+        inv[data.orderId] = _.assign(inv[data.orderId], opts);
       }
       if (opts && opts.remove) {
-        delete inv[data.transferId];
+        if (inv[data.transferId]) delete inv[data.transferId];
+        if (inv[data.orderId]) delete inv[data.orderId];
       }
 
       inv = JSON.stringify(inv);

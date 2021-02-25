@@ -372,9 +372,8 @@ export class AmountPage {
 
   public isSendMaxButtonShown() {
     return (
-      this.showSendMax && !this.requestingAmount && !this.useAsModal
-      // ||
-      // this.fromExchangeCrypto // TODO: implement send max
+      (this.showSendMax && !this.requestingAmount && !this.useAsModal) ||
+      this.fromExchangeCrypto
     );
   }
 
@@ -583,7 +582,7 @@ export class AmountPage {
         id: this._id,
         amount,
         currency: this.fromBuyCrypto ? this.unit : unit.id.toUpperCase(),
-        coin,
+        coin: this.fromBuyCrypto && !this.navParams.data.coin ? null : coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
         cardConfig: this.cardConfig,

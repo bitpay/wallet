@@ -221,19 +221,14 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.platform.pause.subscribe(() => {
-      const config = this.configProvider.get();
-      const lockMethod =
-        config && config.lock && config.lock.method
-          ? config.lock.method.toLowerCase()
-          : null;
-      if (!lockMethod || lockMethod === 'disabled') {
-        return;
-      }
-      this.iabCardProvider.pause();
-    });
+    const network = await this.persistenceProvider.getNetwork();
 
-    this.logger.debug('BitPay: setting network');
+    if (network) {
+      this.NETWORK = network;
+    }
+
+    this.logger.debug('BitPay: setting network', this.NETWORK);
+
     [
       this.bitpayProvider,
       this.bitpayIdProvider,
@@ -391,16 +386,21 @@ export class CopayApp {
             `${CARD_IAB_CONFIG},OverrideUserAgent=${agent}`,
             `https://${host}/wallet-card?context=bpa`,
             `( async () => {
-              window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}});
-              window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
-                this.appProvider.info.version
-              )}});
-              await new Promise((res) => setTimeout(res, 300));
-              sessionStorage.setItem('isPaired', ${!!token}); 
-              sessionStorage.setItem('cards', ${JSON.stringify(
-                JSON.stringify(cards)
-              )});
-              webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify({message: 'IABLoaded'}));
+              const sendMessageToWallet = (message) => webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(message));
+              try {
+                window.postMessage({message: 'isDarkModeEnabled', payload: {theme: ${this.themeProvider.isDarkModeEnabled()}}},'*');
+                window.postMessage({message: 'getAppVersion', payload: ${JSON.stringify(
+                  this.appProvider.info.version
+                )}},'*');
+                await new Promise((res) => setTimeout(res, 300));
+                sessionStorage.setItem('isPaired', ${!!token}); 
+                sessionStorage.setItem('cards', ${JSON.stringify(
+                  JSON.stringify(cards)
+                )});
+                sendMessageToWallet({message: 'IABLoaded'});
+              } catch(err) {
+                sendMessageToWallet({message: 'IABError', log: err});
+              }   
               })()`
           );
           this.iabCardProvider.init();
@@ -451,14 +451,18 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.appProvider.isLockModalOpen) return;
-
+    if (this.appProvider.skipLockModal && this.platformProvider.isAndroid) {
+      // workaround for android devices that execute pause for system actions
+      this.appProvider.skipLockModal = false;
+      return;
+    }
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
         : null;
 
-    if (!lockMethod) {
+    if (!lockMethod || lockMethod === 'disabled') {
       return;
     }
 
@@ -467,6 +471,7 @@ export class CopayApp {
     } else if (lockMethod == 'fingerprint') {
       this.openFingerprintModal();
     }
+    this.iabCardProvider.pause();
   }
 
   private openPINModal(action): void {
@@ -480,6 +485,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -496,6 +504,9 @@ export class CopayApp {
       }
     );
     modal.present({ animate: false });
+    modal.onWillDismiss(() => {
+      this.onLockWillDismiss();
+    });
     modal.onDidDismiss(() => {
       this.onLockDidDismiss();
     });
@@ -505,6 +516,9 @@ export class CopayApp {
     this.appProvider.isLockModalOpen = false;
     this.events.publish('Local/FetchWallets');
     this.events.publish('Local/showNewFeaturesSlides');
+  }
+
+  private onLockWillDismiss(): void {
     this.iabCardProvider.resume();
   }
 

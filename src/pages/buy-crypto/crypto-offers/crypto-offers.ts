@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -68,6 +69,7 @@ export class CryptoOffersPage {
   };
 
   constructor(
+    private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private buyCryptoProvider: BuyCryptoProvider,
     private logger: Logger,
@@ -109,12 +111,13 @@ export class CryptoOffersPage {
       this.coin,
       this.currency
     );
-    this.offers.wyre.showOffer = this.buyCryptoProvider.isPaymentMethodSupported(
-      'wyre',
-      this.paymentMethod,
-      this.coin,
-      this.currency
-    );
+    this.offers.wyre.showOffer =
+      this.buyCryptoProvider.isPaymentMethodSupported(
+        'wyre',
+        this.paymentMethod,
+        this.coin,
+        this.currency
+      ) && !this.navParams.data.isPromotionActiveForCountry; // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
     if (this.offers.simplex.showOffer) this.getSimplexQuote();
     if (this.offers.wyre.showOffer) this.getWyreQuote();
   }
@@ -189,7 +192,7 @@ export class CryptoOffersPage {
               this.continueToSimplex();
               break;
             case 'wyre':
-              this.externalLinkProvider.open(url);
+              this.continueToWyre(url);
               break;
 
             default:
@@ -283,6 +286,14 @@ export class CryptoOffersPage {
                 this.logger.debug(
                   'Saved Simplex with status: ' + newData.status
                 );
+                this.analyticsProvider.logEvent('buy_crypto_payment_request', {
+                  exchange: 'simplex',
+                  userId: this.wallet.id,
+                  fiatAmount: this.amount,
+                  fiatCurrency: this.currency.toUpperCase(),
+                  paymentMethod: this.paymentMethod.method,
+                  coin: this.wallet.coin
+                });
                 const paymentUrl: string = this.simplexProvider.getPaymentUrl(
                   this.wallet,
                   quoteData,
@@ -414,16 +425,25 @@ export class CryptoOffersPage {
             paymentMethod = 'debit-card';
             break;
         }
-        const redirectUrl = this.appProvider.info.name + '://wyre';
+        const redirectUrl =
+          this.appProvider.info.name +
+          '://wyre?walletId=' +
+          this.wallet.id +
+          '&destAmount=' +
+          this.offers.wyre.amountReceiving;
         const failureRedirectUrl = this.appProvider.info.name + '://wyreError';
         const dest = this.setPrefix(address, this.coin, this.wallet.network);
         const data = {
-          amount: this.amount.toString(),
+          sourceAmount: this.amount.toString(),
           dest,
           destCurrency: this.coin.toUpperCase(),
-          lockFields: ['dest', 'destCurrency'],
+          lockFields: ['dest', 'destCurrency', 'country'],
           paymentMethod,
-          sourceCurrency: this.currency.toUpperCase()
+          sourceCurrency: this.currency.toUpperCase(),
+          country: this.selectedCountry.shortCode,
+          amountIncludeFees: true, // If amountIncludeFees is true, use sourceAmount instead of amount
+          redirectUrl,
+          failureRedirectUrl
         };
 
         this.wyreProvider
@@ -437,12 +457,7 @@ export class CryptoOffersPage {
               return;
             }
 
-            const url =
-              data.url +
-              '&redirectUrl=' +
-              redirectUrl +
-              '&failureRedirectUrl=' +
-              failureRedirectUrl;
+            const url = data.url;
             this.openPopUpConfirmation('wyre', url);
           })
           .catch(err => {
@@ -452,6 +467,18 @@ export class CryptoOffersPage {
       .catch(err => {
         this.showWyreError(err);
       });
+  }
+
+  private continueToWyre(url: string) {
+    this.analyticsProvider.logEvent('buy_crypto_payment_request', {
+      exchange: 'wyre',
+      userId: this.wallet.id,
+      fiatAmount: this.amount,
+      fiatCurrency: this.currency.toUpperCase(),
+      paymentMethod: this.paymentMethod.method,
+      coin: this.wallet.coin
+    });
+    this.externalLinkProvider.open(url);
   }
 
   private getWyreQuote(): void {
@@ -473,12 +500,23 @@ export class CryptoOffersPage {
         .getAddress(this.wallet, false)
         .then(address => {
           const dest = this.setPrefix(address, this.coin, this.wallet.network);
+          let walletType: string;
+          switch (this.paymentMethod.method) {
+            case 'applePay':
+              walletType = 'APPLE_PAY';
+              break;
+            default:
+              walletType = 'DEBIT_CARD';
+              break;
+          }
           const data = {
-            amount: this.amount.toString(),
+            sourceAmount: this.amount.toString(),
             sourceCurrency: this.currency.toUpperCase(),
             destCurrency: this.coin.toUpperCase(),
             dest,
-            country: this.selectedCountry.shortCode
+            country: this.selectedCountry.shortCode,
+            amountIncludeFees: true, // If amountIncludeFees is true, use sourceAmount instead of amount
+            walletType
           };
 
           this.wyreProvider
@@ -493,8 +531,17 @@ export class CryptoOffersPage {
               }
 
               this.offers.wyre.amountCost = data.sourceAmount; // sourceAmount = Total amount (including fees)
-              this.offers.wyre.buyAmount = this.amount;
-              this.offers.wyre.fee = data.sourceAmount - this.amount;
+              this.offers.wyre.buyAmount = data.sourceAmountWithoutFees;
+              this.offers.wyre.fee =
+                data.sourceAmount - data.sourceAmountWithoutFees;
+
+              if (this.offers.wyre.fee < 0) {
+                const err = this.translate.instant(
+                  `Wyre has returned a wrong value for the fee. Fee: ${this.offers.wyre.fee}`
+                );
+                this.showWyreError(err);
+                return;
+              }
 
               this.offers.wyre.fiatMoney = Number(
                 this.offers.wyre.buyAmount / data.destAmount

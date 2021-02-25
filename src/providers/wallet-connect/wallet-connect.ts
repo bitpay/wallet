@@ -76,7 +76,7 @@ export class WalletConnectProvider {
         'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(45, 47, 51, 1) 100%)',
       page: 'WalletConnectPage',
       show: !!this.configProvider.get().showIntegration['walletConnect'],
-      type: 'exchange'
+      type: 'external-services'
     });
   }
 

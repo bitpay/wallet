@@ -92,6 +92,16 @@ page-crypto-offers {
       font-size: 18px;
       line-height: 20px;
       color: black;
+      &.error-label {
+        .error-title {
+          color: color($colors, danger);
+          font-weight: bold;
+        }
+        .error-msg {
+          color: color($colors, danger);
+          font-size: 14px;
+        }
+      }
     }
 
     .secondary-label {

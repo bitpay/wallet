@@ -28,6 +28,7 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
+declare var cordova: any;
 
 @Injectable()
 export class IABCardProvider {
@@ -100,6 +101,7 @@ export class IABCardProvider {
           this._IABLoaded.next(true);
           break;
 
+        case 'IABError':
         case 'log':
           this.logger.debug(event.data.log);
           break;
@@ -290,6 +292,35 @@ export class IABCardProvider {
           this.logEvent(event);
           break;
 
+        case 'getVirtualImage': {
+          const { url, id } = event.data.params;
+
+          cordova.plugin.http.sendRequest(
+            url,
+            {
+              method: 'get',
+              responseType: 'arraybuffer'
+            },
+            ({ data }) => {
+              const base64Image = Buffer.from(data, 'binary').toString(
+                'base64'
+              );
+              const fullImageString = `data:image/jpg;base64, ${base64Image}`;
+              this.sendMessage({
+                message: 'virtualImageFetchComplete',
+                payload: { id, fullImageString }
+              });
+            },
+            ({ error }) => {
+              this.sendMessage({
+                message: 'virtualImageFetchComplete',
+                payload: { id, error }
+              });
+            }
+          );
+          break;
+        }
+
         default:
           break;
       }
@@ -385,7 +416,6 @@ export class IABCardProvider {
             cards:debitCards {
               token,
               id,
-              nickname,
               pagingSupport,
               currency {
                 name
@@ -402,7 +432,6 @@ export class IABCardProvider {
               activationDate,
               cardType,
               cardBalance,
-              lockedByUser
             }
           }
         }

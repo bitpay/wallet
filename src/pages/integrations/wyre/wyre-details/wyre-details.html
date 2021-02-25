@@ -82,6 +82,17 @@
       </div>
     </ion-item>
 
+    <ion-item *ngIf="paymentRequest.paymentMethodName">
+      {{'Payment method' | translate}}
+      <div padding-top>
+        <ion-note text-wrap>
+          <span copy-to-clipboard="{{paymentRequest.paymentMethodName}}">
+            {{ paymentRequest.paymentMethodName }}
+          </span>
+        </ion-note>
+      </div>
+    </ion-item>
+
     <ion-item>
       Transfer ID
       <div padding-top>
