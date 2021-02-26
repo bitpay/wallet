@@ -731,7 +731,7 @@ export class WalletProvider {
     });
   }
 
-  public clearCache(wallet): Promise<any> {
+  clearWalletCache(wallet): Promise<boolean> {
     return new Promise(resolve => {
       const config = this.configProvider.get();
       const defaults = this.configProvider.getDefaults();
@@ -1471,7 +1471,7 @@ export class WalletProvider {
   public clearTxHistory(wallet): void {
     this.invalidateCache(wallet);
     this.persistenceProvider.removeTxHistory(wallet.id);
-    this.clearCache(wallet)
+    this.clearWalletCache(wallet)
       .then(() => {
         this.logger.info(
           `TxHistory cache cleared from server for: ${wallet.id}`
