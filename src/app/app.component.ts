@@ -161,9 +161,6 @@ export class CopayApp {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
     this.imageLoaderConfig.enableSpinner(false);
-    this.locationProvider.getCountry().then(c => {
-      this.logger.info('Country: ' + c);
-    });
     this.initializeApp();
   }
 
@@ -228,6 +225,10 @@ export class CopayApp {
         this.appProvider.info.commitHash +
         deviceInfo
     );
+
+    this.locationProvider.getCountry().then(c => {
+      this.logger.info('Country: ' + c);
+    });
 
     const network = await this.persistenceProvider.getNetwork();
 
