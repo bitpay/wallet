@@ -88,10 +88,9 @@
           </div>
         </div>
 
-        <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
-          <span class="title" translate>Tap to recreate</span>
+        <div class="balance-error" *ngIf="walletNotRegistered">
           <div translate>
-            This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+            This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab).
           </div>
         </div>
       </expandable-header-primary>
