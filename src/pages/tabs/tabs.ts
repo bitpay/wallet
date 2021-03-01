@@ -119,16 +119,14 @@ export class TabsPage {
       }, 1000);
     });
 
-    const cards = await this.persistenceProvider.getBitpayDebitCards(
-      this.NETWORK
-    );
-
-    if (cards) {
-      this.events.publish('CardAdvertisementUpdate', {
-        status: 'connected',
-        cards
-      });
-    }
+    this.persistenceProvider.getBitpayDebitCards(this.NETWORK).then(cards => {
+      if (cards) {
+        this.events.publish('CardAdvertisementUpdate', {
+          status: 'connected',
+          cards
+        });
+      }
+    });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');

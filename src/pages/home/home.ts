@@ -565,7 +565,7 @@ export class HomePage {
       });
   }
 
-  private addGiftCardDiscount(discountedCard: CardConfig) {
+  private async addGiftCardDiscount(discountedCard: CardConfig) {
     const discount = discountedCard.discounts[0];
     const discountText =
       discount.type === 'flatrate'
@@ -579,7 +579,12 @@ export class HomePage {
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: `${discountText} off ${discountedCard.displayName}`,
@@ -592,15 +597,21 @@ export class HomePage {
         dismissible: true,
         imgSrc: discountedCard.icon
       });
+    this.showAdvertisements = true;
   }
 
-  private addGiftCardPromotion(promotedCard: CardConfig) {
+  private async addGiftCardPromotion(promotedCard: CardConfig) {
     const promo = promotedCard.promotions[0];
     const advertisementName = promo.shortDescription;
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: promo.title,
@@ -613,6 +624,11 @@ export class HomePage {
         dismissible: true,
         imgSrc: promo.icon
       });
+    this.showAdvertisements = true;
+  }
+
+  private checkIfDismissed(name: string): Promise<any> {
+    return this.persistenceProvider.getAdvertisementDismissed(name);
   }
 
   slideChanged() {
