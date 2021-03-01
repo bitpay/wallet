@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2020-12-18 14:37\n"
+"PO-Revision-Date: 2021-02-26 17:23\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -20,19 +20,22 @@ msgstr "(mogelijk dubbel besteed)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* Een betalingsvoorstel kan worden verwijderd als 1) je de maker bent en geen enkele andere copayer heeft getekend, of 2) er 10 minuten zijn verstreken sinds de creatie van het voorstel."
 
-msgid ", please provide your phone number."
+msgid "*Currently available in the USA. More countries coming soon."
 msgstr ""
 
+msgid ", please provide your phone number."
+msgstr ", voer je telefoonnummer in."
+
 msgid "1.5% of the amount."
-msgstr ""
+msgstr "1,5% van het bedrag."
 
 msgid "1D"
 msgstr "1D"
 
-msgid "2.9% of the amount + 0.30 USD per transactions"
+msgid "5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
 msgstr ""
 
-msgid "3.9% of the amount + 0.30 USD per transactions"
+msgid "5 USD minimum fee or 3.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
@@ -62,15 +65,6 @@ msgstr "Een totaal van {{amountAboveMaxSizeStr}} is uitgesloten. De maximum toeg
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
-msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: {{withdrawalFee}} {{toWallet.coin | uppercase}}"
-msgstr ""
-
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
-
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
-
 msgid "A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time."
 msgstr ""
 
@@ -79,6 +73,9 @@ msgstr ""
 
 msgid "ACTIVATED"
 msgstr "GEACTIVEERD"
+
+msgid "AML/KYC Policy"
+msgstr ""
 
 msgid "About {{ appName }}"
 msgstr "Over {{ appName }}"
@@ -111,10 +108,10 @@ msgid "Add BitPay Account?"
 msgstr "BitPay account toevoegen?"
 
 msgid "Add Encryption"
-msgstr ""
+msgstr "Voeg encryptie toe"
 
 msgid "Add Encryption?"
-msgstr ""
+msgstr "Encryptie toevoegen?"
 
 msgid "Add Me"
 msgstr "Voeg mij toe"
@@ -157,6 +154,9 @@ msgstr "Adres Type"
 
 msgid "Address already added"
 msgstr "Adres is al toegevoegd"
+
+msgid "Address requested does not match active account"
+msgstr ""
 
 msgid "Addressbook is empty"
 msgstr "Adresboek is leeg"
@@ -210,10 +210,13 @@ msgid "An update to this app is available."
 msgstr "Er is een update voor deze app beschikbaar."
 
 msgid "Apple Pay"
-msgstr ""
+msgstr "Apple Pay"
 
 msgid "Apply changes"
 msgstr "Wijzigingen toepassen"
+
+msgid "Approve"
+msgstr ""
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Geschatte Bitcoin netwerk transactiekosten voor overdracht van volledige saldo van portemonnee (met normale prioriteit)"
@@ -262,6 +265,9 @@ msgstr "Weet je zeker dat je jouw BitPay ID wilt ontkoppelen?"
 
 msgid "Are you sure?"
 msgstr "Weet je het zeker?"
+
+msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
+msgstr ""
 
 msgid "Attempted payment request"
 msgstr "Geprobeerd betalingsverzoek"
@@ -381,7 +387,7 @@ msgid "Broadcasting transaction..."
 msgstr "Transactie broadcasten..."
 
 msgid "Buy"
-msgstr ""
+msgstr "Koop"
 
 msgid "Buy Amount"
 msgstr ""
@@ -423,7 +429,7 @@ msgid "CLOSE"
 msgstr "SLUITEN"
 
 msgid "CONTINUE"
-msgstr ""
+msgstr "GA VERDER"
 
 msgid "Calculating fee..."
 msgstr "Transactiekosten berekenen..."
@@ -434,7 +440,7 @@ msgstr "Berekenen..."
 msgid "Camera access denied"
 msgstr "Toegang tot camera geweigerd"
 
-msgid "Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD)."
+msgid "Can range from 2.5% to 5% of the transaction, depending on the volume of traffic (with a minimum of 10 USD or its equivalent in any other fiat currency) + 1% of the transaction."
 msgstr ""
 
 msgid "Can't get rates at this moment. Please try again later"
@@ -467,14 +473,20 @@ msgstr "Bedrag wijzigen"
 msgid "Change Miner Fee"
 msgstr ""
 
+msgid "Changelly Policies"
+msgstr ""
+
+msgid "Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency."
+msgstr ""
+
+msgid "Changelly is not available at this moment. Please, try again later."
+msgstr ""
+
 msgid "Check the app camera permissions under your phone settings"
 msgstr "Controleer de machtigingen van de camera-app in je telefooninstellingen"
 
 msgid "Check the transaction on your wallet details"
 msgstr "Controleer de transactie op je wallet gegevens"
-
-msgid "Choose Assets"
-msgstr "Kies activa"
 
 msgid "Choose a backup file from your computer"
 msgstr "Kies een back-upbestand op je computer"
@@ -493,9 +505,6 @@ msgstr "Cache legen"
 
 msgid "Click to accept"
 msgstr "Klik om te accepteren"
-
-msgid "Click to confirm"
-msgstr "Klik om te bevestigen"
 
 msgid "Click to deposit"
 msgstr "Klik om te storten"
@@ -527,6 +536,12 @@ msgstr "Coinbase ondersteuning"
 msgid "Coinbase updated!"
 msgstr "Coinbase bijgewerkt!"
 
+msgid "Coins are being sent to the recipient address."
+msgstr ""
+
+msgid "Coins were successfully sent to the recipient address."
+msgstr ""
+
 msgid "Coming soon"
 msgstr "Binnenkort beschikbaar"
 
@@ -551,14 +566,14 @@ msgstr ""
 msgid "Confirm Payment"
 msgstr "Bevestig betaling"
 
+msgid "Confirm Request"
+msgstr ""
+
 msgid "Confirm Speed Up"
 msgstr "Bevestig versnelling"
 
 msgid "Confirm Withdraw"
 msgstr "Bevestig opname"
-
-msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
-msgstr "Bevestigen om het verschuiven van {{fromCoin}} naar {{toCoin}}"
 
 msgid "Confirm your PIN"
 msgstr "Bevestig je pincode"
@@ -579,7 +594,7 @@ msgid "Congratulations! It looks like you've recently received money. It's highl
 msgstr "Het is raadzaam dat je jouw herstelzin controleert, zodat je altijd een back-up hebt van je wallet als bijvoorbeeld je telefoon wordt gestolen."
 
 msgid "Connect"
-msgstr ""
+msgstr "Verbinden"
 
 msgid "Connect Account"
 msgstr "Koppel account"
@@ -588,13 +603,10 @@ msgid "Connect Coinbase Account"
 msgstr "Koppel Coinbase-account"
 
 msgid "Connect Your BitPay ID"
-msgstr ""
-
-msgid "Connect to ShapeShift Account"
-msgstr "Koppel ShapeShift-account"
+msgstr "Koppel je BitPay ID"
 
 msgid "Connect with Coinbase"
-msgstr ""
+msgstr "Koppel met Coinbase"
 
 msgid "Connect your BitPay ID"
 msgstr "Koppel je BitPay ID"
@@ -608,11 +620,11 @@ msgstr ""
 msgid "Connecting BitPay ID..."
 msgstr "BitPay ID koppelen..."
 
+msgid "Connecting to Changelly..."
+msgstr ""
+
 msgid "Connecting to Coinbase..."
 msgstr "Verbinding maken met Coinbase..."
-
-msgid "Connecting to ShapeShift..."
-msgstr "ShapeShift verbinden..."
 
 msgid "Connection reset by peer"
 msgstr "Verbinding is gereset door peer"
@@ -620,8 +632,8 @@ msgstr "Verbinding is gereset door peer"
 msgid "Contact Information"
 msgstr "Contactgegevens"
 
-msgid "Contact the ShapeShift support team."
-msgstr "Neem contact op met de klantenservice van ShapeShift."
+msgid "Contact the Changelly support team."
+msgstr ""
 
 msgid "Contact the Simplex support team."
 msgstr "Neem contact op met de klantenservice van Simplex."
@@ -631,6 +643,9 @@ msgstr "Contactpersonen"
 
 msgid "Continue"
 msgstr "Ga verder"
+
+msgid "Continue & Make Payment"
+msgstr ""
 
 msgid "Continue Anyway"
 msgstr "Toch doorgaan"
@@ -701,6 +716,9 @@ msgstr "Kon geen bericht toegevoegd worden aan geïmporteerde portemonnee zonder
 msgid "Could not build transaction"
 msgstr "Kon transactie niet opzetten"
 
+msgid "Could not connect"
+msgstr ""
+
 msgid "Could not create address"
 msgstr "Kon adres niet aanmaken"
 
@@ -724,9 +742,6 @@ msgstr "Kon betalingsvoorstel niet verwijderen"
 
 msgid "Could not encrypt wallet"
 msgstr "Kon wallet niet versleutelen"
-
-msgid "Could not get claim code. Please contact BitPay support."
-msgstr "Kon claimcode niet ophalen. Neem contact op met BitPay's klantenservice."
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr ""
@@ -822,10 +837,10 @@ msgid "Creating transaction..."
 msgstr "Transactie aanmaken..."
 
 msgid "Credit Card"
-msgstr ""
+msgstr "Creditcard"
 
 msgid "Crypto"
-msgstr ""
+msgstr "Crypto"
 
 msgid "Crypto Wallets & Keys"
 msgstr "Cryptowallets & sleutels"
@@ -835,6 +850,9 @@ msgstr "Huidige kaarten"
 
 msgid "Current fee rate for this policy"
 msgstr "Huidige transactiekosten voor dit beleid"
+
+msgid "Currently our partner does not support exchanges with the selected coin"
+msgstr ""
 
 msgid "Custom"
 msgstr "Aangepast"
@@ -846,6 +864,9 @@ msgid "DETAILS"
 msgstr "DETAILS"
 
 msgid "DO THIS LATER"
+msgstr ""
+
+msgid "Dapp not responding. Try scanning a new QR code"
 msgstr ""
 
 msgid "Dark Mode"
@@ -881,15 +902,6 @@ msgstr "Portemonnee Verwijderen..."
 msgid "Deleting payment proposal..."
 msgstr "Betalingsvoorstel verwijderen..."
 
-msgid "Deposit"
-msgstr "Storting"
-
-msgid "Deposit Max"
-msgstr "Stortingsmaximum"
-
-msgid "Deposit Min"
-msgstr "Stortingsminimum"
-
 msgid "Deposit address"
 msgstr "Ontvangstadres"
 
@@ -917,8 +929,14 @@ msgstr "Ontworpen voor mensen die willen leven op crypto."
 msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
 msgstr "Speciaal ontworpen voor mensen die willen leven op crypto. Snel je saldo bekijken, bijstorten of een nieuwe pincode aanvragen? Het is allemaal mogelijk in de BitPay-app."
 
+msgid "Destination"
+msgstr ""
+
 msgid "Destination Tag"
 msgstr "Destination tag"
+
+msgid "Destination Tag (Payin Extra Id)"
+msgstr ""
 
 msgid "Destination wallet needs to be backed up"
 msgstr ""
@@ -953,9 +971,6 @@ msgstr "Voeg geen private key toe"
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
-msgid "Do you want to verify your account now?"
-msgstr "Wil je jouw account nu verifiëren?"
-
 msgid "Don't lose your key!"
 msgstr "Verlies je sleutel niet!"
 
@@ -973,6 +988,9 @@ msgstr "Download"
 
 msgid "Download logs"
 msgstr "Download logs"
+
+msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
 
 msgid "Duplicate to BCH"
 msgstr "Dupliceren naar BCH"
@@ -1091,9 +1109,6 @@ msgstr "Fout bij toevoegen nieuw item"
 msgid "Error connecting to Coinbase"
 msgstr "Fout bij verbinden met Coinbase"
 
-msgid "Error connecting to ShapeShift"
-msgstr "Fout bij verbinden met ShapeShift"
-
 msgid "Error creating wallet"
 msgstr "Fout tijdens maken portemonnee"
 
@@ -1111,6 +1126,9 @@ msgstr "Fout bij ophalen versnellingskosten"
 
 msgid "Error getting Speed Up information"
 msgstr "Fout bij ophalen versnellingsinformatie"
+
+msgid "Error getting address"
+msgstr ""
 
 msgid "Error getting fee rate"
 msgstr "Fout bij ophalen transactiekosten"
@@ -1139,11 +1157,38 @@ msgstr "Ethereum wallet nodig"
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Dagelijkse limiet van $500 per gebruiker overschreden"
 
+msgid "Exchange"
+msgstr ""
+
+msgid "Exchange Crypto"
+msgstr ""
+
+msgid "Exchange Crypto Settings"
+msgstr ""
+
+msgid "Exchange Fee"
+msgstr ""
+
 msgid "Exchange Rates"
 msgstr "Wisselkoersen"
 
+msgid "Exchange Transaction ID"
+msgstr ""
+
+msgid "Exchange address (Payin)"
+msgstr ""
+
+msgid "Exchange failed and coins were refunded to user's wallet."
+msgstr ""
+
+msgid "Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC"
+msgstr ""
+
 msgid "Exchanges"
 msgstr "Beurzen"
+
+msgid "Exchanging"
+msgstr ""
 
 msgid "Execution Failed"
 msgstr "Uitvoering mislukt"
@@ -1171,6 +1216,9 @@ msgstr "Verlengde Privé Sleutel"
 
 msgid "Extended Public Keys"
 msgstr "Verlengde Publieke Sleutels"
+
+msgid "External Services"
+msgstr ""
 
 msgid "Extracting Wallet information..."
 msgstr "Portemonnee informatie ophalen..."
@@ -1216,6 +1264,9 @@ msgstr "Betalingsopties ophalen..."
 
 msgid "File/Text"
 msgstr "Bestand/tekst"
+
+msgid "Finished"
+msgstr ""
 
 msgid "First, lets ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security."
 msgstr ""
@@ -1310,6 +1361,9 @@ msgstr "Ga aan de slag door uw eerste toe te voegen."
 msgid "Get the BitPay Card"
 msgstr "Bestel BitPay-kaart"
 
+msgid "Getting data from the exchange..."
+msgstr ""
+
 msgid "Getting fee levels..."
 msgstr "Hoogte transactiekosten opvragen..."
 
@@ -1337,20 +1391,23 @@ msgstr "Terug"
 msgid "Go to Coinbase"
 msgstr "Ga naar Coinbase"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
 msgstr "Al je {brand}-cadeaubonnen ingewisseld? Gearchiveerde cadeaubonnen zijn nog steeds toegankelijk via de instellingen."
 
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "Heb je het volledige saldo van deze cadeaubon ingewisseld?"
 
+msgid "Having problems with Changelly?"
+msgstr ""
+
 msgid "Having problems with Simplex?"
 msgstr "Problemen met Simplex?"
 
 msgid "Having problems with Wyre?"
 msgstr ""
-
-msgid "Having problems with a ShapeShift?"
-msgstr "Heb je problemen met een ShapeShift?"
 
 msgid "Help & Support"
 msgstr "Hulp & support"
@@ -1385,6 +1442,9 @@ msgstr "Verberg geavanceerde opties"
 msgid "Hide discount?"
 msgstr "Korting verbergen?"
 
+msgid "Hold"
+msgstr ""
+
 msgid "Home"
 msgstr "Start"
 
@@ -1402,9 +1462,6 @@ msgstr "Het is echter niet toegestaan om onbevestigd saldo uit te geven bij merc
 
 msgid "I Understand"
 msgstr "Ik begrijp het"
-
-msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
-msgstr "Ik ga akkoord met de voorwaarden en verklaar dat ik de uiteindelijke begunstigde ben van de ingevoerde asset en het bestemmingsadres."
 
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
@@ -1490,7 +1547,7 @@ msgstr ""
 msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
 msgstr "Een Ethereum (ETH) wallet is vereist om een token wallet aan te maken. Maak dus eerst een ETH wallet aan. Slechts één {{ params.token.name }} wallet is toegestaan per ETH wallet."
 
-msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet is required."
+msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required."
 msgstr ""
 
 msgid "In order to finish the payment process you will be redirected to Simplex's page"
@@ -1613,6 +1670,9 @@ msgstr "Schrijf je in voor de wachtlijst en hoor als eerste over onze nieuwe Car
 msgid "Joining Wallet..."
 msgstr "Deelnemen aan Portemonnee..."
 
+msgid "Just a second, we're setting a few things up."
+msgstr ""
+
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
 msgstr "Vergeet niet dat je coderingswachtwoord niet de recovery phrase van 12 woorden is"
 
@@ -1626,9 +1686,6 @@ msgid "Key already associated with an existing wallet"
 msgstr "Sleutel is reeds geassocieerd met een bestaande portemonnee"
 
 msgid "Key verification required"
-msgstr ""
-
-msgid "Kill Session"
 msgstr ""
 
 msgid "Language"
@@ -1688,6 +1745,9 @@ msgstr "Gekoppeld aan (Copayer 1)"
 msgid "Linked to wallet: {linkedEthWalletName}"
 msgstr "Gekoppeld aan wallet: {linkedEthWalletName}"
 
+msgid "Linked wallet"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr "Leef op crypto."
 
@@ -1727,8 +1787,8 @@ msgstr "Kleine ontvangsten"
 msgid "Manage your Coinbase account, check balances, deposit and withdraw funds between wallets."
 msgstr "Beheer je Coinbase-account, check je saldo, stort en neem geld op tussen wallets."
 
-msgid "Maximum amount allowed is {{max}}"
-msgstr "Maximaal toegestaan bedrag is {{max}}"
+msgid "Maximum Amount"
+msgstr ""
 
 msgid "Maybe a pincode instead?"
 msgstr ""
@@ -1763,11 +1823,11 @@ msgstr "Miner fee"
 msgid "Miner fee not required for payments with Coinbase accounts"
 msgstr ""
 
-msgid "Minimum amount required is {{min}}"
-msgstr "Minimum vereist bedrag is {{min}}"
-
 msgid "Missing 2-step verification"
 msgstr "Twee-staps-verificatie ontbreekt"
+
+msgid "Missing Credentials"
+msgstr ""
 
 msgid "Missing parameter"
 msgstr "Ontbrekende parameter"
@@ -1811,6 +1871,9 @@ msgstr "Oorspronkelijke valuta"
 msgid "Needs Backup"
 msgstr "Back-up nodig"
 
+msgid "Needs Backup 2"
+msgstr ""
+
 msgid "Needs backup"
 msgstr "Back-up nodig"
 
@@ -1832,8 +1895,14 @@ msgstr "Netwerk fout"
 msgid "Never mind"
 msgstr ""
 
+msgid "New"
+msgstr ""
+
 msgid "New Key"
 msgstr "Nieuwe key"
+
+msgid "New Session Request"
+msgstr ""
 
 msgid "New contact"
 msgstr "Nieuwe contactpersoon"
@@ -1907,8 +1976,8 @@ msgstr "Geen portemonnees beschikbaar"
 msgid "No wallets available to receive funds"
 msgstr "Geen portemonnees beschikbaar om saldo te ontvangen"
 
-msgid "No wallets available to use ShapeShift"
-msgstr "Geen wallets beschikbaar om ShapeShift te gebruiken"
+msgid "No wallets available to use this exchange"
+msgstr ""
 
 msgid "No wallets with funds"
 msgstr "Geen wallet met tegoed"
@@ -1933,9 +2002,6 @@ msgstr "Niet genoeg saldo"
 
 msgid "Not enough funds for fee"
 msgstr "Onvoldoende saldo voor transactiekosten"
-
-msgid "Not enough funds for fee {{shiftFee}}"
-msgstr "Niet genoeg saldo voor fee {{shiftFee}}"
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "Als de private key niet is toegevoegd, is het alleen mogelijk om het saldo en de transactiegeschiedenis van een wallet te controleren. Het is ook mogelijk om bestedingsvoorstellen (spend proposals) aan te maken, maar het is niet mogelijk om zulke voorstellen goed te keuren (te ondertekenen) vanaf een export."
@@ -2027,10 +2093,13 @@ msgstr "Open helpcenter"
 msgid "Open Translation Community"
 msgstr "Vertalings Gemeenschap openen"
 
+msgid "Open Wallet"
+msgstr ""
+
 msgid "Open settings"
 msgstr "Open instellingen"
 
-msgid "Or contact Wyre's support team: support@sendwyre.com"
+msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr ""
 
 msgid "Order Details"
@@ -2090,6 +2159,9 @@ msgstr "Plak de platte tekst van de back-up"
 msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
 msgstr ""
 
+msgid "Payin was not sent within the indicated timeframe."
+msgstr ""
+
 msgid "Paying"
 msgstr "Betalen"
 
@@ -2138,6 +2210,9 @@ msgstr "Payment URL"
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Betaling geaccepteerd, maar nog niet verzonden"
 
+msgid "Payment method"
+msgstr ""
+
 msgid "Payment method updated"
 msgstr ""
 
@@ -2156,6 +2231,9 @@ msgstr "Betalingsverzoek afgekeurd"
 msgid "Payment request sent"
 msgstr ""
 
+msgid "Payment was confirmed and is being exchanged."
+msgstr ""
+
 msgid "Pending"
 msgstr "In behandeling"
 
@@ -2166,7 +2244,7 @@ msgid "Pending Proposals"
 msgstr "Voorstellen in behandeling"
 
 msgid "Perfect!"
-msgstr ""
+msgstr "Geweldig!"
 
 msgid "Permanently delete all wallets using this key."
 msgstr "Verwijder definitief alle wallets die deze sleutel gebruiken."
@@ -2178,16 +2256,16 @@ msgid "Personal Wallet"
 msgstr "Persoonlijke Portemonnee"
 
 msgid "Physical"
-msgstr ""
+msgstr "Fysiek"
 
 msgid "Plain URL"
 msgstr "Plain URL"
 
-msgid "Please complete your account verification on ShapeShift website."
-msgstr ""
-
 msgid "Please connect a camera to get started."
 msgstr "Sluit een camera aan om aan de slag te gaan."
+
+msgid "Please contact Changelly support:"
+msgstr ""
 
 msgid "Please enter the recovery phrase"
 msgstr "Vul de herstel zin in met enkel kleine letters"
@@ -2197,6 +2275,9 @@ msgstr "Vul de herstel zin van de portemonnee in met enkel kleine letters"
 
 msgid "Please enter your PIN"
 msgstr "Vul je pincode in"
+
+msgid "Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount is correct before proceeding to the confirmation step"
+msgstr ""
 
 msgid "Please provide your email address to receive payment notifications"
 msgstr "Geef je e-mailadres op om betalingsmeldingen te ontvangen"
@@ -2212,6 +2293,9 @@ msgstr "Even geduld..."
 
 msgid "Please, select your backup file"
 msgstr "Selecteer uw backup bestand"
+
+msgid "Powered by"
+msgstr ""
 
 msgid "Pre-Auth Holds"
 msgstr "Pre-Authorisatie Inhoudingen"
@@ -2270,6 +2354,9 @@ msgstr "Voorstel aangemaakt"
 msgid "Protect your money"
 msgstr ""
 
+msgid "Provide the transaction id:"
+msgstr ""
+
 msgid "Provided by"
 msgstr ""
 
@@ -2290,9 +2377,6 @@ msgstr "RBF-transactie"
 
 msgid "Random"
 msgstr "Willekeurig"
-
-msgid "Rate"
-msgstr "Beoordeel"
 
 msgid "Re-Import Wallets"
 msgstr "Importeer wallet opnieuw"
@@ -2333,11 +2417,17 @@ msgstr "Ontvangen"
 msgid "Receiving"
 msgstr "Ontvangen"
 
+msgid "Receiving amount"
+msgstr ""
+
 msgid "Receiving funds will be temporarily disabled until you can verify your key has been stored away securely. You can always complete this later."
 msgstr ""
 
 msgid "Recent"
 msgstr "Recent"
+
+msgid "Recently added"
+msgstr ""
 
 msgid "Recipient"
 msgstr "Ontvanger"
@@ -2369,6 +2459,12 @@ msgstr "Portemonnee herstellen..."
 msgid "Redeem Now"
 msgstr "Wissel nu in"
 
+msgid "Refund address"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
 msgid "Reject Payment Proposal"
 msgstr "Betalingsvoorstel afwijzen"
 
@@ -2391,6 +2487,9 @@ msgid "Remove"
 msgstr "Verwijderen"
 
 msgid "Removing Payment Request Data"
+msgstr ""
+
+msgid "Removing Transaction Data"
 msgstr ""
 
 msgid "Repeat the password"
@@ -2438,9 +2537,6 @@ msgstr "Vereist meerdere apparaten (meest veilig optie)"
 msgid "Reset All Settings"
 msgstr "Reset alle instellingen"
 
-msgid "Resolved"
-msgstr "Opgelost"
-
 msgid "Restore from backup"
 msgstr ""
 
@@ -2449,6 +2545,9 @@ msgstr "Inputs informatie ophalen..."
 
 msgid "Retry camera"
 msgstr "Probeer camera opnieuw"
+
+msgid "Review Changelly policies"
+msgstr ""
 
 msgid "Ripple URI"
 msgstr "Ripple URI"
@@ -2493,7 +2592,7 @@ msgid "Search contact or enter address"
 msgstr "Zoek contact of voer een adres in"
 
 msgid "Search country"
-msgstr ""
+msgstr "Zoek land"
 
 msgid "Search currency"
 msgstr "Zoek valuta"
@@ -2507,20 +2606,20 @@ msgstr "Zoek een land"
 msgid "Security"
 msgstr "Beveiliging"
 
-msgid "See transaction"
-msgstr "Bekijk transactie"
-
 msgid "Select"
 msgstr "Selecteer"
 
 msgid "Select Coin"
-msgstr ""
+msgstr "Selecteer coin"
 
 msgid "Select Currencies"
 msgstr "Selecteer valuta's"
 
 msgid "Select Currency"
 msgstr "Selecteer valuta"
+
+msgid "Select Destination Wallet"
+msgstr ""
 
 msgid "Select Key"
 msgstr "Selecteer key"
@@ -2529,6 +2628,9 @@ msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
 msgid "Select Payment Method"
+msgstr ""
+
+msgid "Select Source Wallet"
 msgstr ""
 
 msgid "Select Your Country"
@@ -2549,14 +2651,11 @@ msgstr "Selecteer inputs voor transactie"
 msgid "Select recipient"
 msgstr "Selecteer ontvanger"
 
-msgid "Select wallet to deposit funds"
-msgstr "Selecteer wallet om tegoed te storten"
-
 msgid "Select wallet to deposit to"
 msgstr "Selecteer wallet om naar te storten"
 
-msgid "Select wallet to receive funds"
-msgstr "Selecteer wallet om tegoed te ontvangen"
+msgid "Selling"
+msgstr ""
 
 msgid "Selling Bitcoin..."
 msgstr "Bitcoin verkopen..."
@@ -2636,20 +2735,17 @@ msgstr "Server reactie kon niet geverifieerd worden"
 msgid "Session Log"
 msgstr "Sessie Log"
 
+msgid "Session Request"
+msgstr ""
+
 msgid "Set up a password"
 msgstr "Stel wachtwoord in"
 
+msgid "Setting parameters..."
+msgstr ""
+
 msgid "Settings"
 msgstr "Instellingen"
-
-msgid "ShapeShift is not available at this moment. Please, try again later."
-msgstr "ShapeShift is op dit moment niet beschikbaar. Probeer het later opnieuw."
-
-msgid "ShapeShift max limit reached"
-msgstr ""
-
-msgid "ShapeShift requires a minimum value of {{min}}"
-msgstr ""
 
 msgid "Share"
 msgstr "Deel"
@@ -2702,6 +2798,9 @@ msgstr "Toon"
 msgid "Show \"Buy Crypto\""
 msgstr "Toon \"Koop crypto\""
 
+msgid "Show \"Exchange Crypto\""
+msgstr ""
+
 msgid "Show Portfolio Value"
 msgstr "Toon portfolio waarde"
 
@@ -2723,9 +2822,6 @@ msgstr "Maak Coinbase-account aan"
 msgid "Sign Up for Coinbase &rarr;"
 msgstr "Maak Coinbase-account aan &rarr;"
 
-msgid "Sign Up for ShapeShift"
-msgstr "Maak ShapeShift-account aan"
-
 msgid "Sign selected proposals"
 msgstr "Onderteken geselecteerde voorstellen"
 
@@ -2743,6 +2839,9 @@ msgstr "Enkel adres"
 
 msgid "Skip"
 msgstr "Overslaan"
+
+msgid "Slide to Make Payment"
+msgstr ""
 
 msgid "Slide to accept"
 msgstr "Schuif om te accepteren"
@@ -2776,6 +2875,9 @@ msgstr "Er gaat iets mis..."
 
 msgid "Something went wrong"
 msgstr "Er ging iets mis"
+
+msgid "Source"
+msgstr ""
 
 msgid "Specify Amount"
 msgstr "Specificeer bedrag"
@@ -2811,7 +2913,7 @@ msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Dit bedrag uitgeven vereist aanzienlijke transactiekosten"
 
 msgid "Start"
-msgstr ""
+msgstr "Begin"
 
 msgid "Status"
 msgstr "Status"
@@ -2852,8 +2954,11 @@ msgstr "DEZE ACTIE IS ONOMKEERBAAR"
 msgid "TOTAL"
 msgstr "TOTAAL"
 
-msgid "TRY AGAIN"
+msgid "TOTAL TO RECEIVE"
 msgstr ""
+
+msgid "TRY AGAIN"
+msgstr "PROBEER OPNIEUW"
 
 msgid "Take control of your crypto"
 msgstr "Neem de controle over je crypto"
@@ -2869,9 +2974,6 @@ msgstr "Tik om opnieuw aan te maken"
 
 msgid "Temporarily Unavailable"
 msgstr "Tijdelijk niet beschikbaar"
-
-msgid "Terms of Service"
-msgstr "Algemene voorwaarden"
 
 msgid "Terms of Use"
 msgstr "Gebruikersvoorwaarden"
@@ -2891,14 +2993,17 @@ msgstr "Bedankt!"
 msgid "The \"Key\" to your funds"
 msgstr "De 'sleutel' naar jouw geld"
 
-msgid "The Safest, Fastest Asset Exchange on Earth"
-msgstr ""
-
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
 msgstr "Het XRP-grootboek vereist dat alle wallets een minimum saldo van 20 XRP behouden. Deze 20 XRP kun je niet uit de wallet halen en zit dus permanent vast in je wallet."
 
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet."
 msgstr "Het XRP-grootboek vereist dat alle wallets een minimum saldo van 20 XRP behouden. Deze 20 XRP kun je niet uit de wallet halen en zit dus permanent vast in je wallet. Stort eerst ten minste 20 XRP om je wallet te activeren."
+
+msgid "The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}"
+msgstr ""
+
+msgid "The amount entered is lower than the minimum allowed: {{params.minAmount}} {{params.coin}}"
+msgstr ""
 
 msgid "The amount of {coinName} immediately spendable from this wallet."
 msgstr ""
@@ -2912,11 +3017,11 @@ msgstr ""
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr ""
 
-msgid "The data of this payment request will be deleted. Make sure you don't need it"
+msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr ""
 
-msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
-msgstr "Er is geen back-up van de bestemmings-wallet. Rond het back-upproces af voordat je verder gaat."
+msgid "The data of this payment request will be deleted. Make sure you don't need it"
+msgstr ""
 
 msgid "The ethereum paired wallet you choose does not belong to this contract"
 msgstr ""
@@ -3023,6 +3128,12 @@ msgstr "Er is een nieuwe versie beschikbaar"
 msgid "There is an error in the form"
 msgstr "Het formulier bevat een fout"
 
+msgid "There was a problem retrieving the returnAddress. Please, try again later."
+msgstr ""
+
+msgid "There was a problem retrieving the withdrawalAddress. Please, try again later."
+msgstr ""
+
 msgid "There was an error with the payment process through Wyre."
 msgstr ""
 
@@ -3107,9 +3218,6 @@ msgstr "Tijdlijn"
 msgid "To"
 msgstr "Naar"
 
-msgid "To get started, you'll need to create a wallet and get some funds."
-msgstr "Om te beginnen, moet je een wallet aanmaken en wat coins verkrijgen."
-
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr ""
 
@@ -3140,12 +3248,6 @@ msgstr "Totaal geselecteerde inputs"
 msgid "Total wallet inputs"
 msgstr "Totaal portemonnee ontvangsten"
 
-msgid "Trade Crypto with ShapeShift"
-msgstr "Handel in crypto met ShapeShift"
-
-msgid "Trade any leading blockchain asset for any other. Protection by Design."
-msgstr ""
-
 msgid "Transaction"
 msgstr "Transactie"
 
@@ -3164,11 +3266,17 @@ msgstr "Transactie bevestigd"
 msgid "Transaction fee is below the current minimum threshold"
 msgstr "Transactiekosten zijn onder de huidige minimumdrempel"
 
+msgid "Transaction has failed. In most cases, the amount was less than the minimum."
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr "Transactie is niet aangemaakt"
 
 msgid "Transaction initiated"
 msgstr "Transactie gestart"
+
+msgid "Transaction is waiting for an incoming payment."
+msgstr ""
 
 msgid "Transaction not available at this time"
 msgstr "Transactie momenteel niet beschikbaar"
@@ -3215,6 +3323,9 @@ msgstr "Probeer het nogmaals over {{expires}}"
 msgid "Try entering any passwords you may have set in the past"
 msgstr "Probeer wachtwoorden in te voeren die je in het verleden hebt ingesteld"
 
+msgid "Try it"
+msgstr ""
+
 msgid "Turn crypto into dollars using our BitPay Card."
 msgstr "Zet crypto om in dollars met behulp van de BitPay-kaart."
 
@@ -3260,11 +3371,11 @@ msgstr ""
 msgid "Unsent transactions"
 msgstr "Niet-verzonden transacties"
 
+msgid "Unsupported network"
+msgstr ""
+
 msgid "Unused addresses"
 msgstr "Ongebruikte adressen"
-
-msgid "Unverified Account"
-msgstr "Ongeverifieerd account"
 
 msgid "Updating Gift Card..."
 msgstr "Cadeaubon bijwerken..."
@@ -3280,6 +3391,12 @@ msgstr "Spoed"
 
 msgid "Use Basic QR Code"
 msgstr "Gebruik eenvoudige QR-code"
+
+msgid "Use Max Amount"
+msgstr ""
+
+msgid "Use Min Amount"
+msgstr ""
 
 msgid "Use Unconfirmed Funds"
 msgstr "Onbevestigd Saldo Gebruiken"
@@ -3308,14 +3425,8 @@ msgstr ""
 msgid "Validating recovery phrase..."
 msgstr "Herstel zin valideren..."
 
-msgid "Value"
-msgstr ""
-
 msgid "Verification Required"
 msgstr ""
-
-msgid "Verify Account"
-msgstr "Verifieer account"
 
 msgid "Verify Your Phrase"
 msgstr "Verifieer je phrase"
@@ -3332,11 +3443,14 @@ msgstr "Bekijk bevestigingsstatus"
 msgid "View Directory"
 msgstr "Bekijk lijst"
 
+msgid "View History"
+msgstr ""
+
 msgid "View Invoice"
 msgstr "Bekijk factuur"
 
 msgid "View Offers"
-msgstr ""
+msgstr "Bekijk aanbiedingen"
 
 msgid "View Order Summary"
 msgstr ""
@@ -3348,7 +3462,7 @@ msgid "View Redemption Code"
 msgstr "Bekijk inwisselingscode"
 
 msgid "View Transaction"
-msgstr ""
+msgstr "Bekijk transactie"
 
 msgid "View Wallet Terms of Use"
 msgstr "Bekijk gebruikersvoorwaarden van wallet"
@@ -3373,9 +3487,6 @@ msgstr "Virtueel"
 
 msgid "Visit Help Center"
 msgstr ""
-
-msgid "Visit ShapeShift.io"
-msgstr "Bezoek ShapeShift.io"
 
 msgid "WARNING: Key derivation is not working on this device/wallet?. Actions cannot be performed on this wallet?."
 msgstr ""
@@ -3527,6 +3638,9 @@ msgstr "Wat is de status van mijn betaling?"
 msgid "What service fees am I paying?"
 msgstr "Welke servicekosten betaal ik?"
 
+msgid "What's new"
+msgstr ""
+
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "Toen deze wallet werd gemaakt, heette deze \"{{walletName}}\". Je kan de naam die op dit apparaat wordt weergegeven hieronder wijzigen."
 
@@ -3542,17 +3656,11 @@ msgstr ""
 msgid "Which Ethereum wallet would you like this token to use for transaction costs?"
 msgstr ""
 
-msgid "Why does this require authentication?"
-msgstr "Waarom vereist dit authenticatie?"
-
 msgid "Why is my transaction unconfirmed?"
 msgstr "Waarom is mijn transactie onbevestigd?"
 
 msgid "Why?"
 msgstr "Waarom?"
-
-msgid "Withdraw"
-msgstr "Neem op"
 
 msgid "Withdraw success"
 msgstr "Opname succesvol"
@@ -3605,6 +3713,9 @@ msgstr "Je maakt een {m}-{n}-wallet aan. Je hebt alle {m} copayers adressen nodi
 msgid "You are saving {{tx.minerFee | satToUnit: tx.coin}}"
 msgstr ""
 
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount."
+msgstr ""
+
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
 msgstr "Je probeert meer geld over te maken dan er beschikbaar is. Zorg ervoor dat je geld niet is geblokkeerd door in afwachtende transactievoorstellen."
 
@@ -3619,9 +3730,6 @@ msgstr "Je kunt de naam die op dit apparaat wordt weergegeven hieronder wijzigen
 
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr "Je kunt je gearchiveerde kaarten hier blijven bekijken als je ze nodig hebt."
-
-msgid "You can describe the problem to Wyre's support team: support@sendwyre.com"
-msgstr ""
 
 msgid "You can email support@coinbase.com for direct support, or you can view their help center."
 msgstr "Je kunt een e-mail sturen naar support@coinbase.com voor directe support, of je kunt hun helpcentrum bekijken."
@@ -3647,7 +3755,7 @@ msgstr "Je kunt je Mercado Livre-cadeaubonnen op je Mercado Pago-account gebruik
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
-msgid "You do not have a {{params.coin ? params.coin : ''}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
+msgid "You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
 msgstr ""
 
 msgid "You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm."
@@ -3663,6 +3771,9 @@ msgid "You have only entered {wordListLength} word, please follow the recommenda
 msgstr ""
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
+msgstr ""
+
+msgid "You must first select a wallet to deposit."
 msgstr ""
 
 msgid "You need a minimum of 20 XRP to send funds."
@@ -3737,6 +3848,9 @@ msgstr "[Saldo Scannen]"
 msgid "add your BitPay Visa card(s)"
 msgstr "voeg uw BitPay Visa kaart(en) toe"
 
+msgid "dummy"
+msgstr ""
+
 msgid "me"
 msgstr "ik"
 
@@ -3773,7 +3887,22 @@ msgstr "{walletsGroupLength} wallet"
 msgid "{walletsGroupLength} Wallets"
 msgstr "{walletsGroupLength} wallets"
 
+msgid "{{ 'Linked wallet' | translate }}"
+msgstr ""
+
+msgid "{{ 'Pending Call Requests' | translate }}"
+msgstr ""
+
+msgid "{{ 'Privacy Policy' | translate}}"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
+msgstr ""
+
+msgid "{{ status.statusTitle }}"
+msgstr ""
+
+msgid "{{ swapTx.status | titlecase }}"
 msgstr ""
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
@@ -3785,13 +3914,13 @@ msgstr "{{appName}} ondersteunt alleen Bitcoin Cash met nieuwe versienummeradres
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} van je wallets bestaan al in {{nameCase}}"
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr "{{fee}} {{coin}} wordt afgetrokken van de bitcoin-transactiekosten."
-
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Telefoon vereist"
 
 msgid "{{params.name}} ({{params.isoCode}}) is no longer supported. Please select another alternative currency."
+msgstr ""
+
+msgid "{{peerMetaName}} ({{peerMetaUrl}}) is trying to connect to {{walletName}}"
 msgstr ""
 
 msgid "{{txpsSuccess}} proposal signed"
@@ -3802,4 +3931,7 @@ msgstr "{{txpsSuccess}} voorstellen ondertekend"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transacties gedownload"
+
+msgid "{{walletName}} will be disconected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})"
+msgstr ""
 

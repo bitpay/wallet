@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2020-12-18 14:37\n"
+"PO-Revision-Date: 2021-02-26 17:23\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -20,38 +20,41 @@ msgstr "(возможна двойная трата)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* Предложенный платёж может быть удалён если 1) вы создали этот платёж и никто его ещё не подписал, или 2) если прошло более 10 минут с момента его создания."
 
-msgid ", please provide your phone number."
+msgid "*Currently available in the USA. More countries coming soon."
 msgstr ""
 
+msgid ", please provide your phone number."
+msgstr "укажите свой номер телефона."
+
 msgid "1.5% of the amount."
-msgstr ""
+msgstr "1,5% от суммы."
 
 msgid "1D"
 msgstr "1Д"
 
-msgid "2.9% of the amount + 0.30 USD per transactions"
+msgid "5 USD minimum fee or 2.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
 msgstr ""
 
-msgid "3.9% of the amount + 0.30 USD per transactions"
+msgid "5 USD minimum fee or 3.9% of the amount + 0.30 USD, whichever is greater + Required miners fee."
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "Рейтинг в 5 звезд поможет нам и нашему приложению BitPay Wallet привлечь больше пользователей и развивать приложение в дальнейшем"
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
-msgstr ""
+msgstr "Destination Tag - это необязательный номер, который соответствует счету или учетной записи XRP на бирже."
 
 msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr ""
+msgstr "К вашему кошельку {{walletName}} только что присоединился новый плательщик."
 
 msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr ""
+msgstr "В вашем кошельке {{walletName}} создано новое предложение по оплате."
 
 msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr ""
+msgstr "Платеж в размере {{amountStr}} был получен в ваш кошелек {{walletName}}."
 
 msgid "A payment proposal in your wallet {{walletName}} has been rejected."
-msgstr ""
+msgstr "Предложение по оплате в вашем кошельке {{walletName}} было отклонено."
 
 msgid "A pincode will ensure no one can easily access your crypto funds when you're away from your device."
 msgstr ""
@@ -62,15 +65,6 @@ msgstr "В общей сложности {{amountAboveMaxSizeStr}} {{coin}} бы
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "В общей сложности {{amountBelowFeeStr}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше чем плата за сеть."
 
-msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: {{withdrawalFee}} {{toWallet.coin | uppercase}}"
-msgstr ""
-
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Превышен максимальный размер транзакции."
-
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше, чем предусмотренная плата за сеть."
-
 msgid "A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time."
 msgstr ""
 
@@ -80,8 +74,11 @@ msgstr ""
 msgid "ACTIVATED"
 msgstr "АКТИВИРОВАН"
 
-msgid "About {{ appName }}"
+msgid "AML/KYC Policy"
 msgstr ""
+
+msgid "About {{ appName }}"
+msgstr "О {{ appName }}"
 
 msgid "About {{appName}}"
 msgstr "Про {{appName}}"
@@ -99,7 +96,7 @@ msgid "Account"
 msgstr "Учётная запись"
 
 msgid "Activation Fee"
-msgstr ""
+msgstr "Комиссия за активацию"
 
 msgid "Activity"
 msgstr "Активность"
@@ -111,10 +108,10 @@ msgid "Add BitPay Account?"
 msgstr "Добавить учетную запись BitPay?"
 
 msgid "Add Encryption"
-msgstr ""
+msgstr "Добавить шифрование"
 
 msgid "Add Encryption?"
-msgstr ""
+msgstr "Добавить шифрование?"
 
 msgid "Add Me"
 msgstr "Добавить меня"
@@ -135,13 +132,13 @@ msgid "Add funds"
 msgstr "Пополнить счёт"
 
 msgid "Add funds from an existing wallet."
-msgstr ""
+msgstr "Пополнить счет из существующего кошелька."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Добавить эту учетную запись BitPay ({{email}})?"
 
 msgid "Add {coinName} address"
-msgstr ""
+msgstr "Добавить {coinName} адрес"
 
 msgid "Additional third-party fees may apply."
 msgstr ""
@@ -156,13 +153,16 @@ msgid "Address Type"
 msgstr "Тип адреса"
 
 msgid "Address already added"
+msgstr "Адрес уже добавлен"
+
+msgid "Address requested does not match active account"
 msgstr ""
 
 msgid "Addressbook is empty"
 msgstr "Адресная книга пуста"
 
 msgid "Addresses"
-msgstr ""
+msgstr "Адреса"
 
 msgid "Addresses with balance"
 msgstr "Адреса с балансом"
@@ -171,7 +171,7 @@ msgid "Advanced"
 msgstr "Дополнительные возможности"
 
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 msgid "All addresses"
 msgstr "Все адреса"
@@ -207,13 +207,16 @@ msgid "An encrypted passphrase is an extra layer of security that can prevent ha
 msgstr ""
 
 msgid "An update to this app is available."
-msgstr ""
+msgstr "Доступно обновление для этого приложения."
 
 msgid "Apple Pay"
-msgstr ""
+msgstr "Apple Pay"
 
 msgid "Apply changes"
 msgstr "Применить изменения"
+
+msgid "Approve"
+msgstr ""
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Приблизительная комиссия на перевод сети Bitcoin для передачи баланса кошелька (с нормальным приоритетом)"
@@ -228,19 +231,19 @@ msgid "Archive"
 msgstr ""
 
 msgid "Archive All {brand} Gift Cards?"
-msgstr ""
+msgstr "Архивировать все {brand} подарочные карты?"
 
 msgid "Archive Card"
-msgstr ""
+msgstr "Архивировать карту"
 
 msgid "Archive this Card?"
-msgstr ""
+msgstr "Архивировать эту карту?"
 
 msgid "Archived Cards"
-msgstr ""
+msgstr "Архивированные карты"
 
 msgid "Are you sure you want to delete all wallets using this key?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить все кошельки, используя этот ключ?"
 
 msgid "Are you sure you want to delete this contact?"
 msgstr "Вы действительно хотите удалить этот контакт?"
@@ -263,6 +266,9 @@ msgstr ""
 msgid "Are you sure?"
 msgstr "Вы уверены?"
 
+msgid "As the estimated miner fee to complete the transaction is {{params.fee}} {{params.coin}}, the maximum spendable amount of your wallet is {{params.amount}} {{params.coin}} which is lower than the minimum allowed by the exchange: {{params.minAmount}} {{params.coin}}"
+msgstr ""
+
 msgid "Attempted payment request"
 msgstr ""
 
@@ -279,13 +285,13 @@ msgid "Awaiting payment to confirm"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 msgid "Back up all your wallets before using this function"
 msgstr ""
 
 msgid "Back up your wallet before using this function"
-msgstr ""
+msgstr "Сделайте резервную копию вашего кошелька перед использованием этой функции"
 
 msgid "Backup"
 msgstr "Резервное копирование"
@@ -381,10 +387,10 @@ msgid "Broadcasting transaction..."
 msgstr "Трансакция передается..."
 
 msgid "Buy"
-msgstr ""
+msgstr "Купить"
 
 msgid "Buy Amount"
-msgstr ""
+msgstr "Сумма покупки"
 
 msgid "Buy Crypto"
 msgstr ""
@@ -399,7 +405,7 @@ msgid "Buy Gift Cards"
 msgstr ""
 
 msgid "Buy Now"
-msgstr ""
+msgstr "Купить сейчас"
 
 msgid "Buy crypto with a credit card."
 msgstr ""
@@ -434,7 +440,7 @@ msgstr ""
 msgid "Camera access denied"
 msgstr ""
 
-msgid "Can range from 6% of the transaction and down depending on the volume of traffic (with a minimum of 10 USD)."
+msgid "Can range from 2.5% to 5% of the transaction, depending on the volume of traffic (with a minimum of 10 USD or its equivalent in any other fiat currency) + 1% of the transaction."
 msgstr ""
 
 msgid "Can't get rates at this moment. Please try again later"
@@ -459,7 +465,7 @@ msgid "Card Settings"
 msgstr "Настройки карты"
 
 msgid "Cards"
-msgstr ""
+msgstr "Карты"
 
 msgid "Change Amount"
 msgstr ""
@@ -467,14 +473,20 @@ msgstr ""
 msgid "Change Miner Fee"
 msgstr ""
 
+msgid "Changelly Policies"
+msgstr ""
+
+msgid "Changelly has received payin and is waiting for certain amount of confirmations depending of incoming currency."
+msgstr ""
+
+msgid "Changelly is not available at this moment. Please, try again later."
+msgstr ""
+
 msgid "Check the app camera permissions under your phone settings"
 msgstr ""
 
 msgid "Check the transaction on your wallet details"
 msgstr "Проверьте транзакцию в подробностях вашего кошелька"
-
-msgid "Choose Assets"
-msgstr ""
 
 msgid "Choose a backup file from your computer"
 msgstr "Выберите файл резервной копии с вашего компьютера"
@@ -493,9 +505,6 @@ msgstr "Очистить кэш"
 
 msgid "Click to accept"
 msgstr "Подтвердить"
-
-msgid "Click to confirm"
-msgstr "Щелкните для подтверждения"
 
 msgid "Click to deposit"
 msgstr ""
@@ -527,8 +536,14 @@ msgstr ""
 msgid "Coinbase updated!"
 msgstr ""
 
-msgid "Coming soon"
+msgid "Coins are being sent to the recipient address."
 msgstr ""
+
+msgid "Coins were successfully sent to the recipient address."
+msgstr ""
+
+msgid "Coming soon"
+msgstr "Скоро"
 
 msgid "Completed"
 msgstr "Завершено"
@@ -540,25 +555,25 @@ msgid "Confirm"
 msgstr "Подтвердить"
 
 msgid "Confirm & Finish"
-msgstr ""
+msgstr "Подтвердить и завершить"
 
 msgid "Confirm Deposit"
-msgstr ""
+msgstr "Подтвердить депозит"
 
 msgid "Confirm Passphrase"
-msgstr ""
+msgstr "Подтвердить кодовую фразу"
 
 msgid "Confirm Payment"
+msgstr "Подтвердить платеж"
+
+msgid "Confirm Request"
 msgstr ""
 
 msgid "Confirm Speed Up"
 msgstr ""
 
 msgid "Confirm Withdraw"
-msgstr ""
-
-msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
-msgstr "Подтвердить переход от {{fromCoin}} к {{toCoin}}"
+msgstr "Подтвердить вывод средств"
 
 msgid "Confirm your PIN"
 msgstr "Подтвердите ваш PIN-код"
@@ -570,7 +585,7 @@ msgid "Confirmations"
 msgstr "Подтверждения"
 
 msgid "Confirmed transactions"
-msgstr ""
+msgstr "Подтвержденные транзакции"
 
 msgid "Confirming"
 msgstr "Ожидает подтверждения"
@@ -590,9 +605,6 @@ msgstr ""
 msgid "Connect Your BitPay ID"
 msgstr ""
 
-msgid "Connect to ShapeShift Account"
-msgstr ""
-
 msgid "Connect with Coinbase"
 msgstr ""
 
@@ -608,11 +620,11 @@ msgstr ""
 msgid "Connecting BitPay ID..."
 msgstr ""
 
+msgid "Connecting to Changelly..."
+msgstr ""
+
 msgid "Connecting to Coinbase..."
 msgstr "Подключение к Coinbase..."
-
-msgid "Connecting to ShapeShift..."
-msgstr "Подключение к ShapeShift..."
 
 msgid "Connection reset by peer"
 msgstr "Соединение сброшено другой стороной"
@@ -620,20 +632,23 @@ msgstr "Соединение сброшено другой стороной"
 msgid "Contact Information"
 msgstr ""
 
-msgid "Contact the ShapeShift support team."
-msgstr "Связаться с командой поддержки ShapeShift."
+msgid "Contact the Changelly support team."
+msgstr ""
 
 msgid "Contact the Simplex support team."
 msgstr ""
 
 msgid "Contacts"
-msgstr ""
+msgstr "Контакты"
 
 msgid "Continue"
 msgstr "Продолжить"
 
-msgid "Continue Anyway"
+msgid "Continue & Make Payment"
 msgstr ""
+
+msgid "Continue Anyway"
+msgstr "Все равно продолжить"
 
 msgid "Continue to Simplex"
 msgstr ""
@@ -701,6 +716,9 @@ msgstr "Не удалось добавить сообщение в импорт�
 msgid "Could not build transaction"
 msgstr "Не удалось создать транзакцию"
 
+msgid "Could not connect"
+msgstr ""
+
 msgid "Could not create address"
 msgstr "Не удалось создать адрес"
 
@@ -723,9 +741,6 @@ msgid "Could not delete payment proposal"
 msgstr "Не удалось удалить предложенный платёж"
 
 msgid "Could not encrypt wallet"
-msgstr ""
-
-msgid "Could not get claim code. Please contact BitPay support."
 msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
@@ -836,6 +851,9 @@ msgstr ""
 msgid "Current fee rate for this policy"
 msgstr "Текущая комиссия для этой политики"
 
+msgid "Currently our partner does not support exchanges with the selected coin"
+msgstr ""
+
 msgid "Custom"
 msgstr "Пользовательское"
 
@@ -846,6 +864,9 @@ msgid "DETAILS"
 msgstr ""
 
 msgid "DO THIS LATER"
+msgstr ""
+
+msgid "Dapp not responding. Try scanning a new QR code"
 msgstr ""
 
 msgid "Dark Mode"
@@ -881,15 +902,6 @@ msgstr "Удаление кошелька..."
 msgid "Deleting payment proposal..."
 msgstr "Удаление заявки на платеж..."
 
-msgid "Deposit"
-msgstr "Депозит"
-
-msgid "Deposit Max"
-msgstr "Максимальный депозит"
-
-msgid "Deposit Min"
-msgstr "Минимальный депозит"
-
 msgid "Deposit address"
 msgstr ""
 
@@ -917,7 +929,13 @@ msgstr ""
 msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
 msgstr ""
 
+msgid "Destination"
+msgstr ""
+
 msgid "Destination Tag"
+msgstr ""
+
+msgid "Destination Tag (Payin Extra Id)"
 msgstr ""
 
 msgid "Destination wallet needs to be backed up"
@@ -953,9 +971,6 @@ msgstr "Не включать закрытый ключ"
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
-msgid "Do you want to verify your account now?"
-msgstr ""
-
 msgid "Don't lose your key!"
 msgstr ""
 
@@ -972,6 +987,9 @@ msgid "Download"
 msgstr "Скачать"
 
 msgid "Download logs"
+msgstr ""
+
+msgid "Due to AML/KYC procedure, exchange may be delayed."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1091,9 +1109,6 @@ msgstr "Ошибка при добавлении новой записи"
 msgid "Error connecting to Coinbase"
 msgstr ""
 
-msgid "Error connecting to ShapeShift"
-msgstr ""
-
 msgid "Error creating wallet"
 msgstr "Ошибка создания кошелька"
 
@@ -1110,6 +1125,9 @@ msgid "Error getting Speed Up fee"
 msgstr ""
 
 msgid "Error getting Speed Up information"
+msgstr ""
+
+msgid "Error getting address"
 msgstr ""
 
 msgid "Error getting fee rate"
@@ -1139,10 +1157,37 @@ msgstr ""
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Превышен дневной лимит в 500$ на пользователя"
 
+msgid "Exchange"
+msgstr ""
+
+msgid "Exchange Crypto"
+msgstr ""
+
+msgid "Exchange Crypto Settings"
+msgstr ""
+
+msgid "Exchange Fee"
+msgstr ""
+
 msgid "Exchange Rates"
 msgstr ""
 
+msgid "Exchange Transaction ID"
+msgstr ""
+
+msgid "Exchange address (Payin)"
+msgstr ""
+
+msgid "Exchange failed and coins were refunded to user's wallet."
+msgstr ""
+
+msgid "Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC"
+msgstr ""
+
 msgid "Exchanges"
+msgstr ""
+
+msgid "Exchanging"
 msgstr ""
 
 msgid "Execution Failed"
@@ -1171,6 +1216,9 @@ msgstr "Продлённый частный ключ"
 
 msgid "Extended Public Keys"
 msgstr "Расширенные открытые ключи"
+
+msgid "External Services"
+msgstr ""
 
 msgid "Extracting Wallet information..."
 msgstr "Извлечение информации о кошельке..."
@@ -1216,6 +1264,9 @@ msgstr ""
 
 msgid "File/Text"
 msgstr "Файл/Текст"
+
+msgid "Finished"
+msgstr ""
 
 msgid "First, lets ensure no one can easily access your crypto funds when you’re away from your device by adding biometric security."
 msgstr ""
@@ -1310,6 +1361,9 @@ msgstr "Начните, добавив первый контакт."
 msgid "Get the BitPay Card"
 msgstr ""
 
+msgid "Getting data from the exchange..."
+msgstr ""
+
 msgid "Getting fee levels..."
 msgstr "Получение информации о комиссиях..."
 
@@ -1337,10 +1391,16 @@ msgstr "Вернуться"
 msgid "Go to Coinbase"
 msgstr ""
 
+msgid "Got it"
+msgstr ""
+
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
 msgstr ""
 
 msgid "Have you redeemed the entire balance of this gift card?"
+msgstr ""
+
+msgid "Having problems with Changelly?"
 msgstr ""
 
 msgid "Having problems with Simplex?"
@@ -1348,9 +1408,6 @@ msgstr ""
 
 msgid "Having problems with Wyre?"
 msgstr ""
-
-msgid "Having problems with a ShapeShift?"
-msgstr "Возникли проблемы с ShapeShift?"
 
 msgid "Help & Support"
 msgstr ""
@@ -1385,6 +1442,9 @@ msgstr "Скрыть дополнительные параметры"
 msgid "Hide discount?"
 msgstr ""
 
+msgid "Hold"
+msgstr ""
+
 msgid "Home"
 msgstr "Главная"
 
@@ -1402,9 +1462,6 @@ msgstr ""
 
 msgid "I Understand"
 msgstr ""
-
-msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
-msgstr "Я согласен с Условиями и подтверждаю, что являюсь бенефициарным владельцем вводимых активов и адреса назначения."
 
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
@@ -1490,7 +1547,7 @@ msgstr ""
 msgid "In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet."
 msgstr ""
 
-msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet is required."
+msgid "In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required."
 msgstr ""
 
 msgid "In order to finish the payment process you will be redirected to Simplex's page"
@@ -1613,6 +1670,9 @@ msgstr ""
 msgid "Joining Wallet..."
 msgstr "Присоединение к кошельку..."
 
+msgid "Just a second, we're setting a few things up."
+msgstr ""
+
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
 msgstr ""
 
@@ -1626,9 +1686,6 @@ msgid "Key already associated with an existing wallet"
 msgstr "Ключ уже связан с существующим кошельком"
 
 msgid "Key verification required"
-msgstr ""
-
-msgid "Kill Session"
 msgstr ""
 
 msgid "Language"
@@ -1688,6 +1745,9 @@ msgstr ""
 msgid "Linked to wallet: {linkedEthWalletName}"
 msgstr ""
 
+msgid "Linked wallet"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr ""
 
@@ -1727,8 +1787,8 @@ msgstr "Низкое количество входов"
 msgid "Manage your Coinbase account, check balances, deposit and withdraw funds between wallets."
 msgstr ""
 
-msgid "Maximum amount allowed is {{max}}"
-msgstr "Максимальное допустимое количество {{max}}"
+msgid "Maximum Amount"
+msgstr ""
 
 msgid "Maybe a pincode instead?"
 msgstr ""
@@ -1763,10 +1823,10 @@ msgstr "Комиссия майнера"
 msgid "Miner fee not required for payments with Coinbase accounts"
 msgstr ""
 
-msgid "Minimum amount required is {{min}}"
-msgstr "Минимальная необходимая сумма {{min}}"
-
 msgid "Missing 2-step verification"
+msgstr ""
+
+msgid "Missing Credentials"
 msgstr ""
 
 msgid "Missing parameter"
@@ -1811,6 +1871,9 @@ msgstr ""
 msgid "Needs Backup"
 msgstr ""
 
+msgid "Needs Backup 2"
+msgstr ""
+
 msgid "Needs backup"
 msgstr "Необходимо создание резервной копии"
 
@@ -1832,7 +1895,13 @@ msgstr "Ошибка сети"
 msgid "Never mind"
 msgstr ""
 
+msgid "New"
+msgstr ""
+
 msgid "New Key"
+msgstr ""
+
+msgid "New Session Request"
 msgstr ""
 
 msgid "New contact"
@@ -1907,8 +1976,8 @@ msgstr "Нет доступных кошельков"
 msgid "No wallets available to receive funds"
 msgstr "Некуда перевести средства"
 
-msgid "No wallets available to use ShapeShift"
-msgstr "Нет доступных кошельков для использования ShapeShift"
+msgid "No wallets available to use this exchange"
+msgstr ""
 
 msgid "No wallets with funds"
 msgstr "Нет кошельков с фондами"
@@ -1933,9 +2002,6 @@ msgstr ""
 
 msgid "Not enough funds for fee"
 msgstr "Недостаточно средств для уплаты комиссии"
-
-msgid "Not enough funds for fee {{shiftFee}}"
-msgstr ""
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -2027,10 +2093,13 @@ msgstr ""
 msgid "Open Translation Community"
 msgstr "Редактировать перевод"
 
+msgid "Open Wallet"
+msgstr ""
+
 msgid "Open settings"
 msgstr "Открыть настройки"
 
-msgid "Or contact Wyre's support team: support@sendwyre.com"
+msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr ""
 
 msgid "Order Details"
@@ -2090,6 +2159,9 @@ msgstr ""
 msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
 msgstr ""
 
+msgid "Payin was not sent within the indicated timeframe."
+msgstr ""
+
 msgid "Paying"
 msgstr ""
 
@@ -2138,6 +2210,9 @@ msgstr ""
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Платёж принят, но пока не отправлен"
 
+msgid "Payment method"
+msgstr ""
+
 msgid "Payment method updated"
 msgstr ""
 
@@ -2154,6 +2229,9 @@ msgid "Payment request rejected"
 msgstr ""
 
 msgid "Payment request sent"
+msgstr ""
+
+msgid "Payment was confirmed and is being exchanged."
 msgstr ""
 
 msgid "Pending"
@@ -2183,11 +2261,11 @@ msgstr ""
 msgid "Plain URL"
 msgstr ""
 
-msgid "Please complete your account verification on ShapeShift website."
-msgstr ""
-
 msgid "Please connect a camera to get started."
 msgstr "Чтобы начать, подключите камеру."
+
+msgid "Please contact Changelly support:"
+msgstr ""
 
 msgid "Please enter the recovery phrase"
 msgstr "Введите ключевое словосочетание"
@@ -2197,6 +2275,9 @@ msgstr "Введите ключевое словосочетание кошел�
 
 msgid "Please enter your PIN"
 msgstr "Пожалуйста, введите ПИН-код"
+
+msgid "Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount is correct before proceeding to the confirmation step"
+msgstr ""
 
 msgid "Please provide your email address to receive payment notifications"
 msgstr ""
@@ -2212,6 +2293,9 @@ msgstr "Пожалуйста, подождите..."
 
 msgid "Please, select your backup file"
 msgstr "Пожалуйста, выберите ваш файл резервной копии"
+
+msgid "Powered by"
+msgstr ""
 
 msgid "Pre-Auth Holds"
 msgstr ""
@@ -2270,6 +2354,9 @@ msgstr "Предложение создано"
 msgid "Protect your money"
 msgstr ""
 
+msgid "Provide the transaction id:"
+msgstr ""
+
 msgid "Provided by"
 msgstr ""
 
@@ -2290,9 +2377,6 @@ msgstr ""
 
 msgid "Random"
 msgstr "Случайное"
-
-msgid "Rate"
-msgstr "Курс"
 
 msgid "Re-Import Wallets"
 msgstr ""
@@ -2333,11 +2417,17 @@ msgstr "Получено"
 msgid "Receiving"
 msgstr "Получение"
 
+msgid "Receiving amount"
+msgstr ""
+
 msgid "Receiving funds will be temporarily disabled until you can verify your key has been stored away securely. You can always complete this later."
 msgstr ""
 
 msgid "Recent"
 msgstr "Недавние"
+
+msgid "Recently added"
+msgstr ""
 
 msgid "Recipient"
 msgstr "Получатель"
@@ -2369,6 +2459,12 @@ msgstr "Воссоздаю кошелёк..."
 msgid "Redeem Now"
 msgstr ""
 
+msgid "Refund address"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
 msgid "Reject Payment Proposal"
 msgstr ""
 
@@ -2391,6 +2487,9 @@ msgid "Remove"
 msgstr "Удалить"
 
 msgid "Removing Payment Request Data"
+msgstr ""
+
+msgid "Removing Transaction Data"
 msgstr ""
 
 msgid "Repeat the password"
@@ -2438,9 +2537,6 @@ msgstr ""
 msgid "Reset All Settings"
 msgstr ""
 
-msgid "Resolved"
-msgstr ""
-
 msgid "Restore from backup"
 msgstr ""
 
@@ -2449,6 +2545,9 @@ msgstr "Ошибка при получении информации SendMax"
 
 msgid "Retry camera"
 msgstr "Retry camera"
+
+msgid "Review Changelly policies"
+msgstr ""
 
 msgid "Ripple URI"
 msgstr ""
@@ -2507,9 +2606,6 @@ msgstr ""
 msgid "Security"
 msgstr "Безопасность"
 
-msgid "See transaction"
-msgstr "Увидеть транзакцию"
-
 msgid "Select"
 msgstr ""
 
@@ -2522,6 +2618,9 @@ msgstr ""
 msgid "Select Currency"
 msgstr ""
 
+msgid "Select Destination Wallet"
+msgstr ""
+
 msgid "Select Key"
 msgstr ""
 
@@ -2529,6 +2628,9 @@ msgid "Select Key to add ETH Wallet to"
 msgstr ""
 
 msgid "Select Payment Method"
+msgstr ""
+
+msgid "Select Source Wallet"
 msgstr ""
 
 msgid "Select Your Country"
@@ -2549,13 +2651,10 @@ msgstr ""
 msgid "Select recipient"
 msgstr ""
 
-msgid "Select wallet to deposit funds"
-msgstr ""
-
 msgid "Select wallet to deposit to"
 msgstr ""
 
-msgid "Select wallet to receive funds"
+msgid "Selling"
 msgstr ""
 
 msgid "Selling Bitcoin..."
@@ -2636,19 +2735,16 @@ msgstr "Ответ сервера не может быть проверен"
 msgid "Session Log"
 msgstr "Журнал сеанса"
 
+msgid "Session Request"
+msgstr ""
+
 msgid "Set up a password"
 msgstr "Задайте пароль"
 
-msgid "Settings"
+msgid "Setting parameters..."
 msgstr ""
 
-msgid "ShapeShift is not available at this moment. Please, try again later."
-msgstr "ShapeShift в настоящий момент недоступен. Пожалуйста, повторите попытку позже."
-
-msgid "ShapeShift max limit reached"
-msgstr "Достигнуто макс. ограничение \"ShapeShift\""
-
-msgid "ShapeShift requires a minimum value of {{min}}"
+msgid "Settings"
 msgstr ""
 
 msgid "Share"
@@ -2702,6 +2798,9 @@ msgstr ""
 msgid "Show \"Buy Crypto\""
 msgstr ""
 
+msgid "Show \"Exchange Crypto\""
+msgstr ""
+
 msgid "Show Portfolio Value"
 msgstr ""
 
@@ -2723,9 +2822,6 @@ msgstr ""
 msgid "Sign Up for Coinbase &rarr;"
 msgstr ""
 
-msgid "Sign Up for ShapeShift"
-msgstr ""
-
 msgid "Sign selected proposals"
 msgstr ""
 
@@ -2743,6 +2839,9 @@ msgstr "Один адрес"
 
 msgid "Skip"
 msgstr "Пропустить"
+
+msgid "Slide to Make Payment"
+msgstr ""
 
 msgid "Slide to accept"
 msgstr "Подтвердить"
@@ -2775,6 +2874,9 @@ msgid "Something goes wrong..."
 msgstr ""
 
 msgid "Something went wrong"
+msgstr ""
+
+msgid "Source"
 msgstr ""
 
 msgid "Specify Amount"
@@ -2852,6 +2954,9 @@ msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 msgid "TOTAL"
 msgstr ""
 
+msgid "TOTAL TO RECEIVE"
+msgstr ""
+
 msgid "TRY AGAIN"
 msgstr ""
 
@@ -2868,9 +2973,6 @@ msgid "Tap to recreate"
 msgstr ""
 
 msgid "Temporarily Unavailable"
-msgstr ""
-
-msgid "Terms of Service"
 msgstr ""
 
 msgid "Terms of Use"
@@ -2891,13 +2993,16 @@ msgstr "Спасибо!"
 msgid "The \"Key\" to your funds"
 msgstr ""
 
-msgid "The Safest, Fastest Asset Exchange on Earth"
-msgstr ""
-
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
 msgstr ""
 
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet."
+msgstr ""
+
+msgid "The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}"
+msgstr ""
+
+msgid "The amount entered is lower than the minimum allowed: {{params.minAmount}} {{params.coin}}"
 msgstr ""
 
 msgid "The amount of {coinName} immediately spendable from this wallet."
@@ -2912,10 +3017,10 @@ msgstr ""
 msgid "The amount on the transaction does not match the amount requested. This payment will not be accepted"
 msgstr ""
 
-msgid "The data of this payment request will be deleted. Make sure you don't need it"
+msgid "The data of this exchange will be deleted from your device. Make sure you don't need it"
 msgstr ""
 
-msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgid "The data of this payment request will be deleted. Make sure you don't need it"
 msgstr ""
 
 msgid "The ethereum paired wallet you choose does not belong to this contract"
@@ -3003,10 +3108,10 @@ msgid "The wallet you are using does not match the network and/or the currency o
 msgstr ""
 
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 msgid "Themes"
-msgstr ""
+msgstr "Темы"
 
 msgid "There are no records of your wallet on our servers. If you are importing a BIP44 compatible wallet from a 3rd party you can continue to recreate it. If you wallet is not BIP44 compatible, you will not be able to access its funds."
 msgstr ""
@@ -3022,6 +3127,12 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "Ошибка в форме"
+
+msgid "There was a problem retrieving the returnAddress. Please, try again later."
+msgstr ""
+
+msgid "There was a problem retrieving the withdrawalAddress. Please, try again later."
+msgstr ""
 
 msgid "There was an error with the payment process through Wyre."
 msgstr ""
@@ -3107,9 +3218,6 @@ msgstr "Хронология"
 msgid "To"
 msgstr "Кому"
 
-msgid "To get started, you'll need to create a wallet and get some funds."
-msgstr ""
-
 msgid "To get started, you'll need to enter a valid address or select an existent contact or wallet."
 msgstr ""
 
@@ -3140,12 +3248,6 @@ msgstr ""
 msgid "Total wallet inputs"
 msgstr "Cумма вводов кошелька"
 
-msgid "Trade Crypto with ShapeShift"
-msgstr ""
-
-msgid "Trade any leading blockchain asset for any other. Protection by Design."
-msgstr ""
-
 msgid "Transaction"
 msgstr "Транзакция"
 
@@ -3164,11 +3266,17 @@ msgstr ""
 msgid "Transaction fee is below the current minimum threshold"
 msgstr ""
 
+msgid "Transaction has failed. In most cases, the amount was less than the minimum."
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr ""
 
 msgid "Transaction initiated"
 msgstr "Транзакция начата"
+
+msgid "Transaction is waiting for an incoming payment."
+msgstr ""
 
 msgid "Transaction not available at this time"
 msgstr "Транзакция недоступна в данный момент"
@@ -3213,6 +3321,9 @@ msgid "Try again in {{expires}}"
 msgstr "Попробуйте снова через {{expires}}"
 
 msgid "Try entering any passwords you may have set in the past"
+msgstr ""
+
+msgid "Try it"
 msgstr ""
 
 msgid "Turn crypto into dollars using our BitPay Card."
@@ -3260,11 +3371,11 @@ msgstr ""
 msgid "Unsent transactions"
 msgstr "Неотправленные транзакции"
 
+msgid "Unsupported network"
+msgstr ""
+
 msgid "Unused addresses"
 msgstr "Неиспользованные адреса"
-
-msgid "Unverified Account"
-msgstr ""
 
 msgid "Updating Gift Card..."
 msgstr "Подарочная карта бновляется..."
@@ -3279,6 +3390,12 @@ msgid "Urgent"
 msgstr "Срочно"
 
 msgid "Use Basic QR Code"
+msgstr ""
+
+msgid "Use Max Amount"
+msgstr ""
+
+msgid "Use Min Amount"
 msgstr ""
 
 msgid "Use Unconfirmed Funds"
@@ -3308,13 +3425,7 @@ msgstr ""
 msgid "Validating recovery phrase..."
 msgstr "Проверка ключевого словосочетания..."
 
-msgid "Value"
-msgstr ""
-
 msgid "Verification Required"
-msgstr ""
-
-msgid "Verify Account"
 msgstr ""
 
 msgid "Verify Your Phrase"
@@ -3330,6 +3441,9 @@ msgid "View Confirmation Status"
 msgstr "Просмотреть состояние подтверждения"
 
 msgid "View Directory"
+msgstr ""
+
+msgid "View History"
 msgstr ""
 
 msgid "View Invoice"
@@ -3373,9 +3487,6 @@ msgstr ""
 
 msgid "Visit Help Center"
 msgstr ""
-
-msgid "Visit ShapeShift.io"
-msgstr "Посетите ShapeShift.io"
 
 msgid "WARNING: Key derivation is not working on this device/wallet?. Actions cannot be performed on this wallet?."
 msgstr ""
@@ -3527,6 +3638,9 @@ msgstr ""
 msgid "What service fees am I paying?"
 msgstr ""
 
+msgid "What's new"
+msgstr ""
+
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
@@ -3542,17 +3656,11 @@ msgstr ""
 msgid "Which Ethereum wallet would you like this token to use for transaction costs?"
 msgstr ""
 
-msgid "Why does this require authentication?"
-msgstr ""
-
 msgid "Why is my transaction unconfirmed?"
 msgstr ""
 
 msgid "Why?"
 msgstr "Почему?"
-
-msgid "Withdraw"
-msgstr "Снятие"
 
 msgid "Withdraw success"
 msgstr ""
@@ -3605,6 +3713,9 @@ msgstr ""
 msgid "You are saving {{tx.minerFee | satToUnit: tx.coin}}"
 msgstr ""
 
+msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals or enter a valid amount."
+msgstr ""
+
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
 msgstr ""
 
@@ -3618,9 +3729,6 @@ msgid "You can change the name displayed on this device below."
 msgstr ""
 
 msgid "You can continue to view your archived cards here if you need to access them."
-msgstr ""
-
-msgid "You can describe the problem to Wyre's support team: support@sendwyre.com"
 msgstr ""
 
 msgid "You can email support@coinbase.com for direct support, or you can view their help center."
@@ -3647,7 +3755,7 @@ msgstr ""
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
-msgid "You do not have a {{params.coin ? params.coin : ''}} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
+msgid "You do not have a {coin} wallet able to receive funds. If you decide to create it, remember it needs to be backed up."
 msgstr ""
 
 msgid "You do not have enough confirmed funds to make this payment. Please wait for your pending transactions to confirm."
@@ -3663,6 +3771,9 @@ msgid "You have only entered {wordListLength} word, please follow the recommenda
 msgstr ""
 
 msgid "You have only entered {wordListLength} words, please follow the recommendations provided"
+msgstr ""
+
+msgid "You must first select a wallet to deposit."
 msgstr ""
 
 msgid "You need a minimum of 20 XRP to send funds."
@@ -3737,6 +3848,9 @@ msgstr ""
 msgid "add your BitPay Visa card(s)"
 msgstr "добавьте вашу BitPay Visa карту(ы)"
 
+msgid "dummy"
+msgstr ""
+
 msgid "me"
 msgstr "мне"
 
@@ -3773,7 +3887,22 @@ msgstr ""
 msgid "{walletsGroupLength} Wallets"
 msgstr ""
 
+msgid "{{ 'Linked wallet' | translate }}"
+msgstr ""
+
+msgid "{{ 'Pending Call Requests' | translate }}"
+msgstr ""
+
+msgid "{{ 'Privacy Policy' | translate}}"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
+msgstr ""
+
+msgid "{{ status.statusTitle }}"
+msgstr ""
+
+msgid "{{ swapTx.status | titlecase }}"
 msgstr ""
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
@@ -3785,13 +3914,13 @@ msgstr ""
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr ""
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr ""
-
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr ""
 
 msgid "{{params.name}} ({{params.isoCode}}) is no longer supported. Please select another alternative currency."
+msgstr ""
+
+msgid "{{peerMetaName}} ({{peerMetaUrl}}) is trying to connect to {{walletName}}"
 msgstr ""
 
 msgid "{{txpsSuccess}} proposal signed"
@@ -3802,4 +3931,7 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
+
+msgid "{{walletName}} will be disconected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})"
+msgstr ""
 
