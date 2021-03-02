@@ -119,15 +119,6 @@ export class TabsPage {
       }, 1000);
     });
 
-    this.persistenceProvider.getBitpayDebitCards(this.NETWORK).then(cards => {
-      if (cards) {
-        this.events.publish('CardAdvertisementUpdate', {
-          status: 'connected',
-          cards
-        });
-      }
-    });
-
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('Local/UpdateTxps');
@@ -170,6 +161,7 @@ export class TabsPage {
 
     // set banner advertisement in home.ts
     this.events.publish('CardAdvertisementUpdate', {
+      status: cards ? 'connected' : null,
       cardExperimentEnabled,
       cards
     });

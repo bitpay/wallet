@@ -184,7 +184,6 @@ export class HomePage {
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.events.publish('Local/showNewFeaturesSlides');
-    this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance)
@@ -192,6 +191,7 @@ export class HomePage {
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
+    this.setMerchantDirectoryAdvertisement();
     this.loadAds();
     this.fetchAdvertisements();
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
@@ -259,6 +259,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         } else {
@@ -291,6 +292,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         }
@@ -334,6 +336,7 @@ export class HomePage {
         isTesting: false,
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private verifySignature(ad): boolean {
@@ -504,41 +507,49 @@ export class HomePage {
         imgSrc: 'assets/img/amazon.svg',
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private addBitPayCard() {
     if (!this.isCordova) return;
-    const card: Advertisement = this.cardExperimentEnabled
-      ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Get the BitPay Card'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Order Now'),
-          link: BitPayCardIntroPage,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+    this.persistenceProvider
+      .getAdvertisementDismissed('bitpay-card')
+      .then((value: string) => {
+        if (value === 'dismissed') {
+          return;
         }
-      : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'bitpay-card'
-    );
-    !alreadyVisible && this.advertisements.unshift(card);
+        const card: Advertisement = this.cardExperimentEnabled
+          ? {
+              name: 'bitpay-card',
+              title: this.translate.instant('Get the BitPay Card'),
+              body: this.translate.instant(
+                'Designed for people who want to live life on crypto.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Order Now'),
+              link: BitPayCardIntroPage,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+            }
+          : {
+              name: 'bitpay-card',
+              title: this.translate.instant('Coming soon'),
+              body: this.translate.instant(
+                'Join the waitlist and be first to experience the new card.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Notify Me'),
+              link: PhaseOneCardIntro,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/icon-bpcard.svg'
+            };
+        const alreadyVisible = this.advertisements.find(
+          a => a.name === 'bitpay-card'
+        );
+        !alreadyVisible && this.advertisements.unshift(card);
+      });
   }
 
   private addCoinbase() {
@@ -563,6 +574,7 @@ export class HomePage {
         isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
+    this.showAdvertisements = true;
   }
 
   private async addGiftCardDiscount(discountedCard: CardConfig) {
@@ -597,7 +609,6 @@ export class HomePage {
         dismissible: true,
         imgSrc: discountedCard.icon
       });
-    this.showAdvertisements = true;
   }
 
   private async addGiftCardPromotion(promotedCard: CardConfig) {
@@ -624,7 +635,6 @@ export class HomePage {
         dismissible: true,
         imgSrc: promo.icon
       });
-    this.showAdvertisements = true;
   }
 
   private checkIfDismissed(name: string): Promise<any> {
@@ -711,7 +721,6 @@ export class HomePage {
             this.logger.debug('Removed advertisement: ', advertisement.name);
             return;
           }
-          this.showAdvertisements = true;
         });
     });
   }
@@ -740,6 +749,7 @@ export class HomePage {
         this.advertisements,
         adv => adv.name !== name
       );
+      if (this.advertisements.length == 0) this.showAdvertisements = false;
     }
     if (this.slides) this.slides.slideTo(0, 500);
   }
