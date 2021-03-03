@@ -58,6 +58,18 @@ export class NewFeaturePage {
     }
   }
 
+  styleFullFitImageDiv(imagePath: string) {
+    const img = this.getImage(imagePath);
+    return {
+      'background-image': 'url(' + img + ')',
+      'background-repeat': 'no-repeat',
+      'background-position': 'bottom',
+      'background-color': '#F4F6FF',
+      'background-size': 'auto 100%',
+      height: '100%'
+    };
+  }
+
   slideChanged() {
     this.endSlide = this.slider.isEnd();
     this.firstSlide = this.slider.isBeginning();
