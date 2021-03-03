@@ -53,6 +53,7 @@ import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
@@ -101,6 +102,7 @@ export class CopayApp {
     AddressbookAddPage,
     AmountPage,
     BitPayCardIntroPage,
+    ExchangeCryptoPage,
     PhaseOneCardIntro,
     CoinbasePage,
     ConfirmPage,
