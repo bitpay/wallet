@@ -152,7 +152,7 @@ export class NewFeatureData {
             slideTitle: '',
             title: 'Dogecoin added',
             details:
-              'Store, buy, send and receive Dogecoin, an open source p2p digital currency favored by Shiba Inu worldwide.',
+              'Store, buy, send and receive Dogecoin, an open source peer-to-peer digital currency favored by Shiba Inus worldwide.',
             image: {
               path: 'assets/img/new-feature/12.2/12-2-doge.svg',
               fitClass: true
