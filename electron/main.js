@@ -131,6 +131,8 @@ app.setAsDefaultProtocolClient('bitcoin');
 app.setAsDefaultProtocolClient('bitcoincash');
 app.setAsDefaultProtocolClient('bchtest');
 app.setAsDefaultProtocolClient('ethereum');
+app.setAsDefaultProtocolClient('ripple');
+app.setAsDefaultProtocolClient('dogecoin');
 app.setAsDefaultProtocolClient(appConfig.name);
 app.setVersion(appConfig.version);
 app.name = appConfig.nameCase;

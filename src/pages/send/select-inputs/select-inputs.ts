@@ -46,11 +46,11 @@ export class SelectInputsPage {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
-    'DogeAddress',
+    'DogecoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
-    'DogeUri'
+    'DogecoinUri'
   ];
   constructor(
     private navCtrl: NavController,

@@ -49,11 +49,11 @@ export class MultiSendPage {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
-    'DogeAddress',
+    'DogecoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
-    'DogeUri'
+    'DogecoinUri'
   ];
 
   constructor(

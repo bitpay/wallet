@@ -738,6 +738,15 @@ export class CopayApp {
     } else if (pathData.indexOf('bitcoin:/') != -1) {
       this.logger.debug('Bitcoin URL found');
       this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
+    } else if (pathData.indexOf('ethereum:/') != -1) {
+      this.logger.debug('Ethereum URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('ethereum:/')));
+    } else if (pathData.indexOf('ripple:/') != -1) {
+      this.logger.debug('Ripple URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('ripple:/')));
+    } else if (pathData.indexOf('dogecoin:/') != -1) {
+      this.logger.debug('Dogecoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('dogecoin:/')));
     } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
       this.logger.debug(this.appProvider.info.name + ' URL found');
       this.handleOpenUrl(

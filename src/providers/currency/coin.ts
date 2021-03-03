@@ -434,7 +434,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     paymentInfo: {
       paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'doge', testnet: 'doge' },
+      protocolPrefix: { livenet: 'dogecoin', testnet: 'dogecoin' },
       ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/doge',
       blockExplorerUrls: 'blockchair.com/',
       blockExplorerUrlsTestnet: 'sochain.com/'

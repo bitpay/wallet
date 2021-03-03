@@ -27,6 +27,7 @@ builder
           'bchtest',
           'ethereum',
           'ripple',
+          'dogecoin',
           '*NAME*'
         ]
       },
