@@ -6,6 +6,7 @@ import {
   ActionSheetProvider,
   AddressBookProvider,
   AddressProvider,
+  AdvertisementProvider,
   AnalyticsProvider,
   AppIdentityProvider,
   AppleWalletNg,
@@ -95,6 +96,7 @@ import {
   providers: [
     ActionSheetProvider,
     AddressProvider,
+    AdvertisementProvider,
     AddressBookProvider,
     AnalyticsProvider,
     AppleWalletNg,
