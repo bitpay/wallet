@@ -105,6 +105,18 @@ page-new-feature {
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
   }
+  @media (orientation: portrait) {
+    .img-fit {
+      background-size: 100% auto;
+      width: 100%;
+    }
+  }
+  @media (orientation: landscape) {
+    .img-fit {
+      background-size: auto 100%;
+      height: 100%;
+    }
+  }
 
   .swiper-container-horizontal > .swiper-pagination-bullets {
     bottom: 3rem;
