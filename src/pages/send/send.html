@@ -9,7 +9,8 @@
       <div>
         <div class="prompt-user">
           <div class="title-icon larger-icon">
-            <img src="assets/img/ghost-straight-face.svg" />
+            <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg">
+            <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
           </div>
           <div class="title-info">
             <span translate>Mmm...</span>

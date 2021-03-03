@@ -190,13 +190,15 @@
       <div class="title-icon larger-icon" *ngIf="!wallet?.credentials.multisigEthInfo">
         <img *ngIf="wallet.coin === 'xrp' && wallet.cachedStatus && !wallet.cachedStatus.lockedBalanceSat; else ghostTongue" width="42" src="assets/img/icon-warning-circled.svg" />
         <ng-template #ghostTongue>
-          <img src="assets/img/ghost-tongue-out.svg">
+          <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-tongue-out.svg">
+          <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
         </ng-template>
       </div>
       <div class="title-info">
         <span translate *ngIf="wallet?.coin === 'xrp' && wallet?.cachedStatus && !wallet?.cachedStatus.lockedBalanceSat; else ghostTown">XRP Minimum Balance</span>
         <ng-template #ghostTown>
-          <span translate *ngIf="!wallet?.credentials.multisigEthInfo">It's a ghost town in here</span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin !== 'doge'">It's a ghost town in here</span>
+          <span translate *ngIf="!wallet?.credentials.multisigEthInfo && wallet.coin === 'doge' ">A dog without funds is a sad dog</span>
           <span translate *ngIf="wallet?.credentials.multisigEthInfo">Join more Copayers</span>
         </ng-template>
       </div>
