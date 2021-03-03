@@ -143,7 +143,7 @@ export class NewFeatureData {
       },
       {
         majorversion: 12,
-        minorversion: 2,
+        minorversion: 3,
         app: ['*'],
         platform: ['*'],
         dummy: this.translate.instant('dummy'),
