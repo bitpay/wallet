@@ -379,7 +379,23 @@ export class ImportWalletPage {
       opts.mnemonic = words;
     }
 
-    const derivationPath = this.importForm.value.derivationPath;
+    let derivationPath;
+    if (this.importForm.value.derivationPathEnabled) {
+      derivationPath = this.importForm.value.derivationPath;
+    } else {
+      if (this.derivationPathHelperProvider[`default${coin.toUpperCase()}`]) {
+        derivationPath = this.derivationPathHelperProvider[
+          `default${coin.toUpperCase()}`
+        ];
+      } else {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
+          `No derivation path for: default${coin.toUpperCase()}`
+        );
+        this.showErrorInfoSheet(title, subtitle);
+        return;
+      }
+    }
     opts.networkName = this.derivationPathHelperProvider.getNetworkName(
       derivationPath
     );
@@ -390,9 +406,8 @@ export class ImportWalletPage {
 
     // set opts.useLegacyPurpose
     if (
-      this.derivationPathHelperProvider.parsePath(
-        this.importForm.value.derivationPath
-      ).purpose == "44'" &&
+      this.derivationPathHelperProvider.parsePath(derivationPath).purpose ==
+        "44'" &&
       opts.n > 1
     ) {
       opts.useLegacyPurpose = true;
@@ -402,9 +417,8 @@ export class ImportWalletPage {
     // set opts.useLegacyCoinType
     if (
       coin == 'bch' &&
-      this.derivationPathHelperProvider.parsePath(
-        this.importForm.value.derivationPath
-      ).coinCode == "0'"
+      this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
+        "0'"
     ) {
       opts.useLegacyCoinType = true;
       this.logger.debug('Using 0 for BCH creation');
@@ -432,7 +446,7 @@ export class ImportWalletPage {
 
     if (
       !this.derivationPathHelperProvider.isValidDerivationPathCoin(
-        this.importForm.value.derivationPath,
+        derivationPath,
         coin
       )
     ) {

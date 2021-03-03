@@ -988,8 +988,16 @@ export class ConfirmPage {
             1,
             tx.inputs.length
           );
-          const estimatedFee =
-            size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+          let estimatedFee;
+          switch (tx.coin) {
+            case 'doge':
+              estimatedFee = 1e8; // 1 DOGE
+              break;
+            default:
+              estimatedFee =
+                size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+              break;
+          }
           tx.fee = estimatedFee;
           tx.amount = tx.amount - estimatedFee;
         }

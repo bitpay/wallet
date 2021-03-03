@@ -11,28 +11,40 @@ describe('RateProvider', () => {
     { code: 'USD', name: 'US Dollar', rate: 11535.74 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 7.65734 },
     { code: 'ETH', name: 'Ethereum', rate: 5.65734 },
-    { code: 'XRP', name: 'Ripple', rate: 32482.54 }
+    { code: 'XRP', name: 'Ripple', rate: 32482.54 },
+    { code: 'DOGE', name: 'Dogecoin', rate: 200000 }
   ];
   const bchResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 1 },
     { code: 'ETH', name: 'Ethereum', rate: 0.899 },
-    { code: 'XRP', name: 'Ripple', rate: 974.05 }
+    { code: 'XRP', name: 'Ripple', rate: 974.05 },
+    { code: 'DOGE', name: 'Dogecoin', rate: 20000 }
   ];
   const ethResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 0.899 },
     { code: 'ETH', name: 'Ethereum', rate: 1 },
-    { code: 'XRP', name: 'Ripple', rate: 700.66 }
+    { code: 'XRP', name: 'Ripple', rate: 700.66 },
+    { code: 'DOGE', name: 'Dogecoin', rate: 25000 }
   ];
   const xrpResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0 },
     { code: 'USD', name: 'US Dollar', rate: 0.25 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 0 },
     { code: 'ETH', name: 'Ethereum', rate: 0 },
-    { code: 'XRP', name: 'Ripple', rate: 1 }
+    { code: 'XRP', name: 'Ripple', rate: 1 },
+    { code: 'DOGE', name: 'Dogecoin', rate: 2 }
+  ];
+  const dogeResponse = [
+    { code: 'BTC', name: 'Bitcoin', rate: 0 },
+    { code: 'USD', name: 'US Dollar', rate: 0.05 },
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 0 },
+    { code: 'ETH', name: 'Ethereum', rate: 0 },
+    { code: 'XRP', name: 'Ripple', rate: 0.5 },
+    { code: 'DOGE', name: 'Dogecoin', rate: 1 }
   ];
   const paxResponse = [
     { code: 'PAX', name: 'Paxos Standard USD', rate: 9371.93 }
@@ -63,6 +75,7 @@ describe('RateProvider', () => {
   let usdcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/usdc';
   let gusdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/gusd';
   let busdUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/busd';
+  let dogeUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/doge';
   // let daiUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/dai';
   // let wbtcUrl: string = 'https://bws.bitpay.com/bws/api/v3/fiatrates/wbtc';
 
@@ -87,6 +100,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(daiUrl)[0].flush(daiResponse);
     // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -100,6 +114,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH', 'btc')).toEqual(7.65734);
       expect(service.getRate('ETH', 'btc')).toEqual(5.65734);
       expect(service.getRate('XRP', 'btc')).toEqual(32482.54);
+      expect(service.getRate('DOGE', 'btc')).toEqual(200000);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -110,6 +125,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(daiUrl)[0].flush(daiResponse);
     // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -123,6 +139,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH', 'bch')).toEqual(1);
       expect(service.getRate('ETH', 'bch')).toEqual(0.899);
       expect(service.getRate('XRP', 'bch')).toEqual(974.05);
+      expect(service.getRate('DOGE', 'bch')).toEqual(20000);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -133,6 +150,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(daiUrl)[0].flush(daiResponse);
     // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -146,6 +164,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH', 'eth')).toEqual(0.899);
       expect(service.getRate('ETH', 'eth')).toEqual(1);
       expect(service.getRate('XRP', 'eth')).toEqual(700.66);
+      expect(service.getRate('DOGE', 'eth')).toEqual(25000);
     });
 
     httpMock.match(btcUrl)[0].flush(btcResponse);
@@ -156,6 +175,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(daiUrl)[0].flush(daiResponse);
     // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -166,6 +186,7 @@ describe('RateProvider', () => {
       expect(service.isCoinAvailable('xrp')).toBe(true);
       expect(service.getRate('USD', 'xrp')).toEqual(0.25);
       expect(service.getRate('XRP', 'xrp')).toEqual(1);
+      expect(service.getRate('DOGE', 'xrp')).toEqual(2);
     });
 
     httpMock.match(btcUrl)[0].flush(btcResponse);
@@ -176,6 +197,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(daiUrl)[0].flush(daiResponse);
     // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -253,6 +275,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     // httpMock.match(busdUrl)[0].flush(daiResponse);
     // httpMock.match(busdUrl)[0].flush(wbtcResponse);
     httpMock.verify();
@@ -278,6 +301,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -301,6 +325,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -324,6 +349,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -347,6 +373,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -370,6 +397,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -393,6 +421,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -416,6 +445,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -459,6 +489,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 
@@ -482,6 +513,7 @@ describe('RateProvider', () => {
     httpMock.match(usdcUrl)[0].flush(usdcResponse);
     httpMock.match(gusdUrl)[0].flush(gusdResponse);
     httpMock.match(busdUrl)[0].flush(busdResponse);
+    httpMock.match(dogeUrl)[0].flush(dogeResponse);
     httpMock.verify();
   });
 

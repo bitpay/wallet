@@ -46,9 +46,11 @@ export class SelectInputsPage {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
+    'DogeAddress',
     'EthereumUri',
     'BitcoinUri',
-    'BitcoinCashUri'
+    'BitcoinCashUri',
+    'DogeUri'
   ];
   constructor(
     private navCtrl: NavController,
@@ -70,7 +72,8 @@ export class SelectInputsPage {
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
-      bch: this.bwcProvider.getBitcoreCash()
+      bch: this.bwcProvider.getBitcoreCash(),
+      doge: this.bwcProvider.getBitcoreDoge()
     };
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
