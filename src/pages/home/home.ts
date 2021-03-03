@@ -22,6 +22,7 @@ import {
   PlatformProvider,
   PopupProvider,
   ProfileProvider,
+  RateProvider,
   ReleaseProvider
 } from '../../providers';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -126,7 +127,8 @@ export class HomePage {
     private newFeatureData: NewFeatureData,
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
-    private splashScreen: SplashScreen
+    private splashScreen: SplashScreen,
+    private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -223,6 +225,7 @@ export class HomePage {
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
+      this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
     }, 2000);
   }
 
@@ -436,9 +439,6 @@ export class HomePage {
     });
     this.events.subscribe('Local/ConnectionError', () => {
       this.fetchingStatus = false;
-    });
-    this.events.subscribe('Local/UnsupportedAltCurrency', altCurrency => {
-      this.showInfoSheet(altCurrency);
     });
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
@@ -881,7 +881,6 @@ export class HomePage {
     );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
-      this.events.unsubscribe('Local/UnsupportedAltCurrency');
       if (option) {
         const settingsTabIndex = this.navCtrl.parent._tabs.length - 1; // The index of SettingsPage tab depends on the platform and distribution
         this.navCtrl.parent.select(settingsTabIndex);
@@ -922,6 +921,17 @@ export class HomePage {
         });
       }
     }, 2000);
+  }
+
+  private checkAltCurrency(): void {
+    const config = this.configProvider.get();
+    const altCurrency = {
+      name: config.wallet.settings.alternativeName,
+      isoCode: config.wallet.settings.alternativeIsoCode
+    };
+    if (!this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode)) {
+      this.showInfoSheet(altCurrency);
+    }
   }
 }
 
