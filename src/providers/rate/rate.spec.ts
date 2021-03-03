@@ -101,119 +101,116 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       // httpMock.match(daiUrl)[0].flush(daiResponse);
       // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
       httpMock.verify();
     });
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(daiUrl)[0].flush(daiResponse);
-    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
   });
 
   it('should get BTC rates', () => {
-    service.updateRates('btc').then(() => {
-      expect(service.isCoinAvailable('btc')).toBe(true);
-      expect(service.getRate('BTC', 'btc')).toEqual(1);
-      expect(service.getRate('USD', 'btc')).toEqual(11535.74);
-      expect(service.getRate('BCH', 'btc')).toEqual(7.65734);
-      expect(service.getRate('ETH', 'btc')).toEqual(5.65734);
-      expect(service.getRate('XRP', 'btc')).toEqual(32482.54);
-      expect(service.getRate('DOGE', 'btc')).toEqual(200000);
-    });
+    service.updateRates().then(() => {
+      service.updateRates('btc').then(() => {
+        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.getRate('BTC', 'btc')).toEqual(1);
+        expect(service.getRate('USD', 'btc')).toEqual(11535.74);
+        expect(service.getRate('BCH', 'btc')).toEqual(7.65734);
+        expect(service.getRate('ETH', 'btc')).toEqual(5.65734);
+        expect(service.getRate('XRP', 'btc')).toEqual(32482.54);
+        expect(service.getRate('DOGE', 'btc')).toEqual(200000);
+      });
 
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(daiUrl)[0].flush(daiResponse);
-    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
+      httpMock.match(ethUrl)[0].flush(ethResponse);
+      httpMock.match(btcUrl)[1].flush(btcResponse);
+      httpMock.match(bchUrl)[0].flush(bchResponse);
+      httpMock.match(xrpUrl)[0].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      // httpMock.match(daiUrl)[0].flush(daiResponse);
+      // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
+      httpMock.verify();
+    });
   });
 
   it('should get BCH rates', () => {
-    service.updateRates('bch').then(() => {
-      expect(service.isCoinAvailable('bch')).toBe(true);
-      expect(service.getRate('BTC', 'bch')).toEqual(0.130377);
-      expect(service.getRate('USD', 'bch')).toEqual(1503.3);
-      expect(service.getRate('BCH', 'bch')).toEqual(1);
-      expect(service.getRate('ETH', 'bch')).toEqual(0.899);
-      expect(service.getRate('XRP', 'bch')).toEqual(974.05);
-      expect(service.getRate('DOGE', 'bch')).toEqual(20000);
-    });
+    service.updateRates().then(() => {
+      service.updateRates('bch').then(() => {
+        expect(service.isCoinAvailable('bch')).toBe(true);
+        expect(service.getRate('BTC', 'bch')).toEqual(0.130377);
+        expect(service.getRate('USD', 'bch')).toEqual(1503.3);
+        expect(service.getRate('BCH', 'bch')).toEqual(1);
+        expect(service.getRate('ETH', 'bch')).toEqual(0.899);
+        expect(service.getRate('XRP', 'bch')).toEqual(974.05);
+        expect(service.getRate('DOGE', 'bch')).toEqual(20000);
+      });
 
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[1].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(daiUrl)[0].flush(daiResponse);
-    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
+      httpMock.match(ethUrl)[0].flush(ethResponse);
+      httpMock.match(btcUrl)[0].flush(btcResponse);
+      httpMock.match(bchUrl)[1].flush(bchResponse);
+      httpMock.match(xrpUrl)[0].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      // httpMock.match(daiUrl)[0].flush(daiResponse);
+      // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
+      httpMock.verify();
+    });
   });
 
   it('should get ETH rates', () => {
-    service.updateRates('eth').then(() => {
-      expect(service.isCoinAvailable('eth')).toBe(true);
-      expect(service.getRate('BTC', 'eth')).toEqual(0.130377);
-      expect(service.getRate('USD', 'eth')).toEqual(1503.3);
-      expect(service.getRate('BCH', 'eth')).toEqual(0.899);
-      expect(service.getRate('ETH', 'eth')).toEqual(1);
-      expect(service.getRate('XRP', 'eth')).toEqual(700.66);
-      expect(service.getRate('DOGE', 'eth')).toEqual(25000);
-    });
+    service.updateRates().then(() => {
+      service.updateRates('eth').then(() => {
+        expect(service.isCoinAvailable('eth')).toBe(true);
+        expect(service.getRate('BTC', 'eth')).toEqual(0.130377);
+        expect(service.getRate('USD', 'eth')).toEqual(1503.3);
+        expect(service.getRate('BCH', 'eth')).toEqual(0.899);
+        expect(service.getRate('ETH', 'eth')).toEqual(1);
+        expect(service.getRate('XRP', 'eth')).toEqual(700.66);
+        expect(service.getRate('DOGE', 'eth')).toEqual(25000);
+      });
 
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(ethUrl)[1].flush(ethResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(daiUrl)[0].flush(daiResponse);
-    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
+      httpMock.match(btcUrl)[0].flush(btcResponse);
+      httpMock.match(bchUrl)[0].flush(bchResponse);
+      httpMock.match(ethUrl)[1].flush(ethResponse);
+      httpMock.match(xrpUrl)[0].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      // httpMock.match(daiUrl)[0].flush(daiResponse);
+      // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
+      httpMock.verify();
+    });
   });
 
   it('should get XRP rates', () => {
-    service.updateRates('xrp').then(() => {
-      expect(service.isCoinAvailable('xrp')).toBe(true);
-      expect(service.getRate('USD', 'xrp')).toEqual(0.25);
-      expect(service.getRate('XRP', 'xrp')).toEqual(1);
-      expect(service.getRate('DOGE', 'xrp')).toEqual(2);
-    });
+    service.updateRates().then(() => {
+      service.updateRates('xrp').then(() => {
+        expect(service.isCoinAvailable('xrp')).toBe(true);
+        expect(service.getRate('USD', 'xrp')).toEqual(0.25);
+        expect(service.getRate('XRP', 'xrp')).toEqual(1);
+        expect(service.getRate('DOGE', 'xrp')).toEqual(2);
+      });
 
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(xrpUrl)[1].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(daiUrl)[0].flush(daiResponse);
-    // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
+      httpMock.match(btcUrl)[0].flush(btcResponse);
+      httpMock.match(bchUrl)[0].flush(bchResponse);
+      httpMock.match(ethUrl)[0].flush(ethResponse);
+      httpMock.match(xrpUrl)[1].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      // httpMock.match(daiUrl)[0].flush(daiResponse);
+      // httpMock.match(wbtcUrl)[0].flush(wbtcResponse);
+      httpMock.verify();
+    });
   });
 
   it('should catch an error on when call to update btc rates fails', () => {
@@ -281,18 +278,19 @@ describe('RateProvider', () => {
         expect(service.toFiat(0.25 * 1e8, 'USD', 'bch')).toEqual(375.825);
       });
 
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[1].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    // httpMock.match(busdUrl)[0].flush(daiResponse);
-    // httpMock.match(busdUrl)[0].flush(wbtcResponse);
-    httpMock.verify();
+      httpMock.match(ethUrl)[0].flush(ethResponse);
+      httpMock.match(btcUrl)[0].flush(btcResponse);
+      httpMock.match(bchUrl)[1].flush(bchResponse);
+      httpMock.match(xrpUrl)[0].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      // httpMock.match(busdUrl)[0].flush(daiResponse);
+      // httpMock.match(busdUrl)[0].flush(wbtcResponse);
+      httpMock.verify();
+    });
   });
 
   it('should covert fiat to BCH satoshis', () => {
@@ -308,16 +306,17 @@ describe('RateProvider', () => {
         expect(service.fromFiat(375.825, 'USD', 'bch')).toEqual(0.25 * 1e8);
       });
 
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[1].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
+      httpMock.match(ethUrl)[0].flush(ethResponse);
+      httpMock.match(btcUrl)[0].flush(btcResponse);
+      httpMock.match(bchUrl)[1].flush(bchResponse);
+      httpMock.match(xrpUrl)[0].flush(xrpResponse);
+      httpMock.match(paxUrl)[0].flush(paxResponse);
+      httpMock.match(usdcUrl)[0].flush(usdcResponse);
+      httpMock.match(gusdUrl)[0].flush(gusdResponse);
+      httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
+      httpMock.verify();
+    });
   });
 
   it('should covert BTC satoshis to fiat', () => {
@@ -340,19 +339,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should covert fiat to BTC satoshis', () => {
@@ -375,19 +364,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should covert ETH satoshis to fiat', () => {
@@ -410,19 +389,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[1].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should covert fiat to ETH satoshis', () => {
@@ -445,19 +414,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[1].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should covert XRP drops to fiat', () => {
@@ -480,19 +439,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[1].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should covert fiat to XRP drops', () => {
@@ -515,19 +464,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[0].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[1].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should list alternatives', () => {
@@ -570,19 +509,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should resolve when rates are available', () => {
@@ -605,19 +534,9 @@ describe('RateProvider', () => {
       httpMock.match(usdcUrl)[0].flush(usdcResponse);
       httpMock.match(gusdUrl)[0].flush(gusdResponse);
       httpMock.match(busdUrl)[0].flush(busdResponse);
+      httpMock.match(dogeUrl)[0].flush(dogeResponse);
       httpMock.verify();
     });
-
-    httpMock.match(ethUrl)[0].flush(ethResponse);
-    httpMock.match(btcUrl)[1].flush(btcResponse);
-    httpMock.match(bchUrl)[0].flush(bchResponse);
-    httpMock.match(xrpUrl)[0].flush(xrpResponse);
-    httpMock.match(paxUrl)[0].flush(paxResponse);
-    httpMock.match(usdcUrl)[0].flush(usdcResponse);
-    httpMock.match(gusdUrl)[0].flush(gusdResponse);
-    httpMock.match(busdUrl)[0].flush(busdResponse);
-    httpMock.match(dogeUrl)[0].flush(dogeResponse);
-    httpMock.verify();
   });
 
   it('should get historic fiat rate', () => {
