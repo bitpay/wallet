@@ -35,7 +35,7 @@
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" [isDogecoin]="selectedWallet.coin == 'doge'" (slideDone)="sweepWallet()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0">
       {{'Sweep' | translate}}
