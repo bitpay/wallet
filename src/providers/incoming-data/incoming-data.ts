@@ -78,7 +78,7 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|doge)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -118,6 +118,11 @@ export class IncomingDataProvider {
   private isValidRippleUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getCore().Validation.validateUri('XRP', data);
+  }
+
+  private isValidDogeUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreDoge().URI.isValid(data);
   }
 
   private isValidWalletConnectUri(data: string): boolean {
@@ -170,6 +175,13 @@ export class IncomingDataProvider {
     return !!this.bwcProvider
       .getCore()
       .Validation.validateAddress('XRP', 'livenet', data);
+  }
+
+  private isValidDogeAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'testnet')
+    );
   }
 
   private isValidCoinbaseUri(data: string): boolean {
@@ -452,6 +464,21 @@ export class IncomingDataProvider {
     }
   }
 
+  private handleDogeUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Doge URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.DOGE;
+    let parsed = this.bwcProvider.getBitcoreDoge().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+    let message = parsed.message;
+    let amount = parsed.amount || amountFromRedirParams;
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
+  }
+
   private handleWalletConnectUri(uri: string): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
@@ -570,6 +597,25 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'rippleAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handlePlainDogeAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Doge plain address');
+    const coin = Coin.DOGE;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'dogeAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -824,6 +870,11 @@ export class IncomingDataProvider {
       this.handleRippleUri(data, redirParams);
       return true;
 
+      // Doge URI
+    } else if (this.isValidDogeUri(data)) {
+      this.handleDogeUri(data, redirParams);
+      return true;
+
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       this.handleWalletConnectUri(data);
@@ -857,6 +908,11 @@ export class IncomingDataProvider {
       // Address (Ripple)
     } else if (this.isValidRippleAddress(data)) {
       this.handleRippleAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Bitcoin)
+    } else if (this.isValidDogeAddress(data)) {
+      this.handlePlainDogeAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -1092,6 +1148,14 @@ export class IncomingDataProvider {
         title: this.translate.instant('XRP Address')
       };
 
+      // Plain Address (Doge)
+    } else if (this.isValidDogeAddress(data)) {
+      return {
+        data,
+        type: 'DogeAddress',
+        title: this.translate.instant('Doge Address')
+      };
+
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       return {
@@ -1170,7 +1234,7 @@ export class IncomingDataProvider {
 
   public getPayProUrl(data: string): string {
     return decodeURIComponent(
-      data.replace(/(bitcoin|bitcoincash|ethereum|ripple)?:\?r=/, '')
+      data.replace(/(bitcoin|bitcoincash|ethereum|ripple|doge)?:\?r=/, '')
     );
   }
 

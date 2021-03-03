@@ -1,5 +1,5 @@
 <action-sheet>
-  <ion-list class="bp-list" *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress' || type === 'rippleAddress'">
+  <ion-list class="bp-list" *ngIf="type === 'bitcoinAddress' || type === 'ethereumAddress' || type === 'rippleAddress' || type === 'dogeAddress'">
     <ion-item-divider *ngIf="coinName">{{'{coinName} Address' | translate: { coinName: coinName } }}</ion-item-divider>
     <ion-item>
       {{data}}

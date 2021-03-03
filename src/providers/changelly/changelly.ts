@@ -31,7 +31,8 @@ export class ChangellyProvider {
       'pax',
       'usdc',
       'gusd',
-      'dai'
+      'dai',
+      'doge'
     ];
   }
 

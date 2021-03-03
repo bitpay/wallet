@@ -49,9 +49,11 @@ export class MultiSendPage {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
+    'DogeAddress',
     'EthereumUri',
     'BitcoinUri',
-    'BitcoinCashUri'
+    'BitcoinCashUri',
+    'DogeUri'
   ];
 
   constructor(
@@ -72,7 +74,8 @@ export class MultiSendPage {
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
-      bch: this.bwcProvider.getBitcoreCash()
+      bch: this.bwcProvider.getBitcoreCash(),
+      doge: this.bwcProvider.getBitcoreDoge()
     };
     this.isDisabledContinue = true;
     this.wallet = this.navParams.data.wallet;
