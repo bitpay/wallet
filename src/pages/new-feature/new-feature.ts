@@ -58,12 +58,13 @@ export class NewFeaturePage {
     }
   }
 
-  styleFullFitImageDiv(imagePath: string) {
+  setBGImgHeader(imagePath: string) {
     return {
       'background-image': 'url(' + imagePath + ')',
       'background-repeat': 'no-repeat',
       'background-position': 'bottom',
-      'background-color': '#F4F6FF'
+      'background-color': '#F4F6FF',
+      height: '100%'
     };
   }
 

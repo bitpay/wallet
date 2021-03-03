@@ -1,7 +1,7 @@
 <ion-slides #newFeatureSlides pager="{{featureList && featureList.length>1}}" class="new-feature-slides" *ngIf="featureList && featureList.length>0" (ionSlideDidChange)="slideChanged()">
   <ion-slide *ngFor="let newfeature of featureList">
     <div class="supperior-container" *ngIf="newfeature.image && !!newfeature.image.fitClass">
-      <div *ngIf="newfeature.image" class="img-fit" [ngStyle]="styleFullFitImageDiv(getImage(newfeature.image.path))"></div>
+      <div *ngIf="newfeature.image" class="img-fit" [ngStyle]="setBGImgHeader(getImage(newfeature.image.path))"></div>
     </div>
     <div class="supperior-container" *ngIf="!newfeature.image.fitClass">
       <div class="page-title" *ngIf="newfeature.slideTitle != ''" translate>{{ newfeature.slideTitle || 'Recently added' }}</div>
