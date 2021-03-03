@@ -44,7 +44,7 @@
         Join the waitlist and be first to experience the new card.
       </div>
 
-      <div *ngIf="initialized && !waitList" action-card-body [clamp]="3" translate>
+      <div *ngIf="initialized && !waitList" action-card-body translate>
         Instantly reload your card with no conversion fee!*
       </div>
 
@@ -169,7 +169,7 @@
           <div class="loading--line" style="width: 30%"></div>
           <div class="loading--line" style="width: 50%"></div>
         </div>
-        <div *ngIf="initialized" action-card-body [clamp]="3" translate>
+        <div *ngIf="initialized" action-card-body translate>
           Instantly reload your card with no conversion fee!*
         </div>
         <div @fadeUp action-card-button translate *ngIf="initialized" (click)="goToBitPayCardIntroPage()">

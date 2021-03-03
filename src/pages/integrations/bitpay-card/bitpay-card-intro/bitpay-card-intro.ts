@@ -145,7 +145,6 @@ export class BitPayCardIntroPage {
 
   public async orderBitPayCard(path?: 'login' | 'createAccount') {
     this.iabCardProvider.loadingWrapper(async () => {
-
       const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
         12,
         'USD'
@@ -157,7 +156,7 @@ export class BitPayCardIntroPage {
         payload: {
           path
         }
-      }
+      };
 
       if (!hasWalletWithFunds && !hasFirstView) {
         this.iabCardProvider.show();
