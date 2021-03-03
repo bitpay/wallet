@@ -19,10 +19,15 @@ interface FeatureList {
   features: Feature[];
 }
 interface Feature {
+  slideTitle?: string;
   title: string;
   details: string;
-  image?: string;
+  image?: Image;
   tryit?: TryIt;
+}
+interface Image {
+  path: string;
+  fitClass?: boolean;
 }
 interface TryIt {
   name: string;
@@ -64,25 +69,25 @@ export class NewFeatureData {
             title: 'Trading now supported!',
             details:
               'Now you can quickly and safely exchange funds from one crypto wallet to another.',
-            image: 'assets/img/new-feature/12/12-1.png'
+            image: { path: 'assets/img/new-feature/12/12-1.png' }
           },
           {
             title: 'Exchange directly from your wallets',
             details:
               'Now you can quickly and safely exchange funds from one crypto wallet to another.',
-            image: 'assets/img/new-feature/12/12-2.png'
+            image: { path: 'assets/img/new-feature/12/12-2.png' }
           },
           {
             title: 'DAI and WBTC added',
             details:
               'Store, Send, and Receive some of the top crypto assets used in Decentralized Finance (DeFi). DAI is a USD pegged stable coin and WBTC is an ERC20 token pegged to Bitcoin.',
-            image: 'assets/img/new-feature/12/12-3.png'
+            image: { path: 'assets/img/new-feature/12/12-3.png' }
           },
           {
             title: 'Interact with DeFi and other DApps',
             details:
               'Try it out by selecting WalletConnect from settings, then scanning a DApp or DeFi QR code.',
-            image: 'assets/img/new-feature/12/12-4.png'
+            image: { path: 'assets/img/new-feature/12/12-4.png' }
           }
         ]
       },
@@ -98,13 +103,13 @@ export class NewFeatureData {
             title: 'Connect to Apple Pay',
             details:
               "Now it's easy to use your BitPay Mastercard with Apple Pay making payments in stores, in apps, and online even easier.",
-            image: 'assets/img/new-feature/12.1/12.1-1.png'
+            image: { path: 'assets/img/new-feature/12.1/12.1-1.png' }
           },
           {
             title: 'Setup your virtual card',
             details:
               'To get started, go to your card settings and select “Add to Apple Wallet”',
-            image: 'assets/img/new-feature/12.1/12.1-2.png',
+            image: { path: 'assets/img/new-feature/12.1/12.1-2.png' },
             tryit: async (viewCtrl: ViewController) => {
               await viewCtrl.dismiss({ done: true });
               const cards = await this.persistenceProvider.getBitpayDebitCards(
@@ -132,6 +137,25 @@ export class NewFeatureData {
                   name: 'BitPayCardIntroPage'
                 });
               }
+            }
+          }
+        ]
+      },
+      {
+        majorversion: 12,
+        minorversion: 2,
+        app: ['*'],
+        platform: ['*'],
+        dummy: this.translate.instant('dummy'),
+        features: [
+          {
+            slideTitle: '',
+            title: 'Dogecoin added',
+            details:
+              'Store, buy, send and receive Dogecoin, an open source peer-to-peer digital currency favored by Shiba Inus worldwide.',
+            image: {
+              path: 'assets/img/new-feature/12.2/12-2-doge.svg',
+              fitClass: true
             }
           }
         ]

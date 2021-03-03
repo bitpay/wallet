@@ -29,6 +29,7 @@ page-new-feature {
           padding: 2em 0 2em 0;
         }
         .img-container {
+          display: contents;
           img {
             display: block;
             width: 80%;
@@ -103,6 +104,16 @@ page-new-feature {
     left: 50%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
+  }
+  @media (orientation: portrait) {
+    .img-fit {
+      background-size: contain;
+    }
+  }
+  @media (orientation: landscape) {
+    .img-fit {
+      background-size: auto 100%;
+    }
   }
 
   .swiper-container-horizontal > .swiper-pagination-bullets {

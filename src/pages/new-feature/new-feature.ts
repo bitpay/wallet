@@ -58,6 +58,16 @@ export class NewFeaturePage {
     }
   }
 
+  setBGImgHeader(imagePath: string) {
+    return {
+      'background-image': 'url(' + imagePath + ')',
+      'background-repeat': 'no-repeat',
+      'background-position': 'bottom',
+      'background-color': '#F4F6FF',
+      height: '100%'
+    };
+  }
+
   slideChanged() {
     this.endSlide = this.slider.isEnd();
     this.firstSlide = this.slider.isBeginning();
