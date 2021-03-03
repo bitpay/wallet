@@ -56,8 +56,11 @@ page-slide-to-accept {
     border-bottom-right-radius: 45px;
     border-top-right-radius: 45px;
     margin-left: -119%;
-    background: $slider-bg-button !important;
     height: 100%;
+    background: $slider-bg-button !important;
+    &.doge {
+      background: linear-gradient(180deg, #d8c172 0%, #bb9f32 100%) !important;
+    }
   }
 
   @mixin center-vertically {
@@ -148,9 +151,15 @@ page-slide-to-accept {
       position: absolute;
       right: 25px;
       top: 20px;
-
       > img {
         height: 36px;
+      }
+      &.doge {
+        top: 0px;
+        right: 0px;
+        > img {
+          height: 77px;
+        }
       }
     }
     &__button-text {
