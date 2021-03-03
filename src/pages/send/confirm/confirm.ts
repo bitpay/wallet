@@ -1547,6 +1547,7 @@ export class ConfirmPage {
     if (
       this.tx.coin === 'bch' ||
       this.tx.coin === 'xrp' ||
+      this.tx.coin === 'doge' ||
       this.usingMerchantFee ||
       this.tx.speedUpTxInfo
     )
