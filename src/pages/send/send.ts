@@ -51,11 +51,11 @@ export class SendPage {
     'EthereumAddress',
     'EthereumUri',
     'RippleAddress',
-    'DogeAddress',
+    'DogecoinAddress',
     'RippleUri',
     'BitcoinUri',
     'BitcoinCashUri',
-    'DogeUri',
+    'DogecoinUri',
     'BitPayUri'
   ];
   private pageMap = {

@@ -140,7 +140,7 @@
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-advanced-http": "2.1.0",
     "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-customurlscheme-ng": "9.0.0",
+    "cordova-plugin-customurlscheme-ng": "10.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-fcm-ng": "8.3.0",
@@ -249,6 +249,7 @@
         "FIFTH_URL_SCHEME": "ethereum",
         "SIXTH_URL_SCHEME": "ripple",
         "SEVENTH_URL_SCHEME": "wc",
+        "EIGHTH_URL_SCHEME": "dogecoin",
         "ANDROID_SCHEME": "",
         "ANDROID_HOST": "",
         "ANDROID_PATHPREFIX": ""

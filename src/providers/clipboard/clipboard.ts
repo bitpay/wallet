@@ -15,7 +15,7 @@ const validDataByCoin = {
   bch: ['BitcoinCashUri', 'BitcoinCashAddress'],
   eth: ['EthereumUri', 'EthereumAddress'],
   xrp: ['RippleUri', 'RippleAddress'],
-  doge: ['DogeUri', 'DogeAddress']
+  doge: ['DogecoinUri', 'DogecoinAddress']
 };
 
 @Injectable()
