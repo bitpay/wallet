@@ -158,8 +158,9 @@ export class SendPage {
 
   public showOptions(coin: Coin) {
     return (
-      this.currencyProvider.isMultiSend(coin) ||
-      this.currencyProvider.isUtxoCoin(coin)
+      (this.currencyProvider.isMultiSend(coin) ||
+        this.currencyProvider.isUtxoCoin(coin)) &&
+      !this.shouldShowZeroState()
     );
   }
 
