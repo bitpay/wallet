@@ -167,7 +167,7 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
       <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Continue & Make Payment' | translate}}</button>
