@@ -370,10 +370,13 @@ export class CryptoOffersPage {
             this.logger.debug('Simplex getting quote: SUCCESS');
           } else {
             if (data.message && _.isString(data.message)) {
-              this.logger.error(data.message);
+              this.logger.error('Simplex error: ' + data.message);
             }
             if (data.error && _.isString(data.error)) {
-              this.logger.error(data.error);
+              this.logger.error('Simplex error: ' + data.error);
+              if (data.errors) {
+                this.logger.error(data.errors);
+              }
             }
             let err = this.translate.instant(
               "Can't get rates at this moment. Please try again later"
