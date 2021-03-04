@@ -48,7 +48,9 @@ export class DynamicLinksProvider {
   }
 
   processDeepLink(deepLink: string) {
-    const view = this.incomingDataProvider.getParameterByName('view', deepLink);
+    const view =
+      this.incomingDataProvider.getParameterByName('view', deepLink) ||
+      'DynamicLink';
     const stateParams = { deepLink: true };
     const nextView = {
       name: view,

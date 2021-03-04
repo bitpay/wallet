@@ -602,6 +602,8 @@ export class CopayApp {
         return;
       } else {
         if (nextView.params && nextView.params.deepLink) {
+          // No params -> return
+          if (nextView.name == 'DynamicLink') return;
           // From deepLink
           setTimeout(() => {
             this.getGlobalTabs()
