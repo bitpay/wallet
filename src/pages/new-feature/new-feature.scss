@@ -1,6 +1,12 @@
 page-new-feature {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  $gradient1-light: #d8defd;
+  $gradient2-light: #f3f4f9;
+  $gradient1-dark: #606060;
+  $gradient2-dark: #202124;
+
   .new-feature-slides {
     .slide-zoom {
       height: 100%;
@@ -13,11 +19,16 @@ page-new-feature {
       background: #4f6ef7;
       opacity: 1;
     }
+
     ion-slide {
       .supperior-container {
         position: relative;
         height: 64%;
-        background: linear-gradient(180deg, #d8defd 0%, #f3f4f9 100%);
+        background: linear-gradient(
+          180deg,
+          $gradient1-light 0%,
+          $gradient2-light 100%
+        );
         .page-title {
           text-align: center;
           width: 100%;
@@ -29,6 +40,7 @@ page-new-feature {
           padding: 2em 0 2em 0;
         }
         .img-container {
+          display: contents;
           img {
             display: block;
             width: 80%;
@@ -103,6 +115,23 @@ page-new-feature {
     left: 50%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
+  }
+  .img-fit {
+    background-color: linear-gradient(
+      180deg,
+      $gradient1-light 0%,
+      $gradient2-light 100%
+    );
+  }
+  @media (orientation: portrait) {
+    .img-fit {
+      background-size: contain;
+    }
+  }
+  @media (orientation: landscape) {
+    .img-fit {
+      background-size: auto 100%;
+    }
   }
 
   .swiper-container-horizontal > .swiper-pagination-bullets {
