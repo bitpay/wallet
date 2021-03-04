@@ -792,12 +792,9 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          if (this.currencyProvider.isUtxoCoin(tx.coin)) {
-            const per = this.getFeeRate(txp.amount, txp.fee);
-            txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
-          }
-
+          const per = this.getFeeRate(txp.amount, txp.fee);
+          txp.feeRatePerStr = per.toFixed(2) + '%';
+          txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
           if (txp.feeTooHigh) {
             this.showHighFeeSheet();
           }
@@ -812,7 +809,6 @@ export class ConfirmPage {
           );
 
           this.getTotalAmountDetails(tx, wallet);
-
           return resolve();
         })
         .catch(err => {
