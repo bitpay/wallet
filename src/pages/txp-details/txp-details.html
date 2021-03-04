@@ -214,7 +214,7 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova && !(isShared && tx.coin === 'eth')" [buttonText]="buttonText" [isDogecoin]="tx.coin == 'doge'" (slideDone)="onConfirm()">
+    <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova && !(isShared && tx.coin === 'eth')" [buttonText]="buttonText" [isDogecoin]="tx && tx.coin == 'doge'" (slideDone)="onConfirm()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && (!isCordova || isShared && tx.coin === 'eth')">
       <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
