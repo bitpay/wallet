@@ -1,6 +1,6 @@
 {
-  "name": "copay",
-  "description": "A Secure Bitcoin Wallet",
+  "name": "bitpay",
+  "description": "Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "12.3.0",
   "keywords": [
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "Copay",
+  "title": "BitPay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://copay.io",
+  "homepage": "https://bitpay.com",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -155,7 +155,7 @@
     "cordova-plugin-splashscreen": "5.0.3",
     "cordova-plugin-statusbar": "2.4.3",
     "cordova-plugin-theme-detection": "1.2.1",
-    "cordova-plugin-useragent": "https://github.com/danielsogl/cordova-plugin-useragent.git",
+    "cordova-plugin-useragent": "git+https://github.com/danielsogl/cordova-plugin-useragent.git",
     "cordova-plugin-vibration": "3.1.1",
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-wkwebview-engine": "1.2.1",
@@ -236,14 +236,17 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-clipboard": {},
       "cordova-plugin-x-toast": {},
-      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      },
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-dialogs": {},
       "cordova-plugin-file": {},
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme-ng": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "copay",
+        "SECOND_URL_SCHEME": "bitpay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",
@@ -255,7 +258,7 @@
         "ANDROID_PATHPREFIX": ""
       },
       "cordova-plugin-fcm-ng": {
-        "PAGE_LINK_DOMAIN": "copay.page.link"
+        "PAGE_LINK_DOMAIN": "bitpayapp.page.link"
       },
       "cordova-plugin-globalization": {},
       "cordova-plugin-inappbrowser": {},

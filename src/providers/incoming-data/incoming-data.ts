@@ -910,7 +910,7 @@ export class IncomingDataProvider {
       this.handleRippleAddress(data, redirParams);
       return true;
 
-      // Plain Address (Bitcoin)
+      // Plain Address (Doge)
     } else if (this.isValidDogecoinAddress(data)) {
       this.handlePlainDogecoinAddress(data, redirParams);
       return true;
@@ -1158,7 +1158,7 @@ export class IncomingDataProvider {
     } else if (this.isValidDogecoinAddress(data)) {
       return {
         data,
-        type: 'DogeAddress',
+        type: 'DogecoinAddress',
         title: this.translate.instant('Doge Address')
       };
 
