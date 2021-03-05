@@ -98,5 +98,15 @@ page-bitpay-card-intro {
       font-size: 11px;
       color: #626262;
     }
+    &__link-button {
+      cursor: pointer;
+      padding-left: 15px;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4f6ef7;
+      height: 45px;
+    }
   }
 }
