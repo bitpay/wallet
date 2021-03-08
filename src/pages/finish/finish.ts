@@ -113,7 +113,11 @@ export class FinishModalPage {
         this.viewCtrl.dismiss();
       }, 4000);
     }
-    if (this.navParams.data.coin === 'doge' && this.cssClass === 'success') {
+    if (
+      this.navParams.data.coin &&
+      this.navParams.data.coin === 'doge' &&
+      this.cssClass === 'success'
+    ) {
       this.showLaunchRocket = true;
       setTimeout(() => {
         this.launchRocketPosition = 'launch';
