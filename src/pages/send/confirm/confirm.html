@@ -231,7 +231,7 @@
       </div>
 
 
-      <ion-item *ngIf="totalAmountStr && !wallet?.credentials.token">
+      <ion-item *ngIf="totalAmountStr && (isERCToken || !wallet?.credentials.token)">
         <ion-label>
           <div class="main-label total-label">
             <span translate>TOTAL</span>

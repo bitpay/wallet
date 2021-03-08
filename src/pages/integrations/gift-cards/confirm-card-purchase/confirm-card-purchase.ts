@@ -26,6 +26,7 @@ import {
   IABCardProvider,
   IncomingDataProvider,
   PersistenceProvider,
+  RateProvider,
   TxConfirmNotificationProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
@@ -109,6 +110,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     private giftCardProvider: GiftCardProvider,
     public incomingDataProvider: IncomingDataProvider,
     replaceParametersProvider: ReplaceParametersProvider,
+    rateProvider: RateProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
@@ -154,6 +156,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       profileProvider,
       popupProvider,
       replaceParametersProvider,
+      rateProvider,
       translate,
       txConfirmNotificationProvider,
       txFormatProvider,
