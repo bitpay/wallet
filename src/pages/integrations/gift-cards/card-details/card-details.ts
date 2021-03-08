@@ -73,7 +73,6 @@ export class CardDetailsPage {
     this.barcodeData = this.card.barcodeData || this.card.claimCode;
     this.barcodeFormat = getBarcodeFormat(this.card.barcodeFormat);
     this.cardConfig = await this.giftCardProvider.getCardConfig(this.card.name);
-    this.updateGiftCard();
   }
 
   ionViewWillEnter() {
@@ -87,6 +86,7 @@ export class CardDetailsPage {
         )
       )
       .subscribe(card => (this.card = card));
+    this.updateGiftCard();
   }
 
   showConfetti() {

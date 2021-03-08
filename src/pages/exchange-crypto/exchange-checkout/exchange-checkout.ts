@@ -11,6 +11,7 @@ import { ChangellyTermsPage } from '../../integrations/changelly/changelly-terms
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
@@ -66,6 +67,7 @@ export class ExchangeCheckoutPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private navParams: NavParams,
     private modalCtrl: ModalController,
@@ -517,6 +519,11 @@ export class ExchangeCheckoutPage {
       this.logger.debug(
         'Saved exchange with status: ' + (newData.status || newData.error)
       );
+      this.analyticsProvider.logEvent('exchange_crypto_payment_sent', {
+        userId: this.fromWalletSelected.id,
+        coinFrom: this.fromWalletSelected.coin,
+        coinTo: this.toWalletSelected.coin
+      });
       this.openFinishModal();
     });
   }

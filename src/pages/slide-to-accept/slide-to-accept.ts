@@ -23,6 +23,9 @@ export class SlideToAcceptPage implements AfterViewInit, OnChanges {
   buttonText: string;
 
   @Input()
+  isDogecoin: boolean;
+
+  @Input()
   set disabled(disabled: boolean) {
     this.isDisabled = disabled !== undefined ? disabled : false;
   }

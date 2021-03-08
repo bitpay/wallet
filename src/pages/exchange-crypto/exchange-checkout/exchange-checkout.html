@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true">
+<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
       <span translate>Cancel</span>
@@ -165,9 +165,8 @@
       </ion-item>
     </ion-list>
   </div>
-
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" (slideDone)="makePayment()">
+    <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
       <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Continue & Make Payment' | translate}}</button>

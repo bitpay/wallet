@@ -56,17 +56,6 @@ describe('SendPage', () => {
   });
 
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
-      it('should call get functions and subscribe to events', () => {
-        const profileProviderSpy = spyOn(
-          instance.profileProvider,
-          'getWallets'
-        );
-        instance.ionViewWillEnter();
-
-        expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
-      });
-    });
     describe('ionViewWillLeave', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');

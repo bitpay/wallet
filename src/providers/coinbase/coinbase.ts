@@ -761,7 +761,7 @@ export class CoinbaseProvider {
           linked: this.linkedAccount,
           email: this.coinbaseData['user']['email'] || null,
           oldLinked, // Register OLD existent users -> show a different banner
-          type: 'exchange'
+          type: 'external-services'
         });
       });
     });

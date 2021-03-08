@@ -62,7 +62,9 @@ export class AddFundsPage {
       return;
     }
 
-    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+    this.analyticsProvider.logEvent('buy_crypto_button_clicked', {
+      from: 'addFundsPage'
+    });
     this.navCtrl.push(AmountPage, {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',

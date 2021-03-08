@@ -170,7 +170,7 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!((wallet || coinbaseAccount) && totalAmountStr) || paymentExpired" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!((wallet || coinbaseAccount) && totalAmountStr) || paymentExpired" buttonText="{{'Slide to confirm' | translate}}" [isDogecoin]="wallet && wallet.coin == 'doge'" (slideDone)="topUpConfirm()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!((wallet || coinbaseAccount) && totalAmountStr) || paymentExpired">
       {{'Add funds' | translate}}

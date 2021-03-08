@@ -59,6 +59,13 @@ export class TabsPage {
     private configProvider: ConfigProvider,
     private http: HttpClient
   ) {
+    this.persistenceProvider.getNetwork().then((network: string) => {
+      if (network) {
+        this.NETWORK = network;
+      }
+      this.logger.log(`tabs initialized with ${this.NETWORK}`);
+    });
+
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
@@ -111,6 +118,17 @@ export class TabsPage {
         this.fetchAllWalletsStatus();
       }, 1000);
     });
+
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      this.NETWORK
+    );
+
+    if (cards) {
+      this.events.publish('CardAdvertisementUpdate', {
+        status: 'connected',
+        cards
+      });
+    }
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');
@@ -305,8 +323,6 @@ export class TabsPage {
       return !w.hidden;
     });
 
-    let foundMessage = false;
-
     const pr = wallet => {
       return this.walletProvider
         .fetchStatus(wallet, {})
@@ -325,9 +341,8 @@ export class TabsPage {
             finished: true
           });
 
-          if (!foundMessage && !_.isEmpty(st.serverMessages)) {
-            foundMessage = true;
-            this.events.publish('Local/ServerMessage', {
+          if (!_.isEmpty(st.serverMessages)) {
+            this.events.publish('Local/ServerMessages', {
               serverMessages: st.serverMessages
             });
           }

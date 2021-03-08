@@ -19,6 +19,10 @@ export class BwcProvider {
     return BWC.BitcoreCash;
   }
 
+  public getBitcoreDoge() {
+    return BWC.BitcoreDoge;
+  }
+
   public getCore() {
     return BWC.Core;
   }

@@ -205,7 +205,7 @@ export class ConfirmPage {
       try {
         networkName = this.addressProvider.getCoinAndNetwork(
           this.navParams.data.toAddress,
-          this.navParams.data.network || 'livenet'
+          this.navParams.data.network || ''
         ).network;
       } catch (e) {
         const message = this.replaceParametersProvider.replace(
@@ -988,8 +988,16 @@ export class ConfirmPage {
             1,
             tx.inputs.length
           );
-          const estimatedFee =
-            size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+          let estimatedFee;
+          switch (tx.coin) {
+            case 'doge':
+              estimatedFee = 1e8; // 1 DOGE
+              break;
+            default:
+              estimatedFee =
+                size * parseInt((tx.feeRate / 1000).toFixed(0), 10);
+              break;
+          }
           tx.fee = estimatedFee;
           tx.amount = tx.amount - estimatedFee;
         }
@@ -1407,7 +1415,8 @@ export class ConfirmPage {
           this.config.confirmedTxsNotifications.enabled
         ) {
           this.txConfirmNotificationProvider.subscribe(wallet, {
-            txid: txp.txid
+            txid: txp.txid,
+            amount: txp.amount
           });
         }
         let redir;
@@ -1498,6 +1507,7 @@ export class ConfirmPage {
       'BitcoinUri',
       'BitcoinCashUri',
       'EthereumUri',
+      'DogecoinUri',
       'RippleUri',
       'InvoiceUri'
     ]);
@@ -1538,6 +1548,7 @@ export class ConfirmPage {
     if (
       this.tx.coin === 'bch' ||
       this.tx.coin === 'xrp' ||
+      this.tx.coin === 'doge' ||
       this.usingMerchantFee ||
       this.tx.speedUpTxInfo
     )
@@ -1683,5 +1694,9 @@ export class ConfirmPage {
     warningSheet.onDidDismiss(option => {
       option ? this.chooseFeeLevel() : this.onFeeModalDismiss(data);
     });
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 }

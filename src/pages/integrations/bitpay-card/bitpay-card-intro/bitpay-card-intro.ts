@@ -143,7 +143,7 @@ export class BitPayCardIntroPage {
     this.externalLinkProvider.open(url);
   }
 
-  public async orderBitPayCard() {
+  public async orderBitPayCard(path?: 'login' | 'createAccount') {
     this.iabCardProvider.loadingWrapper(async () => {
       const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
         12,
@@ -152,10 +152,17 @@ export class BitPayCardIntroPage {
 
       const hasFirstView = await this.iabCardProvider.hasFirstView();
 
+      const baseMessage = {
+        payload: {
+          path
+        }
+      };
+
       if (!hasWalletWithFunds && !hasFirstView) {
         this.iabCardProvider.show();
         this.iabCardProvider.sendMessage(
           {
+            ...baseMessage,
             message: 'needFunds'
           },
           () => {}
@@ -166,6 +173,7 @@ export class BitPayCardIntroPage {
       this.iabCardProvider.show();
       this.iabCardProvider.sendMessage(
         {
+          ...baseMessage,
           message: 'orderCard'
         },
         () => {}

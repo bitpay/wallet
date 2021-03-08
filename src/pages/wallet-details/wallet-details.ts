@@ -26,7 +26,7 @@ import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
-import { ActionSheetProvider } from '../../providers/index';
+import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -120,7 +120,8 @@ export class WalletDetailsPage {
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
     private buyCryptoProvider: BuyCryptoProvider,
-    private exchangeCryptoProvider: ExchangeCryptoProvider
+    private exchangeCryptoProvider: ExchangeCryptoProvider,
+    private appProvider: AppProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
@@ -693,7 +694,10 @@ export class WalletDetailsPage {
         if (data === 'goToBackup') this.goToBackup();
       });
     } else {
-      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {});
+      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
+        from: 'walletDetails',
+        coin: this.wallet.coin
+      });
       this.navCtrl.push(ExchangeCryptoPage, {
         walletId: this.wallet.id
       });
@@ -708,7 +712,10 @@ export class WalletDetailsPage {
         if (data === 'goToBackup') this.goToBackup();
       });
     } else {
-      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {});
+      this.analyticsProvider.logEvent('buy_crypto_button_clicked', {
+        from: 'walletDetails',
+        coin: this.wallet.coin
+      });
       this.navCtrl.push(AmountPage, {
         coin: this.wallet.coin,
         fromBuyCrypto: true,
@@ -753,6 +760,8 @@ export class WalletDetailsPage {
   private shareAddress(): void {
     if (!this.isCordova) return;
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
+      if (this.platformProvider.isAndroid)
+        this.appProvider.skipLockModal = true;
       this.socialSharing.share(addr);
     });
   }

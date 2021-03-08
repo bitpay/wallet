@@ -63,8 +63,11 @@
 
   <ion-footer *ngIf="ready">
     <ion-toolbar>
-      <button ion-button class="button-standard" (click)="orderBitPayCard()">
-        {{'Order Now' | translate}}
+      <button ion-button class="button-standard button-primary" (click)="orderBitPayCard('createAccount')">
+        {{'Sign Up' | translate}}
       </button>
+      <div class="bitpayCard__link-button" (click)="orderBitPayCard('login')">
+        {{'I already have an account' | translate}}
+      </div>
     </ion-toolbar>
   </ion-footer>

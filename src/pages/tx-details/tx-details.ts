@@ -294,10 +294,21 @@ export class TxDetailsModal {
 
   public viewOnBlockchain(): void {
     let btx = this.btx;
-    const url =
-      this.wallet.credentials.network === 'livenet'
-        ? `https://${this.blockexplorerUrl}tx/${btx.txid}`
-        : `https://${this.blockexplorerUrlTestnet}tx/${btx.txid}`;
+    const coin = btx.coin;
+    let url;
+    switch (coin) {
+      case 'doge':
+        url =
+          this.wallet.credentials.network === 'livenet'
+            ? `https://${this.blockexplorerUrl}dogecoin/transaction/${btx.txid}`
+            : `https://${this.blockexplorerUrlTestnet}tx/DOGETEST/${btx.txid}`;
+        break;
+      default:
+        url =
+          this.wallet.credentials.network === 'livenet'
+            ? `https://${this.blockexplorerUrl}tx/${btx.txid}`
+            : `https://${this.blockexplorerUrlTestnet}tx/${btx.txid}`;
+    }
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Transaction');
@@ -316,7 +327,8 @@ export class TxDetailsModal {
   public txConfirmNotificationChange(): void {
     if (this.txNotification.value) {
       this.txConfirmNotificationProvider.subscribe(this.wallet, {
-        txid: this.txId
+        txid: this.txId,
+        amount: this.btx.amount
       });
     } else {
       this.txConfirmNotificationProvider.unsubscribe(this.wallet, this.txId);

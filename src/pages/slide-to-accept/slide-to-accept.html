@@ -1,7 +1,8 @@
 <div #slideButtonContainer class="slide__listener" [ngClass]="{'show': !isDisabled}">
-  <button class="button-slider" [ngClass]="{'animation': animation}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled" *ngIf="!isConfirm">
-    <div class="slide__bitcoin" [ngStyle]="bitcoinStyle">
-      <img src="assets/img/app/slider-button.svg">
+  <button class="button-slider" [ngClass]="{'animation': animation, 'doge': isDogecoin}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled" *ngIf="!isConfirm">
+    <div class="slide__bitcoin" [ngClass]="{'doge': isDogecoin}" [ngStyle]="bitcoinStyle">
+      <img *ngIf="!isDogecoin" src="assets/img/app/slider-button.svg">
+      <img *ngIf="isDogecoin" src="assets/img/currencies/doge.svg">
     </div>
   </button>
   <div #slideText id="button-text" class="slide__button-text" (touchstart)="toggleAnimation()" (touchmove)="toggleAnimation()" [ngStyle]="textStyle" *ngIf="!isConfirm">

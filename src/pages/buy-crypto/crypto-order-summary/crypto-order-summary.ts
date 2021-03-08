@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import env from '../../../environments';
@@ -9,6 +10,7 @@ import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -39,6 +41,7 @@ export class CryptoOrderSummaryPage {
   public address: string;
   public countryList: any[] = [];
   public selectedCountry;
+  public isSimplexPromotionActive: boolean;
 
   constructor(
     private logger: Logger,
@@ -52,78 +55,57 @@ export class CryptoOrderSummaryPage {
     private bitPayProvider: BitPayProvider,
     private buyCryptoProvider: BuyCryptoProvider,
     private errorsProvider: ErrorsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private translate: TranslateService,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
-
-    if (this.navParams.data.walletId) {
-      this.setWallet(this.navParams.data.walletId);
-    } else {
-      const supportedCoins = this.buyCryptoProvider.exchangeCoinsSupported;
-      // Select first available wallet
-      this.wallets = this.profileProvider.getWallets({
-        network: env.name == 'development' ? null : 'livenet',
-        onlyComplete: true,
-        coin:
-          this.coin && supportedCoins.includes(this.coin)
-            ? this.coin
-            : supportedCoins,
-        backedUp: true
-      });
-      if (this.wallets[0]) {
-        this.logger.debug(
-          'Setting wallet to deposit funds: ' +
-            this.wallets[0].credentials.walletId
-        );
-        this.setWallet(this.wallets[0].credentials.walletId);
-      } else {
-        this.logger.debug('No wallets available to deposit funds.');
-        const walletsGroups = this.profileProvider.orderedWalletsByGroup;
-
-        this.errorsProvider.showNoWalletError(
-          this.coin ? this.coin.toUpperCase() : null,
-          option => {
-            // Single seed case:
-            let data;
-            if (walletsGroups.length == 1 && walletsGroups[0][0]) {
-              data = {
-                keyId: walletsGroups[0][0].credentials.keyId
-              };
-            }
-
-            if (option) {
-              this.navCtrl.push(SelectCurrencyPage, data);
-            }
-          }
-        );
-      }
-    }
-
-    if (this.navParams.data.paymentMethod) {
-      this.paymentMethod = this.navParams.data.paymentMethod;
-    } else {
-      this.logger.debug('No payment method selected. Setting to default.');
-      this.setDefaultPaymentMethod();
-    }
-
-    this.persistenceProvider.getLastCountryUsed().then(lastUsedCountry => {
-      if (lastUsedCountry && _.isObject(lastUsedCountry)) {
-        this.selectedCountry = lastUsedCountry;
-      } else {
-        this.selectedCountry = {
-          name: 'United States',
-          phonePrefix: '+1',
-          shortCode: 'US',
-          threeLetterCode: 'USA'
-        };
-      }
-    });
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CryptoOrderSummaryPage');
+    this.onGoingProcessProvider.set(
+      this.translate.instant('Setting parameters...')
+    );
+
+    this.persistenceProvider
+      .getLastCountryUsed()
+      .then(async lastUsedCountry => {
+        if (lastUsedCountry && _.isObject(lastUsedCountry)) {
+          this.selectedCountry = lastUsedCountry;
+        } else {
+          this.selectedCountry = {
+            name: 'United States',
+            phonePrefix: '+1',
+            shortCode: 'US',
+            threeLetterCode: 'USA'
+          };
+        }
+
+        this.isSimplexPromotionActive = await this.buyCryptoProvider.isPromotionActive(
+          'simplexPromotion202002'
+        );
+        this.logger.debug(
+          'Is promotion active from the server: ' +
+            this.isSimplexPromotionActive
+        );
+        this.onGoingProcessProvider.clear();
+
+        if (this.navParams.data.walletId) {
+          this.setWallet(this.navParams.data.walletId);
+        } else {
+          this.selectFirstAvailableWallet();
+        }
+
+        if (this.navParams.data.paymentMethod) {
+          this.paymentMethod = this.navParams.data.paymentMethod;
+        } else {
+          this.logger.debug('No payment method selected. Setting to default.');
+          this.setDefaultPaymentMethod();
+        }
+      });
   }
 
   ionViewWillEnter() {
@@ -143,12 +125,72 @@ export class CryptoOrderSummaryPage {
     });
   }
 
+  public isPromotionActiveForCountry(country) {
+    if (
+      this.isSimplexPromotionActive &&
+      country &&
+      (country.EUCountry || country.threeLetterCode == 'CAN')
+    )
+      return true;
+    return false;
+  }
+
+  private selectFirstAvailableWallet() {
+    const supportedCoins = this.isPromotionActiveForCountry(
+      this.navParams.data.country
+    )
+      ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
+      : this.buyCryptoProvider.getExchangeCoinsSupported();
+    // Select first available wallet
+    this.wallets = this.profileProvider.getWallets({
+      network: env.name == 'development' ? null : 'livenet',
+      onlyComplete: true,
+      coin:
+        this.coin && supportedCoins.includes(this.coin)
+          ? this.coin
+          : supportedCoins,
+      backedUp: true
+    });
+    if (this.wallets[0]) {
+      this.logger.debug(
+        'Setting wallet to deposit funds: ' +
+          this.wallets[0].credentials.walletId
+      );
+      this.setWallet(this.wallets[0].credentials.walletId);
+    } else {
+      this.logger.debug('No wallets available to deposit funds.');
+      const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+
+      this.errorsProvider.showNoWalletError(
+        this.coin ? this.coin.toUpperCase() : null,
+        option => {
+          // Single seed case:
+          let data;
+          if (walletsGroups.length == 1 && walletsGroups[0][0]) {
+            data = {
+              keyId: walletsGroups[0][0].credentials.keyId
+            };
+          }
+
+          if (option) {
+            this.navCtrl.push(SelectCurrencyPage, data);
+          }
+        }
+      );
+    }
+  }
+
   private setWallet(walletId): void {
     this.walletId = walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.address = addr;
-    });
+    this.coin = this.wallet.coin;
+    if (this.isCoinSupportedByCountry()) {
+      this.walletProvider.getAddress(this.wallet, false).then(addr => {
+        this.address = addr;
+      });
+    } else {
+      this.showCoinAndCountryError();
+    }
   }
 
   public openAmountModal() {
@@ -180,7 +222,11 @@ export class CryptoOrderSummaryPage {
     let modal = this.modalCtrl.create(
       CryptoCoinSelectorPage,
       {
-        useAsModal: true
+        useAsModal: true,
+        country: this.selectedCountry,
+        isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+          this.selectedCountry
+        )
       },
       {
         showBackdrop: true,
@@ -213,18 +259,51 @@ export class CryptoOrderSummaryPage {
     modal.onDidDismiss(data => {
       if (data) {
         this.selectedCountry = data.selectedCountry;
-        this.checkPaymentMethod();
+        if (this.isCoinSupportedByCountry()) {
+          this.checkPaymentMethod();
+        } else {
+          this.showCoinAndCountryError();
+        }
       }
     });
   }
 
   private setDefaultPaymentMethod() {
-    this.paymentMethod = this.platformProvider.isIOS
-      ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
-      : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+    if (
+      this.isPromotionActiveForCountry(this.selectedCountry) &&
+      this.buyCryptoProvider.isPaymentMethodSupported(
+        'simplex',
+        this.buyCryptoProvider.paymentMethodsAvailable.creditCard,
+        this.coin,
+        this.currency
+      )
+    ) {
+      this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.creditCard;
+    } else {
+      if (this.platformProvider.isIOS) {
+        this.paymentMethod =
+          this.buyCryptoProvider.isPaymentMethodSupported(
+            'simplex',
+            this.buyCryptoProvider.paymentMethodsAvailable.applePay,
+            this.coin,
+            this.currency
+          ) ||
+          this.buyCryptoProvider.isPaymentMethodSupported(
+            'wyre',
+            this.buyCryptoProvider.paymentMethodsAvailable.applePay,
+            this.coin,
+            this.currency
+          )
+            ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
+            : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+      } else {
+        this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
+      }
+    }
   }
 
   private checkPaymentMethod() {
+    if (!this.coin || !this.currency || !this.paymentMethod) return;
     if (
       this.paymentMethod.method == 'sepaBankTransfer' &&
       !this.selectedCountry.EUCountry
@@ -260,6 +339,35 @@ export class CryptoOrderSummaryPage {
     }
   }
 
+  private isCoinSupportedByCountry(): boolean {
+    if (
+      this.isPromotionActiveForCountry(this.selectedCountry) &&
+      !_.includes(
+        this.buyCryptoProvider.getExchangeCoinsSupported('simplex'),
+        this.coin
+      )
+    ) {
+      this.logger.debug(
+        `Selected coin: ${this.coin} is not currently available for selected country: ${this.selectedCountry.name}. Show warning.`
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private showCoinAndCountryError() {
+    if (!this.coin) return;
+    const title = this.translate.instant('Error');
+    const subtitle = this.translate.instant(
+      `The selected coin (${this.coin.toUpperCase()}) is not currently available to buy in your country.`
+    );
+    this.errorsProvider.showDefaultError(subtitle, title);
+    this.wallet = null;
+    this.address = null;
+    this.coin = null;
+  }
+
   private showPaymentMethodWarning(reason: string): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'payment-method-changed',
@@ -273,6 +381,14 @@ export class CryptoOrderSummaryPage {
   }
 
   public openCryptoPaymentMethodModal() {
+    if (!this.coin) {
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
+        `You must first select a wallet to deposit.`
+      );
+      this.errorsProvider.showDefaultError(subtitle, title);
+      return;
+    }
     let modal = this.modalCtrl.create(
       CryptoPaymentMethodPage,
       {
@@ -280,7 +396,10 @@ export class CryptoOrderSummaryPage {
         useAsModal: true,
         coin: this.coin,
         selectedCountry: this.selectedCountry,
-        currency: this.currency
+        currency: this.currency,
+        isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+          this.selectedCountry
+        )
       },
       {
         showBackdrop: true,
@@ -302,7 +421,10 @@ export class CryptoOrderSummaryPage {
       paymentMethod: this.paymentMethod,
       coin: this.coin,
       walletId: this.walletId,
-      selectedCountry: this.selectedCountry
+      selectedCountry: this.selectedCountry,
+      isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+        this.selectedCountry
+      )
     };
     this.navCtrl.push(CryptoOffersPage, params);
   }
@@ -313,15 +435,24 @@ export class CryptoOrderSummaryPage {
   }
 
   public goToCoinSelector(): void {
-    this.navCtrl.push(CryptoCoinSelectorPage);
+    this.navCtrl.push(CryptoCoinSelectorPage, {
+      country: this.selectedCountry,
+      isPromotionActiveForCountry: this.isPromotionActiveForCountry(
+        this.selectedCountry
+      )
+    });
   }
 
   public cancelOrder() {
     this.navCtrl.popToRoot().then(_ => {
-      if (!this.navParams.data.walletId) return;
-      this.navCtrl.push(WalletDetailsPage, {
-        walletId: this.wallet.credentials.walletId
-      });
+      if (
+        this.wallet &&
+        this.wallet.credentials.walletId == this.navParams.data.walletId
+      ) {
+        this.navCtrl.push(WalletDetailsPage, {
+          walletId: this.navParams.data.walletId
+        });
+      }
     });
   }
 }

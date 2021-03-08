@@ -1,74 +1,75 @@
-<img src="https://filedn.eu/lnmEktFNqpzkMmVPVG1P1nS/img/abcpay-wallet.png" height="128" width="128" alt="AbcPay">
-
-Roadmap
-- [ ] iOS Support
-- [ ] Claim code
-- [ ] Progressive Web App
-- [ ] Support tokenization
-- [ ] 2FA for Multi-Sig
-- [ ] Registration verification
-- [ ] Avalanche Support
-- [ ] Fee Schedules
-- [ ] Refactor and restructure AbcPay
-- [ ] BCHA Support
-- [ ] AbcPay BWS for BCH
-- [ ] Rebranding 
-- [x] Build web and Android app on tBCH (BitPay BWS) https://gitlab.com/abcpros/internal/abc-pay/-/issues/1 
+<img src="https://github.com/bitpay/wallet/blob/master/resources/bitpay/windows/icon/Wide310x150Logo.scale-100.png" alt="Bitpay Wallet">
 
 [![CircleCI](https://img.shields.io/circleci/project/github/bitpay/wallet/master.svg)](https://circleci.com/gh/bitpay/wallet/)
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/wallet.svg)](https://codecov.io/gh/bitpay/wallet/)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
-AbcPay Wallet is a secure Bitcoin ABC and Bitcoin Cash wallet platform for both web and mobile devices. AbcPay Wallet uses [Bitcore Wallet Service](https://gitlab.com/abcpros/internal/bitcore) (BWS) for peer synchronization and network interfacing.
+**PLEASE NOTE WE HAVE DETECTED SOME FAKE COPAY WALLETS ON THE GOOGLE PLAY STORE FOR ANDROID, PLEASE BE SURE TO INSTALL "BITPAY WALLET" ONLY FROM THE APP STORES. APP's DEVELOPER SHOULD BE "BITPAY INC" ONLY**
 
-Binary versions of AbcPay Wallet are available for download at:
-https://abcpay.cc/
+Bitpay Wallet (formelly Copay) is a secure Bitcoin, Bitcoin Cash, Ethereum and ERC20 wallet platform for both desktop and mobile devices. Bitpay Wallet uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
-This project was created by bcPro Foundation as a fork from Bitpay (https://github.com/bitpay/wallet), and it is maintained by bcPro's contributors.
+Binary versions of Bitpay Wallet are available for download at:
+https://bitpay.com/wallet/
+
+This project was created by BitPay Inc, and it is maintained by BitPay and hundreds of contributors.
 
 ## Main Features
 
-- Bitcoin ABC and Bitcoin Cash support
-- Multiple wallet creation (ABC and BCH) and management in-app
-- Innovative, intuitive, multisignature security for personal or shared wallets
-- Joyful to use without fear of losing funds or being stolen
+- Bitcoin, Ethereum, Bitcoin Cash and XRP support
+- Multiple wallet creation (BTC, BCH and ETH) and management in-app
+- Intuitive, multisignature security for personal or shared wallets
+- Easy spending proposal flow for shared wallets and group payments
 - [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) Hierarchical deterministic (HD) address generation and wallet backups
-- Device-based security: private keys are stored locally, not in the cloud
-- Support testnet wallets for all supported coins
-- Synchronous access across all major mobile platforms and browsers
+- Device-based security: all private keys are stored locally, not in the cloud
+- Support testnet wallets for all supported coins.
+- Synchronous access across all major mobile and desktop platforms
 - Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiable, secure bitcoin payments
-- Support for over 150 currency pricing options
+- Support for over 150 currency pricing options and unit denomination in BTC
 - Mnemonic (BIP39) support for wallet backups
 - Paper wallet sweep support (BIP38)
 - Email for payments, transfers, confirmations, etc.
-- Push notifications (only available for Android and iOS versions)
+- Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
-- Multiple languages supports
+- Multiple languages supported
 
-See more details and download links at https://abcpay.cc/
+See more details and download links at https://bitpay.com/wallet
 
 ### Coin specific features
+
+#### Bitcoin
+
+- Segwit and native segwit addresses (BECH32) for sending and receiving
+- CPFP (Child pays for parent) transaction acceleration (available after 4 hours of unconfirmed TXs).
+- Transaction fee adjustmenet using 4 preset levels (using bitcoin-core estimations) OR custom fee-rate setting.
 
 #### Bitcoin Cash
 
 - Schnorr signature support
 
+#### Ethereum
+
+- Wallet connect
+- Multisig wallet (using gnosis multisig contract)
+  - mainnet contract address: 0x6e95C8E8557AbC08b46F3c347bA06F8dC012763f
+  - kovan testnet contract address: 0x2C992817e0152A65937527B774c7A99a84603045
+- Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas pricee setting.
+
 ## Testing in a Browser
 
-> **Note:** This method should only be used for development purposes. When running AbcPay Wallet in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://gitlab.com/abcpros/internal/abc-pay/releases/).
+> **Note:** This method should only be used for development purposes. When running Bitpay Wallet in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/wallet/releases/).
 
 Clone the repo and open the directory:
 
 ```sh
-git clone https://github.com/abcpros/internal/abc-pay.git
-cd abc-pay
+git clone https://github.com/bitpay/wallet.git
+cd wallet
 ```
 
 Ensure you have [Node](https://nodejs.org/) installed, then install and start Wallet:
 
 ```sh
 npm install
-npm run apply:abcpay
+npm run apply:bitpay
 npm run start
 ```
 
@@ -93,8 +94,8 @@ Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/l
 When your development environment is ready, run the `start:android` package script.
 
 ```sh
-npm run apply:abcpay
-npm run prepare:abcpay
+npm run apply:bitpay
+npm run prepare:bitpay
 npm run start:android
 ```
 
@@ -105,12 +106,23 @@ Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/lates
 When your development environment is ready, run the `start:ios` package script.
 
 ```sh
-npm run apply:abcpay
-npm run prepare:abcpay
+npm run apply:bitpay
+npm run prepare:bitpay
 npm run start:ios
 ```
 
-## Build AbcPay Wallet App Bundles
+### Desktop (Linux, macOS, and Windows)
+
+The desktop version of Bitpay Wallet currently uses Electron. To get started, first install Electron on your system from [the Electron website](https://electronjs.org/).
+
+When Electron is installed, run the `start:desktop` package script.
+
+```sh
+npm run apply:wallet
+npm run start:desktop
+```
+
+## Build Bitpay Wallet App Bundles
 
 Before building the release version for a platform, run the `clean-all` command to delete any untracked files in your current working directory. (Be sure to stash any uncommitted changes you've made.) This guarantees consistency across builds for the current state of this repository.
 
@@ -121,8 +133,8 @@ The `final` commands build the production version of the app, and bundle it with
 ```sh
 npm run clean-all
 npm install
-npm run apply:abcpay
-npm run prepare:abcpay
+npm run apply:bitpay
+npm run prepare:bitpay
 npm run final:android
 ```
 
@@ -131,68 +143,90 @@ npm run final:android
 ```sh
 npm run clean-all
 npm install
-npm run apply:abcpay
-npm run prepare:abcpay
+npm run apply:bitpay
+npm run prepare:bitpay
 npm run final:ios
+```
+
+### Desktop (Linux, macOS, and Windows)
+
+```sh
+npm run clean-all
+npm install
+npm run apply:bitpay
+npm run final:desktop
+```
+
+## Desktop Data Path
+
+Per-user application data directory for BitPay distribution.
+
+```sh
+"~/Library/Containers/com.bitpay.wallet.desktop/Data/.bitpay"
 ```
 
 ## Configuration
 
 ### Enable External Services
 
-To enable external services, set the `ABCPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
+To enable external services, set the `BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
 
 ```sh
-ABCPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.abcpay/externalServices.json" npm run apply:abcpay
+BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm run apply:bitpay
 ```
 
-## About AbcPay Wallet
+## About Bitpay Wallet
 
 ### General
 
-AbcPay Wallet implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses. It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3. To create a multisig wallet shared between multiple participants, AbcPay Wallet requires the extended public keys of all the wallet participants. Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet. Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
+Bitpay Wallet (formelly Copay) implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses. It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3. To create a multisig wallet shared between multiple participants, Bitpay Wallet requires the extended public keys of all the wallet participants. Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet. Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
 
 To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction. The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc.). Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally. Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
 
-AbcPay Wallet also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers. The public key that each participant contributes to the wallet is a BIP32 extended public key. As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys. Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
+Bitpay Wallet also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers. The public key that each participant contributes to the wallet is a BIP32 extended public key. As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys. Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
 
 For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki).
 
-## AbcPay Wallet Backups and Recovery
+## Bitpay Wallet Backups and Recovery
 
-AbcPay Wallet uses BIP39 mnemonics for backing up wallets. The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
+Since v1.2 Bitpay Wallet uses BIP39 mnemonics for backing up wallets. The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
 
-Information about backup and recovery procedures is available at: https://github.com/AbcPros/internal/abc-pay/blob/master/backupRecovery.md
+Information about backup and recovery procedures is available at: https://github.com/bitpay/wallet/blob/master/backupRecovery.md
 
-It is possible to recover funds from an AbcPay Wallet without using AbcPay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery/tree/master).
+Previous versions of Bitpay Wallet used files as backups. See the following section.
+
+It is possible to recover funds from a Bitpay Wallet Wallet without using Bitpay Wallet or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery/tree/master).
 
 ## Wallet Export Format
 
-AbcPay Wallet encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/). To extract the private key of your wallet you can go to settings, choose your wallet, click in "more options", then "wallet information", scroll to the bottom and click in "Extended Private Key". That information is enough to sign any transaction from your wallet, so be careful when handling it!
+Bitpay Wallet encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/). To extract the private key of your wallet you can go to settings, choose your wallet, click in "more options", then "wallet information", scroll to the bottom and click in "Extended Private Key". That information is enough to sign any transaction from your wallet, so be careful when handling it!
 
 The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.
 Depending on the key `derivationStrategy`, addresses are derived using
-[BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in AbcPay always use BIP44. Also note that in AbcPay, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
+[BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
 
-| AbcPay Version| Wallet Type               | Derivation Strategy | Address Type |
+| Copay Version | Wallet Type               | Derivation Strategy | Address Type |
 | ------------- | ------------------------- | ------------------- | ------------ |
-| All           | Non-multisig              | BIP44               | P2PKH        |
-| All           | Multisig                  | BIP44               | P2SH         |
-| All           | Multisig Hardware wallets | BIP44 (root m/48’)  | P2SH         |
+| <1.2          | All                       | BIP45               | P2SH         |
+| ≥1.2          | Non-multisig              | BIP44               | P2PKH        |
+| ≥1.2          | Multisig                  | BIP44               | P2SH         |
+| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’)  | P2SH         |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallets and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
 BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
 
-AbcPay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other copayers extended public keys.
+Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other copayers extended public keys.
 
 ## Bitcore Wallet Service
 
-AbcPay Wallet depends on [Bitcore Wallet Service](https://github.com/abcpros/internal/bitcore) (BWS) for blockchain information, networking and Copayer synchronization. A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.abcpay.cc`. Switching between BWS instances is very simple and can be done with a click from within AbcPay Wallet. BWS also allows AbcPay Wallet to interoperate with other wallets like [Bitcore Wallet CLI](https://github.com/bitpay/bitcore-wallet).
+Bitpay Wallet depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization. A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`. Switching between BWS instances is very simple and can be done with a click from within Bitpay Wallet. BWS also allows Bitpay Wallet to interoperate with other wallets like [Bitcore Wallet CLI](https://github.com/bitpay/bitcore-wallet).
+
+Please note that Bitpay Wallet v5.3.0 and above use CSP to restrict network access. To use a custom BWS see [CSP announcement](https://github.com/bitpay/copay/blob/master/CSP.md).
 
 ## Translations
 
-AbcPay Wallet uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the AbcPay Wallet documentation and application text into your native language.
+Bitpay Wallet uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Bitpay Wallet documentation and application text into your native language.
 
 To download and build using the latest translations from Crowdin, please use the following commands:
 
@@ -216,7 +250,7 @@ _Gracias totales!_
 
 ## Release Schedules
 
-AbcPay Wallet uses the `MAJOR.MINOR.BATCH` convention for versioning. Any release that adds features should modify the MINOR or MAJOR number.
+Bitpay Wallet uses the `MAJOR.MINOR.BATCH` convention for versioning. Any release that adds features should modify the MINOR or MAJOR number.
 
 ### Bug Fixing Releases
 
@@ -238,8 +272,17 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 
 ## Current Active Developers GPG keys ID
 
-- TBD @nghiacc
+- 15EDAD8D9F2EB1AF @cmgustavo
 
+- FC283098DA862864 @gabrielbazan7
+
+- DD6D7EAADE12280D @Gamboster
+
+- D87947CC8A32D91C @msalcala11
+
+- 612C9C4DDAC47B61 @rastajpa
+
+- F8FC1D9B1B46486D @matiu
 
 ## Support
 
@@ -247,4 +290,4 @@ Please see [Support requests](CONTRIBUTING.md#support)
 
 ## License
 
-AbcPay Wallet is released under the MIT License. Please refer to the [LICENSE](https://github.com/abcpros/internal/abc-pay/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.
+Bitpay Wallet is released under the MIT License. Please refer to the [LICENSE](https://github.com/bitpay/wallet/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.

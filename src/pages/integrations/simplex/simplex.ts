@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { SimplexDetailsPage } from './simplex-details/simplex-details';
 
 // Proviers
+import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { SimplexProvider } from '../../../providers/simplex/simplex';
@@ -22,6 +23,7 @@ export class SimplexPage {
   public service;
 
   constructor(
+    private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private modalCtrl: ModalController,
@@ -53,6 +55,14 @@ export class SimplexPage {
             this.navParams.data.success === 'true' ? 'success' : 'failed';
           this.simplexProvider
             .saveSimplex(simplexData[this.navParams.data.paymentId], null)
+            .then(() => {
+              if (this.navParams.data.userId) {
+                this.analyticsProvider.logEvent('buy_crypto_payment_success', {
+                  exchange: 'simplex',
+                  userId: this.navParams.data.userId
+                });
+              }
+            })
             .catch(() => {
               this.logger.warn('Could not update payment request status');
             });

@@ -53,6 +53,7 @@ import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
@@ -101,6 +102,7 @@ export class CopayApp {
     AddressbookAddPage,
     AmountPage,
     BitPayCardIntroPage,
+    ExchangeCryptoPage,
     PhaseOneCardIntro,
     CoinbasePage,
     ConfirmPage,
@@ -221,18 +223,14 @@ export class CopayApp {
         deviceInfo
     );
 
-    this.platform.pause.subscribe(() => {
-      const config = this.configProvider.get();
-      const lockMethod =
-        config && config.lock && config.lock.method
-          ? config.lock.method.toLowerCase()
-          : null;
-      if (!lockMethod || lockMethod === 'disabled') {
-        return;
-      }
-    });
+    const network = await this.persistenceProvider.getNetwork();
 
-    this.logger.debug('BitPay: setting network');
+    if (network) {
+      this.NETWORK = network;
+    }
+
+    this.logger.debug('BitPay: setting network', this.NETWORK);
+
     [
       this.bitpayProvider,
       this.bitpayIdProvider,
@@ -455,14 +453,18 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.appProvider.isLockModalOpen) return;
-
+    if (this.appProvider.skipLockModal && this.platformProvider.isAndroid) {
+      // workaround for android devices that execute pause for system actions
+      this.appProvider.skipLockModal = false;
+      return;
+    }
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
         : null;
 
-    if (!lockMethod) {
+    if (!lockMethod || lockMethod === 'disabled') {
       return;
     }
 
@@ -600,6 +602,8 @@ export class CopayApp {
         return;
       } else {
         if (nextView.params && nextView.params.deepLink) {
+          // No params -> return
+          if (nextView.name == 'DynamicLink') return;
           // From deepLink
           setTimeout(() => {
             this.getGlobalTabs()
@@ -736,6 +740,15 @@ export class CopayApp {
     } else if (pathData.indexOf('bitcoin:/') != -1) {
       this.logger.debug('Bitcoin URL found');
       this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
+    } else if (pathData.indexOf('ethereum:/') != -1) {
+      this.logger.debug('Ethereum URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('ethereum:/')));
+    } else if (pathData.indexOf('ripple:/') != -1) {
+      this.logger.debug('Ripple URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('ripple:/')));
+    } else if (pathData.indexOf('dogecoin:/') != -1) {
+      this.logger.debug('Dogecoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('dogecoin:/')));
     } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
       this.logger.debug(this.appProvider.info.name + ' URL found');
       this.handleOpenUrl(

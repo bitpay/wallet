@@ -731,6 +731,23 @@ export class WalletProvider {
     });
   }
 
+  clearWalletCache(wallet): Promise<boolean> {
+    return new Promise(resolve => {
+      const config = this.configProvider.get();
+      const defaults = this.configProvider.getDefaults();
+      const bws_url =
+        (config.bwsFor && config.bwsFor[wallet.id]) || defaults.bws.url;
+      this.bwcProvider
+        .getClient(JSON.stringify(wallet.credentials), {
+          bwsurl: bws_url
+        })
+        .clearCache(err => {
+          if (err) resolve(false);
+          return resolve(true);
+        });
+    });
+  }
+
   private updateLocalTxHistory(
     wallet,
     progressFn,
@@ -1454,6 +1471,15 @@ export class WalletProvider {
   public clearTxHistory(wallet): void {
     this.invalidateCache(wallet);
     this.persistenceProvider.removeTxHistory(wallet.id);
+    this.clearWalletCache(wallet)
+      .then(() => {
+        this.logger.info(
+          `TxHistory cache cleared from server for: ${wallet.id}`
+        );
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   public expireAddress(walletId: string): Promise<any> {

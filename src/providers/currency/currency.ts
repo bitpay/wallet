@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { availableCoins, CoinOpts } from './abc-coin';
-import { Token } from './token';
+import { availableCoins, CoinOpts } from './coin';
+import { Token, TokenOpts } from './token';
 
 export enum Coin {
-  ABC = 'abc',
+  BTC = 'btc',
   BCH = 'bch',
+  ETH = 'eth',
+  XRP = 'xrp',
+  USDC = 'usdc',
+  GUSD = 'gusd',
+  PAX = 'pax',
+  BUSD = 'busd',
+  DAI = 'dai',
+  WBTC = 'wbtc',
+  DOGE = 'doge'
 }
 
 export type CoinsMap<T> = { [key in Coin]: T };
@@ -21,7 +30,7 @@ export class CurrencyProvider {
 
   constructor() {
     this.coinOpts = availableCoins;
-    this.availableTokens = [];
+    this.availableTokens = Object.values(TokenOpts);
     this.availableCoins = Object.keys(this.coinOpts) as Coin[];
     for (const opts of Object.values(this.coinOpts)) {
       const { paymentInfo, coin } = opts;
@@ -52,12 +61,12 @@ export class CurrencyProvider {
     return !!this.coinOpts[coin].properties.isERCToken;
   }
 
-  // getLinkedEthWallet(coin: Coin, walletId: string, m: number): string {
-  //   if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
-  //     return null;
-  //   if (coin === 'eth' && m === 1) return null;
-  //   return walletId.replace(/-0x.*$/, '');
-  // }
+  getLinkedEthWallet(coin: Coin, walletId: string, m: number): string {
+    if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
+      return null;
+    if (coin === 'eth' && m === 1) return null;
+    return walletId.replace(/-0x.*$/, '');
+  }
 
   isMultiSend(coin: Coin): boolean {
     return !!this.coinOpts[coin].properties.hasMultiSend;

@@ -278,6 +278,7 @@
           <div label-tip-body translate>
             A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange.
             <br>
+            <a class="pointer" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360039839312-What-are-XRP-Destination-Tags-')" translate>Learn more</a>
           </div>
         </label-tip>
       </ng-template>
@@ -285,7 +286,7 @@
   </div>
 
   <div footer-content>
-    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)">
+    <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired" [buttonText]="buttonText" [isDogecoin]="wallet && wallet.coin == 'doge'" (slideDone)="approve(tx, wallet)">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova && (wallet || coinbaseAccount)">
       <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="(!wallet && !coinbaseAccount) || (wallet && !tx?.txp[wallet.id]) || paymentExpired">{{buttonText}}</button>
