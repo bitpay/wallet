@@ -928,9 +928,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     let finishText = '';
+    const coin = this.wallet
+      ? this.wallet.coin
+      : this.coinbaseAccount.currency.code.toLowerCase();
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, cssClass },
+      { finishText, finishComment, cssClass, coin },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     await modal.present();

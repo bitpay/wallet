@@ -82,4 +82,21 @@ page-finish {
   .bg-none {
     background-color: #ffffff;
   }
+  .rocket {
+    &-container {
+      position: fixed;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    &-img {
+      overflow: hidden;
+      position: fixed;
+      top: 85%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2000;
+      width: 50%;
+    }
+  }
 }
