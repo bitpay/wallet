@@ -795,14 +795,6 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          if (
-            this.currencyProvider.isUtxoCoin(tx.coin) ||
-            tx.coin.toLowerCase() === Coin.ETH
-          ) {
-            const per = this.getFeeRate(txp.amount, txp.fee);
-            txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
-          }
           this.isERCToken = this.currencyProvider.isERCToken(tx.coin);
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
@@ -820,6 +812,10 @@ export class ConfirmPage {
             txp.feeRatePerStr = per.toFixed(2) + '%';
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
             this.totalAmountStr = (fiatOfAmount + fiatOfFee).toFixed(2);
+          } else {
+            const per = this.getFeeRate(txp.amount, txp.fee);
+            txp.feeRatePerStr = per.toFixed(2) + '%';
+            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
           }
 
           if (txp.feeTooHigh) {
