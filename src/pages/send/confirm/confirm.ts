@@ -1484,16 +1484,18 @@ export class ConfirmPage {
       finishText: string;
       finishComment?: string;
       autoDismiss?: boolean;
+      coin: string;
     } = {
       finishText: this.successText,
-      autoDismiss: !!redir
+      autoDismiss: !!redir,
+      coin: this.coin
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
-      params = { finishText, finishComment };
+      params = { finishText, finishComment, coin: this.coin };
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,

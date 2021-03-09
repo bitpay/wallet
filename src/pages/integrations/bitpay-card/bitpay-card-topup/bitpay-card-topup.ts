@@ -1153,9 +1153,12 @@ export class BitPayCardTopUpPage {
         ? this.translate.instant('Funds were added to debit card')
         : this.translate.instant('Transaction initiated');
     let finishText = '';
+    const coin = this.wallet
+      ? this.wallet.coin
+      : this.coinbaseAccount.currency.code.toLowerCase();
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment },
+      { finishText, finishComment, coin },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
 
