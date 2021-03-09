@@ -38,6 +38,7 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { RateProvider } from '../../../providers/rate/rate';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -78,6 +79,7 @@ export class ConfirmPage {
   public fromSelectInputs: boolean;
   public recipients;
   public coin: Coin;
+  public isERCToken: boolean;
   public appName: string;
   public merchantFeeLabel: string;
   public totalAmountStr: string;
@@ -130,6 +132,7 @@ export class ConfirmPage {
     protected profileProvider: ProfileProvider,
     protected popupProvider: PopupProvider,
     protected replaceParametersProvider: ReplaceParametersProvider,
+    protected rateProvider: RateProvider,
     protected translate: TranslateService,
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
@@ -792,7 +795,24 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          if (this.currencyProvider.isUtxoCoin(tx.coin)) {
+          this.isERCToken = this.currencyProvider.isERCToken(tx.coin);
+          if (this.isERCToken) {
+            const chain = this.getChain(tx.coin);
+            const fiatOfAmount = this.rateProvider.toFiat(
+              txp.amount,
+              this.config.wallet.settings.alternativeIsoCode,
+              tx.coin
+            );
+            const fiatOfFee = this.rateProvider.toFiat(
+              txp.fee,
+              this.config.wallet.settings.alternativeIsoCode,
+              chain
+            );
+            const per = this.getFeeRate(fiatOfAmount, fiatOfFee);
+            txp.feeRatePerStr = per.toFixed(2) + '%';
+            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
+            this.totalAmountStr = (fiatOfAmount + fiatOfFee).toFixed(2);
+          } else {
             const per = this.getFeeRate(txp.amount, txp.fee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
