@@ -53,7 +53,6 @@ export { FeedbackProvider } from '../providers/feedback/feedback';
 export { FilterProvider } from '../providers/filter/filter';
 export { GiftCardProvider } from '../providers/gift-card/gift-card';
 export { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
-export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
 export { InAppBrowserProvider } from '../providers/in-app-browser/in-app-browser';
 export { IABCardProvider } from '../providers/in-app-browser/card';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
