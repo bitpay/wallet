@@ -259,9 +259,9 @@ export class CopayApp {
           ')'
       );
 
-      // Set to portrait
+      // Support landscape & portrait
       this.logger.debug('Setting Screen Orientation');
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      this.screenOrientation.unlock();
 
       // Only for iOS
       if (this.platform.is('ios')) {
