@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -16,15 +16,19 @@ import { DisclaimerPage } from '../../../pages/onboarding/disclaimer/disclaimer'
 export class RecoveryKeyPage {
   private unregisterBackButtonAction;
   public isOnboardingFlow: boolean;
+  public hideBackButton: boolean;
 
   constructor(
     public navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private actionSheetProvider: ActionSheetProvider,
-    private platform: Platform
+    private platform: Platform,
+    private events: Events
   ) {
     this.isOnboardingFlow = this.navParams.data.isOnboardingFlow;
+    this.hideBackButton =
+      this.isOnboardingFlow || this.navParams.data.hideBackButton;
   }
 
   ionViewDidLoad() {
@@ -57,7 +61,9 @@ export class RecoveryKeyPage {
           ? this.navCtrl.push(DisclaimerPage, {
               keyId: this.navParams.data.keyId
             })
-          : this.navCtrl.pop();
+          : this.navCtrl.popToRoot().then(() => {
+              this.events.publish('Local/FetchWallets');
+            });
       }
     });
   }
