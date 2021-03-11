@@ -110,11 +110,16 @@ export class ExchangeCryptoPage {
             this.currencyProvider.getAvailableCoins(),
             data.result
           );
-          const index = this.supportedCoins.indexOf('xrp');
-          if (index > -1) {
-            this.logger.debug('Removing XRP from supported coins');
-            this.supportedCoins.splice(index, 1);
-          }
+          const coinsToRemove = ['xrp', 'busd'];
+          coinsToRemove.forEach((coin: string) => {
+            const index = this.supportedCoins.indexOf(coin);
+            if (index > -1) {
+              this.logger.debug(
+                `Removing ${coin.toUpperCase()} from supported coins`
+              );
+              this.supportedCoins.splice(index, 1);
+            }
+          });
         }
 
         this.logger.debug('Changelly supportedCoins: ' + this.supportedCoins);
