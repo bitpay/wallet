@@ -14,7 +14,7 @@ const NETWORK = 'livenet';
   templateUrl: 'fee-policy.html'
 })
 export class FeePolicyPage {
-  public feeLevels: object;
+  public feeLevels: any;
   public feeOpts: object;
   public currentFeeLevel: string;
 
@@ -36,9 +36,9 @@ export class FeePolicyPage {
   ionViewDidEnter() {
     this.error = null;
     return this.feeProvider
-      .getFeeLevels(COIN)
+      .getFeeLevels(COIN, NETWORK)
       .then(data => {
-        this.feeLevels = data['levels'];
+        this.feeLevels = data.levels;
         this.updateCurrentValues();
       })
       .catch(err => {
@@ -61,9 +61,10 @@ export class FeePolicyPage {
   private updateCurrentValues() {
     if (_.isEmpty(this.feeLevels) || _.isEmpty(this.currentFeeLevel)) return;
 
-    let value = _.find(this.feeLevels[NETWORK], {
-      level: this.currentFeeLevel
-    });
+    let value = _.find(
+      this.feeLevels,
+      feeLevel => feeLevel.level == this.currentFeeLevel
+    );
 
     if (_.isEmpty(value)) return;
 

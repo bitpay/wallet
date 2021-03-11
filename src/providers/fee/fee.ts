@@ -11,14 +11,20 @@ import * as _ from 'lodash';
 @Injectable()
 export class FeeProvider {
   private CACHE_TIME_TS: number = 60;
-  private cache: {
-    updateTs: number;
-    coin: string;
-    data?: any;
-  } = {
-    updateTs: 0,
-    coin: ''
-  };
+  private cache: [
+    {
+      updateTs: number;
+      coin: string;
+      network: string;
+      data?: any;
+    }
+  ] = [
+    {
+      updateTs: 0,
+      coin: '',
+      network: 'livenet'
+    }
+  ];
 
   constructor(
     private configProvider: ConfigProvider,
@@ -70,10 +76,10 @@ export class FeeProvider {
     return new Promise((resolve, reject) => {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
-      this.getFeeLevels(coin)
+      this.getFeeLevels(coin, network)
         .then(response => {
           let feeLevelRate;
-          feeLevelRate = _.find(response.levels[network], o => {
+          feeLevelRate = _.find(response.levels, o => {
             return o.level == feeLevel;
           });
           if (!feeLevelRate || !feeLevelRate.feePerKb) {
@@ -103,46 +109,46 @@ export class FeeProvider {
     });
   }
 
-  public getFeeLevels(coin: string): Promise<any> {
+  public getFeeLevels(coin: string, network: string): Promise<any> {
     return new Promise((resolve, reject) => {
       coin = coin || 'btc';
-
+      const indexFound = this.cache.findIndex(
+        fl => fl.coin == coin && fl.network == network
+      );
       if (
-        this.cache.coin == coin &&
-        this.cache.updateTs > Date.now() - this.CACHE_TIME_TS * 1000
+        indexFound >= 0 &&
+        this.cache[indexFound].updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
-        return resolve({ levels: this.cache.data, fromCache: true });
+        return resolve({
+          levels: this.cache[indexFound].data,
+          fromCache: true
+        });
       }
 
       let walletClient = this.bwcProvider.getClient(null, {});
 
-      walletClient.getFeeLevels(
-        coin,
-        'livenet',
-        (errLivenet, levelsLivenet) => {
-          if (errLivenet) {
-            return reject(this.translate.instant('Could not get dynamic fee'));
-          }
-          walletClient.getFeeLevels(
-            coin,
-            'testnet',
-            (errTestnet, levelsTestnet) => {
-              if (errTestnet) {
-                return reject(
-                  this.translate.instant('Could not get dynamic fee')
-                );
-              }
-              this.cache.updateTs = Date.now();
-              this.cache.coin = coin;
-              this.cache.data = {
-                livenet: levelsLivenet,
-                testnet: levelsTestnet
-              };
-              return resolve({ levels: this.cache.data });
-            }
-          );
+      walletClient.getFeeLevels(coin, network, (errLivenet, feeLevels) => {
+        if (errLivenet) {
+          return reject(this.translate.instant('Could not get dynamic fee'));
         }
-      );
+
+        if (indexFound >= 0) {
+          this.cache[indexFound] = {
+            updateTs: Date.now(),
+            coin,
+            network,
+            data: feeLevels
+          };
+        } else {
+          this.cache.push({
+            updateTs: Date.now(),
+            coin,
+            network,
+            data: feeLevels
+          });
+        }
+        return resolve({ levels: feeLevels });
+      });
     });
   }
 

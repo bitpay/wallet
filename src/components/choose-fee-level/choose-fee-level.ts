@@ -85,7 +85,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
 
     this.loadingFee = true;
     this.feeProvider
-      .getFeeLevels(this.coin)
+      .getFeeLevels(this.coin, this.network)
       .then(levels => {
         this.loadingFee = false;
         if (_.isEmpty(levels)) {
@@ -95,7 +95,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
           );
           return;
         }
-        this.feeLevels = levels;
+        this.feeLevels = levels.levels;
         this.setFeeRates();
         if (this.customFeePerKB) this._setCustomFee();
       })
@@ -118,7 +118,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
   }
 
   public setFeeRates() {
-    this.feeLevels.levels[this.network].forEach((feeLevel, i) => {
+    this.feeLevels.forEach((feeLevel, i) => {
       this.feeOpts[i] = feeLevel;
       this.feeOpts[i].feePerSatByte = (
         feeLevel.feePerKb / this.feeUnitAmount
@@ -179,7 +179,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
   }
 
   private getMinRecommended(): number {
-    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
+    let value = _.find(this.feeLevels, feeLevel => {
       return feeLevel.level == 'superEconomy';
     });
 
@@ -187,7 +187,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
   }
 
   private getMaxRecommended(): number {
-    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
+    let value = _.find(this.feeLevels, feeLevel => {
       return feeLevel.level == 'urgent';
     });
 
