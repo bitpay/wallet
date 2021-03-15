@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -69,8 +64,7 @@ export class SelectCurrencyPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider,
-    private events: Events
+    private errorsProvider: ErrorsProvider
   ) {
     this.isJoin = this.navParam.data.isJoin;
     this.isShared = this.navParam.data.isShared;
@@ -195,15 +189,11 @@ export class SelectCurrencyPage {
 
   private endProcess(keyId?: string) {
     this.onGoingProcessProvider.clear();
-    if (this.isOnboardingFlow) {
-      this.navCtrl.push(RecoveryKeyPage, {
-        keyId,
-        isOnboardingFlow: this.isOnboardingFlow
-      });
-    } else
-      this.navCtrl.popToRoot().then(() => {
-        this.events.publish('Local/FetchWallets');
-      });
+    this.navCtrl.push(RecoveryKeyPage, {
+      keyId,
+      isOnboardingFlow: this.isOnboardingFlow,
+      hideBackButton: true
+    });
   }
 
   public createAndBindTokenWallet(pairedWallet, token) {
