@@ -137,9 +137,9 @@ describe('FeePolicyPage', () => {
       });
       it('should set feePerSatByte and avgConfirmationTime to correct values', () => {
         instance.currentFeeLevel = 'normal';
-        instance.feeLevels = {
-          livenet: [{ level: 'normal', feePerKb: 10500, nbBlocks: 3 }]
-        };
+        instance.feeLevels = [
+          { level: 'normal', feePerKb: 10500, nbBlocks: 3 }
+        ];
 
         instance.updateCurrentValues();
 

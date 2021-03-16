@@ -157,8 +157,8 @@ describe('Provider: Fee Provider', () => {
 
   describe('getFeeLevels', () => {
     it('should return the correct fee levels from cached', () => {
-      feeProvider.getFeeLevels('btc').then(response => {
-        const btcFeeLevels = response.levels['livenet'];
+      feeProvider.getFeeLevels('btc', 'livenet').then(response => {
+        const btcFeeLevels = response.levels;
         expect(response.fromCache).toEqual(undefined);
         expect(btcFeeLevels).toEqual([
           { level: 'urgent', feePerKb: 272369, nbBlocks: 2 },
@@ -167,8 +167,8 @@ describe('Provider: Fee Provider', () => {
           { level: 'economy', feePerKb: 135307, nbBlocks: 6 },
           { level: 'superEconomy', feePerKb: 117048, nbBlocks: 24 }
         ]);
-        feeProvider.getFeeLevels('btc').then(response => {
-          const btcFeeLevels = response.levels['livenet'];
+        feeProvider.getFeeLevels('btc', 'livenet').then(response => {
+          const btcFeeLevels = response.levels;
           expect(response.fromCache).toEqual(true);
           expect(btcFeeLevels).toEqual([
             { level: 'urgent', feePerKb: 272369, nbBlocks: 2 },
@@ -188,7 +188,7 @@ describe('Provider: Fee Provider', () => {
         }
       });
 
-      feeProvider.getFeeLevels('btc').catch(err => {
+      feeProvider.getFeeLevels('btc', 'livenet').catch(err => {
         expect(err).toEqual('Could not get dynamic fee');
       });
     });
@@ -205,7 +205,7 @@ describe('Provider: Fee Provider', () => {
         }
       });
 
-      feeProvider.getFeeLevels('btc').catch(err => {
+      feeProvider.getFeeLevels('btc', 'livenet').catch(err => {
         expect(err).toEqual('Could not get dynamic fee');
       });
     });

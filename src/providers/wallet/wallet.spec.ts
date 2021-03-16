@@ -89,20 +89,12 @@ describe('Provider: Wallet Provider', () => {
 
     spyOn(feeProvider, 'getFeeLevels').and.returnValue(
       Promise.resolve({
-        levels: {
-          livenet: [
-            {
-              feePerKb: 10000,
-              level: 'normal'
-            }
-          ],
-          testnet: [
-            {
-              feePerKb: 10000,
-              level: 'normal'
-            }
-          ]
-        }
+        levels: [
+          {
+            feePerKb: 10000,
+            level: 'normal'
+          }
+        ]
       })
     );
 
