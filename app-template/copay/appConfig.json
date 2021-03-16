@@ -28,6 +28,7 @@
   "description": "A Secure Bitcoin Wallet",
   "version": "12.3.2",
   "androidVersion": "91203002",
+  "iOSBuildVersion": "1",
   "_extraCSS": null,
   "_enabledExtensions": {
     "buycrypto": false,

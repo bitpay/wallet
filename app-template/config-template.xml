@@ -2,7 +2,7 @@
 <widget id="com.bitpay.*BUNDLENAME*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
-  ios-CFBundleVersion="*VERSION*"
+  ios-CFBundleVersion="*IOSBUILDVERSION*"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <name>*USERVISIBLENAME*</name>
     <description>
