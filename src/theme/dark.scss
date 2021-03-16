@@ -851,12 +851,15 @@
     }
   }
 
-  encrypt-password {
+  encrypt-password,
+  miner-fee-warning {
     action-sheet {
       .action-sheet-bottom {
         background: $bg-color-dark-theme;
-        .encrypt-password {
-          .encrypt-password-info {
+        .encrypt-password,
+        .miner-fee {
+          .encrypt-password-info,
+          .miner-fee-info {
             .info {
               .title {
                 color: $text-color-dark-theme;

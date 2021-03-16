@@ -32,17 +32,6 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
-      <span sheet-title-text>{{ 'Network Fee Warning' | translate }}</span>
-      <span sheet-text>
-        {{ 'This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion.' | translate }}
-        <p>
-          {{ 'BitPay does not receive and does not control miner fees.' | translate }}
-        </p></span>
-
-      <span sheet-button-text translate>GOT IT</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text>

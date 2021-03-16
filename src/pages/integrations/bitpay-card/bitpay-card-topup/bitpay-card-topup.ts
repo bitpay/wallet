@@ -700,10 +700,8 @@ export class BitPayCardTopUpPage {
     let per = (fee / (amount + fee)) * 100;
 
     if (per > FEE_TOO_HIGH_LIMIT_PER) {
-      const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'miner-fee'
-      );
-      minerFeeInfoSheet.present();
+      const minerFeeWarning = this.actionSheetProvider.createMinerFeeWarningComponent();
+      minerFeeWarning.present({ maxHeight: '100%', minHeight: '100%' });
     }
   }
 
