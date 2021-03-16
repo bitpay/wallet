@@ -6,6 +6,7 @@ import { EncryptPasswordComponent } from '../../components/encrypt-password/encr
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
+import { MinerFeeWarningComponent } from '../../components/miner-fee-warning/miner-fee-warning';
 import { NeedsBackupComponent } from '../../components/needs-backup/needs-backup';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { PhoneSheet } from '../../components/phone-sheet/phone-sheet';
@@ -40,7 +41,6 @@ export type InfoSheetType =
   | 'linkEthWallet'
   | 'max-amount-allowed'
   | 'min-amount-allowed'
-  | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'
   | 'payment-request'
@@ -197,6 +197,11 @@ export class ActionSheetProvider {
 
   public createEncryptPasswordComponent(): EncryptPasswordComponent {
     return this.setupSheet<EncryptPasswordComponent>(EncryptPasswordComponent)
+      .instance;
+  }
+
+  public createMinerFeeWarningComponent(): MinerFeeWarningComponent {
+    return this.setupSheet<MinerFeeWarningComponent>(MinerFeeWarningComponent)
       .instance;
   }
 

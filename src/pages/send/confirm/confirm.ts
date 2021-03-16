@@ -771,10 +771,8 @@ export class ConfirmPage {
   }
 
   protected showHighFeeSheet() {
-    const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'miner-fee'
-    );
-    minerFeeInfoSheet.present();
+    const minerFeeWarning = this.actionSheetProvider.createMinerFeeWarningComponent();
+    minerFeeWarning.present({ maxHeight: '100%', minHeight: '100%' });
   }
 
   protected showTotalAmountSheet() {
