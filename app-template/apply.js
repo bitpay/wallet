@@ -160,6 +160,39 @@ try {
   console.log(err);
 }
 
+// XCode build.json
+let buildJsonData;
+try {
+  const confName = configDir.toUpperCase();
+  const buildJson = confName + '_XCODE';
+  console.log('Looking for ' + buildJson + '...');
+  if (typeof process.env[buildJson] !== 'undefined') {
+    let location = process.env[buildJson];
+    if (location.charAt(0) === '~') {
+      location = location.replace(
+        /^\~/,
+        process.env.HOME || process.env.USERPROFILE
+      );
+    }
+    console.log('Found at: ' + location);
+    console.log('Copying ' + location + ' to assets.');
+    buildJsonData = fs.readFileSync(location, 'utf8');
+    fs.writeFileSync('../build.json', buildJsonData);
+  } else {
+    throw buildJson + ' environment variable not set.';
+  }
+} catch (err) {
+  console.log(err);
+  console.log('External services not configured.');
+}
+
+function copyDir(from, to, noRemove) {
+  console.log(`Copying dir '${from}' to '${to}'...`);
+  if (fs.existsSync(to) && !noRemove) fs.removeSync(to); // remove previous app directory
+  if (!fs.existsSync(from)) return; // nothing to do
+  fs.copySync(from, to);
+}
+
 copyDir(configDir + '/img', '../src/assets/img/app');
 copyDir(configDir + '/sass', '../src/theme', true);
 
