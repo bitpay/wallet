@@ -36,42 +36,105 @@ export class AddressProvider {
     return extractedAddress;
   }
 
-  public getCoinAndNetwork(
-    str: string,
-    network: string = 'livenet'
-  ): CoinNetwork {
+  public getCoinAndNetwork(str: string, network?: string): CoinNetwork {
     const address = this.extractAddress(str);
     try {
-      network = this.bitcore.Address(address).network.name;
-      return { coin: 'btc', network };
+      const Address = this.bitcore.Address;
+      if (!network) {
+        if (Address.isValid(address, 'livenet')) {
+          return { coin: 'btc', network: 'livenet' };
+        }
+        if (Address.isValid(address, 'testnet')) {
+          return { coin: 'btc', network: 'testnet' };
+        }
+      } else {
+        if (Address.isValid(address, network)) {
+          return { coin: 'btc', network };
+        }
+      }
+      throw new TypeError();
     } catch (e) {
       try {
-        network = this.bitcoreCash.Address(address).network.name;
-        return { coin: 'bch', network };
+        const AddressCash = this.bitcoreCash.Address;
+        if (!network) {
+          if (AddressCash.isValid(address, 'livenet')) {
+            return { coin: 'bch', network: 'livenet' };
+          }
+          if (AddressCash.isValid(address, 'testnet')) {
+            return { coin: 'bch', network: 'testnet' };
+          }
+        } else {
+          if (AddressCash.isValid(address, network)) {
+            return { coin: 'bch', network };
+          }
+        }
+        throw new TypeError();
       } catch (e) {
         try {
-          const isValidEthAddress = this.core.Validation.validateAddress(
-            'ETH',
-            network,
-            address
-          );
-          if (isValidEthAddress) {
-            return { coin: 'eth', network };
-          } else {
-            throw isValidEthAddress;
-          }
-        } catch (e) {
-          try {
-            const isValidXrpAddress = this.core.Validation.validateAddress(
-              'XRP',
+          let isValidEthAddress: any;
+          if (network) {
+            isValidEthAddress = this.core.Validation.validateAddress(
+              'ETH',
               network,
               address
             );
-            if (isValidXrpAddress) {
-              return { coin: 'xrp', network };
-            } else {
-              throw isValidXrpAddress;
+            if (isValidEthAddress) {
+              return { coin: 'eth', network };
             }
+          } else {
+            isValidEthAddress = this.core.Validation.validateAddress(
+              'ETH',
+              'livenet',
+              address
+            );
+            if (isValidEthAddress) {
+              return { coin: 'eth', network: 'livenet' };
+            }
+            if (!isValidEthAddress) {
+              isValidEthAddress = this.core.Validation.validateAddress(
+                'ETH',
+                'testnet',
+                address
+              );
+              if (isValidEthAddress) {
+                return { coin: 'eth', network: 'testnet' };
+              }
+            }
+          }
+          throw isValidEthAddress;
+        } catch (e) {
+          try {
+            let isValidXrpAddress: any;
+            if (network) {
+              isValidXrpAddress = this.core.Validation.validateAddress(
+                'XRP',
+                network,
+                address
+              );
+              if (isValidXrpAddress) {
+                return { coin: 'xrp', network };
+              }
+            } else {
+              isValidXrpAddress = this.core.Validation.validateAddress(
+                'XRP',
+                'livenet',
+                address
+              );
+              if (isValidXrpAddress) {
+                return { coin: 'xrp', network: 'livenet' };
+              }
+              if (!isValidXrpAddress) {
+                isValidXrpAddress = this.core.Validation.validateAddress(
+                  'XRP',
+                  'testnet',
+                  address
+                );
+                if (isValidXrpAddress) {
+                  return { coin: 'xrp', network: 'testnet' };
+                }
+              }
+            }
+            throw isValidXrpAddress;
           } catch (e) {
             try {
               network = this.bitcoreDoge.Address(address).network.name;

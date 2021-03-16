@@ -274,8 +274,10 @@ export class MultiSendPage {
       this.wallet.network
     );
     const isValid =
+      addrData &&
       this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-        addrData.coin && addrData.network == this.wallet.network;
+        addrData.coin &&
+      addrData.network == this.wallet.network;
 
     if (isValid) {
       this.invalidAddress = false;
@@ -346,7 +348,10 @@ export class MultiSendPage {
 
   private checkIfLegacy(): boolean {
     return (
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
+      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(
+        this.search,
+        this.wallet.network
+      ) ||
       this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
         this.search
       )

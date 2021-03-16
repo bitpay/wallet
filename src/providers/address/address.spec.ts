@@ -81,12 +81,15 @@ describe('AddressProvider', () => {
       ['etherum:0x1CD7b5A3294c8714DB5c48e56DD11a6d7EAeaB4C', 'eth', 'testnet'],
       // XRP
       ['rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'testnet'],
-      ['ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'testnet']
+      ['ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF', 'xrp', 'testnet'],
+      /// DOGE Address
+      ['nXH5XLXmwM3XBwrCK9Faqyqb4fSwLTpskK', 'doge', 'testnet'],
+      ['doge:nXH5XLXmwM3XBwrCK9Faqyqb4fSwLTpskK', 'doge', 'testnet']
     ];
 
     testVectors.forEach(v => {
       it('address ' + v[0] + ' should be ' + v[1] + ' / ' + v[2], () => {
-        let addrData = addressProvider.getCoinAndNetwork(v[0]);
+        let addrData = addressProvider.getCoinAndNetwork(v[0], v[2]);
         expect(addrData.coin).toEqual(v[1]);
         expect(addrData.network).toEqual(v[2]);
       });
@@ -94,7 +97,7 @@ describe('AddressProvider', () => {
 
     testnetVectors.forEach(v => {
       it('address ' + v[0] + ' should be ' + v[1] + ' / ' + v[2], () => {
-        let addrData = addressProvider.getCoinAndNetwork(v[0], 'testnet');
+        let addrData = addressProvider.getCoinAndNetwork(v[0], v[2]);
         expect(addrData.coin).toEqual(v[1]);
         expect(addrData.network).toEqual(v[2]);
       });

@@ -177,8 +177,10 @@ export class SendPage {
         this.wallet.network
       );
       isValid =
+        addrData &&
         this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-          addrData.coin && addrData.network == this.wallet.network;
+          addrData.coin &&
+        addrData.network == this.wallet.network;
     }
 
     if (isValid) {
@@ -186,7 +188,11 @@ export class SendPage {
       return true;
     } else {
       this.invalidAddress = true;
-      let network = isPayPro ? data.network : addrData.network;
+      let network = isPayPro
+        ? data.network
+        : addrData
+        ? addrData.network
+        : this.wallet.network;
 
       if (this.wallet.coin === 'bch' && this.wallet.network === network) {
         const isLegacy = this.checkIfLegacy();
@@ -317,7 +323,10 @@ export class SendPage {
 
   private checkIfLegacy(): boolean {
     return (
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
+      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(
+        this.search,
+        this.wallet.network
+      ) ||
       this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
         this.search
       )

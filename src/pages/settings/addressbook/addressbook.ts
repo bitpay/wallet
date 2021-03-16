@@ -34,22 +34,20 @@ export class AddressbookPage {
       .list()
       .then(addressBook => {
         this.isEmptyList = _.isEmpty(addressBook);
-        setTimeout(() => {
-          let contacts: object[] = [];
-          _.each(addressBook, (contact, k: string) => {
-            const coinInfo = this.getCoinAndNetwork(k);
-            contacts.push({
-              name: _.isObject(contact) ? contact.name : contact,
-              address: k,
-              email: _.isObject(contact) ? contact.email : null,
-              tag: _.isObject(contact) ? contact.tag : null,
-              coin: coinInfo.coin,
-              network: coinInfo.network
-            });
+        let contacts: object[] = [];
+        _.each(addressBook, (contact, k: string) => {
+          const coinInfo = this.getCoinAndNetwork(k);
+          contacts.push({
+            name: _.isObject(contact) ? contact.name : contact,
+            address: k,
+            email: _.isObject(contact) ? contact.email : null,
+            tag: _.isObject(contact) ? contact.tag : null,
+            coin: coinInfo.coin,
+            network: coinInfo.network
           });
-          this.addressbook = _.clone(contacts);
-          this.filteredAddressbook = _.clone(this.addressbook);
-        }, 100);
+        });
+        this.addressbook = _.clone(contacts);
+        this.filteredAddressbook = _.clone(this.addressbook);
       })
       .catch(err => {
         this.logger.error(err);

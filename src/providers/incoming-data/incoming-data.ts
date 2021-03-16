@@ -144,18 +144,16 @@ export class IncomingDataProvider {
     return !!/^https?:\/\//.test(data);
   }
 
-  private isValidBitcoinAddress(data: string): boolean {
-    return !!(
-      this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
-      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
-    );
+  private isValidBitcoinAddress(data: string, network?: string): boolean {
+    // Also checks if it is a Bitcoin Cash Legacy Address
+    return !!this.bwcProvider.getBitcore().Address.isValid(data, network);
   }
 
-  public isValidBitcoinCashLegacyAddress(data: string): boolean {
-    return !!(
-      this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
-      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
-    );
+  public isValidBitcoinCashLegacyAddress(
+    data: string,
+    network: string
+  ): boolean {
+    return this.isValidBitcoinAddress(data, network);
   }
 
   private isValidBitcoinCashAddress(data: string): boolean {
