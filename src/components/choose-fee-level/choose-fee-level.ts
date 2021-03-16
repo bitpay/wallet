@@ -86,16 +86,16 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
     this.loadingFee = true;
     this.feeProvider
       .getFeeLevels(this.coin, this.network)
-      .then(levels => {
+      .then(response => {
         this.loadingFee = false;
-        if (_.isEmpty(levels)) {
+        if (_.isEmpty(response)) {
           this.showErrorAndClose(
             null,
             this.translate.instant('Could not get fee levels')
           );
           return;
         }
-        this.feeLevels = levels.levels;
+        this.feeLevels = response.levels;
         this.setFeeRates();
         if (this.customFeePerKB) this._setCustomFee();
       })
