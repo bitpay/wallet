@@ -165,39 +165,21 @@ export class SendPage {
   }
 
   private checkCoinAndNetwork(data, isPayPro?): boolean {
-    let isValid, addrData;
-    if (isPayPro) {
-      isValid =
-        data &&
-        data.chain == this.currencyProvider.getChain(this.wallet.coin) &&
-        data.network == this.wallet.network;
-    } else {
-      addrData = this.addressProvider.getCoinAndNetwork(
-        data,
-        this.wallet.network
-      );
-      isValid =
-        addrData &&
-        this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-          addrData.coin &&
-        addrData.network == this.wallet.network;
-    }
+    const validation = this.addressProvider.checkCoinAndNetwork(
+      data,
+      this.wallet.network,
+      this.wallet.coin,
+      isPayPro
+    );
 
-    if (isValid) {
+    if (validation.isValid) {
       this.invalidAddress = false;
       return true;
     } else {
-      this.invalidAddress = true;
-      let network = isPayPro
-        ? data.network
-        : addrData
-        ? addrData.network
-        : this.wallet.network;
-
-      if (this.wallet.coin === 'bch' && this.wallet.network === network) {
-        const isLegacy = this.checkIfLegacy();
-        isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
-      } else {
+      if (validation.isLegacy) {
+        this.showLegacyAddrMessage();
+      }
+      if (validation.showError) {
         this.showErrorMessage();
       }
     }
@@ -319,18 +301,6 @@ export class SendPage {
   public async checkIfContact() {
     await Observable.timer(50).toPromise();
     return this.transferTo.hasContactsOrWallets;
-  }
-
-  private checkIfLegacy(): boolean {
-    return (
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(
-        this.search,
-        this.wallet.network
-      ) ||
-      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
-        this.search
-      )
-    );
   }
 
   public showMoreOptions(): void {

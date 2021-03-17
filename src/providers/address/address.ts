@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 // Providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 
 export interface CoinNetwork {
@@ -15,7 +16,11 @@ export class AddressProvider {
   private bitcoreDoge;
   private core;
 
-  constructor(private bwcProvider: BwcProvider, private logger: Logger) {
+  constructor(
+    private bwcProvider: BwcProvider,
+    private currencyProvider: CurrencyProvider,
+    private logger: Logger
+  ) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.bitcoreDoge = this.bwcProvider.getBitcoreDoge();
@@ -182,5 +187,53 @@ export class AddressProvider {
   public getLegacyBchAddressFormat(addr: string): string {
     const a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
+  }
+
+  public checkCoinAndNetwork(data, network: string, coin: Coin, isPayPro?) {
+    let isValid: boolean;
+    let addrData: CoinNetwork;
+    if (isPayPro) {
+      isValid =
+        data &&
+        data.chain == this.currencyProvider.getChain(coin) &&
+        data.network == network;
+      console.log(`isValid ${isValid} payPro`);
+    } else {
+      addrData = this.getCoinAndNetwork(data, network);
+      isValid =
+        addrData &&
+        this.currencyProvider.getChain(coin).toLowerCase() == addrData.coin &&
+        addrData.network == network;
+      Object.freeze(addrData);
+    }
+    Object.freeze(isValid);
+
+    if (isValid) {
+      return { isValid: true };
+    } else {
+      const _network = isPayPro
+        ? data.network
+        : addrData
+        ? addrData.network
+        : network;
+
+      if (coin === 'bch' && network === _network) {
+        const isLegacy = this.checkIfLegacy(data, _network);
+        return { isValid, isLegacy, showError: !isLegacy };
+        // isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
+      } else {
+        return { isValid, showError: true };
+        // this.showErrorMessage();
+      }
+    }
+  }
+
+  private checkIfLegacy(data, network): boolean {
+    return (
+      !!this.bwcProvider.getBitcore().Address.isValid(data, network) ||
+      !!this.bwcProvider
+        .getBitcore()
+        .URI.isValid(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'))
+    );
   }
 }

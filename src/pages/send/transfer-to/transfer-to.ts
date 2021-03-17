@@ -189,7 +189,7 @@ export class TransferToPage {
       _.each(ab, (v, k: string) => {
         const addrData = this.addressProvider.getCoinAndNetwork(
           k,
-          this.wallet?.network
+          this.wallet.network
         );
         contactsList.push({
           name: _.isObject(v) ? v.name : v,
