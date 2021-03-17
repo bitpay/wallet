@@ -192,7 +192,7 @@ export class WalletConnectPage {
 
   public approveRequest(request): void {
     try {
-      let addressRequested = request.params[0].from;
+      let addressRequested = request.params[0].from || request.params[0];
       const address = this.address;
       const wallet = this.wallet;
       const peerMeta = this.peerMeta;
@@ -225,15 +225,13 @@ export class WalletConnectPage {
             );
           }
           break;
-        case 'eth_signTransaction':
+        case 'eth_signTypedData':
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            // TODO
-            // redirect to confirm page with navParams
-            // result = await this.walletProvider.signTx(
-            //   this.wallet,
-            //   txProposal,
-            //   password
-            // );
+            const result = this.walletConnectProvider.signTypedData(
+              JSON.parse(request.params[1]),
+              this.wallet
+            );
+            this.walletConnectProvider.approveRequest(request.id, result);
           } else {
             this.errorsProvider.showDefaultError(
               this.translate.instant(
@@ -243,33 +241,11 @@ export class WalletConnectPage {
             );
           }
           break;
-        case 'eth_sign':
-          // TODO
-          // dataToSign = request.params[1];
-          // addressRequested = request.params[0];
-          // if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
-          //   result = ''; // await this.walletProvider.signMessage(dataToSign); TODO
-          // } else {
-          //   this.errorsProvider.showDefaultError(
-          //     this.translate.instant('Address requested does not match active account'),
-          //     this.translate.instant('Error')
-          //   );
-          // }
-          break;
-        case 'personal_sign':
-          // TODO
-          // dataToSign = request.params[0];
-          // addressRequested = request.params[1];
-          // if (this.address.toLowerCase() === addressRequested.toLowerCase()) {
-          //   result = ''; // await this.walletProvider.signPersonalMessage(dataToSign); TODO
-          // } else {
-          //   this.errorsProvider.showDefaultError(
-          //     this.translate.instant('Address requested does not match active account'),
-          //     this.translate.instant('Error')
-          //   );
-          // }
-          break;
         default:
+          this.errorsProvider.showDefaultError(
+            this.translate.instant(`Not supported method: ${request.method}`),
+            this.translate.instant('Error')
+          );
           break;
       }
     } catch (error) {

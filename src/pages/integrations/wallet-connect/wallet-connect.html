@@ -99,7 +99,7 @@
               {{ request.method }}
             </ion-note>
             <div *ngFor="let param of request.params; let i = index;">
-              <div *ngIf="request.method === 'eth_signTransaction' || request.method === 'eth_sendTransaction'">
+              <div *ngIf="request.method === 'eth_sendTransaction'">
                 <div class="item" *ngIf="param.to">
                   <div>{{ 'To' | translate }}</div>
                   <ion-note class="ellipsis" item-end>
@@ -137,22 +137,8 @@
                   </ion-note>
                 </div>
               </div>
-              <div *ngIf="request.method === 'eth_sign'">
+              <div *ngIf="request.method === 'eth_signTypedData'">
                 <div class="item" *ngIf="i === 0 && param">
-                  <div>{{ 'Address' | translate }}</div>
-                  <ion-note item-end>
-                    {{ param }}
-                  </ion-note>
-                </div>
-                <div class="item" *ngIf="i === 1 && param">
-                  <div>{{ 'Message' | translate }}</div>
-                  <ion-note item-end>
-                    {{ param }}
-                  </ion-note>
-                </div>
-              </div>
-              <div *ngIf="request.method === 'personal_sign'">
-                <div class="item" *ngIf="i === 1 && param">
                   <div>{{ 'Address' | translate }}</div>
                   <ion-note item-end>
                     {{ param }}
@@ -167,8 +153,11 @@
               </div>
             </div>
           </div>
-          <div action-card-button (click)="approveRequest(request)">
+          <div *ngIf="request.method === 'eth_sendTransaction'" action-card-button (click)="approveRequest(request)">
             {{'Continue' | translate }}
+          </div>
+          <div *ngIf="request.method === 'eth_signTypedData'" action-card-button (click)="approveRequest(request)">
+            {{'Approve' | translate }}
           </div>
         </action-card>
       </div>
