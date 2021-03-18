@@ -44,7 +44,6 @@ export class OnGoingProcessProvider {
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
       importingWallet: this.translate.instant('Importing Wallet...'),
       joiningWallet: this.translate.instant('Joining Wallet...'),
-      recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
       removeTx: this.translate.instant('Deleting payment proposal...'),
       retrievingInputs: this.translate.instant(
