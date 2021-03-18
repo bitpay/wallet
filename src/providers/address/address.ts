@@ -197,7 +197,6 @@ export class AddressProvider {
         data &&
         data.chain == this.currencyProvider.getChain(coin) &&
         data.network == network;
-      console.log(`isValid ${isValid} payPro`);
     } else {
       addrData = this.getCoinAndNetwork(data, network);
       isValid =
@@ -209,7 +208,7 @@ export class AddressProvider {
     Object.freeze(isValid);
 
     if (isValid) {
-      return { isValid: true };
+      return { isValid: true, isLegacy: false, showError: false };
     } else {
       const _network = isPayPro
         ? data.network
@@ -222,7 +221,7 @@ export class AddressProvider {
         return { isValid, isLegacy, showError: !isLegacy };
         // isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
       } else {
-        return { isValid, showError: true };
+        return { isValid, isLegacy: false, showError: true };
         // this.showErrorMessage();
       }
     }

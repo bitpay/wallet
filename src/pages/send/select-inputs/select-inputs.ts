@@ -254,14 +254,15 @@ export class SelectInputsPage {
       this.wallet.coin
     );
 
-    if (validation.isValid) {
+    if (!!validation.isValid) {
       this.invalidAddress = false;
       return true;
     } else {
-      if (validation.isLegacy) {
+      this.invalidAddress = true;
+      if (!!validation.isLegacy) {
         this.showLegacyAddrMessage();
       } else {
-        if (validation.showError) {
+        if (!!validation.showError) {
           this.showErrorMessage();
         }
       }
@@ -296,18 +297,6 @@ export class SelectInputsPage {
         this.processInput();
       }
     });
-  }
-
-  private checkIfLegacy(): boolean {
-    return (
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(
-        this.search,
-        this.wallet.network
-      ) ||
-      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
-        this.search
-      )
-    );
   }
 
   public addRecipient(recipient): void {

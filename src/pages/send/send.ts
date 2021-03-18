@@ -171,15 +171,15 @@ export class SendPage {
       this.wallet.coin,
       isPayPro
     );
-
-    if (validation.isValid) {
+    if (!!validation.isValid) {
       this.invalidAddress = false;
       return true;
     } else {
-      if (validation.isLegacy) {
+      this.invalidAddress = true;
+      if (!!validation.isLegacy) {
         this.showLegacyAddrMessage();
       }
-      if (validation.showError) {
+      if (!!validation.showError) {
         this.showErrorMessage();
       }
     }
