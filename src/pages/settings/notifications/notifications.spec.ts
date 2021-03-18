@@ -32,14 +32,14 @@ describe('NotificationsPage', () => {
     });
   });
   describe('Methods', () => {
-    describe('#openPrivacyPolicy', () => {
-      it('open privacy policy with correct params', () => {
+    describe('#openPrivacyNotice', () => {
+      it('open privacy notice with correct params', () => {
         spyOn(instance.externalLinkProvider, 'open');
 
         const params = {
           'Go Back': 'Go Back',
           Open: 'Open',
-          'View Privacy Policy': 'View Privacy Policy'
+          'View Privacy Notice': 'View Privacy Notice'
         };
 
         spyOn(instance.translate, 'instant').and.callFake(myParam => {
@@ -52,7 +52,7 @@ describe('NotificationsPage', () => {
           'https://bitpay.com/about/privacy',
           true,
           null,
-          'View Privacy Policy',
+          'View Privacy Notice',
           'Open',
           'Go Back'
         );
