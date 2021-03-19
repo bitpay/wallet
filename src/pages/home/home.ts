@@ -893,14 +893,14 @@ export class HomePage {
     const message = this.translate.instant(
       'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
     );
-    const title = this.translate.instant('Privacy Policy update');
+    const title = this.translate.instant('Privacy Notice update');
     const okText = this.translate.instant('Accept');
     const cancelText = this.translate.instant('Disable notifications');
     this.popupProvider
       .ionicConfirm(title, message, okText, cancelText)
       .then(ok => {
         if (ok) {
-          // Accept new Privacy Policy
+          // Accept new Privacy Notice
           this.persistenceProvider.setEmailLawCompliance('accepted');
         } else {
           // Disable email notifications
