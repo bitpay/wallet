@@ -5,6 +5,8 @@ export interface User {
     email?: string;
     eid?: string;
     experiments?: [string];
+    incentiveLevel?: string;
+    incentiveLevelId?: string;
   };
   error?: string;
 }
