@@ -1438,17 +1438,6 @@ export class WalletProvider {
     return Promise.all(updates);
   }
 
-  public recreate(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.info('Recreating wallet:', wallet.id);
-      wallet.recreateWallet(err => {
-        wallet.notAuthorized = false;
-        if (err) return reject(err);
-        return resolve();
-      });
-    });
-  }
-
   public startScan(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Scanning wallet ' + wallet.id);

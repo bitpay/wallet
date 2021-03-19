@@ -820,21 +820,6 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: recreate', () => {
-    it('Should recreate and change notAuthorized property to false', () => {
-      const wallet: WalletMock = new WalletMock();
-
-      walletProvider
-        .recreate(wallet)
-        .then(() => {
-          expect(wallet.notAuthorized).toBeFalsy();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
-        });
-    });
-  });
-
   describe('Function: startScan', () => {
     it('Should start scanning', () => {
       const wallet: WalletMock = new WalletMock();

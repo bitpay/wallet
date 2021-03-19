@@ -264,9 +264,6 @@ export class WalletMock {
   savePreferences(_pref, cb) {
     return cb(null);
   }
-  recreateWallet(cb) {
-    return cb(null);
-  }
   startScan(_opts, cb) {
     return cb(null);
   }
