@@ -24,7 +24,7 @@ export class PurchasedCardsPage {
 
   constructor(
     protected actionSheetProvider: ActionSheetProvider,
-    protected giftCardProvider: GiftCardProvider,
+    public giftCardProvider: GiftCardProvider,
     protected logger: Logger,
     protected navCtrl: NavController,
     protected navParams: NavParams

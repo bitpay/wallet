@@ -528,7 +528,9 @@ export class PersistenceProvider {
       email: string;
       token: string;
       familyName?: string; // last name
-      givenName?: string; // firstName
+      givenName?: string; // firstName,
+      incentiveLevel?: string;
+      incentiveLevelId?: string;
     }
   ) {
     return this.getBitpayAccounts(network).then(allAccounts => {

@@ -21,10 +21,12 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 import {
   AddressProvider,
   AnalyticsProvider,
+  BitPayIdProvider,
   EmailNotificationsProvider,
   FeeProvider,
   IABCardProvider,
   IncomingDataProvider,
+  MerchantProvider,
   PersistenceProvider,
   RateProvider,
   TxConfirmNotificationProvider
@@ -133,7 +135,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     iabCardProvider: IABCardProvider,
     homeIntegrationsProvider: HomeIntegrationsProvider,
     persistenceProvider: PersistenceProvider,
-    WalletConnectProvider: WalletConnectProvider
+    WalletConnectProvider: WalletConnectProvider,
+    private bitpayIdProvider: BitPayIdProvider,
+    private merchantProvider: MerchantProvider
   ) {
     super(
       addressProvider,
@@ -386,6 +390,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
+    this.refreshCardConfigIfNeeded();
+
     throw {
       title: err_title,
       message: err_msg
@@ -573,6 +579,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   private async initialize(wallet, email) {
     const COIN = wallet.coin.toUpperCase();
     this.currencyIsoCode = this.currency;
+    this.onGoingProcessProvider.set('loadingTxInfo');
+    await this.refreshCardConfigIfNeeded().catch(_ => {});
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: this.amount,
@@ -584,8 +592,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       cardName: this.cardConfig.name,
       ...(this.phone && { phone: this.phone })
     };
-
-    this.onGoingProcessProvider.set('loadingTxInfo');
 
     const data = await this.createInvoice(dataSrc).catch(err => {
       this.onGoingProcessProvider.clear();
@@ -675,6 +681,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const COIN = account.currency.code;
 
     this.currencyIsoCode = this.currency;
+    this.onGoingProcessProvider.set('loadingTxInfo');
+    await this.refreshCardConfigIfNeeded().catch(_ => {});
     const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: this.amount,
@@ -686,8 +694,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       cardName: this.cardConfig.name,
       ...(this.phone && { phone: this.phone })
     };
-
-    this.onGoingProcessProvider.set('loadingTxInfo');
 
     const data = await this.createInvoice(dataSrc).catch(err => {
       this.onGoingProcessProvider.clear();
@@ -865,6 +871,23 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
       const email = await this.promptEmail();
       await this.initialize(option, email).catch(() => {});
+    }
+  }
+
+  public async refreshCardConfig() {
+    this.logger.debug('Refreshing cardConfig...');
+    this.bitpayIdProvider.refreshUserInfo();
+    const cardMap = await this.giftCardProvider.getSupportedCardConfigMap(true);
+    const oldCardConfig = this.cardConfig;
+    this.cardConfig = cardMap[this.cardConfig.name] || oldCardConfig;
+    this.logger.debug('Refreshed cardConfig');
+    this.merchantProvider.refreshMerchants();
+  }
+
+  public async refreshCardConfigIfNeeded() {
+    const shouldSync = await this.giftCardProvider.shouldSyncGiftCardPurchasesWithBitPayId();
+    if (shouldSync) {
+      this.refreshCardConfig();
     }
   }
 

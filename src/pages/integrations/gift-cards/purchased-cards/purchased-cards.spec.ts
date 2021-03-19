@@ -12,6 +12,7 @@ describe('PurchasedCardsPage', () => {
     TestUtils.configurePageTestingModule([PurchasedCardsPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
+      instance.giftCardProvider.countryPromise = Promise.resolve('US');
       fixture.detectChanges();
     });
   }));
