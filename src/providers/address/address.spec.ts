@@ -1,7 +1,7 @@
 import { TestUtils } from '../../test';
 import { AddressProvider } from './address';
 
-describe('AddressProvider', () => {
+fdescribe('AddressProvider', () => {
   let addressProvider: AddressProvider;
 
   beforeEach(() => {
@@ -92,6 +92,11 @@ describe('AddressProvider', () => {
         let addrData = addressProvider.getCoinAndNetwork(v[0], v[2]);
         expect(addrData.coin).toEqual(v[1]);
         expect(addrData.network).toEqual(v[2]);
+
+        console.log(`> Testing without specifying network`);
+        addrData = addressProvider.getCoinAndNetwork(v[0]);
+        expect(addrData.coin).toEqual(v[1]);
+        expect(addrData.network).toEqual(v[2]);
       });
     });
 
@@ -100,6 +105,14 @@ describe('AddressProvider', () => {
         let addrData = addressProvider.getCoinAndNetwork(v[0], v[2]);
         expect(addrData.coin).toEqual(v[1]);
         expect(addrData.network).toEqual(v[2]);
+
+        console.log(`> Testing without specifying network`);
+        addrData = addressProvider.getCoinAndNetwork(v[0]);
+        expect(addrData.coin).toEqual(v[1]);
+        if (addrData.coin !== 'eth' && addrData.coin !== 'xrp') {
+          // eth and xrp address are both livenet and testnet the same
+          expect(addrData.network).toEqual(v[2]);
+        }
       });
     });
   });

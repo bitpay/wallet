@@ -184,28 +184,40 @@ export class TransferToPage {
     this.addressBookProvider.list().then(ab => {
       this.hasContacts = _.isEmpty(ab) ? false : true;
       if (!this.hasContacts) return;
-
+      this.logger.debug(
+        `====== ${this.wallet.network} - contacts ${JSON.stringify(ab)}`
+      );
       let contactsList = [];
       _.each(ab, (v, k: string) => {
         const addrData = this.addressProvider.getCoinAndNetwork(
           k,
           this.wallet.network
         );
-        contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: addrData.network,
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: addrData.coin,
-          getAddress: () => Promise.resolve(k),
-          destinationTag: v.tag
-        });
+        this.logger.debug(
+          `====== addDrata ${
+            addrData
+              ? JSON.stringify(addrData)
+              : k + 'is not ' + this.wallet.network
+          }`
+        );
+        if (addrData && addrData.coin === this.wallet.coin) {
+          contactsList.push({
+            name: _.isObject(v) ? v.name : v,
+            address: k,
+            network: addrData.network,
+            email: _.isObject(v) ? v.email : null,
+            recipientType: 'contact',
+            coin: addrData.coin,
+            getAddress: () => Promise.resolve(k),
+            destinationTag: v.tag
+          });
+        }
       });
       contactsList = _.orderBy(contactsList, 'name');
-      this.contactsList = contactsList.filter(c =>
-        this.filterIrrelevantRecipients(c)
-      );
+      this.contactsList = _.clone(contactsList);
+      // this.contactsList = contactsList.filter(c =>
+      //   this.filterIrrelevantRecipients(c)
+      // );
       let shortContactsList = _.clone(
         this.contactsList.slice(
           0,
