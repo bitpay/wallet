@@ -1616,6 +1616,11 @@ export class ConfirmPage {
       clearCache: true,
       dryRun: true
     }).catch(err => {
+      if (err.message && err.message.includes('Insufficient funds')) {
+        this.showErrorInfoSheet(
+          this.translate.instant('Not enough funds for fee')
+        );
+      }
       this.logger.warn('Error updateTx', err);
     });
   }
