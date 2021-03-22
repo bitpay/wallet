@@ -17,6 +17,7 @@ import {
   PersistenceProvider,
   ProfileProvider
 } from '../../../../providers';
+import { Network } from '../../../../providers/persistence/persistence';
 import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
@@ -29,6 +30,7 @@ export class BitPayCardIntroPage {
   public accounts;
   public cardExperimentEnabled: boolean;
   public ready: boolean;
+  private network: Network;
   constructor(
     private translate: TranslateService,
     private actionSheetCtrl: ActionSheetController,
@@ -48,6 +50,9 @@ export class BitPayCardIntroPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
+    this.persistenceProvider
+      .getNetwork()
+      .then(network => (this.network = network));
   }
 
   ionViewWillEnter() {
@@ -143,45 +148,51 @@ export class BitPayCardIntroPage {
     this.externalLinkProvider.open(url);
   }
 
-  public async orderBitPayCard(path?: 'login' | 'createAccount') {
-    this.iabCardProvider.loadingWrapper(async () => {
-      const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
-        12,
-        'USD'
-      );
+  public orderBitPayCard(path?: 'login' | 'createAccount') {
+    if (this.network === 'livenet') {
+      this.iabCardProvider.loadingWrapper(async () => {
+        const hasWalletWithFunds = this.profileProvider.hasWalletWithFunds(
+          12,
+          'USD'
+        );
 
-      const hasFirstView = await this.iabCardProvider.hasFirstView();
+        const hasFirstView = await this.iabCardProvider.hasFirstView();
 
-      const baseMessage = {
-        payload: {
-          path
+        const baseMessage = {
+          payload: {
+            path
+          }
+        };
+
+        if (!hasWalletWithFunds && !hasFirstView) {
+          this.iabCardProvider.show();
+          this.iabCardProvider.sendMessage(
+            {
+              ...baseMessage,
+              message: 'needFunds'
+            },
+            () => {}
+          );
+          return;
         }
-      };
 
-      if (!hasWalletWithFunds && !hasFirstView) {
         this.iabCardProvider.show();
         this.iabCardProvider.sendMessage(
           {
             ...baseMessage,
-            message: 'needFunds'
+            message: 'orderCard'
           },
           () => {}
         );
-        return;
-      }
-
-      this.iabCardProvider.show();
-      this.iabCardProvider.sendMessage(
-        {
-          ...baseMessage,
-          message: 'orderCard'
-        },
-        () => {}
-      );
-      setTimeout(() => {
-        this.navCtrl.pop();
-      }, 300);
-    });
+        setTimeout(() => {
+          this.navCtrl.pop();
+        }, 300);
+      });
+    } else {
+      const root = 'test.bitpay.com';
+      let url = `https://${root}/wallet-card?context=${path}`;
+      this.externalLinkProvider.open(url);
+    }
   }
 
   public connectBitPayCard() {
