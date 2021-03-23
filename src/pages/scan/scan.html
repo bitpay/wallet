@@ -9,7 +9,11 @@
 </ion-header>
 
 <ion-content *ngIf="!isCordova">
-  <h1>Camera not supported</h1>
+  <div class="not-supported">
+    <span>
+      Camera not supported
+    </span>
+  </div>
 </ion-content>
 
 <ion-content *ngIf="isCordova" class="back-transparent" no-bounce>
