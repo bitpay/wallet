@@ -184,15 +184,15 @@ export class BitPayCardIntroPage {
           },
           () => {}
         );
-        setTimeout(() => {
-          this.navCtrl.pop();
-        }, 300);
       });
     } else {
       const root = 'test.bitpay.com';
       let url = `https://${root}/wallet-card?context=${path}`;
       this.externalLinkProvider.open(url);
     }
+    setTimeout(() => {
+      this.navCtrl.pop();
+    }, 300);
   }
 
   public connectBitPayCard() {
