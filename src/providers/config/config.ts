@@ -332,7 +332,7 @@ export class ConfigProvider {
 
   public removeBwsFor(walletid) {
     const config = _.cloneDeep(this.configCache);
-    if (_.isString(walletid) && config.bwsFor[walletid]) {
+    if (_.isString(walletid) && config.bwsFor && config.bwsFor[walletid]) {
       try {
         delete config.bwsFor[walletid];
         this.logger.debug(`Removed bwsFor ${walletid}`);
