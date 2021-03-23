@@ -1,4 +1,4 @@
-import { Component, VERSION } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
@@ -18,15 +18,6 @@ import env from '../../environments';
   providers: [ScanProvider]
 })
 export class ScanPage {
-  ngVersion = VERSION.full;
-
-  hasCameras = false;
-  hasPermission: boolean;
-  qrResultString: string;
-
-  availableDevices: MediaDeviceInfo[];
-  selectedDevice: MediaDeviceInfo;
-
   public browserScanEnabled: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
@@ -121,12 +112,11 @@ export class ScanPage {
     this.fromConfirm = this.navParams.data.fromConfirm;
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
 
-    if (this.canGoBack) this.tabBarElement.style.display = 'none';
+    if (this.canGoBack && this.tabBarElement)
+      this.tabBarElement.style.display = 'none';
 
     if (!env.activateScanner) {
-      // test scanner visibility in E2E mode
-      this.selectedDevice = true as any;
-      this.hasPermission = true;
+      this.logger.debug('Scanner page: env.activateScanner = false');
       return;
     }
 
@@ -134,9 +124,12 @@ export class ScanPage {
 
     // try initializing and refreshing status any time the view is entered
     if (this.scannerHasPermission) {
+      this.logger.debug('scannerHasPermission: true');
       this.activate();
     } else {
+      this.logger.debug('scannerHasPermission: false');
       if (!this.scanProvider.isInitialized()) {
+        this.logger.debug('Scanner trying to initialize');
         this.scanProvider.gentleInitialize().then(() => {
           this.authorize();
         });
@@ -173,6 +166,8 @@ export class ScanPage {
   }
 
   private initializeBackButtonHandler(): void {
+    // This event is only used within Cordova apps running on Android and
+    // Windows platforms. This event is not fired on iOS since iOS doesn't come with a hardware back button
     this.unregisterBackButtonAction = this.platform.registerBackButtonAction(
       () => {
         this.closeCam();

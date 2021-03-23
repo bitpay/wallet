@@ -9,6 +9,11 @@ page-scan {
     background: transparent none;
   }
 
+  .not-supported {
+    text-align: center;
+    margin-top: 10rem;
+  }
+
   .page-scan-has-problems {
     z-index: 9999;
     height: 100%;
