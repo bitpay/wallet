@@ -47,7 +47,6 @@ export class RateProvider {
       this.rateServiceUrl[coin] = env.ratesAPI[coin];
       this.rates[coin] = { USD: 1 };
       this.ratesAvailable[coin] = false;
-      this.updateRates(coin);
     }
 
     const defaults = this.configProvider.getDefaults();
@@ -57,26 +56,59 @@ export class RateProvider {
       7: [],
       30: []
     };
+    this.updateRates();
   }
 
-  public updateRates(chain: string): Promise<any> {
+  public updateRates(chain?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.getCoin(chain)
-        .then(dataCoin => {
-          _.each(dataCoin, currency => {
-            if (currency && currency.code && currency.rate) {
-              this.rates[chain][currency.code] = currency.rate;
-              if (currency.name)
-                this.alternatives[currency.code] = { name: currency.name };
-            }
+      if (chain) {
+        this.getCoin(chain)
+          .then(dataCoin => {
+            _.each(dataCoin, currency => {
+              if (currency && currency.code && currency.rate) {
+                this.rates[chain][currency.code] = currency.rate;
+              }
+            });
+            resolve();
+          })
+          .catch(errorCoin => {
+            this.logger.error(errorCoin);
+            reject(errorCoin);
           });
-          this.ratesAvailable[chain] = true;
-          resolve();
-        })
-        .catch(errorCoin => {
-          this.logger.error(errorCoin);
-          reject(errorCoin);
-        });
+      } else {
+        this.getRates()
+          .then(res => {
+            _.map(res, (rates, coin) => {
+              const coinRates = {};
+              _.each(rates, r => {
+                if (r.code && r.rate) {
+                  const rate = { [r.code]: r.rate };
+                  Object.assign(coinRates, rate);
+                }
+
+                // set alternative currency list
+                if (r.code && r.name) {
+                  this.alternatives[r.code] = { name: r.name };
+                }
+              });
+              this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
+              this.ratesAvailable[coin] = true;
+            });
+            resolve();
+          })
+          .catch(err => {
+            this.logger.error(err);
+            reject(err);
+          });
+      }
+    });
+  }
+
+  public getRates(): Promise<any> {
+    return new Promise(resolve => {
+      this.http.get(`${this.bwsURL}/v3/fiatrates/`).subscribe(res => {
+        resolve(res);
+      });
     });
   }
 
@@ -125,7 +157,6 @@ export class RateProvider {
   }
 
   public isAltCurrencyAvailable(currency: string) {
-    if (_.isEmpty(this.alternatives)) return true;
     return this.alternatives[currency];
   }
 

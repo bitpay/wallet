@@ -5,7 +5,6 @@ import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -56,7 +55,6 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private configProvider: ConfigProvider,
     private http: HttpClient
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
@@ -290,23 +288,6 @@ export class TabsPage {
     }
   );
 
-  private checkAltCurrency(): void {
-    const alternativeIsoCode = this.configProvider.get().wallet.settings
-      .alternativeIsoCode;
-
-    if (!this.rateProvider.isAltCurrencyAvailable(alternativeIsoCode)) {
-      const altCurrency = {
-        name: this.configProvider.get().wallet.settings.alternativeName,
-        isoCode: alternativeIsoCode
-      };
-      const params = {
-        altCurrency,
-        tabIndex: this.tabs._tabs.length - 1 // The index of SettingsPage tab depends on the platform and distribution
-      };
-      this.events.publish('Local/UnsupportedAltCurrency', params);
-    }
-  }
-
   private _fetchAllWallets() {
     let hasConnectionError: boolean = false;
 
@@ -367,7 +348,6 @@ export class TabsPage {
 
     Promise.all(promises).then(() => {
       if (!hasConnectionError) {
-        this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
         this.updateTotalBalance(wallets);
       }
       this.updateTxps();
