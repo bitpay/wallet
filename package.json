@@ -145,7 +145,7 @@
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-fcm-ng": "8.3.0",
     "cordova-plugin-file": "6.0.2",
-    "cordova-plugin-fingerprint-aio": "3.0.1",
+    "cordova-plugin-fingerprint-aio": "4.0.2",
     "cordova-plugin-globalization": "1.0.9",
     "cordova-plugin-inappbrowser": "4.1.0",
     "cordova-plugin-ionic-keyboard": "2.1.3",
