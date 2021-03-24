@@ -5,19 +5,19 @@ import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
-import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
-import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
-import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
-import { PopupProvider } from '../../../../providers/popup/popup';
-import { ScanProvider } from '../../../../providers/scan/scan';
-
 // pages
 import {
   IABCardProvider,
   PersistenceProvider,
   ProfileProvider
 } from '../../../../providers';
+import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
+import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { Network } from '../../../../providers/persistence/persistence';
+import { PopupProvider } from '../../../../providers/popup/popup';
+import { ScanProvider } from '../../../../providers/scan/scan';
+import { ThemeProvider } from '../../../../providers/theme/theme';
 import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
@@ -43,7 +43,8 @@ export class BitPayCardIntroPage {
     private persistenceProvider: PersistenceProvider,
     private iabCardProvider: IABCardProvider,
     private profileProvider: ProfileProvider,
-    private scanProvider: ScanProvider
+    private scanProvider: ScanProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.scannerHasPermission = false;
     this.updateCapabilities();
@@ -188,6 +189,11 @@ export class BitPayCardIntroPage {
     } else {
       const root = 'test.bitpay.com';
       let url = `https://${root}/wallet-card?context=${path}`;
+
+      if (this.themeProvider.isDarkModeEnabled()) {
+        url += '&darkMode=true';
+      }
+
       this.externalLinkProvider.open(url);
     }
     setTimeout(() => {
