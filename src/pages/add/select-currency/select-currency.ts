@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -64,7 +69,8 @@ export class SelectCurrencyPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private persistenceProvider: PersistenceProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private events: Events
   ) {
     this.isJoin = this.navParam.data.isJoin;
     this.isShared = this.navParam.data.isShared;
@@ -201,7 +207,13 @@ export class SelectCurrencyPage {
       this.profileProvider.createTokenWallet(pairedWallet, token).then(() => {
         // store preferences for the paired eth wallet
         this.walletProvider.updateRemotePreferences(pairedWallet);
-        this.endProcess();
+        if (pairedWallet.needsBackup) {
+          this.endProcess();
+        } else {
+          this.navCtrl.popToRoot().then(() => {
+            this.events.publish('Local/FetchWallets');
+          });
+        }
       });
     }
   }
