@@ -16,6 +16,7 @@ import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { InvoiceProvider } from '../invoice/invoice';
+import { LocationProvider } from '../location/location';
 import { Logger } from '../logger/logger';
 import {
   GiftCardMap,
@@ -38,7 +39,6 @@ import {
 
 @Injectable()
 export class GiftCardProvider extends InvoiceProvider {
-  countryPromise: Promise<string>;
   availableCardsPromise: Promise<CardConfig[]>;
   supportedCardMapPromise: Promise<{ [name: string]: CardConfig }>;
 
@@ -61,7 +61,8 @@ export class GiftCardProvider extends InvoiceProvider {
     public http: HttpClient,
     public logger: Logger,
     public persistenceProvider: PersistenceProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private locationProvider: LocationProvider
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
@@ -593,7 +594,7 @@ export class GiftCardProvider extends InvoiceProvider {
   async getGiftCardCatalog(
     incentiveLevelId: string = ''
   ): Promise<AvailableCardMap> {
-    const country = await this.getCountry().catch(_ => 'US');
+    const country = await this.locationProvider.getCountry();
     const url = `${
       this.credentials.BITPAY_API_URL
     }/gift-cards/catalog/${country}${
@@ -666,17 +667,6 @@ export class GiftCardProvider extends InvoiceProvider {
         countryIsoCode: ''
       }
     };
-  }
-
-  async getCountry(): Promise<string> {
-    this.countryPromise = this.countryPromise
-      ? this.countryPromise
-      : this.http
-          .get('https://bitpay.com/wallet-card/location')
-          .map((res: { country: string }) => res.country)
-          .toPromise()
-          .catch(_ => 'US');
-    return this.countryPromise;
   }
 
   async getAvailableCards(): Promise<CardConfig[]> {

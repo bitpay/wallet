@@ -185,12 +185,11 @@ export class HomePage {
     });
   }
 
-  async ionViewWillEnter() {
+  ionViewWillEnter() {
     const config = this.configProvider.get();
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.events.publish('Local/showNewFeaturesSlides');
-    this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance)
@@ -198,6 +197,7 @@ export class HomePage {
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
+    this.setMerchantDirectoryAdvertisement();
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
@@ -220,7 +220,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-    this.giftCardProvider.getCountry();
 
     // Required delay to improve performance loading
     setTimeout(() => {
@@ -229,7 +228,7 @@ export class HomePage {
     }, 2000);
   }
 
-  private async loadAds() {
+  private loadAds() {
     const client = this.bwcProvider.getClient(null, {});
 
     client.getAdvertisements(
@@ -268,6 +267,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         } else {
@@ -300,6 +300,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         }
@@ -343,6 +344,7 @@ export class HomePage {
         isTesting: false,
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private verifySignature(ad): boolean {
@@ -502,41 +504,49 @@ export class HomePage {
         imgSrc: 'assets/img/amazon.svg',
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private addBitPayCard() {
     if (!this.isCordova) return;
-    const card: Advertisement = this.cardExperimentEnabled
-      ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Get the BitPay Card'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Order Now'),
-          link: BitPayCardIntroPage,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+    this.persistenceProvider
+      .getAdvertisementDismissed('bitpay-card')
+      .then((value: string) => {
+        if (value === 'dismissed') {
+          return;
         }
-      : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'bitpay-card'
-    );
-    !alreadyVisible && this.advertisements.unshift(card);
+        const card: Advertisement = this.cardExperimentEnabled
+          ? {
+              name: 'bitpay-card',
+              title: this.translate.instant('Get the BitPay Card'),
+              body: this.translate.instant(
+                'Designed for people who want to live life on crypto.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Order Now'),
+              link: BitPayCardIntroPage,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+            }
+          : {
+              name: 'bitpay-card',
+              title: this.translate.instant('Coming soon'),
+              body: this.translate.instant(
+                'Join the waitlist and be first to experience the new card.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Notify Me'),
+              link: PhaseOneCardIntro,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/icon-bpcard.svg'
+            };
+        const alreadyVisible = this.advertisements.find(
+          a => a.name === 'bitpay-card'
+        );
+        !alreadyVisible && this.advertisements.unshift(card);
+      });
   }
 
   private addCoinbase() {
@@ -561,9 +571,10 @@ export class HomePage {
         isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
+    this.showAdvertisements = true;
   }
 
-  private addGiftCardDiscount(discountedCard: CardConfig) {
+  private async addGiftCardDiscount(discountedCard: CardConfig) {
     const discount = discountedCard.discounts[0];
     const discountText =
       discount.type === 'flatrate'
@@ -577,7 +588,12 @@ export class HomePage {
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: `${discountText} off ${discountedCard.displayName}`,
@@ -592,13 +608,18 @@ export class HomePage {
       });
   }
 
-  private addGiftCardPromotion(promotedCard: CardConfig) {
+  private async addGiftCardPromotion(promotedCard: CardConfig) {
     const promo = promotedCard.promotions[0];
     const advertisementName = promo.shortDescription;
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: promo.title,
@@ -624,6 +645,10 @@ export class HomePage {
     } else if (promotedCard) {
       this.addGiftCardPromotion(promotedCard);
     }
+  }
+
+  private checkIfDismissed(name: string): Promise<any> {
+    return this.persistenceProvider.getAdvertisementDismissed(name);
   }
 
   slideChanged() {
@@ -686,11 +711,13 @@ export class HomePage {
 
   private fetchAdvertisements(): void {
     this.advertisements.forEach(advertisement => {
+      this.logger.debug('Add advertisement: ', advertisement.name);
       if (
         advertisement.app &&
         advertisement.app != this.appProvider.info.name
       ) {
         this.removeAdvertisement(advertisement.name);
+        this.logger.debug('Removed advertisement: ', advertisement.name);
         return;
       }
       this.persistenceProvider
@@ -701,11 +728,10 @@ export class HomePage {
             (!this.showCoinbase && advertisement.name == 'coinbase')
           ) {
             this.removeAdvertisement(advertisement.name);
+            this.logger.debug('Removed advertisement: ', advertisement.name);
             return;
           }
-          this.showAdvertisements = true;
         });
-      this.logger.debug('fetchAdvertisements');
     });
   }
 
@@ -733,6 +759,7 @@ export class HomePage {
         this.advertisements,
         adv => adv.name !== name
       );
+      if (this.advertisements.length == 0) this.showAdvertisements = false;
     }
     if (this.slides) this.slides.slideTo(0, 500);
   }

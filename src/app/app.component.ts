@@ -16,33 +16,37 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  AppProvider,
+  BitPayCardProvider,
   BitPayIdProvider,
   BitPayProvider,
+  BuyCryptoProvider,
+  CoinbaseProvider,
+  ConfigProvider,
+  DynamicLinksProvider,
+  EmailNotificationsProvider,
   GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
-  PersistenceProvider
+  IncomingDataProvider,
+  KeyProvider,
+  LocationProvider,
+  Logger,
+  LogsProvider,
+  PlatformProvider,
+  PopupProvider,
+  ProfileProvider,
+  PushNotificationsProvider,
+  ThemeProvider,
+  TouchIdProvider,
+  WalletConnectProvider
 } from '../providers';
-import { AppProvider } from '../providers/app/app';
-import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
-import { BuyCryptoProvider } from '../providers/buy-crypto/buy-crypto';
-import { CoinbaseProvider } from '../providers/coinbase/coinbase';
-import { ConfigProvider } from '../providers/config/config';
-import { DynamicLinksProvider } from '../providers/dynamic-links/dynamic-links';
-import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+
 import { ExchangeCryptoProvider } from '../providers/exchange-crypto/exchange-crypto';
-import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
-import { KeyProvider } from '../providers/key/key';
-import { Logger } from '../providers/logger/logger';
-import { LogsProvider } from '../providers/logs/logs';
-import { Network } from '../providers/persistence/persistence';
-import { PlatformProvider } from '../providers/platform/platform';
-import { PopupProvider } from '../providers/popup/popup';
-import { ProfileProvider } from '../providers/profile/profile';
-import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
-import { ThemeProvider } from '../providers/theme/theme';
-import { TouchIdProvider } from '../providers/touchid/touchid';
-import { WalletConnectProvider } from '../providers/wallet-connect/wallet-connect';
+import {
+  Network,
+  PersistenceProvider
+} from '../providers/persistence/persistence';
 
 // Components
 import { AdvertisingComponent } from '../components/advertising/advertising';
@@ -153,7 +157,8 @@ export class CopayApp {
     private bitpayIdProvider: BitPayIdProvider,
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
-    private dynamicLinksProvider: DynamicLinksProvider
+    private dynamicLinksProvider: DynamicLinksProvider,
+    private locationProvider: LocationProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -222,6 +227,10 @@ export class CopayApp {
         this.appProvider.info.commitHash +
         deviceInfo
     );
+
+    this.locationProvider.getCountry().then(c => {
+      this.logger.info('Set location: ' + c);
+    });
 
     const network = await this.persistenceProvider.getNetwork();
 
