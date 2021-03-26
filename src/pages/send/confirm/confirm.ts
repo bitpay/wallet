@@ -266,6 +266,9 @@ export class ConfirmPage {
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
+        : this.tx.coin == 'ETH' ||
+          this.currencyProvider.isERCToken(this.tx.coin)
+        ? Number(amount)
         : parseInt(amount, 10);
 
     this.tx.origToAddress = this.tx.toAddress;
