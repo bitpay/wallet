@@ -11,6 +11,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {
   ActionSheetProvider,
   GiftCardProvider,
+  LocationProvider,
   PlatformProvider
 } from '../../../../providers';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
@@ -39,6 +40,7 @@ export class PhonePage {
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
     private navParams: NavParams,
+    private locationProvider: LocationProvider,
     public platformProvider: PlatformProvider
   ) {
     this.phoneForm = new FormGroup({
@@ -73,7 +75,7 @@ export class PhonePage {
 
   async initializeBlankPhoneInput() {
     const allowedPhoneCountries = this.cardConfig.allowedPhoneCountries;
-    const userCountryCode = await this.giftCardProvider.getCountry();
+    const userCountryCode = await this.locationProvider.getCountry();
     this.initialCountryCode =
       allowedPhoneCountries && !allowedPhoneCountries.includes(userCountryCode)
         ? allowedPhoneCountries[0]

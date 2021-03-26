@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, Platform } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -55,7 +55,7 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private http: HttpClient
+    private locationProvider: LocationProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -107,7 +107,7 @@ export class TabsPage {
     this.events.unsubscribe('experimentUpdateStart');
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
@@ -117,17 +117,6 @@ export class TabsPage {
       }, 1000);
     });
 
-    const cards = await this.persistenceProvider.getBitpayDebitCards(
-      this.NETWORK
-    );
-
-    if (cards) {
-      this.events.publish('CardAdvertisementUpdate', {
-        status: 'connected',
-        cards
-      });
-    }
-
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('Local/UpdateTxps');
@@ -135,8 +124,8 @@ export class TabsPage {
       this.events.unsubscribe('experimentUpdateStart');
     });
 
-    await this.checkCardEnabled();
-    await this.tabProvider.prefetchCards();
+    this.checkCardEnabled();
+    this.tabProvider.prefetchGiftCards();
   }
 
   ngOnDestroy() {
@@ -156,9 +145,7 @@ export class TabsPage {
     if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
-        const { country } = await this.http
-          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
-          .toPromise();
+        const country = await this.locationProvider.getCountry();
         if (country === 'US') {
           this.logger.debug('If US: Set Card Experiment Flag Enabled');
           await this.persistenceProvider.setCardExperimentFlag('enabled');
@@ -171,6 +158,7 @@ export class TabsPage {
 
     // set banner advertisement in home.ts
     this.events.publish('CardAdvertisementUpdate', {
+      status: cards ? 'connected' : null,
       cardExperimentEnabled,
       cards
     });
