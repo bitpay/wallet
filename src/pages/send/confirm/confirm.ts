@@ -797,7 +797,7 @@ export class ConfirmPage {
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
             const fiatOfAmount = this.rateProvider.toFiat(
-              txp.amount,
+              tx.paypro ? tx.amount : txp.amount,
               this.config.wallet.settings.alternativeIsoCode,
               tx.coin
             );
@@ -808,8 +808,14 @@ export class ConfirmPage {
             );
             const per = this.getFeeRate(fiatOfAmount, fiatOfFee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
-            this.totalAmountStr = (fiatOfAmount + fiatOfFee).toFixed(2);
+            txp.feeTooHigh = this.isHighFee(
+              tx.paypro ? tx.amount : txp.amount,
+              txp.fee
+            );
+            this.totalAmountStr =
+              (fiatOfAmount + fiatOfFee).toFixed(2) +
+              ' ' +
+              this.config.wallet.settings.alternativeIsoCode;
           } else {
             const per = this.getFeeRate(txp.amount, txp.fee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
