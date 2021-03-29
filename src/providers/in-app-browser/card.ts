@@ -969,9 +969,16 @@ export class IABCardProvider {
             'default-error',
             {
               title: 'BitPay ID',
-              msg: 'Uh oh, something went wrong please try again later.'
+              msg: 'Uh oh, something went wrong please try again.'
             }
           );
+
+          if (dashboardRedirect) {
+            errorSheet.onDidDismiss(() => {
+              this.sendMessage({ message: 'pairingOnly' });
+              this.show();
+            });
+          }
 
           await errorSheet.present();
 
