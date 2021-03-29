@@ -1473,6 +1473,11 @@ export class ConfirmPage {
             this.logger.warn('Could not delete transaction');
           });
         }
+        if (err.includes('Broadcasting timeout')) {
+          this.navigateBack(
+            txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
+          );
+        }
       });
   }
 
@@ -1531,7 +1536,10 @@ export class ConfirmPage {
       'RippleUri',
       'InvoiceUri'
     ]);
+    this.navigateBack(redir, walletId);
+  }
 
+  private navigateBack(redir?: string, walletId?: string) {
     this.navCtrl.popToRoot().then(_ => {
       if (this.fromCoinbase) {
         this.coinbaseProvider.logEvent({
