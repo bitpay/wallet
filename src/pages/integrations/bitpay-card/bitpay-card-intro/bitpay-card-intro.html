@@ -63,11 +63,21 @@
 
   <ion-footer *ngIf="ready">
     <ion-toolbar>
-      <button ion-button class="button-standard button-primary" (click)="orderBitPayCard('createAccount')">
-        {{'Sign Up' | translate}}
-      </button>
-      <div class="bitpayCard__link-button" (click)="orderBitPayCard('login')">
-        {{'I already have an account' | translate}}
-      </div>
+
+      <ng-container *ngIf="bitPayIdConnected else notConnected">
+        <button ion-button class="button-standard button-primary" (click)="orderBitPayCard('login')">
+          {{'Sign Up' | translate}}
+        </button>
+      </ng-container>
+
+      <ng-template #notConnected>
+        <button ion-button class="button-standard button-primary" (click)="orderBitPayCard('createAccount')">
+          {{'Sign Up' | translate}}
+        </button>
+        <div class="bitpayCard__link-button" (click)="orderBitPayCard('login')">
+          {{'I already have an account' | translate}}
+        </div>
+      </ng-template>
+
     </ion-toolbar>
   </ion-footer>
