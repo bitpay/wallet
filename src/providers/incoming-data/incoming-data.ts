@@ -991,6 +991,15 @@ export class IncomingDataProvider {
           }
 
           this.iabCardProvider.pairing({ data: { params } });
+
+          // this param is set if pairing for the first time after an order
+          if (payload.includes('fb=orderComplete')) {
+            this.persistenceProvider.getNetwork().then(network => {
+              if (network === 'livenet') {
+                this.analyticsProvider.logEvent('Card_application_Success', {});
+              }
+            });
+          }
           break;
 
         case 'order-now':
