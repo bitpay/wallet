@@ -164,11 +164,12 @@ export class BitPayCardIntroPage {
       url += `&email=${user.email}`;
     }
 
-    this.externalLinkProvider.open(url);
-
-    setTimeout(() => {
-      this.navCtrl.pop();
-    }, 300);
+    this.iabCardProvider.loadingWrapper(() => {
+      this.externalLinkProvider.open(url);
+      setTimeout(() => {
+        this.navCtrl.pop();
+      }, 300);
+    });
   }
 
   public connectBitPayCard() {
