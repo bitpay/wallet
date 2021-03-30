@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2021-02-26 17:23\n"
+"PO-Revision-Date: 2021-03-30 20:32\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -42,6 +42,9 @@ msgid "5-star ratings help us get BitPay Wallet into more hands, and more users 
 msgstr ""
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
+msgstr ""
+
+msgid "A dog without funds is a sad dog"
 msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
@@ -350,7 +353,7 @@ msgstr ""
 msgid "BitPay ID successfully disconnected."
 msgstr ""
 
-msgid "BitPay does not receive and does not control miner fees."
+msgid "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
 msgstr ""
 
 msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
@@ -362,14 +365,8 @@ msgstr "比特币地址"
 msgid "Bitcoin Cash Address"
 msgstr "Địa chỉ Bitcoin Cash"
 
-msgid "Bitcoin Cash URI"
-msgstr "Bitcoin Cash URI"
-
 msgid "Bitcoin Network Fee Policy"
 msgstr "比特币网络手续费策略"
-
-msgid "Bitcoin URI"
-msgstr "Bitcoin URI"
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "比特币交易包括在网络上被矿工所收取的费用。"
@@ -971,6 +968,9 @@ msgstr "不包括私钥"
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
+msgid "Doge Address"
+msgstr ""
+
 msgid "Don't lose your key!"
 msgstr ""
 
@@ -990,6 +990,9 @@ msgid "Download logs"
 msgstr "下载日志"
 
 msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid "Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1146,9 +1149,6 @@ msgid "Error updating Debit Cards"
 msgstr "更新借记卡时出错"
 
 msgid "Ethereum Address"
-msgstr ""
-
-msgid "Ethereum URI"
 msgstr ""
 
 msgid "Ethereum wallet required"
@@ -1463,6 +1463,9 @@ msgstr ""
 msgid "I Understand"
 msgstr ""
 
+msgid "I already have an account"
+msgstr ""
+
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
 
@@ -1625,9 +1628,6 @@ msgstr ""
 msgid "Invitation Code"
 msgstr ""
 
-msgid "Invoice URL"
-msgstr ""
-
 msgid "Is this correct?"
 msgstr "这是正确的吗？"
 
@@ -1701,6 +1701,9 @@ msgid "Last four digits"
 msgstr ""
 
 msgid "Learn More"
+msgstr ""
+
+msgid "Learn about miner fees"
 msgstr ""
 
 msgid "Learn more"
@@ -1871,9 +1874,6 @@ msgstr ""
 msgid "Needs Backup"
 msgstr ""
 
-msgid "Needs Backup 2"
-msgstr ""
-
 msgid "Needs backup"
 msgstr "需要备份"
 
@@ -1881,9 +1881,6 @@ msgid "Network"
 msgstr "网络"
 
 msgid "Network Cost"
-msgstr ""
-
-msgid "Network Fee Warning"
 msgstr ""
 
 msgid "Network cost"
@@ -2204,9 +2201,6 @@ msgstr ""
 msgid "Payment Sent"
 msgstr "支付已发送"
 
-msgid "Payment URL"
-msgstr ""
-
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "支付已被接受，但尚未广播"
 
@@ -2256,9 +2250,6 @@ msgid "Personal Wallet"
 msgstr "个人钱包"
 
 msgid "Physical"
-msgstr ""
-
-msgid "Plain URL"
 msgstr ""
 
 msgid "Please connect a camera to get started."
@@ -2321,11 +2312,14 @@ msgstr ""
 msgid "Priority"
 msgstr "优先"
 
+msgid "Privacy Notice"
+msgstr ""
+
+msgid "Privacy Notice update"
+msgstr ""
+
 msgid "Privacy Policy"
 msgstr "隐私政策"
-
-msgid "Privacy Policy update"
-msgstr "隐私政策更新"
 
 msgid "Private Key"
 msgstr "私钥"
@@ -2426,9 +2420,6 @@ msgstr ""
 msgid "Recent"
 msgstr "最近"
 
-msgid "Recently added"
-msgstr ""
-
 msgid "Recipient"
 msgstr "收件人"
 
@@ -2452,9 +2443,6 @@ msgstr ""
 
 msgid "Recovery Phrase"
 msgstr "恢复短语"
-
-msgid "Recreating Wallet..."
-msgstr "正在重新创建的钱包..."
 
 msgid "Redeem Now"
 msgstr "立即兑现"
@@ -2547,9 +2535,6 @@ msgid "Retry camera"
 msgstr "重试相机"
 
 msgid "Review Changelly policies"
-msgstr ""
-
-msgid "Ripple URI"
 msgstr ""
 
 msgid "SEPA Bank Transfer"
@@ -2969,9 +2954,6 @@ msgstr "点击并按住以显示"
 msgid "Tap each word in the correct order."
 msgstr ""
 
-msgid "Tap to recreate"
-msgstr "點擊此以重新創建"
-
 msgid "Temporarily Unavailable"
 msgstr "暂时不可用"
 
@@ -3200,11 +3182,8 @@ msgstr ""
 msgid "This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee."
 msgstr ""
 
-msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab)."
 msgstr ""
-
-msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "此钱包不在给定的 Bitcore Wallet Service (BWS) 注册。你可以从本地信息重新创建它。"
 
 msgid "This will open Coinbase.com, where you can create an account."
 msgstr ""
@@ -3264,6 +3243,9 @@ msgid "Transaction confirmed"
 msgstr ""
 
 msgid "Transaction fee is below the current minimum threshold"
+msgstr ""
+
+msgid "Transaction fees are currently high"
 msgstr ""
 
 msgid "Transaction has failed. In most cases, the amount was less than the minimum."
@@ -3455,8 +3437,8 @@ msgstr ""
 msgid "View Order Summary"
 msgstr ""
 
-msgid "View Privacy Policy"
-msgstr "查看隐私策政策"
+msgid "View Privacy Notice"
+msgstr ""
 
 msgid "View Redemption Code"
 msgstr ""
@@ -3570,9 +3552,6 @@ msgid "Wallet service not found"
 msgstr "找不到 Wallet Service"
 
 msgid "WalletConnect"
-msgstr ""
-
-msgid "WalletConnect URI"
 msgstr ""
 
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."

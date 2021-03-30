@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2021-02-26 17:23\n"
+"PO-Revision-Date: 2021-03-30 20:32\n"
 
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
@@ -43,6 +43,9 @@ msgstr "Рейтинг в 5 звезд поможет нам и нашему п�
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
 msgstr "Destination Tag - это необязательный номер, который соответствует счету или учетной записи XRP на бирже."
+
+msgid "A dog without funds is a sad dog"
+msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "К вашему кошельку {{walletName}} только что присоединился новый плательщик."
@@ -350,7 +353,7 @@ msgstr ""
 msgid "BitPay ID successfully disconnected."
 msgstr ""
 
-msgid "BitPay does not receive and does not control miner fees."
+msgid "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
 msgstr ""
 
 msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
@@ -362,14 +365,8 @@ msgstr "Биткойн-адрес"
 msgid "Bitcoin Cash Address"
 msgstr ""
 
-msgid "Bitcoin Cash URI"
-msgstr ""
-
 msgid "Bitcoin Network Fee Policy"
 msgstr "Политика комиссии сети Биткойн"
-
-msgid "Bitcoin URI"
-msgstr ""
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin transactions include a fee collected by miners on the network."
@@ -971,6 +968,9 @@ msgstr "Не включать закрытый ключ"
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
+msgid "Doge Address"
+msgstr ""
+
 msgid "Don't lose your key!"
 msgstr ""
 
@@ -990,6 +990,9 @@ msgid "Download logs"
 msgstr ""
 
 msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid "Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1146,9 +1149,6 @@ msgid "Error updating Debit Cards"
 msgstr "Ошибка обновления Дебетовых Карт"
 
 msgid "Ethereum Address"
-msgstr ""
-
-msgid "Ethereum URI"
 msgstr ""
 
 msgid "Ethereum wallet required"
@@ -1463,6 +1463,9 @@ msgstr ""
 msgid "I Understand"
 msgstr ""
 
+msgid "I already have an account"
+msgstr ""
+
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
 
@@ -1625,9 +1628,6 @@ msgstr ""
 msgid "Invitation Code"
 msgstr ""
 
-msgid "Invoice URL"
-msgstr ""
-
 msgid "Is this correct?"
 msgstr "Правильно?"
 
@@ -1701,6 +1701,9 @@ msgid "Last four digits"
 msgstr ""
 
 msgid "Learn More"
+msgstr ""
+
+msgid "Learn about miner fees"
 msgstr ""
 
 msgid "Learn more"
@@ -1871,9 +1874,6 @@ msgstr ""
 msgid "Needs Backup"
 msgstr ""
 
-msgid "Needs Backup 2"
-msgstr ""
-
 msgid "Needs backup"
 msgstr "Необходимо создание резервной копии"
 
@@ -1881,9 +1881,6 @@ msgid "Network"
 msgstr "Сеть"
 
 msgid "Network Cost"
-msgstr ""
-
-msgid "Network Fee Warning"
 msgstr ""
 
 msgid "Network cost"
@@ -2204,9 +2201,6 @@ msgstr ""
 msgid "Payment Sent"
 msgstr "Платёж отправлен"
 
-msgid "Payment URL"
-msgstr ""
-
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Платёж принят, но пока не отправлен"
 
@@ -2256,9 +2250,6 @@ msgid "Personal Wallet"
 msgstr "Личный кошелёк"
 
 msgid "Physical"
-msgstr ""
-
-msgid "Plain URL"
 msgstr ""
 
 msgid "Please connect a camera to get started."
@@ -2321,11 +2312,14 @@ msgstr ""
 msgid "Priority"
 msgstr "Приоритетная"
 
+msgid "Privacy Notice"
+msgstr ""
+
+msgid "Privacy Notice update"
+msgstr ""
+
 msgid "Privacy Policy"
 msgstr "Политика конфиденциальности"
-
-msgid "Privacy Policy update"
-msgstr "Обновление Политики Конфиденциальности"
 
 msgid "Private Key"
 msgstr "Приватный ключ"
@@ -2426,9 +2420,6 @@ msgstr ""
 msgid "Recent"
 msgstr "Недавние"
 
-msgid "Recently added"
-msgstr ""
-
 msgid "Recipient"
 msgstr "Получатель"
 
@@ -2452,9 +2443,6 @@ msgstr ""
 
 msgid "Recovery Phrase"
 msgstr "Фраза для восстановления кошелька"
-
-msgid "Recreating Wallet..."
-msgstr "Воссоздаю кошелёк..."
 
 msgid "Redeem Now"
 msgstr ""
@@ -2547,9 +2535,6 @@ msgid "Retry camera"
 msgstr "Retry camera"
 
 msgid "Review Changelly policies"
-msgstr ""
-
-msgid "Ripple URI"
 msgstr ""
 
 msgid "SEPA Bank Transfer"
@@ -2969,9 +2954,6 @@ msgstr "Коснитесь и удерживайте, чтобы показат�
 msgid "Tap each word in the correct order."
 msgstr ""
 
-msgid "Tap to recreate"
-msgstr ""
-
 msgid "Temporarily Unavailable"
 msgstr ""
 
@@ -3200,11 +3182,8 @@ msgstr ""
 msgid "This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee."
 msgstr ""
 
-msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab)."
 msgstr ""
-
-msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Это кошелёк не зарегистрирован на данном сервере Bitcore. Вы можете воссоздать его из локальной информации."
 
 msgid "This will open Coinbase.com, where you can create an account."
 msgstr ""
@@ -3264,6 +3243,9 @@ msgid "Transaction confirmed"
 msgstr ""
 
 msgid "Transaction fee is below the current minimum threshold"
+msgstr ""
+
+msgid "Transaction fees are currently high"
 msgstr ""
 
 msgid "Transaction has failed. In most cases, the amount was less than the minimum."
@@ -3455,8 +3437,8 @@ msgstr ""
 msgid "View Order Summary"
 msgstr ""
 
-msgid "View Privacy Policy"
-msgstr "Просмотр политики конфиденциальности"
+msgid "View Privacy Notice"
+msgstr ""
 
 msgid "View Redemption Code"
 msgstr ""
@@ -3570,9 +3552,6 @@ msgid "Wallet service not found"
 msgstr "Сервер Bitcore не найден"
 
 msgid "WalletConnect"
-msgstr ""
-
-msgid "WalletConnect URI"
 msgstr ""
 
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
