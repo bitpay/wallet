@@ -422,13 +422,7 @@ msgstr ""
 msgid "Bitcoin Cash Address"
 msgstr ""
 
-msgid "Bitcoin Cash URI"
-msgstr ""
-
 msgid "Bitcoin Network Fee Policy"
-msgstr ""
-
-msgid "Bitcoin URI"
 msgstr ""
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
@@ -1054,9 +1048,6 @@ msgstr ""
 msgid "Doge Address"
 msgstr ""
 
-msgid "Dogecoin URI"
-msgstr ""
-
 msgid "Don't lose your key!"
 msgstr ""
 
@@ -1249,9 +1240,6 @@ msgid "Error updating Debit Cards"
 msgstr ""
 
 msgid "Ethereum Address"
-msgstr ""
-
-msgid "Ethereum URI"
 msgstr ""
 
 msgid "Ethereum wallet required"
@@ -1782,9 +1770,6 @@ msgid "Invalid derivation path for selected coin"
 msgstr ""
 
 msgid "Invitation Code"
-msgstr ""
-
-msgid "Invoice URL"
 msgstr ""
 
 msgid "Is this correct?"
@@ -2379,9 +2364,6 @@ msgstr ""
 msgid "Payment Sent"
 msgstr ""
 
-msgid "Payment URL"
-msgstr ""
-
 msgid "Payment accepted, but not yet broadcasted"
 msgstr ""
 
@@ -2431,9 +2413,6 @@ msgid "Personal Wallet"
 msgstr ""
 
 msgid "Physical"
-msgstr ""
-
-msgid "Plain URL"
 msgstr ""
 
 msgid "Please connect a camera to get started."
@@ -2730,9 +2709,6 @@ msgid "Retry camera"
 msgstr ""
 
 msgid "Review Changelly policies"
-msgstr ""
-
-msgid "Ripple URI"
 msgstr ""
 
 msgid "SEPA Bank Transfer"
@@ -3865,9 +3841,6 @@ msgstr ""
 msgid "WalletConnect"
 msgstr ""
 
-msgid "WalletConnect URI"
-msgstr ""
-
 msgid ""
 "WalletConnect is an open source protocol for connecting decentralized "
 "applications to mobile wallets with QR code scanning or deep linking."
@@ -4277,9 +4250,6 @@ msgid "{{ 'Pending Call Requests' | translate }}"
 msgstr ""
 
 msgid "{{ 'Privacy Policy' | translate}}"
-msgstr ""
-
-msgid "{{ newfeature.slideTitle || 'Recently added' }}"
 msgstr ""
 
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
