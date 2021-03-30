@@ -45,6 +45,9 @@ msgid ""
 "XRP account on an exchange."
 msgstr ""
 
+msgid "A dog without funds is a sad dog"
+msgstr ""
+
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr ""
 
@@ -400,7 +403,10 @@ msgstr ""
 msgid "BitPay ID successfully disconnected."
 msgstr ""
 
-msgid "BitPay does not receive and does not control miner fees."
+msgid ""
+"BitPay cannot validate the destination tag. Before sending XRP please "
+"double-check the destination tag with the receiver, if not valid it may "
+"result in the permanent loss of the funds."
 msgstr ""
 
 msgid ""
@@ -1045,6 +1051,12 @@ msgstr ""
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
+msgid "Doge Address"
+msgstr ""
+
+msgid "Dogecoin URI"
+msgstr ""
+
 msgid "Don't lose your key!"
 msgstr ""
 
@@ -1066,6 +1078,11 @@ msgid "Download logs"
 msgstr ""
 
 msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid ""
+"Due to high demand, miner fees are high. Fees are paid to miners who "
+"process transactions and are not paid to {{appName}}."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1563,6 +1580,9 @@ msgstr ""
 msgid "I Understand"
 msgstr ""
 
+msgid "I already have an account"
+msgstr ""
+
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
 
@@ -1845,6 +1865,9 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
+msgid "Learn about miner fees"
+msgstr ""
+
 msgid "Learn more"
 msgstr ""
 
@@ -2021,9 +2044,6 @@ msgstr ""
 msgid "Needs Backup"
 msgstr ""
 
-msgid "Needs Backup 2"
-msgstr ""
-
 msgid "Needs backup"
 msgstr ""
 
@@ -2031,9 +2051,6 @@ msgid "Network"
 msgstr ""
 
 msgid "Network Cost"
-msgstr ""
-
-msgid "Network Fee Warning"
 msgstr ""
 
 msgid "Network cost"
@@ -2482,10 +2499,13 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-msgid "Privacy Policy"
+msgid "Privacy Notice"
 msgstr ""
 
-msgid "Privacy Policy update"
+msgid "Privacy Notice update"
+msgstr ""
+
+msgid "Privacy Policy"
 msgstr ""
 
 msgid "Private Key"
@@ -2593,9 +2613,6 @@ msgstr ""
 msgid "Recent"
 msgstr ""
 
-msgid "Recently added"
-msgstr ""
-
 msgid "Recipient"
 msgstr ""
 
@@ -2618,9 +2635,6 @@ msgid "Recovery Key"
 msgstr ""
 
 msgid "Recovery Phrase"
-msgstr ""
-
-msgid "Recreating Wallet..."
 msgstr ""
 
 msgid "Redeem Now"
@@ -3142,9 +3156,6 @@ msgstr ""
 msgid "Tap each word in the correct order."
 msgstr ""
 
-msgid "Tap to recreate"
-msgstr ""
-
 msgid "Temporarily Unavailable"
 msgstr ""
 
@@ -3471,13 +3482,10 @@ msgid ""
 msgstr ""
 
 msgid ""
-"This transaction requires a high network fee because either the sending "
-"amount is too small or the network is experiencing congestion."
-msgstr ""
-
-msgid ""
-"This wallet is not registered at the given Bitcore Wallet Service (BWS). "
-"You can recreate it from the local information."
+"This wallet is not registered at the given Bitcore Wallet Service (BWS). As "
+"an advice, you could delete the key, under settings and selecting the "
+"specific key, and then use the Backup to import the wallet again (under "
+"Home > Wallet Tab)."
 msgstr ""
 
 msgid "This will open Coinbase.com, where you can create an account."
@@ -3540,6 +3548,9 @@ msgid "Transaction confirmed"
 msgstr ""
 
 msgid "Transaction fee is below the current minimum threshold"
+msgstr ""
+
+msgid "Transaction fees are currently high"
 msgstr ""
 
 msgid "Transaction has failed. In most cases, the amount was less than the minimum."
@@ -3733,7 +3744,7 @@ msgstr ""
 msgid "View Order Summary"
 msgstr ""
 
-msgid "View Privacy Policy"
+msgid "View Privacy Notice"
 msgstr ""
 
 msgid "View Redemption Code"
@@ -4266,6 +4277,9 @@ msgid "{{ 'Pending Call Requests' | translate }}"
 msgstr ""
 
 msgid "{{ 'Privacy Policy' | translate}}"
+msgstr ""
+
+msgid "{{ newfeature.slideTitle || 'Recently added' }}"
 msgstr ""
 
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
