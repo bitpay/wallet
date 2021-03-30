@@ -49,6 +49,7 @@ export type InfoSheetType =
   | 'print-required'
   | 'send-max-min-amount'
   | 'sensitive-info'
+  | 'slippage-info'
   | 'in-app-notification'
   | 'request-feature'
   | 'report-issue'

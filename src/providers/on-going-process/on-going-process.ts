@@ -26,6 +26,7 @@ export class OnGoingProcessProvider {
       calculatingFee: this.translate.instant('Calculating fee...'),
       calculatingSendMax: this.translate.instant('Calculating send max...'),
       connectingChangelly: this.translate.instant('Connecting to Changelly...'),
+      connectingOneInch: this.translate.instant('Connecting to 1Inch...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),

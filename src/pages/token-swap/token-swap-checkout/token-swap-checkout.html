@@ -1,4 +1,4 @@
-<wide-header-page title="{{'Exchange Crypto' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
+<wide-header-page title="{{'Token Swap' | translate}}" hideBackButton="true" [hasSlideButton]="isCordova">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="cancelExchange()" ion-button>
       <span translate>Cancel</span>
@@ -100,13 +100,47 @@
       <ion-item>
         <ion-label>
           <div class="summary-item">
+            <span>{{"Gas Price" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end *ngIf="gasPrice">
+          <div class="summary-item-detail">
+            <span>
+              {{ gasPrice }} wei
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
+            <span>{{"Gas Limit" | translate}}</span>
+          </div>
+        </ion-label>
+        <ion-note item-end *ngIf="gasLimit">
+          <div class="summary-item-detail">
+            <span>
+              {{ gasLimit }}
+            </span>
+          </div>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
+      <ion-item>
+        <ion-label>
+          <div class="summary-item">
             <span>{{"Exchange Fee" | translate}}</span>
           </div>
         </ion-label>
         <ion-note item-end>
           <div class="summary-item-detail">
             <span>
-              {{ totalExchangeFee | number:'1.0-6'}} {{ toWalletSelected.coin | uppercase }}
+              {{ totalExchangeFee | number:'1.0-6'}} {{ fromWalletSelected.coin | uppercase }}
             </span>
           </div>
         </ion-note>
@@ -136,7 +170,7 @@
         </ion-label>
         <ion-note item-end>
           <div class="total-amount">
-            <span>{{ amountTo }} {{ toWalletSelected.coin | uppercase }}</span>
+            <span>{{ amountTo | number:'1.0-6'}} {{ toWalletSelected.coin | uppercase }}</span>
           </div>
         </ion-note>
       </ion-item>
@@ -149,27 +183,13 @@
         </div>
       </div>
 
-      <ion-item>
-        <ion-label class="terms-checkbox">
-          <span translate>Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC</span>
-        </ion-label>
-        <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
-      </ion-item>
-      <ion-item (click)="openTermsModal()">
-        <ion-label class="terms">
-          <span translate>Review Changelly policies</span>
-        </ion-label>
-        <ion-note item-end>
-          <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-        </ion-note>
-      </ion-item>
     </ion-list>
   </div>
   <div footer-content>
     <page-slide-to-accept #slideButton *ngIf="isCordova && canContinue()" [disabled]="!canContinue()" buttonText="{{'Slide to Make Payment' | translate}}" [isDogecoin]="fromWalletSelected && fromWalletSelected.coin == 'doge'"  (slideDone)="makePayment()">
     </page-slide-to-accept>
     <ion-toolbar *ngIf="!isCordova">
-      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Continue & Make Payment' | translate}}</button>
+      <button ion-button full class="button-footer" (click)="makePayment()" [disabled]="!canContinue()">{{'Make Payment' | translate}}</button>
     </ion-toolbar>
   </div>
 </wide-header-page>

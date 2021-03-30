@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 // Pages
 import { ChangellyPage } from '../../../pages/integrations/changelly/changelly';
+import { OneInchPage } from '../../../pages/integrations/one-inch/one-inch';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -22,6 +23,7 @@ export class ExchangeCryptoSettingsPage {
   public showInHome;
   public service;
   public changellySwapTxs: any[];
+  public oneInchSwapTxs: any[];
 
   constructor(
     private configProvider: ConfigProvider,
@@ -44,7 +46,7 @@ export class ExchangeCryptoSettingsPage {
   ionViewWillEnter() {
     this.exchangeCryptoProvider.getSwapTxs().then(res => {
       this.changellySwapTxs = res.changellySwapTxs;
-      // this.shpeshiftSwapTxs = res.shpeshiftSwapTxs;
+      this.oneInchSwapTxs = res.oneInchSwapTxs;
     });
   }
 
@@ -61,5 +63,9 @@ export class ExchangeCryptoSettingsPage {
 
   public goToChangellyPage(): void {
     this.navCtrl.push(ChangellyPage);
+  }
+
+  public goToOneInchPage(): void {
+    this.navCtrl.push(OneInchPage);
   }
 }

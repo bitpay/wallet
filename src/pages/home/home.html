@@ -186,13 +186,19 @@
         <div class="services-list-label" translate>Swap Crypto</div>
       </ion-label>
     </button>
-    <div class="line-divider" *ngIf="showExchangeCryptoOption"></div>
+    <div class="line-divider" *ngIf="showWalletConnect"></div>
     <button ion-item *ngIf="showWalletConnect" (click)="goToWalletConnectPage()">
       <ion-label>
         <div class="services-list-label" translate>WalletConnect</div>
       </ion-label>
     </button>
-    <div class="line-divider" *ngIf="showWalletConnect"></div>
+    <div class="line-divider" *ngIf="showBuyCryptoOption"></div>
+    <button ion-item *ngIf="showExchangeCryptoOption" (click)="goToTokenSwapPage()">
+      <ion-label>
+        <div class="services-list-label" translate>Token Swap</div>
+      </ion-label>
+    </button>
+    <div class="line-divider"></div>
   </ion-list>
 
   <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
