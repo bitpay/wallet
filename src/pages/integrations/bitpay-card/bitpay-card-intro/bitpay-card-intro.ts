@@ -26,7 +26,6 @@ export class BitPayCardIntroPage {
   public accounts;
   public cardExperimentEnabled: boolean;
   public ready: boolean;
-  private network: Network;
   public bitPayIdConnected: boolean;
   constructor(
     private translate: TranslateService,
@@ -47,9 +46,6 @@ export class BitPayCardIntroPage {
     this.persistenceProvider.getCardExperimentFlag().then(status => {
       this.cardExperimentEnabled = status === 'enabled';
     });
-    this.persistenceProvider
-      .getNetwork()
-      .then(network => (this.network = network));
   }
 
   ionViewWillEnter() {
@@ -119,7 +115,7 @@ export class BitPayCardIntroPage {
 
   ionViewDidEnter() {
     this.persistenceProvider
-      .getBitPayIdPairingToken(this.network)
+      .getBitPayIdPairingToken(Network.livenet)
       .then(token => (this.bitPayIdConnected = !!token));
 
     this.iabCardProvider.updateWalletStatus();
@@ -150,8 +146,7 @@ export class BitPayCardIntroPage {
   }
 
   public async orderBitPayCard(path?: 'login' | 'createAccount') {
-    const root = this.network === 'livenet' ? 'bitpay.com' : 'test.bitpay.com';
-    let url = `https://${root}/wallet-card?context=${path}`;
+    let url = `https://bitpay.com/wallet-card?context=${path}`;
 
     if (this.themeProvider.isDarkModeEnabled()) {
       url += '&darkMode=true';
@@ -159,7 +154,7 @@ export class BitPayCardIntroPage {
 
     if (this.bitPayIdConnected) {
       const user = await this.persistenceProvider.getBitPayIdUserInfo(
-        this.network
+        Network.livenet
       );
       url += `&email=${user.email}`;
     }
