@@ -956,7 +956,10 @@ export class HomePage {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode
     };
-    if (!this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode)) {
+    if (
+      !this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode) &&
+      !_.isEmpty(this.rateProvider.alternatives)
+    ) {
       this.showInfoSheet(altCurrency);
     }
   }
