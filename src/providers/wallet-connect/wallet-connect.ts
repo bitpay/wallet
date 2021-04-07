@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import WalletConnect from '@walletconnect/client';
 import { convertHexToNumber } from '@walletconnect/utils';
-import { signTypedData_v4 } from 'eth-sig-util';
+import { personalSign, signTypedData_v4 } from 'eth-sig-util';
 import { Events } from 'ionic-angular';
 import { KeyProvider } from '../../providers/key/key';
 
@@ -75,6 +75,17 @@ export class WalletConnectProvider {
     const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
     const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
     const result = signTypedData_v4(Buffer.from(priv.toString(), 'hex'), {
+      data
+    });
+    return result;
+  }
+
+  public personalSign(data: any, wallet) {
+    const key = this.keyProvider.getKey(wallet.keyId).get();
+    const bitcore = this.bwcProvider.getBitcore();
+    const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
+    const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
+    const result = personalSign(Buffer.from(priv.toString(), 'hex'), {
       data
     });
     return result;
@@ -342,6 +353,9 @@ export class WalletConnectProvider {
           : 0;
         break;
       case 'eth_signTypedData':
+        // nothing
+        break;
+      case 'personal_sign':
         // nothing
         break;
       default:

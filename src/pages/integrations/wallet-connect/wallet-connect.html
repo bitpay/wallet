@@ -151,13 +151,29 @@
                   </ion-note>
                 </div>
               </div>
+              <div *ngIf="request.method === 'personal_sign'">
+                <div class="item" *ngIf="i === 0 && param">
+                  <div>{{ 'Message' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+                <div class="item" *ngIf="i === 1 && param">
+                  <div>{{ 'Address' | translate }}</div>
+                  <ion-note item-end>
+                    {{ param }}
+                  </ion-note>
+                </div>
+              </div>
             </div>
           </div>
-          <div *ngIf="request.method === 'eth_sendTransaction'" action-card-button (click)="approveRequest(request)">
-            {{'Continue' | translate }}
-          </div>
-          <div *ngIf="request.method === 'eth_signTypedData'" action-card-button (click)="approveRequest(request)">
-            {{'Approve' | translate }}
+          <div action-card-button (click)="approveRequest(request)">
+            <span *ngIf="request.method === 'eth_sendTransaction'">
+              {{'Continue' | translate }}
+            </span>
+            <span *ngIf="request.method === 'eth_signTypedData' || request.method === 'personal_sign'">
+              {{'Approve' | translate }}
+            </span>
           </div>
         </action-card>
       </div>
