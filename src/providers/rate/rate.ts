@@ -27,7 +27,7 @@ export interface HistoricalRates {
 
 @Injectable()
 export class RateProvider {
-  private alternatives;
+  public alternatives;
   private rates = {} as CoinsMap<{}>;
   private ratesAvailable = {} as CoinsMap<boolean>;
   private rateServiceUrl = {} as CoinsMap<string>;
