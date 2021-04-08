@@ -12,6 +12,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
 import { AppProvider } from '../../../../providers/app/app';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
@@ -25,9 +26,12 @@ import { ScanPage } from '../../../scan/scan';
 })
 export class AddressbookAddPage {
   public addressBookAdd: FormGroup;
-
   public isCordova: boolean;
   public appName: string;
+  public isXRP: boolean;
+  public addressInfo;
+  public networks;
+
   private destinationTagregex: RegExp;
 
   constructor(
@@ -35,12 +39,14 @@ export class AddressbookAddPage {
     private navParams: NavParams,
     private events: Events,
     private ab: AddressBookProvider,
+    private currencyProvider: CurrencyProvider,
     private addressProvider: AddressProvider,
     private appProvider: AppProvider,
     private formBuilder: FormBuilder,
     private logger: Logger,
     private popupProvider: PopupProvider
   ) {
+    this.networks = ['livenet', 'testnet'];
     this.destinationTagregex = /^[0-9]{1,}$/;
     this.addressBookAdd = this.formBuilder.group({
       name: [
@@ -55,7 +61,15 @@ export class AddressbookAddPage {
           new AddressValidator(this.addressProvider).isValid
         ])
       ],
-      tag: ['', Validators.pattern(this.destinationTagregex)]
+      tag: ['', Validators.pattern(this.destinationTagregex)],
+      network: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ],
+      coin: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
     });
     if (this.navParams.data.addressbookEntry) {
       this.addressBookAdd.controls['address'].setValue(
@@ -64,6 +78,32 @@ export class AddressbookAddPage {
     }
     this.appName = this.appProvider.info.nameCase;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.addressBookAdd
+      .get('address')
+      .valueChanges.subscribe(val => this.analizeAddress(val));
+  }
+
+  analizeAddress(address: string, network?: string) {
+    this.addressInfo = undefined;
+    this.isXRP = false;
+    if (address && this.addressBookAdd.get('address').valid) {
+      this.addressInfo = this.addressProvider.getCoinAndNetwork(
+        address,
+        network
+      );
+      if (this.addressInfo) {
+        this.isXRP = this.addressInfo.coin === 'xrp';
+        this.addressBookAdd.controls['network'].setValue(
+          this.addressInfo.network
+        );
+        this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
+        const chain = this.currencyProvider.getChain(this.addressInfo.coin);
+        this.addressBookAdd.controls['network'].disable();
+        if (['XRP', 'ETH'].includes(chain.toUpperCase())) {
+          this.addressBookAdd.controls['network'].enable();
+        }
+      }
+    }
   }
 
   ionViewDidLoad() {
@@ -98,7 +138,14 @@ export class AddressbookAddPage {
       this.parseAddress(this.addressBookAdd.value.address)
     );
     this.ab
-      .add(this.addressBookAdd.value)
+      .add({
+        name: this.addressBookAdd.value.name,
+        email: this.addressBookAdd.value.email,
+        address: this.addressBookAdd.value.address,
+        tag: this.addressBookAdd.value.tag,
+        network: this.addressBookAdd.value.network,
+        coin: this.addressBookAdd.value.coin
+      })
       .then(() => {
         this.navCtrl.pop();
       })

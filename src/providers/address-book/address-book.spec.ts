@@ -1,6 +1,6 @@
 import { TestUtils } from '../../test';
 import { PersistenceProvider } from '../persistence/persistence';
-import { AddressBookProvider } from './address-book';
+import { AddressBookProvider, Contact } from './address-book';
 
 describe('AddressBookProvider', () => {
   let addressBookProvider: AddressBookProvider;
@@ -103,13 +103,14 @@ describe('AddressBookProvider', () => {
   describe('add function', () => {
     it('If network is empty add function will reject', () => {
       const errorMsg = 'Not valid bitcoin address';
-      const entry = {
+      const entry: Contact = {
         address: 'invalidAddress',
         email: 'a@a.com',
         name: 'a'
       };
 
       addressBookProvider.add(entry).catch(err => {
+        console.log('>>> err', err);
         expect(err).toEqual(errorMsg);
       });
     });

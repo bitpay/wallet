@@ -156,7 +156,7 @@ export class WalletDetailsPage {
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
     this.addressbookProvider
-      .list()
+      .list(this.wallet.network)
       .then(ab => {
         this.addressbook = ab;
       })

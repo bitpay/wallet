@@ -6,6 +6,14 @@ import { AddressProvider } from '../address/address';
 
 import * as _ from 'lodash';
 
+export interface Contact {
+  name: string;
+  email?: string;
+  address: string;
+  tag?: number;
+  coin?: string;
+  network?: string;
+}
 @Injectable()
 export class AddressBookProvider {
   constructor(
@@ -17,64 +25,99 @@ export class AddressBookProvider {
     this.logger.debug('AddressBookProvider initialized');
   }
 
-  public get(addr: string): Promise<any> {
+  public get(addr: string, network?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .getAddressBook('testnet')
-        .then(ab => {
-          if (ab && _.isString(ab)) ab = JSON.parse(ab);
-          if (ab && ab[addr]) return resolve(ab[addr]);
+      if (network) {
+        this.persistenceProvider
+          .getAddressBook('testnet')
+          .then(ab => {
+            if (ab && _.isString(ab)) ab = JSON.parse(ab);
+            if (ab && ab[addr]) return resolve(ab[addr]);
+            return resolve();
+          })
+          .catch(() => {
+            return reject();
+          });
+      } else {
+        this.persistenceProvider
+          .getAddressBook('testnet')
+          .then(ab => {
+            if (ab && _.isString(ab)) ab = JSON.parse(ab);
+            if (ab && ab[addr]) return resolve(ab[addr]);
 
-          this.persistenceProvider
-            .getAddressBook('livenet')
-            .then(ab => {
-              if (ab && _.isString(ab)) ab = JSON.parse(ab);
-              if (ab && ab[addr]) return resolve(ab[addr]);
-              return resolve();
-            })
-            .catch(() => {
-              return reject();
-            });
-        })
-        .catch(() => {
-          return reject();
-        });
+            this.persistenceProvider
+              .getAddressBook('livenet')
+              .then(ab => {
+                if (ab && _.isString(ab)) ab = JSON.parse(ab);
+                if (ab && ab[addr]) return resolve(ab[addr]);
+                return resolve();
+              })
+              .catch(() => {
+                return reject();
+              });
+          })
+          .catch(() => {
+            return reject();
+          });
+      }
     });
   }
 
-  public list(): Promise<any> {
+  public list(network?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .getAddressBook('testnet')
-        .then(ab => {
-          if (ab && _.isString(ab)) ab = JSON.parse(ab);
+      if (network) {
+        this.persistenceProvider
+          .getAddressBook(network)
+          .then(ab => {
+            if (ab && _.isString(ab)) ab = JSON.parse(ab);
 
-          ab = ab || {};
-          this.persistenceProvider
-            .getAddressBook('livenet')
-            .then(ab2 => {
-              if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
+            ab = ab || {};
+            return resolve(ab);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      } else {
+        this.persistenceProvider
+          .getAddressBook('testnet')
+          .then(ab => {
+            if (ab && _.isString(ab)) ab = JSON.parse(ab);
 
-              ab2 = ab2 || {};
-              return resolve(_.defaults(ab2, ab));
-            })
-            .catch(err => {
-              return reject(err);
-            });
-        })
-        .catch(() => {
-          let msg = this.translate.instant('Could not get the Addressbook');
+            ab = ab || {};
+            this.persistenceProvider
+              .getAddressBook('livenet')
+              .then(ab2 => {
+                if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
+
+                ab2 = ab2 || {};
+                return resolve(_.defaults(ab2, ab));
+              })
+              .catch(err => {
+                return reject(err);
+              });
+          })
+          .catch(() => {
+            let msg = this.translate.instant('Could not get the Addressbook');
+            return reject(msg);
+          });
+      }
+    });
+  }
+
+  public add(entry: Contact): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const addrData = _.clone(entry);
+      if (!entry.coin || !entry.network) {
+        const _addrData = this.addressProvider.getCoinAndNetwork(
+          entry.address,
+          entry.network
+        );
+        if (_.isNull(_addrData) || _.isEmpty(_addrData)) {
+          let msg = this.translate.instant('Not valid bitcoin address');
           return reject(msg);
-        });
-    });
-  }
-
-  public add(entry): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const addrData = this.addressProvider.getCoinAndNetwork(entry.address);
-      if (_.isEmpty(addrData)) {
-        let msg = this.translate.instant('Not valid bitcoin address');
-        return reject(msg);
+        }
+        addrData.coin = _addrData.coin;
+        addrData.network = _addrData.network;
       }
 
       this.persistenceProvider
@@ -110,17 +153,19 @@ export class AddressBookProvider {
     });
   }
 
-  public remove(addr): Promise<any> {
+  public remove(addr: string, network?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const addrData = this.addressProvider.getCoinAndNetwork(addr);
-
-      if (_.isEmpty(addrData)) {
-        let msg = this.translate.instant('Not valid bitcoin address');
-        return reject(msg);
+      if (!network) {
+        const addrData = this.addressProvider.getCoinAndNetwork(addr);
+        if (_.isEmpty(addrData)) {
+          let msg = this.translate.instant('Not valid bitcoin address');
+          return reject(msg);
+        }
+        network = addrData.network;
       }
 
       this.persistenceProvider
-        .getAddressBook(addrData.network)
+        .getAddressBook(network)
         .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           ab = ab || {};
@@ -134,7 +179,7 @@ export class AddressBookProvider {
           }
           delete ab[addr];
           this.persistenceProvider
-            .setAddressBook(addrData.network, JSON.stringify(ab))
+            .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
               this.list()
                 .then(ab => {

@@ -13,8 +13,8 @@
         <img class="coin-img" *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard') || true" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
 
-        <span *ngIf="!contactName">{{ (tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address) | shortenedAddress}}</span>
-        <span class="ellipsis" *ngIf="contactName">{{ contactName }}</span>
+        <span *ngIf="!tx.outputs[0].contactName">{{ (tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address) | shortenedAddress}}</span>
+        <span class="ellipsis" *ngIf="tx.outputs[0].contactName">{{ tx.outputs[0].contactName }}</span>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
 <div *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
   <ion-item *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
     <ion-note class="secondary-note" item-right text-end>
-      <span>{{output.addressToShow || output.toAddress || output.address}}</span>
+      <span>{{output.contactName || output.addressToShow || output.toAddress || output.address}}</span>
       <span>{{output.amountStr}}
         <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
       </span>

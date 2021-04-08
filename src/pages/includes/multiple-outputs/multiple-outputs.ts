@@ -18,7 +18,6 @@ export class MultipleOutputsPage {
   private _tx;
   private _misunderstoodOutputsMsg;
 
-  public contactName: string;
   public showMultiplesOutputs: boolean;
 
   constructor(
@@ -54,9 +53,10 @@ export class MultipleOutputsPage {
       );
       output.addressToShow =
         addressToShow == 'false' ? 'Unparsed address' : addressToShow;
+      this.contact(outputAddr, this.tx.network).then(contact => {
+        output.contactName = contact;
+      });
     });
-
-    this.contact();
   }
 
   get tx() {
@@ -71,15 +71,15 @@ export class MultipleOutputsPage {
     this.openBlockChainEvent.next();
   }
 
-  private contact(): void {
-    const addr = this._tx.toAddress;
-    this.addressBookProvider
-      .get(addr)
+  private contact(addr: string, network: string) {
+    return this.addressBookProvider
+      .get(addr, network)
       .then(ab => {
         if (ab) {
           const name = _.isObject(ab) ? ab.name : ab;
-          this.contactName = name;
+          return name;
         }
+        return undefined;
       })
       .catch(err => {
         this.logger.warn(err);

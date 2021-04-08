@@ -34,9 +34,17 @@ export class AddressbookViewPage {
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.address = this.navParams.data.contact.address;
-    const addrData = this.addressProvider.getCoinAndNetwork(this.address);
-    this.coin = addrData.coin;
-    this.network = addrData.network;
+    if (
+      !this.navParams.data.contact.coin ||
+      !this.navParams.data.contact.network
+    ) {
+      const addrData = this.addressProvider.getCoinAndNetwork(this.address);
+      this.coin = addrData.coin;
+      this.network = addrData.network;
+    } else {
+      this.coin = this.navParams.data.contact.coin;
+      this.network = this.navParams.data.contact.network;
+    }
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
     this.tag = this.navParams.data.contact.tag;
@@ -64,7 +72,7 @@ export class AddressbookViewPage {
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (!res) return;
       this.addressBookProvider
-        .remove(this.address)
+        .remove(this.address, this.network)
         .then(() => {
           this.navCtrl.pop();
         })

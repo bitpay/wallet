@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import {
+  AddressBookProvider,
+  Contact
+} from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
 import { Logger } from '../../../providers/logger/logger';
 import { AddressbookAddPage } from './add/add';
@@ -35,9 +38,9 @@ export class AddressbookPage {
       .then(addressBook => {
         this.isEmptyList = _.isEmpty(addressBook);
         setTimeout(() => {
-          let contacts: object[] = [];
+          let contacts: Contact[] = [];
           _.each(addressBook, (contact, k: string) => {
-            const coinInfo = this.getCoinAndNetwork(k);
+            const coinInfo = this.getCoinAndNetwork(k, contact.network);
             contacts.push({
               name: _.isObject(contact) ? contact.name : contact,
               address: k,
@@ -81,7 +84,10 @@ export class AddressbookPage {
     }
   }
 
-  private getCoinAndNetwork(addr: string): { coin: string; network: string } {
-    return this.addressProvider.getCoinAndNetwork(addr);
+  private getCoinAndNetwork(
+    addr: string,
+    network?: string
+  ): { coin: string; network: string } {
+    return this.addressProvider.getCoinAndNetwork(addr, network);
   }
 }
