@@ -279,14 +279,16 @@ export class CopayApp {
       this.onPauseSubscription = this.platform.pause.subscribe(async () => {
         // Since Biometric plugin put on Pause Android devices,
         // it's needed to close all iab instances
-        if (this.platform.is('android')) this.closeIAB();
+        if (this.platform.is('android') && this.iabCardProvider.isHidden)
+          this.closeIAB();
       });
 
       // Subscribe Resume
       this.logger.debug('On Resume Subscription');
       this.onResumeSubscription = this.platform.resume.subscribe(async () => {
         // Resume InAppBrowser (only Android)
-        if (this.platform.is('android')) this.initIAB();
+        if (this.platform.is('android') && this.iabCardProvider.isHidden)
+          this.initIAB();
 
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
