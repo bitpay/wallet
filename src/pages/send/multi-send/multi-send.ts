@@ -150,7 +150,7 @@ export class MultiSendPage {
   }
 
   public addRecipient(recipient): void {
-    let amountToShow = +recipient.amount
+    let amountToShow: string = +recipient.amount
       ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
       : null;
 

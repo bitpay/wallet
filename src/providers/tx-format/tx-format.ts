@@ -38,15 +38,18 @@ export class TxFormatProvider {
     return legacyAddr;
   }
 
-  // TODO: Check return of formatAmount(...), sometimes returns a number and sometimes a string
-  public formatAmount(coin: string, satoshis: number, fullPrecision?: boolean) {
-    if (coin == 'sat') return satoshis;
+  public formatAmount(
+    coin: string,
+    satoshis: number,
+    fullPrecision?: boolean
+  ): string {
+    if (coin == 'sat') return satoshis.toString();
 
     // TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.bwcProvider.getUtils().formatAmount(satoshis, coin, opts);
+    return this.bwcProvider.getUtils().formatAmount(satoshis, coin, opts); // This util returns a string
   }
 
   public formatAmountStr(
@@ -94,13 +97,13 @@ export class TxFormatProvider {
     let settings = this.configProvider.get().wallet.settings;
 
     let val = (() => {
-      var v1 = parseFloat(
+      const v1num = parseFloat(
         this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin).toFixed(2)
       );
-      v1 = this.filter.formatFiatAmount(v1);
-      if (!v1) return null;
+      const v1str = this.filter.formatFiatAmount(v1num);
+      if (!v1str) return null;
 
-      return v1 + ' ' + settings.alternativeIsoCode;
+      return v1str + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
     if (!this.rate.isCoinAvailable(coin)) return null;
@@ -188,7 +191,7 @@ export class TxFormatProvider {
 
     // If fiat currency
     if (!Coin[currency] && currency != 'sat') {
-      let formattedAmount =
+      let formattedAmount: string =
         opts && opts.onlyIntegers
           ? this.filter.formatFiatAmount(amount.toFixed(0))
           : this.filter.formatFiatAmount(amount);

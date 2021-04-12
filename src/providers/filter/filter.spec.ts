@@ -12,11 +12,11 @@ describe('Provider: Filter Provider', () => {
   describe('Function: formatFiatAmount', () => {
     it('should return 0 if not has value', () => {
       let amount;
-      expect(filterProvider.formatFiatAmount(amount)).toEqual(0);
+      expect(filterProvider.formatFiatAmount(amount)).toEqual('0');
     });
     it('should return 0 if it is a negative value', () => {
       let amount = -1;
-      expect(filterProvider.formatFiatAmount(amount)).toEqual(0);
+      expect(filterProvider.formatFiatAmount(amount)).toEqual('0');
     });
     it('should return the value with 2 decimals if it does not have decimal values', () => {
       let amount = 1;
