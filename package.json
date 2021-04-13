@@ -127,7 +127,7 @@
     "apple-wallet-ng": "1.1.1",
     "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#68cf0353bf517a7e5293478608839fa904351eb6",
-    "bitcore-wallet-client": "8.25.7",
+    "bitcore-wallet-client": "8.25.8",
     "buffer-compare": "1.1.1",
     "chart.js": "2.8.0",
     "cordova": "9.0.0",
