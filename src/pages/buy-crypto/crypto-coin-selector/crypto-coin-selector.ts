@@ -8,6 +8,7 @@ import env from '../../../environments';
 import {
   ActionSheetProvider,
   BuyCryptoProvider,
+  BwcErrorProvider,
   Coin,
   CurrencyProvider,
   ErrorsProvider,
@@ -18,6 +19,7 @@ import {
 // Pages
 import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
 import { RecoveryKeyPage } from '../../../pages/onboarding/recovery-key/recovery-key';
+import { SendPage } from '../../../pages/send/send';
 @Component({
   selector: 'page-crypto-coin-selector',
   templateUrl: 'crypto-coin-selector.html'
@@ -25,8 +27,10 @@ import { RecoveryKeyPage } from '../../../pages/onboarding/recovery-key/recovery
 export class CryptoCoinSelectorPage {
   public coins = [];
   public useAsModal: boolean;
+  public title: string;
   private wallets;
   private wallet;
+  private fromFooterMenu: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -38,12 +42,15 @@ export class CryptoCoinSelectorPage {
     private currencyProvider: CurrencyProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
     const supportedCoins = this.navParams.data.isPromotionActiveForCountry
       ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
       : this.buyCryptoProvider.getExchangeCoinsSupported();
+    this.title = this.navParams.data.title;
+    this.fromFooterMenu = this.navParams.data.fromFooterMenu;
     this.wallets = this.profileProvider.getWallets({
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
@@ -87,7 +94,9 @@ export class CryptoCoinSelectorPage {
       const params = {
         wallets,
         selectedWalletId: null,
-        title: this.translate.instant('Select wallet to deposit to')
+        title: this.title
+          ? this.title
+          : this.translate.instant('Select wallet to deposit to')
       };
       const walletSelector = this.actionSheetProvider.createWalletSelector(
         params
@@ -106,6 +115,8 @@ export class CryptoCoinSelectorPage {
               });
             }
           });
+        } else if (this.fromFooterMenu) {
+          this.goToNextView(wallet);
         } else {
           this.onWalletSelect(wallet);
         }
@@ -126,5 +137,28 @@ export class CryptoCoinSelectorPage {
 
   private save() {
     this.viewCtrl.dismiss({ coin: this.wallet.coin, walletId: this.wallet.id });
+  }
+
+  private goToNextView(wallet): void {
+    const action = this.navParams.data.action;
+    const params = { wallet };
+
+    if (action === 'receive') {
+      const receiveModal = this.actionSheetProvider.createWalletReceive(params);
+      receiveModal.present();
+      receiveModal.onDidDismiss(data => {
+        if (data) this.showErrorInfoSheet(data);
+      });
+    } else {
+      this.navCtrl.push(SendPage, params);
+    }
+  }
+
+  private showErrorInfoSheet(error: Error | string): void {
+    const infoSheetTitle = this.translate.instant('Error');
+    this.errorsProvider.showDefaultError(
+      this.bwcErrorProvider.msg(error),
+      infoSheetTitle
+    );
   }
 }

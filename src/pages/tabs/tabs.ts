@@ -1,7 +1,8 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, Platform } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { LocationProvider } from '../../providers/location/location';
@@ -16,9 +17,13 @@ import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
+import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CardsPage } from '../cards/cards';
+import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
+import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
 import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
@@ -35,12 +40,17 @@ export class TabsPage {
   NETWORK = 'livenet';
   public txpsN: number;
   public cardNotificationBadgeText;
-  public scanIconType: string;
-  public isCordova: boolean;
   private zone;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  private pageMap = {
+    AmountPage,
+    ExchangeCryptoPage,
+    CryptoCoinSelectorPage,
+    CardCatalogPage,
+    ScanPage
+  };
 
   constructor(
     private plt: Platform,
@@ -55,7 +65,9 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private locationProvider: LocationProvider
+    private locationProvider: LocationProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private navCtrl: NavController
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -67,9 +79,6 @@ export class TabsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
-    this.isCordova = this.platformProvider.isCordova;
-    this.scanIconType =
-      this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
 
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
@@ -342,9 +351,17 @@ export class TabsPage {
     });
   }
 
+  public openFooterMenu(): void {
+    const footerMenu = this.actionSheetProvider.createFooterMenu();
+    footerMenu.present();
+    footerMenu.onDidDismiss(nextView => {
+      if (nextView)
+        this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+    });
+  }
+
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
-  scanRoot = ScanPage;
   cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
 }
