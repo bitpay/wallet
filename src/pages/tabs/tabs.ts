@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Platform } from 'ionic-angular';
 
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { LocationProvider } from '../../providers/location/location';
@@ -67,7 +68,8 @@ export class TabsPage {
     private platformProvider: PlatformProvider,
     private locationProvider: LocationProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -352,6 +354,9 @@ export class TabsPage {
   }
 
   public openFooterMenu(): void {
+    this.analyticsProvider.logEvent('transaction_menu_clicked', {
+      from: 'tabs'
+    });
     const footerMenu = this.actionSheetProvider.createFooterMenu();
     footerMenu.present();
     footerMenu.onDidDismiss(nextView => {
