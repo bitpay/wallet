@@ -30,7 +30,7 @@ export class FooterMenuComponent extends ActionSheetParent {
         imgSrc: `assets/img/footer-menu/buy-crypto.svg`,
         mainLabel: this.translate.instant('Buy Crypto'),
         secondaryLabel: this.translate.instant('Buy crypto with cash'),
-        showOption: this.appName === 'copay' ? false : true,
+        showOption: this.appName === 'bitpay' && this.isCordova ? true : false,
         nextView: {
           name: 'AmountPage',
           params: {
@@ -46,7 +46,7 @@ export class FooterMenuComponent extends ActionSheetParent {
         imgSrc: `assets/img/footer-menu/exchange.svg`,
         mainLabel: this.translate.instant('Exchange'),
         secondaryLabel: this.translate.instant('Swap crypto for another'),
-        showOption: this.appName === 'copay' ? false : true,
+        showOption: this.appName === 'bitpay' && this.isCordova ? true : false,
         nextView: {
           name: 'ExchangeCryptoPage',
           params: {

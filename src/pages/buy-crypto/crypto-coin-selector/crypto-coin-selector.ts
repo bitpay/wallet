@@ -140,6 +140,8 @@ export class CryptoCoinSelectorPage {
   }
 
   private goToNextView(wallet): void {
+    if (!wallet) return;
+
     const action = this.navParams.data.action;
     const params = { wallet };
 
