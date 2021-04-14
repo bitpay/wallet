@@ -73,7 +73,7 @@ export class ConfirmPage {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public hideSlideButton: boolean;
-  public amount;
+  public amount: string;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
@@ -330,7 +330,7 @@ export class ConfirmPage {
     }
   }
 
-  private getAmountDetails() {
+  private getAmountDetails(): void {
     this.amount = this.txFormatProvider.formatAmount(this.coin, this.tx.amount);
   }
 

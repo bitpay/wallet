@@ -187,7 +187,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       .toLowerCase()
       .includes('gift card');
     this.onlyIntegers = this.cardConfig.currency === 'JPY';
-    this.activationFee = getActivationFee(this.amount, this.cardConfig);
+    this.activationFee = getActivationFee(+this.amount, this.cardConfig);
   }
 
   ionViewDidLoad() {
@@ -355,7 +355,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const networkFee = await this.satToFiat(chain, networkFeeSat);
     this.networkFee = Number(networkFee);
     this.totalAmount =
-      this.amount -
+      +this.amount -
       this.totalDiscount +
       this.activationFee +
       this.invoiceFee +
