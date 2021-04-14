@@ -270,7 +270,7 @@ export class ConfirmPage {
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
-        : this.tx.coin == 'ETH' ||
+        : this.tx.coin == 'eth' ||
           this.currencyProvider.isERCToken(this.tx.coin)
         ? Number(amount)
         : parseInt(amount, 10);
