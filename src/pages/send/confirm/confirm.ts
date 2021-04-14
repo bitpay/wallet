@@ -1485,17 +1485,10 @@ export class ConfirmPage {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
-        if (txp.payProUrl || this.navParams.data.isEthMultisigInstantiation) {
-          this.logger.warn('Paypro error: removing payment proposal');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete payment proposal');
-          });
-        } else if (this.isSpeedUpTx) {
-          this.logger.warn('Speed up transaction error: removing transaction');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete transaction');
-          });
-        }
+        this.logger.warn('Broadcast error: removing payment proposal');
+        this.walletProvider.removeTx(wallet, txp).catch(() => {
+          this.logger.warn('Could not delete payment proposal');
+        });
       });
   }
 
