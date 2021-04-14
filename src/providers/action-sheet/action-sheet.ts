@@ -3,6 +3,7 @@ import { ActionSheetParent } from '../../components/action-sheet/action-sheet-pa
 import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
 import { EmailComponent } from '../../components/email-component/email-component';
 import { EncryptPasswordComponent } from '../../components/encrypt-password/encrypt-password';
+import { FooterMenuComponent } from '../../components/footer-menu/footer-menu';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
@@ -203,6 +204,11 @@ export class ActionSheetProvider {
 
   public createMinerFeeWarningComponent(): MinerFeeWarningComponent {
     return this.setupSheet<MinerFeeWarningComponent>(MinerFeeWarningComponent)
+      .instance;
+  }
+
+  public createFooterMenu(): FooterMenuComponent {
+    return this.setupSheet<FooterMenuComponent>(FooterMenuComponent, null)
       .instance;
   }
 

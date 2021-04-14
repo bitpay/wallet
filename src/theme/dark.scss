@@ -202,14 +202,6 @@
         &[class*='tab-settings'] {
           opacity: 0.4;
         }
-        &[class*='tab-scan'] {
-          background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat
-            50% 50%;
-        }
-        &[class*='tab-copay-scan'] {
-          filter: invert(0.4);
-          opacity: 1;
-        }
       }
     }
   }
@@ -666,6 +658,12 @@
             background-color: $bg-color-dark-theme-2;
             color: $text-color-dark-theme;
           }
+        }
+      }
+      .item {
+        &.item-ios,
+        &.item-md {
+          background-color: $bg-color-dark-theme-2;
         }
       }
     }
