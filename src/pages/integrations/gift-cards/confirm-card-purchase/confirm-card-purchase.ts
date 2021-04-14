@@ -333,7 +333,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
-
     await this.walletProvider.publishAndSign(wallet, txp);
     return this.onGoingProcessProvider.clear();
   }
@@ -841,7 +840,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
-    await this.walletProvider.removeTx(this.wallet, this.tx);
+    await this.walletProvider.removeTx(this.wallet, this.tx).catch(() => {});
     const errorMessage = err && err.message;
     const canceledErrors = ['FINGERPRINT_CANCELLED', 'PASSWORD_CANCELLED'];
     if (canceledErrors.indexOf(errorMessage) !== -1) {

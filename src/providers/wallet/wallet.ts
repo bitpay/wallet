@@ -1681,46 +1681,15 @@ export class WalletProvider {
     });
   }
 
-  public publishAndSign(wallet, txp): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // Already published?
-      if (txp.status == 'pending') {
-        this.prepare(wallet)
-          .then((password: string) => {
-            this.signAndBroadcast(wallet, txp, password)
-              .then(broadcastedTxp => {
-                return resolve(broadcastedTxp);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          })
-          .catch(err => {
-            return reject(err);
-          });
-      } else {
-        this.prepare(wallet)
-          .then((password: string) => {
-            this.onGoingProcessProvider.set('sendingTx');
-            this.publishTx(wallet, txp)
-              .then(publishedTxp => {
-                this.signAndBroadcast(wallet, publishedTxp, password)
-                  .then(broadcastedTxp => {
-                    return resolve(broadcastedTxp);
-                  })
-                  .catch(err => {
-                    return reject(err);
-                  });
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          })
-          .catch(err => {
-            return reject(err);
-          });
-      }
-    });
+  public async publishAndSign(wallet, txp): Promise<any> {
+    const password = await this.prepare(wallet);
+    // Already published?
+    if (txp.status == 'pending') {
+      return this.signAndBroadcast(wallet, txp, password);
+    }
+    this.onGoingProcessProvider.set('sendingTx');
+    const publishedTxp = await this.publishTx(wallet, txp);
+    return this.signAndBroadcast(wallet, publishedTxp, password);
   }
 
   public signMultipleTxps(wallet, txps: any[]): Promise<any> {
