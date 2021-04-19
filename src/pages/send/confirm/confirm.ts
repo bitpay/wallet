@@ -743,7 +743,7 @@ export class ConfirmPage {
   }
 
   protected getFeeRate(amount: number, fee: number) {
-    return (fee / amount) * 100;
+    return (fee / (amount + fee)) * 100;
   }
 
   protected isHighFee(amount: number, fee: number) {
