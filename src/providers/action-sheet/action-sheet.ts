@@ -57,6 +57,7 @@ export type InfoSheetType =
   | 'wrong-encrypt-password'
   | 'bch-legacy-warning-1'
   | 'bch-legacy-warning-2'
+  | 'network-coin-warning'
   | 'speed-up-tx'
   | 'speed-up-notice'
   | 'unconfirmed-inputs'

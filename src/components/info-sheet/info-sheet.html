@@ -329,6 +329,20 @@
       <span sheet-button-text translate>Show me the legacy address</span>
     </info-sheet-template>
 
+
+    <info-sheet-template *ngSwitchCase="'network-coin-warning'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span *ngIf="!params.isERCToken; else erc20Warning" sheet-text>
+        {{'Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: params.coin } }}
+      </span>
+      <ng-template #erc20Warning>
+        <span sheet-text>
+          {{'Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: params.coin } }}
+        </span>
+      </ng-template>
+      <span sheet-button-text translate>I Understand</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">
       <span sheet-title-text translate>Wrong password</span>
       <span sheet-text>
