@@ -24,9 +24,9 @@ import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-
 @Component({
   selector: 'page-select-inputs',
   templateUrl: 'select-inputs.html'
@@ -40,6 +40,7 @@ export class SelectInputsPage {
   public recipient;
   public inputs: any[] = [];
   public totalAmount: number = 0;
+  public isCordova: boolean;
 
   private selectedInputs = [];
   private validDataTypeMap: string[] = [
@@ -68,13 +69,15 @@ export class SelectInputsPage {
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge()
     };
+    this.isCordova = this.platformProvider.isCordova;
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
       'Local/AddressScanSelectInputs',
@@ -240,6 +243,15 @@ export class SelectInputsPage {
       );
       this.recipient = item;
     });
+  }
+
+  public clearAmount(item): void {
+    item.amount = null;
+    item.altAmountStr = null;
+    item.fiatAmount = null;
+    item.fiatCode = null;
+    item.amountToShow = null;
+    this.recipient = item;
   }
 
   public cleanSearch(): void {

@@ -336,11 +336,19 @@ export class ConfirmPage {
 
   private getTotalAmountDetails(tx, wallet) {
     if (wallet && wallet.credentials && !wallet.credentials.token) {
-      this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
-      this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-        this.coin,
-        tx.amount + tx.txp[wallet.id].fee
-      );
+      if (tx.fromSelectInputs) {
+        this.totalAmount = tx.amount;
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          this.coin,
+          tx.amount
+        );
+      } else {
+        this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          this.coin,
+          tx.amount + tx.txp[wallet.id].fee
+        );
+      }
     }
   }
 
@@ -1688,11 +1696,12 @@ export class ConfirmPage {
         exit
       );
     } else {
-      this.showErrorInfoSheet(err, exit);
+      this.showErrorInfoSheet(err, null, exit);
     }
   }
 
   public showWallets(): void {
+    if (this.fromSelectInputs) return;
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
 

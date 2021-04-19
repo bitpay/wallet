@@ -42,6 +42,19 @@ page-proposals-notifications {
     padding: 30px;
   }
 
+  .item-divider-exp-header {
+    height: 5rem;
+    border-bottom: 0;
+    .header-data,
+    .header-data-warning {
+      padding-left: 20px;
+    }
+    .header-data-warning {
+      padding-left: 20px;
+      color: color($colors, danger);
+    }
+  }
+
   .item-divider-header {
     height: 5rem;
     border-bottom: 0;
@@ -67,6 +80,10 @@ page-proposals-notifications {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .ion-ios-close-outline {
+      font-size: 24px;
     }
   }
 
