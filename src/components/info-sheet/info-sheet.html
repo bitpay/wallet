@@ -334,6 +334,13 @@
       <span sheet-title-text translate>Warning!</span>
       <span *ngIf="!params.isERCToken; else erc20Warning" sheet-text>
         {{'Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: params.coin } }}
+        <span *ngIf="params.coin === 'XRP'">
+          <br>
+          <br>
+          <span sheet-text>
+            {{'Important note: Keep in mind BitPay has suspended XRP as a payment method, this includes loads to the BitPay Card, BitPay invoices and in-app purchases' | translate }}
+          </span>
+        </span>
       </span>
       <ng-template #erc20Warning>
         <span sheet-text>
