@@ -786,8 +786,7 @@ ion-tabs {
     display: none;
     content: url('../assets/img/tab-icons/tab-home-active.svg')
       url('../assets/img/tab-icons/tab-wallets-active.svg')
-      url('../assets/img/tab-icons/tab-scan.svg')
-      url('../assets/img/tab-icons/tab-copay-scan.svg')
+      url('../assets/img/tab-icons/tab-transact.svg')
       url('../assets/img/tab-icons/tab-cards-active.svg')
       url('../assets/img/tab-icons/tab-settings-active.svg');
   }
@@ -804,12 +803,7 @@ $wallets-active: url('../assets/img/tab-icons/tab-wallets-active.svg') no-repeat
   50% 50%;
 $wallets-inactive: url('../assets/img/tab-icons/tab-wallets.svg') no-repeat 50%
   50%;
-$scan-active: url('../assets/img/tab-icons/tab-scan-active.svg') no-repeat 50%
-  50%;
-$scan-inactive: url('../assets/img/tab-icons/tab-scan.svg') no-repeat 50% 50%;
-$copay-scan-active: url('../assets/img/scan-ico.svg') no-repeat 50% 50%;
-$copay-scan-inactive: url('../assets/img/tab-icons/tab-copay-scan.svg')
-  no-repeat 50% 50%;
+$transact: url('../assets/img/tab-icons/tab-transact.svg') no-repeat 50% 50%;
 $cards-active: url('../assets/img/tab-icons/tab-cards-active.svg') no-repeat 50%
   50%;
 $cards-inactive: url('../assets/img/tab-icons/tab-cards.svg') no-repeat 50% 50%;
@@ -847,28 +841,15 @@ ion-icon {
     }
   }
 
-  &[class*='tab-scan'] {
-    background: $scan-inactive;
+  &[class*='tab-transact'] {
+    background: $transact;
     background-size: contain;
     width: 36px;
     height: 36px !important;
 
     .tab-button[aria-selected='true'] & {
-      background: $scan-active;
+      background: $transact;
       background-size: contain;
-    }
-  }
-
-  &[class*='tab-copay-scan'] {
-    background: $copay-scan-inactive;
-    background-size: contain;
-    margin-top: 0px;
-    opacity: 0.2;
-
-    .tab-button[aria-selected='true'] & {
-      background: $copay-scan-active;
-      background-size: contain;
-      opacity: 1;
     }
   }
 

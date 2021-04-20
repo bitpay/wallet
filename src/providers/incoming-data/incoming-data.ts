@@ -991,6 +991,15 @@ export class IncomingDataProvider {
           }
 
           this.iabCardProvider.pairing({ data: { params } });
+
+          // this param is set if pairing for the first time after an order
+          if (payload.includes('fb=orderComplete')) {
+            this.persistenceProvider.getNetwork().then(network => {
+              if (network === 'livenet') {
+                this.analyticsProvider.logEvent('Card_application_Success', {});
+              }
+            });
+          }
           break;
 
         case 'order-now':
@@ -1051,13 +1060,13 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'InvoiceUri',
-        title: this.translate.instant('Invoice URL')
+        title: 'Invoice URL'
       };
     } else if (this.isValidPayPro(data)) {
       return {
         data,
         type: 'PayPro',
-        title: this.translate.instant('Payment URL')
+        title: 'Payment URL'
       };
 
       // Bitcoin URI
@@ -1065,7 +1074,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitcoinUri',
-        title: this.translate.instant('Bitcoin URI')
+        title: 'Bitcoin URI'
       };
 
       // Bitcoin Cash URI
@@ -1073,7 +1082,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitcoinCashUri',
-        title: this.translate.instant('Bitcoin Cash URI')
+        title: 'Bitcoin Cash URI'
       };
 
       // Ethereum URI
@@ -1081,7 +1090,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'EthereumUri',
-        title: this.translate.instant('Ethereum URI')
+        title: 'Ethereum URI'
       };
 
       // Ripple URI
@@ -1089,21 +1098,21 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'RippleUri',
-        title: this.translate.instant('Ripple URI')
+        title: 'Ripple URI'
       };
       // Dogecoin URI
     } else if (this.isValidDogecoinUri(data)) {
       return {
         data,
         type: 'DogecoinUri',
-        title: this.translate.instant('Dogecoin URI')
+        title: 'Dogecoin URI'
       };
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       return {
         data,
         type: 'WalletConnectUri',
-        title: this.translate.instant('WalletConnect URI')
+        title: 'WalletConnect URI'
       };
 
       // Bitcoin Cash URI using Bitcoin Core legacy address
@@ -1111,7 +1120,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'BitcoinCashUri',
-        title: this.translate.instant('Bitcoin Cash URI')
+        title: 'Bitcoin Cash URI'
       };
 
       // Plain URL
@@ -1119,7 +1128,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'PlainUrl',
-        title: this.translate.instant('Plain URL')
+        title: 'Plain URL'
       };
 
       // Plain Address (Bitcoin)

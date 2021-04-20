@@ -52,7 +52,7 @@ See more details and download links at https://bitpay.com/wallet
 - Multisig wallet (using gnosis multisig contract)
   - mainnet contract address: 0x6e95C8E8557AbC08b46F3c347bA06F8dC012763f
   - kovan testnet contract address: 0x2C992817e0152A65937527B774c7A99a84603045
-- Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas pricee setting.
+- Gas price adjustment using 4 preset levels (using custom estimation algoritm) OR custom gas price setting.
 
 ## Testing in a Browser
 

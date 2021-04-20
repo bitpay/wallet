@@ -116,31 +116,41 @@
 
       <div class="line-divider" *ngIf="!coinbaseAccount"></div>
 
-      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" *ngIf="!coinbaseAccount" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
+      <button ion-item [attr.detail-none]="usingMerchantFee ? '' : null" *ngIf="!coinbaseAccount && wallet" (click)="chooseFeeLevel()" class="item-fee" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}">
         <ion-label>
           <div class="summary-item">
             <span *ngIf="!merchantFeeLabel" translate>Miner fee</span>
             <span *ngIf="merchantFeeLabel">{{ merchantFeeLabel }}</span>
           </div>
         </ion-label>
-        <ion-note *ngIf="wallet && tx.txp[wallet.id]" item-end>
-          <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
-            <div>...</div>
-            <div>...</div>
+        <ion-note item-end>
+          <div class="fee-loading" *ngIf="!tx.txp[wallet.id]">
+            <div class="summary-item-detail">
+              <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
+            </div>
+            <div *ngIf="!requiredFee">...</div>
+            <div *ngIf="!requiredFee">...</div>
+            <div *ngIf="requiredFee" class="summary-item-detail">
+              {{requiredFee | satToUnit: getChain(tx.coin)}}
+            </div>
+            <div *ngIf="requiredFee" class="secondary-note fee-details">
+              {{requiredFee | satToFiat: getChain(tx.coin)}}
+            </div>
           </div>
-          <div class="summary-item-detail">
+          <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
             <span class="text-bold">{{tx.feeLevelName | uppercase}}</span>
           </div>
-          <div class="summary-item-detail">
+          <div *ngIf="tx.txp[wallet.id]" class="summary-item-detail">
             {{tx.txp[wallet.id].fee | satToUnit: getChain(tx.coin)}}
           </div>
-          <div class="secondary-note fee-details" [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
+          <div *ngIf="tx.txp[wallet.id]" class="secondary-note fee-details" [ngStyle]="tx.txp[wallet.id].feeTooHigh === true ? { opacity: 1 } : null">
             {{tx.txp[wallet.id].fee | satToFiat: getChain(tx.coin)}}
             <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
               &middot;
               <span>
                 <ion-icon *ngIf="tx.txp[wallet.id].feeTooHigh" name="warning"></ion-icon>
                 {{tx.txp[wallet.id].feeRatePerStr}}
+                <span translate> of total amount</span>
               </span>
             </span>
           </div>

@@ -65,7 +65,7 @@ export class AmountPage {
   public onlyIntegers: boolean;
   public alternativeUnit: string;
   public globalResult: string;
-  public alternativeAmount;
+  public alternativeAmount: string;
   public expression;
   public amount;
 
@@ -485,16 +485,16 @@ export class AmountPage {
 
   private processResult(val): number {
     if (this.availableUnits[this.unitIndex].isFiat)
-      return this.filterProvider.formatFiatAmount(val);
+      return +this.filterProvider.formatFiatAmount(val);
     else
-      return this.txFormatProvider.formatAmount(
+      return +this.txFormatProvider.formatAmount(
         this.unit.toLowerCase(),
         val.toFixed(this.unitDecimals) * this.unitToSatoshi,
         true
       );
   }
 
-  private fromFiat(val, coin?: Coin): number {
+  private fromFiat(val: number, coin?: Coin): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
     return parseFloat(
       (

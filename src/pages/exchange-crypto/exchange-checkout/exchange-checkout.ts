@@ -107,8 +107,13 @@ export class ExchangeCheckoutPage {
     this.createFixTransaction();
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCheckoutPage');
+    this.navCtrl.swipeBackEnabled = false;
   }
 
   private createFixTransaction() {

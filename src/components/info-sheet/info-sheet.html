@@ -32,6 +32,33 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'insufficient-funds-for-fee'" type="danger">
+      <span *ngIf="!params.isERCToken" sheet-title-text translate>Insufficient funds for fee</span>
+      <span *ngIf="params.isERCToken" sheet-title-text translate>Insufficient ETH linked wallet funds for fee</span>
+      <span *ngIf="params.coin === 'btc' || params.coin === 'eth' || params.isERCToken; else shortNotice" sheet-text>
+        <span>{{ 'Current fee value: {fee} ({feeAlternative})' | translate: { feeAlternative: params.feeAlternative, fee: params.fee } }}</span>
+        <br>
+        <br>
+        {{ 'Keep in mind fees are not charged by BitPay.' | translate }}
+        <br>
+        <br>
+        {{ 'Before sending more funds to complete this transaction we recommend you read more about miner fees.' | translate }}
+        <br>
+        <br>
+        <span *ngIf="params.canChooseFeeLevel">{{ "If you don't mind waiting longer for this transaction to confirm you can change to a lower miner fee level." | translate  }}</span>
+      </span>
+      <ng-template #shortNotice>
+        <span sheet-text>
+          {{ 'Current fee value: {fee} ({feeAlternative})' | translate: { feeAlternative: params.feeAlternative, fee: params.fee } }}          <br>
+          <br>
+          {{ 'Keep in mind fees are not charged by BitPay.' }}
+        </span>
+      </ng-template>
+      <span *ngIf="params.coin === 'btc' || params.coin === 'eth' || params.isERCToken" sheet-button-text translate>Learn More</span>
+      <span *ngIf="!params.canChooseFeeLevel" sheet-second-button-text translate>CANCEL</span>
+      <span *ngIf="params.canChooseFeeLevel" sheet-second-button-text translate>CHOOSE FEE LEVEL</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text>
@@ -300,6 +327,20 @@
       </span>
       <span sheet-second-button-text translate>Cancel</span>
       <span sheet-button-text translate>Show me the legacy address</span>
+    </info-sheet-template>
+
+
+    <info-sheet-template *ngSwitchCase="'network-coin-warning'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span *ngIf="!params.isERCToken; else erc20Warning" sheet-text>
+        {{'Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: params.coin } }}
+      </span>
+      <ng-template #erc20Warning>
+        <span sheet-text>
+          {{'Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network.' | translate: {coin: params.coin } }}
+        </span>
+      </ng-template>
+      <span sheet-button-text translate>I Understand</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'wrong-encrypt-password'" type="danger">

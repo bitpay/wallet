@@ -2,17 +2,23 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { TestUtils } from '../../../../test';
 
 import { GiftCard } from '../../../../providers/gift-card/gift-card.types';
+import { LocationProvider } from '../../../../providers/location/location';
 import { PurchasedCardsPage } from './purchased-cards';
 
 describe('PurchasedCardsPage', () => {
   let fixture: ComponentFixture<PurchasedCardsPage>;
   let instance: PurchasedCardsPage;
+  let locationProvider: LocationProvider;
 
   beforeEach(async(() => {
     TestUtils.configurePageTestingModule([PurchasedCardsPage]).then(testEnv => {
+      locationProvider = testEnv.testBed.get(LocationProvider);
+      locationProvider.countryPromise = new Promise(_ => 'US');
       fixture = testEnv.fixture;
       instance = testEnv.instance;
-      instance.giftCardProvider.countryPromise = Promise.resolve('US');
+      spyOn(instance.giftCardProvider, 'getCardConfig').and.returnValue(
+        Promise.resolve({ name: 'Amazon.com' })
+      );
       fixture.detectChanges();
     });
   }));

@@ -1,10 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, Platform } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -16,9 +18,13 @@ import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
+import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CardsPage } from '../cards/cards';
+import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
+import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
 import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
@@ -35,12 +41,17 @@ export class TabsPage {
   NETWORK = 'livenet';
   public txpsN: number;
   public cardNotificationBadgeText;
-  public scanIconType: string;
-  public isCordova: boolean;
   private zone;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  private pageMap = {
+    AmountPage,
+    ExchangeCryptoPage,
+    CryptoCoinSelectorPage,
+    CardCatalogPage,
+    ScanPage
+  };
 
   constructor(
     private plt: Platform,
@@ -55,7 +66,10 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private http: HttpClient
+    private locationProvider: LocationProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private navCtrl: NavController,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -67,9 +81,6 @@ export class TabsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
-    this.isCordova = this.platformProvider.isCordova;
-    this.scanIconType =
-      this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
 
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
@@ -107,7 +118,7 @@ export class TabsPage {
     this.events.unsubscribe('experimentUpdateStart');
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeEvents();
@@ -117,17 +128,6 @@ export class TabsPage {
       }, 1000);
     });
 
-    const cards = await this.persistenceProvider.getBitpayDebitCards(
-      this.NETWORK
-    );
-
-    if (cards) {
-      this.events.publish('CardAdvertisementUpdate', {
-        status: 'connected',
-        cards
-      });
-    }
-
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('Local/UpdateTxps');
@@ -135,8 +135,8 @@ export class TabsPage {
       this.events.unsubscribe('experimentUpdateStart');
     });
 
-    await this.checkCardEnabled();
-    await this.tabProvider.prefetchCards();
+    this.checkCardEnabled();
+    this.tabProvider.prefetchGiftCards();
   }
 
   ngOnDestroy() {
@@ -156,9 +156,7 @@ export class TabsPage {
     if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
-        const { country } = await this.http
-          .get<{ country: string }>('https://bitpay.com/wallet-card/location')
-          .toPromise();
+        const country = await this.locationProvider.getCountry();
         if (country === 'US') {
           this.logger.debug('If US: Set Card Experiment Flag Enabled');
           await this.persistenceProvider.setCardExperimentFlag('enabled');
@@ -171,6 +169,7 @@ export class TabsPage {
 
     // set banner advertisement in home.ts
     this.events.publish('CardAdvertisementUpdate', {
+      status: cards ? 'connected' : null,
       cardExperimentEnabled,
       cards
     });
@@ -354,9 +353,20 @@ export class TabsPage {
     });
   }
 
+  public openFooterMenu(): void {
+    this.analyticsProvider.logEvent('transaction_menu_clicked', {
+      from: 'tabs'
+    });
+    const footerMenu = this.actionSheetProvider.createFooterMenu();
+    footerMenu.present();
+    footerMenu.onDidDismiss(nextView => {
+      if (nextView)
+        this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+    });
+  }
+
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
-  scanRoot = ScanPage;
   cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
 }

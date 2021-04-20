@@ -69,13 +69,11 @@ export class BackupProvider {
         delete b.credentials.keyId;
       }
       if (wallet.canSign && !opts.noSign) {
-        const k: any = {};
-        Object.assign(k, this.keyProvider.getKey(wallet.credentials.keyId));
+        const k = this.keyProvider.getKey(wallet.credentials.keyId).toObj();
         if (opts.password) {
-          const k1 = this.keyProvider.get(
-            wallet.credentials.keyId,
-            opts.password
-          );
+          const k1 = this.keyProvider
+            .get(wallet.credentials.keyId, opts.password)
+            .toObj();
           k.mnemonic = k1.mnemonic;
           k.xPrivKey = k1.xPrivKey;
           delete k.xPrivKeyEncrypted;

@@ -73,7 +73,7 @@ export class ConfirmPage {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public hideSlideButton: boolean;
-  public amount;
+  public amount: string;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
@@ -106,6 +106,10 @@ export class ConfirmPage {
 
   public mainTitle: string;
   public isSpeedUpTx: boolean;
+
+  public requiredFee: number;
+
+  private errors = this.bwcProvider.getErrors();
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -266,6 +270,9 @@ export class ConfirmPage {
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
+        : this.tx.coin == 'eth' ||
+          this.currencyProvider.isERCToken(this.tx.coin)
+        ? Number(amount)
         : parseInt(amount, 10);
 
     this.tx.origToAddress = this.tx.toAddress;
@@ -323,7 +330,7 @@ export class ConfirmPage {
     }
   }
 
-  private getAmountDetails() {
+  private getAmountDetails(): void {
     this.amount = this.txFormatProvider.formatAmount(this.coin, this.tx.amount);
   }
 
@@ -431,34 +438,7 @@ export class ConfirmPage {
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
-      const previousView = this.navCtrl.getPrevious().name;
-      switch (err) {
-        case 'insufficient_funds':
-          if (this.showUseUnconfirmedMsg()) {
-            this.showErrorInfoSheet(
-              this.translate.instant(
-                'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
-              ),
-              this.translate.instant('Not enough confirmed funds'),
-              exit
-            );
-          } else if (previousView === 'AmountPage') {
-            // Do not allow user to change or use max amount if previous view is not Amount
-            this.showInsufficientFundsInfoSheet();
-          } else {
-            this.showErrorInfoSheet(
-              this.translate.instant(
-                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
-              ),
-              this.translate.instant('Insufficient funds'),
-              exit
-            );
-          }
-          break;
-        default:
-          this.showErrorInfoSheet(err);
-          break;
-      }
+      this.handleError(err, exit);
     });
   }
 
@@ -763,7 +743,7 @@ export class ConfirmPage {
   }
 
   protected getFeeRate(amount: number, fee: number) {
-    return (fee / amount) * 100;
+    return (fee / (amount + fee)) * 100;
   }
 
   protected isHighFee(amount: number, fee: number) {
@@ -797,7 +777,7 @@ export class ConfirmPage {
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
             const fiatOfAmount = this.rateProvider.toFiat(
-              txp.amount,
+              tx.paypro ? tx.amount : txp.amount,
               this.config.wallet.settings.alternativeIsoCode,
               tx.coin
             );
@@ -808,8 +788,14 @@ export class ConfirmPage {
             );
             const per = this.getFeeRate(fiatOfAmount, fiatOfFee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
-            this.totalAmountStr = (fiatOfAmount + fiatOfFee).toFixed(2);
+            txp.feeTooHigh = this.isHighFee(
+              tx.paypro ? tx.amount : txp.amount,
+              txp.fee
+            );
+            this.totalAmountStr =
+              (fiatOfAmount + fiatOfFee).toFixed(2) +
+              ' ' +
+              this.config.wallet.settings.alternativeIsoCode;
           } else {
             const per = this.getFeeRate(txp.amount, txp.fee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
@@ -834,11 +820,7 @@ export class ConfirmPage {
           return resolve();
         })
         .catch(err => {
-          if (err.message == 'Insufficient funds') {
-            return reject('insufficient_funds');
-          } else {
-            return reject(err);
-          }
+          return reject(err);
         });
     });
   }
@@ -1302,6 +1284,47 @@ export class ConfirmPage {
     });
   }
 
+  private showInsufficientFundsForFeeInfoSheet(
+    fee,
+    feeAlternative,
+    feeLevel,
+    coin,
+    exit
+  ): void {
+    const canChooseFeeLevel =
+      coin !== 'bch' &&
+      coin !== 'xrp' &&
+      coin !== 'doge' &&
+      !this.usingMerchantFee &&
+      !this.tx.speedUpTxInfo &&
+      feeLevel !== 'superEconomy';
+
+    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'insufficient-funds-for-fee',
+      {
+        fee,
+        feeAlternative,
+        coin,
+        isERCToken: this.currencyProvider.isERCToken(coin),
+        canChooseFeeLevel
+      }
+    );
+    insufficientFundsInfoSheet.present();
+    insufficientFundsInfoSheet.onDidDismiss(option => {
+      if (option) {
+        this.openExternalLink(
+          'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
+        );
+      } else if (canChooseFeeLevel) {
+        this.chooseFeeLevel();
+        return;
+      }
+      if (exit) {
+        this.fromWalletDetails ? this.navCtrl.pop() : this.navCtrl.popToRoot();
+      }
+    });
+  }
+
   public showErrorInfoSheet(
     error: Error | string,
     title?: string,
@@ -1325,7 +1348,7 @@ export class ConfirmPage {
     }
 
     // Currently the paypro error is the following string: 500 - "{}"
-    if (error.toString().includes('500')) {
+    if (error.toString().includes('500 - "{}"')) {
       msg = this.translate.instant(
         'Error 500 - There is a temporary problem, please try again later.'
       );
@@ -1339,8 +1362,8 @@ export class ConfirmPage {
       () => {
         if (exit) {
           this.fromWalletDetails
-            ? this.navCtrl.popToRoot()
-            : this.navCtrl.pop();
+            ? this.navCtrl.pop()
+            : this.navCtrl.popToRoot();
         }
       }
     );
@@ -1462,17 +1485,10 @@ export class ConfirmPage {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
-        if (txp.payProUrl || this.navParams.data.isEthMultisigInstantiation) {
-          this.logger.warn('Paypro error: removing payment proposal');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete payment proposal');
-          });
-        } else if (this.isSpeedUpTx) {
-          this.logger.warn('Speed up transaction error: removing transaction');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete transaction');
-          });
-        }
+        this.logger.warn('Error on publishAndSign: removing payment proposal');
+        this.walletProvider.removeTx(wallet, txp).catch(() => {
+          this.logger.warn('Could not delete payment proposal');
+        });
         if (err.includes('Broadcasting timeout')) {
           this.navigateBack(
             txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
@@ -1624,13 +1640,64 @@ export class ConfirmPage {
       clearCache: true,
       dryRun: true
     }).catch(err => {
-      if (err.message && err.message.includes('Insufficient funds')) {
+      this.handleError(err);
+    });
+  }
+
+  private handleError(err, exit?) {
+    const previousView = this.navCtrl.getPrevious().name;
+    const isInsufficientFundsErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS;
+    const isInsufficientFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
+    const isInsufficientLinkedEthFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+
+    if (isInsufficientFundsErr) {
+      if (this.showUseUnconfirmedMsg()) {
         this.showErrorInfoSheet(
-          this.translate.instant('Not enough funds for fee')
+          this.translate.instant(
+            'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
+          ),
+          this.translate.instant('Not enough confirmed funds'),
+          exit
+        );
+      } else if (previousView === 'AmountPage') {
+        // Do not allow user to change or use max amount if previous view is not Amount
+        this.showInsufficientFundsInfoSheet();
+      } else {
+        this.showErrorInfoSheet(
+          this.translate.instant(
+            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+          ),
+          this.translate.instant('Insufficient funds'),
+          exit
         );
       }
-      this.logger.warn('Error updateTx', err);
-    });
+    }
+    if (isInsufficientFundsForFeeErr || isInsufficientLinkedEthFundsForFeeErr) {
+      let { requiredFee } = err.messageData;
+      this.requiredFee = requiredFee;
+
+      const coin = this.tx.coin.toLowerCase();
+      const feeLevel = this.tx.feeLevel;
+      let feeCoin = isInsufficientLinkedEthFundsForFeeErr ? 'eth' : coin;
+
+      const feeAlternative = this.txFormatProvider.formatAlternativeStr(
+        feeCoin,
+        requiredFee
+      );
+      const fee = this.txFormatProvider.formatAmountStr(feeCoin, requiredFee);
+      this.showInsufficientFundsForFeeInfoSheet(
+        fee,
+        feeAlternative,
+        feeLevel,
+        coin,
+        exit
+      );
+    } else {
+      this.showErrorInfoSheet(err, exit);
+    }
   }
 
   public showWallets(): void {
