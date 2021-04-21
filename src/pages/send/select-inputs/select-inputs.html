@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons right>
-      <button *ngIf="!recipient" clear (click)="openTransferToModal()" ion-button icon-only>
+      <button class="add-btn" *ngIf="!recipient" clear (click)="openTransferToModal()" ion-button icon-only>
         <span translation>Add Contact</span>
       </button>
     </ion-buttons>
@@ -89,6 +89,10 @@
       <ion-list *ngIf="recipient" class="content-list">
         <ion-item-divider sticky class="item-divider-header">
           <span class="ellipsis">{{ 'Wallet Inputs' | translate}}</span>
+          <button ion-button item-end clear (click)="reverseInputs()">
+            <ion-icon *ngIf="!reverse" name="ios-arrow-round-down" color="grey"></ion-icon>
+            <ion-icon *ngIf="reverse" name="ios-arrow-round-up" color="grey"></ion-icon>
+          </button>
           <button ion-button item-end clear *ngIf="inputs.length > 0" (click)="shortcuts(false)">
             <ion-icon name="md-trash" color="grey"></ion-icon>
           </button>

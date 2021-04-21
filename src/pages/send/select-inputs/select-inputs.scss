@@ -1,6 +1,9 @@
 page-select-inputs,
 page-multi-send,
 page-proposals-notifications {
+  .add-btn .button-inner {
+    color: #434d5a;
+  }
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -33,7 +36,6 @@ page-proposals-notifications {
     background-color: #fff6f7;
   }
   .no-wallet-message {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,7 +84,9 @@ page-proposals-notifications {
       align-items: center;
     }
 
-    .ion-ios-close-outline {
+    .ion-ios-close-outline,
+    .ion-ios-arrow-round-up,
+    .ion-ios-arrow-round-down {
       font-size: 24px;
     }
   }

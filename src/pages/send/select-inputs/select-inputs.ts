@@ -41,6 +41,7 @@ export class SelectInputsPage {
   public inputs: any[] = [];
   public totalAmount: number = 0;
   public isCordova: boolean;
+  public reverse: boolean;
 
   private selectedInputs = [];
   private validDataTypeMap: string[] = [
@@ -77,6 +78,7 @@ export class SelectInputsPage {
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge()
     };
+    this.reverse = false;
     this.isCordova = this.platformProvider.isCordova;
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
@@ -121,6 +123,11 @@ export class SelectInputsPage {
     this.inputs = _.filter(this.inputs, i => {
       return i.confirmations !== 0;
     });
+  }
+
+  public reverseInputs() {
+    this.reverse = !this.reverse;
+    this.inputs.reverse();
   }
 
   public getCoinName(coin): string {
