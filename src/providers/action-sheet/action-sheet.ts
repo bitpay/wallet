@@ -1,6 +1,5 @@
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
-import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
 import { EmailComponent } from '../../components/email-component/email-component';
 import { EncryptPasswordComponent } from '../../components/encrypt-password/encrypt-password';
 import { FooterMenuComponent } from '../../components/footer-menu/footer-menu';
@@ -14,7 +13,6 @@ import { PhoneSheet } from '../../components/phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { WalletTabOptionsComponent } from '../../components/wallet-tab-options/wallet-tab-options';
-import { Coin } from '../../providers/currency/currency';
 import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
@@ -103,15 +101,6 @@ export interface WalletReceiveParams {
 export interface WalletTabOptionsParams {
   walletsGroups: any;
 }
-
-export interface ChooseFeeLevelParams {
-  network: string;
-  coin: Coin;
-  feeLevel: string;
-  noSave: boolean;
-  customFeePerKB: string;
-  feePerSatByte: number;
-}
 @Injectable()
 export class ActionSheetProvider {
   constructor(private domProvider: DomProvider) {}
@@ -176,16 +165,6 @@ export class ActionSheetProvider {
   public createNeedsBackup(): NeedsBackupComponent {
     return this.setupSheet<NeedsBackupComponent>(NeedsBackupComponent, null)
       .instance;
-  }
-
-  public createChooseFeeLevel(
-    params: ChooseFeeLevelParams
-  ): ChooseFeeLevelComponent {
-    return this.setupSheet<ChooseFeeLevelComponent>(
-      ChooseFeeLevelComponent,
-      null,
-      params
-    ).instance;
   }
 
   public createWalletTabOptions(

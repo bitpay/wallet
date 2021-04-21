@@ -1,13 +1,11 @@
 import { TestUtils } from '../../test';
 import { BwcProvider } from '../bwc/bwc';
-import { ConfigProvider } from '../config/config';
 import { PersistenceProvider } from '../persistence/persistence';
 import { FeeProvider } from './fee';
 
 describe('Provider: Fee Provider', () => {
   let feeProvider: FeeProvider;
   let persistenceProvider: PersistenceProvider;
-  let configProvider: ConfigProvider;
 
   class BwcProviderMock {
     constructor() {}
@@ -48,7 +46,6 @@ describe('Provider: Fee Provider', () => {
       { provide: BwcProvider, useClass: BwcProviderMock }
     ]);
     feeProvider = testBed.get(FeeProvider);
-    configProvider = testBed.get(ConfigProvider);
     persistenceProvider = testBed.get(PersistenceProvider);
     persistenceProvider.load();
   });
@@ -63,31 +60,6 @@ describe('Provider: Fee Provider', () => {
         economy: 'Economy',
         superEconomy: 'Super Economy',
         custom: 'Custom'
-      });
-    });
-  });
-
-  describe('getCurrentFeeLevel', () => {
-    it('should return normal fee level is not set', () => {
-      configProvider.load().then(() => {
-        delete configProvider.get().wallet.settings.feeLevel;
-        const currentFeeLevel = feeProvider.getCurrentFeeLevel();
-        expect(currentFeeLevel).toEqual('normal');
-      });
-    });
-
-    it('should get current fee level', () => {
-      configProvider.load().then(() => {
-        const newOpts = {
-          wallet: {
-            settings: {
-              feeLevel: 'urgent'
-            }
-          }
-        };
-        configProvider.set(newOpts);
-        const currentFeeLevel = feeProvider.getCurrentFeeLevel();
-        expect(currentFeeLevel).toEqual('urgent');
       });
     });
   });
