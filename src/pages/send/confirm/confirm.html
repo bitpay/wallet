@@ -225,14 +225,16 @@
         </ion-label>
         <ion-note item-end>
           <div class="total-amount" [ngClass]="{'subtotal-amount': !wallet?.credentials.token}">
-            {{amount}} {{tx.coin | uppercase}}
+            <span *ngIf="!fromSelectInputs">{{amount}} {{tx.coin | uppercase}}</span>
+            <span *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{txFormatProvider.formatAmount(tx.coin, tx.amount - tx.txp[wallet.id].fee)}} {{tx.coin | uppercase}}</span>
           </div>
         </ion-note>
       </ion-item>
 
       <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
-          {{tx.amount | satToFiat: tx.coin}}
+          <span *ngIf="!fromSelectInputs">{{tx.amount | satToFiat: tx.coin}}</span>
+          <span *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span>
         </div>
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>

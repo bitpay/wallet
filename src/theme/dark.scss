@@ -1221,6 +1221,12 @@
       }
     }
 
+    ion-header .item-divider-exp-header {
+      .header-data {
+        color: $text-color-dark-theme-2;
+      }
+    }
+
     .content-list {
       .item {
         background-color: $bg-color-dark-theme;

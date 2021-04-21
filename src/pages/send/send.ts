@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
@@ -83,6 +84,7 @@ export class SendPage {
     private addressProvider: AddressProvider,
     private events: Events,
     private actionSheetProvider: ActionSheetProvider,
+    private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
@@ -336,13 +338,25 @@ export class SendPage {
 
     optionsSheet.onDidDismiss(option => {
       if (option == 'multi-send')
-        this.navCtrl.push(MultiSendPage, {
-          wallet: this.wallet
-        });
+        this.navCtrl
+          .push(MultiSendPage, {
+            wallet: this.wallet
+          })
+          .then(() => {
+            this.analyticsProvider.logEvent('multi_send_clicked', {
+              coin: this.wallet.coin
+            });
+          });
       if (option == 'select-inputs')
-        this.navCtrl.push(SelectInputsPage, {
-          wallet: this.wallet
-        });
+        this.navCtrl
+          .push(SelectInputsPage, {
+            wallet: this.wallet
+          })
+          .then(() => {
+            this.analyticsProvider.logEvent('select_inputs_clicked', {
+              coin: this.wallet.coin
+            });
+          });
     });
   }
 
