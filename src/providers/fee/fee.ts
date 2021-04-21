@@ -4,7 +4,6 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';
-import { ConfigProvider } from '../../providers/config/config';
 
 import * as _ from 'lodash';
 
@@ -27,7 +26,6 @@ export class FeeProvider {
   ];
 
   constructor(
-    private configProvider: ConfigProvider,
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private translate: TranslateService
@@ -47,25 +45,8 @@ export class FeeProvider {
     return feeOpts;
   }
 
-  public getCoinCurrentFeeLevel(coin): string {
-    let feeLevel;
-    switch (coin) {
-      case 'bch':
-        feeLevel = 'normal';
-        break;
-      case 'xrp':
-        feeLevel = 'normal';
-        break;
-      default:
-        feeLevel =
-          this.configProvider.get().wallet.settings.feeLevel || 'normal';
-        break;
-    }
-    return feeLevel;
-  }
-
-  public getCurrentFeeLevel(): string {
-    return this.configProvider.get().wallet.settings.feeLevel || 'normal';
+  public getDefaultFeeLevel(): string {
+    return 'normal';
   }
 
   public getFeeRate(

@@ -10,6 +10,7 @@ import {
 import * as _ from 'lodash';
 
 // Pages
+import { ChooseFeeLevelModal } from '../../choose-fee-level/choose-fee-level';
 import { FinishModalPage } from '../../finish/finish';
 import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
@@ -284,7 +285,7 @@ export class ConfirmPage {
       this.usingCustomFee = true;
       this.tx.feeLevel = 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
+      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -408,7 +409,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
+      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
 
     if (
@@ -1594,16 +1595,16 @@ export class ConfirmPage {
       network: this.tx.network,
       coin: this.tx.coin,
       feeLevel: this.tx.feeLevel,
-      noSave: true,
       customFeePerKB: this.usingCustomFee ? this.tx.feeRate : undefined,
       feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined
     };
 
-    const chooseFeeLevelAction = this.actionSheetProvider.createChooseFeeLevel(
+    const chooseFeeLevelModal = this.modalCtrl.create(
+      ChooseFeeLevelModal,
       txObject
     );
-    chooseFeeLevelAction.present();
-    chooseFeeLevelAction.onDidDismiss(data => {
+    chooseFeeLevelModal.present();
+    chooseFeeLevelModal.onDidDismiss(data => {
       data && data.showMinWarning
         ? this.showCustomFeeWarningSheet(data)
         : this.onFeeModalDismiss(data);
@@ -1666,8 +1667,10 @@ export class ConfirmPage {
           exit
         );
       }
-    }
-    if (isInsufficientFundsForFeeErr || isInsufficientLinkedEthFundsForFeeErr) {
+    } else if (
+      isInsufficientFundsForFeeErr ||
+      isInsufficientLinkedEthFundsForFeeErr
+    ) {
       let { requiredFee } = err.messageData;
       this.requiredFee = requiredFee;
 

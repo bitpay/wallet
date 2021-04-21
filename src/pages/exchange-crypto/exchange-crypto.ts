@@ -533,9 +533,7 @@ export class ExchangeCryptoPage {
         this.fromWalletSelected.coin == 'btc' ||
         this.getChain(this.fromWalletSelected.coin) == 'eth'
           ? 'priority'
-          : this.feeProvider.getCoinCurrentFeeLevel(
-              this.fromWalletSelected.coin
-            );
+          : this.feeProvider.getDefaultFeeLevel();
 
       this.feeProvider
         .getFeeRate(

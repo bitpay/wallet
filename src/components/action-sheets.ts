@@ -1,5 +1,4 @@
 import { ActionSheetComponent } from './action-sheet/action-sheet';
-import { ChooseFeeLevelComponent } from './choose-fee-level/choose-fee-level';
 import { EmailComponent } from './email-component/email-component';
 import { EncryptPasswordComponent } from './encrypt-password/encrypt-password';
 import { FooterMenuComponent } from './footer-menu/footer-menu';
@@ -23,7 +22,6 @@ export const ACTION_SHEET_COMPONENTS = [
   NeedsBackupComponent,
   WalletSelectorComponent,
   WalletReceiveComponent,
-  ChooseFeeLevelComponent,
   EmailComponent,
   PhoneSheet,
   WalletTabOptionsComponent,
