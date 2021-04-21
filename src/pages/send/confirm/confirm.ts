@@ -1485,10 +1485,15 @@ export class ConfirmPage {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
-        this.logger.warn('Broadcast error: removing payment proposal');
+        this.logger.warn('Error on publishAndSign: removing payment proposal');
         this.walletProvider.removeTx(wallet, txp).catch(() => {
           this.logger.warn('Could not delete payment proposal');
         });
+        if (err.includes('Broadcasting timeout')) {
+          this.navigateBack(
+            txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
+          );
+        }
       });
   }
 
@@ -1547,7 +1552,10 @@ export class ConfirmPage {
       'RippleUri',
       'InvoiceUri'
     ]);
+    this.navigateBack(redir, walletId);
+  }
 
+  private navigateBack(redir?: string, walletId?: string) {
     this.navCtrl.popToRoot().then(_ => {
       if (this.fromCoinbase) {
         this.coinbaseProvider.logEvent({

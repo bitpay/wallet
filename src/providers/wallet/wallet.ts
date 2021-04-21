@@ -1327,30 +1327,40 @@ export class WalletProvider {
     });
   }
 
-  public broadcastTx(wallet, txp): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (_.isEmpty(txp) || _.isEmpty(wallet))
-        return reject('MISSING_PARAMETER');
+  public broadcastTx(wallet, txp, timeout = 20000): Promise<any> {
+    return Promise.race([
+      new Promise((resolve, reject) => {
+        if (_.isEmpty(txp) || _.isEmpty(wallet))
+          return reject('MISSING_PARAMETER');
 
-      if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
+        if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-        if (err) {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            this.removeTx(wallet, txp);
-            return reject(err);
-          } else {
-            return reject(err);
+        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
           }
-        }
-
-        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-        if (memo) this.logger.info('Memo: ', memo);
-        return resolve(broadcastedTxp);
-      });
-    });
+          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+          if (memo) this.logger.info('Memo: ', memo);
+          return resolve(broadcastedTxp);
+        });
+      }),
+      new Promise((_r, rej) => {
+        setTimeout(
+          () =>
+            rej(
+              'Broadcasting timeout. Please check your wallet transaction history before do it again.'
+            ),
+          timeout
+        );
+      })
+    ]);
   }
 
   public rejectTx(wallet, txp): Promise<any> {
