@@ -493,7 +493,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     if (details.requiredFeeRate) {
       const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
-        ? details.requiredFeeRate
+        ? parseInt((details.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
         : Math.ceil(details.requiredFeeRate * 1000);
       txp.feePerKb = requiredFeeRate;
       this.logger.debug('Using merchant fee rate:' + txp.feePerKb);

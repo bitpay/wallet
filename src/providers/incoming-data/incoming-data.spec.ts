@@ -282,7 +282,10 @@ describe('Provider: Incoming Data Provider', () => {
           coin: element.paymentOptions[2].currency.toLowerCase(),
           network: payProDetails.network,
           payProUrl: element.payProUrl,
-          requiredFeeRate: payProDetails.requiredFeeRate,
+          requiredFeeRate: parseInt(
+            (payProDetails.requiredFeeRate * 1.1).toFixed(0),
+            10
+          ),
           minerFee: element.paymentOptions[2].minerFee
         };
 
