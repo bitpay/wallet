@@ -400,7 +400,7 @@ export class ConfirmPage {
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
-  private setWallet(wallet): void {
+  private async setWallet(wallet) {
     this.wallet = wallet;
     this.coinbaseAccount = null;
 
@@ -432,7 +432,29 @@ export class ConfirmPage {
       this.isSpeedUpTx
     );
 
-    if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
+    if (this.tx.paypro) {
+      if (!this.currencyProvider.isUtxoCoin(this.tx.coin)) {
+        // Update fees to most recent for eth ( in case required fee change ? )
+        const address = await this.walletProvider.getAddress(
+          this.wallet,
+          false
+        );
+        const payload = {
+          address
+        };
+        this.tx.paypro = await this.payproProvider.getPayProDetails({
+          paymentUrl: this.tx.payProUrl,
+          coin: this.wallet.coin,
+          payload,
+          disableLoader: true
+        });
+        this.tx.feeRate = parseInt(
+          (this.tx.paypro.requiredFeeRate * 1.1).toFixed(0),
+          10
+        ); // Workaround to avoid gas price supplied is lower than requested error
+      }
+      this.paymentTimeControl(this.tx.paypro.expires);
+    }
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
     const feeOpts = this.feeProvider.getFeeOpts();
