@@ -1368,7 +1368,7 @@ export class IncomingDataProvider {
 
     if (payProDetails.requiredFeeRate) {
       requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
-        ? payProDetails.requiredFeeRate
+        ? parseInt((payProDetails.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
         : Math.ceil(payProDetails.requiredFeeRate * 1000);
     }
 
