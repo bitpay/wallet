@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 
 import * as _ from 'lodash';
 
@@ -28,6 +29,7 @@ export class FeeProvider {
   constructor(
     private logger: Logger,
     private bwcProvider: BwcProvider,
+    private currencyProvider: CurrencyProvider,
     private translate: TranslateService
   ) {
     this.logger.debug('FeeProvider initialized');
@@ -93,6 +95,9 @@ export class FeeProvider {
   public getFeeLevels(coin: string, network: string): Promise<any> {
     return new Promise((resolve, reject) => {
       coin = coin || 'btc';
+      const chain = this.currencyProvider
+        .getChain(Coin[coin.toUpperCase()])
+        .toLowerCase();
       const indexFound = this.cache.findIndex(
         fl => fl.coin == coin && fl.network == network
       );
@@ -100,6 +105,11 @@ export class FeeProvider {
         indexFound >= 0 &&
         this.cache[indexFound].updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
+        if (chain === 'eth' && network === 'livenet') {
+          this.cache[indexFound].data = this.processFeeLevels(
+            this.cache[indexFound].data
+          );
+        }
         return resolve({
           levels: this.cache[indexFound].data,
           fromCache: true
@@ -112,7 +122,9 @@ export class FeeProvider {
         if (errLivenet) {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
-
+        if (chain === 'eth' && network === 'livenet') {
+          feeLevels = this.processFeeLevels(feeLevels);
+        }
         if (indexFound >= 0) {
           this.cache[indexFound] = {
             updateTs: Date.now(),
@@ -131,6 +143,31 @@ export class FeeProvider {
         return resolve({ levels: feeLevels });
       });
     });
+  }
+
+  processFeeLevels(feelevels) {
+    const normalFee = feelevels.find(f => f.level === 'normal').feePerKb;
+    const economyFee = feelevels.find(f => f.level === 'economy').feePerKb;
+    if (!normalFee || !economyFee) {
+      return feelevels;
+    }
+    if (normalFee > economyFee + Number.parseInt((normalFee / 2).toFixed(0))) {
+      const objIndex = feelevels.findIndex(f => f.level === 'economy');
+      feelevels[objIndex].feePerKb =
+        economyFee + Number.parseInt(((normalFee - economyFee) / 2).toFixed(0));
+    }
+    const superEconomyFee = feelevels.find(f => f.level === 'superEconomy')
+      .feePerKb;
+    if (
+      normalFee >
+      superEconomyFee + Number.parseInt((normalFee / 2).toFixed(0))
+    ) {
+      const objIndex = feelevels.findIndex(f => f.level === 'superEconomy');
+      feelevels[objIndex].feePerKb =
+        superEconomyFee +
+        Number.parseInt(((normalFee - superEconomyFee) / 2).toFixed(0));
+    }
+    return feelevels;
   }
 
   public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
