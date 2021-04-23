@@ -43,6 +43,17 @@
         </ion-note>
       </button>
 
+      <button ion-item (click)="openNavigationPage()" *ngIf="isCordova">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-hand.svg" />
+        </ion-icon><ion-label>
+          <div class="main-label">{{ 'Navigation' | translate }}</div>
+        </ion-label>
+        <ion-note *ngIf="navigation" item-end>
+          {{ navigation }}
+        </ion-note>
+      </button>
+
       <button ion-item (click)="openAltCurrencyPage()">
         <ion-icon class="item-img icon-settings" item-start>
           <img src="assets/img/settings-icons/icon-currency.svg" />

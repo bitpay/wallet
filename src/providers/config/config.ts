@@ -130,6 +130,10 @@ export interface Config {
   totalBalance: {
     show: boolean;
   };
+
+  navigation: {
+    type: string;
+  };
 }
 
 @Injectable()
@@ -268,6 +272,10 @@ export class ConfigProvider {
 
       totalBalance: {
         show: true
+      },
+
+      navigation: {
+        type: 'transact'
       }
     };
   }
@@ -415,6 +423,10 @@ export class ConfigProvider {
 
     if (!this.configCache.legacyQrCode) {
       this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
+    }
+
+    if (!this.configCache.navigation) {
+      this.configCache.navigation = this.configDefault.navigation;
     }
   }
 

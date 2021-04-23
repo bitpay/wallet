@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Button/Scan (Selected)</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Button/Scan-(Selected)">
+            <rect id="Rectangle" fill="#4F6EF7" x="0" y="0" width="36" height="36" rx="18"></rect>
+            <g id="Interface/Medium/Scan" transform="translate(8.000000, 8.000000)" filter="url(#filter-1)">
+                <g>
+                    <g id="Tabs-(Scan)" transform="translate(0.000000, 3.333333)" fill="#9BA3AE">
+                        <line x1="0" y1="6.1845039" x2="20" y2="6.1845039" id="Line"></line>
+                    </g>
+                    <path d="M17.5,12.5 L17.5,17.5 L12.5,17.5 L12.5,15.5 L15.5,15.5 L15.5,12.5 L17.5,12.5 Z M4.5,12.5 L4.5,15.5 L7.5,15.5 L7.5,17.5 L2.5,17.5 L2.5,12.5 L4.5,12.5 Z M20,10 L20,10.8333333 L0,10.8333333 L0,10 L20,10 Z M7.5,3.33333333 L7.5,5 L4.166,4.99933333 L4.16666667,8.33333333 L2.5,8.33333333 L2.5,3.33333333 L7.5,3.33333333 Z M17.5,3.33333333 L17.5,8.33333333 L15.5,8.33333333 L15.5,5.33333333 L12.5,5.33333333 L12.5,3.33333333 L17.5,3.33333333 Z" id="Rectangle-Copy-2" fill="#9BA3AE"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

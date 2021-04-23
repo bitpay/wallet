@@ -16,6 +16,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
@@ -41,6 +42,9 @@ export class TabsPage {
   NETWORK = 'livenet';
   public txpsN: number;
   public cardNotificationBadgeText;
+  public scanIconType: string;
+  public isCordova: boolean;
+  public navigationType: string;
   private zone;
 
   private onResumeSubscription: Subscription;
@@ -69,7 +73,8 @@ export class TabsPage {
     private locationProvider: LocationProvider,
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private themeProvider: ThemeProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -81,6 +86,10 @@ export class TabsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.logger.info('Loaded: TabsPage');
     this.appName = this.appProvider.info.nameCase;
+    this.isCordova = this.platformProvider.isCordova;
+    this.scanIconType =
+      this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
+    this.navigationType = this.themeProvider.getSelectedNavigationType();
 
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
@@ -109,12 +118,16 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
+    this.events.subscribe('Local/UpdateNavigationType', () => {
+      this.navigationType = this.themeProvider.getSelectedNavigationType();
+    });
   }
 
   private unsubscribeEvents() {
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/UpdateTxps');
     this.events.unsubscribe('Local/FetchWallets');
+    this.events.unsubscribe('Local/UpdateNavigationType');
     this.events.unsubscribe('experimentUpdateStart');
   }
 
@@ -132,6 +145,7 @@ export class TabsPage {
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('Local/UpdateTxps');
       this.events.unsubscribe('Local/FetchWallets');
+      this.events.unsubscribe('Local/UpdateNavigationType');
       this.events.unsubscribe('experimentUpdateStart');
     });
 
@@ -367,6 +381,7 @@ export class TabsPage {
 
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
+  scanRoot = ScanPage;
   cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
 }
