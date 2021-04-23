@@ -9,8 +9,14 @@
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
           <ion-icon *ngIf="!bitPayIdUserInfo" name="contact"></ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo">
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id icon-small">
+              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
+              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+            </span>
           </ion-icon>
         </button>
       </div>
@@ -24,10 +30,16 @@
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
       <expandable-header-primary>
-        <button *ngIf="isCordova && !isCopay" class="home-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
+        <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
           <ion-icon *ngIf="!bitPayIdUserInfo" name="contact"></ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo">
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="35">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id">
+              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
+              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+            </span>
           </ion-icon>
         </button>
         {{ 'Home' | translate }}
