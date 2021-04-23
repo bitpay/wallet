@@ -107,7 +107,8 @@
     }
   }
 
-  page-local-theme {
+  page-local-theme,
+  page-navigation {
     ion-content.add-bottom-safe-area {
       .fixed-content,
       .scroll-content {
@@ -201,6 +202,14 @@
         &[class*='tab-cards'],
         &[class*='tab-settings'] {
           opacity: 0.4;
+        }
+        &[class*='tab-scan'] {
+          background: url('../assets/img/tab-icons/tab-scan-dm.svg') no-repeat
+            50% 50%;
+        }
+        &[class*='tab-copay-scan'] {
+          filter: invert(0.4);
+          opacity: 1;
         }
       }
     }
