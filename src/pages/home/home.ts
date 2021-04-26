@@ -454,17 +454,19 @@ export class HomePage {
       ({ status, cards, cardExperimentEnabled }) => {
         const hasGalileo = cards && cards.some(c => c.provider === 'galileo');
         switch (status) {
-          case 'connected':
-            hasGalileo
-              ? this.removeAdvertisement('bitpay-card')
-              : this.addBitPayCard();
-            break;
           case 'disconnected':
             this.addBitPayCard();
+            this.removeAdvertisement('card-referral');
             break;
           default:
             this.cardExperimentEnabled = cardExperimentEnabled;
-            if (!hasGalileo) this.addBitPayCard();
+            if (hasGalileo) {
+              this.addCardReferralAdvertisement();
+              this.removeAdvertisement('bitpay-card');
+            } else {
+              this.addBitPayCard();
+              this.removeAdvertisement('card-referral');
+            }
         }
       }
     );
@@ -541,6 +543,36 @@ export class HomePage {
         dismissible: true
       });
     this.showAdvertisements = true;
+  }
+
+  private addCardReferralAdvertisement() {
+    this.logger.log('start add card referral advertisement');
+    if (!this.isCordova) return;
+    this.persistenceProvider
+      .getAdvertisementDismissed('card-referral')
+      .then((value: string) => {
+        if (value === 'dismissed') {
+          return;
+        }
+
+        const referral: Advertisement = {
+          name: 'card-referral',
+          title: this.translate.instant('Get $10'),
+          body: this.translate.instant(
+            'Refer a friend and get $10 loaded onto your BitPay card.'
+          ),
+          app: 'bitpay',
+          linkText: this.translate.instant('Refer Friend'),
+          link: 'card-referral',
+          isTesting: false,
+          imgSrc: 'assets/img/icon-bpcard.svg',
+          dismissible: true
+        };
+        const alreadyVisible = this.advertisements.find(
+          a => a.name === 'card-referral'
+        );
+        !alreadyVisible && this.advertisements.unshift(referral);
+      });
   }
 
   private addBitPayCard() {
@@ -801,6 +833,20 @@ export class HomePage {
   }
 
   public goTo(page, params: any = {}) {
+    if (page === 'card-referral') {
+      this.iabCardProvider.loadingWrapper(async () => {
+        this.iabCardProvider.sendMessage(
+          {
+            message: 'openCardReferralDashboard'
+          },
+          () => {
+            this.iabCardProvider.show();
+          }
+        );
+      });
+      return;
+    }
+
     if (typeof page === 'string' && page.indexOf('https://') === 0) {
       this.externalLinkProvider.open(page);
     } else {
