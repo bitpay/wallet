@@ -105,10 +105,9 @@ export class FeeProvider {
         indexFound >= 0 &&
         this.cache[indexFound].updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
-        if (chain === 'eth' && network === 'livenet') {
-          this.cache[indexFound].data = this.processFeeLevels(
-            this.cache[indexFound].data
-          );
+        if (chain === 'eth') {
+          const feeLevels = this.processFeeLevels(this.cache[indexFound].data);
+          this.cache[indexFound].data = feeLevels;
         }
         return resolve({
           levels: this.cache[indexFound].data,
@@ -122,7 +121,7 @@ export class FeeProvider {
         if (errLivenet) {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
-        if (chain === 'eth' && network === 'livenet') {
+        if (chain === 'eth') {
           feeLevels = this.processFeeLevels(feeLevels);
         }
         if (indexFound >= 0) {
@@ -146,28 +145,27 @@ export class FeeProvider {
   }
 
   processFeeLevels(feelevels) {
-    const normalFee = feelevels.find(f => f.level === 'normal').feePerKb;
-    const economyFee = feelevels.find(f => f.level === 'economy').feePerKb;
-    if (!normalFee || !economyFee) {
+    const normalFeeIdx = feelevels.findIndex(f => f.level === 'normal');
+    const economyFeeIdx = feelevels.findIndex(f => f.level === 'economy');
+    const superEconomyFeeIdx = feelevels.findIndex(
+      f => f.level === 'superEconomy'
+    );
+    const normalFee =
+      normalFeeIdx >= 0 ? feelevels[normalFeeIdx].feePerKb : undefined;
+    const economyFee =
+      economyFeeIdx >= 0 ? feelevels[economyFeeIdx].feePerKb : undefined;
+    const superEconomyFee =
+      superEconomyFeeIdx >= 0
+        ? feelevels[superEconomyFeeIdx].feePerKb
+        : undefined;
+
+    if (!normalFee || !economyFee || !superEconomyFee) {
       return feelevels;
     }
-    if (normalFee > economyFee + Number.parseInt((normalFee / 2).toFixed(0))) {
-      const objIndex = feelevels.findIndex(f => f.level === 'economy');
-      feelevels[objIndex].feePerKb =
-        economyFee + Number.parseInt(((normalFee - economyFee) / 2).toFixed(0));
-    }
-    const superEconomyFee = feelevels.find(f => f.level === 'superEconomy')
-      .feePerKb;
-    if (
-      normalFee >
-      superEconomyFee + Number.parseInt((normalFee / 2).toFixed(0))
-    ) {
-      const objIndex = feelevels.findIndex(f => f.level === 'superEconomy');
-      feelevels[objIndex].feePerKb =
-        superEconomyFee +
-        Number.parseInt(((normalFee - superEconomyFee) / 2).toFixed(0));
-    }
-    return feelevels;
+
+    delete feelevels[superEconomyFeeIdx];
+    delete feelevels[economyFeeIdx];
+    return _.clone(feelevels.filter(f => _.isObject(f) && !_.isEmpty(f)));
   }
 
   public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
