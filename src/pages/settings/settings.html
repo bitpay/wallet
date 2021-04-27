@@ -23,7 +23,9 @@
       <ng-container *ngIf="isCordova && !isCopay">
         <button ion-item (click)="openBitPayIdPage()">
 
-          <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-login" item-start name="contact"></ion-icon>
+          <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-login" item-start>
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="60">
+          </ion-icon>
           <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName" class="item-img icon-login" item-start>
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
           </ion-icon>
@@ -43,7 +45,7 @@
               </span>
               <span class="bitpay-name" *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
                 {{ bitPayIdUserInfo?.givenName }} {{ bitPayIdUserInfo?.familyName }}
-                <div class="bitpay-email">{{ bitPayIdUserInfo?.email  }}</div>
+                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
               </span>
             </span>
           </ion-label>

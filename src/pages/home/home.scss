@@ -12,15 +12,15 @@ page-home {
     float: right;
   }
   .icon-bitpay-id {
-    font-family: 'Heebo' !important;
+    font-family: 'Heebo-Medium' !important;
     background: #1a2c57;
     color: #9faff5;
-    font-size: 20px;
+    font-size: 16px;
     border-radius: 50%;
     width: 35px;
     height: 35px;
-    padding-top: 8px;
-    padding-right: 6px;
+    padding-top: 10px;
+    padding-right: 3px;
     .account-initials {
       display: inline-block;
       visibility: hidden;
@@ -31,13 +31,13 @@ page-home {
     }
   }
   .icon-bitpay-id.icon-small {
-    font-size: 14px;
+    font-size: 12px;
     width: 25px;
     height: 25px;
-    padding-top: 6px;
-    padding-right: 4px;
+    padding-top: 7px;
+    padding-right: 2px;
     .account-initials {
-      width: 5px;
+      width: 6px;
     }
   }
   .total-amount-container {
