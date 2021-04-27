@@ -81,6 +81,7 @@
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
+      <span sheet-second-button-text translate *ngIf="params.secondBtnText" (click)="openInBrowser(params.url)">{{ params.secondBtnText }}</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-later-warning'" type="warning">
@@ -579,6 +580,15 @@
         <span translate>The amount entered is greater than the maximum allowed: {{params.maxAmount}} {{params.coin}}</span>
       </span>
       <span sheet-button-text translate>Use Max Amount</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+
+    <info-sheet-template *ngSwitchCase="'erc20-eth-fee-info'" type="info">
+      <span sheet-title-text translate>Reminder</span>
+      <span sheet-text>
+        <span translate>Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet (<b>{{params.linkedEthWalletName}}</b>) to pay the ETH miner fees.</span>
+      </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
   </div>

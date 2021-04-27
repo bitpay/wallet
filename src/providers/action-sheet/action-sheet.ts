@@ -29,6 +29,7 @@ export type InfoSheetType =
   | 'copied-gift-card-claim-code'
   | 'copied-invoice-url'
   | 'default-error'
+  | 'erc20-eth-fee-info'
   | 'gift-card-archived'
   | 'gift-cards-unavailable'
   | 'hide-gift-card-discount-item'
