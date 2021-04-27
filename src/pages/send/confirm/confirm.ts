@@ -1833,4 +1833,46 @@ export class ConfirmPage {
   public openExternalLink(url: string) {
     this.externalLinkProvider.open(url);
   }
+
+  public setGasPrice(): void {
+    if (this.usingMerchantFee) return;
+
+    const message = this.translate.instant('Gas Price (Gwei)');
+    const opts = {
+      type: 'number',
+      enableBackdropDismiss: true,
+      defaultText: (this.tx.txp[this.wallet.id].gasPrice * 1e-9).toFixed(2)
+    };
+    this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+      if (res) {
+        const data = {
+          newFeeLevel: 'custom',
+          customFeePerKB: (res * 1e9).toFixed()
+        };
+        this.onFeeModalDismiss(data);
+      }
+    });
+  }
+
+  public setGasLimit(): void {
+    // sendMax: getWalletSendMaxInfo() in BWS always sets gas limit 21000 as default
+    if (this.tx.sendMax || this.usingMerchantFee) return;
+
+    const message = this.translate.instant('Gas Limit');
+    const opts = {
+      type: 'number',
+      enableBackdropDismiss: true,
+      defaultText: this.tx.txp[this.wallet.id].gasLimit
+    };
+    this.popupProvider.ionicPrompt(null, message, opts).then(res => {
+      if (res) {
+        this.tx.gasLimit = res;
+        const data = {
+          newFeeLevel: 'custom',
+          customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
+        };
+        this.onFeeModalDismiss(data);
+      }
+    });
+  }
 }
