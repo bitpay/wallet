@@ -12,13 +12,14 @@ page-home {
     float: right;
   }
   .icon-bitpay-id {
+    font-family: 'Heebo' !important;
     background: #1a2c57;
     color: #9faff5;
     font-size: 20px;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    padding-top: 7px;
+    width: 35px;
+    height: 35px;
+    padding-top: 8px;
     padding-right: 6px;
     .account-initials {
       display: inline-block;
@@ -31,10 +32,10 @@ page-home {
   }
   .icon-bitpay-id.icon-small {
     font-size: 14px;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     padding-top: 6px;
-    padding-right: 6px;
+    padding-right: 4px;
     .account-initials {
       width: 5px;
     }

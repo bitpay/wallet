@@ -8,7 +8,9 @@
     <ion-buttons *ngIf="isCordova && !isCopay" end>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
         <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
-          <ion-icon *ngIf="!bitPayIdUserInfo" name="contact"></ion-icon>
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="25">
+          </ion-icon>
           <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
           </ion-icon>
@@ -31,7 +33,9 @@
     <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
       <expandable-header-primary>
         <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
-          <ion-icon *ngIf="!bitPayIdUserInfo" name="contact"></ion-icon>
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="35">
+          </ion-icon>
           <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
             <img src="assets/img/bitpay-card/icon-bitpay.svg" width="35">
           </ion-icon>
