@@ -110,7 +110,7 @@ export class ConfirmPage {
 
   public requiredFee: number;
 
-  private errors = this.bwcProvider.getErrors();
+  public errors = this.bwcProvider.getErrors();
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -1293,12 +1293,12 @@ export class ConfirmPage {
     });
   }
 
-  private showInsufficientFundsForFeeInfoSheet(
+  public showInsufficientFundsForFeeInfoSheet(
     fee,
     feeAlternative,
     feeLevel,
     coin,
-    exit
+    exit?
   ): void {
     const canChooseFeeLevel =
       coin !== 'bch' &&
@@ -1653,7 +1653,7 @@ export class ConfirmPage {
     });
   }
 
-  private handleError(err, exit?) {
+  public handleError(err, exit?, preserveErrMsgData?: boolean) {
     const previousView = this.navCtrl.getPrevious().name;
     const isInsufficientFundsErr =
       err instanceof this.errors.INSUFFICIENT_FUNDS;
@@ -1676,10 +1676,14 @@ export class ConfirmPage {
         this.showInsufficientFundsInfoSheet();
       } else {
         this.showErrorInfoSheet(
-          this.translate.instant(
-            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
-          ),
-          this.translate.instant('Insufficient funds'),
+          preserveErrMsgData
+            ? err.message
+            : this.translate.instant(
+                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+              ),
+          preserveErrMsgData
+            ? err.title
+            : this.translate.instant('Insufficient funds'),
           exit
         );
       }
