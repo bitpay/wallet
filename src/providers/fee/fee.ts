@@ -106,7 +106,9 @@ export class FeeProvider {
         this.cache[indexFound].updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
         if (chain === 'eth') {
-          const feeLevels = this.processFeeLevels(this.cache[indexFound].data);
+          const feeLevels = this.removeLowFeeLevels(
+            this.cache[indexFound].data
+          );
           this.cache[indexFound].data = feeLevels;
         }
         return resolve({
@@ -122,7 +124,7 @@ export class FeeProvider {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
         if (chain === 'eth') {
-          feeLevels = this.processFeeLevels(feeLevels);
+          feeLevels = this.removeLowFeeLevels(feeLevels);
         }
         if (indexFound >= 0) {
           this.cache[indexFound] = {
@@ -144,17 +146,15 @@ export class FeeProvider {
     });
   }
 
-  processFeeLevels(feelevels) {
+  private removeLowFeeLevels(feelevels) {
+    // Difference between low and normal fee levels is often mistakenly very wide
     const economyFeeIdx = feelevels.findIndex(f => f.level === 'economy');
     const superEconomyFeeIdx = feelevels.findIndex(
       f => f.level === 'superEconomy'
     );
     if (superEconomyFeeIdx >= 0) delete feelevels[superEconomyFeeIdx];
     if (economyFeeIdx >= 0) delete feelevels[economyFeeIdx];
-    console.log('>>> ' + JSON.stringify(feelevels));
     return _.compact(feelevels);
-
-
   }
 
   public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
