@@ -235,6 +235,26 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.preFetchWallets();
+  
+    const deviceUUID = this.platformProvider.getDeviceUUID();
+    const hasCreatedWallet = this.persistenceProvider.getHasReportedFirebaseWalletCreateFlag();
+
+    if (!hasCreatedWallet) {
+      this.persistenceProvider.getKeys().then((keys) => {
+        if(!keys) {
+          this.analyticsProvider.logEvent('userHasNotCreatedWallet', {
+            id: this.platformProvider.getDeviceUUID(),
+          });
+        } else {
+          this.analyticsProvider.logEvent('userHasCreatedWallet', {
+            id: deviceUUID
+          });
+        }
+      });
+    } else {
+      this.persistenceProvider.setHasReportedFirebaseWalletCreateFlag();
+    }
+    
     this.merchantProvider.getMerchants();
 
     // Required delay to improve performance loading

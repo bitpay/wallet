@@ -54,6 +54,7 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HAS_REPORTED_FIREBASE_CREATED_WALLET: 'hasReportedFirebaseCreatedWallet',
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   TOTAL_BALANCE: 'totalBalance',
@@ -162,6 +163,14 @@ export class PersistenceProvider {
 
   getKeyOnboardingFlag() {
     return this.storage.get(Keys.KEY_ONBOARDING);
+  }
+
+  setHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET, true);
+  }
+  
+  getHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET);
   }
 
   storeFocusedWalletId(walletId: string) {
