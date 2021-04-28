@@ -145,27 +145,16 @@ export class FeeProvider {
   }
 
   processFeeLevels(feelevels) {
-    const normalFeeIdx = feelevels.findIndex(f => f.level === 'normal');
     const economyFeeIdx = feelevels.findIndex(f => f.level === 'economy');
     const superEconomyFeeIdx = feelevels.findIndex(
       f => f.level === 'superEconomy'
     );
-    const normalFee =
-      normalFeeIdx >= 0 ? feelevels[normalFeeIdx].feePerKb : undefined;
-    const economyFee =
-      economyFeeIdx >= 0 ? feelevels[economyFeeIdx].feePerKb : undefined;
-    const superEconomyFee =
-      superEconomyFeeIdx >= 0
-        ? feelevels[superEconomyFeeIdx].feePerKb
-        : undefined;
+    if (superEconomyFeeIdx >= 0) delete feelevels[superEconomyFeeIdx];
+    if (economyFeeIdx >= 0) delete feelevels[economyFeeIdx];
+    console.log('>>> ' + JSON.stringify(feelevels));
+    return _.compact(feelevels);
 
-    if (!normalFee || !economyFee || !superEconomyFee) {
-      return feelevels;
-    }
 
-    delete feelevels[superEconomyFeeIdx];
-    delete feelevels[economyFeeIdx];
-    return _.clone(feelevels.filter(f => _.isObject(f) && !_.isEmpty(f)));
   }
 
   public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {
