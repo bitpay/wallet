@@ -581,5 +581,13 @@
       <span sheet-button-text translate>Use Max Amount</span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'low-eth-gas'" type="danger">
+      <span sheet-title-text translate>Error</span>
+      <span sheet-text>
+        <span translate>The transaction fee cannot be lower than the fee required by the merchant. Please increase the Gas Price and/or Gas Limit</span>
+      </span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

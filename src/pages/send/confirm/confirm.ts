@@ -109,6 +109,7 @@ export class ConfirmPage {
   public isSpeedUpTx: boolean;
 
   public requiredFee: number;
+  public lowEthGas: boolean = false;
 
   private errors = this.bwcProvider.getErrors();
 
@@ -619,7 +620,9 @@ export class ConfirmPage {
           if (this.usingCustomFee) {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
-          } else if (this.usingMerchantFee) {
+          }
+
+          if (this.usingMerchantFee) {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${tx.feeRate} vs. referent level (5 * feeRate) ${maxAllowedFee}`
@@ -643,7 +646,6 @@ export class ConfirmPage {
             tx.feeLevelName = feeOpts[tx.feeLevel];
             tx.feeRate = feeRate;
           }
-
           // call getSendMaxInfo if was selected from amount view
           if (tx.sendMax && this.shouldUseSendMax()) {
             this.useSendMax(tx, wallet, opts)
@@ -833,12 +835,28 @@ export class ConfirmPage {
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
           }
 
+          tx.txp[wallet.id] = txp;
+          this.tx = tx;
+
+          if (
+            this.usingMerchantFee &&
+            (wallet.coin == 'eth' || this.isERCToken)
+          ) {
+            if (!this.requiredFee && this.usingMerchantFee) {
+              this.requiredFee = txp.fee;
+            }
+            if (txp.gasLimit * txp.gasPrice < this.requiredFee) {
+              this.lowEthGas = true;
+              return reject(this.showLowEthGasInfoSheet());
+            } else {
+              this.lowEthGas = false;
+            }
+          }
+
           if (txp.feeTooHigh) {
             this.showHighFeeSheet();
           }
 
-          tx.txp[wallet.id] = txp;
-          this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
               wallet.id +
@@ -1009,7 +1027,8 @@ export class ConfirmPage {
             toAddress: instruction.toAddress,
             amount: instruction.amount,
             message: instruction.message,
-            data: instruction.data
+            data: instruction.data,
+            gasLimit: tx.gasLimit
           });
         }
       } else {
@@ -1398,6 +1417,13 @@ export class ConfirmPage {
         }
       }
     );
+  }
+
+  private showLowEthGasInfoSheet(): void {
+    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'low-eth-gas'
+    );
+    insufficientFundsInfoSheet.present();
   }
 
   public toggleAddress(): void {
@@ -1835,8 +1861,6 @@ export class ConfirmPage {
   }
 
   public setGasPrice(): void {
-    if (this.usingMerchantFee) return;
-
     const message = this.translate.instant('Gas Price (Gwei)');
     const opts = {
       type: 'number',
@@ -1845,6 +1869,7 @@ export class ConfirmPage {
     };
     this.popupProvider.ionicPrompt(null, message, opts).then(res => {
       if (res) {
+        this.tx.gasLimit = this.tx.txp[this.wallet.id].gasLimit;
         const data = {
           newFeeLevel: 'custom',
           customFeePerKB: (res * 1e9).toFixed()
@@ -1856,7 +1881,7 @@ export class ConfirmPage {
 
   public setGasLimit(): void {
     // sendMax: getWalletSendMaxInfo() in BWS always sets gas limit 21000 as default
-    if (this.tx.sendMax || this.usingMerchantFee) return;
+    if (this.tx.sendMax) return;
 
     const message = this.translate.instant('Gas Limit');
     const opts = {
@@ -1866,7 +1891,7 @@ export class ConfirmPage {
     };
     this.popupProvider.ionicPrompt(null, message, opts).then(res => {
       if (res) {
-        this.tx.gasLimit = res;
+        this.tx.gasLimit = this.tx.txp[this.wallet.id].gasLimit = res;
         const data = {
           newFeeLevel: 'custom',
           customFeePerKB: this.tx.txp[this.wallet.id].gasPrice

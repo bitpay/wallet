@@ -75,7 +75,8 @@ export type InfoSheetType =
   | 'incorrect-recovery-prhase'
   | 'correct-recovery-prhase'
   | 'unsupported-alt-currency'
-  | 'custom-fee-warning';
+  | 'custom-fee-warning'
+  | 'low-eth-gas';
 
 export type OptionsSheetType =
   | 'wallet-options'
