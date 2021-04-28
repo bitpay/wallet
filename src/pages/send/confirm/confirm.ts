@@ -1653,7 +1653,7 @@ export class ConfirmPage {
     });
   }
 
-  public handleError(err, exit?, preserveErrMsgData?: boolean) {
+  private handleError(err, exit?) {
     const previousView = this.navCtrl.getPrevious().name;
     const isInsufficientFundsErr =
       err instanceof this.errors.INSUFFICIENT_FUNDS;
@@ -1676,14 +1676,10 @@ export class ConfirmPage {
         this.showInsufficientFundsInfoSheet();
       } else {
         this.showErrorInfoSheet(
-          preserveErrMsgData
-            ? err.message
-            : this.translate.instant(
-                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
-              ),
-          preserveErrMsgData
-            ? err.title
-            : this.translate.instant('Insufficient funds'),
+          this.translate.instant(
+            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+          ),
+          this.translate.instant('Insufficient funds'),
           exit
         );
       }
