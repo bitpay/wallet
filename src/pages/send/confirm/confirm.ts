@@ -1293,12 +1293,12 @@ export class ConfirmPage {
     });
   }
 
-  public showInsufficientFundsForFeeInfoSheet(
+  private showInsufficientFundsForFeeInfoSheet(
     fee,
     feeAlternative,
     feeLevel,
     coin,
-    exit?
+    exit
   ): void {
     const canChooseFeeLevel =
       coin !== 'bch' &&
