@@ -110,7 +110,7 @@ export class ConfirmPage {
 
   public requiredFee: number;
 
-  private errors = this.bwcProvider.getErrors();
+  public errors = this.bwcProvider.getErrors();
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;

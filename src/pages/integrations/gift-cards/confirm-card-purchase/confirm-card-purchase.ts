@@ -76,6 +76,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public invoiceId: string;
   public invoiceRates: any;
   private configWallet;
+  private invoiceFeeSat: number;
   public currencyIsoCode: string;
 
   public totalAmountStr: string;
@@ -624,7 +625,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     // Sometimes API does not return this element;
     invoice['minerFees'][COIN]['totalFee'] =
       invoice.minerFees[COIN].totalFee || 0;
-    let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+    this.invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(`{{amountUnitStr}} Gift Card`),
@@ -634,8 +635,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const ctxp = await this.createTx(wallet, invoice, this.message).catch(
       err => {
         this.onGoingProcessProvider.clear();
-        this.resetValues();
-        throw this.showErrorInfoSheet(err.message, err.title);
+        throw this._handleError(err);
       }
     );
 
@@ -667,13 +667,70 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
       this.checkFeeHigh(
         Number(amountSat),
-        Number(invoiceFeeSat) + Number(ctxp.fee)
+        Number(this.invoiceFeeSat) + Number(ctxp.fee)
       );
     }
 
-    this.setTotalAmount(wallet.coin, invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(wallet.coin, this.invoiceFeeSat, ctxp.fee);
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
+  }
+
+  private _handleError(err) {
+    const isInsufficientFundsErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS;
+    const isInsufficientFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
+    const isInsufficientLinkedEthFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+
+    if (isInsufficientFundsErr) {
+      this.showErrorInfoSheet(err.message, err.title);
+    } else if (
+      isInsufficientFundsForFeeErr ||
+      isInsufficientLinkedEthFundsForFeeErr
+    ) {
+      let { requiredFee } = err.messageData;
+      const coin = this.wallet.coin.toLowerCase();
+      let feeCoin = isInsufficientLinkedEthFundsForFeeErr ? 'eth' : coin;
+
+      this.setTotalAmount(coin, this.invoiceFeeSat, requiredFee).then(() => {
+        const totalFee = this.invoiceFeeSat + requiredFee;
+        const feeAlternative = this.txFormatProvider.formatAlternativeStr(
+          feeCoin,
+          totalFee
+        );
+        const fee = this.txFormatProvider.formatAmountStr(feeCoin, totalFee);
+        this._showInsufficientFundsForFeeInfoSheet(fee, feeAlternative, coin);
+      });
+    } else {
+      this.showErrorInfoSheet(err, null);
+    }
+    this.resetValues();
+  }
+
+  private _showInsufficientFundsForFeeInfoSheet(
+    fee,
+    feeAlternative,
+    coin
+  ): void {
+    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'insufficient-funds-for-fee',
+      {
+        fee,
+        feeAlternative,
+        coin,
+        isERCToken: this.currencyProvider.isERCToken(coin)
+      }
+    );
+    insufficientFundsInfoSheet.present();
+    insufficientFundsInfoSheet.onDidDismiss(option => {
+      if (option) {
+        this.openExternalLink(
+          'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
+        );
+      }
+    });
   }
 
   private async initializeCoinbase(account, email) {
