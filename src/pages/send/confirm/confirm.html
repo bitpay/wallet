@@ -157,9 +157,9 @@
         </ion-note>
       </button>
 
-      <div class="line-divider" *ngIf="wallet && wallet.coin === 'eth' && tx.txp[wallet.id]"></div>
+      <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <button ion-item detail-none (click)="setGasPrice()" *ngIf="wallet && wallet.coin === 'eth' && tx.txp[wallet.id]">
+      <button ion-item detail-none (click)="setGasPrice()" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]">
         <ion-label>
           <div class="summary-item">
             <span translate>Gas Price</span>

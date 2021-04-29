@@ -644,7 +644,7 @@ export class ConfirmPage {
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
             tx.feeLevelName = feeOpts[tx.feeLevel];
-            tx.feeRate = feeRate;
+            if (feeRate) tx.feeRate = feeRate;
           }
           // call getSendMaxInfo if was selected from amount view
           if (tx.sendMax && this.shouldUseSendMax()) {
@@ -838,19 +838,26 @@ export class ConfirmPage {
           tx.txp[wallet.id] = txp;
           this.tx = tx;
 
-          if (
-            this.usingMerchantFee &&
-            (wallet.coin == 'eth' || this.isERCToken)
-          ) {
-            if (!this.requiredFee && this.usingMerchantFee) {
-              this.requiredFee = txp.fee;
+          if (this.usingMerchantFee) {
+            if (!this.requiredFee) this.requiredFee = txp.fee;
+
+            if (wallet.coin === 'eth') {
+              if (txp.gasLimit * txp.gasPrice < this.requiredFee) {
+                this.lowEthGas = true;
+                return reject(this.showLowEthGasInfoSheet());
+              }
+            } else if (this.isERCToken) {
+              let ERCTokenfee = 0;
+              _.each(txp.outputs, output => {
+                ERCTokenfee += output.gasLimit * txp.gasPrice;
+              });
+              if (ERCTokenfee < this.requiredFee) {
+                this.lowEthGas = true;
+                return reject(this.showLowEthGasInfoSheet());
+              }
             }
-            if (txp.gasLimit * txp.gasPrice < this.requiredFee) {
-              this.lowEthGas = true;
-              return reject(this.showLowEthGasInfoSheet());
-            } else {
-              this.lowEthGas = false;
-            }
+
+            this.lowEthGas = false;
           }
 
           if (txp.feeTooHigh) {
@@ -1421,7 +1428,8 @@ export class ConfirmPage {
 
   private showLowEthGasInfoSheet(): void {
     const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'low-eth-gas'
+      'low-eth-gas',
+      { isERCToken: this.isERCToken }
     );
     insufficientFundsInfoSheet.present();
   }
@@ -1870,9 +1878,13 @@ export class ConfirmPage {
     this.popupProvider.ionicPrompt(null, message, opts).then(res => {
       if (res) {
         this.tx.gasLimit = this.tx.txp[this.wallet.id].gasLimit;
+        this.tx.txp[this.wallet.id].gasPrice = parseInt(
+          (res * 1e9).toFixed(),
+          10
+        );
         const data = {
           newFeeLevel: 'custom',
-          customFeePerKB: (res * 1e9).toFixed()
+          customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
         };
         this.onFeeModalDismiss(data);
       }
