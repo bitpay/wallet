@@ -109,7 +109,12 @@ export class ConfirmPage {
   public isSpeedUpTx: boolean;
 
   public requiredFee: number;
-  public lowEthGas: boolean = false;
+  public requiredFeeRate: number;
+  public minAllowedGasLimit: number;
+  public editGasPrice: boolean = false;
+  public editGasLimit: boolean = false;
+  public customGasPrice: number;
+  public customGasLimit: number;
 
   private errors = this.bwcProvider.getErrors();
 
@@ -281,7 +286,8 @@ export class ConfirmPage {
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
-      this.tx.feeRate = +this.navParams.data.requiredFeeRate;
+      this.tx.feeRate = this.requiredFeeRate = +this.navParams.data
+        .requiredFeeRate;
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
       this.tx.feeLevel = 'custom';
@@ -838,26 +844,13 @@ export class ConfirmPage {
           tx.txp[wallet.id] = txp;
           this.tx = tx;
 
-          if (this.usingMerchantFee) {
-            if (!this.requiredFee) this.requiredFee = txp.fee;
-
-            if (wallet.coin === 'eth') {
-              if (txp.gasLimit * txp.gasPrice < this.requiredFee) {
-                this.lowEthGas = true;
-                return reject(this.showLowEthGasInfoSheet());
-              }
-            } else if (this.isERCToken) {
-              let ERCTokenfee = 0;
-              _.each(txp.outputs, output => {
-                ERCTokenfee += output.gasLimit * txp.gasPrice;
-              });
-              if (ERCTokenfee < this.requiredFee) {
-                this.lowEthGas = true;
-                return reject(this.showLowEthGasInfoSheet());
-              }
-            }
-
-            this.lowEthGas = false;
+          if (wallet.coin == 'eth' || this.isERCToken) {
+            this.customGasPrice = Number(
+              (this.tx.txp[wallet.id].gasPrice * 1e-9).toFixed(2)
+            );
+            this.customGasLimit = this.tx.txp[wallet.id].gasLimit;
+            if (!this.minAllowedGasLimit)
+              this.minAllowedGasLimit = this.tx.txp[wallet.id].gasLimit;
           }
 
           if (txp.feeTooHigh) {
@@ -1426,14 +1419,6 @@ export class ConfirmPage {
     );
   }
 
-  private showLowEthGasInfoSheet(): void {
-    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'low-eth-gas',
-      { isERCToken: this.isERCToken }
-    );
-    insufficientFundsInfoSheet.present();
-  }
-
   public toggleAddress(): void {
     this.showAddress = !this.showAddress;
   }
@@ -1869,47 +1854,25 @@ export class ConfirmPage {
   }
 
   public setGasPrice(): void {
-    const message = this.translate.instant('Gas Price (Gwei)');
-    const opts = {
-      type: 'number',
-      enableBackdropDismiss: true,
-      defaultText: (this.tx.txp[this.wallet.id].gasPrice * 1e-9).toFixed(2)
+    this.editGasPrice = !this.editGasPrice;
+
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.customGasPrice * 1e9
     };
-    this.popupProvider.ionicPrompt(null, message, opts).then(res => {
-      if (res) {
-        this.tx.gasLimit = this.tx.txp[this.wallet.id].gasLimit;
-        this.tx.txp[this.wallet.id].gasPrice = parseInt(
-          (res * 1e9).toFixed(),
-          10
-        );
-        const data = {
-          newFeeLevel: 'custom',
-          customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
-        };
-        this.onFeeModalDismiss(data);
-      }
-    });
+    this.onFeeModalDismiss(data);
   }
 
   public setGasLimit(): void {
-    // sendMax: getWalletSendMaxInfo() in BWS always sets gas limit 21000 as default
-    if (this.tx.sendMax) return;
+    this.editGasLimit = !this.editGasLimit;
+    this.tx.gasLimit = this.tx.txp[
+      this.wallet.id
+    ].gasLimit = this.customGasLimit;
 
-    const message = this.translate.instant('Gas Limit');
-    const opts = {
-      type: 'number',
-      enableBackdropDismiss: true,
-      defaultText: this.tx.txp[this.wallet.id].gasLimit
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
     };
-    this.popupProvider.ionicPrompt(null, message, opts).then(res => {
-      if (res) {
-        this.tx.gasLimit = this.tx.txp[this.wallet.id].gasLimit = res;
-        const data = {
-          newFeeLevel: 'custom',
-          customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
-        };
-        this.onFeeModalDismiss(data);
-      }
-    });
+    this.onFeeModalDismiss(data);
   }
 }

@@ -80,7 +80,6 @@ export interface TransactionProposal {
   payProUrl: any;
   excludeUnconfirmedUtxos: boolean;
   feePerKb: number;
-  gasPrice?: number;
   feeLevel: string;
   dryRun: boolean;
   tokenAddress?: string;
