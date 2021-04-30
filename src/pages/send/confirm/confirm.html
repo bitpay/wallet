@@ -159,7 +159,18 @@
 
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]">
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Price</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+            <span item-start>{{tx.txp[wallet.id].gasPrice * 1e-9 | number:'1.2-2'}} (Gwei)</span>
+        </ion-note>
+      </button>
+
+      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasPrice">
         <ion-label>
           <div class="summary-item">
             <span translate>Gas Price</span>
@@ -167,24 +178,14 @@
         </ion-label>
         <ion-note class="main-note" item-end>
             <ion-row align-items-center>
-              <ion-col text-right>
-                <span item-start *ngIf="!editGasPrice">{{tx.txp[wallet.id].gasPrice * 1e-9 | number:'1.2-2'}}</span>
-                <ion-input item-start *ngIf="editGasPrice" type="number" min="requiredFeeRate ?  requiredFeeRate * 1e-9 : 1" [(ngModel)]="customGasPrice" required></ion-input>
-              </ion-col>
-              <ion-col text-right>
-                <span item-end> (Gwei)</span>
-              </ion-col>
-              <ion-col text-right>
-                <button item-end class="reorder-option" ion-button item-end clear *ngIf="!editGasPrice" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
-                  <ion-icon name="md-create"></ion-icon>
-                </button>
-                <button item-end [disabled]="requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9 : customGasPrice < 1" class="reorder-option" ion-button clear *ngIf="editGasPrice" (click)="setGasPrice()">
-                  <ion-icon name="md-checkmark"></ion-icon>
-                </button>
-                <button item-end class="reorder-option" ion-button clear *ngIf="editGasPrice" (click)="editGasPrice = !editGasPrice">
-                  <ion-icon name="md-close"></ion-icon>
-                </button>
-              </ion-col>
+              <ion-input item-start type="number" min="requiredFeeRate ?  requiredFeeRate * 1e-9 : 1" [(ngModel)]="customGasPrice" required></ion-input>
+              <ion-text text-right> (Gwei)</ion-text>
+              <button item-end [disabled]="requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9 : customGasPrice < 1" ion-button clear (click)="setGasPrice()">
+                <ion-icon name="md-checkmark"></ion-icon>
+              </button>
+              <button item-end ion-button clear (click)="editGasPrice = !editGasPrice">
+                <ion-icon name="md-close"></ion-icon>
+              </button>
             </ion-row>
         </ion-note>
       </ion-item>
@@ -200,30 +201,33 @@
 
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]">
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || isERCToken}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
         <ion-label>
           <div class="summary-item">
             <span translate>Gas Limit</span>
           </div>
         </ion-label>
         <ion-note class="main-note" item-end>
-            <ion-row align-items-center>
-              <ion-col text-right>
-                <span item-start *ngIf="!editGasLimit">{{tx.txp[wallet.id].gasLimit}}</span>
-                <ion-input item-start *ngIf="editGasLimit" type="number" min="minAllowedGasLimit" [(ngModel)]="customGasLimit" required></ion-input>
-              </ion-col>
-              <ion-col text-right *ngIf="!tx.sendMax && !isERCToken">
-                <button item-end class="reorder-option" ion-button item-end clear *ngIf="!editGasLimit" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
-                  <ion-icon name="md-create"></ion-icon>
-                </button>
-                <button item-end [disabled]="customGasLimit < minAllowedGasLimit" class="reorder-option" ion-button clear *ngIf="editGasLimit" (click)="setGasLimit()">
-                  <ion-icon name="md-checkmark"></ion-icon>
-                </button>
-                <button item-end class="reorder-option" ion-button clear *ngIf="editGasLimit" (click)="editGasLimit = !editGasLimit">
-                  <ion-icon name="md-close"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
+            <span item-start>{{tx.txp[wallet.id].gasLimit}}</span>
+        </ion-note>
+      </button>
+
+      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasLimit">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Limit</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+          <ion-row align-items-center>
+            <ion-input item-start  type="number" min="minAllowedGasLimit" [(ngModel)]="customGasLimit" required></ion-input>
+            <button item-end [disabled]="customGasLimit < minAllowedGasLimit" ion-button clear (click)="setGasLimit()">
+              <ion-icon name="md-checkmark"></ion-icon>
+            </button>
+            <button item-end ion-button clear (click)="editGasLimit = !editGasLimit">
+              <ion-icon name="md-close"></ion-icon>
+            </button>
+          </ion-row>
         </ion-note>
       </ion-item>
 
