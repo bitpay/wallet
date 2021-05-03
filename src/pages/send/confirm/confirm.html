@@ -157,6 +157,86 @@
         </ion-note>
       </button>
 
+      <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
+
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Price</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+            <span item-start>{{tx.txp[wallet.id].gasPrice * 1e-9 | number:'1.2-2'}} (Gwei)</span>
+        </ion-note>
+      </button>
+
+      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasPrice">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Price</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+            <ion-row align-items-center>
+              <ion-input item-start type="number" min="requiredFeeRate ?  requiredFeeRate * 1e-9 : 1" [(ngModel)]="customGasPrice" required></ion-input>
+              <ion-text text-right> (Gwei)</ion-text>
+              <button item-end [disabled]="requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9 : customGasPrice < 1" ion-button clear (click)="setGasPrice()">
+                <ion-icon name="md-checkmark"></ion-icon>
+              </button>
+              <button item-end ion-button clear (click)="editGasPrice = !editGasPrice">
+                <ion-icon name="md-close"></ion-icon>
+              </button>
+            </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="amount-details" *ngIf="(requiredFeeRate ? customGasPrice < requiredFeeRate * 1e-9: customGasPrice < 1) && editGasPrice">
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="!requiredFeeRate" translate>
+          The Gas Price cannot be lower than 1 Gwei
+        </div>
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="requiredFeeRate" translate>
+          The Gas Price cannot be lower than the required by the merchant ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
+        </div>
+      </div>
+
+      <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
+
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || isERCToken}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Limit</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+            <span item-start>{{tx.txp[wallet.id].gasLimit}}</span>
+        </ion-note>
+      </button>
+
+      <ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && editGasLimit">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Gas Limit</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>
+          <ion-row align-items-center>
+            <ion-input item-start  type="number" min="minAllowedGasLimit" [(ngModel)]="customGasLimit" required></ion-input>
+            <button item-end [disabled]="customGasLimit < minAllowedGasLimit" ion-button clear (click)="setGasLimit()">
+              <ion-icon name="md-checkmark"></ion-icon>
+            </button>
+            <button item-end ion-button clear (click)="editGasLimit = !editGasLimit">
+              <ion-icon name="md-close"></ion-icon>
+            </button>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
+      <div class="amount-details" *ngIf="customGasLimit < minAllowedGasLimit && editGasLimit">
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" translate>
+          The Gas Limit cannot be lower than {{minAllowedGasLimit}}
+        </div>
+      </div>
+
       <div class="line-divider"></div>
 
       <button ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromWalletDetails || walletConnectRequestId}">
@@ -259,7 +339,7 @@
       </ion-item>
 
       <div class="amount-details" *ngIf="totalAmount" padding-bottom>
-        <div class="total-amount-note total-amount-note">
+        <div class="total-amount-note">
           {{totalAmount | satToFiat: tx.coin}}
         </div>
       </div>

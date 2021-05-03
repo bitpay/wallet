@@ -202,4 +202,10 @@ page-bitpay-card-topup {
       padding-left: 10px;
     }
   }
+  .item.item-input span {
+    width: auto;
+  }
+  .item.item-input input {
+    width: 80px;
+  }
 }
