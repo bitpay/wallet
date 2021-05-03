@@ -129,7 +129,7 @@
 
     <div class="line-divider" *ngIf="!coinbaseAccount"></div>
 
-    <ion-item *ngIf="!coinbaseAccount">
+    <ion-item *ngIf="networkFee && !coinbaseAccount">
       <ion-label>
         <div class="summary-item">
           <span translate>Miner fee</span>
@@ -145,7 +145,7 @@
 
     <div class="summary-line"></div>
 
-    <ion-item>
+    <ion-item *ngIf="totalAmountStr">
       <ion-label>
         <div class="main-label total-label">TOTAL</div>
       </ion-label>
@@ -156,7 +156,7 @@
         </div>
       </ion-note>
     </ion-item>
-    <div *ngIf="totalAmount && !isERCToken" class="amount-details">
+    <div *ngIf="totalAmountStr && totalAmount && !isERCToken" class="amount-details">
       <div class="secondary-note">
         {{totalAmount | number:'1.2-2'}} {{currencyIsoCode}}
       </div>
