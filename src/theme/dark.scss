@@ -8,8 +8,6 @@
 1.6 - Toggles
 1.7 - Overriding Ionic Variables
 
-2 - Transition between themes
-
 3 - General
 3.1 - Lists
 3.2 - Label tip
@@ -69,12 +67,6 @@
 
   // 1.7 - Overriding Ionic Variables
   $background-color: $bg-color-dark-theme;
-
-  // 2 - Transition between themes
-  // This is just to make a smooth transition between themes
-  @mixin transition {
-    transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
-  }
 
   @include toolbar-button-color($text-color-dark-theme);
 

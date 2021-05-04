@@ -1,9 +1,4 @@
 .light {
-  // Uses default values. This is just to make a smooth transition between themes
-  @mixin transition {
-    transition: all, color, 150ms cubic-bezier(0, 0, 0.3, 0.3) !important;
-  }
-
   // Overriding Ionic Variable
   $background-color: #fff;
 }
