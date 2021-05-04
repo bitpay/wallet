@@ -107,42 +107,6 @@
     }
   }
 
-  page-local-theme,
-  page-navigation {
-    ion-content.add-bottom-safe-area {
-      .fixed-content,
-      .scroll-content {
-        @include transition();
-      }
-    }
-
-    ion-content.add-padding-bottom,
-    .add-padding-bottom ion-content {
-      .fixed-content,
-      .scroll-content {
-        @include transition();
-      }
-    }
-
-    ion-content,
-    .content-ios .toolbar-background-ios,
-    .toolbar-background-md,
-    .toolbar-title,
-    .header .toolbar-background {
-      @include transition();
-    }
-
-    // Lists
-    .bp-list.settings-list {
-      .item {
-        &.item-ios,
-        &.item-md {
-          @include transition();
-        }
-      }
-    }
-  }
-
   // 3 - General
   ion-content {
     background-color: $bg-color-dark-theme;
