@@ -42,6 +42,13 @@
         </div>
       </label-tip>
       <ion-item *ngIf="this.addressBookAdd.get('address').valid">
+        <ion-label stacked translate>Coin</ion-label>
+        <ion-input formControlName="coin" type="text" [value]="addressBookAdd.value.coin"></ion-input>
+        <!-- <ion-select formControlName="coin">
+          <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>
+        </ion-select> -->
+      </ion-item>
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid">
         <ion-label stacked translate>Network</ion-label>
         <ion-select formControlName="network" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network)">
           <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>

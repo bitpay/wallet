@@ -5,8 +5,6 @@ import {
   AddressBookProvider,
   Contact
 } from '../../../providers/address-book/address-book';
-import { AddressProvider } from '../../../providers/address/address';
-import { Logger } from '../../../providers/logger/logger';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
 
@@ -15,48 +13,32 @@ import { AddressbookViewPage } from './view/view';
   templateUrl: 'addressbook.html'
 })
 export class AddressbookPage {
-  public addressbook: object[] = [];
-  public filteredAddressbook: object[] = [];
+  public addressbook: Contact[] = [];
+  public filteredAddressbook: Contact[] = [];
 
   public isEmptyList: boolean;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private logger: Logger,
-    private addressbookProvider: AddressBookProvider,
-    private addressProvider: AddressProvider
+    private addressbookProvider: AddressBookProvider
   ) {}
 
   ionViewDidEnter() {
-    this.initAddressbook();
+    setTimeout(async () => {
+      await this.initAddressbook().catch();
+    }, 100);
   }
 
-  private initAddressbook(): void {
-    this.addressbookProvider
-      .list()
-      .then(addressBook => {
-        this.isEmptyList = _.isEmpty(addressBook);
-        setTimeout(() => {
-          let contacts: Contact[] = [];
-          _.each(addressBook, (contact, k: string) => {
-            const coinInfo = this.getCoinAndNetwork(k, contact.network);
-            contacts.push({
-              name: _.isObject(contact) ? contact.name : contact,
-              address: k,
-              email: _.isObject(contact) ? contact.email : null,
-              tag: _.isObject(contact) ? contact.tag : null,
-              coin: coinInfo.coin,
-              network: coinInfo.network
-            });
-          });
-          this.addressbook = _.clone(contacts);
-          this.filteredAddressbook = _.clone(this.addressbook);
-        }, 100);
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
+  private async initAddressbook() {
+    this.addressbook = [];
+    this.filteredAddressbook = [];
+    const livenetContacts = await this.addressbookProvider.list('livenet');
+    if (livenetContacts) this.addressbook.push(...livenetContacts);
+    const testnetContacts = await this.addressbookProvider.list('testnet');
+    if (testnetContacts) this.addressbook.push(...testnetContacts);
+    this.filteredAddressbook.push(...this.addressbook);
+    this.isEmptyList = _.isEmpty(this.addressbook);
   }
 
   public addEntry(): void {
@@ -80,14 +62,7 @@ export class AddressbookPage {
       this.filteredAddressbook = result;
     } else {
       // Reset items back to all of the items
-      this.initAddressbook();
+      this.filteredAddressbook = _.clone(this.addressbook);
     }
-  }
-
-  private getCoinAndNetwork(
-    addr: string,
-    network?: string
-  ): { coin: string; network: string } {
-    return this.addressProvider.getCoinAndNetwork(addr, network);
   }
 }
