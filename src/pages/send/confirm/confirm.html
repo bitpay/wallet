@@ -25,7 +25,7 @@
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
               <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-              <span *ngIf="!tx.name">{{tx.origToAddress | shortenedAddress}}</span>
+              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
 
@@ -105,7 +105,7 @@
             <div class="payment-proposal-to align-right">
               <div class="background-content">
                 <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-                <span>{{(recipient.addressToShow || recipient.toAddress || recipient.address) | shortenedAddress}}</span>
+                <span>{{recipient.contactName || ((recipient.addressToShow || recipient.toAddress || recipient.address) | shortenedAddress)}}</span>
               </div>
             </div>
             <div class="multi-amount">{{recipient.amountToShow}} {{coin | uppercase}}</div>
