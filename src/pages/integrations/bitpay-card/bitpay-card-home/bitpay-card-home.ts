@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 // Providers
-import { AppProvider, IABCardProvider } from '../../../../providers';
+import { AnalyticsProvider, AppProvider, IABCardProvider, PlatformProvider } from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -63,6 +63,8 @@ export class BitPayCardHome implements OnInit {
     private navCtrl: NavController,
     private iabCardProvider: IABCardProvider,
     private persistenceProvider: PersistenceProvider,
+    private analyticsProvider: AnalyticsProvider,
+    private platformProvider: PlatformProvider,
     private events: Events
   ) {
     this.persistenceProvider.getWaitingListStatus().then(status => {
@@ -89,7 +91,52 @@ export class BitPayCardHome implements OnInit {
     return index;
   }
 
+  public async runCardAudienceEvents() {
+    let cards = await this.persistenceProvider.getBitpayDebitCards('livenet');
+    let physicalCards = cards.filter(c => c.cardType == 'physical');
+    let virtualCards = cards.filter(c => c.cardType == 'virtual');
+    let deviceUUID = this.platformProvider.getDeviceUUID();
+
+    let hasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
+    if(!hasFundedCard) {
+      let cardHasBalance = cards.some(c => c.cardBalance > 0);
+      if (cardHasBalance) {
+        this.analyticsProvider.logEvent('has_funded_card', {
+          uuid: deviceUUID,
+        });
+        this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
+      } else {
+        this.analyticsProvider.logEvent('has_not_funded_card', {
+          uuid: deviceUUID
+        })
+      }
+    }
+
+
+    let hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
+    let hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();
+
+    if (!hasReportedFirebaseHasPhysicalCard) {
+      if (physicalCards.length > 0) {
+        this.analyticsProvider.logEvent('has_physical_card', {
+          uuid: deviceUUID
+        });
+      }
+      this.persistenceProvider.setHasReportedFirebaseHasPhysicalCardFlag();
+    }
+
+    if (!hasReportedFirebaseHasVirtualCard) {
+      if (virtualCards.length > 0) {
+        this.analyticsProvider.logEvent('has_virtual_card', {
+          uuid: deviceUUID
+        });
+      }
+      this.persistenceProvider.setHasReportedFirebaseHasVirtualCardFlag();
+    }
+  }
+
   public async goToCard(cardId) {
+    this.runCardAudienceEvents();
     this.iabCardProvider.loadingWrapper(async () => {
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
         this.network
