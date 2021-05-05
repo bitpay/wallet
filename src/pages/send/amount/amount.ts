@@ -319,7 +319,7 @@ export class AmountPage {
     let nextPage;
     switch (this.navParams.data.nextPage) {
       case 'BitPayCardTopUpPage':
-        this.showSendMax = true;
+        this.showSendMax = false;
         nextPage = BitPayCardTopUpPage;
         break;
       case 'ConfirmCardPurchasePage':
