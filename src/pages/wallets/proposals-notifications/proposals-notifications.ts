@@ -11,7 +11,10 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import {
+  AddressBookProvider,
+  Contact
+} from '../../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
@@ -31,7 +34,7 @@ import { FinishModalPage } from '../../finish/finish';
 export class ProposalsNotificationsPage {
   @ViewChild('slideButton')
   slideButton;
-  public addressbook;
+  public addressbook: Contact[];
   public allTxps: any[];
   public txpsPending: any[];
   public txpsAccepted: any[];
@@ -129,9 +132,17 @@ export class ProposalsNotificationsPage {
 
   private updateAddressBook(): void {
     this.addressBookProvider
-      .list()
+      .list('livenet')
       .then(ab => {
-        this.addressbook = ab || {};
+        if (ab) this.addressbook.push(...ab);
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+    this.addressBookProvider
+      .list('testnet')
+      .then(ab => {
+        if (ab) this.addressbook.push(...ab);
       })
       .catch(err => {
         this.logger.error(err);
