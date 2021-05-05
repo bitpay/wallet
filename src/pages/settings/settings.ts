@@ -43,11 +43,11 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { BitPayIdPage } from './bitpay-id/bitpay-id';
-import { FeePolicyPage } from './fee-policy/fee-policy';
 import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
 import { LocalThemePage } from './local-theme/local-theme';
 import { LockPage } from './lock/lock';
+import { NavigationPage } from './navigation/navigation';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
@@ -98,6 +98,7 @@ export class SettingsPage {
   public tapped = 0;
   public certOnlyTapped = 0;
   public appVersion: string;
+  public navigation: string;
   private featureList: any;
   constructor(
     private navCtrl: NavController,
@@ -204,6 +205,7 @@ export class SettingsPage {
 
     // Get Theme
     this.appTheme = this.themeProvider.getCurrentAppTheme();
+    this.navigation = this.themeProvider.getCurrentNavigationType();
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -330,6 +332,10 @@ export class SettingsPage {
     this.navCtrl.push(LocalThemePage);
   }
 
+  public openNavigationPage(): void {
+    this.navCtrl.push(NavigationPage);
+  }
+
   public openLockPage(): void {
     const config = this.configProvider.get();
     const lockMethod =
@@ -347,10 +353,6 @@ export class SettingsPage {
 
   public openNotificationsPage(): void {
     this.navCtrl.push(NotificationsPage);
-  }
-
-  public openFeePolicyPage(): void {
-    this.navCtrl.push(FeePolicyPage);
   }
 
   public openWalletSettingsPage(walletId: string): void {

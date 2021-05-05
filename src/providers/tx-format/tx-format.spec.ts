@@ -48,35 +48,33 @@ describe('TxFormatProvider', () => {
   });
 
   describe('formatAmount', () => {
-    it('should get the formatted amount for provided amount', () => {
-      let newOpts = {
-        wallet: {
-          settings: { unitCode: 'bit' }
+    const testVectors: any[] = [
+      // [coin, amount, fullPrecision, expectedResult]
+      ['bit', 12312312, true, '123,123.12'],
+      ['sat', 12312312, true, '12312312'],
+      ['btc', 0, true, '0.00000000'],
+      ['btc', 0, false, '0.00'],
+      ['btc', 12312312, true, '0.12312312'],
+      ['btc', 1231231223423, true, '12,312.31223423'],
+      ['btc', 1231231223423, false, '12,312.312234'],
+      ['eth', 345345345345345345, true, '0.34534534'],
+      ['eth', 345345345345345345, false, '0.345345'],
+      ['eth', 345345345345345345123123, true, '345,345.34534534']
+    ];
+
+    testVectors.forEach(v => {
+      it(
+        'should get the formatted amount for ' +
+          v[1] +
+          ' "satoshis" in ' +
+          v[0] +
+          ' and fullPrecision: ' +
+          v[2],
+        () => {
+          let formattedAmount = txFormatProvider.formatAmount(v[0], v[1], v[2]);
+          expect(formattedAmount).toEqual(v[3]);
         }
-      };
-      configProvider.set(newOpts);
-
-      let formattedAmount = txFormatProvider.formatAmount(
-        'bit',
-        12312312,
-        true
       );
-      expect(formattedAmount).toEqual('123,123.12');
-    });
-
-    it('should get the same amount of satoshis that was provided', () => {
-      let newOpts = {
-        wallet: {
-          settings: { unitCode: 'sat' }
-        }
-      };
-      configProvider.set(newOpts);
-
-      let formattedAmount: number = txFormatProvider.formatAmount(
-        'sat',
-        12312312
-      );
-      expect(formattedAmount).toEqual(12312312);
     });
   });
 

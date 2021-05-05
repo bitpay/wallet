@@ -79,7 +79,6 @@ const Keys = {
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
-  APP_THEME: 'app-theme',
   USER_LOCATION: 'user-location',
   COUNTRIES: 'countries',
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
@@ -883,14 +882,6 @@ export class PersistenceProvider {
   }
   getReachedCardLimit() {
     return this.storage.get('reachedCardLimit');
-  }
-
-  setAppTheme(value: string) {
-    return this.storage.set(Keys.APP_THEME, value);
-  }
-
-  getAppTheme() {
-    return this.storage.get(Keys.APP_THEME);
   }
 
   setUserLocation(location: string) {

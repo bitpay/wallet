@@ -8,6 +8,7 @@ import { FormatCurrencyPipe } from '../../pipes/format-currency';
 // Providers
 import {
   AppProvider,
+  BitPayIdProvider,
   BwcProvider,
   DynamicLinksProvider,
   EmailNotificationsProvider,
@@ -15,6 +16,7 @@ import {
   FeedbackProvider,
   GiftCardProvider,
   HomeIntegrationsProvider,
+  IABCardProvider,
   Logger,
   MerchantProvider,
   NewFeatureData,
@@ -36,6 +38,7 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { User } from '../../models/user/user.model';
 import { Network } from '../../providers/persistence/persistence';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -47,6 +50,7 @@ import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
+import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
 
 export interface Advertisement {
   name: string;
@@ -95,6 +99,8 @@ export class HomePage {
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
+  public bitPayIdUserInfo: any;
+  private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
@@ -128,6 +134,8 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
     private splashScreen: SplashScreen,
+    private iabCardProvider: IABCardProvider,
+    private bitPayIdProvider: BitPayIdProvider,
     private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
@@ -187,6 +195,14 @@ export class HomePage {
 
   ionViewWillEnter() {
     const config = this.configProvider.get();
+    if (this.iabCardProvider.ref) {
+      // check for user info
+      this.persistenceProvider
+        .getBitPayIdUserInfo(this.network)
+        .then((user: User) => {
+          this.bitPayIdUserInfo = user;
+        });
+    }
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.events.publish('Local/showNewFeaturesSlides');
@@ -956,8 +972,30 @@ export class HomePage {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode
     };
-    if (!this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode)) {
+    if (
+      !this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode) &&
+      !_.isEmpty(this.rateProvider.alternatives)
+    ) {
       this.showInfoSheet(altCurrency);
+    }
+  }
+
+  public openBitPayIdPage(): void {
+    if (this.bitPayIdUserInfo) {
+      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
+    } else {
+      this.iabCardProvider.loadingWrapper(() => {
+        this.logger.log('settings - pairing');
+        this.iabCardProvider.show();
+        setTimeout(() => {
+          this.iabCardProvider.sendMessage(
+            {
+              message: 'pairingOnly'
+            },
+            () => {}
+          );
+        }, 100);
+      });
     }
   }
 }

@@ -1,13 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Slides } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
-import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 interface FeeOpts {
   feeUnit: string;
@@ -18,9 +17,7 @@ interface FeeOpts {
   selector: 'page-choose-fee-level',
   templateUrl: 'choose-fee-level.html'
 })
-export class ChooseFeeLevelComponent extends ActionSheetParent {
-  @ViewChild('feeSlides')
-  feeSlides: Slides;
+export class ChooseFeeLevelModal {
   private blockTime: number;
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
@@ -55,26 +52,25 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
     private popupProvider: PopupProvider,
     public feeProvider: FeeProvider,
     private translate: TranslateService,
-    private externalLinkProvider: ExternalLinkProvider
-  ) {
-    super();
-  }
+    private externalLinkProvider: ExternalLinkProvider,
+    private navParams: NavParams,
+    private viewCtrl: ViewController
+  ) {}
 
   ngOnInit() {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
-    // From parent controller
-    this.network = this.params.network;
-    this.coin = this.params.coin;
-    this.feeLevel = this.params.feeLevel;
+    this.network = this.navParams.data.network;
+    this.coin = this.navParams.data.coin;
+    this.feeLevel = this.navParams.data.feeLevel;
     this.setFeeUnits();
 
     // IF usingCustomFee
-    this.customFeePerKB = this.params.customFeePerKB
-      ? this.params.customFeePerKB
+    this.customFeePerKB = this.navParams.data.customFeePerKB
+      ? this.navParams.data.customFeePerKB
       : null;
-    this.feePerSatByte = this.params.feePerSatByte
-      ? this.params.feePerSatByte
+    this.feePerSatByte = this.navParams.data.feePerSatByte
+      ? this.navParams.data.feePerSatByte
       : null;
 
     if (_.isEmpty(this.feeLevel))
@@ -132,15 +128,6 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
         ).toFixed();
     });
 
-    setTimeout(() => {
-      const index = this.feeOpts
-        .map(feeOpt => feeOpt.level)
-        .indexOf(this.feeLevel);
-      index == -1
-        ? this.feeSlides.slideTo(this.feeSlides.length(), 200)
-        : this.feeSlides.slideTo(index, 200);
-    }, 300);
-
     // Warnings
     this.setFeesRecommended();
     this.checkFees(this.feePerSatByte);
@@ -159,7 +146,7 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     this.popupProvider.ionicAlert(title, msg).then(() => {
-      this.dismiss();
+      this.viewCtrl.dismiss();
     });
   }
 
@@ -179,19 +166,19 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
   }
 
   private getMinRecommended(): number {
-    let value = _.find(this.feeLevels, feeLevel => {
-      return feeLevel.level == 'superEconomy';
+    let value = _.map(this.feeLevels, feeLevel => {
+      return feeLevel.feePerKb;
     });
-
-    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
+    const minValue = Math.min(...value);
+    return parseInt((minValue / this.feeUnitAmount).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
-    let value = _.find(this.feeLevels, feeLevel => {
-      return feeLevel.level == 'urgent';
+    let value = _.map(this.feeLevels, feeLevel => {
+      return feeLevel.feePerKb;
     });
-
-    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
+    const maxValue = Math.max(...value);
+    return parseInt((maxValue / this.feeUnitAmount).toFixed(), 10);
   }
 
   public checkFees(feePerSatByte: string): void {
@@ -210,11 +197,15 @@ export class ChooseFeeLevelComponent extends ActionSheetParent {
       ? (this.customSatPerByte * this.feeUnitAmount).toFixed()
       : null;
 
-    this.dismiss({
+    this.viewCtrl.dismiss({
       newFeeLevel: this.feeLevel,
       customFeePerKB: this.customFeePerKB,
       showMinWarning: this.showMinWarning
     });
+  }
+
+  public close(): void {
+    this.viewCtrl.dismiss();
   }
 
   public openExternalLink(url: string): void {

@@ -26,8 +26,8 @@
   "WindowsApplicationId": "CopayforWindows",
   "pushSenderId": "1036948132229",
   "description": "A Secure Bitcoin Wallet",
-  "version": "12.4.1",
-  "androidVersion": "91204001",
+  "version": "12.5.0",
+  "androidVersion": "91205000",
   "iOSBuildVersion": "1",
   "_extraCSS": null,
   "_enabledExtensions": {

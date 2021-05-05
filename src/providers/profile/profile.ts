@@ -403,11 +403,12 @@ export class ProfileProvider {
       this.logger.info('BWC Report:' + n);
     });
 
-    // Desktop: uses this event 'notification'
-    // Mobile: uses 'bwsEvent'
-    //
-    // Disabled on mobile to avoid duplicate notifications
-    if (!this.platformProvider.isCordova) {
+    // Desktop: only use this 'notification' event
+    // Mobile: use this event in case push notification is not enabled; otherwise use push notifications
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
       wallet.on('notification', n => {
         if (this.platformProvider.isElectron) {
           this.showDesktopNotifications(n, wallet);
@@ -444,7 +445,12 @@ export class ProfileProvider {
           this.logger.error('Could not init notifications err:', err);
           return;
         }
-        wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+        if (
+          !this.configProvider.get().pushNotifications.enabled ||
+          !this.platformProvider.isCordova
+        ) {
+          wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+        }
         wallet.openWallet(() => {});
       }
     );
@@ -541,12 +547,22 @@ export class ProfileProvider {
 
   public setFastRefresh(wallet): void {
     this.logger.debug(`Wallet ${wallet.id} set to fast refresh`);
-    wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
+    }
   }
 
   public setSlowRefresh(wallet): void {
     this.logger.debug(`Wallet ${wallet.id} back to slow refresh`);
-    wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+    }
   }
 
   private showDesktopNotifications(n, wallet): void {

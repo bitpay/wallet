@@ -192,13 +192,14 @@ export class WalletConnectPage {
 
   public approveRequest(request): void {
     try {
-      let addressRequested = request.params[0].from || request.params[0];
+      let addressRequested;
       const address = this.address;
       const wallet = this.wallet;
       const peerMeta = this.peerMeta;
 
       switch (request.method) {
         case 'eth_sendTransaction':
+          addressRequested = request.params[0].from;
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
             // redirect to confirm page with navParams
             let data = {
@@ -226,9 +227,27 @@ export class WalletConnectPage {
           }
           break;
         case 'eth_signTypedData':
+          addressRequested = request.params[0];
           if (address.toLowerCase() === addressRequested.toLowerCase()) {
             const result = this.walletConnectProvider.signTypedData(
               JSON.parse(request.params[1]),
+              this.wallet
+            );
+            this.walletConnectProvider.approveRequest(request.id, result);
+          } else {
+            this.errorsProvider.showDefaultError(
+              this.translate.instant(
+                'Address requested does not match active account'
+              ),
+              this.translate.instant('Error')
+            );
+          }
+          break;
+        case 'personal_sign':
+          addressRequested = request.params[1];
+          if (address.toLowerCase() === addressRequested.toLowerCase()) {
+            const result = this.walletConnectProvider.personalSign(
+              request.params[0],
               this.wallet
             );
             this.walletConnectProvider.approveRequest(request.id, result);

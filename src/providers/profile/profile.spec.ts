@@ -482,6 +482,11 @@ describe('Profile Provider', () => {
         'setNotificationsInterval'
       );
       profileProvider.UPDATE_PERIOD_FAST = 5;
+      const opts = {
+        pushNotifications: { enabled: false }
+      };
+
+      spyOn(configProvider, 'get').and.returnValue(opts);
       profileProvider.setFastRefresh(profileProvider.wallet.id1);
       expect(setNotificationsIntervalSpy).toHaveBeenCalledWith(5);
     });
@@ -494,6 +499,10 @@ describe('Profile Provider', () => {
         'setNotificationsInterval'
       );
       profileProvider.UPDATE_PERIOD = 15;
+      const opts = {
+        pushNotifications: { enabled: false }
+      };
+      spyOn(configProvider, 'get').and.returnValue(opts);
       profileProvider.setSlowRefresh(profileProvider.wallet.id1);
       expect(setNotificationsIntervalSpy).toHaveBeenCalledWith(15);
     });

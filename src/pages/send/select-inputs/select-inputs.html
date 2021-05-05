@@ -1,10 +1,33 @@
-<wide-header-page title="{{'Select inputs' | translate}}">
-  <ion-buttons right>
-    <button *ngIf="!recipient" clear wide-header-bar-button (click)="openTransferToModal()" ion-button icon-only>
-      <span translation>Add Contact</span>
-    </button>
-  </ion-buttons>
-  <div page-content>
+<ion-header>
+  <ion-navbar>
+    <ion-buttons right>
+      <button class="add-btn" *ngIf="!recipient" clear (click)="openTransferToModal()" ion-button icon-only>
+        <span translation>Add Contact</span>
+      </button>
+    </ion-buttons>
+    <ion-title class="bp-title">
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{ 'Select inputs' | translate }}
+      </div>
+    </ion-title>
+  </ion-navbar>
+  <div *ngIf="inputs && inputs.length > 5" class="item-divider-exp-header">
+    <div class="header-data" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient">{{ 'Total selected inputs: ' | translate}} {{totalAmount}} {{wallet.coin | uppercase}}</div>
+    <div class="header-data" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient && recipient.amountToShow && totalAmount >= recipient.amountToShow">{{ 'Specified amount: ' | translate}} {{recipient.amountToShow}} {{wallet.coin | uppercase}}</div>
+    <div class="header-data-warning" [reveal-at-scroll-pos]="(expandableHeader.headerHeight + 270)" [scrollArea]="scrollArea" *ngIf="recipient && recipient.amountToShow && totalAmount < recipient.amountToShow">
+      <small>{{'This amount must be at least:' | translate}} {{ recipient.amountToShow }} {{wallet.coin | uppercase}}</small>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content #scrollArea [ngClass]="{'add-padding-bottom': isCordova}">
+  <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
+    <ion-toolbar class="wide-header__title">
+      <expandable-header-primary>
+        {{ 'Select inputs' | translate }}
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
     <div>
       <div class="send-header-wrapper" *ngIf="!recipient">
         <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
@@ -19,7 +42,12 @@
       <ion-list *ngIf="recipient" class="content-list">
         <ion-item-divider class="item-divider-header">
           <span class="ellipsis">{{ 'Recipient' | translate}}</span>
-          <ion-icon class="close-icon pointer" name="ios-close-outline" item-right (click)="removeRecipient()"></ion-icon>
+          <button ion-button item-end clear (click)="clearAmount(recipient)">
+            <ion-icon name="md-trash" color="grey"></ion-icon>
+          </button>
+          <button ion-button item-end clear (click)="removeRecipient()">
+            <ion-icon name="ios-close-outline" color="grey"></ion-icon>
+          </button>
         </ion-item-divider>
         <ion-item (click)="openAmountModal(recipient)" class="recipient">
           <ion-icon class="item-img wallet" item-start>
@@ -53,7 +81,7 @@
             {{totalAmount}} {{wallet.coin | uppercase}}
           </div>
           <div class="total-inputs-warning" *ngIf="recipient.amountToShow && totalAmount < recipient.amountToShow">
-            <small>{{'This amount should be higher than the amount you are trying to send.' | translate}}</small>
+            <small>{{'The sum of the selected amounts must be at least:' | translate}} {{ recipient.amountToShow }} {{wallet.coin | uppercase}}</small>
           </div>
         </ion-item>
       </ion-list>
@@ -61,6 +89,10 @@
       <ion-list *ngIf="recipient" class="content-list">
         <ion-item-divider sticky class="item-divider-header">
           <span class="ellipsis">{{ 'Wallet Inputs' | translate}}</span>
+          <button ion-button item-end clear (click)="reverseInputs()">
+            <ion-icon *ngIf="!reverse" name="ios-arrow-round-down" color="grey"></ion-icon>
+            <ion-icon *ngIf="reverse" name="ios-arrow-round-up" color="grey"></ion-icon>
+          </button>
           <button ion-button item-end clear *ngIf="inputs.length > 0" (click)="shortcuts(false)">
             <ion-icon name="md-trash" color="grey"></ion-icon>
           </button>
@@ -91,11 +123,9 @@
     <div *ngIf="!recipient" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address or select an existent contact or wallet.</span>
     </div>
-  </div>
-
-  <div footer-content>
-    <ion-toolbar>
-      <button ion-button full class="button-footer" (click)="goToConfirm()" [disabled]="canContinue()">{{'Continue' | translate}}</button>
-    </ion-toolbar>
-  </div>
-</wide-header-page>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="goToConfirm()" [disabled]="canContinue()">{{'Continue' | translate}}</button>
+  </ion-toolbar>
+</ion-footer>

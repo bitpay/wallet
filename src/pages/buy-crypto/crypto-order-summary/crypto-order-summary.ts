@@ -8,6 +8,7 @@ import env from '../../../environments';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -57,7 +58,8 @@ export class CryptoOrderSummaryPage {
     private errorsProvider: ErrorsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private currencyProvider: CurrencyProvider
   ) {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
@@ -187,6 +189,16 @@ export class CryptoOrderSummaryPage {
     if (this.isCoinSupportedByCountry()) {
       this.walletProvider.getAddress(this.wallet, false).then(addr => {
         this.address = addr;
+        if (this.currencyProvider.isERCToken(this.wallet.coin)) {
+          const infoSheet = this.actionSheetProvider.createInfoSheet(
+            'erc20-eth-fee-info',
+            {
+              coin: this.wallet.coin.toUpperCase(),
+              linkedEthWalletName: this.wallet.linkedEthWalletName
+            }
+          );
+          infoSheet.present();
+        }
       });
     } else {
       this.showCoinAndCountryError();

@@ -6,7 +6,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
-import { CurrencyProvider } from '../../providers/currency/currency';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -34,6 +34,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
   public bchAddrFormat: string;
   public disclaimerAccepted: boolean;
   public useLegacyQrCode: boolean;
+  public showingWarning: boolean;
 
   private onResumeSubscription: Subscription;
   private retryCount: number = 0;
@@ -150,6 +151,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
+    this.showCoinNetworkWarning(this.wallet.coin);
   }
 
   public setQrAddress() {
@@ -189,6 +191,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
       }
     });
   }
+
   public showSecondWarning() {
     const infoSheet = this.createInfoSheet('bch-legacy-warning-2');
     infoSheet.present();
@@ -203,6 +206,18 @@ export class WalletReceiveComponent extends ActionSheetParent {
         this.disclaimerAccepted = false;
         this.bchAddrFormat = 'cashAddress';
       }
+    });
+  }
+
+  public showCoinNetworkWarning(coin: Coin) {
+    this.showingWarning = true;
+    const infoSheet = this.createInfoSheet('network-coin-warning', {
+      coin: coin.toUpperCase(),
+      isERCToken: this.currencyProvider.isERCToken(coin)
+    });
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
+      this.showingWarning = false;
     });
   }
 }

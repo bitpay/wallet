@@ -1,6 +1,9 @@
 page-select-inputs,
 page-multi-send,
 page-proposals-notifications {
+  .add-btn .button-inner {
+    color: #434d5a;
+  }
   .send-header-wrapper {
     padding: 1rem;
     background-color: white;
@@ -33,13 +36,25 @@ page-proposals-notifications {
     background-color: #fff6f7;
   }
   .no-wallet-message {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 30px;
+  }
+
+  .item-divider-exp-header {
+    height: 5rem;
+    border-bottom: 0;
+    .header-data,
+    .header-data-warning {
+      padding-left: 20px;
+    }
+    .header-data-warning {
+      padding-left: 20px;
+      color: color($colors, danger);
+    }
   }
 
   .item-divider-header {
@@ -67,6 +82,12 @@ page-proposals-notifications {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .ion-ios-close-outline,
+    .ion-ios-arrow-round-up,
+    .ion-ios-arrow-round-down {
+      font-size: 24px;
     }
   }
 

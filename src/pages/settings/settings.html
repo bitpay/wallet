@@ -19,7 +19,40 @@
     </expandable-header>
 
     <ion-list class="bp-list">
-      <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
+
+      <ng-container *ngIf="isCordova && !isCopay">
+        <button ion-item (click)="openBitPayIdPage()">
+
+          <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-login" item-start>
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="60">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName" class="item-img icon-login" item-start>
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName" class="item-img icon-login" item-start>
+            <span class="icon-bitpay-id">
+              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
+              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+            </span>
+          </ion-icon>
+
+          <ion-label>
+            <span class="main-label">
+              <span *ngIf="!bitPayIdUserInfo" translate>Log in or Sign Up</span>
+              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+                <span translate>BitPay Account</span>
+                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
+              </span>
+              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+                {{ bitPayIdUserInfo?.givenName }} {{ bitPayIdUserInfo?.familyName }}
+                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
+              </span>
+            </span>
+          </ion-label>
+        </button>
+      </ng-container>
+
+      <ion-item-divider tappable (click)="mdesFlag()"> {{ 'General' | translate }} </ion-item-divider>
 
       <button ion-item (click)="openWhatsNew()" *ngIf="featureList && featureList.features.length > 0">
         <ion-icon class="item-img icon-settings" item-start>
@@ -40,6 +73,17 @@
         </ion-label>
         <ion-note *ngIf="appTheme" item-end>
           {{ appTheme }}
+        </ion-note>
+      </button>
+
+      <button ion-item (click)="openNavigationPage()" *ngIf="isCordova">
+        <ion-icon class="item-img icon-settings" item-start>
+          <img src="assets/img/settings-icons/icon-hand.svg" />
+        </ion-icon><ion-label>
+          <div class="main-label">{{ 'Navigation' | translate }}</div>
+        </ion-label>
+        <ion-note *ngIf="navigation" item-end>
+          {{ navigation }}
         </ion-note>
       </button>
 
@@ -118,18 +162,7 @@
         </ion-icon>
         <span class="main-label" translate>Address Book</span>
       </button>
-
-      <button ion-item (click)="openFeePolicyPage()">
-        <ion-icon class="item-img icon-settings" item-start>
-          <img src="assets/img/settings-icons/icon-network.svg" />
-        </ion-icon>
-        <ion-label>
-          <div class="main-label">
-            {{ 'Bitcoin Network Fee Policy' | translate }}
-          </div>
-        </ion-label>
-      </button>
-
+      
       <ion-item class="align-with-button">
         <ion-icon class="item-img icon-settings icon-qrcode" style="opacity: 0.3;" item-start>
           <img src="assets/img/settings-icons/icon-qrcode.svg">
@@ -214,23 +247,6 @@
           </span>
         </ion-note>
       </button>
-
-      <ng-container *ngIf="isCordova && !isCopay">
-        <ion-item-divider tappable (click)="mdesFlag()">
-          {{'BitPay Account' | translate}}
-        </ion-item-divider>
-
-        <button ion-item (click)="openBitPayIdPage()">
-          <ion-icon class="item-img" item-start>
-            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
-          </ion-icon>
-          <span class="main-label">{{ bitPayIdUserInfo ? bitPayIdUserInfo.email : 'Connect your BitPay ID' | translate}}</span>
-          <ion-note item-end *ngIf="bitPayIdUserInfo">
-            <span translate>Linked</span>
-          </ion-note>
-        </button>
-      </ng-container>
-
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{ 'Exchanges' | translate }}

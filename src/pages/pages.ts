@@ -14,6 +14,7 @@ import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offer
 import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
 import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
 import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
+import { ChooseFeeLevelModal } from '../pages/choose-fee-level/choose-fee-level';
 import { ExchangeCheckoutPage } from '../pages/exchange-crypto/exchange-checkout/exchange-checkout';
 import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
 import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
@@ -105,10 +106,10 @@ import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
-import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LocalThemePage } from '../pages/settings/local-theme/local-theme';
 import { LockPage } from '../pages/settings/lock/lock';
+import { NavigationPage } from '../pages/settings/navigation/navigation';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
 
@@ -235,7 +236,6 @@ export const PAGES = [
   WyrePage,
   WyreDetailsPage,
   NotificationsPage,
-  FeePolicyPage,
   SearchTxModalPage,
   SessionLogPage,
   SendFeedbackPage,
@@ -265,11 +265,13 @@ export const PAGES = [
   WalletRecoverPage,
   WalletMnemonicRecoverPage,
   WalletBalanceModal,
+  ChooseFeeLevelModal,
   WideHeaderPage,
   CardItemPage,
   CoinSelectorPage,
   SlideToAcceptPage,
   LocalThemePage,
+  NavigationPage,
   NewFeaturePage,
   // Phases: card pages
   PhaseOneCardIntro

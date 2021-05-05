@@ -809,13 +809,12 @@ export class CoinbaseProvider {
     currency: string,
     twoFactorCode?: string
   ): Promise<any> {
-    if (!twoFactorCode) {
-      try {
-        await this.doRefreshToken();
-      } catch (error) {
-        this.logger.warn('Coinbase: the token could not be refreshed');
-      }
-    }
+    // Check for user data (if it needs new token, update it)
+    if (!(await this._checkAndRefreshExpiredToken()))
+      return Promise.reject(
+        'Could not authenticate with new token. Please reconnect Coinbase account to BitPay App.'
+      );
+
     return this._payInvoice(invoiceId, currency, twoFactorCode);
   }
 
@@ -853,6 +852,45 @@ export class CoinbaseProvider {
               'Coinbase: Send Transaction ERROR ' + data.status
             );
             return reject(this.parseErrorsAsString(data.error));
+          }
+        }
+      );
+    });
+  }
+
+  private _checkAndRefreshExpiredToken(): Promise<boolean> {
+    const url = this.credentials.API + '/v2/user';
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
+      Authorization: 'Bearer ' + this.accessToken
+    };
+
+    this.logger.debug('Coinbase: Checking if token has expired...');
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { headers }).subscribe(
+        _ => {
+          this.logger.info('Coinbase: Token is still valid!');
+          return resolve(true);
+        },
+        data => {
+          if (this.isExpiredTokenError(data.error.errors)) {
+            this.doRefreshToken()
+              .then(_ => {
+                return this._checkAndRefreshExpiredToken();
+              })
+              .catch(e => {
+                this.logger.warn(e);
+                setTimeout(() => {
+                  return this._checkAndRefreshExpiredToken();
+                }, 5000);
+              });
+          } else {
+            this.logger.error(
+              'Coinbase: Could not refresh expired token. ' + data.status
+            );
+            return reject(false);
           }
         }
       );
