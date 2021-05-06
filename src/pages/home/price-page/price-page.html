@@ -19,15 +19,17 @@
     </div>
   </div>
 
-  <price-chart #canvas (priceChange)="setPrice($event)" (touchend)="setPrice()" (mouseup)="setPrice()"></price-chart>
+  <price-chart #canvas (priceChange)="setPrice($event)"></price-chart>
 </ion-content>
 
 <ion-footer no-border>
   <ion-toolbar>
     <span class="labels">
       <div *ngFor="let option of updateOptions">
-        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }" (click)="updateChart(option)">
-          <ion-label>{{ option.label }}</ion-label>
+        <ion-chip [ngClass]="{'active': activeOption === option.label, 'inactive': activeOption !== option.label }">
+          <button ion-button clear [disabled]="canvas.loading" (click)="updateChart(option)">
+            {{ option.label }}
+          </button>
         </ion-chip>
       </div>
     </span>
