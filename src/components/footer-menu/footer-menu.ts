@@ -106,7 +106,9 @@ export class FooterMenuComponent extends ActionSheetParent {
         showOption: this.isCordova,
         nextView: {
           name: 'ScanPage',
-          params: {}
+          params: {
+            fromFooterMenu: true
+          }
         },
         logEvent: 'menu_scan_button_clicked'
       }

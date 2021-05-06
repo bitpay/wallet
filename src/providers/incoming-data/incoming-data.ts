@@ -23,11 +23,13 @@ export interface RedirParams {
   amount?: string;
   coin?: Coin;
   fromHomeCard?: boolean;
+  fromFooterMenu?: boolean;
 }
 
 @Injectable()
 export class IncomingDataProvider {
   private activePage: string;
+  private fromFooterMenu: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -59,7 +61,7 @@ export class IncomingDataProvider {
   }
 
   public finishIncomingData(data: any): void {
-    let nextView = {};
+    let nextView: any = {};
     if (data) {
       const stateParams = {
         addressbookEntry:
@@ -73,6 +75,7 @@ export class IncomingDataProvider {
         params: stateParams
       };
     }
+    nextView.params.fromFooterMenu = this.fromFooterMenu;
     this.incomingDataRedir(nextView);
   }
 
@@ -836,6 +839,8 @@ export class IncomingDataProvider {
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
+    if (redirParams && redirParams.activePage)
+      this.fromFooterMenu = redirParams.fromFooterMenu;
 
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
