@@ -75,8 +75,7 @@ export class IncomingDataProvider {
         params: stateParams
       };
     }
-
-    nextView.fromFooterMenu = this.fromFooterMenu;
+    nextView.params.fromFooterMenu = this.fromFooterMenu;
     this.incomingDataRedir(nextView);
   }
 
