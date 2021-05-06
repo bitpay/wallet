@@ -436,24 +436,25 @@ export class ProfileProvider {
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
-    wallet.initialize(
-      {
-        notificationIncludeOwn: true
-      },
-      err => {
-        if (err) {
-          this.logger.error('Could not init notifications err:', err);
-          return;
-        }
-        if (
-          !this.configProvider.get().pushNotifications.enabled ||
-          !this.platformProvider.isCordova
-        ) {
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.initialize(
+        {
+          notificationIncludeOwn: true,
+          notificationIntervalSeconds: this.UPDATE_PERIOD
+        },
+        err => {
+          if (err) {
+            this.logger.error('Could not init notifications err:', err);
+            return;
+          }
           wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+          wallet.openWallet(() => {});
         }
-        wallet.openWallet(() => {});
-      }
-    );
+      );
+    }
     this.events.subscribe('Local/ConfigUpdate', opts => {
       this.logger.debug('Local/ConfigUpdate handler @profile', opts);
 
