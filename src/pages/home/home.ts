@@ -46,6 +46,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
@@ -77,6 +78,7 @@ export class HomePage {
   showBuyCryptoOption: boolean;
   showExchangeCryptoOption: boolean;
   showShoppingOption: boolean;
+  showWalletConnect: boolean;
   @ViewChild('showCard')
   showCard;
 
@@ -475,6 +477,7 @@ export class HomePage {
     this.showBuyCryptoOption = false;
     this.showExchangeCryptoOption = false;
     this.showShoppingOption = false;
+    this.showWalletConnect = false;
     const integrations = this.homeIntegrationsProvider
       .get()
       .filter(i => i.show);
@@ -496,6 +499,9 @@ export class HomePage {
             x.linked == false && !this.platformProvider.isMacApp();
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
+          break;
+        case 'walletConnect':
+          this.showWalletConnect = x.show;
           break;
       }
     });
@@ -819,6 +825,10 @@ export class HomePage {
     this.navCtrl.push(ExchangeCryptoPage, {
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
+  }
+
+  public goToWalletConnectPage() {
+    this.navCtrl.push(WalletConnectPage);
   }
 
   private checkNewRelease() {
