@@ -579,6 +579,7 @@ export class CopayApp {
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
       if (!nextView.name) {
+        if (nextView.params && nextView.params.fromFooterMenu) return;
         setTimeout(() => {
           this.getGlobalTabs()
             .goToRoot()

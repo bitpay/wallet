@@ -95,6 +95,7 @@ export class AmountPage {
   private alternativeCurrency;
   public fromBuyCrypto: boolean;
   public fromExchangeCrypto: boolean;
+  public isCardTopUp: boolean;
   public quoteForm: FormGroup;
   public supportedFiatAltCurrencies: string[];
   public altCurrenciesToShow: string[];
@@ -149,7 +150,7 @@ export class AmountPage {
     this.alternativeCurrency = this.navParams.data.alternativeCurrency;
     this.fromBuyCrypto = this.navParams.data.fromBuyCrypto;
     this.fromExchangeCrypto = this.navParams.data.fromExchangeCrypto;
-
+    this.isCardTopUp = !!this.navParams.data.card;
     this.showSendMax = false;
     this.useSendMax = false;
     this.allowSend = false;
@@ -319,7 +320,7 @@ export class AmountPage {
     let nextPage;
     switch (this.navParams.data.nextPage) {
       case 'BitPayCardTopUpPage':
-        this.showSendMax = true;
+        this.showSendMax = false;
         nextPage = BitPayCardTopUpPage;
         break;
       case 'ConfirmCardPurchasePage':

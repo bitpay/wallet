@@ -41,7 +41,7 @@ export class WyreProvider {
       'wbtc'
     ];
     this.fiatAmountLimits = {
-      min: 20,
+      min: 50,
       max: 1000
     };
   }
@@ -96,10 +96,10 @@ export class WyreProvider {
   ) {
     let min, max: number;
     if (!country || country != 'US') {
-      min = 20;
+      min = 50;
       max = 1000;
     } else {
-      min = 20;
+      min = 50;
       max = 500;
     }
     this.fiatAmountLimits.min = this.calculateFiatRate(min, fiatCurrency, coin);

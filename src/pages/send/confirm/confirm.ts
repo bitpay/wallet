@@ -109,8 +109,14 @@ export class ConfirmPage {
   public isSpeedUpTx: boolean;
 
   public requiredFee: number;
+  public requiredFeeRate: number;
+  public minAllowedGasLimit: number;
+  public editGasPrice: boolean = false;
+  public editGasLimit: boolean = false;
+  public customGasPrice: number;
+  public customGasLimit: number;
 
-  private errors = this.bwcProvider.getErrors();
+  public errors = this.bwcProvider.getErrors();
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -280,7 +286,8 @@ export class ConfirmPage {
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
-      this.tx.feeRate = +this.navParams.data.requiredFeeRate;
+      this.tx.feeRate = this.requiredFeeRate = +this.navParams.data
+        .requiredFeeRate;
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
       this.tx.feeLevel = 'custom';
@@ -619,7 +626,9 @@ export class ConfirmPage {
           if (this.usingCustomFee) {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
-          } else if (this.usingMerchantFee) {
+          }
+
+          if (this.usingMerchantFee) {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${tx.feeRate} vs. referent level (5 * feeRate) ${maxAllowedFee}`
@@ -641,9 +650,8 @@ export class ConfirmPage {
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
             tx.feeLevelName = feeOpts[tx.feeLevel];
-            tx.feeRate = feeRate;
+            if (feeRate) tx.feeRate = feeRate;
           }
-
           // call getSendMaxInfo if was selected from amount view
           if (tx.sendMax && this.shouldUseSendMax()) {
             this.useSendMax(tx, wallet, opts)
@@ -833,12 +841,22 @@ export class ConfirmPage {
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
           }
 
+          tx.txp[wallet.id] = txp;
+          this.tx = tx;
+
+          if (wallet.coin == 'eth' || this.isERCToken) {
+            this.customGasPrice = Number(
+              (this.tx.txp[wallet.id].gasPrice * 1e-9).toFixed(2)
+            );
+            this.customGasLimit = this.tx.txp[wallet.id].gasLimit;
+            if (!this.minAllowedGasLimit)
+              this.minAllowedGasLimit = this.tx.txp[wallet.id].gasLimit;
+          }
+
           if (txp.feeTooHigh) {
             this.showHighFeeSheet();
           }
 
-          tx.txp[wallet.id] = txp;
-          this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
               wallet.id +
@@ -1009,7 +1027,8 @@ export class ConfirmPage {
             toAddress: instruction.toAddress,
             amount: instruction.amount,
             message: instruction.message,
-            data: instruction.data
+            data: instruction.data,
+            gasLimit: tx.gasLimit
           });
         }
       } else {
@@ -1832,5 +1851,28 @@ export class ConfirmPage {
 
   public openExternalLink(url: string) {
     this.externalLinkProvider.open(url);
+  }
+
+  public setGasPrice(): void {
+    this.editGasPrice = !this.editGasPrice;
+
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.customGasPrice * 1e9
+    };
+    this.onFeeModalDismiss(data);
+  }
+
+  public setGasLimit(): void {
+    this.editGasLimit = !this.editGasLimit;
+    this.tx.gasLimit = this.tx.txp[
+      this.wallet.id
+    ].gasLimit = this.customGasLimit;
+
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
+    };
+    this.onFeeModalDismiss(data);
   }
 }

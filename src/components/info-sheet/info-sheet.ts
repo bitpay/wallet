@@ -20,6 +20,7 @@ export class InfoSheetComponent extends ActionSheetParent {
   }
 
   public openInBrowser(url) {
+    if (!url) return;
     this.externalLinkProvider.open(url);
     this.dismiss();
   }

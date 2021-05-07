@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 
 import * as _ from 'lodash';
 
@@ -28,6 +29,7 @@ export class FeeProvider {
   constructor(
     private logger: Logger,
     private bwcProvider: BwcProvider,
+    private currencyProvider: CurrencyProvider,
     private translate: TranslateService
   ) {
     this.logger.debug('FeeProvider initialized');
@@ -93,6 +95,9 @@ export class FeeProvider {
   public getFeeLevels(coin: string, network: string): Promise<any> {
     return new Promise((resolve, reject) => {
       coin = coin || 'btc';
+      const chain = this.currencyProvider
+        .getChain(Coin[coin.toUpperCase()])
+        .toLowerCase();
       const indexFound = this.cache.findIndex(
         fl => fl.coin == coin && fl.network == network
       );
@@ -100,6 +105,12 @@ export class FeeProvider {
         indexFound >= 0 &&
         this.cache[indexFound].updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
+        if (chain === 'eth') {
+          const feeLevels = this.removeLowFeeLevels(
+            this.cache[indexFound].data
+          );
+          this.cache[indexFound].data = feeLevels;
+        }
         return resolve({
           levels: this.cache[indexFound].data,
           fromCache: true
@@ -112,7 +123,9 @@ export class FeeProvider {
         if (errLivenet) {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
-
+        if (chain === 'eth') {
+          feeLevels = this.removeLowFeeLevels(feeLevels);
+        }
         if (indexFound >= 0) {
           this.cache[indexFound] = {
             updateTs: Date.now(),
@@ -131,6 +144,17 @@ export class FeeProvider {
         return resolve({ levels: feeLevels });
       });
     });
+  }
+
+  private removeLowFeeLevels(feelevels) {
+    // Difference between low and normal fee levels is often mistakenly very wide
+    const economyFeeIdx = feelevels.findIndex(f => f.level === 'economy');
+    const superEconomyFeeIdx = feelevels.findIndex(
+      f => f.level === 'superEconomy'
+    );
+    if (superEconomyFeeIdx >= 0) delete feelevels[superEconomyFeeIdx];
+    if (economyFeeIdx >= 0) delete feelevels[economyFeeIdx];
+    return _.compact(feelevels);
   }
 
   public getSpeedUpTxFee(network: string, txSize: number): Promise<number> {

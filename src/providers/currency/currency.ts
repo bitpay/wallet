@@ -100,6 +100,10 @@ export class CurrencyProvider {
     return this.coinOpts[coin].chain;
   }
 
+  getCoin(coin: string): Coin {
+    return Coin[coin];
+  }
+
   getRatesApi() {
     return this.ratesApi;
   }

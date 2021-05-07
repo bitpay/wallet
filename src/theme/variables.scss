@@ -153,6 +153,18 @@ $segment-button-md-padding-top: 4px;
   src: url(../assets/fonts/AmazonEmberDisplay_Rg.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Heebo';
+  font-style: normal;
+  font-weight: normal;
+  src: url(../assets/fonts/Heebo-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Heebo-Medium';
+  src: url(../assets/fonts/Heebo-Medium.ttf) format('truetype');
+}
+
 /* Ionic Overrides and Workarounds */
 
 // Please include a description of the problem solved by the workaround.

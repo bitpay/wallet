@@ -21,25 +21,38 @@
     <ion-list class="bp-list">
 
       <ng-container *ngIf="isCordova && !isCopay">
-        <ion-item-divider tappable (click)="mdesFlag()">
-          {{'Account' | translate}}
-        </ion-item-divider>
-
         <button ion-item (click)="openBitPayIdPage()">
-          <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-settings" item-start name="contact"></ion-icon>
-          <ion-icon *ngIf="bitPayIdUserInfo" class="item-img icon-settings" item-start>
-            <img src="assets/img/bitpay-card/icon-bitpay.svg">
+
+          <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-login" item-start>
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="60">
           </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName" class="item-img icon-login" item-start>
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName" class="item-img icon-login" item-start>
+            <span class="icon-bitpay-id">
+              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
+              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+            </span>
+          </ion-icon>
+
           <ion-label>
-            <span class="main-label">{{ bitPayIdUserInfo ? bitPayIdUserInfo.email : 'Log in or Sign Up' | translate}}</span>
+            <span class="main-label">
+              <span *ngIf="!bitPayIdUserInfo" translate>Log in or Sign Up</span>
+              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+                <span translate>BitPay Account</span>
+                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
+              </span>
+              <span class="bitpay-name" *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+                {{ bitPayIdUserInfo?.givenName }} {{ bitPayIdUserInfo?.familyName }}
+                <div class="bitpay-email">{{ bitPayIdUserInfo?.email }}</div>
+              </span>
+            </span>
           </ion-label>
-          <ion-note item-end *ngIf="bitPayIdUserInfo">
-            <span translate>Linked</span>
-          </ion-note>
         </button>
       </ng-container>
 
-      <ion-item-divider> {{ 'General' | translate }} </ion-item-divider>
+      <ion-item-divider tappable (click)="mdesFlag()"> {{ 'General' | translate }} </ion-item-divider>
 
       <button ion-item (click)="openWhatsNew()" *ngIf="featureList && featureList.features.length > 0">
         <ion-icon class="item-img icon-settings" item-start>

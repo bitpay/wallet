@@ -166,19 +166,19 @@ export class ChooseFeeLevelModal {
   }
 
   private getMinRecommended(): number {
-    let value = _.find(this.feeLevels, feeLevel => {
-      return feeLevel.level == 'superEconomy';
+    let value = _.map(this.feeLevels, feeLevel => {
+      return feeLevel.feePerKb;
     });
-
-    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
+    const minValue = Math.min(...value);
+    return parseInt((minValue / this.feeUnitAmount).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
-    let value = _.find(this.feeLevels, feeLevel => {
-      return feeLevel.level == 'urgent';
+    let value = _.map(this.feeLevels, feeLevel => {
+      return feeLevel.feePerKb;
     });
-
-    return parseInt((value.feePerKb / this.feeUnitAmount).toFixed(), 10);
+    const maxValue = Math.max(...value);
+    return parseInt((maxValue / this.feeUnitAmount).toFixed(), 10);
   }
 
   public checkFees(feePerSatByte: string): void {
