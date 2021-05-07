@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Events, NavController } from 'ionic-angular';
 // Providers
-import { AnalyticsProvider, AppProvider, IABCardProvider, PlatformProvider } from '../../../../providers';
+import {
+  AnalyticsProvider,
+  AppProvider,
+  IABCardProvider,
+  PlatformProvider
+} from '../../../../providers';
 
 // Pages
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -98,20 +103,19 @@ export class BitPayCardHome implements OnInit {
     let deviceUUID = this.platformProvider.getDeviceUUID();
 
     let hasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
-    if(!hasFundedCard) {
+    if (!hasFundedCard) {
       let cardHasBalance = cards.some(c => c.cardBalance > 0);
       if (cardHasBalance) {
         this.analyticsProvider.logEvent('has_funded_card', {
-          uuid: deviceUUID,
+          uuid: deviceUUID
         });
         this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
       } else {
         this.analyticsProvider.logEvent('has_not_funded_card', {
           uuid: deviceUUID
-        })
+        });
       }
     }
-
 
     let hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
     let hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();

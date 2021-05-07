@@ -212,7 +212,10 @@ export class PersistenceProvider {
   }
 
   setHasReportedFirebaseNonFundedWallet() {
-    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET, true);
+    return this.storage.set(
+      Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET,
+      true
+    );
   }
 
   getHasReportedFirebasedNonFundedWallet() {
