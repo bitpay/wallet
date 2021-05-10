@@ -40,7 +40,7 @@ export class FooterMenuComponent extends ActionSheetParent {
               .alternativeIsoCode
           }
         },
-        logEvent: 'menu_buy_crytpo_clicked'
+        logEvent: 'buy_crypto_button_clicked'
       },
       exchange: {
         imgSrc: `assets/img/footer-menu/exchange.svg`,
@@ -54,7 +54,7 @@ export class FooterMenuComponent extends ActionSheetParent {
               .alternativeIsoCode
           }
         },
-        logEvent: 'menu_exchange_crypto_clicked'
+        logEvent: 'exchange_crypto_button_clicked'
       },
       receive: {
         imgSrc: `assets/img/footer-menu/receive.svg`,
@@ -71,7 +71,7 @@ export class FooterMenuComponent extends ActionSheetParent {
             fromFooterMenu: true
           }
         },
-        logEvent: 'menu_receive_crypto_clicked'
+        logEvent: 'receive_crypto_clicked'
       },
       send: {
         imgSrc: `assets/img/footer-menu/send.svg`,
@@ -86,7 +86,7 @@ export class FooterMenuComponent extends ActionSheetParent {
             fromFooterMenu: true
           }
         },
-        logEvent: 'menu_send_crypto_clicked'
+        logEvent: 'send_crypto_clicked'
       },
       buyGiftCards: {
         imgSrc: `assets/img/footer-menu/buy-gift-card.svg`,
@@ -97,7 +97,7 @@ export class FooterMenuComponent extends ActionSheetParent {
           name: 'CardCatalogPage',
           params: {}
         },
-        logEvent: 'menu_buy_giftcards_clicked'
+        logEvent: 'buy_giftcards_clicked'
       },
       scan: {
         imgSrc: `assets/img/footer-menu/scan.svg`,
@@ -110,7 +110,7 @@ export class FooterMenuComponent extends ActionSheetParent {
             fromFooterMenu: true
           }
         },
-        logEvent: 'menu_scan_button_clicked'
+        logEvent: 'scan_button_clicked'
       }
     };
   }
