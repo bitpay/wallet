@@ -13,7 +13,7 @@ import {
 import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-browser';
 
 @Component({
-  selector: 'bitpay-id',
+  selector: 'page-bitpay-id',
   templateUrl: 'bitpay-id.html'
 })
 export class BitPayIdPage {

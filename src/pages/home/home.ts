@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 
 // Providers
@@ -100,6 +101,7 @@ export class HomePage {
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
+  private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
@@ -154,6 +156,7 @@ export class HomePage {
       CardCatalogPage,
       CoinbasePage
     };
+    this.user$ = this.iabCardProvider.user$;
   }
 
   private showNewFeatureSlides() {
@@ -229,6 +232,11 @@ export class HomePage {
             if (value === 'enabled' && this.appProvider.info.name !== 'copay')
               this.openAddFunds();
           });
+      }
+    });
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
       }
     });
   }
