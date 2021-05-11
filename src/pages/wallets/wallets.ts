@@ -105,50 +105,56 @@ export class WalletsPage {
   }
 
   private async walletAudienceEvents() {
-    const deviceUUID = this.platformProvider.getDeviceUUID();
-    const hasCreatedWallet = this.persistenceProvider.getHasReportedFirebaseWalletCreateFlag();
-    const hasSecuredWalletFlag = this.persistenceProvider.getHasReportedFirebaseSecuredWallet();
-    const hasFundedWallet = this.persistenceProvider.getHasReportedFirebaseHasFundedWallet();
-    const hasNotFundedWallet = this.persistenceProvider.getHasReportedFirebasedNonFundedWallet();
-    const keys = await this.persistenceProvider.getKeys();
+    try {
+      const deviceUUID = this.platformProvider.getDeviceUUID();
+      const hasCreatedWallet = await this.persistenceProvider.getHasReportedFirebaseWalletCreateFlag();
+      const hasSecuredWalletFlag = await this.persistenceProvider.getHasReportedFirebaseSecuredWallet();
+      const hasFundedWallet = await this.persistenceProvider.getHasReportedFirebaseHasFundedWallet();
+      const hasNotFundedWallet = await this.persistenceProvider.getHasReportedFirebasedNonFundedWallet();
+      const keys = await this.persistenceProvider.getKeys();
 
-    if (!hasCreatedWallet) {
-      if (keys && keys.length > 0) {
-        this.analyticsProvider.logEvent('user_has_created_wallet', {
-          uuid: deviceUUID,
-          timestamp: Date.now()
-        });
-        this.persistenceProvider.setHasReportedFirebaseWalletCreateFlag();
-      }
-    }
-
-    if (!hasSecuredWalletFlag) {
-      let hasAtLeastOneMnemonicEncrypted = keys.some(
-        key => key.mnemonicEncrypted
-      );
-      if (hasAtLeastOneMnemonicEncrypted) {
-        this.analyticsProvider.logEvent('user_has_secured_wallet', {
-          uuid: deviceUUID
-        });
-        this.persistenceProvider.setHasReportedFirebaseSecuredWallet();
-      }
-    }
-
-    if (!hasFundedWallet) {
-      let totalBalance = await this.persistenceProvider.getTotalBalance();
-      if (parseFloat(totalBalance.totalBalanceAlternative)) {
-        this.analyticsProvider.logEvent('user_has_funded_wallet', {
-          uuid: deviceUUID
-        });
-        this.persistenceProvider.setHasReportedFirebaseHasFundedWallet();
-      } else {
-        if (!hasNotFundedWallet) {
-          this.analyticsProvider.logEvent('user_has_not_funded_wallet', {
-            uuid: deviceUUID
+      if (!hasCreatedWallet) {
+        if (keys && keys.length > 0) {
+          this.analyticsProvider.logEvent('user_has_created_wallet', {
+            uuid: deviceUUID,
+            timestamp: Date.now()
           });
-          this.persistenceProvider.setHasReportedFirebaseNonFundedWallet();
+          this.persistenceProvider.setHasReportedFirebaseWalletCreateFlag();
         }
       }
+
+      if (!hasSecuredWalletFlag) {
+        let hasAtLeastOneMnemonicEncrypted = keys.some(
+          key => key.mnemonicEncrypted
+        );
+        if (hasAtLeastOneMnemonicEncrypted) {
+          this.analyticsProvider.logEvent('user_has_secured_wallet', {
+            uuid: deviceUUID
+          });
+          this.persistenceProvider.setHasReportedFirebaseSecuredWallet();
+        }
+      }
+
+      if (!hasFundedWallet) {
+        let totalBalance = await this.persistenceProvider.getTotalBalance();
+        if (parseFloat(totalBalance.totalBalanceAlternative)) {
+          this.analyticsProvider.logEvent('user_has_funded_wallet', {
+            uuid: deviceUUID
+          });
+          this.persistenceProvider.setHasReportedFirebaseHasFundedWallet();
+        } else {
+          if (!hasNotFundedWallet) {
+            this.analyticsProvider.logEvent('user_has_not_funded_wallet', {
+              uuid: deviceUUID
+            });
+            this.persistenceProvider.setHasReportedFirebaseNonFundedWallet();
+          }
+        }
+      }
+    } catch (e) {
+      this.logger.debug(
+        'Error occurred during wallet audience events: ' + e.message
+      );
     }
   }
 

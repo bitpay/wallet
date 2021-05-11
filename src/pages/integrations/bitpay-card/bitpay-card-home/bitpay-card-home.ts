@@ -5,6 +5,7 @@ import {
   AnalyticsProvider,
   AppProvider,
   IABCardProvider,
+  Logger,
   PlatformProvider
 } from '../../../../providers';
 
@@ -69,6 +70,7 @@ export class BitPayCardHome implements OnInit {
     private iabCardProvider: IABCardProvider,
     private persistenceProvider: PersistenceProvider,
     private analyticsProvider: AnalyticsProvider,
+    private logger: Logger,
     private platformProvider: PlatformProvider,
     private events: Events
   ) {
@@ -97,45 +99,53 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async runCardAudienceEvents() {
-    let cards = await this.persistenceProvider.getBitpayDebitCards('livenet');
-    let physicalCards = cards.filter(c => c.cardType == 'physical');
-    let virtualCards = cards.filter(c => c.cardType == 'virtual');
-    let deviceUUID = this.platformProvider.getDeviceUUID();
+    try {
+      let cards = await this.persistenceProvider.getBitpayDebitCards('livenet');
+      let physicalCards = cards.filter(
+        c => c.cardType == 'physical' && c.provider == 'galileo'
+      );
+      let virtualCards = cards.filter(c => c.cardType == 'virtual');
+      let deviceUUID = await this.platformProvider.getDeviceUUID();
 
-    let hasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
-    if (!hasFundedCard) {
-      let cardHasBalance = cards.some(c => c.cardBalance > 0);
-      if (cardHasBalance) {
-        this.analyticsProvider.logEvent('has_funded_card', {
-          uuid: deviceUUID
-        });
-        this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
-      } else {
-        this.analyticsProvider.logEvent('has_not_funded_card', {
-          uuid: deviceUUID
-        });
+      let hasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
+      if (!hasFundedCard) {
+        let cardHasBalance = cards.some(c => c.cardBalance > 0);
+        if (cardHasBalance) {
+          this.analyticsProvider.logEvent('has_funded_card', {
+            uuid: deviceUUID
+          });
+          this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
+        } else {
+          this.analyticsProvider.logEvent('has_not_funded_card', {
+            uuid: deviceUUID
+          });
+        }
       }
-    }
 
-    let hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
-    let hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();
+      let hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
+      let hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();
 
-    if (!hasReportedFirebaseHasPhysicalCard) {
-      if (physicalCards.length > 0) {
-        this.analyticsProvider.logEvent('has_physical_card', {
-          uuid: deviceUUID
-        });
+      if (!hasReportedFirebaseHasPhysicalCard) {
+        if (physicalCards.length > 0) {
+          this.analyticsProvider.logEvent('has_physical_card', {
+            uuid: deviceUUID
+          });
+        }
+        this.persistenceProvider.setHasReportedFirebaseHasPhysicalCardFlag();
       }
-      this.persistenceProvider.setHasReportedFirebaseHasPhysicalCardFlag();
-    }
 
-    if (!hasReportedFirebaseHasVirtualCard) {
-      if (virtualCards.length > 0) {
-        this.analyticsProvider.logEvent('has_virtual_card', {
-          uuid: deviceUUID
-        });
+      if (!hasReportedFirebaseHasVirtualCard) {
+        if (virtualCards.length > 0) {
+          this.analyticsProvider.logEvent('has_virtual_card', {
+            uuid: deviceUUID
+          });
+        }
+        this.persistenceProvider.setHasReportedFirebaseHasVirtualCardFlag();
       }
-      this.persistenceProvider.setHasReportedFirebaseHasVirtualCardFlag();
+    } catch (e) {
+      this.logger.debug(
+        'Error occurred during card audience events: ' + e.message
+      );
     }
   }
 
