@@ -62,6 +62,10 @@ import { COMPONENTS } from '../components/components';
 import { LanguageLoader } from '../providers/language-loader/language-loader';
 import { ProvidersModule } from '../providers/providers.module';
 
+/* Modal Transitions */
+import { ModalTranslateEnterTransition } from '../pages/notification-component/transitions/on-enter-translate.transition';
+import { ModalTranslateLeaveTransition } from '../pages/notification-component/transitions/on-leave-translate.transition';
+
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
 }
@@ -147,5 +151,18 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
-  constructor(public config: Config) {}
+  constructor(public config: Config) {
+    this.setCustomTransitions();
+  }
+
+  private setCustomTransitions() {
+    this.config.setTransition(
+      'modal-translate-up-enter',
+      ModalTranslateEnterTransition
+    );
+    this.config.setTransition(
+      'modal-translate-up-leave',
+      ModalTranslateLeaveTransition
+    );
+  }
 }
