@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
+
+// pages
+import { NotificationComponent } from '../../../../notification-component/notification-component';
 
 // providers
 import { AppProvider } from '../../../../../providers/app/app';
@@ -49,7 +52,7 @@ export class WalletExportPage {
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
     private clipboard: Clipboard,
-    private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -234,17 +237,25 @@ export class WalletExportPage {
       if (!ew) return;
       this.clipboard.copy(ew);
       const copyMessage = this.translate.instant('Copied to clipboard');
-      const showSuccess = this.toastCtrl.create({
-        message: copyMessage,
-        duration: 1000
-      });
+
+      const showSuccess = this.modalCtrl.create(
+        NotificationComponent,
+        {
+          title: '',
+          message: copyMessage
+        },
+        {
+          enterAnimation: 'modal-translate-up-enter',
+          leaveAnimation: 'modal-translate-up-leave'
+        }
+      );
       showSuccess.present();
     });
   }
 
   public sendWalletBackup(): void {
     const preparingMessage = this.translate.instant('Preparing backup...');
-    const showSuccess = this.toastCtrl.create({
+    const showSuccess = this.modalCtrl.create({
       message: preparingMessage,
       duration: 1000
     });

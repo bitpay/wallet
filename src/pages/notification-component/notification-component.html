@@ -2,7 +2,7 @@
   <div class="notification-content" (swipe)="swipeEvent($event)">
     <ion-slides #notificationSlide>
       <ion-slide>
-        <div class="notification-title">
+        <div class="notification-title" *ngIf="title">
             <h1>{{title}}</h1>
         </div>
         <div class="notification-message">
