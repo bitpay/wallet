@@ -831,8 +831,8 @@ export class WalletDetailsPage {
   }
 
   getContactName(address: string) {
-    const exists = _.find(this.addressbook, c => c.address === address);
-    if (exists) return exists.name;
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
     return null;
   }
 }

@@ -26,6 +26,7 @@ export interface GiftCardMap {
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
+  NEW_ADDRESS_BOOK: network => 'new-addressbook-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
@@ -88,6 +89,7 @@ const Keys = {
 };
 
 interface Storage {
+  exists(k: string): Promise<boolean>;
   get(k: string): Promise<any>;
   set(k: string, v): Promise<void>;
   remove(k: string): Promise<void>;
@@ -356,16 +358,32 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.COINBASE_TXS(network));
   }
 
-  setAddressBook(network: string, addressbook) {
-    return this.storage.set(Keys.ADDRESS_BOOK(network), addressbook);
+  existsNewAddressBook(network: string) {
+    return this.storage.exists(Keys.NEW_ADDRESS_BOOK(network));
+  }
+  setAddressBook(network: string, addressbook, newAddressBook: boolean = true) {
+    return this.storage.set(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network),
+      addressbook
+    );
   }
 
-  getAddressBook(network: string) {
-    return this.storage.get(Keys.ADDRESS_BOOK(network));
+  getAddressBook(network: string, newAddressBook: boolean = true) {
+    return this.storage.get(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network)
+    );
   }
 
-  removeAddressbook(network: string) {
-    return this.storage.remove(Keys.ADDRESS_BOOK(network));
+  removeAddressbook(network: string, newAddressBook: boolean = true) {
+    return this.storage.remove(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network)
+    );
   }
 
   setLastCurrencyUsed(lastCurrencyUsed) {

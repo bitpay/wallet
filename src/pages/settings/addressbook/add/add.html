@@ -48,7 +48,7 @@
           <ion-option *ngFor="let _coin of coins" [value]="_coin">{{_coin}}</ion-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="this.addressBookAdd.get('address').valid && !addressBookAdd.value.network.disbaled">
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid && allowNetworkSelection">
         <ion-label stacked translate>Network</ion-label>
         <ion-select formControlName="network" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
           <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>

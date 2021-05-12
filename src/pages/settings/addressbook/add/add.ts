@@ -32,6 +32,7 @@ export class AddressbookAddPage {
   public addressInfo;
   public networks;
   public coins: string[];
+  public allowNetworkSelection: boolean;
 
   private destinationTagregex: RegExp;
 
@@ -101,8 +102,10 @@ export class AddressbookAddPage {
         const chain = this.currencyProvider.getChain(this.addressInfo.coin);
         this.coins.push(chain);
         this.addressBookAdd.controls['network'].disable();
+        this.allowNetworkSelection = false;
         if (['XRP', 'ETH'].includes(chain.toUpperCase())) {
           this.addressBookAdd.controls['network'].enable();
+          this.allowNetworkSelection = true;
           if (chain.toUpperCase() === 'ETH') {
             this.coins.push(
               ...this.currencyProvider.availableTokens.map(t => t.symbol)

@@ -25,17 +25,20 @@ export class AddressBookProvider {
     private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
+    this.processContacts().then(() => {
+      this.logger.debug('Old AddressBook processed');
+    });
   }
 
   public get(addr: string, network: string): Promise<Contact> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
-        .getAddressBook(network)
+        .getAddressBook(network, true)
         .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           if (ab) {
-            const exists = _.find(ab, c => c.address == addr);
-            if (exists) resolve(this.getContact(exists));
+            const existsAddress = _.find(ab, c => c.address == addr);
+            if (existsAddress) resolve(this.getContact(existsAddress));
           }
           return reject(
             new Error('Failed to process AddressBook from storage')
@@ -62,13 +65,16 @@ export class AddressBookProvider {
       });
   }
 
-  public list(network: string): Promise<Contact[]> {
+  public list(
+    network: string,
+    newAddressBook: boolean = true
+  ): Promise<Contact[]> {
     return new Promise((resolve, reject) => {
       if (!network)
         return reject('You must provide a network to get a Contact List');
       let contacts: Contact[] = [];
       this.persistenceProvider
-        .getAddressBook(network)
+        .getAddressBook(network, newAddressBook)
         .then(ab => {
           try {
             if (ab && _.isString(ab)) ab = JSON.parse(ab);
@@ -222,6 +228,42 @@ export class AddressBookProvider {
         .catch(err => {
           return reject(err);
         });
+    });
+  }
+
+  private processContacts(): Promise<boolean> {
+    return Promise.all([
+      this.processNetworkContacts('livenet'),
+      this.processNetworkContacts('testnet')
+    ])
+      .then(() => Promise.resolve(true))
+      .catch(() => Promise.reject(false));
+  }
+
+  private processNetworkContacts(network: string): Promise<boolean> {
+    return new Promise(async resolve => {
+      const newABFile = await this.persistenceProvider.existsNewAddressBook(
+        network
+      );
+      if (!newABFile) {
+        const oldContacts = await this.list(network, false);
+        if (oldContacts) {
+          let newContactJson = {};
+          _.each(oldContacts, old => {
+            newContactJson[old.address + ' (' + old.coin + ')'] = old;
+          });
+          this.persistenceProvider
+            .setAddressBook(network, JSON.stringify(newContactJson), true)
+            .then(() => resolve(true))
+            .catch(err => {
+              this.logger.error(err);
+              resolve(false);
+            });
+        }
+      } else {
+        this.logger.info('Using new addressBook');
+      }
+      return resolve(true);
     });
   }
 }

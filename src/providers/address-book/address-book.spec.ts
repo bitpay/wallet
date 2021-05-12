@@ -36,7 +36,7 @@ describe('AddressBookProvider', () => {
             tag: undefined
           };
 
-          expect(getAddressBookSpy).toHaveBeenCalledWith('testnet');
+          expect(getAddressBookSpy).toHaveBeenCalledWith('testnet', true);
           expect(result).toEqual(expectedResult);
         })
         .catch(err => expect(err).toBeNull);
@@ -88,10 +88,10 @@ describe('AddressBookProvider', () => {
       ).and.returnValue(promise);
 
       addressBookProvider.list('testnet').then(() => {
-        expect(getAddressBookSpy).toHaveBeenCalledWith('testnet');
+        expect(getAddressBookSpy).toHaveBeenCalledWith('testnet', true);
       });
       addressBookProvider.list('livenet').then(() => {
-        expect(getAddressBookSpy).toHaveBeenCalledWith('livenet');
+        expect(getAddressBookSpy).toHaveBeenCalledWith('livenet', true);
       });
     });
     it('list function will reject if an error occurred', () => {

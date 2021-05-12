@@ -79,11 +79,11 @@ export class TxpPage implements OnInit {
   }
 
   private getContact(addr: string, coin: string) {
-    const exists = _.find(
+    const existsContact = _.find(
       this.addressbook,
       c => c.address === addr && c.coin === coin
     );
-    if (exists) return exists.name;
+    if (existsContact) return existsContact.name;
     return undefined;
   }
 }

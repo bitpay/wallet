@@ -344,14 +344,13 @@ export class ConfirmPage {
   private setAddressesContactName() {
     this.addressBookProvider.list(this.tx.network).then(contacts => {
       if (contacts && contacts.length > 0) {
-        console.log(this.recipients);
         if (this.recipients) {
           _.each(this.recipients, r => {
-            const exists = _.find(
+            const existsContact = _.find(
               contacts,
               c => c.address === (r.addressToShow || r.toAddress || r.address)
             );
-            if (exists) r.contactName = exists.name;
+            if (existsContact) r.contactName = existsContact.name;
           });
         } else if (
           this.tx &&
@@ -360,11 +359,11 @@ export class ConfirmPage {
           !this.tx.paypro &&
           !this.fromCoinbase
         ) {
-          const exists = _.find(
+          const existsContact = _.find(
             contacts,
             c => c.address === this.tx.origToAddress
           );
-          if (exists) this.toAddressName = exists.name;
+          if (existsContact) this.toAddressName = existsContact.name;
         }
       }
     });
