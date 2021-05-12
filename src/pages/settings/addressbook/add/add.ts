@@ -31,6 +31,7 @@ export class AddressbookAddPage {
   public isXRP: boolean;
   public addressInfo;
   public networks;
+  public coins: string[];
 
   private destinationTagregex: RegExp;
 
@@ -83,7 +84,8 @@ export class AddressbookAddPage {
       .valueChanges.subscribe(val => this.analizeAddress(val));
   }
 
-  analizeAddress(address: string, network?: string) {
+  analizeAddress(address: string, network?: string, coin?: string) {
+    this.coins = [];
     this.addressInfo = undefined;
     this.isXRP = false;
     if (address && this.addressBookAdd.get('address').valid) {
@@ -96,12 +98,23 @@ export class AddressbookAddPage {
         this.addressBookAdd.controls['network'].setValue(
           this.addressInfo.network
         );
-        this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
         const chain = this.currencyProvider.getChain(this.addressInfo.coin);
+        this.coins.push(chain);
         this.addressBookAdd.controls['network'].disable();
         if (['XRP', 'ETH'].includes(chain.toUpperCase())) {
           this.addressBookAdd.controls['network'].enable();
+          if (chain.toUpperCase() === 'ETH') {
+            this.coins.push(
+              ...this.currencyProvider.availableTokens.map(t => t.symbol)
+            );
+          }
         }
+      }
+
+      if (this.coins && this.coins.find(c => c === coin)) {
+        this.addressBookAdd.controls['coin'].setValue(coin);
+      } else {
+        this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
       }
     }
   }
@@ -134,14 +147,11 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
-    this.addressBookAdd.controls['address'].setValue(
-      this.parseAddress(this.addressBookAdd.value.address)
-    );
     this.ab
       .add({
         name: this.addressBookAdd.value.name,
         email: this.addressBookAdd.value.email,
-        address: this.addressBookAdd.value.address,
+        address: this.parseAddress(this.addressBookAdd.value.address),
         tag: this.addressBookAdd.value.tag,
         network: this.addressBookAdd.value.network,
         coin: this.addressBookAdd.value.coin

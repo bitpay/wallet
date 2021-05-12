@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';

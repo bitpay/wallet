@@ -41,16 +41,16 @@
           <span translate>BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds.</span>
         </div>
       </label-tip>
-      <ion-item *ngIf="this.addressBookAdd.get('address').valid">
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid && coins.length>1">
         <ion-label stacked translate>Coin</ion-label>
-        <ion-input formControlName="coin" type="text" [value]="addressBookAdd.value.coin"></ion-input>
-        <!-- <ion-select formControlName="coin">
-          <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>
-        </ion-select> -->
+        <!-- <ion-input formControlName="coin" type="text" [value]="addressBookAdd.value.coin"></ion-input> -->
+        <ion-select formControlName="coin" [disabled]="coins.length === 1" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
+          <ion-option *ngFor="let _coin of coins" [value]="_coin">{{_coin}}</ion-option>
+        </ion-select>
       </ion-item>
-      <ion-item *ngIf="this.addressBookAdd.get('address').valid">
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid && !addressBookAdd.value.network.disbaled">
         <ion-label stacked translate>Network</ion-label>
-        <ion-select formControlName="network" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network)">
+        <ion-select formControlName="network" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
           <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>
         </ion-select>
       </ion-item>

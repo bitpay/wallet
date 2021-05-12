@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { AddressProvider, CoinNetwork } from '../address/address';
@@ -20,7 +21,8 @@ export class AddressBookProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
   }
@@ -59,6 +61,7 @@ export class AddressBookProvider {
         return undefined;
       });
   }
+
   public list(network: string): Promise<Contact[]> {
     return new Promise((resolve, reject) => {
       if (!network)
@@ -128,7 +131,13 @@ export class AddressBookProvider {
         let msg = this.translate.instant('Not valid bitcoin address');
         return reject(msg);
       }
-      addrData.coin = _addrData.coin;
+
+      addrData.coin =
+        entry.coin &&
+        this.currencyProvider.getChain(Coin[entry.coin.toUpperCase()]) ===
+          _addrData.coin
+          ? entry.coin
+          : _addrData.coin;
       addrData.network = _addrData.network;
 
       this.persistenceProvider
