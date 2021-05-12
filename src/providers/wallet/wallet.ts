@@ -769,14 +769,17 @@ export class WalletProvider {
 
         if (cacheCoin == 'bits') {
           this.logger.debug('Fixing Tx Cache Unit to: ' + wallet.coin);
+          const isFullPrecision = this.platformProvider.isElectron;
           _.each(txs, tx => {
             tx.amountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
-              tx.amount
+              tx.amount,
+              isFullPrecision
             );
             tx.feeStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
-              tx.fees
+              tx.fees,
+              isFullPrecision
             );
           });
         }
