@@ -13,6 +13,7 @@ import { AddressBookProvider } from '../../../../providers/address-book/address-
 import { AddressProvider } from '../../../../providers/address/address';
 import { AppProvider } from '../../../../providers/app/app';
 import { Logger } from '../../../../providers/logger/logger';
+import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 // validators
@@ -39,8 +40,10 @@ export class AddressbookAddPage {
     private appProvider: AppProvider,
     private formBuilder: FormBuilder,
     private logger: Logger,
+    private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider
   ) {
+    this.isCordova = this.platformProvider.isCordova;
     this.destinationTagregex = /^[0-9]{1,}$/;
     this.addressBookAdd = this.formBuilder.group({
       name: [

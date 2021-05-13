@@ -18,6 +18,7 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 // Pages
 import { CopayersPage } from '../add/copayers/copayers';
@@ -43,6 +44,7 @@ import { MultiSendPage } from './multi-send/multi-send';
 export class SendPage {
   public wallet: any;
   public search: string = '';
+  public isCordova: boolean;
   public invalidAddress: boolean;
   public validDataFromClipboard;
   private onResumeSubscription: Subscription;
@@ -91,9 +93,11 @@ export class SendPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private plt: Platform,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.isCordova = this.platformProvider.isCordova;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
     this.events.subscribe('Desktop/onFocus', () => {
