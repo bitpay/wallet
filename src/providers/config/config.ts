@@ -222,7 +222,7 @@ export class ConfigProvider {
         buycrypto: true,
         exchangecrypto: true,
         giftcards: true,
-        walletConnect: true
+        walletConnect: false
       },
 
       pushNotifications: {
@@ -384,6 +384,9 @@ export class ConfigProvider {
       }
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
+      }
+      if (!this.configCache.showIntegration.walletConnect) {
+        this.configCache.showIntegration.walletConnect = this.configDefault.showIntegration.walletConnect;
       }
     }
     if (!this.configCache.pushNotifications) {
