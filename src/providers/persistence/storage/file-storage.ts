@@ -85,8 +85,12 @@ export class FileStorage implements IStorage {
       this.init()
         .then(() => {
           this.file
-            .checkFile(this.dir.fullPath, k)
-            .then(fileExists => resolve(fileExists));
+            .getFile(this.dir, k, { create: false })
+            .then(() => resolve(true))
+            .catch(err => {
+              this.log.error(err);
+              return resolve(false);
+            });
         })
         .catch(err => {
           this.log.error(err);

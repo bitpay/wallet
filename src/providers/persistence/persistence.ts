@@ -361,6 +361,7 @@ export class PersistenceProvider {
   existsNewAddressBook(network: string) {
     return this.storage.exists(Keys.NEW_ADDRESS_BOOK(network));
   }
+
   setAddressBook(network: string, addressbook, newAddressBook: boolean = true) {
     return this.storage.set(
       newAddressBook

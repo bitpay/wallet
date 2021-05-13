@@ -6,6 +6,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { AddressProvider, CoinNetwork } from '../address/address';
 
 import * as _ from 'lodash';
+import { Subject } from 'rxjs/Subject';
 
 export interface Contact {
   name: string;
@@ -17,6 +18,8 @@ export interface Contact {
 }
 @Injectable()
 export class AddressBookProvider {
+  public migratingContactsSubject: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
@@ -25,7 +28,7 @@ export class AddressBookProvider {
     private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
-    this.processContacts().then(() => {
+    this.migrateOldContacts().then(() => {
       this.logger.debug('Old AddressBook processed');
     });
   }
@@ -231,39 +234,75 @@ export class AddressBookProvider {
     });
   }
 
-  private processContacts(): Promise<boolean> {
+  public migrateOldContacts(): Promise<boolean> {
+    this.logger.info('AddressBookProvider: migrating old contacts');
     return Promise.all([
       this.processNetworkContacts('livenet'),
       this.processNetworkContacts('testnet')
     ])
-      .then(() => Promise.resolve(true))
-      .catch(() => Promise.reject(false));
+      .then(() => {
+        this.migratingContactsSubject.next(false);
+        return Promise.resolve(true);
+      })
+      .catch(() => {
+        this.migratingContactsSubject.next(false);
+        return Promise.reject(false);
+      });
+  }
+
+  public async removeAddressBook() {
+    let network = 'livenet';
+    let newABFile = await this.persistenceProvider.existsNewAddressBook(
+      network
+    );
+    if (newABFile) {
+      await this.persistenceProvider.removeAddressbook(network, true);
+    }
+    network = 'testnet';
+    newABFile = await this.persistenceProvider.existsNewAddressBook(network);
+    if (newABFile) {
+      await this.persistenceProvider.removeAddressbook(network, true);
+    }
   }
 
   private processNetworkContacts(network: string): Promise<boolean> {
     return new Promise(async resolve => {
-      const newABFile = await this.persistenceProvider.existsNewAddressBook(
-        network
-      );
-      if (!newABFile) {
-        const oldContacts = await this.list(network, false);
-        if (oldContacts) {
-          let newContactJson = {};
-          _.each(oldContacts, old => {
-            newContactJson[old.address + ' (' + old.coin + ')'] = old;
-          });
-          this.persistenceProvider
-            .setAddressBook(network, JSON.stringify(newContactJson), true)
-            .then(() => resolve(true))
-            .catch(err => {
-              this.logger.error(err);
-              resolve(false);
+      try {
+        const newABFile = await this.persistenceProvider.existsNewAddressBook(
+          network
+        );
+
+        if (!newABFile) {
+          this.migratingContactsSubject.next(true);
+          const oldContacts = await this.list(network, false);
+          if (oldContacts) {
+            this.logger.info(
+              'AddressBookProvider: got ' +
+                oldContacts.length +
+                ' old contacts to migrate.'
+            );
+            let newContactJson = {};
+            _.each(oldContacts, old => {
+              newContactJson[old.address + ' (' + old.coin + ')'] = old;
             });
+            this.persistenceProvider
+              .setAddressBook(network, JSON.stringify(newContactJson), true)
+              .then(() => resolve(true))
+              .catch(err => {
+                this.logger.error(err);
+                resolve(false);
+              });
+          }
+        } else {
+          this.logger.info('AddressBookProvider: Using new addressBook');
         }
-      } else {
-        this.logger.info('Using new addressBook');
+        return resolve(true);
+      } catch {
+        err => {
+          this.logger.error(err);
+          resolve(false);
+        };
       }
-      return resolve(true);
     });
   }
 }

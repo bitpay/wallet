@@ -17,6 +17,7 @@ export class AddressbookPage {
   public filteredAddressbook: Contact[] = [];
 
   public isEmptyList: boolean;
+  public migratingContacts: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -25,6 +26,10 @@ export class AddressbookPage {
   ) {}
 
   ionViewDidEnter() {
+    this.migratingContacts = false;
+    this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
+      this.migratingContacts = _migrating;
+    });
     setTimeout(async () => {
       await this.initAddressbook().catch();
     }, 100);
