@@ -20,13 +20,14 @@ page-home {
     width: 35px;
     height: 35px;
     padding-top: 10px;
-    padding-right: 5px;
+    padding-right: 4px;
     .account-initials {
       display: inline-block;
       visibility: hidden;
-      width: 7px;
+      width: 8px;
     }
     .account-initials:first-letter {
+      text-transform: uppercase;
       visibility: visible;
     }
   }
