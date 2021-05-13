@@ -425,7 +425,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       unitCode: 'doge'
     },
     properties: {
-      hasMultiSig: false,
+      hasMultiSig: true,
       hasMultiSend: true,
       isUtxo: true,
       isERCToken: false,
