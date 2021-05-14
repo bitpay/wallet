@@ -187,15 +187,16 @@ export class AddressBookProvider {
     });
   }
 
-  public remove(addr: string, network: string): Promise<any> {
+  public remove(addr: string, network: string, coin: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!network) {
+      if (!network || !coin) {
         const addrData = this.addressProvider.getCoinAndNetwork(addr);
         if (_.isEmpty(addrData)) {
           let msg = this.translate.instant('Not valid bitcoin address');
           return reject(msg);
         }
         network = addrData.network;
+        if (!coin) coin = addrData.coin;
       }
 
       this.persistenceProvider
@@ -207,11 +208,11 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Addressbook is empty');
             return reject(msg);
           }
-          if (!ab[addr]) {
+          if (!ab[addr + ' (' + coin + ')']) {
             let msg = this.translate.instant('Entry does not exist');
             return reject(msg);
           }
-          delete ab[addr];
+          delete ab[addr + ' (' + coin + ')'];
           this.persistenceProvider
             .setAddressBook(network, JSON.stringify(ab))
             .then(() => {

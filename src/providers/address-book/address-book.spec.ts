@@ -162,7 +162,7 @@ describe('AddressBookProvider', () => {
         expect(err).toEqual(errorMsg);
       });
     });
-    it('If setAddressBook fails, add function will reject', () => {
+    it('If setAddressBook fails, add function will reject (add)', () => {
       const errorMsg = 'Entry already exist';
       const promise = Promise.reject(errorMsg);
       const entry: Contact = {
@@ -202,7 +202,7 @@ describe('AddressBookProvider', () => {
       const errorMsg = 'Not valid bitcoin address';
       const address = 'invalidAddress';
 
-      addressBookProvider.remove(address, '').catch(err => {
+      addressBookProvider.remove(address, '', '').catch(err => {
         expect(err).toEqual(errorMsg);
       });
     });
@@ -228,7 +228,7 @@ describe('AddressBookProvider', () => {
 
       spyOn(persistenceProvider, 'getAddressBook').and.returnValue(promise);
       addressBookProvider
-        .remove(address, 'testnet')
+        .remove(address, 'testnet', 'btc')
         .then(result => {
           const expectedResult = {
             address: '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU',
@@ -264,7 +264,7 @@ describe('AddressBookProvider', () => {
       const address = 'mwsHDe7SBo2p9iWyiLMSuDvqa6W1w5qgPj';
 
       spyOn(persistenceProvider, 'getAddressBook').and.returnValue(promise);
-      addressBookProvider.remove(address, 'livenet').catch(err => {
+      addressBookProvider.remove(address, 'livenet', 'btc').catch(err => {
         expect(err).toEqual(errorMsg);
       });
     });
@@ -275,7 +275,7 @@ describe('AddressBookProvider', () => {
       const address = 'mwsHDe7SBo2p9iWyiLMSuDvqa6W1w5qgPj';
 
       spyOn(persistenceProvider, 'getAddressBook').and.returnValue(promise);
-      addressBookProvider.remove(address, 'livenet').catch(err => {
+      addressBookProvider.remove(address, 'livenet', 'btc').catch(err => {
         expect(err).toEqual(errorMsg);
       });
     });
@@ -285,21 +285,25 @@ describe('AddressBookProvider', () => {
       const address = 'mwsHDe7SBo2p9iWyiLMSuDvqa6W1w5qgPj';
 
       spyOn(persistenceProvider, 'getAddressBook').and.returnValue(promise);
-      addressBookProvider.remove(address, 'livenet').catch(err => {
+      addressBookProvider.remove(address, 'livenet', 'btc').catch(err => {
         expect(err).toEqual(errorMsg);
       });
     });
-    it('If setAddressBook fails, add function will reject', () => {
+    it('If setAddressBook fails, remove function will reject', () => {
       const response = {
-        '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU': {
+        '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU (btc)': {
           address: '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU',
           email: 'test@test.com',
-          name: 'test'
+          name: 'test',
+          coin: 'btc',
+          network: 'livenet'
         },
-        mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm: {
+        'mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm (btc)': {
           address: 'mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm',
           email: 'asd@sad.com',
-          name: 'jp'
+          name: 'jp',
+          coin: 'btc',
+          network: 'livenet'
         }
       };
       const getAddressBookPromise = Promise.resolve(response);
@@ -313,7 +317,7 @@ describe('AddressBookProvider', () => {
       spyOn(persistenceProvider, 'setAddressBook').and.returnValue(
         setAddressBookPromise
       );
-      addressBookProvider.remove(address, 'livenet').catch(err => {
+      addressBookProvider.remove(address, 'livenet', 'btc').catch(err => {
         expect(err).toEqual(errorMsg);
       });
     });

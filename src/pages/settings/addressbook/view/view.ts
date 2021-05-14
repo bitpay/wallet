@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../../../pages/send/amount/amount';
@@ -31,7 +31,8 @@ export class AddressbookViewPage {
     private navParams: NavParams,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private events: Events
   ) {
     this.address = this.navParams.data.contact.address;
     if (
@@ -39,7 +40,7 @@ export class AddressbookViewPage {
       !this.navParams.data.contact.network
     ) {
       const addrData = this.addressProvider.getCoinAndNetwork(this.address);
-      this.coin = addrData.coin;
+      if (!this.navParams.data.contact.coin) this.coin = addrData.coin; // preserve coin
       this.network = addrData.network;
     } else {
       this.coin = this.navParams.data.contact.coin;
@@ -72,8 +73,9 @@ export class AddressbookViewPage {
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (!res) return;
       this.addressBookProvider
-        .remove(this.address, this.network)
+        .remove(this.address, this.network, this.coin)
         .then(() => {
+          this.events.publish('Local/AddressBook/Changed');
           this.navCtrl.pop();
         })
         .catch(err => {

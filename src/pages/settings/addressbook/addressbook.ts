@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import {
   AddressBookProvider,
@@ -22,10 +22,14 @@ export class AddressbookPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private addressbookProvider: AddressBookProvider
+    private addressbookProvider: AddressBookProvider,
+    private events: Events
   ) {}
 
   ionViewDidEnter() {
+    this.events.subscribe('Local/AddressBook/Changed', async () =>
+      this.initAddressbook()
+    );
     this.migratingContacts = false;
     this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
       this.migratingContacts = _migrating;
