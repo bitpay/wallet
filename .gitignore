@@ -12,6 +12,9 @@ npm-debug.log*
 
 yarn.lock
 
+# iOS
+build.json
+
 # Firebase
 GoogleService-Info.plist
 google-services.json

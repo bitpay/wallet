@@ -913,9 +913,18 @@ export class IABCardProvider {
               }
             );
 
-            await infoSheet.present();
-            // close in app browser
-            this.hide();
+            if (dashboardRedirect) {
+              this.events.publish('IncomingDataRedir', {
+                name: 'CardsPage'
+              });
+
+              infoSheet.onDidDismiss(() => {
+                this.loadingWrapper(() => {
+                  this.sendMessage({ message: 'loadDashboard' });
+                  this.show();
+                });
+              });
+            }
 
             // paymentUrl - so pass to unlock context
             if (paymentUrl) {
@@ -924,12 +933,9 @@ export class IABCardProvider {
               });
             }
 
-            if (dashboardRedirect) {
-              this.events.publish('IncomingDataRedir', {
-                name: 'CardsPage'
-              });
-              this.sendMessage({ message: 'loadDashboard' });
-            }
+            await infoSheet.present();
+            // close in app browser
+            this.hide();
           }
 
           // publish new user
@@ -963,9 +969,16 @@ export class IABCardProvider {
             'default-error',
             {
               title: 'BitPay ID',
-              msg: 'Uh oh, something went wrong please try again later.'
+              msg: 'Uh oh, something went wrong please try again.'
             }
           );
+
+          if (dashboardRedirect) {
+            errorSheet.onDidDismiss(() => {
+              this.sendMessage({ message: 'pairingOnly' });
+              this.show();
+            });
+          }
 
           await errorSheet.present();
 

@@ -174,7 +174,7 @@ export class NotificationsPage {
     const url = 'https://bitpay.com/about/privacy';
     const optIn = true;
     const title = null;
-    const message = this.translate.instant('View Privacy Policy');
+    const message = this.translate.instant('View Privacy Notice');
     const okText = this.translate.instant('Open');
     const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(

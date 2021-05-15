@@ -191,7 +191,9 @@ export class BwcErrorProvider {
         body = this.translate.instant('Copayer data mismatch');
         break;
       case 'DUST_AMOUNT':
-        body = this.translate.instant('Amount below minimum allowed');
+        body = this.translate.instant(
+          'Amount below minimum allowed (dust threshold)'
+        );
         break;
       case 'INCORRECT_ADDRESS_NETWORK':
         body = this.translate.instant('Incorrect network address');

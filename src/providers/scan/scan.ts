@@ -14,17 +14,17 @@ export class ScanProvider {
   public scannerVisible: boolean;
   public lightEnabled: boolean;
   public frontCameraEnabled: boolean;
-  public isDesktop = !this.platform.isCordova;
-  public isAvailable: boolean = true;
-  public hasPermission: boolean = false;
-  public isDenied: boolean = false;
-  public isRestricted: boolean = false;
-  public canEnableLight: boolean = false;
-  public canChangeCamera: boolean = false;
-  public canOpenSettings: boolean = false;
-  public backCamera: boolean = true;
-  public initializeStarted: boolean = false;
-  public initializeCompleted: boolean = false;
+  public isDesktop: boolean;
+  public isAvailable: boolean;
+  public hasPermission: boolean;
+  public isDenied: boolean;
+  public isRestricted: boolean;
+  public canEnableLight: boolean;
+  public canChangeCamera: boolean;
+  public canOpenSettings: boolean;
+  public backCamera: boolean;
+  public initializeStarted: boolean;
+  public initializeCompleted: boolean;
 
   constructor(
     private qrScanner: QRScanner,
@@ -34,6 +34,17 @@ export class ScanProvider {
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider
   ) {
+    this.isDesktop = !this.platform.isCordova;
+    this.isAvailable = true;
+    this.hasPermission = false;
+    this.isDenied = false;
+    this.isRestricted = false;
+    this.canEnableLight = false;
+    this.canChangeCamera = false;
+    this.canOpenSettings = false;
+    this.backCamera = true;
+    this.initializeStarted = false;
+    this.initializeCompleted = false;
     this.scannerVisible = false;
     this.lightEnabled = false;
     this.frontCameraEnabled = false;

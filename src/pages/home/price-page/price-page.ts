@@ -68,9 +68,14 @@ export class PricePage {
         this.card.historicalRates = response[this.card.unitCode];
         this.updateValues();
         this.setPrice();
-        this.redrawCanvas();
+        if (this.canvas.chart) {
+          this.redrawCanvas();
+        } else {
+          this.canvas.loading = false;
+        }
       },
       err => {
+        this.canvas.loading = false;
         this.logger.error('Error getting rates:', err);
       }
     );
@@ -99,7 +104,8 @@ export class PricePage {
     this.card.totalBalanceChangeAmount = price - minPrice;
     this.card.totalBalanceChange =
       (this.card.totalBalanceChangeAmount * 100) / minPrice;
-    const customPrecision = this.card.unitCode === 'xrp' ? 4 : 2;
+    const customPrecision =
+      this.card.unitCode === 'xrp' || this.card.unitCode === 'doge' ? 4 : 2;
     document.getElementById(
       'displayPrice'
     ).textContent = `${this.formatCurrencyPipe.transform(
@@ -125,15 +131,12 @@ export class PricePage {
   }
 
   private redrawCanvas() {
-    this.canvas.loading = false;
-    if (!this.canvas.chart) return;
-
     const data = this.card.historicalRates.map(rate => [rate.ts, rate.rate]);
     this.canvas.chart.updateOptions(
       {
         chart: {
           animations: {
-            enabled: true
+            enabled: false
           }
         },
         series: [
@@ -148,9 +151,10 @@ export class PricePage {
         }
       },
       false,
-      true,
-      true
+      false,
+      false
     );
+    this.canvas.loading = false;
   }
 
   private drawCanvas() {

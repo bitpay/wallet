@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2021-02-26 17:23\n"
+"PO-Revision-Date: 2021-03-30 20:32\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -43,6 +43,9 @@ msgstr "5-sterrenbeoordelingen helpen BitPay wallet onder de aandacht te brengen
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
 msgstr "Een destination tag is een optioneel nummer dat overeenkomt met een factuur of een XRP account op een exchange."
+
+msgid "A dog without funds is a sad dog"
+msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "Een nieuwe copayer is zojuist toegetreden tot je {{walletName}} wallet."
@@ -350,8 +353,8 @@ msgstr "BitPay ID succesvol gekoppeld."
 msgid "BitPay ID successfully disconnected."
 msgstr "BitPay ID succesvol ontkoppeld."
 
-msgid "BitPay does not receive and does not control miner fees."
-msgstr "BitPay ontvangt geen miner fees en heeft er ook geen controle over."
+msgid "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
+msgstr ""
 
 msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
 msgstr "BitPay wil je ook graag marketing- en promotiemateriaal sturen over onze producten, diensten en speciale promoties. Je kunt je voorkeuren op elk gewenst moment wijzigen in \"Instellingen\" in onze app of door contact met ons op te nemen zoals uiteengezet in onze"
@@ -362,14 +365,8 @@ msgstr "Bitcoin Adres"
 msgid "Bitcoin Cash Address"
 msgstr "Bitcoin Cash-adres"
 
-msgid "Bitcoin Cash URI"
-msgstr "Bitcoin Cash-URI"
-
 msgid "Bitcoin Network Fee Policy"
 msgstr "Transactiekostenbeleid Bitcoin-netwerk"
-
-msgid "Bitcoin URI"
-msgstr "Bitcoin URI"
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin transacties bevatten transactiekosten betaald aan de miners in het netwerk."
@@ -971,6 +968,9 @@ msgstr "Voeg geen private key toe"
 msgid "Do you want to reset all settings to default value?"
 msgstr ""
 
+msgid "Doge Address"
+msgstr ""
+
 msgid "Don't lose your key!"
 msgstr "Verlies je sleutel niet!"
 
@@ -990,6 +990,9 @@ msgid "Download logs"
 msgstr "Download logs"
 
 msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid "Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1147,9 +1150,6 @@ msgstr "Fout tijdens bijwerken Debet Kaarten"
 
 msgid "Ethereum Address"
 msgstr "Ethereum-adres"
-
-msgid "Ethereum URI"
-msgstr "Ethereum URI"
 
 msgid "Ethereum wallet required"
 msgstr "Ethereum wallet nodig"
@@ -1463,6 +1463,9 @@ msgstr "Het is echter niet toegestaan om onbevestigd saldo uit te geven bij merc
 msgid "I Understand"
 msgstr "Ik begrijp het"
 
+msgid "I already have an account"
+msgstr ""
+
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
 
@@ -1625,9 +1628,6 @@ msgstr "Ongeldig derivation path voor geselecteerde coin"
 msgid "Invitation Code"
 msgstr "Uitnodigingscode"
 
-msgid "Invoice URL"
-msgstr "Factuur URL"
-
 msgid "Is this correct?"
 msgstr "Klopt dit?"
 
@@ -1702,6 +1702,9 @@ msgstr "Laatste vier cijfers"
 
 msgid "Learn More"
 msgstr "Meer informatie"
+
+msgid "Learn about miner fees"
+msgstr ""
 
 msgid "Learn more"
 msgstr "Meer informatie"
@@ -1871,9 +1874,6 @@ msgstr "Oorspronkelijke valuta"
 msgid "Needs Backup"
 msgstr "Back-up nodig"
 
-msgid "Needs Backup 2"
-msgstr ""
-
 msgid "Needs backup"
 msgstr "Back-up nodig"
 
@@ -1882,9 +1882,6 @@ msgstr "Netwerk"
 
 msgid "Network Cost"
 msgstr "Netwerkkosten"
-
-msgid "Network Fee Warning"
-msgstr "Waarschuwing netwerkkosten"
 
 msgid "Network cost"
 msgstr "Netwerkkosten"
@@ -2204,9 +2201,6 @@ msgstr "Betaalverzoeken"
 msgid "Payment Sent"
 msgstr "Betaling Verzonden"
 
-msgid "Payment URL"
-msgstr "Payment URL"
-
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Betaling geaccepteerd, maar nog niet verzonden"
 
@@ -2257,9 +2251,6 @@ msgstr "Persoonlijke Portemonnee"
 
 msgid "Physical"
 msgstr "Fysiek"
-
-msgid "Plain URL"
-msgstr "Plain URL"
 
 msgid "Please connect a camera to get started."
 msgstr "Sluit een camera aan om aan de slag te gaan."
@@ -2321,11 +2312,14 @@ msgstr "Geprinte cadeaubon vereist"
 msgid "Priority"
 msgstr "Dringend"
 
+msgid "Privacy Notice"
+msgstr ""
+
+msgid "Privacy Notice update"
+msgstr ""
+
 msgid "Privacy Policy"
 msgstr "Privacybeleid"
-
-msgid "Privacy Policy update"
-msgstr "Update van het privacybeleid"
 
 msgid "Private Key"
 msgstr "Privé Sleutel"
@@ -2426,9 +2420,6 @@ msgstr ""
 msgid "Recent"
 msgstr "Recent"
 
-msgid "Recently added"
-msgstr ""
-
 msgid "Recipient"
 msgstr "Ontvanger"
 
@@ -2452,9 +2443,6 @@ msgstr ""
 
 msgid "Recovery Phrase"
 msgstr "Herstelzin"
-
-msgid "Recreating Wallet..."
-msgstr "Portemonnee herstellen..."
 
 msgid "Redeem Now"
 msgstr "Wissel nu in"
@@ -2548,9 +2536,6 @@ msgstr "Probeer camera opnieuw"
 
 msgid "Review Changelly policies"
 msgstr ""
-
-msgid "Ripple URI"
-msgstr "Ripple URI"
 
 msgid "SEPA Bank Transfer"
 msgstr ""
@@ -2969,9 +2954,6 @@ msgstr "Tik en houd vast om te tonen"
 msgid "Tap each word in the correct order."
 msgstr "Tik op elk woord in de juiste volgorde."
 
-msgid "Tap to recreate"
-msgstr "Tik om opnieuw aan te maken"
-
 msgid "Temporarily Unavailable"
 msgstr "Tijdelijk niet beschikbaar"
 
@@ -3200,11 +3182,8 @@ msgstr "Het kan lang duren voordat deze transactie is bevestigd of kan worden st
 msgid "This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee."
 msgstr ""
 
-msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
-msgstr "Voor deze transactie zijn hoge netwerkkosten vereist, omdat het bedrag te laag is of omdat het netwerk overbelast is."
-
-msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Deze portemonnee is niet geregistreerd bij de opgegeven Bitcore Wallet Service (BWS). U kunt deze opnieuw aanmaken vanuit de lokale informatie."
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab)."
+msgstr ""
 
 msgid "This will open Coinbase.com, where you can create an account."
 msgstr "Dit zal Coinbase.com openen, waar je een account kan aanmaken."
@@ -3265,6 +3244,9 @@ msgstr "Transactie bevestigd"
 
 msgid "Transaction fee is below the current minimum threshold"
 msgstr "Transactiekosten zijn onder de huidige minimumdrempel"
+
+msgid "Transaction fees are currently high"
+msgstr ""
 
 msgid "Transaction has failed. In most cases, the amount was less than the minimum."
 msgstr ""
@@ -3455,8 +3437,8 @@ msgstr "Bekijk aanbiedingen"
 msgid "View Order Summary"
 msgstr ""
 
-msgid "View Privacy Policy"
-msgstr "Bekijk het privacybeleid"
+msgid "View Privacy Notice"
+msgstr ""
 
 msgid "View Redemption Code"
 msgstr "Bekijk inwisselingscode"
@@ -3570,9 +3552,6 @@ msgid "Wallet service not found"
 msgstr "Wallet service niet gevonden"
 
 msgid "WalletConnect"
-msgstr ""
-
-msgid "WalletConnect URI"
 msgstr ""
 
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."

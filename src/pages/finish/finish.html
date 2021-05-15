@@ -13,7 +13,16 @@
       </div>
     </div>
   </div>
-  <div class="footer" *ngIf="cssClass !== 'bg-none'" (click)="close()">
+  <div *ngIf="showLaunchRocket" class="rocket-container">
+    <img src="assets/img/rocket-doge.svg" class="rocket-img"
+    [@photoState]="launchRocketPosition"
+    (@photoState.done)="rocketLanding('land')">
+  </div>
+  <div *ngIf="showLandRocket" class="rocket-container">
+    <img src="assets/img/rocket-sad-doge.svg" class="rocket-img"
+    [@photoState]="landRocketPosition">
+  </div>
+  <div class="footer" *ngIf="cssClass !== 'bg-none'" (click)="close()" >
     OK
   </div>
 </div>

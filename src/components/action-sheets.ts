@@ -1,10 +1,11 @@
 import { ActionSheetComponent } from './action-sheet/action-sheet';
-import { ChooseFeeLevelComponent } from './choose-fee-level/choose-fee-level';
 import { EmailComponent } from './email-component/email-component';
 import { EncryptPasswordComponent } from './encrypt-password/encrypt-password';
+import { FooterMenuComponent } from './footer-menu/footer-menu';
 import { IncomingDataMenuComponent } from './incoming-data-menu/incoming-data-menu';
 import { INFO_SHEET_COMPONENTS } from './info-sheet/info-sheet';
 import { MemoComponent } from './memo-component/memo-component';
+import { MinerFeeWarningComponent } from './miner-fee-warning/miner-fee-warning';
 import { NeedsBackupComponent } from './needs-backup/needs-backup';
 import { OptionsSheetComponent } from './options-sheet/options-sheet';
 import { PhoneSheet } from './phone-sheet/phone-sheet';
@@ -21,9 +22,10 @@ export const ACTION_SHEET_COMPONENTS = [
   NeedsBackupComponent,
   WalletSelectorComponent,
   WalletReceiveComponent,
-  ChooseFeeLevelComponent,
   EmailComponent,
   PhoneSheet,
   WalletTabOptionsComponent,
-  EncryptPasswordComponent
+  EncryptPasswordComponent,
+  MinerFeeWarningComponent,
+  FooterMenuComponent
 ];

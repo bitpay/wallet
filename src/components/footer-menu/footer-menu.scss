@@ -1,0 +1,14 @@
+footer-menu {
+  .item-md [item-left] {
+    margin: 0px 15px 0px 0px;
+  }
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  .bp-header {
+    margin: 32px 0 20px 3px;
+  }
+  .item-close {
+    ion-icon {
+      margin-left: -5px;
+    }
+  }
+}

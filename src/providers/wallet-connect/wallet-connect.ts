@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import WalletConnect from '@walletconnect/client';
-import { convertHexToNumber, convertHexToUtf8 } from '@walletconnect/utils';
+import { convertHexToNumber } from '@walletconnect/utils';
+import { personalSign, signTypedData_v4 } from 'eth-sig-util';
 import { Events } from 'ionic-angular';
+import { KeyProvider } from '../../providers/key/key';
 
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 
 import { Logger } from '../../providers/logger/logger';
 import { AnalyticsProvider } from '../analytics/analytics';
+import { BwcProvider } from '../bwc/bwc';
 import { ErrorsProvider } from '../errors/errors';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -59,9 +62,33 @@ export class WalletConnectProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private events: Events,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private keyProvider: KeyProvider,
+    private bwcProvider: BwcProvider
   ) {
     this.logger.debug('WalletConnect Provider initialized');
+  }
+
+  public signTypedData(data: any, wallet) {
+    const key = this.keyProvider.getKey(wallet.keyId).get();
+    const bitcore = this.bwcProvider.getBitcore();
+    const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
+    const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
+    const result = signTypedData_v4(Buffer.from(priv.toString(), 'hex'), {
+      data
+    });
+    return result;
+  }
+
+  public personalSign(data: any, wallet) {
+    const key = this.keyProvider.getKey(wallet.keyId).get();
+    const bitcore = this.bwcProvider.getBitcore();
+    const xpriv = new bitcore.HDPrivateKey(key.xPrivKey);
+    const priv = xpriv.deriveChild("m/44'/60'/0'/0/0").privateKey;
+    const result = personalSign(Buffer.from(priv.toString(), 'hex'), {
+      data
+    });
+    return result;
   }
 
   public register(): void {
@@ -123,7 +150,7 @@ export class WalletConnectProvider {
           );
         }
         this.onGoingProcessProvider.clear();
-      }, 5000);
+      }, 10000);
       this.subscribeToEvents();
     } catch (error) {
       this.onGoingProcessProvider.clear();
@@ -305,10 +332,10 @@ export class WalletConnectProvider {
     }
   }
 
-  private refEthereumRequests(payload): void {
+  private refEthereumRequests(payload) {
+    this.logger.debug(`refEthereumRequests ${payload.method}`);
     switch (payload.method) {
       case 'eth_sendTransaction':
-      case 'eth_signTransaction':
         payload.params[0].gas = payload.params[0].gas
           ? convertHexToNumber(payload.params[0].gas)
           : null;
@@ -323,17 +350,19 @@ export class WalletConnectProvider {
           : null;
         payload.params[0].value = payload.params[0].value
           ? convertHexToNumber(payload.params[0].value)
-          : null;
+          : 0;
+        break;
+      case 'eth_signTypedData':
+        // nothing
         break;
       case 'personal_sign':
-        try {
-          payload.params[0] = convertHexToUtf8(payload.params[0]);
-        } catch (err) {
-          this.logger.error('refEthereumRequests err', err);
-        }
+        // nothing
         break;
       default:
-        payload.params = JSON.stringify(payload.params, null, '\t');
+        this.errorsProvider.showDefaultError(
+          this.translate.instant(`Not supported method: ${payload.method}`),
+          this.translate.instant('Error')
+        );
         break;
     }
     return payload;

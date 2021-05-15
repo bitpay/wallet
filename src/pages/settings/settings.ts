@@ -35,7 +35,7 @@ import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-s
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
+import { WalletConnectSettingsPage } from '../integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -43,11 +43,11 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { BitPayIdPage } from './bitpay-id/bitpay-id';
-import { FeePolicyPage } from './fee-policy/fee-policy';
 import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
 import { LocalThemePage } from './local-theme/local-theme';
 import { LockPage } from './lock/lock';
+import { NavigationPage } from './navigation/navigation';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
@@ -98,6 +98,7 @@ export class SettingsPage {
   public tapped = 0;
   public certOnlyTapped = 0;
   public appVersion: string;
+  public navigation: string;
   private featureList: any;
   constructor(
     private navCtrl: NavController,
@@ -204,6 +205,7 @@ export class SettingsPage {
 
     // Get Theme
     this.appTheme = this.themeProvider.getCurrentAppTheme();
+    this.navigation = this.themeProvider.getCurrentNavigationType();
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -330,6 +332,10 @@ export class SettingsPage {
     this.navCtrl.push(LocalThemePage);
   }
 
+  public openNavigationPage(): void {
+    this.navCtrl.push(NavigationPage);
+  }
+
   public openLockPage(): void {
     const config = this.configProvider.get();
     const lockMethod =
@@ -347,10 +353,6 @@ export class SettingsPage {
 
   public openNotificationsPage(): void {
     this.navCtrl.push(NotificationsPage);
-  }
-
-  public openFeePolicyPage(): void {
-    this.navCtrl.push(FeePolicyPage);
   }
 
   public openWalletSettingsPage(walletId: string): void {
@@ -379,7 +381,7 @@ export class SettingsPage {
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
       case 'walletConnect':
-        this.navCtrl.push(WalletConnectPage);
+        this.navCtrl.push(WalletConnectSettingsPage);
         break;
     }
   }
@@ -507,7 +509,7 @@ export class SettingsPage {
     const url = 'https://bitpay.com/about/privacy';
     const optIn = true;
     const title = null;
-    const message = this.translate.instant('View Privacy Policy');
+    const message = this.translate.instant('View Privacy Notice');
     const okText = this.translate.instant('Open');
     const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(

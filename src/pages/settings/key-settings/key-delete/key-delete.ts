@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // providers
+import { ConfigProvider } from '../../../../providers/config/config';
 import { KeyProvider } from '../../../../providers/key/key';
 import { Logger } from '../../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -29,6 +30,7 @@ export class KeyDeletePage {
     private translate: TranslateService,
     private keyProvider: KeyProvider,
     private persistanceProvider: PersistenceProvider,
+    private configProvider: ConfigProvider,
     private pushNotificationsProvider: PushNotificationsProvider
   ) {}
 
@@ -70,6 +72,7 @@ export class KeyDeletePage {
           wallets.forEach(wallet => {
             this.pushNotificationsProvider.unsubscribe(wallet);
             this.persistanceProvider.removeLastKnownBalance(wallet.id);
+            this.configProvider.removeBwsFor(wallet.credentials.walletId);
           });
           this.keyProvider.removeKey(this.keyId);
           this.goHome();

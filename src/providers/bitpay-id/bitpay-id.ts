@@ -130,7 +130,14 @@ export class BitPayIdProvider {
 
               this.logger.debug('BitPayID: successfully paired');
               const { data } = user;
-              const { email, familyName, givenName, experiments } = data;
+              const {
+                email,
+                familyName,
+                givenName,
+                experiments,
+                incentiveLevel,
+                incentiveLevelId
+              } = data;
 
               if (experiments && experiments.includes('NADebitCard')) {
                 this.persistenceProvider.setCardExperimentFlag('enabled');
@@ -147,7 +154,9 @@ export class BitPayIdProvider {
                   email,
                   token: token.data,
                   familyName: familyName || '',
-                  givenName: givenName || ''
+                  givenName: givenName || '',
+                  incentiveLevel,
+                  incentiveLevelId
                 })
               ]);
 
@@ -197,6 +206,13 @@ export class BitPayIdProvider {
       throw new Error(res.error);
     }
     return (res && res.data) || res;
+  }
+
+  public async refreshUserInfo() {
+    this.logger.debug('Refreshing user info');
+    const userInfo = await this.apiCall('getBasicInfo');
+    const network = Network[this.getEnvironment().network];
+    await this.persistenceProvider.setBitPayIdUserInfo(network, userInfo);
   }
 
   public async unlockInvoice(invoiceId: string): Promise<string> {

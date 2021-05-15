@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2021-02-26 17:23\n"
+"PO-Revision-Date: 2021-03-30 20:32\n"
 
 msgid "(possible double spend)"
 msgstr "(Possível gasto duplo)"
@@ -43,6 +43,9 @@ msgstr "5-star ratings help us get BitPay Wallet into more hands, and more users
 
 msgid "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
 msgstr "A Tag de destino é um número opcional que corresponde a uma fatura ou conta XRP em uma bolsa."
+
+msgid "A dog without funds is a sad dog"
+msgstr ""
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "Um novo copayer acabou de se juntar à sua carteira {{walletName}}."
@@ -350,8 +353,8 @@ msgstr "ID BitPay conectado com sucesso."
 msgid "BitPay ID successfully disconnected."
 msgstr "ID BitPay desconectado com sucesso."
 
-msgid "BitPay does not receive and does not control miner fees."
-msgstr "BitPay não recebe e não controla as taxas de mineração."
+msgid "BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds."
+msgstr ""
 
 msgid "BitPay would also like to send you marketing and promotional communications about our products, services and special promotions. You can change your preferences at any time in “Settings” in our app or by contacting us as set forth in our"
 msgstr "BitPay também gostaria de lhe enviar comunicações de marketing e promocionais sobre nossos produtos, serviços e promoções especiais. Você pode alterar suas preferências a qualquer momento em \"Configurações\" em nosso app ou entrando em contato conosco conforme definido em nosso"
@@ -362,14 +365,8 @@ msgstr "Endereço Bitcoin"
 msgid "Bitcoin Cash Address"
 msgstr "Endereço Bitcoin Cash"
 
-msgid "Bitcoin Cash URI"
-msgstr "URI do Bitcoin Cash"
-
 msgid "Bitcoin Network Fee Policy"
 msgstr "Política de taxa de rede Bitcoin"
-
-msgid "Bitcoin URI"
-msgstr "URI do Bitcoin"
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "As transações Bitcoin incluem uma taxa cobrada pelos mineiros na rede."
@@ -971,6 +968,9 @@ msgstr "Não incluir chave privada"
 msgid "Do you want to reset all settings to default value?"
 msgstr "Você deseja redefinir todas as configurações para o valor padrão?"
 
+msgid "Doge Address"
+msgstr ""
+
 msgid "Don't lose your key!"
 msgstr "Não perca sua chave!"
 
@@ -990,6 +990,9 @@ msgid "Download logs"
 msgstr "Baixar logs"
 
 msgid "Due to AML/KYC procedure, exchange may be delayed."
+msgstr ""
+
+msgid "Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}."
 msgstr ""
 
 msgid "Duplicate to BCH"
@@ -1147,9 +1150,6 @@ msgstr "Erro na atualização dos Cartões de Débito"
 
 msgid "Ethereum Address"
 msgstr "Endereço Ethereum"
-
-msgid "Ethereum URI"
-msgstr ""
 
 msgid "Ethereum wallet required"
 msgstr ""
@@ -1463,6 +1463,9 @@ msgstr "No entanto, fundos não confirmados não são permitidos para gastar com
 msgid "I Understand"
 msgstr "Estou ciente"
 
+msgid "I already have an account"
+msgstr ""
+
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr "Eu li, entendi e concordo com os Termos de Uso."
 
@@ -1625,9 +1628,6 @@ msgstr "Caminho de derivação inválido para a moeda selecionada"
 msgid "Invitation Code"
 msgstr "Código de convite"
 
-msgid "Invoice URL"
-msgstr "URL da Fatura"
-
 msgid "Is this correct?"
 msgstr "Isto está correto?"
 
@@ -1702,6 +1702,9 @@ msgstr "Últimos quatro dígitos"
 
 msgid "Learn More"
 msgstr "Saiba Mais"
+
+msgid "Learn about miner fees"
+msgstr ""
 
 msgid "Learn more"
 msgstr "Saiba mais"
@@ -1871,9 +1874,6 @@ msgstr ""
 msgid "Needs Backup"
 msgstr "Necessário Backup"
 
-msgid "Needs Backup 2"
-msgstr ""
-
 msgid "Needs backup"
 msgstr "Necessário backup"
 
@@ -1882,9 +1882,6 @@ msgstr "Rede"
 
 msgid "Network Cost"
 msgstr "Custo de Rede"
-
-msgid "Network Fee Warning"
-msgstr "Aviso de Taxa de Rede"
 
 msgid "Network cost"
 msgstr "Custo de rede"
@@ -2204,9 +2201,6 @@ msgstr "Solicitações de Pagamento"
 msgid "Payment Sent"
 msgstr "Pagamento Enviado"
 
-msgid "Payment URL"
-msgstr "URL de Pagamento"
-
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Pagamento aceito, mas ainda não publicado"
 
@@ -2257,9 +2251,6 @@ msgstr "Carteira Pessoal"
 
 msgid "Physical"
 msgstr ""
-
-msgid "Plain URL"
-msgstr "URL Simples"
 
 msgid "Please connect a camera to get started."
 msgstr "Por favor conecte uma câmera para iniciar."
@@ -2321,11 +2312,14 @@ msgstr "Cartão-Presente Impresso Necessário"
 msgid "Priority"
 msgstr "Prioridade"
 
+msgid "Privacy Notice"
+msgstr ""
+
+msgid "Privacy Notice update"
+msgstr ""
+
 msgid "Privacy Policy"
 msgstr "Política de privacidade"
-
-msgid "Privacy Policy update"
-msgstr "Actualização de política de privacidade"
 
 msgid "Private Key"
 msgstr "Chave Privada"
@@ -2426,9 +2420,6 @@ msgstr ""
 msgid "Recent"
 msgstr "Recente"
 
-msgid "Recently added"
-msgstr ""
-
 msgid "Recipient"
 msgstr "Destinatário"
 
@@ -2452,9 +2443,6 @@ msgstr "Chave de Recuperação"
 
 msgid "Recovery Phrase"
 msgstr "Frase de Recuperação"
-
-msgid "Recreating Wallet..."
-msgstr "Recriando Carteira…"
 
 msgid "Redeem Now"
 msgstr "Resgatar Agora"
@@ -2547,9 +2535,6 @@ msgid "Retry camera"
 msgstr "Tentanto câmera"
 
 msgid "Review Changelly policies"
-msgstr ""
-
-msgid "Ripple URI"
 msgstr ""
 
 msgid "SEPA Bank Transfer"
@@ -2969,9 +2954,6 @@ msgstr "Toque e mantenha para mostrar"
 msgid "Tap each word in the correct order."
 msgstr "Toque cada palavra na ordem correta."
 
-msgid "Tap to recreate"
-msgstr "Toque para recriar"
-
 msgid "Temporarily Unavailable"
 msgstr "Temporariamente Indisponível"
 
@@ -3200,11 +3182,8 @@ msgstr "Esta transação pode levar muito tempo para ser confirmada ou pode ser 
 msgid "This transaction is taking longer than usual to confirm. You can try to speed it up by using a higher fee."
 msgstr ""
 
-msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
-msgstr "Esta transação requer uma taxa de rede elevada porque o valor de envio é muito pequeno ou a rede está sofrendo congestionamento."
-
-msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Esta carteira não está registrada no dado serviço Wallet Service Bitcore (BWS) informado. Você pode recriá-la a partir da informação local."
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). As an advice, you could delete the key, under settings and selecting the specific key, and then use the Backup to import the wallet again (under Home > Wallet Tab)."
+msgstr ""
 
 msgid "This will open Coinbase.com, where you can create an account."
 msgstr ""
@@ -3264,6 +3243,9 @@ msgid "Transaction confirmed"
 msgstr "Transação confirmada"
 
 msgid "Transaction fee is below the current minimum threshold"
+msgstr ""
+
+msgid "Transaction fees are currently high"
 msgstr ""
 
 msgid "Transaction has failed. In most cases, the amount was less than the minimum."
@@ -3455,8 +3437,8 @@ msgstr "Ver Ofertas"
 msgid "View Order Summary"
 msgstr ""
 
-msgid "View Privacy Policy"
-msgstr "Política de Privacidade"
+msgid "View Privacy Notice"
+msgstr ""
 
 msgid "View Redemption Code"
 msgstr "Ver Código de Resgate"
@@ -3570,9 +3552,6 @@ msgid "Wallet service not found"
 msgstr "Serviço de carteira não encontrado"
 
 msgid "WalletConnect"
-msgstr ""
-
-msgid "WalletConnect URI"
 msgstr ""
 
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."

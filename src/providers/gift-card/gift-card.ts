@@ -11,12 +11,12 @@ import { timer } from 'rxjs/observable/timer';
 import { switchMap } from 'rxjs/operators';
 import { promiseSerial } from '../../utils';
 import { AnalyticsProvider } from '../analytics/analytics';
-import { AppProvider } from '../app/app';
 import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { InvoiceProvider } from '../invoice/invoice';
+import { LocationProvider } from '../location/location';
 import { Logger } from '../logger/logger';
 import {
   GiftCardMap,
@@ -39,7 +39,6 @@ import {
 
 @Injectable()
 export class GiftCardProvider extends InvoiceProvider {
-  countryPromise: Promise<string>;
   availableCardsPromise: Promise<CardConfig[]>;
   supportedCardMapPromise: Promise<{ [name: string]: CardConfig }>;
 
@@ -52,7 +51,6 @@ export class GiftCardProvider extends InvoiceProvider {
 
   constructor(
     private analyticsProvider: AnalyticsProvider,
-    private appProvider: AppProvider,
     private bitpayIdProvider: BitPayIdProvider,
     private configProvider: ConfigProvider,
     private events: Events,
@@ -63,7 +61,8 @@ export class GiftCardProvider extends InvoiceProvider {
     public http: HttpClient,
     public logger: Logger,
     public persistenceProvider: PersistenceProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private locationProvider: LocationProvider
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
@@ -120,7 +119,7 @@ export class GiftCardProvider extends InvoiceProvider {
     const network = this.getNetwork();
     const map = await Promise.race([
       this.persistenceProvider.getGiftCards(cardName, network),
-      Observable.timer(fetchTimeout)
+      timer(fetchTimeout)
         .toPromise()
         .then(() => {
           throw new Error('timeout');
@@ -576,9 +575,14 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async fetchAvailableCardMap() {
     const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
-    const availableCardMap = shouldSync
-      ? await this.fetchAuthenticatedAvailableCardMap()
-      : await this.fetchPublicAvailableCardMap();
+    const userInfo = await this.persistenceProvider.getBitPayIdUserInfo(
+      this.getNetwork()
+    );
+    const incentiveLevelId = userInfo && userInfo.incentiveLevelId;
+    const availableCardMap =
+      shouldSync && incentiveLevelId
+        ? await this.getGiftCardCatalog(incentiveLevelId)
+        : await this.getGiftCardCatalog();
     this.cacheApiCardConfig(availableCardMap);
     this.logger.debug(
       'fetched available card map',
@@ -587,21 +591,16 @@ export class GiftCardProvider extends InvoiceProvider {
     return availableCardMap;
   }
 
-  async fetchPublicAvailableCardMap(): Promise<AvailableCardMap> {
-    const url = `${this.credentials.BITPAY_API_URL}/gift-cards/cards`;
-    return this.http
-      .get(url, {
-        headers: {
-          'x-bitpay-version': this.appProvider.info.version
-        }
-      })
-      .toPromise() as Promise<AvailableCardMap>;
-  }
-
-  async fetchAuthenticatedAvailableCardMap(): Promise<AvailableCardMap> {
-    return this.bitpayIdProvider.apiCall('getGiftCardCatalog', {
-      bitpayVersion: this.appProvider.info.version
-    });
+  async getGiftCardCatalog(
+    incentiveLevelId: string = ''
+  ): Promise<AvailableCardMap> {
+    const country = await this.locationProvider.getCountry();
+    const url = `${
+      this.credentials.BITPAY_API_URL
+    }/gift-cards/catalog/${country}${
+      incentiveLevelId ? `/${incentiveLevelId}` : ''
+    }`;
+    return this.http.get(url).toPromise() as Promise<AvailableCardMap>;
   }
 
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
@@ -668,17 +667,6 @@ export class GiftCardProvider extends InvoiceProvider {
         countryIsoCode: ''
       }
     };
-  }
-
-  async getCountry(): Promise<string> {
-    this.countryPromise = this.countryPromise
-      ? this.countryPromise
-      : this.http
-          .get('https://bitpay.com/wallet-card/location')
-          .map((res: { country: string }) => res.country)
-          .toPromise()
-          .catch(_ => 'US');
-    return this.countryPromise;
   }
 
   async getAvailableCards(): Promise<CardConfig[]> {

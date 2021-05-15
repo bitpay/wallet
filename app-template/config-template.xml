@@ -2,7 +2,7 @@
 <widget id="com.bitpay.*BUNDLENAME*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
-  ios-CFBundleVersion="*VERSION*"
+  ios-CFBundleVersion="*IOSBUILDVERSION*"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <name>*USERVISIBLENAME*</name>
     <description>
@@ -158,6 +158,7 @@
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
         <application android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true" />
+        <application android:icon="@mipmap/ic_launcher" android:resource="@drawable/fcm_push_icon"/>
       </edit-config>
       <!-- Adaptive Icons -->
       <icon background="resources/*PACKAGENAME*/android/icon/new/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="resources/*PACKAGENAME*/android/icon/new/mipmap-mdpi/ic_launcher_foreground.png" />
@@ -165,6 +166,13 @@
       <icon background="resources/*PACKAGENAME*/android/icon/new/mipmap-xhdpi/ic_launcher_background.png" density="xhdpi" foreground="resources/*PACKAGENAME*/android/icon/new/mipmap-xhdpi/ic_launcher_foreground.png" />
       <icon background="resources/*PACKAGENAME*/android/icon/new/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="resources/*PACKAGENAME*/android/icon/new/mipmap-xxhdpi/ic_launcher_foreground.png" />
       <icon background="resources/*PACKAGENAME*/android/icon/new/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="resources/*PACKAGENAME*/android/icon/new/mipmap-xxxhdpi/ic_launcher_foreground.png" />
+
+      <!-- Push Notifications Icons -->
+      <resource-file src="resources/*PACKAGENAME*/android/icon/new/drawable-mdpi/fcm_push_icon.png" density="mdpi" target="app/src/main/res/drawable-mdpi/fcm_push_icon.png"/>
+      <resource-file src="resources/*PACKAGENAME*/android/icon/new/drawable-hdpi/fcm_push_icon.png" density="hdpi" target="app/src/main/res/drawable-hdpi/fcm_push_icon.png"/>
+      <resource-file src="resources/*PACKAGENAME*/android/icon/new/drawable-xhdpi/fcm_push_icon.png" density="xhdpi" target="app/src/main/res/drawable-xhdpi/fcm_push_icon.png"/>
+      <resource-file src="resources/*PACKAGENAME*/android/icon/new/drawable-xxhdpi/fcm_push_icon.png" density="xxhdpi" target="app/src/main/res/drawable-xxhdpi/fcm_push_icon.png"/>
+      <resource-file src="resources/*PACKAGENAME*/android/icon/new/drawable-xxxhdpi/fcm_push_icon.png" density="xxxhdpi" target="app/src/main/res/drawable-xxhdpi/fcm_push_icon.png"/>
 
       <!-- Splash -->
       <splash src="resources/*PACKAGENAME*/android/splash/drawable-land-hdpi-screen.png" density="land-hdpi"/>

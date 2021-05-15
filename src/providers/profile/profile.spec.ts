@@ -30,6 +30,7 @@ describe('Profile Provider', () => {
   let platformProvider: PlatformProvider;
   let txFormatProvider: TxFormatProvider;
   let persistenceProvider: PersistenceProvider;
+  let rateProvider: RateProvider;
 
   const walletMock = {
     id1: {
@@ -404,6 +405,7 @@ describe('Profile Provider', () => {
     replaceParametersProvider = testBed.get(ReplaceParametersProvider);
     platformProvider = testBed.get(PlatformProvider);
     txFormatProvider = testBed.get(TxFormatProvider);
+    rateProvider = testBed.get(RateProvider);
     persistenceProvider = testBed.get(PersistenceProvider);
     persistenceProvider.load();
 
@@ -480,6 +482,11 @@ describe('Profile Provider', () => {
         'setNotificationsInterval'
       );
       profileProvider.UPDATE_PERIOD_FAST = 5;
+      const opts = {
+        pushNotifications: { enabled: false }
+      };
+
+      spyOn(configProvider, 'get').and.returnValue(opts);
       profileProvider.setFastRefresh(profileProvider.wallet.id1);
       expect(setNotificationsIntervalSpy).toHaveBeenCalledWith(5);
     });
@@ -492,6 +499,10 @@ describe('Profile Provider', () => {
         'setNotificationsInterval'
       );
       profileProvider.UPDATE_PERIOD = 15;
+      const opts = {
+        pushNotifications: { enabled: false }
+      };
+      spyOn(configProvider, 'get').and.returnValue(opts);
       profileProvider.setSlowRefresh(profileProvider.wallet.id1);
       expect(setNotificationsIntervalSpy).toHaveBeenCalledWith(15);
     });
@@ -1395,21 +1406,27 @@ describe('Profile Provider', () => {
     });
 
     it('should return true with multiple wallets', () => {
-      // The all wallets have more than 10 BOB worth of btc.
-      const res = profileProvider.hasWalletWithFunds(10, 'BOB');
-      expect(res).toEqual(true);
+      rateProvider.updateRates().then(() => {
+        // The all wallets have more than 10 BOB worth of btc.
+        const res = profileProvider.hasWalletWithFunds(10, 'BOB');
+        expect(res).toEqual(true);
+      });
     });
 
     it('should return true just barely', () => {
-      // The wallet w/ 10 btc should equate to 123 * 10 bob, which would result in this returning true
-      const res = profileProvider.hasWalletWithFunds(1230, 'BOB');
-      expect(res).toEqual(true);
+      rateProvider.updateRates().then(() => {
+        // The wallet w/ 10 btc should equate to 123 * 10 bob, which would result in this returning true
+        const res = profileProvider.hasWalletWithFunds(1230, 'BOB');
+        expect(res).toEqual(true);
+      });
     });
 
     it('should return false', () => {
-      // The wallet w/ 10 btc is the biggest wallet. So no wallets are able to pay 1231 BOB.
-      const res = profileProvider.hasWalletWithFunds(1231, 'BOB');
-      expect(res).toEqual(false);
+      rateProvider.updateRates().then(() => {
+        // The wallet w/ 10 btc is the biggest wallet. So no wallets are able to pay 1231 BOB.
+        const res = profileProvider.hasWalletWithFunds(1231, 'BOB');
+        expect(res).toEqual(false);
+      });
     });
   });
 });

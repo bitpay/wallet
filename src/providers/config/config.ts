@@ -25,7 +25,6 @@ export interface Config {
       alternativeName: string;
       alternativeIsoCode: string;
       defaultLanguage: string;
-      feeLevel: string;
     };
   };
 
@@ -131,6 +130,10 @@ export interface Config {
   totalBalance: {
     show: boolean;
   };
+
+  navigation: {
+    type: string;
+  };
 }
 
 @Injectable()
@@ -165,8 +168,7 @@ export class ConfigProvider {
           unitCode: 'btc',
           alternativeName: 'US Dollar',
           alternativeIsoCode: 'USD',
-          defaultLanguage: '',
-          feeLevel: 'normal'
+          defaultLanguage: ''
         }
       },
 
@@ -220,7 +222,7 @@ export class ConfigProvider {
         buycrypto: true,
         exchangecrypto: true,
         giftcards: true,
-        walletConnect: true
+        walletConnect: false
       },
 
       pushNotifications: {
@@ -270,6 +272,10 @@ export class ConfigProvider {
 
       totalBalance: {
         show: true
+      },
+
+      navigation: {
+        type: 'transact'
       }
     };
   }
@@ -330,6 +336,20 @@ export class ConfigProvider {
     });
   }
 
+  public removeBwsFor(walletid) {
+    const config = _.cloneDeep(this.configCache);
+    if (_.isString(walletid) && config.bwsFor && config.bwsFor[walletid]) {
+      try {
+        delete config.bwsFor[walletid];
+        this.logger.debug(`Removed bwsFor ${walletid}`);
+        this.configCache = config;
+        this.persistence.storeConfig(this.configCache).then(() => {
+          this.logger.info('Config saved');
+        });
+      } catch {}
+    }
+  }
+
   public get(): Config {
     return this.configCache;
   }
@@ -364,6 +384,9 @@ export class ConfigProvider {
       }
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
+      }
+      if (!this.configCache.showIntegration.walletConnect) {
+        this.configCache.showIntegration.walletConnect = this.configDefault.showIntegration.walletConnect;
       }
     }
     if (!this.configCache.pushNotifications) {
@@ -403,6 +426,10 @@ export class ConfigProvider {
 
     if (!this.configCache.legacyQrCode) {
       this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
+    }
+
+    if (!this.configCache.navigation) {
+      this.configCache.navigation = this.configDefault.navigation;
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Slides } from 'ionic-angular';
+import { Events, NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
@@ -42,7 +42,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private events: Events
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
@@ -190,7 +191,10 @@ export class BackupGamePage {
               ? this.navCtrl.push(AddFundsPage, { keyId: this.keyId })
               : this.navCtrl.push(DisclaimerPage, { keyId: this.keyId });
           });
-      } else this.navCtrl.popToRoot();
+      } else
+        this.navCtrl.popToRoot().then(() => {
+          this.events.publish('Local/FetchWallets');
+        });
     });
   }
 

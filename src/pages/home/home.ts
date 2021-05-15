@@ -3,11 +3,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 
 // Providers
 import {
   AppProvider,
+  BitPayIdProvider,
   BwcProvider,
   DynamicLinksProvider,
   EmailNotificationsProvider,
@@ -15,6 +17,7 @@ import {
   FeedbackProvider,
   GiftCardProvider,
   HomeIntegrationsProvider,
+  IABCardProvider,
   Logger,
   MerchantProvider,
   NewFeatureData,
@@ -22,6 +25,7 @@ import {
   PlatformProvider,
   PopupProvider,
   ProfileProvider,
+  RateProvider,
   ReleaseProvider
 } from '../../providers';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -35,6 +39,7 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { User } from '../../models/user/user.model';
 import { Network } from '../../providers/persistence/persistence';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -42,10 +47,12 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
+import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
 
 export interface Advertisement {
   name: string;
@@ -72,6 +79,7 @@ export class HomePage {
   showBuyCryptoOption: boolean;
   showExchangeCryptoOption: boolean;
   showShoppingOption: boolean;
+  showWalletConnect: boolean;
   @ViewChild('showCard')
   showCard;
 
@@ -94,6 +102,9 @@ export class HomePage {
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
+  public bitPayIdUserInfo: any;
+  private user$: Observable<User>;
+  private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
@@ -126,7 +137,10 @@ export class HomePage {
     private newFeatureData: NewFeatureData,
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
-    private splashScreen: SplashScreen
+    private splashScreen: SplashScreen,
+    private iabCardProvider: IABCardProvider,
+    private bitPayIdProvider: BitPayIdProvider,
+    private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -144,6 +158,7 @@ export class HomePage {
       CardCatalogPage,
       CoinbasePage
     };
+    this.user$ = this.iabCardProvider.user$;
   }
 
   private showNewFeatureSlides() {
@@ -183,12 +198,19 @@ export class HomePage {
     });
   }
 
-  async ionViewWillEnter() {
+  ionViewWillEnter() {
     const config = this.configProvider.get();
+    if (this.iabCardProvider.ref) {
+      // check for user info
+      this.persistenceProvider
+        .getBitPayIdUserInfo(this.network)
+        .then((user: User) => {
+          this.bitPayIdUserInfo = user;
+        });
+    }
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.events.publish('Local/showNewFeaturesSlides');
-    this.setMerchantDirectoryAdvertisement();
     this.checkFeedbackInfo();
     this.showTotalBalance = config.totalBalance.show;
     if (this.showTotalBalance)
@@ -196,6 +218,7 @@ export class HomePage {
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
     this.setIntegrations();
+    this.setMerchantDirectoryAdvertisement();
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
@@ -213,20 +236,25 @@ export class HomePage {
           });
       }
     });
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+      }
+    });
   }
 
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-    this.giftCardProvider.getCountry();
 
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
+      this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
     }, 2000);
   }
 
-  private async loadAds() {
+  private loadAds() {
     const client = this.bwcProvider.getClient(null, {});
 
     client.getAdvertisements(
@@ -265,6 +293,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         } else {
@@ -297,6 +326,7 @@ export class HomePage {
                     isTesting: ad.isTesting,
                     dismissible: true
                   });
+                this.showAdvertisements = true;
               });
           });
         }
@@ -340,6 +370,7 @@ export class HomePage {
         isTesting: false,
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private verifySignature(ad): boolean {
@@ -437,9 +468,6 @@ export class HomePage {
     this.events.subscribe('Local/ConnectionError', () => {
       this.fetchingStatus = false;
     });
-    this.events.subscribe('Local/UnsupportedAltCurrency', params => {
-      this.showInfoSheet(params);
-    });
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
     });
@@ -457,6 +485,7 @@ export class HomePage {
     this.showBuyCryptoOption = false;
     this.showExchangeCryptoOption = false;
     this.showShoppingOption = false;
+    this.showWalletConnect = false;
     const integrations = this.homeIntegrationsProvider
       .get()
       .filter(i => i.show);
@@ -478,6 +507,9 @@ export class HomePage {
             x.linked == false && !this.platformProvider.isMacApp();
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
+          break;
+        case 'walletConnect':
+          this.showWalletConnect = x.show;
           break;
       }
     });
@@ -502,41 +534,49 @@ export class HomePage {
         imgSrc: 'assets/img/amazon.svg',
         dismissible: true
       });
+    this.showAdvertisements = true;
   }
 
   private addBitPayCard() {
     if (!this.isCordova) return;
-    const card: Advertisement = this.cardExperimentEnabled
-      ? {
-          name: 'bitpay-card',
-          title: this.translate.instant('Get the BitPay Card'),
-          body: this.translate.instant(
-            'Designed for people who want to live life on crypto.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Order Now'),
-          link: BitPayCardIntroPage,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+    this.persistenceProvider
+      .getAdvertisementDismissed('bitpay-card')
+      .then((value: string) => {
+        if (value === 'dismissed') {
+          return;
         }
-      : {
-          name: 'bitpay-card',
-          title: this.translate.instant('Coming soon'),
-          body: this.translate.instant(
-            'Join the waitlist and be first to experience the new card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Notify Me'),
-          link: PhaseOneCardIntro,
-          isTesting: false,
-          dismissible: true,
-          imgSrc: 'assets/img/icon-bpcard.svg'
-        };
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'bitpay-card'
-    );
-    !alreadyVisible && this.advertisements.unshift(card);
+        const card: Advertisement = this.cardExperimentEnabled
+          ? {
+              name: 'bitpay-card',
+              title: this.translate.instant('Get the BitPay Card'),
+              body: this.translate.instant(
+                'Designed for people who want to live life on crypto.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Order Now'),
+              link: BitPayCardIntroPage,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
+            }
+          : {
+              name: 'bitpay-card',
+              title: this.translate.instant('Coming soon'),
+              body: this.translate.instant(
+                'Join the waitlist and be first to experience the new card.'
+              ),
+              app: 'bitpay',
+              linkText: this.translate.instant('Notify Me'),
+              link: PhaseOneCardIntro,
+              isTesting: false,
+              dismissible: true,
+              imgSrc: 'assets/img/icon-bpcard.svg'
+            };
+        const alreadyVisible = this.advertisements.find(
+          a => a.name === 'bitpay-card'
+        );
+        !alreadyVisible && this.advertisements.unshift(card);
+      });
   }
 
   private addCoinbase() {
@@ -561,9 +601,10 @@ export class HomePage {
         isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
       });
+    this.showAdvertisements = true;
   }
 
-  private addGiftCardDiscount(discountedCard: CardConfig) {
+  private async addGiftCardDiscount(discountedCard: CardConfig) {
     const discount = discountedCard.discounts[0];
     const discountText =
       discount.type === 'flatrate'
@@ -577,7 +618,12 @@ export class HomePage {
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: `${discountText} off ${discountedCard.displayName}`,
@@ -592,13 +638,18 @@ export class HomePage {
       });
   }
 
-  private addGiftCardPromotion(promotedCard: CardConfig) {
+  private async addGiftCardPromotion(promotedCard: CardConfig) {
     const promo = promotedCard.promotions[0];
     const advertisementName = promo.shortDescription;
     const alreadyVisible = this.advertisements.find(
       a => a.name === advertisementName
     );
+    const isDismissed =
+      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
+        ? true
+        : false;
     !alreadyVisible &&
+      !isDismissed &&
       this.advertisements.unshift({
         name: advertisementName,
         title: promo.title,
@@ -624,6 +675,10 @@ export class HomePage {
     } else if (promotedCard) {
       this.addGiftCardPromotion(promotedCard);
     }
+  }
+
+  private checkIfDismissed(name: string): Promise<any> {
+    return this.persistenceProvider.getAdvertisementDismissed(name);
   }
 
   slideChanged() {
@@ -686,11 +741,13 @@ export class HomePage {
 
   private fetchAdvertisements(): void {
     this.advertisements.forEach(advertisement => {
+      this.logger.debug('Add advertisement: ', advertisement.name);
       if (
         advertisement.app &&
         advertisement.app != this.appProvider.info.name
       ) {
         this.removeAdvertisement(advertisement.name);
+        this.logger.debug('Removed advertisement: ', advertisement.name);
         return;
       }
       this.persistenceProvider
@@ -701,11 +758,10 @@ export class HomePage {
             (!this.showCoinbase && advertisement.name == 'coinbase')
           ) {
             this.removeAdvertisement(advertisement.name);
+            this.logger.debug('Removed advertisement: ', advertisement.name);
             return;
           }
-          this.showAdvertisements = true;
         });
-      this.logger.debug('fetchAdvertisements');
     });
   }
 
@@ -733,6 +789,7 @@ export class HomePage {
         this.advertisements,
         adv => adv.name !== name
       );
+      if (this.advertisements.length == 0) this.showAdvertisements = false;
     }
     if (this.slides) this.slides.slideTo(0, 500);
   }
@@ -776,6 +833,10 @@ export class HomePage {
     this.navCtrl.push(ExchangeCryptoPage, {
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
+  }
+
+  public goToWalletConnectPage() {
+    this.navCtrl.push(WalletConnectPage);
   }
 
   private checkNewRelease() {
@@ -874,16 +935,16 @@ export class HomePage {
     });
   }
 
-  private showInfoSheet(params): void {
+  private showInfoSheet(altCurrency): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'unsupported-alt-currency',
-      params.altCurrency
+      altCurrency
     );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
-      this.events.unsubscribe('Local/UnsupportedAltCurrency');
       if (option) {
-        this.navCtrl.parent.select(params.tabIndex);
+        const settingsTabIndex = this.navCtrl.parent._tabs.length - 1; // The index of SettingsPage tab depends on the platform and distribution
+        this.navCtrl.parent.select(settingsTabIndex);
         this.navCtrl.push(AltCurrencyPage);
       }
     });
@@ -893,14 +954,14 @@ export class HomePage {
     const message = this.translate.instant(
       'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
     );
-    const title = this.translate.instant('Privacy Policy update');
+    const title = this.translate.instant('Privacy Notice update');
     const okText = this.translate.instant('Accept');
     const cancelText = this.translate.instant('Disable notifications');
     this.popupProvider
       .ionicConfirm(title, message, okText, cancelText)
       .then(ok => {
         if (ok) {
-          // Accept new Privacy Policy
+          // Accept new Privacy Notice
           this.persistenceProvider.setEmailLawCompliance('accepted');
         } else {
           // Disable email notifications
@@ -921,6 +982,39 @@ export class HomePage {
         });
       }
     }, 2000);
+  }
+
+  private checkAltCurrency(): void {
+    const config = this.configProvider.get();
+    const altCurrency = {
+      name: config.wallet.settings.alternativeName,
+      isoCode: config.wallet.settings.alternativeIsoCode
+    };
+    if (
+      !this.rateProvider.isAltCurrencyAvailable(altCurrency.isoCode) &&
+      !_.isEmpty(this.rateProvider.alternatives)
+    ) {
+      this.showInfoSheet(altCurrency);
+    }
+  }
+
+  public openBitPayIdPage(): void {
+    if (this.bitPayIdUserInfo) {
+      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
+    } else {
+      this.iabCardProvider.loadingWrapper(() => {
+        this.logger.log('settings - pairing');
+        this.iabCardProvider.show();
+        setTimeout(() => {
+          this.iabCardProvider.sendMessage(
+            {
+              message: 'pairingOnly'
+            },
+            () => {}
+          );
+        }, 100);
+      });
+    }
   }
 }
 

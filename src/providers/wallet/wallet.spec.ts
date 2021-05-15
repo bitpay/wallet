@@ -89,20 +89,12 @@ describe('Provider: Wallet Provider', () => {
 
     spyOn(feeProvider, 'getFeeLevels').and.returnValue(
       Promise.resolve({
-        levels: {
-          livenet: [
-            {
-              feePerKb: 10000,
-              level: 'normal'
-            }
-          ],
-          testnet: [
-            {
-              feePerKb: 10000,
-              level: 'normal'
-            }
-          ]
-        }
+        levels: [
+          {
+            feePerKb: 10000,
+            level: 'normal'
+          }
+        ]
       })
     );
 
@@ -821,21 +813,6 @@ describe('Provider: Wallet Provider', () => {
         .updateRemotePreferences(clients)
         .then(() => {
           expect().nothing();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
-        });
-    });
-  });
-
-  describe('Function: recreate', () => {
-    it('Should recreate and change notAuthorized property to false', () => {
-      const wallet: WalletMock = new WalletMock();
-
-      walletProvider
-        .recreate(wallet)
-        .then(() => {
-          expect(wallet.notAuthorized).toBeFalsy();
         })
         .catch(err => {
           expect(err).toBeUndefined();

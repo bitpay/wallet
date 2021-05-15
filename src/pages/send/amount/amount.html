@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto">
+    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto && !isCardTopUp">
       <div class="amount-switcher">
         <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
           <img class="switcher__icon" src="assets/img/icon-swap.svg">

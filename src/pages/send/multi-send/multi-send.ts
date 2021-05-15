@@ -17,6 +17,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
@@ -37,6 +38,7 @@ export class MultiSendPage {
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
+  public isCordova: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
@@ -70,13 +72,15 @@ export class MultiSendPage {
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
     private bwcProvider: BwcProvider,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge()
     };
+    this.isCordova = this.platformProvider.isCordova;
     this.isDisabledContinue = true;
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
@@ -150,7 +154,7 @@ export class MultiSendPage {
   }
 
   public addRecipient(recipient): void {
-    let amountToShow = +recipient.amount
+    let amountToShow: string = +recipient.amount
       ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
       : null;
 

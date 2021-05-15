@@ -1,0 +1,23 @@
+<action-sheet>
+  <div class="miner-fee">
+    <div class="miner-fee-info">
+      <div class="img-container">
+        <img src="assets/img/miners.svg" />
+      </div>
+      <div class="info">
+        <h3 class="title" translate>Transaction fees are currently high</h3>
+        <div class="text" translate>
+          Due to high demand, miner fees are high. Fees are paid to miners who process transactions and are not paid to {{appName}}.
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button ion-button class="button-standard no-margin-bottom" (click)="confirm()">
+        {{'OK' | translate}}
+      </button>
+      <button ion-button clear color="primary" class="button-standard" (click)="openExternalLink()">
+        {{'Learn about miner fees' | translate}}
+      </button>
+    </div>
+  </div>
+</action-sheet>

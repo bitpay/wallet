@@ -33,6 +33,13 @@ export class LocalThemePage {
     });
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      let element = document.getElementsByTagName('page-local-theme');
+      element[0].classList.add('theme-transition');
+    }, 150);
+  }
+
   public save(theme: string) {
     this.themeProvider.setActiveTheme(theme, this.autoDetectedTheme);
     if (this.platformProvider.isCordova) {

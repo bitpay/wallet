@@ -1,18 +1,18 @@
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
-import { ChooseFeeLevelComponent } from '../../components/choose-fee-level/choose-fee-level';
 import { EmailComponent } from '../../components/email-component/email-component';
 import { EncryptPasswordComponent } from '../../components/encrypt-password/encrypt-password';
+import { FooterMenuComponent } from '../../components/footer-menu/footer-menu';
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { MemoComponent } from '../../components/memo-component/memo-component';
+import { MinerFeeWarningComponent } from '../../components/miner-fee-warning/miner-fee-warning';
 import { NeedsBackupComponent } from '../../components/needs-backup/needs-backup';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { PhoneSheet } from '../../components/phone-sheet/phone-sheet';
 import { WalletReceiveComponent } from '../../components/wallet-receive/wallet-receive';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { WalletTabOptionsComponent } from '../../components/wallet-tab-options/wallet-tab-options';
-import { Coin } from '../../providers/currency/currency';
 import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
@@ -29,10 +29,12 @@ export type InfoSheetType =
   | 'copied-gift-card-claim-code'
   | 'copied-invoice-url'
   | 'default-error'
+  | 'erc20-eth-fee-info'
   | 'gift-card-archived'
   | 'gift-cards-unavailable'
   | 'hide-gift-card-discount-item'
   | 'insufficient-funds'
+  | 'insufficient-funds-for-fee'
   | 'import-no-wallet-warning'
   | 'above-maximum-gift-card-amount'
   | 'below-minimum-gift-card-amount'
@@ -40,7 +42,6 @@ export type InfoSheetType =
   | 'linkEthWallet'
   | 'max-amount-allowed'
   | 'min-amount-allowed'
-  | 'miner-fee'
   | 'miner-fee-notice'
   | 'one-phone-country'
   | 'payment-request'
@@ -55,6 +56,7 @@ export type InfoSheetType =
   | 'wrong-encrypt-password'
   | 'bch-legacy-warning-1'
   | 'bch-legacy-warning-2'
+  | 'network-coin-warning'
   | 'speed-up-tx'
   | 'speed-up-notice'
   | 'unconfirmed-inputs'
@@ -99,15 +101,6 @@ export interface WalletReceiveParams {
 
 export interface WalletTabOptionsParams {
   walletsGroups: any;
-}
-
-export interface ChooseFeeLevelParams {
-  network: string;
-  coin: Coin;
-  feeLevel: string;
-  noSave: boolean;
-  customFeePerKB: string;
-  feePerSatByte: number;
 }
 @Injectable()
 export class ActionSheetProvider {
@@ -175,16 +168,6 @@ export class ActionSheetProvider {
       .instance;
   }
 
-  public createChooseFeeLevel(
-    params: ChooseFeeLevelParams
-  ): ChooseFeeLevelComponent {
-    return this.setupSheet<ChooseFeeLevelComponent>(
-      ChooseFeeLevelComponent,
-      null,
-      params
-    ).instance;
-  }
-
   public createWalletTabOptions(
     params: WalletTabOptionsParams
   ): WalletTabOptionsComponent {
@@ -197,6 +180,16 @@ export class ActionSheetProvider {
 
   public createEncryptPasswordComponent(): EncryptPasswordComponent {
     return this.setupSheet<EncryptPasswordComponent>(EncryptPasswordComponent)
+      .instance;
+  }
+
+  public createMinerFeeWarningComponent(): MinerFeeWarningComponent {
+    return this.setupSheet<MinerFeeWarningComponent>(MinerFeeWarningComponent)
+      .instance;
+  }
+
+  public createFooterMenu(): FooterMenuComponent {
+    return this.setupSheet<FooterMenuComponent>(FooterMenuComponent, null)
       .instance;
   }
 

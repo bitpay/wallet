@@ -1069,9 +1069,9 @@ export class WalletProvider {
   public getMinFee(wallet, nbOutputs?: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getFeeLevels(wallet.coin)
+        .getFeeLevels(wallet.coin, wallet.network)
         .then(data => {
-          const normalLevelRate = _.find(data.levels[wallet.network], level => {
+          const normalLevelRate = _.find(data.levels, level => {
             return level.level === 'normal';
           });
           const lowLevelRate: string = (
@@ -1327,30 +1327,53 @@ export class WalletProvider {
     });
   }
 
-  public broadcastTx(wallet, txp): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (_.isEmpty(txp) || _.isEmpty(wallet))
-        return reject('MISSING_PARAMETER');
+  public broadcastTx(wallet, txp, timeout = 20000): Promise<any> {
+    return Promise.race([
+      new Promise((resolve, reject) => {
+        if (_.isEmpty(txp) || _.isEmpty(wallet))
+          return reject('MISSING_PARAMETER');
 
-      if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
+        if (txp.status != 'accepted') return reject('TX_NOT_ACCEPTED');
 
-      wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
-        if (err) {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            this.removeTx(wallet, txp);
-            return reject(err);
+        if (txp.raw) {
+          if (
+            txp.coin.toLowerCase() === 'eth' &&
+            this.currencyProvider.isERCToken(txp.coin)
+          ) {
+            txp.raw.forEach((raw, i) => {
+              this.logger.info(`Broadcasting raw tx (${i}): ${raw}`);
+            });
           } else {
-            return reject(err);
+            this.logger.info(`Broadcasting raw tx: ${txp.raw}`);
           }
         }
 
-        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
-        if (memo) this.logger.info('Memo: ', memo);
-        return resolve(broadcastedTxp);
-      });
-    });
+        wallet.broadcastTxProposal(txp, (err, broadcastedTxp, memo) => {
+          if (err) {
+            if (_.isArrayBuffer(err)) {
+              const enc = new encoding.TextDecoder();
+              err = enc.decode(err);
+              this.removeTx(wallet, txp);
+              return reject(err);
+            } else {
+              return reject(err);
+            }
+          }
+          this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
+          if (memo) this.logger.info('Memo: ', memo);
+          return resolve(broadcastedTxp);
+        });
+      }),
+      new Promise((_r, rej) => {
+        setTimeout(
+          () =>
+            rej(
+              'Broadcasting timeout. Please check your wallet transaction history before do it again.'
+            ),
+          timeout
+        );
+      })
+    ]);
   }
 
   public rejectTx(wallet, txp): Promise<any> {
@@ -1436,17 +1459,6 @@ export class WalletProvider {
     });
 
     return Promise.all(updates);
-  }
-
-  public recreate(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.info('Recreating wallet:', wallet.id);
-      wallet.recreateWallet(err => {
-        wallet.notAuthorized = false;
-        if (err) return reject(err);
-        return resolve();
-      });
-    });
   }
 
   public startScan(wallet): Promise<any> {
@@ -1692,46 +1704,15 @@ export class WalletProvider {
     });
   }
 
-  public publishAndSign(wallet, txp): Promise<any> {
-    return new Promise((resolve, reject) => {
-      // Already published?
-      if (txp.status == 'pending') {
-        this.prepare(wallet)
-          .then((password: string) => {
-            this.signAndBroadcast(wallet, txp, password)
-              .then(broadcastedTxp => {
-                return resolve(broadcastedTxp);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          })
-          .catch(err => {
-            return reject(err);
-          });
-      } else {
-        this.prepare(wallet)
-          .then((password: string) => {
-            this.onGoingProcessProvider.set('sendingTx');
-            this.publishTx(wallet, txp)
-              .then(publishedTxp => {
-                this.signAndBroadcast(wallet, publishedTxp, password)
-                  .then(broadcastedTxp => {
-                    return resolve(broadcastedTxp);
-                  })
-                  .catch(err => {
-                    return reject(err);
-                  });
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          })
-          .catch(err => {
-            return reject(err);
-          });
-      }
-    });
+  public async publishAndSign(wallet, txp): Promise<any> {
+    const password = await this.prepare(wallet);
+    // Already published?
+    if (txp.status == 'pending') {
+      return this.signAndBroadcast(wallet, txp, password);
+    }
+    this.onGoingProcessProvider.set('sendingTx');
+    const publishedTxp = await this.publishTx(wallet, txp);
+    return this.signAndBroadcast(wallet, publishedTxp, password);
   }
 
   public signMultipleTxps(wallet, txps: any[]): Promise<any> {

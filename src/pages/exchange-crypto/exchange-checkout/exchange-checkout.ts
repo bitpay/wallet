@@ -107,8 +107,13 @@ export class ExchangeCheckoutPage {
     this.createFixTransaction();
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
   ionViewDidLoad() {
     this.logger.info('Loaded: ExchangeCheckoutPage');
+    this.navCtrl.swipeBackEnabled = false;
   }
 
   private createFixTransaction() {
@@ -532,7 +537,7 @@ export class ExchangeCheckoutPage {
     let finishText = 'Transaction Sent';
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText },
+      { finishText, coin: this.fromWalletSelected.coin },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
