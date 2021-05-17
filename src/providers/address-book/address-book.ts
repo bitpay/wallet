@@ -145,8 +145,8 @@ export class AddressBookProvider {
         entry.coin &&
         this.currencyProvider.getChain(Coin[entry.coin.toUpperCase()]) ===
           _addrData.coin
-          ? entry.coin
-          : _addrData.coin;
+          ? entry.coin.toLowerCase()
+          : _addrData.coin.toLowerCase();
       addrData.network = _addrData.network;
 
       this.persistenceProvider
@@ -164,7 +164,7 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Entry already exist');
             return reject(msg);
           }
-          ab[entry.address + ' (' + entry.coin + ')'] = entry;
+          ab[entry.address + ' (' + entry.coin.toLowerCase() + ')'] = addrData;
           this.persistenceProvider
             .setAddressBook(addrData.network, JSON.stringify(ab))
             .then(() => {
@@ -208,11 +208,11 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Addressbook is empty');
             return reject(msg);
           }
-          if (!ab[addr + ' (' + coin + ')']) {
+          if (!ab[addr + ' (' + coin.toLowerCase() + ')']) {
             let msg = this.translate.instant('Entry does not exist');
             return reject(msg);
           }
-          delete ab[addr + ' (' + coin + ')'];
+          delete ab[addr + ' (' + coin.toLowerCase() + ')'];
           this.persistenceProvider
             .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
@@ -284,7 +284,9 @@ export class AddressBookProvider {
             );
             let newContactJson = {};
             _.each(oldContacts, old => {
-              newContactJson[old.address + ' (' + old.coin + ')'] = old;
+              newContactJson[
+                old.address + ' (' + old.coin.toLowerCase() + ')'
+              ] = old;
             });
             this.persistenceProvider
               .setAddressBook(network, JSON.stringify(newContactJson), true)
