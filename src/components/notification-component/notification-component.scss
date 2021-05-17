@@ -1,29 +1,39 @@
 .notification-modal-panel {
   position: absolute;
   top: 1%;
-  max-height: 15%;
   width: 100%;
+  max-height: 15%;
   transition: opacity 300ms ease;
   background-color: transparent;
   text-align: center;
   .notification-content {
-    display: inline-block;
-    padding: 0 1%;
-    width: 95%;
-    height: 97%;
-    background-color: darkcyan;
+    background-color: color($colors, primary);
     border-radius: 10px;
-    .notification-title {
-      text-align: left;
-    }
-    .notification-message {
-      text-align: left;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    justify-items: start;
+    .notification-info {
+      padding: 19px 16px 17px 16px;
+      .notification-title {
+        font-size: 1.5rem;
+        text-align: left;
+        color: white;
+      }
+      .notification-message {
+        font-size: 1.3rem;
+        text-align: left;
+        color: white;
+      }
     }
     .notification-button {
-      text-align: right;
-      ion-button {
-        background-color: steelblue;
-        border-radius: 10px;
+      padding: 19px 16px 17px 16px;
+      align-self: center;
+      justify-self: end;
+      ion-label {
+        margin: 0px;
+        font-size: 1.5rem;
+        color: white;
+        font-weight: bold;
       }
     }
   }

@@ -349,7 +349,8 @@ export class PushNotificationsProvider {
             showBackdrop: true,
             enableBackdropDismiss: true,
             enterAnimation: 'modal-translate-up-enter',
-            leaveAnimation: 'modal-translate-up-leave'
+            leaveAnimation: 'modal-translate-up-leave',
+            cssClass: 'in-app-notification-modal'
           }
         );
 

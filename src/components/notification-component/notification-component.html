@@ -1,19 +1,19 @@
-<div class="notification-modal-panel">
-  <div class="notification-content" (swipe)="swipeEvent($event)">
-    <ion-slides #notificationSlide>
-      <ion-slide>
+<div class="notification-modal-panel" >
+    <div #notificationSlide (swipe)="swipeEvent($event)" class="notification-content">
+      <div class="notification-info">
         <div class="notification-title" *ngIf="title">
-            <h1>{{title}}</h1>
+          <strong>
+            {{title}}
+          </strong>
         </div>
         <div class="notification-message">
           {{message}}
         </div>
-        <div class="notification-button" *ngIf="customButton">
-          <button ion-button *ngIf="customButton" (click)="dismiss(99, customButton.data)">
-            {{ customButton.closeButtonText }}
-          </button>
-        </div>
-      </ion-slide>
-  </ion-slides>
+      </div>
+      <div class="notification-button" *ngIf="customButton">
+        <ion-label *ngIf="customButton" (click)="dismiss(9999, customButton.data)">
+          {{ customButton.closeButtonText }}
+        </ion-label>
+      </div>
   </div>
 </div>
