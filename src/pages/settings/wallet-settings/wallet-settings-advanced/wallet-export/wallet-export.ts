@@ -8,8 +8,8 @@ import { Logger } from '../../../../../providers/logger/logger';
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-// pages
-import { NotificationComponent } from '../../../../notification-component/notification-component';
+// components
+import { NotificationComponent } from '../../../../../components/notification-component/notification-component';
 
 // providers
 import { AppProvider } from '../../../../../providers/app/app';

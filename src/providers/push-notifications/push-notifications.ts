@@ -6,8 +6,8 @@ import { Events, Modal, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
-// pages
-import { NotificationComponent } from '../../pages/notification-component/notification-component';
+// components
+import { NotificationComponent } from '../../components/notification-component/notification-component';
 
 // providers
 import { AppProvider } from '../app/app';
@@ -26,7 +26,7 @@ export class PushNotificationsProvider {
   private usePushNotifications: boolean;
   private _token = null;
   private fcmInterval;
-  private notifs = [];
+  private notifications = [];
   private currentNotif: Modal;
   private openWalletId;
 
@@ -324,14 +324,14 @@ export class PushNotificationsProvider {
   private showInappNotification(data) {
     if (!data.body || data.notification_type === 'NewOutgoingTx') return;
 
-    this.notifs.unshift(data);
+    this.notifications.unshift(data);
     this.runNotificationsQueue();
   }
 
   private runNotificationsQueue() {
     if (this.currentNotif) return;
 
-    this.notifs.some(data => {
+    this.notifications.some(data => {
       if (!data.showDone) {
         this.currentNotif = this.modalCtrl.create(
           NotificationComponent,
