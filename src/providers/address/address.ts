@@ -46,6 +46,7 @@ export class AddressProvider {
       return { coin: 'btc', network };
     } catch (e) {
       try {
+        // TODO: Add option to check BCHA
         network = this.bitcoreCash.Address(address).network.name;
         return { coin: 'bch', network };
       } catch (e) {
