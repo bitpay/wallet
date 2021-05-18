@@ -89,6 +89,7 @@ export class SettingsPage {
   public readOnlyWalletsGroup: any[];
   public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private user$: Observable<User>;
   public showReorder: boolean = false;
@@ -151,11 +152,15 @@ export class SettingsPage {
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
+          if (user) {
+            this.accountInitials = this.getBitPayIdInitials(user);
+          }
         });
 
       this.user$.subscribe(async user => {
         if (user) {
           this.bitPayIdUserInfo = user;
+          this.accountInitials = this.getBitPayIdInitials(user);
           this.changeRef.detectChanges();
         }
       });
@@ -239,6 +244,13 @@ export class SettingsPage {
       this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
       this.bitpayCardItems = cards;
     });
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 
   public trackBy(index) {

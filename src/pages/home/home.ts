@@ -103,6 +103,7 @@ export class HomePage {
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
@@ -206,6 +207,9 @@ export class HomePage {
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
+          if (user) {
+            this.accountInitials = this.getBitPayIdInitials(user);
+          }
         });
     }
     this.totalBalanceAlternativeIsoCode =
@@ -239,6 +243,7 @@ export class HomePage {
     this.user$.subscribe(async user => {
       if (user) {
         this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
       }
     });
   }
@@ -1015,6 +1020,13 @@ export class HomePage {
         }, 100);
       });
     }
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 }
 
