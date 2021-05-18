@@ -63,8 +63,8 @@ import { LanguageLoader } from '../providers/language-loader/language-loader';
 import { ProvidersModule } from '../providers/providers.module';
 
 /* Modal Transitions */
-import { ModalTranslateEnterTransition } from '../pages/notification-component/transitions/on-enter-translate.transition';
-import { ModalTranslateLeaveTransition } from '../pages/notification-component/transitions/on-leave-translate.transition';
+import { ModalTranslateEnterTransition } from '../components/notification-component/transitions/on-enter-translate.transition';
+import { ModalTranslateLeaveTransition } from '../components/notification-component/transitions/on-leave-translate.transition';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();

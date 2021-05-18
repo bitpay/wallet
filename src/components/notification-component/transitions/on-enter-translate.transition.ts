@@ -9,7 +9,7 @@ export class ModalTranslateEnterTransition extends PageTransition {
     );
 
     wrapper.beforeStyles({ transform: 'translateX(100%);', opacity: 1 });
-    wrapper.fromTo('transform', 'translateX(100%)', 'translateX(0)');
+    wrapper.fromTo('transform', 'translateY(-100%)', 'translateY(0)');
     wrapper.fromTo('opacity', 1, 1);
 
     this.element(this.enteringView.pageRef())

@@ -1,0 +1,45 @@
+.notification-modal-panel {
+  position: absolute;
+  width: 100%;
+  max-height: 15%;
+  transition: opacity 300ms ease;
+  background-color: transparent;
+  text-align: center;
+  .swiper-container-vertical {
+    padding-top: 10px;
+  }
+  .notification-content {
+    .slide-zoom {
+      background-color: color($colors, primary);
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      justify-items: start;
+      .notification-info {
+        padding: 19px 16px 17px 16px;
+        .notification-title {
+          font-size: 1.5rem;
+          text-align: left;
+          color: white;
+          font-weight: bold;
+        }
+        .notification-message {
+          font-size: 1.3rem;
+          text-align: left;
+          color: white;
+        }
+      }
+      .notification-button {
+        padding: 19px 16px 17px 16px;
+        align-self: center;
+        justify-self: end;
+        ion-label {
+          margin: 0px;
+          font-size: 1.5rem;
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
