@@ -12,7 +12,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 })
 export class FooterMenuComponent extends ActionSheetParent {
   public optionsMenu: object;
-  private isCordova: boolean;
+  public isCordova: boolean;
   private appName: string;
 
   constructor(
@@ -40,7 +40,7 @@ export class FooterMenuComponent extends ActionSheetParent {
               .alternativeIsoCode
           }
         },
-        logEvent: 'menu_buy_crytpo_clicked'
+        logEvent: 'buy_crypto_button_clicked'
       },
       exchange: {
         imgSrc: `assets/img/footer-menu/exchange.svg`,
@@ -54,7 +54,7 @@ export class FooterMenuComponent extends ActionSheetParent {
               .alternativeIsoCode
           }
         },
-        logEvent: 'menu_exchange_crypto_clicked'
+        logEvent: 'exchange_crypto_button_clicked'
       },
       receive: {
         imgSrc: `assets/img/footer-menu/receive.svg`,
@@ -71,7 +71,7 @@ export class FooterMenuComponent extends ActionSheetParent {
             fromFooterMenu: true
           }
         },
-        logEvent: 'menu_receive_crypto_clicked'
+        logEvent: 'receive_crypto_clicked'
       },
       send: {
         imgSrc: `assets/img/footer-menu/send.svg`,
@@ -86,7 +86,7 @@ export class FooterMenuComponent extends ActionSheetParent {
             fromFooterMenu: true
           }
         },
-        logEvent: 'menu_send_crypto_clicked'
+        logEvent: 'send_crypto_clicked'
       },
       buyGiftCards: {
         imgSrc: `assets/img/footer-menu/buy-gift-card.svg`,
@@ -97,18 +97,7 @@ export class FooterMenuComponent extends ActionSheetParent {
           name: 'CardCatalogPage',
           params: {}
         },
-        logEvent: 'menu_buy_giftcards_clicked'
-      },
-      scan: {
-        imgSrc: `assets/img/footer-menu/scan.svg`,
-        mainLabel: this.translate.instant('Scan'),
-        secondaryLabel: this.translate.instant('Scan QR code'),
-        showOption: this.isCordova,
-        nextView: {
-          name: 'ScanPage',
-          params: {}
-        },
-        logEvent: 'menu_scan_button_clicked'
+        logEvent: 'buy_giftcards_clicked'
       }
     };
   }
@@ -120,5 +109,18 @@ export class FooterMenuComponent extends ActionSheetParent {
       });
     }
     this.dismiss(opt.nextView);
+  }
+
+  public openScanPage() {
+    this.analyticsProvider.logEvent('scan_button_clicked', {
+      from: 'footerMenu'
+    });
+    const nextView = {
+      name: 'ScanPage',
+      params: {
+        fromFooterMenu: true
+      }
+    };
+    this.dismiss(nextView);
   }
 }

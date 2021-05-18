@@ -25,6 +25,7 @@ import { DerivationPathHelperProvider } from '../../../providers/derivation-path
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
@@ -37,6 +38,7 @@ import {
 })
 export class JoinWalletPage {
   private defaults;
+  public isCordova: boolean;
   public showAdvOpts: boolean;
   public seedOptions;
   public okText: string;
@@ -60,6 +62,7 @@ export class JoinWalletPage {
     private navParams: NavParams,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
+    private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private logger: Logger,
@@ -71,6 +74,7 @@ export class JoinWalletPage {
     private errorsProvider: ErrorsProvider,
     private actionSheetProvider: ActionSheetProvider
   ) {
+    this.isCordova = this.platformProvider.isCordova;
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();

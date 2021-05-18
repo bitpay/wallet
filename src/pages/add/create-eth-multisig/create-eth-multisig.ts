@@ -9,6 +9,7 @@ import { GnosisFactories } from '../../../providers/currency/gnosisFactories';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
@@ -25,6 +26,7 @@ export class CreateEthMultisigPage {
   public search: string = '';
   public m: number; // requiredConfirmations
   public n: number; // totalCopayers
+  public isCordova: boolean;
 
   constructor(
     private addressProvider: AddressProvider,
@@ -35,11 +37,13 @@ export class CreateEthMultisigPage {
     private navParams: NavParams,
     private translate: TranslateService,
     private walletProvider: WalletProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private platformProvider: PlatformProvider
   ) {
     this.pairedWallet = this.navParams.data.pairedWallet;
     this.n = this.navParams.data.n;
     this.m = this.navParams.data.m;
+    this.isCordova = this.platformProvider.isCordova;
 
     this.events.subscribe(
       'Local/AddressScanEthMultisig',

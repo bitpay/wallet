@@ -35,7 +35,7 @@
         <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
           <ion-input placeholder="{{'Enter copayer address' }}" [(ngModel)]="search" (ionChange)="processInput(search)"></ion-input>
           <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
-          <ion-icon item-end class="scan-icon" (click)="openScanner()">
+          <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
             <img src="assets/img/scan-ico.svg">
           </ion-icon>
         </ion-item>

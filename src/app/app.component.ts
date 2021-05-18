@@ -579,6 +579,7 @@ export class CopayApp {
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
       if (!nextView.name) {
+        if (nextView.params && nextView.params.fromFooterMenu) return;
         setTimeout(() => {
           this.getGlobalTabs()
             .goToRoot()
@@ -590,7 +591,7 @@ export class CopayApp {
         this.getGlobalTabs()
           .goToRoot()
           .then(_ => {
-            this.getGlobalTabs().select(3);
+            this.getGlobalTabs().select(4);
           });
       } else if (nextView.name === 'WalletConnectPage') {
         const currentIndex = this.nav.getActive().index;
@@ -604,7 +605,7 @@ export class CopayApp {
           this.getGlobalTabs()
             .goToRoot()
             .then(_ => {
-              this.getGlobalTabs().select(4);
+              this.getGlobalTabs().select(5);
               this.nav.push(this.pageMap[nextView.name], nextView.params);
             });
         }

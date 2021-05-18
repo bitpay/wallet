@@ -6,8 +6,8 @@
       </div>
     </ion-title>
     <ion-buttons *ngIf="isCordova && !isCopay" end>
-      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
+      <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
+        <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
           <ion-icon *ngIf="!bitPayIdUserInfo">
             <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="25">
           </ion-icon>
@@ -20,8 +20,8 @@
               <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
             </span>
           </ion-icon>
-        </button>
-      </div>
+        </div>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -165,6 +165,12 @@
       </ion-label>
     </button>
     <div class="line-divider" *ngIf="showExchangeCryptoOption"></div>
+    <button ion-item *ngIf="showWalletConnect" (click)="goToWalletConnectPage()">
+      <ion-label>
+        <div class="services-list-label" translate>WalletConnect</div>
+      </ion-label>
+    </button>
+    <div class="line-divider" *ngIf="showWalletConnect"></div>
   </ion-list>
 
   <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
