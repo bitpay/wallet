@@ -492,7 +492,7 @@ export class WalletDetailsPage {
         txid: tx.txid,
         recipientType: 'wallet',
         name:
-          this.wallet.coin === 'eth'
+          this.wallet.coin === 'eth' && tx.customData
             ? tx.customData.toWalletName
             : this.wallet.name,
         nonce: tx.nonce
