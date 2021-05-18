@@ -80,7 +80,7 @@ export class WalletDetailsPage {
   public updatingTxHistoryProgress: number = 0;
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
-  public addressbook = {};
+  public addressbook = [];
   public txps = [];
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
@@ -156,7 +156,7 @@ export class WalletDetailsPage {
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
     this.addressbookProvider
-      .list()
+      .list(this.wallet.network)
       .then(ab => {
         this.addressbook = ab;
       })
@@ -828,5 +828,11 @@ export class WalletDetailsPage {
       okText,
       cancelText
     );
+  }
+
+  getContactName(address: string) {
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
+    return null;
   }
 }

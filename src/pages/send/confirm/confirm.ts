@@ -18,6 +18,7 @@ import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
 import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
@@ -79,6 +80,7 @@ export class ConfirmPage {
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
   public recipients;
+  public toAddressName;
   public coin: Coin;
   public isERCToken: boolean;
   public appName: string;
@@ -124,6 +126,7 @@ export class ConfirmPage {
 
   constructor(
     protected addressProvider: AddressProvider,
+    protected addressBookProvider: AddressBookProvider,
     protected analyticsProvider: AnalyticsProvider,
     protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
@@ -300,7 +303,7 @@ export class ConfirmPage {
         .Address(this.tx.toAddress)
         .toString(true);
     }
-
+    this.setAddressesContactName();
     this.getAmountDetails();
 
     const feeOpts = this.feeProvider.getFeeOpts();
@@ -336,6 +339,34 @@ export class ConfirmPage {
     } else {
       this.mainTitle = this.translate.instant('Confirm Payment');
     }
+  }
+
+  private setAddressesContactName() {
+    this.addressBookProvider.list(this.tx.network).then(contacts => {
+      if (contacts && contacts.length > 0) {
+        if (this.recipients) {
+          _.each(this.recipients, r => {
+            const existsContact = _.find(
+              contacts,
+              c => c.address === (r.addressToShow || r.toAddress || r.address)
+            );
+            if (existsContact) r.contactName = existsContact.name;
+          });
+        } else if (
+          this.tx &&
+          !this.tx.recipientType &&
+          !this.tx.name &&
+          !this.tx.paypro &&
+          !this.fromCoinbase
+        ) {
+          const existsContact = _.find(
+            contacts,
+            c => c.address === this.tx.origToAddress
+          );
+          if (existsContact) this.toAddressName = existsContact.name;
+        }
+      }
+    });
   }
 
   private getAmountDetails(): void {

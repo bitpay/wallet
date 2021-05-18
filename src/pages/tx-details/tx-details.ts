@@ -10,7 +10,6 @@ import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
 // Providers
-import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -42,11 +41,9 @@ export class TxDetailsModal {
   public color: string;
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
-  public contactName: string;
   public txMemo: string;
 
   constructor(
-    private addressBookProvider: AddressBookProvider,
     private configProvider: ConfigProvider,
     private currencyProvider: CurrencyProvider,
     private events: Events,
@@ -246,7 +243,6 @@ export class TxDetailsModal {
 
         this.updateMemo();
         this.initActionList();
-        this.contact();
 
         this.updateFiatRate();
 
@@ -333,21 +329,6 @@ export class TxDetailsModal {
     } else {
       this.txConfirmNotificationProvider.unsubscribe(this.wallet, this.txId);
     }
-  }
-
-  private contact(): void {
-    let addr = this.btx.addressTo;
-    this.addressBookProvider
-      .get(addr)
-      .then(ab => {
-        if (ab) {
-          let name = _.isObject(ab) ? ab.name : ab;
-          this.contactName = name;
-        }
-      })
-      .catch(err => {
-        this.logger.warn(err);
-      });
   }
 
   public openExternalLink(url: string): void {

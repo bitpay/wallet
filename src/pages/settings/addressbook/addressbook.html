@@ -5,7 +5,7 @@
     </button>
   </ion-buttons>
   <div page-content>
-    <search-bar *ngIf="!isEmptyList" [scrollArea]="wideHeaderPage?.scrollArea" (search)="getItems($event)" placeholder="{{'Search a contact' | translate}}"></search-bar>
+    <search-bar *ngIf="!isEmptyList && !migratingContacts" [scrollArea]="wideHeaderPage?.scrollArea" (search)="getItems($event)" placeholder="{{'Search a contact' | translate}}"></search-bar>
     <div class="zero-state" *ngIf="isEmptyList">
       <ion-icon class="zero-state-icon">
         <img class="svg" src="assets/img/address-book-add.svg" />
