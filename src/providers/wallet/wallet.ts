@@ -1907,4 +1907,20 @@ export class WalletProvider {
       });
     });
   }
+
+  public getNonce(wallet, address: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      wallet.getNonce(
+        {
+          coin: wallet.coin,
+          network: wallet.network,
+          address
+        },
+        (err, nonce) => {
+          if (err) return reject(err);
+          return resolve(nonce);
+        }
+      );
+    });
+  }
 }
