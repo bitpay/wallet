@@ -15,6 +15,11 @@
     </ng-container>
   </ion-list>
 
+  <button ion-button *ngIf="isCordova" class="scan-button" (click)="openScanPage()">
+    <img src="assets/img/footer-menu/scan.svg">
+    {{'Scan' | translate }}
+  </button>
+
   <ion-item no-lines text-center class="item-close" (click)="dismiss()">
     <ion-icon>
       <img src="assets/img/footer-menu/close.svg" width="36">

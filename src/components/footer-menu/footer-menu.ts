@@ -12,7 +12,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 })
 export class FooterMenuComponent extends ActionSheetParent {
   public optionsMenu: object;
-  private isCordova: boolean;
+  public isCordova: boolean;
   private appName: string;
 
   constructor(
@@ -98,19 +98,6 @@ export class FooterMenuComponent extends ActionSheetParent {
           params: {}
         },
         logEvent: 'buy_giftcards_clicked'
-      },
-      scan: {
-        imgSrc: `assets/img/footer-menu/scan.svg`,
-        mainLabel: this.translate.instant('Scan'),
-        secondaryLabel: this.translate.instant('Scan QR code'),
-        showOption: this.isCordova,
-        nextView: {
-          name: 'ScanPage',
-          params: {
-            fromFooterMenu: true
-          }
-        },
-        logEvent: 'scan_button_clicked'
       }
     };
   }
@@ -122,5 +109,18 @@ export class FooterMenuComponent extends ActionSheetParent {
       });
     }
     this.dismiss(opt.nextView);
+  }
+
+  public openScanPage() {
+    this.analyticsProvider.logEvent('scan_button_clicked', {
+      from: 'footerMenu'
+    });
+    const nextView = {
+      name: 'ScanPage',
+      params: {
+        fromFooterMenu: true
+      }
+    };
+    this.dismiss(nextView);
   }
 }
