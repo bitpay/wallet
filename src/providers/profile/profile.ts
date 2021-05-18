@@ -441,7 +441,7 @@ export class ProfileProvider {
       !this.configProvider.get().pushNotifications.enabled ||
       !this.platformProvider.isCordova
     ) {
-        wallet.initialize(
+      wallet.initialize(
         {
           notificationIncludeOwn: true,
           notificationIntervalSeconds: this.EXTENDED_UPDATE_PERIOD
