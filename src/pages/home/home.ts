@@ -246,7 +246,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();

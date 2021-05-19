@@ -55,6 +55,13 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HAS_REPORTED_FIREBASE_CREATED_WALLET: 'hasReportedFirebaseCreatedWallet',
+  HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD: 'hasReportedFirebaseHasPhysicalCard',
+  HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD: 'hasReportedFirebaseHasVirtualCard',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard',
+  HAS_REPORTED_FIREBASE_SECURED_WALLET: 'hasSecuredWallet',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET: 'hasFundedWallet',
+  HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET: 'hasNotFundedWallet',
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   TOTAL_BALANCE: 'totalBalance',
@@ -164,6 +171,65 @@ export class PersistenceProvider {
 
   getKeyOnboardingFlag() {
     return this.storage.get(Keys.KEY_ONBOARDING);
+  }
+
+  setHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET, true);
+  }
+
+  getHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET);
+  }
+
+  setHasReportedFirebaseHasPhysicalCardFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD, true);
+  }
+
+  getHasReportedFirebaseHasPhysicalCardFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD);
+  }
+
+  setHasReportedFirebaseHasVirtualCardFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD, true);
+  }
+
+  getHasReportedFirebaseHasVirtualCardFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD);
+  }
+
+  setHasReportedFirebaseHasFundedCard() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD, true);
+  }
+
+  getHasReportedFirebaseHasFundedCard() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD);
+  }
+
+  setHasReportedFirebaseHasFundedWallet() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET, true);
+  }
+
+  getHasReportedFirebaseHasFundedWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET);
+  }
+
+  setHasReportedFirebaseNonFundedWallet() {
+    return this.storage.set(
+      Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET,
+      true
+    );
+  }
+
+  getHasReportedFirebasedNonFundedWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET);
+  }
+
+  setHasReportedFirebaseSecuredWallet() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_SECURED_WALLET, true);
+  }
+
+  getHasReportedFirebaseSecuredWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_SECURED_WALLET);
   }
 
   storeFocusedWalletId(walletId: string) {

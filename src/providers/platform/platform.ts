@@ -162,4 +162,8 @@ export class PlatformProvider {
 
     return info;
   }
+
+  public getDeviceUUID() {
+    return this.device.uuid;
+  }
 }
