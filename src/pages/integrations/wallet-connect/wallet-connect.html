@@ -37,7 +37,7 @@
     <ion-list class="bp-list">
 
       <div *ngIf="peerMeta">
-        <div class="item-label" translate>{{ 'Connected to' | translate }}</div>
+        <div class="item-label" translate>Connected to</div>
         <ion-item *ngIf="peerMeta && peerMeta.name">
           <ion-label>
             <div class="main-label">
@@ -51,7 +51,7 @@
         </div>
       </div>
       
-      <div class="item-label" translate>{{ 'Linked wallet' | translate }}</div>
+      <div class="item-label" translate>Linked wallet</div>
       <ion-item *ngIf="peerMeta">
         <coin-icon item-start [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
         <ion-label>
@@ -62,7 +62,7 @@
         </ion-label>
       </ion-item>
       
-      <div class="item-label" translate>{{ 'Pending Call Requests' | translate }}</div>
+      <div class="item-label" translate>Pending Call Requests</div>
       <ion-item *ngIf="requests.length === 0">
         <ion-label>
           {{'No pending call requests' | translate}}

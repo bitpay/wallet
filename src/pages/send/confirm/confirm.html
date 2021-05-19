@@ -198,8 +198,8 @@
         <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="!requiredFeeRate" translate>
           The Gas Price cannot be lower than 1 Gwei
         </div>
-        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="requiredFeeRate" translate>
-          The Gas Price cannot be lower than the required by the merchant ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="requiredFeeRate">
+          {{'The Gas Price cannot be lower than the required by the merchant' | translate}} ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
         </div>
       </div>
 
@@ -236,8 +236,8 @@
       </ion-item>
 
       <div class="amount-details" *ngIf="customGasLimit < minAllowedGasLimit && editGasLimit">
-        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" translate>
-          The Gas Limit cannot be lower than {{minAllowedGasLimit}}
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}">
+          {{'The Gas Limit cannot be lower than' | translate}} {{minAllowedGasLimit}}
         </div>
       </div>
 
