@@ -10,8 +10,7 @@
       </ion-icon>
       <ion-icon *ngIf="userBasicInfo?.givenName" class="item-img icon-login" item-start>
         <span class="icon-bitpay-id">
-          <span class="account-initials">{{userBasicInfo?.givenName}}</span>
-          <span class="account-initials">{{userBasicInfo?.familyName}}</span>
+          {{accountInitials}}
         </span>
       </ion-icon>
 

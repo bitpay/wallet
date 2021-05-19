@@ -24,6 +24,7 @@ footer-menu {
     background-color: #edf0fe;
     color: black;
 
+    &.activated,
     &:hover:not(.disable-hover) {
       background-color: #edf0fe;
       color: black;

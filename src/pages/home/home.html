@@ -16,8 +16,7 @@
           </ion-icon>
           <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
             <span class="icon-bitpay-id icon-small">
-              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
-              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+              {{accountInitials}}
             </span>
           </ion-icon>
         </div>
@@ -41,8 +40,7 @@
           </ion-icon>
           <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
             <span class="icon-bitpay-id">
-              <span class="account-initials">{{bitPayIdUserInfo?.givenName}}</span>
-              <span class="account-initials">{{bitPayIdUserInfo?.familyName}}</span>
+              {{accountInitials}}
             </span>
           </ion-icon>
         </button>

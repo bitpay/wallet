@@ -103,6 +103,7 @@ export class HomePage {
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
@@ -159,6 +160,12 @@ export class HomePage {
       CoinbasePage
     };
     this.user$ = this.iabCardProvider.user$;
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
+      }
+    });
   }
 
   private showNewFeatureSlides() {
@@ -206,6 +213,9 @@ export class HomePage {
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
+          if (user) {
+            this.accountInitials = this.getBitPayIdInitials(user);
+          }
         });
     }
     this.totalBalanceAlternativeIsoCode =
@@ -234,11 +244,6 @@ export class HomePage {
             if (value === 'enabled' && this.appProvider.info.name !== 'copay')
               this.openAddFunds();
           });
-      }
-    });
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.bitPayIdUserInfo = user;
       }
     });
   }
@@ -1014,6 +1019,13 @@ export class HomePage {
         }, 100);
       });
     }
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 }
 
