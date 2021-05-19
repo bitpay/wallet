@@ -24,24 +24,36 @@
         <ion-icon *ngIf="addressBookAdd.controls['address'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
         <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
 
-        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+        <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
-      <ion-item *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
+      <ion-item *ngIf="addressBookAdd.value.address && !!isXRP">
         <ion-label stacked>{{ 'Destination Tag' | translate }}</ion-label>
         <ion-input formControlName="tag" type="number" [value]="addressBookAdd.value.tag"></ion-input>
 
         <ion-icon *ngIf="addressBookAdd.value.tag && addressBookAdd.controls['tag'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
         <ion-icon *ngIf="addressBookAdd.value.tag && addressBookAdd.controls['tag'].status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
 
-        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+        <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
-      <label-tip type="info" header="no-header" *ngIf="addressBookAdd.value.address && getCoinAndNetwork() && getCoinAndNetwork().coin === 'xrp'">
+      <label-tip type="info" header="no-header" *ngIf="addressBookAdd.value.address && !!isXRP">
         <div label-tip-body>
           <span translate>BitPay cannot validate the destination tag. Before sending XRP please double-check the destination tag with the receiver, if not valid it may result in the permanent loss of the funds.</span>
         </div>
       </label-tip>
-
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid && coins.length>1">
+        <ion-label stacked translate>Coin</ion-label>
+        <!-- <ion-input formControlName="coin" type="text" [value]="addressBookAdd.value.coin"></ion-input> -->
+        <ion-select formControlName="coin" [disabled]="coins.length === 1" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
+          <ion-option *ngFor="let _coin of coins" [value]="_coin">{{_coin}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="this.addressBookAdd.get('address').valid && allowNetworkSelection">
+        <ion-label stacked translate>Network</ion-label>
+        <ion-select formControlName="network" (ionChange)="analizeAddress(addressBookAdd.value.address, addressBookAdd.value.network, addressBookAdd.value.coin)">
+          <ion-option *ngFor="let net of networks" [value]="net">{{net}}</ion-option>
+        </ion-select>
+      </ion-item>
       <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls['address'].status == 'INVALID'">
         <div label-tip-body>
           <span>{{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}</span>

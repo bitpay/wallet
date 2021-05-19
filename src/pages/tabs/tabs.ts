@@ -368,6 +368,8 @@ export class TabsPage {
   }
 
   public openFooterMenu(): void {
+    if (this.navigationType !== 'transact') return;
+
     this.analyticsProvider.logEvent('transaction_menu_clicked', {
       from: 'tabs'
     });

@@ -11,7 +11,6 @@ import {
   ActionSheetProvider,
   AnalyticsProvider,
   ErrorsProvider,
-  ExternalLinkProvider,
   Logger,
   PersistenceProvider,
   PlatformProvider,
@@ -57,7 +56,6 @@ export class WalletConnectPage {
     private navCtrl: NavController,
     private events: Events,
     private platformProvider: PlatformProvider,
-    private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
@@ -305,9 +303,5 @@ export class WalletConnectPage {
       { fromWalletConnect: true },
       { animate: false }
     );
-  }
-
-  public openExternalLink(url: string) {
-    this.externalLinkProvider.open(url);
   }
 }

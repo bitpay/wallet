@@ -3,18 +3,32 @@
 </ion-header>
 
 <ion-content>
-  <div class="bitpay-id__container">
-    <img
-      src="assets/img/app/icon-flat.svg"
-      class="bitpay-id__icon"
-      width="40"
-    />
-    <div class="col">
-      <ion-label>{{userBasicInfo?.givenName}} {{userBasicInfo?.familyName}}</ion-label>
-      <ion-label>{{userBasicInfo?.email}}</ion-label>
-    </div>
-  </div>
-  <ion-list class="bp-list bitpay-id__settings-list">
+  <ion-list class="bp-list">
+    <ion-item>
+      <ion-icon *ngIf="!userBasicInfo?.givenName" class="item-img icon-login" item-start>
+        <img src="assets/img/bitpay-card/icon-bitpay.svg" width="60">
+      </ion-icon>
+      <ion-icon *ngIf="userBasicInfo?.givenName" class="item-img icon-login" item-start>
+        <span class="icon-bitpay-id">
+          <span class="account-initials">{{userBasicInfo?.givenName}}</span>
+          <span class="account-initials">{{userBasicInfo?.familyName}}</span>
+        </span>
+      </ion-icon>
+
+      <ion-label>
+        <span class="main-label">
+          <span class="bitpay-name" *ngIf="!userBasicInfo?.givenName">
+            <span translate>BitPay Account</span>
+            <div class="bitpay-email">{{ userBasicInfo?.email }}</div>
+          </span>
+          <span class="bitpay-name" *ngIf="userBasicInfo?.givenName">
+            {{ userBasicInfo?.givenName }} {{ userBasicInfo?.familyName }}
+            <div class="bitpay-email">{{ userBasicInfo?.email }}</div>
+          </span>
+        </span>
+      </ion-label>
+    </ion-item>
+
     <ion-item>
       <ion-label>{{'Sync gift card purchases' | translate}}</ion-label>
       <ion-toggle
@@ -28,11 +42,7 @@
       </div>
     </label-tip>
   </ion-list>
-  <button
-    ion-button
-    class="button-standard button-secondary bitpay-id__disconnect-button"
-    (click)="disconnectBitPayID()"
-  >
+  <button ion-button class="button-standard button-secondary bitpay-id__disconnect-button" (click)="disconnectBitPayID()">
     {{'Disconnect' | translate}}
   </button>
 </ion-content>

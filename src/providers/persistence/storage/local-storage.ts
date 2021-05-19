@@ -25,6 +25,12 @@ export class LocalStorage implements IStorage {
     return parsed || v;
   }
 
+  exists(k: string): Promise<boolean> {
+    return new Promise(resolve => {
+      let v = this.ls.getItem(k);
+      return resolve(v ? true : false);
+    });
+  }
   get(k: string): Promise<any> {
     return new Promise(resolve => {
       let v = this.ls.getItem(k);

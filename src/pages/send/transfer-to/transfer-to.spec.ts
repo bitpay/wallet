@@ -10,6 +10,7 @@ describe('TransferToPage', () => {
 
   const wallet = {
     coin: 'btc',
+    network: 'livenet',
     status: {
       totalBalanceStr: '1.000000'
     }
@@ -32,7 +33,8 @@ describe('TransferToPage', () => {
       instance.walletList.btc = [
         {
           name: 'test1',
-          coin: 'btc'
+          coin: 'btc',
+          network: 'livenet'
         },
         {
           name: 'test2',
@@ -66,6 +68,7 @@ describe('TransferToPage', () => {
     it('should filter BTC wallets when search by wallet name', () => {
       instance.hasWallets.btc = true;
       instance.wallet.coin = 'btc';
+      instance.wallet.network = 'livenet';
 
       instance.search = 'test';
       instance.searchWallets();

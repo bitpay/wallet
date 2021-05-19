@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">WalletConnect</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <label-tip type="info" header="no-header" class="no-arrowhead">
+    <div label-tip-body>
+      <span translate>WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking.</span>
+      <br>
+      <br>
+      <a class="pointer" (click)="openExternalLink('https://walletconnect.org/')" translate>Read more</a>
+    </div>
+  </label-tip>
+
+  <ion-list class="bp-list">
+    <ion-item>
+      <ion-label>{{'Show in Home tab' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

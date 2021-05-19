@@ -1,8 +1,8 @@
 <button ion-item class="proposal-container" (click)="openTxpModal(tx)">
   <div *ngIf="!tx.merchant" class="proposal-title">
     <span *ngIf="tx.message">{{tx.message}}</span>
-    <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
-    <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+    <span *ngIf="!tx.message && tx.toAddress && contactName">{{contactName}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && !contactName" translate>Sending</span>
   </div>
   <div class="proposal-subtitle">
     <span *ngIf="tx.merchant" class="item-subtitle">

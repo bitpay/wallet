@@ -11,4 +11,35 @@ footer-menu {
       margin-left: -5px;
     }
   }
+  .scan-button {
+    width: 35%;
+    max-width: 300px;
+    margin: 20px auto 25px auto;
+    display: flex;
+    min-height: 50px;
+    border-radius: 5px;
+    box-shadow: none;
+    font-weight: 400;
+    font-size: 18px;
+    background-color: #edf0fe;
+    color: black;
+
+    &:hover:not(.disable-hover) {
+      background-color: #edf0fe;
+      color: black;
+      box-shadow: none;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+
+    .button-inner {
+      padding: 2px;
+    }
+
+    span {
+      @extend .two-lines;
+    }
+  }
 }
