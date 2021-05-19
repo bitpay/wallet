@@ -692,7 +692,7 @@ msgstr ""
 msgid "Connect your Coinbase!"
 msgstr ""
 
-msgid "Connected with"
+msgid "Connected to"
 msgstr ""
 
 msgid "Connecting BitPay ID..."
@@ -831,9 +831,6 @@ msgid "Could not get dynamic fee for level:"
 msgstr ""
 
 msgid "Could not get fee levels"
-msgstr ""
-
-msgid "Could not get the Addressbook"
 msgstr ""
 
 msgid "Could not get transactions"
@@ -1171,6 +1168,9 @@ msgstr ""
 msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
+msgid "Enter WalletConnect URI"
+msgstr ""
+
 msgid "Enter a destination tag"
 msgstr ""
 
@@ -1190,9 +1190,6 @@ msgid "Enter email address"
 msgstr ""
 
 msgid "Enter encrypt password"
-msgstr ""
-
-msgid "Enter the wallet connect uri"
 msgstr ""
 
 msgid ""
@@ -1739,6 +1736,11 @@ msgid ""
 "In order to protect your funds from being accessible to hackers and "
 "thieves, the Master Key to your wallet must be kept somewhere safe and "
 "remain a secret."
+msgstr ""
+
+msgid ""
+"In order to speed up the confirmation of your ETH transaction, the original "
+"transaction will be replaced by a new one that uses a higher miner fee."
 msgstr ""
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
@@ -2787,9 +2789,6 @@ msgstr ""
 msgid "Scan QR Codes"
 msgstr ""
 
-msgid "Scan QR code"
-msgstr ""
-
 msgid "Scan addresses for funds"
 msgstr ""
 
@@ -3036,6 +3035,9 @@ msgid "Show Portfolio Value"
 msgstr ""
 
 msgid "Show advanced options"
+msgstr ""
+
+msgid "Show in Home tab"
 msgstr ""
 
 msgid "Show me the legacy address"
@@ -4332,12 +4334,6 @@ msgid "{walletsGroupLength} Wallet"
 msgstr ""
 
 msgid "{walletsGroupLength} Wallets"
-msgstr ""
-
-msgid "{{ 'Linked wallet' | translate }}"
-msgstr ""
-
-msgid "{{ 'Pending Call Requests' | translate }}"
 msgstr ""
 
 msgid "{{ 'Privacy Policy' | translate}}"
