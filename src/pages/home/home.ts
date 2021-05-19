@@ -160,6 +160,12 @@ export class HomePage {
       CoinbasePage
     };
     this.user$ = this.iabCardProvider.user$;
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
+      }
+    });
   }
 
   private showNewFeatureSlides() {
@@ -238,12 +244,6 @@ export class HomePage {
             if (value === 'enabled' && this.appProvider.info.name !== 'copay')
               this.openAddFunds();
           });
-      }
-    });
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.bitPayIdUserInfo = user;
-        this.accountInitials = this.getBitPayIdInitials(user);
       }
     });
   }

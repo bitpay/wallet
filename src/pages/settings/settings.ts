@@ -129,6 +129,13 @@ export class SettingsPage {
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
+        this.changeRef.detectChanges();
+      }
+    });
 
     this.events.subscribe('updateCards', cards => {
       if (cards && cards.length > 0) {
@@ -156,14 +163,6 @@ export class SettingsPage {
             this.accountInitials = this.getBitPayIdInitials(user);
           }
         });
-
-      this.user$.subscribe(async user => {
-        if (user) {
-          this.bitPayIdUserInfo = user;
-          this.accountInitials = this.getBitPayIdInitials(user);
-          this.changeRef.detectChanges();
-        }
-      });
     }
 
     this.currentLanguageName = this.language.getName(
