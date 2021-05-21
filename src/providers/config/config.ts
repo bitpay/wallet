@@ -385,7 +385,7 @@ export class ConfigProvider {
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
       }
-      if (!this.configCache.showIntegration.walletConnect) {
+      if (this.configCache.showIntegration.walletConnect !== true) {
         this.configCache.showIntegration.walletConnect = this.configDefault.showIntegration.walletConnect;
       }
     }
