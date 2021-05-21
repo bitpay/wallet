@@ -5,7 +5,6 @@ import { Events, ModalController, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
-import { Observable } from 'rxjs';
 // pages
 import { User } from '../../models/user/user.model';
 import { BitPayIdProvider, IABCardProvider } from '../../providers';
@@ -90,7 +89,6 @@ export class SettingsPage {
   public bitPayIdUserInfo: any;
   public accountInitials: string;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
-  private user$: Observable<User>;
   public showReorder: boolean = false;
   public showTotalBalance: boolean;
   public appTheme: string;
@@ -127,7 +125,6 @@ export class SettingsPage {
     this.appVersion = this.app.info.version;
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
-    this.user$ = this.iabCardProvider.user$;
   }
 
   ngOnInit() {
