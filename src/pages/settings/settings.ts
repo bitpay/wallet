@@ -87,7 +87,6 @@ export class SettingsPage {
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
   public readOnlyWalletsGroup: any[];
-  public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
   public accountInitials: string;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
@@ -129,19 +128,30 @@ export class SettingsPage {
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
     this.user$ = this.iabCardProvider.user$;
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.bitPayIdUserInfo = user;
-        this.accountInitials = this.getBitPayIdInitials(user);
-        this.changeRef.detectChanges();
-      }
-    });
+  }
 
-    this.events.subscribe('updateCards', cards => {
-      if (cards && cards.length > 0) {
-        this.bitpayCardItems = cards;
-      }
-    });
+  ngOnInit() {
+    if (this.isCordova) {
+      // check for user info
+      this.persistenceProvider
+        .getBitPayIdUserInfo(this.network)
+        .then((user: User) => {
+          if (user) {
+            this.updateUser(user);
+          }
+        });
+
+      this.events.subscribe('BitPayId/Disconnected', () => this.updateUser());
+      this.events.subscribe('BitPayId/Connected', user =>
+        this.updateUser(user)
+      );
+
+      this.events.subscribe('updateCards', cards => {
+        if (cards && cards.length > 0) {
+          this.bitpayCardItems = cards;
+        }
+      });
+    }
   }
 
   ionViewDidLoad() {
@@ -149,22 +159,6 @@ export class SettingsPage {
   }
 
   async ionViewWillEnter() {
-    this.persistenceProvider
-      .getBitpayIdPairingFlag()
-      .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
-
-    if (this.iabCardProvider.ref) {
-      // check for user info
-      this.persistenceProvider
-        .getBitPayIdUserInfo(this.network)
-        .then((user: User) => {
-          this.bitPayIdUserInfo = user;
-          if (user) {
-            this.accountInitials = this.getBitPayIdInitials(user);
-          }
-        });
-    }
-
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
@@ -243,6 +237,12 @@ export class SettingsPage {
       this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
       this.bitpayCardItems = cards;
     });
+  }
+
+  private updateUser(user?) {
+    this.bitPayIdUserInfo = user;
+    this.accountInitials = this.getBitPayIdInitials(user);
+    this.changeRef.detectChanges();
   }
 
   private getBitPayIdInitials(user): string {
