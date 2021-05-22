@@ -1,15 +1,20 @@
 <ion-header>
   <ion-navbar [hideBackButton]="useAsModal">
-    <ion-buttons left *ngIf="useAsModal">
-      <button class="close-container disable-hover" (click)="closeModal()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-buttons right>
-      <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
-        <span translate>Send max</span>
-      </button>
-    </ion-buttons>
+    <ng-container *ngIf="isDonation">
+      <div class="remaining">{{remaining}}</div>
+    </ng-container>
+    <ng-container *ngIf="!isDonation">
+      <ion-buttons left *ngIf="useAsModal">
+        <button class="close-container disable-hover" (click)="closeModal()" ion-button>
+          <ion-icon ios="md-close" md="md-close"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons right>
+        <button class="send-max" *ngIf="isSendMaxButtonShown()" (click)="sendMax()" clear wide-header-bar-button ion-button>
+          <span translate>Send max</span>
+        </button>
+      </ion-buttons>
+    </ng-container>
   </ion-navbar>
 </ion-header>
 
@@ -53,6 +58,8 @@
         </ion-select>
       </div>
     </form>
+
+    <div class="receiveLotus" *ngIf="isShowReceiveLotus">{{receiveLotus}}</div>
 
     <div class="bottom-absolute">
       <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>

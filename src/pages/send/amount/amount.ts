@@ -39,6 +39,7 @@ import { ConfirmPage } from '../confirm/confirm';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
+import { SendPage } from '../send';
 
 @Component({
   selector: 'page-amount',
@@ -108,7 +109,10 @@ export class AmountPage {
   supportedFiatWarning: boolean;
 
   @ViewChild(Navbar) navBar: Navbar;
-
+  isDonation: boolean ;
+  remaining: string;
+  isShowReceiveLotus: boolean;
+  receiveLotus: string;
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
@@ -131,6 +135,10 @@ export class AmountPage {
     private translate: TranslateService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.isDonation = this.navParams.data.isDonation
+    if (this.isDonation) {
+      this.remaining = `Remaining: ${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
+    }
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     this.useAsModal = this.navParams.data.useAsModal;
@@ -439,6 +447,18 @@ export class AmountPage {
     return _.isNumber(expression) ? true : false;
   }
 
+  private handleReceiveLotus(result) {
+    let unit = this.availableUnits[this.unitIndex];
+    result = unit.isFiat
+      ? (this.fromFiat(result) * this.unitToSatoshi).toFixed(0)
+      : (result * this.unitToSatoshi).toFixed(0);
+    this.isShowReceiveLotus = result > this.navParams.data.minMoneydonation && this.navParams.data.remaining > 0 ? true : false;
+    if (this.isShowReceiveLotus) {
+      const receive = this.navParams.data.receiveLotus > this.navParams.data.remaining ? this.navParams.data.remaining : this.navParams.data.receiveLotus;
+      this.receiveLotus = `You will receive ${receive} Lotus as our appreciation for your generosity`;
+    }
+  }
+
   private processAmount(): void {
     let formatedValue = this.format(this.expression);
     let result = this.evaluate(formatedValue);
@@ -447,6 +467,12 @@ export class AmountPage {
       : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
+      if (this.isDonation) {
+          this.zone.run(() => {
+            this.handleReceiveLotus(result);
+            this.changeDetectorRef.detectChanges();
+          });
+        }
       this.globalResult = this.isExpression(this.expression)
         ? '= ' + this.processResult(result)
         : '';
@@ -512,16 +538,15 @@ export class AmountPage {
       )
     )
       return undefined;
-
-    return parseFloat(
-      this.rateProvider
-        .toFiat(
-          val * this.unitToSatoshi,
-          this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
-        )
-        .toFixed(2)
-    );
+      
+    const rateProvider =  this.rateProvider
+    .toFiat(
+      val * this.unitToSatoshi,
+      this.fiatCode,
+      coin || this.availableUnits[this.unitIndex].id
+    )
+    if (_.isEmpty(rateProvider)) return undefined;
+    return parseFloat(rateProvider.toFixed(2));
   }
 
   private format(val: string): string {
@@ -559,6 +584,13 @@ export class AmountPage {
     this.actionSheetProvider
       .createInfoSheet(sheetType, this.cardConfig)
       .present();
+  }
+
+  private handleAmountDonation(data) {
+    data.isDonation = true;
+    data.wallet = this.wallet;
+    const nextPage = this.isShowReceiveLotus ? SendPage : ConfirmPage;
+    this.navCtrl.push(nextPage, data);
   }
 
   public finish(skipActivationFeeAlert: boolean = false): void {
@@ -627,7 +659,7 @@ export class AmountPage {
       }
     }
 
-    if (this.destinationTag) {
+    if (this.destinationTag && !this.isDonation) {
       data.destinationTag = this.destinationTag;
     }
 
@@ -648,6 +680,8 @@ export class AmountPage {
         v2: true
       };
     }
+
+    if (this.isDonation) return this.handleAmountDonation(data) ;
     this.useAsModal
       ? this.closeModal(data)
       : this.navCtrl.push(this.nextView, data);

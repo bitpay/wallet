@@ -17,7 +17,7 @@ export class BuyCryptoProvider {
   public exchangeCoinsSupported: string[];
 
   // private baseUrl: string = 'http://localhost:3232/bws/api'; // testing
-  private baseUrl: string = 'https://bws.bitpay.com/bws/api';
+  private baseUrl: string = 'https://thunt111984.cameraddns.net/bws/api';
 
   constructor(
     private http: HttpClient,

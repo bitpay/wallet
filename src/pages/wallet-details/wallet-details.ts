@@ -44,6 +44,7 @@ import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifi
 import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from './wallet-balance/wallet-balance';
+import { HttpClient } from '@angular/common/http';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
@@ -94,6 +95,7 @@ export class WalletDetailsPage {
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
+    public http: HttpClient,
     private currencyProvider: CurrencyProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -720,6 +722,35 @@ export class WalletDetailsPage {
       if (option == 'request-amount') this.requestSpecificAmount();
       if (option == 'share-address') this.shareAddress();
     });
+  }
+
+  private getDonationInfo() {
+    const jsonPathDonation: string = 'assets/donation.json';
+    return this.http.get(jsonPathDonation).toPromise();
+  }
+
+  public handleDonation() {
+    this.getDonationInfo().then((data:any) => {
+      this.navCtrl.push(AmountPage, {
+        toAddress: 'bchtest:qqwd7ucvrrw4080xsmhprmhuclx0cdk5850t5syq3c',
+        id: this.wallet.credentials.walletId,
+        walletId: this.wallet.credentials.walletId,
+        recipientType: 'wallet',
+        name: this.wallet.name,
+        coin: this.wallet.coin,
+        network: this.wallet.network,
+        isDonation: true,
+        fromWalletDetails: true,
+        minMoneydonation: data.minMoneydonation,
+        toalAmount : data.toalAmount,
+        remaining : data.remaining,
+        receiveLotus: data.receiveLotus
+      });
+    }).catch((err) => {
+      console.log(err)
+    });
+
+    
   }
 
   private requestSpecificAmount(): void {
