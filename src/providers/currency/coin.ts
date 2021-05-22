@@ -140,7 +140,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bch', testnet: 'bch' },
       // ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
-      ratesApi: 'http://aws.abcpay.cash:3232/bws/api/v3/fiatrates/bch',
+      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'bitpay.com/insight/#/BCH/mainnet/',
       blockExplorerUrlsTestnet: 'bitpay.com/insight/#/BCH/testnet/'
     },
@@ -473,7 +473,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'dogecoin', testnet: 'dogecoin' },
-      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/doge',
+      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/doge',
       blockExplorerUrls: 'blockchair.com/',
       blockExplorerUrlsTestnet: 'sochain.com/'
     },

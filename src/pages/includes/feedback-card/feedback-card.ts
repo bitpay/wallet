@@ -12,7 +12,7 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 
 // pages
 import { SendFeedbackPage } from '../../../pages/feedback/send-feedback/send-feedback';
-
+import { WalletsPage } from '../../wallets/wallets';
 @Component({
   selector: 'page-feedback-card',
   templateUrl: 'feedback-card.html'
@@ -116,5 +116,9 @@ export class FeedbackCardPage {
       score: this.score,
       fromCard: true
     });
+  }
+  // TODO: Set Lotus Donation
+  public donationLotus(){
+    this.navCtrl.push(WalletsPage);
   }
 }

@@ -145,8 +145,8 @@
       <span *ngIf="totalBalanceChange || totalBalanceChange === 0" class="date" translate>Last day</span>
     </div>
   </div>
-
-  <ion-list margin-bottom class="bp-list">
+  <!-- TODO: Disable some feature -->
+  <!-- <ion-list margin-bottom class="bp-list">
     <button ion-item *ngIf="showShoppingOption" (click)="goToShop()">
       <ion-label>
         <div class="services-list-label" translate>Shop</div>
@@ -171,7 +171,7 @@
       </ion-label>
     </button>
     <div class="line-divider" *ngIf="showWalletConnect"></div>
-  </ion-list>
+  </ion-list> -->
 
   <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let advertisement of advertisements">

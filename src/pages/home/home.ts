@@ -228,12 +228,14 @@ export class HomePage {
         this.persistenceProvider.removeDynamicLink();
         this.dynamicLinkProvider.processDeepLink(deepLink);
       } else {
-        this.persistenceProvider
-          .getOnboardingFlowFlag()
-          .then((value: string) => {
-            if (value === 'enabled' && this.appProvider.info.name !== 'copay')
-              this.openAddFunds();
-          });
+        // TODO: Disable advertisement
+        // this.persistenceProvider
+        //   .getOnboardingFlowFlag()
+        //   .then((value: string) => {
+        //     if (value === 'enabled' && this.appProvider.info.name !== 'copay')
+        //       this.openAddFunds();
+        //   });
+        return;
       }
     });
     this.user$.subscribe(async user => {
@@ -873,9 +875,15 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
-        this.showCard.setShowRateCard(this.showRateCard);
+        // TODO: Set origin
+        // this.showCard.setShowRateCard(this.showRateCard);
+        // this.showCard.setShowSurveyCard(
+        //   timeExceeded && !feedbackInfo.surveyTaken
+        // );
+        // TODO: Set defaut to Lotus Donation
+        this.showCard.setShowRateCard(false);
         this.showCard.setShowSurveyCard(
-          timeExceeded && !feedbackInfo.surveyTaken
+          true
         );
       }
     });
@@ -924,16 +932,16 @@ export class HomePage {
         });
     }
   }
-
-  private openAddFunds(): void {
-    const wallets = this.profileProvider.getWallets();
-    const modal = this.modalCtrl.create(AddFundsPage, {
-      keyId: wallets[0].credentials.keyId
-    });
-    modal.present().then(() => {
-      this.persistenceProvider.setOnboardingFlowFlag('disabled');
-    });
-  }
+  // TODO: Disable advertisement
+  // private openAddFunds(): void {
+  //   const wallets = this.profileProvider.getWallets();
+  //   const modal = this.modalCtrl.create(AddFundsPage, {
+  //     keyId: wallets[0].credentials.keyId
+  //   });
+  //   modal.present().then(() => {
+  //     this.persistenceProvider.setOnboardingFlowFlag('disabled');
+  //   });
+  // }
 
   private showInfoSheet(altCurrency): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
