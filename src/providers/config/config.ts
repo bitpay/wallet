@@ -174,7 +174,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'http://172.25.225.221:3232/bws/api' // Uncomment and replace w/ http://aws.abcpay.cash:3232/bws/api for testing
+        url: 'http://localhost:3232/bws/api' // Uncomment and replace w/ http://aws.abcpay.cash:3232/bws/api for testing
       },
 
       adPubKey: {
