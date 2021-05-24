@@ -360,8 +360,18 @@ export class CopayApp {
           });
       })
       .catch(err => {
-        this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
+        this.popupProvider
+          .ionicAlert('Error loading keys', err.message || '')
+          .then(() => {
+            // Share logs
+            const platform = this.platformProvider.isCordova
+              ? this.platformProvider.isAndroid
+                ? 'android'
+                : 'ios'
+              : 'desktop';
+            this.logsProvider.get(this.appProvider.info.nameCase, platform);
+          });
       });
 
     let [token, cards]: any = await Promise.all([
