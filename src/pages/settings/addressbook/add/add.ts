@@ -116,6 +116,7 @@ export class AddressbookAddPage {
 
       if (
         this.coins &&
+        coin &&
         this.coins.find(c => c.toUpperCase() === coin.toUpperCase())
       ) {
         this.addressBookAdd.controls['coin'].setValue(coin);
