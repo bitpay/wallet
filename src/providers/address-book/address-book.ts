@@ -140,11 +140,10 @@ export class AddressBookProvider {
         let msg = this.translate.instant('Not valid bitcoin address');
         return reject(msg);
       }
-
       addrData.coin =
         entry.coin &&
-        this.currencyProvider.getChain(Coin[entry.coin.toUpperCase()]) ===
-          _addrData.coin
+        this.currencyProvider.getChain(Coin[entry.coin.toUpperCase()]).toLowerCase() ===
+          _addrData.coin.toLowerCase()
           ? entry.coin.toLowerCase()
           : _addrData.coin.toLowerCase();
       addrData.network = _addrData.network;
@@ -196,7 +195,7 @@ export class AddressBookProvider {
           return reject(msg);
         }
         network = addrData.network;
-        if (!coin) coin = addrData.coin;
+        if (!coin) coin = addrData.coin.toLowerCase();
       }
 
       this.persistenceProvider
