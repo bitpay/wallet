@@ -117,7 +117,11 @@ export class AddressbookAddPage {
         }
       }
 
-      if (this.coins && this.coins.find(c => c === coin)) {
+      if (
+        this.coins &&
+        coin &&
+        this.coins.find(c => c.toUpperCase() === coin.toUpperCase())
+      ) {
         this.addressBookAdd.controls['coin'].setValue(coin);
       } else {
         this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
