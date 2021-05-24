@@ -142,8 +142,9 @@ export class AddressBookProvider {
       }
       addrData.coin =
         entry.coin &&
-        this.currencyProvider.getChain(Coin[entry.coin.toUpperCase()]).toLowerCase() ===
-          _addrData.coin.toLowerCase()
+        this.currencyProvider
+          .getChain(Coin[entry.coin.toUpperCase()])
+          .toLowerCase() === _addrData.coin.toLowerCase()
           ? entry.coin.toLowerCase()
           : _addrData.coin.toLowerCase();
       addrData.network = _addrData.network;
