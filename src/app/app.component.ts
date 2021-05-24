@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  AnalyticsProvider,
   AppProvider,
   BitPayCardProvider,
   BitPayIdProvider,
@@ -158,6 +159,7 @@ export class CopayApp {
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
     private dynamicLinksProvider: DynamicLinksProvider,
+    private analyticsProvider: AnalyticsProvider,
     private locationProvider: LocationProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
@@ -275,6 +277,18 @@ export class CopayApp {
       // Only for iOS
       if (this.platform.is('ios')) {
         this.statusBar.overlaysWebView(true);
+
+        // Check for AppTrackingTransparency
+        this.analyticsProvider
+          .setTrackingPermissions()
+          .then(value => {
+            this.logger.info(
+              'Got permission for tracking user. IDFA/AAID: ' + value
+            );
+          })
+          .catch(err => {
+            this.logger.warn(err);
+          });
       }
 
       // Subscribe Resume

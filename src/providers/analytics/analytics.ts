@@ -6,58 +6,89 @@ declare var cordova: any;
 
 @Injectable()
 export class AnalyticsProvider {
-  private hasPermission: boolean;
+  private hasPermission: boolean = false;
   constructor(
     private FCMPlugin: FCMNG,
     private platformProvider: PlatformProvider
-  ) {
-    const idfa = this.getIdfa();
-    console.log('[analytics.ts:14]', idfa); /* TODO */
-  }
+  ) {}
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
-    if (this.getPermissions()) this.FCMPlugin.logEvent(eventName, eventParams);
+    this.getPermissions().then(res => {
+      if (res) this.FCMPlugin.logEvent(eventName, eventParams);
+    });
   }
 
   setUserProperty(name: string, value: string) {
-    if (this.getPermissions()) this.FCMPlugin.setUserProperty(name, value);
+    this.getPermissions().then(res => {
+      if (res) this.FCMPlugin.setUserProperty(name, value);
+    });
   }
 
-  getPermissions() {
-    return this.platformProvider.isCordova && this.hasPermission;
+  getPermissions(): Promise<boolean> {
+    return new Promise(resolve => {
+      if (!this.platformProvider.isCordova) return resolve(true);
+      if (!this.platformProvider.isIOS) return resolve(true);
+      if (this.hasPermission) return resolve(true);
+      return resolve(false);
+    });
   }
 
-  getIdfa() {
-    if (!this.platformProvider.isCordova && !this.platformProvider.isIOS) {
-      this.hasPermission = true;
-      return;
-    }
+  setTrackingPermissions(): Promise<string> {
     const idfaPlugin = cordova.plugins.idfa;
-
-    idfaPlugin
-      .getInfo()
-      .then(info => {
-        if (!info.trackingLimited) {
-          return info.idfa || info.aaid;
-        } else if (
-          info.trackingPermission ===
-          idfaPlugin.TRACKING_PERMISSION_NOT_DETERMINED
-        ) {
-          return idfaPlugin.requestPermission().then(result => {
-            if (result === idfaPlugin.TRACKING_PERMISSION_AUTHORIZED) {
-              this.hasPermission = true;
-              return idfaPlugin.getInfo().then(info => {
-                return info.idfa || info.aaid;
-              });
-            }
-          });
-        } else {
+    return new Promise((resolve, reject) => {
+      idfaPlugin
+        .getInfo()
+        .then(info => {
+          if (info && !info.trackingLimited) {
+            this.hasPermission = true;
+            return resolve(info.idfa || info.aaid);
+          } else if (
+            info &&
+            info.trackingPermission ===
+              idfaPlugin.TRACKING_PERMISSION_NOT_DETERMINED
+          ) {
+            // Request permission
+            idfaPlugin.requestPermission().then(result => {
+              if (
+                result &&
+                result === idfaPlugin.TRACKING_PERMISSION_AUTHORIZED
+              ) {
+                this.hasPermission = true;
+                idfaPlugin.getInfo().then(info => {
+                  return resolve(info.idfa || info.aaid);
+                });
+              } else if (
+                result &&
+                result == idfaPlugin.TRACKING_PERMISSION_DENIED
+              ) {
+                this.hasPermission = false;
+                return reject('Tracking Permission Denied');
+              } else {
+                this.hasPermission = false;
+                return reject(result);
+              }
+            });
+          } else if (
+            info &&
+            info.trackingPermission === idfaPlugin.TRACKING_PERMISSION_DENIED
+          ) {
+            this.hasPermission = false;
+            return reject('Tracking Permission Denied');
+          } else if (
+            info &&
+            info.trackingPermission ===
+              idfaPlugin.TRACKING_PERMISSION_AUTHORIZED
+          ) {
+            this.hasPermission = true;
+            return resolve(info.idfa || info.aaid);
+          } else {
+            this.hasPermission = false;
+            return reject('Could not get Tracking information');
+          }
+        })
+        .catch(_ => {
           this.hasPermission = false;
-        }
-      })
-      .then(idfaOrAaid => {
-        if (idfaOrAaid) {
-          console.log(idfaOrAaid);
-        }
-      });
+          return reject('Device is supported');
+        });
+    });
   }
 }
