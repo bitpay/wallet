@@ -282,12 +282,10 @@ export class CopayApp {
         this.analyticsProvider
           .setTrackingPermissions()
           .then(value => {
-            this.logger.info(
-              'Got permission for tracking user. IDFA/AAID: ' + value
-            );
+            this.logger.info('AppTrackingTransparency: ' + value);
           })
           .catch(err => {
-            this.logger.warn(err);
+            this.logger.warn('AppTrackingTransparency: ' + err);
           });
       }
 

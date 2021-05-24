@@ -6,30 +6,18 @@ declare var cordova: any;
 
 @Injectable()
 export class AnalyticsProvider {
-  private hasPermission: boolean = false;
   constructor(
     private FCMPlugin: FCMNG,
     private platformProvider: PlatformProvider
   ) {}
   logEvent(eventName: string, eventParams: { [key: string]: any }) {
-    this.getPermissions().then(res => {
-      if (res) this.FCMPlugin.logEvent(eventName, eventParams);
-    });
+    if (this.platformProvider.isCordova)
+      this.FCMPlugin.logEvent(eventName, eventParams);
   }
 
   setUserProperty(name: string, value: string) {
-    this.getPermissions().then(res => {
-      if (res) this.FCMPlugin.setUserProperty(name, value);
-    });
-  }
-
-  getPermissions(): Promise<boolean> {
-    return new Promise(resolve => {
-      if (!this.platformProvider.isCordova) return resolve(true);
-      if (!this.platformProvider.isIOS) return resolve(true);
-      if (this.hasPermission) return resolve(true);
-      return resolve(false);
-    });
+    if (this.platformProvider.isCordova)
+      this.FCMPlugin.setUserProperty(name, value);
   }
 
   setTrackingPermissions(): Promise<string> {
@@ -39,8 +27,7 @@ export class AnalyticsProvider {
         .getInfo()
         .then(info => {
           if (info && !info.trackingLimited) {
-            this.hasPermission = true;
-            return resolve(info.idfa || info.aaid);
+            return resolve(JSON.stringify(info));
           } else if (
             info &&
             info.trackingPermission ===
@@ -52,18 +39,15 @@ export class AnalyticsProvider {
                 result &&
                 result === idfaPlugin.TRACKING_PERMISSION_AUTHORIZED
               ) {
-                this.hasPermission = true;
                 idfaPlugin.getInfo().then(info => {
-                  return resolve(info.idfa || info.aaid);
+                  return resolve(JSON.stringify(info));
                 });
               } else if (
                 result &&
                 result == idfaPlugin.TRACKING_PERMISSION_DENIED
               ) {
-                this.hasPermission = false;
-                return reject('Tracking Permission Denied');
+                return reject('Permission Denied');
               } else {
-                this.hasPermission = false;
                 return reject(result);
               }
             });
@@ -71,23 +55,24 @@ export class AnalyticsProvider {
             info &&
             info.trackingPermission === idfaPlugin.TRACKING_PERMISSION_DENIED
           ) {
-            this.hasPermission = false;
-            return reject('Tracking Permission Denied');
+            return reject('Permission Denied');
           } else if (
             info &&
             info.trackingPermission ===
               idfaPlugin.TRACKING_PERMISSION_AUTHORIZED
           ) {
-            this.hasPermission = true;
-            return resolve(info.idfa || info.aaid);
+            return resolve(JSON.stringify(info));
           } else {
-            this.hasPermission = false;
-            return reject('Could not get Tracking information');
+            return reject('Could not get AppTrackingTransparency');
+          }
+        })
+        .then(idfaOrAaid => {
+          if (idfaOrAaid) {
+            return resolve(idfaOrAaid);
           }
         })
         .catch(_ => {
-          this.hasPermission = false;
-          return reject('Device is supported');
+          return reject('Device is not supported');
         });
     });
   }
