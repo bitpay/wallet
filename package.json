@@ -201,6 +201,7 @@
     "@types/prismjs": "1.9.1",
     "adm-zip": "0.4.13",
     "codecov": "3.7.2",
+    "cordova-plugin-androidx-adapter": "1.1.3",
     "core-js": "2.6.10",
     "electron": "9.4.2",
     "fs-extra": "9.0.1",
@@ -277,7 +278,8 @@
       },
       "cordova-plugin-idfa": {
         "ANDROID_PLAY_ADID_VERSION": "17.0.+"
-      }
+      },
+      "cordova-plugin-androidx-adapter": {}
     },
     "platforms": [
       "android",
