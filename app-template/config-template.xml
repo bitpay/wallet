@@ -126,6 +126,10 @@
         </array>
       </config-file>
 
+      <edit-config target="NSUserTrackingUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Allow tracking use of the App</string>
+      </edit-config>
+
       <!-- Apple Pay Support -->
       *APPLEPAY*
 
