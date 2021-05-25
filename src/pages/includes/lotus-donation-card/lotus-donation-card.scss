@@ -1,0 +1,41 @@
+page-lotus-donation-card {
+  .message-background--donate {
+    margin-bottom: 40px;
+    padding-top: 15px;
+    .message-icon {
+      img {
+        margin-left: 7px;
+      }
+    }
+    .message-body {
+      padding-top: 20px;
+    }
+  }
+
+  .message-header {
+    margin-bottom: -15px;
+  }
+  .message-content {
+    .title-container {
+      align-items: center;
+    }
+  }
+  .icon-svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > img {
+      background-repeat: no-repeat;
+      background-clip: padding-box;
+      background-size: contain;
+      height: 4.4rem;
+      margin-bottom: 5px;
+    }
+  }
+  .icons-row {
+    padding: 2.2rem 0;
+  }
+  .opacity-low {
+    opacity: 0.42;
+  }
+}

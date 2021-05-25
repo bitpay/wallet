@@ -49,7 +49,7 @@ import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
-import { AddFundsPage } from '../onboarding/add-funds/add-funds';
+// import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
@@ -880,11 +880,6 @@ export class HomePage {
         // this.showCard.setShowSurveyCard(
         //   timeExceeded && !feedbackInfo.surveyTaken
         // );
-        // TODO: Set defaut to Lotus Donation
-        this.showCard.setShowRateCard(false);
-        this.showCard.setShowSurveyCard(
-          true
-        );
       }
     });
   }
