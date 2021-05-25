@@ -138,9 +138,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     paymentInfo: {
       paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'bch', testnet: 'bch' },
-      // ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/btc',
-      ratesApi: 'http://aws.abcpay.cash:3232/bws/api/v3/fiatrates/bch',
+      protocolPrefix: { livenet: 'bcha', testnet: 'bcha' },
+      ratesApi: 'http://localhost:3232/bws/api/v3/fiatrates/btc',
+      // ratesApi: 'http://aws.abcpay.cash:3232/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'bitpay.com/insight/#/BCH/mainnet/',
       blockExplorerUrlsTestnet: 'bitpay.com/insight/#/BCH/testnet/'
     },
