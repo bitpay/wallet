@@ -49,7 +49,7 @@ import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
-// import { AddFundsPage } from '../onboarding/add-funds/add-funds';
+import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
@@ -228,14 +228,14 @@ export class HomePage {
         this.persistenceProvider.removeDynamicLink();
         this.dynamicLinkProvider.processDeepLink(deepLink);
       } else {
-        // TODO: Disable advertisement
-        // this.persistenceProvider
-        //   .getOnboardingFlowFlag()
-        //   .then((value: string) => {
-        //     if (value === 'enabled' && this.appProvider.info.name !== 'copay')
-        //       this.openAddFunds();
-        //   });
-        return;
+        this.persistenceProvider
+          .getOnboardingFlowFlag()
+          .then((value: string) => {
+            // TODO: Disable advertisement value = disable
+            value = 'disable';
+            if (value === 'enabled' && this.appProvider.info.name !== 'copay')
+              this.openAddFunds();
+          });
       }
     });
     this.user$.subscribe(async user => {
@@ -875,11 +875,10 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
-        // TODO: Set origin
-        // this.showCard.setShowRateCard(this.showRateCard);
-        // this.showCard.setShowSurveyCard(
-        //   timeExceeded && !feedbackInfo.surveyTaken
-        // );
+        this.showCard.setShowRateCard(this.showRateCard);
+        this.showCard.setShowSurveyCard(
+          timeExceeded && !feedbackInfo.surveyTaken
+        );
       }
     });
   }
@@ -927,16 +926,16 @@ export class HomePage {
         });
     }
   }
-  // TODO: Disable advertisement
-  // private openAddFunds(): void {
-  //   const wallets = this.profileProvider.getWallets();
-  //   const modal = this.modalCtrl.create(AddFundsPage, {
-  //     keyId: wallets[0].credentials.keyId
-  //   });
-  //   modal.present().then(() => {
-  //     this.persistenceProvider.setOnboardingFlowFlag('disabled');
-  //   });
-  // }
+
+  private openAddFunds(): void {
+    const wallets = this.profileProvider.getWallets();
+    const modal = this.modalCtrl.create(AddFundsPage, {
+      keyId: wallets[0].credentials.keyId
+    });
+    modal.present().then(() => {
+      this.persistenceProvider.setOnboardingFlowFlag('disabled');
+    });
+  }
 
   private showInfoSheet(altCurrency): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(

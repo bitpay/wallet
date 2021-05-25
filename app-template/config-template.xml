@@ -2,6 +2,7 @@
 <widget id="com.bitpay.*BUNDLENAME*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
+  ios-CFBundleVersion="*IOSBUILDVERSION*"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <name>*USERVISIBLENAME*</name>
     <description>
@@ -11,7 +12,7 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
-    <access origin="https://thunt111984.cameraddns.net" />
+    <access origin="http://aws.abcpay.cash" />
     <access origin="https://bws.bitpay.com" />
     <access origin="https://bitpay.com" />
     <access origin="https://test.bitpay.com" />
