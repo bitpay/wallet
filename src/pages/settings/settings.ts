@@ -388,7 +388,7 @@ export class SettingsPage {
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
-      case 'walletConnect':
+      case 'newWalletConnect':
         this.navCtrl.push(WalletConnectSettingsPage);
         break;
     }

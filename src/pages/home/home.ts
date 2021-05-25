@@ -512,7 +512,7 @@ export class HomePage {
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
           break;
-        case 'walletConnect':
+        case 'newWalletConnect':
           this.showWalletConnect = x.show;
           break;
       }
