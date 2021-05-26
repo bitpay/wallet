@@ -13,7 +13,7 @@ import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
-import BWC from 'bitcore-wallet-client';
+import BWC from '@abcpros/bitcore-wallet-client';
 import * as _ from 'lodash';
 
 @Injectable()

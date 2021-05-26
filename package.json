@@ -1,8 +1,8 @@
 {
-  "name": "abcpay",
+  "name": "bitpay",
   "description": "Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "12.5.1",
+  "version": "12.0.2",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "AbcPay",
+  "title": "BitPay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
@@ -33,7 +33,7 @@
   "scripts": {
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
     "electron:patch": "(! grep -q 'com.apple.security.app-sandbox' ./node_modules/app-builder-lib/templates/entitlements.mac.plist && sed -i -e \"/<dict>/ a\\ \n<key>com.apple.security.app-sandbox</key><true/>\" ./node_modules/app-builder-lib/templates/entitlements.mac.plist) | echo 'electron patched.'",
-    "patch:bwc": "(sed -i -e 's/\\#private;//' ./node_modules/bitcore-wallet-client/ts_build/lib/key.d.ts) | echo 'BWC patched.'",
+    "patch:bwc": "(sed -i -e 's/\\#private;//' ./node_modules/@abcpros/bitcore-wallet-client/ts_build/lib/key.d.ts) | echo 'BWC patched.'",
     "patch:walletconnect": "sh ./utils/walletconnect-patch.sh | echo 'walletconnect patched.'",
     "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
     "start": "npm run ionic:serve",
@@ -97,6 +97,7 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "dependencies": {
+    "@abcpros/bitcore-wallet-client": "^8.25.10",
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
     "@angular/compiler": "5.2.11",
@@ -129,7 +130,6 @@
     "apple-wallet-ng": "1.1.1",
     "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#68cf0353bf517a7e5293478608839fa904351eb6",
-    "bitcore-wallet-client": "8.25.10",
     "buffer-compare": "1.1.1",
     "chart.js": "2.8.0",
     "cordova": "9.0.0",
@@ -247,7 +247,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme-ng": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "abcpay",
+        "SECOND_URL_SCHEME": "bitpay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "FOURTH_URL_SCHEME": "bchtest",
         "FIFTH_URL_SCHEME": "ethereum",

@@ -47,15 +47,18 @@ export class MultiSendPage {
   public invalidAddress: boolean;
   public isDisabledContinue: boolean;
 
+  // TODO: Check where using BCHAcoinAddress & BCHAcoinUri
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
     'EthereumAddress',
     'DogecoinAddress',
+    'BCHAcoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
-    'DogecoinUri'
+    'DogecoinUri',
+    'BCHAcoinUri'
   ];
 
   constructor(
@@ -78,7 +81,9 @@ export class MultiSendPage {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
-      doge: this.bwcProvider.getBitcoreDoge()
+      doge: this.bwcProvider.getBitcoreDoge(),
+      // TODO: Add function for bcha
+      bcha: this.bwcProvider.getBitcoreCash()
     };
     this.isCordova = this.platformProvider.isCordova;
     this.isDisabledContinue = true;
