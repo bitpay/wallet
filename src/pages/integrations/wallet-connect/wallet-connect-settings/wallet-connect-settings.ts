@@ -13,7 +13,7 @@ import * as _ from 'lodash';
   templateUrl: 'wallet-connect-settings.html'
 })
 export class WalletConnectSettingsPage {
-  private serviceName: string = 'walletConnect';
+  private serviceName: string = 'newWalletConnect';
   public showInHome;
   public service;
 

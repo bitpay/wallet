@@ -93,8 +93,8 @@ export class WalletConnectProvider {
 
   public register(): void {
     this.homeIntegrationsProvider.register({
-      name: 'walletConnect',
-      title: this.translate.instant('WalletConnect'),
+      name: 'newWalletConnect',
+      title: 'WalletConnect',
       icon: 'assets/img/wallet-connect.svg',
       showIcon: true,
       logo: null,
@@ -102,7 +102,7 @@ export class WalletConnectProvider {
       background:
         'linear-gradient(to bottom,rgba(60, 63, 69, 1) 0,rgba(45, 47, 51, 1) 100%)',
       page: 'WalletConnectPage',
-      show: !!this.configProvider.get().showIntegration['walletConnect'],
+      show: !!this.configProvider.get().showIntegration['newWalletConnect'],
       type: 'external-services'
     });
   }
