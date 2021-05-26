@@ -81,6 +81,7 @@ import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector'
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
+import { LotusDonationCard } from './includes/lotus-donation-card/lotus-donation-card';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
 
@@ -195,6 +196,7 @@ export const PAGES = [
   ExchangeCryptoSettingsPage,
   SelectInputsPage,
   FeedbackCardPage,
+  LotusDonationCard,
   SharePage,
   ImportWalletPage,
   JoinWalletPage,

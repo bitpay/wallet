@@ -793,6 +793,13 @@
     }
   }
 
+  page-lotus-donation-card {
+    ion-card.card {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme;
+    }
+  }
+
   incoming-data-menu {
     img {
       filter: invert(0.7);

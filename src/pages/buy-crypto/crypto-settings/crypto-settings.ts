@@ -20,7 +20,7 @@ import { ThemeProvider } from '../../../providers/theme/theme';
 export class CryptoSettingsPage {
   private serviceName: string = 'buycrypto';
 
-  public showInHome;
+  public showInHome = false;
   public service;
   public simplexPaymentRequests: any[];
   public wyrePaymentRequests: any[];
@@ -36,7 +36,7 @@ export class CryptoSettingsPage {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
     });
-    this.showInHome = !!this.service[0].show;
+    // this.showInHome = !!this.service[0].show;
   }
 
   ionViewDidLoad() {

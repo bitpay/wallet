@@ -231,6 +231,8 @@ export class HomePage {
         this.persistenceProvider
           .getOnboardingFlowFlag()
           .then((value: string) => {
+            // TODO: Disable advertisement value = disable
+            value = 'disable';
             if (value === 'enabled' && this.appProvider.info.name !== 'copay')
               this.openAddFunds();
           });

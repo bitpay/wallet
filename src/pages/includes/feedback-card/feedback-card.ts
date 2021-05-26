@@ -12,7 +12,6 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 
 // pages
 import { SendFeedbackPage } from '../../../pages/feedback/send-feedback/send-feedback';
-
 @Component({
   selector: 'page-feedback-card',
   templateUrl: 'feedback-card.html'

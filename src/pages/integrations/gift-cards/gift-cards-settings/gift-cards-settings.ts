@@ -16,7 +16,7 @@ import { GiftCardSettingsPage } from '../gift-card-settings/gift-card-settings';
 })
 export class GiftCardsSettingsPage {
   purchasedBrands: GiftCard[][];
-  showAtHome: boolean;
+  showAtHome: boolean = false;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -26,9 +26,9 @@ export class GiftCardsSettingsPage {
   ) {}
 
   async ngOnInit() {
-    this.showAtHome = this.homeIntegrationsProvider.shouldShowInHome(
-      'giftcards'
-    );
+    // this.showAtHome = this.homeIntegrationsProvider.shouldShowInHome(
+    //   'giftcards'
+    // );
     const purchasedCards = await this.giftCardProvider.getPurchasedBrands();
     this.purchasedBrands = _.uniqBy(
       purchasedCards,
