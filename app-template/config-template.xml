@@ -129,7 +129,7 @@
       </config-file>
 
       <edit-config target="NSUserTrackingUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Allow tracking use of the App</string>
+        <string>Tracking is used to identify source of traffic, optimize campaigns, and improve user experiences in the app.</string>
       </edit-config>
 
       <!-- Apple Pay Support -->
