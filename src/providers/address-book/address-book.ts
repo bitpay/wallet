@@ -107,22 +107,24 @@ export class AddressBookProvider {
             coin: contactStr.coin,
             network: contactStr.network
           }
-        : {
-            ...this.addressProvider.getCoinAndNetwork(
-              contactStr.address,
-              contactStr.network
-            )
-          };
+        : this.addressProvider.getCoinAndNetwork(
+            contactStr.address,
+            contactStr.network
+          ) || undefined;
 
-    const contact: Contact = {
-      address: contactStr.address,
-      coin: coinInfo.coin,
-      network: coinInfo.network,
-      name: _.isObject(contactStr) ? contactStr.name : contactStr,
-      tag: _.isObject(contactStr) ? contactStr.tag : null,
-      email: _.isObject(contactStr) ? contactStr.email : null
-    };
-    return contact;
+    if (!coinInfo) {
+      return undefined;
+    } else {
+      const contact: Contact = {
+        address: contactStr.address,
+        coin: coinInfo.coin,
+        network: coinInfo.network,
+        name: _.isObject(contactStr) ? contactStr.name : contactStr,
+        tag: _.isObject(contactStr) ? contactStr.tag : null,
+        email: _.isObject(contactStr) ? contactStr.email : null
+      };
+      return contact;
+    }
   }
 
   public add(entry: Contact): Promise<any> {
