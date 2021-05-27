@@ -1641,6 +1641,7 @@ export class ConfirmPage {
   public chooseFeeLevel(): void {
     if (
       this.tx.coin === 'bch' ||
+      this.tx.coin === 'bcha' ||
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
       this.usingMerchantFee ||

@@ -19,7 +19,7 @@ import { ThemeProvider } from '../../../providers/theme/theme';
 export class ExchangeCryptoSettingsPage {
   private serviceName: string = 'exchangecrypto';
 
-  public showInHome;
+  public showInHome = false;
   public service;
   public changellySwapTxs: any[];
 
@@ -34,7 +34,7 @@ export class ExchangeCryptoSettingsPage {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
     });
-    this.showInHome = !!this.service[0].show;
+    // this.showInHome = !!this.service[0].show;
   }
 
   ionViewDidLoad() {
