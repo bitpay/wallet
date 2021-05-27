@@ -83,8 +83,10 @@ export class AddressBookProvider {
             if (ab && _.isString(ab)) ab = JSON.parse(ab);
             ab = ab || {};
             _.each(ab, contact => {
-              const ctc = this.getContact(contact);
-              if (ctc) contacts.push(ctc);
+              if (contact.address) {
+                const ctc = this.getContact(contact);
+                if (ctc) contacts.push(ctc);
+              }
             });
             return resolve(contacts);
           } catch (err) {
