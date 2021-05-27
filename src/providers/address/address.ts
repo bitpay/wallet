@@ -40,6 +40,7 @@ export class AddressProvider {
     str: string,
     network: string = 'livenet'
   ): CoinNetwork {
+    if (!str) return null;
     const address = this.extractAddress(str);
     try {
       network = this.bitcore.Address(address).network.name;
