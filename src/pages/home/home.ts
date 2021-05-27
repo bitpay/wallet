@@ -104,6 +104,7 @@ export class HomePage {
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
   public accountInitials: string;
+  public isCopay: boolean;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
@@ -144,6 +145,7 @@ export class HomePage {
     private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
+    this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.subscribeEvents();
     this.persistenceProvider
