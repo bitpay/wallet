@@ -212,6 +212,14 @@ export class AmountPage {
     );
   }
 
+  public shouldShowZeroState() {
+    return (
+      this.wallet &&
+      this.wallet.cachedStatus &&
+      !this.wallet.cachedStatus.totalBalanceSat
+    );
+  }
+
   ionViewWillLeave() {
     this._disableHardwareKeyboard();
   }
@@ -589,6 +597,8 @@ export class AmountPage {
   private handleAmountDonation(data) {
     data.isDonation = true;
     data.wallet = this.wallet;
+    data.toalAmount = this.navParams.data.toalAmount;
+    data.remaining = this.navParams.data.remaining;
     const nextPage = this.isShowReceiveLotus ? SendPage : ConfirmPage;
     this.navCtrl.push(nextPage, data);
   }

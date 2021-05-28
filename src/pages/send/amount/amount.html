@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-navbar [hideBackButton]="useAsModal">
     <ng-container *ngIf="isDonation">
@@ -18,55 +19,81 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="add-bottom-safe-area" no-bounce>
-  <div class="container">
-    <div class="amount-content" [ngClass]="{'amount-content-fixed': fromBuyCrypto}">
-      <div class="expression-container">
-        <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
-          <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
-          <span *ngIf="!isNumber(expression)">{{expression}}</span>
-        </span>
-        <ng-template #noExpression>
-          <span class="expression">
-            {{ '0' }}
-          </span>
-        </ng-template>
-        <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
+<div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState() && isDonation; else nomal">
+  <div>
+    <div class="prompt-user">
+      <div class="title-icon larger-icon">
+        <img *ngIf="wallet.coin !== 'doge'" src="assets/img/ghost-straight-face.svg">
+        <img *ngIf="wallet.coin === 'doge'" src="assets/img/sad-doge.svg">
       </div>
-      <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-      <div class="result" *ngIf="!fromBuyCrypto">&asymp;
-        <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
-        <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
-        {{alternativeUnit}}
+      <div class="title-info">
+        <span translate>Mmm...</span>
+      </div>
+      <div class="subtitle-info" *ngIf="wallet.coin !== 'xrp'; else minXrp">
+        <span translate>It appears that you do not have any money to send.</span>
       </div>
     </div>
 
-    <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto && !isCardTopUp">
-      <div class="amount-switcher">
-        <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
-          <img class="switcher__icon" src="assets/img/icon-swap.svg">
-          <div class="switcher__label">{{unit}}</div>
+    <ng-template #minXrp>
+      <div class="subtitle-info">
+        <p translate>You need a minimum of 20 XRP to send funds.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #nomal>
+  <ion-content class="add-bottom-safe-area" no-bounce>
+    <div class="container">
+      <div class="amount-content" [ngClass]="{'amount-content-fixed': fromBuyCrypto}">
+        <div class="expression-container">
+          <span *ngIf="expression; else noExpression" class="ellipsis expression" [ngClass]="{'small-font': useSmallFontSize}">
+            <span *ngIf="isNumber(expression)">{{expression | number:'1.0-6'}}</span>
+            <span *ngIf="!isNumber(expression)">{{expression}}</span>
+          </span>
+          <ng-template #noExpression>
+            <span class="expression">
+              {{ '0' }}
+            </span>
+          </ng-template>
+          <span class="unit" [ngClass]="{'small-font': useSmallFontSize}" [hidden]="globalResult">{{unit}}</span>
+        </div>
+        <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
+        <div class="result" *ngIf="!fromBuyCrypto">&asymp;
+          <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
+          <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0'}}</span>
+          {{alternativeUnit}}
         </div>
       </div>
-    </div>
-
-    <form class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
-      <div class="amount-switcher">
-        <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
-          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
-          <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
-        </ion-select>
+  
+      <div class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" *ngIf="!fromBuyCrypto && !isCardTopUp">
+        <div class="amount-switcher">
+          <div class="switcher" (click)="changeUnit()" [hidden]="fixedUnit" tappable>
+            <img class="switcher__icon" src="assets/img/icon-swap.svg">
+            <div class="switcher__label">{{unit}}</div>
+          </div>
+        </div>
       </div>
-    </form>
-
-    <div class="receiveLotus" *ngIf="isShowReceiveLotus">{{receiveLotus}}</div>
-
-    <div class="bottom-absolute">
-      <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
-
-      <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
-        <span>{{'Continue' | translate}}</span>
-      </button>
+  
+      <form class="amount-switcher-margin" [ngClass]="{'fix-modal-switcher': useAsModal}" [formGroup]="quoteForm" *ngIf="this.quoteForm && fromBuyCrypto">
+        <div class="amount-switcher">
+          <ion-select class="switcher select-options" [selectOptions]="selectOptions" okText="{{okText}}" cancelText="{{cancelText}}" formControlName="altCurrency" (ionChange)="altCurrencyChange()">
+            <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+            <ion-option *ngFor="let fiatAltCurrency of altCurrenciesToShow2" [value]="fiatAltCurrency">{{ fiatAltCurrency }}</ion-option>
+          </ion-select>
+        </div>
+      </form>
+  
+      <div class="receiveLotus" *ngIf="isShowReceiveLotus">{{receiveLotus}}</div>
+  
+      <div class="bottom-absolute">
+        <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>
+  
+        <button ion-button class="button-standard button-primary" [disabled]="!expression || !allowSend" (click)="finish()">
+          <span>{{'Continue' | translate}}</span>
+        </button>
+      </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
+
+</ng-template>
