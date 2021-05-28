@@ -162,8 +162,7 @@ export class CopayApp {
     private dynamicLinksProvider: DynamicLinksProvider,
     private locationProvider: LocationProvider,
     private addressBookProvider: AddressBookProvider,
-    private analyticsProvider: AnalyticsProvider,
-    private locationProvider: LocationProvider
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
