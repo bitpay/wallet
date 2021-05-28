@@ -423,7 +423,7 @@ export class CopayApp {
       });
     }
 
-    await this.addressBookProvider.migrateOldContacts();
+    this.addressBookProvider.migrateOldContacts();
   }
 
   private updateDesktopOnFocus() {
