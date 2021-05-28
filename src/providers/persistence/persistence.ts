@@ -26,7 +26,7 @@ export interface GiftCardMap {
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
-  NEW_ADDRESS_BOOK: network => 'new-addressbook-' + network,
+  NEW_ADDRESS_BOOK: network => 'addressbook-v2-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,

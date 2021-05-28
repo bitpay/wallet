@@ -28,9 +28,6 @@ export class AddressBookProvider {
     private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
-    this.migrateOldContacts().then(() => {
-      this.logger.debug('Old AddressBook processed');
-    });
   }
 
   public get(addr: string, network: string): Promise<Contact> {
@@ -168,7 +165,7 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Entry already exist');
             return reject(msg);
           }
-          ab[entry.address + ' (' + entry.coin.toLowerCase() + ')'] = addrData;
+          ab[entry.coin.toLowerCase() + '-' + entry.address] = addrData;
           this.persistenceProvider
             .setAddressBook(addrData.network, JSON.stringify(ab))
             .then(() => {
@@ -212,11 +209,11 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Addressbook is empty');
             return reject(msg);
           }
-          if (!ab[addr + ' (' + coin.toLowerCase() + ')']) {
+          if (!ab[coin.toLowerCase() + '-' + addr]) {
             let msg = this.translate.instant('Entry does not exist');
             return reject(msg);
           }
-          delete ab[addr + ' (' + coin.toLowerCase() + ')'];
+          delete ab[coin.toLowerCase() + '-' + addr];
           this.persistenceProvider
             .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
@@ -247,10 +244,12 @@ export class AddressBookProvider {
     ])
       .then(() => {
         this.migratingContactsSubject.next(false);
+        this.logger.debug('Old AddressBook processed');
         return Promise.resolve(true);
       })
       .catch(() => {
         this.migratingContactsSubject.next(false);
+        this.logger.debug('Failed to migrate old AddressBook');
         return Promise.reject(false);
       });
   }
@@ -288,26 +287,23 @@ export class AddressBookProvider {
             );
             let newContactJson = {};
             _.each(oldContacts, old => {
-              newContactJson[
-                old.address + ' (' + old.coin.toLowerCase() + ')'
-              ] = old;
+              newContactJson[old.coin.toLowerCase() + '-' + old.address] = old;
             });
             this.persistenceProvider
               .setAddressBook(network, JSON.stringify(newContactJson), true)
               .then(() => resolve(true))
               .catch(err => {
                 this.logger.error(err);
-                resolve(false);
+                return resolve(false);
               });
           }
-        } else {
-          this.logger.info('AddressBookProvider: Using new addressBook');
         }
         return resolve(true);
       } catch {
         err => {
+          this.logger.error(`Failed to process old ${network} AddressBook.`);
           this.logger.error(err);
-          resolve(false);
+          return resolve(false);
         };
       }
     });

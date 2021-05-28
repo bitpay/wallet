@@ -291,14 +291,14 @@ describe('AddressBookProvider', () => {
     });
     it('If setAddressBook fails, remove function will reject', () => {
       const response = {
-        '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU (btc)': {
+        'btc-1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU': {
           address: '1Q2aGBWZHNuZ7WjB9komwj9fF9GmnK5AzU',
           email: 'test@test.com',
           name: 'test',
           coin: 'btc',
           network: 'livenet'
         },
-        'mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm (btc)': {
+        'btc-mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm': {
           address: 'mnH3XUZ8CmH8CMruEfCDXGc83XLSn8szbm',
           email: 'asd@sad.com',
           name: 'jp',
