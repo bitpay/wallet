@@ -237,14 +237,12 @@ export class AddressBookProvider {
   }
 
   public migrateOldContacts(): Promise<boolean> {
-    this.logger.info('AddressBookProvider: migrating old contacts');
     return Promise.all([
       this.processNetworkContacts('livenet'),
       this.processNetworkContacts('testnet')
     ])
       .then(() => {
         this.migratingContactsSubject.next(false);
-        this.logger.debug('Old AddressBook processed');
         return Promise.resolve(true);
       })
       .catch(() => {
@@ -275,8 +273,13 @@ export class AddressBookProvider {
         const newABFile = await this.persistenceProvider.existsNewAddressBook(
           network
         );
-
-        if (!newABFile) {
+        const oldABFile = await this.persistenceProvider.existsOldAddressBook(
+          network
+        );
+        if (oldABFile && !newABFile) {
+          this.logger.info(
+            `AddressBookProvider: migrating old ${network} contacts.`
+          );
           this.migratingContactsSubject.next(true);
           const oldContacts = await this.list(network, false);
           if (oldContacts) {
@@ -291,7 +294,10 @@ export class AddressBookProvider {
             });
             this.persistenceProvider
               .setAddressBook(network, JSON.stringify(newContactJson), true)
-              .then(() => resolve(true))
+              .then(() => {
+                this.logger.debug(`Old ${network} AddressBook processed.`);
+                return resolve(true);
+              })
               .catch(err => {
                 this.logger.error(err);
                 return resolve(false);
