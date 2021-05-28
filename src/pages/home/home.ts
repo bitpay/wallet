@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
 
 // Providers
@@ -46,6 +47,7 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
@@ -77,6 +79,7 @@ export class HomePage {
   showBuyCryptoOption: boolean;
   showExchangeCryptoOption: boolean;
   showShoppingOption: boolean;
+  showWalletConnect: boolean;
   @ViewChild('showCard')
   showCard;
 
@@ -100,6 +103,9 @@ export class HomePage {
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
+  public isCopay: boolean;
+  private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
@@ -139,6 +145,7 @@ export class HomePage {
     private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
+    this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.subscribeEvents();
     this.persistenceProvider
@@ -154,6 +161,13 @@ export class HomePage {
       CardCatalogPage,
       CoinbasePage
     };
+    this.user$ = this.iabCardProvider.user$;
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
+      }
+    });
   }
 
   private showNewFeatureSlides() {
@@ -201,6 +215,9 @@ export class HomePage {
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
+          if (user) {
+            this.accountInitials = this.getBitPayIdInitials(user);
+          }
         });
     }
     this.totalBalanceAlternativeIsoCode =
@@ -236,7 +253,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
@@ -475,6 +491,7 @@ export class HomePage {
     this.showBuyCryptoOption = false;
     this.showExchangeCryptoOption = false;
     this.showShoppingOption = false;
+    this.showWalletConnect = false;
     const integrations = this.homeIntegrationsProvider
       .get()
       .filter(i => i.show);
@@ -496,6 +513,9 @@ export class HomePage {
             x.linked == false && !this.platformProvider.isMacApp();
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
+          break;
+        case 'newWalletConnect':
+          this.showWalletConnect = x.show;
           break;
       }
     });
@@ -821,6 +841,10 @@ export class HomePage {
     });
   }
 
+  public goToWalletConnectPage() {
+    this.navCtrl.push(WalletConnectPage);
+  }
+
   private checkNewRelease() {
     this.persistenceProvider
       .getNewReleaseMessageDismissed()
@@ -997,6 +1021,13 @@ export class HomePage {
         }, 100);
       });
     }
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 }
 

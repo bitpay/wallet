@@ -26,7 +26,7 @@
       <ion-label stacked>{{'Type the recovery phrase' | translate}}</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">
       </ion-textarea>
-      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
 

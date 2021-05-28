@@ -238,6 +238,10 @@ export class CardDetailsPage {
     this.externalLinkProvider.open(this.card.invoiceUrl);
   }
 
+  launchSupportForm() {
+    this.externalLinkProvider.open('https://bitpay.com/request-help/wizard');
+  }
+
   private shareCode() {
     this.socialSharing.share(this.card.claimLink || this.card.claimCode);
   }

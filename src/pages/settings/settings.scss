@@ -27,21 +27,13 @@ page-about {
     font-family: 'Heebo-Medium' !important;
     background: #1a2c57;
     color: #9faff5;
-    font-size: 32px;
+    font-size: 26px;
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    padding-top: 15px;
-    padding-left: 8px;
-    .account-initials {
-      display: inline-block;
-      visibility: hidden;
-      width: 21px;
-      float: left;
-    }
-    .account-initials:first-letter {
-      visibility: visible;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .bp-list {
