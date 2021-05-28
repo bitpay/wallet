@@ -17,7 +17,7 @@ import { CoinbasePage } from '../coinbase';
 })
 export class CoinbaseSettingsPage {
   private serviceName: string = 'coinbase';
-  public showInHome;
+  public showInHome: boolean = false;
   public service;
   public loading: boolean;
 
@@ -35,7 +35,7 @@ export class CoinbaseSettingsPage {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
     });
-    this.showInHome = !!this.service[0].show;
+    // this.showInHome = !!this.service[0].show;
   }
 
   ionViewWillEnter() {
