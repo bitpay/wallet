@@ -1,26 +1,67 @@
-.bitpay-id {
-  &__icon {
-    margin: 20px;
-  }
-
-  &__name {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  &__container {
-    ion-label {
-      margin: 0;
+page-bitpay-id {
+  .bp-list {
+    .main-label {
+      font-weight: 400;
+      .bitpay-name {
+        font-weight: bold;
+      }
+      .bitpay-email {
+        font-weight: 200;
+      }
     }
+    ion-item-divider {
+      margin-top: 0px;
+      padding: 12.5px 0px 12.5px 20px;
+      background: #f8f8f9;
+    }
+    ion-icon.item-img.icon {
+      &.icon-md.item-icon,
+      &.icon-ios.item-icon {
+        padding: 14.5px;
+        font-size: 20px;
+        &.icon-settings {
+          opacity: 0.5;
+        }
+        &.icon-login {
+          font-size: 60px;
+          padding-left: 15px;
+          img {
+            width: 60px;
+            height: 60px;
+          }
+        }
+        &.ionic-icon {
+          font-size: 25px;
+          color: #cdd1d7;
+          opacity: 1;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    ion-note.note {
+      background: #f4f5fb;
+      color: #565d6d;
+      font-weight: 300;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+  }
+  .icon-bitpay-id {
+    font-family: 'Heebo-Medium' !important;
+    background: #1a2c57;
+    color: #9faff5;
+    font-size: 26px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    margin: 20px;
-    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.08);
-    border-radius: 5px;
   }
-
   &__disconnect-button {
     color: red;
     position: absolute;
@@ -28,12 +69,5 @@
     right: 0;
     bottom: 50px;
     margin: auto;
-  }
-
-  &__settings-list {
-    ion-item.item {
-      padding-left: 25px;
-      padding-right: 10px;
-    }
   }
 }

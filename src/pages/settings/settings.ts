@@ -5,7 +5,6 @@ import { Events, ModalController, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
-import { Observable } from 'rxjs';
 // pages
 import { User } from '../../models/user/user.model';
 import { BitPayIdProvider, IABCardProvider } from '../../providers';
@@ -35,7 +34,7 @@ import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-s
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
+import { WalletConnectSettingsPage } from '../integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -87,10 +86,9 @@ export class SettingsPage {
   public touchIdPrevValue: boolean;
   public walletsGroups: any[];
   public readOnlyWalletsGroup: any[];
-  public bitpayIdPairingEnabled: boolean;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
-  private user$: Observable<User>;
   public showReorder: boolean = false;
   public showTotalBalance: boolean;
   public appTheme: string;
@@ -127,13 +125,30 @@ export class SettingsPage {
     this.appVersion = this.app.info.version;
     this.isCordova = this.platformProvider.isCordova;
     this.isCopay = this.app.info.name === 'copay';
-    this.user$ = this.iabCardProvider.user$;
+  }
 
-    this.events.subscribe('updateCards', cards => {
-      if (cards && cards.length > 0) {
-        this.bitpayCardItems = cards;
-      }
-    });
+  ngOnInit() {
+    if (this.isCordova) {
+      // check for user info
+      this.persistenceProvider
+        .getBitPayIdUserInfo(this.network)
+        .then((user: User) => {
+          if (user) {
+            this.updateUser(user);
+          }
+        });
+
+      this.events.subscribe('BitPayId/Disconnected', () => this.updateUser());
+      this.events.subscribe('BitPayId/Connected', user =>
+        this.updateUser(user)
+      );
+
+      this.events.subscribe('updateCards', cards => {
+        if (cards && cards.length > 0) {
+          this.bitpayCardItems = cards;
+        }
+      });
+    }
   }
 
   ionViewDidLoad() {
@@ -141,26 +156,6 @@ export class SettingsPage {
   }
 
   async ionViewWillEnter() {
-    this.persistenceProvider
-      .getBitpayIdPairingFlag()
-      .then(res => (this.bitpayIdPairingEnabled = res === 'enabled'));
-
-    if (this.iabCardProvider.ref) {
-      // check for user info
-      this.persistenceProvider
-        .getBitPayIdUserInfo(this.network)
-        .then((user: User) => {
-          this.bitPayIdUserInfo = user;
-        });
-
-      this.user$.subscribe(async user => {
-        if (user) {
-          this.bitPayIdUserInfo = user;
-          this.changeRef.detectChanges();
-        }
-      });
-    }
-
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
@@ -239,6 +234,19 @@ export class SettingsPage {
       this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
       this.bitpayCardItems = cards;
     });
+  }
+
+  private updateUser(user?) {
+    this.bitPayIdUserInfo = user;
+    this.accountInitials = this.getBitPayIdInitials(user);
+    this.changeRef.detectChanges();
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 
   public trackBy(index) {
@@ -380,8 +388,8 @@ export class SettingsPage {
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
-      case 'walletConnect':
-        this.navCtrl.push(WalletConnectPage);
+      case 'newWalletConnect':
+        this.navCtrl.push(WalletConnectSettingsPage);
         break;
     }
   }

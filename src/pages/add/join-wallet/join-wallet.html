@@ -51,7 +51,7 @@
 
         <ion-icon *ngIf="coin !== 'eth' && joinForm.controls['invitationCode'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
 
-        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+        <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
 
       <button *ngIf="coin !== 'eth'" ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">

@@ -61,6 +61,7 @@ import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-de
 
 // Integrations: Wallet Connect
 import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
+import { WalletConnectSettingsPage } from '../pages/integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
@@ -261,6 +262,7 @@ export const PAGES = [
   KeyNamePage,
   KeyOnboardingPage,
   WalletConnectPage,
+  WalletConnectSettingsPage,
   WalletDetailsPage,
   WalletRecoverPage,
   WalletMnemonicRecoverPage,

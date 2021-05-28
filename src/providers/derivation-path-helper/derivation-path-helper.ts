@@ -10,6 +10,7 @@ export class DerivationPathHelperProvider {
   public defaultTestnet: string;
   public defaultMultisigBTC: string;
   public defaultMultisigBCH: string;
+  public defaultMultisigDOGE: string;
 
   public constructor() {
     this.defaultBTC = "m/44'/0'/0'";
@@ -19,6 +20,7 @@ export class DerivationPathHelperProvider {
     this.defaultDOGE = "m/44'/3'/0'";
     this.defaultMultisigBTC = "m/48'/0'/0'";
     this.defaultMultisigBCH = "m/48'/145'/0'";
+    this.defaultMultisigDOGE = "m/48'/3'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 

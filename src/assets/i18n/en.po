@@ -15,6 +15,9 @@ msgstr ""
 msgid "(possible double spend)"
 msgstr "(possible double spend)"
 
+msgid ") to pay the ETH miner fees."
+msgstr ") to pay the ETH miner fees."
+
 msgid ""
 "* A payment proposal can be deleted if 1) you are the creator, and no other "
 "copayer has signed, or 2) 10 minutes have passed since the proposal was "
@@ -254,8 +257,9 @@ msgstr "Amount"
 msgid "Amount Too Low To Spend"
 msgstr "Amount Too Low To Spend"
 
-msgid "Amount below minimum allowed"
-msgstr "Amount below minimum allowed"
+#| msgid "Amount below minimum allowed"
+msgid "Amount below minimum allowed (dust threshold)"
+msgstr "Amount below minimum allowed (dust threshold)"
 
 msgid "Amount too big"
 msgstr "Amount too big"
@@ -275,8 +279,9 @@ msgstr "An update to this app is available."
 msgid "Apple Pay"
 msgstr "Apple Pay"
 
-msgid "Apply changes"
-msgstr "Apply changes"
+#| msgid "Apple Pay"
+msgid "Apply"
+msgstr "Apply"
 
 msgid "Approve"
 msgstr "Approve"
@@ -349,9 +354,6 @@ msgstr "Attempted payment request"
 
 msgid "Available"
 msgstr "Available"
-
-msgid "Average confirmation time"
-msgstr "Average confirmation time"
 
 msgid "Average confirmation time:"
 msgstr "Average confirmation time:"
@@ -449,6 +451,13 @@ msgstr ""
 "write down your recovery phrase and store it securely so that your wallets "
 "can be recovered in the case your device was lost or stolen."
 
+msgid ""
+"Before sending more funds to complete this transaction we recommend you read "
+"more about miner fees."
+msgstr ""
+"Before sending more funds to complete this transaction we recommend you read "
+"more about miner fees."
+
 msgid "Below Minimum Amount"
 msgstr "Below Minimum Amount"
 
@@ -493,12 +502,6 @@ msgstr "Bitcoin Address"
 msgid "Bitcoin Cash Address"
 msgstr "Bitcoin Cash Address"
 
-msgid "Bitcoin Network Fee Policy"
-msgstr "Bitcoin Network Fee Policy"
-
-msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Bitcoin transactions include a fee collected by miners on the network."
-
 msgid ""
 "Bitcore Wallet Service is under maintenance. Please check https://status."
 "bitpay.com/."
@@ -539,6 +542,14 @@ msgstr "Buy Now"
 msgid "Buy crypto with a credit card."
 msgstr "Buy crypto with a credit card."
 
+#| msgid "Buy crypto with a credit card."
+msgid "Buy crypto with cash"
+msgstr "Buy crypto with cash"
+
+#| msgid "Buy Gift Cards"
+msgid "Buy gift cards with crypto"
+msgstr "Buy gift cards with crypto"
+
 msgid "Buy {displayName} Gift Card"
 msgstr "Buy {displayName} Gift Card"
 
@@ -561,6 +572,12 @@ msgid ""
 msgstr ""
 "By providing your email address, you give explicit consent to BitPay to use "
 "your email address to send you email notifications about payments."
+
+msgid "CANCEL"
+msgstr "CANCEL"
+
+msgid "CHOOSE FEE LEVEL"
+msgstr "CHOOSE FEE LEVEL"
 
 msgid "CLOSE"
 msgstr "CLOSE"
@@ -765,14 +782,12 @@ msgstr "Connect Your BitPay ID"
 msgid "Connect with Coinbase"
 msgstr "Connect with Coinbase"
 
-msgid "Connect your BitPay ID"
-msgstr "Connect your BitPay ID"
-
 msgid "Connect your Coinbase!"
 msgstr "Connect your Coinbase!"
 
-msgid "Connected with"
-msgstr "Connected with"
+#| msgid "Connected with"
+msgid "Connected to"
+msgstr "Connected to"
 
 msgid "Connecting BitPay ID..."
 msgstr "Connecting BitPay ID..."
@@ -912,9 +927,6 @@ msgstr "Could not get dynamic fee for level:"
 msgid "Could not get fee levels"
 msgstr "Could not get fee levels"
 
-msgid "Could not get the Addressbook"
-msgstr "Could not get the Addressbook"
-
 msgid "Could not get transactions"
 msgstr "Could not get transactions"
 
@@ -1005,8 +1017,8 @@ msgstr "Crypto Wallets & Keys"
 msgid "Current Cards"
 msgstr "Current Cards"
 
-msgid "Current fee rate for this policy"
-msgstr "Current fee rate for this policy"
+msgid "Current fee value:"
+msgstr "Current fee value:"
 
 msgid "Currently our partner does not support exchanges with the selected coin"
 msgstr ""
@@ -1071,6 +1083,26 @@ msgstr "Deposit success"
 
 msgid "Deposit to"
 msgstr "Deposit to"
+
+msgid ""
+"Depositing any other crypto asset besides {coin} to this address may result "
+"in the total loss of your funds. BitPay is not responsible for any funds "
+"loss  due to the deposit of a different asset, wallet or network."
+msgstr ""
+"Depositing any other crypto asset besides {coin} to this address may result "
+"in the total loss of your funds. BitPay is not responsible for any funds "
+"loss  due to the deposit of a different asset, wallet or network."
+
+msgid ""
+"Depositing any other crypto asset besides {coin} to this address or doing it "
+"through any other network than ERC20 may result in the total loss of your "
+"funds. BitPay is not responsible for any funds loss  due to the deposit of a "
+"different asset, wallet or network."
+msgstr ""
+"Depositing any other crypto asset besides {coin} to this address or doing it "
+"through any other network than ERC20 may result in the total loss of your "
+"funds. BitPay is not responsible for any funds loss  due to the deposit of a "
+"different asset, wallet or network."
 
 msgid "Derivation Path"
 msgstr "Derivation Path"
@@ -1251,6 +1283,10 @@ msgstr "Enter Amount"
 msgid "Enter Two Factor for your BitPay account"
 msgstr "Enter Two Factor for your BitPay account"
 
+#| msgid "WalletConnect URI"
+msgid "Enter WalletConnect URI"
+msgstr "Enter WalletConnect URI"
+
 msgid "Enter a destination tag"
 msgstr "Enter a destination tag"
 
@@ -1271,9 +1307,6 @@ msgstr "Enter email address"
 
 msgid "Enter encrypt password"
 msgstr "Enter encrypt password"
-
-msgid "Enter the wallet connect uri"
-msgstr "Enter the wallet connect uri"
 
 msgid ""
 "Enter your recovery phrase (usually 12-words) in the correct order. Separate "
@@ -1558,6 +1591,9 @@ msgstr "Generating new address..."
 msgid "Get Started"
 msgstr "Get Started"
 
+msgid "Get crypto from another wallet"
+msgstr "Get crypto from another wallet"
+
 msgid "Get help"
 msgstr "Get help"
 
@@ -1753,6 +1789,13 @@ msgstr ""
 "access to your wallet."
 
 msgid ""
+"If you don't mind waiting longer for this transaction to confirm you can "
+"change to a lower miner fee level."
+msgstr ""
+"If you don't mind waiting longer for this transaction to confirm you can "
+"change to a lower miner fee level."
+
+msgid ""
 "If you have funds stored on a website then you should move them into a "
 "secure wallet... like this one!"
 msgstr ""
@@ -1812,6 +1855,13 @@ msgstr "Import existing wallet"
 msgid "Import from backup"
 msgstr "Import from backup"
 
+msgid ""
+"Important note: Keep in mind BitPay has suspended XRP as a payment method, "
+"this includes loads to the BitPay Card, BitPay invoices and in-app purchases"
+msgstr ""
+"Important note: Keep in mind BitPay has suspended XRP as a payment method, "
+"this includes loads to the BitPay Card, BitPay invoices and in-app purchases"
+
 msgid "Importing Wallet..."
 msgstr "Importing Wallet..."
 
@@ -1867,6 +1917,13 @@ msgstr ""
 "secret."
 
 msgid ""
+"In order to speed up the confirmation of your ETH transaction, the original "
+"transaction will be replaced by a new one that uses a higher miner fee."
+msgstr ""
+"In order to speed up the confirmation of your ETH transaction, the original "
+"transaction will be replaced by a new one that uses a higher miner fee."
+
+msgid ""
 "In order to verify your wallet recovery phrase, please type your password."
 msgstr ""
 "In order to verify your wallet recovery phrase, please type your password."
@@ -1909,6 +1966,10 @@ msgstr "Insufficient funds"
 
 msgid "Insufficient funds for fee"
 msgstr "Insufficient funds for fee"
+
+#| msgid "Insufficient funds for fee"
+msgid "Insufficient funds for fee in your ETH linked wallet"
+msgstr "Insufficient funds for fee in your ETH linked wallet"
 
 msgid "Interaction with contract"
 msgstr "Interaction with contract"
@@ -1987,6 +2048,18 @@ msgstr "Joining Wallet..."
 
 msgid "Just a second, we're setting a few things up."
 msgstr "Just a second, we're setting a few things up."
+
+msgid "Keep in mind fees are not charged by BitPay."
+msgstr "Keep in mind fees are not charged by BitPay."
+
+msgid ""
+"Keep in mind that once the funds are received in your {{params.coin}} "
+"wallet, to move them you will need to have enough funds in your Ethereum "
+"linked wallet ("
+msgstr ""
+"Keep in mind that once the funds are received in your {{params.coin}} "
+"wallet, to move them you will need to have enough funds in your Ethereum "
+"linked wallet ("
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
 msgstr "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -2101,6 +2174,9 @@ msgstr "Locktime in effect. Please wait to create a new spend proposal"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime in effect. Please wait to remove this spend proposal"
 
+msgid "Log in or Sign Up"
+msgstr "Log in or Sign Up"
+
 msgid "Log out"
 msgstr "Log out"
 
@@ -2201,6 +2277,10 @@ msgstr "Name (at creation)"
 
 msgid "Native Currency"
 msgstr "Native Currency"
+
+#| msgid "Notifications"
+msgid "Navigation"
+msgstr "Navigation"
 
 msgid "Needs Backup"
 msgstr "Needs Backup"
@@ -2839,6 +2919,9 @@ msgstr ""
 "Remember there are no special requirements for the password (numbers, "
 "symbols, etc.)"
 
+msgid "Reminder"
+msgstr "Reminder"
+
 msgid "Remove"
 msgstr "Remove"
 
@@ -2922,6 +3005,9 @@ msgstr "SUMMARY"
 msgid "Save"
 msgstr "Save"
 
+msgid "Scan"
+msgstr "Scan"
+
 msgid "Scan QR Codes"
 msgstr "Scan QR Codes"
 
@@ -2997,6 +3083,10 @@ msgstr "Select a wallet"
 msgid "Select an Ethereum Wallet"
 msgstr "Select an Ethereum Wallet"
 
+#| msgid "Select Destination Wallet"
+msgid "Select destination wallet"
+msgstr "Select destination wallet"
+
 msgid "Select inputs"
 msgstr "Select inputs"
 
@@ -3005,6 +3095,10 @@ msgstr "Select inputs for transaction"
 
 msgid "Select recipient"
 msgstr "Select recipient"
+
+#| msgid "Select Source Wallet"
+msgid "Select source wallet"
+msgstr "Select source wallet"
 
 msgid "Select wallet to deposit to"
 msgstr "Select wallet to deposit to"
@@ -3029,6 +3123,10 @@ msgstr "Send addresses by email"
 
 msgid "Send by email"
 msgstr "Send by email"
+
+#| msgid "Spend crypto at your favorite places."
+msgid "Send crypto to another wallet"
+msgstr "Send crypto to another wallet"
 
 msgid "Send from"
 msgstr "Send from"
@@ -3166,6 +3264,10 @@ msgstr "Show Portfolio Value"
 msgid "Show advanced options"
 msgstr "Show advanced options"
 
+#| msgid "Show in Home"
+msgid "Show in Home tab"
+msgstr "Show in Home tab"
+
 msgid "Show me the legacy address"
 msgstr "Show me the legacy address"
 
@@ -3242,6 +3344,10 @@ msgstr "Something went wrong"
 msgid "Source"
 msgstr "Source"
 
+#| msgid "Specify Amount"
+msgid "Specified amount: "
+msgstr "Specified amount: "
+
 msgid "Specify Amount"
 msgstr "Specify Amount"
 
@@ -3286,6 +3392,9 @@ msgstr "Status"
 msgid "Store this key separately"
 msgstr "Store this key separately"
 
+msgid "Submit a ticket"
+msgstr "Submit a ticket"
+
 msgid "Subtotal"
 msgstr "Subtotal"
 
@@ -3294,6 +3403,9 @@ msgstr "Super Economy"
 
 msgid "Supported by"
 msgstr "Supported by"
+
+msgid "Swap crypto for another"
+msgstr "Swap crypto for another"
 
 msgid "Sweep"
 msgstr "Sweep"
@@ -3354,6 +3466,15 @@ msgstr "Thanks!"
 
 msgid "The \"Key\" to your funds"
 msgstr "The \"Key\" to your funds"
+
+msgid "The Gas Limit cannot be lower than"
+msgstr "The Gas Limit cannot be lower than"
+
+msgid "The Gas Price cannot be lower than 1 Gwei"
+msgstr "The Gas Price cannot be lower than 1 Gwei"
+
+msgid "The Gas Price cannot be lower than the required by the merchant"
+msgstr "The Gas Price cannot be lower than the required by the merchant"
 
 msgid ""
 "The XRP ledger requires that all wallets maintain a minimum balance of 20 "
@@ -3459,15 +3580,6 @@ msgstr ""
 "differ because it is based on the exchange rates of the providers."
 
 msgid ""
-"The higher the fee, the greater the incentive a miner has to include that "
-"transaction in a block. Current fees are determined based on network load "
-"and the selected policy."
-msgstr ""
-"The higher the fee, the greater the incentive a miner has to include that "
-"transaction in a block. Current fees are determined based on network load "
-"and the selected policy."
-
-msgid ""
 "The information you are about to share/export may contain sensitive data "
 "such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
 "person or entity with whom you are sharing this information."
@@ -3539,6 +3651,9 @@ msgstr ""
 
 msgid "The spend proposal is not pending"
 msgstr "The spend proposal is not pending"
+
+msgid "The sum of the selected amounts must be at least:"
+msgstr "The sum of the selected amounts must be at least:"
 
 msgid ""
 "The testnet is an alternative {coinName} block chain, to be used for "
@@ -3653,8 +3768,8 @@ msgstr ""
 "There's obviously something we're doing wrong. How could we improve your "
 "experience?"
 
-msgid "This amount should be higher than the amount you are trying to send."
-msgstr "This amount should be higher than the amount you are trying to send."
+msgid "This amount must be at least:"
+msgstr "This amount must be at least:"
 
 msgid "This app is not available for your device."
 msgstr "This app is not available for your device."
@@ -3809,8 +3924,16 @@ msgstr "Total number of copayers"
 msgid "Total selected inputs"
 msgstr "Total selected inputs"
 
+#| msgid "Total selected inputs"
+msgid "Total selected inputs: "
+msgstr "Total selected inputs: "
+
 msgid "Total wallet inputs"
 msgstr "Total wallet inputs"
+
+#| msgid "Transaction"
+msgid "Transact"
+msgstr "Transact"
 
 msgid "Transaction"
 msgstr "Transaction"
@@ -4654,17 +4777,14 @@ msgstr "{walletsGroupLength} Wallet"
 msgid "{walletsGroupLength} Wallets"
 msgstr "{walletsGroupLength} Wallets"
 
-msgid "{{ 'Linked wallet' | translate }}"
-msgstr "{{ 'Linked wallet' | translate }}"
-
-msgid "{{ 'Pending Call Requests' | translate }}"
-msgstr "{{ 'Pending Call Requests' | translate }}"
-
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr "{{ 'Privacy Policy' | translate}}"
 
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr "{{ params.error ? 'Error' : 'Warning!' }}"
+
+msgid "{{ params.secondBtnText }}"
+msgstr "{{ params.secondBtnText }}"
 
 msgid "{{ status.statusTitle }}"
 msgstr "{{ status.statusTitle }}"
@@ -4724,6 +4844,51 @@ msgstr ""
 "{{walletName}} will be disconected from your actual connection to "
 "{{peerMetaName}} ({{peerMetaUrl}})"
 
+#~ msgid "Apply changes"
+#~ msgstr "Apply changes"
+
+#~ msgid "Average confirmation time"
+#~ msgstr "Average confirmation time"
+
+#~ msgid "Bitcoin Network Fee Policy"
+#~ msgstr "Bitcoin Network Fee Policy"
+
+#~ msgid ""
+#~ "Bitcoin transactions include a fee collected by miners on the network."
+#~ msgstr ""
+#~ "Bitcoin transactions include a fee collected by miners on the network."
+
+#~ msgid "Connect your BitPay ID"
+#~ msgstr "Connect your BitPay ID"
+
+#~ msgid "Could not get the Addressbook"
+#~ msgstr "Could not get the Addressbook"
+
+#~ msgid "Current fee rate for this policy"
+#~ msgstr "Current fee rate for this policy"
+
+#~ msgid "Enter the wallet connect uri"
+#~ msgstr "Enter the wallet connect uri"
+
+#~ msgid ""
+#~ "The higher the fee, the greater the incentive a miner has to include that "
+#~ "transaction in a block. Current fees are determined based on network load "
+#~ "and the selected policy."
+#~ msgstr ""
+#~ "The higher the fee, the greater the incentive a miner has to include that "
+#~ "transaction in a block. Current fees are determined based on network load "
+#~ "and the selected policy."
+
+#~ msgid "This amount should be higher than the amount you are trying to send."
+#~ msgstr ""
+#~ "This amount should be higher than the amount you are trying to send."
+
+#~ msgid "{{ 'Linked wallet' | translate }}"
+#~ msgstr "{{ 'Linked wallet' | translate }}"
+
+#~ msgid "{{ 'Pending Call Requests' | translate }}"
+#~ msgstr "{{ 'Pending Call Requests' | translate }}"
+
 #~ msgid "BitPay does not receive and does not control miner fees."
 #~ msgstr "BitPay does not receive and does not control miner fees."
 
@@ -4778,9 +4943,6 @@ msgstr ""
 #~ msgstr ""
 #~ "This wallet is not registered at the given Bitcore Wallet Service (BWS). "
 #~ "You can recreate it from the local information."
-
-#~ msgid "WalletConnect URI"
-#~ msgstr "WalletConnect URI"
 
 #~ msgid "2.9% of the amount + 0.30 USD per transactions"
 #~ msgstr "2.9% of the amount + 0.30 USD per transactions"
@@ -5042,9 +5204,6 @@ msgstr ""
 
 #~ msgid "Safeguard your recovery phrase"
 #~ msgstr "Safeguard your recovery phrase"
-
-#~ msgid "Scan"
-#~ msgstr "Scan"
 
 #~| msgid "Select wallet to deposit to"
 #~ msgid "Select a wallet to link to"
@@ -5332,9 +5491,6 @@ msgstr ""
 
 #~ msgid "Session log"
 #~ msgstr "Session log"
-
-#~ msgid "Show in Home"
-#~ msgstr "Show in Home"
 
 #~ msgid ""
 #~ "The final amount is based on the exchange rate when the transaction is "

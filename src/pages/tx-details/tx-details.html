@@ -23,7 +23,7 @@
         </div>
       </ion-item>
 
-      <label-tip class="low-fees" type="warn" *ngIf="btx.action == 'received' && btx.lowAmount">
+      <label-tip class="low-fees" type="warn" *ngIf="wallet.coin === 'btc' && btx.action == 'received' && btx.lowAmount">
         <span label-tip-title translate>Amount Too Low To Spend</span>
         <div label-tip-body translate>
           This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
@@ -98,6 +98,21 @@
           <span class="note-container ellipsis summary-item-detail">
             <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
+        </ion-note>
+      </ion-item>
+
+      <div class="line-divider" *ngIf="btx.nonce"></div>
+
+      <ion-item *ngIf="btx.nonce">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Nonce</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <div class="summary-item-detail">
+            {{btx.nonce}}
+          </div>
         </ion-note>
       </ion-item>
 

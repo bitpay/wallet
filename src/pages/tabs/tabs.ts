@@ -368,6 +368,8 @@ export class TabsPage {
   }
 
   public openFooterMenu(): void {
+    if (this.navigationType !== 'transact') return;
+
     this.analyticsProvider.logEvent('transaction_menu_clicked', {
       from: 'tabs'
     });
@@ -375,7 +377,9 @@ export class TabsPage {
     footerMenu.present();
     footerMenu.onDidDismiss(nextView => {
       if (nextView)
-        this.navCtrl.push(this.pageMap[nextView.name], nextView.params);
+        this.navCtrl.push(this.pageMap[nextView.name], nextView.params, {
+          animate: !['ScanPage'].includes(nextView.name)
+        });
     });
   }
 

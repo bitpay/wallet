@@ -51,6 +51,7 @@ export class ProfileProvider {
   public orderedWalletsByGroup: any = [];
 
   public UPDATE_PERIOD = 15;
+  public EXTENDED_UPDATE_PERIOD = 3600;
   public UPDATE_PERIOD_FAST = 5;
   private throttledBwsEvent;
   private validationLock: boolean = false;
@@ -436,24 +437,25 @@ export class ProfileProvider {
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
-    wallet.initialize(
-      {
-        notificationIncludeOwn: true
-      },
-      err => {
-        if (err) {
-          this.logger.error('Could not init notifications err:', err);
-          return;
+    if (
+      !this.configProvider.get().pushNotifications.enabled ||
+      !this.platformProvider.isCordova
+    ) {
+      wallet.initialize(
+        {
+          notificationIncludeOwn: true,
+          notificationIntervalSeconds: this.EXTENDED_UPDATE_PERIOD
+        },
+        err => {
+          if (err) {
+            this.logger.error('Could not init notifications err:', err);
+            return;
+          }
+          wallet.setNotificationsInterval(this.EXTENDED_UPDATE_PERIOD);
+          wallet.openWallet(() => {});
         }
-        if (
-          !this.configProvider.get().pushNotifications.enabled ||
-          !this.platformProvider.isCordova
-        ) {
-          wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        }
-        wallet.openWallet(() => {});
-      }
-    );
+      );
+    }
     this.events.subscribe('Local/ConfigUpdate', opts => {
       this.logger.debug('Local/ConfigUpdate handler @profile', opts);
 
@@ -561,7 +563,7 @@ export class ProfileProvider {
       !this.configProvider.get().pushNotifications.enabled ||
       !this.platformProvider.isCordova
     ) {
-      wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+      wallet.setNotificationsInterval(this.EXTENDED_UPDATE_PERIOD);
     }
   }
 
