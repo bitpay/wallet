@@ -28,9 +28,6 @@ export class AddressBookProvider {
     private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
-    this.migrateOldContacts().then(() => {
-      this.logger.debug('Old AddressBook processed');
-    });
   }
 
   public get(addr: string, network: string): Promise<Contact> {
@@ -83,8 +80,10 @@ export class AddressBookProvider {
             if (ab && _.isString(ab)) ab = JSON.parse(ab);
             ab = ab || {};
             _.each(ab, contact => {
-              const ctc = this.getContact(contact);
-              if (ctc) contacts.push(ctc);
+              if (contact.address) {
+                const ctc = this.getContact(contact);
+                if (ctc) contacts.push(ctc);
+              }
             });
             return resolve(contacts);
           } catch (err) {
@@ -105,22 +104,24 @@ export class AddressBookProvider {
             coin: contactStr.coin,
             network: contactStr.network
           }
-        : {
-            ...this.addressProvider.getCoinAndNetwork(
-              contactStr.address,
-              contactStr.network
-            )
-          };
+        : this.addressProvider.getCoinAndNetwork(
+            contactStr.address,
+            contactStr.network
+          ) || undefined;
 
-    const contact: Contact = {
-      address: contactStr.address,
-      coin: coinInfo.coin,
-      network: coinInfo.network,
-      name: _.isObject(contactStr) ? contactStr.name : contactStr,
-      tag: _.isObject(contactStr) ? contactStr.tag : null,
-      email: _.isObject(contactStr) ? contactStr.email : null
-    };
-    return contact;
+    if (!coinInfo) {
+      return undefined;
+    } else {
+      const contact: Contact = {
+        address: contactStr.address,
+        coin: coinInfo.coin,
+        network: coinInfo.network,
+        name: _.isObject(contactStr) ? contactStr.name : contactStr,
+        tag: _.isObject(contactStr) ? contactStr.tag : null,
+        email: _.isObject(contactStr) ? contactStr.email : null
+      };
+      return contact;
+    }
   }
 
   public add(entry: Contact): Promise<any> {
@@ -164,7 +165,7 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Entry already exist');
             return reject(msg);
           }
-          ab[entry.address + ' (' + entry.coin.toLowerCase() + ')'] = addrData;
+          ab[entry.coin.toLowerCase() + '-' + entry.address] = addrData;
           this.persistenceProvider
             .setAddressBook(addrData.network, JSON.stringify(ab))
             .then(() => {
@@ -208,11 +209,11 @@ export class AddressBookProvider {
             let msg = this.translate.instant('Addressbook is empty');
             return reject(msg);
           }
-          if (!ab[addr + ' (' + coin.toLowerCase() + ')']) {
+          if (!ab[coin.toLowerCase() + '-' + addr]) {
             let msg = this.translate.instant('Entry does not exist');
             return reject(msg);
           }
-          delete ab[addr + ' (' + coin.toLowerCase() + ')'];
+          delete ab[coin.toLowerCase() + '-' + addr];
           this.persistenceProvider
             .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
@@ -236,7 +237,6 @@ export class AddressBookProvider {
   }
 
   public migrateOldContacts(): Promise<boolean> {
-    this.logger.info('AddressBookProvider: migrating old contacts');
     return Promise.all([
       this.processNetworkContacts('livenet'),
       this.processNetworkContacts('testnet')
@@ -247,6 +247,7 @@ export class AddressBookProvider {
       })
       .catch(() => {
         this.migratingContactsSubject.next(false);
+        this.logger.debug('Failed to migrate old AddressBook');
         return Promise.reject(false);
       });
   }
@@ -267,13 +268,18 @@ export class AddressBookProvider {
   }
 
   private processNetworkContacts(network: string): Promise<boolean> {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve, reject) => {
       try {
         const newABFile = await this.persistenceProvider.existsNewAddressBook(
           network
         );
-
-        if (!newABFile) {
+        const oldABFile = await this.persistenceProvider.existsOldAddressBook(
+          network
+        );
+        if (oldABFile && !newABFile) {
+          this.logger.info(
+            `AddressBookProvider: migrating old ${network} contacts.`
+          );
           this.migratingContactsSubject.next(true);
           const oldContacts = await this.list(network, false);
           if (oldContacts) {
@@ -284,26 +290,26 @@ export class AddressBookProvider {
             );
             let newContactJson = {};
             _.each(oldContacts, old => {
-              newContactJson[
-                old.address + ' (' + old.coin.toLowerCase() + ')'
-              ] = old;
+              newContactJson[old.coin.toLowerCase() + '-' + old.address] = old;
             });
             this.persistenceProvider
               .setAddressBook(network, JSON.stringify(newContactJson), true)
-              .then(() => resolve(true))
+              .then(() => {
+                this.logger.debug(`Old ${network} AddressBook processed.`);
+                return resolve(true);
+              })
               .catch(err => {
                 this.logger.error(err);
-                resolve(false);
+                return reject(err);
               });
           }
-        } else {
-          this.logger.info('AddressBookProvider: Using new addressBook');
         }
         return resolve(true);
       } catch {
         err => {
+          this.logger.error(`Failed to process old ${network} AddressBook.`);
           this.logger.error(err);
-          resolve(false);
+          return reject(err);
         };
       }
     });

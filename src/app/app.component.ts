@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  AddressBookProvider,
   AnalyticsProvider,
   AppProvider,
   BitPayCardProvider,
@@ -159,8 +160,9 @@ export class CopayApp {
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
     private dynamicLinksProvider: DynamicLinksProvider,
-    private analyticsProvider: AnalyticsProvider,
-    private locationProvider: LocationProvider
+    private locationProvider: LocationProvider,
+    private addressBookProvider: AddressBookProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -442,6 +444,8 @@ export class CopayApp {
         }
       });
     }
+
+    this.addressBookProvider.migrateOldContacts();
   }
 
   private updateDesktopOnFocus() {
