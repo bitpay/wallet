@@ -268,7 +268,7 @@ export class AddressBookProvider {
   }
 
   private processNetworkContacts(network: string): Promise<boolean> {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve, reject) => {
       try {
         const newABFile = await this.persistenceProvider.existsNewAddressBook(
           network
@@ -300,7 +300,7 @@ export class AddressBookProvider {
               })
               .catch(err => {
                 this.logger.error(err);
-                return resolve(false);
+                return reject(err);
               });
           }
         }
@@ -309,7 +309,7 @@ export class AddressBookProvider {
         err => {
           this.logger.error(`Failed to process old ${network} AddressBook.`);
           this.logger.error(err);
-          return resolve(false);
+          return reject(err);
         };
       }
     });
