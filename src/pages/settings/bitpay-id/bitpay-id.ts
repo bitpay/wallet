@@ -18,6 +18,7 @@ import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-b
 })
 export class BitPayIdPage {
   public userBasicInfo;
+  public accountInitials: string;
   public network;
   public originalBitpayIdSettings: string;
   public bitpayIdSettings = this.getDefaultBitPayIdSettings();
@@ -38,6 +39,9 @@ export class BitPayIdPage {
 
   async ionViewDidLoad() {
     this.userBasicInfo = this.navParams.data;
+    if (this.userBasicInfo) {
+      this.accountInitials = this.getBitPayIdInitials(this.userBasicInfo);
+    }
     this.changeDetectorRef.detectChanges();
     this.network = this.bitPayIdProvider.getEnvironment().network;
     this.bitpayIdSettings =
@@ -113,5 +117,12 @@ export class BitPayIdPage {
           );
         }
       });
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 }

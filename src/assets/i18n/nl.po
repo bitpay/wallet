@@ -12,10 +12,13 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2021-03-30 20:32\n"
+"PO-Revision-Date: 2021-05-21 13:31\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
+
+msgid ") to pay the ETH miner fees."
+msgstr ""
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* Een betalingsvoorstel kan worden verwijderd als 1) je de maker bent en geen enkele andere copayer heeft getekend, of 2) er 10 minuten zijn verstreken sinds de creatie van het voorstel."
@@ -200,8 +203,8 @@ msgstr "Bedrag"
 msgid "Amount Too Low To Spend"
 msgstr "Bedrag te laag om te besteden"
 
-msgid "Amount below minimum allowed"
-msgstr "Bedrag lager dan minimum toegestaan"
+msgid "Amount below minimum allowed (dust threshold)"
+msgstr ""
 
 msgid "Amount too big"
 msgstr "Bedrag te groot"
@@ -215,8 +218,8 @@ msgstr "Er is een update voor deze app beschikbaar."
 msgid "Apple Pay"
 msgstr "Apple Pay"
 
-msgid "Apply changes"
-msgstr "Wijzigingen toepassen"
+msgid "Apply"
+msgstr ""
 
 msgid "Approve"
 msgstr ""
@@ -278,9 +281,6 @@ msgstr "Geprobeerd betalingsverzoek"
 msgid "Available"
 msgstr "Beschikbaar"
 
-msgid "Average confirmation time"
-msgstr "Gemiddelde bevestigingstijd"
-
 msgid "Average confirmation time:"
 msgstr "Gemiddelde bevestigingstijd:"
 
@@ -335,6 +335,9 @@ msgstr "Voordat je jouw ontvangstadres opvraagt, is het slim om je recovery seed
 msgid "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
 msgstr "Voordat je jouw ontvangstadressen opvraagt, is het slim om je recovery seed op te schrijven en deze veilig te bewaren. Met je recovery seed kun je je wallets herstellen als je dit apparaat verliest."
 
+msgid "Before sending more funds to complete this transaction we recommend you read more about miner fees."
+msgstr ""
+
 msgid "Below Minimum Amount"
 msgstr "Onder het minimumbedrag"
 
@@ -364,12 +367,6 @@ msgstr "Bitcoin Adres"
 
 msgid "Bitcoin Cash Address"
 msgstr "Bitcoin Cash-adres"
-
-msgid "Bitcoin Network Fee Policy"
-msgstr "Transactiekostenbeleid Bitcoin-netwerk"
-
-msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Bitcoin transacties bevatten transactiekosten betaald aan de miners in het netwerk."
 
 msgid "Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/."
 msgstr "Bitcore Wallet Service is in onderhoud. Check: https://status.bitpay.com/."
@@ -407,6 +404,12 @@ msgstr "Koop nu"
 msgid "Buy crypto with a credit card."
 msgstr ""
 
+msgid "Buy crypto with cash"
+msgstr ""
+
+msgid "Buy gift cards with crypto"
+msgstr ""
+
 msgid "Buy {displayName} Gift Card"
 msgstr "{displayName}-cadeaubon kopen"
 
@@ -421,6 +424,12 @@ msgstr "Door mijn e-mailadres op te geven, geef ik BitPay toestemming om mijn e-
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr "Door je e-mailadres op te geven, geef je toestemming aan BitPay om je e-mailadres te gebruiken om je e-mailberichten te sturen over betalingen."
+
+msgid "CANCEL"
+msgstr ""
+
+msgid "CHOOSE FEE LEVEL"
+msgstr ""
 
 msgid "CLOSE"
 msgstr "SLUITEN"
@@ -605,13 +614,10 @@ msgstr "Koppel je BitPay ID"
 msgid "Connect with Coinbase"
 msgstr "Koppel met Coinbase"
 
-msgid "Connect your BitPay ID"
-msgstr "Koppel je BitPay ID"
-
 msgid "Connect your Coinbase!"
 msgstr "Koppel je Coinbase-account!"
 
-msgid "Connected with"
+msgid "Connected to"
 msgstr ""
 
 msgid "Connecting BitPay ID..."
@@ -752,9 +758,6 @@ msgstr "Kon dynamische fee niet opvragen voor level:"
 msgid "Could not get fee levels"
 msgstr "Kon niveaus transactiekosten niet opvragen"
 
-msgid "Could not get the Addressbook"
-msgstr "Kon het adresboek niet ophalen"
-
 msgid "Could not get transactions"
 msgstr "Kon transacties niet opvragen"
 
@@ -845,8 +848,8 @@ msgstr "Cryptowallets & sleutels"
 msgid "Current Cards"
 msgstr "Huidige kaarten"
 
-msgid "Current fee rate for this policy"
-msgstr "Huidige transactiekosten voor dit beleid"
+msgid "Current fee value:"
+msgstr ""
 
 msgid "Currently our partner does not support exchanges with the selected coin"
 msgstr ""
@@ -910,6 +913,12 @@ msgstr "Storting succesvol"
 
 msgid "Deposit to"
 msgstr "Stort naar"
+
+msgid "Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgstr ""
+
+msgid "Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgstr ""
 
 msgid "Derivation Path"
 msgstr "Derivation path"
@@ -1064,6 +1073,9 @@ msgstr "Vul bedrag in"
 msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
+msgid "Enter WalletConnect URI"
+msgstr ""
+
 msgid "Enter a destination tag"
 msgstr "Voer een destination tag in"
 
@@ -1084,9 +1096,6 @@ msgstr "Voer e-mailadres in"
 
 msgid "Enter encrypt password"
 msgstr "Voer het coderingswachtwoord in"
-
-msgid "Enter the wallet connect uri"
-msgstr ""
 
 msgid "Enter your recovery phrase (usually 12-words) in the correct order. Separate each word with a single space only (no commas or any other punctuation). For backup phrases in non-English languages: Some words may include special symbols (ñ, è, っ, etc.), so be sure to spell all the words correctly."
 msgstr "Voer je recovery seed (meestal 12 woorden) in de juiste volgorde in. Scheid ieder woord met een spatie (geen komma's of andere leestekens). Voor recovery seeds die niet bestaan uit Engelse woorden: sommige woorden kunnen speciale symbolen bevatten (ñ, è, っ, etc.), dus zorg ervoor dat je alle woorden correct spelt."
@@ -1343,6 +1352,9 @@ msgstr "Nieuw adres genereren..."
 msgid "Get Started"
 msgstr "Begin"
 
+msgid "Get crypto from another wallet"
+msgstr ""
+
 msgid "Get help"
 msgstr "Hulp vragen"
 
@@ -1505,6 +1517,9 @@ msgstr ""
 msgid "If you do not have the recovery phrase, you will not be able to regain access to your wallet."
 msgstr "Als je de recovery phrase niet hebt, kun je geen toegang meer krijgen tot je wallet."
 
+msgid "If you don't mind waiting longer for this transaction to confirm you can change to a lower miner fee level."
+msgstr ""
+
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr "Als je tegoeden hebt opgeslagen op een website, is het slim om ze te verplaatsen naar een veilige wallet, zoals deze!"
 
@@ -1541,6 +1556,9 @@ msgstr "Importeer een bestaande wallet"
 msgid "Import from backup"
 msgstr ""
 
+msgid "Important note: Keep in mind BitPay has suspended XRP as a payment method, this includes loads to the BitPay Card, BitPay invoices and in-app purchases"
+msgstr ""
+
 msgid "Importing Wallet..."
 msgstr "Portemonnee importeren..."
 
@@ -1564,6 +1582,9 @@ msgstr ""
 
 msgid "In order to protect your funds from being accessible to hackers and thieves, the Master Key to your wallet must be kept somewhere safe and remain a secret."
 msgstr "De hoofdsleutel van je wallet moet je geheim houden en opbergen op een veilige plek. Alleen zo bescherm je jouw geld tegen hackers en dieven."
+
+msgid "In order to speed up the confirmation of your ETH transaction, the original transaction will be replaced by a new one that uses a higher miner fee."
+msgstr ""
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
 msgstr "Voor het wachtwoord van je wallet in om de recovery seed te verifiëren."
@@ -1600,6 +1621,9 @@ msgstr "Onvoldoende saldo"
 
 msgid "Insufficient funds for fee"
 msgstr "Onvoldoende saldo voor transactiekosten"
+
+msgid "Insufficient funds for fee in your ETH linked wallet"
+msgstr ""
 
 msgid "Interaction with contract"
 msgstr "Interactie met contract"
@@ -1671,6 +1695,12 @@ msgid "Joining Wallet..."
 msgstr "Deelnemen aan Portemonnee..."
 
 msgid "Just a second, we're setting a few things up."
+msgstr ""
+
+msgid "Keep in mind fees are not charged by BitPay."
+msgstr ""
+
+msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
 msgstr ""
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -1778,6 +1808,9 @@ msgstr "Tijdslot van kracht. Wacht a.u.b. met het maken van een nieuw bestedings
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Tijdslot van kracht. Wacht a.u.b. met het verwijderen van dit bestedingsvoorstel"
 
+msgid "Log in or Sign Up"
+msgstr ""
+
 msgid "Log out"
 msgstr "Uitloggen"
 
@@ -1870,6 +1903,9 @@ msgstr "Naam (bij aanmaak)"
 
 msgid "Native Currency"
 msgstr "Oorspronkelijke valuta"
+
+msgid "Navigation"
+msgstr ""
 
 msgid "Needs Backup"
 msgstr "Back-up nodig"
@@ -2471,6 +2507,9 @@ msgstr "Herlaad je saldo zonder conversiekosten* en besteed"
 msgid "Remember there are no special requirements for the password (numbers, symbols, etc.)"
 msgstr ""
 
+msgid "Reminder"
+msgstr ""
+
 msgid "Remove"
 msgstr "Verwijderen"
 
@@ -2552,6 +2591,9 @@ msgstr "OVERZICHT"
 msgid "Save"
 msgstr "Opslaan"
 
+msgid "Scan"
+msgstr ""
+
 msgid "Scan QR Codes"
 msgstr "Scan QR Codes"
 
@@ -2627,6 +2669,9 @@ msgstr "Selecteer een portemonnee"
 msgid "Select an Ethereum Wallet"
 msgstr "Selecteer een Ethereum wallet"
 
+msgid "Select destination wallet"
+msgstr ""
+
 msgid "Select inputs"
 msgstr "Selecteer inputs"
 
@@ -2635,6 +2680,9 @@ msgstr "Selecteer inputs voor transactie"
 
 msgid "Select recipient"
 msgstr "Selecteer ontvanger"
+
+msgid "Select source wallet"
+msgstr ""
 
 msgid "Select wallet to deposit to"
 msgstr "Selecteer wallet om naar te storten"
@@ -2659,6 +2707,9 @@ msgstr "Verstuur adressen per email"
 
 msgid "Send by email"
 msgstr "Verstuur via email"
+
+msgid "Send crypto to another wallet"
+msgstr ""
 
 msgid "Send from"
 msgstr "Verzenden vanuit"
@@ -2792,6 +2843,9 @@ msgstr "Toon portfolio waarde"
 msgid "Show advanced options"
 msgstr "Geavanceerde opties weergeven"
 
+msgid "Show in Home tab"
+msgstr ""
+
 msgid "Show me the legacy address"
 msgstr "Toon mij het legacy adres"
 
@@ -2864,6 +2918,9 @@ msgstr "Er ging iets mis"
 msgid "Source"
 msgstr ""
 
+msgid "Specified amount: "
+msgstr ""
+
 msgid "Specify Amount"
 msgstr "Specificeer bedrag"
 
@@ -2906,6 +2963,9 @@ msgstr "Status"
 msgid "Store this key separately"
 msgstr "Sla deze key afzonderlijk op"
 
+msgid "Submit a ticket"
+msgstr ""
+
 msgid "Subtotal"
 msgstr "Subtotaal"
 
@@ -2913,6 +2973,9 @@ msgid "Super Economy"
 msgstr "Super Zuinig"
 
 msgid "Supported by"
+msgstr ""
+
+msgid "Swap crypto for another"
 msgstr ""
 
 msgid "Sweep"
@@ -2975,6 +3038,15 @@ msgstr "Bedankt!"
 msgid "The \"Key\" to your funds"
 msgstr "De 'sleutel' naar jouw geld"
 
+msgid "The Gas Limit cannot be lower than"
+msgstr ""
+
+msgid "The Gas Price cannot be lower than 1 Gwei"
+msgstr ""
+
+msgid "The Gas Price cannot be lower than the required by the merchant"
+msgstr ""
+
 msgid "The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet."
 msgstr "Het XRP-grootboek vereist dat alle wallets een minimum saldo van 20 XRP behouden. Deze 20 XRP kun je niet uit de wallet halen en zit dus permanent vast in je wallet."
 
@@ -3020,9 +3092,6 @@ msgstr ""
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
 msgstr ""
 
-msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr "Des te hoger de betaalde transactiekosten, des te meer reden een miner heeft om de transactie in een blok op te nemen. De huidige transactiekosten worden bepaald aan de hand van de drukte op het netwerk en het gekozen beleid."
-
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "De informatie die je gaat delen/exporteren kan gevoelige data bevatten, zoals wallet-ID's, adressen, saldo's, enz. Zorg ervoor dat je de persoon of entiteit vertrouwt met wie je deze informatie deelt."
 
@@ -3061,6 +3130,9 @@ msgstr ""
 
 msgid "The spend proposal is not pending"
 msgstr "Het bestedingsvoorstel is niet meer in behandeling"
+
+msgid "The sum of the selected amounts must be at least:"
+msgstr ""
 
 msgid "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
 msgstr "Het testnet is een alternatieve {coinName}-blockchain die gebruikt kan worden voor testdoeleinde. Testnet-coins hebben geen waarde omdat ze gescheiden en verschillen van 'echte' {coinName}. Applicatieontwikkelaars en {coinName}-testers kunnen dankzij testnets hun werk doen zonder echte {coinName} te gebruiken."
@@ -3125,8 +3197,8 @@ msgstr ""
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
 
-msgid "This amount should be higher than the amount you are trying to send."
-msgstr "Dit bedrag moet hoger zijn dan het bedrag dat je probeert te versturen."
+msgid "This amount must be at least:"
+msgstr ""
 
 msgid "This app is not available for your device."
 msgstr "Deze app is niet beschikbaar voor je apparaat."
@@ -3224,8 +3296,14 @@ msgstr "Totaal aantal copayers"
 msgid "Total selected inputs"
 msgstr "Totaal geselecteerde inputs"
 
+msgid "Total selected inputs: "
+msgstr ""
+
 msgid "Total wallet inputs"
 msgstr "Totaal portemonnee ontvangsten"
+
+msgid "Transact"
+msgstr ""
 
 msgid "Transaction"
 msgstr "Transactie"
@@ -3866,16 +3944,13 @@ msgstr "{walletsGroupLength} wallet"
 msgid "{walletsGroupLength} Wallets"
 msgstr "{walletsGroupLength} wallets"
 
-msgid "{{ 'Linked wallet' | translate }}"
-msgstr ""
-
-msgid "{{ 'Pending Call Requests' | translate }}"
-msgstr ""
-
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr ""
 
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
+msgstr ""
+
+msgid "{{ params.secondBtnText }}"
 msgstr ""
 
 msgid "{{ status.statusTitle }}"

@@ -11,6 +11,7 @@ export class DerivationPathHelperProvider {
   public defaultTestnet: string;
   public defaultMultisigBTC: string;
   public defaultMultisigBCH: string;
+  public defaultMultisigDOGE: string;
   public defaultMultisigBCHA: string;
 
   public constructor() {
@@ -22,6 +23,7 @@ export class DerivationPathHelperProvider {
     this.defaultBCHA = "m/44'/899'/0'";
     this.defaultMultisigBTC = "m/48'/0'/0'";
     this.defaultMultisigBCH = "m/48'/145'/0'";
+    this.defaultMultisigDOGE = "m/48'/3'/0'";
     this.defaultMultisigBCHA = "m/48'/899'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
@@ -82,6 +84,7 @@ export class DerivationPathHelperProvider {
       case "899'": // for BCHA
         networkName = 'livenet';
         break;
+
     }
     return networkName;
   }
@@ -121,7 +124,7 @@ export class DerivationPathHelperProvider {
         isValid = ["3'", "1'"].indexOf(coinCode) > -1;
         break;      
       case 'bcha':
-        isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
+          isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
     }
 

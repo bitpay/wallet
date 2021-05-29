@@ -16,6 +16,8 @@ import { Observable, Subscription } from 'rxjs';
 
 // Providers
 import {
+  AddressBookProvider,
+  AnalyticsProvider,
   AppProvider,
   BitPayCardProvider,
   BitPayIdProvider,
@@ -158,7 +160,9 @@ export class CopayApp {
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
     private dynamicLinksProvider: DynamicLinksProvider,
-    private locationProvider: LocationProvider
+    private locationProvider: LocationProvider,
+    private addressBookProvider: AddressBookProvider,
+    private analyticsProvider: AnalyticsProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -275,6 +279,16 @@ export class CopayApp {
       // Only for iOS
       if (this.platform.is('ios')) {
         this.statusBar.overlaysWebView(true);
+
+        // Check for AppTrackingTransparency
+        this.analyticsProvider
+          .setTrackingPermissions()
+          .then(value => {
+            this.logger.info('AppTrackingTransparency: ' + value);
+          })
+          .catch(err => {
+            this.logger.warn('AppTrackingTransparency: ' + err);
+          });
       }
 
       // Subscribe Resume
@@ -360,8 +374,18 @@ export class CopayApp {
           });
       })
       .catch(err => {
-        this.popupProvider.ionicAlert('Error loading keys', err.message || '');
         this.logger.error('Error loading keys: ', err);
+        this.popupProvider
+          .ionicAlert('Error loading keys', err.message || '')
+          .then(() => {
+            // Share logs
+            const platform = this.platformProvider.isCordova
+              ? this.platformProvider.isAndroid
+                ? 'android'
+                : 'ios'
+              : 'desktop';
+            this.logsProvider.get(this.appProvider.info.nameCase, platform);
+          });
       });
 
     let [token, cards]: any = await Promise.all([
@@ -420,6 +444,8 @@ export class CopayApp {
         }
       });
     }
+
+    this.addressBookProvider.migrateOldContacts();
   }
 
   private updateDesktopOnFocus() {

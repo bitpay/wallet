@@ -103,6 +103,8 @@ export class HomePage {
   public testingAdsEnabled: boolean;
   public showCoinbase: boolean = false;
   public bitPayIdUserInfo: any;
+  public accountInitials: string;
+  public isCopay: boolean;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
@@ -143,6 +145,7 @@ export class HomePage {
     private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
+    this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.subscribeEvents();
     this.persistenceProvider
@@ -159,6 +162,12 @@ export class HomePage {
       CoinbasePage
     };
     this.user$ = this.iabCardProvider.user$;
+    this.user$.subscribe(async user => {
+      if (user) {
+        this.bitPayIdUserInfo = user;
+        this.accountInitials = this.getBitPayIdInitials(user);
+      }
+    });
   }
 
   private showNewFeatureSlides() {
@@ -206,6 +215,9 @@ export class HomePage {
         .getBitPayIdUserInfo(this.network)
         .then((user: User) => {
           this.bitPayIdUserInfo = user;
+          if (user) {
+            this.accountInitials = this.getBitPayIdInitials(user);
+          }
         });
     }
     this.totalBalanceAlternativeIsoCode =
@@ -238,17 +250,11 @@ export class HomePage {
           });
       }
     });
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.bitPayIdUserInfo = user;
-      }
-    });
   }
 
   ionViewDidLoad() {
     this.preFetchWallets();
     this.merchantProvider.getMerchants();
-
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
@@ -510,7 +516,7 @@ export class HomePage {
           this.hasOldCoinbaseSession = x.oldLinked;
           if (this.showCoinbase) this.addCoinbase();
           break;
-        case 'walletConnect':
+        case 'newWalletConnect':
           this.showWalletConnect = x.show;
           break;
       }
@@ -1017,6 +1023,13 @@ export class HomePage {
         }, 100);
       });
     }
+  }
+
+  private getBitPayIdInitials(user): string {
+    const { givenName, familyName } = user;
+    return [givenName, familyName]
+      .map(name => name && name.charAt(0).toUpperCase())
+      .join('');
   }
 }
 

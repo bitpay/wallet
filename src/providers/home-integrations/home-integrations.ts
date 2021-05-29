@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 const exchangeList: object[] = [
   { name: 'coinbase' },
-  { name: 'walletConnect' }
+  { name: 'newWalletConnect' }
 ];
 
 @Injectable()

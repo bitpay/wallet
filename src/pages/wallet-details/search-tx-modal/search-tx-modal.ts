@@ -81,11 +81,11 @@ export class SearchTxModalPage {
 
   private computeSearchableString(tx) {
     let addressBook = '';
-    if (tx.addressTo && this.addressbook && this.addressbook[tx.addressTo])
-      addressBook =
-        this.addressbook[tx.addressTo].name ||
-        this.addressbook[tx.addressTo] ||
-        '';
+    if (tx.addressTo && this.addressbook) {
+      const contact = _.find(this.addressbook, c => c.address === tx.addressTo);
+      addressBook = contact ? contact.name : '';
+    }
+
     let searchableDate = this.computeSearchableDate(new Date(tx.time * 1000));
     let message = tx.message ? tx.message : '';
     let comment = tx.note ? tx.note.body : '';

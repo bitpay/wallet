@@ -80,7 +80,7 @@ export class WalletDetailsPage {
   public updatingTxHistoryProgress: number = 0;
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
-  public addressbook = {};
+  public addressbook = [];
   public txps = [];
   public txpsPending: any[];
   public lowUtxosWarning: boolean;
@@ -156,7 +156,7 @@ export class WalletDetailsPage {
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
     this.addressbookProvider
-      .list()
+      .list(this.wallet.network)
       .then(ab => {
         this.addressbook = ab;
       })
@@ -486,12 +486,16 @@ export class WalletDetailsPage {
         network: this.wallet.network,
         coin: this.wallet.coin,
         speedUpTx: true,
-        toAddress: addr,
+        toAddress: this.wallet.coin === 'eth' ? tx.addressTo : addr,
         walletId: this.wallet.credentials.walletId,
         fromWalletDetails: true,
         txid: tx.txid,
         recipientType: 'wallet',
-        name: this.wallet.name
+        name:
+          this.wallet.coin === 'eth' && tx.customData
+            ? tx.customData.toWalletName
+            : this.wallet.name,
+        nonce: tx.nonce
       };
       const nextView = {
         name: 'ConfirmPage',
@@ -570,7 +574,7 @@ export class WalletDetailsPage {
   }
 
   public canSpeedUpTx(tx): boolean {
-    if (this.wallet.coin !== 'btc') return false;
+    if (this.wallet.coin !== 'btc' && this.wallet.coin !== 'eth') return false;
 
     const currentTime = moment();
     const txTime = moment(tx.time * 1000);
@@ -579,7 +583,9 @@ export class WalletDetailsPage {
     return (
       currentTime.diff(txTime, 'hours') >= 4 &&
       this.isUnconfirmed(tx) &&
-      tx.action === 'received'
+      ((tx.action === 'received' && this.wallet.coin == 'btc') ||
+        ((tx.action === 'sent' || tx.action === 'moved') &&
+          this.wallet.coin === 'eth'))
     );
   }
 
@@ -828,5 +834,11 @@ export class WalletDetailsPage {
       okText,
       cancelText
     );
+  }
+
+  getContactName(address: string) {
+    const existsContact = _.find(this.addressbook, c => c.address === address);
+    if (existsContact) return existsContact.name;
+    return null;
   }
 }

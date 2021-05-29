@@ -6,9 +6,39 @@ footer-menu {
   .bp-header {
     margin: 32px 0 20px 3px;
   }
-  .item-close {
-    ion-icon {
-      margin-left: -5px;
+  .scan-button {
+    width: 125px;
+    margin: 20px auto 25px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 59px;
+    border-radius: 12px;
+    box-shadow: none;
+    line-height: 1.5;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #edf0fe;
+    color: black;
+
+    &.activated,
+    &:hover:not(.disable-hover) {
+      background-color: #edf0fe;
+      color: black;
+      box-shadow: none;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+
+    .button-inner {
+      margin-right: 13px;
+      display: flex;
+    }
+
+    span {
+      @extend .two-lines;
     }
   }
 }

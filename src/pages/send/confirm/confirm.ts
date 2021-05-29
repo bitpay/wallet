@@ -18,6 +18,7 @@ import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
 import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
@@ -79,6 +80,7 @@ export class ConfirmPage {
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
   public recipients;
+  public toAddressName;
   public coin: Coin;
   public isERCToken: boolean;
   public appName: string;
@@ -124,6 +126,7 @@ export class ConfirmPage {
 
   constructor(
     protected addressProvider: AddressProvider,
+    protected addressBookProvider: AddressBookProvider,
     protected analyticsProvider: AnalyticsProvider,
     protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
@@ -269,7 +272,8 @@ export class ConfirmPage {
       gasLimit: this.navParams.data.gasLimit,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
-      inputs: this.navParams.data.inputs
+      inputs: this.navParams.data.inputs,
+      nonce: this.navParams.data.nonce
     };
 
     this.tx.sendMax = this.navParams.data.useSendMax ? true : false;
@@ -290,7 +294,8 @@ export class ConfirmPage {
         .requiredFeeRate;
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
-      this.tx.feeLevel = 'custom';
+      this.tx.feeLevel =
+        this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
       this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
@@ -300,7 +305,7 @@ export class ConfirmPage {
         .Address(this.tx.toAddress)
         .toString(true);
     }
-
+    this.setAddressesContactName();
     this.getAmountDetails();
 
     const feeOpts = this.feeProvider.getFeeOpts();
@@ -336,6 +341,34 @@ export class ConfirmPage {
     } else {
       this.mainTitle = this.translate.instant('Confirm Payment');
     }
+  }
+
+  private setAddressesContactName() {
+    this.addressBookProvider.list(this.tx.network).then(contacts => {
+      if (contacts && contacts.length > 0) {
+        if (this.recipients) {
+          _.each(this.recipients, r => {
+            const existsContact = _.find(
+              contacts,
+              c => c.address === (r.addressToShow || r.toAddress || r.address)
+            );
+            if (existsContact) r.contactName = existsContact.name;
+          });
+        } else if (
+          this.tx &&
+          !this.tx.recipientType &&
+          !this.tx.name &&
+          !this.tx.paypro &&
+          !this.fromCoinbase
+        ) {
+          const existsContact = _.find(
+            contacts,
+            c => c.address === this.tx.origToAddress
+          );
+          if (existsContact) this.toAddressName = existsContact.name;
+        }
+      }
+    });
   }
 
   private getAmountDetails(): void {
@@ -661,7 +694,7 @@ export class ConfirmPage {
               .catch(err => {
                 return reject(err);
               });
-          } else if (tx.speedUpTx && this.shouldUseSendMax()) {
+          } else if (tx.speedUpTx) {
             this.speedUpTx(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -751,27 +784,33 @@ export class ConfirmPage {
           }
           tx.speedUpTxInfo = speedUpTxInfo;
         }
-
-        return this.feeProvider
-          .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
-          .then(speedUpTxFee => {
-            speedUpTxInfo.fee = speedUpTxFee;
-            this.showWarningSheet(wallet, speedUpTxInfo);
-            return this.getInput(wallet).then(input => {
-              tx.speedUpTxInfo.input = input;
-              tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
-
-              this.tx.amount = tx.amount;
-              this.getAmountDetails();
-              return this.buildTxp(tx, wallet, opts);
+        if (wallet.coin === 'eth') {
+          tx.speedUpTxInfo.input = [];
+          tx.amount = tx.speedUpTxInfo.amount;
+          this.tx.amount = tx.amount;
+          this.getAmountDetails();
+          return this.buildTxp(tx, wallet, opts);
+        } else {
+          return this.feeProvider
+            .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
+            .then(speedUpTxFee => {
+              speedUpTxInfo.fee = speedUpTxFee;
+              this.showWarningSheet(wallet, speedUpTxInfo);
+              return this.getInput(wallet).then(input => {
+                tx.speedUpTxInfo.input = input;
+                tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
+                this.tx.amount = tx.amount;
+                this.getAmountDetails();
+                return this.buildTxp(tx, wallet, opts);
+              });
+            })
+            .catch(err => {
+              const error = err
+                ? err
+                : this.translate.instant('Error getting Speed Up fee');
+              return Promise.reject(error);
             });
-          })
-          .catch(err => {
-            const error = err
-              ? err
-              : this.translate.instant('Error getting Speed Up fee');
-            return Promise.reject(error);
-          });
+        }
       })
       .catch(err => {
         const error = err
@@ -811,7 +850,7 @@ export class ConfirmPage {
   private buildTxp(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
-        .then(txp => {
+        .then(async txp => {
           this.isERCToken = this.currencyProvider.isERCToken(tx.coin);
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
@@ -857,6 +896,21 @@ export class ConfirmPage {
             this.showHighFeeSheet();
           }
 
+          tx.txp[wallet.id] = txp;
+
+          if (
+            !this.tx.nonce &&
+            this.isSpeedUpTx &&
+            this.wallet.coin === 'eth'
+          ) {
+            const nonce = await this.walletProvider.getNonce(
+              wallet,
+              tx.txp[wallet.id].from
+            );
+            this.tx.nonce = tx.txp[wallet.id].nonce = nonce;
+          }
+
+          this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
               wallet.id +
