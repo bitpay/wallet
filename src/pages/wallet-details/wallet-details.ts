@@ -732,7 +732,7 @@ export class WalletDetailsPage {
   public handleDonation() {
     this.getDonationInfo().then((data:any) => {
       this.navCtrl.push(AmountPage, {
-        toAddress: 'bchtest:qqwd7ucvrrw4080xsmhprmhuclx0cdk5850t5syq3c',
+        toAddress: data.donationBCHtoAddress,
         id: this.wallet.credentials.walletId,
         walletId: this.wallet.credentials.walletId,
         recipientType: 'wallet',
@@ -749,8 +749,6 @@ export class WalletDetailsPage {
     }).catch((err) => {
       console.log(err)
     });
-
-    
   }
 
   private requestSpecificAmount(): void {

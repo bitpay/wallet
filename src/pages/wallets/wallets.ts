@@ -367,7 +367,7 @@ export class WalletsPage {
   public handleDonation(wallet) {
     this.getDonationInfo().then((data:any) => {
       this.navCtrl.push(AmountPage, {
-        toAddress: 'bchtest:qqwd7ucvrrw4080xsmhprmhuclx0cdk5850t5syq3c',
+        toAddress: data.donationBCHtoAddress,
         id: wallet.credentials.walletId,
         walletId: wallet.credentials.walletId,
         recipientType: 'wallet',
@@ -379,7 +379,7 @@ export class WalletsPage {
         minMoneydonation: data.minMoneydonation,
         toalAmount : data.toalAmount,
         remaining : data.remaining,
-        receiveLotus: data.receiveLotus
+        receiveLotus: data.receiveLotus,
       });
     }).catch((err) => {
       console.log(err)
