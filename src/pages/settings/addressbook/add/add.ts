@@ -12,6 +12,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
 import { AppProvider } from '../../../../providers/app/app';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
@@ -26,9 +27,14 @@ import { ScanPage } from '../../../scan/scan';
 })
 export class AddressbookAddPage {
   public addressBookAdd: FormGroup;
-
   public isCordova: boolean;
   public appName: string;
+  public isXRP: boolean;
+  public addressInfo;
+  public networks;
+  public coins: string[];
+  public allowNetworkSelection: boolean;
+
   private destinationTagregex: RegExp;
 
   constructor(
@@ -36,6 +42,7 @@ export class AddressbookAddPage {
     private navParams: NavParams,
     private events: Events,
     private ab: AddressBookProvider,
+    private currencyProvider: CurrencyProvider,
     private addressProvider: AddressProvider,
     private appProvider: AppProvider,
     private formBuilder: FormBuilder,
@@ -43,6 +50,7 @@ export class AddressbookAddPage {
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider
   ) {
+    this.networks = ['livenet', 'testnet'];
     this.isCordova = this.platformProvider.isCordova;
     this.destinationTagregex = /^[0-9]{1,}$/;
     this.addressBookAdd = this.formBuilder.group({
@@ -58,7 +66,15 @@ export class AddressbookAddPage {
           new AddressValidator(this.addressProvider).isValid
         ])
       ],
-      tag: ['', Validators.pattern(this.destinationTagregex)]
+      tag: ['', Validators.pattern(this.destinationTagregex)],
+      network: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ],
+      coin: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
     });
     if (this.navParams.data.addressbookEntry) {
       this.addressBookAdd.controls['address'].setValue(
@@ -67,6 +83,50 @@ export class AddressbookAddPage {
     }
     this.appName = this.appProvider.info.nameCase;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.addressBookAdd
+      .get('address')
+      .valueChanges.subscribe(val => this.analizeAddress(val));
+  }
+
+  analizeAddress(address: string, network?: string, coin?: string) {
+    this.coins = [];
+    this.addressInfo = undefined;
+    this.isXRP = false;
+    if (address && this.addressBookAdd.get('address').valid) {
+      this.addressInfo = this.addressProvider.getCoinAndNetwork(
+        address,
+        network
+      );
+      if (this.addressInfo) {
+        this.isXRP = this.addressInfo.coin === 'xrp';
+        this.addressBookAdd.controls['network'].setValue(
+          this.addressInfo.network
+        );
+        const chain = this.currencyProvider.getChain(this.addressInfo.coin);
+        this.coins.push(chain);
+        this.addressBookAdd.controls['network'].disable();
+        this.allowNetworkSelection = false;
+        if (['XRP', 'ETH'].includes(chain.toUpperCase())) {
+          this.addressBookAdd.controls['network'].enable();
+          this.allowNetworkSelection = true;
+          if (chain.toUpperCase() === 'ETH') {
+            this.coins.push(
+              ...this.currencyProvider.availableTokens.map(t => t.symbol)
+            );
+          }
+        }
+      }
+
+      if (
+        this.coins &&
+        coin &&
+        this.coins.find(c => c.toUpperCase() === coin.toUpperCase())
+      ) {
+        this.addressBookAdd.controls['coin'].setValue(coin);
+      } else {
+        this.addressBookAdd.controls['coin'].setValue(this.addressInfo.coin);
+      }
+    }
   }
 
   ionViewDidLoad() {
@@ -97,11 +157,15 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
-    this.addressBookAdd.controls['address'].setValue(
-      this.parseAddress(this.addressBookAdd.value.address)
-    );
     this.ab
-      .add(this.addressBookAdd.value)
+      .add({
+        name: this.addressBookAdd.value.name,
+        email: this.addressBookAdd.value.email,
+        address: this.parseAddress(this.addressBookAdd.value.address),
+        tag: this.addressBookAdd.value.tag,
+        network: this.addressBookAdd.value.network,
+        coin: this.addressBookAdd.value.coin
+      })
       .then(() => {
         this.navCtrl.pop();
       })

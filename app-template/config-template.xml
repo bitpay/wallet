@@ -59,6 +59,8 @@
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
 
+    <preference name="AndroidXEnabled" value="true" />
+
     <!-- Supported Platforms -->
     <engine name="android" spec="9.0.0" />
     <engine name="ios" spec="5.1.1" />
@@ -110,7 +112,7 @@
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.2.1" />
 
     <plugin name="cordova-plugin-theme-detection" spec="1.2.1" />
-
+    
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
@@ -126,6 +128,10 @@
           <string>twitter</string>
         </array>
       </config-file>
+
+      <edit-config target="NSUserTrackingUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Tracking is used to identify source of traffic, optimize campaigns, and improve user experiences in the app.</string>
+      </edit-config>
 
       <!-- Apple Pay Support -->
       *APPLEPAY*

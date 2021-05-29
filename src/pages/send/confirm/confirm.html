@@ -1,8 +1,12 @@
 <wide-header-page title="{{ mainTitle }}" [hasSlideButton]="!hideSlideButton && isCordova">
   <div page-content>
     <label-tip *ngIf="isSpeedUpTx" type="info" header="no-header" class="no-arrowhead">
-      <div label-tip-body translate>
+      <div *ngIf="wallet.coin === 'btc'" label-tip-body translate>
         A transaction using your delayed transaction inputs will be sent to your own wallet with a higher miner fee to speed up the last confirmation time.
+        <br>
+      </div>
+      <div *ngIf="wallet.coin === 'eth'" label-tip-body translate>
+        In order to speed up the confirmation of your ETH transaction, the original transaction will be replaced by a new one that uses a higher miner fee.
         <br>
       </div>
     </label-tip>
@@ -25,7 +29,7 @@
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
               <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-              <span *ngIf="!tx.name">{{tx.origToAddress | shortenedAddress}}</span>
+              <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
 
@@ -105,7 +109,7 @@
             <div class="payment-proposal-to align-right">
               <div class="background-content">
                 <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
-                <span>{{(recipient.addressToShow || recipient.toAddress || recipient.address) | shortenedAddress}}</span>
+                <span>{{recipient.contactName || ((recipient.addressToShow || recipient.toAddress || recipient.address) | shortenedAddress)}}</span>
               </div>
             </div>
             <div class="multi-amount">{{recipient.amountToShow}} {{coin | uppercase}}</div>
@@ -159,7 +163,7 @@
 
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasPrice" [ngClass]="{'not-clickable': tx.speedUpTx}" (click)="editGasPrice = !editGasPrice; editGasLimit = false">
         <ion-label>
           <div class="summary-item">
             <span translate>Gas Price</span>
@@ -194,14 +198,14 @@
         <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="!requiredFeeRate" translate>
           The Gas Price cannot be lower than 1 Gwei
         </div>
-        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="requiredFeeRate" translate>
-          The Gas Price cannot be lower than the required by the merchant ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" *ngIf="requiredFeeRate">
+          {{'The Gas Price cannot be lower than the required by the merchant' | translate}} ({{requiredFeeRate * 1e-9 | number:'1.2-2'}} Gwei)
         </div>
       </div>
 
       <div class="line-divider" *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id]"></div>
 
-      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || isERCToken}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
+      <button ion-item detail-none *ngIf="wallet && (wallet.coin === 'eth' || isERCToken) && tx.txp[wallet.id] && !editGasLimit" [ngClass]="{'not-clickable': tx.sendMax || tx.speedUpTx || isERCToken}" (click)="editGasLimit = !editGasLimit; editGasPrice = false">
         <ion-label>
           <div class="summary-item">
             <span translate>Gas Limit</span>
@@ -232,10 +236,21 @@
       </ion-item>
 
       <div class="amount-details" *ngIf="customGasLimit < minAllowedGasLimit && editGasLimit">
-        <div class="total-amount-note" [ngStyle]="{'color': 'red'}" translate>
-          The Gas Limit cannot be lower than {{minAllowedGasLimit}}
+        <div class="total-amount-note" [ngStyle]="{'color': 'red'}">
+          {{'The Gas Limit cannot be lower than' | translate}} {{minAllowedGasLimit}}
         </div>
       </div>
+
+      <div class="line-divider" *ngIf="tx.nonce"></div>
+
+      <ion-item *ngIf="tx.nonce">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Nonce</span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" item-end>{{tx.nonce}}</ion-note>
+      </ion-item>
 
       <div class="line-divider"></div>
 

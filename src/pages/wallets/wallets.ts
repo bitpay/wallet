@@ -21,11 +21,13 @@ import { ProposalsNotificationsPage } from './proposals-notifications/proposals-
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { CoinbaseProvider } from '../../providers/coinbase/coinbase';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { AmountPage } from '../send/amount/amount';
@@ -66,6 +68,8 @@ export class WalletsPage {
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
+    private platformProvider: PlatformProvider,
+    private analyticsProvider: AnalyticsProvider,
     private logger: Logger,
     private events: Events,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -107,8 +111,63 @@ export class WalletsPage {
     }
   }
 
+  private async walletAudienceEvents() {
+    try {
+      const deviceUUID = this.platformProvider.getDeviceUUID();
+      const hasCreatedWallet = await this.persistenceProvider.getHasReportedFirebaseWalletCreateFlag();
+      const hasSecuredWalletFlag = await this.persistenceProvider.getHasReportedFirebaseSecuredWallet();
+      const hasFundedWallet = await this.persistenceProvider.getHasReportedFirebaseHasFundedWallet();
+      const hasNotFundedWallet = await this.persistenceProvider.getHasReportedFirebasedNonFundedWallet();
+      const keys = await this.persistenceProvider.getKeys();
+
+      if (!hasCreatedWallet) {
+        if (keys && keys.length > 0) {
+          this.analyticsProvider.logEvent('user_has_created_wallet', {
+            uuid: deviceUUID,
+            timestamp: Date.now()
+          });
+          this.persistenceProvider.setHasReportedFirebaseWalletCreateFlag();
+        }
+      }
+
+      if (!hasSecuredWalletFlag) {
+        let hasAtLeastOneMnemonicEncrypted = keys.some(
+          key => key.mnemonicEncrypted
+        );
+        if (hasAtLeastOneMnemonicEncrypted) {
+          this.analyticsProvider.logEvent('user_has_secured_wallet', {
+            uuid: deviceUUID
+          });
+          this.persistenceProvider.setHasReportedFirebaseSecuredWallet();
+        }
+      }
+
+      if (!hasFundedWallet) {
+        let totalBalance = await this.persistenceProvider.getTotalBalance();
+        if (parseFloat(totalBalance.totalBalanceAlternative)) {
+          this.analyticsProvider.logEvent('user_has_funded_wallet', {
+            uuid: deviceUUID
+          });
+          this.persistenceProvider.setHasReportedFirebaseHasFundedWallet();
+        } else {
+          if (!hasNotFundedWallet) {
+            this.analyticsProvider.logEvent('user_has_not_funded_wallet', {
+              uuid: deviceUUID
+            });
+            this.persistenceProvider.setHasReportedFirebaseNonFundedWallet();
+          }
+        }
+      }
+    } catch (e) {
+      this.logger.debug(
+        'Error occurred during wallet audience events: ' + e.message
+      );
+    }
+  }
+
   private _didEnter() {
     this.updateTxps();
+    this.walletAudienceEvents();
   }
 
   private walletFocusHandler = opts => {

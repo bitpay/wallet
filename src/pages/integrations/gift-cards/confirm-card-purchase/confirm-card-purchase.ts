@@ -19,6 +19,7 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 // Provider
 import {
+  AddressBookProvider,
   AddressProvider,
   AnalyticsProvider,
   BitPayIdProvider,
@@ -103,6 +104,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   constructor(
     analyticsProvider: AnalyticsProvider,
     addressProvider: AddressProvider,
+    addressBookProvider: AddressBookProvider,
     app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -144,6 +146,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   ) {
     super(
       addressProvider,
+      addressBookProvider,
       analyticsProvider,
       app,
       actionSheetProvider,

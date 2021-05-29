@@ -36,7 +36,7 @@
       <span *ngIf="!params.isERCToken" sheet-title-text translate>Insufficient funds for fee</span>
       <span *ngIf="params.isERCToken" sheet-title-text translate>Insufficient funds for fee in your ETH linked wallet</span>
       <span *ngIf="params.coin === 'btc' || params.coin === 'eth' || params.isERCToken; else shortNotice" sheet-text>
-        <span>{{ 'Current fee value: {fee} ({feeAlternative})' | translate: { feeAlternative: params.feeAlternative, fee: params.fee } }}</span>
+        <span>{{ 'Current fee value:' | translate }} {{params.fee}} ({{params.feeAlternative}})</span>
         <br>
         <br>
         {{ 'Keep in mind fees are not charged by BitPay.' | translate }}
@@ -49,7 +49,7 @@
       </span>
       <ng-template #shortNotice>
         <span sheet-text>
-          {{ 'Current fee value: {fee} ({feeAlternative})' | translate: { feeAlternative: params.feeAlternative, fee: params.fee } }}          <br>
+          {{ 'Current fee value:' | translate }} {{params.fee}} ({{params.feeAlternative}})          <br>
           <br>
           {{ 'Keep in mind fees are not charged by BitPay.' }}
         </span>

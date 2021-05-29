@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { AddressProvider } from '../../../providers/address/address';
 import {
   Coin,
   CoinsMap,
@@ -85,7 +84,6 @@ export class TransferToPage {
     private logger: Logger,
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
-    private addressProvider: AddressProvider,
     private viewCtrl: ViewController,
     private events: Events
   ) {
@@ -194,38 +192,39 @@ export class TransferToPage {
   }
 
   private updateContactsList(): void {
-    this.addressBookProvider.list().then(ab => {
-      this.hasContacts = _.isEmpty(ab) ? false : true;
-      if (!this.hasContacts) return;
+    this.addressBookProvider
+      .list(this._wallet ? this._wallet.network : null)
+      .then(ab => {
+        this.hasContacts = _.isEmpty(ab) ? false : true;
+        if (!this.hasContacts) return;
 
-      let contactsList = [];
-      _.each(ab, (v, k: string) => {
-        const addrData = this.addressProvider.getCoinAndNetwork(k);
-        contactsList.push({
-          name: _.isObject(v) ? v.name : v,
-          address: k,
-          network: addrData.network,
-          email: _.isObject(v) ? v.email : null,
-          recipientType: 'contact',
-          coin: addrData.coin,
-          getAddress: () => Promise.resolve(k),
-          destinationTag: v.tag
+        let contactsList = [];
+        _.each(ab, c => {
+          contactsList.push({
+            name: c.name,
+            address: c.address,
+            network: c.network,
+            email: c.email,
+            recipientType: 'contact',
+            coin: c.coin,
+            getAddress: () => Promise.resolve(c.address),
+            destinationTag: c.tag
+          });
         });
+        contactsList = _.orderBy(contactsList, 'name');
+        this.contactsList = contactsList.filter(c =>
+          this.filterIrrelevantRecipients(c)
+        );
+        let shortContactsList = _.clone(
+          this.contactsList.slice(
+            0,
+            (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+          )
+        );
+        this.filteredContactsList = _.clone(shortContactsList);
+        this.contactsShowMore =
+          this.contactsList.length > shortContactsList.length;
       });
-      contactsList = _.orderBy(contactsList, 'name');
-      this.contactsList = contactsList.filter(c =>
-        this.filterIrrelevantRecipients(c)
-      );
-      let shortContactsList = _.clone(
-        this.contactsList.slice(
-          0,
-          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
-        )
-      );
-      this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore =
-        this.contactsList.length > shortContactsList.length;
-    });
   }
 
   private flattenWallet(wallet): FlatWallet {

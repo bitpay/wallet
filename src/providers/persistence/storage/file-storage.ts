@@ -80,6 +80,25 @@ export class FileStorage implements IStorage {
     });
   }
 
+  exists(k: string): Promise<boolean> {
+    return new Promise(resolve => {
+      this.init()
+        .then(() => {
+          this.file
+            .getFile(this.dir, k, { create: false })
+            .then(() => resolve(true))
+            .catch(err => {
+              this.log.error(err);
+              return resolve(false);
+            });
+        })
+        .catch(err => {
+          this.log.error(err);
+          return resolve(false);
+        });
+    });
+  }
+
   get(k: string): Promise<any> {
     return new Promise(resolve => {
       this.init()
