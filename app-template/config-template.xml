@@ -2,6 +2,7 @@
 <widget id="com.bitpay.*BUNDLENAME*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
+  ios-CFBundleVersion="*IOSBUILDVERSION*"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <name>*USERVISIBLENAME*</name>
     <description>
@@ -133,7 +134,6 @@
       </edit-config>
 
       <!-- Apple Pay Support -->
-      *APPLEPAY*
 
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60.png" width="60" height="60" />
