@@ -1293,14 +1293,18 @@ export class BitPayCardTopUpPage {
       return;
     }
 
-    this._resetValues();
     // Currently the paypro error is the following string: 500 - "{}"
     if (error.toString().includes('500 - "{}"')) {
-      msg = this.translate.instant(
-        'Error 500 - There is a temporary problem, please try again later.'
-      );
+      msg = this.createdTx.paypro
+        ? this.translate.instant(
+            'There is a temporary problem with the merchant requesting the payment. Please try later'
+          )
+        : this.translate.instant(
+            'Error 500 - There is a temporary problem, please try again later.'
+          );
     }
 
+    this._resetValues();
     const infoSheetTitle = title ? title : this.translate.instant('Error');
 
     this.errorsProvider.showDefaultError(
