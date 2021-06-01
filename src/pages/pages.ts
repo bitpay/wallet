@@ -157,6 +157,7 @@ import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-cat
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
 import { MerchantPage } from './merchant/merchant';
 
+
 export const PAGES = [
   AddPage,
   AddWalletPage,

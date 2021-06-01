@@ -22,6 +22,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // Pages
 import { AmountPage } from '../amount/amount';
+import { ConfirmPage } from '../confirm/confirm';
 
 export interface FlatWallet {
   walletId: string;
@@ -134,6 +135,9 @@ export class TransferToPage {
   get useAsModal() {
     return this._useAsModal;
   }
+
+  @Input() dataDonation?: any;
+
 
   @Input()
   set fromWalletDetails(fromWalletDetails: boolean) {
@@ -319,7 +323,11 @@ export class TransferToPage {
           };
           this.events.publish('addRecipient', recipient);
           this.viewCtrl.dismiss();
-        } else {
+        } else if (this.dataDonation && this.dataDonation.isDonation) {
+          this.dataDonation.reciveLotus = addr;
+          this.navCtrl.push(ConfirmPage, this.dataDonation);
+        }
+         else {
           this.navCtrl.push(AmountPage, {
             walletId: this.navParams.data.wallet.id,
             recipientType: item.recipientType,

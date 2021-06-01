@@ -297,6 +297,17 @@
 
       <div class="line-divider"></div>
 
+      <ion-item *ngIf="isDonation">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Lotus Remaining </span>
+          </div>
+        </ion-label>
+        <ion-note class="main-note" *ngIf="!paymentExpired" item-end>{{remaining}}</ion-note>
+      </ion-item>
+
+      <div class="line-divider"></div>
+
       <ion-item *ngIf="tx.paypro && (wallet || coinbaseAccount)">
         <ion-label>
           <div class="summary-item">

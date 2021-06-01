@@ -76,6 +76,9 @@ export class SendPage {
     WalletDetailsPage
   };
 
+  isDonation: boolean;
+  titlePage: string = "Send to";
+  dataDonation: any;
   constructor(
     private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
@@ -97,6 +100,11 @@ export class SendPage {
     private platformProvider: PlatformProvider
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.isDonation = this.navParams.data.isDonation;
+    if (this.isDonation) {
+      this.titlePage = "Receive Lotus Address";
+      this.dataDonation = this.navParams.data
+    }
     this.isCordova = this.platformProvider.isCordova;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
     this.events.subscribe('SendPageRedir', this.SendPageRedirEventHandler);
@@ -184,7 +192,7 @@ export class SendPage {
       );
       isValid =
         this.currencyProvider.getChain(this.wallet.coin).toLowerCase() ==
-          addrData.coin && addrData.network == this.wallet.network;
+        addrData.coin && addrData.network == this.wallet.network;
     }
 
     if (isValid) {

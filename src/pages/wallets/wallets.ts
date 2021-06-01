@@ -4,6 +4,7 @@ import {
   Events,
   ModalController,
   NavController,
+  NavParams,
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -29,6 +30,8 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { AmountPage } from '../send/amount/amount';
+import { HttpClient } from '@angular/common/http';
 
 interface UpdateWalletOptsI {
   walletId: string;
@@ -56,8 +59,10 @@ export class WalletsPage {
   public showCoinbase: boolean;
   public coinbaseLinked: boolean;
   public coinbaseData: object = {};
+  isDonation ;
 
   constructor(
+    public http: HttpClient,
     private plt: Platform,
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
@@ -72,8 +77,10 @@ export class WalletsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private actionSheetProvider: ActionSheetProvider,
-    private coinbaseProvider: CoinbaseProvider
+    private coinbaseProvider: CoinbaseProvider,
+    private navParams: NavParams,
   ) {
+    this.isDonation = this.navParams.data.isDonation;
     this.collapsedGroups = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
@@ -411,7 +418,37 @@ export class WalletsPage {
     );
   }
 
+  public getDonationInfo() {
+    const jsonPathDonation: string = 'assets/donation.json';
+    return this.http.get(jsonPathDonation).toPromise();
+  }
+
+  public handleDonation(wallet) {
+    this.getDonationInfo().then((data:any) => {
+      this.navCtrl.push(AmountPage, {
+        toAddress: data.donationBCHtoAddress,
+        id: wallet.credentials.walletId,
+        walletId: wallet.credentials.walletId,
+        recipientType: 'wallet',
+        name: wallet.name,
+        coin: wallet.coin,
+        network: wallet.network,
+        isDonation: true,
+        fromWalletDetails: true,
+        minMoneydonation: data.minMoneydonation,
+        toalAmount : data.toalAmount,
+        remaining : data.remaining,
+        receiveLotus: data.receiveLotus,
+      });
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+
   public goToWalletDetails(wallet): void {
+    if (this.isDonation) {
+      this.handleDonation(wallet)
+    }
     if (wallet.isComplete()) {
       this.navCtrl.push(WalletDetailsPage, {
         walletId: wallet.credentials.walletId

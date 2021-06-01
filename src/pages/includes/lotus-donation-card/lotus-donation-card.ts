@@ -13,7 +13,9 @@ export class LotusDonationCard {
     private navCtrl: NavController,
   ) {}
 
-  public donationLotus(){
-    this.navCtrl.push(WalletsPage);
+  public donationLotus() {
+    this.navCtrl.push(WalletsPage, {
+      isDonation: true
+    });
   }
 }

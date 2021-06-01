@@ -49,6 +49,7 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'page-confirm',
@@ -117,8 +118,10 @@ export class ConfirmPage {
   public editGasLimit: boolean = false;
   public customGasPrice: number;
   public customGasLimit: number;
-
+  
   public errors = this.bwcProvider.getErrors();
+  remaining;
+  isDonation;
 
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
@@ -159,9 +162,12 @@ export class ConfirmPage {
     private iabCardProvider: IABCardProvider,
     protected homeIntegrationsProvider: HomeIntegrationsProvider,
     protected persistenceProvider: PersistenceProvider,
-    private walletConnectProvider: WalletConnectProvider
+    private walletConnectProvider: WalletConnectProvider,
+    public http: HttpClient,
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.isDonation = this.navParams.data.isDonation
+    this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -185,8 +191,20 @@ export class ConfirmPage {
     //   this.navParams.data.payProUrl.includes('redir=wc');
   }
 
+  private getDonationInfo() {
+    const jsonPathDonation: string = 'assets/donation.json';
+    return this.http.get(jsonPathDonation).toPromise();
+  }
+
   ngOnInit() {
     // Overrides the ngOnInit logic of WalletTabsChild
+
+    this.getDonationInfo().then((data:any) => {
+      this.remaining = `${data.remaining}/${data.toalAmount}`
+    }).catch((err) => {
+      console.log(err)
+    });
+    
   }
 
   ionViewWillLeave() {

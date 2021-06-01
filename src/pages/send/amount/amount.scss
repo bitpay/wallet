@@ -5,6 +5,16 @@ page-amount {
     }
   }
 
+  .remaining {
+    text-align: right;
+  }
+
+  .receiveLotus {
+    text-align: center;
+    position: relative;
+    top: -40px;
+  }
+
   ion-content.content {
     background-color: white;
   }

@@ -66,6 +66,7 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'confirm-card-purchase-page',
@@ -139,6 +140,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     homeIntegrationsProvider: HomeIntegrationsProvider,
     persistenceProvider: PersistenceProvider,
     WalletConnectProvider: WalletConnectProvider,
+    http: HttpClient,
     private bitpayIdProvider: BitPayIdProvider,
     private merchantProvider: MerchantProvider
   ) {
@@ -177,7 +179,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       iabCardProvider,
       homeIntegrationsProvider,
       persistenceProvider,
-      WalletConnectProvider
+      WalletConnectProvider,
+      http
     );
     this.configWallet = this.configProvider.get().wallet;
   }
