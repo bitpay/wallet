@@ -1167,6 +1167,7 @@
   }
 
   page-send,
+  page-select-currency,
   page-multi-send,
   page-select-inputs,
   page-proposals-notifications {
@@ -1517,6 +1518,7 @@
 
   page-import-wallet,
   page-create-wallet,
+  page-custom-token,
   page-create-eth-multisig,
   page-bitpay-phase-one-card-intro {
     ion-item {
@@ -1526,6 +1528,7 @@
   }
 
   page-create-wallet,
+  page-custom-token,
   page-create-eth-multisig,
   page-join-wallet {
     .linked-wallet {

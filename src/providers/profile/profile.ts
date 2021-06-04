@@ -1748,6 +1748,12 @@ export class ProfileProvider {
     return this.addAndBindWalletClient(tokenWalletClient);
   }
 
+  public async createCustomTokenWallet(ethWallet, customToken): Promise<any> {
+    await this.currencyProvider.addCustomToken(customToken);
+    const tokenWalletClient = this._createTokenWallet(ethWallet, customToken);
+    return this.addAndBindWalletClient(tokenWalletClient);
+  }
+
   public createMultisigEthWallet(ethWallet, multisigEthInfo): Promise<any> {
     const multisigEthWalletClient = this._createMultisigEthWallet(
       ethWallet,

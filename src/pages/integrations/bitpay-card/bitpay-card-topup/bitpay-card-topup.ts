@@ -17,10 +17,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
-import {
-  Coin,
-  CurrencyProvider
-} from '../../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
@@ -138,7 +135,7 @@ export class BitPayCardTopUpPage {
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount;
 
-    let coin = Coin[this.currency] ? Coin[this.currency] : null;
+    let coin = this.currency ? this.currency.toLowerCase() : null;
 
     this.bitPayCardProvider
       .get({
@@ -172,7 +169,7 @@ export class BitPayCardTopUpPage {
           hasFunds: true
         };
 
-        if (Coin[this.currency]) {
+        if (this.currency.toLowerCase()) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             this.currency.toLowerCase(),
             this.amount,

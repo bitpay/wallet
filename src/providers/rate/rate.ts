@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import env from '../../environments';
 import { ConfigProvider } from '../../providers/config/config';
 import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
@@ -44,8 +43,10 @@ export class RateProvider {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
     for (const coin of this.currencyProvider.getAvailableCoins()) {
-      this.rateServiceUrl[coin] = env.ratesAPI[coin];
-      this.rates[coin] = { USD: 1 };
+      this.rateServiceUrl[coin] = this.currencyProvider.getRatesApi()[coin];
+      this.rates[coin] = this.currencyProvider.isCustomERCToken(coin)
+        ? { USD: 0 }
+        : { USD: 1 };
       this.ratesAvailable[coin] = false;
     }
 

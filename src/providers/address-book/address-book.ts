@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { AddressProvider, CoinNetwork } from '../address/address';
@@ -144,7 +144,7 @@ export class AddressBookProvider {
       addrData.coin =
         entry.coin &&
         this.currencyProvider
-          .getChain(Coin[entry.coin.toUpperCase()])
+          .getChain(entry.coin.toLowerCase())
           .toLowerCase() === _addrData.coin.toLowerCase()
           ? entry.coin.toLowerCase()
           : _addrData.coin.toLowerCase();

@@ -14,7 +14,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -66,7 +66,7 @@ export class CreateWalletPage implements OnInit {
   public showAdvOpts: boolean;
   public seedOptions;
   public isShared: boolean;
-  public coin: Coin;
+  public coin: string;
   public coinName: string;
   public okText: string;
   public cancelText: string;

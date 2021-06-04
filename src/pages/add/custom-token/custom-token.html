@@ -1,0 +1,71 @@
+<wide-header-page title="{{ 'Add custom token' | translate }}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="createAndBindTokenWallet()" [disabled]="!customTokenForm.valid" ion-button>
+      <span translate>Add</span>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <button class="linked-wallet" ion-item (click)="showPairedWalletSelector()" detail-none>
+      <ion-label>
+        <div class="summary-item">
+          <span translate>Linked to</span>
+        </div>
+      </ion-label>
+
+      <ion-note item-end>
+        <ion-row align-items-center class="wallet" *ngIf="pairedWallet">
+          <ion-col>
+            <coin-icon [coin]="pairedWallet.coin" [network]="pairedWallet.network"></coin-icon>
+          </ion-col>
+
+          <ion-col>
+            <span class="note-container ellipsis">{{pairedWallet.name}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row align-items-center class="wallet" *ngIf="!pairedWallet">
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
+        </ion-row>
+      </ion-note>
+    </button>
+
+    <form [formGroup]="customTokenForm">
+        <ion-item>
+          <ion-icon *ngIf="isValid" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+          <ion-icon *ngIf="isValid === false" name="ios-close-circle" class="check fail" item-right></ion-icon>
+          <ion-label floating>{{'Token address' | translate}}</ion-label>
+          <ion-input  (ionChange)="setTokenInfo()" type="text" formControlName="tokenAddress"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="customTokenForm.value.tokenName">
+          <ion-label floating>{{'Token name' | translate}}</ion-label>
+          <ion-input [disabled]="true" type="text" formControlName="tokenName"></ion-input>
+        </ion-item>
+
+
+        <ion-item *ngIf="customTokenForm.value.tokenSymbol">
+          <ion-label floating>{{'Token symbol' | translate}}</ion-label>
+          <ion-input [disabled]="true" type="text" formControlName="tokenSymbol"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="customTokenForm.value.tokenDecimals">
+          <ion-label floating>{{'Token precision' | translate}}</ion-label>
+          <ion-input [disabled]="true" type="text" formControlName="tokenDecimals"></ion-input>
+        </ion-item>
+
+
+      <label-tip type="info" header="no-header" class="no-arrowhead">
+        <div label-tip-body>
+          <span translate>
+            Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.
+          </span>
+          </div>
+      </label-tip>
+    </form>
+  </div>
+</wide-header-page>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
@@ -10,7 +10,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 export class IncomingDataMenuComponent extends ActionSheetParent {
   public data: string;
   public type: string;
-  public coin: Coin;
+  public coin: string;
   public coinName: string;
   public fromHomeCard: boolean;
   public isCordova: boolean;

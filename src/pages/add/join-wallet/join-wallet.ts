@@ -20,7 +20,6 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
@@ -45,7 +44,7 @@ export class JoinWalletPage {
   public cancelText: string;
   public joinForm: FormGroup;
   public keyId: string;
-  public coin: Coin;
+  public coin: string;
   public isOpenSelector: boolean;
   public pairedWallet;
 

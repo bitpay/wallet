@@ -591,5 +591,13 @@
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'custom-tokens-warning'" type="warning">
+      <span sheet-title-text translate>Custom Tokens</span>
+      <span sheet-text>
+        <span translate>Custom tokens cannot be used for payments on BitPay</span>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

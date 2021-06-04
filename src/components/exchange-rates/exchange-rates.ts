@@ -3,7 +3,6 @@ import { Events, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { PricePage } from '../../pages/home/price-page/price-page';
 import { ConfigProvider, CurrencyProvider, Logger } from '../../providers';
-import { Coin } from '../../providers/currency/currency';
 import {
   DateRanges,
   ExchangeRate,
@@ -43,7 +42,7 @@ export class ExchangeRates {
       const {
         backgroundColor,
         gradientBackgroundColor
-      } = this.currencyProvider.getTheme(coin as Coin);
+      } = this.currencyProvider.getTheme(coin);
       const card = {
         unitCode: coin,
         historicalRates: [],
@@ -52,7 +51,7 @@ export class ExchangeRates {
         totalBalanceChangeAmount: 0,
         backgroundColor,
         gradientBackgroundColor,
-        name: this.currencyProvider.getCoinName(coin as Coin)
+        name: this.currencyProvider.getCoinName(coin)
       };
       this.coins.push(card);
     }

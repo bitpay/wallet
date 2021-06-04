@@ -2,12 +2,25 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { Coin, CurrencyProvider } from '../currency/currency';
+import { CurrencyProvider } from '../currency/currency';
 import { FilterProvider } from '../filter/filter';
 import { RateProvider } from '../rate/rate';
 
 import * as _ from 'lodash';
 
+export enum Coin {
+  BTC = 'btc',
+  BCH = 'bch',
+  ETH = 'eth',
+  XRP = 'xrp',
+  USDC = 'usdc',
+  GUSD = 'gusd',
+  PAX = 'pax',
+  BUSD = 'busd',
+  DAI = 'dai',
+  WBTC = 'wbtc',
+  DOGE = 'doge'
+}
 @Injectable()
 export class TxFormatProvider {
   private bitcoreCash;
@@ -46,9 +59,24 @@ export class TxFormatProvider {
     if (coin == 'sat') return satoshis.toString();
 
     // TODO : now only works for english, specify opts to change thousand separator and decimal separator
-    var opts = {
+    let opts: any = {
       fullPrecision: !!fullPrecision
     };
+
+    // TODO ???
+    if (coin && this.currencyProvider.isCustomERCToken(coin)) {
+      opts.toSatoshis = this.currencyProvider.getPrecision(coin).unitToSatoshi;
+      opts.decimals = {
+        full: {
+          maxDecimals: 8,
+          minDecimals: 8
+        },
+        short: {
+          maxDecimals: 6,
+          minDecimals: 2
+        }
+      };
+    }
     return this.bwcProvider.getUtils().formatAmount(satoshis, coin, opts); // This util returns a string
   }
 
@@ -110,7 +138,7 @@ export class TxFormatProvider {
     return val();
   }
 
-  public processTx(coin: Coin, tx) {
+  public processTx(coin: string, tx) {
     if (!tx || tx.action == 'invalid') return tx;
 
     // New transaction output format. Fill tx.amount and tx.toAmount for
@@ -176,7 +204,7 @@ export class TxFormatProvider {
   }
 
   public parseAmount(
-    coin: Coin,
+    coin: string,
     amount,
     currency: string,
     opts?: { onlyIntegers?: boolean; rates? }
@@ -190,7 +218,11 @@ export class TxFormatProvider {
     let amountSat;
 
     // If fiat currency
-    if (!Coin[currency] && currency != 'sat') {
+    if (
+      !Coin[currency] &&
+      !this.currencyProvider.isCustomERCToken(currency) &&
+      currency != 'sat'
+    ) {
       let formattedAmount: string =
         opts && opts.onlyIntegers
           ? this.filter.formatFiatAmount(amount.toFixed(0))
@@ -222,7 +254,7 @@ export class TxFormatProvider {
     };
   }
 
-  public satToUnit(amount: number, coin: Coin): number {
+  public satToUnit(amount: number, coin: string): number {
     let { unitToSatoshi, unitDecimals } = this.currencyProvider.getPrecision(
       coin
     );

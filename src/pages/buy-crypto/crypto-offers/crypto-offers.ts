@@ -8,7 +8,7 @@ import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
 import { BuyCryptoProvider } from '../../../providers/buy-crypto/buy-crypto';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -40,7 +40,7 @@ interface CryptoOffer {
 export class CryptoOffersPage {
   public wallet: any;
   public walletId: any;
-  public coin: Coin;
+  public coin: string;
   public paymentMethod: any;
   public selectedCountry;
   public currency: string;
@@ -93,7 +93,7 @@ export class CryptoOffersPage {
     this.selectedCountry = this.navParams.data.selectedCountry;
     this.coin = this.navParams.data.coin;
     const coinColor =
-      this.currencyProvider.getTheme(this.coin as Coin).coinColor || '#e6f8e9';
+      this.currencyProvider.getTheme(this.coin).coinColor || '#e6f8e9';
     this.coinBorderColor = `2px solid ${coinColor}`;
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
@@ -144,7 +144,7 @@ export class CryptoOffersPage {
     }
   }
 
-  private setPrefix(address: string, coin: Coin, network: string): string {
+  private setPrefix(address: string, coin: string, network: string): string {
     const prefix: string = this.currencyProvider.getProtocolPrefix(
       coin,
       network

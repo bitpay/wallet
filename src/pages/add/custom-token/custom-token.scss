@@ -1,0 +1,48 @@
+page-custom-token {
+  .check {
+    font-size: 22px;
+    padding-top: 3px;
+    &.success {
+      color: color($colors, success);
+    }
+    &.fail {
+      color: color($colors, danger);
+    }
+  }
+  .custom-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    .buttons-container {
+      .add-button {
+        height: 48px;
+        width: 48px;
+        font-size: 20px;
+        border-radius: 50%;
+        border: 1px solid color($colors, primary);
+        box-shadow: none;
+      }
+      .remove-button {
+        opacity: 50%;
+        height: 33px;
+        width: 33px;
+        border-radius: 50%;
+        font-size: 14px;
+        border: 1px solid color($colors, grey);
+        box-shadow: none;
+        ion-icon {
+          color: color($colors, grey);
+        }
+      }
+    }
+  }
+  .linked-wallet {
+    .item-inner {
+      border-bottom: 0px !important;
+    }
+  }
+  .last-item {
+    margin-left: auto !important;
+  }
+}

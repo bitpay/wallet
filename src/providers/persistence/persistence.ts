@@ -92,7 +92,9 @@ const Keys = {
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
   TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
   TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
-  NETWORK: 'network'
+  NETWORK: 'network',
+  CUSTOMTOKENSDATA: 'customTokensData',
+  CUSTOMTOKENSOPTS: 'customTokensOpts'
 };
 
 interface Storage {
@@ -1031,6 +1033,22 @@ export class PersistenceProvider {
 
   getNetwork() {
     return this.storage.get(Keys.NETWORK);
+  }
+
+  setCustomTokenData(customTokenData) {
+    return this.storage.set(Keys.CUSTOMTOKENSDATA, customTokenData);
+  }
+
+  getCustomTokenData() {
+    return this.storage.get(Keys.CUSTOMTOKENSDATA);
+  }
+
+  setCustomTokenOpts(customTokenOpts) {
+    return this.storage.set(Keys.CUSTOMTOKENSOPTS, customTokenOpts);
+  }
+
+  getCustomTokenOpts() {
+    return this.storage.get(Keys.CUSTOMTOKENSOPTS);
   }
 }
 

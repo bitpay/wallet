@@ -9,7 +9,7 @@ import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
-import { Coin, CurrencyProvider } from '../currency/currency';
+import { CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
@@ -21,7 +21,7 @@ import { ProfileProvider } from '../profile/profile';
 export interface RedirParams {
   activePage?: any;
   amount?: string;
-  coin?: Coin;
+  coin?: string;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
 }
@@ -354,7 +354,7 @@ export class IncomingDataProvider {
       data.replace(`bitpay:${address}`, '')
     );
     let amount = params.get('amount') || amountFromRedirParams;
-    const coin: Coin = Coin[params.get('coin').toUpperCase()];
+    const coin: string = params.get('coin').toLocaleLowerCase();
     const message = params.get('message');
     const requiredFeeParam = params.get('gasPrice');
     if (amount) {
@@ -373,7 +373,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.BTC;
+    const coin = 'btc';
     let parsed = this.bwcProvider.getBitcore().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
@@ -388,7 +388,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.BCH;
+    const coin = 'bch';
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
 
@@ -410,7 +410,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Ethereum URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.ETH;
+    const coin = 'eth';
     const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
     const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
     let parsedAmount;
@@ -435,7 +435,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Ripple URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.XRP;
+    const coin = 'xrp';
     const amountParam = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
     const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
     let parsedAmount;
@@ -471,7 +471,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Dogecoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.DOGE;
+    const coin = 'doge';
     let parsed = this.bwcProvider.getBitcoreDoge().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
@@ -503,7 +503,7 @@ export class IncomingDataProvider {
 
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
-    const coin = Coin.BCH;
+    const coin = 'bch';
     let parsed = this.bwcProvider
       .getBitcore()
       .URI(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'));
@@ -544,7 +544,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin plain address');
-    const coin = Coin.BTC;
+    const coin = 'btc';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -563,7 +563,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin Cash plain address');
-    const coin = Coin.BCH;
+    const coin = 'bch';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -579,7 +579,7 @@ export class IncomingDataProvider {
 
   private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Ethereum address');
-    const coin = Coin.ETH;
+    const coin = 'eth';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -595,7 +595,7 @@ export class IncomingDataProvider {
 
   private handleRippleAddress(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Ripple address');
-    const coin = Coin.XRP;
+    const coin = 'xrp';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -614,7 +614,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Dogecoin plain address');
-    const coin = Coin.DOGE;
+    const coin = 'doge';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -1289,7 +1289,7 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: Coin,
+    coin: string,
     requiredFeeRate?: string,
     destinationTag?: string
   ): void {
@@ -1321,7 +1321,7 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: Coin): void {
+  private goToAmountPage(toAddress: string, coin: string): void {
     let stateParams = {
       toAddress,
       coin
@@ -1336,7 +1336,7 @@ export class IncomingDataProvider {
 
   public goToPayPro(
     url: string,
-    coin: Coin,
+    coin: string,
     payProOptions?,
     disableLoader?: boolean,
     activePage?: string
@@ -1359,7 +1359,7 @@ export class IncomingDataProvider {
     payProDetails,
     payProOptions,
     url,
-    coin: Coin
+    coin: string
   ): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');

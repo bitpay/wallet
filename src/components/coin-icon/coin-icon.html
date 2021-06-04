@@ -1,4 +1,4 @@
-<ion-icon *ngIf="coin && coin !== 'default'" class="item-img rectangle" [ngClass]="{ 
+<ion-icon *ngIf="coin && Coin[coin | uppercase]" class="item-img rectangle" [ngClass]="{ 
 'background_btc': coin == 'btc',
 'background_bch': coin == 'bch',
 'background_eth': coin == 'eth',
@@ -15,4 +15,6 @@
   <img src="assets/img/currencies/{{coin}}.svg" />
 </ion-icon>
 
-<ion-icon *ngIf="coin ==='default'" name="logo-usd" color="success" class="item-img rectangle background_default" item-start></ion-icon>
+<ion-icon *ngIf="coin && !Coin[coin | uppercase]" color="success" class="item-img rectangle background_default" item-start>
+  <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin)}}.png" />
+</ion-icon>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
@@ -35,7 +35,7 @@ export class ChooseFeeLevelModal {
   public feeOpts = [];
   public loadingFee: boolean;
   public feeLevels;
-  public coin: Coin;
+  public coin: string;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
   public maxFee: number;

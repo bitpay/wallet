@@ -38,7 +38,7 @@ export { ClipboardProvider } from '../providers/clipboard/clipboard';
 export { CoinbaseProvider } from '../providers/coinbase/coinbase';
 export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
-export { CurrencyProvider, Coin } from '../providers/currency/currency';
+export { CurrencyProvider } from '../providers/currency/currency';
 export { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 export { DirectoryProvider } from '../providers/directory/directory';
 export { DomProvider } from '../providers/dom/dom';

@@ -5,7 +5,7 @@ export interface CoinOpts {
   name: string;
   chain: string;
   coin: string;
-  unitInfo: {
+  unitInfo?: {
     // Config/Precision
     unitName: string;
     unitToSatoshi: number;
@@ -20,6 +20,7 @@ export interface CoinOpts {
     isERCToken: boolean;
     isStableCoin: boolean;
     singleAddress: boolean;
+    isCustom?: boolean;
   };
   paymentInfo: {
     paymentCode: string;

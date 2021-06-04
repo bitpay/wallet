@@ -18,7 +18,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { Logger } from '../../../providers/logger/logger';
@@ -136,7 +136,7 @@ export class ImportWalletPage {
     this.setForm();
   };
 
-  public getCoinName(coin: Coin) {
+  public getCoinName(coin: string) {
     return this.currencyProvider.getCoinName(coin);
   }
 
@@ -355,7 +355,7 @@ export class ImportWalletPage {
     return;
   }
 
-  public setOptsAndCreate(coin: Coin): void {
+  public setOptsAndCreate(coin: string): void {
     const opts: Partial<WalletOptions> = {
       keyId: undefined,
       name: this.currencyProvider.getCoinName(coin),
@@ -365,7 +365,7 @@ export class ImportWalletPage {
       networkName: 'livenet',
       bwsurl: this.importForm.value.bwsURL,
       singleAddress: this.currencyProvider.isSingleAddress(coin),
-      coin: Coin[coin.toUpperCase()]
+      coin: coin.toLowerCase()
     };
 
     const words = this.importForm.value.words;

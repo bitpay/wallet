@@ -11,7 +11,7 @@ import { AmountPage } from '../../pages/send/amount/amount';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ChangellyProvider } from '../../providers/changelly/changelly';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
@@ -555,7 +555,7 @@ export class ExchangeCryptoPage {
       });
   }
 
-  private getChain(coin: Coin): string {
+  private getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 

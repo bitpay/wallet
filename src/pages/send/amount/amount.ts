@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 // Providers
 import { ActionSheetProvider, IABCardProvider } from '../../../providers';
 import { Config, ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ElectronProvider } from '../../../providers/electron/electron';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { getActivationFee } from '../../../providers/gift-card/gift-card';
@@ -232,10 +232,6 @@ export class AmountPage {
     } else if (event.keyCode === 86) {
       if (event.ctrlKey || event.metaKey) this.processClipboard();
     } else if (event.keyCode === 13) this.finish();
-  }
-
-  public isCoin(coin: string): boolean {
-    return !!Coin[coin];
   }
 
   private setAvailableUnits(): void {
@@ -495,7 +491,7 @@ export class AmountPage {
       );
   }
 
-  private fromFiat(val: number, coin?: Coin): number {
+  private fromFiat(val: number, coin?: string): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
     return parseFloat(
       (
@@ -504,7 +500,7 @@ export class AmountPage {
     );
   }
 
-  private toFiat(val: number, coin?: Coin): number {
+  private toFiat(val: number, coin?: string): number {
     if (
       !this.rateProvider.getRate(
         this.fiatCode,
@@ -677,7 +673,7 @@ export class AmountPage {
       ? this.currencyProvider.getPrecision(
           this.availableUnits[this.altUnitIndex].id
         )
-      : this.currencyProvider.getPrecision(this.unit.toLowerCase() as Coin);
+      : this.currencyProvider.getPrecision(this.unit.toLowerCase());
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitDecimals = unitDecimals;

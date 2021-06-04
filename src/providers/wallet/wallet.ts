@@ -10,7 +10,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { Coin, CurrencyProvider } from '../currency/currency';
+import { CurrencyProvider } from '../currency/currency';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
 import { KeyProvider } from '../key/key';
@@ -41,7 +41,7 @@ export interface WalletOptions {
   networkName: string;
   bwsurl: any;
   singleAddress: any;
-  coin: Coin;
+  coin: string;
   extendedPrivateKey: any;
   mnemonic: any;
   derivationStrategy: any;
@@ -559,13 +559,21 @@ export class WalletProvider {
     });
   }
 
-  public getAddressView(coin: Coin, network: string, address: string): string {
+  public getAddressView(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
     if (coin != 'bch') return address;
     const protoAddr = this.getProtoAddress(coin, network, address);
     return protoAddr;
   }
 
-  public getProtoAddress(coin: Coin, network: string, address: string): string {
+  public getProtoAddress(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
     const proto: string = this.getProtocolHandler(coin, network);
     const protoAddr: string = proto + ':' + address;
     return protoAddr;
@@ -1161,6 +1169,16 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       wallet.getMultisigContractInfo(opts, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
+  }
+
+  public getTokenContractInfo(wallet, opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      opts = opts || {};
+      wallet.getTokenContractInfo(opts, (err, res) => {
         if (err) return reject(err);
         return resolve(res);
       });
@@ -1873,7 +1891,7 @@ export class WalletProvider {
     });
   }
 
-  public getProtocolHandler(coin: Coin, network: string = 'livenet'): string {
+  public getProtocolHandler(coin: string, network: string = 'livenet'): string {
     return this.currencyProvider.getProtocolPrefix(coin, network);
   }
 

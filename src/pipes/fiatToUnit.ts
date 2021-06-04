@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ConfigProvider } from '../providers/config/config';
-import { Coin } from '../providers/currency/currency';
 import { RateProvider } from '../providers/rate/rate';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 
@@ -18,7 +17,7 @@ export class FiatToUnitPipe implements PipeTransform {
   ) {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
-  transform(amount: number, coin: Coin, alternative?: string) {
+  transform(amount: number, coin: string, alternative?: string) {
     alternative = alternative
       ? alternative
       : this.walletSettings.alternativeIsoCode;

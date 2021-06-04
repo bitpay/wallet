@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
-import { Coin } from '../../../providers/currency/currency';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -12,7 +11,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'multiple-outputs.html'
 })
 export class MultipleOutputsPage {
-  public coin: Coin;
+  public coin: string;
   private _tx;
   private _misunderstoodOutputsMsg;
 

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+// providers
+import { CurrencyProvider } from '../../providers/currency/currency';
 @Component({
   selector: 'wallet-item-content',
   templateUrl: 'wallet-item-content.html'
@@ -7,6 +9,8 @@ import { Component, Input } from '@angular/core';
 export class WalletItemContent {
   @Input()
   wallet: any;
+
+  constructor(public currencyProvider: CurrencyProvider) {}
 
   getBalance(wallet, currency) {
     const lastKnownBalance = this.getLastKownBalance(wallet, currency);

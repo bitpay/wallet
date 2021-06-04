@@ -10,6 +10,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { CurrencyProvider } from '../currency/currency';
 import { PlatformProvider } from '../platform/platform';
 import { ThemeProvider } from '../theme/theme';
 
@@ -69,7 +70,8 @@ export class AppProvider {
     private persistence: PersistenceProvider,
     private file: File,
     private platformProvider: PlatformProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private currencyProvider: CurrencyProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
@@ -114,6 +116,7 @@ export class AppProvider {
     await this.config.load();
     await this.themeProvider.load();
     await this.language.load();
+    await this.currencyProvider.load();
   }
 
   private getAppInfo() {
