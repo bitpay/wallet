@@ -41,6 +41,13 @@ export class WalletConnectPage {
   public wallet;
   public address: string;
   public activeChainId: number = 1;
+  public buttonAction = {
+    eth_sendTransaction: 'Confirm',
+    eth_signTransaction: 'Approve',
+    eth_sign: 'Approve',
+    personal_sign: 'Approve',
+    eth_signTypedData: 'Approve'
+  };
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
