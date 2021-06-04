@@ -80,7 +80,7 @@ export class WalletConnectPage {
     this.uri = data.value;
   };
 
-  private setConnectionData: any = _ => {
+  private setConnectionData: any = async _ => {
     const {
       connected,
       activeChainId,
@@ -88,7 +88,7 @@ export class WalletConnectPage {
       address,
       peerMeta,
       requests
-    } = this.walletConnectProvider.getConnectionData();
+    } = await this.walletConnectProvider.getConnectionData();
     this.connected = connected;
     this.activeChainId = activeChainId;
     this.wallet = this.profileProvider.getWallet(walletId);
