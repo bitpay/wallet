@@ -380,6 +380,7 @@ export class WalletConnectProvider {
       this.logger.debug('walletConnector.killSession');
       this.walletConnector.killSession();
       await this.persistenceProvider.removeWalletConnect();
+      await this.persistenceProvider.removeWalletConnectPendingRequests();
       this.peerMeta = null;
       this.connected = false;
     }
