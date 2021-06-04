@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-
+import { CurrencyProvider } from '../../providers/currency/currency';
 @Component({
   selector: 'coin-icon',
   templateUrl: 'coin-icon.html'
@@ -29,4 +29,5 @@ export class CoinIconComponent {
 
     this.assetUrl += `${coin}.svg`;
   }
+  constructor(public currencyProvider: CurrencyProvider) {}
 }

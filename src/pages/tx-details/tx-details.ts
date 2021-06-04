@@ -46,7 +46,7 @@ export class TxDetailsModal {
 
   constructor(
     private configProvider: ConfigProvider,
-    private currencyProvider: CurrencyProvider,
+    public currencyProvider: CurrencyProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,

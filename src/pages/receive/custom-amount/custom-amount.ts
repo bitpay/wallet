@@ -8,7 +8,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -65,7 +65,7 @@ export class CustomAmountPage {
       const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (!Coin[_currency]) {
+      if (!_currency.toLowerCase()) {
         // Convert to BTC or BCH
         const amountUnit = this.txFormatProvider.satToUnit(
           parsedAmount.amountSat,

@@ -5,6 +5,8 @@ export interface Token {
   address: string;
 }
 
+export const TokensListAPIUrl = 'https://api.1inch.exchange/v3.0/1/tokens';
+
 export const TokenOpts = {
   '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
     name: 'USD Coin',

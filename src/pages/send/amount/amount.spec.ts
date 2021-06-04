@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestUtils } from '../../../test';
 
-import { Coin } from '../../../providers/currency/currency';
 import { RateProvider } from '../../../providers/rate/rate';
 import { AmountPage } from './amount';
 
@@ -56,7 +55,7 @@ describe('AmountPage', () => {
       instance.unitIndex = 1;
       instance.unitToSatoshi = 1e8;
       instance.sendMax();
-      expect(toFiatSpy).toHaveBeenCalledWith(100000000, 'USD', Coin.BCH);
+      expect(toFiatSpy).toHaveBeenCalledWith(100000000, 'USD', 'bch');
       expect(instance.expression).toBe('1000000.00');
     });
 

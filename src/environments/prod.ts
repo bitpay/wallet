@@ -1,4 +1,3 @@
-import { CurrencyProvider } from '../providers/currency/currency';
 import { EnvironmentSchema } from './schema';
 
 /**
@@ -7,7 +6,6 @@ import { EnvironmentSchema } from './schema';
 const env: EnvironmentSchema = {
   name: 'production',
   enableAnimations: true,
-  ratesAPI: new CurrencyProvider().getRatesApi(),
   activateScanner: true
 };
 

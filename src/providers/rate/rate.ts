@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import env from '../../environments';
 import { ConfigProvider } from '../../providers/config/config';
 import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
@@ -44,7 +43,7 @@ export class RateProvider {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
     for (const coin of this.currencyProvider.getAvailableCoins()) {
-      this.rateServiceUrl[coin] = env.ratesAPI[coin];
+      this.rateServiceUrl[coin] = this.currencyProvider.getRatesApi()[coin];
       this.rates[coin] = { USD: 1 };
       this.ratesAvailable[coin] = false;
     }
@@ -60,48 +59,47 @@ export class RateProvider {
   }
 
   public updateRates(chain?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (chain) {
-        this.getCoin(chain)
-          .then(dataCoin => {
-            _.each(dataCoin, currency => {
-              if (currency && currency.code && currency.rate) {
-                this.rates[chain][currency.code] = currency.rate;
+    if (chain) {
+      if (!this.currencyProvider.getRatesApi()[chain]) return Promise.resolve();
+      return this.getCoin(chain)
+        .then(dataCoin => {
+          _.each(dataCoin, currency => {
+            if (currency && currency.code && currency.rate) {
+              this.rates[chain][currency.code] = currency.rate;
+            }
+          });
+          return Promise.resolve();
+        })
+        .catch(errorCoin => {
+          this.logger.error(errorCoin);
+          return Promise.resolve();
+        });
+    } else {
+      return this.getRates()
+        .then(res => {
+          _.map(res, (rates, coin) => {
+            const coinRates = {};
+            _.each(rates, r => {
+              if (r.code && r.rate) {
+                const rate = { [r.code]: r.rate };
+                Object.assign(coinRates, rate);
+              }
+
+              // set alternative currency list
+              if (r.code && r.name) {
+                this.alternatives[r.code] = { name: r.name };
               }
             });
-            resolve();
-          })
-          .catch(errorCoin => {
-            this.logger.error(errorCoin);
-            reject(errorCoin);
+            this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
+            this.ratesAvailable[coin] = true;
           });
-      } else {
-        this.getRates()
-          .then(res => {
-            _.map(res, (rates, coin) => {
-              const coinRates = {};
-              _.each(rates, r => {
-                if (r.code && r.rate) {
-                  const rate = { [r.code]: r.rate };
-                  Object.assign(coinRates, rate);
-                }
-
-                // set alternative currency list
-                if (r.code && r.name) {
-                  this.alternatives[r.code] = { name: r.name };
-                }
-              });
-              this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
-              this.ratesAvailable[coin] = true;
-            });
-            resolve();
-          })
-          .catch(err => {
-            this.logger.error(err);
-            reject(err);
-          });
-      }
-    });
+          return Promise.resolve();
+        })
+        .catch(err => {
+          this.logger.error(err);
+          return Promise.reject(err);
+        });
+    }
   }
 
   public getRates(): Promise<any> {
@@ -124,6 +122,7 @@ export class RateProvider {
     const customRate =
       opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
     if (customRate) return customRate;
+    if (!this.rates[chain]) return 0;
     if (this.rates[chain][code]) return this.rates[chain][code];
     if (
       !this.rates[chain][code] &&

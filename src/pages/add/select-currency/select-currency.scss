@@ -25,4 +25,10 @@ page-select-currency {
   .list-subtitle {
     padding-left: 20px;
   }
+  .create-button {
+    background: white;
+    color: color($colors, primary);
+    margin-left: -12px;
+    text-align: center;
+  }
 }

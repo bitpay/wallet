@@ -28,7 +28,10 @@
         <ion-note item-end>
           <div class="payment-proposal-to" *ngIf="!tx.recipientType">
             <div class="background-content" *ngIf="!tx.paypro && !fromCoinbase" copy-to-clipboard="{{ tx.origToAddress }}">
-              <img class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+              <img *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="coin-img" src="assets/img/currencies/{{tx.coin}}.svg" [ngClass]="{'testnet': tx.network === 'testnet'}" alt="Coin" />
+              <ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" class="coin-img" [ngClass]="{'testnet': tx.network === 'testnet'}" item-start>
+                <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin)}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'" />
+              </ion-icon>
               <span *ngIf="!tx.name">{{toAddressName || (tx.origToAddress | shortenedAddress)}}</span>
               <span class="ellipsis" *ngIf="tx.name">{{tx.name}}</span>
             </div>
@@ -326,7 +329,7 @@
         </ion-note>
       </ion-item>
 
-      <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount">
+      <div class="amount-details" padding-bottom *ngIf="!coinbaseAccount && !currencyProvider.isCustomERCToken(tx.coin)">
         <div class="total-amount-note" [ngClass]="{'subtotal-amount-note': !wallet?.credentials.token}">
           <span *ngIf="!fromSelectInputs">{{tx.amount | satToFiat: tx.coin}}</span>
           <span *ngIf="fromSelectInputs && wallet && tx.txp[wallet.id] && tx.txp[wallet.id].fee">{{tx.amount - tx.txp[wallet.id].fee | satToFiat: tx.coin}}</span>
@@ -337,7 +340,7 @@
       </div>
 
 
-      <ion-item *ngIf="totalAmountStr">
+      <ion-item *ngIf="totalAmountStr && !currencyProvider.isCustomERCToken(tx.coin)">
         <ion-label>
           <div class="main-label total-label">
             <span translate>TOTAL</span>
