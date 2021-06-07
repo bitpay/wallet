@@ -459,7 +459,9 @@ export class HomePage {
             this.removeAdvertisement('card-referral');
             break;
           default:
-            this.cardExperimentEnabled = cardExperimentEnabled;
+            if (cardExperimentEnabled) {
+              this.cardExperimentEnabled = cardExperimentEnabled;
+            }
             if (hasGalileo) {
               this.addCardReferralAdvertisement();
               this.removeAdvertisement('bitpay-card');
