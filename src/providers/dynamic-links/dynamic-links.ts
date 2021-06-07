@@ -32,6 +32,7 @@ export class DynamicLinksProvider {
   private getDynamicLink(): Promise<any> {
     return new Promise(resolve => {
       this.FCMPlugin.getDynamicLink().subscribe(data => {
+        console.log('[dynamic-links.ts:34]', JSON.stringify(data)); /* TODO */
         if (data && data.deepLink && data.newInstall)
           this.persistenceProvider.setDynamicLink(data.deepLink);
         resolve(data);

@@ -8,11 +8,13 @@ import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
 import { RateProvider } from '../rate/rate';
 
 import { Coin, CurrencyProvider } from '../currency/currency';
+
+import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 
 import * as _ from 'lodash';
 
@@ -20,6 +22,7 @@ const LIMIT: number = 100;
 
 @Injectable()
 export class CoinbaseProvider {
+  private coinbaseIAB_Ref: InAppBrowserRef;
   private environment: string = env.name;
   private linkedAccount: boolean = false;
   private credentials;
@@ -41,12 +44,12 @@ export class CoinbaseProvider {
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
     private analyticsProvider: AnalyticsProvider,
+    private iab: InAppBrowserProvider,
     private rateProvider: RateProvider
   ) {
     /*
@@ -73,9 +76,8 @@ export class CoinbaseProvider {
 
     const coinbase = this.appProvider.servicesInfo.coinbase;
 
-    this.credentials.REDIRECT_URI = this.platformProvider.isCordova
-      ? coinbase.redirect_uri.mobile
-      : coinbase.redirect_uri.desktop;
+    // ? 'https://bitpayapp.page.link/Zvyi'
+    this.credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
 
     // Force to use specific version
     this.credentials.API_VERSION = '2017-10-31'; // TODO: there is a newest version: 2020-02-11
@@ -137,6 +139,35 @@ export class CoinbaseProvider {
         '&account=all&state=SECURE_RANDOM&scope=' +
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+    }
+  }
+
+  public iabInit(): void {
+    this.logger.debug('IAB Coinbase initialized');
+    this.coinbaseIAB_Ref = this.iab.refs.coinbase;
+    this.coinbaseIAB_Ref.addEventListener('message', data => {
+      console.log('[coinbase.ts:148] MESSAGE', JSON.stringify(data)); /* TODO */
+    });
+    this.coinbaseIAB_Ref.addEventListener('loadstop', data => {
+      console.log(
+        '[coinbase.ts:151] LOAD STOP',
+        JSON.stringify(data)
+      ); /* TODO */
+      var title = data.url;
+      const coinbasePrefix = 'https://www.coinbase.com/oauth/authorize/';
+      if (title.startsWith(coinbasePrefix) && title.endsWith('?')) {
+        title = title.replace(coinbasePrefix, '');
+        title = title.replace('?', '');
+        console.log('WE HAVE THE CODE' + title);
+        this.linkAccount(title);
+        this.closeIab();
+      }
+    });
+  }
+
+  private closeIab(): void {
+    if (this.coinbaseIAB_Ref) {
+      this.coinbaseIAB_Ref.close();
     }
   }
 

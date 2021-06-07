@@ -14,6 +14,7 @@ export class InAppBrowserProvider {
   // add new refs here
   refs: {
     card?: InAppBrowserRef;
+    coinbase?: InAppBrowserRef;
   } = {};
 
   constructor(

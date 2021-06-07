@@ -6,9 +6,11 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 // Providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-browser';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
+
 @Component({
   selector: 'page-coinbase',
   templateUrl: 'coinbase.html'
@@ -32,6 +34,7 @@ export class CoinbasePage {
     private navParams: NavParams,
     private translate: TranslateService,
     private formBuilder: FormBuilder,
+    private iab: InAppBrowserProvider,
     private viewCtrl: ViewController
   ) {
     this.oauthCodeForm = this.formBuilder.group({
@@ -62,7 +65,7 @@ export class CoinbasePage {
     }, 600);
   }
 
-  public openAuthenticateWindow(): void {
+  public async openAuthenticateWindow() {
     this.showOauthForm = true;
     if (!this.isElectron) {
       if (this.navParams.data.isOnboardingFlow) {
@@ -70,7 +73,15 @@ export class CoinbasePage {
           this.viewCtrl.dismiss();
         });
       }
-      this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
+
+      await this.iab.createIABInstance(
+        'coinbase',
+        null,
+        this.coinbaseProvider.oauthUrl
+      );
+      this.coinbaseProvider.iabInit();
+
+      // this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
     } else {
       const { remote } = (window as any).require('electron');
       const BrowserWindow = remote.BrowserWindow;
