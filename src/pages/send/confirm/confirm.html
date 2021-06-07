@@ -295,6 +295,29 @@
         </ion-note>
       </button>
 
+      <div class="line-divider" *ngIf="isDonation"></div>
+
+      <ion-item *ngIf="isDonation">
+        <ion-label>
+          <div class="summary-item">
+            <span translate>Receiving</span>
+          </div>
+        </ion-label>
+        <ion-note item-end>
+          <ion-row align-items-center class="wallet" *ngIf="reciveLotus">
+            <ion-col>
+              <coin-icon [coin]="reciveLotus.coin" [network]="reciveLotus.network"></coin-icon>
+            </ion-col>
+
+            <ion-col>
+              <div copy-to-clipboard="{{ reciveLotus.reciveLotus }}">
+                <span class="note-container ellipsis" *ngIf="reciveLotus.name">{{reciveLotus.name}}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+
       <div class="line-divider"></div>
 
       <ion-item *ngIf="isDonation">

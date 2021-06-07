@@ -91,7 +91,16 @@ export class WalletsPage {
 
   ionViewWillEnter() {
     this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
-
+    if(this.isDonation){
+      const walletsGroup = [];
+      this.walletsGroups.forEach((el: any) => {
+        const wallet = el.filter(wallet => {
+            return ((wallet.coin == 'doge' && wallet.network == 'testnet') || wallet.coin == 'bch')
+         })
+         walletsGroup.push(wallet);
+     })
+    this.walletsGroups = walletsGroup;
+    }
     // Get Coinbase Accounts and UserInfo
     this.setCoinbase();
   }
@@ -447,7 +456,7 @@ export class WalletsPage {
 
   public goToWalletDetails(wallet): void {
     if (this.isDonation) {
-      this.handleDonation(wallet)
+      return this.handleDonation(wallet);
     }
     if (wallet.isComplete()) {
       this.navCtrl.push(WalletDetailsPage, {
@@ -528,3 +537,8 @@ export class WalletsPage {
     });
   }
 }
+
+
+
+// WEBPACK FOOTER //
+// ./src/pages/wallets/wallets.ts

@@ -326,6 +326,7 @@ export class TransferToPage {
         } else if (this.dataDonation && this.dataDonation.isDonation) {
           this.dataDonation.reciveLotus = addr;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
+          return;
         }
          else {
           this.navCtrl.push(AmountPage, {
