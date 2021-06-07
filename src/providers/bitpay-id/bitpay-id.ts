@@ -261,6 +261,12 @@ export class BitPayIdProvider {
         this.persistenceProvider.removeBitPayIdUserInfo(network),
         this.persistenceProvider.removeBitpayAccountV2(network)
       ]);
+
+      this.events.publish('BitPayId/Disconnected');
+      this.events.publish('CardAdvertisementUpdate', {
+        status: 'disconnected'
+      });
+
       this.iab.refs.card.executeScript(
         {
           code: `window.postMessage(${JSON.stringify({

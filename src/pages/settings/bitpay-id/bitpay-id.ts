@@ -10,7 +10,6 @@ import {
   PersistenceProvider,
   PopupProvider
 } from '../../../providers';
-import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-browser';
 
 @Component({
   selector: 'page-bitpay-id',
@@ -33,8 +32,7 @@ export class BitPayIdPage {
     private persistenceProvider: PersistenceProvider,
     private actionSheetProvider: ActionSheetProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    private translate: TranslateService,
-    private iab: InAppBrowserProvider
+    private translate: TranslateService
   ) {}
 
   async ionViewDidLoad() {
@@ -93,23 +91,10 @@ export class BitPayIdPage {
                   )
                 }
               );
-              this.iab.refs.card.executeScript(
-                {
-                  code: `window.postMessage(${JSON.stringify({
-                    message: 'bitPayIdDisconnected'
-                  })}, '*')`
-                },
-                () => {
-                  infoSheet.present();
-                  setTimeout(() => {
-                    this.navCtrl.popToRoot();
-                  }, 400);
-                }
-              );
-              this.events.publish('BitPayId/Disconnected');
-              this.events.publish('CardAdvertisementUpdate', {
-                status: 'disconnected'
-              });
+              infoSheet.present();
+              setTimeout(() => {
+                this.navCtrl.popToRoot();
+              }, 400);
             },
             err => {
               this.logger.log(err);
