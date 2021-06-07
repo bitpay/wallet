@@ -548,8 +548,7 @@ export class HomePage {
   }
 
   private addCardReferralAdvertisement() {
-    this.logger.log('start add card referral advertisement');
-    if (!this.isCordova) return;
+    if (!this.isCordova || this.network === 'livenet') return;
     this.persistenceProvider
       .getAdvertisementDismissed('card-referral')
       .then((value: string) => {
