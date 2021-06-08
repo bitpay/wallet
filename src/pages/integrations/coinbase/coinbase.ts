@@ -74,14 +74,17 @@ export class CoinbasePage {
         });
       }
 
-      await this.iab.createIABInstance(
-        'coinbase',
-        null,
-        this.coinbaseProvider.oauthUrl
-      );
-      this.coinbaseProvider.iabInit();
-
-      // this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
+      if (this.platformProvider.isIOS)
+        this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
+      else {
+        this.backToWalletTabs();
+        await this.iab.createIABInstance(
+          'coinbase',
+          null,
+          this.coinbaseProvider.oauthUrl
+        );
+        this.coinbaseProvider.iabInit();
+      }
     } else {
       const { remote } = (window as any).require('electron');
       const BrowserWindow = remote.BrowserWindow;

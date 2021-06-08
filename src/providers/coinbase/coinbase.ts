@@ -10,6 +10,7 @@ import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 import { RateProvider } from '../rate/rate';
 
 import { Coin, CurrencyProvider } from '../currency/currency';
@@ -44,6 +45,7 @@ export class CoinbaseProvider {
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
@@ -76,8 +78,11 @@ export class CoinbaseProvider {
 
     const coinbase = this.appProvider.servicesInfo.coinbase;
 
-    // ? 'https://bitpayapp.page.link/Zvyi'
-    this.credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
+    // Android and Desktop devices use desktop uri scheme
+    this.credentials.REDIRECT_URI =
+      this.platformProvider.isCordova && this.platformProvider.isIOS
+        ? coinbase.redirect_uri.mobile
+        : coinbase.redirect_uri.desktop;
 
     // Force to use specific version
     this.credentials.API_VERSION = '2017-10-31'; // TODO: there is a newest version: 2020-02-11
@@ -145,21 +150,16 @@ export class CoinbaseProvider {
   public iabInit(): void {
     this.logger.debug('IAB Coinbase initialized');
     this.coinbaseIAB_Ref = this.iab.refs.coinbase;
-    this.coinbaseIAB_Ref.addEventListener('message', data => {
-      console.log('[coinbase.ts:148] MESSAGE', JSON.stringify(data)); /* TODO */
-    });
     this.coinbaseIAB_Ref.addEventListener('loadstop', data => {
-      console.log(
-        '[coinbase.ts:151] LOAD STOP',
-        JSON.stringify(data)
-      ); /* TODO */
-      var title = data.url;
       const coinbasePrefix = 'https://www.coinbase.com/oauth/authorize/';
-      if (title.startsWith(coinbasePrefix) && title.endsWith('?')) {
-        title = title.replace(coinbasePrefix, '');
-        title = title.replace('?', '');
-        console.log('WE HAVE THE CODE' + title);
-        this.linkAccount(title);
+      if (
+        data &&
+        data.url &&
+        data.url.startsWith(coinbasePrefix) &&
+        data.url.endsWith('?')
+      ) {
+        const url = data.url.replace(coinbasePrefix, '').replace('?', '');
+        this.linkAccount(url);
         this.closeIab();
       }
     });
