@@ -113,7 +113,7 @@
     "@ionic-native/launch-review": "4.14.0",
     "@ionic-native/qr-scanner": "4.14.0",
     "@ionic-native/screen-orientation": "4.14.0",
-    "@ionic-native/social-sharing": "4.14.0",
+    "@ionic-native/social-sharing": "4.20.0",
     "@ionic-native/splash-screen": "4.14.0",
     "@ionic-native/status-bar": "4.14.0",
     "@ionic-native/toast": "4.14.0",
