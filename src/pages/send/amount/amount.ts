@@ -690,12 +690,6 @@ export class AmountPage {
     );
   }
 
-  private resetValues(): void {
-    this.expression = '';
-    this.globalResult = '';
-    this.alternativeAmount = null;
-  }
-
   public changeUnit(): void {
     if (this.fixedUnit) return;
 
@@ -710,8 +704,6 @@ export class AmountPage {
         isFiat: true
       });
     }
-
-    this.resetValues();
 
     this.zone.run(() => {
       this.updateUnitUI();
