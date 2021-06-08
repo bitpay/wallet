@@ -243,6 +243,8 @@ export class SettingsPage {
   }
 
   private getBitPayIdInitials(user): string {
+    if (!user) return '';
+
     const { givenName, familyName } = user;
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
