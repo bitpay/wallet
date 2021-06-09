@@ -243,6 +243,8 @@ export class SettingsPage {
   }
 
   private getBitPayIdInitials(user): string {
+    if (!user) return '';
+
     const { givenName, familyName } = user;
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
@@ -388,7 +390,7 @@ export class SettingsPage {
       case 'giftcards':
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
-      case 'walletConnect':
+      case 'newWalletConnect':
         this.navCtrl.push(WalletConnectSettingsPage);
         break;
     }

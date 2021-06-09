@@ -142,11 +142,7 @@ export class TabsPage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe('bwsEvent');
-      this.events.unsubscribe('Local/UpdateTxps');
-      this.events.unsubscribe('Local/FetchWallets');
-      this.events.unsubscribe('Local/UpdateNavigationType');
-      this.events.unsubscribe('experimentUpdateStart');
+      this.unsubscribeEvents();
     });
 
     this.checkCardEnabled();

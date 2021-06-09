@@ -10,7 +10,6 @@ import {
   PersistenceProvider,
   PopupProvider
 } from '../../../providers';
-import { InAppBrowserProvider } from '../../../providers/in-app-browser/in-app-browser';
 
 @Component({
   selector: 'page-bitpay-id',
@@ -33,8 +32,7 @@ export class BitPayIdPage {
     private persistenceProvider: PersistenceProvider,
     private actionSheetProvider: ActionSheetProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    private translate: TranslateService,
-    private iab: InAppBrowserProvider
+    private translate: TranslateService
   ) {}
 
   async ionViewDidLoad() {
@@ -80,46 +78,31 @@ export class BitPayIdPage {
           'Are you sure you would like to disconnect your BitPay ID?'
         )
       )
-      .then(res => {
-        if (res) {
-          this.bitPayIdProvider.disconnectBitPayID(
-            () => {
-              const infoSheet = this.actionSheetProvider.createInfoSheet(
-                'in-app-notification',
-                {
-                  title: 'BitPay ID',
-                  body: this.translate.instant(
-                    'BitPay ID successfully disconnected.'
-                  )
-                }
-              );
-              this.iab.refs.card.executeScript(
-                {
-                  code: `window.postMessage(${JSON.stringify({
-                    message: 'bitPayIdDisconnected'
-                  })}, '*')`
-                },
-                () => {
-                  infoSheet.present();
-                  setTimeout(() => {
-                    this.navCtrl.popToRoot();
-                  }, 400);
-                }
-              );
-              this.events.publish('BitPayId/Disconnected');
-              this.events.publish('CardAdvertisementUpdate', {
-                status: 'disconnected'
-              });
-            },
-            err => {
-              this.logger.log(err);
-            }
-          );
-        }
+      .then(async () => {
+        await this.bitPayIdProvider.disconnectBitPayID(
+          () => null,
+          err => {
+            this.logger.log(err);
+          }
+        );
+
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          'in-app-notification',
+          {
+            title: 'BitPay ID',
+            body: this.translate.instant('BitPay ID successfully disconnected.')
+          }
+        );
+
+        infoSheet.present();
+        setTimeout(() => {
+          this.navCtrl.popToRoot();
+        }, 400);
       });
   }
 
   private getBitPayIdInitials(user): string {
+    if (!user) return '';
     const { givenName, familyName } = user;
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
