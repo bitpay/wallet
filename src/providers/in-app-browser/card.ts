@@ -29,8 +29,14 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
-const REFERRAL_SOCIAL_SHARING_MESSAGE = (code: string) =>
-  `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code} Go check it out at https://bitpay.com/card?ref=${code}`;
+const REFERRAL_SOCIAL_SHARING_MESSAGE = (
+  code: string,
+  name: string,
+  network: string
+) =>
+  `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code} Go check it out at https://${
+    network === 'testnet' ? 'test.bitpay.com' : 'bitpay.com'
+  }/card?code=${code}&ref=${name}`;
 declare var cordova: any;
 
 @Injectable()
@@ -326,9 +332,9 @@ export class IABCardProvider {
         }
 
         case 'referralSocialSharing': {
-          const { referralCode } = event.data.params;
+          const { referralCode, name } = event.data.params;
           this.socialSharing.share(
-            REFERRAL_SOCIAL_SHARING_MESSAGE(referralCode)
+            REFERRAL_SOCIAL_SHARING_MESSAGE(referralCode, name, this.NETWORK)
           );
           break;
         }
