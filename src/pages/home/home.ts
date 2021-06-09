@@ -836,9 +836,14 @@ export class HomePage {
   public goTo(page, params: any = {}) {
     if (page === 'card-referral') {
       this.iabCardProvider.loadingWrapper(async () => {
+        const cards = await this.persistenceProvider.getBitpayDebitCards(
+          this.network
+        );
+        const { id } = cards.find(c => c.cardType === 'virtual');
+
         this.iabCardProvider.sendMessage(
           {
-            message: 'openCardReferralDashboard'
+            message: `openCardReferralDashboard?${id}`
           },
           () => {
             this.iabCardProvider.show();
