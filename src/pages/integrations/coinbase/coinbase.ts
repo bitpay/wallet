@@ -120,11 +120,6 @@ export class CoinbasePage {
       .then(_ => {
         this.onGoingProcessProvider.clear();
         this.backToWalletTabs();
-        setTimeout(() => {
-          this.popupProvider.ionicAlert(
-            this.translate.instant('Connected to Coinbase successfully')
-          );
-        }, 1000);
       })
       .catch(e => {
         this.onGoingProcessProvider.clear();

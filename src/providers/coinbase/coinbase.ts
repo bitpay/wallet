@@ -86,17 +86,11 @@ export class CoinbaseProvider {
 
     const coinbase = this.appProvider.servicesInfo.coinbase;
 
-    const redirectUriProd = 'https://bitpay.com/coinbase/redirect';
-    const redirectUriDev = 'https://cmgustavo.github.io/website/coinbase';
-
-    // TODO: change to production only
     this.credentials.REDIRECT_URI =
       this.platformProvider.isCordova && this.platformProvider.isIOS
         ? coinbase.redirect_uri.mobile
         : this.platformProvider.isAndroid
-        ? this.environment == 'development'
-          ? redirectUriDev
-          : redirectUriProd
+        ? 'https://bitpay.com/coinbase/redirect'
         : coinbase.redirect_uri.desktop;
 
     // Force to use specific version
