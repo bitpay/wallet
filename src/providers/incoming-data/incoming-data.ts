@@ -726,9 +726,10 @@ export class IncomingDataProvider {
   private goToCoinbase(data: string): void {
     this.logger.debug('Incoming-data (redirect): Coinbase URL');
 
-    let code = this.getParameterByName('code', data);
-    let stateParams = { code };
-    let nextView = {
+    const code = this.getParameterByName('code', data);
+    const state = this.getParameterByName('state', data);
+    const stateParams = { code, state };
+    const nextView = {
       name: 'CoinbasePage',
       params: stateParams
     };

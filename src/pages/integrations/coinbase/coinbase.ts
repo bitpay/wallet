@@ -9,7 +9,6 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
-
 @Component({
   selector: 'page-coinbase',
   templateUrl: 'coinbase.html'
@@ -63,7 +62,7 @@ export class CoinbasePage {
     }, 600);
   }
 
-  public openAuthenticateWindow() {
+  public openAuthenticateWindow(): void {
     this.showOauthForm = true;
     if (!this.isElectron) {
       if (this.navParams.data.isOnboardingFlow) {
@@ -71,6 +70,7 @@ export class CoinbasePage {
           this.viewCtrl.dismiss();
         });
       }
+      if (this.platformProvider.isAndroid) this.backToWalletTabs();
       this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
     } else {
       const { remote } = (window as any).require('electron');
@@ -100,12 +100,31 @@ export class CoinbasePage {
   }
 
   private submitOauthCode(code: string): void {
+    // Security check
+    if (
+      !this.isElectron &&
+      !this.navParams.data.state &&
+      this.navParams.data.state != this.coinbaseProvider.getCurrentState()
+    ) {
+      this.popupProvider.ionicAlert(
+        this.translate.instant('Error connecting to Coinbase'),
+        this.translate.instant(
+          'You are using a different OAuthURL from original request or it has expired. Please try again.'
+        )
+      );
+      return;
+    }
     this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider
       .linkAccount(code)
       .then(_ => {
         this.onGoingProcessProvider.clear();
         this.backToWalletTabs();
+        setTimeout(() => {
+          this.popupProvider.ionicAlert(
+            this.translate.instant('Connected to Coinbase successfully')
+          );
+        }, 1000);
       })
       .catch(e => {
         this.onGoingProcessProvider.clear();
