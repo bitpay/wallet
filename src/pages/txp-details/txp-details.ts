@@ -481,7 +481,7 @@ export class TxpDetailsPage {
   private openFinishModal() {
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText: this.successText, coin: this.wallet.coin },
+      { finishText: this.successText },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
