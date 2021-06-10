@@ -8,14 +8,11 @@ import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { InAppBrowserProvider } from '../in-app-browser/in-app-browser';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { RateProvider } from '../rate/rate';
 
 import { Coin, CurrencyProvider } from '../currency/currency';
-
-import { InAppBrowserRef } from '../../models/in-app-browser/in-app-browser-ref.model';
 
 import * as _ from 'lodash';
 
@@ -23,7 +20,6 @@ const LIMIT: number = 100;
 
 @Injectable()
 export class CoinbaseProvider {
-  private coinbaseIAB_Ref: InAppBrowserRef;
   private environment: string = env.name;
   private linkedAccount: boolean = false;
   private credentials;
@@ -51,7 +47,6 @@ export class CoinbaseProvider {
     private appProvider: AppProvider,
     private currencyProvider: CurrencyProvider,
     private analyticsProvider: AnalyticsProvider,
-    private iab: InAppBrowserProvider,
     private rateProvider: RateProvider
   ) {
     /*
@@ -78,10 +73,12 @@ export class CoinbaseProvider {
 
     const coinbase = this.appProvider.servicesInfo.coinbase;
 
-    // Android and Desktop devices use desktop uri scheme
+    // Android uses a temporal redirect website
     this.credentials.REDIRECT_URI =
       this.platformProvider.isCordova && this.platformProvider.isIOS
         ? coinbase.redirect_uri.mobile
+        : this.platformProvider.isAndroid
+        ? 'https://cmgustavo.github.io/website/coinbase'
         : coinbase.redirect_uri.desktop;
 
     // Force to use specific version
@@ -144,30 +141,6 @@ export class CoinbaseProvider {
         '&account=all&state=SECURE_RANDOM&scope=' +
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
-    }
-  }
-
-  public iabInit(): void {
-    this.logger.debug('IAB Coinbase initialized');
-    this.coinbaseIAB_Ref = this.iab.refs.coinbase;
-    this.coinbaseIAB_Ref.addEventListener('loadstop', data => {
-      const coinbasePrefix = 'https://www.coinbase.com/oauth/authorize/';
-      if (
-        data &&
-        data.url &&
-        data.url.startsWith(coinbasePrefix) &&
-        data.url.endsWith('?')
-      ) {
-        const url = data.url.replace(coinbasePrefix, '').replace('?', '');
-        this.linkAccount(url);
-        this.closeIab();
-      }
-    });
-  }
-
-  private closeIab(): void {
-    if (this.coinbaseIAB_Ref) {
-      this.coinbaseIAB_Ref.close();
     }
   }
 
