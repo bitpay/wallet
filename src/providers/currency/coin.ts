@@ -103,8 +103,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
       ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/bch',
-      blockExplorerUrls: 'bitpay.com/insight/#/BCH/mainnet/',
-      blockExplorerUrlsTestnet: 'bitpay.com/insight/#/BCH/testnet/'
+      blockExplorerUrls: 'explorer.bitcoin.com/bch/',
+      blockExplorerUrlsTestnet: 'blockexplorer.one/bch/testnet/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
@@ -141,8 +141,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       protocolPrefix: { livenet: 'bcha', testnet: 'bcha' },
       ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/btc',
       // ratesApi: 'http://thunt111984.cameraddns.net:3232/bws/api/v3/fiatrates/bch',
-      blockExplorerUrls: 'bitpay.com/insight/#/BCH/mainnet/',
-      blockExplorerUrlsTestnet: 'bitpay.com/insight/#/BCH/testnet/'
+      blockExplorerUrls: 'texplorer.bitcoinabc.org/',
+      blockExplorerUrlsTestnet: 'upgrade-explorer.bitcoinabc.org/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
