@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { availableCoins, CoinOpts } from './coin';
-import { Token, TokenOpts } from './token';
+import { Token, TokenProvider } from './token';
 
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
@@ -18,9 +18,12 @@ export class CurrencyProvider {
   public customERC20CoinsData;
   public customERC20Opts;
 
-  constructor(private persistenceProvider: PersistenceProvider) {
+  constructor(
+    private persistenceProvider: PersistenceProvider,
+    private tokenProvider: TokenProvider
+  ) {
     this.coinOpts = availableCoins;
-    this.availableTokens = Object.values(TokenOpts);
+    this.availableTokens = Object.values(this.tokenProvider.tokens);
     this.availableCoins = Object.keys(this.coinOpts);
     this.retreiveInfo();
   }
@@ -49,7 +52,10 @@ export class CurrencyProvider {
           .then(customERC20Opts => {
             this.customERC20Opts = customERC20Opts;
             this.coinOpts = { ...this.customERC20CoinsData, ...availableCoins };
-            const tokenOpts = { ...TokenOpts, ...this.customERC20Opts };
+            const tokenOpts = {
+              ...this.availableTokens,
+              ...this.customERC20Opts
+            };
             this.availableTokens = Object.values(tokenOpts);
             this.availableCoins = Object.keys(this.coinOpts) as string[];
             this.retreiveInfo();

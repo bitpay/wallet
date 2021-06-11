@@ -21,6 +21,7 @@ import { PlatformProvider } from '../platform/platform';
 import { ThemeProvider } from '../theme/theme';
 import { AppProvider } from './app';
 
+import { TokenProvider } from '../currency/token';
 import { LoggerMock } from '../logger/logger.mock';
 import * as appTemplate from './../../../app-template/bitpay/appConfig.json';
 
@@ -45,6 +46,7 @@ describe('AppProvider', () => {
         CurrencyProvider,
         ConfigProvider,
         Events,
+        TokenProvider,
         PersistenceProvider,
         PlatformProvider,
         ThemeProvider,
