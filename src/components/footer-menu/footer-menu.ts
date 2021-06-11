@@ -13,6 +13,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 export class FooterMenuComponent extends ActionSheetParent {
   public optionsMenu: object;
   public isCordova: boolean;
+  public clipboardData: string;
   private appName: string;
 
   constructor(
@@ -102,6 +103,10 @@ export class FooterMenuComponent extends ActionSheetParent {
     };
   }
 
+  ngOnInit() {
+    this.clipboardData = this.params.clipboardData;
+  }
+
   public optionClicked(opt) {
     if (opt.logEvent) {
       this.analyticsProvider.logEvent(opt.logEvent, {
@@ -117,6 +122,18 @@ export class FooterMenuComponent extends ActionSheetParent {
     });
     const nextView = {
       name: 'ScanPage',
+      params: {
+        fromFooterMenu: true
+      }
+    };
+    this.dismiss(nextView);
+  }
+
+  public processClipboardData() {
+    this.analyticsProvider.logEvent('clipboard_clicked', {
+      from: 'footerMenu'
+    });
+    const nextView = {
       params: {
         fromFooterMenu: true
       }
