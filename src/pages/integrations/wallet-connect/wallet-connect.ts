@@ -41,6 +41,13 @@ export class WalletConnectPage {
   public wallet;
   public address: string;
   public activeChainId: number = 1;
+  public buttonAction = {
+    eth_sendTransaction: 'Confirm',
+    eth_signTransaction: 'Approve',
+    eth_sign: 'Approve',
+    personal_sign: 'Approve',
+    eth_signTypedData: 'Approve'
+  };
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -80,7 +87,7 @@ export class WalletConnectPage {
     this.uri = data.value;
   };
 
-  private setConnectionData: any = _ => {
+  private setConnectionData: any = async _ => {
     const {
       connected,
       activeChainId,
@@ -88,7 +95,7 @@ export class WalletConnectPage {
       address,
       peerMeta,
       requests
-    } = this.walletConnectProvider.getConnectionData();
+    } = await this.walletConnectProvider.getConnectionData();
     this.connected = connected;
     this.activeChainId = activeChainId;
     this.wallet = this.profileProvider.getWallet(walletId);

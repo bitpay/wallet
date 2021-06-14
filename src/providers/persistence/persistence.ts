@@ -954,6 +954,18 @@ export class PersistenceProvider {
     return this.storage.remove('walletConnectSession');
   }
 
+  getWalletConnectPendingRequests() {
+    return this.storage.get('walletConnectPendingRequests');
+  }
+
+  setWalletConnectPendingRequests(pendingRequests: any[]) {
+    return this.storage.set('walletConnectPendingRequests', pendingRequests);
+  }
+
+  removeWalletConnectPendingRequests() {
+    return this.storage.remove('walletConnectPendingRequests');
+  }
+
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }
