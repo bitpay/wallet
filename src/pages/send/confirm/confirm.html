@@ -306,12 +306,12 @@
         <ion-note item-end>
           <ion-row align-items-center class="wallet" *ngIf="reciveLotus">
             <ion-col>
-              <coin-icon [coin]="reciveLotus.coin" [network]="reciveLotus.network"></coin-icon>
+              <coin-icon [coin]="'bch'" [network]="'testnet'"></coin-icon>
             </ion-col>
 
             <ion-col>
-              <div copy-to-clipboard="{{ reciveLotus.reciveLotus }}">
-                <span class="note-container ellipsis" *ngIf="reciveLotus.name">{{reciveLotus.name}}</span>
+              <div copy-to-clipboard="{{ reciveLotus }}">
+                <span class="note-container ellipsis">Bitcoin Cash</span>
               </div>
             </ion-col>
           </ion-row>

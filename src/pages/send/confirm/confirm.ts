@@ -167,7 +167,7 @@ export class ConfirmPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
-    this.isDonation ? this.reciveLotus = this.navParams.data : this.reciveLotus = null;
+    this.isDonation ? this.reciveLotus = this.navParams.data.reciveLotus : this.reciveLotus = null;
     this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;

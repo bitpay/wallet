@@ -30,6 +30,9 @@
     </expandable-header>
 
     <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
+    <div class="no-wallet" *ngIf="isEmptyWalletDonation(walletsGroups)">
+      No wallet here you can donation lotus
+    </div>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
       <div class="section-header" *ngIf="walletGroup[0].canSign && walletsGroups.length > 1">

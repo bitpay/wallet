@@ -553,7 +553,7 @@ export class AmountPage {
       this.fiatCode,
       coin || this.availableUnits[this.unitIndex].id
     )
-    if (_.isEmpty(rateProvider)) return undefined;
+    if (_.isNil(rateProvider)) return undefined;
     return parseFloat(rateProvider.toFixed(2));
   }
 
