@@ -90,7 +90,7 @@ export class CoinbaseProvider {
       this.platformProvider.isCordova && this.platformProvider.isIOS
         ? coinbase.redirect_uri.mobile
         : this.platformProvider.isAndroid
-        ? 'https://bitpay.com/coinbase/redirect'
+        ? 'https://bitpay.com/oauth/coinbase/redirect'
         : coinbase.redirect_uri.desktop;
 
     // Force to use specific version
