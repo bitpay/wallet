@@ -354,7 +354,7 @@ export class PaperWalletPage {
     let finishText = this.translate.instant('Sweep Completed');
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, coin: this.selectedWallet.coin },
+      { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

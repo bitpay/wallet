@@ -1631,18 +1631,16 @@ export class ConfirmPage {
       finishText: string;
       finishComment?: string;
       autoDismiss?: boolean;
-      coin: string;
     } = {
       finishText: this.successText,
-      autoDismiss: !!redir,
-      coin: this.coin
+      autoDismiss: !!redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
-      params = { finishText, finishComment, coin: this.coin };
+      params = { finishText, finishComment };
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
