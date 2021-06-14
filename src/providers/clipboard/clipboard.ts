@@ -110,4 +110,9 @@ export class ClipboardProvider {
         });
     });
   }
+
+  public redir(data): void {
+    this.clear();
+    this.incomingDataProvider.redir(data);
+  }
 }
