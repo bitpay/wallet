@@ -496,7 +496,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     if (details.requiredFeeRate) {
-      const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.coin)
+      const requiredFeeRate = !this.currencyProvider.isUtxoCoin(wallet.chain)
         ? parseInt((details.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
         : Math.ceil(details.requiredFeeRate * 1000);
       txp.feePerKb = requiredFeeRate;
@@ -667,7 +667,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
 
     // Warn: fee too high
-    if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+    if (this.currencyProvider.isUtxoCoin(wallet.chain)) {
       this.checkFeeHigh(
         Number(amountSat),
         Number(this.invoiceFeeSat) + Number(ctxp.fee)

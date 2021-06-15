@@ -128,11 +128,10 @@ export class ProfileProvider {
     wallet.email = config.emailFor && config.emailFor[wallet.id];
 
     // for token wallets
-    wallet.linkedEthWallet = this.currencyProvider.getLinkedEthWallet(
-      wallet.coin,
+    wallet.linkedEthWallet = wallet.token ? this.currencyProvider.getLinkedEthWallet(
       wallet.id,
       wallet.n
-    );
+    ) : null;
 
     if (wallet.linkedEthWallet) {
       this.trySetName(wallet);
@@ -500,8 +499,10 @@ export class ProfileProvider {
       const coinCode = this.derivationPathHelperProvider.parsePath(
         wallet.credentials.rootPath
       ).coinCode;
-
-      const chain = this.currencyProvider.getChain(wallet.coin).toLowerCase();
+      console.log('###### Wallet');
+      console.log(wallet);
+      
+      const chain = wallet.credentials.chain || this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
         (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
         (wallet.credentials.addressType == 'P2WPKH' &&
@@ -1251,7 +1252,7 @@ export class ProfileProvider {
         new Error('bindWallet should receive credentials JSON')
       );
     }
-
+    console.log('##### bindWallet ' + JSON.stringify(credentials));
     // Create the client
     const walletClient = this.bwcProvider.getClient(
       JSON.stringify(credentials),

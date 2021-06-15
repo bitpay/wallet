@@ -125,12 +125,12 @@ export class CurrencyProvider {
     return Promise.resolve();
   }
 
-  isUtxoCoin(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.isUtxo;
+  isUtxoCoin(chain: string): boolean {
+    return !!this.coinOpts[chain].properties.isUtxo;
   }
 
-  isSingleAddress(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.singleAddress;
+  isSingleAddress(chain: string): boolean {
+    return !!this.coinOpts[chain].properties.singleAddress;
   }
 
   isSharedCoin(coin: string): boolean {
@@ -145,15 +145,13 @@ export class CurrencyProvider {
     return this.coinOpts[coin] && this.coinOpts[coin].properties.isCustom;
   }
 
-  getLinkedEthWallet(coin: string, walletId: string, m: number): string {
-    if (!this.coinOpts[coin].properties.isERCToken && coin !== 'eth')
-      return null;
-    if (coin === 'eth' && m === 1) return null;
+  getLinkedEthWallet(walletId: string, m: number): string {
+    if (m === 1) return null;
     return walletId.replace(/-0x.*$/, '');
   }
 
-  isMultiSend(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.hasMultiSend;
+  isMultiSend(chain: string): boolean {
+    return !!this.coinOpts[chain].properties.hasMultiSend;
   }
 
   getAvailableCoins(): string[] {
@@ -176,8 +174,8 @@ export class CurrencyProvider {
     return this.availableCoins.filter(coin => this.isSharedCoin(coin));
   }
 
-  getCoinName(coin: string): string {
-    return this.coinOpts[coin].name;
+  getCoinName(chain: string): string {
+    return this.coinOpts[chain].name;
   }
 
   getChain(coin: string): string {
@@ -216,8 +214,8 @@ export class CurrencyProvider {
     return this.coinOpts[coin].feeInfo.maxMerchantFee;
   }
 
-  getTheme(coin: string) {
-    return this.coinOpts[coin].theme;
+  getTheme(chain: string) {
+    return this.coinOpts[chain].theme;
   }
 
   getTokenAddress(coin) {

@@ -158,7 +158,7 @@ export class TxpDetailsPage {
       chain,
       this.tx.fee
     );
-    if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+    if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {
       this.tx.feeRateStr =
         ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
     }

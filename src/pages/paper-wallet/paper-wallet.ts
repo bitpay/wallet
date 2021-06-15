@@ -81,7 +81,7 @@ export class PaperWalletPage {
 
     this.wallets = _.filter(_.clone(this.wallets), wallet => {
       return (
-        !wallet.needsBackup && this.currencyProvider.isUtxoCoin(wallet.coin)
+        !wallet.needsBackup && this.currencyProvider.isUtxoCoin(wallet.chain)
       );
     });
 

@@ -363,7 +363,7 @@ export class WalletProvider {
             // This will update exchange rates
             cacheStatus(wallet.cachedStatus);
 
-            if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+            if (this.currencyProvider.isUtxoCoin(wallet.chain)) {
               checkAndUpdateAdddress();
             }
 
@@ -948,7 +948,7 @@ export class WalletProvider {
                 });
               };
 
-              if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+              if (this.currencyProvider.isUtxoCoin(wallet.chain)) {
                 this.getLowAmount(wallet).then(fee => {
                   opts.lowAmount = fee;
                   updateLowAmount(txs);

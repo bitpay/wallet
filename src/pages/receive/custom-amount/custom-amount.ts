@@ -97,7 +97,7 @@ export class CustomAmountPage {
       }
 
       if (
-        this.currencyProvider.isUtxoCoin(this.wallet.coin) ||
+        this.currencyProvider.isUtxoCoin(this.wallet.chain) ||
         this.wallet.coin === 'xrp'
       ) {
         this.qrAddress =

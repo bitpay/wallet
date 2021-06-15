@@ -38,20 +38,20 @@ export class ExchangeRates {
     private events: Events
   ) {
     const availableChains = this.currencyProvider.getAvailableChains();
-    for (const coin of availableChains) {
+    for (const chain of availableChains) {
       const {
         backgroundColor,
         gradientBackgroundColor
-      } = this.currencyProvider.getTheme(coin);
+      } = this.currencyProvider.getTheme(chain);
       const card = {
-        unitCode: coin,
+        unitCode: chain,
         historicalRates: [],
         currentPrice: 0,
         totalBalanceChange: 0,
         totalBalanceChangeAmount: 0,
         backgroundColor,
         gradientBackgroundColor,
-        name: this.currencyProvider.getCoinName(coin)
+        name: this.currencyProvider.getCoinName(chain)
       };
       this.coins.push(card);
     }

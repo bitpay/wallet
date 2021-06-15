@@ -66,7 +66,7 @@ export class CreateWalletPage implements OnInit {
   public showAdvOpts: boolean;
   public seedOptions;
   public isShared: boolean;
-  public coin: string;
+  public coin: string; // chain
   public coinName: string;
   public okText: string;
   public cancelText: string;
@@ -223,11 +223,11 @@ export class CreateWalletPage implements OnInit {
       useNativeSegwit: this.createForm.value.useNativeSegwit,
       bwsurl: this.createForm.value.bwsURL,
       singleAddress: this.currencyProvider.isSingleAddress(
-        this.createForm.value.coin
+        this.createForm.value.coin // chain
       )
         ? true
         : this.createForm.value.singleAddress,
-      coin: this.createForm.value.coin
+      coin: this.createForm.value.coin // chain
     };
 
     const setSeed = this.createForm.value.selectedSeed == 'set';

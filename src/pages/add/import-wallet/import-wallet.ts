@@ -40,7 +40,7 @@ export class ImportWalletPage {
   private defaults;
   private processedInfo;
   private keyId: string;
-  public availableCoins: string[];
+  public availableChains: string[];
   public importForm: FormGroup;
   public prettyFileName: string;
   public formFile;
@@ -86,7 +86,7 @@ export class ImportWalletPage {
     this.isIOS = this.platformProvider.isIOS;
     this.selectedTab = 'words';
     this.showAdvOpts = false;
-    this.availableCoins = this.currencyProvider.getAvailableChains();
+    this.availableChains = this.currencyProvider.getAvailableChains();
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
@@ -136,8 +136,8 @@ export class ImportWalletPage {
     this.setForm();
   };
 
-  public getCoinName(coin: string) {
-    return this.currencyProvider.getCoinName(coin);
+  public getCoinName(chain: string) {
+    return this.currencyProvider.getCoinName(chain);
   }
 
   public selectTab(tab: string): void {
@@ -355,17 +355,17 @@ export class ImportWalletPage {
     return;
   }
 
-  public setOptsAndCreate(coin: string): void {
+  public setOptsAndCreate(chain: string): void {
     const opts: Partial<WalletOptions> = {
       keyId: undefined,
-      name: this.currencyProvider.getCoinName(coin),
+      name: this.currencyProvider.getCoinName(chain),
       m: 1,
       n: 1,
       myName: null,
       networkName: 'livenet',
       bwsurl: this.importForm.value.bwsURL,
-      singleAddress: this.currencyProvider.isSingleAddress(coin),
-      coin: coin.toLowerCase()
+      singleAddress: this.currencyProvider.isSingleAddress(chain),
+      coin: chain.toLowerCase()
     };
 
     const words = this.importForm.value.words;

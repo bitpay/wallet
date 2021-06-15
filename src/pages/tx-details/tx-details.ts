@@ -218,7 +218,7 @@ export class TxDetailsModal {
           tx.fees
         );
 
-        if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+        if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {
           this.btx.feeRateStr =
             ((this.btx.fees / (this.btx.amount + this.btx.fees)) * 100).toFixed(
               2
@@ -246,7 +246,7 @@ export class TxDetailsModal {
 
         this.updateFiatRate();
 
-        if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+        if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {
           this.walletProvider
             .getLowAmount(this.wallet)
             .then((amount: number) => {

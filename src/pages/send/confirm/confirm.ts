@@ -482,7 +482,7 @@ export class ConfirmPage {
     );
 
     if (this.tx.paypro) {
-      if (!this.currencyProvider.isUtxoCoin(this.tx.coin)) {
+      if (!this.currencyProvider.isUtxoCoin(this.tx.chain)) {
         // Update fees to most recent for eth ( in case required fee change ? )
         const address = await this.walletProvider.getAddress(
           this.wallet,
@@ -666,7 +666,7 @@ export class ConfirmPage {
             this.logger.info(
               `Using Merchant Fee: ${tx.feeRate} vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
-            const isUtxo = this.currencyProvider.isUtxoCoin(wallet.coin);
+            const isUtxo = this.currencyProvider.isUtxoCoin(wallet.chain);
             if (
               tx.network != 'testnet' &&
               tx.feeRate > maxAllowedFee &&
@@ -1040,7 +1040,7 @@ export class ConfirmPage {
         return reject(msg);
       }
       if (
-        this.currencyProvider.isUtxoCoin(tx.coin) &&
+        this.currencyProvider.isUtxoCoin(tx.chain) &&
         tx.amount > Number.MAX_SAFE_INTEGER
       ) {
         const msg = this.translate.instant('Amount too big');

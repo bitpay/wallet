@@ -435,7 +435,7 @@ export class BitPayCardTopUpPage {
 
               if (details.requiredFeeRate) {
                 const requiredFeeRate = !this.currencyProvider.isUtxoCoin(
-                  wallet.coin
+                  wallet.chain
                 )
                   ? parseInt((details.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
                   : Math.ceil(details.requiredFeeRate * 1000);
@@ -626,7 +626,7 @@ export class BitPayCardTopUpPage {
                       })
                       .then(details => {
                         const payProFeeSat = !this.currencyProvider.isUtxoCoin(
-                          wallet.coin
+                          wallet.chain
                         )
                           ? parseInt(
                               (details.requiredFeeRate * 1.1).toFixed(0),
@@ -827,7 +827,7 @@ export class BitPayCardTopUpPage {
               ctxp.amount || this.parsedAmount.amountSat
             );
 
-            if (this.currencyProvider.isUtxoCoin(wallet.coin)) {
+            if (this.currencyProvider.isUtxoCoin(wallet.chain)) {
               // Warn: fee too high
               this.checkFeeHigh(
                 Number(this.parsedAmount.amountSat),

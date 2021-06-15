@@ -162,10 +162,10 @@ export class SendPage {
     this.navCtrl.push(ScanPage, { fromSend: true }, { animate: false });
   }
 
-  public showOptions(coin: string) {
+  public showOptions(chain: string) {
     return (
-      (this.currencyProvider.isMultiSend(coin) ||
-        this.currencyProvider.isUtxoCoin(coin)) &&
+      (this.currencyProvider.isMultiSend(chain) ||
+        this.currencyProvider.isUtxoCoin(chain)) &&
       !this.shouldShowZeroState()
     );
   }
@@ -334,8 +334,8 @@ export class SendPage {
     const optionsSheet = this.actionSheetProvider.createOptionsSheet(
       'send-options',
       {
-        isUtxoCoin: this.currencyProvider.isUtxoCoin(this.wallet.coin),
-        isMultiSend: this.currencyProvider.isMultiSend(this.wallet.coin)
+        isUtxoCoin: this.currencyProvider.isUtxoCoin(this.wallet.chain),
+        isMultiSend: this.currencyProvider.isMultiSend(this.wallet.chain)
       }
     );
     optionsSheet.present();

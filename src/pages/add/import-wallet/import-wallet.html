@@ -74,8 +74,8 @@
         <ion-item *ngIf="importForm.value.derivationPathEnabled">
           <ion-label floating>{{'Coin' | translate}}</ion-label>
           <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin" (ionChange)="setDerivationPath($event)">
-            <div *ngFor="let coin of availableCoins">
-              <ion-option value="{{coin}}"> {{ getCoinName(coin) }} ({{ coin.toUpperCase() }})</ion-option>
+            <div *ngFor="let chain of availableChains">
+              <ion-option value="{{chain}}"> {{ getCoinName(chain) }} ({{ chain.toUpperCase() }})</ion-option>
             </div>
           </ion-select>
         </ion-item>
