@@ -1,0 +1,86 @@
+page-fee-policy {
+  .description {
+    margin: auto 20px;
+    color: #434d5a;
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+  ion-list {
+    .item-divider-ios {
+      background-color: white;
+    }
+    ion-item ion-icon img {
+      width: 20px;
+      height: 20px;
+    }
+    .item {
+      &.item-ios,
+      &.item-md {
+        border: 0;
+
+        .item-inner {
+          padding: 5px 16px 0px 16px;
+          margin-left: 0px;
+        }
+      }
+    }
+    .network-fee-policy {
+      &-title {
+        font-size: 20px;
+        font-weight: 500;
+        padding-left: 8px;
+        margin-top: -2px;
+      }
+      &-rate {
+        font-size: 16px;
+        font-weight: 400;
+        padding-top: 8px;
+      }
+    }
+    ion-range {
+      // .range-ios .range-slider .range-tick {
+      //   border-radius: 50%;
+      // }
+      .range-slider {
+        .range-tick,
+        .range-bar {
+          background-color: #e1e4e7;
+        }
+        .range-knob {
+          border: 3px solid white;
+          box-shadow: 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13),
+            0 0 0 1px rgba(0, 0, 0, 0.02);
+        }
+      }
+
+      &.btc-range {
+        padding: auto 16px;
+        .range-knob-min .range-knob {
+          background: color($colors, btc-color) !important;
+          border: 3px solid white !important;
+        }
+        .range-tick-active,
+        .range-bar-active,
+        .range-knob-handle .range-knob {
+          background-color: color($colors, btc-color);
+        }
+      }
+      &.eth-range {
+        padding: auto 16px;
+        .range-knob-min .range-knob {
+          background: color($colors, eth-color) !important;
+          border: 3px solid white !important;
+        }
+        .range-tick-active,
+        .range-bar-active,
+        .range-knob-handle .range-knob {
+          background-color: color($colors, eth-color);
+        }
+      }
+    }
+    .range-label {
+      margin: auto 11px;
+    }
+  }
+}

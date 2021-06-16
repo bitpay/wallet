@@ -36,7 +36,9 @@ $colors: (
   dark: #000,
   grey: #667,
   light-grey: #9b9bab,
-  error: #e56c7b
+  error: #e56c7b,
+  btc-color: #f7931a,
+  eth-color: #6b71d6
 );
 
 $background-colors: (
@@ -98,6 +100,14 @@ $searchbar-ios-padding-horizontal: 8px;
 $note-ios-color: color($colors, light-grey);
 $toolbar-ios-title-font-weight: 400;
 $checkbox-ios-icon-border-color-off: color($colors, light-grey);
+$range-ios-tick-width: 10px;
+$range-ios-tick-height: 10px;
+$range-ios-knob-width: 23px;
+$range-ios-knob-height: 23px;
+$range-ios-tick-border-radius: 50%;
+$range-ios-bar-height: 3px;
+$range-ios-slider-height: 35px;
+
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
@@ -125,6 +135,12 @@ $segment-button-md-border-bottom-width: 0.5px;
 $segment-button-md-text-color-activated: color($colors, dark);
 $segment-button-md-height: 5rem;
 $segment-button-md-padding-top: 4px;
+$range-md-tick-width: 10px;
+$range-md-tick-height: 10px;
+$range-md-knob-width: 30px;
+$range-md-knob-height: 30px;
+$range-md-slider-height: 35px;
+// $range-ios-knob-box-shadow: 3% solid white;
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here

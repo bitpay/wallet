@@ -297,7 +297,7 @@ export class ConfirmPage {
       this.tx.feeLevel =
         this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -457,7 +457,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     if (

@@ -135,6 +135,11 @@ export interface Config {
   navigation: {
     type: string;
   };
+
+  feeLevels: {
+    btc: string;
+    eth: string;
+  };
 }
 
 @Injectable()
@@ -278,6 +283,11 @@ export class ConfigProvider {
 
       navigation: {
         type: 'transact'
+      },
+
+      feeLevels: {
+        btc: 'normal',
+        eth: 'normal'
       }
     };
   }
@@ -432,6 +442,10 @@ export class ConfigProvider {
 
     if (!this.configCache.navigation) {
       this.configCache.navigation = this.configDefault.navigation;
+    }
+
+    if (!this.configCache.feeLevels) {
+      this.configCache.feeLevels = this.configDefault.feeLevels;
     }
   }
 
