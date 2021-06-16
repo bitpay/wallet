@@ -25,9 +25,9 @@
                     <ion-col text-end [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 4}">{{'Urgent' | translate}}</ion-col>
                 </ion-row>
                 <ion-row class="range-label" *ngIf="coinFeePolicy.key == 'eth'">
-                    <ion-col text-start [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 0}">{{'Slow' | translate}}</ion-col>
+                    <ion-col text-start [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 0}">{{'Low' | translate}}</ion-col>
                     <ion-col text-center [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 1}">{{'Average' | translate}}</ion-col>
-                    <ion-col text-end [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 2}">{{'Fast' | translate}}</ion-col>
+                    <ion-col text-end [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 2}">{{'High' | translate}}</ion-col>
                 </ion-row>
             </div>
 

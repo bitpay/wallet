@@ -12,7 +12,7 @@
     <div *ngFor="let fee of feeOpts" class="fee-card" (click)="changeSelectedFee(fee.level)">
       <div class="fee-title">
         <div>
-          <span class="fee-speed-name">{{ feeProvider.getFeeOpts()[fee.level] | translate }}</span>
+          <span class="fee-speed-name">{{ feeProvider.getFeeOpts(coin)[fee.level] | translate }}</span>
           <span class="fee-speed-satByte">{{fee.feePerSatByte}} {{ feeUnit }}</span>
         </div>
         <div>
