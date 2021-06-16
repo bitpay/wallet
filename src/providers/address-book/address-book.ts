@@ -168,15 +168,7 @@ export class AddressBookProvider {
           ab[entry.coin.toLowerCase() + '-' + entry.address] = addrData;
           this.persistenceProvider
             .setAddressBook(addrData.network, JSON.stringify(ab))
-            .then(() => {
-              this.list(addrData.network)
-                .then(ab => {
-                  return resolve(ab);
-                })
-                .catch(err => {
-                  return reject(err);
-                });
-            })
+            .then(() => resolve(true))
             .catch(() => {
               let msg = this.translate.instant('Error adding new entry');
               return reject(msg);
