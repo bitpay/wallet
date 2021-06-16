@@ -70,9 +70,6 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-  }
-
-  ngOnInit(): void {
     this.initWallet();
   }
 
@@ -123,11 +120,7 @@ export class WalletConnectPage {
         onlyComplete: true,
         backedUp: true
       });
-      if (_.isEmpty(this.wallets)) {
-        return;
-      } else {
-        this.onWalletSelect(this.wallets[0]);
-      }
+      if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallets[0]);
     }
   }
 
