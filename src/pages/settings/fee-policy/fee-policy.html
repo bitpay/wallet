@@ -3,51 +3,34 @@
         <div class="description" translate>The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.</div>
         
         <ion-list no-lines>
-            <ion-item-divider></ion-item-divider>
+            <div *ngFor="let coinFeePolicy of coinFeePolicies | keys">
+                <ion-item-divider></ion-item-divider>
+                <ion-item no-lines no-padding no-margin>
+                    <ion-row>
+                        <ion-icon >
+                            <img src="assets/img/currencies/{{coinFeePolicy.key}}.svg" alt="Coin">
+                        </ion-icon> 
+                        <span  class="network-fee-policy-title" translate>{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy</span> 
+                    </ion-row>
+                    <ion-row>
+                        <span class="network-fee-policy-rate">{{ coinFeePolicy.value.feePerSatByteStr }}</span> 
+                    </ion-row>
+                </ion-item>
+                <ion-item no-padding no-margin>
+                    <ion-range [ngClass]="{'btc-range': coinFeePolicy.key == 'btc','eth-range': coinFeePolicy.key == 'eth'}" min="0" max="{{maxRanges[coinFeePolicy.key]}}" step="1" snaps="true" color="{{coinFeePolicy.key}}-color" [(ngModel)]="coinFeePolicies[coinFeePolicy.key].rangeValue" (ionChange)="save(coinFeePolicy.key)"></ion-range>
+                </ion-item>
+                <ion-row class="range-label" *ngIf="coinFeePolicy.key != 'eth'">
+                    <ion-col text-start [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 0}">{{'Super Economy' | translate}}</ion-col>
+                    <ion-col text-center [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 2}">{{'Normal' | translate}}</ion-col>
+                    <ion-col text-end [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 4}">{{'Urgent' | translate}}</ion-col>
+                </ion-row>
+                <ion-row class="range-label" *ngIf="coinFeePolicy.key == 'eth'">
+                    <ion-col text-start [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 0}">{{'Slow' | translate}}</ion-col>
+                    <ion-col text-center [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 1}">{{'Average' | translate}}</ion-col>
+                    <ion-col text-end [ngClass]="{'text-bold': coinFeePolicy.value.rangeValue == 2}">{{'Fast' | translate}}</ion-col>
+                </ion-row>
+            </div>
 
-            <!-- Bitcoin -->
-            <ion-item no-lines no-padding no-margin>
-                <ion-row>
-                    <ion-icon >
-                        <img src="assets/img/currencies/btc.svg" alt="Coin">
-                    </ion-icon> 
-                    <span  class="network-fee-policy-title" translate>{{ getCoinName('btc') }} Network Fee Policy</span> 
-                </ion-row>
-                <ion-row>
-                    <span class="network-fee-policy-rate">{{ coinFeePolicies['btc'].feePerSatByteStr }}</span> 
-                </ion-row>
-            </ion-item>
-            <ion-item no-padding no-margin>
-                <ion-range class="btc-range" min="0" max="4" step="1" snaps="true" color="btc-color" [(ngModel)]="coinFeePolicies['btc'].rangeValue" (ionChange)="save('btc')"></ion-range>
-            </ion-item>
-            <ion-row class="range-label">
-                <ion-col text-start [ngClass]="{'text-bold': coinFeePolicies['btc'].rangeValue == 0}">{{'Super Economy' | translate}}</ion-col>
-                <ion-col text-center [ngClass]="{'text-bold': coinFeePolicies['btc'].rangeValue == 2}">{{'Normal' | translate}}</ion-col>
-                <ion-col text-end [ngClass]="{'text-bold': coinFeePolicies['btc'].rangeValue == 4}">{{'Urgent' | translate}}</ion-col>
-            </ion-row>
-
-            <ion-item-divider></ion-item-divider>
-
-            <!-- Ethereum -->
-            <ion-item no-lines no-padding no-margin>
-                <ion-row>
-                    <ion-icon >
-                        <img src="assets/img/currencies/eth.svg" alt="Coin">
-                    </ion-icon> 
-                    <span  class="network-fee-policy-title" translate>{{ getCoinName('eth') }} Network Fee Policy</span> 
-                </ion-row>
-                <ion-row>
-                    <span class="network-fee-policy-rate">{{ coinFeePolicies['eth'].feePerSatByteStr }}</span> 
-                </ion-row>
-            </ion-item>
-            <ion-item no-padding no-margin>
-                <ion-range class="eth-range" min="0" max="2" step="1" snaps="true" color="eth-color" [(ngModel)]="coinFeePolicies['eth'].rangeValue" (ionChange)="save('eth')"></ion-range>
-            </ion-item>
-            <ion-row class="range-label">
-                <ion-col text-start [ngClass]="{'text-bold': coinFeePolicies['eth'].rangeValue == 0}">{{'Slow' | translate}}</ion-col>
-                <ion-col text-center [ngClass]="{'text-bold': coinFeePolicies['eth'].rangeValue == 1}">{{'Average' | translate}}</ion-col>
-                <ion-col text-end [ngClass]="{'text-bold': coinFeePolicies['eth'].rangeValue == 2}">{{'Fast' | translate}}</ion-col>
-            </ion-row>
         </ion-list>
     </div>
   </wide-header-page>

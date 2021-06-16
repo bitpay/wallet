@@ -7,7 +7,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { FeeProvider } from '../../../providers/fee/fee';
 
-// const COINS = ['btc', 'eth'];
 const NETWORK = 'livenet';
 
 export interface FeePolicyObject {
@@ -32,6 +31,10 @@ export class FeePolicyPage {
     currentFeeLevel: '',
     rangeValue: 0,
     feePerSatByteStr: ''
+  };
+  public maxRanges = {
+    btc: 4,
+    eth: 2
   };
 
   constructor(
