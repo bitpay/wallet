@@ -874,6 +874,27 @@
     }
   }
 
+  .notification-modal-panel {
+    .notification-content {
+      background-color: $bg-color-dark-theme-2;
+      .slide-zoom {
+        .notification-info {
+          .notification-title {
+            color: $text-color-dark-theme;
+          }
+          .notification-message {
+            color: $text-color-dark-theme;
+          }
+        }
+        .notification-button {
+          ion-label {
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+
   // 5 - Tabs
   // 5.1 Tab Home
   page-home {

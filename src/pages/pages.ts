@@ -152,7 +152,6 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 
-import { NotificationComponent } from '../pages/notification-component/notification-component';
 import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
 import { MerchantPage } from './merchant/merchant';
@@ -277,6 +276,5 @@ export const PAGES = [
   NavigationPage,
   NewFeaturePage,
   // Phases: card pages
-  PhaseOneCardIntro,
-  NotificationComponent
+  PhaseOneCardIntro
 ];

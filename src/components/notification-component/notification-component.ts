@@ -9,19 +9,18 @@ export class NotificationComponent {
   customButton: any;
   title: string;
   message: string;
-  @ViewChild('notificationSlide') slider: Slides;
+  @ViewChild('notificationSlide') notificationSlide: Slides;
   constructor(private viewCtrl: ViewController, private navParams: NavParams) {
     this.customButton = this.navParams.data.customButton;
     this.title = this.navParams.data.title;
     this.message = this.navParams.data.message;
   }
 
-  dismiss(_dir, data) {
-    this.viewCtrl.dismiss(data);
+  ionViewDidLoad() {
+    if (this.notificationSlide) this.notificationSlide.lockSwipeToPrev(true);
   }
 
-  swipeEvent(e) {
-    // Improve: get swipe direction and set animation related to that
-    this.dismiss(e.direction, {});
+  dismiss(data) {
+    this.viewCtrl.dismiss(data);
   }
 }
