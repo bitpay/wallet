@@ -28,6 +28,7 @@ export class CryptoPaymentMethodPage {
   public useAsModal: boolean;
   public isIOS: boolean;
   private coin: string;
+  private tokenAddress: string;
   private country;
   private currency: string;
 
@@ -40,6 +41,7 @@ export class CryptoPaymentMethodPage {
     public themeProvider: ThemeProvider
   ) {
     this.coin = this.navParams.data.coin;
+    this.tokenAddress = this.navParams.data.tokenAddress;
     this.country = this.navParams.data.selectedCountry;
     this.currency = this.navParams.data.currency;
     this.methods = this.buyCryptoProvider.paymentMethodsAvailable;
@@ -54,13 +56,15 @@ export class CryptoPaymentMethodPage {
           'simplex',
           m,
           this.coin,
-          this.currency
+          this.currency,
+          this.tokenAddress
         ) ||
           (this.buyCryptoProvider.isPaymentMethodSupported(
             'wyre',
             m,
             this.coin,
-            this.currency
+            this.currency,
+            this.tokenAddress
           ) &&
             !this.navParams.data.isPromotionActiveForCountry)) && // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
         (m.method != 'sepaBankTransfer' ||
@@ -84,7 +88,8 @@ export class CryptoPaymentMethodPage {
       exchange,
       paymentMethod,
       this.coin,
-      this.currency
+      this.currency,
+      this.tokenAddress
     );
   }
 

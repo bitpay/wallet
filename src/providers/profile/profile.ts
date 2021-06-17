@@ -128,10 +128,9 @@ export class ProfileProvider {
     wallet.email = config.emailFor && config.emailFor[wallet.id];
 
     // for token wallets
-    wallet.linkedEthWallet = wallet.token ? this.currencyProvider.getLinkedEthWallet(
-      wallet.id,
-      wallet.n
-    ) : null;
+    wallet.linkedEthWallet = wallet.token
+      ? this.currencyProvider.getLinkedEthWallet(wallet.id, wallet.n)
+      : null;
 
     if (wallet.linkedEthWallet) {
       this.trySetName(wallet);
@@ -319,6 +318,7 @@ export class ProfileProvider {
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
+    wallet.chain = wallet.credentials.chain;
     wallet.cachedStatus = {};
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
@@ -501,8 +501,10 @@ export class ProfileProvider {
       ).coinCode;
       console.log('###### Wallet');
       console.log(wallet);
-      
-      const chain = wallet.credentials.chain || this.currencyProvider.getChain(wallet.coin).toLowerCase();
+
+      const chain =
+        wallet.chain ||
+        this.currencyProvider.getChain(wallet.coin).toLowerCase();
       if (
         (wallet.n == 1 && wallet.credentials.addressType == 'P2PKH') ||
         (wallet.credentials.addressType == 'P2WPKH' &&
@@ -1252,7 +1254,6 @@ export class ProfileProvider {
         new Error('bindWallet should receive credentials JSON')
       );
     }
-    console.log('##### bindWallet ' + JSON.stringify(credentials));
     // Create the client
     const walletClient = this.bwcProvider.getClient(
       JSON.stringify(credentials),
@@ -1678,19 +1679,19 @@ export class ProfileProvider {
     return this.storeProfileIfDirty();
   }
 
-  private getDefaultWalletOpts(coin): Partial<WalletOptions> {
+  private getDefaultWalletOpts(chain): Partial<WalletOptions> {
     const defaults = this.configProvider.getDefaults();
     const opts: Partial<WalletOptions> = {
-      name: this.currencyProvider.getCoinName(coin),
+      name: this.currencyProvider.getCoinName(chain),
       m: 1,
       n: 1,
       myName: null,
       networkName: 'livenet',
       bwsurl: defaults.bws.url,
-      singleAddress: this.currencyProvider.isSingleAddress(coin) || false,
-      coin
+      singleAddress: this.currencyProvider.isSingleAddress(chain) || false,
+      coin: chain
     };
-    if (coin === 'btc') opts.useNativeSegwit = true;
+    if (chain === 'btc') opts.useNativeSegwit = true;
     return opts;
   }
 
@@ -1763,21 +1764,21 @@ export class ProfileProvider {
     return this.addAndBindWalletClient(multisigEthWalletClient);
   }
 
-  public createMultipleWallets(coins: string[], tokens = []): Promise<any> {
+  public createMultipleWallets(chains: string[], tokens = []): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (tokens && tokens.length && coins.indexOf('eth') < 0) {
+      if (tokens && tokens.length && chains.indexOf('eth') < 0) {
         reject('No ethereum wallets for tokens');
       }
 
-      const defaultOpts = this.getDefaultWalletOpts(coins[0]);
+      const defaultOpts = this.getDefaultWalletOpts(chains[0]);
 
       this._createWallet(defaultOpts).then(data => {
         const key = data.key;
         const firstWalletData = data;
         const create2ndWallets = [];
-        coins.slice(1).forEach(coin => {
+        chains.slice(1).forEach(chain => {
           const newOpts: any = {};
-          Object.assign(newOpts, this.getDefaultWalletOpts(coin));
+          Object.assign(newOpts, this.getDefaultWalletOpts(chain));
           newOpts['key'] = key; // Add Key
           create2ndWallets.push(this._createWallet(newOpts));
         });
@@ -1789,7 +1790,7 @@ export class ProfileProvider {
             // Handle tokens
             if (!_.isEmpty(tokens)) {
               const ethWalletClient = walletClients.find(
-                wallet => wallet.credentials.coin === 'eth'
+                wallet => wallet.chain === 'eth'
               );
 
               if (!ethWalletClient) reject('no eth wallet for tokens');
@@ -1934,44 +1935,58 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.coin) {
+    if (opts.coin && !opts.chain) {
       let coins: string[] = [].concat(opts.coin);
       ret = _.filter(ret, x => {
         return _.findIndex(coins, coin => x.credentials.coin == coin) >= 0;
       });
     }
 
-    if (opts.backedUp) {
+    if (
+      ret.length > 0 &&
+      opts.coin &&
+      opts.chain &&
+      _.isString(opts.coin) &&
+      _.isString(opts.chain)
+    ) {
+      ret = _.filter(ret, x => {
+        return (
+          x.credentials.chain === opts.chain && x.credentials.coin === opts.coin
+        );
+      });
+    }
+
+    if (ret.length > 0 && opts.backedUp) {
       ret = _.filter(ret, x => {
         return !x.needsBackup;
       });
     }
 
-    if (opts.network) {
+    if (ret.length > 0 && opts.network) {
       ret = _.filter(ret, x => {
         return x.credentials.network == opts.network;
       });
     }
 
-    if (opts.n) {
+    if (ret.length > 0 && opts.n) {
       ret = _.filter(ret, w => {
         return w.credentials.n == opts.n;
       });
     }
 
-    if (opts.m) {
+    if (ret.length > 0 && opts.m) {
       ret = _.filter(ret, w => {
         return w.credentials.m == opts.m;
       });
     }
 
-    if (opts.onlyComplete) {
+    if (ret.length > 0 && opts.onlyComplete) {
       ret = _.filter(ret, w => {
         return w.isComplete();
       });
     }
 
-    if (opts.minAmount) {
+    if (ret.length > 0 && opts.minAmount) {
       ret = _.filter(ret, w => {
         // IF no cached Status => return true!
         if (_.isEmpty(w.cachedStatus)) return true;
@@ -1980,7 +1995,7 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.hasFunds) {
+    if (ret.length > 0 && opts.hasFunds) {
       ret = _.filter(ret, w => {
         // IF no cached Status => return true!
         if (_.isEmpty(w.cachedStatus)) return true;
@@ -1989,20 +2004,20 @@ export class ProfileProvider {
       });
     }
 
-    if (!opts.showHidden) {
+    if (ret.length > 0 && !opts.showHidden) {
       // remove hidden wallets
       ret = _.filter(ret, w => {
         return !w.hidden;
       });
     }
 
-    if (opts.canAddNewAccount) {
+    if (ret.length > 0 && opts.canAddNewAccount) {
       ret = _.filter(ret, w => {
         return w.canAddNewAccount;
       });
     }
 
-    if (opts.pairFor) {
+    if (ret.length > 0 && opts.pairFor) {
       // grab walletIds from current wallet for this token (if any)
       const tokenWalletIds = ret
         .filter(wallet => wallet.coin === opts.pairFor.symbol.toLowerCase())
@@ -2015,7 +2030,7 @@ export class ProfileProvider {
       );
     }
 
-    if (opts.minFiatCurrency) {
+    if (ret.length > 0 && opts.minFiatCurrency) {
       ret = ret.filter(wallet => {
         if (_.isEmpty(wallet.cachedStatus)) return true;
 
@@ -2029,7 +2044,7 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.minPendingAmount) {
+    if (ret.length > 0 && opts.minPendingAmount) {
       ret = ret.filter(wallet => {
         if (_.isEmpty(wallet.cachedStatus)) return true;
 
@@ -2043,7 +2058,7 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.lastAddress) {
+    if (ret.length > 0 && opts.lastAddress) {
       ret = _.filter(ret, w => {
         return w.lastAddress == opts.lastAddress;
       });

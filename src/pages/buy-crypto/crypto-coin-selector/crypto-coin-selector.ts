@@ -9,7 +9,6 @@ import {
   ActionSheetProvider,
   BuyCryptoProvider,
   BwcErrorProvider,
-  CurrencyProvider,
   ErrorsProvider,
   Logger,
   ProfileProvider
@@ -38,7 +37,6 @@ export class CryptoCoinSelectorPage {
     private navCtrl: NavController,
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
-    private currencyProvider: CurrencyProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams,
@@ -50,17 +48,28 @@ export class CryptoCoinSelectorPage {
       : this.buyCryptoProvider.getExchangeCoinsSupported();
     this.title = this.navParams.data.title;
     this.fromFooterMenu = this.navParams.data.fromFooterMenu;
-    this.wallets = this.profileProvider.getWallets({
-      network: env.name == 'development' ? null : 'livenet',
-      onlyComplete: true,
-      coin: supportedCoins,
-      backedUp: true
+    this.wallets = [];
+    _.each(supportedCoins, sc => {
+      const walletsWithSC = this.profileProvider.getWallets({
+        network: env.name == 'development' ? null : 'livenet',
+        onlyComplete: true,
+        coin: sc.coin.toLowerCase(),
+        chain: sc.chain.toLowerCase(),
+        backedUp: true
+      });
+      if (walletsWithSC) this.wallets.push(...walletsWithSC);
     });
+
     for (const coin of supportedCoins) {
       const c = {
-        unitCode: coin,
-        name: this.currencyProvider.getCoinName(coin),
-        availableWallets: _.filter(this.wallets, w => w.coin === coin)
+        unitCode: coin.coin,
+        name: coin.name,
+        availableWallets: _.filter(
+          this.wallets,
+          w =>
+            w.credentials.coin == coin.coin.toLowerCase() &&
+            w.credentials.chain == coin.chain.toLowerCase()
+        )
       };
       this.coins.push(c);
     }

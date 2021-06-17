@@ -35,6 +35,7 @@ export class CryptoOrderSummaryPage {
   public wallet: any;
   public walletId: any;
   public coin: string;
+  public tokenAddress: string;
   public paymentMethod: any;
   public country: string;
   public currency: string;
@@ -64,6 +65,7 @@ export class CryptoOrderSummaryPage {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
+    this.tokenAddress = this.navParams.data.tokenAddress;
   }
 
   ionViewDidLoad() {
@@ -144,16 +146,35 @@ export class CryptoOrderSummaryPage {
       ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
       : this.buyCryptoProvider.getExchangeCoinsSupported();
     // Select first available wallet
-    this.wallets = this.profileProvider.getWallets({
+    const opts = {
       network: env.name == 'development' ? null : 'livenet',
       onlyComplete: true,
-      coin:
-        this.coin && supportedCoins.includes(this.coin)
-          ? this.coin
-          : supportedCoins,
-      backedUp: true
-    });
-    if (this.wallets[0]) {
+      backedUp: true,
+      coin: undefined,
+      chain: undefined
+    };
+    if (this.coin) {
+      opts.coin = this.coin;
+      opts.chain = this.tokenAddress
+        ? this.currencyProvider.getTokenChain(this.tokenAddress)
+        : undefined;
+      this.wallets = this.profileProvider.getWallets(opts);
+    } else {
+      if (supportedCoins.length > 0) {
+        _.each(supportedCoins, sc => {
+          opts.coin = sc.coin.toLowerCase();
+          opts.chain = sc.chain.toLowerCase();
+          const existWallet = this.profileProvider.getWallets(opts);
+          if (existWallet) {
+            this.wallets = _.clone(existWallet);
+            return false; // break _.some
+          }
+          return true;
+        });
+      }
+    }
+
+    if (this.wallets && this.wallets[0]) {
       this.logger.debug(
         'Setting wallet to deposit funds: ' +
           this.wallets[0].credentials.walletId
@@ -287,7 +308,8 @@ export class CryptoOrderSummaryPage {
         'simplex',
         this.buyCryptoProvider.paymentMethodsAvailable.creditCard,
         this.coin,
-        this.currency
+        this.currency,
+        this.tokenAddress
       )
     ) {
       this.paymentMethod = this.buyCryptoProvider.paymentMethodsAvailable.creditCard;
@@ -298,13 +320,15 @@ export class CryptoOrderSummaryPage {
             'simplex',
             this.buyCryptoProvider.paymentMethodsAvailable.applePay,
             this.coin,
-            this.currency
+            this.currency,
+            this.tokenAddress
           ) ||
           this.buyCryptoProvider.isPaymentMethodSupported(
             'wyre',
             this.buyCryptoProvider.paymentMethodsAvailable.applePay,
             this.coin,
-            this.currency
+            this.currency,
+            this.tokenAddress
           )
             ? this.buyCryptoProvider.paymentMethodsAvailable.applePay
             : this.buyCryptoProvider.paymentMethodsAvailable.debitCard;
@@ -329,13 +353,15 @@ export class CryptoOrderSummaryPage {
         'simplex',
         this.paymentMethod,
         this.coin,
-        this.currency
+        this.currency,
+        this.tokenAddress
       ) ||
       this.buyCryptoProvider.isPaymentMethodSupported(
         'wyre',
         this.paymentMethod,
         this.coin,
-        this.currency
+        this.currency,
+        this.tokenAddress
       )
     ) {
       this.logger.debug(
@@ -354,10 +380,12 @@ export class CryptoOrderSummaryPage {
   private isCoinSupportedByCountry(): boolean {
     if (
       this.isPromotionActiveForCountry(this.selectedCountry) &&
-      !_.includes(
+      _.findIndex(
         this.buyCryptoProvider.getExchangeCoinsSupported('simplex'),
-        this.coin
-      )
+        ct =>
+          ct.isToken == (this.tokenAddress ? true : false) &&
+          ct.coin == this.coin
+      ) >= 0
     ) {
       this.logger.debug(
         `Selected coin: ${this.coin} is not currently available for selected country: ${this.selectedCountry.name}. Show warning.`
@@ -407,6 +435,7 @@ export class CryptoOrderSummaryPage {
         paymentMethod: this.paymentMethod.method,
         useAsModal: true,
         coin: this.coin,
+        tokenAddress: this.tokenAddress,
         selectedCountry: this.selectedCountry,
         currency: this.currency,
         isPromotionActiveForCountry: this.isPromotionActiveForCountry(
@@ -432,6 +461,7 @@ export class CryptoOrderSummaryPage {
       currency: this.currency,
       paymentMethod: this.paymentMethod,
       coin: this.coin,
+      tokenAddress: this.tokenAddress,
       walletId: this.walletId,
       selectedCountry: this.selectedCountry,
       isPromotionActiveForCountry: this.isPromotionActiveForCountry(

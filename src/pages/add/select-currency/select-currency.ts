@@ -93,7 +93,7 @@ export class SelectCurrencyPage {
     this.keyId = this.navParam.data.keyId;
     this.availableChains =
       this.isShared || this.isJoin
-        ? this.currencyProvider.getMultiSigCoins()
+        ? this.currencyProvider.getMultiSigChains()
         : this.currencyProvider.getAvailableChains();
     this.availableTokens = this.currencyProvider.getAvailableTokens();
     for (const chain of this.availableChains) {
@@ -239,7 +239,7 @@ export class SelectCurrencyPage {
     const eligibleWallets = this.keyId
       ? this.profileProvider.getWalletsFromGroup({
           keyId: this.keyId,
-          network: 'livenet',
+          // network: 'livenet',
           pairFor: token
         })
       : [];
@@ -266,7 +266,7 @@ export class SelectCurrencyPage {
           let canCreateit = _.isEmpty(
             this.profileProvider.getWalletsFromGroup({
               keyId: this.keyId,
-              network: 'livenet',
+              // network: 'livenet',
               pairFor: token
             })
           );

@@ -92,14 +92,14 @@ export class DerivationPathHelperProvider {
     return +match[1];
   }
 
-  public isValidDerivationPathCoin(path: string, coin: string): boolean {
+  public isValidDerivationPathCoin(path: string, chain: string): boolean {
     let isValid: boolean;
     const coinCode = this.parsePath(path).coinCode;
 
     // BIP45
     if (path == "m/45'") return true;
 
-    switch (coin) {
+    switch (chain) {
       case 'btc':
         isValid = ["0'", "1'"].indexOf(coinCode) > -1;
         break;

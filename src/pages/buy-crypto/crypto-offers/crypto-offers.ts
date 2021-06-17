@@ -41,6 +41,7 @@ export class CryptoOffersPage {
   public wallet: any;
   public walletId: any;
   public coin: string;
+  public tokenAddress: string;
   public paymentMethod: any;
   public selectedCountry;
   public currency: string;
@@ -92,6 +93,7 @@ export class CryptoOffersPage {
     this.paymentMethod = this.navParams.data.paymentMethod;
     this.selectedCountry = this.navParams.data.selectedCountry;
     this.coin = this.navParams.data.coin;
+    this.tokenAddress = this.navParams.data.tokenAddress;
     const coinColor =
       this.currencyProvider.getTheme(this.coin).coinColor || '#e6f8e9';
     this.coinBorderColor = `2px solid ${coinColor}`;
@@ -109,14 +111,16 @@ export class CryptoOffersPage {
       'simplex',
       this.paymentMethod,
       this.coin,
-      this.currency
+      this.currency,
+      this.tokenAddress
     );
     this.offers.wyre.showOffer =
       this.buyCryptoProvider.isPaymentMethodSupported(
         'wyre',
         this.paymentMethod,
         this.coin,
-        this.currency
+        this.currency,
+        this.tokenAddress
       ) && !this.navParams.data.isPromotionActiveForCountry; // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
     if (this.offers.simplex.showOffer) this.getSimplexQuote();
     if (this.offers.wyre.showOffer) this.getWyreQuote();

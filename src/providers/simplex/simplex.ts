@@ -5,6 +5,11 @@ import * as moment from 'moment';
 
 // providers
 import env from '../../environments';
+import {
+  AvailableCoin,
+  AvailableToken,
+  SupportedCoinsAndTokens
+} from '../../models/crypto/crypto.model';
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { CurrencyProvider } from '../currency/currency';
@@ -20,10 +25,12 @@ const PASSTHROUGH_URI_PROD = 'https://bws.bitpay.com/static/simplex/';
 @Injectable()
 export class SimplexProvider {
   private env: string;
+  private _supportedCoins: AvailableCoin[];
+  private _supportedTokens: AvailableToken[];
 
   public passthrough_uri: string;
   public supportedFiatAltCurrencies;
-  public supportedCoins: string[];
+  public supportedCoinsAndTokens: SupportedCoinsAndTokens[];
   public supportedPaymentMethods;
   public fiatAmountLimits: { min: number; max: number };
 
@@ -93,16 +100,36 @@ export class SimplexProvider {
       'VND',
       'ZAR'
     ];
-    this.supportedCoins = [
-      'btc',
-      'bch',
-      'eth',
-      'pax',
-      'busd',
-      'doge',
-      'dai',
-      'usdc'
+    this.supportedCoinsAndTokens = [];
+    this._supportedCoins = [
+      { coin: 'btc' },
+      { coin: 'bch' },
+      { coin: 'eth' },
+      { coin: 'doge' }
     ];
+    _.each(this._supportedCoins, sc => {
+      this.supportedCoinsAndTokens.push({
+        name: this.currencyProvider.getCoinName(sc.coin),
+        chain: this.currencyProvider.getChain(sc.coin),
+        coin: sc.coin,
+        isToken: false
+      });
+    });
+
+    this._supportedTokens = [
+      { symbol: 'pax', chain: 'eth' },
+      { symbol: 'busd', chain: 'eth' },
+      { symbol: 'dai', chain: 'eth' },
+      { symbol: 'usdc', chain: 'eth' }
+    ];
+    _.each(this._supportedTokens, sc => {
+      this.supportedCoinsAndTokens.push({
+        name: this.currencyProvider.getTokenName(sc.symbol),
+        chain: this.currencyProvider.getChain(sc.chain),
+        coin: sc.symbol,
+        isToken: true
+      });
+    });
     this.fiatAmountLimits = {
       min: 50,
       max: 20000

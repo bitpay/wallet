@@ -383,14 +383,14 @@ export class ImportWalletPage {
     if (this.importForm.value.derivationPathEnabled) {
       derivationPath = this.importForm.value.derivationPath;
     } else {
-      if (this.derivationPathHelperProvider[`default${coin.toUpperCase()}`]) {
+      if (this.derivationPathHelperProvider[`default${chain.toUpperCase()}`]) {
         derivationPath = this.derivationPathHelperProvider[
-          `default${coin.toUpperCase()}`
+          `default${chain.toUpperCase()}`
         ];
       } else {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant(
-          `No derivation path for: default${coin.toUpperCase()}`
+          `No derivation path for: default${chain.toUpperCase()}`
         );
         this.showErrorInfoSheet(title, subtitle);
         return;
@@ -416,7 +416,7 @@ export class ImportWalletPage {
 
     // set opts.useLegacyCoinType
     if (
-      coin == 'bch' &&
+      chain == 'bch' &&
       this.derivationPathHelperProvider.parsePath(derivationPath).coinCode ==
         "0'"
     ) {
@@ -447,7 +447,7 @@ export class ImportWalletPage {
     if (
       !this.derivationPathHelperProvider.isValidDerivationPathCoin(
         derivationPath,
-        coin
+        chain
       )
     ) {
       const title = this.translate.instant('Error');

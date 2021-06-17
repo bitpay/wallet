@@ -5,6 +5,7 @@ import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
+import { CurrencyProvider } from '../../../../../providers/currency/currency';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
@@ -49,7 +50,8 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private currencyProvider: CurrencyProvider
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -122,33 +124,35 @@ export class WalletAddressesPage {
         );
       });
 
-    this.walletProvider
-      .getLowUtxos(this.wallet)
-      .then(resp => {
-        if (resp && resp.allUtxos && resp.allUtxos.length) {
-          const allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
-          const per = (resp.minFee / allSum) * 100;
+    if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+      this.walletProvider
+        .getLowUtxos(this.wallet)
+        .then(resp => {
+          if (resp && resp.allUtxos && resp.allUtxos.length) {
+            const allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
+            const per = (resp.minFee / allSum) * 100;
 
-          this.lowUtxosNb = resp.lowUtxos.length;
-          this.allUtxosNb = resp.allUtxos.length;
-          this.lowUtxosSum = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
-            _.sumBy(resp.lowUtxos || 0, 'satoshis')
-          );
-          this.allUtxosSum = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
-            allSum
-          );
-          this.minFee = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
-            resp.minFee || 0
-          );
-          this.minFeePer = per.toFixed(2) + '%';
-        }
-      })
-      .catch(err => {
-        this.logger.warn('GetLowUtxos', err);
-      });
+            this.lowUtxosNb = resp.lowUtxos.length;
+            this.allUtxosNb = resp.allUtxos.length;
+            this.lowUtxosSum = this.txFormatProvider.formatAmountStr(
+              this.wallet.coin,
+              _.sumBy(resp.lowUtxos || 0, 'satoshis')
+            );
+            this.allUtxosSum = this.txFormatProvider.formatAmountStr(
+              this.wallet.coin,
+              allSum
+            );
+            this.minFee = this.txFormatProvider.formatAmountStr(
+              this.wallet.coin,
+              resp.minFee || 0
+            );
+            this.minFeePer = per.toFixed(2) + '%';
+          }
+        })
+        .catch(err => {
+          this.logger.warn('GetLowUtxos', err);
+        });
+    }
   }
 
   private processList(list): void {

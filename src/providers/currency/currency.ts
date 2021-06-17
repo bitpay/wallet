@@ -13,7 +13,7 @@ export class CurrencyProvider {
   public ratesApi = {} as CoinsMap<string>;
   public blockExplorerUrls = {} as CoinsMap<string>;
   public blockExplorerUrlsTestnet = {} as CoinsMap<string>;
-  public availableCoins: string[];
+  public availableChains: string[];
   public availableTokens: Token[];
   public customERC20CoinsData;
   public customERC20Opts;
@@ -24,7 +24,7 @@ export class CurrencyProvider {
   ) {
     this.coinOpts = availableCoins;
     this.availableTokens = Object.values(this.tokenProvider.tokens);
-    this.availableCoins = Object.keys(this.coinOpts);
+    this.availableChains = Object.keys(this.coinOpts);
     this.retreiveInfo();
   }
 
@@ -57,7 +57,7 @@ export class CurrencyProvider {
               ...this.customERC20Opts
             };
             this.availableTokens = Object.values(tokenOpts);
-            this.availableCoins = Object.keys(this.coinOpts) as string[];
+            this.availableChains = Object.keys(this.coinOpts) as string[];
             this.retreiveInfo();
             return Promise.resolve();
           });
@@ -133,8 +133,8 @@ export class CurrencyProvider {
     return !!this.coinOpts[chain].properties.singleAddress;
   }
 
-  isSharedCoin(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.hasMultiSig;
+  isSharedChain(chain: string): boolean {
+    return !!this.coinOpts[chain].properties.hasMultiSig;
   }
 
   isERCToken(coin: string): boolean {
@@ -155,7 +155,7 @@ export class CurrencyProvider {
   }
 
   getAvailableCoins(): string[] {
-    return this.availableCoins;
+    return this.availableChains;
   }
 
   getAvailableChains(): string[] {
@@ -170,16 +170,29 @@ export class CurrencyProvider {
     return this.availableTokens;
   }
 
-  getMultiSigCoins(): string[] {
-    return this.availableCoins.filter(coin => this.isSharedCoin(coin));
+  getMultiSigChains(): string[] {
+    return this.availableChains.filter(chain => this.isSharedChain(chain));
   }
 
   getCoinName(chain: string): string {
     return this.coinOpts[chain].name;
   }
 
-  getChain(coin: string): string {
-    return this.coinOpts[coin].chain;
+  getTokenName(tokenSymbol: string): string {
+    const existToken = this.availableTokens
+      ? this.availableTokens.find(
+          tk => tk.symbol.toUpperCase() == tokenSymbol.toUpperCase()
+        )
+      : undefined;
+    return existToken ? existToken.name : tokenSymbol;
+  }
+  /// Uppercase chain of tokenAddress
+  getTokenChain(tokenAddress: string): string {
+    return this.tokenProvider.tokens[tokenAddress].chain;
+  }
+
+  getChain(chain: string): string {
+    return this.coinOpts[chain].chain;
   }
 
   getRatesApi() {

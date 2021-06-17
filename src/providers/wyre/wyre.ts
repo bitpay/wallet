@@ -2,8 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import env from '../../environments';
+import {
+  AvailableCoin,
+  AvailableToken,
+  SupportedCoinsAndTokens
+} from '../../models/crypto/crypto.model';
 
 // providers
+import { CurrencyProvider } from '../currency/currency';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { RateProvider } from '../rate/rate';
@@ -14,9 +20,12 @@ const URI_PROD = 'https://api.sendwyre.com';
 @Injectable()
 export class WyreProvider {
   private env: string;
+  private _supportedCoins: AvailableCoin[];
+  private _supportedTokens: AvailableToken[];
+
   public uri: string;
   public supportedFiatAltCurrencies;
-  public supportedCoins: string[];
+  public supportedCoinsAndTokens: SupportedCoinsAndTokens[];
   public supportedPaymentMethods;
   public fiatAmountLimits: { min: number; max: number };
 
@@ -24,22 +33,41 @@ export class WyreProvider {
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private currencyProvider: CurrencyProvider
   ) {
     this.env = env.name == 'development' ? 'sandbox' : 'production';
     this.logger.debug('WyreProvider initialized - env: ' + this.env);
     this.uri = env.name == 'development' ? URI_DEV : URI_PROD;
     this.supportedFiatAltCurrencies = ['AUD', 'CAD', 'EUR', 'GBP', 'USD'];
-    this.supportedCoins = [
-      'btc',
-      'eth',
-      'usdc',
-      'gusd',
-      'pax',
-      'busd',
-      'dai',
-      'wbtc'
+    this.supportedCoinsAndTokens = [];
+    this._supportedCoins = [{ coin: 'btc' }, { coin: 'eth' }];
+    _.each(this._supportedCoins, sc => {
+      this.supportedCoinsAndTokens.push({
+        name: this.currencyProvider.getCoinName(sc.coin),
+        chain: this.currencyProvider.getChain(sc.coin),
+        coin: sc.coin,
+        isToken: false
+      });
+    });
+
+    this._supportedTokens = [
+      { symbol: 'usdc', chain: 'eth' },
+      { symbol: 'gusd', chain: 'eth' },
+      { symbol: 'pax', chain: 'eth' },
+      { symbol: 'busd', chain: 'eth' },
+      { symbol: 'dai', chain: 'eth' },
+      { symbol: 'wbtc', chain: 'eth' }
     ];
+    _.each(this._supportedTokens, sc => {
+      this.supportedCoinsAndTokens.push({
+        name: this.currencyProvider.getTokenName(sc.symbol),
+        chain: this.currencyProvider.getChain(sc.chain),
+        coin: sc.symbol,
+        isToken: true
+      });
+    });
+
     this.fiatAmountLimits = {
       min: 50,
       max: 1000

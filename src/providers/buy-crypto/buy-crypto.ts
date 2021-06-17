@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 // providers
+import { SupportedCoinsAndTokens } from '../../models/crypto/crypto.model';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
@@ -14,7 +15,7 @@ import { WyreProvider } from '../wyre/wyre';
 @Injectable()
 export class BuyCryptoProvider {
   public paymentMethodsAvailable;
-  public exchangeCoinsSupported: string[];
+  public exchangeCoinsSupported: SupportedCoinsAndTokens[];
 
   // private baseUrl: string = 'http://localhost:3232/bws/api'; // testing
   private baseUrl: string = 'https://bws.bitpay.com/bws/api';
@@ -31,10 +32,14 @@ export class BuyCryptoProvider {
   ) {
     this.logger.debug('BuyCrypto Provider initialized');
 
-    this.exchangeCoinsSupported = _.union(
-      this.simplexProvider.supportedCoins,
-      this.wyreProvider.supportedCoins
+    this.exchangeCoinsSupported = _.uniqWith(
+      _.union(
+        this.simplexProvider.supportedCoinsAndTokens,
+        this.wyreProvider.supportedCoinsAndTokens
+      ),
+      _.isEqual
     );
+
     this.paymentMethodsAvailable = {
       applePay: {
         label: this.translate.instant('Apple Pay'),
@@ -112,12 +117,26 @@ export class BuyCryptoProvider {
     }
   }
 
-  private isCoinSupported(exchange: string, coin: string) {
+  private isCoinSupported(
+    exchange: string,
+    coin: string,
+    tokenAddress: string
+  ) {
     switch (exchange) {
       case 'simplex':
-        return _.includes(this.simplexProvider.supportedCoins, coin);
+        return (
+          _.findIndex(
+            this.simplexProvider.supportedCoinsAndTokens,
+            ct => ct.isToken == (tokenAddress ? true : false) && ct.coin == coin
+          ) >= 0
+        );
       case 'wyre':
-        return _.includes(this.wyreProvider.supportedCoins, coin);
+        return (
+          _.findIndex(
+            this.wyreProvider.supportedCoinsAndTokens,
+            ct => ct.isToken == (tokenAddress ? true : false) && ct.coin == coin
+          ) >= 0
+        );
       default:
         return false;
     }
@@ -127,11 +146,12 @@ export class BuyCryptoProvider {
     exchange: string,
     paymentMethod,
     coin: string,
-    currency: string
+    currency: string,
+    tokenAddress: string
   ): boolean {
     return (
       paymentMethod.supportedExchanges[exchange] &&
-      this.isCoinSupported(exchange, coin) &&
+      this.isCoinSupported(exchange, coin, tokenAddress) &&
       this.isCurrencySupported(exchange, currency)
     );
   }
@@ -150,12 +170,14 @@ export class BuyCryptoProvider {
     };
   }
 
-  public getExchangeCoinsSupported(exchange?: string): string[] {
+  public getExchangeCoinsSupported(
+    exchange?: string
+  ): SupportedCoinsAndTokens[] {
     switch (exchange) {
       case 'simplex':
-        return this.simplexProvider.supportedCoins;
+        return this.simplexProvider.supportedCoinsAndTokens;
       case 'wyre':
-        return this.wyreProvider.supportedCoins;
+        return this.wyreProvider.supportedCoinsAndTokens;
       default:
         // return all supported coins
         return this.exchangeCoinsSupported;
