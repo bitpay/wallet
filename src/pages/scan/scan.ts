@@ -42,6 +42,7 @@ export class ScanPage {
   public fromEthMultisig: boolean;
   public fromConfirm: boolean;
   public fromWalletConnect: boolean;
+  public fromFooterMenu: boolean;
   public canGoBack: boolean;
   public tabBarElement;
 
@@ -111,6 +112,7 @@ export class ScanPage {
     this.fromEthMultisig = this.navParams.data.fromEthMultisig;
     this.fromConfirm = this.navParams.data.fromConfirm;
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
+    this.fromFooterMenu = this.navParams.data.fromFooterMenu;
 
     if (this.canGoBack && this.tabBarElement)
       this.tabBarElement.style.display = 'none';
@@ -253,6 +255,12 @@ export class ScanPage {
       this.events.publish('Local/TagScan', { value: contents });
     } else if (this.fromWalletConnect) {
       this.events.publish('Local/UriScan', { value: contents });
+    } else if (this.fromFooterMenu) {
+      const redirParms = {
+        activePage: 'ScanPage',
+        fromFooterMenu: this.fromFooterMenu
+      };
+      this.incomingDataProvider.redir(contents, redirParms);
     } else {
       this.navCtrl.parent.select(1); // Workaround to avoid keep camera active
       const redirParms = { activePage: 'ScanPage' };

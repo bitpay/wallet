@@ -275,36 +275,35 @@
             </ion-icon>
 
             <div class="action" *ngIf="tx.confirmations <= 0 && !(tx.amount === 0 && wallet?.coin === 'eth')">
-              <span *ngIf="(tx.action == 'sent') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Sending'
+              <span *ngIf="(tx.action == 'sent') && !(addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address))">{{'Sending'
                     | translate}}
               </span>
-              <span *ngIf="(tx.action == 'moved') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Moving'
+              <span *ngIf="(tx.action == 'moved') && !(addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address))">{{'Moving'
                     | translate}}</span>
-              <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name
-                    || addressbook[tx.outputs[0].address]}}</span>
+              <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address))">{{getContactName(tx.outputs[0].address)}}</span>
               <span *ngIf="tx.action == 'received'">{{'Receiving' | translate}}</span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
-              <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address])">{{'Received'
+              <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address))">{{'Received'
                     | translate}}</span>
               <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-              <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
-                {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+              <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                {{getContactName(tx.outputs[0].address)}}
               </span>
             </div>
 
             <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent' && !(tx.amount === 0 && wallet?.coin === 'eth')">
-              <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)" translate>Sent</span>
-              <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent'
+              <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)" translate>Sent</span>
+              <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent'
                     | translate}}</span>
-              <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">
+              <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !getContactName(tx.outputs[0].address)) && (tx.customData && tx.customData.toWalletName)">
                 {{ 'Sent to {walletName}' | translate: {walletName: tx.customData.toWalletName} }}
               </span>
               <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
               <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-              <span *ngIf="!tx.message && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
-                {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+              <span *ngIf="!tx.message && addressbook && tx.outputs[0] && getContactName(tx.outputs[0].address)">
+                {{getContactName(tx.outputs[0].address)}}
               </span>
             </div>
 

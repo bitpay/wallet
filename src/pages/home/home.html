@@ -5,6 +5,23 @@
         {{ 'Home' | translate }}
       </div>
     </ion-title>
+    <ion-buttons *ngIf="isCordova && !isCopay" end>
+      <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
+        <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="25">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="25">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id icon-small">
+              {{accountInitials}}
+            </span>
+          </ion-icon>
+        </div>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
@@ -14,6 +31,19 @@
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
       <expandable-header-primary>
+        <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
+          <ion-icon *ngIf="!bitPayIdUserInfo">
+            <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="35">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && !bitPayIdUserInfo?.givenName">
+            <img src="assets/img/bitpay-card/icon-bitpay.svg" width="35">
+          </ion-icon>
+          <ion-icon *ngIf="bitPayIdUserInfo && bitPayIdUserInfo?.givenName">
+            <span class="icon-bitpay-id">
+              {{accountInitials}}
+            </span>
+          </ion-icon>
+        </button>
         {{ 'Home' | translate }}
       </expandable-header-primary>
     </ion-toolbar>
@@ -133,6 +163,12 @@
       </ion-label>
     </button>
     <div class="line-divider" *ngIf="showExchangeCryptoOption"></div>
+    <button ion-item *ngIf="showWalletConnect" (click)="goToWalletConnectPage()">
+      <ion-label>
+        <div class="services-list-label" translate>WalletConnect</div>
+      </ion-label>
+    </button>
+    <div class="line-divider" *ngIf="showWalletConnect"></div>
   </ion-list>
 
   <ion-slides *ngIf="showAdvertisements && advertisements && advertisements[0] && !testingAdsEnabled" pager="true" (ionSlideDidChange)="slideChanged()">

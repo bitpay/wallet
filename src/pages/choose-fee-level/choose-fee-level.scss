@@ -1,4 +1,10 @@
 page-choose-fee-level {
+  .toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .testnet-warning {
     width: 100%;
     height: 3rem;
@@ -10,27 +16,20 @@ page-choose-fee-level {
   }
 
   .fee-error {
+    padding-top: 10px;
     font-size: 12.5px;
     color: red;
   }
 
   .fee {
+    &-title {
+      display: flex;
+      justify-content: space-between;
+    }
     &-check {
       font-size: 28px;
       &.success {
         color: color($colors, success);
-      }
-    }
-    &-row {
-      display: flex;
-      align-items: baseline;
-    }
-    &-container {
-      .slide-zoom {
-        height: 80%;
-        width: 80%;
-        display: flex;
-        text-align: left;
       }
     }
     &-speed-name {
@@ -55,17 +54,11 @@ page-choose-fee-level {
       color: #434d5a;
     }
     &-card {
-      height: 207px;
-      margin: 15px 0px 20px 0px;
+      padding: 15px;
+      margin: 10px;
       border-radius: 9px;
       background-color: #ffffff;
-      box-shadow: 0 4px 23px 0 rgba(0, 0, 0, 0.14);
-      .apply-button {
-        padding-bottom: 10px;
-      }
-      .line-divider {
-        margin: 0px 15px;
-      }
+      box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14);
     }
   }
 }

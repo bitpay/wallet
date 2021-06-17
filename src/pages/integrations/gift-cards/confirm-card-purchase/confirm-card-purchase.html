@@ -66,7 +66,7 @@
 
       <div class="line-divider"></div>
 
-      <div *ngIf="totalAmountStr">
+      <div>
         <ion-item>
           <ion-label>
             <div class="summary-item">
@@ -138,7 +138,7 @@
 
         <div *ngIf="invoiceFee && !coinbaseAccount" class="line-divider"></div>
 
-        <ion-item *ngIf="!coinbaseAccount">
+        <ion-item *ngIf="networkFee && !coinbaseAccount">
           <ion-label>
             <div class="summary-item">
               <span translate>Miner fee</span>

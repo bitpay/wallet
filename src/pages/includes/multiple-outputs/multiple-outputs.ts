@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
 import { Coin } from '../../../providers/currency/currency';
-import { Logger } from '../../../providers/logger/logger';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -18,13 +16,11 @@ export class MultipleOutputsPage {
   private _tx;
   private _misunderstoodOutputsMsg;
 
-  public contactName: string;
   public showMultiplesOutputs: boolean;
 
   constructor(
     private addressBookProvider: AddressBookProvider,
     private addressProvider: AddressProvider,
-    private logger: Logger,
     private translate: TranslateService,
     private walletProvider: WalletProvider
   ) {
@@ -54,9 +50,12 @@ export class MultipleOutputsPage {
       );
       output.addressToShow =
         addressToShow == 'false' ? 'Unparsed address' : addressToShow;
+      this.addressBookProvider
+        .getContactName(outputAddr, this.tx.network)
+        .then(contact => {
+          output.contactName = contact;
+        });
     });
-
-    this.contact();
   }
 
   get tx() {
@@ -69,20 +68,5 @@ export class MultipleOutputsPage {
 
   viewOnBlockchain(): void {
     this.openBlockChainEvent.next();
-  }
-
-  private contact(): void {
-    const addr = this._tx.toAddress;
-    this.addressBookProvider
-      .get(addr)
-      .then(ab => {
-        if (ab) {
-          const name = _.isObject(ab) ? ab.name : ab;
-          this.contactName = name;
-        }
-      })
-      .catch(err => {
-        this.logger.warn(err);
-      });
   }
 }

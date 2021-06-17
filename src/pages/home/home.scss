@@ -6,6 +6,31 @@ page-home {
       align-items: normal;
     }
   }
+  button.bitpay-id-login {
+    height: 2.1em;
+    margin-top: -12px;
+    float: right;
+  }
+  .icon-bitpay-id {
+    font-family: 'Heebo-Medium' !important;
+    background: #1a2c57;
+    color: #9faff5;
+    font-size: 16px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .icon-bitpay-id.icon-small {
+    font-size: 12px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .total-amount-container {
     margin: 20px 0px 10px 20px;
     .section-header {

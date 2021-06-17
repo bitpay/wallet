@@ -1,9 +1,12 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, Platform } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
@@ -14,11 +17,16 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
 import { TabProvider } from '../../providers/tab/tab';
+import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
+import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CardsPage } from '../cards/cards';
+import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
+import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { ScanPage } from '../scan/scan';
+import { AmountPage } from '../send/amount/amount';
 import { SettingsPage } from '../settings/settings';
 import { WalletsPage } from '../wallets/wallets';
 
@@ -34,13 +42,23 @@ export class TabsPage {
   tabs;
   NETWORK = 'livenet';
   public txpsN: number;
+  public clipboardBadge: number;
+  public clipboardData: string;
   public cardNotificationBadgeText;
   public scanIconType: string;
   public isCordova: boolean;
+  public navigationType: string;
   private zone;
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  private pageMap = {
+    AmountPage,
+    ExchangeCryptoPage,
+    CryptoCoinSelectorPage,
+    CardCatalogPage,
+    ScanPage
+  };
 
   constructor(
     private plt: Platform,
@@ -55,7 +73,12 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private locationProvider: LocationProvider
+    private locationProvider: LocationProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private navCtrl: NavController,
+    private analyticsProvider: AnalyticsProvider,
+    private themeProvider: ThemeProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -70,6 +93,7 @@ export class TabsPage {
     this.isCordova = this.platformProvider.isCordova;
     this.scanIconType =
       this.appName == 'BitPay' ? 'tab-scan' : 'tab-copay-scan';
+    this.navigationType = this.themeProvider.getSelectedNavigationType();
 
     if (this.platformProvider.isElectron) {
       this.updateDesktopOnFocus();
@@ -98,12 +122,16 @@ export class TabsPage {
     this.events.subscribe('Local/FetchWallets', () => {
       this.fetchAllWalletsStatus();
     });
+    this.events.subscribe('Local/UpdateNavigationType', () => {
+      this.navigationType = this.themeProvider.getSelectedNavigationType();
+    });
   }
 
   private unsubscribeEvents() {
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/UpdateTxps');
     this.events.unsubscribe('Local/FetchWallets');
+    this.events.unsubscribe('Local/UpdateNavigationType');
     this.events.unsubscribe('experimentUpdateStart');
   }
 
@@ -118,13 +146,11 @@ export class TabsPage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe('bwsEvent');
-      this.events.unsubscribe('Local/UpdateTxps');
-      this.events.unsubscribe('Local/FetchWallets');
-      this.events.unsubscribe('experimentUpdateStart');
+      this.unsubscribeEvents();
     });
 
     this.checkCardEnabled();
+    this.checkClipboardData();
     this.tabProvider.prefetchGiftCards();
   }
 
@@ -190,11 +216,17 @@ export class TabsPage {
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.events.publish('Desktop/onFocus');
+      this.checkClipboardData();
       setTimeout(() => {
         this.updateTxps();
         this.fetchAllWalletsStatus();
       }, 1000);
     });
+  }
+
+  private async checkClipboardData(): Promise<void> {
+    this.clipboardData = await this.clipboardProvider.getValidData();
+    this.clipboardBadge = this.clipboardData ? 1 : 0;
   }
 
   private bwsEventHandler: any = (walletId: string, type: string) => {
@@ -339,6 +371,30 @@ export class TabsPage {
         this.updateTotalBalance(wallets);
       }
       this.updateTxps();
+    });
+  }
+
+  public openFooterMenu(): void {
+    if (this.navigationType !== 'transact') return;
+
+    this.analyticsProvider.logEvent('transaction_menu_clicked', {
+      from: 'tabs'
+    });
+    const footerMenu = this.actionSheetProvider.createFooterMenu({
+      clipboardData: this.clipboardData
+    });
+    footerMenu.present();
+    footerMenu.onDidDismiss(nextView => {
+      if (nextView) {
+        if (nextView.name) {
+          this.navCtrl.push(this.pageMap[nextView.name], nextView.params, {
+            animate: !['ScanPage'].includes(nextView.name)
+          });
+        } else {
+          this.clipboardProvider.redir(this.clipboardData);
+          this.checkClipboardData();
+        }
+      }
     });
   }
 

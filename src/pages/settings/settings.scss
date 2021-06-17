@@ -23,9 +23,28 @@ page-about {
     height: 25px;
   }
 
+  .icon-bitpay-id {
+    font-family: 'Heebo-Medium' !important;
+    background: #1a2c57;
+    color: #9faff5;
+    font-size: 26px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .bp-list {
     .main-label {
       font-weight: 400;
+      .bitpay-name {
+        font-weight: bold;
+      }
+      .bitpay-email {
+        font-weight: 200;
+      }
     }
     ion-item-divider {
       margin-top: 0px;
@@ -39,6 +58,14 @@ page-about {
         font-size: 20px;
         &.icon-settings {
           opacity: 0.5;
+        }
+        &.icon-login {
+          font-size: 60px;
+          padding-left: 15px;
+          img {
+            width: 60px;
+            height: 60px;
+          }
         }
         &.ionic-icon {
           font-size: 25px;

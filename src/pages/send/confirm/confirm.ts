@@ -10,6 +10,7 @@ import {
 import * as _ from 'lodash';
 
 // Pages
+import { ChooseFeeLevelModal } from '../../choose-fee-level/choose-fee-level';
 import { FinishModalPage } from '../../finish/finish';
 import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
@@ -17,6 +18,7 @@ import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../providers/address/address';
 import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
@@ -73,11 +75,12 @@ export class ConfirmPage {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public hideSlideButton: boolean;
-  public amount;
+  public amount: string;
   public showMultiplesOutputs: boolean;
   public fromMultiSend: boolean;
   public fromSelectInputs: boolean;
   public recipients;
+  public toAddressName;
   public coin: Coin;
   public isERCToken: boolean;
   public appName: string;
@@ -107,12 +110,23 @@ export class ConfirmPage {
   public mainTitle: string;
   public isSpeedUpTx: boolean;
 
+  public requiredFee: number;
+  public requiredFeeRate: number;
+  public minAllowedGasLimit: number;
+  public editGasPrice: boolean = false;
+  public editGasLimit: boolean = false;
+  public customGasPrice: number;
+  public customGasLimit: number;
+
+  public errors = this.bwcProvider.getErrors();
+
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
 
   constructor(
     protected addressProvider: AddressProvider,
+    protected addressBookProvider: AddressBookProvider,
     protected analyticsProvider: AnalyticsProvider,
     protected app: App,
     protected actionSheetProvider: ActionSheetProvider,
@@ -258,7 +272,8 @@ export class ConfirmPage {
       gasLimit: this.navParams.data.gasLimit,
       speedUpTx: this.isSpeedUpTx,
       fromSelectInputs: this.navParams.data.fromSelectInputs ? true : false,
-      inputs: this.navParams.data.inputs
+      inputs: this.navParams.data.inputs,
+      nonce: this.navParams.data.nonce
     };
 
     this.tx.sendMax = this.navParams.data.useSendMax ? true : false;
@@ -266,7 +281,7 @@ export class ConfirmPage {
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
-        : this.tx.coin == 'ETH' ||
+        : this.tx.coin == 'eth' ||
           this.currencyProvider.isERCToken(this.tx.coin)
         ? Number(amount)
         : parseInt(amount, 10);
@@ -275,12 +290,14 @@ export class ConfirmPage {
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
-      this.tx.feeRate = +this.navParams.data.requiredFeeRate;
+      this.tx.feeRate = this.requiredFeeRate = +this.navParams.data
+        .requiredFeeRate;
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
-      this.tx.feeLevel = 'custom';
+      this.tx.feeLevel =
+        this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
+      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -288,7 +305,7 @@ export class ConfirmPage {
         .Address(this.tx.toAddress)
         .toString(true);
     }
-
+    this.setAddressesContactName();
     this.getAmountDetails();
 
     const feeOpts = this.feeProvider.getFeeOpts();
@@ -326,17 +343,53 @@ export class ConfirmPage {
     }
   }
 
-  private getAmountDetails() {
+  private setAddressesContactName() {
+    this.addressBookProvider.list(this.tx.network).then(contacts => {
+      if (contacts && contacts.length > 0) {
+        if (this.recipients) {
+          _.each(this.recipients, r => {
+            const existsContact = _.find(
+              contacts,
+              c => c.address === (r.addressToShow || r.toAddress || r.address)
+            );
+            if (existsContact) r.contactName = existsContact.name;
+          });
+        } else if (
+          this.tx &&
+          !this.tx.recipientType &&
+          !this.tx.name &&
+          !this.tx.paypro &&
+          !this.fromCoinbase
+        ) {
+          const existsContact = _.find(
+            contacts,
+            c => c.address === this.tx.origToAddress
+          );
+          if (existsContact) this.toAddressName = existsContact.name;
+        }
+      }
+    });
+  }
+
+  private getAmountDetails(): void {
     this.amount = this.txFormatProvider.formatAmount(this.coin, this.tx.amount);
   }
 
   private getTotalAmountDetails(tx, wallet) {
     if (wallet && wallet.credentials && !wallet.credentials.token) {
-      this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
-      this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-        this.coin,
-        tx.amount + tx.txp[wallet.id].fee
-      );
+      if (tx.fromSelectInputs) {
+        this.totalAmount = tx.amount;
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          this.coin,
+          tx.amount
+        );
+      } else {
+        this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+          this.coin,
+          tx.amount + tx.txp[wallet.id].fee
+        );
+      }
     }
   }
 
@@ -396,7 +449,7 @@ export class ConfirmPage {
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
-  private setWallet(wallet): void {
+  private async setWallet(wallet) {
     this.wallet = wallet;
     this.coinbaseAccount = null;
 
@@ -404,7 +457,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
+      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
 
     if (
@@ -428,40 +481,35 @@ export class ConfirmPage {
       this.isSpeedUpTx
     );
 
-    if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
+    if (this.tx.paypro) {
+      if (!this.currencyProvider.isUtxoCoin(this.tx.coin)) {
+        // Update fees to most recent for eth ( in case required fee change ? )
+        const address = await this.walletProvider.getAddress(
+          this.wallet,
+          false
+        );
+        const payload = {
+          address
+        };
+        this.tx.paypro = await this.payproProvider.getPayProDetails({
+          paymentUrl: this.tx.payProUrl,
+          coin: this.wallet.coin,
+          payload,
+          disableLoader: true
+        });
+        this.tx.feeRate = parseInt(
+          (this.tx.paypro.requiredFeeRate * 1.1).toFixed(0),
+          10
+        ); // Workaround to avoid gas price supplied is lower than requested error
+      }
+      this.paymentTimeControl(this.tx.paypro.expires);
+    }
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
-      const previousView = this.navCtrl.getPrevious().name;
-      switch (err) {
-        case 'insufficient_funds':
-          if (this.showUseUnconfirmedMsg()) {
-            this.showErrorInfoSheet(
-              this.translate.instant(
-                'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
-              ),
-              this.translate.instant('Not enough confirmed funds'),
-              exit
-            );
-          } else if (previousView === 'AmountPage') {
-            // Do not allow user to change or use max amount if previous view is not Amount
-            this.showInsufficientFundsInfoSheet();
-          } else {
-            this.showErrorInfoSheet(
-              this.translate.instant(
-                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
-              ),
-              this.translate.instant('Insufficient funds'),
-              exit
-            );
-          }
-          break;
-        default:
-          this.showErrorInfoSheet(err);
-          break;
-      }
+      this.handleError(err, exit);
     });
   }
 
@@ -611,7 +659,9 @@ export class ConfirmPage {
           if (this.usingCustomFee) {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
-          } else if (this.usingMerchantFee) {
+          }
+
+          if (this.usingMerchantFee) {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${tx.feeRate} vs. referent level (5 * feeRate) ${maxAllowedFee}`
@@ -633,9 +683,8 @@ export class ConfirmPage {
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
             tx.feeLevelName = feeOpts[tx.feeLevel];
-            tx.feeRate = feeRate;
+            if (feeRate) tx.feeRate = feeRate;
           }
-
           // call getSendMaxInfo if was selected from amount view
           if (tx.sendMax && this.shouldUseSendMax()) {
             this.useSendMax(tx, wallet, opts)
@@ -645,7 +694,7 @@ export class ConfirmPage {
               .catch(err => {
                 return reject(err);
               });
-          } else if (tx.speedUpTx && this.shouldUseSendMax()) {
+          } else if (tx.speedUpTx) {
             this.speedUpTx(tx, wallet, opts)
               .then(() => {
                 return resolve();
@@ -735,27 +784,33 @@ export class ConfirmPage {
           }
           tx.speedUpTxInfo = speedUpTxInfo;
         }
-
-        return this.feeProvider
-          .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
-          .then(speedUpTxFee => {
-            speedUpTxInfo.fee = speedUpTxFee;
-            this.showWarningSheet(wallet, speedUpTxInfo);
-            return this.getInput(wallet).then(input => {
-              tx.speedUpTxInfo.input = input;
-              tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
-
-              this.tx.amount = tx.amount;
-              this.getAmountDetails();
-              return this.buildTxp(tx, wallet, opts);
+        if (wallet.coin === 'eth') {
+          tx.speedUpTxInfo.input = [];
+          tx.amount = tx.speedUpTxInfo.amount;
+          this.tx.amount = tx.amount;
+          this.getAmountDetails();
+          return this.buildTxp(tx, wallet, opts);
+        } else {
+          return this.feeProvider
+            .getSpeedUpTxFee(wallet.network, speedUpTxInfo.size)
+            .then(speedUpTxFee => {
+              speedUpTxInfo.fee = speedUpTxFee;
+              this.showWarningSheet(wallet, speedUpTxInfo);
+              return this.getInput(wallet).then(input => {
+                tx.speedUpTxInfo.input = input;
+                tx.amount = tx.speedUpTxInfo.input.satoshis - speedUpTxInfo.fee;
+                this.tx.amount = tx.amount;
+                this.getAmountDetails();
+                return this.buildTxp(tx, wallet, opts);
+              });
+            })
+            .catch(err => {
+              const error = err
+                ? err
+                : this.translate.instant('Error getting Speed Up fee');
+              return Promise.reject(error);
             });
-          })
-          .catch(err => {
-            const error = err
-              ? err
-              : this.translate.instant('Error getting Speed Up fee');
-            return Promise.reject(error);
-          });
+        }
       })
       .catch(err => {
         const error = err
@@ -766,7 +821,7 @@ export class ConfirmPage {
   }
 
   protected getFeeRate(amount: number, fee: number) {
-    return (fee / amount) * 100;
+    return (fee / (amount + fee)) * 100;
   }
 
   protected isHighFee(amount: number, fee: number) {
@@ -795,7 +850,7 @@ export class ConfirmPage {
   private buildTxp(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
-        .then(txp => {
+        .then(async txp => {
           this.isERCToken = this.currencyProvider.isERCToken(tx.coin);
           if (this.isERCToken) {
             const chain = this.getChain(tx.coin);
@@ -825,11 +880,36 @@ export class ConfirmPage {
             txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
           }
 
+          tx.txp[wallet.id] = txp;
+          this.tx = tx;
+
+          if (wallet.coin == 'eth' || this.isERCToken) {
+            this.customGasPrice = Number(
+              (this.tx.txp[wallet.id].gasPrice * 1e-9).toFixed(2)
+            );
+            this.customGasLimit = this.tx.txp[wallet.id].gasLimit;
+            if (!this.minAllowedGasLimit)
+              this.minAllowedGasLimit = this.tx.txp[wallet.id].gasLimit;
+          }
+
           if (txp.feeTooHigh) {
             this.showHighFeeSheet();
           }
 
           tx.txp[wallet.id] = txp;
+
+          if (
+            !this.tx.nonce &&
+            this.isSpeedUpTx &&
+            this.wallet.coin === 'eth'
+          ) {
+            const nonce = await this.walletProvider.getNonce(
+              wallet,
+              tx.txp[wallet.id].from
+            );
+            this.tx.nonce = tx.txp[wallet.id].nonce = nonce;
+          }
+
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
@@ -843,11 +923,7 @@ export class ConfirmPage {
           return resolve();
         })
         .catch(err => {
-          if (err.message == 'Insufficient funds') {
-            return reject('insufficient_funds');
-          } else {
-            return reject(err);
-          }
+          return reject(err);
         });
     });
   }
@@ -1005,7 +1081,8 @@ export class ConfirmPage {
             toAddress: instruction.toAddress,
             amount: instruction.amount,
             message: instruction.message,
-            data: instruction.data
+            data: instruction.data,
+            gasLimit: tx.gasLimit
           });
         }
       } else {
@@ -1311,6 +1388,47 @@ export class ConfirmPage {
     });
   }
 
+  private showInsufficientFundsForFeeInfoSheet(
+    fee,
+    feeAlternative,
+    feeLevel,
+    coin,
+    exit
+  ): void {
+    const canChooseFeeLevel =
+      coin !== 'bch' &&
+      coin !== 'xrp' &&
+      coin !== 'doge' &&
+      !this.usingMerchantFee &&
+      !this.tx.speedUpTxInfo &&
+      feeLevel !== 'superEconomy';
+
+    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'insufficient-funds-for-fee',
+      {
+        fee,
+        feeAlternative,
+        coin,
+        isERCToken: this.currencyProvider.isERCToken(coin),
+        canChooseFeeLevel
+      }
+    );
+    insufficientFundsInfoSheet.present();
+    insufficientFundsInfoSheet.onDidDismiss(option => {
+      if (option) {
+        this.openExternalLink(
+          'https://support.bitpay.com/hc/en-us/articles/115003393863-What-are-bitcoin-miner-fees-'
+        );
+      } else if (canChooseFeeLevel) {
+        this.chooseFeeLevel();
+        return;
+      }
+      if (exit) {
+        this.fromWalletDetails ? this.navCtrl.pop() : this.navCtrl.popToRoot();
+      }
+    });
+  }
+
   public showErrorInfoSheet(
     error: Error | string,
     title?: string,
@@ -1334,10 +1452,14 @@ export class ConfirmPage {
     }
 
     // Currently the paypro error is the following string: 500 - "{}"
-    if (error.toString().includes('500')) {
-      msg = this.translate.instant(
-        'Error 500 - There is a temporary problem, please try again later.'
-      );
+    if (error.toString().includes('500 - "{}"')) {
+      msg = this.tx.paypro
+        ? this.translate.instant(
+            'There is a temporary problem with the merchant requesting the payment. Please try later'
+          )
+        : this.translate.instant(
+            'Error 500 - There is a temporary problem, please try again later.'
+          );
     }
 
     const infoSheetTitle = title ? title : this.translate.instant('Error');
@@ -1348,8 +1470,8 @@ export class ConfirmPage {
       () => {
         if (exit) {
           this.fromWalletDetails
-            ? this.navCtrl.popToRoot()
-            : this.navCtrl.pop();
+            ? this.navCtrl.pop()
+            : this.navCtrl.popToRoot();
         }
       }
     );
@@ -1471,16 +1593,14 @@ export class ConfirmPage {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
-        if (txp.payProUrl || this.navParams.data.isEthMultisigInstantiation) {
-          this.logger.warn('Paypro error: removing payment proposal');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete payment proposal');
-          });
-        } else if (this.isSpeedUpTx) {
-          this.logger.warn('Speed up transaction error: removing transaction');
-          this.walletProvider.removeTx(wallet, txp).catch(() => {
-            this.logger.warn('Could not delete transaction');
-          });
+        this.logger.warn('Error on publishAndSign: removing payment proposal');
+        this.walletProvider.removeTx(wallet, txp).catch(() => {
+          this.logger.warn('Could not delete payment proposal');
+        });
+        if (err.includes('Broadcasting timeout')) {
+          this.navigateBack(
+            txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
+          );
         }
       });
   }
@@ -1511,18 +1631,16 @@ export class ConfirmPage {
       finishText: string;
       finishComment?: string;
       autoDismiss?: boolean;
-      coin: string;
     } = {
       finishText: this.successText,
-      autoDismiss: !!redir,
-      coin: this.coin
+      autoDismiss: !!redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
-      params = { finishText, finishComment, coin: this.coin };
+      params = { finishText, finishComment };
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
@@ -1540,7 +1658,10 @@ export class ConfirmPage {
       'RippleUri',
       'InvoiceUri'
     ]);
+    this.navigateBack(redir, walletId);
+  }
 
+  private navigateBack(redir?: string, walletId?: string) {
     this.navCtrl.popToRoot().then(_ => {
       if (this.fromCoinbase) {
         this.coinbaseProvider.logEvent({
@@ -1587,16 +1708,16 @@ export class ConfirmPage {
       network: this.tx.network,
       coin: this.tx.coin,
       feeLevel: this.tx.feeLevel,
-      noSave: true,
       customFeePerKB: this.usingCustomFee ? this.tx.feeRate : undefined,
       feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined
     };
 
-    const chooseFeeLevelAction = this.actionSheetProvider.createChooseFeeLevel(
+    const chooseFeeLevelModal = this.modalCtrl.create(
+      ChooseFeeLevelModal,
       txObject
     );
-    chooseFeeLevelAction.present();
-    chooseFeeLevelAction.onDidDismiss(data => {
+    chooseFeeLevelModal.present();
+    chooseFeeLevelModal.onDidDismiss(data => {
       data && data.showMinWarning
         ? this.showCustomFeeWarningSheet(data)
         : this.onFeeModalDismiss(data);
@@ -1625,16 +1746,70 @@ export class ConfirmPage {
       clearCache: true,
       dryRun: true
     }).catch(err => {
-      if (err.message && err.message.includes('Insufficient funds')) {
-        this.showErrorInfoSheet(
-          this.translate.instant('Not enough funds for fee')
-        );
-      }
-      this.logger.warn('Error updateTx', err);
+      this.handleError(err);
     });
   }
 
+  private handleError(err, exit?) {
+    const previousView = this.navCtrl.getPrevious().name;
+    const isInsufficientFundsErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS;
+    const isInsufficientFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_FUNDS_FOR_FEE;
+    const isInsufficientLinkedEthFundsForFeeErr =
+      err instanceof this.errors.INSUFFICIENT_ETH_FEE;
+
+    if (isInsufficientFundsErr) {
+      if (this.showUseUnconfirmedMsg()) {
+        this.showErrorInfoSheet(
+          this.translate.instant(
+            'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
+          ),
+          this.translate.instant('Not enough confirmed funds'),
+          exit
+        );
+      } else if (previousView === 'AmountPage') {
+        // Do not allow user to change or use max amount if previous view is not Amount
+        this.showInsufficientFundsInfoSheet();
+      } else {
+        this.showErrorInfoSheet(
+          this.translate.instant(
+            'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+          ),
+          this.translate.instant('Insufficient funds'),
+          exit
+        );
+      }
+    } else if (
+      isInsufficientFundsForFeeErr ||
+      isInsufficientLinkedEthFundsForFeeErr
+    ) {
+      let { requiredFee } = err.messageData;
+      this.requiredFee = requiredFee;
+
+      const coin = this.tx.coin.toLowerCase();
+      const feeLevel = this.tx.feeLevel;
+      let feeCoin = isInsufficientLinkedEthFundsForFeeErr ? 'eth' : coin;
+
+      const feeAlternative = this.txFormatProvider.formatAlternativeStr(
+        feeCoin,
+        requiredFee
+      );
+      const fee = this.txFormatProvider.formatAmountStr(feeCoin, requiredFee);
+      this.showInsufficientFundsForFeeInfoSheet(
+        fee,
+        feeAlternative,
+        feeLevel,
+        coin,
+        exit
+      );
+    } else {
+      this.showErrorInfoSheet(err, null, exit);
+    }
+  }
+
   public showWallets(): void {
+    if (this.fromSelectInputs) return;
     this.isOpenSelector = true;
     const id = this.wallet ? this.wallet.credentials.walletId : null;
 
@@ -1732,5 +1907,28 @@ export class ConfirmPage {
 
   public openExternalLink(url: string) {
     this.externalLinkProvider.open(url);
+  }
+
+  public setGasPrice(): void {
+    this.editGasPrice = !this.editGasPrice;
+
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.customGasPrice * 1e9
+    };
+    this.onFeeModalDismiss(data);
+  }
+
+  public setGasLimit(): void {
+    this.editGasLimit = !this.editGasLimit;
+    this.tx.gasLimit = this.tx.txp[
+      this.wallet.id
+    ].gasLimit = this.customGasLimit;
+
+    const data = {
+      newFeeLevel: 'custom',
+      customFeePerKB: this.tx.txp[this.wallet.id].gasPrice
+    };
+    this.onFeeModalDismiss(data);
   }
 }

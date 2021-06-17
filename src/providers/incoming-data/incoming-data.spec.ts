@@ -282,7 +282,10 @@ describe('Provider: Incoming Data Provider', () => {
           coin: element.paymentOptions[2].currency.toLowerCase(),
           network: payProDetails.network,
           payProUrl: element.payProUrl,
-          requiredFeeRate: payProDetails.requiredFeeRate,
+          requiredFeeRate: parseInt(
+            (payProDetails.requiredFeeRate * 1.1).toFixed(0),
+            10
+          ),
           minerFee: element.paymentOptions[2].minerFee
         };
 
@@ -935,7 +938,8 @@ describe('Provider: Incoming Data Provider', () => {
         privateKey: '123',
         toAddress: null,
         coin: 'btc',
-        addressbookEntry: null
+        addressbookEntry: null,
+        fromFooterMenu: undefined
       };
       const nextView = {
         name: 'PaperWalletPage',
@@ -950,7 +954,8 @@ describe('Provider: Incoming Data Provider', () => {
         toAddress: 'xxx',
         coin: 'bch',
         privateKey: null,
-        addressbookEntry: null
+        addressbookEntry: null,
+        fromFooterMenu: undefined
       };
       const nextView = {
         name: 'AmountPage',
@@ -965,7 +970,8 @@ describe('Provider: Incoming Data Provider', () => {
         toAddress: null,
         coin: 'bch',
         privateKey: null,
-        addressbookEntry: 'xxx'
+        addressbookEntry: 'xxx',
+        fromFooterMenu: undefined
       };
       const nextView = {
         name: 'AddressbookAddPage',

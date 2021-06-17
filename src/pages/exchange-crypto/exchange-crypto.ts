@@ -294,8 +294,32 @@ export class ExchangeCryptoPage {
       .getPairsParams(this.fromWalletSelected, data)
       .then(async data => {
         if (data.error) {
-          const msg = 'Changelly getPairsParams Error: ' + data.error.message;
-          this.showErrorAndBack(null, msg, true);
+          let secondBtnText,
+            url,
+            msg = null;
+          msg = 'Changelly getPairsParams Error: ' + data.error.message;
+          if (
+            Math.abs(data.error.code) == 32602 &&
+            data.error.message.indexOf('Invalid currency:') != -1
+          ) {
+            msg = `${data.error.message}. This is a temporary Changelly decision. If you have further questions please reach out to them.`;
+            secondBtnText = this.translate.instant('Submit a ticket');
+            url = 'https://support.changelly.com/en/support/tickets/new';
+          }
+
+          this.showErrorAndBack(null, msg, true, secondBtnText, url);
+          return;
+        }
+
+        if (
+          data.result &&
+          data.result[0] &&
+          Number(data.result[0].maxAmountFixed) <= 0
+        ) {
+          const msg = `Changelly has temporarily disabled ${this.fromWalletSelected.coin}-${this.toWalletSelected.coin} pair. If you have further questions please reach out to them.`;
+          const secondBtnText = this.translate.instant('Submit a ticket');
+          const url = 'https://support.changelly.com/en/support/tickets/new';
+          this.showErrorAndBack(null, msg, true, secondBtnText, url);
           return;
         }
 
@@ -409,7 +433,13 @@ export class ExchangeCryptoPage {
     return chain.includes(this.fromWalletSelected.coin);
   }
 
-  private showErrorAndBack(title: string, msg, noExit?: boolean): void {
+  private showErrorAndBack(
+    title: string,
+    msg,
+    noExit?: boolean,
+    secondBtnText?: string,
+    url?: string
+  ): void {
     this.onGoingProcessProvider.clear();
     this.loading = false;
     title = title ? title : this.translate.instant('Error');
@@ -419,7 +449,9 @@ export class ExchangeCryptoPage {
       'default-error',
       {
         msg,
-        title
+        title,
+        secondBtnText,
+        url
       }
     );
     errorActionSheet.present();
@@ -533,9 +565,7 @@ export class ExchangeCryptoPage {
         this.fromWalletSelected.coin == 'btc' ||
         this.getChain(this.fromWalletSelected.coin) == 'eth'
           ? 'priority'
-          : this.feeProvider.getCoinCurrentFeeLevel(
-              this.fromWalletSelected.coin
-            );
+          : this.feeProvider.getDefaultFeeLevel();
 
       this.feeProvider
         .getFeeRate(

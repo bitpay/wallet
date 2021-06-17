@@ -127,13 +127,21 @@ function createMenu() {
 }
 // The setAsDefaultProtocolClient only works on packaged versions of the application
 
-app.setAsDefaultProtocolClient('bitcoin');
-app.setAsDefaultProtocolClient('bitcoincash');
-app.setAsDefaultProtocolClient('bchtest');
-app.setAsDefaultProtocolClient('ethereum');
-app.setAsDefaultProtocolClient('ripple');
-app.setAsDefaultProtocolClient('dogecoin');
-app.setAsDefaultProtocolClient(appConfig.name);
+if (!app.isDefaultProtocolClient('bitcoin'))
+  app.setAsDefaultProtocolClient('bitcoin');
+if (!app.isDefaultProtocolClient('bitcoincash'))
+  app.setAsDefaultProtocolClient('bitcoincash');
+if (!app.isDefaultProtocolClient('bchtest'))
+  app.setAsDefaultProtocolClient('bchtest');
+if (!app.isDefaultProtocolClient('ethereum'))
+  app.setAsDefaultProtocolClient('ethereum');
+if (!app.isDefaultProtocolClient('ripple'))
+  app.setAsDefaultProtocolClient('ripple');
+if (!app.isDefaultProtocolClient('dogecoin'))
+  app.setAsDefaultProtocolClient('dogecoin');
+if (!app.isDefaultProtocolClient(appConfig.name))
+  app.setAsDefaultProtocolClient(appConfig.name);
+
 app.setVersion(appConfig.version);
 app.name = appConfig.nameCase;
 

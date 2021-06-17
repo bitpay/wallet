@@ -80,19 +80,6 @@ describe('ConfirmPage', () => {
     });
   });
   describe('Methods', () => {
-    describe('chooseFeeLevel', () => {
-      it('should display a fee modal', () => {
-        const appSheet = spyOn(
-          instance.actionSheetProvider,
-          'createChooseFeeLevel'
-        ).and.returnValue({
-          present() {},
-          onDidDismiss() {}
-        });
-        instance.chooseFeeLevel();
-        expect(appSheet).toHaveBeenCalled();
-      });
-    });
     describe('onFeeModalDismiss', () => {
       it('should set usingCustomFee to true if newFeeLevel is custom', () => {
         spyOn(instance, 'updateTx').and.returnValue(Promise.resolve());

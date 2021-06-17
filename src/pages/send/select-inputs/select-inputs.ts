@@ -24,9 +24,9 @@ import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 import { Logger } from '../../../providers/logger/logger';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-
 @Component({
   selector: 'page-select-inputs',
   templateUrl: 'select-inputs.html'
@@ -40,6 +40,8 @@ export class SelectInputsPage {
   public recipient;
   public inputs: any[] = [];
   public totalAmount: number = 0;
+  public isCordova: boolean;
+  public reverse: boolean;
 
   private selectedInputs = [];
   private validDataTypeMap: string[] = [
@@ -68,13 +70,16 @@ export class SelectInputsPage {
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.bitcore = {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge()
     };
+    this.reverse = false;
+    this.isCordova = this.platformProvider.isCordova;
     this.wallet = this.navParams.data.wallet;
     this.events.subscribe(
       'Local/AddressScanSelectInputs',
@@ -118,6 +123,11 @@ export class SelectInputsPage {
     this.inputs = _.filter(this.inputs, i => {
       return i.confirmations !== 0;
     });
+  }
+
+  public reverseInputs() {
+    this.reverse = !this.reverse;
+    this.inputs.reverse();
   }
 
   public getCoinName(coin): string {
@@ -242,6 +252,15 @@ export class SelectInputsPage {
     });
   }
 
+  public clearAmount(item): void {
+    item.amount = null;
+    item.altAmountStr = null;
+    item.fiatAmount = null;
+    item.fiatCode = null;
+    item.amountToShow = null;
+    this.recipient = item;
+  }
+
   public cleanSearch(): void {
     this.search = '';
     this.parsedData = {};
@@ -313,7 +332,7 @@ export class SelectInputsPage {
   }
 
   public addRecipient(recipient): void {
-    let amountToShow = +recipient.amount
+    let amountToShow: string = +recipient.amount
       ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
       : null;
 

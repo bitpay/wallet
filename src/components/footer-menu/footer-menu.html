@@ -1,0 +1,30 @@
+<action-sheet>
+  <div class="bp-header"></div>
+
+  <ion-list no-lines class="bp-list">
+    <ng-container *ngFor="let opt of optionsMenu | keys">
+      <ion-item *ngIf="opt.value.showOption" (click)="optionClicked(opt.value)">
+          <ion-icon item-left>
+            <img [src]="opt.value.imgSrc" width="40">
+          </ion-icon>
+          <ion-label>
+            <div class="main-label">{{opt.value.mainLabel}}</div>
+            <div class="secondary-label">{{opt.value.secondaryLabel}}</div>
+          </ion-label>
+        </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <button ion-button *ngIf="isCordova" class="scan-button" (click)="openScanPage()">
+    <img src="assets/img/footer-menu/scan.svg">
+    <span>{{'Scan' | translate }}</span>
+  </button>
+
+  <button ion-button *ngIf="!isCordova && clipboardData" class="clipboard-button" (click)="processClipboardData()">{{clipboardData}}</button>
+
+  <ion-item margin-bottom no-lines text-center class="item-close" (click)="dismiss()">
+    <ion-icon>
+      <img src="assets/img/footer-menu/close.svg" width="36">
+    </ion-icon>
+  </ion-item>
+</action-sheet>

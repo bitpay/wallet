@@ -26,6 +26,7 @@ export interface GiftCardMap {
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
+  NEW_ADDRESS_BOOK: network => 'addressbook-v2-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
@@ -54,6 +55,13 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HAS_REPORTED_FIREBASE_CREATED_WALLET: 'hasReportedFirebaseCreatedWallet',
+  HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD: 'hasReportedFirebaseHasPhysicalCard',
+  HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD: 'hasReportedFirebaseHasVirtualCard',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard',
+  HAS_REPORTED_FIREBASE_SECURED_WALLET: 'hasSecuredWallet',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET: 'hasFundedWallet',
+  HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET: 'hasNotFundedWallet',
   HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   TOTAL_BALANCE: 'totalBalance',
@@ -79,7 +87,6 @@ const Keys = {
   BITPAY_ID_PAIRING_TOKEN: network => `bitpayIdToken-${network}`,
   BITPAY_ID_USER_INFO: network => `bitpayIdUserInfo-${network}`,
   BITPAY_ID_SETTINGS: network => `bitpayIdSettings-${network}`,
-  APP_THEME: 'app-theme',
   USER_LOCATION: 'user-location',
   COUNTRIES: 'countries',
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
@@ -89,6 +96,7 @@ const Keys = {
 };
 
 interface Storage {
+  exists(k: string): Promise<boolean>;
   get(k: string): Promise<any>;
   set(k: string, v): Promise<void>;
   remove(k: string): Promise<void>;
@@ -163,6 +171,65 @@ export class PersistenceProvider {
 
   getKeyOnboardingFlag() {
     return this.storage.get(Keys.KEY_ONBOARDING);
+  }
+
+  setHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET, true);
+  }
+
+  getHasReportedFirebaseWalletCreateFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_CREATED_WALLET);
+  }
+
+  setHasReportedFirebaseHasPhysicalCardFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD, true);
+  }
+
+  getHasReportedFirebaseHasPhysicalCardFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD);
+  }
+
+  setHasReportedFirebaseHasVirtualCardFlag() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD, true);
+  }
+
+  getHasReportedFirebaseHasVirtualCardFlag() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD);
+  }
+
+  setHasReportedFirebaseHasFundedCard() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD, true);
+  }
+
+  getHasReportedFirebaseHasFundedCard() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD);
+  }
+
+  setHasReportedFirebaseHasFundedWallet() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET, true);
+  }
+
+  getHasReportedFirebaseHasFundedWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET);
+  }
+
+  setHasReportedFirebaseNonFundedWallet() {
+    return this.storage.set(
+      Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET,
+      true
+    );
+  }
+
+  getHasReportedFirebasedNonFundedWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET);
+  }
+
+  setHasReportedFirebaseSecuredWallet() {
+    return this.storage.set(Keys.HAS_REPORTED_FIREBASE_SECURED_WALLET, true);
+  }
+
+  getHasReportedFirebaseSecuredWallet() {
+    return this.storage.get(Keys.HAS_REPORTED_FIREBASE_SECURED_WALLET);
   }
 
   storeFocusedWalletId(walletId: string) {
@@ -357,16 +424,37 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.COINBASE_TXS(network));
   }
 
-  setAddressBook(network: string, addressbook) {
-    return this.storage.set(Keys.ADDRESS_BOOK(network), addressbook);
+  existsNewAddressBook(network: string) {
+    return this.storage.exists(Keys.NEW_ADDRESS_BOOK(network));
   }
 
-  getAddressBook(network: string) {
-    return this.storage.get(Keys.ADDRESS_BOOK(network));
+  existsOldAddressBook(network: string) {
+    return this.storage.exists(Keys.ADDRESS_BOOK(network));
   }
 
-  removeAddressbook(network: string) {
-    return this.storage.remove(Keys.ADDRESS_BOOK(network));
+  setAddressBook(network: string, addressbook, newAddressBook: boolean = true) {
+    return this.storage.set(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network),
+      addressbook
+    );
+  }
+
+  getAddressBook(network: string, newAddressBook: boolean = true) {
+    return this.storage.get(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network)
+    );
+  }
+
+  removeAddressbook(network: string, newAddressBook: boolean = true) {
+    return this.storage.remove(
+      newAddressBook
+        ? Keys.NEW_ADDRESS_BOOK(network)
+        : Keys.ADDRESS_BOOK(network)
+    );
   }
 
   setLastCurrencyUsed(lastCurrencyUsed) {
@@ -866,6 +954,18 @@ export class PersistenceProvider {
     return this.storage.remove('walletConnectSession');
   }
 
+  getWalletConnectPendingRequests() {
+    return this.storage.get('walletConnectPendingRequests');
+  }
+
+  setWalletConnectPendingRequests(pendingRequests: any[]) {
+    return this.storage.set('walletConnectPendingRequests', pendingRequests);
+  }
+
+  removeWalletConnectPendingRequests() {
+    return this.storage.remove('walletConnectPendingRequests');
+  }
+
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }
@@ -883,14 +983,6 @@ export class PersistenceProvider {
   }
   getReachedCardLimit() {
     return this.storage.get('reachedCardLimit');
-  }
-
-  setAppTheme(value: string) {
-    return this.storage.set(Keys.APP_THEME, value);
-  }
-
-  getAppTheme() {
-    return this.storage.get(Keys.APP_THEME);
   }
 
   setUserLocation(location: string) {

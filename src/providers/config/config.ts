@@ -25,7 +25,6 @@ export interface Config {
       alternativeName: string;
       alternativeIsoCode: string;
       defaultLanguage: string;
-      feeLevel: string;
     };
   };
 
@@ -75,6 +74,7 @@ export interface Config {
     exchangecrypto: boolean;
     giftcards: boolean;
     walletConnect: boolean;
+    newWalletConnect: boolean;
   };
 
   pushNotifications: {
@@ -131,6 +131,10 @@ export interface Config {
   totalBalance: {
     show: boolean;
   };
+
+  navigation: {
+    type: string;
+  };
 }
 
 @Injectable()
@@ -165,8 +169,7 @@ export class ConfigProvider {
           unitCode: 'btc',
           alternativeName: 'US Dollar',
           alternativeIsoCode: 'USD',
-          defaultLanguage: '',
-          feeLevel: 'normal'
+          defaultLanguage: ''
         }
       },
 
@@ -220,7 +223,8 @@ export class ConfigProvider {
         buycrypto: true,
         exchangecrypto: true,
         giftcards: true,
-        walletConnect: true
+        walletConnect: false,
+        newWalletConnect: false
       },
 
       pushNotifications: {
@@ -270,6 +274,10 @@ export class ConfigProvider {
 
       totalBalance: {
         show: true
+      },
+
+      navigation: {
+        type: 'transact'
       }
     };
   }
@@ -379,6 +387,9 @@ export class ConfigProvider {
       if (this.configCache.showIntegration.coinbase !== false) {
         this.configCache.showIntegration.coinbase = this.configDefault.showIntegration.coinbase;
       }
+      if (this.configCache.showIntegration.newWalletConnect !== true) {
+        this.configCache.showIntegration.newWalletConnect = this.configDefault.showIntegration.newWalletConnect;
+      }
     }
     if (!this.configCache.pushNotifications) {
       this.configCache.pushNotifications = this.configDefault.pushNotifications;
@@ -417,6 +428,10 @@ export class ConfigProvider {
 
     if (!this.configCache.legacyQrCode) {
       this.configCache.legacyQrCode = this.configDefault.legacyQrCode;
+    }
+
+    if (!this.configCache.navigation) {
+      this.configCache.navigation = this.configDefault.navigation;
     }
   }
 

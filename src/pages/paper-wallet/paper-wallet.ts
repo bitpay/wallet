@@ -267,7 +267,7 @@ export class PaperWalletPage {
                 .getFeeRate(
                   balanceToSweep.coin,
                   'livenet',
-                  this.feeProvider.getCoinCurrentFeeLevel(balanceToSweep.coin)
+                  this.feeProvider.getDefaultFeeLevel()
                 )
                 .then((feePerKb: number) => {
                   opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
@@ -354,7 +354,7 @@ export class PaperWalletPage {
     let finishText = this.translate.instant('Sweep Completed');
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, coin: this.selectedWallet.coin },
+      { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

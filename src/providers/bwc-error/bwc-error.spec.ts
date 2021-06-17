@@ -205,7 +205,9 @@ describe('BwcErrorProvider: Bwc Error Provider', () => {
       expect(bwcErrorProvider.msg(err)).toEqual('Copayer data mismatch');
 
       err = new Error('DUST_AMOUNT');
-      expect(bwcErrorProvider.msg(err)).toEqual('Amount below minimum allowed');
+      expect(bwcErrorProvider.msg(err)).toEqual(
+        'Amount below minimum allowed (dust threshold)'
+      );
 
       err = new Error('INCORRECT_ADDRESS_NETWORK');
       expect(bwcErrorProvider.msg(err)).toEqual('Incorrect network address');

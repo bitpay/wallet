@@ -18,6 +18,7 @@ import { ProfileProvider } from '../profile/profile';
 import { InAppBrowserProvider } from './in-app-browser';
 
 import { HttpClient } from '@angular/common/http';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { ExternalLinkProvider } from '../external-link/external-link';
@@ -28,6 +29,14 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
+const REFERRAL_SOCIAL_SHARING_MESSAGE = (
+  code: string,
+  name: string,
+  network: string
+) =>
+  `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code} Go check it out at https://${
+    network === 'testnet' ? 'test.bitpay.com' : 'bitpay.com'
+  }/card?code=${code}&ref=${name}`;
 declare var cordova: any;
 
 @Injectable()
@@ -65,7 +74,8 @@ export class IABCardProvider {
     private appleWalletProvider: AppleWalletProvider,
     private platform: Platform,
     private device: Device,
-    private analyticsProvider: AnalyticsProvider
+    private analyticsProvider: AnalyticsProvider,
+    private socialSharing: SocialSharing
   ) {}
 
   public setNetwork(network: string) {
@@ -317,6 +327,14 @@ export class IABCardProvider {
                 payload: { id, error }
               });
             }
+          );
+          break;
+        }
+
+        case 'referralSocialSharing': {
+          const { referralCode, name } = event.data.params;
+          this.socialSharing.share(
+            REFERRAL_SOCIAL_SHARING_MESSAGE(referralCode, name, this.NETWORK)
           );
           break;
         }
@@ -888,7 +906,7 @@ export class IABCardProvider {
 
           this.logger.log(`pairing success -> ${JSON.stringify(user)}`);
           // publish to correct window
-          this.events.publish('BitPayId/Connected');
+          this.events.publish('BitPayId/Connected', user);
 
           // if with notification -> connect your bitpay id in settings or pairing from personal dashboard
           if (withNotification) {
@@ -969,9 +987,16 @@ export class IABCardProvider {
             'default-error',
             {
               title: 'BitPay ID',
-              msg: 'Uh oh, something went wrong please try again later.'
+              msg: 'Uh oh, something went wrong please try again.'
             }
           );
+
+          if (dashboardRedirect) {
+            errorSheet.onDidDismiss(() => {
+              this.sendMessage({ message: 'pairingOnly' });
+              this.show();
+            });
+          }
 
           await errorSheet.present();
 
