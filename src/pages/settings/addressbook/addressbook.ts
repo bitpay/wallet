@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
 import {
   AddressBookProvider,
   Contact
@@ -13,8 +14,8 @@ import { AddressbookViewPage } from './view/view';
   templateUrl: 'addressbook.html'
 })
 export class AddressbookPage {
-  public addressbook: Contact[] = [];
-  public filteredAddressbook: Contact[] = [];
+  public addressbook: Contact[];
+  public filteredAddressbook: Subject<Contact[]>;
 
   public isEmptyList: boolean;
   public migratingContacts: boolean;
@@ -22,14 +23,13 @@ export class AddressbookPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private addressbookProvider: AddressBookProvider,
-    private events: Events
-  ) {}
+    private addressbookProvider: AddressBookProvider
+  ) {
+    this.addressbook = [];
+    this.filteredAddressbook = new Subject<Contact[]>();
+  }
 
   ionViewDidEnter() {
-    this.events.subscribe('Local/AddressBook/Changed', async () =>
-      this.initAddressbook()
-    );
     this.migratingContacts = false;
     this.addressbookProvider.migratingContactsSubject.subscribe(_migrating => {
       this.migratingContacts = _migrating;
@@ -41,13 +41,14 @@ export class AddressbookPage {
 
   private async initAddressbook() {
     this.addressbook = [];
-    this.filteredAddressbook = [];
+    this.filteredAddressbook.next([]);
     const livenetContacts = await this.addressbookProvider.list('livenet');
     if (livenetContacts) this.addressbook.push(...livenetContacts);
     const testnetContacts = await this.addressbookProvider.list('testnet');
     if (testnetContacts) this.addressbook.push(...testnetContacts);
-    this.filteredAddressbook.push(...this.addressbook);
     this.isEmptyList = _.isEmpty(this.addressbook);
+    if (!this.isEmptyList)
+      this.filteredAddressbook.next(_.orderBy(this.addressbook, 'name'));
   }
 
   public addEntry(): void {
@@ -68,10 +69,10 @@ export class AddressbookPage {
         let name = item['name'];
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });
-      this.filteredAddressbook = result;
+      this.filteredAddressbook.next(result);
     } else {
       // Reset items back to all of the items
-      this.filteredAddressbook = _.clone(this.addressbook);
+      this.filteredAddressbook.next(_.clone(this.addressbook));
     }
   }
 }
