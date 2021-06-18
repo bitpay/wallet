@@ -18,6 +18,9 @@ export class NotificationComponent {
 
   ionViewDidLoad() {
     if (this.notificationSlide) this.notificationSlide.lockSwipeToPrev(true);
+    setTimeout(() => {
+      this.dismiss({});
+    }, 5000);
   }
 
   dismiss(data) {
