@@ -43,12 +43,14 @@ export class TokenSwapPage {
   public showPendingApprove: boolean;
   public approveButtonText: string;
   private approveTxId: string;
+  private approveSpenderAddress: string;
 
   public oneInchSupportedCoins: any[];
   public oneInchSupportedCoinsSymbols: string[];
   public supportedCoinsFull;
   public slippageValues: any[];
   public selectedSlippage: number;
+  private referrerFee: number;
 
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -136,8 +138,23 @@ export class TokenSwapPage {
     }
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     this.logger.info('Loaded: TokenSwapPage');
+
+    await this.oneInchProvider
+      .approveSpender1inch()
+      .then((approveSpenderData: any) => {
+        this.approveSpenderAddress = approveSpenderData.address;
+      })
+      .catch(err => {
+        this.logger.error('1Inch approveSpender1inch Error: ', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            '1Inch is not available at this moment. Please, try again later.'
+          )
+        );
+      });
 
     this.oneInchProvider
       .healthCheck1inch()
@@ -264,7 +281,7 @@ export class TokenSwapPage {
           });
       })
       .catch(err => {
-        this.logger.error('1Inch getCurrencies Error: ', err);
+        this.logger.error('1Inch healthCheck1inch Error: ', err);
         this.showErrorAndBack(
           null,
           this.translate.instant(
@@ -363,7 +380,7 @@ export class TokenSwapPage {
       .getAddress(this.fromWalletSelected, false)
       .then(fromAddress => {
         const data = {
-          spenderAddress: '0x11111112542d85b3ef69ae05771c2dccff4faa26', // TODO: take this address from approve/spender
+          spenderAddress: this.approveSpenderAddress,
           addressToCheck: fromAddress
         };
         this.oneInchProvider
@@ -411,20 +428,39 @@ export class TokenSwapPage {
                   }
                 })
                 .catch(err => {
-                  if (err) this.logger.error(err);
+                  this.logger.error('1Inch getOneInchApproveData Error: ', err);
+                  this.showErrorAndBack(
+                    null,
+                    this.translate.instant(
+                      '1Inch is not available at this moment. Please, try again later.'
+                    )
+                  );
+                  return;
                 });
             }
             this.showToWallets();
             this.onGoingProcessProvider.clear();
           })
           .catch(err => {
-            console.log(err);
-            this.onGoingProcessProvider.clear();
+            this.logger.error('1Inch verifyAllowancesAndBalances Error: ', err);
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                '1Inch is not available at this moment. Please, try again later.'
+              )
+            );
+            return;
           });
       })
       .catch(err => {
-        console.log(err);
-        this.onGoingProcessProvider.clear();
+        this.logger.error('Could not get fromAddress address', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'There was a problem retrieving the fromAddress. Please, try again later.'
+          )
+        );
+        return;
       });
   }
 
@@ -438,9 +474,9 @@ export class TokenSwapPage {
     let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
     this.logger.debug('Updating max and min with pair: ' + pair);
 
-    const referrerFee = await this.oneInchProvider.getReferrerFee();
+    this.referrerFee = await this.oneInchProvider.getReferrerFee();
 
-    this.logger.debug(`referrerFee setted to: ${referrerFee}%`);
+    this.logger.debug(`referrerFee setted to: ${this.referrerFee}%`);
 
     this.toToken = this.supportedCoinsFull.filter(token => {
       return (
@@ -452,7 +488,7 @@ export class TokenSwapPage {
       fromTokenAddress: this.fromToken.address,
       toTokenAddress: this.toToken.address,
       amount: this.amountFrom * 10 ** this.fromToken.decimals, // amount in minimum unit
-      fee: referrerFee // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
+      fee: this.referrerFee // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
     };
     this.oneInchProvider
       .getQuote1inch(data)
@@ -532,7 +568,7 @@ export class TokenSwapPage {
       AmountPage,
       {
         fixedUnit: false,
-        fromExchangeCrypto: true,
+        fromTokenSwap: true, // TODO: use this to show send max
         walletId: this.fromWalletSelected.id,
         coin: this.fromWalletSelected.coin,
         useAsModal: true
@@ -581,7 +617,8 @@ export class TokenSwapPage {
       rate: this.rate,
       useSendMax: this.useSendMax,
       sendMaxInfo: this.sendMaxInfo,
-      slippage: this.selectedSlippage
+      slippage: this.selectedSlippage,
+      referrerFee: this.referrerFee
     };
 
     this.navCtrl.push(TokenSwapCheckoutPage, data);

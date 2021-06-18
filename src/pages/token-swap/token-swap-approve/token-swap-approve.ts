@@ -166,11 +166,23 @@ export class TokenSwapApprovePage {
               });
           })
           .catch(err => {
-            console.log('========== approveCalldata1inch err recibida: ', err);
+            this.logger.error('OneInch approveCalldata1inch Error: ', err);
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'OneInch is not available at this moment. Please, try again later.'
+              )
+            );
           });
       })
       .catch(err => {
-        console.log('========== approveSpender1inch err recibida: ', err);
+        this.logger.error('OneInch approveSpender1inch Error: ', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'OneInch is not available at this moment. Please, try again later.'
+          )
+        );
       });
   }
 

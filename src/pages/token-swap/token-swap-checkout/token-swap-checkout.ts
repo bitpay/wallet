@@ -93,7 +93,8 @@ export class TokenSwapCheckoutPage {
     this.useSendMax = this.navParams.data.useSendMax;
     this.sendMaxInfo = this.navParams.data.sendMaxInfo;
     this.amountFrom = this.navParams.data.amountFrom;
-    this.totalExchangeFee = this.amountFrom * 0.01; // TODO: use bws fee (1%)
+    this.totalExchangeFee =
+      (this.amountFrom * this.navParams.data.referrerFee) / 100; // use fee from bws
     this.alternativeIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     this.getSwap1inch();
@@ -160,15 +161,35 @@ export class TokenSwapCheckoutPage {
                 this.onGoingProcessProvider.clear();
               })
               .catch(err => {
-                this.showErrorAndBack(null, err);
+                this.logger.error('1Inch getSwap1inch Error: ', err);
+                this.showErrorAndBack(
+                  null,
+                  this.translate.instant(
+                    '1Inch is not available at this moment. Please, try again later.'
+                  )
+                );
               });
           })
           .catch(err => {
-            console.log(err);
+            this.logger.error('Could not get toAddress address', err);
+            this.showErrorAndBack(
+              null,
+              this.translate.instant(
+                'There was a problem retrieving the toAddress. Please, try again later.'
+              )
+            );
+            return;
           });
       })
       .catch(err => {
-        console.log(err);
+        this.logger.error('Could not get fromAddress address', err);
+        this.showErrorAndBack(
+          null,
+          this.translate.instant(
+            'There was a problem retrieving the fromAddress. Please, try again later.'
+          )
+        );
+        return;
       });
   }
 
@@ -351,7 +372,9 @@ export class TokenSwapCheckoutPage {
         // TODO: review this event
         userId: this.fromWalletSelected.id,
         coinFrom: this.fromWalletSelected.coin,
-        coinTo: this.toWalletSelected.coin
+        coinTo: this.toWalletSelected.coin,
+        amountFrom: this.amountFrom,
+        amountTo: this.amountTo
       });
       this.onGoingProcessProvider.clear();
       this.openFinishModal();
