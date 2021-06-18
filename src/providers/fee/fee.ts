@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { ConfigProvider } from '../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 
 import * as _ from 'lodash';
@@ -30,16 +31,26 @@ export class FeeProvider {
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('FeeProvider initialized');
   }
 
-  public getFeeOpts() {
+  public getFeeOpts(coin?: string) {
     const feeOpts = {
-      urgent: this.translate.instant('Urgent'),
-      priority: this.translate.instant('Priority'),
-      normal: this.translate.instant('Normal'),
+      urgent:
+        coin == 'eth'
+          ? this.translate.instant('High')
+          : this.translate.instant('Urgent'),
+      priority:
+        coin == 'eth'
+          ? this.translate.instant('Average')
+          : this.translate.instant('Priority'),
+      normal:
+        coin == 'eth'
+          ? this.translate.instant('Low')
+          : this.translate.instant('Normal'),
       economy: this.translate.instant('Economy'),
       superEconomy: this.translate.instant('Super Economy'),
       custom: this.translate.instant('Custom')
@@ -168,5 +179,25 @@ export class FeeProvider {
       );
       return Number(fee.toFixed());
     });
+  }
+
+  public getCoinCurrentFeeLevel(coin): string {
+    let feeLevel;
+    switch (coin) {
+      case 'btc':
+        feeLevel = this.configProvider.get().feeLevels.btc || 'normal';
+        break;
+      case 'eth':
+        feeLevel = this.configProvider.get().feeLevels.eth || 'normal';
+        break;
+      default:
+        feeLevel = 'normal';
+        break;
+    }
+    return feeLevel;
+  }
+
+  public getCurrentFeeLevels(coin: string): string {
+    return this.configProvider.get().feeLevels[coin];
   }
 }

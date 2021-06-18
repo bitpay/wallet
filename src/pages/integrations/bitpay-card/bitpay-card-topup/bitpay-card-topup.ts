@@ -450,7 +450,9 @@ export class BitPayCardTopUpPage {
                   'Using merchant fee rate (for debit card):' + txp.feePerKb
                 );
               } else {
-                txp.feeLevel = this.feeProvider.getDefaultFeeLevel();
+                txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(
+                  wallet.coin
+                );
               }
 
               txp['origToAddress'] = txp.toAddress;
@@ -487,7 +489,7 @@ export class BitPayCardTopUpPage {
         .getFeeRate(
           wallet.coin,
           wallet.credentials.network,
-          this.feeProvider.getDefaultFeeLevel()
+          this.feeProvider.getCoinCurrentFeeLevel(wallet.coin)
         )
         .then(feePerKb => {
           this.walletProvider

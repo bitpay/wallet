@@ -162,7 +162,7 @@ export class TxpDetailsPage {
       this.tx.feeRateStr =
         ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
     }
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.wallet.coin);
     this.tx.feeLevelStr = feeOpts[this.tx.feeLevel];
   }
 

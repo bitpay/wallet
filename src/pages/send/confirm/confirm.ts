@@ -297,7 +297,7 @@ export class ConfirmPage {
       this.tx.feeLevel =
         this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -308,7 +308,7 @@ export class ConfirmPage {
     this.setAddressesContactName();
     this.getAmountDetails();
 
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
@@ -457,7 +457,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     if (
@@ -506,7 +506,7 @@ export class ConfirmPage {
     }
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
       this.handleError(err, exit);
@@ -681,7 +681,7 @@ export class ConfirmPage {
             );
             this.merchantFeeLabel = msg;
           } else {
-            const feeOpts = this.feeProvider.getFeeOpts();
+            const feeOpts = this.feeProvider.getFeeOpts(wallet.coin);
             tx.feeLevelName = feeOpts[tx.feeLevel];
             if (feeRate) tx.feeRate = feeRate;
           }
@@ -1737,7 +1737,7 @@ export class ConfirmPage {
     }
 
     this.tx.feeLevel = data.newFeeLevel;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     if (this.usingCustomFee)
       this.tx.feeRate = parseInt(data.customFeePerKB, 10);
