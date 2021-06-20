@@ -30,29 +30,32 @@
     </expandable-header>
 
     <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
+    <div class="no-wallet" *ngIf="isEmptyWalletDonation(walletsGroups)">
+      No wallet here you can donation lotus
+    </div>
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
-      <div class="section-header" *ngIf="walletGroup[0].canSign && walletsGroups.length > 1">
+      <div class="section-header" *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">
         <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-key.svg" width="15" />
         </ion-icon>
         <ion-label class="key-name">
-          <span>{{ profileProvider.getWalletGroup(walletGroup[0].keyId).name }}</span>
+          <span>{{ profileProvider.getWalletGroup(walletGroup[0]?.keyId).name }}</span>
         </ion-label>
         <div class="collapse">
-          <div *ngIf="!walletGroup[0].canAddNewAccount" class="legacy-tag">Legacy</div>
-          <div *ngIf="walletGroup[0].canAddNewAccount" (click)="addWallet(walletGroup[0].keyId)">
+          <div *ngIf="!walletGroup[0]?.canAddNewAccount" class="legacy-tag">Legacy</div>
+          <div *ngIf="walletGroup[0]?.canAddNewAccount" (click)="addWallet(walletGroup[0]?.keyId)">
             <ion-icon class="item-img">
               <img src="assets/img/plus-gray.svg" width="15" />
             </ion-icon>
           </div>
-          <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0].keyId)">
-            <ion-icon *ngIf="!isCollapsed(walletGroup[0].keyId)" name="ios-arrow-down"></ion-icon>
-            <ion-icon *ngIf="isCollapsed(walletGroup[0].keyId)" name="ios-arrow-up"></ion-icon>
+          <div class="collapse-btn" *ngIf="walletsGroups.length > 1" (click)="collapseGroup(walletGroup[0]?.keyId)">
+            <ion-icon *ngIf="!isCollapsed(walletGroup[0]?.keyId)" name="ios-arrow-down"></ion-icon>
+            <ion-icon *ngIf="isCollapsed(walletGroup[0]?.keyId)" name="ios-arrow-up"></ion-icon>
           </div>
         </div>
       </div>
-      <div class="section-header" *ngIf="walletGroup[0].keyId == 'read-only'">
+      <div class="section-header" *ngIf="walletGroup[0]?.keyId == 'read-only'">
         <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-read-only.svg" width="20" />
         </ion-icon>
@@ -60,14 +63,14 @@
           <span translate>Read Only Wallets</span>
         </ion-label>
       </div>
-      <ion-list no-lines class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0].keyId) }">
+      <ion-list no-lines class="bp-list" [ngClass]="{ collapsed: isCollapsed(walletGroup[0]?.keyId) }">
         <wallet-item-content *ngFor="let wallet of walletGroup" [wallet]="wallet" (click)="goToWalletDetails(wallet)"></wallet-item-content>
       </ion-list>
-      <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0].needsBackup" header="no-header" margin-top>
+      <label-tip type="warn" *ngIf="walletGroup && walletGroup[0] && walletGroup[0]?.needsBackup" header="no-header" margin-top>
         <div label-tip-body>
           <span translate>Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen.</span>
           <br>
-          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0].keyId)" translate>Backup now</a>
+          <a class="label-tip-link" (click)="openBackupPage(walletGroup[0]?.keyId)" translate>Backup now</a>
         </div>
       </label-tip>
     </div>

@@ -122,7 +122,7 @@ export class ConfirmPage {
   public errors = this.bwcProvider.getErrors();
   remaining;
   isDonation;
-
+  reciveLotus;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -166,7 +166,8 @@ export class ConfirmPage {
     public http: HttpClient,
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isDonation = this.navParams.data.isDonation
+    this.isDonation = this.navParams.data.isDonation;
+    this.isDonation ? this.reciveLotus = this.navParams.data.reciveLotus : this.reciveLotus = null;
     this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
@@ -321,6 +322,12 @@ export class ConfirmPage {
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
+        .toString(true);
+    }
+
+    if (this.isDonation && this.reciveLotus.coin == 'bch'){
+      this.reciveLotus.reciveLotus = this.bitcoreCash
+        .Address(this.reciveLotus.reciveLotus)
         .toString(true);
     }
     this.setAddressesContactName();

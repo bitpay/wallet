@@ -553,7 +553,7 @@ export class AmountPage {
       this.fiatCode,
       coin || this.availableUnits[this.unitIndex].id
     )
-    if (_.isEmpty(rateProvider)) return undefined;
+    if (_.isNil(rateProvider)) return undefined;
     return parseFloat(rateProvider.toFixed(2));
   }
 
@@ -824,5 +824,14 @@ export class AmountPage {
       'altCurrency changed to: ' + this.quoteForm.value.altCurrency
     );
     this.unit = this.quoteForm.value.altCurrency;
+  }
+
+  getColorRemaining(){
+    if(this.navParams.data?.remaining <= 500 && this.navParams.data?.remaining > 0){
+      return 'orange';
+    }else if(this.navParams.data?.remaining == 0){
+      return 'red';
+    }
+    return 'green';
   }
 }

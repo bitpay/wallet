@@ -47,7 +47,7 @@ export class WalletsPage {
   @ViewChild('priceCard')
   priceCard;
   public wallets;
-  public walletsGroups;
+  public walletsGroups = [];
   public txpsN: number;
 
   public collapsedGroups;
@@ -91,9 +91,26 @@ export class WalletsPage {
 
   ionViewWillEnter() {
     this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
-
+    if(this.isDonation){
+    this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
+    }
     // Get Coinbase Accounts and UserInfo
     this.setCoinbase();
+  }
+
+  private filterLotusDonationWallet(walletGroups: any){
+    const walletsGroup = [];
+      walletGroups.forEach((el: any) => {
+        const wallet = el.filter(wallet => {
+            return ((wallet.coin == 'doge' && wallet.network == 'testnet'))
+         })
+         walletsGroup.push(wallet);
+     })
+     return walletsGroup;
+  }
+
+  isEmptyWalletDonation(walletGroups: any){
+    return walletGroups.length <= 1 && _.isEmpty(walletGroups[0]);
   }
 
   private setCoinbase(force?) {
@@ -447,7 +464,7 @@ export class WalletsPage {
 
   public goToWalletDetails(wallet): void {
     if (this.isDonation) {
-      this.handleDonation(wallet)
+      return this.handleDonation(wallet);
     }
     if (wallet.isComplete()) {
       this.navCtrl.push(WalletDetailsPage, {
@@ -528,3 +545,8 @@ export class WalletsPage {
     });
   }
 }
+
+
+
+// WEBPACK FOOTER //
+// ./src/pages/wallets/wallets.ts
