@@ -879,7 +879,7 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should handle Coinbase URI', () => {
       let data = ['bitpay://coinbase', 'copay://coinbase'];
       data.forEach(element => {
-        let stateParams = { code: null };
+        let stateParams = { code: null, state: null };
         let nextView = {
           name: 'CoinbasePage',
           params: stateParams

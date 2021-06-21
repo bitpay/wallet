@@ -70,6 +70,7 @@ export class CoinbasePage {
           this.viewCtrl.dismiss();
         });
       }
+      if (this.platformProvider.isAndroid) this.backToWalletTabs();
       this.externalLinkProvider.open(this.coinbaseProvider.oauthUrl);
     } else {
       const { remote } = (window as any).require('electron');
@@ -99,6 +100,20 @@ export class CoinbasePage {
   }
 
   private submitOauthCode(code: string): void {
+    // Security check
+    if (
+      !this.isElectron &&
+      !this.navParams.data.state &&
+      this.navParams.data.state != this.coinbaseProvider.getCurrentState()
+    ) {
+      this.popupProvider.ionicAlert(
+        this.translate.instant('Error connecting to Coinbase'),
+        this.translate.instant(
+          'You are using a different OAuthURL from original request or it has expired. Please try again.'
+        )
+      );
+      return;
+    }
     this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider
       .linkAccount(code)
