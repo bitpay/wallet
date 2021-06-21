@@ -10,7 +10,7 @@
 
 <ion-content no-bounce>
   <div *ngIf="!connected">
-    <div class="uri-header-wrapper">
+    <div *ngIf="wallet" class="uri-header-wrapper">
       <ion-item class="search-wrapper">
         <ion-input placeholder="{{'Enter WalletConnect URI' | translate}}" [(ngModel)]="uri"></ion-input>
         <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
@@ -26,14 +26,23 @@
         </ion-label>
       </ion-item>
       <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+
+      <button margin-top ion-button class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
+        {{'Connect' | translate}}
+      </button>
     </ion-list>
 
-    <button margin-top ion-button class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
-      {{'Connect' | translate}}
-    </button>
+    <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+      <div label-tip-title>
+        <span translate>ETH wallet is required</span>
+      </div>
+      <div label-tip-body>
+        <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+      </div>
+    </label-tip>
   </div>
 
-  <div *ngIf="connected && wallet">
+  <div *ngIf="connected">
     <ion-list class="bp-list">
 
       <div *ngIf="peerMeta">
@@ -52,7 +61,7 @@
       </div>
       
       <div class="item-label" translate>Linked wallet</div>
-      <ion-item *ngIf="peerMeta">
+      <ion-item *ngIf="wallet">
         <coin-icon item-start [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
         <ion-label>
           <div class="main-label">
