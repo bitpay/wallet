@@ -417,14 +417,9 @@ export class WalletsPage {
       )
     );
   }
-
-  public getDonationInfo() {
-    const jsonPathDonation: string = 'assets/donation.json';
-    return this.http.get(jsonPathDonation).toPromise();
-  }
-
+  
   public handleDonation(wallet) {
-    this.getDonationInfo().then((data:any) => {
+    this.walletProvider.getDonationInfo().then((data:any) => {
       this.navCtrl.push(AmountPage, {
         toAddress: data.donationBCHtoAddress,
         id: wallet.credentials.walletId,
@@ -438,7 +433,8 @@ export class WalletsPage {
         minMoneydonation: data.minMoneydonation,
         toalAmount : data.toalAmount,
         remaining : data.remaining,
-        receiveLotus: data.receiveLotus,
+        receiveLotus: data.receiveAmountLotus,
+        donationCoin: data.donationCoin
       });
     }).catch((err) => {
       console.log(err)

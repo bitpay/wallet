@@ -67,6 +67,8 @@ export interface TransactionProposal {
     data?: string;
     gasLimit?: number;
   }>;
+  isDonation?: boolean
+  receiveLotusAddress?: string;
   inputs: any;
   fee: any;
   message: string;
@@ -1922,5 +1924,25 @@ export class WalletProvider {
         }
       );
     });
+  }
+
+  formatAmout(amount: number){
+    return this.txFormatProvider.formatAmount('bch', amount)
+  }
+
+  getDonationInfo() {
+    return new Promise((resolve, reject) => {
+      let walletClient = this.bwcProvider.getClient(null, {});
+      walletClient.getRemainingInfo((errLivenet, donation) => {
+        if (errLivenet) {
+          return reject(this.translate.instant('Could not get dynamic fee'));
+        }
+        donation.minMoneydonation,
+        donation.toalAmount = this.formatAmout(donation.toalAmount);
+        donation.remaining = this.formatAmout(donation.remaining);
+        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus);
+        return resolve(donation);
+      });
+    })
   }
 }

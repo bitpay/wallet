@@ -462,8 +462,7 @@ export class AmountPage {
       : (result * this.unitToSatoshi).toFixed(0);
     this.isShowReceiveLotus = result > this.navParams.data.minMoneydonation && this.navParams.data.remaining > 0 ? true : false;
     if (this.isShowReceiveLotus) {
-      const receive = this.navParams.data.receiveLotus > this.navParams.data.remaining ? this.navParams.data.remaining : this.navParams.data.receiveLotus;
-      this.receiveLotus = `You will receive ${receive} Lotus as our appreciation for your generosity`;
+      this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus as our appreciation for your generosity`;
     }
   }
 
@@ -553,7 +552,7 @@ export class AmountPage {
       this.fiatCode,
       coin || this.availableUnits[this.unitIndex].id
     )
-    if (_.isEmpty(rateProvider)) return undefined;
+    if (_.isNil(rateProvider)) return undefined;
     return parseFloat(rateProvider.toFixed(2));
   }
 
@@ -599,6 +598,7 @@ export class AmountPage {
     data.wallet = this.wallet;
     data.toalAmount = this.navParams.data.toalAmount;
     data.remaining = this.navParams.data.remaining;
+    data.donationCoin = this.navParams.data.donationCoin;
     const nextPage = this.isShowReceiveLotus ? SendPage : ConfirmPage;
     this.navCtrl.push(nextPage, data);
   }

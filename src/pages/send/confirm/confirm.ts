@@ -191,15 +191,10 @@ export class ConfirmPage {
     //   this.navParams.data.payProUrl.includes('redir=wc');
   }
 
-  private getDonationInfo() {
-    const jsonPathDonation: string = 'assets/donation.json';
-    return this.http.get(jsonPathDonation).toPromise();
-  }
-
   ngOnInit() {
     // Overrides the ngOnInit logic of WalletTabsChild
 
-    this.getDonationInfo().then((data:any) => {
+    this.walletProvider.getDonationInfo().then((data:any) => {
       this.remaining = `${data.remaining}/${data.toalAmount}`
     }).catch((err) => {
       console.log(err)
@@ -1130,7 +1125,7 @@ export class ConfirmPage {
             amount: tx.amount,
             message: tx.description,
             data: tx.data,
-            gasLimit: tx.gasLimit // wallet connect needs exact gasLimit value
+            gasLimit: tx.gasLimit, // wallet connect needs exact gasLimit value
           }
         ];
       }
@@ -1278,6 +1273,11 @@ export class ConfirmPage {
       if (wallet.coin === 'xrp') {
         txp.invoiceID = tx.invoiceID;
         txp.destinationTag = tx.destinationTag;
+      }
+
+      if (this.isDonation && this.navParams.data.receiveLotusAddress) {
+        txp.isDonation = true;
+        txp.receiveLotusAddress = this.navParams.data.receiveLotusAddress
       }
 
       this.walletProvider
