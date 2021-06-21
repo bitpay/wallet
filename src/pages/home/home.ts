@@ -548,7 +548,7 @@ export class HomePage {
   }
 
   private addCardReferralAdvertisement() {
-    if (!this.isCordova || this.network === 'livenet') return;
+    if (!this.isCordova) return;
     this.persistenceProvider
       .getAdvertisementDismissed('card-referral')
       .then((value: string) => {
