@@ -1426,7 +1426,7 @@ export class IncomingDataProvider {
 
   private async handleUnlock(data) {
     try {
-      const url = data.split('?')[1];
+      const url = data.split('?r=')[1];
       const invoiceId = url.split('i/')[1];
 
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
