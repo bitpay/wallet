@@ -5,7 +5,8 @@
         {{ 'Home' | translate }}
       </div>
     </ion-title>
-    <ion-buttons *ngIf="isCordova && !isCopay" end>
+    <!-- TODO: Disable login account bitpay  -->
+    <!-- <ion-buttons *ngIf="isCordova && !isCopay" end>
       <button color="light" ion-button clear icon-only (click)="openBitPayIdPage()">
         <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
           <ion-icon *ngIf="!bitPayIdUserInfo">
@@ -21,7 +22,7 @@
           </ion-icon>
         </div>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea>
@@ -31,7 +32,8 @@
   <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" [disableFade]="true" #expandableHeader>
     <ion-toolbar class="wide-header__title" (click)="toggleTestnet()" tappable>
       <expandable-header-primary>
-        <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
+        <!-- TODO: Disable login account bitpay  -->
+        <!-- <button *ngIf="isCordova && !isCopay" class="bitpay-id-login" color="light" ion-button clear icon-only large (click)="openBitPayIdPage()">
           <ion-icon *ngIf="!bitPayIdUserInfo">
             <img src="assets/img/bitpay-card/icon-bitpay-user.svg" width="35">
           </ion-icon>
@@ -43,7 +45,7 @@
               {{accountInitials}}
             </span>
           </ion-icon>
-        </button>
+        </button> -->
         {{ 'Home' | translate }}
       </expandable-header-primary>
     </ion-toolbar>

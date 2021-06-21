@@ -19,8 +19,8 @@
     </expandable-header>
 
     <ion-list class="bp-list">
-
-      <ng-container *ngIf="isCordova && !isCopay">
+      <!-- TODO: Disable login account bitpay  -->
+      <!-- <ng-container *ngIf="isCordova && !isCopay">
         <button ion-item (click)="openBitPayIdPage()">
 
           <ion-icon *ngIf="!bitPayIdUserInfo" class="item-img icon-login" item-start>
@@ -49,7 +49,7 @@
             </span>
           </ion-label>
         </button>
-      </ng-container>
+      </ng-container> -->
 
       <ion-item-divider tappable (click)="mdesFlag()"> {{ 'General' | translate }} </ion-item-divider>
 

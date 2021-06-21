@@ -132,7 +132,8 @@
         </div>
         <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
 
-          <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
+          <!-- TODO: Disable feature Buy, Exchange on mainnet -->
+          <!-- <div class="action-btn" *ngIf="showBuyCrypto" (click)="goToBuyCryptoPage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-buy-dm.svg' : 'assets/img/wallet-details/wd-buy.svg'" width="50">
             <div class="ellipsis">{{ 'Buy' | translate }}</div>
           </div>
@@ -140,14 +141,14 @@
           <div class="action-btn" *ngIf="showExchangeCrypto" (click)="goToExchangeCryptoPage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-exchange-dm.svg': 'assets/img/wallet-details/wd-exchange.svg'" width="50">
             <div class="ellipsis">{{ 'Exchange' | translate }}</div>
-          </div>
+          </div> -->
 
           <div class="action-btn" (click)="goToReceivePage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-receive-dm.svg' : 'assets/img/wallet-details/wd-receive.svg'" width="50">
             <div class="ellipsis">{{ 'Receive' | translate }}</div>
           </div>
 
-          <div *ngIf="wallet.coin == 'bch'" class="action-btn" (click)="handleDonation()">
+          <div *ngIf="wallet.coin == 'bch' || wallet.coin == 'doge'" class="action-btn" (click)="handleDonation()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/currencies/lts.svg' : 'assets/img/currencies/lts.svg'" width="50">
             <div class="ellipsis">Donation</div>
           </div>

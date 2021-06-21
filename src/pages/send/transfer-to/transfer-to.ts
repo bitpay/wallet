@@ -60,7 +60,7 @@ export class TransferToPage {
   public amount: string;
   public fiatAmount: number;
   public fiatCode: string;
-  public _wallet;
+  public _wallet: any = {};
   public _useAsModal: boolean;
   public _fromWalletDetails: boolean;
   public hasContactsOrWallets: boolean;
@@ -100,9 +100,15 @@ export class TransferToPage {
 
   @Input()
   set wallet(wallet) {
-    this._wallet = this.navParams.data.wallet
+    if(this.navParams.data.isDonation){
+      this._wallet.coin = 'bch';
+      this._wallet.network = 'testnet';
+      this._wallet.id = this.navParams.data.walletId;
+    }else{
+      this._wallet = this.navParams.data.wallet
       ? this.navParams.data.wallet
       : wallet;
+    }
     for (const coin of this.availableCoins) {
       this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }
@@ -339,6 +345,7 @@ export class TransferToPage {
         } else if (this.dataDonation && this.dataDonation.isDonation) {
           this.dataDonation.receiveLotusAddress = addr;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
+          return;
         }
          else {
           this.navCtrl.push(AmountPage, {
