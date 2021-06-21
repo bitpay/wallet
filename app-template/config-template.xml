@@ -52,8 +52,8 @@
 
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
-    <!-- Android Version: Q 10.0 (API Level 29) or higher -->
-    <preference name="android-targetSdkVersion" value="29" />
+    <!-- Android Version: Android11 (API Level 30) or higher -->
+    <preference name="android-targetSdkVersion" value="30" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
@@ -159,6 +159,7 @@
     </platform>
 
     <platform name="android">
+      <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
