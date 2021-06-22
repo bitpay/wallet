@@ -1,10 +1,12 @@
 .notification-modal-panel {
   position: absolute;
   width: 100%;
-  min-height: 15vh;
   transition: opacity 300ms ease;
   background-color: transparent;
   text-align: center;
+  .swiper-container-vertical {
+    padding-top: 10px;
+  }
   .notification-content {
     .slide-zoom {
       background-color: color($colors, primary);
@@ -24,6 +26,14 @@
           font-size: 1.3rem;
           text-align: left;
           color: white;
+          white-space: normal;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          line-clamp: 2;
+          -webkit-line-clamp: 2;
+          box-orient: vertical;
+          -webkit-box-orient: vertical;
         }
       }
       .notification-button {
