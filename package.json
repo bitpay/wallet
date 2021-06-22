@@ -284,7 +284,7 @@
         "ANDROID_PLAY_ADID_VERSION": "17.0.+"
       },
       "cordova-plugin-androidx-adapter": {},
-      "cordova-android-googlepay-issuer-ng": {},
+      "cordova-android-googlepay-issuer-ng": {}
     },
     "platforms": [
       "android",
