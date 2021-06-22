@@ -100,15 +100,10 @@ export class TransferToPage {
 
   @Input()
   set wallet(wallet) {
-    if(this.navParams.data.isDonation){
-      this._wallet.coin = 'bch';
-      this._wallet.network = 'testnet';
-      this._wallet.id = this.navParams.data.walletId;
-    }else{
-      this._wallet = this.navParams.data.wallet
-      ? this.navParams.data.wallet
-      : wallet;
-    }
+    this._wallet = this.navParams.data.wallet
+    ? this.navParams.data.wallet
+    : wallet;
+
     for (const coin of this.availableCoins) {
       this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }

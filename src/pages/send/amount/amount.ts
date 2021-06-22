@@ -456,11 +456,7 @@ export class AmountPage {
   }
 
   private handleReceiveLotus(result) {
-    let unit = this.availableUnits[this.unitIndex];
-    result = unit.isFiat
-      ? (this.fromFiat(result) * this.unitToSatoshi).toFixed(0)
-      : (result * this.unitToSatoshi).toFixed(0);
-    this.isShowReceiveLotus = result > this.navParams.data.minMoneydonation && this.navParams.data.remaining > 0 ? true : false;
+    this.isShowReceiveLotus = _.toNumber(result) > _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining > 0 ? true : false;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus as our appreciation for your generosity`;
     }
@@ -474,12 +470,7 @@ export class AmountPage {
       : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
-      if (this.isDonation) {
-          this.zone.run(() => {
-            this.handleReceiveLotus(result);
-            this.changeDetectorRef.detectChanges();
-          });
-        }
+     
       this.globalResult = this.isExpression(this.expression)
         ? '= ' + this.processResult(result)
         : '';
@@ -495,6 +486,12 @@ export class AmountPage {
             true
           );
           this.checkAmountForBitpaycard(result);
+          if (this.isDonation) {
+            this.zone.run(() => {
+              this.handleReceiveLotus(result);
+              this.changeDetectorRef.detectChanges();
+            });
+          }
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
@@ -504,6 +501,13 @@ export class AmountPage {
           this.toFiat(result)
         );
         this.checkAmountForBitpaycard(this.toFiat(result));
+
+        if (this.isDonation) {
+          this.zone.run(() => {
+            this.handleReceiveLotus(this.toFiat(result));
+            this.changeDetectorRef.detectChanges();
+          });
+        }
       }
     }
   }

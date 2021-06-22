@@ -122,7 +122,7 @@ export class ConfirmPage {
   public errors = this.bwcProvider.getErrors();
   remaining;
   isDonation;
-  reciveLotus;
+  receiveLotusAddress;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -167,8 +167,8 @@ export class ConfirmPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
-    this.isDonation ? this.reciveLotus = this.navParams.data.reciveLotus : this.reciveLotus = null;
-    this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
+    this.isDonation ? this.receiveLotusAddress = this.navParams.data.receiveLotusAddress : this.receiveLotusAddress = null;
+    // this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -320,11 +320,16 @@ export class ConfirmPage {
         .toString(true);
     }
 
-    if (this.isDonation && this.reciveLotus.coin == 'bch'){
-      this.reciveLotus.reciveLotus = this.bitcoreCash
-        .Address(this.reciveLotus.reciveLotus)
-        .toString(true);
+    // if (this.isDonation && this.receiveLotusAddress.coin == 'bch'){
+    //   this.receiveLotusAddress.receiveLotusAddress = this.bitcoreCash
+    //     .Address(this.receiveLotusAddress.receiveLotusAddress)
+    //     .toString(true);
+    // }
+    if (this.isDonation && !_.isEmpty(this.receiveLotusAddress)) {
+      this.tx.isDonation = true;
+      this.tx.receiveLotusAddress = this.receiveLotusAddress;
     }
+
     this.setAddressesContactName();
     this.getAmountDetails();
 

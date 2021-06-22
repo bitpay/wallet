@@ -1937,12 +1937,13 @@ export class WalletProvider {
         if (errLivenet) {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
+        donation.donationSupportCoins = _.map(donation.donationToAddresses, item => item.coin),
         donation.minMoneydonation,
         donation.toalAmount = this.formatAmout(donation.toalAmount);
         donation.remaining = this.formatAmout(donation.remaining);
         donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus);
         return resolve(donation);
       });
-    })
+    });
   }
 }
