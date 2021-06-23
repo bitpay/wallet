@@ -1754,6 +1754,34 @@
     }
   }
 
+  page-fee-policy {
+    .description {
+      color: $text-color-dark-theme-2;
+    }
+
+    ion-list {
+      .item-divider-ios {
+        background-color: $bg-color-dark-theme;
+      }
+      .item {
+        &.item-ios,
+        &.item-md {
+          .item-inner {
+            background-color: $bg-color-dark-theme;
+          }
+        }
+      }
+      .network-fee-policy {
+        &-title {
+          color: $text-color-dark-theme;
+        }
+        &-rate {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
+  }
+
   // 7 - Buy Crypto
   page-crypto-order-summary {
     .bp-list {
