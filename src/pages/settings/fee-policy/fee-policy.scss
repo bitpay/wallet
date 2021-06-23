@@ -22,6 +22,7 @@ page-fee-policy {
         .item-inner {
           padding: 5px 16px 0px 16px;
           margin-left: 0px;
+          background-color: white;
         }
       }
     }
@@ -39,9 +40,6 @@ page-fee-policy {
       }
     }
     ion-range {
-      // .range-ios .range-slider .range-tick {
-      //   border-radius: 50%;
-      // }
       .range-slider {
         .range-tick,
         .range-bar {
