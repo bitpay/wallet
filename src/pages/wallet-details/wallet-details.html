@@ -148,7 +148,7 @@
             <div class="ellipsis">{{ 'Receive' | translate }}</div>
           </div>
 
-          <div *ngIf="wallet.coin == 'bch' || wallet.coin == 'doge'" class="action-btn" (click)="handleDonation()">
+          <div *ngIf="isShowDonationBtn" class="action-btn" (click)="handleDonation()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/currencies/lts.svg' : 'assets/img/currencies/lts.svg'" width="50">
             <div class="ellipsis">Donation</div>
           </div>

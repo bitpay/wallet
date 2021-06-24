@@ -2,7 +2,9 @@
 <ion-header>
   <ion-navbar [hideBackButton]="useAsModal">
     <ng-container *ngIf="isDonation && !shouldShowZeroState()">
-      <div class="remaining" [ngStyle]="{color: getColorRemaining()}">{{remaining}}</div>
+      <div class="remaining" [ngStyle]="{color: getColorRemaining()}">
+        <span>Remaining :</span> <span>{{remaining}}</span>
+        </div>
     </ng-container>
     <ng-container *ngIf="!isDonation">
       <ion-buttons left *ngIf="useAsModal">

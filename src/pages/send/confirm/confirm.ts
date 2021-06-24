@@ -168,7 +168,6 @@ export class ConfirmPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
     this.isDonation ? this.receiveLotusAddress = this.navParams.data.receiveLotusAddress : this.receiveLotusAddress = null;
-    // this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -196,7 +195,7 @@ export class ConfirmPage {
     // Overrides the ngOnInit logic of WalletTabsChild
 
     this.walletProvider.getDonationInfo().then((data:any) => {
-      this.remaining = `${data.remaining}/${data.toalAmount}`
+      this.remaining = data.remaining;
     }).catch((err) => {
       console.log(err)
     });

@@ -1927,7 +1927,7 @@ export class WalletProvider {
   }
 
   formatAmout(amount: number){
-    return this.txFormatProvider.formatAmount('bch', amount)
+    return _.toNumber(this.txFormatProvider.formatAmount('bch', amount));
   }
 
   getDonationInfo() {
@@ -1938,10 +1938,8 @@ export class WalletProvider {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
         donation.donationSupportCoins = _.map(donation.donationToAddresses, item => item.coin),
-        donation.minMoneydonation,
-        donation.toalAmount = this.formatAmout(donation.toalAmount);
         donation.remaining = this.formatAmout(donation.remaining);
-        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus);
+        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus).toFixed();
         return resolve(donation);
       });
     });
