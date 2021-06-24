@@ -100,21 +100,22 @@ export class TransferToPage {
 
   @Input()
   set wallet(wallet) {
-    if(this.navParams.data.isDonation){
-      this._wallet.coin = 'bch';
-      this._wallet.network = 'testnet';
-      this._wallet.id = this.navParams.data.walletId;
-    }else{
-      this._wallet = this.navParams.data.wallet
-      ? this.navParams.data.wallet
-      : wallet;
-    }
+    this._wallet = this.navParams.data.wallet
+    ? this.navParams.data.wallet
+    : wallet;
+
     for (const coin of this.availableCoins) {
       this.walletList[coin] = _.compact(this.getWalletsList(coin));
     }
-    this.walletsByKeys = _.values(
-      _.groupBy(this.walletList[this._wallet.coin], 'keyId')
-    );
+    if (this._wallet.donationCoin) {
+      this.walletsByKeys = _.values(
+        _.groupBy(this.walletList[this._wallet.donationCoin], 'keyId')
+      );
+    } else {
+      this.walletsByKeys = _.values(
+        _.groupBy(this.walletList[this._wallet.coin], 'keyId')
+      );
+    }
 
     this.delayUpdateContactsList(this._delayTimeOut);
   }
@@ -256,6 +257,13 @@ export class TransferToPage {
     network: string;
     walletId: string;
   }): boolean {
+    if (this._wallet.donationCoin) {
+      return this._wallet
+      ? this._wallet.donationCoin ===  recipient.coin &&
+          this._wallet.network === recipient.network &&
+          this._wallet.id !== recipient.walletId
+      : true;
+    }
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
           this._wallet.network === recipient.network &&
@@ -330,7 +338,7 @@ export class TransferToPage {
           this.events.publish('addRecipient', recipient);
           this.viewCtrl.dismiss();
         } else if (this.dataDonation && this.dataDonation.isDonation) {
-          this.dataDonation.reciveLotus = addr;
+          this.dataDonation.receiveLotusAddress = addr;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
           return;
         }

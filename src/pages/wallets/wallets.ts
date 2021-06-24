@@ -60,6 +60,7 @@ export class WalletsPage {
   public coinbaseLinked: boolean;
   public coinbaseData: object = {};
   isDonation ;
+  donationSupportCoins: string[] = [];
 
   constructor(
     public http: HttpClient,
@@ -91,22 +92,25 @@ export class WalletsPage {
 
   ionViewWillEnter() {
     this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
-    if(this.isDonation){
-    this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
-    }
     // Get Coinbase Accounts and UserInfo
+    this.walletProvider.getDonationInfo().then((data: any) => {
+      this.donationSupportCoins = data.donationSupportCoins;
+      if (this.isDonation) {
+        this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
+      }
+    });
     this.setCoinbase();
   }
 
-  private filterLotusDonationWallet(walletGroups: any){
+  private filterLotusDonationWallet(walletGroups: any) {
     const walletsGroup = [];
-      walletGroups.forEach((el: any) => {
-        const wallet = el.filter(wallet => {
-            return ((wallet.coin == 'doge' && wallet.network == 'testnet'))
-         })
-         walletsGroup.push(wallet);
-     })
-     return walletsGroup;
+    walletGroups.forEach((el: any) => {
+      const wallet = el.filter(wallet => {
+        return ((_.includes(this.donationSupportCoins, wallet.coin) && wallet.network == 'testnet'));
+      })
+      walletsGroup.push(wallet);
+    })
+    return walletsGroup;
   }
 
   isEmptyWalletDonation(walletGroups: any){
@@ -434,16 +438,13 @@ export class WalletsPage {
       )
     );
   }
-
-  public getDonationInfo() {
-    const jsonPathDonation: string = 'assets/donation.json';
-    return this.http.get(jsonPathDonation).toPromise();
-  }
-
+  
   public handleDonation(wallet) {
-    this.getDonationInfo().then((data:any) => {
+    this.walletProvider.getDonationInfo().then((data:any) => {
+      if(_.isEmpty(data))  throw 'No data Remaning'
       this.navCtrl.push(AmountPage, {
-        toAddress: data.donationBCHtoAddress,
+        toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == wallet.coin), 'address', '' ),
+        donationSupportCoins : data.donationSupportCoins,
         id: wallet.credentials.walletId,
         walletId: wallet.credentials.walletId,
         recipientType: 'wallet',
@@ -453,9 +454,9 @@ export class WalletsPage {
         isDonation: true,
         fromWalletDetails: true,
         minMoneydonation: data.minMoneydonation,
-        toalAmount : data.toalAmount,
         remaining : data.remaining,
-        receiveLotus: data.receiveLotus,
+        receiveLotus: data.receiveAmountLotus,
+        donationCoin: data.donationCoin
       });
     }).catch((err) => {
       console.log(err)
@@ -468,7 +469,8 @@ export class WalletsPage {
     }
     if (wallet.isComplete()) {
       this.navCtrl.push(WalletDetailsPage, {
-        walletId: wallet.credentials.walletId
+        walletId: wallet.credentials.walletId,
+        donationSupportCoins : this.donationSupportCoins
       });
     } else {
       const copayerModal = this.modalCtrl.create(

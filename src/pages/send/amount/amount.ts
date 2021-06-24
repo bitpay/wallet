@@ -137,7 +137,7 @@ export class AmountPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isDonation = this.navParams.data.isDonation
     if (this.isDonation) {
-      this.remaining = `Remaining: ${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
+      this.remaining = this.navParams.data.remaining ;
     }
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
@@ -456,14 +456,9 @@ export class AmountPage {
   }
 
   private handleReceiveLotus(result) {
-    let unit = this.availableUnits[this.unitIndex];
-    result = unit.isFiat
-      ? (this.fromFiat(result) * this.unitToSatoshi).toFixed(0)
-      : (result * this.unitToSatoshi).toFixed(0);
-    this.isShowReceiveLotus = result > this.navParams.data.minMoneydonation && this.navParams.data.remaining > 0 ? true : false;
+    this.isShowReceiveLotus = _.toNumber(result) > _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
     if (this.isShowReceiveLotus) {
-      const receive = this.navParams.data.receiveLotus > this.navParams.data.remaining ? this.navParams.data.remaining : this.navParams.data.receiveLotus;
-      this.receiveLotus = `You will receive ${receive} Lotus as our appreciation for your generosity`;
+      this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus as our appreciation for your generosity`;
     }
   }
 
@@ -475,12 +470,7 @@ export class AmountPage {
       : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
-      if (this.isDonation) {
-          this.zone.run(() => {
-            this.handleReceiveLotus(result);
-            this.changeDetectorRef.detectChanges();
-          });
-        }
+     
       this.globalResult = this.isExpression(this.expression)
         ? '= ' + this.processResult(result)
         : '';
@@ -496,6 +486,10 @@ export class AmountPage {
             true
           );
           this.checkAmountForBitpaycard(result);
+          if (this.isDonation) {
+              this.handleReceiveLotus(result);
+              this.changeDetectorRef.detectChanges();
+          }
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
@@ -505,6 +499,11 @@ export class AmountPage {
           this.toFiat(result)
         );
         this.checkAmountForBitpaycard(this.toFiat(result));
+
+        if (this.isDonation) {
+            this.handleReceiveLotus(this.toFiat(result));
+            this.changeDetectorRef.detectChanges();
+        }
       }
     }
   }
@@ -597,8 +596,8 @@ export class AmountPage {
   private handleAmountDonation(data) {
     data.isDonation = true;
     data.wallet = this.wallet;
-    data.toalAmount = this.navParams.data.toalAmount;
     data.remaining = this.navParams.data.remaining;
+    data.donationCoin = this.navParams.data.donationCoin;
     const nextPage = this.isShowReceiveLotus ? SendPage : ConfirmPage;
     this.navCtrl.push(nextPage, data);
   }

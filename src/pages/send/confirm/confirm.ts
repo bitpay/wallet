@@ -122,7 +122,7 @@ export class ConfirmPage {
   public errors = this.bwcProvider.getErrors();
   remaining;
   isDonation;
-  reciveLotus;
+  receiveLotusAddress;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -167,8 +167,7 @@ export class ConfirmPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
-    this.isDonation ? this.reciveLotus = this.navParams.data.reciveLotus : this.reciveLotus = null;
-    this.remaining = `${this.navParams.data.remaining}/${this.navParams.data.toalAmount}`
+    this.isDonation ? this.receiveLotusAddress = this.navParams.data.receiveLotusAddress : this.receiveLotusAddress = null;
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -192,16 +191,11 @@ export class ConfirmPage {
     //   this.navParams.data.payProUrl.includes('redir=wc');
   }
 
-  private getDonationInfo() {
-    const jsonPathDonation: string = 'assets/donation.json';
-    return this.http.get(jsonPathDonation).toPromise();
-  }
-
   ngOnInit() {
     // Overrides the ngOnInit logic of WalletTabsChild
 
-    this.getDonationInfo().then((data:any) => {
-      this.remaining = `${data.remaining}/${data.toalAmount}`
+    this.walletProvider.getDonationInfo().then((data:any) => {
+      this.remaining = data.remaining;
     }).catch((err) => {
       console.log(err)
     });
@@ -325,11 +319,16 @@ export class ConfirmPage {
         .toString(true);
     }
 
-    if (this.isDonation && this.reciveLotus.coin == 'bch'){
-      this.reciveLotus.reciveLotus = this.bitcoreCash
-        .Address(this.reciveLotus.reciveLotus)
-        .toString(true);
+    // if (this.isDonation && this.receiveLotusAddress.coin == 'bch'){
+    //   this.receiveLotusAddress.receiveLotusAddress = this.bitcoreCash
+    //     .Address(this.receiveLotusAddress.receiveLotusAddress)
+    //     .toString(true);
+    // }
+    if (this.isDonation && !_.isEmpty(this.receiveLotusAddress)) {
+      this.tx.isDonation = true;
+      this.tx.receiveLotusAddress = this.receiveLotusAddress;
     }
+
     this.setAddressesContactName();
     this.getAmountDetails();
 
@@ -1137,7 +1136,7 @@ export class ConfirmPage {
             amount: tx.amount,
             message: tx.description,
             data: tx.data,
-            gasLimit: tx.gasLimit // wallet connect needs exact gasLimit value
+            gasLimit: tx.gasLimit, // wallet connect needs exact gasLimit value
           }
         ];
       }
@@ -1285,6 +1284,11 @@ export class ConfirmPage {
       if (wallet.coin === 'xrp') {
         txp.invoiceID = tx.invoiceID;
         txp.destinationTag = tx.destinationTag;
+      }
+
+      if (this.isDonation && this.navParams.data.receiveLotusAddress) {
+        txp.isDonation = true;
+        txp.receiveLotusAddress = this.navParams.data.receiveLotusAddress
       }
 
       this.walletProvider

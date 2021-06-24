@@ -103,7 +103,10 @@ export class SendPage {
     this.isDonation = this.navParams.data.isDonation;
     if (this.isDonation) {
       this.titlePage = "Receive Lotus Address";
-      this.dataDonation = this.navParams.data
+      this.dataDonation = this.navParams.data;
+      this.wallet.donationCoin = this.navParams.data.donationCoin;
+    } else {
+      this.wallet.donationCoin = undefined;
     }
     this.isCordova = this.platformProvider.isCordova;
     this.events.subscribe('Local/AddressScan', this.updateAddressHandler);

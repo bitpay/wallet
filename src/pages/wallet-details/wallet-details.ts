@@ -92,6 +92,7 @@ export class WalletDetailsPage {
   public isDarkModeEnabled: boolean;
   public showBuyCrypto: boolean;
   public showExchangeCrypto: boolean;
+  public isShowDonationBtn: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
   constructor(
@@ -127,6 +128,7 @@ export class WalletDetailsPage {
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.isShowDonationBtn = _.includes(this.navParams.data.donationSupportCoins, this.wallet.coin);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
@@ -730,15 +732,12 @@ export class WalletDetailsPage {
     });
   }
 
-  private getDonationInfo() {
-    const jsonPathDonation: string = 'assets/donation.json';
-    return this.http.get(jsonPathDonation).toPromise();
-  }
-
   public handleDonation() {
-    this.getDonationInfo().then((data:any) => {
+    this.walletProvider.getDonationInfo().then((data:any) => {
+      if(_.isEmpty(data))  throw 'No data Remaning'
       this.navCtrl.push(AmountPage, {
-        toAddress: data.donationBCHtoAddress,
+        toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == this.wallet.coin), 'address', ''),
+        donationSupportCoins : data.donationSupportCoins,
         id: this.wallet.credentials.walletId,
         walletId: this.wallet.credentials.walletId,
         recipientType: 'wallet',
@@ -748,9 +747,9 @@ export class WalletDetailsPage {
         isDonation: true,
         fromWalletDetails: true,
         minMoneydonation: data.minMoneydonation,
-        toalAmount : data.toalAmount,
         remaining : data.remaining,
-        receiveLotus: data.receiveLotus
+        receiveLotus: data.receiveAmountLotus,
+        donationCoin: data.donationCoin
       });
     }).catch((err) => {
       console.log(err)
