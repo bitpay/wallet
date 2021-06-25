@@ -515,7 +515,7 @@ export class WalletProvider {
       !_.isEmpty(statusWallet)
     ) {
       const balance =
-        wallet.chain === 'xrp'
+        wallet.coin === 'xrp'
           ? statusWallet.availableBalanceSat
           : statusWallet.totalBalanceSat;
 
