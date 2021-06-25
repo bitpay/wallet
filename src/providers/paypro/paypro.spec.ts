@@ -40,7 +40,8 @@ describe('PayProProvider', () => {
       payproProvider
         .getPayProDetails({
           paymentUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-          coin: 'btc'
+          coin: 'btc',
+          chain: 'btc'
         })
         .then(paypro => {
           expect(paypro).toEqual(defaultPayPro);
@@ -59,7 +60,8 @@ describe('PayProProvider', () => {
       payproProvider
         .getPayProDetails({
           paymentUrl: 'https://bitpay.com/i/5GREtmntcTvB9aejVDhVdm',
-          coin: 'btc'
+          coin: 'btc',
+          chain: 'btc'
         })
         .then(paypro => {
           expect(paypro).toBeUndefined();

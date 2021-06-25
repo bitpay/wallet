@@ -210,12 +210,12 @@ export class TxDetailsModal {
         this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
         this.btx.network = this.wallet.credentials.network;
         this.btx.coin = this.wallet.coin;
-        const chain = this.currencyProvider
-          .getChain(this.wallet.coin)
-          .toLowerCase();
+        const chain =
+          this.wallet.chain || this.currencyProvider.getChain(this.wallet.coin);
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-          chain,
-          tx.fees
+          chain.toLowerCase(),
+          tx.fees,
+          this.wallet.credentials.token && this.wallet.credentials.token.address
         );
 
         if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {

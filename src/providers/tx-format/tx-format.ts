@@ -53,6 +53,7 @@ export class TxFormatProvider {
 
   public formatAmount(
     coin: string,
+    tokenAddress: string,
     satoshis: number,
     fullPrecision?: boolean
   ): string {
@@ -64,8 +65,10 @@ export class TxFormatProvider {
     };
 
     // TODO ???
-    if (coin && this.currencyProvider.isCustomERCToken(coin)) {
-      opts.toSatoshis = this.currencyProvider.getPrecision(coin).unitToSatoshi;
+    if (tokenAddress && this.currencyProvider.isCustomERCToken(coin)) {
+      opts.toSatoshis = this.currencyProvider.getTokenPrecision(
+        tokenAddress
+      ).unitToSatoshi;
       opts.decimals = {
         full: {
           maxDecimals: 8,
@@ -82,12 +85,13 @@ export class TxFormatProvider {
 
   public formatAmountStr(
     coin: string,
+    tokenAddress: string,
     satoshis: number,
     fullPrecision?: boolean
   ): string {
     if (isNaN(satoshis)) return undefined;
     return (
-      this.formatAmount(coin, satoshis, fullPrecision) +
+      this.formatAmount(coin, tokenAddress, satoshis, fullPrecision) +
       ' ' +
       coin.toUpperCase()
     );
@@ -97,36 +101,47 @@ export class TxFormatProvider {
     coin: string,
     satoshis: number,
     code: string,
+    tokenAddress: string,
     opts?: { rates? }
   ): Promise<string> {
     // TODO not a promise
     return new Promise(resolve => {
       if (isNaN(satoshis)) return resolve();
       var v1;
-      v1 = this.rate.toFiat(satoshis, code, coin, opts);
+      v1 = this.rate.toFiat(satoshis, code, coin, tokenAddress, opts);
       if (!v1) return resolve(null);
       return resolve(v1.toFixed(2));
     });
   }
 
-  public formatToUSD(coin: string, satoshis: number): Promise<any> {
+  public formatToUSD(
+    coin: string,
+    satoshis: number,
+    tokenAddress: string
+  ): Promise<any> {
     // TODO not a promise
     return new Promise(resolve => {
       let v1: number;
       if (isNaN(satoshis)) return resolve();
-      v1 = this.rate.toFiat(satoshis, 'USD', coin);
+      v1 = this.rate.toFiat(satoshis, 'USD', coin, tokenAddress);
       if (!v1) return resolve(null);
       return resolve(v1.toFixed(2));
     });
   }
 
-  public formatAlternativeStr(coin: string, satoshis: number): string {
+  public formatAlternativeStr(
+    coin: string,
+    satoshis: number,
+    tokenAddress: string
+  ): string {
     if (isNaN(satoshis)) return undefined;
     let settings = this.configProvider.get().wallet.settings;
 
     let val = (() => {
       const v1num = parseFloat(
-        this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin).toFixed(2)
+        this.rate
+          .toFiat(satoshis, settings.alternativeIsoCode, coin, tokenAddress)
+          .toFixed(2)
       );
       const v1str = this.filter.formatFiatAmount(v1num);
       if (!v1str) return null;
@@ -154,8 +169,12 @@ export class TxFormatProvider {
         tx.amount = _.reduce(
           tx.outputs,
           (total, o) => {
-            o.amountStr = this.formatAmountStr(coin, o.amount);
-            o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount);
+            o.amountStr = this.formatAmountStr(coin, tx.tokenAddress, o.amount);
+            o.alternativeAmountStr = this.formatAlternativeStr(
+              coin,
+              o.amount,
+              tx.tokenAddress
+            );
             return total + o.amount;
           },
           0
@@ -179,14 +198,19 @@ export class TxFormatProvider {
       ];
     }
 
-    tx.amountStr = this.formatAmountStr(coin, tx.amount);
-    tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
+    tx.amountStr = this.formatAmountStr(coin, tx.tokenAddress, tx.amount);
+    tx.alternativeAmountStr = this.formatAlternativeStr(
+      coin,
+      tx.amount,
+      tx.tokenAddress
+    );
 
-    const chain = this.currencyProvider.getChain(coin).toLowerCase();
+    const chain =
+      tx.chain || this.currencyProvider.getChain(coin).toLowerCase();
     tx.feeStr = tx.fee
-      ? this.formatAmountStr(chain, tx.fee)
+      ? this.formatAmountStr(chain, tx.tokenAddress, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(chain, tx.fees)
+      ? this.formatAmountStr(chain, tx.tokenAddress, tx.fees)
       : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
@@ -196,7 +220,7 @@ export class TxFormatProvider {
     if (tx.size && (tx.fee || tx.fees) && tx.amountUnitStr)
       tx.feeRate = `${((tx.fee || tx.fees) / tx.size).toFixed(0)} sat/byte`;
 
-    if (tx.addressTo && coin == 'bch') {
+    if (tx.addressTo && chain == 'bch') {
       tx.addressTo = this.toCashAddress(tx.addressTo);
     }
 
@@ -205,6 +229,7 @@ export class TxFormatProvider {
 
   public parseAmount(
     coin: string,
+    tokenAddress: string,
     amount,
     currency: string,
     opts?: { onlyIntegers?: boolean; rates? }
@@ -233,13 +258,13 @@ export class TxFormatProvider {
       );
     } else if (currency == 'sat') {
       amountSat = Number(amount);
-      amountUnitStr = this.formatAmountStr(coin, amountSat);
+      amountUnitStr = this.formatAmountStr(coin, tokenAddress, amountSat);
       // convert sat to Coin
       amount = (amountSat * satToUnit).toFixed(unitDecimals);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
-      amountUnitStr = this.formatAmountStr(coin, amountSat);
+      amountUnitStr = this.formatAmountStr(coin, tokenAddress, amountSat);
       // convert unit to Coin
       amount = (amountSat * satToUnit).toFixed(unitDecimals);
       currency = coin.toUpperCase();

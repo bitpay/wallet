@@ -56,6 +56,7 @@ export class CustomAmountPage {
 
       const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
+        this.wallet.credentials.token && this.wallet.credentials.token.address,
         this.navParams.data.amount,
         this.navParams.data.currency
       );
@@ -73,6 +74,8 @@ export class CustomAmountPage {
         );
         var btcParsedAmount = this.txFormatProvider.parseAmount(
           this.wallet.coin,
+          this.wallet.credentials.token &&
+            this.wallet.credentials.token.address,
           amountUnit,
           this.wallet.coin.toUpperCase()
         );
@@ -83,7 +86,8 @@ export class CustomAmountPage {
         this.amountCoin = _amount; // BTC or BCH
         this.altAmountStr = this.txFormatProvider.formatAlternativeStr(
           this.wallet.coin,
-          parsedAmount.amountSat
+          parsedAmount.amountSat,
+          undefined
         );
       }
 

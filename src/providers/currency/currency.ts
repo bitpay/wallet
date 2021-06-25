@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { availableCoins, CoinOpts } from './coin';
-import { Token, TokenProvider } from './token';
+import { availableChains, CoinOpts } from './coin';
+import { TokenProvider } from './token';
 
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
@@ -9,12 +9,13 @@ export type CoinsMap<T> = { [key in string]: T };
 
 @Injectable()
 export class CurrencyProvider {
-  public coinOpts: CoinsMap<CoinOpts>;
+  public chainOpts: CoinsMap<CoinOpts>;
   public ratesApi = {} as CoinsMap<string>;
   public blockExplorerUrls = {} as CoinsMap<string>;
   public blockExplorerUrlsTestnet = {} as CoinsMap<string>;
   public availableChains: string[];
-  public availableTokens: Token[];
+  public availableTokens = {} as { [key: string]: CoinOpts };
+  public availableCoins: CoinOpts[];
   public customERC20CoinsData;
   public customERC20Opts;
 
@@ -22,14 +23,14 @@ export class CurrencyProvider {
     private persistenceProvider: PersistenceProvider,
     private tokenProvider: TokenProvider
   ) {
-    this.coinOpts = availableCoins;
-    this.availableTokens = Object.values(this.tokenProvider.tokens);
-    this.availableChains = Object.keys(this.coinOpts);
+    this.chainOpts = availableChains;
+    this.availableTokens = this.tokenProvider.tokens;
+    this.availableChains = Object.keys(this.chainOpts);
     this.retreiveInfo();
   }
 
   private retreiveInfo() {
-    for (const opts of Object.values(this.coinOpts)) {
+    for (const opts of Object.values(this.chainOpts)) {
       const { paymentInfo, coin } = opts;
       const {
         blockExplorerUrls,
@@ -51,13 +52,17 @@ export class CurrencyProvider {
           .getCustomTokenOpts()
           .then(customERC20Opts => {
             this.customERC20Opts = customERC20Opts;
-            this.coinOpts = { ...this.customERC20CoinsData, ...availableCoins };
+            this.chainOpts = { ...availableChains };
             const tokenOpts = {
-              ...this.availableTokens,
+              ...Object.values(this.availableTokens),
               ...this.customERC20Opts
             };
-            this.availableTokens = Object.values(tokenOpts);
-            this.availableChains = Object.keys(this.coinOpts) as string[];
+            this.availableTokens = tokenOpts;
+            this.availableChains = Object.keys(this.chainOpts) as string[];
+            this.availableCoins = [
+              ...Object.values(this.availableTokens),
+              ...Object.values(this.chainOpts)
+            ];
             this.retreiveInfo();
             return Promise.resolve();
           });
@@ -126,23 +131,26 @@ export class CurrencyProvider {
   }
 
   isUtxoCoin(chain: string): boolean {
-    return !!this.coinOpts[chain].properties.isUtxo;
+    return !!this.chainOpts[chain].properties.isUtxo;
   }
 
   isSingleAddress(chain: string): boolean {
-    return !!this.coinOpts[chain].properties.singleAddress;
+    return !!this.chainOpts[chain].properties.singleAddress;
   }
 
   isSharedChain(chain: string): boolean {
-    return !!this.coinOpts[chain].properties.hasMultiSig;
+    return !!this.chainOpts[chain].properties.hasMultiSig;
   }
 
-  isERCToken(coin: string): boolean {
-    return !!this.coinOpts[coin].properties.isERCToken;
+  isERCToken(tokenAddress: string): boolean {
+    return (
+      this.tokenProvider.tokens[tokenAddress] &&
+      this.tokenProvider.tokens[tokenAddress].chain === 'ETH'
+    );
   }
 
   isCustomERCToken(coin) {
-    return this.coinOpts[coin] && this.coinOpts[coin].properties.isCustom;
+    return this.chainOpts[coin] && this.chainOpts[coin].properties.isCustom;
   }
 
   getLinkedEthWallet(walletId: string, m: number): string {
@@ -151,7 +159,7 @@ export class CurrencyProvider {
   }
 
   isMultiSend(chain: string): boolean {
-    return !!this.coinOpts[chain].properties.hasMultiSend;
+    return !!this.chainOpts[chain].properties.hasMultiSend;
   }
 
   getAvailableCoins(): string[] {
@@ -160,14 +168,14 @@ export class CurrencyProvider {
 
   getAvailableChains(): string[] {
     return _.uniq(
-      _.map(Object.values(this.coinOpts), (opts: CoinOpts) => {
+      _.map(Object.values(this.chainOpts), (opts: CoinOpts) => {
         return opts.chain.toLowerCase();
       })
     );
   }
 
-  getAvailableTokens(): Token[] {
-    return this.availableTokens;
+  getAvailableTokens(): CoinOpts[] {
+    return Object.values(this.availableTokens);
   }
 
   getMultiSigChains(): string[] {
@@ -175,28 +183,35 @@ export class CurrencyProvider {
   }
 
   getCoinName(chain: string): string {
-    return this.coinOpts[chain].name;
+    return this.chainOpts[chain].name;
   }
 
   getTokenName(tokenSymbol: string): string {
     const existToken = this.availableTokens
-      ? this.availableTokens.find(
-          tk => tk.symbol.toUpperCase() == tokenSymbol.toUpperCase()
+      ? Object.values(this.availableTokens).find(
+          tk => tk.tokenInfo.symbol.toUpperCase() == tokenSymbol.toUpperCase()
         )
       : undefined;
     return existToken ? existToken.name : tokenSymbol;
   }
   /// Uppercase chain of tokenAddress
   getTokenChain(tokenAddress: string): string {
-    return this.tokenProvider.tokens[tokenAddress].chain;
+    return (
+      this.availableTokens[tokenAddress] &&
+      this.availableTokens[tokenAddress].chain
+    );
   }
 
   getChain(chain: string): string {
-    return this.coinOpts[chain].chain;
+    return this.chainOpts[chain].chain;
   }
 
   getRatesApi() {
     return this.ratesApi;
+  }
+
+  getTokenRatesApi(tokenSymbol: string) {
+    return `https://bws.bitpay.com/bws/api/v3/fiatrates/${tokenSymbol.toLowerCase()}`;
   }
 
   getBlockExplorerUrls() {
@@ -208,33 +223,37 @@ export class CurrencyProvider {
   }
 
   getPaymentCode(coin: string): string {
-    return this.coinOpts[coin].paymentInfo.paymentCode;
+    return this.chainOpts[coin].paymentInfo.paymentCode;
   }
 
-  getPrecision(coin: string) {
-    return this.coinOpts[coin].unitInfo;
+  getPrecision(chain: string) {
+    return this.chainOpts[chain].unitInfo;
+  }
+
+  getTokenPrecision(tokenAddress: string) {
+    return this.tokenProvider.getTokenUnitInfo(tokenAddress);
   }
 
   getProtocolPrefix(coin: string, network: string) {
-    return this.coinOpts[coin].paymentInfo.protocolPrefix[network];
+    return this.chainOpts[coin].paymentInfo.protocolPrefix[network];
   }
 
   getFeeUnits(coin: string) {
-    return this.coinOpts[coin].feeInfo;
+    return this.chainOpts[coin].feeInfo;
   }
 
   getMaxMerchantFee(coin: string): string {
-    return this.coinOpts[coin].feeInfo.maxMerchantFee;
+    return this.chainOpts[coin].feeInfo.maxMerchantFee;
   }
 
   getTheme(chain: string) {
-    return this.coinOpts[chain].theme;
+    return this.chainOpts[chain].theme;
   }
 
   getTokenAddress(coin) {
     let tokens = this.getAvailableTokens();
-    const token = tokens.find(x => x.symbol == coin.toUpperCase());
-    const tokenAddress = token && token.address;
+    const token = tokens.find(x => x.tokenInfo.symbol == coin.toUpperCase());
+    const tokenAddress = token && token.tokenInfo.address;
     return tokenAddress;
   }
 }

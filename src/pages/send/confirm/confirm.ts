@@ -266,6 +266,7 @@ export class ConfirmPage {
         ? this.navParams.data.network
         : networkName,
       coin: this.navParams.data.coin,
+      chain: this.navParams.data.chain,
       txp: {},
       multisigContractAddress: this.navParams.data.multisigContractAddress,
       tokenAddress: this.navParams.data.tokenAddress,
@@ -281,8 +282,9 @@ export class ConfirmPage {
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0
-        : this.tx.coin == 'eth' ||
-          this.currencyProvider.isERCToken(this.tx.coin)
+        : this.tx.chain == 'eth' ||
+          (this.tx.tokenAddress &&
+            this.currencyProvider.isERCToken(this.tx.tokenAddress))
         ? Number(amount)
         : parseInt(amount, 10);
 
@@ -295,12 +297,12 @@ export class ConfirmPage {
     } else if (this.isSpeedUpTx) {
       this.usingCustomFee = true;
       this.tx.feeLevel =
-        this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
+        this.navParams.data.chain == 'eth' ? 'priority' : 'custom';
     } else {
       this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
     }
 
-    if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
+    if (this.tx.chain && this.tx.chain == 'bch' && !this.fromMultiSend) {
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
         .toString(true);
@@ -313,7 +315,7 @@ export class ConfirmPage {
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
 
-    this.setWalletSelector(this.tx.coin, this.tx.network)
+    this.setWalletSelector(this.tx.chain, this.tx.coin, this.tx.network)
       .then(() => {
         this.afterWalletSelectorSet();
       })
@@ -372,7 +374,11 @@ export class ConfirmPage {
   }
 
   private getAmountDetails(): void {
-    this.amount = this.txFormatProvider.formatAmount(this.coin, this.tx.amount);
+    this.amount = this.txFormatProvider.formatAmount(
+      this.coin,
+      this.tx.tokenAddress,
+      this.tx.amount
+    );
   }
 
   private getTotalAmountDetails(tx, wallet) {
@@ -381,12 +387,14 @@ export class ConfirmPage {
         this.totalAmount = tx.amount;
         this.totalAmountStr = this.txFormatProvider.formatAmountStr(
           this.coin,
+          this.tx.tokenAddress,
           tx.amount
         );
       } else {
         this.totalAmount = tx.amount + tx.txp[wallet.id].fee;
         this.totalAmountStr = this.txFormatProvider.formatAmountStr(
           this.coin,
+          this.tx.tokenAddress,
           tx.amount + tx.txp[wallet.id].fee
         );
       }
@@ -416,11 +424,16 @@ export class ConfirmPage {
     }
   }
 
-  private setWalletSelector(coin: string, network: string): Promise<any> {
+  private setWalletSelector(
+    chain: string,
+    coin: string,
+    network: string
+  ): Promise<any> {
     if (
       this.wallet &&
       this.wallet.network == network &&
-      this.wallet.coin == coin
+      this.wallet.chain == chain &&
+      (!coin || this.wallet.coin == coin)
     ) {
       return Promise.resolve();
     }
@@ -429,12 +442,12 @@ export class ConfirmPage {
       onlyComplete: true,
       hasFunds: true,
       network,
-      coin
+      coin: chain
     });
 
     this.coinbaseAccounts =
       this.showCoinbase && network === 'livenet'
-        ? this.coinbaseProvider.getAvailableAccounts(coin)
+        ? this.coinbaseProvider.getAvailableAccounts(chain)
         : [];
 
     if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
@@ -493,6 +506,7 @@ export class ConfirmPage {
         };
         this.tx.paypro = await this.payproProvider.getPayProDetails({
           paymentUrl: this.tx.payProUrl,
+          chain: this.wallet.chain,
           coin: this.wallet.coin,
           payload,
           disableLoader: true
@@ -537,6 +551,7 @@ export class ConfirmPage {
       this.totalAmount = this.tx.amount - this.tx.minerFee;
       this.totalAmountStr = this.txFormatProvider.formatAmountStr(
         this.coin,
+        this.tx.tokenAddress,
         this.totalAmount
       );
     }
@@ -857,12 +872,14 @@ export class ConfirmPage {
             const fiatOfAmount = this.rateProvider.toFiat(
               tx.paypro ? tx.amount : txp.amount,
               this.config.wallet.settings.alternativeIsoCode,
-              tx.coin
+              tx.coin,
+              tx.tokenAddress
             );
             const fiatOfFee = this.rateProvider.toFiat(
               txp.fee,
               this.config.wallet.settings.alternativeIsoCode,
-              chain
+              chain,
+              tx.tokenAddress
             );
             const per = this.getFeeRate(fiatOfAmount, fiatOfFee);
             txp.feeRatePerStr = per.toFixed(2) + '%';
@@ -1521,29 +1538,35 @@ export class ConfirmPage {
   private confirmTx(txp, wallet) {
     return new Promise<boolean>(resolve => {
       if (wallet.isPrivKeyEncrypted) return resolve(false);
-      this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
-        const amountUsd = parseFloat(val);
-        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
-        const unit = txp.coin.toUpperCase();
-        const amount = (
-          this.tx.amount /
-          this.currencyProvider.getPrecision(txp.coin).unitToSatoshi
-        ).toFixed(8);
-        const name = wallet.name;
-        const message = this.replaceParametersProvider.replace(
-          this.translate.instant(
-            'Sending {{amount}} {{unit}} from your {{name}} wallet'
-          ),
-          { amount, unit, name }
-        );
-        const okText = this.translate.instant('Confirm');
-        const cancelText = this.translate.instant('Cancel');
-        this.popupProvider
-          .ionicConfirm(null, message, okText, cancelText)
-          .then((ok: boolean) => {
-            return resolve(!ok);
-          });
-      });
+      this.txFormatProvider
+        .formatToUSD(
+          wallet.coin,
+          txp.amount,
+          wallet.credentials.token && wallet.credentials.token.address
+        )
+        .then(val => {
+          const amountUsd = parseFloat(val);
+          if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
+          const unit = txp.coin.toUpperCase();
+          const amount = (
+            this.tx.amount /
+            this.currencyProvider.getPrecision(txp.coin).unitToSatoshi
+          ).toFixed(8);
+          const name = wallet.name;
+          const message = this.replaceParametersProvider.replace(
+            this.translate.instant(
+              'Sending {{amount}} {{unit}} from your {{name}} wallet'
+            ),
+            { amount, unit, name }
+          );
+          const okText = this.translate.instant('Confirm');
+          const cancelText = this.translate.instant('Cancel');
+          this.popupProvider
+            .ionicConfirm(null, message, okText, cancelText)
+            .then((ok: boolean) => {
+              return resolve(!ok);
+            });
+        });
     });
   }
 
@@ -1786,14 +1809,20 @@ export class ConfirmPage {
       this.requiredFee = requiredFee;
 
       const coin = this.tx.coin.toLowerCase();
+      // const tokenAddress = this.tx.tokenAddress;
       const feeLevel = this.tx.feeLevel;
       let feeCoin = isInsufficientLinkedEthFundsForFeeErr ? 'eth' : coin;
 
       const feeAlternative = this.txFormatProvider.formatAlternativeStr(
         feeCoin,
+        requiredFee,
+        undefined
+      );
+      const fee = this.txFormatProvider.formatAmountStr(
+        feeCoin,
+        undefined,
         requiredFee
       );
-      const fee = this.txFormatProvider.formatAmountStr(feeCoin, requiredFee);
       this.showInsufficientFundsForFeeInfoSheet(
         fee,
         feeAlternative,

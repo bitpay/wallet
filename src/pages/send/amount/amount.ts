@@ -86,7 +86,6 @@ export class AmountPage {
   private _id: string;
   public requestingAmount: boolean;
   public wallet;
-  any;
 
   public cardName: string;
   public cardConfig: CardConfig;
@@ -237,20 +236,40 @@ export class AmountPage {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    const parentWalletCoin = this.navParams.data.wallet
-      ? this.navParams.data.wallet.coin
-      : this.wallet && this.wallet.coin;
+    const parentWalletChain = this.navParams.data.wallet
+      ? this.navParams.data.wallet.chain
+      : this.wallet && this.wallet.chain;
 
-    for (const coin of this.currencyProvider.getAvailableCoins()) {
-      if (parentWalletCoin === coin || !parentWalletCoin) {
-        const { unitName, unitCode } = this.currencyProvider.getPrecision(coin);
+    for (const chain of this.currencyProvider.getAvailableCoins()) {
+      if (!parentWalletChain || parentWalletChain === chain) {
+        const { unitName, unitCode } = this.currencyProvider.getPrecision(
+          chain
+        );
         this.availableUnits.push({
-          name: this.currencyProvider.getCoinName(coin),
+          name: this.currencyProvider.getCoinName(chain),
           id: unitCode,
           shortName: unitName
         });
       }
     }
+    const availableTokens = this.currencyProvider.getAvailableTokens();
+    console.log(availableTokens);
+    _.each(availableTokens, at => {
+      console.log(at);
+      if (
+        !parentWalletChain ||
+        parentWalletChain.toLowerCase() === at.chain.toLowerCase()
+      ) {
+        const { unitName, unitCode } = this.currencyProvider.getTokenPrecision(
+          at.tokenInfo.address
+        );
+        this.availableUnits.push({
+          name: at.name,
+          id: unitCode,
+          shortName: unitName
+        });
+      }
+    });
 
     this.unitIndex = 0;
 
@@ -448,12 +467,13 @@ export class AmountPage {
         : '';
 
       if (this.fromBuyCrypto) return;
-
+      console.log('#####', this.wallet);
       if (this.availableUnits[this.unitIndex].isFiat) {
         let a = this.fromFiat(result);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(
             this.availableUnits[this.altUnitIndex].id,
+            this.wallet.tokenAddress,
             a * this.unitToSatoshi,
             true
           );
@@ -486,6 +506,7 @@ export class AmountPage {
     else
       return +this.txFormatProvider.formatAmount(
         this.unit.toLowerCase(),
+        this.wallet.tokenAddress,
         val.toFixed(this.unitDecimals) * this.unitToSatoshi,
         true
       );
@@ -514,7 +535,8 @@ export class AmountPage {
         .toFiat(
           val * this.unitToSatoshi,
           this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
+          coin || this.availableUnits[this.unitIndex].id,
+          undefined
         )
         .toFixed(2)
     );

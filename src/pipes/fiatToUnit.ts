@@ -22,6 +22,11 @@ export class FiatToUnitPipe implements PipeTransform {
       ? alternative
       : this.walletSettings.alternativeIsoCode;
     let amount_ = this.rateProvider.fromFiat(amount, alternative, coin);
-    return this.txFormatProvider.formatAmountStr(coin, amount_, true);
+    return this.txFormatProvider.formatAmountStr(
+      coin,
+      undefined,
+      amount_,
+      true
+    );
   }
 }

@@ -29,7 +29,7 @@ export class RateProvider {
   public alternatives;
   private rates = {} as CoinsMap<{}>;
   private ratesAvailable = {} as CoinsMap<boolean>;
-  private rateServiceUrl = {} as CoinsMap<string>;
+  private rateServiceUrl: string[] = [];
 
   private bwsURL: string;
   private ratesCache: any;
@@ -42,14 +42,20 @@ export class RateProvider {
   ) {
     this.logger.debug('RateProvider initialized');
     this.alternatives = {};
-    for (const coin of this.currencyProvider.getAvailableCoins()) {
-      this.rateServiceUrl[coin] = this.currencyProvider.getRatesApi()[coin];
-      this.rates[coin] = this.currencyProvider.isCustomERCToken(coin)
-        ? { USD: 0 }
-        : { USD: 1 };
-      this.ratesAvailable[coin] = false;
+    for (const chain of this.currencyProvider.getAvailableCoins()) {
+      this.rateServiceUrl[chain] = this.currencyProvider.getRatesApi()[chain];
+      this.rates[chain] = { USD: 1 };
+      // this.rates[chain] = this.currencyProvider.isCustomERCToken(chain)
+      //   ? { USD: 0 }
+      //   : { USD: 1 };
+      this.ratesAvailable[chain] = false;
     }
-
+    for (const token of this.currencyProvider.getAvailableTokens()) {
+      this.rateServiceUrl[
+        token.tokenInfo.symbol.toLowerCase()
+      ] = this.currencyProvider.getTokenRatesApi(token.tokenInfo.symbol);
+      this.ratesAvailable[token.tokenInfo.symbol.toLowerCase()] = false;
+    }
     const defaults = this.configProvider.getDefaults();
     this.bwsURL = defaults.bws.url;
     this.ratesCache = {
@@ -79,6 +85,7 @@ export class RateProvider {
       } else {
         this.getRates()
           .then(res => {
+            console.log('#### getRates ', res);
             _.map(res, (rates, coin) => {
               const coinRates = {};
               _.each(rates, r => {
@@ -92,6 +99,9 @@ export class RateProvider {
                   this.alternatives[r.code] = { name: r.name };
                 }
               });
+              // FIX!!!!
+              console.log('### coinRates: ', coin);
+              console.log(coinRates);
               this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
               this.ratesAvailable[coin] = true;
             });
@@ -165,6 +175,7 @@ export class RateProvider {
     satoshis: number,
     code: string,
     chain,
+    tokenAddress: string,
     opts?: { customRate?: number; rates? }
   ): number {
     if (!this.isCoinAvailable(chain)) {
@@ -172,11 +183,10 @@ export class RateProvider {
     }
     const customRate = opts && opts.customRate;
     const rate = customRate || this.getRate(code, chain, opts);
-    return (
-      satoshis *
-      (1 / this.currencyProvider.getPrecision(chain).unitToSatoshi) *
-      rate
-    );
+    const unitToSatoshi = tokenAddress
+      ? this.currencyProvider.getTokenPrecision(tokenAddress).unitToSatoshi
+      : this.currencyProvider.getPrecision(chain).unitToSatoshi;
+    return satoshis * (1 / unitToSatoshi) * rate;
   }
 
   public fromFiat(
@@ -204,12 +214,12 @@ export class RateProvider {
     return _.uniqBy(alternatives, 'isoCode');
   }
 
-  public whenRatesAvailable(chain: string): Promise<any> {
+  public whenRatesAvailable(coin: string): Promise<any> {
     return new Promise(resolve => {
-      if (this.ratesAvailable[chain]) resolve();
+      if (this.ratesAvailable[coin.toLowerCase()]) resolve();
       else {
-        if (chain) {
-          this.updateRates(chain).then(() => {
+        if (coin) {
+          this.updateRates(coin.toLowerCase()).then(() => {
             resolve();
           });
         }
@@ -230,6 +240,7 @@ export class RateProvider {
     });
   }
 
+  // Get chain rates [bch, btc, doge, eth, xrp]
   public getLastDayRates(): Promise<HistoricalRates> {
     const fiatIsoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';

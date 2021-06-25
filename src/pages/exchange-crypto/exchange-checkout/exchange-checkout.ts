@@ -208,7 +208,8 @@ export class ExchangeCheckoutPage {
                       this.toWalletSelected.coin
                     ).unitToSatoshi,
                   this.alternativeIsoCode,
-                  this.toWalletSelected.coin
+                  this.toWalletSelected.chain,
+                  this.toWalletSelected.tokenAddress
                 );
 
                 this.paymentTimeControl(data.result.payTill);
@@ -376,9 +377,11 @@ export class ExchangeCheckoutPage {
       if (this.currencyProvider.isERCToken(wallet.coin)) {
         let tokenAddress;
         let tokens = this.currencyProvider.getAvailableTokens();
-        const token = tokens.find(x => x.symbol == wallet.coin.toUpperCase());
+        const token = tokens.find(
+          x => x.tokenInfo.symbol == wallet.coin.toUpperCase()
+        );
 
-        tokenAddress = token.address;
+        tokenAddress = token.tokenInfo.address;
 
         if (tokenAddress) {
           txp.tokenAddress = tokenAddress;

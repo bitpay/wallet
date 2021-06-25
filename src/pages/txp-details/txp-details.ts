@@ -120,6 +120,7 @@ export class TxpDetailsPage {
 
     this.amount = this.txFormatProvider.formatAmount(
       this.wallet.coin,
+      this.wallet.credentials.token && this.wallet.credentials.token.address,
       this.tx.amount
     );
   }
@@ -151,12 +152,12 @@ export class TxpDetailsPage {
   };
 
   private displayFeeValues(): void {
-    const chain = this.currencyProvider
-      .getChain(this.wallet.coin)
-      .toLowerCase();
+    const chain =
+      this.wallet.chain || this.currencyProvider.getChain(this.wallet.coin);
     this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-      chain,
-      this.tx.fee
+      chain.toLowerCase(),
+      this.tx.fee,
+      this.wallet.credentials.token && this.wallet.credentials.token.address
     );
     if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {
       this.tx.feeRateStr =
@@ -235,6 +236,7 @@ export class TxpDetailsPage {
             .getPayProDetails({
               paymentUrl: this.tx.payProUrl,
               coin: this.tx.coin,
+              chain: this.tx.chain,
               payload,
               disableLoader
             })

@@ -616,6 +616,7 @@ export class ProfileProvider {
         title = this.translate.instant('New payment received');
         const amountStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           amount
         );
         translatedMsg = this.translate.instant(
@@ -1744,7 +1745,7 @@ export class ProfileProvider {
   public createTokenWallet(ethWallet, token): Promise<any> {
     if (_.isString(token)) {
       let tokens = this.currencyProvider.getAvailableTokens();
-      token = tokens.find(x => x.symbol == token);
+      token = tokens.find(x => x.tokenInfo.symbol == token);
     }
     const tokenWalletClient = this._createTokenWallet(ethWallet, token);
     return this.addAndBindWalletClient(tokenWalletClient);
@@ -1798,7 +1799,7 @@ export class ProfileProvider {
               let tokenObjs = this.currencyProvider.getAvailableTokens();
 
               const tokenClients = tokens.map(token => {
-                token = tokenObjs.find(x => x.symbol == token);
+                token = tokenObjs.find(x => x.tokenInfo.symbol == token);
                 return this._createTokenWallet(ethWalletClient, token);
               });
 
@@ -2037,7 +2038,8 @@ export class ProfileProvider {
         const availableBalanceFiat = this.rateProvider.toFiat(
           wallet.cachedStatus.availableBalanceSat,
           opts.minFiatCurrency.currency,
-          wallet.coin
+          wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address
         );
 
         return availableBalanceFiat >= Number(opts.minFiatCurrency.amount);
@@ -2051,7 +2053,8 @@ export class ProfileProvider {
         const availablePendingFiat = this.rateProvider.toFiat(
           wallet.cachedStatus.pendingAmount,
           opts.minPendingAmount.currency,
-          wallet.coin
+          wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address
         );
 
         return availablePendingFiat >= Number(opts.minPendingAmount.amount);

@@ -8,6 +8,6 @@ import { TxFormatProvider } from '../providers/tx-format/tx-format';
 export class SatToUnitPipe implements PipeTransform {
   constructor(private txFormatProvider: TxFormatProvider) {}
   transform(amount: number, coin: string) {
-    return this.txFormatProvider.formatAmountStr(coin, amount);
+    return this.txFormatProvider.formatAmountStr(coin, undefined, amount);
   }
 }

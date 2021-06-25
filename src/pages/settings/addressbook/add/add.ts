@@ -111,7 +111,9 @@ export class AddressbookAddPage {
           this.allowNetworkSelection = true;
           if (chain.toUpperCase() === 'ETH') {
             this.coins.push(
-              ...this.currencyProvider.availableTokens.map(t => t.symbol)
+              ...Object.values(this.currencyProvider.availableTokens).map(
+                t => t.tokenInfo.symbol
+              )
             );
           }
         }

@@ -137,7 +137,8 @@ export class MultiSendPage {
 
       let altAmountStr = this.txFormatProvider.formatAlternativeStr(
         this.wallet.coin,
-        +data.amount
+        +data.amount,
+        this.wallet.credentials.token && this.wallet.credentials.token.address
       );
 
       item.amount = +data.amount;
@@ -146,6 +147,7 @@ export class MultiSendPage {
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.txFormatProvider.formatAmount(
         this.wallet.coin,
+        this.wallet.credentials.token && this.wallet.credentials.token.address,
         +data.amount
       );
       this.multiRecipients[index] = item;
@@ -155,12 +157,18 @@ export class MultiSendPage {
 
   public addRecipient(recipient): void {
     let amountToShow: string = +recipient.amount
-      ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
+      ? this.txFormatProvider.formatAmount(
+          this.wallet.coin,
+          this.wallet.credentials.token &&
+            this.wallet.credentials.token.address,
+          +recipient.amount
+        )
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(
       this.wallet.coin,
-      ++recipient.amount
+      ++recipient.amount,
+      this.wallet.credentials.token && this.wallet.credentials.token.address
     );
 
     this.multiRecipients.push({

@@ -28,11 +28,11 @@ import {
   PushNotificationsProvider,
   WalletProvider
 } from '../../../providers';
+import { CoinOpts } from '../../../providers/currency/coin';
 import {
   CoinsMap,
   CurrencyProvider
 } from '../../../providers/currency/currency';
-import { Token } from '../../../providers/currency/token';
 
 @Component({
   selector: 'page-select-currency',
@@ -49,8 +49,8 @@ export class SelectCurrencyPage {
   public tokenDisabled = {} as CoinsMap<boolean>;
 
   public availableChains: string[];
-  public availableTokens: Token[];
-  public tokens: Token[];
+  public availableTokens: CoinOpts[];
+  public tokens: CoinOpts[];
   public isOnboardingFlow: boolean;
   public isZeroState: boolean;
   public isJoin: boolean;
@@ -261,7 +261,7 @@ export class SelectCurrencyPage {
     if (coin === 'eth' || !coin) {
       for (const token of this.availableTokens) {
         if (this.isZeroState) {
-          this.tokensSelected[token.symbol] = false;
+          this.tokensSelected[token.tokenInfo.symbol] = false;
         } else {
           let canCreateit = _.isEmpty(
             this.profileProvider.getWalletsFromGroup({
@@ -270,7 +270,7 @@ export class SelectCurrencyPage {
               pairFor: token
             })
           );
-          this.tokenDisabled[token.symbol] = canCreateit;
+          this.tokenDisabled[token.tokenInfo.symbol] = canCreateit;
         }
       }
     }
@@ -299,10 +299,12 @@ export class SelectCurrencyPage {
       ? this.availableTokens.filter(token => {
           return (
             token.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            token.symbol
+            token.tokenInfo.symbol
               .toLowerCase()
               .includes(this.searchQuery.toLowerCase()) ||
-            token.address.toLowerCase().includes(this.searchQuery.toLowerCase())
+            token.tokenInfo.address
+              .toLowerCase()
+              .includes(this.searchQuery.toLowerCase())
           );
         })
       : [];

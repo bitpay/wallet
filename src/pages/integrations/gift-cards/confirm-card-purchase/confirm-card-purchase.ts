@@ -341,21 +341,28 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return this.onGoingProcessProvider.clear();
   }
 
-  private satToFiat(coin: string, sat: number) {
-    return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode, {
-      rates: this.invoiceRates
-    });
+  private satToFiat(coin: string, sat: number, tokenAddress: string) {
+    return this.txFormatProvider.toFiat(
+      coin,
+      sat,
+      this.currencyIsoCode,
+      tokenAddress,
+      {
+        rates: this.invoiceRates
+      }
+    );
   }
 
   private async setTotalAmount(
     coin,
+    tokenAddress: string,
     invoiceFeeSat: number = 0,
     networkFeeSat: number = 0
   ) {
-    const invoiceFee = await this.satToFiat(coin, invoiceFeeSat);
+    const invoiceFee = await this.satToFiat(coin, invoiceFeeSat, tokenAddress);
     this.invoiceFee = Number(invoiceFee);
     const chain = this.currencyProvider.getChain(coin).toLowerCase();
-    const networkFee = await this.satToFiat(chain, networkFeeSat);
+    const networkFee = await this.satToFiat(chain, networkFeeSat, tokenAddress);
     this.networkFee = Number(networkFee);
     this.totalAmount =
       +this.amount -
@@ -444,7 +451,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     };
 
     const details = await this.payproProvider
-      .getPayProDetails({ paymentUrl: payProUrl, coin: wallet.coin, payload })
+      .getPayProDetails({
+        paymentUrl: payProUrl,
+        coin: wallet.coin,
+        chain: wallet.chain,
+        payload
+      })
       .catch(err => {
         throw {
           title: this.translate.instant('Error fetching this invoice'),
@@ -477,7 +489,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     }
 
     if (
-      wallet.coin === 'xrp' &&
+      wallet.chain === 'xrp' &&
       instructions &&
       instructions[0] &&
       instructions[0].outputs &&
@@ -507,7 +519,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     txp['origToAddress'] = txp.toAddress;
 
-    if (wallet.coin && wallet.coin == 'bch') {
+    if (wallet.chain && wallet.chain == 'bch') {
       txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString(true);
       txp.outputs[0].toAddress = txp.toAddress;
     }
@@ -605,6 +617,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     const parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
+      wallet.credentials.token && wallet.credentials.token.address,
       this.amount,
       this.currency,
       { onlyIntegers: this.onlyIntegers, rates: this.invoiceRates }
@@ -663,6 +676,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     };
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       wallet.coin,
+      wallet.tokenAddress,
       ctxp.amount || amountSat
     );
 
@@ -674,7 +688,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
     }
 
-    this.setTotalAmount(wallet.coin, this.invoiceFeeSat, ctxp.fee);
+    this.setTotalAmount(
+      wallet.coin,
+      wallet.credentials.token && wallet.credentials.token.address,
+      this.invoiceFeeSat,
+      ctxp.fee
+    );
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }
@@ -695,15 +714,27 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     ) {
       let { requiredFee } = err.messageData;
       const coin = this.wallet.coin.toLowerCase();
+      const tokenAddress =
+        this.wallet.credentials.token && this.wallet.credentials.token.address;
       let feeCoin = isInsufficientLinkedEthFundsForFeeErr ? 'eth' : coin;
 
-      this.setTotalAmount(coin, this.invoiceFeeSat, requiredFee).then(() => {
+      this.setTotalAmount(
+        coin,
+        tokenAddress,
+        this.invoiceFeeSat,
+        requiredFee
+      ).then(() => {
         const totalFee = this.invoiceFeeSat + requiredFee;
         const feeAlternative = this.txFormatProvider.formatAlternativeStr(
           feeCoin,
+          totalFee,
+          undefined
+        );
+        const fee = this.txFormatProvider.formatAmountStr(
+          feeCoin,
+          undefined,
           totalFee
         );
-        const fee = this.txFormatProvider.formatAmountStr(feeCoin, totalFee);
         this._showInsufficientFundsForFeeInfoSheet(fee, feeAlternative, coin);
       });
     } else {
@@ -761,8 +792,13 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     this.invoiceRates = lowercaseKeys(data.invoice.exchangeRates);
 
+    const coinDetails = _.find(
+      this.currencyProvider.availableCoins,
+      ac => ac.coin == COIN.toLowerCase()
+    );
     const parsedAmount = this.txFormatProvider.parseAmount(
       COIN.toLowerCase(),
+      coinDetails && coinDetails.tokenInfo && coinDetails.tokenInfo.address,
       this.amount,
       this.currency,
       { onlyIntegers: this.onlyIntegers, rates: this.invoiceRates }
@@ -813,10 +849,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     };
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       COIN.toLowerCase(),
+      undefined,
       amountSat
     );
 
-    this.setTotalAmount(COIN.toLowerCase());
+    this.setTotalAmount(
+      COIN.toLowerCase(),
+      coinDetails && coinDetails.tokenInfo && coinDetails.tokenInfo.address
+    );
 
     this.logGiftCardPurchaseEvent(false, COIN, dataSrc);
   }

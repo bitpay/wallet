@@ -232,8 +232,17 @@ export class SimplexProvider {
       'USD',
       cryptoCurrency
     );
+    const coinDetails = _.find(
+      this.currencyProvider.availableCoins,
+      at => at.coin == cryptoCurrency.toLowerCase()
+    );
     return +this.rateProvider
-      .toFiat(rateFromFiat, fiatCurrency, cryptoCurrency)
+      .toFiat(
+        rateFromFiat,
+        fiatCurrency,
+        cryptoCurrency,
+        coinDetails.tokenInfo && coinDetails.tokenInfo.address
+      )
       .toFixed(2);
   }
 

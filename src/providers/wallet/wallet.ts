@@ -218,30 +218,38 @@ export class WalletProvider {
         }
 
         // Selected unit
-        cache.unitToSatoshi = this.currencyProvider.getPrecision(
-          wallet.coin
-        ).unitToSatoshi;
+        cache.unitToSatoshi =
+          wallet.credentials.token && wallet.credentials.token.address
+            ? this.currencyProvider.getTokenPrecision(
+                wallet.credentials.token.address
+              )
+            : this.currencyProvider.getPrecision(wallet.chain).unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         // STR
         cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           cache.totalBalanceSat
         );
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           cache.lockedBalanceSat
         );
         cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           cache.availableBalanceSat
         );
         cache.spendableBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           cache.spendableAmount
         );
         cache.pendingBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
+          wallet.credentials.token && wallet.credentials.token.address,
           cache.pendingAmount
         );
 
@@ -254,32 +262,38 @@ export class WalletProvider {
             const availableBalanceAlternative = this.rateProvider.toFiat(
               cache.availableBalanceSat,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
             const totalBalanceAlternative = this.rateProvider.toFiat(
               cache.totalBalanceSat,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
             const pendingBalanceAlternative = this.rateProvider.toFiat(
               cache.pendingAmount,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
             const lockedBalanceAlternative = this.rateProvider.toFiat(
               cache.lockedBalanceSat,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
             const spendableBalanceAlternative = this.rateProvider.toFiat(
               cache.spendableAmount,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
             const alternativeConversionRate = this.rateProvider.toFiat(
               100000000,
               cache.alternativeIsoCode,
-              wallet.coin
+              wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address
             );
 
             cache.availableBalanceAlternative = this.filter.formatFiatAmount(
@@ -459,22 +473,35 @@ export class WalletProvider {
 
   private getWalletTotalBalanceAlternative(
     balanceSat: number,
-    coin: string,
-    isoCode: string
+    chain: string,
+    isoCode: string,
+    tokenAddress: string
   ): string {
-    const balance = this.rateProvider.toFiat(balanceSat, isoCode, coin);
+    const balance = this.rateProvider.toFiat(
+      balanceSat,
+      isoCode,
+      chain,
+      tokenAddress
+    );
     return balance ? balance.toFixed(2) : '0.00';
   }
 
   private getWalletTotalBalanceAlternativeLastDay(
     balanceSat: number,
-    coin: string,
+    chain: string,
+    tokenAddress: string,
     isoCode: string,
     lastDayRatesArray: any
   ): string {
-    const balanceLastDay = this.rateProvider.toFiat(balanceSat, isoCode, coin, {
-      customRate: lastDayRatesArray[coin]
-    });
+    const balanceLastDay = this.rateProvider.toFiat(
+      balanceSat,
+      isoCode,
+      chain,
+      tokenAddress,
+      {
+        customRate: lastDayRatesArray[chain]
+      }
+    );
     return balanceLastDay ? balanceLastDay.toFixed(2) : '0.00';
   }
 
@@ -488,19 +515,26 @@ export class WalletProvider {
       !_.isEmpty(statusWallet)
     ) {
       const balance =
-        wallet.coin === 'xrp'
+        wallet.chain === 'xrp'
           ? statusWallet.availableBalanceSat
           : statusWallet.totalBalanceSat;
+
       walletTotalBalanceAlternativeLastDay = parseFloat(
         this.getWalletTotalBalanceAlternativeLastDay(
           balance,
-          wallet.coin,
+          wallet.chain,
+          wallet.credentials.token && wallet.credentials.token.address,
           isoCode,
           lastDayRatesArray
         )
       );
       walletTotalBalanceAlternative = parseFloat(
-        this.getWalletTotalBalanceAlternative(balance, wallet.coin, isoCode)
+        this.getWalletTotalBalanceAlternative(
+          balance,
+          wallet.chain,
+          isoCode,
+          wallet.credentials.token && wallet.credentials.token.address
+        )
       );
     }
     return {
@@ -513,12 +547,14 @@ export class WalletProvider {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     const totalAmountArray = [];
-
+    
+    console.log('### lastDayRatesArray ',lastDayRatesArray);
     _.each(wallets, wallet => {
       totalAmountArray.push(
         this.calcTotalAmount(wallet, isoCode, lastDayRatesArray)
       );
     });
+    console.log('### Total Amount array ', totalAmountArray);
 
     const totalBalanceAlternative = _.sumBy(
       _.compact(totalAmountArray),
@@ -780,10 +816,12 @@ export class WalletProvider {
           _.each(txs, tx => {
             tx.amountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address,
               tx.amount
             );
             tx.feeStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address,
               tx.fees
             );
           });
@@ -1467,8 +1505,10 @@ export class WalletProvider {
 
     let updates = [];
     clients.forEach(c => {
+      console.log(c);
       if (
-        this.currencyProvider.isERCToken(c.credentials.coin) ||
+        (c.credentials.token &&
+          this.currencyProvider.isERCToken(c.credentials.token.address)) ||
         c.credentials.multisigEthInfo
       )
         return;

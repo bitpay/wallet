@@ -136,7 +136,10 @@ export class BitPayCardTopUpPage {
     this.amount = this.navParams.data.amount;
 
     let coin = this.currency ? this.currency.toLowerCase() : null;
-
+    const coinDetails = _.find(
+      this.currencyProvider.availableCoins,
+      ac => ac.coin == coin.toLowerCase()
+    );
     this.bitPayCardProvider
       .get({
         cardId: this.cardId,
@@ -172,6 +175,9 @@ export class BitPayCardTopUpPage {
         if (this.currency.toLowerCase()) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             this.currency.toLowerCase(),
+            coinDetails &&
+              coinDetails.tokenInfo &&
+              coinDetails.tokenInfo.address,
             this.amount,
             this.currency
           );
@@ -266,10 +272,14 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private satToFiat(coin: string, sat: number): Promise<any> {
+  private satToFiat(
+    coin: string,
+    sat: number,
+    tokenAddress?: string
+  ): Promise<any> {
     return new Promise(resolve => {
       this.txFormatProvider
-        .toFiat(coin, sat, this.currencyIsoCode)
+        .toFiat(coin, sat, this.currencyIsoCode, tokenAddress)
         .then((value: string) => {
           return resolve(value);
         });
@@ -377,6 +387,7 @@ export class BitPayCardTopUpPage {
             .getPayProDetails({
               paymentUrl: payProUrl,
               coin: wallet.coin,
+              chain: wallet.chain,
               payload
             })
             .then(details => {
@@ -622,6 +633,7 @@ export class BitPayCardTopUpPage {
                       .getPayProDetails({
                         paymentUrl: payProUrl,
                         coin: wallet.coin,
+                        chain: wallet.chain,
                         payload
                       })
                       .then(details => {
@@ -824,6 +836,7 @@ export class BitPayCardTopUpPage {
 
             this.totalAmountStr = this.txFormatProvider.formatAmountStr(
               wallet.coin,
+              wallet.credentials.token && wallet.credentials.token.address,
               ctxp.amount || this.parsedAmount.amountSat
             );
 
@@ -908,6 +921,7 @@ export class BitPayCardTopUpPage {
 
         this.totalAmountStr = this.txFormatProvider.formatAmountStr(
           COIN.toLowerCase(),
+          undefined,
           this.parsedAmount.amountSat
         );
 
@@ -1053,12 +1067,17 @@ export class BitPayCardTopUpPage {
         });
   }
 
-  public onWalletSelect(option): void {
+  private onWalletSelect(option): void {
     if (option.isCoinbaseAccount) {
       this.wallet = null;
       this.coinbaseAccount = option.accountSelected;
+      const coinDetails = _.find(
+        this.currencyProvider.availableCoins,
+        ac => ac.coin == option.accountSelected.currency.code.toLowerCase()
+      );
       this.parsedAmount = this.txFormatProvider.parseAmount(
         option.accountSelected.currency.code.toLowerCase(),
+        coinDetails && coinDetails.tokenInfo && coinDetails.tokenInfo.address,
         this.amount,
         this.currency
       );
@@ -1079,7 +1098,10 @@ export class BitPayCardTopUpPage {
       this.coinbaseAccount = null;
       const wallet = option;
       this.wallet = wallet;
-      this.isERCToken = this.currencyProvider.isERCToken(this.wallet.coin);
+      this.isERCToken =
+        this.wallet.credentials.token &&
+        this.wallet.credentials.token.address &&
+        this.currencyProvider.isERCToken(this.wallet.credentials.token.address);
       if (this.countDown) {
         clearInterval(this.countDown);
       }
@@ -1094,6 +1116,7 @@ export class BitPayCardTopUpPage {
         .then(val => {
           this.parsedAmount = this.txFormatProvider.parseAmount(
             wallet.coin,
+            wallet.credentials.token && wallet.credentials.token.address,
             val.amount,
             val.currency
           );
@@ -1238,9 +1261,14 @@ export class BitPayCardTopUpPage {
       const totalFee = this.invoiceFeeSat + requiredFee;
       const feeAlternative = this.txFormatProvider.formatAlternativeStr(
         feeCoin,
+        totalFee,
+        undefined
+      );
+      const fee = this.txFormatProvider.formatAmountStr(
+        feeCoin,
+        undefined,
         totalFee
       );
-      const fee = this.txFormatProvider.formatAmountStr(feeCoin, totalFee);
       this._resetValues();
       this._showInsufficientFundsForFeeInfoSheet(fee, feeAlternative, coin);
     } else {

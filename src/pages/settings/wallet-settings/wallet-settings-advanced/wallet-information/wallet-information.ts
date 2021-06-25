@@ -68,6 +68,6 @@ export class WalletInformationPage {
   }
 
   public isUtxoCoin(): boolean {
-    return this.currencyProvider.isUtxoCoin(this.wallet.credentials.chain);
+    return this.currencyProvider.isUtxoCoin(this.wallet.chain);
   }
 }

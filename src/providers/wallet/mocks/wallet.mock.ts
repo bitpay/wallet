@@ -126,6 +126,7 @@ export class WalletMock {
     coin: string;
   };
   coin: string;
+  chain: string;
   id: string;
   m: number;
   n: number;
@@ -149,6 +150,7 @@ export class WalletMock {
       coin: 'btc'
     };
     this.coin = 'btc';
+    this.chain = 'btc';
     this.id = 'walletid1';
     this.needsBackup = false;
     this.network = 'livenet';

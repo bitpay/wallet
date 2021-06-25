@@ -331,7 +331,7 @@ export class CoinbaseProvider {
 
   public getAccounts(data?) {
     if (!this.isLinked()) return;
-    const availableCoins = this.currencyProvider.getAvailableCoins();
+    const availableCoins = this.currencyProvider.availableCoins;
     if (data) data['accounts'] = this.coinbaseData['accounts'] || [];
     // go to coinbase to update data
     this._getAccounts().then(remoteData => {
@@ -341,7 +341,10 @@ export class CoinbaseProvider {
         if (
           allAccounts[i].type == 'wallet' &&
           allAccounts[i].currency &&
-          _.includes(availableCoins, allAccounts[i].currency.code.toLowerCase())
+          _.findIndex(
+            availableCoins,
+            ac => ac.coin === allAccounts[i].currency.code.toLowerCase()
+          ) >= 0
         ) {
           accounts.push(allAccounts[i]);
         }
@@ -778,6 +781,11 @@ export class CoinbaseProvider {
         ? nativeBalance + ' ' + this.coinbaseData['user']['native_currency']
         : null;
       const accountCoin = ac.balance.currency.toLowerCase();
+      const coinDetails = _.find(
+        this.currencyProvider.availableCoins,
+        ac => ac.coin == accountCoin
+      );
+
       if (minFiatCurrency) {
         // check if it's crypto currency
         if (minFiatCurrency.currency.toLowerCase()) {
@@ -787,7 +795,8 @@ export class CoinbaseProvider {
           this.currencyProvider.getPrecision(accountCoin).unitToSatoshi *
             Number(ac.balance.amount),
           minFiatCurrency.currency,
-          accountCoin
+          accountCoin,
+          coinDetails && coinDetails.tokenInfo && coinDetails.tokenInfo.address
         );
         return (
           availableBalanceFiat >=

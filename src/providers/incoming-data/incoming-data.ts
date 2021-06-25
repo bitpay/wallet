@@ -288,10 +288,11 @@ export class IncomingDataProvider {
 
       if (selected.length === 1) {
         // Confirm Page - selectedTransactionCurrency set to selected
-        const [{ currency }] = selected;
+        const [{ currency, chain }] = selected;
         return this.goToPayPro(
           invoiceUrl,
           currency.toLowerCase(),
+          chain,
           payProOptions,
           disableLoader
         );
@@ -302,6 +303,7 @@ export class IncomingDataProvider {
         for (const option of payProOptions.paymentOptions) {
           const fundedWallets = this.profileProvider.getWallets({
             coin: option.currency.toLowerCase(),
+            chain: option.chain,
             network: option.network,
             minAmount: option.estimatedAmount
           });
@@ -314,10 +316,11 @@ export class IncomingDataProvider {
         }
         if (availableWallets.length === 1) {
           // Only one available wallet with balance
-          const [{ currency }] = availableWallets;
+          const [{ currency, chain }] = availableWallets;
           return this.goToPayPro(
             invoiceUrl,
             currency.toLowerCase(),
+            chain,
             payProOptions,
             disableLoader
           );
@@ -374,13 +377,14 @@ export class IncomingDataProvider {
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = 'btc';
+    const chain = coin;
     let parsed = this.bwcProvider.getBitcore().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
       const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
+      this.goToPayPro(payProUrl, coin, chain);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -389,6 +393,7 @@ export class IncomingDataProvider {
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = 'bch';
+    const chain = coin;
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
 
@@ -402,7 +407,7 @@ export class IncomingDataProvider {
 
     if (parsed.r) {
       const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
+      this.goToPayPro(payProUrl, coin, chain);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -472,13 +477,14 @@ export class IncomingDataProvider {
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = 'doge';
+    const chain = coin;
     let parsed = this.bwcProvider.getBitcoreDoge().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
       const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
+      this.goToPayPro(payProUrl, coin, chain);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -504,6 +510,7 @@ export class IncomingDataProvider {
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
     const coin = 'bch';
+    const chain = coin;
     let parsed = this.bwcProvider
       .getBitcore()
       .URI(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'));
@@ -524,7 +531,7 @@ export class IncomingDataProvider {
     this.logger.warn('Legacy Bitcoin Address translated to: ' + address);
     if (parsed.r) {
       const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
+      this.goToPayPro(payProUrl, coin, chain);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -1337,16 +1344,17 @@ export class IncomingDataProvider {
   public goToPayPro(
     url: string,
     coin: string,
+    chain: string,
     payProOptions?,
     disableLoader?: boolean,
     activePage?: string
   ): void {
     if (activePage) this.activePage = activePage;
     this.payproProvider
-      .getPayProDetails({ paymentUrl: url, coin, disableLoader })
+      .getPayProDetails({ paymentUrl: url, chain, coin, disableLoader })
       .then(details => {
         this.onGoingProcessProvider.clear();
-        this.handlePayPro(details, payProOptions, url, coin);
+        this.handlePayPro(details, payProOptions, url, coin, chain);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -1359,7 +1367,8 @@ export class IncomingDataProvider {
     payProDetails,
     payProOptions,
     url,
-    coin: string
+    coin: string,
+    chain: string
   ): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');
@@ -1370,9 +1379,9 @@ export class IncomingDataProvider {
 
     let invoiceID;
     let requiredFeeRate;
-
+    console.log('#####', chain, coin);
     if (payProDetails.requiredFeeRate) {
-      requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
+      requiredFeeRate = !this.currencyProvider.isUtxoCoin(chain)
         ? parseInt((payProDetails.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
         : Math.ceil(payProDetails.requiredFeeRate * 1000);
     }
@@ -1384,11 +1393,13 @@ export class IncomingDataProvider {
       }
       const paymentOptions = payProOptions.paymentOptions;
       const { estimatedAmount, minerFee } = paymentOptions.find(
-        option => option.currency.toLowerCase() === coin
+        option =>
+          option.currency.toLowerCase() === coin.toLowerCase() &&
+          option.chain.toLowerCase() === chain.toLowerCase()
       );
       const instructions = payProDetails.instructions[0];
       const { outputs, toAddress, data } = instructions;
-      if (coin === 'xrp' && outputs) {
+      if (chain.toLowerCase() === 'xrp' && outputs) {
         invoiceID = outputs[0].invoiceID;
       }
       const stateParams = {
@@ -1399,6 +1410,7 @@ export class IncomingDataProvider {
         invoiceID,
         paypro: payProDetails,
         coin,
+        chain,
         network,
         payProUrl: url,
         requiredFeeRate,

@@ -12,7 +12,11 @@ export interface CoinOpts {
     unitDecimals: number;
     unitCode: string;
   };
-  properties: {
+  tokenInfo?: {
+    symbol: string;
+    address: string;
+  };
+  properties?: {
     // Properties
     hasMultiSig: boolean;
     hasMultiSend: boolean;
@@ -22,7 +26,7 @@ export interface CoinOpts {
     singleAddress: boolean;
     isCustom?: boolean;
   };
-  paymentInfo: {
+  paymentInfo?: {
     paymentCode: string;
     protocolPrefix: { livenet: string; testnet: string };
     // Urls
@@ -30,21 +34,21 @@ export interface CoinOpts {
     blockExplorerUrls: string;
     blockExplorerUrlsTestnet: string;
   };
-  feeInfo: {
+  feeInfo?: {
     // Fee Units
     feeUnit: string;
     feeUnitAmount: number;
     blockTime: number;
     maxMerchantFee: string;
   };
-  theme: {
+  theme?: {
     coinColor: string;
     backgroundColor: string;
     gradientBackgroundColor: string;
   };
 }
 
-export const availableCoins: CoinsMap<CoinOpts> = {
+export const availableChains: CoinsMap<CoinOpts> = {
   btc: {
     name: 'Bitcoin',
     chain: 'BTC',

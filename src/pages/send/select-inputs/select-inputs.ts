@@ -237,7 +237,8 @@ export class SelectInputsPage {
 
       let altAmountStr = this.txFormatProvider.formatAlternativeStr(
         this.wallet.coin,
-        +data.amount
+        +data.amount,
+        this.wallet.credentials.token && this.wallet.credentials.token.address
       );
 
       item.amount = +data.amount;
@@ -246,6 +247,7 @@ export class SelectInputsPage {
       item.fiatCode = data.fiatCode;
       item.amountToShow = this.txFormatProvider.formatAmount(
         this.wallet.coin,
+        this.wallet.credentials.token && this.wallet.credentials.token.address,
         +data.amount
       );
       this.recipient = item;
@@ -333,12 +335,18 @@ export class SelectInputsPage {
 
   public addRecipient(recipient): void {
     let amountToShow: string = +recipient.amount
-      ? this.txFormatProvider.formatAmount(this.wallet.coin, +recipient.amount)
+      ? this.txFormatProvider.formatAmount(
+          this.wallet.coin,
+          this.wallet.credentials.token &&
+            this.wallet.credentials.token.address,
+          +recipient.amount
+        )
       : null;
 
     let altAmountStr = this.txFormatProvider.formatAlternativeStr(
       this.wallet.coin,
-      ++recipient.amount
+      ++recipient.amount,
+      this.wallet.credentials.token && this.wallet.credentials.token.address
     );
 
     this.recipient = {

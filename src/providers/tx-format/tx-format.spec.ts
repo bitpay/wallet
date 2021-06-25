@@ -70,7 +70,12 @@ describe('TxFormatProvider', () => {
           ' and fullPrecision: ' +
           v[2],
         () => {
-          let formattedAmount = txFormatProvider.formatAmount(v[0], v[1], v[2]);
+          let formattedAmount = txFormatProvider.formatAmount(
+            v[0],
+            undefined,
+            v[1],
+            v[2]
+          );
           expect(formattedAmount).toEqual(v[3]);
         }
       );
@@ -80,7 +85,7 @@ describe('TxFormatProvider', () => {
   describe('formatAmountStr', () => {
     it('should return undefined if satoshis amount are not type of number', () => {
       expect(
-        txFormatProvider.formatAmountStr('btc', undefined)
+        txFormatProvider.formatAmountStr('btc', undefined, undefined, undefined)
       ).toBeUndefined();
     });
 
@@ -92,49 +97,55 @@ describe('TxFormatProvider', () => {
       };
       configProvider.set(newOpts);
 
-      expect(txFormatProvider.formatAmountStr('btc', 12312312)).toEqual(
-        '0.123123 BTC'
-      );
+      expect(
+        txFormatProvider.formatAmountStr('btc', undefined, 12312312)
+      ).toEqual('0.123123 BTC');
     });
   });
 
   describe('toFiat', () => {
     it('should return undefined if satoshis amount are undefined', () => {
-      txFormatProvider.toFiat('btc', undefined, 'USD').then(result => {
-        expect(result).toBeUndefined();
-      });
+      txFormatProvider
+        .toFiat('btc', undefined, 'USD', undefined)
+        .then(result => {
+          expect(result).toBeUndefined();
+        });
     });
 
     it('should return null', () => {
-      txFormatProvider.toFiat('btc', 12312312, 'USD').then(result => {
-        expect(result).toBeNull();
-      });
+      txFormatProvider
+        .toFiat('btc', 12312312, 'USD', undefined)
+        .then(result => {
+          expect(result).toBeNull();
+        });
     });
 
     it('should return a string with formatted amount', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      txFormatProvider.toFiat('btc', 12312312, 'USD').then(result => {
-        expect(result).toEqual('1000000.00');
-      });
+      txFormatProvider
+        .toFiat('btc', 12312312, 'USD', undefined)
+        .then(result => {
+          expect(result).toEqual('1000000.00');
+        });
     });
   });
 
   describe('formatToUSD', () => {
     it('should return undefined if satoshis amount are undefined', () => {
-      txFormatProvider.formatToUSD('btc', undefined).then(result => {
+      txFormatProvider.formatToUSD('btc', undefined, undefined).then(result => {
         expect(result).toBeUndefined();
       });
     });
 
     it('should return null', () => {
-      txFormatProvider.formatToUSD('btc', 12312312).then(result => {
+      txFormatProvider.formatToUSD('btc', 12312312, undefined).then(result => {
         expect(result).toBeNull();
       });
     });
 
     it('should return a string with formatted amount in USD', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      txFormatProvider.formatToUSD('btc', 12312312).then(result => {
+      txFormatProvider.formatToUSD('btc', 12312312, undefined).then(result => {
         expect(result).toEqual('1000000.00');
       });
     });
@@ -155,26 +166,38 @@ describe('TxFormatProvider', () => {
 
     it('should return undefined if satoshis amount are undefined', () => {
       expect(
-        txFormatProvider.formatAlternativeStr('btc', undefined)
+        txFormatProvider.formatAlternativeStr('btc', undefined, undefined)
       ).toBeUndefined();
     });
 
     it('should return null', () => {
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
+      let result = txFormatProvider.formatAlternativeStr(
+        'btc',
+        12312312,
+        undefined
+      );
       expect(result).toBeNull();
     });
 
     it('should return null', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue(undefined);
       spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
+      let result = txFormatProvider.formatAlternativeStr(
+        'btc',
+        12312312,
+        undefined
+      );
       expect(result).toBeNull();
     });
 
     it('should return a string with formatted amount in alternative Iso Code setted in wallet', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
       spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
-      let result = txFormatProvider.formatAlternativeStr('btc', 12312312);
+      let result = txFormatProvider.formatAlternativeStr(
+        'btc',
+        12312312,
+        undefined
+      );
       expect(result).toEqual('1,000,000 ARS');
     });
   });
@@ -282,9 +305,15 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount parsed correctly if the currency is BTC', () => {
-      let result = txFormatProvider.parseAmount('btc', 0.012235, 'BTC', {
-        onlyIntegers: false
-      });
+      let result = txFormatProvider.parseAmount(
+        'btc',
+        undefined,
+        0.012235,
+        'BTC',
+        {
+          onlyIntegers: false
+        }
+      );
       expect(result).toEqual({
         amount: '0.01223500',
         currency: 'BTC',
@@ -298,7 +327,7 @@ describe('TxFormatProvider', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
-      let result = txFormatProvider.parseAmount('btc', 1505, 'USD', {
+      let result = txFormatProvider.parseAmount('btc', undefined, 1505, 'USD', {
         onlyIntegers: false
       });
       expect(result).toEqual({
@@ -326,7 +355,7 @@ describe('TxFormatProvider', () => {
       spyOn(rateProvider, 'fromFiat').and.returnValue(24117237);
 
       let onlyIntegers = true;
-      let result = txFormatProvider.parseAmount('btc', 1505, 'JPY', {
+      let result = txFormatProvider.parseAmount('btc', undefined, 1505, 'JPY', {
         onlyIntegers
       });
       expect(result).toEqual({
@@ -341,7 +370,7 @@ describe('TxFormatProvider', () => {
     it('should return amount parsed correctly if the currency is sat', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue('1,505');
 
-      let result = txFormatProvider.parseAmount('btc', 1505, 'sat', {
+      let result = txFormatProvider.parseAmount('btc', undefined, 1505, 'sat', {
         onlyIntegers: false
       });
       expect(result).toEqual({

@@ -21,7 +21,8 @@ export class SatToFiatPipe implements PipeTransform {
     let amount_ = this.rateProvider.toFiat(
       amount,
       this.walletSettings.alternativeIsoCode,
-      coin.toLowerCase()
+      coin.toLowerCase(),
+      undefined
     );
     return (
       this.decimalPipe.transform(amount_ || 0, '1.2-2') +

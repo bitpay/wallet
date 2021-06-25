@@ -124,7 +124,7 @@ export class WalletAddressesPage {
         );
       });
 
-    if (this.currencyProvider.isUtxoCoin(this.wallet.coin)) {
+    if (this.currencyProvider.isUtxoCoin(this.wallet.chain)) {
       this.walletProvider
         .getLowUtxos(this.wallet)
         .then(resp => {
@@ -136,14 +136,20 @@ export class WalletAddressesPage {
             this.allUtxosNb = resp.allUtxos.length;
             this.lowUtxosSum = this.txFormatProvider.formatAmountStr(
               this.wallet.coin,
+              this.wallet.credentials.token &&
+                this.wallet.credentials.token.address,
               _.sumBy(resp.lowUtxos || 0, 'satoshis')
             );
             this.allUtxosSum = this.txFormatProvider.formatAmountStr(
               this.wallet.coin,
+              this.wallet.credentials.token &&
+                this.wallet.credentials.token.address,
               allSum
             );
             this.minFee = this.txFormatProvider.formatAmountStr(
               this.wallet.coin,
+              this.wallet.credentials.token &&
+                this.wallet.credentials.token.address,
               resp.minFee || 0
             );
             this.minFeePer = per.toFixed(2) + '%';

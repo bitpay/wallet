@@ -32,12 +32,11 @@ export class SelectInvoicePage {
     this.logger.info('Loaded: SelectInvoicePage');
   }
 
-  public getCoinName(currency): string {
-    const coin = currency.toLowerCase();
-    return this.currencyProvider.getCoinName(coin);
+  public getCoinName(chain): string {
+    return this.currencyProvider.getCoinName(chain);
   }
 
-  public goToPayPro(currency): void {
+  public goToPayPro(currency, chain): void {
     const coin = currency.toLowerCase();
     if (this.navParams.data.walletCardRedir) {
       this.payProUrl += '?redir=wc';
@@ -45,6 +44,7 @@ export class SelectInvoicePage {
     this.incomingDataProvider.goToPayPro(
       this.payProUrl,
       coin,
+      chain,
       this.navParams.data.payProOptions
     );
   }

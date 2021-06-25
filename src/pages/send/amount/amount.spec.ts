@@ -4,7 +4,7 @@ import { TestUtils } from '../../../test';
 import { RateProvider } from '../../../providers/rate/rate';
 import { AmountPage } from './amount';
 
-describe('AmountPage', () => {
+fdescribe('AmountPage', () => {
   // TODO: Improve Amount page unit tests
   let fixture: ComponentFixture<AmountPage>;
   let instance;
@@ -14,6 +14,7 @@ describe('AmountPage', () => {
 
   const wallet = {
     coin: 'bch',
+    chain: 'bch',
     cachedStatus: {
       totalBalanceStr: '1.000000',
       totalBalanceSat: 100000000,
@@ -55,7 +56,12 @@ describe('AmountPage', () => {
       instance.unitIndex = 1;
       instance.unitToSatoshi = 1e8;
       instance.sendMax();
-      expect(toFiatSpy).toHaveBeenCalledWith(100000000, 'USD', 'bch');
+      expect(toFiatSpy).toHaveBeenCalledWith(
+        100000000,
+        'USD',
+        'bch',
+        undefined
+      );
       expect(instance.expression).toBe('1000000.00');
     });
 
