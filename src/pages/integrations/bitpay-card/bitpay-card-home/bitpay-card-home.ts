@@ -100,47 +100,51 @@ export class BitPayCardHome implements OnInit {
 
   public async runCardAudienceEvents() {
     try {
-      let cards = await this.persistenceProvider.getBitpayDebitCards('livenet');
-      let physicalCards = cards.filter(
-        c => c.cardType == 'physical' && c.provider == 'galileo'
+      const allCards = await this.persistenceProvider.getBitpayDebitCards(
+        'livenet'
       );
-      let virtualCards = cards.filter(c => c.cardType == 'virtual');
-      let deviceUUID = await this.platformProvider.getDeviceUUID();
+      const galileoCards = allCards.filter(c => c.provider === 'galileo');
+      const hasPhysicalCard = galileoCards.some(c => c.cardType === 'physical');
+      const hasVirtualCard = galileoCards.some(c => c.cardType === 'virtual');
+      const deviceUUID = await this.platformProvider.getDeviceUUID();
+      const hasReportedFirebaseHasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
 
-      let hasFundedCard = await this.persistenceProvider.getHasReportedFirebaseHasFundedCard();
-      if (!hasFundedCard) {
-        let cardHasBalance = cards.some(c => c.cardBalance > 0);
-        if (cardHasBalance) {
-          this.analyticsProvider.logEvent('has_funded_card', {
-            uuid: deviceUUID
-          });
-          this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
-        } else {
-          this.analyticsProvider.logEvent('has_not_funded_card', {
-            uuid: deviceUUID
-          });
+      if (!!galileoCards.length) {
+        if (!hasReportedFirebaseHasFundedCard) {
+          const cardHasBalance = galileoCards.some(c => c.cardBalance > 0);
+
+          if (cardHasBalance) {
+            this.analyticsProvider.logEvent('has_funded_card_2', {
+              uuid: deviceUUID
+            });
+          } else {
+            this.analyticsProvider.logEvent('has_not_funded_card_2', {
+              uuid: deviceUUID
+            });
+          }
+          await this.persistenceProvider.setHasReportedFirebaseHasFundedCard();
         }
-      }
 
-      let hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
-      let hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();
+        const hasReportedFirebaseHasPhysicalCard = await this.persistenceProvider.getHasReportedFirebaseHasPhysicalCardFlag();
+        const hasReportedFirebaseHasVirtualCard = await this.persistenceProvider.getHasReportedFirebaseHasVirtualCardFlag();
 
-      if (!hasReportedFirebaseHasPhysicalCard) {
-        if (physicalCards.length > 0) {
-          this.analyticsProvider.logEvent('has_physical_card', {
-            uuid: deviceUUID
-          });
+        if (!hasReportedFirebaseHasPhysicalCard) {
+          if (hasPhysicalCard) {
+            this.analyticsProvider.logEvent('has_physical_card', {
+              uuid: deviceUUID
+            });
+          }
+          await this.persistenceProvider.setHasReportedFirebaseHasPhysicalCardFlag();
         }
-        this.persistenceProvider.setHasReportedFirebaseHasPhysicalCardFlag();
-      }
 
-      if (!hasReportedFirebaseHasVirtualCard) {
-        if (virtualCards.length > 0) {
-          this.analyticsProvider.logEvent('has_virtual_card', {
-            uuid: deviceUUID
-          });
+        if (!hasReportedFirebaseHasVirtualCard) {
+          if (hasVirtualCard) {
+            this.analyticsProvider.logEvent('has_virtual_card', {
+              uuid: deviceUUID
+            });
+          }
+          await this.persistenceProvider.setHasReportedFirebaseHasVirtualCardFlag();
         }
-        this.persistenceProvider.setHasReportedFirebaseHasVirtualCardFlag();
       }
     } catch (e) {
       this.logger.debug(
