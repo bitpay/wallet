@@ -113,7 +113,9 @@ export class BitPayCardHome implements OnInit {
       if (!!galileoCards.length) {
         if (!hasReportedFirebaseHasFundedCard) {
           const cardHasBalance = galileoCards.some(c => c.cardBalance > 0);
-          const event = cardHasBalance ? 'has_funded_card_2' : 'has_not_funded_card_2';
+          const event = cardHasBalance
+            ? 'has_funded_card_2'
+            : 'has_not_funded_card_2';
           this.analyticsProvider.logEvent(event, {
             uuid: deviceUUID
           });
