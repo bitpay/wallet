@@ -34,7 +34,7 @@ const REFERRAL_SOCIAL_SHARING_MESSAGE = (
   name: string,
   network: string
 ) =>
-  `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code} Go check it out at https://${
+  `Hey, checkout BitPay's new card. You can convert crypto to dollars easily. Just get the app, set up a wallet, and order the card using my code ${code}. https://${
     network === 'testnet' ? 'test.bitpay.com' : 'bitpay.com'
   }/card?code=${code}&ref=${name}`;
 declare var cordova: any;
