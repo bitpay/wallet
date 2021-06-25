@@ -88,6 +88,7 @@ export class BitPayCardHome implements OnInit {
     this.disableAddCard =
       this.bitpayCardItems &&
       this.bitpayCardItems.find(c => c.provider === 'galileo');
+    this.runCardAudienceEvents();
   }
 
   public goToBitPayCardIntroPage() {
@@ -154,7 +155,6 @@ export class BitPayCardHome implements OnInit {
   }
 
   public async goToCard(cardId) {
-    this.runCardAudienceEvents();
     this.iabCardProvider.loadingWrapper(async () => {
       const token = await this.persistenceProvider.getBitPayIdPairingToken(
         this.network
