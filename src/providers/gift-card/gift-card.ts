@@ -627,10 +627,26 @@ export class GiftCardProvider extends InvoiceProvider {
     }
   }
 
-  async fetchCachedApiCardConfig(): Promise<CardConfigMap> {
-    this.cachedApiCardConfigPromise = this.persistenceProvider.getGiftCardConfigCache(
-      this.getNetwork()
-    );
+  async fetchCachedApiCardConfig(
+    fetchTimeout: number = 3000
+  ): Promise<CardConfigMap> {
+    this.cachedApiCardConfigPromise = Promise.race([
+      this.persistenceProvider.getGiftCardConfigCache(this.getNetwork()),
+      timer(fetchTimeout)
+        .toPromise()
+        .then(() => {
+          throw new Error('timeout');
+        })
+    ]).catch(async err => {
+      if (err && err.message === 'timeout') {
+        this.logger.debug(
+          `cachedApiCardConfig took longer than ${fetchTimeout}ms to load`
+        );
+        this.persistenceProvider.setGiftCardConfigCache(this.getNetwork(), {});
+        return {};
+      }
+      throw err;
+    });
     return this.cachedApiCardConfigPromise;
   }
 
