@@ -488,7 +488,7 @@ export class WalletProvider {
 
   private getWalletTotalBalanceAlternativeLastDay(
     balanceSat: number,
-    chain: string,
+    coin: string,
     tokenAddress: string,
     isoCode: string,
     lastDayRatesArray: any
@@ -496,10 +496,10 @@ export class WalletProvider {
     const balanceLastDay = this.rateProvider.toFiat(
       balanceSat,
       isoCode,
-      chain,
+      coin,
       tokenAddress,
       {
-        customRate: lastDayRatesArray[chain]
+        customRate: lastDayRatesArray[coin]
       }
     );
     return balanceLastDay ? balanceLastDay.toFixed(2) : '0.00';
@@ -522,7 +522,7 @@ export class WalletProvider {
       walletTotalBalanceAlternativeLastDay = parseFloat(
         this.getWalletTotalBalanceAlternativeLastDay(
           balance,
-          wallet.chain,
+          wallet.coin,
           wallet.credentials.token && wallet.credentials.token.address,
           isoCode,
           lastDayRatesArray
@@ -531,7 +531,7 @@ export class WalletProvider {
       walletTotalBalanceAlternative = parseFloat(
         this.getWalletTotalBalanceAlternative(
           balance,
-          wallet.chain,
+          wallet.coin,
           isoCode,
           wallet.credentials.token && wallet.credentials.token.address
         )
@@ -547,14 +547,12 @@ export class WalletProvider {
     const isoCode =
       this.configProvider.get().wallet.settings.alternativeIsoCode || 'USD';
     const totalAmountArray = [];
-    
-    console.log('### lastDayRatesArray ',lastDayRatesArray);
     _.each(wallets, wallet => {
       totalAmountArray.push(
+        { coin: wallet.coin, chain: wallet.chain },
         this.calcTotalAmount(wallet, isoCode, lastDayRatesArray)
       );
     });
-    console.log('### Total Amount array ', totalAmountArray);
 
     const totalBalanceAlternative = _.sumBy(
       _.compact(totalAmountArray),

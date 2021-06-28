@@ -4,7 +4,7 @@ import { TestUtils } from '../../../test';
 import { RateProvider } from '../../../providers/rate/rate';
 import { AmountPage } from './amount';
 
-fdescribe('AmountPage', () => {
+describe('AmountPage', () => {
   // TODO: Improve Amount page unit tests
   let fixture: ComponentFixture<AmountPage>;
   let instance;

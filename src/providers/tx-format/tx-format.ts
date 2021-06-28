@@ -149,7 +149,7 @@ export class TxFormatProvider {
       return v1str + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (!this.rate.isCoinAvailable(coin)) return null;
+    if (!this.rate.isCoinRateAvailable(coin)) return null;
     return val();
   }
 

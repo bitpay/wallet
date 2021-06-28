@@ -181,7 +181,7 @@ describe('TxFormatProvider', () => {
 
     it('should return null', () => {
       spyOn(filterProvider, 'formatFiatAmount').and.returnValue(undefined);
-      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
+      spyOn(rateProvider, 'isCoinRateAvailable').and.returnValue(true);
       let result = txFormatProvider.formatAlternativeStr(
         'btc',
         12312312,
@@ -192,7 +192,7 @@ describe('TxFormatProvider', () => {
 
     it('should return a string with formatted amount in alternative Iso Code setted in wallet', () => {
       spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
-      spyOn(rateProvider, 'isCoinAvailable').and.returnValue(true);
+      spyOn(rateProvider, 'isCoinRateAvailable').and.returnValue(true);
       let result = txFormatProvider.formatAlternativeStr(
         'btc',
         12312312,

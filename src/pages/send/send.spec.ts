@@ -31,6 +31,7 @@ describe('SendPage', () => {
 
   const wallet = {
     coin: 'bch',
+    chain: 'bch',
     network: 'testnet',
     status: {
       totalBalanceStr: '1.000000'
@@ -84,6 +85,7 @@ describe('SendPage', () => {
     it('should set data from the clipboard', async () => {
       const data = 'mq8Hc2XwYqXw4sPTc8i7wPx9iJzTFTBWbQ';
       instance.wallet.coin = 'btc';
+      instance.wallet.chain = 'btc';
       spyOn(clipboardProvider, 'getValidData').and.returnValue(
         Promise.resolve(data)
       );
@@ -96,6 +98,7 @@ describe('SendPage', () => {
     describe('for wallets btc livenet', () => {
       beforeEach(() => {
         instance.wallet.coin = 'btc';
+        instance.wallet.chain = 'btc';
         instance.wallet.network = 'livenet';
         instance.navParams.data = {
           amount: 11111111,
@@ -156,6 +159,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e',
           'btc',
+          'btc',
           undefined,
           true,
           'SendPage'
@@ -189,6 +193,7 @@ describe('SendPage', () => {
       it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'bch',
+          chain: 'bch',
           network: 'testnet',
           status: {
             totalBalanceStr: '1.000000'
@@ -229,6 +234,7 @@ describe('SendPage', () => {
       it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'bch',
+          chain: 'bch',
           network: 'livenet',
           status: {
             totalBalanceStr: '1.000000'
@@ -303,6 +309,7 @@ describe('SendPage', () => {
     describe('for wallets btc testnet', () => {
       beforeEach(() => {
         instance.wallet.coin = 'btc';
+        instance.wallet.chain = 'btc';
         instance.wallet.network = 'testnet';
         instance.navParams.data.amount = 11111111;
         instance.navParams.data.coin = 'btc';
@@ -361,6 +368,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ',
           'btc',
+          'btc',
           undefined,
           true,
           'SendPage'
@@ -394,6 +402,7 @@ describe('SendPage', () => {
       it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'bch',
+          chain: 'bch',
           network: 'testnet',
           status: {
             totalBalanceStr: '1.000000'
@@ -433,6 +442,7 @@ describe('SendPage', () => {
       it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'bch',
+          chain: 'bch',
           network: 'livenet',
           status: {
             totalBalanceStr: '1.000000'
@@ -473,6 +483,7 @@ describe('SendPage', () => {
       it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'btc',
+          chain: 'btc',
           network: 'testnet',
           status: {
             totalBalanceStr: '1.000000'
@@ -514,6 +525,7 @@ describe('SendPage', () => {
     describe('for wallets bch livenet', () => {
       beforeEach(() => {
         instance.wallet.coin = 'bch';
+        instance.wallet.chain = 'bch';
         instance.wallet.network = 'livenet';
         instance.navParams.data.amount = 11111111;
         instance.navParams.data.coin = 'bch';
@@ -572,6 +584,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           'bch',
+          'bch',
           undefined,
           true,
           'SendPage'
@@ -605,6 +618,7 @@ describe('SendPage', () => {
       it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'btc',
+          chain: 'btc',
           network: 'testnet',
           status: {
             totalBalanceStr: '1.000000'
@@ -678,6 +692,7 @@ describe('SendPage', () => {
       it('should handle paypro btc testnet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'btc',
+          chain: 'btc',
           network: 'livenet',
           status: {
             totalBalanceStr: '1.000000'
@@ -719,6 +734,7 @@ describe('SendPage', () => {
     describe('for wallets bch testnet', () => {
       beforeEach(() => {
         instance.wallet.coin = 'bch';
+        instance.wallet.chain = 'bch';
         instance.wallet.network = 'testnet';
         instance.navParams.data.amount = 11111111;
         instance.navParams.data.coin = 'bch';
@@ -777,6 +793,7 @@ describe('SendPage', () => {
         expect(redirSpy).toHaveBeenCalledWith(
           'https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
           'bch',
+          'bch',
           undefined,
           true,
           'SendPage'
@@ -814,6 +831,7 @@ describe('SendPage', () => {
       it('should handle paypro BTC livenet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'btc',
+          chain: 'btc',
           network: 'testnet',
           status: {
             totalBalanceStr: '1.000000'
@@ -854,6 +872,7 @@ describe('SendPage', () => {
       it('should handle paypro BTC testnet and call error modal', fakeAsync(() => {
         instance.wallet = {
           coin: 'btc',
+          chain: 'btc',
           network: 'livenet',
           status: {
             totalBalanceStr: '1.000000'

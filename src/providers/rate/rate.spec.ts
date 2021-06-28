@@ -91,7 +91,7 @@ describe('RateProvider', () => {
   it('should see if rates are available', () => {
     service.updateRates().then(() => {
       service.updateRates('btc').then(() => {
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
       });
       httpMock.match(ethUrl)[0].flush(ethResponse);
       httpMock.match(btcUrl)[1].flush(btcResponse);
@@ -111,7 +111,7 @@ describe('RateProvider', () => {
   it('should get BTC rates', () => {
     service.updateRates().then(() => {
       service.updateRates('btc').then(() => {
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
         expect(service.getRate('BTC', 'btc')).toEqual(1);
         expect(service.getRate('USD', 'btc')).toEqual(11535.74);
         expect(service.getRate('BCH', 'btc')).toEqual(7.65734);
@@ -138,7 +138,7 @@ describe('RateProvider', () => {
   it('should get BCH rates', () => {
     service.updateRates().then(() => {
       service.updateRates('bch').then(() => {
-        expect(service.isCoinAvailable('bch')).toBe(true);
+        expect(service.isCoinRateAvailable('bch')).toBe(true);
         expect(service.getRate('BTC', 'bch')).toEqual(0.130377);
         expect(service.getRate('USD', 'bch')).toEqual(1503.3);
         expect(service.getRate('BCH', 'bch')).toEqual(1);
@@ -165,7 +165,7 @@ describe('RateProvider', () => {
   it('should get ETH rates', () => {
     service.updateRates().then(() => {
       service.updateRates('eth').then(() => {
-        expect(service.isCoinAvailable('eth')).toBe(true);
+        expect(service.isCoinRateAvailable('eth')).toBe(true);
         expect(service.getRate('BTC', 'eth')).toEqual(0.130377);
         expect(service.getRate('USD', 'eth')).toEqual(1503.3);
         expect(service.getRate('BCH', 'eth')).toEqual(0.899);
@@ -192,7 +192,7 @@ describe('RateProvider', () => {
   it('should get XRP rates', () => {
     service.updateRates().then(() => {
       service.updateRates('xrp').then(() => {
-        expect(service.isCoinAvailable('xrp')).toBe(true);
+        expect(service.isCoinRateAvailable('xrp')).toBe(true);
         expect(service.getRate('USD', 'xrp')).toEqual(0.25);
         expect(service.getRate('XRP', 'xrp')).toEqual(1);
         expect(service.getRate('DOGE', 'xrp')).toEqual(2);
@@ -272,7 +272,7 @@ describe('RateProvider', () => {
     // after we have rates
     service.updateRates().then(() => {
       service.updateRates('bch').then(() => {
-        expect(service.isCoinAvailable('bch')).toBe(true);
+        expect(service.isCoinRateAvailable('bch')).toBe(true);
         expect(service.toFiat(1 * 1e8, 'USD', 'bch', undefined)).toEqual(
           1503.3
         );
@@ -306,7 +306,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('bch').then(() => {
-        expect(service.isCoinAvailable('bch')).toBe(true);
+        expect(service.isCoinRateAvailable('bch')).toBe(true);
         expect(service.fromFiat(1503.3, 'USD', 'bch')).toEqual(1 * 1e8);
         expect(service.fromFiat(751.65, 'USD', 'bch')).toEqual(0.5 * 1e8);
         expect(service.fromFiat(375.825, 'USD', 'bch')).toEqual(0.25 * 1e8);
@@ -331,7 +331,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
         expect(service.toFiat(1 * 1e8, 'USD', 'btc', undefined)).toEqual(
           11535.74
         );
@@ -362,7 +362,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
         expect(service.fromFiat(11535.74, 'USD', 'btc')).toEqual(1 * 1e8);
         expect(service.fromFiat(5767.87, 'USD', 'btc')).toEqual(0.5 * 1e8);
         expect(service.fromFiat(2883.935, 'USD', 'btc')).toEqual(0.25 * 1e8);
@@ -387,7 +387,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('eth').then(() => {
-        expect(service.isCoinAvailable('eth')).toBe(true);
+        expect(service.isCoinRateAvailable('eth')).toBe(true);
         expect(service.toFiat(1 * 1e8, 'USD', 'eth', undefined)).toEqual(
           1.5033e-7
         );
@@ -418,7 +418,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('eth').then(() => {
-        expect(service.isCoinAvailable('eth')).toBe(true);
+        expect(service.isCoinRateAvailable('eth')).toBe(true);
         expect(service.fromFiat(1.5033e-7, 'USD', 'eth')).toEqual(1 * 1e8);
         expect(service.fromFiat(7.5165e-8, 'USD', 'eth')).toEqual(0.5 * 1e8);
         expect(service.fromFiat(3.75825e-8, 'USD', 'eth')).toEqual(0.25 * 1e8);
@@ -443,7 +443,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('xrp').then(() => {
-        expect(service.isCoinAvailable('xrp')).toBe(true);
+        expect(service.isCoinRateAvailable('xrp')).toBe(true);
         expect(service.toFiat(1 * 1e6, 'USD', 'xrp', undefined)).toEqual(0.25);
         expect(service.toFiat(0.5 * 1e6, 'USD', 'xrp', undefined)).toEqual(
           0.125
@@ -472,7 +472,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('xrp').then(() => {
-        expect(service.isCoinAvailable('xrp')).toBe(true);
+        expect(service.isCoinRateAvailable('xrp')).toBe(true);
         expect(service.fromFiat(1.5033e-7, 'USD', 'xrp')).toEqual(0.60132);
         expect(service.fromFiat(7.5165e-8, 'USD', 'xrp')).toEqual(0.30066);
         expect(service.fromFiat(3.75825e-8, 'USD', 'xrp')).toEqual(0.15033);
@@ -498,7 +498,7 @@ describe('RateProvider', () => {
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
         expect(service.listAlternatives(false)).toEqual([
           { name: 'Bitcoin', isoCode: 'BTC' },
           { name: 'US Dollar', isoCode: 'USD' },
@@ -538,11 +538,11 @@ describe('RateProvider', () => {
 
   it('should resolve when rates are available', () => {
     // before we have rates
-    expect(service.isCoinAvailable('btc')).toBe(false);
+    expect(service.isCoinRateAvailable('btc')).toBe(false);
     service.updateRates().then(() => {
       service.whenRatesAvailable('btc').then(() => {
         // after we have rates
-        expect(service.isCoinAvailable('btc')).toBe(true);
+        expect(service.isCoinRateAvailable('btc')).toBe(true);
 
         // hit the if in whenRatesAvailable
         service.whenRatesAvailable('btc');

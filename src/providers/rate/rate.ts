@@ -100,11 +100,12 @@ export class RateProvider {
                 }
               });
               // FIX!!!!
-              console.log('### coinRates: ', coin);
-              console.log(coinRates);
               this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
               this.ratesAvailable[coin] = true;
             });
+            console.log('### rates: ');
+            console.log(this.rates);
+            console.log(this.ratesAvailable);
             resolve();
           })
           .catch(err => {
@@ -163,7 +164,7 @@ export class RateProvider {
     return alternatives;
   }
 
-  public isCoinAvailable(chain: string) {
+  public isCoinRateAvailable(chain: string) {
     return this.ratesAvailable[chain];
   }
 
@@ -171,6 +172,8 @@ export class RateProvider {
     return this.alternatives[currency];
   }
 
+  // INCREASE TESTINGS!!!
+  // Testing related to tokens
   public toFiat(
     satoshis: number,
     code: string,
@@ -178,7 +181,7 @@ export class RateProvider {
     tokenAddress: string,
     opts?: { customRate?: number; rates? }
   ): number {
-    if (!this.isCoinAvailable(chain)) {
+    if (!this.isCoinRateAvailable(chain)) {
       return null;
     }
     const customRate = opts && opts.customRate;
@@ -195,7 +198,7 @@ export class RateProvider {
     chain,
     opts?: { rates? }
   ): number {
-    if (!this.isCoinAvailable(chain)) {
+    if (!this.isCoinRateAvailable(chain)) {
       return null;
     }
     return (

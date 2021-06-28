@@ -10,7 +10,7 @@ import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
 import { IncomingDataProvider } from './incoming-data';
 
-describe('Provider: Incoming Data Provider', () => {
+fdescribe('Provider: Incoming Data Provider', () => {
   let incomingDataProvider: IncomingDataProvider;
   let bwcProvider: BwcProvider;
   let currencyProvider: CurrencyProvider;
@@ -280,6 +280,7 @@ describe('Provider: Incoming Data Provider', () => {
           invoiceID: undefined,
           paypro: payProDetails,
           coin: element.paymentOptions[2].currency.toLowerCase(),
+          chain: element.paymentOptions[2].chain,
           network: payProDetails.network,
           payProUrl: element.payProUrl,
           requiredFeeRate: parseInt(
@@ -296,6 +297,7 @@ describe('Provider: Incoming Data Provider', () => {
 
         expect(getPayProDetailsSpy).toHaveBeenCalledWith({
           paymentUrl: element.payProUrl,
+          chain: element.paymentOptions[2].chain,
           coin: element.paymentOptions[2].currency.toLowerCase(),
           disableLoader: true
         });
