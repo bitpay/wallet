@@ -1,10 +1,9 @@
 ext.postBuildExtras = 
 {
   android {
-    defaultConfig {
-      targetSdkVersion 30
-    }
-    compileSdkVersion 30
+    defaultConfig { multiDexEnabled true }
+    lintOptions { disable 'MissingTranslation', 'ExtraTranslation' }
+    compileSdkVersion 28
   }
 }
 ext.cdvMinSdkVersion = 23
