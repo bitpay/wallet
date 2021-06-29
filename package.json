@@ -97,7 +97,7 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "dependencies": {
-    "@abcpros/bitcore-wallet-client": "8.25.12",
+    "@abcpros/bitcore-wallet-client": "8.25.13",
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
     "@angular/compiler": "5.2.11",
