@@ -14,6 +14,7 @@ import { LabelTip } from './label-tip/label-tip';
 import { PriceChart } from './price-chart/price-chart';
 import { SearchBarComponent } from './search-bar/search-bar';
 import { WalletItemContent } from './wallet-item-content/wallet-item-content';
+import { SliderCaptchaComponent } from './slider-captcha/slider-captcha';
 
 export const COMPONENTS = [
   ActionCardComponent,
@@ -31,5 +32,6 @@ export const COMPONENTS = [
   CoinIconComponent,
   BalanceToShowComponent,
   ChartComponent,
-  PriceChart
+  PriceChart,
+  SliderCaptchaComponent
 ];
