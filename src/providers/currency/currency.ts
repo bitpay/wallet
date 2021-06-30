@@ -45,7 +45,9 @@ export class CurrencyProvider {
 
   load() {
     this.chainOpts = { ...availableChains };
-    this.availableChains = Object.keys(this.chainOpts) as string[];
+    this.availableChains = (this.chainOpts
+      ? Object.keys(this.chainOpts)
+      : []) as string[];
     this.availableCoins = [...Object.values(this.chainOpts)];
     return new Promise<void>(resolve => {
       return this.persistenceProvider
@@ -58,26 +60,27 @@ export class CurrencyProvider {
               this.customERC20Opts = customERC20Opts;
 
               let mappedCustomERC20Opts: { [key: string]: CoinOpts } = {};
-              Object.keys(customERC20Opts).forEach(key => {
-                const _value = customERC20Opts[key];
-                const customOpts: CoinOpts = {
-                  name: _value.name,
-                  coin: _value.symbol,
-                  chain: 'ETH',
-                  tokenInfo: {
-                    symbol: _value.symbol,
-                    address: _value.address
-                  },
-                  unitInfo: {
-                    unitName: _value.symbol.toUpperCase(),
-                    unitDecimals: _value.decimal,
-                    unitCode: _value.symbol.toLowerCase(),
-                    unitToSatoshi: 1000000
-                  }
-                };
-                mappedCustomERC20Opts[key] = customOpts;
-              });
-
+              if (customERC20Opts && _.isObject(customERC20Opts)) {
+                Object.keys(customERC20Opts).forEach(key => {
+                  const _value = customERC20Opts[key];
+                  const customOpts: CoinOpts = {
+                    name: _value.name,
+                    coin: _value.symbol,
+                    chain: 'ETH',
+                    tokenInfo: {
+                      symbol: _value.symbol,
+                      address: _value.address
+                    },
+                    unitInfo: {
+                      unitName: _value.symbol.toUpperCase(),
+                      unitDecimals: _value.decimal,
+                      unitCode: _value.symbol.toLowerCase(),
+                      unitToSatoshi: 1000000
+                    }
+                  };
+                  mappedCustomERC20Opts[key] = customOpts;
+                });
+              }
               this.availableTokens = {
                 ...this.availableTokens,
                 ...mappedCustomERC20Opts
