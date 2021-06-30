@@ -11,6 +11,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { CoinOpts } from '../currency/coin';
 import { CurrencyProvider } from '../currency/currency';
 import { ErrorsProvider } from '../errors/errors';
 import { KeyProvider } from '../key/key';
@@ -43,6 +44,11 @@ export interface WalletBindTypeOpts {
   store?: boolean;
 }
 
+export interface TokenObj {
+  name: string;
+  symbol: string;
+  address: string;
+}
 @Injectable()
 export class ProfileProvider {
   public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
@@ -1696,7 +1702,7 @@ export class ProfileProvider {
     return opts;
   }
 
-  private _createTokenWallet(ethWallet, tokenObj) {
+  private _createTokenWallet(ethWallet, tokenObj: TokenObj) {
     this.logger.debug(
       `Creating token wallet ${tokenObj.name} for ${ethWallet.id}:`
     );
@@ -1742,16 +1748,23 @@ export class ProfileProvider {
     return walletClient;
   }
 
-  public createTokenWallet(ethWallet, token): Promise<any> {
+  public createTokenWallet(ethWallet, token: string | CoinOpts): Promise<any> {
     if (_.isString(token)) {
       let tokens = this.currencyProvider.getAvailableTokens();
       token = tokens.find(x => x.tokenInfo.symbol == token);
     }
-    const tokenWalletClient = this._createTokenWallet(ethWallet, token);
+    const tokenWalletClient = this._createTokenWallet(ethWallet, {
+      name: token.name,
+      symbol: token.tokenInfo.symbol,
+      address: token.tokenInfo.address
+    });
     return this.addAndBindWalletClient(tokenWalletClient);
   }
 
-  public async createCustomTokenWallet(ethWallet, customToken): Promise<any> {
+  public async createCustomTokenWallet(
+    ethWallet,
+    customToken: TokenObj
+  ): Promise<any> {
     await this.currencyProvider.addCustomToken(customToken);
     const tokenWalletClient = this._createTokenWallet(ethWallet, customToken);
     return this.addAndBindWalletClient(tokenWalletClient);
@@ -1800,7 +1813,11 @@ export class ProfileProvider {
 
               const tokenClients = tokens.map(token => {
                 token = tokenObjs.find(x => x.tokenInfo.symbol == token);
-                return this._createTokenWallet(ethWalletClient, token);
+                return this._createTokenWallet(ethWalletClient, {
+                  name: token.name,
+                  symbol: token.tokenInfo.symbol,
+                  address: token.tokenInfo.address
+                });
               });
 
               walletClients = walletClients.concat(tokenClients);
@@ -2020,14 +2037,18 @@ export class ProfileProvider {
 
     if (ret.length > 0 && opts.pairFor) {
       // grab walletIds from current wallet for this token (if any)
+      console.log('#### ', opts.pairFor);
       const tokenWalletIds = ret
-        .filter(wallet => wallet.coin === opts.pairFor.symbol.toLowerCase())
+        .filter(
+          wallet => wallet.coin === opts.pairFor.tokenInfo.symbol.toLowerCase()
+        )
         .map(wallet => wallet.id);
 
       ret = ret.filter(
         wallet =>
-          !tokenWalletIds.includes(`${wallet.id}-${opts.pairFor.address}`) &&
-          wallet.coin === 'eth'
+          !tokenWalletIds.includes(
+            `${wallet.id}-${opts.pairFor.tokenInfo.address}`
+          ) && wallet.chain === 'eth'
       );
     }
 

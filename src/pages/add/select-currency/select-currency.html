@@ -20,14 +20,14 @@
             <ion-icon *ngIf="searchQuery != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
           </ion-item>
         </div>
-        <button *ngFor="let token of tokens" class="list-button" [disabled]="tokenDisabled[token.symbol]" ion-item (click)="showPairedWalletSelector(token)">
-          <ion-icon *ngIf="Coin[token.symbol]" item-start>
-            <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+        <button *ngFor="let token of tokens" class="list-button" [disabled]="tokenDisabled[token.tokenInfo.symbol]" ion-item (click)="showPairedWalletSelector(token)">
+          <ion-icon *ngIf="Coin[token.tokenInfo.symbol]" item-start>
+            <img src="assets/img/currencies/{{token.tokenInfo.symbol.toLowerCase()}}.svg" />
           </ion-icon>
-          <ion-icon *ngIf="!Coin[token.symbol]" item-start>
-            <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(token.symbol.toLowerCase())}}.png" />
+          <ion-icon *ngIf="!Coin[token.tokenInfo.symbol]" item-start>
+            <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(token.tokenInfo.symbol.toLowerCase())}}.png" />
           </ion-icon>
-          <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
+          <div class="item-title">{{ token.name }} ({{ token.tokenInfo.symbol }})</div>
         </button>
         <button *ngIf="searchQuery == ''" ion-item detail-none class="create-button" (click)="goToCustomToken()">
           {{ 'Or add a custom token' | translate }}
