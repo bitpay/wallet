@@ -1939,7 +1939,7 @@ export class WalletProvider {
         }
         donation.donationSupportCoins = _.map(donation.donationToAddresses, item => item.coin),
         donation.remaining = this.formatAmout(donation.remaining);
-        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus).toFixed();
+        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus);
         return resolve(donation);
       });
     });

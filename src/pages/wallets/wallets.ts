@@ -2,6 +2,7 @@ import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
+  LoadingController,
   ModalController,
   NavController,
   NavParams,
@@ -80,6 +81,7 @@ export class WalletsPage {
     private actionSheetProvider: ActionSheetProvider,
     private coinbaseProvider: CoinbaseProvider,
     private navParams: NavParams,
+    private loadingCtr: LoadingController
   ) {
     this.isDonation = this.navParams.data.isDonation;
     this.collapsedGroups = {};
@@ -91,6 +93,12 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
+    const loader = this.loadingCtr.create({
+      content: 'Please wait...'
+    })
+    if(this.isDonation){
+      loader.present();
+    }
     this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
     // Get Coinbase Accounts and UserInfo
     this.walletProvider.getDonationInfo().then((data: any) => {
@@ -98,6 +106,7 @@ export class WalletsPage {
       if (this.isDonation) {
         this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
       }
+      loader.dismiss();
     });
     this.setCoinbase();
   }
@@ -440,7 +449,12 @@ export class WalletsPage {
   }
   
   public handleDonation(wallet) {
+    const loading = this.loadingCtr.create({
+      content: 'Please wait...'
+    })
+    loading.present();
     this.walletProvider.getDonationInfo().then((data:any) => {
+      loading.dismiss();
       if(_.isEmpty(data))  throw 'No data Remaning'
       this.navCtrl.push(AmountPage, {
         toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == wallet.coin), 'address', '' ),
