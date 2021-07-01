@@ -181,6 +181,7 @@ export class AmountPage {
   }
 
   async ionViewDidLoad() {
+    this.logger.info('Loaded: AmountPage');
     this.navBar.backButtonClick = () => {
       if (this.navParams.get('card') === 'v2') {
         this.iabCardProvider.show(true);
@@ -242,31 +243,44 @@ export class AmountPage {
 
     for (const chain of this.currencyProvider.getAvailableCoins()) {
       if (!parentWalletChain || parentWalletChain === chain) {
-        const { unitName, unitCode } = this.currencyProvider.getPrecision(
-          chain
-        );
+        const {
+          unitName,
+          unitCode,
+          unitToSatoshi,
+          unitDecimals
+        } = this.currencyProvider.getPrecision(chain);
         this.availableUnits.push({
           name: this.currencyProvider.getCoinName(chain),
           id: unitCode,
-          shortName: unitName
+          shortName: unitName,
+          chain,
+          isToken: false,
+          unitToSatoshi,
+          unitDecimals
         });
       }
     }
     const availableTokens = this.currencyProvider.getAvailableTokens();
-    console.log(availableTokens);
     _.each(availableTokens, at => {
-      console.log(at);
       if (
         !parentWalletChain ||
         parentWalletChain.toLowerCase() === at.chain.toLowerCase()
       ) {
-        const { unitName, unitCode } = this.currencyProvider.getTokenPrecision(
-          at.tokenInfo.address
-        );
+        const {
+          unitName,
+          unitCode,
+          unitToSatoshi,
+          unitDecimals
+        } = this.currencyProvider.getTokenPrecision(at.tokenInfo.address);
         this.availableUnits.push({
           name: at.name,
           id: unitCode,
-          shortName: unitName
+          shortName: unitName,
+          chain: at.chain,
+          isToken: true,
+          unitToSatoshi,
+          unitDecimals,
+          tokenAddress: at.tokenInfo.address
         });
       }
     });
@@ -455,7 +469,12 @@ export class AmountPage {
   }
 
   private processAmount(): void {
+    console.log('#### processAmount');
+    console.log(this.expression);
+
     let formatedValue = this.format(this.expression);
+    console.log(formatedValue);
+
     let result = this.evaluate(formatedValue);
     this.allowSend = this.onlyIntegers
       ? _.isNumber(result) && +result > 0 && Number.isInteger(+result)
@@ -467,7 +486,6 @@ export class AmountPage {
         : '';
 
       if (this.fromBuyCrypto) return;
-      console.log('#####', this.wallet);
       if (this.availableUnits[this.unitIndex].isFiat) {
         let a = this.fromFiat(result);
         if (a) {
@@ -483,6 +501,7 @@ export class AmountPage {
           this.allowSend = false;
         }
       } else {
+        console.log(result);
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
           this.toFiat(result)
         );
@@ -536,7 +555,7 @@ export class AmountPage {
           val * this.unitToSatoshi,
           this.fiatCode,
           coin || this.availableUnits[this.unitIndex].id,
-          undefined
+          this.availableUnits[this.unitIndex].tokenAddress
         )
         .toFixed(2)
     );
@@ -584,10 +603,12 @@ export class AmountPage {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
+    let chain = unit.chain;
     let data;
 
     if (unit.isFiat) {
       coin = this.availableUnits[this.altUnitIndex].id;
+      chain = this.availableUnits[this.altUnitIndex].chain;
     }
 
     if (this.navParams.data.nextPage) {
@@ -602,6 +623,7 @@ export class AmountPage {
         amount,
         currency: this.fromBuyCrypto ? this.unit : unit.id.toUpperCase(),
         coin: this.fromBuyCrypto && !this.navParams.data.coin ? null : coin,
+        chain: this.fromBuyCrypto && !this.navParams.data.coin ? null : chain,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
         cardConfig: this.cardConfig,
@@ -621,6 +643,7 @@ export class AmountPage {
         email: this.email,
         color: this.color,
         coin,
+        chain,
         useSendMax: this.useSendMax,
         description: this.description,
         fromCoinbase: this.fromCoinbase,
@@ -689,13 +712,12 @@ export class AmountPage {
     this.unit = this.fromBuyCrypto
       ? this.altCurrencyInitial
       : this.availableUnits[this.unitIndex].shortName;
+
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
     const { unitToSatoshi, unitDecimals } = this.availableUnits[this.unitIndex]
       .isFiat
-      ? this.currencyProvider.getPrecision(
-          this.availableUnits[this.altUnitIndex].id
-        )
-      : this.currencyProvider.getPrecision(this.unit.toLowerCase());
+      ? this.availableUnits[this.altUnitIndex]
+      : this.availableUnits[this.unitIndex];
     this.unitToSatoshi = unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitDecimals = unitDecimals;

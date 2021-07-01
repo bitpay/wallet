@@ -231,7 +231,7 @@ export class CurrencyProvider {
   }
 
   getChain(chain: string): string {
-    return this.chainOpts[chain].chain;
+    return this.chainOpts[chain] && this.chainOpts[chain].chain;
   }
 
   getRatesApi() {

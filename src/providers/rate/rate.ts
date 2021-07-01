@@ -132,7 +132,7 @@ export class RateProvider {
     });
   }
 
-  public getRate(code: string, chain?: string, opts?: { rates? }): number {
+  public getRate(code: string, chain: string, opts?: { rates? }): number {
     const customRate =
       opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
     if (customRate) return customRate;

@@ -28,6 +28,7 @@ export interface FlatWallet {
   name: string;
   recipientType: 'wallet';
   coin: string;
+  chain: string;
   network: 'testnet' | 'livenet';
   m: number;
   n: number;
@@ -47,7 +48,9 @@ export class TransferToPage {
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public walletList = {} as CoinsMap<FlatWallet[]>;
-  public availableCoins: string[];
+  public availableChains: string[];
+  public availableTokens: string[];
+  public availableCoins;
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
@@ -85,11 +88,25 @@ export class TransferToPage {
     private viewCtrl: ViewController,
     private events: Events
   ) {
-    this.availableCoins = this.currencyProvider.getAvailableCoins();
-    for (const coin of this.availableCoins) {
+    this.availableCoins = [];
+    this.availableChains = this.currencyProvider.getAvailableCoins();
+    for (const coin of this.availableChains) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
       this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
+      this.availableCoins.push({ coin})
     }
+    this.availableTokens = [];
+    _.each(this.currencyProvider.getAvailableTokens(), at => {
+      this.availableTokens.push(at.coin);
+      this.availableCoins.push({ coin: at.coin, isToken:true, tokenAddress: at.tokenInfo.address })
+      this.wallets[at.coin] = this.profileProvider.getWallets({
+        coin: at.coin
+      });
+      this.hasWallets[at.coin] = !_.isEmpty(this.wallets[at.coin]);
+    });
+    this.availableCoins = _.compact(this.availableCoins);
+    console.log('### availableCoins', this.availableCoins);
+    console.log('### transferTo', this.wallets);
     this._delayTimeOut =
       this.platformProvider.isIOS || this.platformProvider.isAndroid
         ? 700
@@ -101,13 +118,18 @@ export class TransferToPage {
     this._wallet = this.navParams.data.wallet
       ? this.navParams.data.wallet
       : wallet;
-    for (const coin of this.availableCoins) {
+    for (const coin of this.availableChains) {
       this.walletList[coin] = _.compact(this.getWalletsList(coin));
+    }
+    for (const token of this.availableTokens) {
+      this.walletList[token] = _.compact(this.getWalletsList(token));
     }
     this.walletsByKeys = _.values(
       _.groupBy(this.walletList[this._wallet.coin], 'keyId')
     );
-
+    console.log('### ')
+    console.log('### ', this.walletList)
+    console.log('### ', this.walletsByKeys)
     this.delayUpdateContactsList(this._delayTimeOut);
   }
 
@@ -165,6 +187,10 @@ export class TransferToPage {
     return this.currencyProvider.getCoinName(coin);
   }
 
+  public getTokenName(tokenSymbol: string) {
+    return this.currencyProvider.getTokenName(tokenSymbol);
+  }
+
   private getWalletsList(coin: string): FlatWallet[] {
     return this.hasWallets[coin]
       ? this.getRelevantWallets(this.wallets[coin])
@@ -202,6 +228,11 @@ export class TransferToPage {
             email: c.email,
             recipientType: 'contact',
             coin: c.coin,
+            chain:
+              this.currencyProvider.getChain(c.coin) ||
+              this.currencyProvider.getTokenChain(
+                this.currencyProvider.getTokenAddress(c.coin)
+              ),
             getAddress: () => Promise.resolve(c.address),
             destinationTag: c.tag
           });
@@ -229,6 +260,7 @@ export class TransferToPage {
       name: wallet.name,
       recipientType: 'wallet',
       coin: wallet.coin,
+      chain: wallet.chain,
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,
@@ -275,18 +307,35 @@ export class TransferToPage {
   }
 
   public searchWallets(): void {
-    for (const coin of this.availableCoins) {
+    this.filteredWallets = [];
+    for (const coin of this.availableChains) {
       if (this.hasWallets[coin] && this._wallet.coin === coin) {
-        this.filteredWallets = this.walletList[coin].filter(wallet => {
-          return _.includes(
-            wallet.name.toLowerCase(),
-            this.search.toLowerCase()
-          );
-        });
-        this.filteredWalletsByKeys = _.values(
-          _.groupBy(this.filteredWallets, 'keyId')
+        this.filteredWallets.push(
+          this.walletList[coin].filter(wallet => {
+            return _.includes(
+              wallet.name.toLowerCase(),
+              this.search.toLowerCase()
+            );
+          })
         );
       }
+    }
+    for (const token of this.availableTokens) {
+      if (this.hasWallets[token] && this._wallet.coin === token) {
+        this.filteredWallets.push(
+          this.walletList[token].filter(wallet => {
+            return _.includes(
+              wallet.name.toLowerCase(),
+              this.search.toLowerCase()
+            );
+          })
+        );
+      }
+    }
+    if (this.filteredWallets) {
+      this.filteredWalletsByKeys = _.values(
+        _.groupBy(this.filteredWallets, 'keyId')
+      );
     }
   }
 
@@ -328,6 +377,7 @@ export class TransferToPage {
             email: item.email,
             color: item.color,
             coin: item.coin,
+            chain: item.chain && item.chain.toLowerCase(),
             network: item.network,
             useAsModal: this._useAsModal,
             fromWalletDetails: this._fromWalletDetails,
