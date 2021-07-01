@@ -2037,7 +2037,6 @@ export class ProfileProvider {
 
     if (ret.length > 0 && opts.pairFor) {
       // grab walletIds from current wallet for this token (if any)
-      console.log('#### ', opts.pairFor);
       const tokenWalletIds = ret
         .filter(
           wallet => wallet.coin === opts.pairFor.tokenInfo.symbol.toLowerCase()
@@ -2048,7 +2047,7 @@ export class ProfileProvider {
         wallet =>
           !tokenWalletIds.includes(
             `${wallet.id}-${opts.pairFor.tokenInfo.address}`
-          ) && wallet.chain === 'eth'
+          ) && wallet.coin === 'eth'
       );
     }
 
