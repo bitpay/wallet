@@ -88,7 +88,7 @@ export class WalletServiceUrlPage {
         break;
       case 'loc':
       case 'local':
-        bws = 'https://thunt111984.cameraddns.net/bws/api';
+        bws = 'https://aws.abcpay.cash/bws/api';
         break;
     }
     if (bws) {

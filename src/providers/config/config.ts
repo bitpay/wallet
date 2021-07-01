@@ -175,7 +175,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-        url: 'https://thunt111984.cameraddns.net/bws/api' // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
+        url: 'https://aws.abcpay.cash/bws/api' // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
       },
 
       adPubKey: {

@@ -65,7 +65,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'BIP73',
   //     protocolPrefix: { livenet: 'bitcoin', testnet: 'bitcoin' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/btc',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/btc',
   //     blockExplorerUrls: 'bitpay.com/insight/#/BTC/mainnet/',
   //     blockExplorerUrlsTestnet: 'bitpay.com/insight/#/BTC/testnet/'
   //   },
@@ -102,7 +102,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bitcoincash', testnet: 'bchtest' },
-      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/bch',
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'explorer.bitcoin.com/bch/',
       blockExplorerUrlsTestnet: 'blockexplorer.one/bch/testnet/'
     },
@@ -119,7 +119,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     }
   },
   bcha: {
-    name: 'Bitcoin ABC',
+    name: 'eCash',
     chain: 'bcha',
     coin: 'bcha',
     unitInfo: {
@@ -139,7 +139,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'bcha', testnet: 'bcha' },
-      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/btc',
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/btc',
       // ratesApi: 'http://thunt111984.cameraddns.net:3232/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'texplorer.bitcoinabc.org/',
       blockExplorerUrlsTestnet: 'upgrade-explorer.bitcoinabc.org/'
@@ -177,7 +177,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/eth',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/eth',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -214,7 +214,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'BIP73',
   //     protocolPrefix: { livenet: 'ripple', testnet: 'ripple' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/xrp',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xrp',
   //     blockExplorerUrls: 'xrpscan.com/',
   //     blockExplorerUrlsTestnet: 'test.bithomp.com/explorer/'
   //   },
@@ -251,7 +251,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/busd',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/busd',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -288,7 +288,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/pax',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/pax',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -325,7 +325,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/usdc',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/usdc',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -362,7 +362,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/gusd',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/gusd',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -399,7 +399,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/gusd',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/gusd',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -436,7 +436,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   //   paymentInfo: {
   //     paymentCode: 'EIP681b',
   //     protocolPrefix: { livenet: 'ethereum', testnet: 'ethereum' },
-  //     ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/btc',
+  //     ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/btc',
   //     blockExplorerUrls: 'etherscan.io/',
   //     blockExplorerUrlsTestnet: 'kovan.etherscan.io/'
   //   },
@@ -473,7 +473,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'dogecoin', testnet: 'dogecoin' },
-      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/doge',
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/doge',
       blockExplorerUrls: 'blockchair.com/',
       blockExplorerUrlsTestnet: 'sochain.com/'
     },
@@ -489,15 +489,15 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: '#d8c172'
     }
   },
-  lts: {
+  xpi: {
     name: 'Give Lotus',
-    chain: 'LTS',
-    coin: 'lts',
+    chain: 'XPI',
+    coin: 'xpi',
     unitInfo: {
-      unitName: 'LTS',
+      unitName: 'XPI',
       unitToSatoshi: 100000000,
       unitDecimals: 8,
-      unitCode: 'lts'
+      unitCode: 'xpi'
     },
     properties: {
       hasMultiSig: true,
@@ -510,7 +510,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'lotusnet', testnet: 'ltstest' },
-      ratesApi: 'https://thunt111984.cameraddns.net/bws/api/v3/fiatrates/bch',
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'blockchair.com/',
       blockExplorerUrlsTestnet: 'sochain.com/'
     },

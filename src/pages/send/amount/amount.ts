@@ -456,7 +456,7 @@ export class AmountPage {
   }
 
   private handleReceiveLotus(result) {
-    this.isShowReceiveLotus = _.toNumber(result) > _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
+    this.isShowReceiveLotus = _.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus as our appreciation for your generosity`;
     }
