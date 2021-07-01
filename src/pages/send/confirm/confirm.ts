@@ -1597,7 +1597,7 @@ export class ConfirmPage {
         this.walletProvider.removeTx(wallet, txp).catch(() => {
           this.logger.warn('Could not delete payment proposal');
         });
-        if (err.includes('Broadcasting timeout')) {
+        if (typeof err == 'string' && err.includes('Broadcasting timeout')) {
           this.navigateBack(
             txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
           );
