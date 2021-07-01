@@ -300,7 +300,23 @@ export class ProfileProvider {
     });
   }
 
+  private coinSupported(coin): boolean {
+    const availableCoin = this.currencyProvider
+      .getAvailableCoins()
+      .find(_availableCoin => {
+        return _availableCoin.toLowerCase().includes(coin.toLowerCase());
+      });
+    return !!availableCoin;
+  }
+
   private async bindWalletClient(wallet): Promise<boolean> {
+    if (!this.coinSupported(wallet.credentials.coin)) {
+      this.logger.debug(
+        `Coin (${wallet.credentials.coin}) not supported. Skipping.`
+      );
+      return Promise.resolve(true);
+    }
+
     const walletId = wallet.credentials.walletId;
     let keyId = wallet.credentials.keyId;
     if (this.wallet[walletId] && this.wallet[walletId].started) {
