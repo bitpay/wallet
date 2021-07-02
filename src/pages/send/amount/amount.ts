@@ -469,11 +469,7 @@ export class AmountPage {
   }
 
   private processAmount(): void {
-    console.log('#### processAmount');
-    console.log(this.expression);
-
     let formatedValue = this.format(this.expression);
-    console.log(formatedValue);
 
     let result = this.evaluate(formatedValue);
     this.allowSend = this.onlyIntegers
@@ -531,11 +527,14 @@ export class AmountPage {
       );
   }
 
-  private fromFiat(val: number, coin?: string): number {
+  private fromFiat(val: number, coin?: string, tokenAddress?: string): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
+    tokenAddress =
+      tokenAddress || this.availableUnits[this.altUnitIndex].tokenAddress;
     return parseFloat(
       (
-        this.rateProvider.fromFiat(val, this.fiatCode, coin) * this.satToUnit
+        this.rateProvider.fromFiat(val, this.fiatCode, coin, tokenAddress) *
+        this.satToUnit
       ).toFixed(this.unitDecimals)
     );
   }

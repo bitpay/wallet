@@ -93,12 +93,16 @@ export class TransferToPage {
     for (const coin of this.availableChains) {
       this.wallets[coin] = this.profileProvider.getWallets({ coin });
       this.hasWallets[coin] = !_.isEmpty(this.wallets[coin]);
-      this.availableCoins.push({ coin})
+      this.availableCoins.push({ coin });
     }
     this.availableTokens = [];
     _.each(this.currencyProvider.getAvailableTokens(), at => {
       this.availableTokens.push(at.coin);
-      this.availableCoins.push({ coin: at.coin, isToken:true, tokenAddress: at.tokenInfo.address })
+      this.availableCoins.push({
+        coin: at.coin,
+        isToken: true,
+        tokenAddress: at.tokenInfo.address
+      });
       this.wallets[at.coin] = this.profileProvider.getWallets({
         coin: at.coin
       });
@@ -127,9 +131,6 @@ export class TransferToPage {
     this.walletsByKeys = _.values(
       _.groupBy(this.walletList[this._wallet.coin], 'keyId')
     );
-    console.log('### ')
-    console.log('### ', this.walletList)
-    console.log('### ', this.walletsByKeys)
     this.delayUpdateContactsList(this._delayTimeOut);
   }
 
@@ -308,28 +309,27 @@ export class TransferToPage {
 
   public searchWallets(): void {
     this.filteredWallets = [];
+    this.filteredWalletsByKeys = [];
     for (const coin of this.availableChains) {
       if (this.hasWallets[coin] && this._wallet.coin === coin) {
-        this.filteredWallets.push(
-          this.walletList[coin].filter(wallet => {
-            return _.includes(
-              wallet.name.toLowerCase(),
-              this.search.toLowerCase()
-            );
-          })
-        );
+        const _filtered = this.walletList[coin].filter(wallet => {
+          return _.includes(
+            wallet.name.toLowerCase(),
+            this.search.toLowerCase()
+          );
+        });
+        this.filteredWallets.push(..._filtered);
       }
     }
     for (const token of this.availableTokens) {
       if (this.hasWallets[token] && this._wallet.coin === token) {
-        this.filteredWallets.push(
-          this.walletList[token].filter(wallet => {
-            return _.includes(
-              wallet.name.toLowerCase(),
-              this.search.toLowerCase()
-            );
-          })
-        );
+        const _filtered = this.walletList[token].filter(wallet => {
+          return _.includes(
+            wallet.name.toLowerCase(),
+            this.search.toLowerCase()
+          );
+        });
+        this.filteredWallets.push(..._filtered);
       }
     }
     if (this.filteredWallets) {

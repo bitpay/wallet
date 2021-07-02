@@ -301,15 +301,21 @@ describe('RateProvider', () => {
 
   it('should covert fiat to BCH satoshis', () => {
     // before we have rates
-    expect(service.fromFiat(0.25 * 1e8, 'USD', 'bch')).toBeNull();
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'bch', undefined)).toBeNull();
 
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('bch').then(() => {
         expect(service.isCoinRateAvailable('bch')).toBe(true);
-        expect(service.fromFiat(1503.3, 'USD', 'bch')).toEqual(1 * 1e8);
-        expect(service.fromFiat(751.65, 'USD', 'bch')).toEqual(0.5 * 1e8);
-        expect(service.fromFiat(375.825, 'USD', 'bch')).toEqual(0.25 * 1e8);
+        expect(service.fromFiat(1503.3, 'USD', 'bch', undefined)).toEqual(
+          1 * 1e8
+        );
+        expect(service.fromFiat(751.65, 'USD', 'bch', undefined)).toEqual(
+          0.5 * 1e8
+        );
+        expect(service.fromFiat(375.825, 'USD', 'bch', undefined)).toEqual(
+          0.25 * 1e8
+        );
       });
 
       httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -358,14 +364,20 @@ describe('RateProvider', () => {
 
   it('should covert fiat to BTC satoshis', () => {
     // before we have rates
-    expect(service.fromFiat(0.25 * 1e8, 'USD', 'btc')).toBeNull();
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'btc', undefined)).toBeNull();
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('btc').then(() => {
         expect(service.isCoinRateAvailable('btc')).toBe(true);
-        expect(service.fromFiat(11535.74, 'USD', 'btc')).toEqual(1 * 1e8);
-        expect(service.fromFiat(5767.87, 'USD', 'btc')).toEqual(0.5 * 1e8);
-        expect(service.fromFiat(2883.935, 'USD', 'btc')).toEqual(0.25 * 1e8);
+        expect(service.fromFiat(11535.74, 'USD', 'btc', undefined)).toEqual(
+          1 * 1e8
+        );
+        expect(service.fromFiat(5767.87, 'USD', 'btc', undefined)).toEqual(
+          0.5 * 1e8
+        );
+        expect(service.fromFiat(2883.935, 'USD', 'btc', undefined)).toEqual(
+          0.25 * 1e8
+        );
       });
 
       httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -414,14 +426,20 @@ describe('RateProvider', () => {
 
   it('should covert fiat to ETH satoshis', () => {
     // before we have rates
-    expect(service.fromFiat(0.25 * 1e8, 'USD', 'eth')).toBeNull();
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'eth', undefined)).toBeNull();
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('eth').then(() => {
         expect(service.isCoinRateAvailable('eth')).toBe(true);
-        expect(service.fromFiat(1.5033e-7, 'USD', 'eth')).toEqual(1 * 1e8);
-        expect(service.fromFiat(7.5165e-8, 'USD', 'eth')).toEqual(0.5 * 1e8);
-        expect(service.fromFiat(3.75825e-8, 'USD', 'eth')).toEqual(0.25 * 1e8);
+        expect(service.fromFiat(1.5033e-7, 'USD', 'eth', undefined)).toEqual(
+          1 * 1e8
+        );
+        expect(service.fromFiat(7.5165e-8, 'USD', 'eth', undefined)).toEqual(
+          0.5 * 1e8
+        );
+        expect(service.fromFiat(3.75825e-8, 'USD', 'eth', undefined)).toEqual(
+          0.25 * 1e8
+        );
       });
 
       httpMock.match(ethUrl)[1].flush(ethResponse);
@@ -468,14 +486,20 @@ describe('RateProvider', () => {
 
   it('should covert fiat to XRP drops', () => {
     // before we have rates
-    expect(service.fromFiat(0.25 * 1e8, 'USD', 'xrp')).toBeNull();
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'xrp', undefined)).toBeNull();
     service.updateRates().then(() => {
       // after we have rates
       service.updateRates('xrp').then(() => {
         expect(service.isCoinRateAvailable('xrp')).toBe(true);
-        expect(service.fromFiat(1.5033e-7, 'USD', 'xrp')).toEqual(0.60132);
-        expect(service.fromFiat(7.5165e-8, 'USD', 'xrp')).toEqual(0.30066);
-        expect(service.fromFiat(3.75825e-8, 'USD', 'xrp')).toEqual(0.15033);
+        expect(service.fromFiat(1.5033e-7, 'USD', 'xrp', undefined)).toEqual(
+          0.60132
+        );
+        expect(service.fromFiat(7.5165e-8, 'USD', 'xrp', undefined)).toEqual(
+          0.30066
+        );
+        expect(service.fromFiat(3.75825e-8, 'USD', 'xrp', undefined)).toEqual(
+          0.15033
+        );
       });
 
       httpMock.match(ethUrl)[0].flush(ethResponse);

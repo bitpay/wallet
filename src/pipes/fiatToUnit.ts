@@ -17,11 +17,21 @@ export class FiatToUnitPipe implements PipeTransform {
   ) {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
-  transform(amount: number, coin: string, alternative?: string) {
+  transform(
+    amount: number,
+    coin: string,
+    alternative?: string,
+    tokenAddress?: string
+  ) {
     alternative = alternative
       ? alternative
       : this.walletSettings.alternativeIsoCode;
-    let amount_ = this.rateProvider.fromFiat(amount, alternative, coin);
+    let amount_ = this.rateProvider.fromFiat(
+      amount,
+      alternative,
+      coin,
+      tokenAddress
+    );
     return this.txFormatProvider.formatAmountStr(
       coin,
       undefined,

@@ -55,6 +55,7 @@ export class RateProvider {
         token.tokenInfo.symbol.toLowerCase()
       ] = this.currencyProvider.getTokenRatesApi(token.tokenInfo.symbol);
       this.ratesAvailable[token.tokenInfo.symbol.toLowerCase()] = false;
+      this.rates[token.tokenInfo.symbol.toLowerCase()] = { USD: 1 };
     }
     const defaults = this.configProvider.getDefaults();
     this.bwsURL = defaults.bws.url;
@@ -132,26 +133,37 @@ export class RateProvider {
     });
   }
 
-  public getRate(code: string, chain: string, opts?: { rates? }): number {
+  public getRate(
+    code: string,
+    chain_or_tokensymbol: string,
+    opts?: { rates? }
+  ): number {
     const customRate =
-      opts && opts.rates && opts.rates[chain] && opts.rates[chain][code];
+      opts &&
+      opts.rates &&
+      opts.rates[chain_or_tokensymbol] &&
+      opts.rates[chain_or_tokensymbol][code];
     if (customRate) return customRate;
-    if (this.rates[chain][code]) return this.rates[chain][code];
+    if (this.rates[chain_or_tokensymbol][code])
+      return this.rates[chain_or_tokensymbol][code];
     if (
-      !this.rates[chain][code] &&
-      this.rates[chain]['USD'] &&
+      !this.rates[chain_or_tokensymbol][code] &&
+      this.rates[chain_or_tokensymbol]['USD'] &&
       this.rates['btc'][code] &&
       this.rates['btc']['USD'] &&
       this.rates['btc']['USD'] > 0
     ) {
       const newRate = +(
-        (this.rates[chain]['USD'] * this.rates['btc'][code]) /
+        (this.rates[chain_or_tokensymbol]['USD'] * this.rates['btc'][code]) /
         this.rates['btc']['USD']
       ).toFixed(2);
       return newRate;
     }
     this.logger.warn(
-      'There are no rates for chain: ' + chain + ' - code: ' + code
+      'There are no rates for coin: ' +
+        chain_or_tokensymbol +
+        ' - code: ' +
+        code
     );
     return undefined;
   }
@@ -164,8 +176,8 @@ export class RateProvider {
     return alternatives;
   }
 
-  public isCoinRateAvailable(chain: string) {
-    return this.ratesAvailable[chain];
+  public isCoinRateAvailable(chain_or_tokensymbol: string) {
+    return this.ratesAvailable[chain_or_tokensymbol];
   }
 
   public isAltCurrencyAvailable(currency: string) {
@@ -195,15 +207,19 @@ export class RateProvider {
   public fromFiat(
     amount: number,
     code: string,
-    chain,
+    chain_or_tokensymbol,
+    tokenAddress,
     opts?: { rates? }
   ): number {
-    if (!this.isCoinRateAvailable(chain)) {
+    if (!this.isCoinRateAvailable(chain_or_tokensymbol)) {
       return null;
     }
     return (
-      (amount / this.getRate(code, chain, opts)) *
-      this.currencyProvider.getPrecision(chain).unitToSatoshi
+      (amount / this.getRate(code, chain_or_tokensymbol, opts)) *
+      (tokenAddress
+        ? this.currencyProvider.getTokenPrecision(tokenAddress).unitToSatoshi
+        : this.currencyProvider.getPrecision(chain_or_tokensymbol)
+            .unitToSatoshi)
     );
   }
 

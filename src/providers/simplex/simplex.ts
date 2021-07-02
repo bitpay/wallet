@@ -227,15 +227,18 @@ export class SimplexProvider {
     if (_.includes(['USD', 'EUR'], fiatCurrency)) {
       return amount;
     }
-    const rateFromFiat = this.rateProvider.fromFiat(
-      amount,
-      'USD',
-      cryptoCurrency
-    );
     const coinDetails = _.find(
       this.currencyProvider.availableCoins,
       at => at.coin == cryptoCurrency.toLowerCase()
     );
+
+    const rateFromFiat = this.rateProvider.fromFiat(
+      amount,
+      'USD',
+      cryptoCurrency,
+      coinDetails.tokenInfo && coinDetails.tokenInfo.address
+    );
+
     return +this.rateProvider
       .toFiat(
         rateFromFiat,

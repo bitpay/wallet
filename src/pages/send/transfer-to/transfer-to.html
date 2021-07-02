@@ -22,7 +22,7 @@
         <span>{{'{coinName} Wallets' | translate: { coinName: coin.isToken ? getTokenName(coin.coin) : getCoinName(coin.coin) } }}</span>
       </ion-label>
     </div>
-    <ion-list no-lines class="bp-list">
+    <ion-list no-lines class="bp-list" *ngIf="wallet">
       <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
         <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
           <ion-icon>
@@ -37,25 +37,3 @@
     </ion-list>
   </div>
 </div>
-<!-- <div *ngFor="let token of availableTokens" ng-class="{ 'disabled':itemTapped}">
-  <div class="wallets-container" *ngIf="walletList[token] && walletList[token][0]">
-    <div class="section-header">
-      <ion-label class="key-name">
-        <span>{{'{coinName} Wallets' | translate: { coinName: getTokenName(token) } }}</span>
-      </ion-label>
-    </div>
-    <ion-list no-lines class="bp-list">
-      <div *ngFor="let walletsByKey of filteredWalletsByKeys[0] ? filteredWalletsByKeys : walletsByKeys">
-        <div class="key-divider" *ngIf="walletsByKey && walletsByKey[0]">
-          <ion-icon>
-            <img src="assets/img/settings-icons/icon-key.svg" width="15">
-          </ion-icon>
-          <span>{{ walletsByKey[0].walletGroupName }}</span>
-        </div>
-        <div *ngFor="let wallet of walletsByKey">
-          <wallet-item-content [wallet]="wallet" (click)="close(wallet)"></wallet-item-content>
-        </div>
-      </div>
-    </ion-list>
-  </div>
-</div> -->

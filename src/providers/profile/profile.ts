@@ -505,8 +505,6 @@ export class ProfileProvider {
       const coinCode = this.derivationPathHelperProvider.parsePath(
         wallet.credentials.rootPath
       ).coinCode;
-      console.log('###### Wallet');
-      console.log(wallet);
 
       const chain =
         wallet.chain ||
