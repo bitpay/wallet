@@ -181,6 +181,7 @@
     "papaparse": "5.3.0",
     "qr-code-component-ng": "0.0.4",
     "rxjs": "5.5.12",
+    "slide-verify": "^1.0.2",
     "text-encoding": "0.6.4",
     "text-mask-core": "5.1.2",
     "web-animations-js": "2.3.1",

@@ -35,7 +35,6 @@ import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/ke
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
 // Slider
-import SlideVerify from 'slide-verify';
 import { SliderCaptchaComponent } from '../../../components/slider-captcha/slider-captcha';
 @Component({
   selector: 'page-create-wallet',
@@ -317,26 +316,31 @@ export class CreateWalletPage implements OnInit {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(opts);
     } else {
-      //this.showSliderCaptcha();
-      new SlideVerify({
-        elementId: "slider",
-        lang: 'en',
-        onSuccess: () => {
-          console.log('success');
-          this.create(opts);
-        },
-        onFail: () => { console.log("fail") },
-        onRefresh: () => { console.log('refresh')},
-        photo: 'assets/img/add-wallet/moon_and_earth.jpg'
-      });
+      this.showSliderCaptcha(opts);
+      // new SlideVerify({
+      //   elementId: "slider",
+      //   lang: 'en',
+      //   onSuccess: () => {
+      //     console.log('success');
+      //     this.create(opts);
+      //   },
+      //   onFail: () => { console.log("fail") },
+      //   onRefresh: () => { console.log('refresh')},
+      //   photo: 'assets/img/add-wallet/moon_and_earth.jpg'
+      // });
     }
   }
 
-  async showSliderCaptcha() {
-    let modal = await this.modalCtrl.create({
-      component: SliderCaptchaComponent
+  async showSliderCaptcha(opts) {
+    let modal = await this.modalCtrl.create(
+      SliderCaptchaComponent
+    )
+    modal.onDidDismiss(data => {
+      if (data === 'success') {
+        this.create(opts);
+      }
     });
-    await modal.present()
+    await modal.present();
   }
 
   private showKeyOnboardingSlides(opts) {

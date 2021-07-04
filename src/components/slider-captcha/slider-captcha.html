@@ -1,21 +1,15 @@
 <!-- my-modal.page.html -->
-<ion-header>
-  <ion-toolbar color="danger">
-    <ion-title>my-modal</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
 
-  <ion-grid>
+  <ion-grid style="height: 100%; display: flex; justify-content: center;" padding>
     <ion-row>
       <ion-col text-center>
-        Modal Content
+        <div class="ion-text-justify" id="slider"></div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <ion-button>Close Modal</ion-button>
+        <ion-icon style="font-size: 38px;" (click)="closeModal()" slot="icon-only" name="close-circle"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
+import SlideVerify from 'slide-verify';
 
 /**
  * Generated class for the SliderCaptchaComponent component.
@@ -13,23 +14,27 @@ import { NavParams } from 'ionic-angular';
 })
 export class SliderCaptchaComponent {
 
-  modalTitle: string;
-  modelId: number;
-
   constructor(
-    // private modalController: ModalController,
-    private navParams: NavParams
+    private viewContrl: ViewController,
+    
   ) { }
 
   ngOnInit() {
-    console.table(this.navParams);
-    this.modelId = this.navParams.data.paramID;
-    this.modalTitle = this.navParams.data.paramTitle;
+    new SlideVerify({
+      elementId: "slider",
+      lang: 'en',
+      onSuccess: () => {
+        console.log('success');
+        this.viewContrl.dismiss('success');
+      },
+      onFail: () => { console.log("fail") },
+      onRefresh: () => { console.log('refresh')},
+      photo: 'assets/img/add-wallet/moon_and_earth.jpg'
+    });
   }
 
-  // async closeModal() {
-  //   const onClosedData: string = "Wrapped Up!";
-  //   //await this.modalController.dismiss(onClosedData);
-  // }
+  closeModal() {
+    this.viewContrl.dismiss();
+  }
 
 }
