@@ -186,6 +186,39 @@ try {
   console.log('External services not configured.');
 }
 
+// Google Pay
+if (configDir == 'bitpay') {
+  let buildExtrasGradle;
+  try {
+    const googlePayPath = 'GOOGLEPAY_DIR';
+    console.log('Looking for ' + googlePayPath + '...');
+    if (typeof process.env[googlePayPath] !== 'undefined') {
+      let location = process.env[googlePayPath];
+      if (location.charAt(0) === '~') {
+        location = location.replace(
+          /^\~/,
+          process.env.HOME || process.env.USERPROFILE
+        );
+      }
+      console.log('Found at: ' + location);
+
+      let content = fs.readFileSync('build-extras-template.gradle', 'utf8');
+      content = content.replace('*GOOGLEPAY_DIR*', location);
+
+      console.log(
+        'Copying build-extras-template.gradle to ./build-extras.gradle'
+      );
+      fs.writeFileSync('../build-extras.gradle', content);
+      console.log('Google Pay is ready.');
+    } else {
+      throw googlePayPath + ' environment variable not set.';
+    }
+  } catch (err) {
+    console.log(err);
+    console.log('Google Pay not configured.');
+  }
+}
+
 function copyDir(from, to, noRemove) {
   console.log(`Copying dir '${from}' to '${to}'...`);
   if (fs.existsSync(to) && !noRemove) fs.removeSync(to); // remove previous app directory
