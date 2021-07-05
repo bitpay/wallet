@@ -292,11 +292,11 @@ export class IABCardProvider {
           break;
 
         case 'startAddPaymentPass': {
-          const {walletProvider} = event.data.params;
+          const { walletProvider } = event.data.params;
 
-          switch(walletProvider) {
+          switch (walletProvider) {
             case 'google':
-              this.startAddGooglePaymentPass(event)
+              this.startAddGooglePaymentPass(event);
               break;
 
             case 'apple':
@@ -1326,19 +1326,35 @@ export class IABCardProvider {
   }
 
   startAddGooglePaymentPass(event) {
-    const {opc, tsp = 'MASTER', name, lastFourDigits, address} = event.data.params.data;
+    const {
+      opc,
+      tsp = 'MASTER',
+      name,
+      lastFourDigits,
+      address
+    } = event.data.params.data;
 
     const googlePay = new GooglePayIssuer();
 
     const onSuccess = () => {
       this.logger.log('success google pay');
-    }
+    };
 
     const onError = () => {
       this.logger.log('error google pay');
-    }
+    };
 
-    googlePay.pushProvision(opc,tsp,name,lastFourDigits,address,onSuccess,onError);
-    this.hide();
+    this.sendMessage({ message: 'googlePayProvisioningCb' });
+
+    googlePay.pushProvision(
+      opc,
+      tsp,
+      name,
+      lastFourDigits,
+      address,
+      onSuccess,
+      onError
+    );
+    this.appProvider.skipLockModal = true;
   }
 }
