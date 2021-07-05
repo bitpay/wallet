@@ -159,6 +159,7 @@
     </platform>
 
     <platform name="android">
+      <hook src="copy-build-extras-gradle.js" type="before_build" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
