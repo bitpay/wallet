@@ -1,15 +1,16 @@
 <!-- my-modal.page.html -->
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" style="background-color: rgba(73,73,73,0.8);">
 
-  <ion-grid style="height: 100%; display: flex; justify-content: center;" padding>
+  <ion-grid id='modalCaptcha' padding>
     <ion-row>
-      <ion-col text-center>
+      <ion-col size-sm="12" offset-md="3" id="sliderContent" text-center>
         <div class="ion-text-justify" id="slider"></div>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-center>
-        <ion-icon style="font-size: 38px;" (click)="closeModal()" slot="icon-only" name="close-circle"></ion-icon>
+      <ion-col id="footerCaptcha" size-sm="12" offset-md="3">
+        <ion-icon style="font-size: 38px; padding-left: 4px;" (click)="closeModal()" slot="icon-only" name="close-circle"></ion-icon>
+        <ion-icon style="font-size: 38px; padding-left: 4px;" slot="icon-only" name="information-circle"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>

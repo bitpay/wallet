@@ -1,4 +1,77 @@
+/* Mixin */
+$mobile-width: 480px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin mobile { @media (max-width: #{$mobile-width - 1px}) {
+  @content;
+ } 
+}
+
+@mixin tablet { @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+  @content;
+ } 
+}
+
+@mixin desktop { @media (min-width: #{$desktop-width}) {
+  @content;
+ } 
+}
+.modal-wrapper {
+  @include tablet {
+    opacity: 1;
+    transform: translateY(0px);
+    height: 42%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+  }
+  @include desktop {
+    opacity: 1;
+    height: 42%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
 slider-captcha {
+  #modalCaptcha {
+    height: 100%; 
+    display: flex; 
+    justify-content: center;
+    background-color: rgba(73, 73, 73, 0.1);
+    #sliderContent {
+      background: #fff;
+      padding-bottom: 20px;
+      @include mobile {
+        padding-top: 15px;
+      }
+      @include tablet {
+        padding-top: 20px;
+      }
+      @include desktop {
+        padding-top: 20px;
+      }
+    }
+    #footerCaptcha {
+      background: #fff;
+      color: dimgray;
+      box-shadow: 0 4px 4px black;
+      border-top: groove;
+      @include mobile {
+        padding-left: 17px;
+      }
+      @include tablet {
+        padding-left: 124px;
+      }
+      @include desktop {
+        padding-left: 124px;
+      }
+    }
+  }
   .refreshIcon {
     position: absolute;
     right: 0;
