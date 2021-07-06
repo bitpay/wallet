@@ -29,6 +29,7 @@ import { ThemeProvider } from '../theme/theme';
 const LOADING_WRAPPER_TIMEOUT = 0;
 const IAB_LOADING_INTERVAL = 1000;
 const IAB_LOADING_ATTEMPTS = 20;
+declare var GooglePayIssuer: any;
 const REFERRAL_SOCIAL_SHARING_MESSAGE = (
   code: string,
   name: string,
@@ -290,12 +291,24 @@ export class IABCardProvider {
           this.checkProvisioningAvailability();
           break;
 
-        case 'startAddPaymentPass':
-          this.startAddPaymentPass(event);
+        case 'startAddPaymentPass': {
+          const { walletProvider } = event.data.params;
+
+          switch (walletProvider) {
+            case 'google':
+              this.startAddGooglePaymentPass(event);
+              break;
+
+            case 'apple':
+              this.startAddApplePaymentPass(event);
+              break;
+          }
+
           break;
+        }
 
         case 'completeAddPaymentPass':
-          this.completeAddPaymentPass(event);
+          this.completeAddApplePaymentPass(event);
           break;
 
         case 'fbLogEvent':
@@ -1172,7 +1185,7 @@ export class IABCardProvider {
     }
   }
 
-  async startAddPaymentPass(event) {
+  async startAddApplePaymentPass(event) {
     /* FROM CARD IAB
      * data - cardholderName, primaryAccountSuffix
      * id - card Id
@@ -1247,7 +1260,7 @@ export class IABCardProvider {
 
         this.logger.debug(JSON.stringify(res));
 
-        await this.completeAddPaymentPass({ res, id });
+        await this.completeAddApplePaymentPass({ res, id });
       } catch (err) {
         this.logger.error(
           `appleWallet - startAddPaymentPassError - ${JSON.stringify(err)}`
@@ -1257,7 +1270,7 @@ export class IABCardProvider {
     }
   }
 
-  async completeAddPaymentPass({ res, id }) {
+  async completeAddApplePaymentPass({ res, id }) {
     /* FROM CARD IAB
      * data - activationData, encryptedPassData, wrappedKey
      * id - card Id
@@ -1310,5 +1323,38 @@ export class IABCardProvider {
       await new Promise(res => setTimeout(res, 300));
       this.cardIAB_Ref.show();
     }
+  }
+
+  startAddGooglePaymentPass(event) {
+    const {
+      opc,
+      tsp = 'MASTER',
+      name,
+      lastFourDigits,
+      address
+    } = event.data.params.data;
+
+    const googlePay = new GooglePayIssuer();
+
+    const onSuccess = () => {
+      this.logger.log('success google pay');
+    };
+
+    const onError = () => {
+      this.logger.log('error google pay');
+    };
+
+    this.sendMessage({ message: 'googlePayProvisioningCb' });
+
+    googlePay.pushProvision(
+      opc,
+      tsp,
+      name,
+      lastFourDigits,
+      address,
+      onSuccess,
+      onError
+    );
+    this.appProvider.skipLockModal = true;
   }
 }
