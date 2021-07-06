@@ -1503,7 +1503,6 @@ export class WalletProvider {
 
     let updates = [];
     clients.forEach(c => {
-      console.log(c);
       if (
         (c.credentials.token &&
           this.currencyProvider.isERCToken(c.credentials.token.address)) ||

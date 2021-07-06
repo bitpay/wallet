@@ -109,8 +109,6 @@ export class TransferToPage {
       this.hasWallets[at.coin] = !_.isEmpty(this.wallets[at.coin]);
     });
     this.availableCoins = _.compact(this.availableCoins);
-    console.log('### availableCoins', this.availableCoins);
-    console.log('### transferTo', this.wallets);
     this._delayTimeOut =
       this.platformProvider.isIOS || this.platformProvider.isAndroid
         ? 700

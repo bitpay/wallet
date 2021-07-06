@@ -86,7 +86,6 @@ export class RateProvider {
       } else {
         this.getRates()
           .then(res => {
-            console.log('#### getRates ', res);
             _.map(res, (rates, coin) => {
               const coinRates = {};
               _.each(rates, r => {
@@ -104,9 +103,6 @@ export class RateProvider {
               this.rates[coin] = !_.isEmpty(coinRates) ? coinRates : { USD: 1 };
               this.ratesAvailable[coin] = true;
             });
-            console.log('### rates: ');
-            console.log(this.rates);
-            console.log(this.ratesAvailable);
             resolve();
           })
           .catch(err => {

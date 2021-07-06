@@ -278,7 +278,6 @@ export class ConfirmPage {
     };
 
     this.tx.sendMax = this.navParams.data.useSendMax ? true : false;
-    console.log(this.tx);
     this.tx.amount =
       this.navParams.data.useSendMax && this.shouldUseSendMax()
         ? 0

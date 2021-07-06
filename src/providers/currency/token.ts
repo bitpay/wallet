@@ -10,7 +10,6 @@ export class TokenProvider {
     if (this.tokens[tokenAddress]) {
       return this.tokens[tokenAddress].unitInfo;
     } else {
-      console.log('#### getTokenUnitInfo error', tokenAddress);
       return undefined;
     }
   }

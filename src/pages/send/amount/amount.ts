@@ -497,7 +497,6 @@ export class AmountPage {
           this.allowSend = false;
         }
       } else {
-        console.log(result);
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
           this.toFiat(result)
         );
