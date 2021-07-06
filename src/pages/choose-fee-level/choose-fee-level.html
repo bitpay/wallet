@@ -24,7 +24,7 @@
         <span class="fee-avg-time">
           <span *ngIf="loadingFee">...</span>
           <span *ngIf="fee.avgConfirmationTime">
-            {{ fee.avgConfirmationTime | amDuration: 'minute' }}
+            {{ coin == 'eth' || isERCToken ? fee.avgConfirmationTime : (fee.avgConfirmationTime | amDuration: 'minute') }}
           </span>
         </span>
       </div>
