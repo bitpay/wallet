@@ -5,7 +5,9 @@
   background-color: transparent;
   text-align: center;
   .swiper-container-vertical {
-    padding-top: 10px;
+    padding: calc(env(safe-area-inset-top) + 10px)
+      calc(env(safe-area-inset-left) + 5px) env(safe-area-inset-bottom, 0px)
+      calc(env(safe-area-inset-right) + 5px);
   }
   .notification-content {
     .slide-zoom {
