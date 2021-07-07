@@ -1,11 +1,13 @@
 import { TestUtils } from '../../test';
 import { BwcProvider } from '../bwc/bwc';
+import { CurrencyProvider } from '../currency/currency';
 import { PersistenceProvider } from '../persistence/persistence';
 import { FeeProvider } from './fee';
 
 describe('Provider: Fee Provider', () => {
   let feeProvider: FeeProvider;
   let persistenceProvider: PersistenceProvider;
+  let currencyProvider: CurrencyProvider;
 
   class BwcProviderMock {
     constructor() {}
@@ -46,12 +48,14 @@ describe('Provider: Fee Provider', () => {
       { provide: BwcProvider, useClass: BwcProviderMock }
     ]);
     feeProvider = testBed.get(FeeProvider);
+    currencyProvider = testBed.get(CurrencyProvider);
     persistenceProvider = testBed.get(PersistenceProvider);
     persistenceProvider.load();
   });
 
   describe('getFeeOpts', () => {
     it('should get fee opts', () => {
+      spyOn(currencyProvider, 'isERCToken').and.returnValue(false);
       const feeOpts = feeProvider.getFeeOpts();
       expect(feeOpts).toEqual({
         urgent: 'Urgent',
