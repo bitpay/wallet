@@ -38,14 +38,15 @@ export class AddressBookProvider {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           if (ab) {
             const existsAddress = _.find(ab, c => c.address == addr);
-            if (existsAddress) resolve(this.getContact(existsAddress));
+            if (existsAddress) return resolve(this.getContact(existsAddress));
           }
           return reject(
-            new Error('Failed to process AddressBook from storage')
+            new Error(
+              'Given address does not match with any entry on Address Book'
+            )
           );
         })
         .catch(err => {
-          this.logger.error(err);
           return reject(err);
         });
     });
