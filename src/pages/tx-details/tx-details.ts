@@ -31,6 +31,7 @@ export class TxDetailsModal {
   private config;
   private blockexplorerUrl: string;
   private blockexplorerUrlTestnet: string;
+  private retryGetTx: number = 0;
 
   public wallet;
   public btx;
@@ -205,6 +206,7 @@ export class TxDetailsModal {
     this.walletProvider
       .getTx(this.wallet, this.txId)
       .then(tx => {
+        this.retryGetTx = 0;
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
@@ -259,13 +261,22 @@ export class TxDetailsModal {
         }
       })
       .catch(err => {
-        if (!opts.hideLoading) this.onGoingProcess.clear();
         this.logger.warn('Error getting transaction: ' + err);
-        this.navCtrl.pop();
-        return this.popupProvider.ionicAlert(
-          'Error',
-          this.translate.instant('Transaction not available at this time')
-        );
+        if (err == 'HISTORY_IN_PROGRESS' && this.retryGetTx < 6) {
+          this.logger.debug(
+            'getTx: wait and retry... ' + ++this.retryGetTx + '/5'
+          );
+          setTimeout(() => {
+            this.updateTx();
+          }, 1000);
+        } else {
+          if (!opts.hideLoading) this.onGoingProcess.clear();
+          this.navCtrl.pop();
+          this.popupProvider.ionicAlert(
+            'Error',
+            this.translate.instant('Transaction not available at this time')
+          );
+        }
       });
   }
 
