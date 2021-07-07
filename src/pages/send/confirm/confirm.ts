@@ -123,6 +123,9 @@ export class ConfirmPage {
   remaining;
   isDonation;
   receiveLotusAddress;
+  receiveAmountLotus;
+  isShowReceive;
+  nameReceiveLotusAddress;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -168,6 +171,8 @@ export class ConfirmPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
     this.isDonation ? this.receiveLotusAddress = this.navParams.data.receiveLotusAddress : this.receiveLotusAddress = null;
+    this.nameReceiveLotusAddress = this.navParams.data.nameReceiveLotusAddress;
+    this.nameReceiveLotusAddress ? this.isShowReceive = true : this.isShowReceive = false;
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -196,6 +201,7 @@ export class ConfirmPage {
 
     this.walletProvider.getDonationInfo().then((data:any) => {
       this.remaining = data.remaining;
+      this.receiveAmountLotus = data.receiveAmountLotus;
     }).catch((err) => {
       console.log(err)
     });
@@ -1495,8 +1501,10 @@ export class ConfirmPage {
       () => {
         if (exit) {
           this.fromWalletDetails
-            ? this.navCtrl.pop()
-            : this.navCtrl.popToRoot();
+            ? //PopTo AmountPage case
+            this.isDonation ? this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length() - 3)) : this.navCtrl.pop()
+            : 
+            this.navCtrl.popToRoot();
         }
       }
     );

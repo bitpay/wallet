@@ -339,6 +339,7 @@ export class TransferToPage {
           this.viewCtrl.dismiss();
         } else if (this.dataDonation && this.dataDonation.isDonation) {
           this.dataDonation.receiveLotusAddress = addr;
+          this.dataDonation.nameReceiveLotusAddress = item.name;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
           return;
         }

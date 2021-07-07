@@ -490,13 +490,13 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     }
   },
   xpi: {
-    name: 'Give Lotus',
+    name: 'Lotus',
     chain: 'XPI',
     coin: 'xpi',
     unitInfo: {
       unitName: 'XPI',
-      unitToSatoshi: 100000000,
-      unitDecimals: 8,
+      unitToSatoshi: 1000000,
+      unitDecimals: 6,
       unitCode: 'xpi'
     },
     properties: {
@@ -510,8 +510,8 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'lotusnet', testnet: 'ltstest' },
-      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/bch',
-      blockExplorerUrls: 'blockchair.com/',
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xpi',
+      blockExplorerUrls: 'explorer.givelotus.org/',
       blockExplorerUrlsTestnet: 'sochain.com/'
     },
     feeInfo: {
