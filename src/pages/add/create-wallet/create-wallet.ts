@@ -317,17 +317,6 @@ export class CreateWalletPage implements OnInit {
       this.showKeyOnboardingSlides(opts);
     } else {
       this.showSliderCaptcha(opts);
-      // new SlideVerify({
-      //   elementId: "slider",
-      //   lang: 'en',
-      //   onSuccess: () => {
-      //     console.log('success');
-      //     this.create(opts);
-      //   },
-      //   onFail: () => { console.log("fail") },
-      //   onRefresh: () => { console.log('refresh')},
-      //   photo: 'assets/img/add-wallet/moon_and_earth.jpg'
-      // });
     }
   }
 
