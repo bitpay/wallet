@@ -126,6 +126,7 @@ export class ConfirmPage {
   receiveAmountLotus;
   isShowReceive;
   nameReceiveLotusAddress;
+  donationSupportCoins;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -202,6 +203,7 @@ export class ConfirmPage {
     this.walletProvider.getDonationInfo().then((data:any) => {
       this.remaining = data.remaining;
       this.receiveAmountLotus = data.receiveAmountLotus;
+      this.donationSupportCoins = data.donationSupportCoins;
     }).catch((err) => {
       console.log(err)
     });
@@ -1722,7 +1724,8 @@ export class ConfirmPage {
           }, 1000);
         } else if (this.wallet) {
           this.navCtrl.push(WalletDetailsPage, {
-            walletId: walletId ? walletId : this.wallet.credentials.walletId
+            walletId: walletId ? walletId : this.wallet.credentials.walletId,
+            donationSupportCoins : this.donationSupportCoins
           });
         }
       }
