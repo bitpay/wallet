@@ -37,18 +37,18 @@ export class FeeProvider {
     this.logger.debug('FeeProvider initialized');
   }
 
-  public getFeeOpts(coin?: string) {
+  public getFeeOpts(coin?: Coin) {
     const feeOpts = {
       urgent:
-        coin == 'eth'
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
           ? this.translate.instant('High')
           : this.translate.instant('Urgent'),
       priority:
-        coin == 'eth'
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
           ? this.translate.instant('Average')
           : this.translate.instant('Priority'),
       normal:
-        coin == 'eth'
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
           ? this.translate.instant('Low')
           : this.translate.instant('Normal'),
       economy: this.translate.instant('Economy'),
