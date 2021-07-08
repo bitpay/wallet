@@ -1016,6 +1016,62 @@ export class ProfileProvider {
     });
   }
 
+  public syncWallets(words, opts): Promise<any> {
+    this.logger.info('Syncing wallets');
+    words = this.normalizeMnemonic(words);
+    opts.words = words;
+    return this.serverAssistedImport(opts).then(async data => {
+      data.key = this.keyProvider.getMatchedKey(data.key);
+      data.walletClients.forEach(walletClient => {
+        walletClient.credentials.keyId = walletClient.keyId = data.key.id;
+      });
+      const boundWalletClients = [];
+      for (const walletClient of data.walletClients) {
+        const boundClient = await this.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          store: false
+        });
+        boundWalletClients.push(boundClient);
+      }
+      return this.storeProfileIfDirty()
+        .then(() => {
+          return this.countNewWallets(boundWalletClients).then(() => {
+            return Promise.resolve(_.compact(boundWalletClients));
+          });
+        })
+        .catch(err => {
+          return Promise.reject('failed to bind wallets:' + err);
+        });
+    });
+  }
+
+  private async countNewWallets(walletClients: any[]): Promise<any> {
+    let msg;
+    const title = this.translate.instant('Sync completed');
+    const newWalletsCount = _.compact(walletClients).length;
+    if (newWalletsCount > 0) {
+      const msg1 = this.translate.instant('New wallet found');
+      const msg2 = this.replaceParametersProvider.replace(
+        this.translate.instant('{{newWalletsCount}} wallets found'),
+        {
+          newWalletsCount
+        }
+      );
+
+      msg = newWalletsCount == 1 ? msg1 : msg2;
+    } else {
+      msg = this.translate.instant('Your key is already synced');
+    }
+    const infoSheet = this.actionSheetProvider.createInfoSheet('sync-wallets', {
+      title,
+      msg
+    });
+    await infoSheet.present();
+    await Observable.timer(4000).toPromise();
+    infoSheet.dismiss();
+    return Promise.resolve();
+  }
+
   public importFile(str: string, opts): Promise<any> {
     return this._importFile(str, opts).then(async data => {
       if (opts.keyId) {

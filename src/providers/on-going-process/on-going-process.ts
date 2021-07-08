@@ -43,6 +43,7 @@ export class OnGoingProcessProvider {
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
       importingWallet: this.translate.instant('Importing Wallet...'),
+      syncWallets: this.translate.instant('Syncing Wallets...'),
       joiningWallet: this.translate.instant('Joining Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
       removeTx: this.translate.instant('Deleting payment proposal...'),

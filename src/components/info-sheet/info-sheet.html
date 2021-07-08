@@ -591,5 +591,11 @@
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'sync-wallets'" type="success">
+      <span sheet-title-text>{{params.title}}</span>
+      <span sheet-text>{{params.msg}}</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
