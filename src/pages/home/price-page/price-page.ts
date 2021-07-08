@@ -105,7 +105,7 @@ export class PricePage {
     this.card.totalBalanceChange =
       (this.card.totalBalanceChangeAmount * 100) / minPrice;
     const customPrecision =
-      this.card.unitCode === 'xrp' || this.card.unitCode === 'doge' ? 4 : 2;
+      this.card.unitCode === 'xrp' || this.card.unitCode === 'doge' ? 4 : 2 || this.card.unitCode === 'xpi' ? 6 : 2;
     document.getElementById(
       'displayPrice'
     ).textContent = `${this.formatCurrencyPipe.transform(

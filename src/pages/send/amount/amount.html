@@ -3,7 +3,7 @@
   <ion-navbar [hideBackButton]="useAsModal">
     <ng-container *ngIf="isDonation && !shouldShowZeroState()">
       <div class="remaining" [ngStyle]="{color: getColorRemaining()}">
-        <span>Remaining :</span> <span>{{remaining}}</span>
+        <span>Lotus Remaining :</span> <span>{{remaining}}</span>
         </div>
     </ng-container>
     <ng-container *ngIf="!isDonation">
@@ -86,7 +86,7 @@
         </div>
       </form>
   
-      <div class="receiveLotus" *ngIf="isShowReceiveLotus">{{receiveLotus}}</div>
+      <div class="receiveLotus" *ngIf="isDonation">{{receiveLotus}}</div>
   
       <div class="bottom-absolute">
         <pin-pad (keystroke)="pushDigit($event)" type="amount" [integersOnly]="onlyIntegers"></pin-pad>

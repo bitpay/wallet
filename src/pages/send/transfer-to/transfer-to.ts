@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {
   Events,
+  LoadingController,
   NavController,
   NavParams,
   ViewController
@@ -85,7 +86,8 @@ export class TransferToPage {
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
     private viewCtrl: ViewController,
-    private events: Events
+    private events: Events,
+    private loadingCtrl: LoadingController
   ) {
     this.availableCoins = this.currencyProvider.getAvailableCoins();
     for (const coin of this.availableCoins) {
@@ -317,6 +319,9 @@ export class TransferToPage {
   }
 
   public close(item): void {
+    const loading = this.loadingCtrl.create();
+    loading.setContent('Please wait...');
+    loading.present();
     this.itemTapped = true;
     item
       .getAddress()
@@ -339,8 +344,9 @@ export class TransferToPage {
           this.viewCtrl.dismiss();
         } else if (this.dataDonation && this.dataDonation.isDonation) {
           this.dataDonation.receiveLotusAddress = addr;
+          this.dataDonation.nameReceiveLotusAddress = item.name;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
-          return;
+          loading.dismiss();
         }
          else {
           this.navCtrl.push(AmountPage, {
