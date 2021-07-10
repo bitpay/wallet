@@ -24,4 +24,11 @@ exchange-rates {
       font-weight: 500;
     }
   }
+  .estimate-product{
+    margin: 0;
+    padding-left: 25px;
+    padding-right: 5px;
+    font-style: italic;
+    color: $color-primary;
+  }
 }
