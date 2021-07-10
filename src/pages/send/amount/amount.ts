@@ -462,9 +462,9 @@ export class AmountPage {
     this.isShowReceiveLotus = _.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus`;
-    }else if(!this.isShowReceiveLotus && result != 0 ){
+    }else if(_.toNumber(result) <= _.toNumber(this.navParams.data.minMoneydonation)  && result != 0 ){
       this.receiveLotus = `You will receive 0 Lotus`;
-    }else if(this.isShowReceiveLotus && this.navParams.data.remaining == 0){
+    }else if(_.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining <= this.navParams.data.receiveLotus && this.navParams.data.remaining == 0){
       this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
     }
   }
