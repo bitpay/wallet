@@ -10,7 +10,7 @@
       </ion-label>
       <ion-note item-end>
         <div class="main-note">
-          <span *ngIf="coin.name === 'Lotus'" class="estimate-product">* </span>
+          <span *ngIf="coin.name === 'Lotus'" class="estimate-sign">* </span>
           <span *ngIf="fiatIsoCode === 'USD' && isFiatIsoCodeSupported">$</span>{{ coin.currentPrice | number: getDigitsInfo(coin.unitCode) }}
           <span class="unit" *ngIf="fiatIsoCode !== 'USD' && isFiatIsoCodeSupported">{{ fiatIsoCode }}</span>
           <span class="unit" *ngIf="!isFiatIsoCodeSupported">USD</span>
