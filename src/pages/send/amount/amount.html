@@ -3,7 +3,9 @@
   <ion-navbar [hideBackButton]="useAsModal">
     <ng-container *ngIf="isDonation && !shouldShowZeroState()">
       <div class="remaining" [ngStyle]="{color: getColorRemaining()}">
-        <span *ngIf="!((receiveAmountLotus * 3) > remaining);else onlyFewLotus">Lotus Remaining :</span> <span>{{remaining}}</span>
+        <ng-container *ngIf="!((receiveAmountLotus * 3) > remaining);else onlyFewLotus">
+          <span >Lotus Remaining :</span> <span>{{remaining}}</span>
+        </ng-container>
         <ng-template #onlyFewLotus>
           <span>Only few remaining</span>
         </ng-template>

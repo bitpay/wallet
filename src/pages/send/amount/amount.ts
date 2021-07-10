@@ -833,11 +833,12 @@ export class AmountPage {
   }
 
   getColorRemaining(){
-    if(this.navParams.data?.remaining <= 500 && this.navParams.data?.remaining > 0){
-      return 'orange';
-    }else if(this.navParams.data?.remaining == 0){
-      return 'red';
-    }
-    return 'green';
+    // if(this.navParams.data?.remaining <= 500 && this.navParams.data?.remaining > 0){
+    //   return 'orange';
+    // }
+    // else if(this.navParams.data?.remaining == 0){
+    //   return 'red';
+    // }
+    return 'orange';
   }
 }
