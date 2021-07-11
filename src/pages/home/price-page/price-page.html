@@ -33,8 +33,15 @@
         </ion-chip>
       </div>
     </span>
-    <button ion-button class="button-standard" *ngIf="card.unitCode != 'xrp'" (click)="goToAmountPage()">
-      Buy {{ card.name }}
-    </button>
+    <ng-container *ngIf="!(card.unitCode === 'xpi');else isDonation">
+      <button ion-button class="button-standard" *ngIf="card.unitCode != 'xrp'" (click)="goToAmountPage()">
+        Buy {{ card.name }}
+      </button>
+    </ng-container>
+    <ng-template #isDonation>
+      <button ion-button class="button-standard" *ngIf="card.unitCode != 'xrp'" (click)="goToDonation()">
+        Donate
+      </button>
+    </ng-template>
   </ion-toolbar>
 </ion-footer>

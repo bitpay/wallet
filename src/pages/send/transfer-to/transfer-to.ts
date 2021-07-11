@@ -346,7 +346,6 @@ export class TransferToPage {
           this.dataDonation.receiveLotusAddress = addr;
           this.dataDonation.nameReceiveLotusAddress = item.name;
           this.navCtrl.push(ConfirmPage, this.dataDonation);
-          loading.dismiss();
         }
          else {
           this.navCtrl.push(AmountPage, {
@@ -365,6 +364,7 @@ export class TransferToPage {
             destinationTag: item.destinationTag
           });
         }
+        loading.dismiss();
       })
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);

@@ -110,9 +110,10 @@ export class AmountPage {
 
   @ViewChild(Navbar) navBar: Navbar;
   isDonation: boolean ;
-  remaining: string;
+  remaining: number;
   isShowReceiveLotus: boolean;
   receiveLotus: string;
+  receiveAmountLotus: number;
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
@@ -138,6 +139,7 @@ export class AmountPage {
     this.isDonation = this.navParams.data.isDonation
     if (this.isDonation) {
       this.remaining = this.navParams.data.remaining ;
+      this.receiveAmountLotus = this.navParams.data.receiveLotus;
     }
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
@@ -460,9 +462,9 @@ export class AmountPage {
     this.isShowReceiveLotus = _.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining >= this.navParams.data.receiveLotus;
     if (this.isShowReceiveLotus) {
       this.receiveLotus = `You will receive ${this.navParams.data.receiveLotus} Lotus`;
-    }else if(!this.isShowReceiveLotus && result != 0){
+    } else if (_.toNumber(result) <= _.toNumber(this.navParams.data.minMoneydonation)  && result != 0 ){
       this.receiveLotus = `You will receive 0 Lotus`;
-    }else if(!this.isShowReceiveLotus && this.navParams.data.remaining == 0){
+    } else if (_.toNumber(result) >= _.toNumber(this.navParams.data.minMoneydonation) && this.navParams.data.remaining <= this.navParams.data.receiveLotus && this.navParams.data.remaining == 0){
       this.receiveLotus = `Due to high demand, we are running out of Lotus today and unable to give you back. Come back another day or proceed anyway.`;
     }
   }
@@ -831,11 +833,6 @@ export class AmountPage {
   }
 
   getColorRemaining(){
-    if(this.navParams.data?.remaining <= 500 && this.navParams.data?.remaining > 0){
-      return 'orange';
-    }else if(this.navParams.data?.remaining == 0){
-      return 'red';
-    }
-    return 'green';
+    return 'orange';
   }
 }

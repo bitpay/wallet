@@ -19,6 +19,7 @@ import {
   SimplexProvider
 } from '../../../providers';
 import { DateRanges, RateProvider } from '../../../providers/rate/rate';
+import { WalletsPage } from '../../wallets/wallets';
 
 @Component({
   selector: 'price-page',
@@ -205,6 +206,12 @@ export class PricePage {
       fromBuyCrypto: true,
       nextPage: 'CryptoOrderSummaryPage',
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
+    });
+  }
+
+  public goToDonation(){
+    this.navCtrl.push(WalletsPage, {
+      isDonation: true
     });
   }
 }
