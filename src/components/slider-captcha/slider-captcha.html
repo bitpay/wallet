@@ -1,0 +1,18 @@
+<!-- my-modal.page.html -->
+<ion-content class="ion-padding" style="background-color: rgba(73,73,73,0.8);">
+
+  <ion-grid id='modalCaptcha' padding>
+    <ion-row>
+      <ion-col size-sm="12" offset-md="3" id="sliderContent" text-center>
+        <div class="ion-text-justify" id="slider"></div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="footerCaptcha" size-sm="12" offset-md="3">
+        <ion-icon style="font-size: 38px; padding-left: 4px;" (click)="closeModal()" slot="icon-only" name="close-circle"></ion-icon>
+        <ion-icon style="font-size: 38px; padding-left: 4px;" slot="icon-only" name="information-circle"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

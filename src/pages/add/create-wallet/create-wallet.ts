@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -33,9 +33,13 @@ import { CopayersPage } from '../../add/copayers/copayers';
 import { CreateEthMultisigPage } from '../../add/create-eth-multisig/create-eth-multisig';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
+
+// Slider
+import { SliderCaptchaComponent } from '../../../components/slider-captcha/slider-captcha';
 @Component({
   selector: 'page-create-wallet',
-  templateUrl: 'create-wallet.html'
+  templateUrl: 'create-wallet.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateWalletPage implements OnInit {
   /* For compressed keys, m*73 + n*34 <= 496 */
@@ -312,8 +316,20 @@ export class CreateWalletPage implements OnInit {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(opts);
     } else {
-      this.create(opts);
+      this.showSliderCaptcha(opts);
     }
+  }
+
+  async showSliderCaptcha(opts) {
+    let modal = await this.modalCtrl.create(
+      SliderCaptchaComponent
+    );
+    modal.onDidDismiss(data => {
+      if (data === 'success') {
+        this.create(opts);
+      }
+    });
+    await modal.present();
   }
 
   private showKeyOnboardingSlides(opts) {
