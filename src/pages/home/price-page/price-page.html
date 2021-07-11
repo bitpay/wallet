@@ -33,7 +33,7 @@
         </ion-chip>
       </div>
     </span>
-    <ng-container *ngIf="!(card.name === 'Lotus');else isDonation">
+    <ng-container *ngIf="!(card.unitCode === 'xpi');else isDonation">
       <button ion-button class="button-standard" *ngIf="card.unitCode != 'xrp'" (click)="goToAmountPage()">
         Buy {{ card.name }}
       </button>
