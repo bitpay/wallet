@@ -323,7 +323,7 @@ export class CreateWalletPage implements OnInit {
   async showSliderCaptcha(opts) {
     let modal = await this.modalCtrl.create(
       SliderCaptchaComponent
-    )
+    );
     modal.onDidDismiss(data => {
       if (data === 'success') {
         this.create(opts);

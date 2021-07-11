@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import SlideVerify from 'slide-verify';
 
-// File
-import { File } from '@ionic-native/file';
-
 /**
  * Generated class for the SliderCaptchaComponent component.
  *
@@ -18,16 +15,11 @@ import { File } from '@ionic-native/file';
 export class SliderCaptchaComponent {
 
   constructor(
-    private viewContrl: ViewController,
-    private file: File
+    private viewContrl: ViewController
     
   ) { }
 
   ngOnInit() {
-    this.file.checkDir(this.file.applicationDirectory, '../../assets/img/add-wallet')
-        .then(_ => console.log('Directory exists'))
-        .catch(err => console.log('error:', err));
-
     let photosList = ['assets/img/slide-captcha/moon_and_earth.jpg']
 
     new SlideVerify({
@@ -46,5 +38,4 @@ export class SliderCaptchaComponent {
   closeModal() {
     this.viewContrl.dismiss();
   }
-
 }
