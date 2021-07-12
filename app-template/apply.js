@@ -211,6 +211,7 @@ if (configDir == 'bitpay') {
       fs.writeFileSync('../build-extras.gradle', content);
       console.log('Google Pay is ready.');
     } else {
+      fs.writeFileSync('../build-extras.gradle', '');
       throw googlePayPath + ' environment variable not set.';
     }
   } catch (err) {
