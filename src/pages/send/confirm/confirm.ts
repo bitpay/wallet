@@ -1655,6 +1655,7 @@ export class ConfirmPage {
       'BitcoinCashUri',
       'EthereumUri',
       'DogecoinUri',
+      'LitecoinUri',
       'RippleUri',
       'InvoiceUri'
     ]);

@@ -81,7 +81,7 @@ export class IncomingDataProvider {
 
   private isValidPayPro(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -126,6 +126,11 @@ export class IncomingDataProvider {
   private isValidDogecoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreDoge().URI.isValid(data);
+  }
+
+  private isValidLitecoinUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreLtc().URI.isValid(data);
   }
 
   private isValidWalletConnectUri(data: string): boolean {
@@ -184,6 +189,13 @@ export class IncomingDataProvider {
     return !!(
       this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'testnet')
+    );
+  }
+
+  private isValidLitecoinAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'testnet')
     );
   }
 
@@ -482,6 +494,21 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
+  private handleLitecoinUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Litecoin URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.LTC;
+    let parsed = this.bwcProvider.getBitcoreLtc().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+    let message = parsed.message;
+    let amount = parsed.amount || amountFromRedirParams;
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
+  }
+
   private handleWalletConnectUri(uri: string): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
@@ -619,6 +646,25 @@ export class IncomingDataProvider {
       this.showMenu({
         data,
         type: 'dogecoinAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handlePlainLitecoinAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Litecoin plain address');
+    const coin = Coin.LTC;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'litecoinAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -881,6 +927,11 @@ export class IncomingDataProvider {
       this.handleDogecoinUri(data, redirParams);
       return true;
 
+      // Litecoin URI
+    } else if (this.isValidLitecoinUri(data)) {
+      this.handleLitecoinUri(data, redirParams);
+      return true;
+
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       this.handleWalletConnectUri(data);
@@ -919,6 +970,11 @@ export class IncomingDataProvider {
       // Plain Address (Doge)
     } else if (this.isValidDogecoinAddress(data)) {
       this.handlePlainDogecoinAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      this.handlePlainLitecoinAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -1113,6 +1169,13 @@ export class IncomingDataProvider {
         type: 'DogecoinUri',
         title: 'Dogecoin URI'
       };
+      // Litecoin URI
+    } else if (this.isValidLitecoinUri(data)) {
+      return {
+        data,
+        type: 'LitecoinUri',
+        title: 'Litecoin URI'
+      };
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       return {
@@ -1175,6 +1238,14 @@ export class IncomingDataProvider {
         data,
         type: 'DogecoinAddress',
         title: this.translate.instant('Doge Address')
+      };
+
+      // Plain Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      return {
+        data,
+        type: 'LitecoinAddress',
+        title: this.translate.instant('Litecoin Address')
       };
 
       // Coinbase
@@ -1255,7 +1326,10 @@ export class IncomingDataProvider {
 
   public getPayProUrl(data: string): string {
     return decodeURIComponent(
-      data.replace(/(bitcoin|bitcoincash|ethereum|ripple|dogecoin)?:\?r=/, '')
+      data.replace(
+        /(bitcoin|bitcoincash|ethereum|ripple|dogecoin|litecoin)?:\?r=/,
+        ''
+      )
     );
   }
 
