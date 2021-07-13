@@ -260,7 +260,7 @@ export class WalletConnectPage {
           break;
         default:
           this.errorsProvider.showDefaultError(
-            this.translate.instant(`Not supported method: ${request.method}`),
+            `Not supported method: ${request.method}`,
             this.translate.instant('Error')
           );
           break;

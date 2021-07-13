@@ -367,7 +367,7 @@ export class WalletConnectProvider {
         break;
       default:
         this.errorsProvider.showDefaultError(
-          this.translate.instant(`Not supported method: ${payload.method}`),
+          `Not supported method: ${payload.method}`,
           this.translate.instant('Error')
         );
         break;
