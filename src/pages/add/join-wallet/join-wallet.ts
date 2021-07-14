@@ -81,7 +81,7 @@ export class JoinWalletPage {
     this.showAdvOpts = false;
     this.keyId = this.navParams.data.keyId;
     this.coin = this.navParams.data.coin;
-    this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
+    this.regex = /^[0-9A-Za-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
       walletName: [null],
       myName: [null],
