@@ -13,12 +13,14 @@ export class AddressProvider {
   private bitcore;
   private bitcoreCash;
   private bitcoreDoge;
+  private bitcoreXpi;
   private core;
 
   constructor(private bwcProvider: BwcProvider, private logger: Logger) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.bitcoreDoge = this.bwcProvider.getBitcoreDoge();
+    this.bitcoreXpi = this.bwcProvider.getBitcoreXpi();
     this.core = this.bwcProvider.getCore();
   }
 
@@ -92,6 +94,7 @@ export class AddressProvider {
     const URI = this.bitcore.URI;
     const Address = this.bitcore.Address;
     const AddressCash = this.bitcoreCash.Address;
+    const AddressXpi = this.bitcoreXpi.Address;
     const URICash = this.bitcoreCash.URI;
     const AddressDoge = this.bitcoreDoge.Address;
     const URIDoge = this.bitcoreDoge.URI;
@@ -109,6 +112,8 @@ export class AddressProvider {
     if (Address.isValid(str, 'testnet')) return true;
     if (AddressCash.isValid(str, 'livenet')) return true;
     if (AddressCash.isValid(str, 'testnet')) return true;
+    if (AddressXpi.isValid(str, 'livenet')) return true;
+    if (AddressXpi.isValid(str, 'testnet')) return true;
     if (AddressDoge.isValid(str, 'livenet')) return true;
     if (AddressDoge.isValid(str, 'testnet')) return true;
     if (Validation.validateAddress('XRP', 'livenet', str)) return true;
