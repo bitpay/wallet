@@ -316,7 +316,9 @@ export class CreateWalletPage implements OnInit {
     if (this.showKeyOnboarding) {
       this.showKeyOnboardingSlides(opts);
     } else {
-      this.showSliderCaptcha(opts);
+      this.create(opts);
+      // TODO: improvement function
+      // this.showSliderCaptcha(opts);
     }
   }
 
