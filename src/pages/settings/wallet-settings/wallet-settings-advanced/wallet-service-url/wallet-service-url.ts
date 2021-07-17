@@ -88,7 +88,7 @@ export class WalletServiceUrlPage {
         break;
       case 'loc':
       case 'local':
-        bws = 'https://aws.abcpay.cash/bws/api';
+        bws = 'http://172.17.209.164:3232/bws/api';
         break;
     }
     if (bws) {

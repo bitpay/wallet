@@ -23,6 +23,10 @@ export class BwcProvider {
     return BWC.BitcoreDoge;
   }
 
+  public getBitcoreXpi() {
+    return BWC.BitcoreXpi;
+  }
+
   public getCore() {
     return BWC.Core;
   }
@@ -60,7 +64,7 @@ export class BwcProvider {
 
     // note opts use `bwsurl` all lowercase;
     let bwc = new BWC({
-      baseUrl: opts.bwsurl || 'https://aws.abcpay.cash/bws/api', // 'http://thunt111984.cameraddns.net:3232/bws/api', 'http://thunt111984.cameraddns.net/bws/api', uncmment for local testing
+      baseUrl: opts.bwsurl || 'http://172.17.209.164:3232/bws/api', // 'http://thunt111984.cameraddns.net:3232/bws/api', 'http://thunt111984.cameraddns.net/bws/api', uncmment for local testing
       verbose: opts.verbose,
       timeout: 100000,
       transports: ['polling'],
