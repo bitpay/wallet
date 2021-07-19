@@ -80,7 +80,12 @@ export class AddressProvider {
               network = this.bitcoreDoge.Address(address).network.name;
               return { coin: 'doge', network };
             } catch (e) {
-              return null;
+              try {
+                network = this.bitcoreXpi.Address(address).network.name;
+                return { coin: 'xpi', network };
+              } catch (e) {
+                return null;
+              }
             }
           }
         }

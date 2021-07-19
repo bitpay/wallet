@@ -51,6 +51,7 @@ export class SendPage {
   private validDataTypeMap: string[] = [
     'BitcoinAddress',
     'BitcoinCashAddress',
+    'LotusAddress',
     'EthereumAddress',
     'EthereumUri',
     'RippleAddress',
