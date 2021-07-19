@@ -113,6 +113,11 @@ export class IncomingDataProvider {
     return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
   }
 
+  private isValidLotusUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreXpi().URI.isValid(data);
+  }
+
   private isValidEthereumUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getCore().Validation.validateUri('ETH', data);
@@ -165,6 +170,13 @@ export class IncomingDataProvider {
     return !!(
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
+    );
+  }
+
+  private isValidLotusAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcoreXpi().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcoreXpi().Address.isValid(data, 'testnet')
     );
   }
 
@@ -376,6 +388,28 @@ export class IncomingDataProvider {
       redirParams && redirParams.amount ? redirParams.amount : '';
     const coin = Coin.BCH;
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+
+    // keep address in original format
+    if (parsed.address && data.indexOf(address) < 0) {
+      address = parsed.address.toCashAddress();
+    }
+
+    let message = parsed.message;
+    let amount = parsed.amount || amountFromRedirParams;
+
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
+  }
+
+  private handleLotusUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Lotus URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.XPI;
+    let parsed = this.bwcProvider.getBitcoreXpi().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
 
     // keep address in original format
@@ -747,6 +781,11 @@ export class IncomingDataProvider {
       this.handleBitcoinCashUri(data, redirParams);
       return true;
 
+      // Lotus URI
+    } else if (this.isValidLotusUri(data)) {
+      this.handleLotusUri(data, redirParams);
+      return true;
+
       // Ethereum URI
     } else if (this.isValidEthereumUri(data)) {
       // this.handleEthereumUri(data, redirParams);
@@ -1031,6 +1070,14 @@ export class IncomingDataProvider {
         data,
         type: 'BitcoinCashAddress',
         title: this.translate.instant('Bitcoin Cash Address')
+      };
+
+      // Plain Address (Lotus)
+    } else if (this.isValidLotusAddress(data)) {
+      return {
+        data,
+        type: 'LotusAddress',
+        title: this.translate.instant('Lotus Address')
       };
 
       // Plain Address (Ethereum)

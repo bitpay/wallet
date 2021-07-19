@@ -11,6 +11,7 @@ log.txt
 npm-debug.log*
 
 yarn.lock
+yalc.lock
 
 # iOS
 build.json
@@ -70,6 +71,8 @@ plugins/ios.json
 screenshots/
 www/
 $RECYCLE.BIN/
+.yalc/
+
 
 Thumbs.db
 UserInterfaceState.xcuserstate
