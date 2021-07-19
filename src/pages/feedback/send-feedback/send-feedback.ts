@@ -209,7 +209,7 @@ export class SendFeedbackPage {
         this.openExternalLink(externalLink);
       } else {
         // Click on Get Help
-        this.openExternalLink('https://support.bitpay.com/hc/en-us');
+        this.openExternalLink('https://t.me/AbcPay');
       }
     });
   }

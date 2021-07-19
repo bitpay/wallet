@@ -8,7 +8,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // providers
 import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { AppProvider } from '../../../providers/app/app';
-import { ConfigProvider } from '../../../providers/config/config';
+// import { ConfigProvider } from '../../../providers/config/config';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
@@ -31,7 +31,7 @@ export class SharePage {
     private logger: Logger,
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
-    private configProvider: ConfigProvider,
+    // private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
     private popupProvider: PopupProvider,
@@ -41,11 +41,9 @@ export class SharePage {
       this.translate.instant('Share {{appName}}'),
       { appName: this.appProvider.info.nameCase }
     );
-    let defaults = this.configProvider.getDefaults();
-    this.downloadUrl =
-      this.appProvider.info.name == 'copay'
-        ? defaults.download.copay.url
-        : defaults.download.bitpay.url;
+    // TODO:AbcPay disable some feature
+    // let defaults = this.configProvider.getDefaults();
+    this.downloadUrl = 'http://t.me/AbcPay';
     this.downloadText = this.replaceParametersProvider.replace(
       this.translate.instant(
         'Spend and control your cryptocurrency by downloading the {{appName}} app.'

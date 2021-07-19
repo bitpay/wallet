@@ -213,8 +213,8 @@
       <button ion-item detail-none class="create-button" *ngIf="walletsGroups && walletsGroups[0]" (click)="goToAddView()">
         {{ 'Create or Import a Key' | translate }}
       </button>
-
-      <ion-item-divider *ngIf="cardServices && cardServices[0]">
+      <!-- TODO: AbcPay disable some feature -->
+      <!-- <ion-item-divider *ngIf="cardServices && cardServices[0]">
         {{ 'Cards' | translate }}
       </ion-item-divider>
 
@@ -274,7 +274,7 @@
           <img src="{{externalService.icon}}" />
         </ion-icon>
         <span class="main-label">{{ externalService.title }}</span>
-      </button>
+      </button> -->
 
 
       <ion-item-divider tappable (click)="mdesCertOnlyFlag()">{{ 'More' | translate }}</ion-item-divider>
@@ -299,8 +299,8 @@
         </ion-icon>
         <span class="main-label" translate>Share</span> {{ appName }}
       </button>
-
-      <button ion-item (click)="openPrivacyPolicy()">
+      <!-- TODO: AbcPay disable some feature -->
+      <!-- <button ion-item (click)="openPrivacyPolicy()">
         <ion-icon class="item-img icon-settings" item-start>
           <img src="assets/img/settings-icons/icon-lock.svg" />
         </ion-icon>
@@ -310,7 +310,7 @@
       <button ion-item (click)="openTermsOfUse()">
         <ion-icon class="item-img icon-settings ionic-icon" name="md-list-box" item-start></ion-icon>
         <span class="main-label" translate>Terms of Use</span>
-      </button>
+      </button> -->
 
       <button ion-item (click)="openAboutPage()">
         <ion-icon class="item-img icon-settings" item-start>
