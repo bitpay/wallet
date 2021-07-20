@@ -31,6 +31,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
+    "config": "ts-node ./src/setenv.ts",
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
     "electron:patch": "(! grep -q 'com.apple.security.app-sandbox' ./node_modules/app-builder-lib/templates/entitlements.mac.plist && sed -i -e \"/<dict>/ a\\ \n<key>com.apple.security.app-sandbox</key><true/>\" ./node_modules/app-builder-lib/templates/entitlements.mac.plist) | echo 'electron patched.'",
     "patch:bwc": "(sed -i -e 's/\\#private;//' ./node_modules/@abcpros/bitcore-wallet-client/ts_build/lib/key.d.ts) | echo 'BWC patched.'",
@@ -55,9 +56,10 @@
     "fix:prettier": "prettier --write '{*,**/*}.{js,ts,md,json,scss}'",
     "fix": "npm run fix:tslint && npm run fix:prettier",
     "fix:iab": "node ./utils/iab-patch.js",
-    "env:desktop": "rm -f src/environments/index.ts && cp src/environments/desktop.ts src/environments/index.ts \n\n# Environment set to: desktop\n\n",
-    "env:prod": "rm -f src/environments/index.ts && cp src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n",
-    "env:dev": "rm -f src/environments/index.ts && cp src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
+    "env:desktop": "npm run config -- --environment=desktop \n\n# Environment set to: desktop\n\n",
+    "env:prod": "npm run config -- --environment=production \n\n# Environment set to: prod\n\n",
+    "env:dev": "npm run config -- --environment=development \n\n# Environment set to: dev\n\n",
+    "env:dev-awsUrl": "npm run config -- --environment=development --awsUrl=https://aws.abcpay.cash/bws/api \n\n# Environment set to: dev\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",
     "translation:update": "node ./i18n/crowdin_update.js",
     "translation:download": "node ./i18n/crowdin_download.js",
@@ -97,7 +99,7 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "dependencies": {
-    "@abcpros/bitcore-wallet-client": "^8.25.27",
+    "@abcpros/bitcore-wallet-client": "8.25.21",
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
     "@angular/compiler": "5.2.11",
@@ -207,6 +209,7 @@
     "codecov": "3.7.2",
     "cordova-plugin-androidx-adapter": "1.1.3",
     "core-js": "2.6.10",
+    "dotenv": "^10.0.0",
     "electron": "9.4.2",
     "fs-extra": "9.0.1",
     "ionic": "4.10.4",
@@ -228,7 +231,8 @@
     "tslint-config-prettier": "1.18.0",
     "typescript": "4.0.6",
     "webpack": "3.12.0",
-    "webpack-obfuscator": "0.17.3"
+    "webpack-obfuscator": "0.17.3",
+    "yargs": "^17.0.1"
   },
   "config": {
     "ionic_uglifyjs": "./config/uglifyjs.config.js",
