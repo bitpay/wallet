@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -49,7 +50,6 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'page-confirm',
@@ -1503,7 +1503,7 @@ export class ConfirmPage {
       () => {
         if (exit) {
           this.fromWalletDetails
-            ? //PopTo AmountPage case
+            ? // PopTo AmountPage case
             this.isDonation ? this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length() - 3)) : this.navCtrl.pop()
             : 
             this.navCtrl.popToRoot();

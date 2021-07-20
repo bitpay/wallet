@@ -36,10 +36,6 @@
         </div>
       </div>
     </ion-list>
-    <!-- TODO: AbcPay disable button -->
-    <!-- <button ion-button clear color="primary" class="button-standard no-margin-bottom" (click)="openDisclaimer()">
-      {{'View complete Terms of Use' | translate}}
-    </button> -->
     <button ion-button class="button-standard" (click)="confirm()" [disabled]="!accepted.first || !accepted.second || !terms.accepted">
       {{'Confirm & Finish' | translate}}
     </button>

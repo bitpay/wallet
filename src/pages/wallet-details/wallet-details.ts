@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, NgZone } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,7 +45,6 @@ import { ProposalsNotificationsPage } from '../../pages/wallets/proposals-notifi
 import { AmountPage } from '../send/amount/amount';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalanceModal } from './wallet-balance/wallet-balance';
-import { HttpClient } from '@angular/common/http';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;

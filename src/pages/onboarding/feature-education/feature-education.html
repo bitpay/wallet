@@ -11,7 +11,7 @@
             <img src="assets/img/onboarding/feature-education-4.svg" />
           </div>
           <div class="info">
-            <h3 class="title" translate>Be your own bank with a simple <a href="https://be.cash" target="_blank">be.cash</a> card</h3>
+            <h3 class="title" translate>Be your own bank with a simple <a (click)="openLink('https://be.cash')">be.cash</a> card</h3>
             <div class="text" translate>
               Keep full control of your crypto while still being able to spend them with card. Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
               <!-- TODO: AbcPay update new text later -->
@@ -23,22 +23,6 @@
         </div>
       </ion-content>
     </ion-slide>
-    <!-- TODO:AbcPay disable some feature -->
-    <!-- <ion-slide *ngIf="appName !== 'Copay'">
-      <ion-content>
-        <div class="slide-info">
-          <div class="img-container">
-            <img class="tour-2" src="assets/img/onboarding/feature-education-2.svg" />
-          </div>
-          <div class="info">
-            <h3 class="title" translate>Spend crypto at your favorite places.</h3>
-            <div class="text" translate>
-              Discover a curated list of places you can spend your crypto. Purchase, manage & spend store credits instantly.
-            </div>
-          </div>
-        </div>
-      </ion-content>
-    </ion-slide> -->
     <ion-slide>
       <ion-content>
         <div class="slide-info">
