@@ -13,8 +13,8 @@ import { GiftCardDiscountText } from './gift-card-discount-text/gift-card-discou
 import { LabelTip } from './label-tip/label-tip';
 import { PriceChart } from './price-chart/price-chart';
 import { SearchBarComponent } from './search-bar/search-bar';
-import { WalletItemContent } from './wallet-item-content/wallet-item-content';
 import { SliderCaptchaComponent } from './slider-captcha/slider-captcha';
+import { WalletItemContent } from './wallet-item-content/wallet-item-content';
 
 export const COMPONENTS = [
   ActionCardComponent,

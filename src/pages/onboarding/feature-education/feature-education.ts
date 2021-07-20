@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
 // Providers
+import { ExternalLinkProvider } from '../../../providers';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
@@ -33,6 +34,7 @@ export class FeatureEducationPage {
   constructor(
     public navCtrl: NavController,
     private logger: Logger,
+    private externalLinkProvider: ExternalLinkProvider,
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private platformProvider: PlatformProvider
@@ -77,5 +79,9 @@ export class FeatureEducationPage {
       params: this.params
     };
     this.navCtrl.push(LockMethodPage, { nextView });
+  }
+
+  public openLink(url) {
+    this.externalLinkProvider.open(url);
   }
 }
