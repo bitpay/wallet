@@ -14,6 +14,7 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
+import env from '../../../../../environments';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -88,7 +89,7 @@ export class WalletServiceUrlPage {
         break;
       case 'loc':
       case 'local':
-		bws = 'https://aws.abcpay.cash/bws/api';
+		bws = env.awsUrl;
         break;
     }
     if (bws) {

@@ -13,6 +13,9 @@ npm-debug.log*
 yarn.lock
 yalc.lock
 
+# ENV config file
+.env
+
 # iOS
 build.json
 

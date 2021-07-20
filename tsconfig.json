@@ -16,7 +16,7 @@
     "target": "es6",
     "baseUrl": "./"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "scripts/setenv.ts"],
   "exclude": ["node_modules","**/*.spec.ts"],
   "compileOnSave": false,
   "atom": {

@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
+import env from '../../environments';
 
 export interface Config {
   limits: {
@@ -175,7 +176,7 @@ export class ConfigProvider {
 
       // Bitcore wallet service URL
       bws: {
-		url: 'https://aws.abcpay.cash/bws/api' // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
+		url: env.awsUrl // Uncomment and replace w/ http://thunt111984.cameraddns.net:3232/bws/api for testing
       },
 
       adPubKey: {
