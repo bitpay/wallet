@@ -31,7 +31,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "config": "ts-node ./src/setenv.ts",
+    "config": "ts-node ./scripts/setenv.ts",
     "postinstall": "npm run env:dev && npm run prompt && npm run patch:bwc && npm run patch:walletconnect",
     "electron:patch": "(! grep -q 'com.apple.security.app-sandbox' ./node_modules/app-builder-lib/templates/entitlements.mac.plist && sed -i -e \"/<dict>/ a\\ \n<key>com.apple.security.app-sandbox</key><true/>\" ./node_modules/app-builder-lib/templates/entitlements.mac.plist) | echo 'electron patched.'",
     "patch:bwc": "(sed -i -e 's/\\#private;//' ./node_modules/@abcpros/bitcore-wallet-client/ts_build/lib/key.d.ts) | echo 'BWC patched.'",
@@ -59,7 +59,7 @@
     "env:desktop": "npm run config -- --environment=desktop \n\n# Environment set to: desktop\n\n",
     "env:prod": "npm run config -- --environment=production \n\n# Environment set to: prod\n\n",
     "env:dev": "npm run config -- --environment=development \n\n# Environment set to: dev\n\n",
-    "env:dev-awsUrl": "npm run config -- --environment=development --awsUrl=https://aws.abcpay.cash/bws/api \n\n# Environment set to: dev\n\n",
+    "env:custom": "npm run config -- --environment=development --awsUrl=https://aws.abcpay.cash/bws/api \n\n# Environment set to: dev\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",
     "translation:update": "node ./i18n/crowdin_update.js",
     "translation:download": "node ./i18n/crowdin_download.js",
