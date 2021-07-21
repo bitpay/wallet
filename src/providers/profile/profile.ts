@@ -1562,7 +1562,7 @@ export class ProfileProvider {
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
 
-      if (opts.useNativeSegwit && opts.coin !== 'btc') {
+      if (opts.useNativeSegwit && opts.coin !== 'btc' && opts.coin !== 'ltc') {
         const err = 'Wrong useNativeSegwit opt for non btc wallet';
         return reject(err);
       }
@@ -1761,7 +1761,7 @@ export class ProfileProvider {
       singleAddress: this.currencyProvider.isSingleAddress(coin) || false,
       coin
     };
-    if (coin === 'btc') opts.useNativeSegwit = true;
+    if (coin === 'btc' || coin === 'ltc') opts.useNativeSegwit = true;
     return opts;
   }
 
