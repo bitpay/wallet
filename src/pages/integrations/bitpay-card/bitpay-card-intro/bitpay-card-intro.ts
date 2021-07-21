@@ -160,9 +160,10 @@ export class BitPayCardIntroPage {
       url += `&email=${user.email}`;
     }
 
+    const now = moment().unix();
+    this.persistenceProvider.setBitPayCardOrderStarted(now);
+
     this.iabCardProvider.loadingWrapper(() => {
-      const now = moment().unix();
-      this.persistenceProvider.setBitPayCardOrderStarted(now);
       this.externalLinkProvider.open(url);
       setTimeout(() => {
         this.navCtrl.pop();

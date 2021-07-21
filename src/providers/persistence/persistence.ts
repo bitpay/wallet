@@ -1075,7 +1075,7 @@ export class PersistenceProvider {
   getEthMultisigPendingInstantiation(walletId) {
     return this.storage.get(`eth-multisig-instantiation-${walletId}`);
   }
-  
+
   setBitPayCardOrderStarted(ts: number) {
     return this.storage.set(Keys.BITPAY_CARD_ORDER_STARTED, ts);
   }
