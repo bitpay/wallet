@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // providers
 // pages
@@ -160,6 +161,8 @@ export class BitPayCardIntroPage {
     }
 
     this.iabCardProvider.loadingWrapper(() => {
+      const now = moment().unix();
+      this.persistenceProvider.setBitPayCardOrderStarted(now);
       this.externalLinkProvider.open(url);
       setTimeout(() => {
         this.navCtrl.pop();

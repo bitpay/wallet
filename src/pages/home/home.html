@@ -91,6 +91,30 @@
     </div>
   </div>
 
+  <div class="message-background" *ngIf="showSurveyCard">
+    <div class="message-header">
+      <ion-row justify-content-end>
+        <button float-right ion-button clear icon-only color="grey" (click)="dismissBitPaySurveyCard()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-row>
+    </div>
+    <div class="message-content">
+      <ion-row align-items-center>
+        <div class="message-icon"><img src="assets/img/icon-heart.svg" /></div>
+        <div class="message-title">
+          {{ 'Help BitPay Improve' | translate }}
+        </div>
+      </ion-row>
+      <div class="message-body">
+        {{ 'You didn't finish your card application.' | translate }} <br>
+        {{ 'Help us by answering 3 quick questions.' | translate }}
+      </div>
+      <div class="line-divider"></div>
+      <span class="message-button" (click)="openBitPaySurveyLink()" translate>Take the survey</span>
+    </div>
+  </div>
+
   <div class="message-background" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
     <div class="message-header" [ngClass]="{'no-dismissible': !serverMessages[0].dismissible}">
       <ion-row *ngIf="serverMessages[0].dismissible" justify-content-end>
