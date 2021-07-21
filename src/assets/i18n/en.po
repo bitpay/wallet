@@ -1207,10 +1207,9 @@ msgstr "ETH Multisig"
 msgid "ETH Multisig Wallet creation"
 msgstr "ETH Multisig Wallet creation"
 
-#, fuzzy
 #| msgid "Ethereum wallet required"
 msgid "ETH wallet is required"
-msgstr "Ethereum wallet required"
+msgstr "ETH wallet is required"
 
 msgid ""
 "Each bitcoin wallet can generate billions of addresses from your 12-word "
@@ -2147,10 +2146,9 @@ msgstr "Linked to wallet: {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr "Linked wallet"
 
-#, fuzzy
 #| msgid "Bitcoin Address"
 msgid "Litecoin Address"
-msgstr "Bitcoin Address"
+msgstr "Litecoin Address"
 
 msgid "Live on crypto."
 msgstr "Live on crypto."
@@ -2185,10 +2183,9 @@ msgstr "Log in or Sign Up"
 msgid "Log out"
 msgstr "Log out"
 
-#, fuzzy
 #| msgid "Low Fee"
 msgid "Low"
-msgstr "Low Fee"
+msgstr "Low"
 
 msgid "Low Fee"
 msgstr "Low Fee"
@@ -2303,15 +2300,13 @@ msgstr "Network"
 msgid "Network Cost"
 msgstr "Network Cost"
 
-#, fuzzy
 #| msgid "Bitcoin Network Fee Policy"
 msgid "Network Fee Policies"
-msgstr "Bitcoin Network Fee Policy"
+msgstr "Network Fee Policies"
 
-#, fuzzy
 #| msgid "Bitcoin Network Fee Policy"
 msgid "Network Fee Policy"
-msgstr "Bitcoin Network Fee Policy"
+msgstr "Network Fee Policy"
 
 msgid "Network cost"
 msgstr "Network cost"
@@ -2343,10 +2338,9 @@ msgstr "New payment proposal"
 msgid "New payment received"
 msgstr "New payment received"
 
-#, fuzzy
 #| msgid "No wallet found"
 msgid "New wallet found"
-msgstr "No wallet found"
+msgstr "New wallet found"
 
 msgid "Next"
 msgstr "Next"
@@ -3441,10 +3435,9 @@ msgstr "Sweep paper wallet"
 msgid "Sweeping Wallet..."
 msgstr "Sweeping Wallet..."
 
-#, fuzzy
 #| msgid "Incomplete"
 msgid "Sync completed"
-msgstr "Incomplete"
+msgstr "Sync completed"
 
 msgid "Sync gift card purchases"
 msgstr "Sync gift card purchases"
@@ -3452,10 +3445,9 @@ msgstr "Sync gift card purchases"
 msgid "Sync wallets across devices"
 msgstr "Sync wallets across devices"
 
-#, fuzzy
 #| msgid "Joining Wallet..."
 msgid "Syncing Wallets..."
-msgstr "Joining Wallet..."
+msgstr "Syncing Wallets..."
 
 msgid "System Default"
 msgstr "System Default"
@@ -3780,14 +3772,14 @@ msgstr "There are some misunderstood outputs, please view on blockchain."
 msgid "There is a new version available"
 msgstr "There is a new version available"
 
-#, fuzzy
 #| msgid ""
 #| "There was a problem retrieving the returnAddress. Please, try again later."
 msgid ""
 "There is a temporary problem with the merchant requesting the payment. "
 "Please try later"
 msgstr ""
-"There was a problem retrieving the returnAddress. Please, try again later."
+"There is a temporary problem with the merchant requesting the payment. "
+"Please try later"
 
 msgid "There is an error in the form"
 msgstr "There is an error in the form"
