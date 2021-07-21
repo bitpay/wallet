@@ -628,12 +628,22 @@ export class CopayApp {
             currentView[currentIndex].name !== 'WalletConnectPage') ||
           nextView.params.uri.indexOf('bridge') !== -1
         ) {
-          this.getGlobalTabs()
-            .goToRoot()
-            .then(_ => {
-              this.getGlobalTabs().select(5);
-              this.nav.push(this.pageMap[nextView.name], nextView.params);
-            });
+          if (nextView.params && nextView.params.force) {
+            this.getGlobalTabs()
+              .goToRoot()
+              .then(_ => {
+                this.getGlobalTabs().select(5);
+                this.nav.push(this.pageMap[nextView.name], nextView.params);
+              });
+          } else {
+            const data = {
+              title: 'Walletconnect',
+              body: 'New Pending Request',
+              action: 'goToWalletconnect',
+              closeButtonText: 'View'
+            };
+            this.pushNotificationsProvider.showInappNotification(data);
+          }
         }
         return;
       } else {

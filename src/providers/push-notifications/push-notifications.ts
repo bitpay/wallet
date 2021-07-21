@@ -321,7 +321,7 @@ export class PushNotificationsProvider {
     return verificationResult;
   }
 
-  private showInappNotification(data) {
+  public showInappNotification(data) {
     if (!data.body || data.notification_type === 'NewOutgoingTx') return;
 
     this.notifications.unshift(data);
@@ -339,9 +339,11 @@ export class PushNotificationsProvider {
             title: data.title,
             message: data.body,
             customButton: {
-              closeButtonText: this.translate.instant('Open Wallet'),
+              closeButtonText: data.closeButtonText
+                ? data.closeButtonText
+                : this.translate.instant('Open Wallet'),
               data: {
-                action: 'openWallet'
+                action: data.action ? data.action : 'openWallet'
               }
             }
           },
@@ -357,6 +359,16 @@ export class PushNotificationsProvider {
         this.currentNotif.onDidDismiss(dismissData => {
           if (dismissData.action && dismissData.action === 'openWallet')
             this._openWallet(data);
+          else if (
+            dismissData.action &&
+            dismissData.action === 'goToWalletconnect'
+          ) {
+            const nextView = {
+              name: 'WalletConnectPage',
+              params: { force: true }
+            };
+            this.events.publish('IncomingDataRedir', nextView);
+          }
 
           this.currentNotif = null;
           this.runNotificationsQueue();
