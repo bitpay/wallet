@@ -832,6 +832,10 @@ export class ProfileProvider {
             bwsurl: opts.bwsurl,
             store: false
           });
+          // Skip if wallet multisig already exists with another key
+          if (boundClient === undefined && walletClient.credentials.m > 1)
+            continue;
+
           boundWalletClients.push(boundClient);
         }
         this.setOrderedWalletsByGroup(); // Update Ordered Wallet List
