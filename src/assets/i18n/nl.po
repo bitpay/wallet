@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2021-05-21 13:31\n"
+"PO-Revision-Date: 2021-07-13 14:14\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -194,9 +194,6 @@ msgstr "Al gedupliceerd"
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr "Amazon.co.jp cadeaubonnen verlopen nooit en kunnen worden ingewisseld voor miljoenen items op www.000000.co.jp."
 
-msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-msgstr "Amazon.com cadeaubonnen verlopen nooit en kunnen worden ingewisseld voor miljoenen items op www.amazon.com."
-
 msgid "Amount"
 msgstr "Bedrag"
 
@@ -219,7 +216,7 @@ msgid "Apple Pay"
 msgstr "Apple Pay"
 
 msgid "Apply"
-msgstr ""
+msgstr "Past toe"
 
 msgid "Approve"
 msgstr ""
@@ -280,6 +277,9 @@ msgstr "Geprobeerd betalingsverzoek"
 
 msgid "Available"
 msgstr "Beschikbaar"
+
+msgid "Average"
+msgstr ""
 
 msgid "Average confirmation time:"
 msgstr "Gemiddelde bevestigingstijd:"
@@ -426,10 +426,10 @@ msgid "By providing your email address, you give explicit consent to BitPay to u
 msgstr "Door je e-mailadres op te geven, geef je toestemming aan BitPay om je e-mailadres te gebruiken om je e-mailberichten te sturen over betalingen."
 
 msgid "CANCEL"
-msgstr ""
+msgstr "ANNULEER"
 
 msgid "CHOOSE FEE LEVEL"
-msgstr ""
+msgstr "KIES FEE LEVEL"
 
 msgid "CLOSE"
 msgstr "SLUITEN"
@@ -1016,6 +1016,9 @@ msgstr "ETH multisig"
 msgid "ETH Multisig Wallet creation"
 msgstr ""
 
+msgid "ETH wallet is required"
+msgstr ""
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Iedere bitcoin wallet kan miljarden adressen genereren uit de recovery seed van 12 Engelstalige woorden. Als je een betaling ontvangt, wordt er automatisch een nieuw ontvangstadres gegenereerd en getoond."
 
@@ -1349,6 +1352,9 @@ msgstr ".csv bestand genereren..."
 msgid "Generating new address..."
 msgstr "Nieuw adres genereren..."
 
+msgid "Get $10"
+msgstr ""
+
 msgid "Get Started"
 msgstr "Begin"
 
@@ -1404,7 +1410,7 @@ msgid "Go to Coinbase"
 msgstr "Ga naar Coinbase"
 
 msgid "Got it"
-msgstr ""
+msgstr "Ik begrijp het"
 
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
 msgstr "Al je {brand}-cadeaubonnen ingewisseld? Gearchiveerde cadeaubonnen zijn nog steeds toegankelijk via de instellingen."
@@ -1413,13 +1419,13 @@ msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "Heb je het volledige saldo van deze cadeaubon ingewisseld?"
 
 msgid "Having problems with Changelly?"
-msgstr ""
+msgstr "Problemen met Changelly?"
 
 msgid "Having problems with Simplex?"
 msgstr "Problemen met Simplex?"
 
 msgid "Having problems with Wyre?"
-msgstr ""
+msgstr "Problemen met Wyre?"
 
 msgid "Help & Support"
 msgstr "Hulp & support"
@@ -1428,7 +1434,7 @@ msgid "Help & support"
 msgstr "Hulp & support"
 
 msgid "Help BitPay improve"
-msgstr ""
+msgstr "Help BitPay verbeteren"
 
 msgid "Help and support information is available at the website"
 msgstr "Hulp en ondersteuning is beschikbaar op de website"
@@ -1454,6 +1460,9 @@ msgstr "Verberg geavanceerde opties"
 msgid "Hide discount?"
 msgstr "Korting verbergen?"
 
+msgid "High"
+msgstr ""
+
 msgid "Hold"
 msgstr ""
 
@@ -1476,7 +1485,7 @@ msgid "I Understand"
 msgstr "Ik begrijp het"
 
 msgid "I already have an account"
-msgstr ""
+msgstr "Ik heb al een account"
 
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr ""
@@ -1554,7 +1563,7 @@ msgid "Import existing wallet"
 msgstr "Importeer een bestaande wallet"
 
 msgid "Import from backup"
-msgstr ""
+msgstr "Importeer back-up"
 
 msgid "Important note: Keep in mind BitPay has suspended XRP as a payment method, this includes loads to the BitPay Card, BitPay invoices and in-app purchases"
 msgstr ""
@@ -1674,7 +1683,7 @@ msgid "It's ok for now"
 msgstr "Het is prima, maar niet geweldig"
 
 msgid "I’ll do this later"
-msgstr ""
+msgstr "Niet nu"
 
 msgid "Join"
 msgstr "Join"
@@ -1781,6 +1790,9 @@ msgstr "Gekoppeld aan wallet: {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr ""
 
+msgid "Litecoin Address"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr "Leef op crypto."
 
@@ -1809,10 +1821,13 @@ msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Tijdslot van kracht. Wacht a.u.b. met het verwijderen van dit bestedingsvoorstel"
 
 msgid "Log in or Sign Up"
-msgstr ""
+msgstr "Log in of maak een account"
 
 msgid "Log out"
 msgstr "Uitloggen"
+
+msgid "Low"
+msgstr ""
 
 msgid "Low Fee"
 msgstr "Lage transactiekosten"
@@ -1842,10 +1857,10 @@ msgid "Merchant Message"
 msgstr "Bericht Verkoper"
 
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 msgid "Method"
-msgstr ""
+msgstr "Methode"
 
 msgid "Miner Fee"
 msgstr "Miner fee"
@@ -1919,6 +1934,12 @@ msgstr "Netwerk"
 msgid "Network Cost"
 msgstr "Netwerkkosten"
 
+msgid "Network Fee Policies"
+msgstr ""
+
+msgid "Network Fee Policy"
+msgstr ""
+
 msgid "Network cost"
 msgstr "Netwerkkosten"
 
@@ -1929,7 +1950,7 @@ msgid "Never mind"
 msgstr ""
 
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 msgid "New Key"
 msgstr "Nieuwe key"
@@ -1948,6 +1969,9 @@ msgstr "Nieuw betalingsvoorstel"
 
 msgid "New payment received"
 msgstr "Nieuwe betaling ontvangen"
+
+msgid "New wallet found"
+msgstr ""
 
 msgid "Next"
 msgstr "Volgende"
@@ -1983,7 +2007,7 @@ msgid "No signing proposal: No private key"
 msgstr "Geen voorstel voor ondertekenen: Geen privé sleutel"
 
 msgid "No thanks"
-msgstr ""
+msgstr "Nee bedankt"
 
 msgid "No transactions"
 msgstr "Geen transacties"
@@ -2079,7 +2103,7 @@ msgid "Off"
 msgstr "Uit"
 
 msgid "Offers"
-msgstr ""
+msgstr "Aanbiedingen"
 
 msgid "Offers & promotions"
 msgstr "Aanbiedingen & acties"
@@ -2101,9 +2125,6 @@ msgstr "Alleen inwisselbaar op Mercado Livre (Brazilië)"
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr "Alleen in te wisselen op www.amazon.co.jp (Japanse website)"
-
-msgid "Only redeemable on www.amazon.com (USA website)"
-msgstr "Alleen in te wisselen op www.amazon.com (Amerikaanse website)"
 
 msgid "Only the payment methods supported to buy {coin} with {currency} will be shown."
 msgstr ""
@@ -2127,7 +2148,7 @@ msgid "Open Translation Community"
 msgstr "Vertalings Gemeenschap openen"
 
 msgid "Open Wallet"
-msgstr ""
+msgstr "Open wallet"
 
 msgid "Open settings"
 msgstr "Open instellingen"
@@ -2214,7 +2235,7 @@ msgid "Payment ID"
 msgstr "Payment ID"
 
 msgid "Payment Method"
-msgstr ""
+msgstr "Betaalmethode"
 
 msgid "Payment Proposal"
 msgstr "Betalingsvoorstel"
@@ -2241,10 +2262,10 @@ msgid "Payment accepted, but not yet broadcasted"
 msgstr "Betaling geaccepteerd, maar nog niet verzonden"
 
 msgid "Payment method"
-msgstr ""
+msgstr "Betaalmethode"
 
 msgid "Payment method updated"
-msgstr ""
+msgstr "Betaalmethode gewijzigd"
 
 msgid "Payment proposal rejected"
 msgstr "Betalingsvoorstel afgewezen"
@@ -2483,6 +2504,12 @@ msgstr "Herstelzin"
 msgid "Redeem Now"
 msgstr "Wissel nu in"
 
+msgid "Refer Friend"
+msgstr ""
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
+msgstr ""
+
 msgid "Refund address"
 msgstr ""
 
@@ -2508,7 +2535,7 @@ msgid "Remember there are no special requirements for the password (numbers, sym
 msgstr ""
 
 msgid "Reminder"
-msgstr ""
+msgstr "Herinnering"
 
 msgid "Remove"
 msgstr "Verwijderen"
@@ -2592,7 +2619,7 @@ msgid "Save"
 msgstr "Opslaan"
 
 msgid "Scan"
-msgstr ""
+msgstr "Scan"
 
 msgid "Scan QR Codes"
 msgstr "Scan QR Codes"
@@ -2688,7 +2715,7 @@ msgid "Select wallet to deposit to"
 msgstr "Selecteer wallet om naar te storten"
 
 msgid "Selling"
-msgstr ""
+msgstr "Verkopen"
 
 msgid "Selling Bitcoin..."
 msgstr "Bitcoin verkopen..."
@@ -2844,13 +2871,13 @@ msgid "Show advanced options"
 msgstr "Geavanceerde opties weergeven"
 
 msgid "Show in Home tab"
-msgstr ""
+msgstr "Toon op startscherm"
 
 msgid "Show me the legacy address"
 msgstr "Toon mij het legacy adres"
 
 msgid "Show on wallet tab"
-msgstr ""
+msgstr "Toon op walletscherm"
 
 msgid "Sign Up"
 msgstr "Maak account aan"
@@ -2990,8 +3017,17 @@ msgstr "Saldo papieren portemonnee opnemen"
 msgid "Sweeping Wallet..."
 msgstr "Saldo Portemonnee opnemen..."
 
+msgid "Sync completed"
+msgstr ""
+
 msgid "Sync gift card purchases"
 msgstr "Synchroniseer cadeaubon-aankopen"
+
+msgid "Sync wallets across devices"
+msgstr ""
+
+msgid "Syncing Wallets..."
+msgstr ""
 
 msgid "System Default"
 msgstr "Systeemstandaard"
@@ -3092,6 +3128,9 @@ msgstr ""
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
 msgstr ""
 
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr ""
+
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "De informatie die je gaat delen/exporteren kan gevoelige data bevatten, zoals wallet-ID's, adressen, saldo's, enz. Zorg ervoor dat je de persoon of entiteit vertrouwt met wie je deze informatie deelt."
 
@@ -3178,6 +3217,9 @@ msgstr ""
 
 msgid "There is a new version available"
 msgstr "Er is een nieuwe versie beschikbaar"
+
+msgid "There is a temporary problem with the merchant requesting the payment. Please try later"
+msgstr ""
 
 msgid "There is an error in the form"
 msgstr "Het formulier bevat een fout"
@@ -3635,6 +3677,9 @@ msgstr ""
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
 msgstr ""
 
+msgid "WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again."
+msgstr ""
+
 msgid "Wallets"
 msgstr "Wallets"
 
@@ -3779,6 +3824,9 @@ msgstr "Je probeert meer geld over te maken dan er beschikbaar is. Zorg ervoor d
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "Je probeert meer geld over te maken dan er beschikbaar is. Zorg ervoor dat je geld niet is geblokkeerd door in afwachtende transactievoorstellen. Je kunt ook een lager bedrag proberen te versturen (of het maximum)."
 
+msgid "You are using a different OAuthURL from original request or it has expired. Please try again."
+msgstr ""
+
 msgid "You can always reset your encrypt password on your key settings under the option"
 msgstr "Je kunt je coderingswachtwoord altijd opnieuw instellen bij instellingen"
 
@@ -3866,6 +3914,9 @@ msgstr ""
 msgid "Your funds, on your device"
 msgstr "Jouw geld, op je eigen apparaat"
 
+msgid "Your key is already synced"
+msgstr ""
+
 msgid "Your linked ETH wallet does not have enough ETH for fee"
 msgstr ""
 
@@ -3947,6 +3998,9 @@ msgstr "{walletsGroupLength} wallets"
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr ""
 
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr ""
 
@@ -3967,6 +4021,9 @@ msgstr "{{appName}} ondersteunt alleen Bitcoin Cash met nieuwe versienummeradres
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} van je wallets bestaan al in {{nameCase}}"
+
+msgid "{{newWalletsCount}} wallets found"
+msgstr ""
 
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Telefoon vereist"

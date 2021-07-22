@@ -76,7 +76,8 @@ export type InfoSheetType =
   | 'incorrect-recovery-prhase'
   | 'correct-recovery-prhase'
   | 'unsupported-alt-currency'
-  | 'custom-fee-warning';
+  | 'custom-fee-warning'
+  | 'sync-wallets';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -102,6 +103,11 @@ export interface WalletReceiveParams {
 export interface WalletTabOptionsParams {
   walletsGroups: any;
 }
+
+export interface FooterMenuParams {
+  clipboardData: string;
+}
+
 @Injectable()
 export class ActionSheetProvider {
   constructor(private domProvider: DomProvider) {}
@@ -188,9 +194,12 @@ export class ActionSheetProvider {
       .instance;
   }
 
-  public createFooterMenu(): FooterMenuComponent {
-    return this.setupSheet<FooterMenuComponent>(FooterMenuComponent, null)
-      .instance;
+  public createFooterMenu(params?: FooterMenuParams): FooterMenuComponent {
+    return this.setupSheet<FooterMenuComponent>(
+      FooterMenuComponent,
+      null,
+      params
+    ).instance;
   }
 
   private setupSheet<T extends ActionSheetParent>(

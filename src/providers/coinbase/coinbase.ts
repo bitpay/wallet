@@ -63,6 +63,19 @@ export class CoinbaseProvider {
     };
   }
 
+  private getRandomHex(): string {
+    const characters = '0123456789abcdef';
+    let str = '';
+    for (let i = 0; i < 40; i++) {
+      str += characters[Math.floor(Math.random() * 16)];
+    }
+    return str;
+  }
+
+  public getCurrentState(): string {
+    return this.credentials.STATE;
+  }
+
   public setCredentials() {
     if (
       !this.appProvider.servicesInfo ||
@@ -73,12 +86,18 @@ export class CoinbaseProvider {
 
     const coinbase = this.appProvider.servicesInfo.coinbase;
 
-    this.credentials.REDIRECT_URI = this.platformProvider.isCordova
-      ? coinbase.redirect_uri.mobile
-      : coinbase.redirect_uri.desktop;
+    this.credentials.REDIRECT_URI =
+      this.platformProvider.isCordova && this.platformProvider.isIOS
+        ? coinbase.redirect_uri.mobile
+        : this.platformProvider.isAndroid
+        ? 'https://bitpay.com/oauth/coinbase/redirect'
+        : coinbase.redirect_uri.desktop;
 
     // Force to use specific version
     this.credentials.API_VERSION = '2017-10-31'; // TODO: there is a newest version: 2020-02-11
+
+    // Random string to protect against cross-site request forgery attacks
+    this.credentials.STATE = this.getRandomHex();
 
     if (this.environment == 'development') {
       /*
@@ -105,7 +124,9 @@ export class CoinbaseProvider {
         this.credentials.CLIENT_ID +
         '&redirect_uri=' +
         this.credentials.REDIRECT_URI +
-        '&account=all&state=SECURE_RANDOM&scope=' +
+        '&account=all&state=' +
+        this.credentials.STATE +
+        '&scope=' +
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
     } else {
@@ -134,7 +155,9 @@ export class CoinbaseProvider {
         this.credentials.CLIENT_ID +
         '&redirect_uri=' +
         this.credentials.REDIRECT_URI +
-        '&account=all&state=SECURE_RANDOM&scope=' +
+        '&account=all&state=' +
+        this.credentials.STATE +
+        '&scope=' +
         this.credentials.SCOPE +
         '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
     }

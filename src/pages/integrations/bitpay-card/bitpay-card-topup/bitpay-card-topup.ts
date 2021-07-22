@@ -450,7 +450,9 @@ export class BitPayCardTopUpPage {
                   'Using merchant fee rate (for debit card):' + txp.feePerKb
                 );
               } else {
-                txp.feeLevel = this.feeProvider.getDefaultFeeLevel();
+                txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(
+                  wallet.coin
+                );
               }
 
               txp['origToAddress'] = txp.toAddress;
@@ -487,7 +489,7 @@ export class BitPayCardTopUpPage {
         .getFeeRate(
           wallet.coin,
           wallet.credentials.network,
-          this.feeProvider.getDefaultFeeLevel()
+          this.feeProvider.getCoinCurrentFeeLevel(wallet.coin)
         )
         .then(feePerKb => {
           this.walletProvider
@@ -1148,12 +1150,9 @@ export class BitPayCardTopUpPage {
         ? this.translate.instant('Funds were added to debit card')
         : this.translate.instant('Transaction initiated');
     let finishText = '';
-    const coin = this.wallet
-      ? this.wallet.coin
-      : this.coinbaseAccount.currency.code.toLowerCase();
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, coin },
+      { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
 
@@ -1293,14 +1292,18 @@ export class BitPayCardTopUpPage {
       return;
     }
 
-    this._resetValues();
     // Currently the paypro error is the following string: 500 - "{}"
     if (error.toString().includes('500 - "{}"')) {
-      msg = this.translate.instant(
-        'Error 500 - There is a temporary problem, please try again later.'
-      );
+      msg = this.createdTx.paypro
+        ? this.translate.instant(
+            'There is a temporary problem with the merchant requesting the payment. Please try later'
+          )
+        : this.translate.instant(
+            'Error 500 - There is a temporary problem, please try again later.'
+          );
     }
 
+    this._resetValues();
     const infoSheetTitle = title ? title : this.translate.instant('Error');
 
     this.errorsProvider.showDefaultError(

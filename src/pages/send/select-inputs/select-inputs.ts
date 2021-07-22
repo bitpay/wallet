@@ -50,11 +50,13 @@ export class SelectInputsPage {
     'EthereumAddress',
     'DogecoinAddress',
     'BCHAcoinAddress',
+    'LitecoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
-    'BCHAcoinUri'
+    'BCHAcoinUri',
+    'LitecoinUri'
   ];
   constructor(
     private navCtrl: NavController,
@@ -81,6 +83,7 @@ export class SelectInputsPage {
       doge: this.bwcProvider.getBitcoreDoge(),
       // TODO: Add function for bcha
       bcha: this.bwcProvider.getBitcoreCash(),
+      ltc: this.bwcProvider.getBitcoreLtc()
     };
     this.reverse = false;
     this.isCordova = this.platformProvider.isCordova;

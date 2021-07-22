@@ -1,0 +1,54 @@
+.notification-modal-panel {
+  position: absolute;
+  width: 100%;
+  transition: opacity 300ms ease;
+  background-color: transparent;
+  text-align: center;
+  .swiper-container-vertical {
+    padding: calc(env(safe-area-inset-top) + 10px)
+      calc(env(safe-area-inset-left) + 5px) env(safe-area-inset-bottom, 0px)
+      calc(env(safe-area-inset-right) + 5px);
+  }
+  .notification-content {
+    .slide-zoom {
+      background-color: color($colors, primary);
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      justify-items: start;
+      .notification-info {
+        padding: 19px 16px 17px 16px;
+        .notification-title {
+          font-size: 1.5rem;
+          text-align: left;
+          color: white;
+          font-weight: bold;
+        }
+        .notification-message {
+          font-size: 1.3rem;
+          text-align: left;
+          color: white;
+          white-space: normal;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          line-clamp: 2;
+          -webkit-line-clamp: 2;
+          box-orient: vertical;
+          -webkit-box-orient: vertical;
+        }
+      }
+      .notification-button {
+        padding: 19px 16px 17px 16px;
+        align-self: center;
+        justify-self: end;
+        ion-label {
+          margin: 0px;
+          font-size: 1.5rem;
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

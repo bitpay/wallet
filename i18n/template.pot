@@ -212,11 +212,6 @@ msgid ""
 "of items at www.amazon.co.jp."
 msgstr ""
 
-msgid ""
-"Amazon.com Gift Cards never expire and can be redeemed towards millions of "
-"items at www.amazon.com."
-msgstr ""
-
 msgid "Amount"
 msgstr ""
 
@@ -308,6 +303,9 @@ msgid "Attempted payment request"
 msgstr ""
 
 msgid "Available"
+msgstr ""
+
+msgid "Average"
 msgstr ""
 
 msgid "Average confirmation time:"
@@ -1106,6 +1104,9 @@ msgstr ""
 msgid "ETH Multisig Wallet creation"
 msgstr ""
 
+msgid "ETH wallet is required"
+msgstr ""
+
 msgid ""
 "Each bitcoin wallet can generate billions of addresses from your 12-word "
 "recovery phrase. A new address is automatically generated and shown each "
@@ -1459,6 +1460,9 @@ msgstr ""
 msgid "Generating new address..."
 msgstr ""
 
+msgid "Get $10"
+msgstr ""
+
 msgid "Get Started"
 msgstr ""
 
@@ -1564,6 +1568,9 @@ msgid "Hide advanced options"
 msgstr ""
 
 msgid "Hide discount?"
+msgstr ""
+
+msgid "High"
 msgstr ""
 
 msgid "Hold"
@@ -1950,6 +1957,9 @@ msgstr ""
 msgid "Linked wallet"
 msgstr ""
 
+msgid "Litecoin Address"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr ""
 
@@ -1981,6 +1991,9 @@ msgid "Log in or Sign Up"
 msgstr ""
 
 msgid "Log out"
+msgstr ""
+
+msgid "Low"
 msgstr ""
 
 msgid "Low Fee"
@@ -2092,6 +2105,12 @@ msgstr ""
 msgid "Network Cost"
 msgstr ""
 
+msgid "Network Fee Policies"
+msgstr ""
+
+msgid "Network Fee Policy"
+msgstr ""
+
 msgid "Network cost"
 msgstr ""
 
@@ -2120,6 +2139,9 @@ msgid "New payment proposal"
 msgstr ""
 
 msgid "New payment received"
+msgstr ""
+
+msgid "New wallet found"
 msgstr ""
 
 msgid "Next"
@@ -2277,9 +2299,6 @@ msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
-msgstr ""
-
-msgid "Only redeemable on www.amazon.com (USA website)"
 msgstr ""
 
 msgid ""
@@ -2671,6 +2690,12 @@ msgid "Recovery Phrase"
 msgstr ""
 
 msgid "Redeem Now"
+msgstr ""
+
+msgid "Refer Friend"
+msgstr ""
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
 msgstr ""
 
 msgid "Refund address"
@@ -3186,7 +3211,16 @@ msgstr ""
 msgid "Sweeping Wallet..."
 msgstr ""
 
+msgid "Sync completed"
+msgstr ""
+
 msgid "Sync gift card purchases"
+msgstr ""
+
+msgid "Sync wallets across devices"
+msgstr ""
+
+msgid "Syncing Wallets..."
 msgstr ""
 
 msgid "System Default"
@@ -3319,6 +3353,12 @@ msgid ""
 msgstr ""
 
 msgid ""
+"The higher the fee, the greater the incentive a miner has to include that "
+"transaction in a block. Current fees are determined based on network load "
+"and the selected policy."
+msgstr ""
+
+msgid ""
 "The information you are about to share/export may contain sensitive data "
 "such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
 "person or entity with whom you are sharing this information."
@@ -3439,6 +3479,11 @@ msgid "There are some misunderstood outputs, please view on blockchain."
 msgstr ""
 
 msgid "There is a new version available"
+msgstr ""
+
+msgid ""
+"There is a temporary problem with the merchant requesting the payment. "
+"Please try later"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -3939,6 +3984,11 @@ msgid ""
 "applications to mobile wallets with QR code scanning or deep linking."
 msgstr ""
 
+msgid ""
+"WalletConnect requires at least one ETH wallet with backup to work "
+"properly. Please, create a new ETH wallet and try again."
+msgstr ""
+
 msgid "Wallets"
 msgstr ""
 
@@ -4123,6 +4173,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"You are using a different OAuthURL from original request or it has expired. "
+"Please try again."
+msgstr ""
+
+msgid ""
 "You can always reset your encrypt password on your key settings under the "
 "option"
 msgstr ""
@@ -4245,6 +4300,9 @@ msgstr ""
 msgid "Your funds, on your device"
 msgstr ""
 
+msgid "Your key is already synced"
+msgstr ""
+
 msgid "Your linked ETH wallet does not have enough ETH for fee"
 msgstr ""
 
@@ -4339,6 +4397,9 @@ msgstr ""
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr ""
 
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr ""
 
@@ -4362,6 +4423,9 @@ msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresse
 msgstr ""
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
+msgstr ""
+
+msgid "{{newWalletsCount}} wallets found"
 msgstr ""
 
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"

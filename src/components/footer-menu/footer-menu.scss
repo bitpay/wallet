@@ -7,7 +7,7 @@ footer-menu {
     margin: 32px 0 20px 3px;
   }
   .scan-button {
-    width: 125px;
+    min-width: 125px;
     margin: 20px auto 25px auto;
     display: flex;
     justify-content: center;
@@ -39,6 +39,38 @@ footer-menu {
 
     span {
       @extend .two-lines;
+    }
+  }
+
+  .clipboard-button {
+    width: 80%;
+    margin: auto 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 49px;
+    border-radius: 12px;
+    box-shadow: none;
+    line-height: 1.5;
+    font-weight: 500;
+    font-size: 14px;
+    background-color: #edf0fe;
+    color: color($colors, primary);
+
+    &.activated,
+    &:hover:not(.disable-hover) {
+      background-color: #edf0fe;
+      color: color($colors, primary);
+      box-shadow: none;
+    }
+
+    .button-inner {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      justify-content: start;
+      height: auto;
+      display: block;
     }
   }
 }

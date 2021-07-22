@@ -13,7 +13,6 @@ export { ScreenOrientation } from '@ionic-native/screen-orientation';
 export { SocialSharing } from '@ionic-native/social-sharing';
 export { SplashScreen } from '@ionic-native/splash-screen';
 export { StatusBar } from '@ionic-native/status-bar';
-export { Toast } from '@ionic-native/toast';
 export { Vibration } from '@ionic-native/vibration';
 export { UserAgent } from '@ionic-native/user-agent';
 

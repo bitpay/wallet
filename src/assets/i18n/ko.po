@@ -12,13 +12,13 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2021-05-21 13:31\n"
+"PO-Revision-Date: 2021-07-13 14:15\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
 
 msgid ") to pay the ETH miner fees."
-msgstr ""
+msgstr ") to pay the ETH miner fees."
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
@@ -194,9 +194,6 @@ msgstr "Already duplicated"
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 
-msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-msgstr "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-
 msgid "Amount"
 msgstr "금액"
 
@@ -204,7 +201,7 @@ msgid "Amount Too Low To Spend"
 msgstr "Amount Too Low To Spend"
 
 msgid "Amount below minimum allowed (dust threshold)"
-msgstr ""
+msgstr "Amount below minimum allowed (dust threshold)"
 
 msgid "Amount too big"
 msgstr "금액이 너무 큽니다"
@@ -219,7 +216,7 @@ msgid "Apple Pay"
 msgstr "Apple Pay"
 
 msgid "Apply"
-msgstr ""
+msgstr "적용하십시오"
 
 msgid "Approve"
 msgstr "승인"
@@ -281,6 +278,9 @@ msgstr "Attempted payment request"
 msgid "Available"
 msgstr "Available"
 
+msgid "Average"
+msgstr ""
+
 msgid "Average confirmation time:"
 msgstr "Average confirmation time:"
 
@@ -336,7 +336,7 @@ msgid "Before retrieving your wallets addresses, it's recommended that you first
 msgstr "Before retrieving your wallets addresses, it's recommended that you first write down your recovery phrase and store it securely so that your wallets can be recovered in the case your device was lost or stolen."
 
 msgid "Before sending more funds to complete this transaction we recommend you read more about miner fees."
-msgstr ""
+msgstr "Before sending more funds to complete this transaction we recommend you read more about miner fees."
 
 msgid "Below Minimum Amount"
 msgstr "Below Minimum Amount"
@@ -405,10 +405,10 @@ msgid "Buy crypto with a credit card."
 msgstr "Buy crypto with a credit card."
 
 msgid "Buy crypto with cash"
-msgstr ""
+msgstr "Buy crypto with cash"
 
 msgid "Buy gift cards with crypto"
-msgstr ""
+msgstr "Buy gift cards with crypto"
 
 msgid "Buy {displayName} Gift Card"
 msgstr "Buy {displayName} Gift Card"
@@ -429,7 +429,7 @@ msgid "CANCEL"
 msgstr ""
 
 msgid "CHOOSE FEE LEVEL"
-msgstr ""
+msgstr "CHOOSE FEE LEVEL"
 
 msgid "CLOSE"
 msgstr "CLOSE"
@@ -618,7 +618,7 @@ msgid "Connect your Coinbase!"
 msgstr "Connect your Coinbase!"
 
 msgid "Connected to"
-msgstr ""
+msgstr "Connected with"
 
 msgid "Connecting BitPay ID..."
 msgstr "Connecting BitPay ID..."
@@ -1016,6 +1016,9 @@ msgstr ""
 msgid "ETH Multisig Wallet creation"
 msgstr ""
 
+msgid "ETH wallet is required"
+msgstr ""
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 
@@ -1349,6 +1352,9 @@ msgstr "Generating .csv file..."
 msgid "Generating new address..."
 msgstr "Generating new address..."
 
+msgid "Get $10"
+msgstr ""
+
 msgid "Get Started"
 msgstr "Get Started"
 
@@ -1453,6 +1459,9 @@ msgstr "Hide advanced options"
 
 msgid "Hide discount?"
 msgstr "Hide discount?"
+
+msgid "High"
+msgstr ""
 
 msgid "Hold"
 msgstr ""
@@ -1781,6 +1790,9 @@ msgstr "Linked to wallet: {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr ""
 
+msgid "Litecoin Address"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr "Live on crypto."
 
@@ -1813,6 +1825,9 @@ msgstr ""
 
 msgid "Log out"
 msgstr "Log out"
+
+msgid "Low"
+msgstr ""
 
 msgid "Low Fee"
 msgstr "Low Fee"
@@ -1919,6 +1934,12 @@ msgstr "Network"
 msgid "Network Cost"
 msgstr "Network Cost"
 
+msgid "Network Fee Policies"
+msgstr ""
+
+msgid "Network Fee Policy"
+msgstr ""
+
 msgid "Network cost"
 msgstr "Network cost"
 
@@ -1948,6 +1969,9 @@ msgstr "New payment proposal"
 
 msgid "New payment received"
 msgstr "New payment received"
+
+msgid "New wallet found"
+msgstr ""
 
 msgid "Next"
 msgstr "Next"
@@ -2101,9 +2125,6 @@ msgstr "Only redeemable on Mercado Livre (Brazil)"
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr "Only redeemable on www.amazon.co.jp (Japan website)"
-
-msgid "Only redeemable on www.amazon.com (USA website)"
-msgstr "Only redeemable on www.amazon.com (USA website)"
 
 msgid "Only the payment methods supported to buy {coin} with {currency} will be shown."
 msgstr ""
@@ -2482,6 +2503,12 @@ msgstr "Recovery Phrase"
 
 msgid "Redeem Now"
 msgstr "Redeem Now"
+
+msgid "Refer Friend"
+msgstr ""
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
+msgstr ""
 
 msgid "Refund address"
 msgstr ""
@@ -2990,7 +3017,16 @@ msgstr "페이퍼 지갑 스윕"
 msgid "Sweeping Wallet..."
 msgstr "지갑 스윕 중..."
 
+msgid "Sync completed"
+msgstr ""
+
 msgid "Sync gift card purchases"
+msgstr ""
+
+msgid "Sync wallets across devices"
+msgstr ""
+
+msgid "Syncing Wallets..."
 msgstr ""
 
 msgid "System Default"
@@ -3092,6 +3128,9 @@ msgstr ""
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
 msgstr ""
 
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr ""
+
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 
@@ -3177,6 +3216,9 @@ msgid "There are some misunderstood outputs, please view on blockchain."
 msgstr ""
 
 msgid "There is a new version available"
+msgstr ""
+
+msgid "There is a temporary problem with the merchant requesting the payment. Please try later"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -3635,6 +3677,9 @@ msgstr ""
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
 msgstr ""
 
+msgid "WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again."
+msgstr ""
+
 msgid "Wallets"
 msgstr "Wallets"
 
@@ -3779,6 +3824,9 @@ msgstr "You are trying to send more funds than you have available. Make sure you
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 
+msgid "You are using a different OAuthURL from original request or it has expired. Please try again."
+msgstr ""
+
 msgid "You can always reset your encrypt password on your key settings under the option"
 msgstr ""
 
@@ -3866,6 +3914,9 @@ msgstr ""
 msgid "Your funds, on your device"
 msgstr "Your funds, on your device"
 
+msgid "Your key is already synced"
+msgstr ""
+
 msgid "Your linked ETH wallet does not have enough ETH for fee"
 msgstr "Your linked ETH wallet does not have enough ETH for fee"
 
@@ -3947,6 +3998,9 @@ msgstr "{walletsGroupLength} Wallets"
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr ""
 
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr ""
 
@@ -3967,6 +4021,9 @@ msgstr "{{appName}} only supports Bitcoin Cash using new version numbers address
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} of your wallets already exist in {{nameCase}}"
+
+msgid "{{newWalletsCount}} wallets found"
+msgstr ""
 
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr ""

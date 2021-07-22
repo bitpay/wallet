@@ -14,6 +14,7 @@ export class AddressProvider {
   private bitcoreCash;
   private bitcoreDoge;
   private bitcoreXpi;
+  private bitcoreLtc;
   private core;
 
   constructor(private bwcProvider: BwcProvider, private logger: Logger) {
@@ -21,6 +22,8 @@ export class AddressProvider {
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.bitcoreDoge = this.bwcProvider.getBitcoreDoge();
     this.bitcoreXpi = this.bwcProvider.getBitcoreXpi();
+    this.bitcoreLtc = this.bwcProvider.getBitcoreLtc();
+
     this.core = this.bwcProvider.getCore();
   }
 
@@ -84,7 +87,12 @@ export class AddressProvider {
                 network = this.bitcoreXpi.Address(address).network.name;
                 return { coin: 'xpi', network };
               } catch (e) {
-                return null;
+                try {
+                  network = this.bitcoreLtc.Address(address).network.name;
+                  return { coin: 'ltc', network };
+                } catch (error) {
+                  return null;
+                }
               }
             }
           }
@@ -103,12 +111,16 @@ export class AddressProvider {
     const URICash = this.bitcoreCash.URI;
     const AddressDoge = this.bitcoreDoge.Address;
     const URIDoge = this.bitcoreDoge.URI;
+    const AddressLtc = this.bitcoreLtc.Address;
+    const URILtc = this.bitcoreLtc.URI;
+
     const { Validation } = this.core;
 
     // Bip21 uri
     if (URI.isValid(str)) return true;
     if (URICash.isValid(str)) return true;
     if (URIDoge.isValid(str)) return true;
+    if (URILtc.isValid(str)) return true;
     if (Validation.validateUri('ETH', str)) return true;
     if (Validation.validateUri('XRP', str)) return true;
 
@@ -121,6 +133,8 @@ export class AddressProvider {
     if (AddressXpi.isValid(str, 'testnet')) return true;
     if (AddressDoge.isValid(str, 'livenet')) return true;
     if (AddressDoge.isValid(str, 'testnet')) return true;
+    if (AddressLtc.isValid(str, 'livenet')) return true;
+    if (AddressLtc.isValid(str, 'testnet')) return true;
     if (Validation.validateAddress('XRP', 'livenet', str)) return true;
     if (Validation.validateAddress('ETH', 'livenet', str)) return true;
 

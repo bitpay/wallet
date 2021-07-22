@@ -537,7 +537,7 @@ export class ExchangeCheckoutPage {
     let finishText = 'Transaction Sent';
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, coin: this.fromWalletSelected.coin },
+      { finishText },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

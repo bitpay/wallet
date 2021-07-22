@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2021-05-21 13:31\n"
+"PO-Revision-Date: 2021-07-13 14:15\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -194,9 +194,6 @@ msgstr "Déjà dupliqué"
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr "Les cartes-cadeaux Amazon.co.jp n'expireront jamais et peuvent être échangées contre des millions d’articles sur www.amazon.co.jp."
 
-msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-msgstr "Les cartes-cadeaux Amazon.com n'expireront jamais et peuvent être échangées contre des millions d’articles sur www.amazon.com."
-
 msgid "Amount"
 msgstr "Montant"
 
@@ -280,6 +277,9 @@ msgstr "Demande de paiement essayée"
 
 msgid "Available"
 msgstr "Disponible"
+
+msgid "Average"
+msgstr ""
 
 msgid "Average confirmation time:"
 msgstr "Temps moyen de confirmation :"
@@ -426,10 +426,10 @@ msgid "By providing your email address, you give explicit consent to BitPay to u
 msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à BitPay d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
 
 msgid "CANCEL"
-msgstr ""
+msgstr "ANNULER"
 
 msgid "CHOOSE FEE LEVEL"
-msgstr ""
+msgstr "CHOISIR LE NIVEAU DE FRAIS"
 
 msgid "CLOSE"
 msgstr "FERMER"
@@ -978,7 +978,7 @@ msgid "Do you want to reset all settings to default value?"
 msgstr "Voulez-vous réinitialiser tous les paramètres à la valeur par défaut ?"
 
 msgid "Doge Address"
-msgstr ""
+msgstr "Adresse Doge"
 
 msgid "Don't lose your key!"
 msgstr "Ne perdez pas votre clé !"
@@ -1015,6 +1015,9 @@ msgstr "ETH Multisig"
 
 msgid "ETH Multisig Wallet creation"
 msgstr "Création du portefeuille ETH Multisig"
+
+msgid "ETH wallet is required"
+msgstr ""
 
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Chaque portefeuille bitcoin peut générer des milliards d’adresses depuis votre phrase de récupération. Une nouvelle adresse est automatiquement générée et affichée à chaque fois que vous recevez un paiement."
@@ -1349,6 +1352,9 @@ msgstr "Génération du fichier .csv..."
 msgid "Generating new address..."
 msgstr "Génération d'une nouvelle adresse..."
 
+msgid "Get $10"
+msgstr ""
+
 msgid "Get Started"
 msgstr "Commencer"
 
@@ -1454,6 +1460,9 @@ msgstr "Masquer les options avancées"
 msgid "Hide discount?"
 msgstr "Masquer la remise ?"
 
+msgid "High"
+msgstr ""
+
 msgid "Hold"
 msgstr ""
 
@@ -1476,7 +1485,7 @@ msgid "I Understand"
 msgstr "Je comprends"
 
 msgid "I already have an account"
-msgstr ""
+msgstr "J'ai déjà un compte"
 
 msgid "I have read, understood, and agree with the Terms of Use."
 msgstr "J'ai lu, compris et j'accepte les conditions d'utilisation."
@@ -1781,6 +1790,9 @@ msgstr "Liée au portefeuille : {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr "Portefeuille lié"
 
+msgid "Litecoin Address"
+msgstr ""
+
 msgid "Live on crypto."
 msgstr "Live on crypto."
 
@@ -1813,6 +1825,9 @@ msgstr ""
 
 msgid "Log out"
 msgstr "Se déconnecter"
+
+msgid "Low"
+msgstr ""
 
 msgid "Low Fee"
 msgstr "Frais faibles"
@@ -1919,6 +1934,12 @@ msgstr "Réseau"
 msgid "Network Cost"
 msgstr "Coût de réseau"
 
+msgid "Network Fee Policies"
+msgstr ""
+
+msgid "Network Fee Policy"
+msgstr ""
+
 msgid "Network cost"
 msgstr "Coût de réseau"
 
@@ -1948,6 +1969,9 @@ msgstr "Nouvelle proposition de paiement"
 
 msgid "New payment received"
 msgstr "Nouveau paiement reçu"
+
+msgid "New wallet found"
+msgstr ""
 
 msgid "Next"
 msgstr "Suivant"
@@ -2101,9 +2125,6 @@ msgstr "Seulement utilisable sur Mercado Livre (Brazil)"
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr "Uniquement échangeable sur www.amazon.co.jp (site japonnais)"
-
-msgid "Only redeemable on www.amazon.com (USA website)"
-msgstr "Uniquement échangeable sur www.amazon.com (site américain)"
 
 msgid "Only the payment methods supported to buy {coin} with {currency} will be shown."
 msgstr ""
@@ -2482,6 +2503,12 @@ msgstr "Phrase de récupération"
 
 msgid "Redeem Now"
 msgstr "Échanger maintenant"
+
+msgid "Refer Friend"
+msgstr ""
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
+msgstr ""
 
 msgid "Refund address"
 msgstr "Adresse de remboursement"
@@ -2964,7 +2991,7 @@ msgid "Store this key separately"
 msgstr "Conservez cette clé séparément"
 
 msgid "Submit a ticket"
-msgstr ""
+msgstr "Soumettre un ticket"
 
 msgid "Subtotal"
 msgstr "Sous-total"
@@ -2990,8 +3017,17 @@ msgstr "Balayer un portefeuille de papier"
 msgid "Sweeping Wallet..."
 msgstr "Balayage du portefeuille..."
 
+msgid "Sync completed"
+msgstr ""
+
 msgid "Sync gift card purchases"
 msgstr "Synchroniser les achats de cartes-cadeaux"
+
+msgid "Sync wallets across devices"
+msgstr ""
+
+msgid "Syncing Wallets..."
+msgstr ""
 
 msgid "System Default"
 msgstr "Système par défaut"
@@ -3092,6 +3128,9 @@ msgstr "Le montant final de crypto-monnaie que vous recevez lorsque la transacti
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
 msgstr ""
 
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr ""
+
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "Les informations que vous êtes sur le point de partager peuvent contenir des données sensibles telles que les ID de portefeuilles, les adresses, les soldes... Vous devez avoir confiance en la personne ou en l'entité avec qui vous partagez ces informations."
 
@@ -3178,6 +3217,9 @@ msgstr ""
 
 msgid "There is a new version available"
 msgstr "Une nouvelle version est disponible"
+
+msgid "There is a temporary problem with the merchant requesting the payment. Please try later"
+msgstr ""
 
 msgid "There is an error in the form"
 msgstr "Il y a une erreur dans la forme"
@@ -3635,6 +3677,9 @@ msgstr "WalletConnect"
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
 msgstr "WalletConnect est un protocole open source pour connecter des applications décentralisées à des portefeuilles mobiles avec un QR code ou un \"deep linking.\""
 
+msgid "WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again."
+msgstr ""
+
 msgid "Wallets"
 msgstr "Portefeuilles"
 
@@ -3779,6 +3824,9 @@ msgstr "Vous essayez d'envoyer plus de fonds que vous n'en avez de disponible. A
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "Vous essayez d'envoyer plus de fonds que vous n'en avez de disponible. Assurez-vous de ne pas avoir de fonds verrouillés par des propositions de transaction en attente. Vous pouvez également essayer avec un montant inférieur ou envoyer le maximum."
 
+msgid "You are using a different OAuthURL from original request or it has expired. Please try again."
+msgstr ""
+
 msgid "You can always reset your encrypt password on your key settings under the option"
 msgstr "Vous pouvez toujours réinitialiser votre code de chiffrement dans les paramètres de votre clé sous l'option"
 
@@ -3866,6 +3914,9 @@ msgstr "Vos fonds sont sous votre garde"
 msgid "Your funds, on your device"
 msgstr "Vos fonds, sur votre appareil"
 
+msgid "Your key is already synced"
+msgstr ""
+
 msgid "Your linked ETH wallet does not have enough ETH for fee"
 msgstr "Votre portefeuille ETH lié n'a pas assez d'ETH pour couvrir les frais."
 
@@ -3947,6 +3998,9 @@ msgstr "{walletsGroupLength} portefeuilles"
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr "{{ 'Privacy Policy' | translate}}"
 
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr ""
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr "{{ params.error ? 'Error' : 'Warning!' }}"
 
@@ -3967,6 +4021,9 @@ msgstr "{{appName}} prend uniquement en charge le nouveau type d'adresse de Bitc
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} de vos portefeuilles existent déjà dans {{nameCase}}"
+
+msgid "{{newWalletsCount}} wallets found"
+msgstr ""
 
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Téléphone requis"

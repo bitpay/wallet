@@ -11,6 +11,7 @@ import { ExchangeRates } from './exchange-rates/exchange-rates';
 import { EXPANDABLE_HEADER_COMPONENTS } from './expandable-header/expandable-header';
 import { GiftCardDiscountText } from './gift-card-discount-text/gift-card-discount-text';
 import { LabelTip } from './label-tip/label-tip';
+import { NotificationComponent } from './notification-component/notification-component';
 import { PriceChart } from './price-chart/price-chart';
 import { SearchBarComponent } from './search-bar/search-bar';
 import { SliderCaptchaComponent } from './slider-captcha/slider-captcha';
@@ -33,5 +34,6 @@ export const COMPONENTS = [
   BalanceToShowComponent,
   ChartComponent,
   PriceChart,
-  SliderCaptchaComponent
+  SliderCaptchaComponent,
+  NotificationComponent
 ];

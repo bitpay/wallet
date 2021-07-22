@@ -102,7 +102,11 @@
 
 
       <ion-item-divider *ngIf="canSign">{{'Advanced' | translate}}</ion-item-divider>
-
+            
+      <button ion-item *ngIf="!needsBackup" (click)="syncWallets()">
+        <span translate>Sync wallets across devices</span>
+      </button>
+      
       <button *ngIf="!needsBackup && canSign && !isDeletedSeed" ion-item (click)="openQrExport()">
         <span translate>Export Key</span>
       </button>

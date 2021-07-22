@@ -9,6 +9,7 @@ export class DerivationPathHelperProvider {
   public defaultDOGE: string;
   public defaultBCHA: string;
   public defaultXPI: string;
+  public defaultLTC: string;
   public defaultTestnet: string;
   public defaultMultisigBTC: string;
   public defaultMultisigBCH: string;
@@ -24,6 +25,7 @@ export class DerivationPathHelperProvider {
     this.defaultDOGE = "m/44'/3'/0'";
     this.defaultBCHA = "m/44'/899'/0'";
     this.defaultXPI = "m/44'/10605'/0'";
+    this.defaultLTC = "m/44'/2'/0'";
     this.defaultMultisigBTC = "m/48'/0'/0'";
     this.defaultMultisigBCH = "m/48'/145'/0'";
     this.defaultMultisigDOGE = "m/48'/3'/0'";
@@ -91,7 +93,9 @@ export class DerivationPathHelperProvider {
       case "10605'": // for XPI
         networkName = 'livenet';
         break;
-
+      case "2'": // for LTC
+        networkName = 'livenet';
+        break;
     }
     return networkName;
   }
@@ -135,6 +139,10 @@ export class DerivationPathHelperProvider {
         break;
       case 'xpi':
           isValid = ["10605'", "0'", "1'"].indexOf(coinCode) > -1;
+        break;
+      case 'ltc':
+        isValid = ["2'", "1'"].indexOf(coinCode) > -1;
+        break;
     }
 
     return isValid;

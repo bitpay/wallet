@@ -1,0 +1,19 @@
+<div class="notification-modal-panel" >
+    <ion-slides #notificationSlide (ionSlideWillChange)="dismiss({})" direction="vertical" pager="false">
+      <ion-slide class="notification-content">
+        <div class="notification-info">
+          <div class="notification-title" *ngIf="title">
+              {{title}}
+          </div>
+          <div class="notification-message">
+            {{message}}
+          </div>
+        </div>
+        <div class="notification-button" *ngIf="customButton">
+          <ion-label *ngIf="customButton" (click)="dismiss(customButton.data)">
+            {{ customButton.closeButtonText }}
+          </ion-label>
+        </div>
+      </ion-slide>
+  </ion-slides>
+</div>

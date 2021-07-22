@@ -10,7 +10,7 @@
 
 <ion-content no-bounce>
   <div *ngIf="!connected">
-    <div class="uri-header-wrapper">
+    <div *ngIf="wallet" class="uri-header-wrapper">
       <ion-item class="search-wrapper">
         <ion-input placeholder="{{'Enter WalletConnect URI' | translate}}" [(ngModel)]="uri"></ion-input>
         <ion-icon *ngIf="isCordova" item-end class="scan-icon" (click)="openScanner()">
@@ -26,14 +26,23 @@
         </ion-label>
       </ion-item>
       <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+
+      <button margin-top ion-button class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
+        {{'Connect' | translate}}
+      </button>
     </ion-list>
 
-    <button margin-top ion-button class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
-      {{'Connect' | translate}}
-    </button>
+    <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+      <div label-tip-title>
+        <span translate>ETH wallet is required</span>
+      </div>
+      <div label-tip-body>
+        <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+      </div>
+    </label-tip>
   </div>
 
-  <div *ngIf="connected && wallet">
+  <div *ngIf="connected">
     <ion-list class="bp-list">
 
       <div *ngIf="peerMeta">
@@ -52,7 +61,7 @@
       </div>
       
       <div class="item-label" translate>Linked wallet</div>
-      <ion-item *ngIf="peerMeta">
+      <ion-item *ngIf="wallet">
         <coin-icon item-start [coin]="wallet.coin" [network]="wallet.network"></coin-icon>
         <ion-label>
           <div class="main-label">
@@ -63,7 +72,7 @@
       </ion-item>
       
       <div class="item-label" translate>Pending Call Requests</div>
-      <ion-item *ngIf="requests.length === 0">
+      <ion-item *ngIf="requests?.length === 0">
         <ion-label>
           {{'No pending call requests' | translate}}
         </ion-label>
@@ -77,9 +86,6 @@
               <ion-note item-end>
                 {{ request.id }}
               </ion-note>
-            </div>
-            <div (click)="rejectRequest(request)">
-              <ion-icon ios="md-close" md="md-close"></ion-icon>
             </div>
           </div>
           <div action-card-body>
@@ -156,13 +162,19 @@
               </div>
             </div>
           </div>
-          <div action-card-button (click)="approveRequest(request)">
-            <span *ngIf="request.method === 'eth_sendTransaction'">
-              {{'Continue' | translate }}
-            </span>
-            <span *ngIf="request.method === 'eth_signTypedData' || request.method === 'personal_sign'">
-              {{'Approve' | translate }}
-            </span>
+          <div action-card-button>
+            <ion-row>
+              <ion-col>
+                <button (click)="rejectRequest(request)" ion-button class="button-standard" color="primary" outline>
+                  {{ 'Reject' | translate }}
+                </button>
+              </ion-col>
+              <ion-col>
+                <button (click)="approveRequest(request)" ion-button class="button-standard" color="primary">
+                  {{ buttonAction[request.method] || 'Confirm' | translate }}
+                </button>
+              </ion-col>
+            </ion-row>
           </div>
         </action-card>
       </div>
