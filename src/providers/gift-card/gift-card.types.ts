@@ -64,6 +64,9 @@ export interface CommonCardConfig {
   supportedUrls?: string;
   tags?: string[];
   terms: string;
+  textOverrides?: {
+    claimCode?: string;
+  };
   website: string;
 }
 
