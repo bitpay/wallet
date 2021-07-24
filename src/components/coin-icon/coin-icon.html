@@ -1,19 +1,4 @@
-<ion-icon *ngIf="coin && coin !== 'default'" class="item-img rectangle" [ngClass]="{ 
-'background_btc': coin == 'btc',
-'background_bch': coin == 'bch',
-'background_eth': coin == 'eth',
-'background_xrp': coin == 'xrp',
-'background_usdc': coin == 'usdc',
-'background_pax': coin == 'pax',
-'background_gusd': coin == 'gusd',
-'background_busd': coin == 'busd',
-'background_dai': coin == 'dai',
-'background_wbtc': coin == 'wbtc',
-'background_doge': coin == 'doge',
-'background_ltc': coin == 'ltc',
-'testnet': network === 'testnet'
-}" item-start>
-  <img src="assets/img/currencies/{{coin}}.svg" />
+<ion-icon *ngIf="coin && coin !== 'default'" class="item-img rectangle background_{{coin}}" [ngClass]="{'testnet': network === 'testnet'}" item-start>
+  <img [src]="assetUrl" />
 </ion-icon>
-
 <ion-icon *ngIf="coin ==='default'" name="logo-usd" color="success" class="item-img rectangle background_default" item-start></ion-icon>

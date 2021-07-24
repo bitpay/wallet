@@ -1,14 +1,22 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'coin-icon',
   templateUrl: 'coin-icon.html'
 })
-export class CoinIconComponent {
+export class CoinIconComponent implements OnInit {
   @Input()
   coin: string;
   @Input()
   network: string;
 
-  constructor() {}
+  public assetUrl = 'assets/img/currencies/';
+
+  ngOnInit() {
+    if (this.network === 'testnet' && ['ltc'].includes(this.coin)) {
+      this.assetUrl += 'testnet/';
+    }
+
+    this.assetUrl += `${this.coin}.svg`;
+  }
 }
