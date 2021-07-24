@@ -13,7 +13,7 @@ export class DerivationPathHelperProvider {
   public defaultMultisigBTC: string;
   public defaultMultisigBCH: string;
   public defaultMultisigDOGE: string;
-  public defaultMultisigBCHA: string;
+  public defaultMultisigXEC: string;
   public defaultMultisigXPI: string;
 
   public constructor() {
@@ -27,7 +27,7 @@ export class DerivationPathHelperProvider {
     this.defaultMultisigBTC = "m/48'/0'/0'";
     this.defaultMultisigBCH = "m/48'/145'/0'";
     this.defaultMultisigDOGE = "m/48'/3'/0'";
-    this.defaultMultisigBCHA = "m/48'/899'/0'";
+    this.defaultMultisigXEC = "m/48'/899'/0'";
     this.defaultMultisigXPI = "m/48'/10605'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
@@ -130,7 +130,7 @@ export class DerivationPathHelperProvider {
       case 'doge':
         isValid = ["3'", "1'"].indexOf(coinCode) > -1;
         break;      
-      case 'bcha':
+      case 'xec':
           isValid = ["899'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'xpi':

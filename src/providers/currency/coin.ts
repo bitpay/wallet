@@ -118,15 +118,15 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: '#2fcf6e'
     }
   },
-  bcha: {
+  xec: {
     name: 'eCash',
-    chain: 'bcha',
+    chain: 'XEC',
     coin: 'bcha',
     unitInfo: {
-      unitName: 'BCHA',
-      unitToSatoshi: 100000000,
+      unitName: 'XEC',
+      unitToSatoshi: 1000,
       unitDecimals: 8,
-      unitCode: 'bcha'
+      unitCode: 'xec'
     },
     properties: {
       hasMultiSig: true,
@@ -138,11 +138,11 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     paymentInfo: {
       paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'bcha', testnet: 'bcha' },
-      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/btc',
+      protocolPrefix: { livenet: 'xec', testnet: 'xec' },
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xec',
       // ratesApi: 'http://thunt111984.cameraddns.net:3232/bws/api/v3/fiatrates/bch',
-      blockExplorerUrls: 'texplorer.bitcoinabc.org/',
-      blockExplorerUrlsTestnet: 'upgrade-explorer.bitcoinabc.org/'
+      blockExplorerUrls: 'explorer.bitcoinabc.org/',
+      blockExplorerUrlsTestnet: 'texplorer.bitcoinabc.org/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
