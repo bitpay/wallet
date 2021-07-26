@@ -183,11 +183,12 @@ export class FeeProvider {
 
   public getCoinCurrentFeeLevel(coin): string {
     let feeLevel;
-    switch (coin) {
-      case 'btc':
+    switch (true) {
+      case coin === 'btc':
         feeLevel = this.configProvider.get().feeLevels.btc || 'normal';
         break;
-      case 'eth':
+      case coin === 'eth':
+      case this.currencyProvider.isERCToken(coin):
         feeLevel = this.configProvider.get().feeLevels.eth || 'normal';
         break;
       default:
