@@ -138,7 +138,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     },
     paymentInfo: {
       paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'xec', testnet: 'xec' },
+      protocolPrefix: { livenet: 'ecash', testnet: 'ectest' },
       ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xec',
       // ratesApi: 'http://thunt111984.cameraddns.net:3232/bws/api/v3/fiatrates/bch',
       blockExplorerUrls: 'explorer.bitcoinabc.org/',
