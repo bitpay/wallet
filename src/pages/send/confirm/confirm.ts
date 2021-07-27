@@ -1399,6 +1399,7 @@ export class ConfirmPage {
       coin !== 'bch' &&
       coin !== 'xrp' &&
       coin !== 'doge' &&
+      coin !== 'ltc' &&
       !this.usingMerchantFee &&
       !this.tx.speedUpTxInfo &&
       feeLevel !== 'superEconomy';
@@ -1700,6 +1701,7 @@ export class ConfirmPage {
       this.tx.coin === 'bch' ||
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
+      this.tx.coin === 'ltc' ||
       this.usingMerchantFee ||
       this.tx.speedUpTxInfo
     )
