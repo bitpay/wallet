@@ -81,7 +81,7 @@ export class IncomingDataProvider {
 
   private isValidPayPro(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin|ecash)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -111,6 +111,11 @@ export class IncomingDataProvider {
   private isValidBitcoinCashUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
+  }
+
+  private isValidECashUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreXec().URI.isValid(data);
   }
 
   private isValidLotusUri(data: string): boolean {
@@ -175,6 +180,13 @@ export class IncomingDataProvider {
     return !!(
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
+    );
+  }
+
+  private isValidECashAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcoreXec().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcoreXec().Address.isValid(data, 'testnet')
     );
   }
 
@@ -416,6 +428,28 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
+  private handleECashUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: ECash URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = Coin.XEC;
+    let parsed = this.bwcProvider.getBitcoreXec().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+
+    // keep address in original format
+    if (parsed.address && data.indexOf(address) < 0) {
+      address = parsed.address.toCashAddress();
+    }
+
+    let message = parsed.message;
+    let amount = parsed.amount || amountFromRedirParams;
+
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
+  }
+
   private handleLotusUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Lotus URI');
     let amountFromRedirParams =
@@ -437,9 +471,6 @@ export class IncomingDataProvider {
       this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
-
-
-
 
 
   private handleDogecoinUri(data: string, redirParams?: RedirParams): void {
@@ -828,6 +859,11 @@ export class IncomingDataProvider {
       this.handleBitcoinCashUri(data, redirParams);
       return true;
 
+      // Ecash URI
+    } else if (this.isValidECashUri(data)) {
+      this.handleECashUri(data, redirParams);
+      return true;
+
       // Lotus URI
     } else if (this.isValidLotusUri(data)) {
       this.handleLotusUri(data, redirParams);
@@ -1136,7 +1172,15 @@ export class IncomingDataProvider {
         title: this.translate.instant('Bitcoin Cash Address')
       };
 
-      // Plain Address (Lotus)
+      // Plain Address (Ecash)
+    } else if (this.isValidECashAddress(data)) {
+      return {
+        data,
+        type: 'ECashAddress',
+        title: this.translate.instant('ECash Address')
+      };
+
+      // Plain Address (Ethereum)
     } else if (this.isValidLotusAddress(data)) {
       return {
         data,

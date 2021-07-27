@@ -84,9 +84,9 @@ export class MultiSendPage {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge(),
-      // TODO: Add function for bcha
-      bcha: this.bwcProvider.getBitcoreCash(),
-      ltc: this.bwcProvider.getBitcoreLtc()
+      ltc: this.bwcProvider.getBitcoreLtc(),
+      xec: this.bwcProvider.getBitcoreXec(),
+      xpi: this.bwcProvider.getBitcoreXpi()
     };
     this.isCordova = this.platformProvider.isCordova;
     this.isDisabledContinue = true;

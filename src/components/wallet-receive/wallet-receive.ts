@@ -112,7 +112,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
         if (this.address && this.address != address) {
           this.playAnimation = true;
         }
-        if (this.wallet.coin === 'bch') this.bchCashAddress = address;
+        if (this.wallet.coin === 'bch' || this.wallet.coin === 'xec') this.bchCashAddress = address;
 
         this.updateQrAddress(address, newAddr);
       })
