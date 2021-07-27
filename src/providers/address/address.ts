@@ -13,6 +13,7 @@ export class AddressProvider {
   private bitcore;
   private bitcoreCash;
   private bitcoreDoge;
+  private bitcoreXec;
   private bitcoreXpi;
   private core;
 
@@ -20,6 +21,7 @@ export class AddressProvider {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.bitcoreDoge = this.bwcProvider.getBitcoreDoge();
+    this.bitcoreXec = this.bwcProvider.getBitcoreXec();
     this.bitcoreXpi = this.bwcProvider.getBitcoreXpi();
     this.core = this.bwcProvider.getCore();
   }
@@ -48,7 +50,6 @@ export class AddressProvider {
       return { coin: 'btc', network };
     } catch (e) {
       try {
-        // TODO: Add option to check BCHA
         network = this.bitcoreCash.Address(address).network.name;
         return { coin: 'bch', network };
       } catch (e) {
@@ -81,10 +82,15 @@ export class AddressProvider {
               return { coin: 'doge', network };
             } catch (e) {
               try {
-                network = this.bitcoreXpi.Address(address).network.name;
-                return { coin: 'xpi', network };
+                network = this.bitcoreXec.Address(address).network.name;
+                return { coin: 'xec', network };
               } catch (e) {
-                return null;
+                try {
+                  network = this.bitcoreXpi.Address(address).network.name;
+                  return { coin: 'xpi', network };
+                } catch (e) {
+                  return null;
+                }
               }
             }
           }
@@ -99,8 +105,10 @@ export class AddressProvider {
     const URI = this.bitcore.URI;
     const Address = this.bitcore.Address;
     const AddressCash = this.bitcoreCash.Address;
+    const AddressXec = this.bitcoreXec.Address;
     const AddressXpi = this.bitcoreXpi.Address;
     const URICash = this.bitcoreCash.URI;
+    const URIXec = this.bitcoreXec.URI;
     const AddressDoge = this.bitcoreDoge.Address;
     const URIDoge = this.bitcoreDoge.URI;
     const { Validation } = this.core;
@@ -108,6 +116,7 @@ export class AddressProvider {
     // Bip21 uri
     if (URI.isValid(str)) return true;
     if (URICash.isValid(str)) return true;
+    if (URIXec.isValid(str)) return true;
     if (URIDoge.isValid(str)) return true;
     if (Validation.validateUri('ETH', str)) return true;
     if (Validation.validateUri('XRP', str)) return true;
@@ -117,6 +126,8 @@ export class AddressProvider {
     if (Address.isValid(str, 'testnet')) return true;
     if (AddressCash.isValid(str, 'livenet')) return true;
     if (AddressCash.isValid(str, 'testnet')) return true;
+    if (AddressXec.isValid(str, 'livenet')) return true;
+    if (AddressXec.isValid(str, 'testnet')) return true;
     if (AddressXpi.isValid(str, 'livenet')) return true;
     if (AddressXpi.isValid(str, 'testnet')) return true;
     if (AddressDoge.isValid(str, 'livenet')) return true;

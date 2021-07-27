@@ -1224,10 +1224,10 @@ describe('Provider: Wallet Provider', () => {
       expect(protocol).toEqual('bchtest');
     });
 
-    it('Should return bitcoin if coin is btc', () => {
-      const coin = Coin.BTC;
+    it('Should return ecash if coin is xec', () => {
+      const coin = Coin.XEC;
       const protocol = walletProvider.getProtocolHandler(coin);
-      expect(protocol).toEqual('bitcoin');
+      expect(protocol).toEqual('ecash');
     });
   });
 });

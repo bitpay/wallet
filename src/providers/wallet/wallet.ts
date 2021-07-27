@@ -562,7 +562,7 @@ export class WalletProvider {
   }
 
   public getAddressView(coin: Coin, network: string, address: string): string {
-    if (coin != 'bch') return address;
+    if (coin != 'bch' && coin != 'xec') return address;
     const protoAddr = this.getProtoAddress(coin, network, address);
     return protoAddr;
   }
