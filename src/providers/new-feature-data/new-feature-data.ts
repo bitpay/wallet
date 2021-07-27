@@ -159,14 +159,44 @@ export class NewFeatureData {
             }
           }
         ]
+      },
+      {
+        majorversion: 12,
+        minorversion: 7,
+        app: ['*'],
+        platform: ['*', 'android'],
+        dummy: this.translate.instant('dummy'),
+        features: [
+          {
+            title: 'Litecoin added',
+            details:
+              'Now you can store, send and receive Litecoin, a low cost, instant peer-to-peer Internet currency, in your BitPay App.',
+            image: {
+              path: 'assets/img/new-feature/12.7/12.7-1-ltc.svg'
+            }
+          },
+          {
+            title: 'Connect with Google Pay',
+            details: `Now it's easy to use your BitPay Card with Google Pay. Make payments in stores, in apps, and online.`,
+            image: {
+              path: 'assets/img/new-feature/12.7/12.7-2-google-pay.svg'
+            }
+          }
+        ]
       }
     ];
   }
 
   async get() {
     await this.locationProv.countryPromise.then(data => (this.country = data));
-    const list = this.feature_list.filter(
-      vs =>
+    const platform = this.platProv.getPlatform();
+    const list = this.feature_list.filter(vs => {
+      if (vs.platform.length > 1) {
+        vs.platform.forEach((p, i) => {
+          if (p !== '*' && p !== platform) vs.features.splice(i, 1);
+        });
+      }
+      return (
         vs.majorversion === this.appProv.version.major &&
         vs.minorversion === this.appProv.version.minor &&
         (vs.app.length == 0 ||
@@ -176,12 +206,13 @@ export class NewFeatureData {
           )) &&
         (vs.platform.length == 0 ||
           vs.platform[0] === '*' ||
-          vs.platform.find(plat => this.platProv.getPlatform() === plat)) &&
+          vs.platform.find(plat => platform === plat)) &&
         (!vs.country ||
           vs.country[0] === '*' ||
           vs.country.indexOf(this.country) != -1) &&
         vs.features.length > 0
-    );
+      );
+    });
     return list && list.length > 0
       ? _.orderBy(list, ['majorversion', 'minorversion'], ['desc', 'desc'])[0]
       : undefined;
