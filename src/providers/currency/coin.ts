@@ -480,7 +480,7 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       feeUnit: 'sat/byte',
       feeUnitAmount: 1000,
       blockTime: 10,
-      maxMerchantFee: 'urgent'
+      maxMerchantFee: 'normal'
     },
     theme: {
       coinColor: '#f7931a',
