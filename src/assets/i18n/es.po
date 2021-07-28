@@ -914,10 +914,10 @@ msgstr "Depósito exitoso"
 msgid "Deposit to"
 msgstr "Depositar en"
 
-msgid "Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgid "Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. AbcPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
 msgstr "Depositar cualquier otro cripto-activo distinto de {coin} a esta dirección puede resultar en la pérdida total de sus fondos. BitPay no se hace responsable de ninguna pérdida de fondos debido al depósito de un activo, billetera o red diferente."
 
-msgid "Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
+msgid "Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. AbcPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
 msgstr "Depositar cualquier otro cripto-activo distinto de {coin} a esta dirección o hacerlo a través de cualquier otra red distinta a ERC20 puede resultar en la pérdida total de sus fondos. BitPay no se hace responsable de ninguna pérdida de fondos debido al depósito de un activo, billetera o red diferente."
 
 msgid "Derivation Path"
