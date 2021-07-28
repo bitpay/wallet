@@ -184,7 +184,7 @@ export class HomePage {
       return;
     }
     this.persistenceProvider.getNewFeatureSlidesFlag().then(value => {
-      if (value !== dismissFlag) {
+      if (!value || value !== dismissFlag) {
         this.newFeatureData.get().then(feature_list => {
           if (feature_list && feature_list.features.length > 0) {
             const modal = this.modalCtrl.create(NewFeaturePage, {
