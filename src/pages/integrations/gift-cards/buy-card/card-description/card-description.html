@@ -1,11 +1,9 @@
 <div [ngSwitch]="cardConfig.name">
-  <div *ngSwitchCase="'Amazon.com'">
-    <div translate>Only redeemable on www.amazon.com (USA website)</div>
-    <div translate>Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com.</div>
-  </div>
   <div *ngSwitchCase="'Amazon.co.jp'">
     <div translate>Only redeemable on www.amazon.co.jp (Japan website)</div>
-    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp.</div>
+    <div translate>
+      Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp.
+    </div>
   </div>
   <div *ngSwitchCase="'Mercado Livre'">
     <div translate>Only redeemable on Mercado Livre (Brazil)</div>
@@ -14,8 +12,12 @@
     </div>
   </div>
   <div *ngSwitchDefault externalize-links>
-    <div markdown [data]="prepForMarkdown(cardConfig.promotions[0].details)" class="card-description__promotion"
-      *ngIf="hasPromotion(cardConfig)"></div>
+    <div
+      markdown
+      [data]="prepForMarkdown(cardConfig.promotions[0].details)"
+      class="card-description__promotion"
+      *ngIf="hasPromotion(cardConfig)"
+    ></div>
     <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>
   </div>
 </div>

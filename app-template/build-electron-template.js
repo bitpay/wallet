@@ -28,6 +28,7 @@ builder
           'ethereum',
           'ripple',
           'dogecoin',
+          'litecoin',
           '*NAME*'
         ]
       },

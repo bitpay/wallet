@@ -318,7 +318,7 @@ export class ConfirmPage {
       this.tx.feeLevel =
         this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -340,7 +340,7 @@ export class ConfirmPage {
     this.setAddressesContactName();
     this.getAmountDetails();
 
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
@@ -489,7 +489,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     if (
@@ -538,7 +538,7 @@ export class ConfirmPage {
     }
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
       this.handleError(err, exit);
@@ -713,7 +713,7 @@ export class ConfirmPage {
             );
             this.merchantFeeLabel = msg;
           } else {
-            const feeOpts = this.feeProvider.getFeeOpts();
+            const feeOpts = this.feeProvider.getFeeOpts(wallet.coin);
             tx.feeLevelName = feeOpts[tx.feeLevel];
             if (feeRate) tx.feeRate = feeRate;
           }
@@ -1490,9 +1490,13 @@ export class ConfirmPage {
 
     // Currently the paypro error is the following string: 500 - "{}"
     if (error.toString().includes('500 - "{}"')) {
-      msg = this.translate.instant(
-        'Error 500 - There is a temporary problem, please try again later.'
-      );
+      msg = this.tx.paypro
+        ? this.translate.instant(
+            'There is a temporary problem with the merchant requesting the payment. Please try later'
+          )
+        : this.translate.instant(
+            'Error 500 - There is a temporary problem, please try again later.'
+          );
     }
 
     const infoSheetTitle = title ? title : this.translate.instant('Error');
@@ -1632,7 +1636,7 @@ export class ConfirmPage {
         this.walletProvider.removeTx(wallet, txp).catch(() => {
           this.logger.warn('Could not delete payment proposal');
         });
-        if (err.includes('Broadcasting timeout')) {
+        if (typeof err == 'string' && err.includes('Broadcasting timeout')) {
           this.navigateBack(
             txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
           );
@@ -1666,18 +1670,16 @@ export class ConfirmPage {
       finishText: string;
       finishComment?: string;
       autoDismiss?: boolean;
-      coin: string;
     } = {
       finishText: this.successText,
-      autoDismiss: !!redir,
-      coin: this.coin
+      autoDismiss: !!redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
-      params = { finishText, finishComment, coin: this.coin };
+      params = { finishText, finishComment };
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
@@ -1692,6 +1694,7 @@ export class ConfirmPage {
       'BitcoinCashUri',
       'EthereumUri',
       'DogecoinUri',
+      'LitecoinUri',
       'RippleUri',
       'InvoiceUri'
     ]);
@@ -1776,7 +1779,7 @@ export class ConfirmPage {
     }
 
     this.tx.feeLevel = data.newFeeLevel;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     if (this.usingCustomFee)
       this.tx.feeRate = parseInt(data.customFeePerKB, 10);

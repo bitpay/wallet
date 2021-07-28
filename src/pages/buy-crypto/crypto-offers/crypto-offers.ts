@@ -539,9 +539,7 @@ export class CryptoOffersPage {
                 data.sourceAmount - data.sourceAmountWithoutFees;
 
               if (this.offers.wyre.fee < 0) {
-                const err = this.translate.instant(
-                  `Wyre has returned a wrong value for the fee. Fee: ${this.offers.wyre.fee}`
-                );
+                const err = `Wyre has returned a wrong value for the fee. Fee: ${this.offers.wyre.fee}`;
                 this.showWyreError(err);
                 return;
               }

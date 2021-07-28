@@ -42,6 +42,7 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { BitPayIdPage } from './bitpay-id/bitpay-id';
+import { FeePolicyPage } from './fee-policy/fee-policy';
 import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
 import { LocalThemePage } from './local-theme/local-theme';
@@ -243,6 +244,8 @@ export class SettingsPage {
   }
 
   private getBitPayIdInitials(user): string {
+    if (!user) return '';
+
     const { givenName, familyName } = user;
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
@@ -357,6 +360,10 @@ export class SettingsPage {
 
   public openAddressBookPage(): void {
     this.navCtrl.push(AddressbookPage);
+  }
+
+  public openFeePolicyPage(): void {
+    this.navCtrl.push(FeePolicyPage);
   }
 
   public openNotificationsPage(): void {

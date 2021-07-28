@@ -58,7 +58,7 @@ const Keys = {
   HAS_REPORTED_FIREBASE_CREATED_WALLET: 'hasReportedFirebaseCreatedWallet',
   HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD: 'hasReportedFirebaseHasPhysicalCard',
   HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD: 'hasReportedFirebaseHasVirtualCard',
-  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard_2',
   HAS_REPORTED_FIREBASE_SECURED_WALLET: 'hasSecuredWallet',
   HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET: 'hasFundedWallet',
   HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET: 'hasNotFundedWallet',
@@ -952,6 +952,18 @@ export class PersistenceProvider {
 
   removeWalletConnect() {
     return this.storage.remove('walletConnectSession');
+  }
+
+  getWalletConnectPendingRequests() {
+    return this.storage.get('walletConnectPendingRequests');
+  }
+
+  setWalletConnectPendingRequests(pendingRequests: any[]) {
+    return this.storage.set('walletConnectPendingRequests', pendingRequests);
+  }
+
+  removeWalletConnectPendingRequests() {
+    return this.storage.remove('walletConnectPendingRequests');
   }
 
   setWaitingListStatus(onList: string) {

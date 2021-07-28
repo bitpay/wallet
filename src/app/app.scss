@@ -327,6 +327,10 @@ ion-spinner * {
   background-color: #d8c172;
 }
 
+.ltc-background {
+  background-color: #2962ff;
+}
+
 button.item {
   &.activated {
     background-color: $feather;
@@ -980,4 +984,7 @@ ion-icon {
   .toast-message {
     white-space: pre-line;
   }
+}
+.in-app-notification-modal {
+  height: 20%;
 }

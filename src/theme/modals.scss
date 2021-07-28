@@ -42,3 +42,14 @@
     pointer-events: none;
   }
 }
+
+.in-app-notification-modal {
+  ion-backdrop {
+    background-color: transparent;
+    opacity: 1;
+  }
+  .modal-wrapper {
+    @include modal-wrapper;
+    --background: transparent !important;
+  }
+}

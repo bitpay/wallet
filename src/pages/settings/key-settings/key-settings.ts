@@ -4,13 +4,24 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
+import { AppProvider } from '../../../providers/app/app';
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
+import { LogsProvider } from '../../../providers/logs/logs';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
+import {
+  WalletOptions,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 // pages
 import { AddPage } from '../../add/add';
@@ -56,7 +67,15 @@ export class KeySettingsPage {
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private modalCtrl: ModalController,
-    private errorsProvider: ErrorsProvider
+    private errorsProvider: ErrorsProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private bwcErrorProvider: BwcErrorProvider,
+    private popupProvider: PopupProvider,
+    private platformProvider: PlatformProvider,
+    private logsProvider: LogsProvider,
+    private appProvider: AppProvider,
+    private configProvider: ConfigProvider
   ) {
     this.logger.info('Loaded:  KeySettingsPage');
     this.keyId = this.navParams.data.keyId;
@@ -239,5 +258,88 @@ export class KeySettingsPage {
       enableBackdropDismiss: true
     });
     modal.present();
+  }
+
+  public syncWallets(): void {
+    this.keyProvider
+      .handleEncryptedWallet(this.keyId)
+      .then((password: string) => {
+        let keys;
+        try {
+          keys = this.keyProvider.get(this.keyId, password);
+        } catch (err) {
+          const title =
+            'Your wallet is in a corrupt state. Please contact support and share the logs provided.';
+          let message;
+          try {
+            message =
+              err instanceof Error ? err.toString() : JSON.stringify(err);
+          } catch (error) {
+            message = 'Unknown error';
+          }
+          this.popupProvider.ionicAlert(title, message).then(() => {
+            // Share logs
+            const platform = this.platformProvider.isCordova
+              ? this.platformProvider.isAndroid
+                ? 'android'
+                : 'ios'
+              : 'desktop';
+            this.logsProvider.get(this.appProvider.info.nameCase, platform);
+          });
+        }
+
+        const opts: Partial<WalletOptions> = {};
+        const defaults = this.configProvider.getDefaults();
+        opts.bwsurl = defaults.bws.url;
+        opts.mnemonic = keys.mnemonic;
+
+        this._syncWallets(keys.mnemonic, opts);
+      })
+      .catch(err => {
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          const title = this.translate.instant('Could not decrypt wallet');
+          if (err.message == 'WRONG_PASSWORD') {
+            this.errorsProvider.showWrongEncryptPasswordError();
+          } else {
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
+          }
+        }
+      });
+  }
+
+  private _syncWallets(words: string, opts): void {
+    this.onGoingProcessProvider.set('syncWallets');
+    this.profileProvider
+      .syncWallets(words, opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        const title = this.translate.instant('Error');
+        this.showErrorInfoSheet(title, this.bwcErrorProvider.msg(err));
+      });
+  }
+
+  private async finish(wallets: any[]) {
+    wallets.forEach(wallet => {
+      this.walletProvider.updateRemotePreferences(wallet);
+      this.pushNotificationsProvider.updateSubscription(wallet);
+      this.profileProvider.setWalletBackup(wallet.credentials.walletId);
+    });
+    if (wallets && wallets[0]) {
+      this.profileProvider.setBackupGroupFlag(wallets[0].credentials.keyId);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      this.profileProvider.setNewWalletGroupOrder(wallets[0].credentials.keyId);
+    }
+    this.wallets = this.profileProvider.getWalletsFromGroup({
+      keyId: this.keyId,
+      showHidden: true
+    });
   }
 }

@@ -54,11 +54,13 @@ export class MultiSendPage {
     'EthereumAddress',
     'DogecoinAddress',
     'BCHAcoinAddress',
+    'LitecoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
-    'BCHAcoinUri'
+    'BCHAcoinUri',
+    'LitecoinUri'
   ];
 
   constructor(
@@ -82,6 +84,7 @@ export class MultiSendPage {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge(),
+      ltc: this.bwcProvider.getBitcoreLtc(),
       xec: this.bwcProvider.getBitcoreXec(),
       xpi: this.bwcProvider.getBitcoreXpi()
     };

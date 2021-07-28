@@ -16,7 +16,8 @@ export enum Coin {
   // DAI = 'dai',
   // WBTC = 'wbtc',
   DOGE = 'doge',
-  XPI = 'xpi'
+  XPI = 'xpi',
+  LTC = 'ltc'
 }
 
 export type CoinsMap<T> = { [key in Coin]: T };

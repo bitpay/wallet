@@ -250,27 +250,28 @@ export class BitPayIdProvider {
   public async disconnectBitPayID(successCallback, errorCallback) {
     const network = Network[this.getEnvironment().network];
 
-    // @ts-ignore
-    const user: any = await this.persistenceProvider.getBitPayIdUserInfo(
-      network
-    );
-
     try {
       await Promise.all([
         this.persistenceProvider.removeBitPayIdPairingToken(network),
         this.persistenceProvider.removeBitPayIdUserInfo(network),
         this.persistenceProvider.removeBitpayAccountV2(network)
       ]);
+
       this.iab.refs.card.executeScript(
         {
           code: `window.postMessage(${JSON.stringify({
-            message: 'bitpayIdDisconnected'
+            message: 'bitPayIdDisconnected'
           })}, '*')`
         },
         () => {
           successCallback();
         }
       );
+
+      this.events.publish('BitPayId/Disconnected');
+      this.events.publish('CardAdvertisementUpdate', {
+        status: 'disconnected'
+      });
     } catch (err) {
       errorCallback(err);
     }

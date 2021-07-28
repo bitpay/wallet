@@ -49,12 +49,14 @@ export class SelectInputsPage {
     'BitcoinCashAddress',
     'EthereumAddress',
     'DogecoinAddress',
+    'LitecoinAddress',
     'XeccoinAddress',
     'XpicoinAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
+    'LitecoinUri',
     'XeccoinUri',
     'XpicoinUri'
   ];
@@ -81,6 +83,7 @@ export class SelectInputsPage {
       btc: this.bwcProvider.getBitcore(),
       bch: this.bwcProvider.getBitcoreCash(),
       doge: this.bwcProvider.getBitcoreDoge(),
+      ltc: this.bwcProvider.getBitcoreLtc(),
       xec: this.bwcProvider.getBitcoreXec(),
       xpi: this.bwcProvider.getBitcoreXpi()
     };

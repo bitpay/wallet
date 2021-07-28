@@ -881,6 +881,27 @@
     }
   }
 
+  .notification-modal-panel {
+    .notification-content {
+      background-color: $bg-color-dark-theme-2;
+      .slide-zoom {
+        .notification-info {
+          .notification-title {
+            color: $text-color-dark-theme;
+          }
+          .notification-message {
+            color: $text-color-dark-theme;
+          }
+        }
+        .notification-button {
+          ion-label {
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+    }
+  }
+
   // 5 - Tabs
   // 5.1 Tab Home
   page-home {
@@ -1757,6 +1778,34 @@
     .filter-container {
       .labels {
         color: $text-color-dark-theme;
+      }
+    }
+  }
+
+  page-fee-policy {
+    .description {
+      color: $text-color-dark-theme-2;
+    }
+
+    ion-list {
+      .item-divider-ios {
+        background-color: $bg-color-dark-theme;
+      }
+      .item {
+        &.item-ios,
+        &.item-md {
+          .item-inner {
+            background-color: $bg-color-dark-theme;
+          }
+        }
+      }
+      .network-fee-policy {
+        &-title {
+          color: $text-color-dark-theme;
+        }
+        &-rate {
+          color: $text-color-dark-theme;
+        }
       }
     }
   }

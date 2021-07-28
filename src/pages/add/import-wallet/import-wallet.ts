@@ -389,9 +389,7 @@ export class ImportWalletPage {
         ];
       } else {
         const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant(
-          `No derivation path for: default${coin.toUpperCase()}`
-        );
+        const subtitle = `No derivation path for: default${coin.toUpperCase()}`;
         this.showErrorInfoSheet(title, subtitle);
         return;
       }
