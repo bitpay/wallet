@@ -1062,6 +1062,17 @@ export class PersistenceProvider {
   getCustomTokenOpts() {
     return this.storage.get(Keys.CUSTOMTOKENSOPTS);
   }
+
+  setEthMultisigPendingInstantiation(walletId, instantiationInfo) {
+    return this.storage.set(
+      `eth-multisig-instantiation-${walletId}`,
+      instantiationInfo
+    );
+  }
+
+  getEthMultisigPendingInstantiation(walletId) {
+    return this.storage.get(`eth-multisig-instantiation-${walletId}`);
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {

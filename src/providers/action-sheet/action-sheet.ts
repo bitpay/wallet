@@ -79,7 +79,8 @@ export type InfoSheetType =
   | 'custom-fee-warning'
   | 'sync-wallets'
   | 'custom-tokens-warning'
-  | 'testnet-warning-1';
+  | 'testnet-warning-1'
+  | 'multisig-instantiation';
 
 export type OptionsSheetType =
   | 'wallet-options'
