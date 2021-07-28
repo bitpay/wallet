@@ -65,7 +65,7 @@ export class NewFeatureData {
         dummy: this.translate.instant('dummy'),
         features: [
           {
-            title: 'Litecoin added',
+            title: 'Litecoin',
             details:
               'Now you can store, send and receive Litecoin, a low cost, instant peer-to-peer Internet currency, in your BitPay App.',
             image: {
