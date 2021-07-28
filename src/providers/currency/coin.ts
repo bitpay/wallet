@@ -162,11 +162,11 @@ export const availableCoins: CoinsMap<CoinOpts> = {
   xec: {
     name: 'eCash',
     chain: 'XEC',
-    coin: 'bcha',
+    coin: 'xec',
     unitInfo: {
       unitName: 'XEC',
-      unitToSatoshi: 1000,
-      unitDecimals: 8,
+      unitToSatoshi: 100,
+      unitDecimals: 2,
       unitCode: 'xec'
     },
     properties: {
