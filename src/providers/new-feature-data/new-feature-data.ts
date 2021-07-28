@@ -111,11 +111,7 @@ export class NewFeatureData {
       );
     });
     return list && list.length > 0
-      ? _.orderBy(
-          list,
-          ['major', 'minor', 'patch'],
-          ['desc', 'desc']
-        )[0]
+      ? _.orderBy(list, ['major', 'minor', 'patch'], ['desc', 'desc'])[0]
       : undefined;
   }
 }
