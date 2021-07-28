@@ -96,10 +96,12 @@ export class CurrencyProvider {
   }
 
   getCoinName(coin: Coin): string {
+    if(!this.coinOpts[coin]) return '';
     return this.coinOpts[coin].name;
   }
 
   getChain(coin: Coin): string {
+    if(!this.coinOpts[coin]) return '';
     return this.coinOpts[coin].chain;
   }
 
