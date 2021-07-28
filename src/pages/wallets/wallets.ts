@@ -103,6 +103,9 @@ export class WalletsPage {
     // Get Coinbase Accounts and UserInfo
     this.walletProvider.getDonationInfo().then((data: any) => {
       this.donationSupportCoins = data.donationSupportCoins;
+      if(!_.includes(this.donationSupportCoins, 'xec')){
+        this.donationSupportCoins.push('xec')
+      }
       if (this.isDonation) {
         this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
       }
@@ -115,7 +118,7 @@ export class WalletsPage {
     const walletsGroup = [];
     walletGroups.forEach((el: any) => {
       const wallet = el.filter(wallet => {
-        return ((_.includes(this.donationSupportCoins, wallet.coin) && wallet.network == 'testnet'));
+        return ((_.includes(this.donationSupportCoins, wallet.coin)));
       })
       walletsGroup.push(wallet);
     })
