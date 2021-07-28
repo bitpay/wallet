@@ -33,7 +33,8 @@ export class BwcProvider {
   }
 
   public getBitcoreLtc() {
-    return BWC.BitcoreLtc;
+    // Temporary wire to bitcore cash
+    return BWC.BitcoreCash;
   }
 
   public getCore() {
