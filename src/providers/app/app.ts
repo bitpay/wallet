@@ -137,4 +137,16 @@ export class AppProvider {
       return this.http.get(this.jsonPathServices).toPromise();
     }
   }
+
+  public meetsVersion(version, targetVersion) {
+    if (!version || !targetVersion) {
+      return false;
+    }
+
+    return (
+      version.major === targetVersion.major &&
+      version.minor === targetVersion.minor &&
+      version.patch === targetVersion.patch
+    );
+  }
 }
