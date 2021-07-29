@@ -59,7 +59,7 @@ export class NewFeatureData {
       {
         major: 12,
         minor: 7,
-        patch: 5,
+        patch: 6,
         app: ['*'],
         platform: ['*', 'android'],
         dummy: this.translate.instant('dummy'),
