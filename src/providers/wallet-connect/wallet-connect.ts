@@ -131,23 +131,29 @@ export class WalletConnectProvider {
         this.logger.debug('walletConnector.createSession');
         await this.walletConnector.createSession();
       }
-      setTimeout(() => {
-        if (!this.peerMeta) {
-          this.errorsProvider.showDefaultError(
-            this.translate.instant(
-              'Dapp not responding. Try scanning a new QR code'
-            ),
-            this.translate.instant('Could not connect')
-          );
-        }
-      }, 10000);
-      this.subscribeToEvents();
     } catch (error) {
       this.errorsProvider.showDefaultError(
         error,
-        this.translate.instant('Error')
+        this.translate.instant('Could not connect')
       );
     }
+  }
+
+  public checkDappStatus(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (this.peerMeta) return resolve;
+
+        const error = this.translate.instant(
+          'Dapp not responding. Try scanning a new QR code'
+        );
+        this.errorsProvider.showDefaultError(
+          error,
+          this.translate.instant('Could not connect')
+        );
+        return reject(error);
+      }, 10000);
+    });
   }
 
   public async getConnectionData() {

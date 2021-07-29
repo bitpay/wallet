@@ -309,7 +309,11 @@ export class ScanPage {
       } else {
         const redirParams = {
           fromWalletConnect: true,
-          force: true
+          force: true,
+          walletId:
+            this.wallet && this.wallet.credentials
+              ? this.wallet.credentials.walletId
+              : null
         };
         this.incomingDataProvider.redir(contents, redirParams);
       }
@@ -372,7 +376,11 @@ export class ScanPage {
       name: 'WalletConnectPage',
       params: {
         fromWalletConnect: this.fromWalletConnect,
-        walletSelected: this.walletSelected
+        walletId:
+          this.wallet && this.wallet.credentials
+            ? this.wallet.credentials.walletId
+            : null,
+        force: true
       }
     };
     this.events.publish('IncomingDataRedir', nextView);

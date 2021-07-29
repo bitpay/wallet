@@ -46,6 +46,7 @@ export class WalletConnectPage {
   public showDappInfo: boolean = false;
   public title: string;
   public sessionRequestLabel: string;
+  public showWalletSelector: boolean = false;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -71,17 +72,13 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.getConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-
-    if (this.uri) {
-      this.initWalletConnect();
-    } else {
-      this.initWallet();
-      this.wallets = this.profileProvider.getWallets({
-        coin: 'eth',
-        onlyComplete: true,
-        backedUp: true
-      });
-    }
+    this.wallets = this.profileProvider.getWallets({
+      coin: 'eth',
+      onlyComplete: true,
+      backedUp: true
+    });
+    if (!this.navParams.data.walletId) this.showWalletSelector = true;
+    this.uri ? this.initWalletConnect() : this.initWallet();
   }
 
   ngOnDestroy() {
@@ -136,12 +133,12 @@ export class WalletConnectPage {
       }
     } else {
       this.title = this.translate.instant('Enter WalletConnect URI');
-      if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallets[0]);
+      if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallet);
     }
   }
 
   public async onWalletSelect(wallet): Promise<void> {
-    this.wallet = wallet;
+    this.wallet = wallet ? wallet : this.wallets[0];
     this.walletConnectProvider.setAccountInfo(wallet);
   }
 
@@ -150,9 +147,15 @@ export class WalletConnectPage {
     this.onGoingProcessProvider.set('Initializing');
     try {
       await this.walletConnectProvider.initWalletConnect(this.uri);
+      await this.walletConnectProvider.subscribeToEvents();
       this.showDappInfo = true;
       this.title = null;
+      await this.walletConnectProvider.checkDappStatus();
+      this.onGoingProcessProvider.clear();
     } catch (error) {
+      this.showDappInfo = false;
+      this.uri = null;
+      this.title = this.translate.instant('Enter WalletConnect URI');
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
     }
@@ -184,8 +187,10 @@ export class WalletConnectPage {
   }
 
   public async killSession() {
+    this.showDappInfo = false;
+    this.uri = null;
     await this.walletConnectProvider.killSession();
-    this.initWallet();
+    this.navCtrl.pop();
   }
 
   public showWallets(): void {
