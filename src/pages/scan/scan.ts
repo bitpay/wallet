@@ -3,14 +3,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
 import { ScanProvider } from '../../providers/scan/scan';
+import { WalletConnectProvider } from '../../providers/wallet-connect/wallet-connect';
 
 import env from '../../environments';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-scan',
@@ -24,6 +29,8 @@ export class ScanPage {
   private scannerIsDenied: boolean;
   private scannerIsRestricted: boolean;
   private unregisterBackButtonAction;
+  private wallets;
+  public wallet;
   public canEnableLight: boolean;
   public canChangeCamera: boolean;
   public lightActive: boolean;
@@ -45,6 +52,7 @@ export class ScanPage {
   public fromFooterMenu: boolean;
   public canGoBack: boolean;
   public tabBarElement;
+  public walletSelected: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -57,7 +65,10 @@ export class ScanPage {
     private navParams: NavParams,
     private platform: Platform,
     private errorsProvider: ErrorsProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private profileProvider: ProfileProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -101,7 +112,7 @@ export class ScanPage {
     this.tabBarElement.style.display = 'flex';
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.initializeBackButtonHandler();
     this.fromAddressbook = this.navParams.data.fromAddressbook;
     this.fromImport = this.navParams.data.fromImport;
@@ -113,6 +124,7 @@ export class ScanPage {
     this.fromConfirm = this.navParams.data.fromConfirm;
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.fromFooterMenu = this.navParams.data.fromFooterMenu;
+    this.walletSelected = this.navParams.data.walletSelected;
 
     if (this.canGoBack && this.tabBarElement)
       this.tabBarElement.style.display = 'none';
@@ -124,6 +136,19 @@ export class ScanPage {
 
     this.events.subscribe('incomingDataError', this.incomingDataErrorHandler);
 
+    if (this.fromWalletConnect && !this.walletSelected) {
+      this.wallets = this.profileProvider.getWallets({
+        coin: 'eth',
+        onlyComplete: true,
+        backedUp: true
+      });
+      if (!_.isEmpty(this.wallets)) this.showWallets();
+    } else {
+      this.initializeScanner();
+    }
+  }
+
+  private initializeScanner() {
     // try initializing and refreshing status any time the view is entered
     if (this.scannerHasPermission) {
       this.logger.debug('scannerHasPermission: true');
@@ -143,6 +168,31 @@ export class ScanPage {
       'scannerServiceInitialized',
       this.scannerServiceInitializedHandler
     );
+  }
+
+  public showWallets(): void {
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: null,
+      title: this.translate.instant('Select a wallet')
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
+      this.initializeScanner();
+      this.onSelectWalletEvent(wallet);
+    });
+  }
+
+  private onSelectWalletEvent(wallet): void {
+    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+  }
+
+  public onWalletSelect(wallet): void {
+    this.wallet = wallet;
+    this.walletConnectProvider.setAccountInfo(wallet);
   }
 
   private incomingDataErrorHandler: any = err => {
@@ -254,17 +304,25 @@ export class ScanPage {
     } else if (this.fromConfirm) {
       this.events.publish('Local/TagScan', { value: contents });
     } else if (this.fromWalletConnect) {
-      this.events.publish('Local/UriScan', { value: contents });
+      if (this.navParams.data.updateURI) {
+        this.events.publish('Local/UriScan', { value: contents });
+      } else {
+        const redirParams = {
+          fromWalletConnect: true,
+          force: true
+        };
+        this.incomingDataProvider.redir(contents, redirParams);
+      }
     } else if (this.fromFooterMenu) {
-      const redirParms = {
+      const redirParams = {
         activePage: 'ScanPage',
         fromFooterMenu: this.fromFooterMenu
       };
-      this.incomingDataProvider.redir(contents, redirParms);
+      this.incomingDataProvider.redir(contents, redirParams);
     } else {
       this.navCtrl.parent.select(1); // Workaround to avoid keep camera active
-      const redirParms = { activePage: 'ScanPage' };
-      this.incomingDataProvider.redir(contents, redirParms);
+      const redirParams = { activePage: 'ScanPage' };
+      this.incomingDataProvider.redir(contents, redirParams);
     }
   }
 
@@ -307,5 +365,16 @@ export class ScanPage {
 
   public closeCam() {
     this.navCtrl.pop({ animate: false });
+  }
+
+  public goToWalletConnectPage() {
+    let nextView = {
+      name: 'WalletConnectPage',
+      params: {
+        fromWalletConnect: this.fromWalletConnect,
+        walletSelected: this.walletSelected
+      }
+    };
+    this.events.publish('IncomingDataRedir', nextView);
   }
 }

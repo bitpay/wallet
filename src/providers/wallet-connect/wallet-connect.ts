@@ -13,11 +13,7 @@ import { Logger } from '../../providers/logger/logger';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { BwcProvider } from '../bwc/bwc';
 import { ErrorsProvider } from '../errors/errors';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PopupProvider } from '../popup/popup';
-import { ProfileProvider } from '../profile/profile';
-import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { WalletProvider } from '../wallet/wallet';
 import {
   IProviderData,
@@ -54,12 +50,8 @@ export class WalletConnectProvider {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private replaceParametersProvider: ReplaceParametersProvider,
-    private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
-    private profileProvider: ProfileProvider,
     private errorsProvider: ErrorsProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private events: Events,
     private incomingDataProvider: IncomingDataProvider,
@@ -95,7 +87,7 @@ export class WalletConnectProvider {
     this.homeIntegrationsProvider.register({
       name: 'newWalletConnect',
       title: 'WalletConnect',
-      icon: 'assets/img/wallet-connect.svg',
+      icon: 'assets/img/wallet-connect/wallet-connect.svg',
       showIcon: true,
       logo: null,
       logoWidth: '110',
@@ -132,7 +124,6 @@ export class WalletConnectProvider {
 
   public async initWalletConnect(uri): Promise<void> {
     try {
-      this.onGoingProcessProvider.set('Initializing');
       this.walletConnector = new WalletConnect({
         uri
       });
@@ -149,11 +140,9 @@ export class WalletConnectProvider {
             this.translate.instant('Could not connect')
           );
         }
-        this.onGoingProcessProvider.clear();
       }, 10000);
       this.subscribeToEvents();
     } catch (error) {
-      this.onGoingProcessProvider.clear();
       this.errorsProvider.showDefaultError(
         error,
         this.translate.instant('Error')
@@ -202,7 +191,7 @@ export class WalletConnectProvider {
       }
 
       this.peerMeta = payload.params[0].peerMeta;
-      this.openConnectPopUpConfirmation(this.peerMeta);
+      this.events.publish('Update/ConnectionData');
     });
 
     this.walletConnector.on('session_update', (error, _payload) => {
@@ -243,7 +232,7 @@ export class WalletConnectProvider {
         this.requests = _.uniqBy(this.requests, 'id');
         this.persistenceProvider.setWalletConnectPendingRequests(this.requests);
         this.events.publish('Update/Requests', this.requests);
-        this.incomingDataProvider.redir('wc:');
+        this.incomingDataProvider.redir('wc:', { force: false });
       }
     });
 
@@ -277,32 +266,6 @@ export class WalletConnectProvider {
       throw new Error('ChainId missing or not supported');
     }
     return chainData;
-  }
-
-  public openConnectPopUpConfirmation(peerMeta): void {
-    const wallet = this.profileProvider.getWallet(this.walletId);
-    const title = this.translate.instant('Session Request');
-    const message = this.replaceParametersProvider.replace(
-      this.translate.instant(
-        `{{peerMetaName}} ({{peerMetaUrl}}) is trying to connect to {{walletName}}`
-      ),
-      {
-        peerMetaName: peerMeta.name,
-        peerMetaUrl: peerMeta.url,
-        walletName: wallet.name
-      }
-    );
-    const okText = this.translate.instant('Approve');
-    const cancelText = this.translate.instant('Reject');
-    this.popupProvider
-      .ionicConfirm(title, message, okText, cancelText)
-      .then((res: boolean) => {
-        if (res) {
-          this.approveSession();
-        } else {
-          this.rejectSession();
-        }
-      });
   }
 
   public async approveSession(): Promise<void> {

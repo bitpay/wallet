@@ -57,5 +57,8 @@
       <span *ngIf="canEnableLight" class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
+    <div class="scanner-controls" *ngIf="fromWalletConnect && !walletSelected">
+      <button ion-button clear class="url-btn" (click)="goToWalletConnectPage()">{{'Or paste URL' | translate}}</button>
+    </div>
   </div>
 </ion-content>

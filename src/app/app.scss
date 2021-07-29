@@ -540,6 +540,28 @@ ion-app,
   background: transparent !important;
 }
 
+.button-standard-full {
+  width: 100%;
+  margin: 5px 16px 25px 16px;
+  display: flex;
+  min-height: 60px;
+  border-radius: 5px;
+  box-shadow: none;
+  font-weight: 400;
+  font-size: 18px;
+
+  .button-inner {
+    padding: 2px;
+  }
+
+  span {
+    @extend .two-lines;
+  }
+  &.no-margin-bottom {
+    margin-bottom: 0px;
+  }
+}
+
 .button-standard {
   width: 85%;
   max-width: 300px;

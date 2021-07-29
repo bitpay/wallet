@@ -632,12 +632,12 @@ export class CopayApp {
             this.getGlobalTabs()
               .goToRoot()
               .then(_ => {
-                this.getGlobalTabs().select(5);
+                this.getGlobalTabs().select(0);
                 this.nav.push(this.pageMap[nextView.name], nextView.params);
               });
           } else {
             const data = {
-              title: 'Walletconnect',
+              title: 'WalletConnect',
               body: 'New Pending Request',
               action: 'goToWalletconnect',
               closeButtonText: 'View'

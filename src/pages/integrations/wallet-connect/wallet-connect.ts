@@ -4,7 +4,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
-import { ConfirmPage } from '../../send/confirm/confirm';
+import { WalletConnectRequestDetailsPage } from './wallet-connect-request-details/wallet-connect-request-details';
 
 // Providers
 import {
@@ -12,6 +12,7 @@ import {
   AnalyticsProvider,
   ErrorsProvider,
   Logger,
+  OnGoingProcessProvider,
   PersistenceProvider,
   PlatformProvider,
   PopupProvider,
@@ -27,6 +28,7 @@ import * as _ from 'lodash';
 })
 export class WalletConnectPage {
   public uri: string = '';
+  public fromWalletConnect: boolean;
   private wallets;
   public isCordova: boolean;
   public peerMeta: {
@@ -41,13 +43,9 @@ export class WalletConnectPage {
   public wallet;
   public address: string;
   public activeChainId: number = 1;
-  public buttonAction = {
-    eth_sendTransaction: 'Confirm',
-    eth_signTransaction: 'Approve',
-    eth_sign: 'Approve',
-    personal_sign: 'Approve',
-    eth_signTypedData: 'Approve'
-  };
+  public showDappInfo: boolean = false;
+  public title: string;
+  public sessionRequestLabel: string;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -63,19 +61,32 @@ export class WalletConnectPage {
     private navCtrl: NavController,
     private events: Events,
     private platformProvider: PlatformProvider,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
-    this.events.subscribe('Update/ConnectionData', this.setConnectionData);
+    this.events.subscribe('Update/ConnectionData', this.getConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-    this.initWallet();
+
+    if (this.uri) {
+      this.initWalletConnect();
+    } else {
+      this.initWallet();
+      this.wallets = this.profileProvider.getWallets({
+        coin: 'eth',
+        onlyComplete: true,
+        backedUp: true
+      });
+    }
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
-    this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
+    this.events.unsubscribe('Update/ConnectionData', this.getConnectionData);
     this.events.unsubscribe('Update/Requests', this.setRequests);
   }
 
@@ -84,7 +95,7 @@ export class WalletConnectPage {
     this.uri = data.value;
   };
 
-  private setConnectionData: any = async _ => {
+  private getConnectionData: any = async _ => {
     const {
       connected,
       activeChainId,
@@ -99,6 +110,13 @@ export class WalletConnectPage {
     this.address = address;
     this.peerMeta = peerMeta;
     this.requests = requests;
+    this.sessionRequestLabel =
+      this.peerMeta && this.peerMeta.name
+        ? `${this.peerMeta.name} ${this.translate.instant(
+            'wants to connect to your wallet'
+          )}`
+        : null;
+    this.onGoingProcessProvider.clear();
   };
 
   private setRequests: any = requests => {
@@ -108,18 +126,16 @@ export class WalletConnectPage {
   public async initWallet(): Promise<void> {
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
-      this.setConnectionData();
+      this.onGoingProcessProvider.set('Initializing');
+      this.getConnectionData();
+      this.title = null;
       if (this.uri && this.uri.indexOf('bridge') !== -1) {
         this.showNewConnectionAlert();
       } else {
         this.uri = null;
       }
     } else {
-      this.wallets = this.profileProvider.getWallets({
-        coin: 'eth',
-        onlyComplete: true,
-        backedUp: true
-      });
+      this.title = this.translate.instant('Enter WalletConnect URI');
       if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallets[0]);
     }
   }
@@ -131,8 +147,15 @@ export class WalletConnectPage {
 
   public async initWalletConnect(): Promise<void> {
     this.logger.info('Initialize wallet connect with uri: ' + this.uri);
-    this.walletConnectProvider.initWalletConnect(this.uri);
-    this.uri = null;
+    this.onGoingProcessProvider.set('Initializing');
+    try {
+      await this.walletConnectProvider.initWalletConnect(this.uri);
+      this.showDappInfo = true;
+      this.title = null;
+    } catch (error) {
+      this.logger.error('Wallet Connect - initWalletConnect error: ', error);
+      this.onGoingProcessProvider.clear();
+    }
   }
 
   private showNewConnectionAlert(): void {
@@ -184,89 +207,23 @@ export class WalletConnectPage {
     if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
   }
 
-  public rejectRequest(request): void {
-    this.walletConnectProvider.rejectRequest(request);
+  public getChainData(chainId) {
+    return this.walletConnectProvider.getChainData(chainId);
   }
 
-  public approveRequest(request): void {
-    try {
-      let addressRequested;
-      const address = this.address;
-      const wallet = this.wallet;
-      const peerMeta = this.peerMeta;
+  public openScanner(): void {
+    this.navCtrl.push(
+      ScanPage,
+      { fromWalletConnect: true, walletSelected: true, updateURI: true },
+      { animate: false }
+    );
+  }
 
-      switch (request.method) {
-        case 'eth_sendTransaction':
-          addressRequested = request.params[0].from;
-          if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            // redirect to confirm page with navParams
-            let data = {
-              amount: request.params[0].value,
-              toAddress: request.params[0].to,
-              coin: wallet.credentials.coin,
-              walletId: wallet.credentials.walletId,
-              network: wallet.network,
-              data: request.params[0].data,
-              gasLimit: request.params[0].gas,
-              walletConnectRequestId: request.id
-            };
-            this.logger.debug(
-              'redirect to confirm page with data: ',
-              JSON.stringify(data)
-            );
-            this.openConfirmPageConfirmation(peerMeta, data);
-          } else {
-            this.errorsProvider.showDefaultError(
-              this.translate.instant(
-                'Address requested does not match active account'
-              ),
-              this.translate.instant('Error')
-            );
-          }
-          break;
-        case 'eth_signTypedData':
-          addressRequested = request.params[0];
-          if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            const result = this.walletConnectProvider.signTypedData(
-              JSON.parse(request.params[1]),
-              this.wallet
-            );
-            this.walletConnectProvider.approveRequest(request.id, result);
-          } else {
-            this.errorsProvider.showDefaultError(
-              this.translate.instant(
-                'Address requested does not match active account'
-              ),
-              this.translate.instant('Error')
-            );
-          }
-          break;
-        case 'personal_sign':
-          addressRequested = request.params[1];
-          if (address.toLowerCase() === addressRequested.toLowerCase()) {
-            const result = this.walletConnectProvider.personalSign(
-              request.params[0],
-              this.wallet
-            );
-            this.walletConnectProvider.approveRequest(request.id, result);
-          } else {
-            this.errorsProvider.showDefaultError(
-              this.translate.instant(
-                'Address requested does not match active account'
-              ),
-              this.translate.instant('Error')
-            );
-          }
-          break;
-        default:
-          this.errorsProvider.showDefaultError(
-            `Not supported method: ${request.method}`,
-            this.translate.instant('Error')
-          );
-          break;
-      }
+  public async approveSession() {
+    try {
+      await this.walletConnectProvider.approveSession();
     } catch (error) {
-      this.logger.error('Wallet Connect - ApproveRequest error: ', error);
+      this.logger.error('Wallet Connect - ApproveSession error: ', error);
       this.errorsProvider.showDefaultError(
         error,
         this.translate.instant('Error')
@@ -274,34 +231,10 @@ export class WalletConnectPage {
     }
   }
 
-  public getChainData(chainId) {
-    return this.walletConnectProvider.getChainData(chainId);
-  }
-
-  public openConfirmPageConfirmation(peerMeta, data): void {
-    const title = this.translate.instant('Confirm Request');
-    const message = this.replaceParametersProvider.replace(
-      this.translate.instant(
-        `Please make sure {{peerMetaName}} request is still waiting for confirmation, and that the amount is correct before proceeding to the confirmation step`
-      ),
-      { peerMetaName: peerMeta.name }
-    );
-    const okText = this.translate.instant('Continue');
-    const cancelText = this.translate.instant('Go Back');
-    this.popupProvider
-      .ionicConfirm(title, message, okText, cancelText)
-      .then((res: boolean) => {
-        if (res) {
-          this.navCtrl.push(ConfirmPage, data);
-        }
-      });
-  }
-
-  public openScanner(): void {
-    this.navCtrl.push(
-      ScanPage,
-      { fromWalletConnect: true },
-      { animate: false }
-    );
+  public goToRequestDetailsPage(request, params) {
+    this.navCtrl.push(WalletConnectRequestDetailsPage, {
+      request,
+      params
+    });
   }
 }

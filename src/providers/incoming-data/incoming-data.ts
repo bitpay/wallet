@@ -24,6 +24,8 @@ export interface RedirParams {
   coin?: string;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
+  fromWalletConnect?: boolean;
+  force?: boolean;
 }
 
 @Injectable()
@@ -509,7 +511,7 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
-  private handleWalletConnectUri(uri: string): void {
+  private handleWalletConnectUri(uri: string, redirParams?: RedirParams): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
       this.logger.warn('Wallet Connect has been disabled for this build');
@@ -517,7 +519,8 @@ export class IncomingDataProvider {
     }
 
     let stateParams = {
-      uri
+      uri,
+      force: redirParams ? redirParams.force : false
     };
     let nextView = {
       name: 'WalletConnectPage',
@@ -934,7 +937,7 @@ export class IncomingDataProvider {
 
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
-      this.handleWalletConnectUri(data);
+      this.handleWalletConnectUri(data, redirParams);
       return true;
 
       // Bitcoin Cash URI using Bitcoin Core legacy address

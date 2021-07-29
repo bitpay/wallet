@@ -50,6 +50,7 @@ import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-ca
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
+import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
@@ -896,7 +897,13 @@ export class HomePage {
   }
 
   public goToWalletConnectPage() {
-    this.navCtrl.push(WalletConnectPage);
+    this.persistenceProvider.getWalletConnect().then(session => {
+      if (session || (!session && !this.isCordova))
+        this.navCtrl.push(WalletConnectPage);
+      else {
+        this.navCtrl.push(ScanPage, { fromWalletConnect: true });
+      }
+    });
   }
 
   private checkNewRelease() {
