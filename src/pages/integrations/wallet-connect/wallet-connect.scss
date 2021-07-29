@@ -119,19 +119,21 @@ page-wallet-connect {
         font-weight: 400;
       }
     }
-    ion-row {
-      .wc-permission {
-        margin-top: 10px;
-        &-label {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 25px;
-          padding-left: 10px;
-          margin-top: -2px;
-        }
-        &-img {
-          width: 20px;
-          height: auto;
+    .wc-permission {
+      margin-top: 10px;
+      ion-row {
+        .wc-permission {
+          &-label {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 25px;
+            padding-left: 10px;
+            margin-top: -2px;
+          }
+          &-img {
+            width: 20px;
+            height: auto;
+          }
         }
       }
     }
