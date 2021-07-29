@@ -41,7 +41,7 @@ export class PayproProvider {
       }
     });
     if (!disableLoader) this.onGoingProcessProvider.clear();
-    this.logger.info('PayPro Options: SUCCESS');
+    this.logger.info('PayPro Options: SUCCESS', JSON.stringify(payOpts));
     return payOpts;
   }
 
@@ -85,7 +85,7 @@ export class PayproProvider {
         }
       });
     if (!disableLoader) this.onGoingProcessProvider.clear();
-    this.logger.info('PayPro Details: SUCCESS');
+    this.logger.info('PayPro Details: SUCCESS', JSON.stringify(payDetails));
     return payDetails;
   }
 }
