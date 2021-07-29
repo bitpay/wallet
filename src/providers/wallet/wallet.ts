@@ -1926,8 +1926,9 @@ export class WalletProvider {
     });
   }
 
-  formatAmout(amount: number){
-    return _.toNumber(this.txFormatProvider.formatAmount('bch', amount));
+  formatAmout(amount: number, coin: string) {
+    if (_.isEmpty(coin)) coin = 'xpi' // lotus
+    return _.toNumber(this.txFormatProvider.formatAmount(coin, amount));
   }
 
   getDonationInfo() {
@@ -1937,9 +1938,14 @@ export class WalletProvider {
         if (errLivenet) {
           return reject(this.translate.instant('Could not get dynamic fee'));
         }
-        donation.donationSupportCoins = _.map(donation.donationToAddresses, item => item.coin),
-        donation.remaining = this.formatAmout(donation.remaining);
-        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus);
+        donation.donationSupportCoins = _.map(donation.donationToAddresses, item => {
+          return {
+            coin: item.coin,
+            network: item.network || 'livenet'
+          }
+        });
+        donation.remaining = this.formatAmout(donation.remaining, donation.donationCoin);
+        donation.receiveAmountLotus = this.formatAmout(donation.receiveAmountLotus, donation.donationCoin);
         return resolve(donation);
       });
     });

@@ -262,7 +262,6 @@ export class TransferToPage {
     if (this._wallet.donationCoin) {
       return this._wallet
       ? this._wallet.donationCoin ===  recipient.coin &&
-          this._wallet.network === recipient.network &&
           this._wallet.id !== recipient.walletId
       : true;
     }

@@ -61,7 +61,7 @@ export class WalletsPage {
   public coinbaseLinked: boolean;
   public coinbaseData: object = {};
   isDonation ;
-  donationSupportCoins: string[] = [];
+  donationSupportCoins = [];
 
   constructor(
     public http: HttpClient,
@@ -115,7 +115,7 @@ export class WalletsPage {
     const walletsGroup = [];
     walletGroups.forEach((el: any) => {
       const wallet = el.filter(wallet => {
-        return ((_.includes(this.donationSupportCoins, wallet.coin) && wallet.network == 'testnet'));
+        return _.some(this.donationSupportCoins, (item: any) => item.network == wallet.network && item.coin == wallet.coin);
       })
       walletsGroup.push(wallet);
     })
