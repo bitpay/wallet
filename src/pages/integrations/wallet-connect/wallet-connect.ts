@@ -121,6 +121,7 @@ export class WalletConnectPage {
   };
 
   public async initWallet(): Promise<void> {
+    this.showWalletSelector = false;
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
       this.onGoingProcessProvider.set('Initializing');
@@ -139,7 +140,7 @@ export class WalletConnectPage {
 
   public async onWalletSelect(wallet): Promise<void> {
     this.wallet = wallet ? wallet : this.wallets[0];
-    this.walletConnectProvider.setAccountInfo(wallet);
+    this.walletConnectProvider.setAccountInfo(this.wallet);
   }
 
   public async initWalletConnect(): Promise<void> {

@@ -523,6 +523,7 @@ export class HomePage {
           break;
         case 'newWalletConnect':
           this.showWalletConnect = x.show;
+          if (this.showCoinbase) this.addWalletConnect();
           break;
       }
     });
@@ -642,6 +643,27 @@ export class HomePage {
         dismissible: true,
         isTesting: false,
         imgSrc: 'assets/img/coinbase/coinbase-icon.png'
+      });
+    this.showAdvertisements = true;
+  }
+
+  private addWalletConnect() {
+    const alreadyVisible = this.advertisements.find(
+      a => a.name === 'walletConnect'
+    );
+    !alreadyVisible &&
+      this.advertisements.unshift({
+        name: 'walletConnect',
+        title: this.translate.instant('Connect to Defi'),
+        body: this.translate.instant(
+          'Use WalletConnect to access your favorite dApps.'
+        ),
+        app: 'bitpay',
+        linkText: this.translate.instant('Get Started'),
+        link: WalletConnectPage,
+        dismissible: true,
+        isTesting: false,
+        imgSrc: 'assets/img/wallet-connect/advertisement.svg'
       });
     this.showAdvertisements = true;
   }
