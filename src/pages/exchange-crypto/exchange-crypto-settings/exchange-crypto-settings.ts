@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Pages
@@ -22,6 +22,7 @@ export class ExchangeCryptoSettingsPage {
 
   public showInHome;
   public service;
+  public fromExchangeCryptoPage: boolean;
   public changellySwapTxs: any[];
   public oneInchSwapTxs: any[];
 
@@ -31,8 +32,10 @@ export class ExchangeCryptoSettingsPage {
     private logger: Logger,
     public themeProvider: ThemeProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private navParams: NavParams
   ) {
+    this.fromExchangeCryptoPage = this.navParams.data.fromExchangeCryptoPage;
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
     });

@@ -1,4 +1,4 @@
-page-crypto-coin-selector {
+page-coin-and-wallet-selector {
   .bp-list {
     .available-wallets {
       &-container {
@@ -16,6 +16,18 @@ page-crypto-coin-selector {
         font-size: 14px;
         padding: 0rem 1.2rem;
       }
+    }
+    .create-button {
+      background: white;
+      color: color($colors, primary);
+      margin-left: -12px;
+      text-align: center;
+    }
+    .token-count {
+      color: color($colors, grey);
+      text-align: center;
+      font-size: 12px;
+      padding-top: 0.5rem;
     }
   }
 }

@@ -1808,6 +1808,19 @@
     }
   }
 
+  page-coin-and-wallet-selector {
+    .bp-list {
+      .available-wallets {
+        &-container {
+          background-color: $bg-color-dark-theme-2;
+        }
+        &-label {
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+  }
+
   // 7 - Buy Crypto
   page-crypto-order-summary {
     .bp-list {
@@ -1839,18 +1852,6 @@
       }
     }
   }
-  page-crypto-coin-selector {
-    .bp-list {
-      .available-wallets {
-        &-container {
-          background-color: $bg-color-dark-theme-2;
-        }
-        &-label {
-          color: $text-color-dark-theme-2;
-        }
-      }
-    }
-  }
   ion-col {
     .ellipsis {
       color: $text-color-dark-theme;
@@ -1859,8 +1860,7 @@
 
   // 8 - Exchange Crypto
 
-  page-exchange-crypto,
-  page-token-swap {
+  page-exchange-crypto {
     .amount .amount-container {
       background-color: $bg-color-dark-theme-2;
       color: $text-color-dark-theme-2;

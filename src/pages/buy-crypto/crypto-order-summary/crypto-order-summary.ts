@@ -20,9 +20,9 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 // Pages
 import { SelectCurrencyPage } from '../../../pages/add/select-currency/select-currency';
 import { CountrySelectorPage } from '../../../pages/buy-crypto/country-selector/country-selector';
-import { CryptoCoinSelectorPage } from '../../../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CryptoOffersPage } from '../../../pages/buy-crypto/crypto-offers/crypto-offers';
 import { CryptoPaymentMethodPage } from '../../../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
+import { CoinAndWalletSelectorPage } from '../../../pages/coin-and-wallet-selector/coin-and-wallet-selector';
 import { AmountPage } from '../../../pages/send/amount/amount';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -230,15 +230,19 @@ export class CryptoOrderSummaryPage {
     });
   }
 
-  public openCryptoCoinSelectorModal() {
+  public openCoinAndWalletSelectorModal() {
+    // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
+    const supportedCoins = this.isPromotionActiveForCountry(
+      this.selectedCountry
+    )
+      ? this.buyCryptoProvider.getExchangeCoinsSupported('simplex')
+      : this.buyCryptoProvider.getExchangeCoinsSupported();
+
     let modal = this.modalCtrl.create(
-      CryptoCoinSelectorPage,
+      CoinAndWalletSelectorPage,
       {
         useAsModal: true,
-        country: this.selectedCountry,
-        isPromotionActiveForCountry: this.isPromotionActiveForCountry(
-          this.selectedCountry
-        )
+        supportedCoins
       },
       {
         showBackdrop: true,
@@ -445,7 +449,7 @@ export class CryptoOrderSummaryPage {
   }
 
   public goToCoinSelector(): void {
-    this.navCtrl.push(CryptoCoinSelectorPage, {
+    this.navCtrl.push(CoinAndWalletSelectorPage, {
       country: this.selectedCountry,
       isPromotionActiveForCountry: this.isPromotionActiveForCountry(
         this.selectedCountry

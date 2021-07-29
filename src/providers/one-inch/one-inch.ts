@@ -54,7 +54,7 @@ export class OneInchProvider {
       this.logger.debug('Making getCurrencies1inch request');
 
       this.http
-        .get('https://api.1inch.exchange/v3.0/1/tokens', {
+        .get('https://bitpay.api.enterprise.1inch.exchange/v3.0/1/tokens', {
           headers
         })
         .subscribe(
@@ -78,7 +78,7 @@ export class OneInchProvider {
       this.logger.debug('Making getQuote1inch request');
 
       this.http
-        .get('https://api.1inch.exchange/v3.0/1/quote', {
+        .get('https://bitpay.api.enterprise.1inch.exchange/v3.0/1/quote', {
           headers,
           params: data
         })
@@ -108,9 +108,12 @@ export class OneInchProvider {
       this.logger.debug('Making approveSpender1inch request');
 
       this.http
-        .get('https://api.1inch.exchange/v3.0/1/approve/spender', {
-          headers
-        })
+        .get(
+          'https://bitpay.api.enterprise.1inch.exchange/v3.0/1/approve/spender',
+          {
+            headers
+          }
+        )
         .subscribe(
           (data: any) => {
             return resolve(data);
@@ -133,10 +136,13 @@ export class OneInchProvider {
       this.logger.debug('Making approveCalldata1inch request');
 
       this.http
-        .get('https://api.1inch.exchange/v3.0/1/approve/calldata', {
-          headers,
-          params: data
-        })
+        .get(
+          'https://bitpay.api.enterprise.1inch.exchange/v3.0/1/approve/calldata',
+          {
+            headers,
+            params: data
+          }
+        )
         .subscribe(
           (data: any) => {
             return resolve(data);
@@ -158,9 +164,12 @@ export class OneInchProvider {
       this.logger.debug('Making healthCheck1inch request');
 
       this.http
-        .get('https://api.1inch.exchange/v3.0/1/healthcheck', {
-          headers
-        })
+        .get(
+          'https://bitpay.api.enterprise.1inch.exchange/v3.0/1/healthcheck',
+          {
+            headers
+          }
+        )
         .subscribe(
           (data: any) => {
             return resolve(data);

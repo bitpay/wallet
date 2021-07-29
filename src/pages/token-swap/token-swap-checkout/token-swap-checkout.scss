@@ -59,4 +59,22 @@ page-token-swap-checkout {
       font-weight: 300;
     }
   }
+
+  ion-icon.item-img.icon {
+    margin: 9px 15px 9px 0;
+    justify-content: center;
+    padding: 7px;
+    img {
+      width: 35px;
+    }
+    &.rectangle {
+      border-radius: 12px;
+      justify-content: center;
+    }
+    &.background {
+      &_default {
+        background-color: #e6f8e9;
+      }
+    }
+  }
 }

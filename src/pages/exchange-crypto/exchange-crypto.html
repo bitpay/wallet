@@ -1,5 +1,5 @@
 <wide-header-page title="{{'Exchange Crypto' | translate}}">
-  <ion-buttons right *ngIf="changellySwapTxs?.length">
+  <ion-buttons right *ngIf="changellySwapTxs?.length || oneInchSwapTxs?.length">
     <button class="history-btn" clear wide-header-bar-button (click)="goToExchangeHistory()" ion-button>
       <ion-icon>
         <img src="assets/img/icon-history.svg" />
@@ -9,7 +9,7 @@
   <div page-content>
     <ion-list class="bp-list">
       <div class="item-label" translate>Source</div>
-      <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showWallets('from')">
+      <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showFromWallets()">
         <div translate>Select Source Wallet</div>
         <div class="last-item" item-end>
           <button ion-button clear color="grey" icon-only>
@@ -20,7 +20,7 @@
       </ion-row>
 
       <ion-row padding align-items-center *ngIf="fromWalletSelected">
-        <ion-col class="wallet" (click)="showWallets('from')">
+        <ion-col class="wallet" (click)="showFromWallets()">
           <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
           <div class="name-balance">
             <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>            
@@ -35,6 +35,15 @@
         </ion-col>
       </ion-row>
 
+      <label-tip *ngIf="showPendingApprove" type="info">
+        <span label-tip-title translate>Approve is Pending</span>
+        <div label-tip-body>
+          <span translate>You have to wait for this transaction to be confirmed to operate with this token.</span>
+          <br *ngIf="approveTxId">
+          <a *ngIf="approveTxId" class="label-tip-link" (click)="viewOnBlockchain()" translate>View on blockchain</a>
+        </div>
+      </label-tip>
+
       <div class="divider">
         <div class="arrow">
           <img src="assets/img/exchange-crypto/down-arrow.svg" width="40">
@@ -42,7 +51,7 @@
       </div>
 
       <div class="item-label" translate>Destination</div>
-      <ion-row padding align-items-center *ngIf="!toWalletSelected" (click)="showWallets('to')">
+      <ion-row padding align-items-center *ngIf="!toWalletSelected" (click)="showToWallets()">
         <div translate>Select Destination Wallet</div>
         <div class="last-item" item-end>
           <button ion-button clear color="grey" icon-only>
@@ -53,37 +62,55 @@
       </ion-row>
 
       <ion-row padding align-items-center *ngIf="toWalletSelected">
-        <ion-col class="wallet" (click)="showWallets('to')">
-          <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+        <ion-col class="wallet" (click)="showToWallets()">
+          <coin-icon *ngIf="!toToken || !toToken.isCustomToken" [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+          <ion-icon *ngIf="toToken && toToken.isCustomToken" class="item-img rectangle background_default" item-start>
+            <img width="35" [src]="toToken.logoURI" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'">
+          </ion-icon>
           <div class="name-balance">
-            <span class="note-container ellipsis">{{toWalletSelected.name}}</span>            
-            <span class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
+            <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis">{{toWalletSelected.name}}</span>
+            <span *ngIf="toToken && toToken.isCustomToken" class="note-container ellipsis">{{toToken.name}}</span>     
+
+            <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
           </div>
         </ion-col>
 
         <ion-col col-5 class="amount">
-          <ion-spinner name="crescent" *ngIf="loading && toWalletSelected && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
-          <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</div>
+          <ion-spinner name="crescent" *ngIf="loading && (toWalletSelected || toToken) && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+          <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</div>
         </ion-col>
       </ion-row>
       <ion-row class="rate-container">
         <div *ngIf="rate" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
         </div>
         <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toWalletSelected.coin.toUpperCase()}}</span>
+          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
         </div>
       </ion-row>
+
+      <div *ngIf="exchangeToUse == '1inch'" class="item-label slippage-label" (click)="showSlippageInfo()">
+        <span translate>Slippage Tolerance</span>
+        <ion-icon name="md-help-circle"></ion-icon>
+      </div>
+      <div *ngIf="exchangeToUse == '1inch'" class="slippage-container">
+        <div *ngFor="let slippage of slippageValues" class="slippage-item" [ngClass]="{'selected': slippage.selected }" (click)=setSlippage(slippage.value)>{{ slippage.value }}%</div>
+      </div>
     </ion-list>
 
-    <div class="bottom-absolute">
+    <div class="bottom-buttons">
+      <button ion-button class="button-standard button-primary" *ngIf="showApproveButton" (click)="showExchangeApproveModal()">
+        <span>{{approveButtonText}}</span>
+      </button>
+
       <button ion-button class="button-standard button-primary" (click)="goToExchangeCheckoutPage()" [disabled]="!canContinue()">
         <span>{{'Continue' | translate}}</span>
       </button>
 
       <div class="partner">
-        <span>{{'Powered by' | translate}}</span>
-        <img src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
+        <span *ngIf="exchangeToUse">{{'Powered by' | translate}}</span>
+        <img *ngIf="exchangeToUse == '1inch'" class="oneInch-img" src="assets/img/exchange-crypto/1inch-logo.svg" width="90">
+        <img *ngIf="exchangeToUse == 'changelly'" class="changelly-img" src="assets/img/exchange-crypto/changelly-vector-logo{{themeProvider.isDarkModeEnabled() ? '-dark' : ''}}.svg" width="120">
       </div>
     </div>
   </div>

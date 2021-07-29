@@ -643,5 +643,19 @@
       <span sheet-button-text translate>I UNDERSTAND</span>
       <span sheet-second-button-text translate>NO THANKS</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'switch-exchange-crypto'" type="info">
+      <span sheet-title-text translate>Approve required</span>
+      <span sheet-text>
+        <span translate>To proceed with this swap you must complete a single "Approve" transaction to authorize the exchange ("1Inch") to access to the {{params.coin}} funds.</span>
+        <span *ngIf="params.canUseChangelly">
+          <br>
+          <br>
+          <span translate>This pair is also enabled through another of our partners ("Changelly"). Would you like to try this one?</span>
+        </span>
+      </span>
+      <span *ngIf="params.canUseChangelly" sheet-button-text translate>Try Changelly</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

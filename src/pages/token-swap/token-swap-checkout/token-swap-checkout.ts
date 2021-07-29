@@ -13,7 +13,7 @@ import { AnalyticsProvider } from '../../../providers/analytics/analytics';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { OneInchProvider } from '../../../providers/one-inch/one-inch';
@@ -149,15 +149,18 @@ export class TokenSwapCheckoutPage {
                 this.amountTo =
                   Number(this.swapData.toTokenAmount) /
                   10 ** this.toToken.decimals; // amount in minimum unit
-                this.fiatAmountTo = this.rateProvider.toFiat(
-                  Number(this.amountTo) *
-                    this.currencyProvider.getPrecision(
-                      this.toWalletSelected.coin
-                    ).unitToSatoshi,
-                  this.alternativeIsoCode,
-                  this.toWalletSelected.coin
-                );
-                this.paymentTimeControl(2);
+
+                if (!this.toToken.isCustomToken) {
+                  this.fiatAmountTo = this.rateProvider.toFiat(
+                    Number(this.amountTo) *
+                      this.currencyProvider.getPrecision(
+                        this.toWalletSelected.coin
+                      ).unitToSatoshi,
+                    this.alternativeIsoCode,
+                    this.toWalletSelected.coin
+                  );
+                }
+                this.paymentTimeControl(5);
                 this.onGoingProcessProvider.clear();
               })
               .catch(err => {
@@ -227,7 +230,7 @@ export class TokenSwapCheckoutPage {
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
-  public getChain(coin: Coin): string {
+  public getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
@@ -355,7 +358,7 @@ export class TokenSwapCheckoutPage {
       txId: txSent.txid,
       date: now,
       amountTo: this.amountTo,
-      coinTo: this.toWalletSelected.coin,
+      coinTo: this.toToken.symbol,
       addressTo: this.addressTo,
       walletIdTo: this.toWalletSelected.id,
       amountFrom: this.amountFrom,
@@ -372,7 +375,7 @@ export class TokenSwapCheckoutPage {
         // TODO: review this event
         userId: this.fromWalletSelected.id,
         coinFrom: this.fromWalletSelected.coin,
-        coinTo: this.toWalletSelected.coin,
+        coinTo: this.toToken.symbol,
         amountFrom: this.amountFrom,
         amountTo: this.amountTo
       });

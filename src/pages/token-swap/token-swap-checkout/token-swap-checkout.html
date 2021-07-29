@@ -43,12 +43,23 @@
         </ion-label>
 
         <ion-note item-end text-left>
-          <ion-row align-items-center class="wallet" *ngIf="toWalletSelected">
+          <ion-row align-items-center class="wallet" *ngIf="toWalletSelected && !toToken.isCustomToken">
             <ion-col>
               <coin-icon [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
             </ion-col>
             <ion-col>
               <span class="note-container ellipsis">{{toWalletSelected.name}}</span>
+            </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="wallet" *ngIf="toToken.isCustomToken">
+            <ion-col>
+              <ion-icon class="item-img rectangle background_default" item-start>
+                <img width="35" [src]="toToken.logoURI" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'">
+              </ion-icon>
+            </ion-col>
+            <ion-col>
+              <span class="note-container ellipsis">{{toToken.name}}</span>
             </ion-col>
           </ion-row>
         </ion-note>
@@ -170,12 +181,13 @@
         </ion-label>
         <ion-note item-end>
           <div class="total-amount">
-            <span>{{ amountTo | number:'1.0-6'}} {{ toWalletSelected.coin | uppercase }}</span>
+            <span *ngIf="!toToken.isCustomToken">{{ amountTo | number:'1.0-6'}} {{ toWalletSelected.coin | uppercase }}</span>
+            <span *ngIf="toToken.isCustomToken">{{ amountTo | number:'1.0-6'}} {{ toToken.symbol }}</span>
           </div>
         </ion-note>
       </ion-item>
 
-      <div class="amount-details">
+      <div *ngIf="fiatAmountTo" class="amount-details">
         <div class="secondary-note">
           <span>
             ~{{ fiatAmountTo | number : '1.2-2' }} {{ alternativeIsoCode }}

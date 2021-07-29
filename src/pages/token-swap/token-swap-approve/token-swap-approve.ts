@@ -14,7 +14,7 @@ import { FinishModalPage } from '../../finish/finish';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -190,7 +190,7 @@ export class TokenSwapApprovePage {
     this.externalLinkProvider.open(url);
   }
 
-  public getChain(coin: Coin): string {
+  public getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
