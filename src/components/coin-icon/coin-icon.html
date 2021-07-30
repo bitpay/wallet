@@ -1,7 +1,7 @@
 <ion-icon *ngIf="coin && coin !== 'default'" class="item-img rectangle" [ngClass]="{ 
 'background_btc': coin == 'btc',
 'background_bch': coin == 'bch',
-'background_bcha': coin == 'bcha',
+'background_xec': coin == 'xec',
 'background_eth': coin == 'eth',
 'background_xrp': coin == 'xrp',
 'background_usdc': coin == 'usdc',
@@ -12,6 +12,7 @@
 'background_wbtc': coin == 'wbtc',
 'background_doge': coin == 'doge',
 'background_ltc': coin == 'ltc',
+'background_xpi': coin == 'xpi',
 'testnet': network === 'testnet'
 }" item-start>
   <img src="assets/img/currencies/{{coin}}.svg" />

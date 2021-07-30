@@ -114,6 +114,8 @@ export class ExchangeRates {
         return '1.4-4';
       case 'xpi':
         return '1.6-6';
+      case 'xec':
+        return '1.6-6';
       default:
         return '1.2-2';
     }

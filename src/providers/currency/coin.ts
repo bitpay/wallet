@@ -45,6 +45,82 @@ export interface CoinOpts {
 
 export const availableCoins: CoinsMap<CoinOpts> = {
   
+  xpi: {
+    name: 'Lotus',
+    chain: 'XPI',
+    coin: 'xpi',
+    unitInfo: {
+      unitName: 'XPI',
+      unitToSatoshi: 1000000,
+      unitDecimals: 6,
+      unitCode: 'xpi'
+    },
+    properties: {
+      hasMultiSig: true,
+      hasMultiSend: true,
+      isUtxo: true,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: false
+    },
+    paymentInfo: {
+      paymentCode: 'BIP73',
+      protocolPrefix: { livenet: 'lotusnet', testnet: 'ltstest' },
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xpi',
+      blockExplorerUrls: 'explorer.givelotus.org/',
+      blockExplorerUrlsTestnet: 'sochain.com/'
+    },
+    feeInfo: {
+      feeUnit: 'sat/byte',
+      feeUnitAmount: 1000,
+      blockTime: 10,
+      maxMerchantFee: 'normal'
+    },
+    theme: {
+      coinColor: '#f39d09',
+      backgroundColor: '#f39d09',
+      gradientBackgroundColor: '#f39d09'
+    }
+  },
+
+  xec: {
+    name: 'eCash',
+    chain: 'XEC',
+    coin: 'xec',
+    unitInfo: {
+      unitName: 'XEC',
+      unitToSatoshi: 100,
+      unitDecimals: 2,
+      unitCode: 'xec'
+    },
+    properties: {
+      hasMultiSig: true,
+      hasMultiSend: true,
+      isUtxo: true,
+      isERCToken: false,
+      isStableCoin: false,
+      singleAddress: false
+    },
+    paymentInfo: {
+      paymentCode: 'BIP73',
+      protocolPrefix: { livenet: 'ecash', testnet: 'ectest' },
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xec',
+      blockExplorerUrls: 'explorer.bitcoinabc.org/',
+      blockExplorerUrlsTestnet: 'texplorer.bitcoinabc.org/'
+    },
+    feeInfo: {
+      feeUnit: 'sat/byte',
+      feeUnitAmount: 1000,
+      blockTime: 10,
+      maxMerchantFee: 'urgent'
+    },
+    theme: {
+      coinColor: '#016cbf',
+      backgroundColor: '#016cbf',
+      gradientBackgroundColor: '#016cbf'
+    }
+  },
+
   bch: {
     name: 'Bitcoin Cash',
     chain: 'BCH',
@@ -158,80 +234,4 @@ export const availableCoins: CoinsMap<CoinOpts> = {
       gradientBackgroundColor: '#f7921a'
     }
   },
-
-  xec: {
-    name: 'eCash',
-    chain: 'XEC',
-    coin: 'xec',
-    unitInfo: {
-      unitName: 'XEC',
-      unitToSatoshi: 100,
-      unitDecimals: 2,
-      unitCode: 'xec'
-    },
-    properties: {
-      hasMultiSig: true,
-      hasMultiSend: true,
-      isUtxo: true,
-      isERCToken: false,
-      isStableCoin: false,
-      singleAddress: false
-    },
-    paymentInfo: {
-      paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'ecash', testnet: 'ectest' },
-      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xec',
-      blockExplorerUrls: 'explorer.bitcoinabc.org/',
-      blockExplorerUrlsTestnet: 'texplorer.bitcoinabc.org/'
-    },
-    feeInfo: {
-      feeUnit: 'sat/byte',
-      feeUnitAmount: 1000,
-      blockTime: 10,
-      maxMerchantFee: 'urgent'
-    },
-    theme: {
-      coinColor: '#f39c11',
-      backgroundColor: '#4b8af8',
-      gradientBackgroundColor: '#92d050'
-    }
-  },
-  
-  xpi: {
-    name: 'Lotus',
-    chain: 'XPI',
-    coin: 'xpi',
-    unitInfo: {
-      unitName: 'XPI',
-      unitToSatoshi: 1000000,
-      unitDecimals: 6,
-      unitCode: 'xpi'
-    },
-    properties: {
-      hasMultiSig: true,
-      hasMultiSend: true,
-      isUtxo: true,
-      isERCToken: false,
-      isStableCoin: false,
-      singleAddress: false
-    },
-    paymentInfo: {
-      paymentCode: 'BIP73',
-      protocolPrefix: { livenet: 'lotusnet', testnet: 'ltstest' },
-      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/xpi',
-      blockExplorerUrls: 'explorer.givelotus.org/',
-      blockExplorerUrlsTestnet: 'sochain.com/'
-    },
-    feeInfo: {
-      feeUnit: 'sat/byte',
-      feeUnitAmount: 1000,
-      blockTime: 10,
-      maxMerchantFee: 'normal'
-    },
-    theme: {
-      coinColor: '#2fcf6e',
-      backgroundColor: '#2fcf6e',
-      gradientBackgroundColor: '#2fcf6e'
-    }
-  }
 };
