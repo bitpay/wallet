@@ -13,9 +13,9 @@ import {
   ExternalLinkProvider,
   Logger,
   PersistenceProvider,
-  ReplaceParametersProvider
+  ReplaceParametersProvider,
+  ThemeProvider
 } from '../../../providers';
-
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
@@ -28,6 +28,7 @@ export class AboutPage {
   private releaseInfoTaps = 0;
   private easterEggStatus;
   public pressed: number = 0;
+  public isDarkTheme: any;
   constructor(
     private navCtrl: NavController,
     private appProvider: AppProvider,
@@ -37,8 +38,13 @@ export class AboutPage {
     private translate: TranslateService,
     private bitpayProvider: BitPayProvider,
     private persistenceProvider: PersistenceProvider,
-    private events: Events
-  ) {}
+    private events: Events,
+    private themeProvider: ThemeProvider
+  ) {
+    // Get Theme
+    this.isDarkTheme =
+      this.themeProvider.getCurrentAppTheme() === 'dark' ? true : false;
+  }
 
   async ionViewDidLoad() {
     this.logger.info('Loaded: AboutPage');

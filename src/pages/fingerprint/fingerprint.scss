@@ -54,4 +54,18 @@ page-fingerprint {
       }
     }
   }
+  .made-with-custom {
+    font-family: 'Lobster';
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    right: 16px;
+    img {
+      position: relative;
+      top: 11px;
+    }
+  }
+  .white-theme {
+    color: white;
+  }
 }

@@ -22,4 +22,18 @@ page-about {
     width: 20px;
     text-align: center;
   }
+  .made-with-custom {
+    font-family: 'Lobster';
+    font-size: 19px;
+    position: fixed;
+    bottom: 0;
+    right: 16px;
+    img {
+      position: relative;
+      top: 9px;
+    }
+  }
+  .white-theme {
+    color: white;
+  }
 }
