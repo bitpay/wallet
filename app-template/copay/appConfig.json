@@ -26,7 +26,7 @@
   "WindowsApplicationId": "CopayforWindows",
   "pushSenderId": "1036948132229",
   "description": "AbcPay Wallet",
-  "version": "12.5.1",
+  "version": "1.0",
   "androidVersion": "91205001",
   "iOSBuildVersion": "1",
   "_extraCSS": null,
