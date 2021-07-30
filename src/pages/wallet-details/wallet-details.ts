@@ -128,7 +128,7 @@ export class WalletDetailsPage {
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isShowDonationBtn = _.includes(this.navParams.data.donationSupportCoins, this.wallet.coin);
+    this.isShowDonationBtn = _.some(this.navParams.data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
