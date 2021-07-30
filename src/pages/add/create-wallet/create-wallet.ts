@@ -130,7 +130,7 @@ export class CreateWalletPage implements OnInit {
       selectedSeed: ['new'],
       recoveryPhrase: [null],
       derivationPath: [this.derivationPathByDefault],
-      testnetEnabled: [true],
+      testnetEnabled: [false],
       useNativeSegwit: [false],
       singleAddress: [false],
       coin: [null, Validators.required]
