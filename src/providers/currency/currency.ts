@@ -29,7 +29,8 @@ export class CurrencyProvider {
     BUSD: 'busd',
     DAI: 'dai',
     WBTC: 'wbtc',
-    DOGE: 'doge'
+    DOGE: 'doge',
+    LTC: 'ltc'
   };
 
   constructor(

@@ -37,7 +37,7 @@ export class FeeProvider {
     this.logger.debug('FeeProvider initialized');
   }
 
-  public getFeeOpts(coin?: Coin) {
+  public getFeeOpts(coin?: string) {
     const feeOpts = {
       urgent:
         coin == 'eth' || this.currencyProvider.isERCToken(coin)

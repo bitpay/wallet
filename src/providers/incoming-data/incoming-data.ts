@@ -498,7 +498,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Litecoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.LTC;
+    const coin = 'ltc';
     let parsed = this.bwcProvider.getBitcoreLtc().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
@@ -660,7 +660,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Litecoin plain address');
-    const coin = Coin.LTC;
+    const coin = 'ltc';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
