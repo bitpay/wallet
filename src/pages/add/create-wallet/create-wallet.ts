@@ -8,6 +8,7 @@ import {
   NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import env from '../../../environments';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -64,6 +65,7 @@ export class CreateWalletPage implements OnInit {
   private derivationPathForTestnet: string;
   private showKeyOnboarding: boolean;
 
+  public isEnvDev = env.name == 'development' ? true : false;
   public keyId: string;
   public copayers: number[];
   public signatures: number[];
