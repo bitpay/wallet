@@ -102,7 +102,7 @@ export class BwcErrorProvider {
         break;
       case 'MAINTENANCE_ERROR':
         body = this.translate.instant(
-          'Bitcore Wallet Service is under maintenance. Please check https://status.bitpay.com/.'
+          'AbcPros Wallet Service is under maintenance. Please check https://t.me/AbcPay.'
         );
         break;
       case 'CONNECTION_ERROR':
