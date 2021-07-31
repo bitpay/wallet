@@ -218,9 +218,9 @@ export const availableCoins: CoinsMap<CoinOpts> = {
     paymentInfo: {
       paymentCode: 'BIP73',
       protocolPrefix: { livenet: 'litecoin', testnet: 'litecoin' },
-      ratesApi: 'https://bws.bitpay.com/bws/api/v3/fiatrates/ltc',
-      blockExplorerUrls: 'bitpay.com/insight/#/LTC/mainnet/',
-      blockExplorerUrlsTestnet: 'bitpay.com/insight/#/LTC/testnet/'
+      ratesApi: 'https://aws.abcpay.cash/bws/api/v3/fiatrates/ltc',
+      blockExplorerUrls: 'blockchair.com/',
+      blockExplorerUrlsTestnet: 'blockchair.com/'
     },
     feeInfo: {
       feeUnit: 'sat/byte',
