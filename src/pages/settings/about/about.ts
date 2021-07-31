@@ -28,7 +28,7 @@ export class AboutPage {
   private releaseInfoTaps = 0;
   private easterEggStatus;
   public pressed: number = 0;
-  public isDarkTheme: any;
+  public isDarkTheme: boolean;
   constructor(
     private navCtrl: NavController,
     private appProvider: AppProvider,
@@ -42,8 +42,7 @@ export class AboutPage {
     private themeProvider: ThemeProvider
   ) {
     // Get Theme
-    this.isDarkTheme =
-      this.themeProvider.getCurrentAppTheme() === 'dark' ? true : false;
+    this.isDarkTheme = this.themeProvider.getCurrentAppTheme() === 'dark';
   }
 
   async ionViewDidLoad() {
