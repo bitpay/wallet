@@ -108,10 +108,12 @@
           <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
         </ion-item>
 
-        <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
-          <ion-label><span *ngIf="coin === 'eth'">Kovan </span>Testnet</ion-label>
-          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()" [disabled]="isShared && coin == 'eth'"></ion-toggle>
-        </ion-item>
+        <ng-container *ngIf="isEnvDev">
+          <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
+            <ion-label><span *ngIf="coin === 'eth'">Kovan </span>Testnet</ion-label>
+            <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()" [disabled]="coin == 'xec' || coin == 'xpi' ||(isShared && coin == 'eth')"></ion-toggle>
+          </ion-item>
+        </ng-container>
 
         <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
           <span label-tip-title translate>Testnet Wallet</span>
