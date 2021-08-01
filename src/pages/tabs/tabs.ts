@@ -342,6 +342,11 @@ export class TabsPage {
             finished: true
           });
 
+          this.events.publish('Local/WalletFocus', {
+            walletId: wallet.id,
+            force: true
+          });
+
           if (!_.isEmpty(st.serverMessages)) {
             this.events.publish('Local/ServerMessages', {
               serverMessages: st.serverMessages
