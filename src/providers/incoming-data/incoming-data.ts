@@ -1132,6 +1132,20 @@ export class IncomingDataProvider {
         type: 'LitecoinUri',
         title: 'Litecoin URI'
       };
+      // Ecash URI
+    } else if (this.isValidECashUri(data)) {
+      return {
+        data,
+        type: 'ECashUri',
+        title: 'Ecash URI'
+      };
+      // Lotus URI
+    } else if (this.isValidLotusUri(data)) {
+      return {
+        data,
+        type: 'LotusUri',
+        title: 'Lotus URI'
+      };
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       return {

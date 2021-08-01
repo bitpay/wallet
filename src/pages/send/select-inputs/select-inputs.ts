@@ -52,13 +52,15 @@ export class SelectInputsPage {
     'LitecoinAddress',
     'XeccoinAddress',
     'XpicoinAddress',
+    'ECashAddress',
+    'LotusAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
     'LitecoinUri',
-    'XeccoinUri',
-    'XpicoinUri'
+    'ECashUri',
+    'LotusUri'
   ];
   constructor(
     private navCtrl: NavController,

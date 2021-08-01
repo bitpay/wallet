@@ -55,12 +55,16 @@ export class MultiSendPage {
     'DogecoinAddress',
     'BCHAcoinAddress',
     'LitecoinAddress',
+    'ECashAddress',
+    'LotusAddress',
     'EthereumUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
     'BCHAcoinUri',
-    'LitecoinUri'
+    'LitecoinUri',
+    'ECashUri',
+    'LotusUri',
   ];
 
   constructor(
