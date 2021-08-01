@@ -1696,7 +1696,9 @@ export class ConfirmPage {
       'DogecoinUri',
       'LitecoinUri',
       'RippleUri',
-      'InvoiceUri'
+      'InvoiceUri',
+      'ECashUri',
+      'LotusUri'
     ]);
     this.navigateBack(redir, walletId);
   }

@@ -323,10 +323,10 @@ export class TabsPage {
     wallets = _.filter(this.profileProvider.wallet, w => {
       return !w.hidden;
     });
-
+    const opts = { force: true };
     const pr = wallet => {
       return this.walletProvider
-        .fetchStatus(wallet, {})
+        .fetchStatus(wallet, opts)
         .then(st => {
           wallet.cachedStatus = st;
           wallet.error = wallet.errorObj = null;

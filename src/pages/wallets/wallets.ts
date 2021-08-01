@@ -283,6 +283,16 @@ export class WalletsPage {
     async () => {
       this.profileProvider.setOrderedWalletsByGroup();
       this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
+      this.walletsGroups.forEach(walletArray => {
+        walletArray.forEach(wallet => {
+          this.events.publish('Local/WalletFocus', {
+            walletId: wallet.id,
+            force: true
+          });
+        });
+        
+      });
+      
     },
     5000,
     {
