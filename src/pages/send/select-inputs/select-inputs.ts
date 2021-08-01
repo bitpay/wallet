@@ -50,8 +50,6 @@ export class SelectInputsPage {
     'EthereumAddress',
     'DogecoinAddress',
     'LitecoinAddress',
-    'XeccoinAddress',
-    'XpicoinAddress',
     'ECashAddress',
     'LotusAddress',
     'EthereumUri',

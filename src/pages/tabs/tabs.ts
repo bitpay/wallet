@@ -323,10 +323,10 @@ export class TabsPage {
     wallets = _.filter(this.profileProvider.wallet, w => {
       return !w.hidden;
     });
-
+    const opts = { force: true };
     const pr = wallet => {
       return this.walletProvider
-        .fetchStatus(wallet, {})
+        .fetchStatus(wallet, opts)
         .then(st => {
           wallet.cachedStatus = st;
           wallet.error = wallet.errorObj = null;
@@ -340,11 +340,6 @@ export class TabsPage {
           this.events.publish('Local/WalletUpdate', {
             walletId: wallet.id,
             finished: true
-          });
-
-          this.events.publish('Local/WalletFocus', {
-            walletId: wallet.id,
-            force: true
           });
 
           if (!_.isEmpty(st.serverMessages)) {
