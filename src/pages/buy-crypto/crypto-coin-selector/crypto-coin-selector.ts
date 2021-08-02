@@ -9,7 +9,6 @@ import {
   ActionSheetProvider,
   BuyCryptoProvider,
   BwcErrorProvider,
-  Coin,
   CurrencyProvider,
   ErrorsProvider,
   Logger,
@@ -60,7 +59,7 @@ export class CryptoCoinSelectorPage {
     for (const coin of supportedCoins) {
       const c = {
         unitCode: coin,
-        name: this.currencyProvider.getCoinName(coin as Coin),
+        name: this.currencyProvider.getCoinName(coin),
         availableWallets: _.filter(this.wallets, w => w.coin === coin)
       };
       this.coins.push(c);

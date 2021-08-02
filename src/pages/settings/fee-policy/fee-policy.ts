@@ -4,7 +4,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { FeeProvider } from '../../../providers/fee/fee';
 
 const NETWORK = 'livenet';
@@ -105,7 +105,7 @@ export class FeePolicyPage {
         : `${feePerSatByte} ${feeUnit}`;
   }
 
-  public getCoinName(coin: Coin) {
+  public getCoinName(coin: string) {
     return this.currencyProvider.getCoinName(coin);
   }
 

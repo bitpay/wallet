@@ -10,7 +10,6 @@ import * as _ from 'lodash';
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import {
-  Coin,
   CoinsMap,
   CurrencyProvider
 } from '../../../providers/currency/currency';
@@ -28,7 +27,7 @@ export interface FlatWallet {
   color: string;
   name: string;
   recipientType: 'wallet';
-  coin: Coin;
+  coin: string;
   network: 'testnet' | 'livenet';
   m: number;
   n: number;
@@ -48,7 +47,7 @@ export class TransferToPage {
   public wallets = {} as CoinsMap<any>;
   public hasWallets = {} as CoinsMap<boolean>;
   public walletList = {} as CoinsMap<FlatWallet[]>;
-  public availableCoins: Coin[];
+  public availableCoins: string[];
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
@@ -162,7 +161,7 @@ export class TransferToPage {
     return this._fromMultiSend;
   }
 
-  public getCoinName(coin: Coin) {
+  public getCoinName(coin: string) {
     return this.currencyProvider.getCoinName(coin);
   }
 

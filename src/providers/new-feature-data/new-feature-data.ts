@@ -99,7 +99,7 @@ export class NewFeatureData {
         (vs.app.length == 0 ||
           vs.app[0] === '*' ||
           vs.app.find(
-            app => app === String(this.appProv.info.name).toLocaleLowerCase()
+            app => app === String(this.appProv.info.name).toLowerCase()
           )) &&
         (vs.platform.length == 0 ||
           vs.platform[0] === '*' ||

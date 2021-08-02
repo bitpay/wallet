@@ -27,7 +27,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -81,7 +81,7 @@ export class ConfirmPage {
   public fromSelectInputs: boolean;
   public recipients;
   public toAddressName;
-  public coin: Coin;
+  public coin: string;
   public isERCToken: boolean;
   public appName: string;
   public merchantFeeLabel: string;
@@ -398,7 +398,7 @@ export class ConfirmPage {
     return chain.includes(this.coin) && !this.tx.multisigContractAddress;
   }
 
-  public getChain(coin: Coin): string {
+  public getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
@@ -1050,6 +1050,7 @@ export class ConfirmPage {
       const txp: Partial<TransactionProposal> = {};
       // set opts.coin to wallet.coin
       txp.coin = wallet.coin;
+      txp.chain = this.currencyProvider.getChain(txp.coin);
 
       if (this.fromMultiSend) {
         txp.outputs = [];

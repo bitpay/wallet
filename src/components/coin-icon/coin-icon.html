@@ -1,4 +1,7 @@
-<ion-icon *ngIf="coin && coin !== 'default'" class="item-img rectangle background_{{coin}}" [ngClass]="{'testnet': network === 'testnet'}" item-start>
+<ion-icon *ngIf="coin && currencyProvider.COIN[coin | uppercase]" class="item-img rectangle background_{{coin}}" [ngClass]="{'testnet': network === 'testnet'}" item-start>
   <img [src]="assetUrl" />
 </ion-icon>
-<ion-icon *ngIf="coin ==='default'" name="logo-usd" color="success" class="item-img rectangle background_default" item-start></ion-icon>
+
+<ion-icon *ngIf="coin && !currencyProvider.COIN[coin | uppercase]" color="success" class="item-img rectangle background_default" item-start>
+  <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin)}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'" />
+</ion-icon>
