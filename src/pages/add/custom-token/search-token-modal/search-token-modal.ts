@@ -60,7 +60,6 @@ export class SearchTokenModalPage {
     this.tokenListShowMore =
       this.filteredTokens.length > this.TOKEN_SHOW_LIMIT ? true : false;
 
-    console.log(this.filteredTokens);
     return this.filteredTokens;
   }
 
