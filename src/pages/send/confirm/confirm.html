@@ -307,7 +307,7 @@
           <ion-note item-end>
             <ion-row align-items-center class="wallet" *ngIf="receiveLotusAddress">
               <ion-col>
-                <coin-icon [coin]="'bch'" [network]="'testnet'"></coin-icon>
+                <coin-icon [coin]="donationCoin" [network]="'livenet'"></coin-icon>
               </ion-col>
   
               <ion-col>
@@ -327,7 +327,7 @@
             <span translate>Lotus Receive</span>
           </div>
         </ion-label>
-        <ion-note class="main-note" item-end>{{receiveAmountLotus}}</ion-note>
+        <ion-note class="main-note" item-end>{{receiveAmountLotus}} {{donationCoin | uppercase}}</ion-note>
       </ion-item>
       </ng-container>
 

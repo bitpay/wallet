@@ -127,6 +127,7 @@ export class ConfirmPage {
   isShowReceive;
   nameReceiveLotusAddress;
   donationSupportCoins;
+  donationCoin;
   // // Card flags for zen desk chat support
   // private isCardPurchase: boolean;
   // private isHelpOpen: boolean = false;
@@ -204,6 +205,7 @@ export class ConfirmPage {
       this.remaining = data.remaining;
       this.receiveAmountLotus = data.receiveAmountLotus;
       this.donationSupportCoins = data.donationSupportCoins;
+      this.donationCoin = data.donationCoin;
     }).catch((err) => {
       console.log(err)
     });

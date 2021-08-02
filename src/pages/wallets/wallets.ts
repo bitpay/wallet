@@ -93,22 +93,19 @@ export class WalletsPage {
   }
 
   ionViewWillEnter() {
-    const loader = this.loadingCtr.create({
-      content: 'Please wait...'
-    })
-    if(this.isDonation){
-      loader.present();
-    }
-    this.walletsGroups = this.profileProvider.orderedWalletsByGroup;
-    // Get Coinbase Accounts and UserInfo
-    this.walletProvider.getDonationInfo().then((data: any) => {
-      this.donationSupportCoins = data.donationSupportCoins;
-      if (this.isDonation) {
-        this.walletsGroups = this.filterLotusDonationWallet(this.walletsGroups);
-      }
-      loader.dismiss();
-    });
+    this.getWalletsGroups();
     this.setCoinbase();
+  }
+
+  private getWalletsGroups(){
+    const walletsGroups = this.profileProvider.orderedWalletsByGroup;
+    if(this.isDonation){
+        this.walletProvider.getDonationInfo().then((data: any) => {
+        this.donationSupportCoins = data.donationSupportCoins;
+        this.walletsGroups = this.filterLotusDonationWallet(walletsGroups);
+      });
+    }
+    this.walletsGroups = walletsGroups;
   }
 
   private filterLotusDonationWallet(walletGroups: any) {
@@ -515,7 +512,9 @@ export class WalletsPage {
   }
 
   public doRefresh(refresher): void {
-    this.debounceSetWallets();
+    if(!this.isDonation){
+      this.debounceSetWallets();
+    }
     this.debounceSetCoinbase();
     setTimeout(() => {
       refresher.complete();
