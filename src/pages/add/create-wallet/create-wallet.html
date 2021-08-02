@@ -114,9 +114,9 @@
         </ion-item>
 
         <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
-          <span label-tip-title translate>Testnet Wallet</span>
+          <span label-tip-title translate>Someone asked you to create this wallet?</span>
           <div label-tip-body>
-            {{ 'The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}' | translate : {coinName: coinName } }} .
+            {{ 'Testnet coins have no value and cannot be converted into "actual" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you.' | translate : {coinName: coinName } }}
           </div>
         </label-tip>
 

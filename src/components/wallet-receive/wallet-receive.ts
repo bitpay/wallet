@@ -151,7 +151,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
-    this.showCoinNetworkWarning(this.wallet.coin);
+    if (this.wallet.network === 'testnet') this.showTestnetWarning();
+    else this.showCoinNetworkWarning(this.wallet.coin);
   }
 
   public setQrAddress() {
@@ -177,6 +178,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
     sheet.instance.sheetType = sheetType;
     sheet.instance.params = params;
     return sheet;
+  }
+
+  private showTestnetWarning() {
+    const infoSheet = this.createInfoSheet('testnet-warning-1', {
+      coinName: this.currencyProvider.getCoinName(this.wallet.coin)
+    });
+    infoSheet.present();
   }
 
   private showFirstWarning() {
