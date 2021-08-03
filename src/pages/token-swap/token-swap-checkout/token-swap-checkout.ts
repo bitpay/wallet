@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
@@ -75,7 +81,8 @@ export class TokenSwapCheckoutPage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private events: Events
   ) {
     this.onGoingProcessProvider.set(
       this.translate.instant('Getting data from the exchange...')
@@ -196,6 +203,30 @@ export class TokenSwapCheckoutPage {
       });
   }
 
+  private createAndBindTokenWallet() {
+    if (
+      !_.isEmpty(this.toWalletSelected) &&
+      !_.isEmpty(this.toToken) &&
+      this.toToken.symbol.toLowerCase() != 'eth'
+    ) {
+      const customToken = {
+        keyId: this.toWalletSelected.keyId,
+        name: this.toToken.name,
+        address: this.toToken.address,
+        symbol: this.toToken.symbol.toLowerCase(),
+        decimals: this.toToken.decimals
+      };
+
+      this.profileProvider
+        .createCustomTokenWallet(this.toWalletSelected, customToken)
+        .then(() => {
+          // store preferences for the paired eth wallet
+          this.walletProvider.updateRemotePreferences(this.toWalletSelected);
+          this.events.publish('Local/FetchWallets');
+        });
+    }
+  }
+
   private setExpirationDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
   }
@@ -266,6 +297,7 @@ export class TokenSwapCheckoutPage {
         this.publishAndSign(this.fromWalletSelected, this.ctxp)
           .then(txSent => {
             this.saveOneInchData(txSent);
+            this.createAndBindTokenWallet();
           })
           .catch(err => {
             this.logger.error(this.bwcErrorProvider.msg(err));
@@ -287,7 +319,9 @@ export class TokenSwapCheckoutPage {
       let message =
         this.fromWalletSelected.coin.toUpperCase() +
         ' to ' +
-        this.toWalletSelected.coin.toUpperCase();
+        !_.isEmpty(this.toToken)
+          ? this.toToken.symbol.toUpperCase()
+          : this.toWalletSelected.coin.toUpperCase();
       let outputs = [];
 
       outputs.push({
@@ -312,6 +346,7 @@ export class TokenSwapCheckoutPage {
 
       txp.feePerKb = this.gasPrice;
       txp.coin = wallet.coin;
+      txp.chain = this.currencyProvider.getChain(txp.coin);
 
       if (this.currencyProvider.isERCToken(wallet.coin)) {
         let tokenAddress;

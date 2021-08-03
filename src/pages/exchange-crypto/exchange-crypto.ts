@@ -674,58 +674,6 @@ export class ExchangeCryptoPage {
     }
   }
 
-  private setToWallets(): void {
-    if (!this.fromWalletSelected) return;
-
-    if (
-      this.oneInchSupportedCoins.length > 0 &&
-      this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin) &&
-      this.changellySupportedCoins.length > 0 &&
-      this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
-    ) {
-      // toWallets could be any supported coin
-      this.toWallets = this.allWallets.filter(
-        w =>
-          !w.needsBackup &&
-          w.id != this.fromWalletSelected.id &&
-          w.coin != this.fromWalletSelected.coin &&
-          (this.oneInchSupportedCoins.includes(w.coin) ||
-            this.changellySupportedCoins.includes(w.coin))
-      );
-    } else if (
-      this.oneInchSupportedCoins.length > 0 &&
-      this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin)
-    ) {
-      // 1inch has priority over Changelly
-      this.toWallets = this.allWallets.filter(
-        w =>
-          !w.needsBackup &&
-          w.id != this.fromWalletSelected.id &&
-          w.coin != this.fromWalletSelected.coin &&
-          this.oneInchSupportedCoins.includes(w.coin)
-      );
-    } else if (
-      this.changellySupportedCoins.length > 0 &&
-      this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
-    ) {
-      this.toWallets = this.allWallets.filter(
-        w =>
-          !w.needsBackup &&
-          w.id != this.fromWalletSelected.id &&
-          w.coin != this.fromWalletSelected.coin &&
-          this.changellySupportedCoins.includes(w.coin)
-      );
-    }
-
-    if (_.isEmpty(this.toWallets)) {
-      let msg = this.translate.instant(
-        'There are no wallets available to choose as a destination. Remember that destination wallet needs to be backed up.'
-      );
-      this.showErrorAndBack(null, msg);
-      return;
-    }
-  }
-
   public onFromWalletSelect(wallet): void {
     this.fromWalletSelected = wallet;
     if (!this.toWalletSelectedByDefault) {
@@ -737,7 +685,6 @@ export class ExchangeCryptoPage {
     this.fixedRateId = null;
     this.exchangeToUse = null;
     this.showPendingApprove = false;
-    this.setToWallets();
     this.setExchangeToUse();
   }
 
@@ -928,7 +875,12 @@ export class ExchangeCryptoPage {
     let pair = this.fromWalletSelected.coin + '_' + this.toWalletSelected.coin;
     this.logger.debug('Updating max and min with pair: ' + pair);
 
-    this.referrerFee = await this.oneInchProvider.getReferrerFee();
+    try {
+      this.referrerFee = await this.oneInchProvider.getReferrerFee();
+    } catch (err) {
+      if (err.error)
+        this.logger.error('Could not get referrer fee: ', err.error);
+    }
 
     this.logger.debug(`referrerFee setted to: ${this.referrerFee}%`);
 
@@ -942,12 +894,16 @@ export class ExchangeCryptoPage {
             );
           })[0];
 
-    const data = {
+    const data: any = {
       fromTokenAddress: this.fromToken.address,
       toTokenAddress: this.toToken.address,
-      amount: this.amountFrom * 10 ** this.fromToken.decimals, // amount in minimum unit
-      fee: this.referrerFee // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
+      amount: this.amountFrom * 10 ** this.fromToken.decimals // amount in minimum unit
     };
+
+    if (this.referrerFee) {
+      data.fee = this.referrerFee; // taking this fee from BWS. This percentage of fromTokenAddress token amount  will be sent to referrerAddress, the rest will be used as input for a swap | min: 0; max: 3; default: 0;
+    }
+
     this.oneInchProvider
       .getQuote1inch(data)
       .then(data => {
@@ -1461,8 +1417,7 @@ export class ExchangeCryptoPage {
                   return;
                 });
             }
-            // TODO: review this decision
-            // this.setToWallets();
+
             this.onGoingProcessProvider.clear();
             this.oneInchGetRates();
           })
