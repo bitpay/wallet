@@ -49,6 +49,7 @@ export class WalletConnectPage {
   public showWalletSelector: boolean = false;
   public dappImgSrc: string;
   private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
+  private isEventLogged: boolean = false;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -254,7 +255,18 @@ export class WalletConnectPage {
   }
 
   public setDappImgSrc(useDefault?: boolean) {
-    console.log(useDefault);
+    if (
+      useDefault &&
+      !this.isEventLogged &&
+      this.peerMeta &&
+      this.peerMeta.icons
+    ) {
+      this.analyticsProvider.logEvent('wallet_connect_img_src_blocked', {
+        imgSrc: this.peerMeta.icons[0]
+      });
+      this.isEventLogged = true;
+    }
+
     this.dappImgSrc =
       this.peerMeta && this.peerMeta.icons && !useDefault
         ? this.peerMeta.icons[1]
