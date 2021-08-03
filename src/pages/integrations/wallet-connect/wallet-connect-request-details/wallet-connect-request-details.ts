@@ -32,6 +32,8 @@ export class WalletConnectRequestDetailsPage {
   public params: any;
   public peerMeta: any;
   public wallet: any;
+  public dappImgSrc: string;
+  private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
 
   constructor(
     private logger: Logger,
@@ -46,12 +48,12 @@ export class WalletConnectRequestDetailsPage {
   ) {}
 
   ionViewDidLoad() {
-    this.getConnectionData();
+    this.setConnectionData();
     this.request = this.navParams.data.request;
     this.params = this.navParams.data.params;
   }
 
-  private getConnectionData: any = async _ => {
+  private setConnectionData: any = async _ => {
     const {
       walletId,
       address,
@@ -60,6 +62,7 @@ export class WalletConnectRequestDetailsPage {
     this.wallet = this.profileProvider.getWallet(walletId);
     this.address = address;
     this.peerMeta = peerMeta;
+    this.setDappImgSrc();
   };
 
   public rejectRequest(request): void {
@@ -171,5 +174,14 @@ export class WalletConnectRequestDetailsPage {
           this.navCtrl.push(ConfirmPage, data);
         }
       });
+  }
+
+  public setDappImgSrc(useDefault?: boolean) {
+    this.dappImgSrc =
+      this.peerMeta && this.peerMeta.icons && !useDefault
+        ? this.peerMeta.icons[1]
+          ? this.peerMeta.icons[1]
+          : this.peerMeta.icons[0]
+        : this.defaultImgSrc;
   }
 }

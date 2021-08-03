@@ -48,7 +48,7 @@
                   <div class="background-content">
                   <ion-col>
                     <ion-icon item-start>
-                      <img class="dapp-img-sm" src="{{peerMeta?.icons[0]}}" width="20">
+                      <img class="dapp-img-sm" [src]="dappImgSrc" (error)="setDappImgSrc(true)" width="20">
                     </ion-icon>
                   </ion-col>
                   <ion-col>

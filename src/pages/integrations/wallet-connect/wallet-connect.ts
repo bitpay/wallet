@@ -47,6 +47,8 @@ export class WalletConnectPage {
   public title: string;
   public sessionRequestLabel: string;
   public showWalletSelector: boolean = false;
+  public dappImgSrc: string;
+  private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -71,7 +73,7 @@ export class WalletConnectPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
-    this.events.subscribe('Update/ConnectionData', this.getConnectionData);
+    this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -88,7 +90,7 @@ export class WalletConnectPage {
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
-    this.events.unsubscribe('Update/ConnectionData', this.getConnectionData);
+    this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
     this.events.unsubscribe('Update/Requests', this.setRequests);
   }
 
@@ -97,7 +99,7 @@ export class WalletConnectPage {
     this.uri = data.value;
   };
 
-  private getConnectionData: any = async _ => {
+  private setConnectionData: any = async _ => {
     const {
       connected,
       activeChainId,
@@ -118,6 +120,7 @@ export class WalletConnectPage {
             'wants to connect to your wallet'
           )}`
         : null;
+    this.setDappImgSrc();
     this.changeRef.detectChanges();
   };
 
@@ -131,7 +134,7 @@ export class WalletConnectPage {
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
       this.onGoingProcessProvider.set('Initializing');
-      await this.getConnectionData();
+      await this.setConnectionData();
       this.title = null;
       if (this.uri && this.uri.indexOf('bridge') !== -1) {
         this.showNewConnectionAlert();
@@ -248,5 +251,15 @@ export class WalletConnectPage {
       request,
       params
     });
+  }
+
+  public setDappImgSrc(useDefault?: boolean) {
+    console.log(useDefault);
+    this.dappImgSrc =
+      this.peerMeta && this.peerMeta.icons && !useDefault
+        ? this.peerMeta.icons[1]
+          ? this.peerMeta.icons[1]
+          : this.peerMeta.icons[0]
+        : this.defaultImgSrc;
   }
 }
