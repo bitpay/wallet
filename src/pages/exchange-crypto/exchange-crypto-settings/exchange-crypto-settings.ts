@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
-
-// Pages
-import { ChangellyPage } from '../../../pages/integrations/changelly/changelly';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -29,7 +25,6 @@ export class ExchangeCryptoSettingsPage {
     private logger: Logger,
     public themeProvider: ThemeProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
-    private navCtrl: NavController
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
@@ -57,9 +52,5 @@ export class ExchangeCryptoSettingsPage {
       this.showInHome
     );
     this.configProvider.set(opts);
-  }
-
-  public goToChangellyPage(): void {
-    this.navCtrl.push(ChangellyPage);
   }
 }

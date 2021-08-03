@@ -6,8 +6,6 @@ import * as moment from 'moment';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
-import { ChangellyPage } from '../../integrations/changelly/changelly';
-import { ChangellyTermsPage } from '../../integrations/changelly/changelly-terms/changelly-terms';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -543,21 +541,20 @@ export class ExchangeCheckoutPage {
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.push(ChangellyPage, null, { animate: false });
     });
   }
 
-  public openTermsModal(): void {
-    this.logger.debug('Changelly Terms modal opened');
-    let modal = this.modalCtrl.create(ChangellyTermsPage, null, {
-      showBackdrop: true,
-      enableBackdropDismiss: false
-    });
-    modal.present();
-    modal.onDidDismiss(async () => {
-      this.logger.debug('Changelly Terms modal closed');
-    });
-  }
+  // public openTermsModal(): void {
+  //   this.logger.debug('Changelly Terms modal opened');
+  //   let modal = this.modalCtrl.create(ChangellyTermsPage, null, {
+  //     showBackdrop: true,
+  //     enableBackdropDismiss: false
+  //   });
+  //   modal.present();
+  //   modal.onDidDismiss(async () => {
+  //     this.logger.debug('Changelly Terms modal closed');
+  //   });
+  // }
 
   private showErrorAndBack(title: string, msg, noExit?: boolean): void {
     title = title ? title : this.translate.instant('Error');

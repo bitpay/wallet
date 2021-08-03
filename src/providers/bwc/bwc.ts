@@ -33,7 +33,7 @@ export class BwcProvider {
   }
 
   public getBitcoreLtc() {
-    return BWC.BitcoreLtc;
+    return BWC.BitcoreXec;
   }
 
   public getCore() {

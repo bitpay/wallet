@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 // Pages
 import { ExchangeCheckoutPage } from '../../pages/exchange-crypto/exchange-checkout/exchange-checkout';
-import { ChangellyPage } from '../../pages/integrations/changelly/changelly';
 import { AmountPage } from '../../pages/send/amount/amount';
 
 // Providers
@@ -620,9 +619,5 @@ export class ExchangeCryptoPage {
     };
 
     this.navCtrl.push(ExchangeCheckoutPage, data);
-  }
-
-  public goToExchangeHistory() {
-    this.navCtrl.push(ChangellyPage);
   }
 }
