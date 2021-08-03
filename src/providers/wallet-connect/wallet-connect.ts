@@ -131,6 +131,7 @@ export class WalletConnectProvider {
         this.logger.debug('walletConnector.createSession');
         await this.walletConnector.createSession();
       }
+      await this.subscribeToEvents();
     } catch (error) {
       this.errorsProvider.showDefaultError(
         error,
@@ -142,7 +143,7 @@ export class WalletConnectProvider {
   public checkDappStatus(): Promise<void> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (this.peerMeta) return resolve;
+        if (this.peerMeta) return resolve();
 
         const error = this.translate.instant(
           'Dapp not responding. Try scanning a new QR code'
@@ -298,6 +299,7 @@ export class WalletConnectProvider {
       });
       this.closeRequest(id);
       this.analyticsProvider.logEvent('wallet_connect_action_completed', {});
+      this.incomingDataProvider.redir('wc:', { force: false });
     }
   }
 

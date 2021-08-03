@@ -75,7 +75,9 @@ export class WalletConnectPage {
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
       onlyComplete: true,
-      backedUp: true
+      backedUp: true,
+      m: 1,
+      n: 1
     });
     if (!this.navParams.data.walletId) this.showWalletSelector = true;
     this.uri ? this.initWalletConnect() : this.initWallet();
@@ -113,7 +115,6 @@ export class WalletConnectPage {
             'wants to connect to your wallet'
           )}`
         : null;
-    this.onGoingProcessProvider.clear();
   };
 
   private setRequests: any = requests => {
@@ -125,13 +126,14 @@ export class WalletConnectPage {
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
       this.onGoingProcessProvider.set('Initializing');
-      this.getConnectionData();
+      await this.getConnectionData();
       this.title = null;
       if (this.uri && this.uri.indexOf('bridge') !== -1) {
         this.showNewConnectionAlert();
       } else {
         this.uri = null;
       }
+      this.onGoingProcessProvider.clear();
     } else {
       this.title = this.translate.instant('Enter WalletConnect URI');
       if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallet);
@@ -148,10 +150,9 @@ export class WalletConnectPage {
     this.onGoingProcessProvider.set('Initializing');
     try {
       await this.walletConnectProvider.initWalletConnect(this.uri);
-      await this.walletConnectProvider.subscribeToEvents();
+      await this.walletConnectProvider.checkDappStatus();
       this.showDappInfo = true;
       this.title = null;
-      await this.walletConnectProvider.checkDappStatus();
       this.onGoingProcessProvider.clear();
     } catch (error) {
       this.showDappInfo = false;

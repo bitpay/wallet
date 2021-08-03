@@ -59,7 +59,7 @@
     <div *ngIf="showDappInfo && !connected" class="dapp-info">
       <ion-item no-padding no-lines>
         <ion-icon item-start>
-          <img class="dapp-img" src="{{peerMeta?.icons[1]}}">
+          <img class="dapp-img" [src]="peerMeta?.icons[1]">
         </ion-icon>
         <ion-label>
           <div class="session-request-label">
@@ -188,7 +188,7 @@
             <div *ngFor="let param of request.params; let i = index;">
               <button ion-item (click)="goToRequestDetailsPage(request, request.params)">
                 <ion-icon class="item-img" item-start>
-                  <img src="{{peerMeta?.icons[1]}}">
+                  <img [src]="peerMeta?.icons[1]">
                 </ion-icon>
                 <ion-label>
                   <div class="main-label">{{peerMeta?.name}}</div>

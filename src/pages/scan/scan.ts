@@ -140,7 +140,9 @@ export class ScanPage {
       this.wallets = this.profileProvider.getWallets({
         coin: 'eth',
         onlyComplete: true,
-        backedUp: true
+        backedUp: true,
+        m: 1,
+        n: 1
       });
       if (!_.isEmpty(this.wallets)) this.showWallets();
     } else {
