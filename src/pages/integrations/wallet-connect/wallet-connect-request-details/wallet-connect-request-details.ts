@@ -63,8 +63,9 @@ export class WalletConnectRequestDetailsPage {
   };
 
   public rejectRequest(request): void {
-    this.walletConnectProvider.rejectRequest(request);
-    this.navCtrl.pop();
+    this.walletConnectProvider.rejectRequest(request).then(_ => {
+      this.navCtrl.pop();
+    });
   }
 
   public approveRequest(request): void {

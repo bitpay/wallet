@@ -145,6 +145,8 @@ export class WalletConnectProvider {
       setTimeout(() => {
         if (this.peerMeta) return resolve();
 
+        if (this.walletConnector.connected) this.killSession();
+
         const error = this.translate.instant(
           'Dapp not responding. Try scanning a new QR code'
         );
@@ -168,10 +170,8 @@ export class WalletConnectProvider {
     };
   }
 
-  public async getPendingRequests() {
-    return _.isEmpty(this.requests)
-      ? this.persistenceProvider.getWalletConnectPendingRequests()
-      : this.requests;
+  public getPendingRequests() {
+    return this.persistenceProvider.getWalletConnectPendingRequests();
   }
 
   public async setAccountInfo(wallet) {
@@ -209,7 +209,7 @@ export class WalletConnectProvider {
       }
     });
 
-    this.walletConnector.on('call_request', (error, payload) => {
+    this.walletConnector.on('call_request', async (error, payload) => {
       this.logger.debug('walletConnector.on("call_request")');
       if (error) {
         throw error;
@@ -235,11 +235,14 @@ export class WalletConnectProvider {
       });
 
       if (!alreadyExist) {
+        this.requests = (await this.getPendingRequests()) || [];
         this.requests.push(_payload);
         this.requests = _.uniqBy(this.requests, 'id');
-        this.persistenceProvider.setWalletConnectPendingRequests(this.requests);
+        await this.persistenceProvider.setWalletConnectPendingRequests(
+          this.requests
+        );
         this.events.publish('Update/Requests', this.requests);
-        this.incomingDataProvider.redir('wc:', { force: false });
+        this.incomingDataProvider.redir('wc:');
       }
     });
 
@@ -297,9 +300,11 @@ export class WalletConnectProvider {
         id,
         result
       });
-      this.closeRequest(id);
+      await this.closeRequest(id);
       this.analyticsProvider.logEvent('wallet_connect_action_completed', {});
-      this.incomingDataProvider.redir('wc:', { force: false });
+      this.incomingDataProvider.redir('wc:', {
+        activePage: 'WalletConnectRequestDetailsPage'
+      });
     }
   }
 
@@ -349,7 +354,7 @@ export class WalletConnectProvider {
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
       this.logger.debug('walletConnector.killSession');
-      this.walletConnector.killSession();
+      await this.walletConnector.killSession();
       await this.persistenceProvider.removeWalletConnect();
       await this.persistenceProvider.removeWalletConnectPendingRequests();
       this.peerMeta = null;
@@ -357,20 +362,22 @@ export class WalletConnectProvider {
     }
   }
 
-  public closeRequest(id): void {
-    const filteredRequests = this.requests.filter(request => request.id !== id);
-    this.requests = filteredRequests;
-    this.persistenceProvider
-      .getWalletConnectPendingRequests()
-      .then(requests => {
-        this.persistenceProvider.setWalletConnectPendingRequests(
-          _.reject(requests, { id })
-        );
-      });
-    this.events.publish('Update/Requests', this.requests);
+  public async closeRequest(id): Promise<void> {
+    try {
+      const filteredRequests = this.requests.filter(
+        request => request.id !== id
+      );
+      this.requests = filteredRequests;
+      await this.persistenceProvider.setWalletConnectPendingRequests(
+        this.requests
+      );
+      this.events.publish('Update/Requests', this.requests);
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
-  public rejectRequest(request): void {
+  public async rejectRequest(request): Promise<void> {
     if (this.walletConnector) {
       try {
         this.logger.debug('walletConnector.rejectRequest');
@@ -378,6 +385,7 @@ export class WalletConnectProvider {
           id: request.id,
           error: { message: 'Failed or Rejected Request' }
         });
+        await this.closeRequest(request.id);
       } catch (error) {
         this.errorsProvider.showDefaultError(
           error,
@@ -385,6 +393,5 @@ export class WalletConnectProvider {
         );
       }
     }
-    this.closeRequest(request.id);
   }
 }

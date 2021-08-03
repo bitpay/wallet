@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 
@@ -63,7 +63,8 @@ export class WalletConnectPage {
     private events: Events,
     private platformProvider: PlatformProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private changeRef: ChangeDetectorRef
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
@@ -80,7 +81,9 @@ export class WalletConnectPage {
       n: 1
     });
     if (!this.navParams.data.walletId) this.showWalletSelector = true;
-    this.uri ? this.initWalletConnect() : this.initWallet();
+    this.uri && !this.navParams.data.activePage
+      ? this.initWalletConnect()
+      : this.initWallet();
   }
 
   ngOnDestroy() {
@@ -115,10 +118,12 @@ export class WalletConnectPage {
             'wants to connect to your wallet'
           )}`
         : null;
+    this.changeRef.detectChanges();
   };
 
   private setRequests: any = requests => {
     this.requests = requests;
+    this.changeRef.detectChanges();
   };
 
   public async initWallet(): Promise<void> {

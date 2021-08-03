@@ -126,16 +126,16 @@
           </div>
 
           <div *ngIf="request.method === 'eth_signTypedData'">
-            <div class="line-divider" *ngIf="i === 0 && param"></div>
+            <div class="line-divider" *ngIf="i === 0 && param" ></div>
 
-            <ion-item *ngIf="i === 0 && param">
+            <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
               <ion-label>
                 <div class="summary-item">
                   <span translate>Address</span>
                 </div>
               </ion-label>
               <ion-note item-end>
-                    <span class="ellipsis">{{ param }}</span>
+                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
               </ion-note>
             </ion-item>
 
@@ -147,9 +147,9 @@
                   <span translate>Message</span>
                 </div>
               </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param }}</span>
-              </ion-note>
+              <div>
+                <ion-textarea disabled [value]="param"></ion-textarea>
+              </div>
             </ion-item>
           </div>
 
@@ -162,21 +162,19 @@
                   <span translate>Message</span>
                 </div>
               </ion-label>
-              <ion-note item-end>
-                    <span class="ellipsis">{{ param }}</span>
-              </ion-note>
+              <ion-textarea disabled [value]="param"></ion-textarea>
             </ion-item>
 
             <div class="line-divider" *ngIf="i === 1 && param"></div>
 
-            <ion-item *ngIf="i === 1 && param">
+            <ion-item *ngIf="i === 1 && param" copy-to-clipboard="{{ param }}">
               <ion-label>
                 <div class="summary-item">
                   <span translate>Address</span>
                 </div>
               </ion-label>
               <ion-note item-end>
-                    <span class="ellipsis">{{ param }}</span>
+                    <span class="ellipsis">{{ param | shortenedAddress }}</span>
               </ion-note>
             </ion-item>
           </div>

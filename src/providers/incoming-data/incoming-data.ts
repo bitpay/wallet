@@ -523,7 +523,8 @@ export class IncomingDataProvider {
       uri,
       force: redirParams ? redirParams.force : false,
       walletId: redirParams ? redirParams.walletId : null,
-      fromWalletConnect: redirParams ? redirParams.fromWalletConnect : false
+      fromWalletConnect: redirParams ? redirParams.fromWalletConnect : false,
+      activePage: this.activePage
     };
     let nextView = {
       name: 'WalletConnectPage',

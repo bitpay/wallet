@@ -628,7 +628,11 @@ export class CopayApp {
             currentView[currentIndex].name !== 'WalletConnectPage') ||
           nextView.params.uri.indexOf('bridge') !== -1
         ) {
-          if (nextView.params && nextView.params.force) {
+          if (
+            nextView.params &&
+            (nextView.params.force ||
+              nextView.params.activePage == 'WalletConnectRequestDetailsPage')
+          ) {
             this.getGlobalTabs()
               .goToRoot()
               .then(_ => {

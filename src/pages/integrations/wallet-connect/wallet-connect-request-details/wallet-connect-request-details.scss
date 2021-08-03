@@ -27,6 +27,15 @@ page-wallet-connect-request-details {
         &.item-ios,
         &.item-md {
           padding-left: 0px;
+          ion-textarea {
+            .text-input[disabled] {
+              opacity: 1;
+              &.text-input-md,
+              &.text-input-ios {
+                width: calc(100%-8px);
+              }
+            }
+          }
           .item-inner {
             padding-top: 0px;
             padding-bottom: 0px;
