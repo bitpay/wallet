@@ -97,6 +97,8 @@ export class CustomTokenPage {
   }
 
   public async setTokenInfo() {
+    if (_.isEmpty(this.customTokenForm.value.tokenAddress)) return;
+
     const opts = {
       tokenAddress: this.customTokenForm.value.tokenAddress
     };
