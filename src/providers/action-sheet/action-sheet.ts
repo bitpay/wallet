@@ -78,7 +78,8 @@ export type InfoSheetType =
   | 'unsupported-alt-currency'
   | 'custom-fee-warning'
   | 'sync-wallets'
-  | 'custom-tokens-warning';
+  | 'custom-tokens-warning'
+  | 'testnet-warning-1';
 
 export type OptionsSheetType =
   | 'wallet-options'

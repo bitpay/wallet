@@ -605,5 +605,14 @@
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'testnet-warning-1'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into "real" coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: params.coinName } }}
+      </span>
+      <span sheet-button-text translate>I Understand</span>
+      <span sheet-second-button-text translate>Cancel</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
