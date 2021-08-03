@@ -99,7 +99,7 @@ export class WalletsPage {
 
   private getWalletsGroups(){
     const walletsGroups = this.profileProvider.orderedWalletsByGroup;
-    if(this.isDonation){
+    if (this.isDonation) {
         this.walletProvider.getDonationInfo().then((data: any) => {
         this.donationSupportCoins = data.donationSupportCoins;
         this.walletsGroups = this.filterLotusDonationWallet(walletsGroups);
@@ -512,7 +512,7 @@ export class WalletsPage {
   }
 
   public doRefresh(refresher): void {
-    if(!this.isDonation){
+    if (!this.isDonation) {
       this.debounceSetWallets();
     }
     this.debounceSetCoinbase();
