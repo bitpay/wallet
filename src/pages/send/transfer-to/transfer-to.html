@@ -39,6 +39,5 @@
 </div>
 
 <ng-container *ngIf="this.navParams.data?.isDonation && walletList[_wallet.donationCoin].length == 0">
-  <div class="no-wallet">No wallet you can select. Please create new wallet below link.</div>
   <create-new-wallet ></create-new-wallet>
 </ng-container>
