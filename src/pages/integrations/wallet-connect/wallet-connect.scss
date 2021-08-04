@@ -33,12 +33,24 @@ page-wallet-connect {
         padding-right: 0px;
       }
       ion-note {
+        &.peer-url {
+          max-width: 200px;
+          ion-row {
+            flex-wrap: nowrap;
+          }
+        }
         margin-right: 0px;
         color: #000000;
         font-size: 16px;
         font-weight: 400;
         .main-note {
           font-weight: 500;
+          max-width: 200px;
+        }
+        ion-icon {
+          vertical-align: text-bottom;
+          margin-left: 3px;
+          margin-right: 0px;
         }
       }
       .summary-item {
