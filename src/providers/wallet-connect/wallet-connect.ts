@@ -242,7 +242,7 @@ export class WalletConnectProvider {
           this.requests
         );
         this.events.publish('Update/Requests', this.requests);
-        this.incomingDataProvider.redir('wc:');
+        this.incomingDataProvider.redir('wc:', { wcRequest: payload });
       }
     });
 

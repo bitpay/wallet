@@ -357,15 +357,24 @@ export class PushNotificationsProvider {
         );
 
         this.currentNotif.onDidDismiss(dismissData => {
-          if (dismissData.action && dismissData.action === 'openWallet')
+          if (
+            dismissData &&
+            dismissData.action &&
+            dismissData.action === 'openWallet'
+          )
             this._openWallet(data);
           else if (
+            dismissData &&
             dismissData.action &&
             dismissData.action === 'goToWalletconnect'
           ) {
             const nextView = {
-              name: 'WalletConnectPage',
-              params: { force: true }
+              name: 'WalletConnectRequestDetailsPage',
+              params: {
+                force: true,
+                request: data.request,
+                params: data.request.params
+              }
             };
             this.events.publish('IncomingDataRedir', nextView);
           }

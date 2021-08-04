@@ -27,6 +27,7 @@ export interface RedirParams {
   fromWalletConnect?: boolean;
   force?: boolean;
   walletId?: string;
+  wcRequest?: any;
 }
 
 @Injectable()
@@ -524,7 +525,8 @@ export class IncomingDataProvider {
       force: redirParams ? redirParams.force : false,
       walletId: redirParams ? redirParams.walletId : null,
       fromWalletConnect: redirParams ? redirParams.fromWalletConnect : false,
-      activePage: this.activePage
+      activePage: this.activePage,
+      request: redirParams ? redirParams.wcRequest : null
     };
     let nextView = {
       name: 'WalletConnectPage',
@@ -891,8 +893,9 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    if (redirParams && redirParams.activePage)
-      this.activePage = redirParams.activePage;
+    this.activePage =
+      redirParams && redirParams.activePage ? redirParams.activePage : null;
+
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
 

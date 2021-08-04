@@ -67,6 +67,7 @@ import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { SelectInvoicePage } from '../pages/integrations/invoice/select-invoice/select-invoice';
 import { SimplexPage } from '../pages/integrations/simplex/simplex';
 import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
+import { WalletConnectRequestDetailsPage } from '../pages/integrations/wallet-connect/wallet-connect-request-details/wallet-connect-request-details';
 import { WyrePage } from '../pages/integrations/wyre/wyre';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { FeatureEducationPage } from '../pages/onboarding/feature-education/feature-education';
@@ -120,6 +121,7 @@ export class CopayApp {
     SimplexPage,
     SelectInvoicePage,
     WalletConnectPage,
+    WalletConnectRequestDetailsPage,
     WalletDetailsPage,
     WyrePage
   };
@@ -633,22 +635,28 @@ export class CopayApp {
             (nextView.params.force ||
               nextView.params.activePage == 'WalletConnectRequestDetailsPage')
           ) {
-            this.getGlobalTabs()
-              .goToRoot()
-              .then(_ => {
-                this.getGlobalTabs().select(0);
-                this.nav.push(this.pageMap[nextView.name], nextView.params);
-              });
+            this.nav.popToRoot().then(_ => {
+              this.getGlobalTabs()
+                .goToRoot()
+                .then(_ => {
+                  this.getGlobalTabs().select(0);
+                  this.nav.push(this.pageMap[nextView.name], nextView.params);
+                });
+            });
           } else {
             const data = {
               title: 'WalletConnect',
-              body: 'New Pending Request',
+              body: `New Pending Request: ${nextView.params.request.method}`,
               action: 'goToWalletconnect',
-              closeButtonText: 'View'
+              closeButtonText: 'View',
+              request: nextView.params.request
             };
             this.pushNotificationsProvider.showInappNotification(data);
           }
         }
+        return;
+      } else if (nextView.name === 'WalletConnectRequestDetailsPage') {
+        this.nav.push(this.pageMap[nextView.name], nextView.params);
         return;
       } else {
         if (nextView.params && nextView.params.deepLink) {
