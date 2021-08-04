@@ -144,7 +144,7 @@ export class WalletConnectPage {
       }
       this.onGoingProcessProvider.clear();
     } else {
-      this.title = this.translate.instant('Enter WalletConnect URI');
+      this.resetView();
       if (!_.isEmpty(this.wallets)) this.onWalletSelect(this.wallet);
     }
   }
@@ -164,9 +164,7 @@ export class WalletConnectPage {
       this.title = null;
       this.onGoingProcessProvider.clear();
     } catch (error) {
-      this.showDappInfo = false;
-      this.uri = null;
-      this.title = this.translate.instant('Enter WalletConnect URI');
+      this.resetView();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
     }
@@ -178,7 +176,7 @@ export class WalletConnectPage {
     const title = this.translate.instant('New Session Request');
     const message = this.replaceParametersProvider.replace(
       this.translate.instant(
-        `{{walletName}} will be disconected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})`
+        `{{walletName}} will be disconnected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})`
       ),
       {
         walletName: wallet.name,
@@ -198,10 +196,21 @@ export class WalletConnectPage {
   }
 
   public async killSession() {
+    try {
+      this.resetView();
+      await this.walletConnectProvider.killSession();
+    } catch (error) {
+      this.logger.error('Wallet Connect - killSession error: ', error);
+    }
+  }
+
+  private resetView() {
     this.showDappInfo = false;
-    this.uri = null;
-    await this.walletConnectProvider.killSession();
-    this.navCtrl.pop();
+    this.uri = this.navParams.data.uri || null;
+    this.peerMeta = null;
+    this.connected = false;
+    this.title = this.translate.instant('Enter WalletConnect URI');
+    this.changeRef.detectChanges();
   }
 
   public showWallets(): void {

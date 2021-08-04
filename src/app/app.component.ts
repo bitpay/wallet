@@ -633,7 +633,8 @@ export class CopayApp {
           if (
             nextView.params &&
             (nextView.params.force ||
-              nextView.params.activePage == 'WalletConnectRequestDetailsPage')
+              nextView.params.activePage == 'WalletConnectRequestDetailsPage' ||
+              nextView.params.activePage == 'ScanPage')
           ) {
             this.nav.popToRoot().then(_ => {
               this.getGlobalTabs()

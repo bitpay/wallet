@@ -145,7 +145,7 @@ export class WalletConnectProvider {
       setTimeout(() => {
         if (this.peerMeta) return resolve();
 
-        if (this.walletConnector.connected) this.killSession();
+        this.killSession();
 
         const error = this.translate.instant(
           'Dapp not responding. Try scanning a new QR code'
@@ -354,9 +354,9 @@ export class WalletConnectProvider {
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
       this.logger.debug('walletConnector.killSession');
+      this.persistenceProvider.removeWalletConnect();
+      this.persistenceProvider.removeWalletConnectPendingRequests();
       await this.walletConnector.killSession();
-      await this.persistenceProvider.removeWalletConnect();
-      await this.persistenceProvider.removeWalletConnectPendingRequests();
       this.peerMeta = null;
       this.connected = false;
     }
