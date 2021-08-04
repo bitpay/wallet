@@ -31,7 +31,6 @@ import {
 
 // Pages
 import { CopayersPage } from '../../add/copayers/copayers';
-import { CreateEthMultisigPage } from '../../add/create-eth-multisig/create-eth-multisig';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -470,16 +469,6 @@ export class CreateWalletPage implements OnInit {
           this.pairedWallet.network == 'testnet' ? true : false
         );
       }
-    });
-  }
-
-  public goToCreateEthMultisig() {
-    this.navCtrl.push(CreateEthMultisigPage, {
-      pairedWallet: this.pairedWallet,
-      m: this.createForm.value.requiredCopayers,
-      n: this.createForm.value.totalCopayers,
-      testnetEnabled: this.createForm.value.testnetEnabled,
-      walletName: this.createForm.value.walletName
     });
   }
 

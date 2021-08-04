@@ -3,9 +3,6 @@
     <button clear wide-header-bar-button *ngIf="!isShared || (isShared && coin !== 'eth')" (click)="setOptsAndCreate()" [disabled]="!createForm.valid" ion-button>
       <span translate>Create</span>
     </button>
-    <button clear wide-header-bar-button *ngIf="isShared && coin === 'eth' && pairedWallet" (click)="goToCreateEthMultisig()" [disabled]="!createForm.valid" ion-button>
-      <span translate>Next</span>
-    </button>
   </ion-buttons>
   <div page-content>
     <button class="linked-wallet" *ngIf="isShared && coin === 'eth'" ion-item (click)="showPairedWalletSelector()" detail-none>

@@ -20,7 +20,6 @@ import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
-import { CardsPage } from '../cards/cards';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
 import { ScanPage } from '../scan/scan';
@@ -391,6 +390,5 @@ export class TabsPage {
   homeRoot = HomePage;
   walletsRoot = WalletsPage;
   scanRoot = ScanPage;
-  cardsRoot = CardsPage;
   settingsRoot = SettingsPage;
 }

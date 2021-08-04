@@ -36,11 +36,6 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
-// // Integrations: Changelly
-// import { ChangellyPage } from '../pages/integrations/changelly/changelly';
-// import { ChangellyDetailsPage } from '../pages/integrations/changelly/changelly-details/changelly-details';
-// import { ChangellyTermsPage } from '../pages/integrations/changelly/changelly-terms/changelly-terms';
-
 // // Integrations: Coinbase
 // import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 // import { CoinbaseAccountPage } from '../pages/integrations/coinbase/coinbase-account/coinbase-account';
@@ -70,7 +65,7 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 // Integrations: BitPayCard - Phases
 
 // Phase 1
-import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
+// import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 
 /*Includes */
 // import { CardItemPage } from '../pages/includes/card-item/card-item';
@@ -139,7 +134,6 @@ import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-s
 import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 /* Send */
-// import { CreateEthMultisigPage } from '../pages/add/create-eth-multisig/create-eth-multisig';
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
@@ -150,11 +144,6 @@ import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
-
-// import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
-// import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
-// import { MerchantPage } from './merchant/merchant';
-
 
 export const PAGES = [
   AddPage,
@@ -245,5 +234,4 @@ export const PAGES = [
   NavigationPage,
   NewFeaturePage,
   // Phases: card pages
-  PhaseOneCardIntro
 ];
