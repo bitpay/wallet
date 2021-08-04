@@ -3,7 +3,6 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { CurrencyProvider, Logger } from '../../../providers';
-import { Coin } from '../../../providers/currency/currency';
 
 @Component({
   selector: 'page-coin-selector',
@@ -24,7 +23,7 @@ export class CoinSelectorPage {
     this.availableChains = this.currencyProvider.getAvailableChains();
   }
 
-  public getCoinName(coin: Coin): string {
+  public getCoinName(coin: string): string {
     return this.currencyProvider.getCoinName(coin);
   }
 

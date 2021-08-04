@@ -15,6 +15,9 @@ yarn.lock
 # iOS
 build.json
 
+# Android
+build-extras.gradle
+
 # Firebase
 GoogleService-Info.plist
 google-services.json

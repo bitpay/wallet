@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2021-05-21 15:31\n"
+"PO-Revision-Date: 2021-07-13 14:24\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible gasto duplicado)"
@@ -194,9 +194,6 @@ msgstr "Ya duplicado"
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr "Las Gift Cards Amazon.co.jp no expiran nunca y pueden ser canjeadas por millones de artículos en www.amazon.co.jp."
 
-msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-msgstr "Las Gift Cards Amazon.co.jp no expiran nunca y pueden ser canjeadas por millones de artículos en www.amazon.co.jp."
-
 msgid "Amount"
 msgstr "Importe"
 
@@ -280,6 +277,9 @@ msgstr "Intento de solicitud de pago"
 
 msgid "Available"
 msgstr "Disponible"
+
+msgid "Average"
+msgstr "Promedio"
 
 msgid "Average confirmation time:"
 msgstr "Tiempo promedio de confirmación:"
@@ -387,10 +387,10 @@ msgid "Buy Amount"
 msgstr "Cantidad de compra"
 
 msgid "Buy Crypto"
-msgstr "Comprar criptomonedas"
+msgstr "Comprar Criptomonedas"
 
 msgid "Buy Crypto Settings"
-msgstr "Ajustes de Compra"
+msgstr "Ajustes de Comprar Criptomonedas"
 
 msgid "Buy Gift Card"
 msgstr "Comprar Gift Card"
@@ -402,13 +402,13 @@ msgid "Buy Now"
 msgstr "Comprar ahora"
 
 msgid "Buy crypto with a credit card."
-msgstr "Compra criptomonedas con tarjeta de crédito."
+msgstr "Comprar criptomonedas con tarjeta de crédito."
 
 msgid "Buy crypto with cash"
-msgstr "Comprar cripto con efectivo"
+msgstr "Comprar criptomonedas con efectivo"
 
 msgid "Buy gift cards with crypto"
-msgstr "Comprar Gift Cards con cripto"
+msgstr "Comprar Gift Cards con criptomonedas"
 
 msgid "Buy {displayName} Gift Card"
 msgstr "Comprar Gift Card de {displayName}"
@@ -1016,6 +1016,9 @@ msgstr "ETH Compartida"
 msgid "ETH Multisig Wallet creation"
 msgstr "Creación de billetera ETH compartida"
 
+msgid "ETH wallet is required"
+msgstr "Se requiere una billetera ETH"
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Cada billetera puede generar billones de direcciones desde su frase de recuperación de 12 palabras. Se genera una nueva dirección automáticamente cada vez que se recibe un pago."
 
@@ -1170,10 +1173,10 @@ msgid "Exchange"
 msgstr "Exchange"
 
 msgid "Exchange Crypto"
-msgstr "Intercambiar Crypto"
+msgstr "Cambiar Criptomonedas"
 
 msgid "Exchange Crypto Settings"
-msgstr "Configuración de Intercambio de Crypto"
+msgstr "Ajustes de Cambiar Criptomonedas"
 
 msgid "Exchange Fee"
 msgstr "Comisión de Intercambio"
@@ -1349,6 +1352,9 @@ msgstr "Generando archivo .csv..."
 msgid "Generating new address..."
 msgstr "Generando una nueva dirección..."
 
+msgid "Get $10"
+msgstr "Obtén $10"
+
 msgid "Get Started"
 msgstr "Comenzar"
 
@@ -1453,6 +1459,9 @@ msgstr "Ocultar opciones avanzadas"
 
 msgid "Hide discount?"
 msgstr "¿Ocultar descuento?"
+
+msgid "High"
+msgstr "Alta"
 
 msgid "Hold"
 msgstr "Retener"
@@ -1781,6 +1790,9 @@ msgstr "Vinculada a: {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr "Billetera vinculada"
 
+msgid "Litecoin Address"
+msgstr "Dirección de Litecoin"
+
 msgid "Live on crypto."
 msgstr "Vive las criptomonedas."
 
@@ -1813,6 +1825,9 @@ msgstr "Iniciar Sesión o Registrarse"
 
 msgid "Log out"
 msgstr "Cerrar sesión"
+
+msgid "Low"
+msgstr "Baja"
 
 msgid "Low Fee"
 msgstr "Comisión baja"
@@ -1919,6 +1934,12 @@ msgstr "Red"
 msgid "Network Cost"
 msgstr "Costo de la red"
 
+msgid "Network Fee Policies"
+msgstr "Políticas de comisión de la red"
+
+msgid "Network Fee Policy"
+msgstr "Política de Comisión de la Red"
+
 msgid "Network cost"
 msgstr "Costo de la red"
 
@@ -1948,6 +1969,9 @@ msgstr "Nueva propuesta de pago"
 
 msgid "New payment received"
 msgstr "Nuevo pago recibido"
+
+msgid "New wallet found"
+msgstr "Se encontró una nueva billetera"
 
 msgid "Next"
 msgstr "Siguiente"
@@ -2101,9 +2125,6 @@ msgstr "Solo canjeable en Mercado Livre (Brasil)"
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr "Solo canjeable en www.amazon.co.jp (sitio web de Japón)"
-
-msgid "Only redeemable on www.amazon.com (USA website)"
-msgstr "Sólo canjeable en www.amazon.com (sitio web de Estados Unidos)"
 
 msgid "Only the payment methods supported to buy {coin} with {currency} will be shown."
 msgstr "Sólo se mostrarán los métodos de pago soportados para comprar {coin} con {currency}."
@@ -2483,6 +2504,12 @@ msgstr "Frase de recuperación"
 msgid "Redeem Now"
 msgstr "Canjear ahora"
 
+msgid "Refer Friend"
+msgstr "Referir Amigos"
+
+msgid "Refer a friend and get $10 loaded onto your BitPay card."
+msgstr "Refiera a un amigo y obtenga $10 cargados en su tarjeta BitPay."
+
 msgid "Refund address"
 msgstr "Dirección de reembolso"
 
@@ -2835,7 +2862,7 @@ msgid "Show \"Buy Crypto\""
 msgstr "Ver \"Comprar criptomonedas\""
 
 msgid "Show \"Exchange Crypto\""
-msgstr "Mostrar \"Intercambiar Crypto\""
+msgstr "Mostrar \"Cambiar Criptomonedas\""
 
 msgid "Show Portfolio Value"
 msgstr "Ver monto total"
@@ -2990,8 +3017,17 @@ msgstr "Importar billetera en papel"
 msgid "Sweeping Wallet..."
 msgstr "Leyendo la Billetera..."
 
+msgid "Sync completed"
+msgstr "Sincronización completa"
+
 msgid "Sync gift card purchases"
 msgstr "Sincronizar compras con gift cards"
+
+msgid "Sync wallets across devices"
+msgstr "Sincronizar billeteras entre dispositivos"
+
+msgid "Syncing Wallets..."
+msgstr "Sincronizando billeteras..."
 
 msgid "System Default"
 msgstr "Predeterminado del sistema"
@@ -3092,6 +3128,9 @@ msgstr "La cantidad final de criptomonedas que recibe cuando la transacción est
 msgid "The final crypto amount you receive when the transaction is complete may differ because it is based on the exchange rates of the providers."
 msgstr "La cantidad final de criptomonedas que recibe cuando la transacción está completa puede diferir porque se basa en el tipo de cambio de los proveedores."
 
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr "Cuanto mayor sea la comisión, mayor será el incentivo que un minero tiene para incluir esa transacción en un bloque. Las comisiones actuales se determinan en función de la carga de la red y de la política seleccionada."
+
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "La información que está por compartir/exportar podría contener datos sensibles tales como IDs de billetera, direcciones, saldos, etcétera. Por favor asegúrese de que confía en la persona o entidad con quien compartirá esta información."
 
@@ -3178,6 +3217,9 @@ msgstr "Hay algunos datos confusos, por favor ver detalle en blockchain."
 
 msgid "There is a new version available"
 msgstr "Hay una nueva versión disponible"
+
+msgid "There is a temporary problem with the merchant requesting the payment. Please try later"
+msgstr "Hay un problema temporal con el comerciante al solicitar el pago. Por favor, inténtalo más tarde"
 
 msgid "There is an error in the form"
 msgstr "Hay un error en el formulario"
@@ -3280,7 +3322,7 @@ msgid "Top up in progress..."
 msgstr "Recarda en progreso..."
 
 msgid "Top-up with this cryptocurrency is not enabled"
-msgstr "La recarga con esta crypto moneda no está habilitada"
+msgstr "La recarga con esta criptomoneda no está habilitada"
 
 msgid "Total"
 msgstr "Total"
@@ -3636,6 +3678,9 @@ msgstr "WalletConnect"
 msgid "WalletConnect is an open source protocol for connecting decentralized applications to mobile wallets with QR code scanning or deep linking."
 msgstr "WalletConnect es un protocolo de código abierto para conectar aplicaciones descentralizadas a billeteras móviles mediante escaneo de código QR o deep links."
 
+msgid "WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again."
+msgstr "WalletConnect requiere al menos una billetera ETH con copia de seguridad para funcionar correctamente. Por favor, crea una nueva billetera ETH y vuelve a intentarlo."
+
 msgid "Wallets"
 msgstr "Billeteras"
 
@@ -3780,6 +3825,9 @@ msgstr "Estás intentando enviar más fondos de lo que tienes disponible. Asegú
 msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
 msgstr "Estás intentando enviar más fondos de lo que tienes disponible. Asegúrate de que no tienes fondos bloqueados por transacciones pendientes. También puedes intentar con una cantidad menor o un envío máximo."
 
+msgid "You are using a different OAuthURL from original request or it has expired. Please try again."
+msgstr "Estás utilizando una URL OAuthURL diferente de la solicitud original o ésta ha caducado. Por favor, inténtalo de nuevo."
+
 msgid "You can always reset your encrypt password on your key settings under the option"
 msgstr "Siempre puede restablecer su contraseña de cifrado en los ajustes de su clave usando su frase de recuperación de 12 palabras"
 
@@ -3867,6 +3915,9 @@ msgstr "Sus fondos están bajo su custodia"
 msgid "Your funds, on your device"
 msgstr "Tus fondos, en tu dispositivo"
 
+msgid "Your key is already synced"
+msgstr "Tu clave ya está sincronizada"
+
 msgid "Your linked ETH wallet does not have enough ETH for fee"
 msgstr "Su billetera ETH vinculada no tiene suficiente ETH para pagar la comisión"
 
@@ -3948,6 +3999,9 @@ msgstr "{walletsGroupLength} Billeteras"
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr "{{ 'Políticas de Privacidad' | translate}}"
 
+msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
+msgstr "Política de comisión de red {{ getCoinName(coinFeePolicy.key) }}"
+
 msgid "{{ params.error ? 'Error' : 'Warning!' }}"
 msgstr "{{ params.error ? 'Error' : '¡Advertencia!' }}"
 
@@ -3968,6 +4022,9 @@ msgstr "{{appName}} solo soporta Bitcoin Cash utilizando la nueva versión de di
 
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} de tus billeteras ya existen en {{nameCase}}"
+
+msgid "{{newWalletsCount}} wallets found"
+msgstr "{{newWalletsCount}} billeteras encontradas"
 
 msgid "{{params.countryCode === 'US' ? 'U.S.' : params.countryCode}} Phone Required"
 msgstr "Requiere Teléfono de {{params.countryCode === 'US' ? 'U.S.' : params.countryCode}}"

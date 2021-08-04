@@ -9,7 +9,7 @@ import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
 import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
-import { Coin, CurrencyProvider } from '../currency/currency';
+import { CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
 import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
@@ -21,7 +21,7 @@ import { ProfileProvider } from '../profile/profile';
 export interface RedirParams {
   activePage?: any;
   amount?: string;
-  coin?: Coin;
+  coin?: string;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
 }
@@ -81,7 +81,7 @@ export class IncomingDataProvider {
 
   private isValidPayPro(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin)?:\?r=[\w+]/.exec(
+    return !!/^(bitcoin|bitcoincash|bchtest|ethereum|ripple|dogecoin|litecoin)?:\?r=[\w+]/.exec(
       data
     );
   }
@@ -126,6 +126,11 @@ export class IncomingDataProvider {
   private isValidDogecoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcoreDoge().URI.isValid(data);
+  }
+
+  private isValidLitecoinUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreLtc().URI.isValid(data);
   }
 
   private isValidWalletConnectUri(data: string): boolean {
@@ -184,6 +189,13 @@ export class IncomingDataProvider {
     return !!(
       this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreDoge().Address.isValid(data, 'testnet')
+    );
+  }
+
+  private isValidLitecoinAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcoreLtc().Address.isValid(data, 'testnet')
     );
   }
 
@@ -354,7 +366,7 @@ export class IncomingDataProvider {
       data.replace(`bitpay:${address}`, '')
     );
     let amount = params.get('amount') || amountFromRedirParams;
-    const coin: Coin = Coin[params.get('coin').toUpperCase()];
+    const coin: string = params.get('coin').toLowerCase();
     const message = params.get('message');
     const requiredFeeParam = params.get('gasPrice');
     if (amount) {
@@ -373,7 +385,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.BTC;
+    const coin = 'btc';
     let parsed = this.bwcProvider.getBitcore().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
@@ -388,7 +400,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.BCH;
+    const coin = 'bch';
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
 
@@ -410,7 +422,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Ethereum URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.ETH;
+    const coin = 'eth';
     const value = /[\?\&]value=(\d+([\,\.]\d+)?)/i;
     const gasPrice = /[\?\&]gasPrice=(\d+([\,\.]\d+)?)/i;
     let parsedAmount;
@@ -435,7 +447,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Ripple URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.XRP;
+    const coin = 'xrp';
     const amountParam = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
     const tagParam = /[\?\&]dt=(\d+([\,\.]\d+)?)/i;
     let parsedAmount;
@@ -471,8 +483,23 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Dogecoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const coin = Coin.DOGE;
+    const coin = 'doge';
     let parsed = this.bwcProvider.getBitcoreDoge().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+    let message = parsed.message;
+    let amount = parsed.amount || amountFromRedirParams;
+    if (parsed.r) {
+      const payProUrl = this.getPayProUrl(parsed.r);
+      this.goToPayPro(payProUrl, coin);
+    } else this.goSend(address, amount, message, coin);
+  }
+
+  private handleLitecoinUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Litecoin URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
+    const coin = 'ltc';
+    let parsed = this.bwcProvider.getBitcoreLtc().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
@@ -503,7 +530,7 @@ export class IncomingDataProvider {
 
   private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
-    const coin = Coin.BCH;
+    const coin = 'bch';
     let parsed = this.bwcProvider
       .getBitcore()
       .URI(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'));
@@ -544,7 +571,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin plain address');
-    const coin = Coin.BTC;
+    const coin = 'btc';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -563,7 +590,7 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin Cash plain address');
-    const coin = Coin.BCH;
+    const coin = 'bch';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -579,7 +606,7 @@ export class IncomingDataProvider {
 
   private handleEthereumAddress(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Ethereum address');
-    const coin = Coin.ETH;
+    const coin = 'eth';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -595,7 +622,7 @@ export class IncomingDataProvider {
 
   private handleRippleAddress(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Ripple address');
-    const coin = Coin.XRP;
+    const coin = 'xrp';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
@@ -614,11 +641,30 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Dogecoin plain address');
-    const coin = Coin.DOGE;
+    const coin = 'doge';
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
         type: 'dogecoinAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handlePlainLitecoinAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Litecoin plain address');
+    const coin = 'ltc';
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'litecoinAddress',
         coin
       });
     } else if (redirParams && redirParams.amount) {
@@ -726,9 +772,10 @@ export class IncomingDataProvider {
   private goToCoinbase(data: string): void {
     this.logger.debug('Incoming-data (redirect): Coinbase URL');
 
-    let code = this.getParameterByName('code', data);
-    let stateParams = { code };
-    let nextView = {
+    const code = this.getParameterByName('code', data);
+    const state = this.getParameterByName('state', data);
+    const stateParams = { code, state };
+    const nextView = {
       name: 'CoinbasePage',
       params: stateParams
     };
@@ -880,6 +927,11 @@ export class IncomingDataProvider {
       this.handleDogecoinUri(data, redirParams);
       return true;
 
+      // Litecoin URI
+    } else if (this.isValidLitecoinUri(data)) {
+      this.handleLitecoinUri(data, redirParams);
+      return true;
+
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       this.handleWalletConnectUri(data);
@@ -918,6 +970,11 @@ export class IncomingDataProvider {
       // Plain Address (Doge)
     } else if (this.isValidDogecoinAddress(data)) {
       this.handlePlainDogecoinAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      this.handlePlainLitecoinAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -1112,6 +1169,13 @@ export class IncomingDataProvider {
         type: 'DogecoinUri',
         title: 'Dogecoin URI'
       };
+      // Litecoin URI
+    } else if (this.isValidLitecoinUri(data)) {
+      return {
+        data,
+        type: 'LitecoinUri',
+        title: 'Litecoin URI'
+      };
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
       return {
@@ -1174,6 +1238,14 @@ export class IncomingDataProvider {
         data,
         type: 'DogecoinAddress',
         title: this.translate.instant('Doge Address')
+      };
+
+      // Plain Address (Litecoin)
+    } else if (this.isValidLitecoinAddress(data)) {
+      return {
+        data,
+        type: 'LitecoinAddress',
+        title: this.translate.instant('Litecoin Address')
       };
 
       // Coinbase
@@ -1254,7 +1326,10 @@ export class IncomingDataProvider {
 
   public getPayProUrl(data: string): string {
     return decodeURIComponent(
-      data.replace(/(bitcoin|bitcoincash|ethereum|ripple|dogecoin)?:\?r=/, '')
+      data.replace(
+        /(bitcoin|bitcoincash|ethereum|ripple|dogecoin|litecoin)?:\?r=/,
+        ''
+      )
     );
   }
 
@@ -1289,7 +1364,7 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: Coin,
+    coin: string,
     requiredFeeRate?: string,
     destinationTag?: string
   ): void {
@@ -1321,7 +1396,7 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: Coin): void {
+  private goToAmountPage(toAddress: string, coin: string): void {
     let stateParams = {
       toAddress,
       coin
@@ -1336,7 +1411,7 @@ export class IncomingDataProvider {
 
   public goToPayPro(
     url: string,
-    coin: Coin,
+    coin: string,
     payProOptions?,
     disableLoader?: boolean,
     activePage?: string
@@ -1359,7 +1434,7 @@ export class IncomingDataProvider {
     payProDetails,
     payProOptions,
     url,
-    coin: Coin
+    coin: string
   ): Promise<void> {
     if (!payProDetails) {
       this.logger.error('No wallets available');
@@ -1425,7 +1500,7 @@ export class IncomingDataProvider {
 
   private async handleUnlock(data) {
     try {
-      const url = data.split('?')[1];
+      const url = data.split('?r=')[1];
       const invoiceId = url.split('i/')[1];
 
       const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);

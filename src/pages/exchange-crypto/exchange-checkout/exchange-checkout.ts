@@ -16,7 +16,7 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ChangellyProvider } from '../../../providers/changelly/changelly';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ExchangeCryptoProvider } from '../../../providers/exchange-crypto/exchange-crypto';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -457,7 +457,7 @@ export class ExchangeCheckoutPage {
     minerFeeNoticeInfoSheet.present();
   }
 
-  public getChain(coin: Coin): string {
+  public getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
@@ -537,7 +537,7 @@ export class ExchangeCheckoutPage {
     let finishText = 'Transaction Sent';
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, coin: this.fromWalletSelected.coin },
+      { finishText },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

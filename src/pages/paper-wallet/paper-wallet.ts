@@ -10,11 +10,7 @@ import { FinishModalPage } from '../finish/finish';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../providers/bwc/bwc';
-import {
-  Coin,
-  CoinsMap,
-  CurrencyProvider
-} from '../../providers/currency/currency';
+import { CoinsMap, CurrencyProvider } from '../../providers/currency/currency';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -40,7 +36,7 @@ export class PaperWalletPage {
   public network: string;
   public wallets;
   // All coins for which we have a usable wallet to sweep to
-  public coins: Coin[];
+  public coins: string[];
   public scannedKey: string;
   public isPkEncrypted: boolean;
   public passphrase: string;
@@ -267,7 +263,7 @@ export class PaperWalletPage {
                 .getFeeRate(
                   balanceToSweep.coin,
                   'livenet',
-                  this.feeProvider.getDefaultFeeLevel()
+                  this.feeProvider.getCoinCurrentFeeLevel(balanceToSweep.coin)
                 )
                 .then((feePerKb: number) => {
                   opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
@@ -354,7 +350,7 @@ export class PaperWalletPage {
     let finishText = this.translate.instant('Sweep Completed');
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, coin: this.selectedWallet.coin },
+      { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

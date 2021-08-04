@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { AddressProvider, CoinNetwork } from '../address/address';
@@ -38,14 +38,15 @@ export class AddressBookProvider {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           if (ab) {
             const existsAddress = _.find(ab, c => c.address == addr);
-            if (existsAddress) resolve(this.getContact(existsAddress));
+            if (existsAddress) return resolve(this.getContact(existsAddress));
           }
           return reject(
-            new Error('Failed to process AddressBook from storage')
+            new Error(
+              'Given address does not match with any entry on Address Book'
+            )
           );
         })
         .catch(err => {
-          this.logger.error(err);
           return reject(err);
         });
     });
@@ -144,7 +145,7 @@ export class AddressBookProvider {
       addrData.coin =
         entry.coin &&
         this.currencyProvider
-          .getChain(Coin[entry.coin.toUpperCase()])
+          .getChain(entry.coin.toLowerCase())
           .toLowerCase() === _addrData.coin.toLowerCase()
           ? entry.coin.toLowerCase()
           : _addrData.coin.toLowerCase();
@@ -168,15 +169,7 @@ export class AddressBookProvider {
           ab[entry.coin.toLowerCase() + '-' + entry.address] = addrData;
           this.persistenceProvider
             .setAddressBook(addrData.network, JSON.stringify(ab))
-            .then(() => {
-              this.list(addrData.network)
-                .then(ab => {
-                  return resolve(ab);
-                })
-                .catch(err => {
-                  return reject(err);
-                });
-            })
+            .then(() => resolve(true))
             .catch(() => {
               let msg = this.translate.instant('Error adding new entry');
               return reject(msg);

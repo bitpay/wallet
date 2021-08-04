@@ -1,0 +1,21 @@
+page-search-token-modal {
+  .send-header-wrapper {
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .search-wrapper {
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+  }
+  .token-count {
+    color: color($colors, grey);
+    text-align: center;
+    font-size: 12px;
+    padding-top: 0.5rem;
+  }
+}

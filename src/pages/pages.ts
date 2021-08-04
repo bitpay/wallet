@@ -3,6 +3,8 @@ import { AddWalletPage } from '../pages/add-wallet/add-wallet';
 import { AddPage } from '../pages/add/add';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { CustomTokenPage } from '../pages/add/custom-token/custom-token';
+import { SearchTokenModalPage } from '../pages/add/custom-token/search-token-modal/search-token-modal';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
@@ -107,6 +109,7 @@ import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../pages/settings/bitpay-id/bitpay-id';
+import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LocalThemePage } from '../pages/settings/local-theme/local-theme';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -178,6 +181,7 @@ export const PAGES = [
   ChangellyPage,
   ChangellyTermsPage,
   CreateWalletPage,
+  CustomTokenPage,
   CreateNewWalletPage,
   CoinbaseAccountPage,
   CoinbasePage,
@@ -218,6 +222,7 @@ export const PAGES = [
   HomePage,
   CardsPage,
   WalletsPage,
+  FeePolicyPage,
   LanguagePage,
   LockPage,
   MerchantPage,
@@ -238,6 +243,7 @@ export const PAGES = [
   WyreDetailsPage,
   NotificationsPage,
   SearchTxModalPage,
+  SearchTokenModalPage,
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,

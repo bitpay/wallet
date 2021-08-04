@@ -27,7 +27,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -81,7 +81,7 @@ export class ConfirmPage {
   public fromSelectInputs: boolean;
   public recipients;
   public toAddressName;
-  public coin: Coin;
+  public coin: string;
   public isERCToken: boolean;
   public appName: string;
   public merchantFeeLabel: string;
@@ -297,7 +297,7 @@ export class ConfirmPage {
       this.tx.feeLevel =
         this.navParams.data.coin == 'eth' ? 'priority' : 'custom';
     } else {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(this.tx.coin);
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
@@ -308,7 +308,7 @@ export class ConfirmPage {
     this.setAddressesContactName();
     this.getAmountDetails();
 
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
@@ -398,7 +398,7 @@ export class ConfirmPage {
     return chain.includes(this.coin) && !this.tx.multisigContractAddress;
   }
 
-  public getChain(coin: Coin): string {
+  public getChain(coin: string): string {
     return this.currencyProvider.getChain(coin).toLowerCase();
   }
 
@@ -457,7 +457,7 @@ export class ConfirmPage {
     this.tx.coin = this.wallet.coin;
 
     if (!this.usingCustomFee && !this.usingMerchantFee) {
-      this.tx.feeLevel = this.feeProvider.getDefaultFeeLevel();
+      this.tx.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(wallet.coin);
     }
 
     if (
@@ -506,7 +506,7 @@ export class ConfirmPage {
     }
     const exit =
       this.wallet || (this.wallets && this.wallets.length === 1) ? true : false;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
       this.handleError(err, exit);
@@ -681,7 +681,7 @@ export class ConfirmPage {
             );
             this.merchantFeeLabel = msg;
           } else {
-            const feeOpts = this.feeProvider.getFeeOpts();
+            const feeOpts = this.feeProvider.getFeeOpts(wallet.coin);
             tx.feeLevelName = feeOpts[tx.feeLevel];
             if (feeRate) tx.feeRate = feeRate;
           }
@@ -1050,6 +1050,7 @@ export class ConfirmPage {
       const txp: Partial<TransactionProposal> = {};
       // set opts.coin to wallet.coin
       txp.coin = wallet.coin;
+      txp.chain = this.currencyProvider.getChain(txp.coin);
 
       if (this.fromMultiSend) {
         txp.outputs = [];
@@ -1290,10 +1291,32 @@ export class ConfirmPage {
 
   private instantiateMultisigContract: any = async (txp, n?: number) => {
     let tryNumber = n ? n : 0;
-    if (tryNumber == 5) {
-      this.logger.error('Error getting multisig contract instantiation info');
-      return;
-    }
+
+    var finishInstantiation = async () => {
+      if (tryNumber < 6) {
+        return this.instantiateMultisigContract(txp, ++tryNumber);
+      } else {
+        this.onGoingProcessProvider.clear();
+        await this.showMultisigIntantiationInfoSheet();
+        const pendingInstantiations =
+          (await this.persistenceProvider.getEthMultisigPendingInstantiation(
+            this.wallet.id
+          )) || [];
+        pendingInstantiations.push({
+          walletId: this.wallet.credentials.id,
+          sender: txp.from,
+          txId: txp.txid,
+          walletName: this.navParams.data.walletName,
+          n: this.navParams.data.totalCopayers,
+          m: this.navParams.data.requiredConfirmations
+        });
+        this.persistenceProvider.setEthMultisigPendingInstantiation(
+          this.wallet.id,
+          pendingInstantiations
+        );
+        this.openFinishModal(false, { redir: null });
+      }
+    };
 
     setTimeout(async () => {
       let multisigContractInstantiationInfo: any[] = [];
@@ -1313,9 +1336,7 @@ export class ConfirmPage {
           }
         );
 
-        if (!multisigContract[0]) {
-          return this.instantiateMultisigContract(txp, tryNumber++);
-        }
+        if (!multisigContract[0]) finishInstantiation();
 
         const multisigEthInfo = {
           multisigContractAddress: multisigContract[0].instantiation,
@@ -1330,10 +1351,22 @@ export class ConfirmPage {
           multisigEthInfo
         );
       } else {
-        return this.instantiateMultisigContract(txp, tryNumber++);
+        finishInstantiation();
       }
     }, 10000);
   };
+
+  private showMultisigIntantiationInfoSheet(): Promise<void> {
+    return new Promise(resolve => {
+      const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'multisig-instantiation'
+      );
+      insufficientFundsInfoSheet.present();
+      insufficientFundsInfoSheet.onDidDismiss(_ => {
+        return resolve();
+      });
+    });
+  }
 
   public createAndBindEthMultisigWallet(pairedWallet, multisigEthInfo) {
     if (!_.isEmpty(pairedWallet)) {
@@ -1399,6 +1432,7 @@ export class ConfirmPage {
       coin !== 'bch' &&
       coin !== 'xrp' &&
       coin !== 'doge' &&
+      coin !== 'ltc' &&
       !this.usingMerchantFee &&
       !this.tx.speedUpTxInfo &&
       feeLevel !== 'superEconomy';
@@ -1597,7 +1631,7 @@ export class ConfirmPage {
         this.walletProvider.removeTx(wallet, txp).catch(() => {
           this.logger.warn('Could not delete payment proposal');
         });
-        if (err.includes('Broadcasting timeout')) {
+        if (typeof err == 'string' && err.includes('Broadcasting timeout')) {
           this.navigateBack(
             txp.payProUrl && txp.payProUrl.includes('redir=wc') ? 'wc' : null
           );
@@ -1631,18 +1665,16 @@ export class ConfirmPage {
       finishText: string;
       finishComment?: string;
       autoDismiss?: boolean;
-      coin: string;
     } = {
       finishText: this.successText,
-      autoDismiss: !!redir,
-      coin: this.coin
+      autoDismiss: !!redir
     };
     if (onlyPublish) {
       const finishText = this.translate.instant('Payment Published');
       const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
-      params = { finishText, finishComment, coin: this.coin };
+      params = { finishText, finishComment };
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
@@ -1657,6 +1689,7 @@ export class ConfirmPage {
       'BitcoinCashUri',
       'EthereumUri',
       'DogecoinUri',
+      'LitecoinUri',
       'RippleUri',
       'InvoiceUri'
     ]);
@@ -1701,6 +1734,7 @@ export class ConfirmPage {
       this.tx.coin === 'bch' ||
       this.tx.coin === 'xrp' ||
       this.tx.coin === 'doge' ||
+      this.tx.coin === 'ltc' ||
       this.usingMerchantFee ||
       this.tx.speedUpTxInfo
     )
@@ -1739,7 +1773,7 @@ export class ConfirmPage {
     }
 
     this.tx.feeLevel = data.newFeeLevel;
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.tx.coin);
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     if (this.usingCustomFee)
       this.tx.feeRate = parseInt(data.customFeePerKB, 10);

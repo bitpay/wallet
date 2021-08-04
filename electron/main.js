@@ -139,6 +139,8 @@ if (!app.isDefaultProtocolClient('ripple'))
   app.setAsDefaultProtocolClient('ripple');
 if (!app.isDefaultProtocolClient('dogecoin'))
   app.setAsDefaultProtocolClient('dogecoin');
+if (!app.isDefaultProtocolClient('litecoin'))
+  app.setAsDefaultProtocolClient('litecoin');
 if (!app.isDefaultProtocolClient(appConfig.name))
   app.setAsDefaultProtocolClient(appConfig.name);
 

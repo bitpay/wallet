@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="bp-title">{{'Tokens' | translate}}</ion-title>
+    <ion-buttons left>
+      <button class="close-container disable-hover" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="send-header-wrapper">
+    <ion-item class="search-wrapper">
+      <ion-input placeholder="{{'Search tokens' | translate}}" [(ngModel)]="searchQuery" (ngModelChange)="updateSearchInput(searchQuery)"></ion-input>
+      <ion-icon *ngIf="searchQuery != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+    </ion-item>
+  </div>
+  <ion-list class="settings-list bp-list">
+    <div>
+      <button *ngFor="let token of tokenSearchResults" class="list-button" (click)="close(token)" ion-item>
+        <ion-icon *ngIf="currencyProvider.COIN[token.symbol | uppercase]" item-start>
+          <img src="assets/img/currencies/{{token.symbol.toLowerCase()}}.svg" />
+        </ion-icon>
+        <ion-icon *ngIf="!currencyProvider.COIN[token.symbol | uppercase]" item-start>
+          <img width="40" height="40" src="{{token.logoURI}}" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+        </ion-icon>
+        <div class="item-title">{{ token.name }} ({{ token.symbol }})</div>
+      </button>
+    </div>
+    <div class="token-count" *ngIf="tokenListShowMore">
+      <span>{{filteredTokens.length - tokenSearchResults.length}} more</span>
+      &nbsp;
+      <ion-icon name="arrow-down"></ion-icon>
+    </div>
+  </ion-list>
+  <ion-infinite-scroll *ngIf="tokenListShowMore" (ionInfinite)="moreSearchResults($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

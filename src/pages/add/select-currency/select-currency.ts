@@ -13,6 +13,7 @@ import { ImportWalletPage } from '../../add/import-wallet/import-wallet';
 import { RecoveryKeyPage } from '../../onboarding/recovery-key/recovery-key';
 import { KeyOnboardingPage } from '../../settings/key-settings/key-onboarding/key-onboarding';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
+import { CustomTokenPage } from '../custom-token/custom-token';
 import { JoinWalletPage } from '../join-wallet/join-wallet';
 
 // providers
@@ -28,7 +29,6 @@ import {
   WalletProvider
 } from '../../../providers';
 import {
-  Coin,
   CoinsMap,
   CurrencyProvider
 } from '../../../providers/currency/currency';
@@ -42,7 +42,7 @@ export class SelectCurrencyPage {
   private showKeyOnboarding: boolean;
 
   public title: string;
-  public coin: Coin;
+  public coin: string;
   public coinsSelected = {} as CoinsMap<boolean>;
   public tokensSelected = {} as CoinsMap<boolean>;
   public tokenDisabled = {} as CoinsMap<boolean>;
@@ -79,7 +79,7 @@ export class SelectCurrencyPage {
       this.isShared || this.isJoin
         ? this.currencyProvider.getMultiSigCoins()
         : this.currencyProvider.getAvailableChains();
-    this.availableTokens = this.currencyProvider.getAvailableTokens();
+    this.availableTokens = this.currencyProvider.getBitPayPaymentsAvailableCoins();
     for (const chain of this.availableChains) {
       this.coinsSelected[chain] = true;
     }
@@ -118,7 +118,7 @@ export class SelectCurrencyPage {
     });
   }
 
-  private showKeyOnboardingSlides(coins: Coin[]) {
+  private showKeyOnboardingSlides(coins: string[]) {
     this.logger.debug('Showing key onboarding');
     const modal = this.modalCtrl.create(KeyOnboardingPage, null, {
       showBackdrop: false,
@@ -148,7 +148,7 @@ export class SelectCurrencyPage {
     }
   }
 
-  public getCoinName(coin: Coin): string {
+  public getCoinName(coin: string): string {
     return this.currencyProvider.getCoinName(coin);
   }
 
@@ -156,8 +156,8 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage);
   }
 
-  private _createWallets(coins: Coin[]): void {
-    const selectedCoins = _.keys(_.pickBy(this.coinsSelected)) as Coin[];
+  private _createWallets(coins: string[]): void {
+    const selectedCoins = _.keys(_.pickBy(this.coinsSelected));
     coins = coins || selectedCoins;
     const selectedTokens = _.keys(_.pickBy(this.tokensSelected));
     this.onGoingProcessProvider.set('creatingWallet');
@@ -177,7 +177,7 @@ export class SelectCurrencyPage {
       });
   }
 
-  public createWallets(coins: Coin[]): void {
+  public createWallets(coins: string[]): void {
     if (this.isZeroState && !this.isOnboardingFlow) {
       this.showInfoSheet(coins);
       return;
@@ -239,6 +239,7 @@ export class SelectCurrencyPage {
       return this.createAndBindTokenWallet(pairedWallet, token);
     });
   }
+
   public setTokens(coin?: string): void {
     if (coin === 'eth' || !coin) {
       for (const token of this.availableTokens) {
@@ -258,7 +259,7 @@ export class SelectCurrencyPage {
     }
   }
 
-  private showInfoSheet(coins: Coin[]) {
+  private showInfoSheet(coins: string[]) {
     const infoSheet = this.actionSheetProvider.createInfoSheet('new-key');
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
@@ -267,6 +268,12 @@ export class SelectCurrencyPage {
         return;
       }
       this._createWallets(coins);
+    });
+  }
+
+  public goToCustomToken() {
+    this.navCtrl.push(CustomTokenPage, {
+      keyId: this.keyId
     });
   }
 }

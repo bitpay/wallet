@@ -58,7 +58,7 @@ const Keys = {
   HAS_REPORTED_FIREBASE_CREATED_WALLET: 'hasReportedFirebaseCreatedWallet',
   HAS_REPORTED_FIREBASE_HAS_PHYSICAL_CARD: 'hasReportedFirebaseHasPhysicalCard',
   HAS_REPORTED_FIREBASE_HAS_VIRTUAL_CARD: 'hasReportedFirebaseHasVirtualCard',
-  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard',
+  HAS_REPORTED_FIREBASE_HAS_FUNDED_CARD: 'hasFundedCard_2',
   HAS_REPORTED_FIREBASE_SECURED_WALLET: 'hasSecuredWallet',
   HAS_REPORTED_FIREBASE_HAS_FUNDED_WALLET: 'hasFundedWallet',
   HAS_REPORTED_FIREBASE_HAS_NOT_FUNDED_WALLET: 'hasNotFundedWallet',
@@ -92,7 +92,9 @@ const Keys = {
   CARD_FAST_TRACK_ENABLED: 'cardFastTrackEnabled',
   TEMP_MDES_DEBUG_FLAG: 'tempMdesDebugFlag',
   TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
-  NETWORK: 'network'
+  NETWORK: 'network',
+  CUSTOMTOKENSDATA: 'customTokensData',
+  CUSTOMTOKENSOPTS: 'customTokensOpts'
 };
 
 interface Storage {
@@ -954,6 +956,18 @@ export class PersistenceProvider {
     return this.storage.remove('walletConnectSession');
   }
 
+  getWalletConnectPendingRequests() {
+    return this.storage.get('walletConnectPendingRequests');
+  }
+
+  setWalletConnectPendingRequests(pendingRequests: any[]) {
+    return this.storage.set('walletConnectPendingRequests', pendingRequests);
+  }
+
+  removeWalletConnectPendingRequests() {
+    return this.storage.remove('walletConnectPendingRequests');
+  }
+
   setWaitingListStatus(onList: string) {
     return this.storage.set('waitingListStatus', onList);
   }
@@ -1031,6 +1045,33 @@ export class PersistenceProvider {
 
   getNetwork() {
     return this.storage.get(Keys.NETWORK);
+  }
+
+  setCustomTokenData(customTokenData) {
+    return this.storage.set(Keys.CUSTOMTOKENSDATA, customTokenData);
+  }
+
+  getCustomTokenData() {
+    return this.storage.get(Keys.CUSTOMTOKENSDATA);
+  }
+
+  setCustomTokenOpts(customTokenOpts) {
+    return this.storage.set(Keys.CUSTOMTOKENSOPTS, customTokenOpts);
+  }
+
+  getCustomTokenOpts() {
+    return this.storage.get(Keys.CUSTOMTOKENSOPTS);
+  }
+
+  setEthMultisigPendingInstantiation(walletId, instantiationInfo) {
+    return this.storage.set(
+      `eth-multisig-instantiation-${walletId}`,
+      instantiationInfo
+    );
+  }
+
+  getEthMultisigPendingInstantiation(walletId) {
+    return this.storage.get(`eth-multisig-instantiation-${walletId}`);
   }
 }
 

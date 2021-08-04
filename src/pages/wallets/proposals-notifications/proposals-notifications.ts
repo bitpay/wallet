@@ -305,7 +305,7 @@ export class ProposalsNotificationsPage {
               : this.translate.instant('{{txpsSuccess}} proposal signed'),
             { txpsSuccess: count.success }
           );
-          this.openModal(finishText, wallet.coin, 'success');
+          this.openModal(finishText, 'success');
         }
         // own TxActions  are not triggered?
         this.events.publish('Local/TxAction', wallet.walletId);
@@ -372,13 +372,12 @@ export class ProposalsNotificationsPage {
     this.walletIdSelectedToSign = null;
   }
 
-  private openModal(finishText, coin, cssClass): void {
+  private openModal(finishText, cssClass): void {
     const modal = this.modalCtrl.create(
       FinishModalPage,
       {
         finishText,
-        cssClass,
-        coin
+        cssClass
       },
       { showBackdrop: true, enableBackdropDismiss: false }
     );

@@ -213,6 +213,7 @@ export class WalletMock {
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
       coin: 'btc',
+      chain: 'btc',
       amount: 1000,
       from: 'address1',
       toAddress: 'address1',

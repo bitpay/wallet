@@ -12,7 +12,7 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -55,10 +55,12 @@ export class SendPage {
     'EthereumUri',
     'RippleAddress',
     'DogecoinAddress',
+    'LitecoinAddress',
     'RippleUri',
     'BitcoinUri',
     'BitcoinCashUri',
     'DogecoinUri',
+    'LitecoinUri',
     'BitPayUri'
   ];
   private pageMap = {
@@ -162,7 +164,7 @@ export class SendPage {
     this.navCtrl.push(ScanPage, { fromSend: true }, { animate: false });
   }
 
-  public showOptions(coin: Coin) {
+  public showOptions(coin: string) {
     return (
       (this.currencyProvider.isMultiSend(coin) ||
         this.currencyProvider.isUtxoCoin(coin)) &&

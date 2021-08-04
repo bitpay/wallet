@@ -2,9 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FCMNG } from 'fcm-ng';
-import { Events, Toast, ToastController } from 'ionic-angular';
+import { Events, Modal, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
+
+// components
+import { NotificationComponent } from '../../components/notification-component/notification-component';
 
 // providers
 import { AppProvider } from '../app/app';
@@ -23,8 +26,8 @@ export class PushNotificationsProvider {
   private usePushNotifications: boolean;
   private _token = null;
   private fcmInterval;
-  private toasts = [];
-  private currentToast: Toast;
+  private notifications = [];
+  private currentNotif: Modal;
   private openWalletId;
 
   constructor(
@@ -37,7 +40,7 @@ export class PushNotificationsProvider {
     private bwcProvider: BwcProvider,
     private FCMPlugin: FCMNG,
     private events: Events,
-    private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
     private translate: TranslateService
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
@@ -123,7 +126,7 @@ export class PushNotificationsProvider {
           const wallet = this.findWallet(data.walletId, data.tokenAddress);
           if (!wallet) return;
           this.newBwsEvent(data, wallet.credentials.walletId);
-          this.showToastNotification(data);
+          this.showInappNotification(data);
         }
       });
     }
@@ -318,35 +321,48 @@ export class PushNotificationsProvider {
     return verificationResult;
   }
 
-  private showToastNotification(data) {
+  private showInappNotification(data) {
     if (!data.body || data.notification_type === 'NewOutgoingTx') return;
 
-    this.toasts.unshift(data);
-    this.runToastQueue();
+    this.notifications.unshift(data);
+    this.runNotificationsQueue();
   }
 
-  private runToastQueue() {
-    if (this.currentToast) return;
+  private runNotificationsQueue() {
+    if (this.currentNotif) return;
 
-    this.toasts.some(data => {
+    this.notifications.some(data => {
       if (!data.showDone) {
-        this.currentToast = this.toastCtrl.create({
-          message: `${data.title}\n${data.body}`,
-          duration: 5000,
-          position: 'top',
-          showCloseButton: true,
-          closeButtonText: this.translate.instant('Open Wallet'),
-          cssClass: 'toast-bg'
+        this.currentNotif = this.modalCtrl.create(
+          NotificationComponent,
+          {
+            title: data.title,
+            message: data.body,
+            customButton: {
+              closeButtonText: this.translate.instant('Open Wallet'),
+              data: {
+                action: 'openWallet'
+              }
+            }
+          },
+          {
+            showBackdrop: true,
+            enableBackdropDismiss: true,
+            enterAnimation: 'modal-translate-up-enter',
+            leaveAnimation: 'modal-translate-up-leave',
+            cssClass: 'in-app-notification-modal'
+          }
+        );
+
+        this.currentNotif.onDidDismiss(dismissData => {
+          if (dismissData.action && dismissData.action === 'openWallet')
+            this._openWallet(data);
+
+          this.currentNotif = null;
+          this.runNotificationsQueue();
         });
 
-        this.currentToast.onDidDismiss((_opt, role) => {
-          if (role === 'close') this._openWallet(data);
-
-          this.currentToast = null;
-          this.runToastQueue();
-        });
-
-        this.currentToast.present();
+        this.currentNotif.present();
         data.showDone = true;
         return true;
       }

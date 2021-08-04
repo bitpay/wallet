@@ -53,7 +53,9 @@
               [hide-toast]="true"
               tappable
             >
-              <div class="card-info__title" translate>Claim Code</div>
+              <div class="card-info__title" translate>
+                {{cardConfig?.textOverrides?.claimCode || 'Claim Code'}}
+              </div>
               <div class="card-info__body" *ngIf="!showBarcode()">
                 {{card.claimCode}}
               </div>

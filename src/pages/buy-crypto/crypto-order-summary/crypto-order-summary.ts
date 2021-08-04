@@ -371,9 +371,7 @@ export class CryptoOrderSummaryPage {
   private showCoinAndCountryError() {
     if (!this.coin) return;
     const title = this.translate.instant('Error');
-    const subtitle = this.translate.instant(
-      `The selected coin (${this.coin.toUpperCase()}) is not currently available to buy in your country.`
-    );
+    const subtitle = `The selected coin (${this.coin.toUpperCase()}) is not currently available to buy in your country.`;
     this.errorsProvider.showDefaultError(subtitle, title);
     this.wallet = null;
     this.address = null;

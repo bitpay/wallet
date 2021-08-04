@@ -785,6 +785,9 @@ export class CopayApp {
     } else if (pathData.indexOf('dogecoin:/') != -1) {
       this.logger.debug('Dogecoin URL found');
       this.handleOpenUrl(pathData.substring(pathData.indexOf('dogecoin:/')));
+    } else if (pathData.indexOf('litecoin:/') != -1) {
+      this.logger.debug('Litecoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('litecoin:/')));
     } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
       this.logger.debug(this.appProvider.info.name + ' URL found');
       this.handleOpenUrl(

@@ -15,7 +15,8 @@ const validDataByCoin = {
   bch: ['BitcoinCashUri', 'BitcoinCashAddress'],
   eth: ['EthereumUri', 'EthereumAddress'],
   xrp: ['RippleUri', 'RippleAddress'],
-  doge: ['DogecoinUri', 'DogecoinAddress']
+  doge: ['DogecoinUri', 'DogecoinAddress'],
+  ltc: ['LitecoinUri', 'LitecoinAddress']
 };
 
 @Injectable()
@@ -109,5 +110,10 @@ export class ClipboardProvider {
           resolve();
         });
     });
+  }
+
+  public redir(data): void {
+    this.clear();
+    this.incomingDataProvider.redir(data);
   }
 }

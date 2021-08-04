@@ -4,7 +4,7 @@ import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
-import { Coin, CurrencyProvider } from '../currency/currency';
+import { CurrencyProvider } from '../currency/currency';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
 import { ProfileProvider } from '../profile/profile';
@@ -785,7 +785,7 @@ describe('Provider: Incoming Data Provider', () => {
           element.replace(`bitpay:${address}`, '')
         );
         const message = params.get('message');
-        const coin: Coin = Coin[params.get('coin').toUpperCase()];
+        const coin = params.get('coin').toLowerCase();
         const { unitToSatoshi } = currencyProvider.getPrecision(coin);
         const amount = parseInt(
           (Number(params.get('amount')) * unitToSatoshi).toFixed(0),
@@ -879,7 +879,7 @@ describe('Provider: Incoming Data Provider', () => {
     it('Should handle Coinbase URI', () => {
       let data = ['bitpay://coinbase', 'copay://coinbase'];
       data.forEach(element => {
-        let stateParams = { code: null };
+        let stateParams = { code: null, state: null };
         let nextView = {
           name: 'CoinbasePage',
           params: stateParams

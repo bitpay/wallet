@@ -12,7 +12,7 @@
             <div class="amount">
               {{btx.amountValueStr}} {{btx.amountUnitStr | uppercase}}
             </div>
-            <div class="alternative">
+            <div *ngIf="!currencyProvider.isCustomERCToken(wallet.coin)" class="alternative">
               <span *ngIf="!btx.fiatRateStr">...</span>
               <span *ngIf="btx.fiatRateStr">{{btx.fiatRateStr}}</span>
             </div>

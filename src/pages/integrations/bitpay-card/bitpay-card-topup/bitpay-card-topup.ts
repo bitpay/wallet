@@ -17,10 +17,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
-import {
-  Coin,
-  CurrencyProvider
-} from '../../../../providers/currency/currency';
+import { CurrencyProvider } from '../../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
@@ -138,7 +135,7 @@ export class BitPayCardTopUpPage {
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount;
 
-    let coin = Coin[this.currency] ? Coin[this.currency] : null;
+    let coin = this.currency ? this.currency.toLowerCase() : null;
 
     this.bitPayCardProvider
       .get({
@@ -172,7 +169,7 @@ export class BitPayCardTopUpPage {
           hasFunds: true
         };
 
-        if (Coin[this.currency]) {
+        if (this.currency.toLowerCase()) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             this.currency.toLowerCase(),
             this.amount,
@@ -450,7 +447,9 @@ export class BitPayCardTopUpPage {
                   'Using merchant fee rate (for debit card):' + txp.feePerKb
                 );
               } else {
-                txp.feeLevel = this.feeProvider.getDefaultFeeLevel();
+                txp.feeLevel = this.feeProvider.getCoinCurrentFeeLevel(
+                  wallet.coin
+                );
               }
 
               txp['origToAddress'] = txp.toAddress;
@@ -487,7 +486,7 @@ export class BitPayCardTopUpPage {
         .getFeeRate(
           wallet.coin,
           wallet.credentials.network,
-          this.feeProvider.getDefaultFeeLevel()
+          this.feeProvider.getCoinCurrentFeeLevel(wallet.coin)
         )
         .then(feePerKb => {
           this.walletProvider
@@ -1148,12 +1147,9 @@ export class BitPayCardTopUpPage {
         ? this.translate.instant('Funds were added to debit card')
         : this.translate.instant('Transaction initiated');
     let finishText = '';
-    const coin = this.wallet
-      ? this.wallet.coin
-      : this.coinbaseAccount.currency.code.toLowerCase();
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText, finishComment, coin },
+      { finishText, finishComment },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
 

@@ -162,7 +162,7 @@ export class TxpDetailsPage {
       this.tx.feeRateStr =
         ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
     }
-    const feeOpts = this.feeProvider.getFeeOpts();
+    const feeOpts = this.feeProvider.getFeeOpts(this.wallet.coin);
     this.tx.feeLevelStr = feeOpts[this.tx.feeLevel];
   }
 
@@ -481,7 +481,7 @@ export class TxpDetailsPage {
   private openFinishModal() {
     let modal = this.modalCtrl.create(
       FinishModalPage,
-      { finishText: this.successText, coin: this.wallet.coin },
+      { finishText: this.successText },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();

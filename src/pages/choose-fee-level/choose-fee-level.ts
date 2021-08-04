@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
@@ -13,6 +13,13 @@ interface FeeOpts {
   feeUnitAmount: number;
   blockTime: number;
 }
+
+enum ethAvgTime {
+  normal = '<5m',
+  priority = '<2m',
+  urgent = 'ASAP'
+}
+
 @Component({
   selector: 'page-choose-fee-level',
   templateUrl: 'choose-fee-level.html'
@@ -35,7 +42,7 @@ export class ChooseFeeLevelModal {
   public feeOpts = [];
   public loadingFee: boolean;
   public feeLevels;
-  public coin: Coin;
+  public coin: string;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
   public maxFee: number;
@@ -45,6 +52,7 @@ export class ChooseFeeLevelModal {
   public showMinWarning: boolean;
   public okText: string;
   public cancelText: string;
+  public isERCToken: boolean;
 
   constructor(
     private currencyProvider: CurrencyProvider,
@@ -62,6 +70,7 @@ export class ChooseFeeLevelModal {
     this.cancelText = this.translate.instant('Cancel');
     this.network = this.navParams.data.network;
     this.coin = this.navParams.data.coin;
+    this.isERCToken = this.currencyProvider.isERCToken(this.coin);
     this.feeLevel = this.navParams.data.feeLevel;
     this.setFeeUnits();
 
@@ -119,8 +128,12 @@ export class ChooseFeeLevelModal {
       this.feeOpts[i].feePerSatByte = (
         feeLevel.feePerKb / this.feeUnitAmount
       ).toFixed();
-      let avgConfirmationTime = feeLevel.nbBlocks * this.blockTime;
-      this.feeOpts[i].avgConfirmationTime = avgConfirmationTime;
+      if (this.coin == 'eth' || this.isERCToken) {
+        this.feeOpts[i].avgConfirmationTime = ethAvgTime[feeLevel.level];
+      } else {
+        let avgConfirmationTime = feeLevel.nbBlocks * this.blockTime;
+        this.feeOpts[i].avgConfirmationTime = avgConfirmationTime;
+      }
 
       if (feeLevel.level == this.feeLevel)
         this.feePerSatByte = (

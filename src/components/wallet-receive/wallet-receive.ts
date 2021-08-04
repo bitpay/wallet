@@ -6,7 +6,7 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { CurrencyProvider } from '../../providers/currency/currency';
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -151,7 +151,8 @@ export class WalletReceiveComponent extends ActionSheetParent {
 
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
-    this.showCoinNetworkWarning(this.wallet.coin);
+    if (this.wallet.network === 'testnet') this.showTestnetWarning();
+    else this.showCoinNetworkWarning(this.wallet.coin);
   }
 
   public setQrAddress() {
@@ -177,6 +178,13 @@ export class WalletReceiveComponent extends ActionSheetParent {
     sheet.instance.sheetType = sheetType;
     sheet.instance.params = params;
     return sheet;
+  }
+
+  private showTestnetWarning() {
+    const infoSheet = this.createInfoSheet('testnet-warning-1', {
+      coinName: this.currencyProvider.getCoinName(this.wallet.coin)
+    });
+    infoSheet.present();
   }
 
   private showFirstWarning() {
@@ -209,7 +217,7 @@ export class WalletReceiveComponent extends ActionSheetParent {
     });
   }
 
-  public showCoinNetworkWarning(coin: Coin) {
+  public showCoinNetworkWarning(coin: string) {
     this.showingWarning = true;
     const infoSheet = this.createInfoSheet('network-coin-warning', {
       coin: coin.toUpperCase(),

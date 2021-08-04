@@ -591,5 +591,34 @@
       </span>
       <span sheet-second-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'sync-wallets'" type="success">
+      <span sheet-title-text>{{params.title}}</span>
+      <span sheet-text>{{params.msg}}</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'custom-tokens-warning'" type="warning">
+      <span sheet-title-text translate>Custom Tokens</span>
+      <span sheet-text>
+        <span translate>Custom tokens cannot be used for payments on BitPay</span>
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'testnet-warning-1'" type="warning">
+      <span sheet-title-text translate>Warning!</span>
+      <span sheet-text translate>
+        {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into "real" coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: params.coinName } }}
+      </span>
+      <span sheet-button-text translate>I Understand</span>
+      <span sheet-second-button-text translate>Cancel</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'multisig-instantiation'" type="success">
+      <span sheet-title-text translate>The transaction is taking longer than usual to confirm</span>
+      <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

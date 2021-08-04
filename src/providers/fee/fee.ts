@@ -4,7 +4,8 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';
-import { Coin, CurrencyProvider } from '../../providers/currency/currency';
+import { ConfigProvider } from '../../providers/config/config';
+import { CurrencyProvider } from '../../providers/currency/currency';
 
 import * as _ from 'lodash';
 
@@ -30,16 +31,26 @@ export class FeeProvider {
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('FeeProvider initialized');
   }
 
-  public getFeeOpts() {
+  public getFeeOpts(coin?: string) {
     const feeOpts = {
-      urgent: this.translate.instant('Urgent'),
-      priority: this.translate.instant('Priority'),
-      normal: this.translate.instant('Normal'),
+      urgent:
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
+          ? this.translate.instant('High')
+          : this.translate.instant('Urgent'),
+      priority:
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
+          ? this.translate.instant('Average')
+          : this.translate.instant('Priority'),
+      normal:
+        coin == 'eth' || this.currencyProvider.isERCToken(coin)
+          ? this.translate.instant('Low')
+          : this.translate.instant('Normal'),
       economy: this.translate.instant('Economy'),
       superEconomy: this.translate.instant('Super Economy'),
       custom: this.translate.instant('Custom')
@@ -96,7 +107,7 @@ export class FeeProvider {
     return new Promise((resolve, reject) => {
       coin = coin || 'btc';
       const chain = this.currencyProvider
-        .getChain(Coin[coin.toUpperCase()])
+        .getChain(coin.toLowerCase())
         .toLowerCase();
       const indexFound = this.cache.findIndex(
         fl => fl.coin == coin && fl.network == network
@@ -119,30 +130,34 @@ export class FeeProvider {
 
       let walletClient = this.bwcProvider.getClient(null, {});
 
-      walletClient.getFeeLevels(coin, network, (errLivenet, feeLevels) => {
-        if (errLivenet) {
-          return reject(this.translate.instant('Could not get dynamic fee'));
+      walletClient.getFeeLevels(
+        this.currencyProvider.getChain(coin.toLowerCase()).toLowerCase(),
+        network,
+        (errLivenet, feeLevels) => {
+          if (errLivenet) {
+            return reject(this.translate.instant('Could not get dynamic fee'));
+          }
+          if (chain === 'eth') {
+            feeLevels = this.removeLowFeeLevels(feeLevels);
+          }
+          if (indexFound >= 0) {
+            this.cache[indexFound] = {
+              updateTs: Date.now(),
+              coin,
+              network,
+              data: feeLevels
+            };
+          } else {
+            this.cache.push({
+              updateTs: Date.now(),
+              coin,
+              network,
+              data: feeLevels
+            });
+          }
+          return resolve({ levels: feeLevels });
         }
-        if (chain === 'eth') {
-          feeLevels = this.removeLowFeeLevels(feeLevels);
-        }
-        if (indexFound >= 0) {
-          this.cache[indexFound] = {
-            updateTs: Date.now(),
-            coin,
-            network,
-            data: feeLevels
-          };
-        } else {
-          this.cache.push({
-            updateTs: Date.now(),
-            coin,
-            network,
-            data: feeLevels
-          });
-        }
-        return resolve({ levels: feeLevels });
-      });
+      );
     });
   }
 
@@ -168,5 +183,26 @@ export class FeeProvider {
       );
       return Number(fee.toFixed());
     });
+  }
+
+  public getCoinCurrentFeeLevel(coin): string {
+    let feeLevel;
+    switch (true) {
+      case coin === 'btc':
+        feeLevel = this.configProvider.get().feeLevels.btc || 'normal';
+        break;
+      case coin === 'eth':
+      case this.currencyProvider.isERCToken(coin):
+        feeLevel = this.configProvider.get().feeLevels.eth || 'normal';
+        break;
+      default:
+        feeLevel = 'normal';
+        break;
+    }
+    return feeLevel;
+  }
+
+  public getCurrentFeeLevels(coin: string): string {
+    return this.configProvider.get().feeLevels[coin];
   }
 }

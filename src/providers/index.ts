@@ -13,7 +13,6 @@ export { ScreenOrientation } from '@ionic-native/screen-orientation';
 export { SocialSharing } from '@ionic-native/social-sharing';
 export { SplashScreen } from '@ionic-native/splash-screen';
 export { StatusBar } from '@ionic-native/status-bar';
-export { Toast } from '@ionic-native/toast';
 export { Vibration } from '@ionic-native/vibration';
 export { UserAgent } from '@ionic-native/user-agent';
 
@@ -38,7 +37,7 @@ export { ClipboardProvider } from '../providers/clipboard/clipboard';
 export { CoinbaseProvider } from '../providers/coinbase/coinbase';
 export { ConfettiProvider } from '../providers/confetti/confetti';
 export { ConfigProvider } from '../providers/config/config';
-export { CurrencyProvider, Coin } from '../providers/currency/currency';
+export { CurrencyProvider } from '../providers/currency/currency';
 export { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 export { DirectoryProvider } from '../providers/directory/directory';
 export { DomProvider } from '../providers/dom/dom';

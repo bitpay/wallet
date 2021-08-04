@@ -6,6 +6,7 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
@@ -41,6 +42,8 @@ export class TabsPage {
   tabs;
   NETWORK = 'livenet';
   public txpsN: number;
+  public clipboardBadge: number;
+  public clipboardData: string;
   public cardNotificationBadgeText;
   public scanIconType: string;
   public isCordova: boolean;
@@ -74,7 +77,8 @@ export class TabsPage {
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private analyticsProvider: AnalyticsProvider,
-    private themeProvider: ThemeProvider
+    private themeProvider: ThemeProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.persistenceProvider.getNetwork().then((network: string) => {
       if (network) {
@@ -146,6 +150,7 @@ export class TabsPage {
     });
 
     this.checkCardEnabled();
+    this.checkClipboardData();
     this.tabProvider.prefetchGiftCards();
   }
 
@@ -211,11 +216,17 @@ export class TabsPage {
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.events.publish('Desktop/onFocus');
+      this.checkClipboardData();
       setTimeout(() => {
         this.updateTxps();
         this.fetchAllWalletsStatus();
       }, 1000);
     });
+  }
+
+  private async checkClipboardData(): Promise<void> {
+    this.clipboardData = await this.clipboardProvider.getValidData();
+    this.clipboardBadge = this.clipboardData ? 1 : 0;
   }
 
   private bwsEventHandler: any = (walletId: string, type: string) => {
@@ -369,13 +380,21 @@ export class TabsPage {
     this.analyticsProvider.logEvent('transaction_menu_clicked', {
       from: 'tabs'
     });
-    const footerMenu = this.actionSheetProvider.createFooterMenu();
+    const footerMenu = this.actionSheetProvider.createFooterMenu({
+      clipboardData: this.clipboardData
+    });
     footerMenu.present();
     footerMenu.onDidDismiss(nextView => {
-      if (nextView)
-        this.navCtrl.push(this.pageMap[nextView.name], nextView.params, {
-          animate: !['ScanPage'].includes(nextView.name)
-        });
+      if (nextView) {
+        if (nextView.name) {
+          this.navCtrl.push(this.pageMap[nextView.name], nextView.params, {
+            animate: !['ScanPage'].includes(nextView.name)
+          });
+        } else {
+          this.clipboardProvider.redir(this.clipboardData);
+          this.checkClipboardData();
+        }
+      }
     });
   }
 
