@@ -29,11 +29,6 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 // pages
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AddPage } from '../add/add';
-import { CryptoSettingsPage } from '../buy-crypto/crypto-settings/crypto-settings';
-import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
-import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
-import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
-import { WalletConnectSettingsPage } from '../integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -375,26 +370,6 @@ export class SettingsPage {
 
   public openSharePage(): void {
     this.navCtrl.push(SharePage);
-  }
-
-  public openSettingIntegration(name: string): void {
-    switch (name) {
-      case 'coinbase':
-        this.navCtrl.push(CoinbaseSettingsPage);
-        break;
-      case 'debitcard':
-        this.navCtrl.push(BitPaySettingsPage);
-        break;
-      case 'buycrypto':
-        this.navCtrl.push(CryptoSettingsPage);
-        break;
-      case 'exchangecrypto':
-        this.navCtrl.push(ExchangeCryptoSettingsPage);
-        break;
-      case 'newWalletConnect':
-        this.navCtrl.push(WalletConnectSettingsPage);
-        break;
-    }
   }
 
   public openCardSettings(id): void {

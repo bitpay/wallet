@@ -8,16 +8,7 @@ import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
-// import { CountrySelectorPage } from '../pages/buy-crypto/country-selector/country-selector';
-// import { CryptoCoinSelectorPage } from '../pages/buy-crypto/crypto-coin-selector/crypto-coin-selector';
-// import { CryptoOffersPage } from '../pages/buy-crypto/crypto-offers/crypto-offers';
-// import { CryptoOrderSummaryPage } from '../pages/buy-crypto/crypto-order-summary/crypto-order-summary';
-// import { CryptoPaymentMethodPage } from '../pages/buy-crypto/crypto-payment-method/crypto-payment-method';
-// import { CryptoSettingsPage } from '../pages/buy-crypto/crypto-settings/crypto-settings';
 import { ChooseFeeLevelModal } from '../pages/choose-fee-level/choose-fee-level';
-import { ExchangeCheckoutPage } from '../pages/exchange-crypto/exchange-checkout/exchange-checkout';
-// import { ExchangeCryptoPage } from '../pages/exchange-crypto/exchange-crypto';
-import { ExchangeCryptoSettingsPage } from '../pages/exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { NewFeaturePage } from '../pages/new-feature/new-feature';
@@ -36,49 +27,14 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalanceModal } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
-// // Integrations: Coinbase
-// import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
-// import { CoinbaseAccountPage } from '../pages/integrations/coinbase/coinbase-account/coinbase-account';
-// import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
-// import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
-// import { CoinbaseWithdrawPage } from '../pages/integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
-
-// // Integrations: Simplex
-// import { SimplexPage } from '../pages/integrations/simplex/simplex';
-// import { SimplexDetailsPage } from '../pages/integrations/simplex/simplex-details/simplex-details';
-
-// // Integrations: Wyre
-// import { WyrePage } from '../pages/integrations/wyre/wyre';
-// import { WyreDetailsPage } from '../pages/integrations/wyre/wyre-details/wyre-details';
-
-// // Integrations: Wallet Connect
-// import { WalletConnectPage } from '../pages/integrations/wallet-connect/wallet-connect';
-// import { WalletConnectSettingsPage } from '../pages/integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
-
-// // Integrations: BitPayCard
-// import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
-// import { BitPayCardHome } from '../pages/integrations/bitpay-card/bitpay-card-home/bitpay-card-home';
-// import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-// import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
-// import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
-
-// Integrations: BitPayCard - Phases
-
-// Phase 1
-// import { PhaseOneCardIntro } from '../pages/integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
-
 /*Includes */
-// import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { CoinSelectorPage } from '../pages/includes/coin-selector/coin-selector';
 import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
-// import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { LotusDonationCard } from '../pages/includes/lotus-donation-card/lotus-donation-card';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
-// import { TxpPage } from '../pages/includes/txp/txp';
 
 /* Tabs */
-// import { CardsPage } from '../pages/cards/cards';
 import { HomePage } from '../pages/home/home';
 import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
@@ -160,8 +116,6 @@ export const PAGES = [
   CreateWalletPage,
   CreateNewWalletPage,
   CopayersPage,
-  ExchangeCheckoutPage,
-  ExchangeCryptoSettingsPage,
   SelectInputsPage,
   LotusDonationCard,
   SharePage,

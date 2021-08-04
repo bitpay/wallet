@@ -19,8 +19,6 @@ import { TabProvider } from '../../providers/tab/tab';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
-import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
@@ -51,8 +49,6 @@ export class TabsPage {
   private onPauseSubscription: Subscription;
   private pageMap = {
     AmountPage,
-    ExchangeCryptoPage,
-    CryptoCoinSelectorPage,
     ScanPage
   };
 

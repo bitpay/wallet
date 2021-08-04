@@ -37,7 +37,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
-import { ExchangeCryptoPage } from '../../pages/exchange-crypto/exchange-crypto';
 import { SendPage } from '../../pages/send/send';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsModal } from '../../pages/tx-details/tx-details';
@@ -674,24 +673,6 @@ export class WalletDetailsPage {
     this.navCtrl.push(SendPage, {
       wallet: this.wallet
     });
-  }
-
-  public goToExchangeCryptoPage() {
-    if (this.wallet && this.wallet.isComplete() && this.wallet.needsBackup) {
-      const needsBackup = this.actionSheetProvider.createNeedsBackup();
-      needsBackup.present();
-      needsBackup.onDidDismiss(data => {
-        if (data === 'goToBackup') this.goToBackup();
-      });
-    } else {
-      this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
-        from: 'walletDetails',
-        coin: this.wallet.coin
-      });
-      this.navCtrl.push(ExchangeCryptoPage, {
-        walletId: this.wallet.id
-      });
-    }
   }
 
   public goToBuyCryptoPage() {

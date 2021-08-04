@@ -35,11 +35,6 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { User } from '../../models/user/user.model';
 import { Network } from '../../providers/persistence/persistence';
-import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
-import { CoinbasePage } from '../integrations/coinbase/coinbase';
-import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
@@ -144,10 +139,6 @@ export class HomePage {
       .getTestingAdvertisments()
       .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
-    this.pagesMap = {
-      BitPayCardIntroPage,
-      CoinbasePage
-    };
     this.user$ = this.iabCardProvider.user$;
     this.user$.subscribe(async user => {
       if (user) {
@@ -514,37 +505,6 @@ export class HomePage {
         if (value === 'dismissed') {
           return;
         }
-        const card: Advertisement = this.cardExperimentEnabled
-          ? {
-              name: 'bitpay-card',
-              title: this.translate.instant('Get the BitPay Card'),
-              body: this.translate.instant(
-                'Designed for people who want to live life on crypto.'
-              ),
-              app: 'bitpay',
-              linkText: this.translate.instant('Order Now'),
-              link: BitPayCardIntroPage,
-              isTesting: false,
-              dismissible: true,
-              imgSrc: 'assets/img/bitpay-card/bitpay-card-mc-angled-plain.svg'
-            }
-          : {
-              name: 'bitpay-card',
-              title: this.translate.instant('Coming soon'),
-              body: this.translate.instant(
-                'Join the waitlist and be first to experience the new card.'
-              ),
-              app: 'bitpay',
-              linkText: this.translate.instant('Notify Me'),
-              link: PhaseOneCardIntro,
-              isTesting: false,
-              dismissible: true,
-              imgSrc: 'assets/img/icon-bpcard.svg'
-            };
-        const alreadyVisible = this.advertisements.find(
-          a => a.name === 'bitpay-card'
-        );
-        !alreadyVisible && this.advertisements.unshift(card);
       });
   }
 
@@ -697,19 +657,6 @@ export class HomePage {
       nextPage: 'CryptoOrderSummaryPage',
       currency: this.configProvider.get().wallet.settings.alternativeIsoCode
     });
-  }
-
-  public goToExchangeCryptoPage() {
-    this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
-      from: 'homePage'
-    });
-    this.navCtrl.push(ExchangeCryptoPage, {
-      currency: this.configProvider.get().wallet.settings.alternativeIsoCode
-    });
-  }
-
-  public goToWalletConnectPage() {
-    this.navCtrl.push(WalletConnectPage);
   }
 
   private checkNewRelease() {

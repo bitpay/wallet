@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
 import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
-import { CoinbaseAccountPage } from '../integrations/coinbase/coinbase-account/coinbase-account';
 import { SettingsPage } from '../settings/settings';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ProposalsNotificationsPage } from './proposals-notifications/proposals-notifications';
@@ -562,12 +561,6 @@ export class WalletsPage {
 
   public getNativeBalance(amount, currency): string {
     return this.coinbaseProvider.getNativeCurrencyBalance(amount, currency);
-  }
-
-  public goToCoinbaseAccount(id): void {
-    this.navCtrl.push(CoinbaseAccountPage, {
-      id
-    });
   }
 }
 

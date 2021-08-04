@@ -13,7 +13,6 @@ import * as _ from 'lodash';
 // Pages
 import { ChooseFeeLevelModal } from '../../choose-fee-level/choose-fee-level';
 import { FinishModalPage } from '../../finish/finish';
-import { CoinbaseAccountPage } from '../../integrations/coinbase/coinbase-account/coinbase-account';
 import { ScanPage } from '../../scan/scan';
 import { WalletDetailsPage } from '../../wallet-details/wallet-details';
 
@@ -1712,9 +1711,6 @@ export class ConfirmPage {
           method: 'deposit',
           amount: this.amount,
           currency: this.coin
-        });
-        this.navCtrl.push(CoinbaseAccountPage, {
-          id: this.fromCoinbase.accountId
         });
       } else {
         if (redir) {

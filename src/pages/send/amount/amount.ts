@@ -31,13 +31,10 @@ import { SimplexProvider } from '../../../providers/simplex/simplex';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/crypto-order-summary';
-import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
 import { TranslateService } from '@ngx-translate/core';
-import { CoinbaseWithdrawPage } from '../../integrations/coinbase/coinbase-withdraw/coinbase-withdraw';
 import { SendPage } from '../send';
 
 @Component({
@@ -336,19 +333,8 @@ export class AmountPage {
   private getNextView() {
     let nextPage;
     switch (this.navParams.data.nextPage) {
-      case 'BitPayCardTopUpPage':
-        this.showSendMax = false;
-        nextPage = BitPayCardTopUpPage;
-        break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
-        break;
-      case 'CryptoOrderSummaryPage':
-        nextPage = CryptoOrderSummaryPage;
-        break;
-      case 'CoinbaseWithdrawPage':
-        this.showSendMax = false;
-        nextPage = CoinbaseWithdrawPage;
         break;
       default:
         this.showSendMax = true;
