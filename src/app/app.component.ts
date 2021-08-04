@@ -32,7 +32,6 @@ import {
   InAppBrowserProvider,
   IncomingDataProvider,
   KeyProvider,
-  LocationProvider,
   Logger,
   LogsProvider,
   PlatformProvider,
@@ -160,7 +159,6 @@ export class CopayApp {
     private themeProvider: ThemeProvider,
     private logsProvider: LogsProvider,
     private dynamicLinksProvider: DynamicLinksProvider,
-    private locationProvider: LocationProvider,
     private addressBookProvider: AddressBookProvider,
     private analyticsProvider: AnalyticsProvider
   ) {
@@ -231,10 +229,6 @@ export class CopayApp {
         this.appProvider.info.commitHash +
         deviceInfo
     );
-
-    this.locationProvider.getCountry().then(c => {
-      this.logger.info('Set location: ' + c);
-    });
 
     const network = await this.persistenceProvider.getNetwork();
 

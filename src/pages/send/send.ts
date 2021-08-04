@@ -108,7 +108,7 @@ export class SendPage {
     this.wallet = this.navParams.data.wallet;
     this.isDonation = this.navParams.data.isDonation;
     if (this.isDonation) {
-      this.titlePage = "Receive Lotus Address";
+      this.titlePage = "Receiving Wallet";
       this.dataDonation = this.navParams.data;
       this.wallet.donationCoin = this.navParams.data.donationCoin;
     } else {

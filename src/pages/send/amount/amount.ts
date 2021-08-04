@@ -33,7 +33,6 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 // Pages
 import { CryptoOrderSummaryPage } from '../../buy-crypto/crypto-order-summary/crypto-order-summary';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
-import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
@@ -340,9 +339,6 @@ export class AmountPage {
       case 'BitPayCardTopUpPage':
         this.showSendMax = false;
         nextPage = BitPayCardTopUpPage;
-        break;
-      case 'ConfirmCardPurchasePage':
-        nextPage = ConfirmCardPurchasePage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;

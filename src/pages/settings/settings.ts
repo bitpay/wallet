@@ -33,7 +33,6 @@ import { CryptoSettingsPage } from '../buy-crypto/crypto-settings/crypto-setting
 import { ExchangeCryptoSettingsPage } from '../exchange-crypto/exchange-crypto-settings/exchange-crypto-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
-import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { WalletConnectSettingsPage } from '../integrations/wallet-connect/wallet-connect-settings/wallet-connect-settings';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
@@ -392,9 +391,6 @@ export class SettingsPage {
       case 'exchangecrypto':
         this.navCtrl.push(ExchangeCryptoSettingsPage);
         break;
-      case 'giftcards':
-        this.navCtrl.push(GiftCardsSettingsPage);
-        break;
       case 'newWalletConnect':
         this.navCtrl.push(WalletConnectSettingsPage);
         break;
@@ -414,10 +410,6 @@ export class SettingsPage {
         );
       });
     });
-  }
-
-  public openGiftCardsSettings() {
-    this.navCtrl.push(GiftCardsSettingsPage);
   }
 
   public openHelpExternalLink(): void {

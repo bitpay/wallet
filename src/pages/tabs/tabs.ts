@@ -7,7 +7,6 @@ import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { LocationProvider } from '../../providers/location/location';
 import { Logger } from '../../providers/logger/logger';
 import {
   Network,
@@ -24,7 +23,6 @@ import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypt
 import { CardsPage } from '../cards/cards';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
-import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { SettingsPage } from '../settings/settings';
@@ -56,7 +54,6 @@ export class TabsPage {
     AmountPage,
     ExchangeCryptoPage,
     CryptoCoinSelectorPage,
-    CardCatalogPage,
     ScanPage
   };
 
@@ -73,7 +70,6 @@ export class TabsPage {
     private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
-    private locationProvider: LocationProvider,
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private analyticsProvider: AnalyticsProvider,
@@ -171,12 +167,6 @@ export class TabsPage {
     if (!cardExperimentEnabled) {
       try {
         this.logger.debug('BitPay: setting country');
-        const country = await this.locationProvider.getCountry();
-        if (country === 'US') {
-          this.logger.debug('If US: Set Card Experiment Flag Enabled');
-          await this.persistenceProvider.setCardExperimentFlag('enabled');
-          cardExperimentEnabled = true;
-        }
       } catch (err) {
         this.logger.error('Error setting country: ', err);
       }

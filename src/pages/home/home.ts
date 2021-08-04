@@ -4,7 +4,6 @@ import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { FormatCurrencyPipe } from '../../pipes/format-currency';
 
 // Providers
 import {
@@ -16,7 +15,6 @@ import {
   ExternalLinkProvider,
   FeedbackProvider,
   GiftCardProvider,
-  HomeIntegrationsProvider,
   IABCardProvider,
   Logger,
   MerchantProvider,
@@ -31,10 +29,6 @@ import {
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import {
-  hasPromotion,
-  hasVisibleDiscount
-} from '../../providers/gift-card/gift-card';
 import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
@@ -45,8 +39,6 @@ import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phases/phase-one/phase-one-intro-page/phase-one-intro-page';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
-import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
-import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
 import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
@@ -107,7 +99,6 @@ export class HomePage {
   public isCopay: boolean;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
-  private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
 
@@ -120,12 +111,10 @@ export class HomePage {
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private formatCurrencyPipe: FormatCurrencyPipe,
     private navCtrl: NavController,
     private giftCardProvider: GiftCardProvider,
     private merchantProvider: MerchantProvider,
     private feedbackProvider: FeedbackProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private events: Events,
@@ -156,9 +145,7 @@ export class HomePage {
       .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
     this.pagesMap = {
-      BuyCardPage,
       BitPayCardIntroPage,
-      CardCatalogPage,
       CoinbasePage
     };
     this.user$ = this.iabCardProvider.user$;
@@ -229,11 +216,9 @@ export class HomePage {
       this.updateTotalBalance(this.appProvider.homeBalance);
     if (this.platformProvider.isElectron) this.checkNewRelease();
     this.showCoinbase = !!config.showIntegration['coinbase'];
-    this.setIntegrations();
     this.setMerchantDirectoryAdvertisement();
     this.loadAds();
     this.fetchAdvertisements();
-    this.fetchGiftCardAdvertisement();
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
       if (deepLink) {
         this.persistenceProvider.setOnboardingFlowFlag('disabled');
@@ -492,63 +477,6 @@ export class HomePage {
     this.events.publish('Local/FetchWallets');
   }
 
-  private setIntegrations() {
-    // Show integrations
-    this.showBuyCryptoOption = false;
-    this.showExchangeCryptoOption = false;
-    this.showShoppingOption = false;
-    this.showWalletConnect = false;
-    const integrations = this.homeIntegrationsProvider
-      .get()
-      .filter(i => i.show);
-
-    integrations.forEach(x => {
-      switch (x.name) {
-        case 'buycrypto':
-          this.showBuyCryptoOption = true;
-          break;
-        case 'exchangecrypto':
-          this.showExchangeCryptoOption = true;
-          break;
-        case 'giftcards':
-          this.showShoppingOption = true;
-          this.setGiftCardAdvertisement();
-          break;
-        case 'coinbase':
-          this.showCoinbase =
-            x.linked == false && !this.platformProvider.isMacApp();
-          this.hasOldCoinbaseSession = x.oldLinked;
-          if (this.showCoinbase) this.addCoinbase();
-          break;
-        case 'newWalletConnect':
-          this.showWalletConnect = x.show;
-          break;
-      }
-    });
-  }
-
-  private setGiftCardAdvertisement() {
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'amazon-gift-cards'
-    );
-    !alreadyVisible &&
-      !this.platformProvider.isMacApp() &&
-      this.advertisements.unshift({
-        name: 'amazon-gift-cards',
-        title: this.translate.instant('Shop at Amazon'),
-        body: this.translate.instant(
-          'Leverage your crypto with an amazon.com gift card.'
-        ),
-        app: 'bitpay',
-        linkText: this.translate.instant('Buy Now'),
-        link: CardCatalogPage,
-        isTesting: false,
-        imgSrc: 'assets/img/amazon.svg',
-        dismissible: true
-      });
-    this.showAdvertisements = true;
-  }
-
   private addCardReferralAdvertisement() {
     if (!this.isCordova) return;
     this.persistenceProvider
@@ -618,108 +546,6 @@ export class HomePage {
         );
         !alreadyVisible && this.advertisements.unshift(card);
       });
-  }
-
-  private addCoinbase() {
-    const alreadyVisible = this.advertisements.find(a => a.name === 'coinbase');
-    !alreadyVisible &&
-      this.advertisements.unshift({
-        name: 'coinbase',
-        title: this.hasOldCoinbaseSession
-          ? this.translate.instant('Coinbase updated!')
-          : this.translate.instant('Connect your Coinbase!'),
-        body: this.hasOldCoinbaseSession
-          ? this.translate.instant(
-              'Reconnect to quickly withdraw and deposit funds.'
-            )
-          : this.translate.instant('Easily deposit and withdraw funds.'),
-        app: 'bitpay',
-        linkText: this.hasOldCoinbaseSession
-          ? this.translate.instant('Reconnect Account')
-          : this.translate.instant('Connect Account'),
-        link: CoinbasePage,
-        dismissible: true,
-        isTesting: false,
-        imgSrc: 'assets/img/coinbase/coinbase-icon.png'
-      });
-    this.showAdvertisements = true;
-  }
-
-  private async addGiftCardDiscount(discountedCard: CardConfig) {
-    const discount = discountedCard.discounts[0];
-    const discountText =
-      discount.type === 'flatrate'
-        ? `${this.formatCurrencyPipe.transform(
-            discount.amount,
-            discountedCard.currency,
-            'minimal'
-          )}`
-        : `${discount.amount}%`;
-    const advertisementName = getGiftCardAdvertisementName(discountedCard);
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === advertisementName
-    );
-    const isDismissed =
-      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
-        ? true
-        : false;
-    !alreadyVisible &&
-      !isDismissed &&
-      this.advertisements.unshift({
-        name: advertisementName,
-        title: `${discountText} off ${discountedCard.displayName}`,
-        body: `Save ${discountText} off ${discountedCard.displayName} gift cards. Limited time offer.`,
-        app: 'bitpay',
-        linkText: 'Buy Now',
-        link: BuyCardPage,
-        linkParams: { cardConfig: discountedCard },
-        isTesting: false,
-        dismissible: true,
-        imgSrc: discountedCard.icon
-      });
-  }
-
-  private async addGiftCardPromotion(promotedCard: CardConfig) {
-    const promo = promotedCard.promotions[0];
-    const advertisementName = promo.shortDescription;
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === advertisementName
-    );
-    const isDismissed =
-      (await this.checkIfDismissed(advertisementName)) == 'dismissed'
-        ? true
-        : false;
-    !alreadyVisible &&
-      !isDismissed &&
-      this.advertisements.unshift({
-        name: advertisementName,
-        title: promo.title,
-        body: promo.description,
-        app: 'bitpay',
-        linkText: promo.cta || 'Buy Now',
-        link: BuyCardPage,
-        linkParams: { cardConfig: promotedCard },
-        isTesting: false,
-        dismissible: true,
-        imgSrc: promo.icon
-      });
-  }
-
-  private async fetchGiftCardAdvertisement() {
-    const availableCards = await this.giftCardProvider.getAvailableCards();
-    const discountedCard = availableCards.find(cardConfig =>
-      hasVisibleDiscount(cardConfig)
-    );
-    const promotedCard = availableCards.find(card => hasPromotion(card));
-    if (discountedCard) {
-      this.addGiftCardDiscount(discountedCard);
-    } else if (promotedCard) {
-      this.addGiftCardPromotion(promotedCard);
-    }
-  }
-
-  private checkIfDismissed(name: string): Promise<any> {
-    return this.persistenceProvider.getAdvertisementDismissed(name);
   }
 
   slideChanged() {
@@ -860,19 +686,6 @@ export class HomePage {
     } else {
       this.navCtrl.push(page, params);
     }
-    if (page === BuyCardPage) {
-      this.giftCardProvider.logEvent(
-        'clickedGiftCardPromo',
-        this.giftCardProvider.getPromoEventParams(
-          params.cardConfig,
-          'Home Tab Advertisement'
-        )
-      );
-    }
-  }
-
-  public goToShop() {
-    this.navCtrl.push(CardCatalogPage);
   }
 
   public goToAmountPage() {
@@ -933,10 +746,12 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
-        this.showCard.setShowRateCard(this.showRateCard);
-        this.showCard.setShowSurveyCard(
-          timeExceeded && !feedbackInfo.surveyTaken
-        );
+
+        //// Uncaught ////
+        // this.showCard.setShowRateCard(this.showRateCard);
+        // this.showCard.setShowSurveyCard(
+        //   timeExceeded && !feedbackInfo.surveyTaken
+        // );
       }
     });
   }
@@ -1083,8 +898,4 @@ export class HomePage {
       .map(name => name && name.charAt(0).toUpperCase())
       .join('');
   }
-}
-
-function getGiftCardAdvertisementName(discountedCard: CardConfig): string {
-  return `${discountedCard.discounts[0].code}-${discountedCard.name}-gift-card-discount`;
 }

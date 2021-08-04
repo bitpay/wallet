@@ -16,7 +16,6 @@ import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { InvoiceProvider } from '../invoice/invoice';
-import { LocationProvider } from '../location/location';
 import { Logger } from '../logger/logger';
 import {
   GiftCardMap,
@@ -62,7 +61,6 @@ export class GiftCardProvider extends InvoiceProvider {
     public logger: Logger,
     public persistenceProvider: PersistenceProvider,
     private platformProvider: PlatformProvider,
-    private locationProvider: LocationProvider
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
@@ -573,36 +571,6 @@ export class GiftCardProvider extends InvoiceProvider {
     return activeCards;
   }
 
-  async fetchAvailableCardMap() {
-    const shouldSync = await this.shouldSyncGiftCardPurchasesWithBitPayId();
-    const userInfo = await this.persistenceProvider.getBitPayIdUserInfo(
-      this.getNetwork()
-    );
-    const incentiveLevelId = userInfo && userInfo.incentiveLevelId;
-    const availableCardMap =
-      shouldSync && incentiveLevelId
-        ? await this.getGiftCardCatalog(incentiveLevelId)
-        : await this.getGiftCardCatalog();
-    this.cacheApiCardConfig(availableCardMap);
-    this.logger.debug(
-      'fetched available card map',
-      shouldSync ? 'synced' : 'unsynced'
-    );
-    return availableCardMap;
-  }
-
-  async getGiftCardCatalog(
-    incentiveLevelId: string = ''
-  ): Promise<AvailableCardMap> {
-    const country = await this.locationProvider.getCountry();
-    const url = `${
-      this.credentials.BITPAY_API_URL
-    }/gift-cards/catalog/${country}${
-      incentiveLevelId ? `/${incentiveLevelId}` : ''
-    }`;
-    return this.http.get(url).toPromise() as Promise<AvailableCardMap>;
-  }
-
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
     const cardNames = Object.keys(availableCardMap);
     const previousCache = await this.persistenceProvider.getGiftCardConfigCache(
@@ -693,7 +661,6 @@ export class GiftCardProvider extends InvoiceProvider {
 
   async fetchAvailableCards(): Promise<CardConfig[]> {
     this.availableCardsPromise = Promise.all([
-      this.fetchAvailableCardMap()
     ]).then(([availableCardMap]) =>
       getCardConfigFromApiConfigMap(
         availableCardMap,
