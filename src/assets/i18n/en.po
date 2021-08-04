@@ -176,6 +176,9 @@ msgstr "Add as a contact"
 msgid "Add copayers"
 msgstr "Add copayers"
 
+msgid "Add custom token"
+msgstr "Add custom token"
+
 msgid "Add funds"
 msgstr "Add funds"
 
@@ -825,6 +828,10 @@ msgstr "Continue to the exchange page"
 msgid "Continue to {storeName}"
 msgstr "Continue to {storeName}"
 
+#| msgid "Could not create address"
+msgid "Contract Address"
+msgstr "Contract Address"
+
 msgid "Contribute translations"
 msgstr "Contribute translations"
 
@@ -905,6 +912,9 @@ msgstr "Could not delete payment proposal"
 
 msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
+
+msgid "Could not find any ERC20 contract attach to the provided address"
+msgstr "Could not find any ERC20 contract attach to the provided address"
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr "Could not get crypto offer. Please, try again later."
@@ -1018,8 +1028,15 @@ msgstr ""
 msgid "Custom"
 msgstr "Custom"
 
+#| msgid "Custom fee"
+msgid "Custom Tokens"
+msgstr "Custom Tokens"
+
 msgid "Custom fee"
 msgstr "Custom fee"
+
+msgid "Custom tokens cannot be used for payments on BitPay"
+msgstr "Custom tokens cannot be used for payments on BitPay"
 
 msgid "DETAILS"
 msgstr "DETAILS"
@@ -1207,7 +1224,6 @@ msgstr "ETH Multisig"
 msgid "ETH Multisig Wallet creation"
 msgstr "ETH Multisig Wallet creation"
 
-#| msgid "Ethereum wallet required"
 msgid "ETH wallet is required"
 msgstr "ETH wallet is required"
 
@@ -1951,6 +1967,10 @@ msgstr "Information"
 msgid "Instant Reloads*"
 msgstr "Instant Reloads*"
 
+#| msgid "Unsent transactions"
+msgid "Instantiation transaction ID"
+msgstr "Instantiation transaction ID"
+
 msgid ""
 "Instantly reload your card balance with no conversion fees. Powered by our "
 "competitive exchange rates."
@@ -2060,6 +2080,19 @@ msgstr ""
 "wallet, to move them you will need to have enough funds in your Ethereum "
 "linked wallet ("
 
+#| msgid ""
+#| "Keep in mind that once the funds are received in your {{params.coin}} "
+#| "wallet, to move them you will need to have enough funds in your Ethereum "
+#| "linked wallet ("
+msgid ""
+"Keep in mind that once the tokens funds are received, to move them you will "
+"need to have enough funds in your Ethereum linked wallet to pay the ETH "
+"miner fees."
+msgstr ""
+"Keep in mind that once the tokens funds are received, to move them you will "
+"need to have enough funds in your Ethereum linked wallet to pay the ETH "
+"miner fees."
+
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
 msgstr "Keep in mind your encrypt password is not the 12-word recovery phrase"
 
@@ -2146,7 +2179,6 @@ msgstr "Linked to wallet: {linkedEthWalletName}"
 msgid "Linked wallet"
 msgstr "Linked wallet"
 
-#| msgid "Bitcoin Address"
 msgid "Litecoin Address"
 msgstr "Litecoin Address"
 
@@ -2183,7 +2215,6 @@ msgstr "Log in or Sign Up"
 msgid "Log out"
 msgstr "Log out"
 
-#| msgid "Low Fee"
 msgid "Low"
 msgstr "Low"
 
@@ -2300,11 +2331,9 @@ msgstr "Network"
 msgid "Network Cost"
 msgstr "Network Cost"
 
-#| msgid "Bitcoin Network Fee Policy"
 msgid "Network Fee Policies"
 msgstr "Network Fee Policies"
 
-#| msgid "Bitcoin Network Fee Policy"
 msgid "Network Fee Policy"
 msgstr "Network Fee Policy"
 
@@ -2338,7 +2367,6 @@ msgstr "New payment proposal"
 msgid "New payment received"
 msgstr "New payment received"
 
-#| msgid "No wallet found"
 msgid "New wallet found"
 msgstr "New wallet found"
 
@@ -2534,6 +2562,9 @@ msgstr "Open Wallet"
 msgid "Open settings"
 msgstr "Open settings"
 
+msgid "Or add a custom token"
+msgstr "Or add a custom token"
+
 msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 
@@ -2679,6 +2710,9 @@ msgstr "Pending Call Requests"
 
 msgid "Pending Proposals"
 msgstr "Pending Proposals"
+
+msgid "Pending multisig wallet"
+msgstr "Pending multisig wallet"
 
 msgid "Perfect!"
 msgstr "Perfect!"
@@ -2985,6 +3019,10 @@ msgstr "Request a new feature"
 msgid "Request feature"
 msgstr "Request feature"
 
+#| msgid "View Confirmation Status"
+msgid "Required Confirmations - Total Copayers"
+msgstr "Required Confirmations - Total Copayers"
+
 msgid "Required number of signatures"
 msgstr "Required number of signatures"
 
@@ -3064,6 +3102,14 @@ msgstr "Search for a brand"
 
 msgid "Search for a country"
 msgstr "Search for a country"
+
+#| msgid "Search for a country"
+msgid "Search for a token"
+msgstr "Search for a token"
+
+#| msgid "Search Transactions"
+msgid "Search tokens"
+msgstr "Search tokens"
 
 msgid "Security"
 msgstr "Security"
@@ -3349,6 +3395,10 @@ msgstr ""
 "Some inputs you want to speed up have no confirmations. Please wait until "
 "they are confirmed and try again."
 
+#| msgid "Are you sure you want to delete this wallet?"
+msgid "Someone asked you to create this wallet?"
+msgstr "Someone asked you to create this wallet?"
+
 msgid "Something exciting is arriving"
 msgstr "Something exciting is arriving"
 
@@ -3435,7 +3485,6 @@ msgstr "Sweep paper wallet"
 msgid "Sweeping Wallet..."
 msgstr "Sweeping Wallet..."
 
-#| msgid "Incomplete"
 msgid "Sync completed"
 msgstr "Sync completed"
 
@@ -3445,7 +3494,6 @@ msgstr "Sync gift card purchases"
 msgid "Sync wallets across devices"
 msgstr "Sync wallets across devices"
 
-#| msgid "Joining Wallet..."
 msgid "Syncing Wallets..."
 msgstr "Syncing Wallets..."
 
@@ -3482,8 +3530,27 @@ msgstr "Terms of Use"
 msgid "Terms of use"
 msgstr "Terms of use"
 
-msgid "Testnet Wallet"
-msgstr "Testnet Wallet"
+msgid ""
+"Testnet coins have no value and cannot be converted into \"actual\" coins. "
+"If you are purchasing cryptocurrency through a third party, and they have "
+"requested you to create this type of wallet, they are scamming you."
+msgstr ""
+"Testnet coins have no value and cannot be converted into \"actual\" coins. "
+"If you are purchasing cryptocurrency through a third party, and they have "
+"requested you to create this type of wallet, they are scamming you."
+
+msgid ""
+"Testnet is an alternative {coinName} block chain meant for testing. This "
+"allows application developers and testers to experiment without having to "
+"use real {coinName}. Testnet coins are different from actual {coinName}, and "
+"do not have any value. They cannot be converted into \"real\" coins and "
+"cannot be exchanged or sold as they have no value."
+msgstr ""
+"Testnet is an alternative {coinName} block chain meant for testing. This "
+"allows application developers and testers to experiment without having to "
+"use real {coinName}. Testnet coins are different from actual {coinName}, and "
+"do not have any value. They cannot be converted into \"real\" coins and "
+"cannot be exchanged or sold as they have no value."
 
 msgid "Text"
 msgstr "Text"
@@ -3691,17 +3758,6 @@ msgstr "The spend proposal is not pending"
 msgid "The sum of the selected amounts must be at least:"
 msgstr "The sum of the selected amounts must be at least:"
 
-msgid ""
-"The testnet is an alternative {coinName} block chain, to be used for "
-"testing. Testnet coins are separate and distinct from actual {coinName}, and "
-"do not have any value. This allows application developers or {coinName} "
-"testers to experiment, without having to use real {coinName}"
-msgstr ""
-"The testnet is an alternative {coinName} block chain, to be used for "
-"testing. Testnet coins are separate and distinct from actual {coinName}, and "
-"do not have any value. This allows application developers or {coinName} "
-"testers to experiment, without having to use real {coinName}"
-
 msgid "The total amount is the subtotal amount plus transaction fees."
 msgstr "The total amount is the subtotal amount plus transaction fees."
 
@@ -3723,6 +3779,12 @@ msgstr ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. Clearing the cache cleans up the transaction history and synchronizes "
 "again from the server."
+
+#| msgid ""
+#| "This transaction is taking longer than usual to confirm. You can try to "
+#| "speed it up by using a higher fee."
+msgid "The transaction is taking longer than usual to confirm"
+msgstr "The transaction is taking longer than usual to confirm"
 
 msgid ""
 "The transaction you sent does not have any output to the address on the "
@@ -3772,8 +3834,6 @@ msgstr "There are some misunderstood outputs, please view on blockchain."
 msgid "There is a new version available"
 msgstr "There is a new version available"
 
-#| msgid ""
-#| "There was a problem retrieving the returnAddress. Please, try again later."
 msgid ""
 "There is a temporary problem with the merchant requesting the payment. "
 "Please try later"
@@ -3947,6 +4007,20 @@ msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
+
+#| msgid "Refund address"
+msgid "Token address"
+msgstr "Token address"
+
+#| msgid "Your name"
+msgid "Token name"
+msgstr "Token name"
+
+msgid "Token precision"
+msgstr "Token precision"
+
+msgid "Token symbol"
+msgstr "Token symbol"
 
 msgid "Top up in progress..."
 msgstr "Top up in progress..."
@@ -4177,6 +4251,10 @@ msgstr "Version"
 
 msgid "View"
 msgstr "View"
+
+#| msgid "Ripple Address"
+msgid "View Address"
+msgstr "View Address"
 
 msgid "View Confirmation Status"
 msgstr "View Confirmation Status"
@@ -4442,6 +4520,13 @@ msgid ""
 msgstr ""
 "When this wallet was created, it was called \"{{walletName}}\". You can "
 "change the name displayed on this device below."
+
+msgid ""
+"When your transaction is confirmed, the multisig wallet will show up in the "
+"wallet list. You can check the transaction status in the wallet history."
+msgstr ""
+"When your transaction is confirmed, the multisig wallet will show up in the "
+"wallet list. You can check the transaction status in the wallet history."
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "Where would you like to receive email notifications about payments?"
@@ -4799,6 +4884,10 @@ msgstr "me"
 msgid "of total amount"
 msgstr "of total amount"
 
+#| msgid "Enter bitcoin address"
+msgid "or enter the contract address"
+msgstr "or enter the contract address"
+
 msgid "preparing..."
 msgstr "preparing..."
 
@@ -4840,7 +4929,6 @@ msgstr "{walletsGroupLength} Wallets"
 msgid "{{ 'Privacy Policy' | translate}}"
 msgstr "{{ 'Privacy Policy' | translate}}"
 
-#| msgid "{{ getCoinName(coin) }} Wallets"
 msgid "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
 msgstr "{{ getCoinName(coinFeePolicy.key) }} Network Fee Policy"
 
@@ -4875,7 +4963,6 @@ msgstr ""
 msgid "{{countInArray}} of your wallets already exist in {{nameCase}}"
 msgstr "{{countInArray}} of your wallets already exist in {{nameCase}}"
 
-#| msgid "{walletsGroupLength} Wallets"
 msgid "{{newWalletsCount}} wallets found"
 msgstr "{{newWalletsCount}} wallets found"
 
@@ -4911,6 +4998,20 @@ msgid ""
 msgstr ""
 "{{walletName}} will be disconected from your actual connection to "
 "{{peerMetaName}} ({{peerMetaUrl}})"
+
+#~ msgid "Testnet Wallet"
+#~ msgstr "Testnet Wallet"
+
+#~ msgid ""
+#~ "The testnet is an alternative {coinName} block chain, to be used for "
+#~ "testing. Testnet coins are separate and distinct from actual {coinName}, "
+#~ "and do not have any value. This allows application developers or "
+#~ "{coinName} testers to experiment, without having to use real {coinName}"
+#~ msgstr ""
+#~ "The testnet is an alternative {coinName} block chain, to be used for "
+#~ "testing. Testnet coins are separate and distinct from actual {coinName}, "
+#~ "and do not have any value. This allows application developers or "
+#~ "{coinName} testers to experiment, without having to use real {coinName}"
 
 #~ msgid ""
 #~ "Amazon.com Gift Cards never expire and can be redeemed towards millions "
@@ -5545,10 +5646,6 @@ msgstr ""
 #~ msgid "Receiving {coinName} address"
 #~ msgstr "Receiving {coinName} address"
 
-#~| msgid "Wallet Address"
-#~ msgid "Ripple Address"
-#~ msgstr "Ripple Address"
-
 #~ msgid "Send Money"
 #~ msgstr "Send Money"
 
@@ -5620,9 +5717,6 @@ msgstr ""
 
 #~ msgid "Could not access the wallet at the server"
 #~ msgstr "Could not access the wallet at the server"
-
-#~ msgid "Enter bitcoin address"
-#~ msgstr "Enter bitcoin address"
 
 #~ msgid ""
 #~ "If enabled, the new wallets may have different keys and will require a "
