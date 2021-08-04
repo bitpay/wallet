@@ -62,7 +62,8 @@ export class CustomTokenPage {
     const walletSelector = this.actionSheetProvider.createInfoSheet(
       'linkEthWallet',
       {
-        wallets: eligibleWallets
+        wallets: eligibleWallets,
+        customToken: true
       }
     );
     walletSelector.present();

@@ -138,8 +138,11 @@
       <span *ngIf="params.wallets && params.wallets.length > 0 && !params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
       <span *ngIf="params.wallets && params.wallets.length > 0 && params.isEthMultisig" sheet-text translate>Which Ethereum wallet would you like this multisig wallet to use for transaction costs?</span>
 
-      <span *ngIf="!params.wallets[0] && !params.isEthMultisig" sheet-text translate>
+      <span *ngIf="!params.wallets[0] && !params.isEthMultisig && !params.customToken" sheet-text translate>
         In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ params.token.name }} wallet is allowed per ETH wallet.
+      </span>
+      <span *ngIf="!params.wallets[0] && !params.isEthMultisig && params.customToken" sheet-text translate>
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first.
       </span>
       <span *ngIf="!params.wallets[0] && params.isEthMultisig" sheet-text translate>
         In order to create this multisig wallet, an Ethereum (ETH) wallet with enough funds is required.
