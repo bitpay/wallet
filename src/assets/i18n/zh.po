@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2021-07-13 14:14\n"
+"PO-Revision-Date: 2021-08-04 18:54\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -133,6 +133,9 @@ msgstr "添加到联系人"
 
 msgid "Add copayers"
 msgstr "Add copayers"
+
+msgid "Add custom token"
+msgstr ""
 
 msgid "Add funds"
 msgstr "添加资金"
@@ -665,6 +668,9 @@ msgstr ""
 msgid "Continue to {storeName}"
 msgstr ""
 
+msgid "Contract Address"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr "贡献翻译"
 
@@ -745,6 +751,9 @@ msgstr "无法删除支付提议"
 
 msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
+
+msgid "Could not find any ERC20 contract attach to the provided address"
+msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr ""
@@ -857,7 +866,13 @@ msgstr ""
 msgid "Custom"
 msgstr "自定义"
 
+msgid "Custom Tokens"
+msgstr ""
+
 msgid "Custom fee"
+msgstr ""
+
+msgid "Custom tokens cannot be used for payments on BitPay"
 msgstr ""
 
 msgid "DETAILS"
@@ -1619,6 +1634,9 @@ msgstr ""
 msgid "Instant Reloads*"
 msgstr ""
 
+msgid "Instantiation transaction ID"
+msgstr ""
+
 msgid "Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates."
 msgstr ""
 
@@ -1710,6 +1728,9 @@ msgid "Keep in mind fees are not charged by BitPay."
 msgstr ""
 
 msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
+msgstr ""
+
+msgid "Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
 msgstr ""
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -2153,6 +2174,9 @@ msgstr ""
 msgid "Open settings"
 msgstr "打开设置"
 
+msgid "Or add a custom token"
+msgstr ""
+
 msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr ""
 
@@ -2293,6 +2317,9 @@ msgstr ""
 
 msgid "Pending Proposals"
 msgstr "支付提议"
+
+msgid "Pending multisig wallet"
+msgstr ""
 
 msgid "Perfect!"
 msgstr ""
@@ -2579,6 +2606,9 @@ msgstr "Request a new feature"
 msgid "Request feature"
 msgstr "请求功能"
 
+msgid "Required Confirmations - Total Copayers"
+msgstr ""
+
 msgid "Required number of signatures"
 msgstr "所需的签名数"
 
@@ -2655,6 +2685,12 @@ msgid "Search for a brand"
 msgstr ""
 
 msgid "Search for a country"
+msgstr ""
+
+msgid "Search for a token"
+msgstr ""
+
+msgid "Search tokens"
 msgstr ""
 
 msgid "Security"
@@ -2933,6 +2969,9 @@ msgstr ""
 msgid "Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again."
 msgstr ""
 
+msgid "Someone asked you to create this wallet?"
+msgstr ""
+
 msgid "Something exciting is arriving"
 msgstr ""
 
@@ -3062,8 +3101,11 @@ msgstr "使用条款"
 msgid "Terms of use"
 msgstr ""
 
-msgid "Testnet Wallet"
-msgstr "泰斯网钱包"
+msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
+msgstr ""
+
+msgid "Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into \"real\" coins and cannot be exchanged or sold as they have no value."
+msgstr ""
 
 msgid "Text"
 msgstr "文本"
@@ -3173,9 +3215,6 @@ msgstr "花费提议不是未决"
 msgid "The sum of the selected amounts must be at least:"
 msgstr ""
 
-msgid "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
-msgstr ""
-
 msgid "The total amount is the subtotal amount plus transaction fees."
 msgstr ""
 
@@ -3186,6 +3225,9 @@ msgid "The transaction from {{walletName}} that you were waiting for has been co
 msgstr ""
 
 msgid "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
+msgstr ""
+
+msgid "The transaction is taking longer than usual to confirm"
 msgstr ""
 
 msgid "The transaction you sent does not have any output to the address on the invoice"
@@ -3316,6 +3358,18 @@ msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "到{{reason}}首先你要添加你的BitPay账户—{{email}}"
+
+msgid "Token address"
+msgstr ""
+
+msgid "Token name"
+msgstr ""
+
+msgid "Token precision"
+msgstr ""
+
+msgid "Token symbol"
+msgstr ""
 
 msgid "Top up in progress..."
 msgstr "在进展充值..."
@@ -3539,6 +3593,9 @@ msgstr "版本"
 msgid "View"
 msgstr "查看"
 
+msgid "View Address"
+msgstr ""
+
 msgid "View Confirmation Status"
 msgstr "查看确认状态"
 
@@ -3745,6 +3802,9 @@ msgstr ""
 
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "创建此钱包时，它被称为{{walletName}}。您可以在下面更改这个设备上显示的名称。"
+
+msgid "When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "在那里你想要接收电子邮件通知有关付款？"
@@ -3964,6 +4024,9 @@ msgstr "我"
 
 msgid "of total amount"
 msgstr "总金额"
+
+msgid "or enter the contract address"
+msgstr ""
 
 msgid "preparing..."
 msgstr "准备中..."

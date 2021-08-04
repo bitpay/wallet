@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2021-07-13 14:15\n"
+"PO-Revision-Date: 2021-08-04 18:54\n"
 
 msgid "(possible double spend)"
 msgstr "(이중 지출 가능)"
@@ -48,7 +48,7 @@ msgid "A Destination Tag is an optional number that corresponds to an invoice or
 msgstr "A Destination Tag is an optional number that corresponds to an invoice or a XRP account on an exchange."
 
 msgid "A dog without funds is a sad dog"
-msgstr ""
+msgstr "돈이 없는 개는 슬픈 개다."
 
 msgid "A new copayer just joined your wallet {{walletName}}."
 msgstr "A new copayer just joined your wallet {{walletName}}."
@@ -133,6 +133,9 @@ msgstr "연락처로 추가"
 
 msgid "Add copayers"
 msgstr "원장 인증자 추가"
+
+msgid "Add custom token"
+msgstr ""
 
 msgid "Add funds"
 msgstr "Add funds"
@@ -279,7 +282,7 @@ msgid "Available"
 msgstr "Available"
 
 msgid "Average"
-msgstr ""
+msgstr "평균"
 
 msgid "Average confirmation time:"
 msgstr "Average confirmation time:"
@@ -426,7 +429,7 @@ msgid "By providing your email address, you give explicit consent to BitPay to u
 msgstr "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 
 msgid "CANCEL"
-msgstr ""
+msgstr "취소"
 
 msgid "CHOOSE FEE LEVEL"
 msgstr "CHOOSE FEE LEVEL"
@@ -665,6 +668,9 @@ msgstr "Continue to the exchange page"
 msgid "Continue to {storeName}"
 msgstr "Continue to {storeName}"
 
+msgid "Contract Address"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr "Contribute translations"
 
@@ -681,10 +687,10 @@ msgid "Copayer data mismatch"
 msgstr "Copayer data mismatch"
 
 msgid "Copayer {{idx+1}}"
-msgstr ""
+msgstr "공동부담자"
 
 msgid "Copayers"
-msgstr ""
+msgstr "공동 부담자"
 
 msgid "Copied"
 msgstr "Copied"
@@ -745,6 +751,9 @@ msgstr "지불 제안을 삭제할 수 없습니다"
 
 msgid "Could not encrypt wallet"
 msgstr "Could not encrypt wallet"
+
+msgid "Could not find any ERC20 contract attach to the provided address"
+msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr "암호화폐에 연결할 수 없습니다. 나중에 다시 시도하세요"
@@ -849,34 +858,40 @@ msgid "Current Cards"
 msgstr "Current Cards"
 
 msgid "Current fee value:"
-msgstr ""
+msgstr "현재 수수료 값:"
 
 msgid "Currently our partner does not support exchanges with the selected coin"
-msgstr ""
+msgstr "현재 당사 파트너는 선택한 코인과의 교환을 지원하지 않습니다."
 
 msgid "Custom"
 msgstr "사용자 정의"
 
+msgid "Custom Tokens"
+msgstr ""
+
 msgid "Custom fee"
 msgstr "Custom fee"
+
+msgid "Custom tokens cannot be used for payments on BitPay"
+msgstr ""
 
 msgid "DETAILS"
 msgstr "DETAILS"
 
 msgid "DO THIS LATER"
-msgstr ""
+msgstr "나중에 수행"
 
 msgid "Dapp not responding. Try scanning a new QR code"
-msgstr ""
+msgstr "Dapp이 응답하지 않습니다. 새 QR 코드를 스캔해 보십시오."
 
 msgid "Dark Mode"
-msgstr ""
+msgstr "다크 모드"
 
 msgid "Date"
 msgstr "Date"
 
 msgid "Debit Card"
-msgstr ""
+msgstr "직불 카드"
 
 msgid "Debit Cards"
 msgstr "Debit Cards"
@@ -906,19 +921,19 @@ msgid "Deposit address"
 msgstr "Deposit address"
 
 msgid "Deposit pending"
-msgstr ""
+msgstr "입금보류중"
 
 msgid "Deposit success"
-msgstr ""
+msgstr "입금 성공"
 
 msgid "Deposit to"
 msgstr "Deposit to"
 
 msgid "Depositing any other crypto asset besides {coin} to this address may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
-msgstr ""
+msgstr "{coin} 이외의 다른 암호화 자산을 이 주소에 예금하면 총 자금의 손실이 발생할 수 있습니다. 비트페이는 다른 자산, 지갑 또는 네트워크의 예금으로 인한 펀드 손실에 대해 책임을 지지 않습니다."
 
 msgid "Depositing any other crypto asset besides {coin} to this address or doing it through any other network than ERC20 may result in the total loss of your funds. BitPay is not responsible for any funds loss  due to the deposit of a different asset, wallet or network."
-msgstr ""
+msgstr "{coin} 이외의 다른 암호화 자산을 이 주소에 예치하거나 ERC20 이외의 다른 네트워크를 통해 암호 자산을 수행하면 총액이 손실될 수 있습니다. 비트페이는 다른 자산, 지갑 또는 네트워크의 예금으로 인한 펀드 손실에 대해 책임을 지지 않습니다."
 
 msgid "Derivation Path"
 msgstr "Derivation Path"
@@ -930,7 +945,7 @@ msgid "Description"
 msgstr "설명"
 
 msgid "Designed for people who want to live life on crypto."
-msgstr ""
+msgstr "암호화폐로 삶을 살고자 하는 사람들을 위해 설계되었습니다."
 
 msgid "Designed for people who want to live life on crypto. View your balance, request a new PIN, and reload instantly all within the BitPay App."
 msgstr ""
@@ -1619,6 +1634,9 @@ msgstr "Information"
 msgid "Instant Reloads*"
 msgstr ""
 
+msgid "Instantiation transaction ID"
+msgstr ""
+
 msgid "Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates."
 msgstr ""
 
@@ -1710,6 +1728,9 @@ msgid "Keep in mind fees are not charged by BitPay."
 msgstr ""
 
 msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
+msgstr ""
+
+msgid "Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
 msgstr ""
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -2153,6 +2174,9 @@ msgstr ""
 msgid "Open settings"
 msgstr "Open settings"
 
+msgid "Or add a custom token"
+msgstr ""
+
 msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr ""
 
@@ -2293,6 +2317,9 @@ msgstr ""
 
 msgid "Pending Proposals"
 msgstr "제안 보류 중"
+
+msgid "Pending multisig wallet"
+msgstr ""
 
 msgid "Perfect!"
 msgstr ""
@@ -2579,6 +2606,9 @@ msgstr "Request a new feature"
 msgid "Request feature"
 msgstr "Request feature"
 
+msgid "Required Confirmations - Total Copayers"
+msgstr ""
+
 msgid "Required number of signatures"
 msgstr "Required number of signatures"
 
@@ -2655,6 +2685,12 @@ msgid "Search for a brand"
 msgstr ""
 
 msgid "Search for a country"
+msgstr ""
+
+msgid "Search for a token"
+msgstr ""
+
+msgid "Search tokens"
 msgstr ""
 
 msgid "Security"
@@ -2933,6 +2969,9 @@ msgstr ""
 msgid "Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again."
 msgstr ""
 
+msgid "Someone asked you to create this wallet?"
+msgstr ""
+
 msgid "Something exciting is arriving"
 msgstr ""
 
@@ -3062,8 +3101,11 @@ msgstr "이용 약관"
 msgid "Terms of use"
 msgstr "Terms of use"
 
-msgid "Testnet Wallet"
-msgstr "Testnet Wallet"
+msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
+msgstr ""
+
+msgid "Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into \"real\" coins and cannot be exchanged or sold as they have no value."
+msgstr ""
 
 msgid "Text"
 msgstr "문자"
@@ -3173,9 +3215,6 @@ msgstr "보류 중인 지출 제안이 아닙니다"
 msgid "The sum of the selected amounts must be at least:"
 msgstr ""
 
-msgid "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
-msgstr "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
-
 msgid "The total amount is the subtotal amount plus transaction fees."
 msgstr ""
 
@@ -3187,6 +3226,9 @@ msgstr "The transaction from {{walletName}} that you were waiting for has been c
 
 msgid "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
 msgstr "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
+
+msgid "The transaction is taking longer than usual to confirm"
+msgstr ""
 
 msgid "The transaction you sent does not have any output to the address on the invoice"
 msgstr "The transaction you sent does not have any output to the address on the invoice"
@@ -3316,6 +3358,18 @@ msgstr "To get started, you'll need to enter a valid address or select an existe
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "To {{reason}} you must first add your BitPay account - {{email}}"
+
+msgid "Token address"
+msgstr ""
+
+msgid "Token name"
+msgstr ""
+
+msgid "Token precision"
+msgstr ""
+
+msgid "Token symbol"
+msgstr ""
 
 msgid "Top up in progress..."
 msgstr "충전 중..."
@@ -3539,6 +3593,9 @@ msgstr "버전"
 msgid "View"
 msgstr "보기"
 
+msgid "View Address"
+msgstr ""
+
 msgid "View Confirmation Status"
 msgstr "View Confirmation Status"
 
@@ -3745,6 +3802,9 @@ msgstr ""
 
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+
+msgid "When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "지불에 대한 이메일 알림을 어디로 받으시겠습니까?"
@@ -3964,6 +4024,9 @@ msgstr "나"
 
 msgid "of total amount"
 msgstr "of total amount"
+
+msgid "or enter the contract address"
+msgstr ""
 
 msgid "preparing..."
 msgstr "준비 중..."
