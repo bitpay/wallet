@@ -141,6 +141,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     persistenceProvider: PersistenceProvider,
     WalletConnectProvider: WalletConnectProvider,
     http: HttpClient,
+    addressBookProvier: AddressBookProvider,
     private bitpayIdProvider: BitPayIdProvider,
     private merchantProvider: MerchantProvider
   ) {
@@ -180,7 +181,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       homeIntegrationsProvider,
       persistenceProvider,
       WalletConnectProvider,
-      http
+      http,
+      addressBookProvier
     );
     this.configWallet = this.configProvider.get().wallet;
   }
