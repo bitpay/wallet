@@ -46,5 +46,10 @@
         </ion-note>
       </ion-item>
     </ion-list>
+    <ion-buttons class="btn-send-container">
+      <button ion-button class="button-standard button-primary" (click)="send()">
+        <span>{{'Send' | translate}} {{coin.toUpperCase()}}</span>
+      </button>
+  </ion-buttons>
   </div>
 </wide-header-page>

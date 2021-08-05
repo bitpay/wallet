@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?> <!-- Created with Vectornator for iOS (http://vectornator.io/) --><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="100%" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="100%" xmlns:vectornator="http://vectornator.io" version="1.1" viewBox="0 0 20 20">
+<metadata>
+<vectornator:setting key="DimensionsVisible" value="1"/>
+<vectornator:setting key="PencilOnly" value="0"/>
+<vectornator:setting key="SnapToPoints" value="0"/>
+<vectornator:setting key="OutlineMode" value="0"/>
+<vectornator:setting key="CMYKEnabledKey" value="0"/>
+<vectornator:setting key="RulersVisible" value="1"/>
+<vectornator:setting key="SnapToEdges" value="0"/>
+<vectornator:setting key="GuidesVisible" value="1"/>
+<vectornator:setting key="DisplayWhiteBackground" value="0"/>
+<vectornator:setting key="doHistoryDisabled" value="0"/>
+<vectornator:setting key="SnapToGuides" value="1"/>
+<vectornator:setting key="TimeLapseWatermarkDisabled" value="0"/>
+<vectornator:setting key="Units" value="Points"/>
+<vectornator:setting key="DynamicGuides" value="0"/>
+<vectornator:setting key="IsolateActiveLayer" value="0"/>
+<vectornator:setting key="SnapToGrid" value="0"/>
+</metadata>
+<defs/>
+<g id="Wallet/Small/Help-" vectornator:layerName="Wallet/Small/Help-">
+<path d="M13.346+0.0126642L0.0126629+0.0126642L0.0126629+20.0127L13.346+20.0127C14.7243+20.0127+15.846+18.891+15.846+17.5127L15.846+2.51266C15.846+1.13433+14.7243+0.0126642+13.346+0.0126642ZM7.92933+5.01266C9.08016+5.01266+10.0127+5.94516+10.0127+7.096C10.0127+8.24683+9.08016+9.17933+7.92933+9.17933C6.7785+9.17933+5.846+8.24683+5.846+7.096C5.846+5.94516+6.7785+5.01266+7.92933+5.01266ZM11.6793+14.1793L4.17933+14.1793L4.17933+12.8285C4.17933+12.086+4.66683+11.4368+5.37933+11.2268C6.04183+11.031+6.93183+10.846+7.92933+10.846C8.92683+10.846+9.81683+11.031+10.4793+11.2268C11.1918+11.4368+11.6793+12.086+11.6793+12.8285L11.6793+14.1793ZM16.6793+3.346L19.1793+3.346L19.1793+7.51266L16.6793+7.51266L16.6793+3.346ZM16.6793+9.17933L19.1793+9.17933L19.1793+13.346L16.6793+13.346L16.6793+9.17933Z" opacity="1" fill="#e7e7e7"/>
+</g>
+</svg>

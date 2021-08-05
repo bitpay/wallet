@@ -14,4 +14,20 @@ page-addressbook-view {
     color: color($colors, grey);
     padding-top: 10px;
   }
+  .btn-send-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    .btn-send-custom{
+      color: white;
+      background-color: #f39c11;
+      padding: 20px 45px;
+      border-radius: 20px;
+      opacity: 0.85;
+    }
+    .btn-send-custom:hover{
+      background-color: #f39c11;
+      opacity: 1;
+    }
+  }
 }
