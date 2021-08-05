@@ -128,7 +128,7 @@ export class WalletDetailsPage {
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isShowDonationBtn = _.some(this.navParams.data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
+    this.getDonationSupportCoins();
     this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
@@ -197,6 +197,12 @@ export class WalletDetailsPage {
     this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
     this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
     this.onResumeSubscription.unsubscribe();
+  }
+
+  getDonationSupportCoins(){
+    this.walletProvider.getDonationInfo().then((data: any) =>{
+      this.isShowDonationBtn = _.some(data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
+    }) 
   }
 
   shouldShowZeroState() {
