@@ -1913,11 +1913,11 @@ export class ConfirmPage {
   public addNewContact() {
     const contactPopupComponent = this.actionSheetProvider.createContactPopupComponent();
     contactPopupComponent.present();
-    contactPopupComponent.onDidDismiss(name => {
-      if (name) {
+    contactPopupComponent.onDidDismiss(nameContact => {
+      if (nameContact) {
         this.ab
           .add({
-            name: name,
+            name: nameContact,
             email: '',
             address: this.parseAddress(this.tx.origToAddress),
             network: this.tx.network,
@@ -1925,7 +1925,7 @@ export class ConfirmPage {
           })
           .then(() => {
             this.tx.recipientType = 'contact';
-            this.tx.name = name;
+            this.tx.name = nameContact;
           })
           .catch(err => {
             this.popupProvider.ionicAlert('Error', err);

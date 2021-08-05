@@ -2333,6 +2333,9 @@ msgstr "New Session Request"
 msgid "New contact"
 msgstr "New contact"
 
+msgid "New contact name"
+msgstr "New contact name"
+
 msgid "New copayer"
 msgstr "New copayer"
 

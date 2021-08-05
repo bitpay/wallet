@@ -1,10 +1,10 @@
 <action-sheet>
   <div class="title">
-    <span>Name</span>
+    <span>{{'Name'| translate}}</span>
   </div>
   <form [formGroup]="contactForm">
     <ion-input
-      placeholder="New contact name"
+      placeholder="{{'New contact name' | translate}}" 
       formControlName="name"
       type="text"
     ></ion-input>
@@ -16,6 +16,6 @@
     [disabled]="contactForm.invalid"
     (click)="optionClicked()"
   >
-    SAVE
+  {{'Save'| translate}}
   </button>
 </action-sheet>
