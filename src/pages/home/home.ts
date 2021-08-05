@@ -523,7 +523,7 @@ export class HomePage {
           break;
         case 'newWalletConnect':
           this.showWalletConnect = x.show;
-          if (this.showCoinbase) this.addWalletConnect();
+          if (this.showWalletConnect) this.addWalletConnect();
           break;
       }
     });
