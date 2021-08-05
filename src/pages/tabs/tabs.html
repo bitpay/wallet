@@ -5,6 +5,6 @@
   <!-- <ion-tab tabIcon="tab-transact" (ionSelect)="openFooterMenu()" [show]="!isCordova || navigationType === 'transact'"></ion-tab> -->
   <ion-tab [root]="scanRoot" [tabIcon]="scanIconType" [show]="navigationType === 'scan' && isCordova"></ion-tab>
   <ion-tab (ionSelect)="disableCardNotificationBadge()" [root]="cardsRoot" [tabBadgeStyle]="'danger'" [tabBadge]="cardNotificationBadgeText" [show]="appName === 'BitPay'" tabIcon="tab-cards"></ion-tab>
-  <ion-tab [root]="addressBookRoot" tabIcon="tab-addressBook"></ion-tab>
+  <ion-tab [root]="addressBookRoot" tabIcon="tab-address-book"></ion-tab>
   <ion-tab [root]="settingsRoot" tabIcon="tab-settings"></ion-tab>
 </ion-tabs>

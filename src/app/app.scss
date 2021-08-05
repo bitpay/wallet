@@ -869,9 +869,9 @@ $settings-active: url('../assets/img/tab-icons/tab-settings-active.svg')
   no-repeat 50% 50%;
 $settings-inactive: url('../assets/img/tab-icons/tab-settings.svg') no-repeat
   50% 50%;
-$addressBook-active: url('../assets/img/tab-icons/tab-address-book-active.svg')
+$address-book-active: url('../assets/img/tab-icons/tab-address-book-active.svg')
   no-repeat 50% 50%;
-$addressBook-inactive: url('../assets/img/tab-icons/tab-address-book.svg') no-repeat
+$address-book-inactive: url('../assets/img/tab-icons/tab-address-book.svg') no-repeat
   50% 50%;
 $scan-active: url('../assets/img/tab-icons/tab-scan-active.svg') no-repeat 50%
   50%;
@@ -966,11 +966,11 @@ ion-icon {
     }
   }
 
-  &[class*='tab-addressBook'] {
-    background: $addressBook-inactive;
+  &[class*='tab-address-book'] {
+    background: $address-book-inactive;
     background-size: contain;
     .tab-button[aria-selected='true'] & {
-      background: $addressBook-active;
+      background: $address-book-active;
       background-size: contain;
     }
   }
