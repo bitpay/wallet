@@ -1,0 +1,21 @@
+<action-sheet>
+  <div class="title">
+    <span>Name</span>
+  </div>
+  <form [formGroup]="contactForm">
+    <ion-input
+      placeholder="New contact name"
+      formControlName="name"
+      type="text"
+    ></ion-input>
+  </form>
+
+  <button
+    ion-button
+    class="button-standard safe-area"
+    [disabled]="contactForm.invalid"
+    (click)="optionClicked()"
+  >
+    SAVE
+  </button>
+</action-sheet>

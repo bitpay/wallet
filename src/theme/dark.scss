@@ -701,6 +701,17 @@
     }
   }
 
+  contact-pop-up-component {
+    .text-input {
+      background-color: $bg-color-dark-theme;
+      color: $text-color-dark-theme;
+    }
+
+    .title {
+      color: $text-color-dark-theme;
+    }
+  }
+
   page-choose-fee-level {
     .testnet-warning {
       background-color: color($colors, warning);

@@ -208,4 +208,17 @@ page-bitpay-card-topup {
   .item.item-input input {
     width: 80px;
   }
+  .add-new-contact {
+    width: 25px;
+    height: 25px;
+  }
+  .add-new-contact-button{
+    float: right;
+    padding: 0px;
+    margin-right: 0px;
+    margin-left: 10px;
+  }
+  .address-note-custom{
+    display: flex;
+  }
 }
