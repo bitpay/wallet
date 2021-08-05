@@ -207,7 +207,9 @@ export class TokenSwapCheckoutPage {
     if (
       !_.isEmpty(this.toWalletSelected) &&
       !_.isEmpty(this.toToken) &&
-      this.toToken.symbol.toLowerCase() != 'eth'
+      this.toToken.symbol.toLowerCase() != 'eth' &&
+      this.toWalletSelected.coin == 'eth' &&
+      this.toToken.symbol.toLowerCase() != this.toWalletSelected.coin
     ) {
       const customToken = {
         keyId: this.toWalletSelected.keyId,

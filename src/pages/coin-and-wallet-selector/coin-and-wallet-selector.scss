@@ -1,5 +1,10 @@
 page-coin-and-wallet-selector {
   .bp-list {
+    .list-subtitle {
+      padding-left: 20px;
+      padding-top: 15px;
+      font-size: 16px;
+    }
     .available-wallets {
       &-container {
         background-color: #f6f7fc;

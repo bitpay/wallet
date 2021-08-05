@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import env from '../../environments';
 
@@ -12,11 +17,12 @@ import {
   CurrencyProvider,
   ErrorsProvider,
   Logger,
-  ProfileProvider
+  ProfileProvider,
+  WalletProvider
 } from '../../providers';
 
 // Pages
-import { SelectCurrencyPage } from '../../pages/add/select-currency/select-currency';
+import { CreateWalletPage } from '../../pages/add/create-wallet/create-wallet';
 import { RecoveryKeyPage } from '../../pages/onboarding/recovery-key/recovery-key';
 import { SendPage } from '../../pages/send/send';
 @Component({
@@ -24,7 +30,10 @@ import { SendPage } from '../../pages/send/send';
   templateUrl: 'coin-and-wallet-selector.html'
 })
 export class CoinAndWalletSelectorPage {
-  public coins = [];
+  public coins: any[] = [];
+  public chains: any[] = [];
+  public tokens: any[] = [];
+
   public useAsModal: boolean;
   public coinSelectorTitle: string;
   public walletSelectorTitle: string;
@@ -32,6 +41,7 @@ export class CoinAndWalletSelectorPage {
   private wallet;
   private fromFooterMenu: boolean;
   public oneInchAllSupportedCoins: any[];
+  public showOneInchTokensSearchBtn: boolean;
   public filteredTokens: any[];
   public tokensSearch: boolean;
   public searchQuery: string;
@@ -54,11 +64,26 @@ export class CoinAndWalletSelectorPage {
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
     private navParams: NavParams,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private walletProvider: WalletProvider,
+    private events: Events
   ) {
     const supportedCoins = this.navParams.data.supportedCoins
       ? this.navParams.data.supportedCoins
       : this.currencyProvider.getAvailableCoins();
+
+    const supportedChains = _.intersection(
+      this.currencyProvider.getAvailableChains(),
+      supportedCoins
+    );
+
+    const supportedTokens = _.intersection(
+      this.currencyProvider
+        .getAvailableTokens()
+        .map(({ symbol }) => symbol.toLowerCase()),
+      supportedCoins
+    );
+
     this.walletSelectorTitle = this.navParams.data.walletSelectorTitle;
     this.coinSelectorTitle = this.navParams.data.coinSelectorTitle
       ? this.navParams.data.coinSelectorTitle
@@ -67,8 +92,9 @@ export class CoinAndWalletSelectorPage {
     this.oneInchAllSupportedCoins =
       this.navParams.data.oneInchAllSupportedCoins &&
       this.navParams.data.oneInchAllSupportedCoins.length > 0
-        ? this.navParams.data.oneInchAllSupportedCoins
+        ? _.orderBy(this.navParams.data.oneInchAllSupportedCoins, 'name')
         : null;
+    this.showOneInchTokensSearchBtn = this.navParams.data.showOneInchTokensSearchBtn;
     this.filteredTokens = _.clone(this.oneInchAllSupportedCoins);
     this.tokensSearch = false;
     this.tokenSearchResults = [];
@@ -81,13 +107,11 @@ export class CoinAndWalletSelectorPage {
           ? null
           : 'livenet',
       onlyComplete: true,
-      coin: supportedCoins,
-      backedUp: true
+      coin: supportedCoins
     });
     if (this.navParams.data.removeSpecificWalletId) {
       this.wallets = this.wallets.filter(
-        w =>
-          !w.needsBackup && w.id != this.navParams.data.removeSpecificWalletId
+        w => w.id != this.navParams.data.removeSpecificWalletId
       );
     }
     for (const coin of supportedCoins) {
@@ -97,6 +121,24 @@ export class CoinAndWalletSelectorPage {
         availableWallets: _.filter(this.wallets, w => w.coin === coin)
       };
       this.coins.push(c);
+    }
+
+    for (const coin of supportedChains) {
+      const c = {
+        unitCode: coin,
+        name: this.currencyProvider.getCoinName(coin),
+        availableWallets: _.filter(this.wallets, w => w.coin === coin)
+      };
+      this.chains.push(c);
+    }
+
+    for (const coin of supportedTokens) {
+      const c = {
+        unitCode: coin,
+        name: this.currencyProvider.getCoinName(coin),
+        availableWallets: _.filter(this.wallets, w => w.coin === coin)
+      };
+      this.tokens.push(c);
     }
   }
 
@@ -115,14 +157,28 @@ export class CoinAndWalletSelectorPage {
   public showWallets(coin): void {
     const wallets = coin.availableWallets;
     if (_.isEmpty(wallets)) {
-      this.errorsProvider.showNoWalletError(
-        coin.unitCode.toUpperCase(),
-        option => {
-          if (option) {
-            this.navCtrl.push(SelectCurrencyPage);
+      if (this.currencyProvider.isERCToken(coin.unitCode.toLowerCase())) {
+        this.logger.debug(
+          'No wallets available for this ERCToken: ' + coin.unitCode
+        );
+        const tokens = this.currencyProvider.getAvailableTokens();
+        const token = tokens.find(x => x.symbol == coin.unitCode.toUpperCase());
+        this.showPairedWalletSelector(token, true);
+      } else {
+        this.errorsProvider.showNoWalletError(
+          coin.unitCode.toUpperCase(),
+          option => {
+            if (option) {
+              this.close();
+              this.navCtrl.push(CreateWalletPage, {
+                isShared: false,
+                coin: coin.unitCode,
+                fromCoinAndWalletSelector: true
+              });
+            }
           }
-        }
-      );
+        );
+      }
     } else {
       const params = {
         wallets,
@@ -162,7 +218,7 @@ export class CoinAndWalletSelectorPage {
     this.showPairedWalletSelector(token);
   }
 
-  public showPairedWalletSelector(token) {
+  public showPairedWalletSelector(token, shouldCreateWallet?: boolean) {
     const eligibleWallets = this.profileProvider.getWallets({
       keyId: this.navParams.data.keyId,
       network: 'livenet',
@@ -182,9 +238,42 @@ export class CoinAndWalletSelectorPage {
     walletSelector.present();
     walletSelector.onDidDismiss(pairedWallet => {
       if (!_.isEmpty(pairedWallet) && token) {
-        this.viewCtrl.dismiss({ selectedToken: token, wallet: pairedWallet });
+        if (shouldCreateWallet) {
+          if (
+            !_.isEmpty(pairedWallet) &&
+            !_.isEmpty(token) &&
+            token.symbol.toLowerCase() != 'eth' &&
+            pairedWallet.coin == 'eth' &&
+            token.symbol.toLowerCase() != pairedWallet.coin
+          ) {
+            this.createAndBindTokenWallet(pairedWallet, token).then(
+              newWallet => {
+                this.walletProvider.updateRemotePreferences(pairedWallet);
+                this.events.publish('Local/FetchWallets');
+                this.onWalletSelect(newWallet);
+              }
+            );
+          }
+        } else {
+          this.viewCtrl.dismiss({ selectedToken: token, wallet: pairedWallet });
+        }
       }
     });
+  }
+
+  private createAndBindTokenWallet(pairedWallet, token): Promise<any> {
+    const customToken = {
+      keyId: pairedWallet.keyId,
+      name: token.name,
+      address: token.address,
+      symbol: token.symbol.toLowerCase(),
+      decimals: token.decimals
+    };
+
+    return this.profileProvider.createCustomTokenWallet(
+      pairedWallet,
+      customToken
+    );
   }
 
   public showTokensSearch() {

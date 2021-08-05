@@ -1861,6 +1861,14 @@
   // 8 - Exchange Crypto
 
   page-exchange-crypto {
+    .bp-list {
+      .card {
+        background: $bg-color-dark-theme-2;
+        .amount-container {
+          border: 1px solid $border-color-dark-theme;
+        }
+      }
+    }
     .amount .amount-container {
       background-color: $bg-color-dark-theme-2;
       color: $text-color-dark-theme-2;

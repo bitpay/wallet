@@ -19,6 +19,11 @@ page-exchange-crypto {
       flex-wrap: nowrap;
     }
   }
+  .item-card {
+    ion-row {
+      padding: 6px 16px 6px 16px;
+    }
+  }
   .wallet {
     display: flex;
     align-items: center;
@@ -46,7 +51,8 @@ page-exchange-crypto {
   .amount {
     text-align: end;
     .amount-container {
-      background-color: color($colors, light);
+      border: 1px solid color($colors, light);
+      border-radius: 5px;
       min-width: 10rem;
       height: 4.5rem;
       line-height: 18px;

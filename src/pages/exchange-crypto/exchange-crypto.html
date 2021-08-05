@@ -9,31 +9,35 @@
   <div page-content>
     <ion-list class="bp-list">
       <div class="item-label" translate>Source</div>
-      <ion-row padding align-items-center *ngIf="!fromWalletSelected" (click)="showFromWallets()">
+      <ion-card class="item-card" *ngIf="!fromWalletSelected" (click)="showFromWallets()">
+        <ion-row align-items-center>
         <div translate>Select Source Wallet</div>
         <div class="last-item" item-end>
-          <button ion-button clear color="grey" icon-only>
+          <button ion-button clear color="#4f6ef7" icon-only>
             <ion-icon *ngIf="!isOpenSelectorFrom" name="ios-arrow-down-outline"></ion-icon>
             <ion-icon *ngIf="isOpenSelectorFrom" name="ios-arrow-up-outline"></ion-icon>
           </button>
         </div>
       </ion-row>
+      </ion-card>
 
-      <ion-row padding align-items-center *ngIf="fromWalletSelected">
-        <ion-col class="wallet" (click)="showFromWallets()">
-          <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
-          <div class="name-balance">
-            <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>            
-            <span class="note-container ellipsis balance">{{fromWalletSelected.lastKnownBalance}}</span>
-          </div>
-        </ion-col>
+      <ion-card class="item-card" *ngIf="fromWalletSelected">
+        <ion-row align-items-center>
+          <ion-col class="wallet" (click)="showFromWallets()">
+            <coin-icon [coin]="fromWalletSelected.coin" [network]="fromWalletSelected.network"></coin-icon>
+            <div class="name-balance">
+              <span class="note-container ellipsis">{{fromWalletSelected.name}}</span>            
+              <span class="note-container ellipsis balance">{{fromWalletSelected.lastKnownBalance}}</span>
+            </div>
+          </ion-col>
 
-        <ion-col col-5 class="amount">
-          <div class="amount-container" *ngIf="!amountFrom && !useSendMax" (click)="openAmountModal()">{{'Enter Amount' | translate}}</div>
-          <div class="amount-container" *ngIf="amountFrom && !useSendMax" (click)="openAmountModal()">{{amountFrom | number:'1.0-8'}} {{fromWalletSelected.coin.toUpperCase()}}</div>
-          <div class="amount-container" *ngIf="useSendMax" (click)="openAmountModal()" translate>Maximum Amount</div>
-        </ion-col>
-      </ion-row>
+          <ion-col col-5 class="amount">
+            <div class="amount-container" *ngIf="!amountFrom && !useSendMax" (click)="openAmountModal()">{{'Enter Amount' | translate}}</div>
+            <div class="amount-container" *ngIf="amountFrom && !useSendMax" (click)="openAmountModal()">{{amountFrom | number:'1.0-8'}} {{fromWalletSelected.coin.toUpperCase()}}</div>
+            <div class="amount-container" *ngIf="useSendMax" (click)="openAmountModal()" translate>Maximum Amount</div>
+          </ion-col>
+        </ion-row>
+      </ion-card>
 
       <label-tip *ngIf="showPendingApprove" type="info">
         <span label-tip-title translate>Approve is Pending</span>
@@ -51,43 +55,48 @@
       </div>
 
       <div class="item-label" translate>Destination</div>
-      <ion-row padding align-items-center *ngIf="!toWalletSelected" (click)="showToWallets()">
-        <div translate>Select Destination Wallet</div>
-        <div class="last-item" item-end>
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
-            <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
-          </button>
-        </div>
-      </ion-row>
 
-      <ion-row padding align-items-center *ngIf="toWalletSelected">
-        <ion-col class="wallet" (click)="showToWallets()">
-          <coin-icon *ngIf="!toToken || !toToken.isCustomToken" [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
-          <ion-icon *ngIf="toToken && toToken.isCustomToken" class="item-img rectangle background_default" item-start>
-            <img width="35" [src]="toToken.logoURI" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'">
-          </ion-icon>
-          <div class="name-balance">
-            <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis">{{toWalletSelected.name}}</span>
-            <span *ngIf="toToken && toToken.isCustomToken" class="note-container ellipsis">{{toToken.name}}</span>     
-
-            <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
+      <ion-card class="item-card" *ngIf="!toWalletSelected" (click)="showToWallets()">
+        <ion-row align-items-center>
+          <div translate>Select Destination Wallet</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="#4f6ef7" icon-only>
+              <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
+            </button>
           </div>
-        </ion-col>
+        </ion-row>
+      </ion-card>
 
-        <ion-col col-5 class="amount">
-          <ion-spinner name="crescent" *ngIf="loading && (toWalletSelected || toToken) && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
-          <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</div>
-        </ion-col>
-      </ion-row>
-      <ion-row class="rate-container">
-        <div *ngIf="rate" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
-        </div>
-        <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
-          <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
-        </div>
-      </ion-row>
+      <ion-card class="item-card" *ngIf="toWalletSelected">
+        <ion-row align-items-center>
+          <ion-col class="wallet" (click)="showToWallets()">
+            <coin-icon *ngIf="!toToken || !toToken.isCustomToken" [coin]="toWalletSelected.coin" [network]="toWalletSelected.network"></coin-icon>
+            <ion-icon *ngIf="toToken && toToken.isCustomToken" class="item-img rectangle background_default" item-start>
+              <img width="35" [src]="toToken.logoURI" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'">
+            </ion-icon>
+            <div class="name-balance">
+              <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis">{{toWalletSelected.name}}</span>
+              <span *ngIf="toToken && toToken.isCustomToken" class="note-container ellipsis">{{toToken.name}}</span>     
+  
+              <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis balance">{{toWalletSelected.lastKnownBalance}}</span>
+            </div>
+          </ion-col>
+  
+          <ion-col col-5 class="amount">
+            <ion-spinner name="crescent" *ngIf="loading && (toWalletSelected || toToken) && fromWalletSelected && amountFrom && !amountTo"></ion-spinner>
+            <div class="amount-container" *ngIf="amountTo">{{amountTo | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="rate-container">
+          <div *ngIf="rate" class="rate">
+            <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{rate | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
+          </div>
+          <div *ngIf="!rate && fromWalletSelected && toWalletSelected && amountTo && amountFrom > 0" class="rate">
+            <span>1 {{fromWalletSelected.coin.toUpperCase()}} ~ {{(amountTo / amountFrom) | number:'1.0-6'}} {{toToken ? toToken.symbol : toWalletSelected.coin.toUpperCase()}}</span>
+          </div>
+        </ion-row>
+      </ion-card>
 
       <div *ngIf="exchangeToUse == '1inch'" class="item-label slippage-label" (click)="showSlippageInfo()">
         <span translate>Slippage Tolerance</span>

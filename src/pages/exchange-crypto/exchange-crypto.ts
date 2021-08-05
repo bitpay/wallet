@@ -423,119 +423,6 @@ export class ExchangeCryptoPage {
     }
   }
 
-  // public changellyInit() {
-  //   this.changellyProvider
-  //     .getCurrencies()
-  //     .then(data => {
-  //       if (data.error) {
-  //         this.logger.error(
-  //           'Changelly getCurrencies Error: ' + data.error.message
-  //         );
-  //         this.showErrorAndBack(
-  //           null,
-  //           this.translate.instant(
-  //             'Changelly is not available at this moment. Please, try again later.'
-  //           )
-  //         );
-  //         return;
-  //       }
-
-  //       if (
-  //         data &&
-  //         data.result &&
-  //         _.isArray(data.result) &&
-  //         data.result.length > 0
-  //       ) {
-  //         this.changellySupportedCoins = _.intersection(
-  //           this.currencyProvider.getAvailableCoins(),
-  //           data.result
-  //         );
-  //         const coinsToRemove = ['xrp', 'busd'];
-  //         coinsToRemove.forEach((coin: string) => {
-  //           const index = this.changellySupportedCoins.indexOf(coin);
-  //           if (index > -1) {
-  //             this.logger.debug(
-  //               `Removing ${coin.toUpperCase()} from supported coins`
-  //             );
-  //             this.changellySupportedCoins.splice(index, 1);
-  //           }
-  //         });
-  //       }
-
-  //       this.logger.debug('Changelly supportedCoins: ' + this.changellySupportedCoins);
-
-  //       this.allWallets = this.profileProvider.getWallets({
-  //         network: 'livenet',
-  //         onlyComplete: true,
-  //         coin: this.changellySupportedCoins,
-  //         backedUp: true
-  //       });
-
-  //       this.onGoingProcessProvider.clear();
-
-  //       if (_.isEmpty(this.allWallets)) {
-  //         this.showErrorAndBack(
-  //           null,
-  //           this.translate.instant('No wallets available to use this exchange')
-  //         );
-  //         return;
-  //       }
-
-  //       this.fromWallets = this.allWallets.filter(w => {
-  //         return w.cachedStatus && w.cachedStatus.availableBalanceSat > 0;
-  //       });
-
-  //       if (_.isEmpty(this.fromWallets)) {
-  //         this.showErrorAndBack(
-  //           null,
-  //           this.translate.instant('No wallets with funds')
-  //         );
-  //         return;
-  //       }
-
-  //       if (this.navParams.data.walletId) {
-  //         const wallet = this.profileProvider.getWallet(
-  //           this.navParams.data.walletId
-  //         );
-  //         if (wallet.network != 'livenet') {
-  //           this.showErrorAndBack(
-  //             null,
-  //             this.translate.instant('Unsupported network')
-  //           );
-  //           return;
-  //         }
-  //         if (!wallet.coin || !this.changellySupportedCoins.includes(wallet.coin)) {
-  //           this.showErrorAndBack(
-  //             null,
-  //             this.translate.instant(
-  //               'Currently our partner does not support exchanges with the selected coin'
-  //             )
-  //           );
-  //           return;
-  //         } else {
-  //           if (
-  //             wallet.cachedStatus &&
-  //             wallet.cachedStatus.spendableAmount &&
-  //             wallet.cachedStatus.spendableAmount > 0
-  //           ) {
-  //             this.onWalletSelect(wallet, 'from');
-  //           } else {
-  //             this.onWalletSelect(wallet, 'to');
-  //           }
-  //         }
-  //       }
-  //     })
-  //     .catch(err => {
-  //       this.logger.error('Changelly getCurrencies Error: ', err);
-  //       this.showErrorAndBack(
-  //         null,
-  //         this.translate.instant(
-  //           'Changelly is not available at this moment. Please, try again later.'
-  //         )
-  //       );
-  //     });
-  // }
-
   public showFromWallets(): void {
     let walletsForActionSheet = [];
     let selectedWalletId: string;
@@ -566,26 +453,40 @@ export class ExchangeCryptoPage {
     if (this.toWalletSelectedByDefault || !this.fromWalletSelected) return;
     this.isOpenSelectorTo = true;
 
-    let supportedCoins;
+    let supportedCoins: any[];
+    let showOneInchTokensSearchBtn: boolean = false;
+
     if (
       this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin) &&
       this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
     ) {
       supportedCoins = _.clone(this.exchangeCryptoSupportedCoins);
+      showOneInchTokensSearchBtn = true;
     } else if (
       this.oneInchSupportedCoins.includes(this.fromWalletSelected.coin)
     ) {
       supportedCoins = _.clone(this.oneInchSupportedCoins);
+      showOneInchTokensSearchBtn = true;
     } else if (
       this.changellySupportedCoins.includes(this.fromWalletSelected.coin)
     ) {
       supportedCoins = _.clone(this.changellySupportedCoins);
+      showOneInchTokensSearchBtn = false;
     }
 
     const index = supportedCoins.indexOf(this.fromWalletSelected.coin);
     if (index > -1) {
       supportedCoins.splice(index, 1);
     }
+
+    const oneInchAllSupportedCoins = this.oneInchAllSupportedCoins.filter(
+      token => {
+        return (
+          token.symbol.toLowerCase() != this.fromWalletSelected.coin &&
+          token.symbol.toLowerCase() != 'eth'
+        );
+      }
+    );
 
     let modal = this.modalCtrl.create(
       CoinAndWalletSelectorPage,
@@ -596,7 +497,8 @@ export class ExchangeCryptoPage {
         supportedCoins,
         removeSpecificWalletId: this.fromWalletSelected.id,
         onlyLivenet: true,
-        oneInchAllSupportedCoins: this.oneInchAllSupportedCoins
+        oneInchAllSupportedCoins,
+        showOneInchTokensSearchBtn
       },
       {
         showBackdrop: true,
@@ -939,11 +841,14 @@ export class ExchangeCryptoPage {
         this.loading = false;
       })
       .catch(err => {
-        this.logger.error('OneInch getPairsParams Error: ', err);
+        this.logger.error(
+          '1Inch getQuote1inch Error: ',
+          err.error && err.error.message ? err.error.message : err
+        );
         this.showErrorAndBack(
           null,
           this.translate.instant(
-            'OneInch is not available at this moment. Please, try again later.'
+            '1Inch is not available at this moment. Please, try again later.'
           )
         );
       });
