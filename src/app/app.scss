@@ -1004,5 +1004,5 @@ ion-icon {
   }
 }
 .in-app-notification-modal {
-  height: 20%;
+  height: calc(env(safe-area-inset-top) + 100px);
 }
