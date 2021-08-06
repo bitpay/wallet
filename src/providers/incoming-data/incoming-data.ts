@@ -134,7 +134,7 @@ export class IncomingDataProvider {
   }
 
   private isValidWalletConnectUri(data: string): boolean {
-    return !!/^(wc)?:/.exec(data);
+    return !!/(wc:)/g.exec(data);
   }
 
   public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
@@ -934,6 +934,9 @@ export class IncomingDataProvider {
 
       // Wallet Connect URI
     } else if (this.isValidWalletConnectUri(data)) {
+      if (data.includes('/wallet/wc')) {
+        data = data.split('?uri=')[1];
+      }
       this.handleWalletConnectUri(data);
       return true;
 
