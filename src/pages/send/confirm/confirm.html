@@ -85,7 +85,7 @@
             </div>
 
             <button
-              *ngIf="!tx.recipientType"
+              *ngIf="!tx.recipientType && !toAddressName"
               class="add-new-contact-button"
               clear
               (click)="addNewContact()"
