@@ -32,24 +32,26 @@
           </ion-icon>
         </ion-item>
       </div>
-    
-      <ion-list *ngIf="wallet" class="bp-list">
-        <ion-item class="sub-title">
-          <ion-label>
-            <div class="main-label">{{ 'Select a wallet' | translate }}</div>
-          </ion-label>
-        </ion-item>
-        <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
-      </ion-list>
-    
-      <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
-        <div label-tip-title>
-          <span translate>ETH wallet is required</span>
-        </div>
-        <div label-tip-body>
-          <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
-        </div>
-      </label-tip>
+
+      <div *ngIf="showWalletSelector">
+        <ion-list *ngIf="wallet" class="bp-list">
+          <ion-item class="sub-title">
+            <ion-label>
+              <div class="main-label">{{ 'Select a wallet' | translate }}</div>
+            </ion-label>
+          </ion-item>
+          <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+        </ion-list>
+      
+        <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+          <div label-tip-title>
+            <span translate>ETH wallet is required</span>
+          </div>
+          <div label-tip-body>
+            <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+          </div>
+        </label-tip>
+      </div>
       
       <button margin-top ion-button full class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
         {{'Connect' | translate}}
@@ -203,8 +205,13 @@
         </div>
       </ion-list>
     </div>
-    <button *ngIf="connected" (click)="killSession()" ion-button class="button-standard" color="danger" margin-top>
-      {{'Disconnect' | translate }}
-    </button>
   </div>
 </ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar>
+    <button *ngIf="connected" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top>
+      {{'Disconnect' | translate }}
+    </button>
+  </ion-toolbar>
+</ion-footer>

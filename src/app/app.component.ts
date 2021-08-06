@@ -647,7 +647,7 @@ export class CopayApp {
           } else {
             const data = {
               title: 'WalletConnect',
-              body: `New Pending Request: ${nextView.params.request.method}`,
+              body: `New Pending Request`,
               action: 'goToWalletconnect',
               closeButtonText: 'View',
               request: nextView.params.request

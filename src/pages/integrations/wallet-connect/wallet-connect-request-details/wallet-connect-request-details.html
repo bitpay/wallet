@@ -7,36 +7,8 @@
         </ion-label>
       </ion-item>
 
-      <div class="line-divider" *ngIf="request?.method"></div>
-      
-      <ion-item *ngIf="request?.method">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Method</span>
-          </div>
-        </ion-label>
-        <ion-note item-end>
-          <span class="ellipsis">{{ request?.method }}</span>
-        </ion-note>
-      </ion-item>
-
-      <div class="line-divider" *ngIf="request?.id"></div>
-
-      <ion-item *ngIf="request?.id">
-        <ion-label>
-          <div class="summary-item">
-            <span translate>Id</span>
-          </div>
-        </ion-label>
-        <ion-note item-end>
-          <span class="ellipsis">{{ request?.id }}</span>
-        </ion-note>
-      </ion-item>
-
       <div *ngFor="let param of request?.params; let i = index;">
         <div *ngIf="request.method === 'eth_sendTransaction'">
-          <div class="line-divider" *ngIf="param.to"></div>
-          
             <ion-item *ngIf="param.to">
               <ion-label>
                 <div class="summary-item">
@@ -81,7 +53,7 @@
                 </div>
               </ion-label>
               <ion-note item-end>
-                    <span class="ellipsis">{{ param.gasPrice | satToUnit: wallet?.coin }}</span>
+                    <span class="ellipsis">{{ param.gasPrice * 1e-9 | number:'1.2-2' }} (Gwei)</span>
               </ion-note>
             </ion-item>
 
@@ -126,8 +98,6 @@
           </div>
 
           <div *ngIf="request.method === 'eth_signTypedData'">
-            <div class="line-divider" *ngIf="i === 0 && param" ></div>
-
             <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
               <ion-label>
                 <div class="summary-item">
@@ -154,8 +124,6 @@
           </div>
 
           <div *ngIf="request.method === 'personal_sign'">
-            <div class="line-divider" *ngIf="i === 0 && param"></div>
-
             <ion-item *ngIf="i === 0 && param">
               <ion-label>
                 <div class="summary-item">

@@ -102,10 +102,6 @@ page-wallet-connect {
         margin: 0px;
       }
     }
-    .button-standard {
-      width: 100%;
-      max-width: none;
-    }
     .session-request-label {
       font-size: 25px;
       font-weight: 700;
@@ -149,5 +145,12 @@ page-wallet-connect {
         }
       }
     }
+  }
+  .button-standard {
+    width: 100%;
+    max-width: none;
+  }
+  ion-footer {
+    padding: 0px 16px;
   }
 }

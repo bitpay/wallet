@@ -3,6 +3,7 @@
       <ion-slide class="notification-content" (click)="dismiss(customButton?.data)">
         <div class="notification-info">
           <div class="notification-title" *ngIf="title">
+            <img *ngIf="title == 'WalletConnect'" src="assets/img/wallet-connect/wallet-connect.svg">
               {{title}}
           </div>
           <div class="notification-message">

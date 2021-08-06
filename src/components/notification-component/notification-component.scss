@@ -15,6 +15,10 @@
       justify-items: start;
       .notification-info {
         padding: 19px 16px 17px 16px;
+        img {
+          width: 1.5rem;
+          filter: brightness(0) invert(1);
+        }
         .notification-title {
           font-size: 1.5rem;
           text-align: left;
