@@ -1,5 +1,4 @@
 import { ComponentRef, Injectable } from '@angular/core';
-import { ContactPopUpComponent } from '../../components/contact-pop-up-component/contact-pop-up-component';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
 import { EmailComponent } from '../../components/email-component/email-component';
 import { EncryptPasswordComponent } from '../../components/encrypt-password/encrypt-password';
@@ -139,11 +138,6 @@ export class ActionSheetProvider {
 
   public createMemoComponent(memo): MemoComponent {
     return this.setupSheet<MemoComponent>(MemoComponent, null, { memo })
-      .instance;
-  }
-
-  public createContactPopupComponent(): ContactPopUpComponent {
-    return this.setupSheet<ContactPopUpComponent>(ContactPopUpComponent)
       .instance;
   }
 

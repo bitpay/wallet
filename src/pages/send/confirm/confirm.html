@@ -29,7 +29,7 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item [ngClass]="{'send-to-custom': !tx.name && !toAddressName }">
         <ion-label>
           <div class="summary-item">
             <span *ngIf="tx.recipientType != 'coinbase'" translate
@@ -83,16 +83,6 @@
               />
               <span class="ellipsis">{{ fromCoinbase.accountName }}</span>
             </div>
-
-            <button
-              *ngIf="!tx.recipientType && !toAddressName"
-              class="add-new-contact-button"
-              clear
-              (click)="addNewContact()"
-              ion-button
-            >
-              <img class="add-new-contact" src="assets/img/user-add_5.png" />
-            </button>
           </div>
 
           <ion-row
@@ -201,6 +191,15 @@
             </button>
           </div>
         </ion-note>
+      </ion-item>
+
+      <ion-item *ngIf="!tx.name && !toAddressName" class="sub-title">
+        <ion-input
+          [(ngModel)]="nameContact"
+          class="input-contact-custom"
+          placeholder="{{'Enter name to save to address book' | translate}}"
+        ></ion-input>
+        <p>{{nameContact}}</p>
       </ion-item>
 
       <div *ngIf="tx && fromMultiSend && showMultiplesOutputs">

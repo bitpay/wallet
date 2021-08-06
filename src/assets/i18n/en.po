@@ -1299,8 +1299,11 @@ msgstr "Enter custom fee in {feeUnit}"
 msgid "Enter email address"
 msgstr "Enter email address"
 
-msgid "Enter encrypt password"
-msgstr "Enter encrypt password"
+msgid "Enter email address"
+msgstr "Enter email address"
+
+msgid "Enter name to save to address book"
+msgstr "Enter name to save to address book"
 
 msgid ""
 "Enter your recovery phrase (usually 12-words) in the correct order. Separate "
