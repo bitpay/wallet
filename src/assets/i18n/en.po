@@ -1302,6 +1302,9 @@ msgstr "Enter email address"
 msgid "Enter encrypt password"
 msgstr "Enter encrypt password"
 
+msgid "Enter name to save to address book"
+msgstr "Enter name to save to address book"
+
 msgid ""
 "Enter your recovery phrase (usually 12-words) in the correct order. Separate "
 "each word with a single space only (no commas or any other punctuation). For "

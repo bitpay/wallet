@@ -1,5 +1,4 @@
 import { ActionSheetComponent } from './action-sheet/action-sheet';
-import { ContactPopUpComponent } from './contact-pop-up-component/contact-pop-up-component';
 import { EmailComponent } from './email-component/email-component';
 import { EncryptPasswordComponent } from './encrypt-password/encrypt-password';
 import { FooterMenuComponent } from './footer-menu/footer-menu';
@@ -19,7 +18,6 @@ export const ACTION_SHEET_COMPONENTS = [
   INFO_SHEET_COMPONENTS,
   OptionsSheetComponent,
   IncomingDataMenuComponent,
-  ContactPopUpComponent,
   MemoComponent,
   NeedsBackupComponent,
   WalletSelectorComponent,

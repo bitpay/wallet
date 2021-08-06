@@ -212,13 +212,34 @@ page-bitpay-card-topup {
     width: 25px;
     height: 25px;
   }
-  .add-new-contact-button{
+  .add-new-contact-button {
     float: right;
     padding: 0px;
     margin-right: 0px;
     margin-left: 10px;
   }
-  .address-note-custom{
+  .address-note-custom {
     display: flex;
+  }
+  .send-to-custom {
+    ion-label {
+      margin: 0 8px 0 0;
+    }
+    .address-note-custom {
+      margin: 0 8px 0 0;
+      ion-icon {
+        margin: 0;
+      }
+    }
+  }
+  .input-contact-custom {
+    background: #1d1d1d;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    input {
+      width: 100% !important;
+    }
   }
 }

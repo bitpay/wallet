@@ -119,6 +119,8 @@ export class ConfirmPage {
   public customGasPrice: number;
   public customGasLimit: number;
 
+  public nameContact: string;
+
   public errors = this.bwcProvider.getErrors();
   remaining;
   isDonation;
@@ -1540,7 +1542,24 @@ export class ConfirmPage {
 
   public approve(tx, wallet): Promise<void> {
     if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
-
+    if(this.nameContact && this.nameContact.trim().length > 0){
+      this.ab
+            .add({
+              name: this.nameContact,
+              email: '',
+              address: this.parseAddress(this.tx.origToAddress),
+              network: this.tx.network,
+              coin: this.tx.coin
+            })
+            .then(() => {
+              this.tx.recipientType = 'contact';
+              this.tx.name = this.nameContact;
+            })
+            .catch(err => {
+              this.popupProvider.ionicAlert('Error', err);
+            });
+    }
+    
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
@@ -1907,30 +1926,6 @@ export class ConfirmPage {
     memoComponent.present();
     memoComponent.onDidDismiss(memo => {
       if (memo) this.tx.description = memo;
-    });
-  }
-
-  public addNewContact() {
-    const contactPopupComponent = this.actionSheetProvider.createContactPopupComponent();
-    contactPopupComponent.present();
-    contactPopupComponent.onDidDismiss(nameContact => {
-      if (nameContact) {
-        this.ab
-          .add({
-            name: nameContact,
-            email: '',
-            address: this.parseAddress(this.tx.origToAddress),
-            network: this.tx.network,
-            coin: this.tx.coin
-          })
-          .then(() => {
-            this.tx.recipientType = 'contact';
-            this.tx.name = nameContact;
-          })
-          .catch(err => {
-            this.popupProvider.ionicAlert('Error', err);
-          });
-      }
     });
   }
 
