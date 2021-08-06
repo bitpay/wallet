@@ -1299,8 +1299,8 @@ msgstr "Enter custom fee in {feeUnit}"
 msgid "Enter email address"
 msgstr "Enter email address"
 
-msgid "Enter email address"
-msgstr "Enter email address"
+msgid "Enter encrypt password"
+msgstr "Enter encrypt password"
 
 msgid "Enter name to save to address book"
 msgstr "Enter name to save to address book"
