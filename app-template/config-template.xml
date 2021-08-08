@@ -106,6 +106,9 @@
       <variable name="ANDROID_SCHEME" value="" />
       <variable name="ANDROID_HOST" value="" />
       <variable name="ANDROID_PATHPREFIX" value="" />
+      <variable name="UL_HOST" value="bitpay.com" />
+      <variable name="UL_PREFIX_1" value="/i/" />
+      <variable name="UL_PREFIX_2" value="/wallet/wc" />
     </plugin>
     <plugin name="cordova-plugin-fcm-ng" spec="8.3.0">
       <variable name="PAGE_LINK_DOMAIN" value="*DYNAMICLINK*" />
@@ -114,7 +117,7 @@
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.2.1" />
 
     <plugin name="cordova-plugin-theme-detection" spec="1.2.1" />
-    
+
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
