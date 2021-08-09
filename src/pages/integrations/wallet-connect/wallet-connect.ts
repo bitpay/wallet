@@ -43,12 +43,13 @@ export class WalletConnectPage {
   public wallet;
   public address: string;
   public activeChainId: number = 1;
-  public showDappInfo: boolean = false;
+  public showDappInfo: boolean;
   public title: string;
   public sessionRequestLabel: string;
   public showWalletSelector: boolean = false;
   public dappImgSrc: string;
-  private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
+  public loading: boolean = false;
+  public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
 
   constructor(
@@ -71,6 +72,7 @@ export class WalletConnectPage {
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
+    this.showDappInfo = this.uri ? true : false;
     const walletId = this.navParams.data.walletId;
     if (!walletId) this.showWalletSelector = true;
     this.wallet = this.profileProvider.getWallet(walletId);
@@ -132,11 +134,11 @@ export class WalletConnectPage {
   };
 
   public async initWallet(): Promise<void> {
-    this.showWalletSelector = false;
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
       this.onGoingProcessProvider.set('Initializing');
       await this.setConnectionData();
+      this.showWalletSelector = false;
       this.title = null;
       if (this.uri && this.uri.indexOf('bridge') !== -1) {
         this.showNewConnectionAlert();
@@ -159,16 +161,20 @@ export class WalletConnectPage {
   public async initWalletConnect(): Promise<void> {
     this.logger.info('Initialize wallet connect with uri: ' + this.uri);
     this.onGoingProcessProvider.set('Initializing');
+    this.loading = true;
     try {
       await this.walletConnectProvider.initWalletConnect(this.uri);
       await this.walletConnectProvider.checkDappStatus();
       this.showDappInfo = true;
       this.title = null;
       this.onGoingProcessProvider.clear();
+      this.loading = false;
+      this.showWalletSelector = false;
     } catch (error) {
       this.resetView();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
+      this.loading = false;
     }
   }
 
@@ -214,6 +220,7 @@ export class WalletConnectPage {
         : null;
     this.peerMeta = null;
     this.connected = false;
+    this.showWalletSelector = true;
     this.title = this.translate.instant('Enter WalletConnect URI');
     this.changeRef.detectChanges();
   }

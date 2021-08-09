@@ -61,17 +61,22 @@
     <div *ngIf="showDappInfo && !connected" class="dapp-info">
       <ion-item no-padding no-lines>
         <ion-icon item-start>
-          <img class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+          <img *ngIf="loading" src="{{defaultImgSrc}}">
+          <img *ngIf="!loading" class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
         </ion-icon>
         <ion-label>
-          <div class="session-request-label">
+          <div *ngIf="loading" class="loading--line"></div>
+          <div *ngIf="!loading" class="session-request-label">
             {{sessionRequestLabel}}
           </div>
         </ion-label>
       </ion-item>
 
       <div class="url-container">
-        <span class="url-wrapper">{{peerMeta?.url}}</span>
+        <span class="url-wrapper">
+          <span *ngIf="loading" class="loading"></span>
+          <span *ngIf="!loading">{{peerMeta?.url}}</span>
+        </span>
       </div>
 
       <div *ngIf="showWalletSelector">
