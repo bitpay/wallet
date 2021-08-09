@@ -94,7 +94,8 @@ const Keys = {
   TEMP_MDES_CERT_ONLY_DEBUG_FLAG: 'tempMdesCertOnlyDebugFlag',
   NETWORK: 'network',
   CUSTOMTOKENSDATA: 'customTokensData',
-  CUSTOMTOKENSOPTS: 'customTokensOpts'
+  CUSTOMTOKENSOPTS: 'customTokensOpts',
+  ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer'
 };
 
 interface Storage {
@@ -1072,6 +1073,14 @@ export class PersistenceProvider {
 
   getEthMultisigPendingInstantiation(walletId) {
     return this.storage.get(`eth-multisig-instantiation-${walletId}`);
+  }
+
+  setSwapCryptoDisclaimer(option: 'accepted') {
+    return this.storage.set(Keys.ACCEPTED_SWAP_CRYPTO_DISCLAIMER, option);
+  }
+
+  getSwapCryptoDisclaimer() {
+    return this.storage.get(Keys.ACCEPTED_SWAP_CRYPTO_DISCLAIMER);
   }
 }
 

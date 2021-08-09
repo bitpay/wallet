@@ -1,11 +1,10 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ComponentRef, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { FormatCurrencyPipe } from '../../pipes/format-currency';
-
 // Providers
 import {
   AppProvider,
@@ -28,9 +27,13 @@ import {
   RateProvider,
   ReleaseProvider
 } from '../../providers';
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
+import { DomProvider } from '../../providers/dom/dom';
 import {
   hasPromotion,
   hasVisibleDiscount
@@ -39,6 +42,8 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
+import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { User } from '../../models/user/user.model';
 import { Network } from '../../providers/persistence/persistence';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
@@ -142,7 +147,8 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private iabCardProvider: IABCardProvider,
     private bitPayIdProvider: BitPayIdProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private domProvider: DomProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -886,7 +892,41 @@ export class HomePage {
     });
   }
 
-  public goToExchangeCryptoPage() {
+  public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
+    return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
+      .instance;
+  }
+
+  private setupSheet<T extends ActionSheetParent>(
+    componentType: { new (...args): T },
+    sheetType?: string,
+    params?
+  ): ComponentRef<T> {
+    const sheet = this.domProvider.appendComponentToBody<T>(componentType);
+    sheet.instance.componentRef = sheet;
+    sheet.instance.sheetType = sheetType;
+    sheet.instance.params = params;
+    return sheet;
+  }
+
+  public async checkSwapCryptoDisclaimer() {
+    const hasAcceptedDisclaimer =
+      (await this.persistenceProvider.getSwapCryptoDisclaimer()) === 'accepted';
+    if (hasAcceptedDisclaimer) {
+      this.goToSwapCryptoPage();
+    } else {
+      const infoSheet = this.createInfoSheet('exchange-crypto-disclaimer');
+      await infoSheet.present();
+      infoSheet.onDidDismiss((hasAcceptedDisclaimer: boolean) => {
+        if (hasAcceptedDisclaimer) {
+          this.persistenceProvider.setSwapCryptoDisclaimer('accepted');
+          this.goToSwapCryptoPage();
+        }
+      });
+    }
+  }
+
+  public goToSwapCryptoPage() {
     this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
       from: 'homePage'
     });

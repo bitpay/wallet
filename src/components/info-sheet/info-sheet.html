@@ -623,5 +623,14 @@
       <span sheet-text translate>When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history.</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'exchange-crypto-disclaimer'" type="info">
+      <span sheet-title-text translate>Swap Crypto</span>
+      <span sheet-text>
+        The Swap Crypto function is provided by Changelly and 1Inch, and subject to the service providers' terms and conditions, which you accept by using the service. Use of the Swap Crypto function is solely between you and the service providers.
+      </span>
+      <span sheet-button-text translate>I UNDERSTAND</span>
+      <span sheet-second-button-text translate>NO THANKS</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
