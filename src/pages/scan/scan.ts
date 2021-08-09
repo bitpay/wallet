@@ -3,19 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 // providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
-import { ProfileProvider } from '../../providers/profile/profile';
 import { ScanProvider } from '../../providers/scan/scan';
-import { WalletConnectProvider } from '../../providers/wallet-connect/wallet-connect';
 
 import env from '../../environments';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-scan',
@@ -29,8 +24,6 @@ export class ScanPage {
   private scannerIsDenied: boolean;
   private scannerIsRestricted: boolean;
   private unregisterBackButtonAction;
-  private wallets;
-  public wallet;
   public canEnableLight: boolean;
   public canChangeCamera: boolean;
   public lightActive: boolean;
@@ -52,7 +45,7 @@ export class ScanPage {
   public fromFooterMenu: boolean;
   public canGoBack: boolean;
   public tabBarElement;
-  public walletSelected: boolean;
+  public walletId: string;
 
   constructor(
     private navCtrl: NavController,
@@ -65,10 +58,7 @@ export class ScanPage {
     private navParams: NavParams,
     private platform: Platform,
     private errorsProvider: ErrorsProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private profileProvider: ProfileProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private walletConnectProvider: WalletConnectProvider
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -124,7 +114,7 @@ export class ScanPage {
     this.fromConfirm = this.navParams.data.fromConfirm;
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.fromFooterMenu = this.navParams.data.fromFooterMenu;
-    this.walletSelected = this.navParams.data.walletSelected;
+    this.walletId = this.navParams.data.walletId;
 
     if (this.canGoBack && this.tabBarElement)
       this.tabBarElement.style.display = 'none';
@@ -135,19 +125,7 @@ export class ScanPage {
     }
 
     this.events.subscribe('incomingDataError', this.incomingDataErrorHandler);
-
-    if (this.fromWalletConnect && !this.walletSelected) {
-      this.wallets = this.profileProvider.getWallets({
-        coin: 'eth',
-        onlyComplete: true,
-        backedUp: true,
-        m: 1,
-        n: 1
-      });
-      if (!_.isEmpty(this.wallets)) this.showWallets();
-    } else {
-      this.initializeScanner();
-    }
+    this.initializeScanner();
   }
 
   private initializeScanner() {
@@ -170,31 +148,6 @@ export class ScanPage {
       'scannerServiceInitialized',
       this.scannerServiceInitializedHandler
     );
-  }
-
-  public showWallets(): void {
-    const params = {
-      wallets: this.wallets,
-      selectedWalletId: null,
-      title: this.translate.instant('Select a wallet')
-    };
-    const walletSelector = this.actionSheetProvider.createWalletSelector(
-      params
-    );
-    walletSelector.present();
-    walletSelector.onDidDismiss(wallet => {
-      this.initializeScanner();
-      this.onSelectWalletEvent(wallet);
-    });
-  }
-
-  private onSelectWalletEvent(wallet): void {
-    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-  }
-
-  public onWalletSelect(wallet): void {
-    this.wallet = wallet;
-    this.walletConnectProvider.setAccountInfo(wallet);
   }
 
   private incomingDataErrorHandler: any = err => {
@@ -312,10 +265,7 @@ export class ScanPage {
         const redirParams = {
           fromWalletConnect: true,
           force: true,
-          walletId:
-            this.wallet && this.wallet.credentials
-              ? this.wallet.credentials.walletId
-              : null
+          walletId: this.walletId
         };
         this.incomingDataProvider.redir(contents, redirParams);
       }
@@ -378,10 +328,7 @@ export class ScanPage {
       name: 'WalletConnectPage',
       params: {
         fromWalletConnect: this.fromWalletConnect,
-        walletId:
-          this.wallet && this.wallet.credentials
-            ? this.wallet.credentials.walletId
-            : null,
+        walletId: this.walletId,
         force: true
       }
     };

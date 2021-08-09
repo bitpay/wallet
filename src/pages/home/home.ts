@@ -26,7 +26,8 @@ import {
   PopupProvider,
   ProfileProvider,
   RateProvider,
-  ReleaseProvider
+  ReleaseProvider,
+  WalletConnectProvider
 } from '../../providers';
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
@@ -143,7 +144,8 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private iabCardProvider: IABCardProvider,
     private bitPayIdProvider: BitPayIdProvider,
-    private rateProvider: RateProvider
+    private rateProvider: RateProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -920,11 +922,7 @@ export class HomePage {
 
   public goToWalletConnectPage() {
     this.persistenceProvider.getWalletConnect().then(session => {
-      if (session || (!session && !this.isCordova))
-        this.navCtrl.push(WalletConnectPage);
-      else {
-        this.navCtrl.push(ScanPage, { fromWalletConnect: true });
-      }
+      session ? this.navCtrl.push(WalletConnectPage) : this.showWallets();
     });
   }
 
@@ -1111,6 +1109,43 @@ export class HomePage {
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
       .join('');
+  }
+
+  private showWallets(): void {
+    const wallets = this.profileProvider.getWallets({
+      coin: 'eth',
+      onlyComplete: true,
+      backedUp: true,
+      m: 1,
+      n: 1
+    });
+
+    const params = {
+      wallets,
+      selectedWalletId: null,
+      title: this.translate.instant('Select a wallet'),
+      fromWalletConnect: true
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
+      this.onSelectWalletEvent(wallet);
+    });
+  }
+
+  private async onSelectWalletEvent(wallet): Promise<void> {
+    if (!_.isEmpty(wallet)) {
+      await this.walletConnectProvider.setAccountInfo(wallet);
+      const params = {
+        fromWalletConnect: true,
+        walletId: wallet.credentials.walletId
+      };
+      this.isCordova
+        ? this.navCtrl.push(ScanPage, params)
+        : this.navCtrl.push(WalletConnectPage, params);
+    }
   }
 }
 

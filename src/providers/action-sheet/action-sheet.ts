@@ -97,6 +97,7 @@ export interface WalletSelectorParams {
     user: any[];
     availableAccounts: any[];
   };
+  fromWalletConnect?: boolean;
 }
 
 export interface WalletReceiveParams {

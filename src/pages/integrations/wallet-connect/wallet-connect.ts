@@ -71,7 +71,9 @@ export class WalletConnectPage {
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    const walletId = this.navParams.data.walletId;
+    if (!walletId) this.showWalletSelector = true;
+    this.wallet = this.profileProvider.getWallet(walletId);
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
@@ -83,7 +85,6 @@ export class WalletConnectPage {
       m: 1,
       n: 1
     });
-    if (!this.navParams.data.walletId) this.showWalletSelector = true;
     this.uri && !this.navParams.data.activePage
       ? this.initWalletConnect()
       : this.initWallet();
@@ -152,6 +153,7 @@ export class WalletConnectPage {
   public async onWalletSelect(wallet): Promise<void> {
     this.wallet = wallet ? wallet : this.wallets[0];
     this.walletConnectProvider.setAccountInfo(this.wallet);
+    this.changeRef.detectChanges();
   }
 
   public async initWalletConnect(): Promise<void> {
@@ -242,7 +244,7 @@ export class WalletConnectPage {
   public openScanner(): void {
     this.navCtrl.push(
       ScanPage,
-      { fromWalletConnect: true, walletSelected: true, updateURI: true },
+      { fromWalletConnect: true, updateURI: true },
       { animate: false }
     );
   }

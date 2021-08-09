@@ -11,6 +11,7 @@ export class WalletSelectorComponent extends ActionSheetParent {
   public title: string;
   public selectedWalletId: string;
   public coinbaseData;
+  public fromWalletConnect: boolean;
 
   constructor() {
     super();
@@ -20,6 +21,7 @@ export class WalletSelectorComponent extends ActionSheetParent {
     this.title = this.params.title;
     this.selectedWalletId = this.params.selectedWalletId;
     this.coinbaseData = this.params.coinbaseData;
+    this.fromWalletConnect = this.params.fromWalletConnect;
     this.separateWallets();
   }
 
