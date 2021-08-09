@@ -626,13 +626,15 @@ export class CopayApp {
         const currentView = this.nav.getViews();
         const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
         if (
-          (views[views.length - 1].name !== 'WalletConnectPage' &&
-            currentView[currentIndex].name !== 'WalletConnectPage') ||
-          nextView.params.uri.indexOf('bridge') !== -1
+          views[views.length - 1].name !== 'WalletConnectPage' &&
+          currentView[currentIndex].name !== 'WalletConnectPage'
         ) {
           if (
             nextView.params &&
-            (nextView.params.force ||
+            ((nextView.params.isDeepLink &&
+              !nextView.params.request &&
+              nextView.params.uri.indexOf('bridge') !== -1) ||
+              nextView.params.force ||
               nextView.params.activePage == 'WalletConnectRequestDetailsPage' ||
               nextView.params.activePage == 'ScanPage')
           ) {
@@ -644,7 +646,7 @@ export class CopayApp {
                   this.nav.push(this.pageMap[nextView.name], nextView.params);
                 });
             });
-          } else {
+          } else if (!nextView.params.isDeepLink) {
             const data = {
               title: 'WalletConnect',
               body: `New Pending Request`,

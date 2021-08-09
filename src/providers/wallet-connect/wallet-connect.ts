@@ -145,8 +145,6 @@ export class WalletConnectProvider {
       setTimeout(() => {
         if (this.peerMeta) return resolve();
 
-        this.killSession();
-
         const error = this.translate.instant(
           'Dapp not responding. Try scanning a new QR code'
         );
@@ -262,6 +260,7 @@ export class WalletConnectProvider {
       if (error) {
         throw error;
       }
+      this.killSession();
       this.connected = false;
       this.events.publish('Update/ConnectionData');
     });
@@ -356,9 +355,13 @@ export class WalletConnectProvider {
       this.logger.debug('walletConnector.killSession');
       this.persistenceProvider.removeWalletConnect();
       this.persistenceProvider.removeWalletConnectPendingRequests();
-      await this.walletConnector.killSession();
       this.peerMeta = null;
       this.connected = false;
+      try {
+        await this.walletConnector.killSession();
+      } catch (error) {
+        this.logger.error(error);
+      }
     }
   }
 

@@ -51,6 +51,7 @@ export class WalletConnectPage {
   public loading: boolean = false;
   public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
+  private walletId: string;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -73,9 +74,9 @@ export class WalletConnectPage {
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
     this.showDappInfo = this.uri ? true : false;
-    const walletId = this.navParams.data.walletId;
-    if (!walletId) this.showWalletSelector = true;
-    this.wallet = this.profileProvider.getWallet(walletId);
+    this.walletId = this.navParams.data.walletId;
+    if (!this.walletId) this.showWalletSelector = true;
+    this.wallet = this.profileProvider.getWallet(this.walletId);
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
@@ -87,7 +88,9 @@ export class WalletConnectPage {
       m: 1,
       n: 1
     });
-    this.uri && !this.navParams.data.activePage
+    this.uri &&
+    !this.navParams.data.activePage &&
+    !this.navParams.data.isDeepLink
       ? this.initWalletConnect()
       : this.initWallet();
   }
@@ -172,6 +175,7 @@ export class WalletConnectPage {
       this.showWalletSelector = false;
     } catch (error) {
       this.resetView();
+      this.killSession();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
       this.loading = false;
@@ -220,7 +224,7 @@ export class WalletConnectPage {
         : null;
     this.peerMeta = null;
     this.connected = false;
-    this.showWalletSelector = true;
+    this.showWalletSelector = this.walletId ? false : true;
     this.title = this.translate.instant('Enter WalletConnect URI');
     this.changeRef.detectChanges();
   }
@@ -261,6 +265,7 @@ export class WalletConnectPage {
       await this.walletConnectProvider.approveSession();
     } catch (error) {
       this.logger.error('Wallet Connect - ApproveSession error: ', error);
+      this.killSession();
       this.errorsProvider.showDefaultError(
         error,
         this.translate.instant('Error')
