@@ -16,7 +16,8 @@ import {
   AnalyticsProvider,
   ConfigProvider,
   Logger,
-  SimplexProvider
+  SimplexProvider,
+  WalletProvider
 } from '../../../providers';
 import { DateRanges, RateProvider } from '../../../providers/rate/rate';
 import { WalletsPage } from '../../wallets/wallets';
@@ -30,6 +31,7 @@ export class PricePage {
   wallets: any[];
   @ViewChild('canvas') canvas: PriceChart;
   private card: Card;
+  public isDonate: boolean = false;
   public activeOption: string = '1D';
   public availableOptions;
   public updateOptions = [
@@ -47,9 +49,11 @@ export class PricePage {
     private formatCurrencyPipe: FormatCurrencyPipe,
     private configProvider: ConfigProvider,
     private logger: Logger,
+    private walletProvider: WalletProvider,
     private simplexProvider: SimplexProvider,
     private analyticsProvider: AnalyticsProvider
   ) {
+    this.getCoinDonate();
     this.card = _.clone(this.navParams.data.card);
     this.setFiatIsoCode();
   }
@@ -60,6 +64,17 @@ export class PricePage {
     setTimeout(() => {
       this.getPrice(DateRanges.Day);
     }, 1000);
+  }
+
+  private getCoinDonate() {
+    this.walletProvider.getDonationInfo().then((data: any) => {
+      const donationSupportCoins = data.donationSupportCoins;
+      donationSupportCoins.forEach(coin => {
+        if (coin.coin == this.navParams.data.card.unitCode) {
+          this.isDonate = true;
+        }
+      });
+    });
   }
 
   private getPrice(dateRange) {
