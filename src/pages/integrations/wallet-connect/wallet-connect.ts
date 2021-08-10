@@ -197,11 +197,9 @@ export class WalletConnectPage {
       this.loading = false;
       this.showWalletSelector = false;
     } catch (error) {
-      this.resetView();
-      this.killSession();
+      await this.killSession();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
-      this.loading = false;
     }
   }
 
@@ -232,8 +230,8 @@ export class WalletConnectPage {
 
   public async killSession() {
     try {
-      this.resetView();
       await this.walletConnectProvider.killSession();
+      await this.navCtrl.pop();
     } catch (error) {
       this.logger.error('Wallet Connect - killSession error: ', error);
     }
@@ -241,13 +239,11 @@ export class WalletConnectPage {
 
   private resetView() {
     this.showDappInfo = false;
-    this.uri =
-      this.navParams.data.uri && this.navParams.data.uri != 'wc:'
-        ? this.navParams.data.uri
-        : null;
+    this.uri = null;
     this.peerMeta = null;
     this.connected = false;
-    this.showWalletSelector = this.walletId ? false : true;
+    this.loading = false;
+    this.showWalletSelector = !this.walletId;
     this.title = this.translate.instant('Enter WalletConnect URI');
     this.changeRef.detectChanges();
   }

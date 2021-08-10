@@ -261,8 +261,6 @@ export class WalletConnectProvider {
         throw error;
       }
       this.killSession();
-      this.connected = false;
-      this.events.publish('Update/ConnectionData');
     });
   }
 
@@ -353,12 +351,18 @@ export class WalletConnectProvider {
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
       this.logger.debug('walletConnector.killSession');
-      this.persistenceProvider.removeWalletConnect();
-      this.persistenceProvider.removeWalletConnectPendingRequests();
-      this.peerMeta = null;
-      this.connected = false;
       try {
+        this.walletConnector.off('disconnect');
         await this.walletConnector.killSession();
+        this.walletConnector = null;
+        await this.persistenceProvider.removeWalletConnect();
+        await this.persistenceProvider.removeWalletConnectPendingRequests();
+        localStorage.removeItem('walletconnect');
+        setTimeout( () => {
+          this.peerMeta = null;
+          this.connected = false;
+        }, 300);
+        this.logger.debug('walletConnector.killSession complete');
       } catch (error) {
         this.logger.error(error);
       }
