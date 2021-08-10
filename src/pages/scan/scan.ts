@@ -329,7 +329,8 @@ export class ScanPage {
       params: {
         fromWalletConnect: this.fromWalletConnect,
         walletId: this.walletId,
-        force: true
+        force: true,
+        pasteURL: true
       }
     };
     this.events.publish('IncomingDataRedir', nextView);
