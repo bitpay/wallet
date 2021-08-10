@@ -22,9 +22,28 @@ import {
 } from '../../../providers';
 
 import * as _ from 'lodash';
+import { animate, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'page-wallet-connect',
-  templateUrl: 'wallet-connect.html'
+  templateUrl: 'wallet-connect.html',
+  animations: [
+    trigger('fadeUp', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('300ms')
+      ])
+    ]),
+    trigger('fadeOut', [
+      transition(':leave', [
+        animate('200ms', style({
+          opacity: 0
+        }),)
+      ])
+    ]),
+  ]
 })
 export class WalletConnectPage {
   public uri: string = '';
@@ -52,6 +71,7 @@ export class WalletConnectPage {
   public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
   private walletId: string;
+  public exiting: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -95,6 +115,9 @@ export class WalletConnectPage {
       : this.initWallet();
   }
 
+  ionViewWillLeave() {
+    this.exiting = true;
+  }
   ngOnDestroy() {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
     this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
