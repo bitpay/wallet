@@ -45,7 +45,7 @@ export class FooterMenuComponent extends ActionSheetParent {
       },
       exchange: {
         imgSrc: `assets/img/footer-menu/exchange.svg`,
-        mainLabel: this.translate.instant('Exchange'),
+        mainLabel: this.translate.instant('Swap'),
         secondaryLabel: this.translate.instant('Swap crypto for another'),
         showOption: this.appName === 'bitpay' && this.isCordova ? true : false,
         nextView: {

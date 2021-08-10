@@ -1,8 +1,8 @@
-<wide-header-page title="{{'Exchange Crypto Settings' | translate}}">
+<wide-header-page title="{{'Swap Crypto Settings' | translate}}">
   <div page-content>
     <ion-list class="bp-list top-padding">
       <ion-item *ngIf="!fromExchangeCryptoPage">
-        <ion-label>{{'Show "Exchange Crypto"' | translate}}</ion-label>
+        <ion-label>{{'Show "Swap Crypto"' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
       <div *ngIf="changellySwapTxs?.length || oneInchSwapTxs?.length">

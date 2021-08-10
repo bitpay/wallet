@@ -33,9 +33,7 @@ export class OnGoingProcessProvider {
         'Creating ETH multisig wallet. Please wait...'
       ),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
-      exchangeCryptoInit: this.translate.instant(
-        'Initializing Exchange Crypto...'
-      ),
+      exchangeCryptoInit: this.translate.instant('Initializing Swap Crypto...'),
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),

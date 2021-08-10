@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
@@ -106,7 +107,8 @@ export class ExchangeCryptoPage {
     private oneInchProvider: OneInchProvider,
     private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private replaceParametersProvider: ReplaceParametersProvider,
+    public decimalPipe: DecimalPipe
   ) {
     this.allWallets = [];
     this.toWallets = [];
@@ -682,6 +684,7 @@ export class ExchangeCryptoPage {
           );
           errorActionSheet.present();
           errorActionSheet.onDidDismiss(option => {
+            this.loading = false;
             if (option) {
               this.amountFrom = this.maxAmount;
               this.useSendMax = null;
@@ -713,6 +716,7 @@ export class ExchangeCryptoPage {
             );
             errorActionSheet.present();
             errorActionSheet.onDidDismiss(() => {
+              this.loading = false;
               this.useSendMax = null;
               this.amountFrom = null;
               this.estimatedFee = null;
@@ -731,6 +735,7 @@ export class ExchangeCryptoPage {
             );
             errorActionSheet.present();
             errorActionSheet.onDidDismiss(option => {
+              this.loading = false;
               if (option) {
                 this.amountFrom = this.minAmount;
                 this.useSendMax = null;
@@ -1026,6 +1031,14 @@ export class ExchangeCryptoPage {
             });
         });
     });
+  }
+
+  public getAmountConteinerClass(length: number): string {
+    if (length > 14) return 'fix-font-size-14';
+    if (length > 12) return 'fix-font-size-12';
+    if (length > 10) return 'fix-font-size-10';
+    if (length > 8) return 'fix-font-size-8';
+    return '';
   }
 
   public canContinue(): boolean {

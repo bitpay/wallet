@@ -35,7 +35,7 @@ export class ExchangeCryptoProvider {
   public register(): void {
     this.homeIntegrationsProvider.register({
       name: 'exchangecrypto',
-      title: this.translate.instant('Exchange Crypto'),
+      title: this.translate.instant('Swap Crypto'),
       icon: 'assets/img/exchange-crypto/exchange-settings.svg',
       showIcon: true,
       logo: null,
