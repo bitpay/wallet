@@ -57,67 +57,68 @@
         {{'Connect' | translate}}
       </button>
     </div>
-    
-    <div *ngIf="showDappInfo && !connected" class="dapp-info">
-      <ion-item no-padding no-lines>
-        <ion-icon item-start>
-          <img *ngIf="loading" src="{{defaultImgSrc}}">
-          <img *ngIf="!loading" class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
-        </ion-icon>
-        <ion-label>
-          <div *ngIf="loading" class="loading--line"></div>
-          <div *ngIf="!loading" class="session-request-label">
-            {{sessionRequestLabel}}
-          </div>
-        </ion-label>
-      </ion-item>
 
-      <div class="url-container">
+    <div *ngIf="showDappInfo && !connected && !loading" class="dapp-info">
+      <div @fadeUp>
+        <ion-item no-padding no-lines>
+          <ion-icon item-start>
+            <img class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+          </ion-icon>
+          <ion-label>
+            <div class="session-request-label">
+              {{sessionRequestLabel}}
+            </div>
+          </ion-label>
+        </ion-item>
+
+        <div class="url-container">
         <span class="url-wrapper">
-          <span *ngIf="loading" class="loading"></span>
-          <span *ngIf="!loading">{{peerMeta?.url}}</span>
+          <span>{{peerMeta?.url}}</span>
         </span>
-      </div>
+        </div>
 
-      <div *ngIf="showWalletSelector">
-        <ion-list *ngIf="wallet" class="bp-list">
-          <ion-item class="sub-title">
-            <ion-label>
-              <div class="main-label">{{ 'Select a wallet' | translate }}</div>
-            </ion-label>
-          </ion-item>
-          <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
-        </ion-list>
-        
-        <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
-          <div label-tip-title>
-            <span translate>ETH wallet is required</span>
-          </div>
-          <div label-tip-body>
-            <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
-          </div>
-        </label-tip>
-      </div>
+        <div *ngIf="showWalletSelector">
+          <ion-list *ngIf="wallet" class="bp-list">
+            <ion-item class="sub-title">
+              <ion-label>
+                <div class="main-label">{{ 'Select a wallet' | translate }}</div>
+              </ion-label>
+            </ion-item>
+            <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
+          </ion-list>
 
-      <ion-item no-lines no-padding no-margin class="wc-permission">
-        <ion-row>
+          <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
+            <div label-tip-title>
+              <span translate>ETH wallet is required</span>
+            </div>
+            <div label-tip-body>
+              <span translate>WalletConnect requires at least one ETH wallet with backup to work properly. Please, create a new ETH wallet and try again.</span>
+            </div>
+          </label-tip>
+        </div>
+
+        <ion-item no-lines no-padding no-margin class="wc-permission">
+          <ion-row>
             <ion-icon >
-                <img class="wc-permission-img" src="assets/img/wallet-connect/wallet.svg">
-            </ion-icon> 
-            <span class="wc-permission-label" translate>View your wallet balance and activity</span> 
-        </ion-row>
-        <br>
-        <ion-row>
-          <ion-icon >
+              <img class="wc-permission-img" src="assets/img/wallet-connect/wallet.svg">
+            </ion-icon>
+            <span class="wc-permission-label" translate>View your wallet balance and activity</span>
+          </ion-row>
+          <br>
+          <ion-row>
+            <ion-icon >
               <img class="wc-permission-img" src="assets/img/wallet-connect/verified.svg">
-          </ion-icon> 
-          <span  class="wc-permission-label" translate>Request approval for transactions</span> 
-        </ion-row>
-      </ion-item>
+            </ion-icon>
+            <span  class="wc-permission-label" translate>Request approval for transactions</span>
+          </ion-row>
+        </ion-item>
 
-      <button margin-top ion-button full class="button-standard" [disabled]="!uri" (click)="approveSession()">
-        {{'Connect' | translate}}
-      </button>
+        <button ion-button full class="button-standard" [disabled]="!uri" (click)="approveSession()">
+          {{'Connect' | translate}}
+        </button>
+
+      </div>
+
     </div>
 
     <div *ngIf="connected && peerMeta">
