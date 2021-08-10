@@ -117,6 +117,7 @@ export class WalletConnectPage {
 
   ionViewWillLeave() {
     this.exiting = true;
+    this.onGoingProcessProvider.clear();
   }
   ngOnDestroy() {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
