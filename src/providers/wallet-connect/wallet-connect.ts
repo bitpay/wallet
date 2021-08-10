@@ -142,18 +142,29 @@ export class WalletConnectProvider {
 
   public checkDappStatus(): Promise<void> {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (this.peerMeta) return resolve();
+      let retry = 0;
+      const interval = setInterval( () => {
+        this.logger.log(JSON.stringify(this.peerMeta));
+        if (this.peerMeta)  {
+          clearInterval(interval);
+          return resolve();
+        }
 
-        const error = this.translate.instant(
-          'Dapp not responding. Try scanning a new QR code'
-        );
-        this.errorsProvider.showDefaultError(
-          error,
-          this.translate.instant('Could not connect')
-        );
-        return reject(error);
-      }, 10000);
+        retry++;
+
+        if(retry >= 10) {
+          clearInterval(interval);
+          const error = this.translate.instant(
+            'Dapp not responding. Try scanning a new QR code'
+          );
+          this.errorsProvider.showDefaultError(
+            error,
+            this.translate.instant('Could not connect')
+          );
+          return reject(error);
+        }
+
+      }, 1000);
     });
   }
 
