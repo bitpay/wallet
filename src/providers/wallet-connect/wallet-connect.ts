@@ -361,22 +361,29 @@ export class WalletConnectProvider {
 
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
+
+      ['session_request', 'session_update', 'call_request', 'connect', 'disconnect'].forEach( (event) => this.walletConnector.off(event));
+
+      this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
       try {
-        this.walletConnector.off('disconnect');
+        this.peerMeta = null;
+        this.connected = false;
         await this.walletConnector.killSession();
         this.walletConnector = null;
         await this.persistenceProvider.removeWalletConnect();
-        await this.persistenceProvider.removeWalletConnectPendingRequests();
         localStorage.removeItem('walletconnect');
-        setTimeout( () => {
-          this.peerMeta = null;
-          this.connected = false;
-        }, 300);
-        this.logger.debug('walletConnector.killSession complete');
       } catch (error) {
         this.logger.error(error);
       }
+
+      try {
+        await this.persistenceProvider.removeWalletConnectPendingRequests();
+      } catch(error) {
+        this.logger.debug('no pending requests to purge');
+      }
+      this.events.publish('Update/WalletConnectDisconnected')
+      this.logger.debug('walletConnector.killSession complete');
     }
   }
 
