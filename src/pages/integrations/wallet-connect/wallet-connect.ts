@@ -157,9 +157,12 @@ export class WalletConnectPage {
     this.changeRef.detectChanges();
   };
 
-  private setRequests: any = requests => {
+  private setRequests: any = (requests, incoming?) => {
     this.requests = requests;
     this.changeRef.detectChanges();
+    if (incoming) {
+      this.goToRequestDetailsPage(incoming, incoming.params);
+    }
   };
 
   public async initWallet(): Promise<void> {

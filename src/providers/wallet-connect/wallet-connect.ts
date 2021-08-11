@@ -250,7 +250,8 @@ export class WalletConnectProvider {
         await this.persistenceProvider.setWalletConnectPendingRequests(
           this.requests
         );
-        this.events.publish('Update/Requests', this.requests);
+        const incoming = this.requests;
+        this.events.publish('Update/Requests', this.requests, incoming.slice(-1)[0]);
         this.incomingDataProvider.redir('wc:', { wcRequest: payload });
       }
     });
