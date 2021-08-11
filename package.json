@@ -107,7 +107,7 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "dependencies": {
-    "@abcpros/bitcore-wallet-client": "^8.25.31",
+    "@abcpros/bitcore-wallet-client": "^8.25.33",
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",
     "@angular/compiler": "5.2.11",
@@ -237,7 +237,7 @@
     "ts-node": "5.0.0",
     "tslint": "5.8.0",
     "tslint-config-prettier": "1.18.0",
-    "typescript": "4.0.6",
+    "typescript": "2.6.2",
     "webpack": "3.12.0",
     "webpack-obfuscator": "0.17.3",
     "yargs": "16.0.0"
