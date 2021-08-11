@@ -248,7 +248,10 @@ export class WalletConnectPage {
 
   private resetView() {
     this.showDappInfo = false;
-    this.uri = null;
+    this.uri =
+      this.navParams.data.uri && this.navParams.data.uri != 'wc:'
+        ? this.navParams.data.uri
+        : null;
     this.peerMeta = null;
     this.connected = false;
     this.loading = false;
