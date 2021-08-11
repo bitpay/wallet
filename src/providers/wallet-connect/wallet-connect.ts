@@ -133,10 +133,7 @@ export class WalletConnectProvider {
       }
       await this.subscribeToEvents();
     } catch (error) {
-      this.errorsProvider.showDefaultError(
-        error,
-        this.translate.instant('Could not connect')
-      );
+      throw error;
     }
   }
 
@@ -156,10 +153,6 @@ export class WalletConnectProvider {
           clearInterval(interval);
           const error = this.translate.instant(
             'Dapp not responding. Try scanning a new QR code'
-          );
-          this.errorsProvider.showDefaultError(
-            error,
-            this.translate.instant('Could not connect')
           );
           return reject(error);
         }

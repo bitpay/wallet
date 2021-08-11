@@ -199,15 +199,16 @@ export class WalletConnectPage {
     try {
       await this.walletConnectProvider.initWalletConnect(this.uri);
       await this.walletConnectProvider.checkDappStatus();
+      this.checkIfPeerSupported();
       this.showDappInfo = true;
       this.title = null;
       this.onGoingProcessProvider.clear();
       this.loading = false;
       this.showWalletSelector = false;
     } catch (error) {
-      await this.killSession();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
+      this.showErrorSheet(error);
     }
   }
 
@@ -292,11 +293,7 @@ export class WalletConnectPage {
       await this.walletConnectProvider.approveSession();
     } catch (error) {
       this.logger.error('Wallet Connect - ApproveSession error: ', error);
-      this.killSession();
-      this.errorsProvider.showDefaultError(
-        error,
-        this.translate.instant('Error')
-      );
+      this.showErrorSheet(error);
     }
   }
 
@@ -344,5 +341,36 @@ export class WalletConnectPage {
     ) {
       this.exiting = true;
     }
+  }
+
+  private checkIfPeerSupported(): void {
+    if (
+      this.peerMeta &&
+      this.peerMeta.url &&
+      this.peerMeta.url.indexOf('thorswap') !== -1
+    ) {
+      const error = this.replaceParametersProvider.replace(
+        this.translate.instant(`{{peerMetaName}} is currenlty not supported`),
+        {
+          peerMetaName: this.peerMeta.name
+        }
+      );
+      this.showErrorSheet(error);
+    }
+  }
+
+  private showErrorSheet(error?: string) {
+    const err = error
+      ? error
+      : this.translate.instant(
+          'Uh oh something went wrong! Please try again later.'
+        );
+    this.errorsProvider.showDefaultError(
+      err,
+      this.translate.instant('Could not connect'),
+      async () => {
+        await this.killSession();
+      }
+    );
   }
 }
