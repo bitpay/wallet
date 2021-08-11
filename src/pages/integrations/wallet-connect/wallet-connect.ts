@@ -101,6 +101,8 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
+    this.events.subscribe('Update/WalletConnectDisconnected', () => this.navCtrl.pop());
+
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
       onlyComplete: true,
