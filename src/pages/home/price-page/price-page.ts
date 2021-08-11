@@ -31,7 +31,7 @@ export class PricePage {
   wallets: any[];
   @ViewChild('canvas') canvas: PriceChart;
   private card: Card;
-  public isDonate: boolean = false;
+  public isDonation: boolean = false;
   public activeOption: string = '1D';
   public availableOptions;
   public updateOptions = [
@@ -69,11 +69,7 @@ export class PricePage {
   private getCoinDonate() {
     this.walletProvider.getDonationInfo().then((data: any) => {
       const donationSupportCoins = data.donationSupportCoins;
-      donationSupportCoins.forEach(coin => {
-        if (coin.coin == this.navParams.data.card.unitCode) {
-          this.isDonate = true;
-        }
-      });
+      this.isDonation = _.some(donationSupportCoins, (item: any) => item.coin === this.navParams.data.card.unitCode);
     });
   }
 
