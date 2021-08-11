@@ -691,10 +691,10 @@
       border-bottom: 1px solid $bg-color-dark-theme-2;
     }
     .bp-header {
-      &__title, &__subtitle {
+      &__title,
+      &__subtitle {
         color: $text-color-dark-theme;
       }
-
     }
   }
 

@@ -102,7 +102,7 @@ export class AboutPage {
     this.tapped++;
     if (this.tapped >= 10) {
       localStorage.removeItem('walletconnect');
-      alert('[DEV] - cleared wallet connect')
+      alert('[DEV] - cleared wallet connect');
       this.tapped = 0;
     }
   }

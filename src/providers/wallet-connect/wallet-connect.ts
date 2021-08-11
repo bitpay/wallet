@@ -143,16 +143,16 @@ export class WalletConnectProvider {
   public checkDappStatus(): Promise<void> {
     return new Promise((resolve, reject) => {
       let retry = 0;
-      const interval = setInterval( () => {
+      const interval = setInterval(() => {
         this.logger.log(JSON.stringify(this.peerMeta));
-        if (this.peerMeta)  {
+        if (this.peerMeta) {
           clearInterval(interval);
           return resolve();
         }
 
         retry++;
 
-        if(retry >= 10) {
+        if (retry >= 10) {
           clearInterval(interval);
           const error = this.translate.instant(
             'Dapp not responding. Try scanning a new QR code'
@@ -163,7 +163,6 @@ export class WalletConnectProvider {
           );
           return reject(error);
         }
-
       }, 1000);
     });
   }
@@ -361,8 +360,13 @@ export class WalletConnectProvider {
 
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
-
-      ['session_request', 'session_update', 'call_request', 'connect', 'disconnect'].forEach( (event) => this.walletConnector.off(event));
+      [
+        'session_request',
+        'session_update',
+        'call_request',
+        'connect',
+        'disconnect'
+      ].forEach(event => this.walletConnector.off(event));
 
       this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
@@ -379,10 +383,10 @@ export class WalletConnectProvider {
 
       try {
         await this.persistenceProvider.removeWalletConnectPendingRequests();
-      } catch(error) {
+      } catch (error) {
         this.logger.debug('no pending requests to purge');
       }
-      this.events.publish('Update/WalletConnectDisconnected')
+      this.events.publish('Update/WalletConnectDisconnected');
       this.logger.debug('walletConnector.killSession complete');
     }
   }

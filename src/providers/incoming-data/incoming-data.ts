@@ -527,7 +527,7 @@ export class IncomingDataProvider {
       fromWalletConnect: redirParams ? redirParams.fromWalletConnect : false,
       activePage: this.activePage,
       request: redirParams ? redirParams.wcRequest : null,
-      isDeepLink: uri && !redirParams,
+      isDeepLink: uri && !redirParams
     };
     let nextView = {
       name: 'WalletConnectPage',

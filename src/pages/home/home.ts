@@ -1143,7 +1143,7 @@ export class HomePage {
         walletId: wallet.credentials.walletId
       };
       this.isCordova
-        ? this.navCtrl.push(ScanPage, params, {animate: false})
+        ? this.navCtrl.push(ScanPage, params, { animate: false })
         : this.navCtrl.push(WalletConnectPage, params);
     }
   }

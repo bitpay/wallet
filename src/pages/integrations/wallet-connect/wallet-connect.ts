@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
@@ -22,7 +23,6 @@ import {
 } from '../../../providers';
 
 import * as _ from 'lodash';
-import { animate, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'page-wallet-connect',
   templateUrl: 'wallet-connect.html',
@@ -38,11 +38,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ]),
     trigger('fadeOut', [
       transition(':leave', [
-        animate('200ms', style({
-          opacity: 0
-        }),)
+        animate(
+          '200ms',
+          style({
+            opacity: 0
+          })
+        )
       ])
-    ]),
+    ])
   ]
 })
 export class WalletConnectPage {
@@ -101,7 +104,9 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-    this.events.subscribe('Update/WalletConnectDisconnected', () => this.navCtrl.pop());
+    this.events.subscribe('Update/WalletConnectDisconnected', () =>
+      this.navCtrl.pop()
+    );
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -328,12 +333,15 @@ export class WalletConnectPage {
   }
 
   /*
-  * IOS workaround - ion-toolbar conflicts with the router animation and lags.
-  * This animates the toolbar out slightly before the router animation finishes to compensate.
-  * */
+   * IOS workaround - ion-toolbar conflicts with the router animation and lags.
+   * This animates the toolbar out slightly before the router animation finishes to compensate.
+   * */
   private setExiting() {
-    if (!['WalletConnectRequestDetailsPage']
-      .includes(this.navCtrl.getActive(true).name)) {
+    if (
+      !['WalletConnectRequestDetailsPage'].includes(
+        this.navCtrl.getActive(true).name
+      )
+    ) {
       this.exiting = true;
     }
   }
