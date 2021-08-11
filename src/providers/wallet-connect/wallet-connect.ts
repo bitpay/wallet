@@ -393,10 +393,9 @@ export class WalletConnectProvider {
 
   public async closeRequest(id): Promise<void> {
     try {
-      const filteredRequests = this.requests.filter(
+      this.requests = (await this.persistenceProvider.getWalletConnectPendingRequests()).filter(
         request => request.id !== id
       );
-      this.requests = filteredRequests;
       await this.persistenceProvider.setWalletConnectPendingRequests(
         this.requests
       );
