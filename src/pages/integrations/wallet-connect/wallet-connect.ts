@@ -323,6 +323,10 @@ export class WalletConnectPage {
         : this.defaultImgSrc;
   }
 
+  public trackByFn(index: number): number {
+    return index;
+  }
+
   /*
   * IOS workaround - ion-toolbar conflicts with the router animation and lags.
   * This animates the toolbar out slightly before the router animation finishes to compensate.
