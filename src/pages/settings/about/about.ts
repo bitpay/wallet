@@ -9,7 +9,6 @@ import { SessionLogPage } from './session-log/session-log';
 // providers
 import {
   AppProvider,
-  BitPayProvider,
   ExternalLinkProvider,
   Logger,
   PersistenceProvider,
@@ -35,7 +34,6 @@ export class AboutPage {
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
-    private bitpayProvider: BitPayProvider,
     private persistenceProvider: PersistenceProvider,
     private events: Events
   ) {}
