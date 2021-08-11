@@ -36,6 +36,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
         animate('300ms')
       ])
     ]),
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate('300ms')
+      ])
+    ]),
     trigger('fadeOut', [
       transition(':leave', [
         animate('200ms', style({

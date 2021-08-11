@@ -185,7 +185,7 @@
           </ion-label>
         </ion-item>
 
-        <div *ngFor="let request of requests; trackBy: trackByFn; let i = index;">
+        <div *ngFor="let request of requests; trackBy: trackByFn; let i = index;" @fadeIn>
           <ion-list class="bp-list">
               <button ion-item (click)="goToRequestDetailsPage(request, request.params)" detail-none>
                 <ion-icon class="item-img" item-start>
