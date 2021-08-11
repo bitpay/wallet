@@ -52,21 +52,19 @@
           </div>
         </label-tip>
       </div>
-      
-      <button margin-top ion-button full class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
+
+      <button ion-button full class="button-standard" [disabled]="!uri" (click)="initWalletConnect()">
         {{'Connect' | translate}}
       </button>
     </div>
-    
-    <div *ngIf="showDappInfo && !connected" class="dapp-info">
+
+    <div *ngIf="showDappInfo && !connected && !loading" class="dapp-info" @fadeUp>
       <ion-item no-padding no-lines>
         <ion-icon item-start>
-          <img *ngIf="loading" src="{{defaultImgSrc}}">
-          <img *ngIf="!loading" class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
+          <img class="dapp-img" [src]="dappImgSrc" (error)="setDappImgSrc(true)">
         </ion-icon>
         <ion-label>
-          <div *ngIf="loading" class="loading--line"></div>
-          <div *ngIf="!loading" class="session-request-label">
+          <div class="session-request-label">
             {{sessionRequestLabel}}
           </div>
         </ion-label>
@@ -74,8 +72,7 @@
 
       <div class="url-container">
         <span class="url-wrapper">
-          <span *ngIf="loading" class="loading"></span>
-          <span *ngIf="!loading">{{peerMeta?.url}}</span>
+          <span>{{peerMeta?.url}}</span>
         </span>
       </div>
 
@@ -88,7 +85,7 @@
           </ion-item>
           <wallet-item-content [wallet]="wallet" (click)="showWallets()"></wallet-item-content>
         </ion-list>
-        
+
         <label-tip *ngIf="!wallet" type="warn" class="no-arrowhead" margin-top>
           <div label-tip-title>
             <span translate>ETH wallet is required</span>
@@ -101,26 +98,26 @@
 
       <ion-item no-lines no-padding no-margin class="wc-permission">
         <ion-row>
-            <ion-icon >
-                <img class="wc-permission-img" src="assets/img/wallet-connect/wallet.svg">
-            </ion-icon> 
-            <span class="wc-permission-label" translate>View your wallet balance and activity</span> 
+          <ion-icon >
+            <img class="wc-permission-img" src="assets/img/wallet-connect/wallet.svg">
+          </ion-icon>
+          <span class="wc-permission-label" translate>View your wallet balance and activity</span>
         </ion-row>
         <br>
         <ion-row>
           <ion-icon >
-              <img class="wc-permission-img" src="assets/img/wallet-connect/verified.svg">
-          </ion-icon> 
-          <span  class="wc-permission-label" translate>Request approval for transactions</span> 
+            <img class="wc-permission-img" src="assets/img/wallet-connect/verified.svg">
+          </ion-icon>
+          <span  class="wc-permission-label" translate>Request approval for transactions</span>
         </ion-row>
       </ion-item>
 
-      <button margin-top ion-button full class="button-standard" [disabled]="!uri" (click)="approveSession()">
+      <button ion-button full class="button-standard" [disabled]="!uri" (click)="approveSession()">
         {{'Connect' | translate}}
       </button>
     </div>
 
-    <div *ngIf="connected && peerMeta">
+    <div *ngIf="connected && peerMeta" @fadeUp>
       <ion-list class="bp-list">
         <ion-item>
           <ion-label>
@@ -190,7 +187,7 @@
           </ion-label>
         </ion-item>
 
-        <div *ngFor="let request of requests">
+        <div *ngFor="let request of requests; trackBy: trackByFn; let i = index;">
           <ion-list class="bp-list">
               <button ion-item (click)="goToRequestDetailsPage(request, request.params)" detail-none>
                 <ion-icon class="item-img" item-start>
@@ -215,7 +212,7 @@
 
 <ion-footer no-border>
   <ion-toolbar>
-    <button *ngIf="connected" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top>
+    <button *ngIf="connected && !exiting" (click)="killSession()" ion-button class="button-standard" color="primary" outline margin-top @fadeOut>
       {{'Disconnect' | translate }}
     </button>
   </ion-toolbar>

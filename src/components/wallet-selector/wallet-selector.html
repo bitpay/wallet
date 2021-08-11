@@ -1,9 +1,10 @@
 <action-sheet>
   <div class="bp-header">
-    <ion-title>{{ title }}</ion-title>
+    <div class="bp-header__title">{{ title }}</div>
+    <div *ngIf="fromWalletConnect" class="bp-header__subtitle" translate>Which Ethereum wallet would you like to use with WalletConnect?</div>
   </div>
   <div *ngIf="(walletsByKeys && walletsByKeys[0]) || coinbaseData; else noWallets">
-    <div *ngIf="fromWalletConnect" class="subtitle" translate>Which Ethereum wallet would you like to use with WalletConnect?</div>
+
     <div *ngFor="let walletsByKey of walletsByKeys">
       <ion-list no-lines class="bp-list">
         <div class="key-divider">

@@ -22,9 +22,28 @@ import {
 } from '../../../providers';
 
 import * as _ from 'lodash';
+import { animate, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'page-wallet-connect',
-  templateUrl: 'wallet-connect.html'
+  templateUrl: 'wallet-connect.html',
+  animations: [
+    trigger('fadeUp', [
+      transition(':enter', [
+        style({
+          transform: 'translateY(5px)',
+          opacity: 0
+        }),
+        animate('300ms')
+      ])
+    ]),
+    trigger('fadeOut', [
+      transition(':leave', [
+        animate('200ms', style({
+          opacity: 0
+        }),)
+      ])
+    ]),
+  ]
 })
 export class WalletConnectPage {
   public uri: string = '';
@@ -52,6 +71,7 @@ export class WalletConnectPage {
   public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
   private walletId: string;
+  public exiting: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -81,6 +101,8 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
+    this.events.subscribe('Update/WalletConnectDisconnected', () => this.navCtrl.pop());
+
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
       onlyComplete: true,
@@ -95,6 +117,10 @@ export class WalletConnectPage {
       : this.initWallet();
   }
 
+  ionViewWillLeave() {
+    this.setExiting();
+    this.onGoingProcessProvider.clear();
+  }
   ngOnDestroy() {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
     this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
@@ -174,11 +200,9 @@ export class WalletConnectPage {
       this.loading = false;
       this.showWalletSelector = false;
     } catch (error) {
-      this.resetView();
-      this.killSession();
+      await this.killSession();
       this.logger.error('Wallet Connect - initWalletConnect error: ', error);
       this.onGoingProcessProvider.clear();
-      this.loading = false;
     }
   }
 
@@ -209,8 +233,8 @@ export class WalletConnectPage {
 
   public async killSession() {
     try {
-      this.resetView();
       await this.walletConnectProvider.killSession();
+      await this.navCtrl.pop();
     } catch (error) {
       this.logger.error('Wallet Connect - killSession error: ', error);
     }
@@ -218,13 +242,11 @@ export class WalletConnectPage {
 
   private resetView() {
     this.showDappInfo = false;
-    this.uri =
-      this.navParams.data.uri && this.navParams.data.uri != 'wc:'
-        ? this.navParams.data.uri
-        : null;
+    this.uri = null;
     this.peerMeta = null;
     this.connected = false;
-    this.showWalletSelector = this.walletId ? false : true;
+    this.loading = false;
+    this.showWalletSelector = !this.walletId;
     this.title = this.translate.instant('Enter WalletConnect URI');
     this.changeRef.detectChanges();
   }
@@ -299,5 +321,20 @@ export class WalletConnectPage {
           ? this.peerMeta.icons[1]
           : this.peerMeta.icons[0]
         : this.defaultImgSrc;
+  }
+
+  public trackByFn(index: number): number {
+    return index;
+  }
+
+  /*
+  * IOS workaround - ion-toolbar conflicts with the router animation and lags.
+  * This animates the toolbar out slightly before the router animation finishes to compensate.
+  * */
+  private setExiting() {
+    if (!['WalletConnectRequestDetailsPage']
+      .includes(this.navCtrl.getActive(true).name)) {
+      this.exiting = true;
+    }
   }
 }

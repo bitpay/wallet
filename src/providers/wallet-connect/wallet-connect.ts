@@ -142,18 +142,29 @@ export class WalletConnectProvider {
 
   public checkDappStatus(): Promise<void> {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (this.peerMeta) return resolve();
+      let retry = 0;
+      const interval = setInterval( () => {
+        this.logger.log(JSON.stringify(this.peerMeta));
+        if (this.peerMeta)  {
+          clearInterval(interval);
+          return resolve();
+        }
 
-        const error = this.translate.instant(
-          'Dapp not responding. Try scanning a new QR code'
-        );
-        this.errorsProvider.showDefaultError(
-          error,
-          this.translate.instant('Could not connect')
-        );
-        return reject(error);
-      }, 10000);
+        retry++;
+
+        if(retry >= 10) {
+          clearInterval(interval);
+          const error = this.translate.instant(
+            'Dapp not responding. Try scanning a new QR code'
+          );
+          this.errorsProvider.showDefaultError(
+            error,
+            this.translate.instant('Could not connect')
+          );
+          return reject(error);
+        }
+
+      }, 1000);
     });
   }
 
@@ -244,11 +255,16 @@ export class WalletConnectProvider {
       }
     });
 
-    this.walletConnector.on('connect', (error, _payload) => {
+    this.walletConnector.on('connect', async (error, _payload) => {
       this.logger.debug('walletConnector.on("connect")');
       if (error) {
         throw error;
       }
+      const walletConnectData = {
+        session: this.walletConnector.session,
+        walletId: this.walletId
+      };
+      await this.persistenceProvider.setWalletConnect(walletConnectData);
 
       this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
@@ -261,8 +277,6 @@ export class WalletConnectProvider {
         throw error;
       }
       this.killSession();
-      this.connected = false;
-      this.events.publish('Update/ConnectionData');
     });
   }
 
@@ -284,11 +298,6 @@ export class WalletConnectProvider {
         chainId: this.activeChainId,
         accounts: [this.address]
       });
-      const walletConnectData = {
-        session: this.walletConnector.session,
-        walletId: this.walletId
-      };
-      await this.persistenceProvider.setWalletConnect(walletConnectData);
     }
   }
 
@@ -352,16 +361,29 @@ export class WalletConnectProvider {
 
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
+
+      ['session_request', 'session_update', 'call_request', 'connect', 'disconnect'].forEach( (event) => this.walletConnector.off(event));
+
+      this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
-      this.persistenceProvider.removeWalletConnect();
-      this.persistenceProvider.removeWalletConnectPendingRequests();
-      this.peerMeta = null;
-      this.connected = false;
       try {
+        this.peerMeta = null;
+        this.connected = false;
         await this.walletConnector.killSession();
+        this.walletConnector = null;
+        await this.persistenceProvider.removeWalletConnect();
+        localStorage.removeItem('walletconnect');
       } catch (error) {
         this.logger.error(error);
       }
+
+      try {
+        await this.persistenceProvider.removeWalletConnectPendingRequests();
+      } catch(error) {
+        this.logger.debug('no pending requests to purge');
+      }
+      this.events.publish('Update/WalletConnectDisconnected')
+      this.logger.debug('walletConnector.killSession complete');
     }
   }
 
