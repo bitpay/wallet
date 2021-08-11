@@ -270,6 +270,9 @@ export class WalletConnectProvider {
       this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
       this.events.publish('Update/ConnectionData');
+      setTimeout( () => {
+        this.events.publish('Update/GoBackToBrowserNotification');
+      }, 300);
     });
 
     this.walletConnector.on('disconnect', (error, _payload) => {

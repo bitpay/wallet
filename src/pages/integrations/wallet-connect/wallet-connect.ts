@@ -109,7 +109,8 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-    this.events.subscribe('Update/WalletConnectDisconnected', () => this.navCtrl.pop());
+    this.events.subscribe('Update/GoBackToBrowserNotification', this.showNotification);
+    this.events.subscribe('Update/WalletConnectDisconnected', this.navCtrl.pop);
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -133,12 +134,30 @@ export class WalletConnectPage {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
     this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
     this.events.unsubscribe('Update/Requests', this.setRequests);
+    this.events.unsubscribe('Update/GoBackToBrowserNotification', this.showNotification);
+    this.events.unsubscribe('Update/WalletConnectDisconnected', this.navCtrl.pop);
   }
 
   private updateAddressHandler: any = data => {
     this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.uri = data.value;
   };
+
+  private showNotification() {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'in-app-notification',
+      {
+        title: 'Wallet Connect',
+        body: this.translate.instant(
+          'You can now return to your browser.'
+        )
+      }
+    );
+    infoSheet.present();
+    setTimeout( () => {
+      infoSheet.dismiss();
+    }, 5000);
+  }
 
   private setConnectionData: any = async _ => {
     const {
