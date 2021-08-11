@@ -118,7 +118,7 @@ export class WalletConnectPage {
   }
 
   ionViewWillLeave() {
-    this.exiting = true;
+    this.setExiting();
     this.onGoingProcessProvider.clear();
   }
   ngOnDestroy() {
@@ -321,5 +321,16 @@ export class WalletConnectPage {
           ? this.peerMeta.icons[1]
           : this.peerMeta.icons[0]
         : this.defaultImgSrc;
+  }
+
+  /*
+  * IOS workaround - ion-toolbar conflicts with the router animation and lags.
+  * This animates the toolbar out slightly before the router animation finishes to compensate.
+  * */
+  private setExiting() {
+    if (!['WalletConnectRequestDetailsPage']
+      .includes(this.navCtrl.getActive(true).name)) {
+      this.exiting = true;
+    }
   }
 }
