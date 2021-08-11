@@ -255,11 +255,16 @@ export class WalletConnectProvider {
       }
     });
 
-    this.walletConnector.on('connect', (error, _payload) => {
+    this.walletConnector.on('connect', async (error, _payload) => {
       this.logger.debug('walletConnector.on("connect")');
       if (error) {
         throw error;
       }
+      const walletConnectData = {
+        session: this.walletConnector.session,
+        walletId: this.walletId
+      };
+      await this.persistenceProvider.setWalletConnect(walletConnectData);
 
       this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
@@ -293,11 +298,6 @@ export class WalletConnectProvider {
         chainId: this.activeChainId,
         accounts: [this.address]
       });
-      const walletConnectData = {
-        session: this.walletConnector.session,
-        walletId: this.walletId
-      };
-      await this.persistenceProvider.setWalletConnect(walletConnectData);
     }
   }
 
