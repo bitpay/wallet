@@ -151,7 +151,7 @@ export class WalletConnectPage {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'in-app-notification',
       {
-        title: 'Wallet Connect',
+        title: 'Connected',
         body: this.translate.instant(
           'You can now return to your browser.'
         )
@@ -199,7 +199,7 @@ export class WalletConnectPage {
   public async initWallet(): Promise<void> {
     const walletConnectData = await this.persistenceProvider.getWalletConnect();
     if (walletConnectData) {
-      this.onGoingProcessProvider.set('Initializing');
+      this.onGoingProcessProvider.set('Connecting');
       await this.setConnectionData();
       this.showWalletSelector = false;
       this.title = null;
@@ -223,7 +223,7 @@ export class WalletConnectPage {
 
   public async initWalletConnect(): Promise<void> {
     this.logger.info('Initialize wallet connect with uri: ' + this.uri);
-    this.onGoingProcessProvider.set('Initializing');
+    this.onGoingProcessProvider.set('Connecting');
     this.loading = true;
     try {
       await this.walletConnectProvider.initWalletConnect(this.uri);
