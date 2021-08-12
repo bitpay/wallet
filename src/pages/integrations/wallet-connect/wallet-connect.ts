@@ -23,6 +23,15 @@ import {
 
 import * as _ from 'lodash';
 import { animate, style, transition, trigger } from '@angular/animations';
+
+export interface PeerMeta {
+  description: string;
+  url: string;
+  icons: string[];
+  name: string;
+  ssl?: boolean;
+}
+
 @Component({
   selector: 'page-wallet-connect',
   templateUrl: 'wallet-connect.html',
@@ -58,13 +67,7 @@ export class WalletConnectPage {
   public fromWalletConnect: boolean;
   private wallets;
   public isCordova: boolean;
-  public peerMeta: {
-    description: string;
-    url: string;
-    icons: string[];
-    name: string;
-    ssl?: boolean;
-  };
+  public peerMeta: PeerMeta;
   public requests: any[] = [];
   public connected: boolean = false;
   public wallet;

@@ -101,6 +101,8 @@ export class AboutPage {
   public async wipeBitPayAccounts() {
     this.tapped++;
     if (this.tapped >= 10) {
+
+      await this.persistenceProvider.removeWalletConnect();
       localStorage.removeItem('walletconnect');
       alert('[DEV] - cleared wallet connect')
       this.tapped = 0;
