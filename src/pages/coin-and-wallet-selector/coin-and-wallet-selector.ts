@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  Content,
   Events,
   NavController,
   NavParams,
@@ -30,6 +31,8 @@ import { SendPage } from '../../pages/send/send';
   templateUrl: 'coin-and-wallet-selector.html'
 })
 export class CoinAndWalletSelectorPage {
+  @ViewChild('pageTop') pageTop: Content;
+
   public coins: any[] = [];
   public chains: any[] = [];
   public tokens: any[] = [];
@@ -278,11 +281,13 @@ export class CoinAndWalletSelectorPage {
 
   public showTokensSearch() {
     this.tokensSearch = true;
+    this.pageTop.scrollToTop();
     this.updateSearchInput('');
   }
 
   public hideTokensSearch() {
     this.tokensSearch = false;
+    this.pageTop.scrollToTop();
   }
 
   private onWalletSelect(wallet): void {

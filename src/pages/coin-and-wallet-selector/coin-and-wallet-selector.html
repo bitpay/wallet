@@ -2,14 +2,17 @@
   <ion-navbar>
     <ion-title class="bp-title">{{ coinSelectorTitle }}</ion-title>
     <ion-buttons left *ngIf="useAsModal">
-      <button class="close-container disable-hover" (click)="close()" ion-button>
+      <button *ngIf="!tokensSearch" class="close-container disable-hover" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+      <button *ngIf="tokensSearch" class="close-container disable-hover back-arrow" (click)="hideTokensSearch()" ion-button>
+        <ion-icon name="ios-arrow-round-back"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content #pageTop>
   <ion-list *ngIf="!tokensSearch" class="bp-list">
     <div class="list-subtitle" *ngIf="chains.length > 0" translate>Featured Currencies</div>
     <div *ngFor="let coin of chains">
@@ -52,7 +55,7 @@
       <div class="line-divider"></div>
     </div>
     <button *ngIf="oneInchAllSupportedCoins && showOneInchTokensSearchBtn" ion-item detail-none class="create-button" (click)="showTokensSearch()">
-      {{ 'See other supported tokens' | translate }}
+      {{ 'Other supported tokens' | translate }}
     </button>
   </ion-list>
   <ion-list *ngIf="tokensSearch" class="bp-list">
@@ -73,14 +76,14 @@
       </button>
       <div class="line-divider"></div>
     </div>
-    <div class="token-count" *ngIf="tokenListShowMore">
+    <div class="token-count" *ngIf="tokenListShowMore && tokensSearch">
       <span>{{filteredTokens.length - tokenSearchResults.length}} more</span>
       &nbsp;
       <ion-icon name="arrow-down"></ion-icon>
     </div>
   </ion-list>
 
-  <ion-infinite-scroll *ngIf="tokenListShowMore" (ionInfinite)="moreSearchResults($event)">
+  <ion-infinite-scroll *ngIf="tokenListShowMore && tokensSearch" (ionInfinite)="moreSearchResults($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

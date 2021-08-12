@@ -60,7 +60,7 @@
         <div class="item-label card-title" translate>To</div>
         <ion-row class="row-selector" align-items-center *ngIf="!toWalletSelected" (click)="showToWallets()">
           <ion-col>
-            <button ion-button class="select-wallet-button">
+            <button ion-button class="select-wallet-button" [disabled]="!fromWalletSelected">
               <span>{{'Select Wallet' | translate}}</span>
               <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
               <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
@@ -82,8 +82,8 @@
               </ion-icon>
               <span *ngIf="!toToken || !toToken.isCustomToken" class="note-container ellipsis">{{toWalletSelected.name}}</span>
               <span *ngIf="toToken && toToken.isCustomToken" class="note-container ellipsis">{{toToken.name}}</span>
-              <ion-icon *ngIf="!isOpenSelectorTo" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelectorTo" name="ios-arrow-up-outline"></ion-icon>
+              <ion-icon *ngIf="!isOpenSelectorTo && !toWalletSelectedByDefault" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelectorTo && !toWalletSelectedByDefault" name="ios-arrow-up-outline"></ion-icon>
             </button>
           </ion-col>
   
