@@ -23,10 +23,9 @@
     <access origin="https://www.coinbase.com" />
     <access origin="https://bitpay.api.enterprise.1inch.exchange" />
     <access origin="https://balances.1inch.exchange" />
+    <access origin="https://tokens.1inch.exchange" />
     <access origin="https://api.testwyre.com" />
     <access origin="https://api.sendwyre.com" />
-    <access origin="https://tokens.1inch.exchange/" />
-    <access origin="https://bitpay.api.enterprise.1inch.exchange/" />
     <allow-navigation href="gap://ready" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
