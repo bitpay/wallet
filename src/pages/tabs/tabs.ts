@@ -15,7 +15,6 @@ import {
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { RateProvider } from '../../providers/rate/rate';
-import { TabProvider } from '../../providers/tab/tab';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -62,7 +61,6 @@ export class TabsPage {
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
     private bwcErrorProvider: BwcErrorProvider,
-    private tabProvider: TabProvider,
     private rateProvider: RateProvider,
     private platformProvider: PlatformProvider,
     private actionSheetProvider: ActionSheetProvider,
@@ -142,7 +140,6 @@ export class TabsPage {
 
     this.checkCardEnabled();
     this.checkClipboardData();
-    this.tabProvider.prefetchGiftCards();
   }
 
   ngOnDestroy() {

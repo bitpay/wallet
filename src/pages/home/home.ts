@@ -14,7 +14,6 @@ import {
   EmailNotificationsProvider,
   ExternalLinkProvider,
   FeedbackProvider,
-  GiftCardProvider,
   IABCardProvider,
   Logger,
   MerchantProvider,
@@ -107,7 +106,6 @@ export class HomePage {
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private navCtrl: NavController,
-    private giftCardProvider: GiftCardProvider,
     private merchantProvider: MerchantProvider,
     private feedbackProvider: FeedbackProvider,
     private translate: TranslateService,
@@ -512,7 +510,7 @@ export class HomePage {
     const slideIndex = this.slides && this.slides.getActiveIndex();
     const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
     const cardConfig = activeAd.linkParams && activeAd.linkParams.cardConfig;
-    cardConfig && this.logPresentedWithGiftCardPromoEvent(cardConfig);
+    cardConfig;
   }
 
   public doRefresh(refresher): void {
@@ -590,16 +588,6 @@ export class HomePage {
           }
         });
     });
-  }
-
-  logPresentedWithGiftCardPromoEvent(promotedCard: CardConfig) {
-    this.giftCardProvider.logEvent(
-      'presentedWithGiftCardPromo',
-      this.giftCardProvider.getPromoEventParams(
-        promotedCard,
-        'Home Tab Advertisement'
-      )
-    );
   }
 
   public dismissAdvertisement(advertisement): void {

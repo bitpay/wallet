@@ -9,7 +9,7 @@ import {
   DirectoryCuration,
   DirectoryProvider
 } from '../directory/directory';
-import { GiftCardProvider, sortByDisplayName } from '../gift-card/gift-card';
+import { sortByDisplayName } from '../gift-card/gift-card';
 import { CardConfig, GiftCardDiscount } from '../gift-card/gift-card.types';
 
 export interface Merchant extends DirectIntegration {
@@ -27,7 +27,6 @@ export class MerchantProvider {
   constructor(
     private directoryProvider: DirectoryProvider,
     private events: Events,
-    private giftCardProvider: GiftCardProvider
   ) {
     this.listenForAuthChanges();
   }
@@ -49,21 +48,15 @@ export class MerchantProvider {
   fetchMerchants() {
     this.merchantPromise = Promise.all([
       this.directoryProvider.fetchDirectIntegrations(),
-      this.giftCardProvider.getAvailableCards(),
       this.directoryProvider.fetchDirectory(),
-      this.giftCardProvider.getRecentlyPurchasedBrandNames()
     ]).then(
       ([
         directIntegrations,
-        availableGiftCardBrands,
         directory,
-        recentlyPurchasedBrandNames
       ]) =>
         buildMerchants(
           directIntegrations,
-          availableGiftCardBrands,
           directory,
-          recentlyPurchasedBrandNames
         )
     );
     return this.merchantPromise;
@@ -77,48 +70,24 @@ export class MerchantProvider {
 
 export function buildMerchants(
   directIntegrations: DirectIntegration[] = [],
-  availableGiftCardBrands: CardConfig[] = [],
   directory: Directory,
-  recentlyPurchasedBrandNames: string[]
 ): Merchant[] {
   const directIntegrationMerchants = directIntegrations.map(integration => ({
     ...integration,
     hasDirectIntegration: true,
     giftCards: []
   }));
-  const giftCardMerchants = availableGiftCardBrands.map(cardConfig => ({
-    hasDirectIntegration: false,
-    name: cardConfig.name,
-    displayName: cardConfig.displayName,
-    caption: cardConfig.description,
-    featured: cardConfig.featured,
-    icon: cardConfig.icon,
-    link: cardConfig.website,
-    displayLink: cardConfig.website,
-    tags: cardConfig.tags || [],
-    domains: [cardConfig.website].concat(cardConfig.supportedUrls || []),
-    theme: cardConfig.brandColor || cardConfig.logoBackgroundColor,
-    instructions: cardConfig.description,
-    giftCards: [cardConfig]
-  }));
   const allMerchants = [
     ...directIntegrationMerchants,
-    ...giftCardMerchants
   ] as Merchant[];
-  const recentlyPurchasedAvailableBrandNames = recentlyPurchasedBrandNames.filter(
-    brandName =>
-      allMerchants.some(merchant => merchant.displayName === brandName)
-  );
   const fullDirectory = appendFeaturedGiftCardsToPopularBrands(
     directory,
-    availableGiftCardBrands
   );
   return allMerchants
     .map(merchant =>
       appendCategories(
         merchant,
         fullDirectory,
-        recentlyPurchasedAvailableBrandNames
       )
     )
     .sort(sortByDisplayName);
@@ -153,7 +122,6 @@ export function appendFeaturedGiftCardsToPopularBrands(
 export function appendCategories(
   merchant: Merchant,
   directory: Directory,
-  recentlyPurchasedBrandNames: string[]
 ): Merchant {
   const baseCurations = directory.curated
     .map((curation, index) => ({
@@ -162,20 +130,7 @@ export function appendCategories(
       merchantIndex: curation.merchants.indexOf(merchant.displayName)
     }))
     .filter(curation => curation.merchants.includes(merchant.displayName));
-  const curations = recentlyPurchasedBrandNames.includes(merchant.displayName)
-    ? [
-        {
-          displayName: 'Recently Purchased',
-          index: -1,
-          merchantIndex: recentlyPurchasedBrandNames.indexOf(
-            merchant.displayName
-          ),
-          merchants: recentlyPurchasedBrandNames,
-          name: 'recentlyPurchased'
-        },
-        ...baseCurations
-      ]
-    : baseCurations;
+  baseCurations;
   return {
     ...merchant,
     categories: directory.categories
@@ -183,7 +138,6 @@ export function appendCategories(
       .filter(category =>
         category.tags.some(tag => merchant.tags.includes(tag))
       ),
-    curations
   };
 }
 

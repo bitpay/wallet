@@ -25,7 +25,6 @@ import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
@@ -102,7 +101,6 @@ export class WalletDetailsPage {
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private events: Events,
-    public giftCardProvider: GiftCardProvider,
     private logger: Logger,
     private timeProvider: TimeProvider,
     private translate: TranslateService,
@@ -128,7 +126,6 @@ export class WalletDetailsPage {
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isShowDonationBtn = _.some(this.navParams.data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
-    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto =

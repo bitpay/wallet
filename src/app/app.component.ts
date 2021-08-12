@@ -27,7 +27,6 @@ import {
   ConfigProvider,
   DynamicLinksProvider,
   EmailNotificationsProvider,
-  GiftCardProvider,
   IABCardProvider,
   InAppBrowserProvider,
   IncomingDataProvider,
@@ -118,7 +117,6 @@ export class CopayApp {
     private appProvider: AppProvider,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
-    private giftCardProvider: GiftCardProvider,
     private imageLoaderConfig: ImageLoaderConfig,
     private modalCtrl: ModalController,
     private coinbaseProvider: CoinbaseProvider,
@@ -226,7 +224,6 @@ export class CopayApp {
       this.bitpayProvider,
       this.bitpayIdProvider,
       this.iabCardProvider,
-      this.giftCardProvider
     ].forEach(provider => provider.setNetwork(this.NETWORK));
 
     this.logger.debug('Setting Cached Total Balance');
@@ -538,10 +535,6 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
-    // Gift Cards
-    if (this.appProvider.info._enabledExtensions.giftcards)
-      this.giftCardProvider.register();
-
     // Buy Crypto
     if (
       this.appProvider.info._enabledExtensions.buycrypto &&

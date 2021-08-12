@@ -50,7 +50,6 @@ export { ExternalLinkProvider } from '../providers/external-link/external-link';
 export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';
 export { FilterProvider } from '../providers/filter/filter';
-export { GiftCardProvider } from '../providers/gift-card/gift-card';
 export { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 export { InAppBrowserProvider } from '../providers/in-app-browser/in-app-browser';
 export { IABCardProvider } from '../providers/in-app-browser/card';
