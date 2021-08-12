@@ -110,7 +110,7 @@ export class WalletConnectPage {
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
     this.events.subscribe('Update/GoBackToBrowserNotification', this.showNotification);
-    this.events.subscribe('Update/WalletConnectDisconnected', this.navCtrl.pop);
+    this.events.subscribe('Update/WalletConnectDisconnected', this.goBack);
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -135,7 +135,7 @@ export class WalletConnectPage {
     this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
     this.events.unsubscribe('Update/Requests', this.setRequests);
     this.events.unsubscribe('Update/GoBackToBrowserNotification', this.showNotification);
-    this.events.unsubscribe('Update/WalletConnectDisconnected', this.navCtrl.pop);
+    this.events.unsubscribe('Update/WalletConnectDisconnected', this.goBack);
   }
 
   private updateAddressHandler: any = data => {
@@ -143,7 +143,11 @@ export class WalletConnectPage {
     this.uri = data.value;
   };
 
-  private showNotification() {
+  private goBack = () => {
+    this.navCtrl.pop();
+  }
+
+  private showNotification = () => {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'in-app-notification',
       {
