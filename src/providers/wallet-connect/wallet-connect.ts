@@ -371,12 +371,13 @@ export class WalletConnectProvider {
       this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
       try {
+        localStorage.removeItem('walletconnect');
+        await this.persistenceProvider.removeWalletConnect();
+        this.logger.debug('walletconnect - removed persistence');
         this.peerMeta = null;
         this.connected = false;
         await this.walletConnector.killSession();
         this.walletConnector = null;
-        await this.persistenceProvider.removeWalletConnect();
-        localStorage.removeItem('walletconnect');
       } catch (error) {
         this.logger.error(error);
       }
