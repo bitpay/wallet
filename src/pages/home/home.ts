@@ -48,13 +48,14 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
-import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
+import { WalletConnectPage} from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 
 export interface Advertisement {
   name: string;
@@ -112,7 +113,7 @@ export class HomePage {
   private hasOldCoinbaseSession: boolean;
   private newReleaseVersion: string;
   private pagesMap: any;
-
+  private newWalletConnectSessionUri: string;
   private isCordova: boolean;
   private zone;
 
@@ -145,7 +146,8 @@ export class HomePage {
     private iabCardProvider: IABCardProvider,
     private bitPayIdProvider: BitPayIdProvider,
     private rateProvider: RateProvider,
-    private walletConnectProvider: WalletConnectProvider
+    private walletConnectProvider: WalletConnectProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.logger.info('Loaded: HomePage');
     this.isCopay = this.appProvider.info.name === 'copay';
@@ -486,6 +488,7 @@ export class HomePage {
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
     });
+    this.events.subscribe('Update/WalletConnectNewSessionRequest', this.onWalletConnectNewSessionRequest);
   }
 
   private preFetchWallets() {
@@ -1138,14 +1141,33 @@ export class HomePage {
   private async onSelectWalletEvent(wallet): Promise<void> {
     if (!_.isEmpty(wallet)) {
       await this.walletConnectProvider.setAccountInfo(wallet);
+
+
       const params = {
         fromWalletConnect: true,
         walletId: wallet.credentials.walletId
       };
-      this.isCordova
-        ? this.navCtrl.push(ScanPage, params, {animate: false})
-        : this.navCtrl.push(WalletConnectPage, params);
+
+      if (this.newWalletConnectSessionUri) {
+        this.logger.log('WalletConnect - New Session Request URI', this.newWalletConnectSessionUri);
+        const redirParams = {
+          ...params,
+          force: true,
+        };
+        this.incomingDataProvider.redir(this.newWalletConnectSessionUri, redirParams);
+
+      } else {
+        this.isCordova
+          ? this.navCtrl.push(ScanPage, params, {animate: false})
+          : this.navCtrl.push(WalletConnectPage, params);
+      }
+
     }
+  }
+
+  private onWalletConnectNewSessionRequest = (newSession) => {
+    this.newWalletConnectSessionUri = newSession;
+    this.showWallets();
   }
 }
 

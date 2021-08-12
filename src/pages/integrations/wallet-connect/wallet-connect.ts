@@ -249,7 +249,7 @@ export class WalletConnectPage {
     const title = this.translate.instant('New Session Request');
     const message = this.replaceParametersProvider.replace(
       this.translate.instant(
-        `{{walletName}} will be disconnected from your actual connection to {{peerMetaName}} ({{peerMetaUrl}})`
+        `{{peerMetaName}} ({{peerMetaUrl}}) is requesting to connect. This will disconnect your current session.`
       ),
       {
         walletName: wallet.name,
@@ -264,6 +264,7 @@ export class WalletConnectPage {
       .then((res: boolean) => {
         if (res) {
           this.killSession();
+          this.events.publish('Update/WalletConnectNewSessionRequest', this.uri);
         }
       });
   }
