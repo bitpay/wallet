@@ -4,21 +4,15 @@
 
 <ion-content no-bounce>
   <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!featureEducationSlides.isEnd()" class="onboarding-slides">
-    <ion-slide *ngIf="appName !== 'Copay'">
+    <ion-slide class="key-creation">
       <ion-content>
         <div class="slide-info">
           <div class="img-container">
-            <img src="assets/img/onboarding/feature-education-4.svg" />
+            <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
           </div>
           <div class="info">
-            <h3 class="title" translate>Be your own bank with a simple <a (click)="openLink('https://be.cash')">be.cash</a> card</h3>
-            <div class="text" translate>
-              Keep full control of your crypto while still being able to spend them with card. Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
-              <!-- TODO: AbcPay update new text later -->
-              <div class="note" translate>
-                *Coming soon...
-              </div>
-            </div>
+            <h3 class="title" translate>Control your money without an account</h3>
+            <div class="text" translate>Websites and exchanges get hacked. AbcPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange.</div>
           </div>
         </div>
       </ion-content>
@@ -38,15 +32,21 @@
         </div>
       </ion-content>
     </ion-slide>
-    <ion-slide class="key-creation">
+    <ion-slide *ngIf="appName !== 'Copay'">
       <ion-content>
         <div class="slide-info">
           <div class="img-container">
-            <img class="tour-1" src="assets/img/onboarding-tour1.svg" />
+            <img src="assets/img/onboarding/feature-education-4.svg" />
           </div>
           <div class="info">
-            <h3 class="title" translate>Control your money without an account</h3>
-            <div class="text" translate>Websites and exchanges get hacked. AbcPay allows you to privately store, manage, and use your crypto funds without having to trust a centralized bank or exchange.</div>
+            <h3 class="title" translate>Be your own bank with a simple <a (click)="openLink('https://be.cash')">be.cash</a> card</h3>
+            <div class="text" translate>
+              Keep full control of your crypto while still being able to spend them with card. Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
+              <!-- TODO: AbcPay update new text later -->
+              <div class="note" translate>
+                *Coming soon...
+              </div>
+            </div>
           </div>
         </div>
       </ion-content>
