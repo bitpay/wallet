@@ -79,8 +79,8 @@ package-android:
     - chmod 777 src/environments/index.ts
     - npm run config -- --environment=development
     - npm run prepare:abcpay
+    - ionic cordova plugin remove cordova-plugin-useragent
     - ionic cordova plugin add cordova-plugin-useragent
-    - npm install --save @ionic-native/user-agent
     - npm run final:android
     - echo $(ls platforms/android/app/build/outputs/apk/release)
     - cp platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk
