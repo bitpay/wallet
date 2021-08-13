@@ -13,7 +13,6 @@ import env from '../../environments';
 // Providers
 import {
   ActionSheetProvider,
-  // BuyCryptoProvider,
   BwcErrorProvider,
   CurrencyProvider,
   ErrorsProvider,
@@ -58,7 +57,6 @@ export class CoinAndWalletSelectorPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
-    // private buyCryptoProvider: BuyCryptoProvider,
     private logger: Logger,
     private navCtrl: NavController,
     private viewCtrl: ViewController,

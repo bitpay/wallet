@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
-// Providers
-import { Logger } from '../../providers/logger/logger';
 @Component({
   selector: 'wallet-selector',
   templateUrl: 'wallet-selector.html'
@@ -16,7 +13,7 @@ export class WalletSelectorComponent extends ActionSheetParent {
   public linkEthTokens: boolean;
   public token;
 
-  constructor(private logger: Logger) {
+  constructor() {
     super();
   }
 
@@ -46,9 +43,5 @@ export class WalletSelectorComponent extends ActionSheetParent {
       };
       this.dismiss(optionClicked);
     }
-  }
-
-  public readMore() {
-    this.logger.debug('Read more clicked'); // TODO: add a link or remove this read more
   }
 }

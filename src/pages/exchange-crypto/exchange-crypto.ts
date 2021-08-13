@@ -222,12 +222,6 @@ export class ExchangeCryptoPage {
         case '1inch':
           if (!promise.data || !promise.data.tokens) {
             this.logger.error('1Inch getCurrencies Error');
-            // this.showErrorAndBack(
-            //   null,
-            //   this.translate.instant(
-            //     '1Inch is not available at this moment. Please, try again later.'
-            //   )
-            // );
             return;
           }
 
@@ -270,12 +264,6 @@ export class ExchangeCryptoPage {
             this.logger.error(
               'Changelly getCurrencies Error: ' + promise.data.error.message
             );
-            // this.showErrorAndBack(
-            //   null,
-            //   this.translate.instant(
-            //     'Changelly is not available at this moment. Please, try again later.'
-            //   )
-            // );
             return;
           }
 
@@ -493,7 +481,7 @@ export class ExchangeCryptoPage {
     let modal = this.modalCtrl.create(
       CoinAndWalletSelectorPage,
       {
-        title: this.toWalletSelectorTitle,
+        walletSelectorTitle: this.toWalletSelectorTitle,
         coinSelectorTitle: this.translate.instant('Select Destination Coin'),
         useAsModal: true,
         supportedCoins,
