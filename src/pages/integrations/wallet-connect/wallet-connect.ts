@@ -194,7 +194,7 @@ export class WalletConnectPage {
   private setRequests: any = (requests, incoming?) => {
     this.requests = requests;
     this.changeRef.detectChanges();
-    if (incoming) {
+    if (incoming && this.navCtrl.getActive().name === 'WalletConnectPage') {
       this.goToRequestDetailsPage(incoming, incoming.params);
     }
   };

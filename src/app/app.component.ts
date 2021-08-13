@@ -652,11 +652,15 @@ export class CopayApp {
                 });
             });
           } else if (!nextView.params.isDeepLink) {
+
+            const { notifyOnly } = nextView.params;
+
             const data = {
               title: 'WalletConnect',
               body: `New Pending Request`,
-              action: 'goToWalletconnect',
-              closeButtonText: 'View',
+              action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
+              closeButtonText: notifyOnly ? 'Dismiss' : 'View',
+              autoDismiss: notifyOnly,
               request: nextView.params.request
             };
             this.pushNotificationsProvider.showInappNotification(data);
@@ -664,7 +668,11 @@ export class CopayApp {
         }
         return;
       } else if (nextView.name === 'WalletConnectRequestDetailsPage') {
-        this.nav.push(this.pageMap[nextView.name], nextView.params);
+        this.nav.push(this.pageMap['WalletConnectPage'], nextView.params);
+        setTimeout( () => {
+          this.nav.push(this.pageMap[nextView.name], nextView.params);
+        }, 300);
+
         return;
       } else {
         if (nextView.params && nextView.params.deepLink) {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 
 // Pages
 import { ConfirmPage } from '../../../../pages/send/confirm/confirm';
@@ -44,13 +44,21 @@ export class WalletConnectRequestDetailsPage {
     private errorsProvider: ErrorsProvider,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private events: Events
   ) {}
 
   ionViewDidLoad() {
     this.setConnectionData();
     this.request = this.navParams.data.request;
     this.params = this.navParams.data.params;
+    // toggling notifyOnly mode - making wc push notifications non actionable as to not distract from current proposal
+    this.events.publish('NotifyOnly', true);
+  }
+
+  ionViewWillLeave() {
+    // reset notifyOnly mode for pushNotifications
+    this.events.publish('NotifyOnly', false);
   }
 
   private setConnectionData: any = async _ => {

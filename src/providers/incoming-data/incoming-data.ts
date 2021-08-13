@@ -28,7 +28,8 @@ export interface RedirParams {
   force?: boolean;
   walletId?: string;
   wcRequest?: any;
-  fromSettings?: boolean
+  fromSettings?: boolean;
+  notifyOnly?: boolean;
 }
 
 @Injectable()
@@ -522,7 +523,7 @@ export class IncomingDataProvider {
     }
 
     // @ts-ignore
-    const {force, walletId, fromWalletConnect, wcRequest: request, fromSettings } = redirParams || {};
+    const {force, walletId, fromWalletConnect, wcRequest: request, fromSettings, notifyOnly } = redirParams || {};
 
     let stateParams = {
       uri,
@@ -532,7 +533,8 @@ export class IncomingDataProvider {
       activePage: this.activePage,
       request,
       isDeepLink: uri && !redirParams,
-      fromSettings
+      fromSettings,
+      notifyOnly
     };
     let nextView = {
       name: 'WalletConnectPage',
