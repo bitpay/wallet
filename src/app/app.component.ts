@@ -448,6 +448,8 @@ export class CopayApp {
     }
 
     this.addressBookProvider.migrateOldContacts();
+
+    this.walletConnectProvider.checkConnection()
   }
 
   private updateDesktopOnFocus() {

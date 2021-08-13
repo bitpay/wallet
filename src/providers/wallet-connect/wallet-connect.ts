@@ -336,6 +336,39 @@ export class WalletConnectProvider {
     }
   }
 
+  private async ping() {
+    this.logger.log('Wallet Connect - Ping Connection');
+    return new Promise( (resolve) => {
+      try {
+        this.walletConnector.approveSession({
+          chainId: this.activeChainId,
+          accounts: [this.address]
+        });
+
+      } catch(err) {
+        resolve(err.message === 'Session currently connected');
+      }
+    })
+  }
+
+  public async checkConnection() {
+    if (!this.walletConnector) return;
+
+    const isConnected = await this.ping();
+    if (isConnected) return;
+
+    // clear out storage
+    try {
+      localStorage.removeItem('walletconnect');
+      await this.persistenceProvider.removeWalletConnect();
+      await this.persistenceProvider.removeWalletConnectPendingRequests();
+    } catch(err) {
+      this.logger.error(err);
+    }
+
+    this.logger.log('Cleared Cached WalletConnect Session');
+  }
+
   private refEthereumRequests(payload) {
     this.logger.debug(`refEthereumRequests ${payload.method}`);
     switch (payload.method) {
