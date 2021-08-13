@@ -51,6 +51,7 @@ import { NavigationPage } from './navigation/navigation';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 
 @Component({
   selector: 'page-settings',
@@ -396,7 +397,10 @@ export class SettingsPage {
         this.navCtrl.push(GiftCardsSettingsPage);
         break;
       case 'newWalletConnect':
-        this.navCtrl.push(WalletConnectSettingsPage);
+        this.persistenceProvider.getWalletConnect().then(session => {
+          this.navCtrl.push(session ? WalletConnectPage : WalletConnectSettingsPage);
+        });
+
         break;
     }
   }

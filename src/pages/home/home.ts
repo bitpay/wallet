@@ -488,7 +488,8 @@ export class HomePage {
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
     });
-    this.events.subscribe('Update/WalletConnectNewSessionRequest', this.onWalletConnectNewSessionRequest);
+    this.events.subscribe('Update/WalletConnectNewSessionRequest', newSessionUri => this.onWalletConnectNewSessionRequest(newSessionUri));
+    this.events.subscribe('OpenWalletConnect', () => this.goToWalletConnectPage());
   }
 
   private preFetchWallets() {
@@ -665,7 +666,7 @@ export class HomePage {
         ),
         app: 'bitpay',
         linkText: this.translate.instant('Get Started'),
-        link: WalletConnectPage,
+        link: 'wallet-connect-page',
         dismissible: true,
         isTesting: false,
         imgSrc: 'assets/img/wallet-connect/advertisement.svg'
@@ -864,6 +865,10 @@ export class HomePage {
   }
 
   public goTo(page, params: any = {}) {
+    if (page === 'wallet-connect-page') {
+      this.goToWalletConnectPage();
+      return;
+    }
     if (page === 'card-referral') {
       this.iabCardProvider.loadingWrapper(async () => {
         const cards = await this.persistenceProvider.getBitpayDebitCards(
@@ -1142,8 +1147,12 @@ export class HomePage {
     if (!_.isEmpty(wallet)) {
       await this.walletConnectProvider.setAccountInfo(wallet);
 
-
-      const params = {
+      let params: {
+        fromWalletConnect: true,
+        walletId: string,
+        force?: boolean,
+        updateURI?: boolean
+      } = {
         fromWalletConnect: true,
         walletId: wallet.credentials.walletId
       };
@@ -1165,7 +1174,7 @@ export class HomePage {
     }
   }
 
-  private onWalletConnectNewSessionRequest = (newSession) => {
+  private onWalletConnectNewSessionRequest(newSession) {
     this.newWalletConnectSessionUri = newSession;
     this.showWallets();
   }

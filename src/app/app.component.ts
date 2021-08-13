@@ -630,7 +630,7 @@ export class CopayApp {
           currentView[currentIndex].name !== 'WalletConnectPage'
         ) {
           // if coming from scan -> pasteURL
-          if (nextView.params && nextView.params.pasteURL) {
+          if (nextView.params && (nextView.params.pasteURL || nextView.params.fromSettings)) {
             this.nav.push(this.pageMap[nextView.name], nextView.params);
             return;
           }

@@ -179,6 +179,10 @@ export class WalletConnectProvider {
     };
   }
 
+  public resetConnectionData() {
+    this.peerMeta = null;
+  }
+
   public getPendingRequests() {
     return this.persistenceProvider.getWalletConnectPendingRequests();
   }

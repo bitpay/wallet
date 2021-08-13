@@ -101,11 +101,16 @@ export class AboutPage {
   public async wipeBitPayAccounts() {
     this.tapped++;
     if (this.tapped >= 10) {
-
-      await this.persistenceProvider.removeWalletConnect();
-      localStorage.removeItem('walletconnect');
-      alert('[DEV] - cleared wallet connect')
       this.tapped = 0;
+      localStorage.removeItem('walletconnect');
+      alert('[DEV] - wc - cleared local storage');
+      const wcSession = await this.persistenceProvider.getWalletConnect();
+      this.logger.log(wcSession);
+      if (wcSession) {
+        await this.persistenceProvider.removeWalletConnect();
+        alert('[DEV] - wc - cleared session')
+      }
+
     }
   }
 }

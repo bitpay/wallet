@@ -11,6 +11,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 
 import env from '../../environments';
+import { WalletConnectProvider } from '../../providers';
 
 @Component({
   selector: 'page-scan',
@@ -58,7 +59,8 @@ export class ScanPage {
     private navParams: NavParams,
     private platform: Platform,
     private errorsProvider: ErrorsProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private walletConnectProvider: WalletConnectProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -115,6 +117,16 @@ export class ScanPage {
     this.fromWalletConnect = this.navParams.data.fromWalletConnect;
     this.fromFooterMenu = this.navParams.data.fromFooterMenu;
     this.walletId = this.navParams.data.walletId;
+
+    if (this.fromWalletConnect) {
+      this.walletConnectProvider.resetConnectionData();
+      if(this.navParams.data.fromSettings) {
+        // workaround for removing wc settings page
+        setTimeout( () => {
+          this.navCtrl.remove(1, 1);
+        }, 500);
+      }
+    }
 
     if (this.canGoBack && this.tabBarElement)
       this.tabBarElement.style.display = 'none';
@@ -264,6 +276,7 @@ export class ScanPage {
       } else {
         const redirParams = {
           fromWalletConnect: true,
+          fromSettings: this.navParams.data.fromSettings,
           force: true,
           walletId: this.walletId
         };
@@ -327,6 +340,7 @@ export class ScanPage {
     let nextView = {
       name: 'WalletConnectPage',
       params: {
+        fromSettings: this.navParams.data.fromSettings,
         fromWalletConnect: this.fromWalletConnect,
         walletId: this.walletId,
         force: true,
