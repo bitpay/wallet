@@ -1,5 +1,5 @@
 stages:
-  - build
+  - configure
   - package
   - deploy
 
@@ -37,14 +37,13 @@ stages:
   # - git config --global user.email "user@example.com"
   # - git config --global user.name "User name"
 
-build:
-  stage: build
+configure:
+  stage: configure
   only:
      - vant/deploy
   image: tarampampam/node:10-alpine
   script:
     - npm i yalc -g
-    - rm -r bitcore
     - git clone https://${BITCORE_USER_NAME}:${BITCORE_DEPLOY_TOKEN}@gitlab.com/abcpros/bitcore.git
     - cd bitcore
     - git checkout master
