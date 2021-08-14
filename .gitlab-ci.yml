@@ -44,9 +44,15 @@ build:
   image: tarampampam/node:10-alpine
   script:
     - npm i yalc -g
-    - git clone https://${BITCORE_USER_NAME}:${BITCORE_DEPLOY_TOKEN}@gitlab.com/abcpros/bitcore.git
-    - cd bitcore
-    - git checkout master
+
+    - if [ -z "$(ls -A /path/to/dir)" ]; then
+        git clone https://${BITCORE_USER_NAME}:${BITCORE_DEPLOY_TOKEN}@gitlab.com/abcpros/bitcore.git
+        cd bitcore
+        git checkout master
+      else
+        cd bitcore
+        git pull -f
+      fi
     - yalc publish
     - cd ..
     - npm install 
