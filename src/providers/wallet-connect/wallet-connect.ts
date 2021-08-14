@@ -62,7 +62,7 @@ export class WalletConnectProvider {
     this.logger.debug('WalletConnect Provider initialized');
     this.events.subscribe('NotifyOnly', (value: boolean) => {
       this.logger.log('NotifyOnly set', value);
-      this.notifyOnly = value
+      this.notifyOnly = value;
     });
   }
 
@@ -148,16 +148,16 @@ export class WalletConnectProvider {
   public checkDappStatus(): Promise<void> {
     return new Promise((resolve, reject) => {
       let retry = 0;
-      const interval = setInterval( () => {
+      const interval = setInterval(() => {
         this.logger.log(JSON.stringify(this.peerMeta));
-        if (this.peerMeta)  {
+        if (this.peerMeta) {
           clearInterval(interval);
           return resolve();
         }
 
         retry++;
 
-        if(retry >= 10) {
+        if (retry >= 10) {
           clearInterval(interval);
           const error = this.translate.instant(
             'Dapp not responding. Try scanning a new QR code'
@@ -168,7 +168,6 @@ export class WalletConnectProvider {
           );
           return reject(error);
         }
-
       }, 1000);
     });
   }
@@ -260,8 +259,15 @@ export class WalletConnectProvider {
           this.requests
         );
         const incoming = this.requests;
-        this.events.publish('Update/Requests', this.requests, incoming.slice(-1)[0]);
-        this.incomingDataProvider.redir('wc:', { wcRequest: payload, notifyOnly: this.notifyOnly});
+        this.events.publish(
+          'Update/Requests',
+          this.requests,
+          incoming.slice(-1)[0]
+        );
+        this.incomingDataProvider.redir('wc:', {
+          wcRequest: payload,
+          notifyOnly: this.notifyOnly
+        });
       }
     });
 
@@ -279,7 +285,7 @@ export class WalletConnectProvider {
       this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
       this.events.publish('Update/ConnectionData');
-      setTimeout( () => {
+      setTimeout(() => {
         this.events.publish('Update/GoBackToBrowserNotification');
       }, 300);
     });
@@ -338,17 +344,16 @@ export class WalletConnectProvider {
 
   private async ping() {
     this.logger.log('Wallet Connect - Ping Connection');
-    return new Promise( (resolve) => {
+    return new Promise(resolve => {
       try {
         this.walletConnector.approveSession({
           chainId: this.activeChainId,
           accounts: [this.address]
         });
-
-      } catch(err) {
+      } catch (err) {
         resolve(err.message === 'Session currently connected');
       }
-    })
+    });
   }
 
   public async checkConnection() {
@@ -362,7 +367,7 @@ export class WalletConnectProvider {
       localStorage.removeItem('walletconnect');
       await this.persistenceProvider.removeWalletConnect();
       await this.persistenceProvider.removeWalletConnectPendingRequests();
-    } catch(err) {
+    } catch (err) {
       this.logger.error(err);
     }
 
@@ -407,8 +412,13 @@ export class WalletConnectProvider {
 
   public async killSession(): Promise<void> {
     if (this.walletConnector) {
-
-      ['session_request', 'session_update', 'call_request', 'connect', 'disconnect'].forEach( (event) => this.walletConnector.off(event));
+      [
+        'session_request',
+        'session_update',
+        'call_request',
+        'connect',
+        'disconnect'
+      ].forEach(event => this.walletConnector.off(event));
 
       this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
@@ -426,19 +436,19 @@ export class WalletConnectProvider {
 
       try {
         await this.persistenceProvider.removeWalletConnectPendingRequests();
-      } catch(error) {
+      } catch (error) {
         this.logger.debug('no pending requests to purge');
       }
-      this.events.publish('Update/WalletConnectDisconnected')
+      this.events.publish('Update/WalletConnectDisconnected');
       this.logger.debug('walletConnector.killSession complete');
     }
   }
 
   public async closeRequest(id): Promise<void> {
     try {
-      this.requests = (await this.persistenceProvider.getWalletConnectPendingRequests()).filter(
-        request => request.id !== id
-      );
+      this.requests = (
+        await this.persistenceProvider.getWalletConnectPendingRequests()
+      ).filter(request => request.id !== id);
       await this.persistenceProvider.setWalletConnectPendingRequests(
         this.requests
       );

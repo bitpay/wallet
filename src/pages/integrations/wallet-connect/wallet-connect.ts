@@ -21,8 +21,8 @@ import {
   WalletConnectProvider
 } from '../../../providers';
 
-import * as _ from 'lodash';
 import { animate, style, transition, trigger } from '@angular/animations';
+import * as _ from 'lodash';
 
 export interface PeerMeta {
   description: string;
@@ -55,11 +55,14 @@ export interface PeerMeta {
     ]),
     trigger('fadeOut', [
       transition(':leave', [
-        animate('200ms', style({
-          opacity: 0
-        }),)
+        animate(
+          '200ms',
+          style({
+            opacity: 0
+          })
+        )
       ])
-    ]),
+    ])
   ]
 })
 export class WalletConnectPage {
@@ -113,7 +116,10 @@ export class WalletConnectPage {
     this.events.subscribe('Local/UriScan', this.updateAddressHandler);
     this.events.subscribe('Update/ConnectionData', this.setConnectionData);
     this.events.subscribe('Update/Requests', this.setRequests);
-    this.events.subscribe('Update/GoBackToBrowserNotification', this.showNotification);
+    this.events.subscribe(
+      'Update/GoBackToBrowserNotification',
+      this.showNotification
+    );
     this.events.subscribe('Update/WalletConnectDisconnected', this.goBack);
 
     this.wallets = this.profileProvider.getWallets({
@@ -138,7 +144,10 @@ export class WalletConnectPage {
     this.events.unsubscribe('Local/UriScan', this.updateAddressHandler);
     this.events.unsubscribe('Update/ConnectionData', this.setConnectionData);
     this.events.unsubscribe('Update/Requests', this.setRequests);
-    this.events.unsubscribe('Update/GoBackToBrowserNotification', this.showNotification);
+    this.events.unsubscribe(
+      'Update/GoBackToBrowserNotification',
+      this.showNotification
+    );
     this.events.unsubscribe('Update/WalletConnectDisconnected', this.goBack);
   }
 
@@ -149,23 +158,21 @@ export class WalletConnectPage {
 
   private goBack = () => {
     this.navCtrl.pop();
-  }
+  };
 
   private showNotification = () => {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'in-app-notification',
       {
         title: 'Connected',
-        body: this.translate.instant(
-          'You can now return to your browser.'
-        )
+        body: this.translate.instant('You can now return to your browser.')
       }
     );
     infoSheet.present();
-    setTimeout( () => {
+    setTimeout(() => {
       infoSheet.dismiss();
     }, 5000);
-  }
+  };
 
   private setConnectionData: any = async _ => {
     const {
@@ -265,7 +272,10 @@ export class WalletConnectPage {
       .then((res: boolean) => {
         if (res) {
           this.killSession();
-          this.events.publish('Update/WalletConnectNewSessionRequest', this.uri);
+          this.events.publish(
+            'Update/WalletConnectNewSessionRequest',
+            this.uri
+          );
         }
       });
   }
@@ -367,12 +377,15 @@ export class WalletConnectPage {
   }
 
   /*
-  * IOS workaround - ion-toolbar conflicts with the router animation and lags.
-  * This animates the toolbar out slightly before the router animation finishes to compensate.
-  * */
+   * IOS workaround - ion-toolbar conflicts with the router animation and lags.
+   * This animates the toolbar out slightly before the router animation finishes to compensate.
+   * */
   private setExiting() {
-    if (!['WalletConnectRequestDetailsPage']
-      .includes(this.navCtrl.getActive(true).name)) {
+    if (
+      !['WalletConnectRequestDetailsPage'].includes(
+        this.navCtrl.getActive(true).name
+      )
+    ) {
       this.exiting = true;
     }
   }

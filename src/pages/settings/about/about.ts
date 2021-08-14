@@ -108,9 +108,8 @@ export class AboutPage {
       this.logger.log(wcSession);
       if (wcSession) {
         await this.persistenceProvider.removeWalletConnect();
-        alert('[DEV] - wc - cleared session')
+        alert('[DEV] - wc - cleared session');
       }
-
     }
   }
 }

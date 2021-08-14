@@ -450,7 +450,7 @@ export class CopayApp {
 
     this.addressBookProvider.migrateOldContacts();
 
-    this.walletConnectProvider.checkConnection()
+    this.walletConnectProvider.checkConnection();
   }
 
   private updateDesktopOnFocus() {
@@ -618,119 +618,133 @@ export class CopayApp {
   }
 
   private incomingDataRedirEvent() {
-    this.events.subscribe('IncomingDataRedir', async (nextView: {name: string, params, callback: Function}) => {
+    this.events.subscribe(
+      'IncomingDataRedir',
+      async (nextView: { name: string; params; callback: () => void }) => {
+        try {
+          const { name, params = {} } = nextView;
 
-      try {
-        const {name, params = {}} = nextView;
+          this.logger.log('------- Incoming Data - params -------');
+          this.logger.log(JSON.stringify(params));
 
-        this.logger.log('------- Incoming Data - params -------');
-        this.logger.log(JSON.stringify(params));
-
-        if (!name) {
-          if (params.fromFooterMenu) return;
-          await sleep(300);
-          await this.selectGlobalTab(2);
-          return;
-        }
-
-        switch (name) {
-          case 'CardsPage':
-            await this.selectGlobalTab(4);
-            break;
-
-          case 'WalletConnectPage':
-            const currentIndex = this.nav.getActive().index;
-            const currentView = this.nav.getViews();
-            const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
-
-            if ((views[views.length - 1].name || currentView[currentIndex].name) === 'WalletConnectPage') return;
-
-            const {
-              fromFooterMenu,
-              uri,
-              pasteURL,
-              fromSettings,
-              isDeepLink,
-              request,
-              force,
-              activePage,
-              notifyOnly
-            } = params;
-            this.logger.log(fromFooterMenu);
-
-            // coming from menu scan -> if valid wc uri and no current wc session
-            if (fromFooterMenu &&
-              uri.includes('bridge') &&
-              !(await this.persistenceProvider.getWalletConnect()))
-            {
-              this.events.publish('Update/WalletConnectNewSessionRequest', uri);
-              return;
-            }
-
-            // if coming from scan -> pasteURL
-            if (pasteURL || fromSettings) {
-              await this.nav.push(this.pageMap[name], params);
-              return;
-            }
-
-            if (
-              force ||
-              (isDeepLink && !request && uri.includes('bridge')) ||
-              ['WalletConnectRequestDetailsPage', 'ScanPage'].includes(activePage)
-            ) {
-              await this.nav.popToRoot();
-              await this.selectGlobalTab(0);
-              await this.nav.push(this.pageMap[name], params);
-              return;
-            }
-
-            // inApp notification
-            if (!isDeepLink) {
-              const notificationConfig = {
-                title: 'WalletConnect',
-                body: `New Pending Request`,
-                action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
-                closeButtonText: notifyOnly ? 'Dismiss' : 'View',
-                autoDismiss: notifyOnly,
-                request
-              };
-              this.pushNotificationsProvider.showInappNotification(notificationConfig);
-            }
-            break;
-
-          case 'WalletConnectRequestDetailsPage':
-            await this.nav.push(this.pageMap['WalletConnectPage'], params);
+          if (!name) {
+            if (params.fromFooterMenu) return;
             await sleep(300);
-            await this.nav.push(this.pageMap[name], params);
-            break;
+            await this.selectGlobalTab(2);
+            return;
+          }
 
-          default:
-            if (params.deepLink) {
-              // No params -> return
-              if (name == 'DynamicLink') return;
+          switch (name) {
+            case 'CardsPage':
+              await this.selectGlobalTab(4);
+              break;
 
-              // From deepLink
-              await sleep(1000);
-              await this.selectGlobalTab(0);
-              await this.nav.push(this.pageMap[name]);
-              return;
-            }
-            await this.closeScannerFromWithinWallet();
-            // wait for wallets status
-            await sleep(300);
-            const globalNav = this.getGlobalTabs().getSelected();
+            case 'WalletConnectPage':
+              const currentIndex = this.nav.getActive().index;
+              const currentView = this.nav.getViews();
+              const views = this.nav.getActiveChildNavs()[0].getSelected()
+                ._views;
 
-            await globalNav.push(this.pageMap[name], params);
+              if (
+                (views[views.length - 1].name ||
+                  currentView[currentIndex].name) === 'WalletConnectPage'
+              )
+                return;
 
-            if (typeof nextView.callback === 'function') {
-              nextView.callback();
-            }
+              const {
+                fromFooterMenu,
+                uri,
+                pasteURL,
+                fromSettings,
+                isDeepLink,
+                request,
+                force,
+                activePage,
+                notifyOnly
+              } = params;
+              this.logger.log(fromFooterMenu);
+
+              // coming from menu scan -> if valid wc uri and no current wc session
+              if (
+                fromFooterMenu &&
+                uri.includes('bridge') &&
+                !(await this.persistenceProvider.getWalletConnect())
+              ) {
+                this.events.publish(
+                  'Update/WalletConnectNewSessionRequest',
+                  uri
+                );
+                return;
+              }
+
+              // if coming from scan -> pasteURL
+              if (pasteURL || fromSettings) {
+                await this.nav.push(this.pageMap[name], params);
+                return;
+              }
+
+              if (
+                force ||
+                (isDeepLink && !request && uri.includes('bridge')) ||
+                ['WalletConnectRequestDetailsPage', 'ScanPage'].includes(
+                  activePage
+                )
+              ) {
+                await this.nav.popToRoot();
+                await this.selectGlobalTab(0);
+                await this.nav.push(this.pageMap[name], params);
+                return;
+              }
+
+              // inApp notification
+              if (!isDeepLink) {
+                const notificationConfig = {
+                  title: 'WalletConnect',
+                  body: `New Pending Request`,
+                  action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
+                  closeButtonText: notifyOnly ? 'Dismiss' : 'View',
+                  autoDismiss: notifyOnly,
+                  request
+                };
+                this.pushNotificationsProvider.showInappNotification(
+                  notificationConfig
+                );
+              }
+              break;
+
+            case 'WalletConnectRequestDetailsPage':
+              await this.nav.push(this.pageMap['WalletConnectPage'], params);
+              await sleep(300);
+              await this.nav.push(this.pageMap[name], params);
+              break;
+
+            default:
+              if (params.deepLink) {
+                // No params -> return
+                if (name == 'DynamicLink') return;
+
+                // From deepLink
+                await sleep(1000);
+                await this.selectGlobalTab(0);
+                await this.nav.push(this.pageMap[name]);
+                return;
+              }
+              await this.closeScannerFromWithinWallet();
+              // wait for wallets status
+              await sleep(300);
+              const globalNav = this.getGlobalTabs().getSelected();
+
+              await globalNav.push(this.pageMap[name], params);
+
+              if (typeof nextView.callback === 'function') {
+                nextView.callback();
+              }
+          }
+        } catch (err) {
+          this.logger.error(err);
         }
-      } catch(err) {
-        this.logger.error(err);
       }
-
-    });
+    );
   }
 
   private showAdvertisingEvent(): void {

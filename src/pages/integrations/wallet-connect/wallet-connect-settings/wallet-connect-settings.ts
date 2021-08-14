@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular'
+import { NavController } from 'ionic-angular';
 // Providers
 import {
   ActionSheetProvider,
   ExternalLinkProvider,
-  HomeIntegrationsProvider, ProfileProvider, WalletConnectProvider, PlatformProvider
+  HomeIntegrationsProvider,
+  PlatformProvider,
+  ProfileProvider,
+  WalletConnectProvider
 } from '../../../../providers';
 
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import { ScanPage } from '../../../scan/scan';
 import { WalletConnectPage } from '../wallet-connect';
-import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'page-wallet-connect-settings',
   templateUrl: 'wallet-connect-settings.html'
@@ -28,7 +31,7 @@ export class WalletConnectSettingsPage {
     private actionSheetProvider: ActionSheetProvider,
     private walletConnectProvider: WalletConnectProvider,
     private translate: TranslateService,
-    private platformProvider: PlatformProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
@@ -52,7 +55,7 @@ export class WalletConnectSettingsPage {
     const params = {
       wallets,
       selectedWalletId: null,
-      title: this.translate.instant('Select a wallet'),
+      title: this.translate.instant('Select a wallet')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
@@ -76,8 +79,6 @@ export class WalletConnectSettingsPage {
       this.platformProvider.isCordova
         ? await this.navCtrl.push(ScanPage, params, { animate: false })
         : await this.navCtrl.push(WalletConnectPage, params);
-
-
     }
   }
 }

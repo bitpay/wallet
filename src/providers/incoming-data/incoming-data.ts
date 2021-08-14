@@ -523,7 +523,15 @@ export class IncomingDataProvider {
     }
 
     // @ts-ignore
-    const {force, walletId, fromWalletConnect, wcRequest: request, fromSettings, notifyOnly, fromFooterMenu } = redirParams || {};
+    const {
+      force,
+      walletId,
+      fromWalletConnect,
+      wcRequest: request,
+      fromSettings,
+      notifyOnly,
+      fromFooterMenu
+    } = redirParams || {};
 
     let stateParams = {
       uri,

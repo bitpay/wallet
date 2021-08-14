@@ -120,9 +120,9 @@ export class ScanPage {
 
     if (this.fromWalletConnect) {
       this.walletConnectProvider.resetConnectionData();
-      if(this.navParams.data.fromSettings) {
+      if (this.navParams.data.fromSettings) {
         // workaround for removing wc settings page
-        setTimeout( () => {
+        setTimeout(() => {
           this.navCtrl.remove(1, 1);
         }, 500);
       }

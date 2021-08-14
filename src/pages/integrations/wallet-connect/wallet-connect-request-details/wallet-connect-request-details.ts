@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ConfirmPage } from '../../../../pages/send/confirm/confirm';

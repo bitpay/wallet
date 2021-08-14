@@ -41,6 +41,7 @@ import { CardConfig } from '../../providers/gift-card/gift-card.types';
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { User } from '../../models/user/user.model';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Network } from '../../providers/persistence/persistence';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -48,14 +49,13 @@ import { PhaseOneCardIntro } from '../integrations/bitpay-card/bitpay-card-phase
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
-import { WalletConnectPage} from '../integrations/wallet-connect/wallet-connect';
+import { WalletConnectPage } from '../integrations/wallet-connect/wallet-connect';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { ScanPage } from '../scan/scan';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
 import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 
 export interface Advertisement {
   name: string;
@@ -488,8 +488,13 @@ export class HomePage {
     this.events.subscribe('Local/showNewFeaturesSlides', () => {
       this.showNewFeatureSlides();
     });
-    this.events.subscribe('Update/WalletConnectNewSessionRequest', newSessionUri => this.onWalletConnectNewSessionRequest(newSessionUri));
-    this.events.subscribe('OpenWalletConnect', () => this.goToWalletConnectPage());
+    this.events.subscribe(
+      'Update/WalletConnectNewSessionRequest',
+      newSessionUri => this.onWalletConnectNewSessionRequest(newSessionUri)
+    );
+    this.events.subscribe('OpenWalletConnect', () =>
+      this.goToWalletConnectPage()
+    );
   }
 
   private preFetchWallets() {
@@ -1148,29 +1153,33 @@ export class HomePage {
       await this.walletConnectProvider.setAccountInfo(wallet);
 
       let params: {
-        fromWalletConnect: true,
-        walletId: string,
-        force?: boolean,
-        updateURI?: boolean
+        fromWalletConnect: true;
+        walletId: string;
+        force?: boolean;
+        updateURI?: boolean;
       } = {
         fromWalletConnect: true,
         walletId: wallet.credentials.walletId
       };
 
       if (this.newWalletConnectSessionUri) {
-        this.logger.log('WalletConnect - New Session Request URI', this.newWalletConnectSessionUri);
+        this.logger.log(
+          'WalletConnect - New Session Request URI',
+          this.newWalletConnectSessionUri
+        );
         const redirParams = {
           ...params,
-          force: true,
+          force: true
         };
-        this.incomingDataProvider.redir(this.newWalletConnectSessionUri, redirParams);
-
+        this.incomingDataProvider.redir(
+          this.newWalletConnectSessionUri,
+          redirParams
+        );
       } else {
         this.isCordova
-          ? this.navCtrl.push(ScanPage, params, {animate: false})
+          ? this.navCtrl.push(ScanPage, params, { animate: false })
           : this.navCtrl.push(WalletConnectPage, params);
       }
-
     }
   }
 

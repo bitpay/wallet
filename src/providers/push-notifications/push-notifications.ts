@@ -383,11 +383,10 @@ export class PushNotificationsProvider {
           this.runNotificationsQueue();
         });
 
-
-        this.currentNotif.present().then( () => {
-          if (data.autoDismiss){
-            setTimeout( () => {
-              this.currentNotif && this.currentNotif.dismiss()
+        this.currentNotif.present().then(() => {
+          if (data.autoDismiss) {
+            setTimeout(() => {
+              this.currentNotif && this.currentNotif.dismiss();
             }, 2000);
           }
         });
