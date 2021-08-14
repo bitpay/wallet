@@ -515,14 +515,13 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
-  private handleWalletConnectUri(uri: string, redirParams?: RedirParams): void {
+  private handleWalletConnectUri(uri: string, redirParams: RedirParams = {}): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
       this.logger.warn('Wallet Connect has been disabled for this build');
       return;
     }
-
-    // @ts-ignore
+    
     const {
       force,
       walletId,
@@ -531,7 +530,7 @@ export class IncomingDataProvider {
       fromSettings,
       notifyOnly,
       fromFooterMenu
-    } = redirParams || {};
+    } = redirParams;
 
     let stateParams = {
       uri,
