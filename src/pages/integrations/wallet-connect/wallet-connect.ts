@@ -102,6 +102,7 @@ export class WalletConnectPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private changeRef: ChangeDetectorRef
   ) {
+    this.navCtrl.swipeBackEnabled = false;
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
     this.showDappInfo = this.uri ? true : false;

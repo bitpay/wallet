@@ -523,7 +523,7 @@ export class IncomingDataProvider {
     }
 
     // @ts-ignore
-    const {force, walletId, fromWalletConnect, wcRequest: request, fromSettings, notifyOnly } = redirParams || {};
+    const {force, walletId, fromWalletConnect, wcRequest: request, fromSettings, notifyOnly, fromFooterMenu } = redirParams || {};
 
     let stateParams = {
       uri,
@@ -534,7 +534,8 @@ export class IncomingDataProvider {
       request,
       isDeepLink: uri && !redirParams,
       fromSettings,
-      notifyOnly
+      notifyOnly,
+      fromFooterMenu
     };
     let nextView = {
       name: 'WalletConnectPage',

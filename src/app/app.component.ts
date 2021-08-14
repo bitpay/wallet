@@ -79,6 +79,7 @@ import { AboutPage } from '../pages/settings/about/about';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { sleep } from '../utils';
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
 // to track the passed Url
@@ -606,104 +607,129 @@ export class CopayApp {
       this.bitPayCardProvider.register();
   }
 
-  private incomingDataRedirEvent(): void {
-    this.events.subscribe('IncomingDataRedir', nextView => {
-      if (!nextView.name) {
-        if (nextView.params && nextView.params.fromFooterMenu) return;
-        setTimeout(() => {
-          this.getGlobalTabs()
-            .goToRoot()
-            .then(_ => {
-              this.getGlobalTabs().select(2);
-            });
-        }, 300);
-      } else if (nextView.name === 'CardsPage') {
-        this.getGlobalTabs()
-          .goToRoot()
-          .then(_ => {
-            this.getGlobalTabs().select(4);
-          });
-      } else if (nextView.name === 'WalletConnectPage') {
-        const currentIndex = this.nav.getActive().index;
-        const currentView = this.nav.getViews();
-        const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
-        if (
-          views[views.length - 1].name !== 'WalletConnectPage' &&
-          currentView[currentIndex].name !== 'WalletConnectPage'
-        ) {
-          // if coming from scan -> pasteURL
-          if (nextView.params && (nextView.params.pasteURL || nextView.params.fromSettings)) {
-            this.nav.push(this.pageMap[nextView.name], nextView.params);
-            return;
-          }
-          if (
-            nextView.params &&
-            ((nextView.params.isDeepLink &&
-              !nextView.params.request &&
-              nextView.params.uri.indexOf('bridge') !== -1) ||
-              nextView.params.force ||
-              nextView.params.activePage == 'WalletConnectRequestDetailsPage' ||
-              nextView.params.activePage == 'ScanPage')
-          ) {
-            this.nav.popToRoot().then(_ => {
-              this.getGlobalTabs()
-                .goToRoot()
-                .then(_ => {
-                  this.getGlobalTabs().select(0);
-                  this.nav.push(this.pageMap[nextView.name], nextView.params);
-                });
-            });
-          } else if (!nextView.params.isDeepLink) {
+  private getGlobalTabs() {
+    return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
+  }
 
-            const { notifyOnly } = nextView.params;
+  private async selectGlobalTab(tab: number): Promise<void> {
+    const globalTabs = this.getGlobalTabs();
+    await globalTabs.goToRoot();
+    globalTabs.select(tab);
+  }
 
-            const data = {
-              title: 'WalletConnect',
-              body: `New Pending Request`,
-              action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
-              closeButtonText: notifyOnly ? 'Dismiss' : 'View',
-              autoDismiss: notifyOnly,
-              request: nextView.params.request
-            };
-            this.pushNotificationsProvider.showInappNotification(data);
-          }
-        }
-        return;
-      } else if (nextView.name === 'WalletConnectRequestDetailsPage') {
-        this.nav.push(this.pageMap['WalletConnectPage'], nextView.params);
-        setTimeout( () => {
-          this.nav.push(this.pageMap[nextView.name], nextView.params);
-        }, 300);
+  private incomingDataRedirEvent() {
+    this.events.subscribe('IncomingDataRedir', async (nextView: {name: string, params, callback: Function}) => {
 
-        return;
-      } else {
-        if (nextView.params && nextView.params.deepLink) {
-          // No params -> return
-          if (nextView.name == 'DynamicLink') return;
-          // From deepLink
-          setTimeout(() => {
-            this.getGlobalTabs()
-              .goToRoot()
-              .then(_ => {
-                this.getGlobalTabs().select(0);
-                this.nav.push(this.pageMap[nextView.name]);
-              });
-          }, 1000);
+      try {
+        const {name, params = {}} = nextView;
+
+        this.logger.log('------- Incoming Data - params -------');
+        this.logger.log(JSON.stringify(params));
+
+        if (!name) {
+          if (params.fromFooterMenu) return;
+          await sleep(300);
+          await this.selectGlobalTab(2);
           return;
         }
-        this.closeScannerFromWithinWallet();
-        // wait for wallets status
-        setTimeout(() => {
-          const globalNav = this.getGlobalTabs().getSelected();
-          globalNav
-            .push(this.pageMap[nextView.name], nextView.params)
-            .then(() => {
-              if (typeof nextView.callback === 'function') {
-                nextView.callback();
-              }
-            });
-        }, 300);
+
+        switch (name) {
+          case 'CardsPage':
+            await this.selectGlobalTab(4);
+            break;
+
+          case 'WalletConnectPage':
+            const currentIndex = this.nav.getActive().index;
+            const currentView = this.nav.getViews();
+            const views = this.nav.getActiveChildNavs()[0].getSelected()._views;
+
+            if ((views[views.length - 1].name || currentView[currentIndex].name) === 'WalletConnectPage') return;
+
+            const {
+              fromFooterMenu,
+              uri,
+              pasteURL,
+              fromSettings,
+              isDeepLink,
+              request,
+              force,
+              activePage,
+              notifyOnly
+            } = params;
+            this.logger.log(fromFooterMenu);
+
+            // coming from menu scan -> if valid wc uri and no current wc session
+            if (fromFooterMenu &&
+              uri.includes('bridge') &&
+              !(await this.persistenceProvider.getWalletConnect()))
+            {
+              this.events.publish('Update/WalletConnectNewSessionRequest', uri);
+              return;
+            }
+
+            // if coming from scan -> pasteURL
+            if (pasteURL || fromSettings) {
+              await this.nav.push(this.pageMap[name], params);
+              return;
+            }
+
+            if (
+              force ||
+              (isDeepLink && !request && uri.includes('bridge')) ||
+              ['WalletConnectRequestDetailsPage', 'ScanPage'].includes(activePage)
+            ) {
+              await this.nav.popToRoot();
+              await this.selectGlobalTab(0);
+              await this.nav.push(this.pageMap[name], params);
+              return;
+            }
+
+            // inApp notification
+            if (!isDeepLink) {
+              const notificationConfig = {
+                title: 'WalletConnect',
+                body: `New Pending Request`,
+                action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
+                closeButtonText: notifyOnly ? 'Dismiss' : 'View',
+                autoDismiss: notifyOnly,
+                request
+              };
+              this.pushNotificationsProvider.showInappNotification(notificationConfig);
+            }
+            break;
+
+          case 'WalletConnectRequestDetailsPage':
+            await this.nav.push(this.pageMap['WalletConnectPage'], params);
+            await sleep(300);
+            await this.nav.push(this.pageMap[name], params);
+            break;
+
+          default:
+            if (params.deepLink) {
+              // No params -> return
+              if (name == 'DynamicLink') return;
+
+              // From deepLink
+              await sleep(1000);
+              await this.selectGlobalTab(0);
+              await this.nav.push(this.pageMap[name]);
+              return;
+            }
+            await this.closeScannerFromWithinWallet();
+            // wait for wallets status
+            await sleep(300);
+            const globalNav = this.getGlobalTabs().getSelected();
+
+            await globalNav.push(this.pageMap[name], params);
+
+            if (typeof nextView.callback === 'function') {
+              nextView.callback();
+            }
+        }
+      } catch(err) {
+        this.logger.error(err);
       }
+
     });
   }
 
@@ -837,9 +863,5 @@ export class CopayApp {
       this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
     }
-  }
-
-  private getGlobalTabs() {
-    return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
   }
 }
