@@ -55,7 +55,6 @@ build:
     key: ${CI_JOB_NAME}
     paths:
       - node_modules/
-      - bitcore
   artifacts:
     untracked: true
     paths:
