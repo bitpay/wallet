@@ -44,6 +44,7 @@ build:
   image: tarampampam/node:10-alpine
   script:
     - npm i yalc -g
+    - rm -r bitcore
     - git clone https://${BITCORE_USER_NAME}:${BITCORE_DEPLOY_TOKEN}@gitlab.com/abcpros/bitcore.git
     - cd bitcore
     - git checkout master
@@ -55,7 +56,6 @@ build:
     key: ${CI_JOB_NAME}
     paths:
       - node_modules/
-      - bitcore
   artifacts:
     untracked: true
     paths:
