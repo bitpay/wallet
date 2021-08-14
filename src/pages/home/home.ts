@@ -108,6 +108,8 @@ export class HomePage {
   public bitPayIdUserInfo: any;
   public accountInitials: string;
   public isCopay: boolean;
+  public showSurveyCard: boolean = false;
+  private bitPaySurveyCardChecked: boolean = false;
   private user$: Observable<User>;
   private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private hasOldCoinbaseSession: boolean;
@@ -241,6 +243,7 @@ export class HomePage {
     this.loadAds();
     this.fetchAdvertisements();
     this.fetchGiftCardAdvertisement();
+    this.checkBitPaySurveyCard();
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
       if (deepLink) {
         this.persistenceProvider.setOnboardingFlowFlag('disabled');
@@ -1122,6 +1125,50 @@ export class HomePage {
     return [givenName, familyName]
       .map(name => name && name.charAt(0).toUpperCase())
       .join('');
+  }
+
+  private checkBitPaySurveyCard() {
+    if (!this.bitPaySurveyCardChecked) {
+      this.persistenceProvider.getBitPayCardOrderStarted().then(ts => {
+        this.showBitPaySurveyCard(ts);
+      });
+    }
+  }
+
+  private async showBitPaySurveyCard(ts: number) {
+    if (!ts || this.bitPaySurveyCardChecked) return;
+
+    this.bitPaySurveyCardChecked = true;
+    const cards = await this.persistenceProvider.getBitpayDebitCards(
+      this.network
+    );
+    if (cards.length) return;
+
+    const lastSurveyCardDismissed = await this.persistenceProvider.getBitPaySurveyCardDismissed();
+    // show for the first time after 24 hours
+    if (
+      moment().diff(moment.unix(ts), 'hours') >= 24 &&
+      !lastSurveyCardDismissed
+    ) {
+      this.showSurveyCard = true;
+    }
+
+    // show every two weeks until the user gets the card
+    if (moment().diff(moment.unix(lastSurveyCardDismissed), 'days') >= 14) {
+      this.showSurveyCard = true;
+    }
+  }
+
+  public dismissBitPaySurveyCard(): void {
+    this.logger.debug(`BitPay survey card dismissed`);
+    this.showSurveyCard = false;
+    const now = moment().unix();
+    this.persistenceProvider.setBitPaySurveyCardDismissed(now);
+  }
+
+  public openBitPaySurveyLink(): void {
+    const url = 'https://payux.typeform.com/to/PbI7b2ZB';
+    this.externalLinkProvider.open(url);
   }
 
   private showWallets(): void {
