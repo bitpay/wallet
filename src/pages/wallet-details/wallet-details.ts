@@ -18,7 +18,6 @@ import env from '../../environments';
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
-import { BuyCryptoProvider } from '../../providers/buy-crypto/buy-crypto';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
@@ -117,7 +116,6 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private buyCryptoProvider: BuyCryptoProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     private appProvider: AppProvider
   ) {
@@ -128,13 +126,7 @@ export class WalletDetailsPage {
     this.isShowDonationBtn = _.some(this.navParams.data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
-    this.showBuyCrypto =
-      _.includes(
-        this.buyCryptoProvider.exchangeCoinsSupported,
-        this.wallet.coin
-      ) &&
-      (this.wallet.network == 'livenet' ||
-        (this.wallet.network == 'testnet' && env.name == 'development'));
+    this.showBuyCrypto = (this.wallet.network == 'livenet' || (this.wallet.network == 'testnet' && env.name == 'development'));
     this.showExchangeCrypto =
       _.includes(
         this.exchangeCryptoProvider.exchangeCoinsSupported,

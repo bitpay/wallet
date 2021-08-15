@@ -22,7 +22,6 @@ import {
   BitPayCardProvider,
   BitPayIdProvider,
   BitPayProvider,
-  BuyCryptoProvider,
   CoinbaseProvider,
   ConfigProvider,
   DynamicLinksProvider,
@@ -122,7 +121,6 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private walletConnectProvider: WalletConnectProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private buyCryptoProvider: BuyCryptoProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private exchangeCryptoProvider: ExchangeCryptoProvider,
     private screenOrientation: ScreenOrientation,
@@ -535,14 +533,8 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
+    // Gift Cards
     // Buy Crypto
-    if (
-      this.appProvider.info._enabledExtensions.buycrypto &&
-      !this.platformProvider.isMacApp()
-    ) {
-      this.buyCryptoProvider.register();
-    }
-
     // Exchange Crypto
     if (
       this.appProvider.info._enabledExtensions.exchangecrypto &&
