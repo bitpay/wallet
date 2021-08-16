@@ -86,6 +86,7 @@ export class WalletConnectPage {
   private isEventLogged: boolean = false;
   private walletId: string;
   public exiting: boolean;
+  public isAndroid: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -107,6 +108,7 @@ export class WalletConnectPage {
   ) {
     this.navCtrl.swipeBackEnabled = false;
     this.isCordova = this.platformProvider.isCordova;
+    this.isAndroid = this.platformProvider.isAndroid;
     this.uri = this.navParams.data.uri;
     this.showDappInfo = !!this.uri;
     this.walletId = this.navParams.data.walletId;
