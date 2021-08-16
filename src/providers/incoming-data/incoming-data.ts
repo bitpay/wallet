@@ -24,6 +24,7 @@ export interface RedirParams {
   coin?: string;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
+  force?: boolean;
 }
 
 @Injectable()
