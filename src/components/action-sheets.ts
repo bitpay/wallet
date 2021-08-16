@@ -27,5 +27,5 @@ export const ACTION_SHEET_COMPONENTS = [
   WalletTabOptionsComponent,
   EncryptPasswordComponent,
   MinerFeeWarningComponent,
-  FooterMenuComponent
+  FooterMenuComponent,
 ];

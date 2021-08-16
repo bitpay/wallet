@@ -143,12 +143,6 @@
         </ion-note>
       </ion-item>
 
-      <div *ngIf="!btx.confirmations || btx.confirmations == 0" class="unconfirmed-message">
-        <a class="positive" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360025484512-Missing-transactions-Why-is-my-transaction-unconfirmed-')">
-          {{'Why is my transaction unconfirmed?' | translate}}
-        </a>
-      </div>
-
       <div class="line-divider"></div>
 
       <ion-item>

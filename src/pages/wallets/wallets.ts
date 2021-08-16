@@ -458,8 +458,7 @@ export class WalletsPage {
     }
     if (wallet.isComplete()) {
       this.navCtrl.push(WalletDetailsPage, {
-        walletId: wallet.credentials.walletId,
-        donationSupportCoins : this.donationSupportCoins
+        walletId: wallet.credentials.walletId
       });
     } else {
       const copayerModal = this.modalCtrl.create(

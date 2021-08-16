@@ -29,10 +29,14 @@
       </ion-toolbar>
     </expandable-header>
 
-    <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
-    <div *ngIf="isEmptyWalletDonation(walletsGroups)">
-      <create-new-wallet></create-new-wallet>
-    </div>
+    <ng-container *ngIf="!isDonation;else donation">
+      <create-new-wallet *ngIf="!walletsGroups || !walletsGroups[0]"></create-new-wallet>
+    </ng-container>
+    <ng-template #donation>
+      <div *ngIf="isEmptyWalletDonation(walletsGroups)">
+        <create-new-wallet></create-new-wallet>
+      </div>
+    </ng-template> 
 
     <div *ngFor="let walletGroup of walletsGroups; let i = index" class="wallets-container">
       <div class="section-header" *ngIf="walletGroup[0]?.canSign && walletsGroups.length > 1">

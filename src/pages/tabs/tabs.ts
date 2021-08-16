@@ -26,6 +26,7 @@ import { WalletsPage } from '../wallets/wallets';
 
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
+import { AddressbookPage } from '../settings/addressbook/addressbook';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -384,4 +385,5 @@ export class TabsPage {
   walletsRoot = WalletsPage;
   scanRoot = ScanPage;
   settingsRoot = SettingsPage;
+  addressBookRoot = AddressbookPage;
 }

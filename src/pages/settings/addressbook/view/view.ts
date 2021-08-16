@@ -65,6 +65,18 @@ export class AddressbookViewPage {
     });
   }
 
+  send():void{
+    this.navCtrl.push(AmountPage, {
+      toAddress: this.address,
+      name: this.name,
+      email: this.email,
+      destinationTag: this.tag,
+      coin: this.coin,
+      recipientType: 'contact',
+      network: this.network
+    });
+  }
+
   private remove(): void {
     const title = this.translate.instant('Warning!');
     const message = this.translate.instant(

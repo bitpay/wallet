@@ -112,7 +112,9 @@ export class ConfirmPage {
   public editGasLimit: boolean = false;
   public customGasPrice: number;
   public customGasLimit: number;
-  
+
+  public nameContact: string;
+
   public errors = this.bwcProvider.getErrors();
   remaining;
   isDonation;
@@ -158,12 +160,18 @@ export class ConfirmPage {
     protected appProvider: AppProvider,
     protected persistenceProvider: PersistenceProvider,
     public http: HttpClient,
+    // Address suggestion
+    private ab: AddressBookProvider
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isDonation = this.navParams.data.isDonation;
-    this.isDonation ? this.receiveLotusAddress = this.navParams.data.receiveLotusAddress : this.receiveLotusAddress = null;
+    this.isDonation
+      ? (this.receiveLotusAddress = this.navParams.data.receiveLotusAddress)
+      : (this.receiveLotusAddress = null);
     this.nameReceiveLotusAddress = this.navParams.data.nameReceiveLotusAddress;
-    this.nameReceiveLotusAddress ? this.isShowReceive = true : this.isShowReceive = false;
+    this.nameReceiveLotusAddress
+      ? (this.isShowReceive = true)
+      : (this.isShowReceive = false);
     this.fromWalletDetails = this.navParams.data.fromWalletDetails;
     this.walletConnectRequestId = this.navParams.data.walletConnectRequestId;
     this.fromCoinbase = this.navParams.data.fromCoinbase;
@@ -187,15 +195,17 @@ export class ConfirmPage {
   ngOnInit() {
     // Overrides the ngOnInit logic of WalletTabsChild
 
-    this.walletProvider.getDonationInfo().then((data:any) => {
-      this.remaining = data.remaining;
-      this.receiveAmountLotus = data.receiveAmountLotus;
-      this.donationSupportCoins = data.donationSupportCoins;
-      this.donationCoin = data.donationCoin;
-    }).catch((err) => {
-      console.log(err)
-    });
-    
+    this.walletProvider
+      .getDonationInfo()
+      .then((data: any) => {
+        this.remaining = data.remaining;
+        this.receiveAmountLotus = data.receiveAmountLotus;
+        this.donationSupportCoins = data.donationSupportCoins;
+        this.donationCoin = data.donationCoin;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   ionViewWillLeave() {
@@ -1113,7 +1123,7 @@ export class ConfirmPage {
             amount: tx.amount,
             message: tx.description,
             data: tx.data,
-            gasLimit: tx.gasLimit, // wallet connect needs exact gasLimit value
+            gasLimit: tx.gasLimit // wallet connect needs exact gasLimit value
           }
         ];
       }
@@ -1265,7 +1275,7 @@ export class ConfirmPage {
 
       if (this.isDonation && this.navParams.data.receiveLotusAddress) {
         txp.isDonation = true;
-        txp.receiveLotusAddress = this.navParams.data.receiveLotusAddress
+        txp.receiveLotusAddress = this.navParams.data.receiveLotusAddress;
       }
 
       this.walletProvider
@@ -1477,9 +1487,12 @@ export class ConfirmPage {
         if (exit) {
           this.fromWalletDetails
             ? // PopTo AmountPage case
-            this.isDonation ? this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length() - 3)) : this.navCtrl.pop()
-            : 
-            this.navCtrl.popToRoot();
+              this.isDonation
+              ? this.navCtrl.popTo(
+                  this.navCtrl.getByIndex(this.navCtrl.length() - 3)
+                )
+              : this.navCtrl.pop()
+            : this.navCtrl.popToRoot();
         }
       }
     );
@@ -1496,7 +1509,24 @@ export class ConfirmPage {
 
   public approve(tx, wallet): Promise<void> {
     if (!tx || (!wallet && !this.coinbaseAccount)) return undefined;
-
+    if(this.nameContact && this.nameContact.trim().length > 0){
+      this.ab
+            .add({
+              name: this.nameContact,
+              email: '',
+              address: this.parseAddress(this.tx.origToAddress),
+              network: this.tx.network,
+              coin: this.tx.coin
+            })
+            .then(() => {
+              this.tx.recipientType = 'contact';
+              this.tx.name = this.nameContact;
+            })
+            .catch(err => {
+              this.popupProvider.ionicAlert('Error', err);
+            });
+    }
+    
     if (this.paymentExpired) {
       this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
@@ -1675,6 +1705,31 @@ export class ConfirmPage {
           walletId: walletId ? walletId : this.wallet.credentials.walletId,
           donationSupportCoins : this.donationSupportCoins
         });
+<<<<<<< HEAD
+=======
+        this.navCtrl.push(CoinbaseAccountPage, {
+          id: this.fromCoinbase.accountId
+        });
+      } else {
+        if (redir) {
+          setTimeout(() => {
+            this.iabCardProvider.show();
+            this.iabCardProvider.sendMessage(
+              {
+                message: 'paymentBroadcasted'
+              },
+              () => {
+                this.logger.log('card IAB -> payment broadcasting opening IAB');
+              }
+            );
+          }, 1000);
+        } else if (this.wallet) {
+          this.navCtrl.push(WalletDetailsPage, {
+            walletId: walletId ? walletId : this.wallet.credentials.walletId,
+            donationSupportCoins: this.donationSupportCoins
+          });
+        }
+>>>>>>> master
       }
     });
   }
@@ -1831,6 +1886,10 @@ export class ConfirmPage {
     memoComponent.onDidDismiss(memo => {
       if (memo) this.tx.description = memo;
     });
+  }
+
+  private parseAddress(str: string): string {
+    return this.addressProvider.extractAddress(str);
   }
 
   public openScanner(): void {
