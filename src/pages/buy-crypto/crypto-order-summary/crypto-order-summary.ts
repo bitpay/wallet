@@ -43,6 +43,7 @@ export class CryptoOrderSummaryPage {
   public countryList: any[] = [];
   public selectedCountry;
   public isSimplexPromotionActive: boolean;
+  public isOpenSelector;
 
   constructor(
     private logger: Logger,
@@ -64,6 +65,11 @@ export class CryptoOrderSummaryPage {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
     this.coin = this.navParams.data.coin;
+    this.isOpenSelector = {
+      country: false,
+      destination: false,
+      paymentMethod: false
+    };
   }
 
   ionViewDidLoad() {
@@ -231,6 +237,7 @@ export class CryptoOrderSummaryPage {
   }
 
   public openCoinAndWalletSelectorModal() {
+    this.isOpenSelector.destination = true;
     // TODO: We temporarily remove Wyre from European Union countries. When the Simplex promotion ends we have to remove this condition
     const supportedCoins = this.isPromotionActiveForCountry(
       this.selectedCountry
@@ -251,6 +258,7 @@ export class CryptoOrderSummaryPage {
     );
     modal.present();
     modal.onDidDismiss(data => {
+      this.isOpenSelector.destination = false;
       if (data) {
         this.coin = data.coin;
         this.setWallet(data.walletId);
@@ -260,6 +268,7 @@ export class CryptoOrderSummaryPage {
   }
 
   public openCountrySelectorModal() {
+    this.isOpenSelector.country = true;
     let modal = this.modalCtrl.create(
       CountrySelectorPage,
       {
@@ -273,6 +282,7 @@ export class CryptoOrderSummaryPage {
     );
     modal.present();
     modal.onDidDismiss(data => {
+      this.isOpenSelector.country = false;
       if (data) {
         this.selectedCountry = data.selectedCountry;
         if (this.isCoinSupportedByCountry()) {
@@ -395,12 +405,14 @@ export class CryptoOrderSummaryPage {
   }
 
   public openCryptoPaymentMethodModal() {
+    this.isOpenSelector.paymentMethod = true;
     if (!this.coin) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant(
         `You must first select a wallet to deposit.`
       );
       this.errorsProvider.showDefaultError(subtitle, title);
+      this.isOpenSelector.paymentMethod = false;
       return;
     }
     let modal = this.modalCtrl.create(
@@ -422,6 +434,7 @@ export class CryptoOrderSummaryPage {
     );
     modal.present();
     modal.onDidDismiss(data => {
+      this.isOpenSelector.paymentMethod = false;
       if (data) {
         this.paymentMethod = data.paymentMethod;
       }

@@ -6,68 +6,77 @@
   </ion-buttons>
   <div page-content>
     <ion-list class="bp-list">
-      <div class="item-label" translate>Amount</div>
-      <ion-card class="item-card" (click)="openAmountModal()">
+      <div class="exchange-container" (click)="openAmountModal()">
+        <div class="item-label card-title" translate>Amount</div>
         <ion-item>
-          <div class="main-label"> <span *ngIf="currency == 'USD'">$</span>{{amount | number : getDigitsInfo(currency)}}<span *ngIf="currency != 'USD'"> {{currency}}</span></div>
+          <button ion-button class="select-wallet-button selected">
+            <span class="note-container ellipsis">{{currency}}</span>
+          </button>
           <ion-note item-end>
             <ion-row align-items-center>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
+              <div class="amount">{{amount | number : getDigitsInfo(currency)}}</div>
             </ion-row>
           </ion-note>
         </ion-item>
-      </ion-card>
+      </div>
 
-      <div class="item-label" translate>Deposit to</div>
-      <ion-card class="item-card" (click)="openCoinAndWalletSelectorModal()">
+      <div class="exchange-container" (click)="openCoinAndWalletSelectorModal()">
+        <div class="item-label card-title" translate>Deposit to</div>
         <ion-item>
-          <coin-icon item-start [coin]="wallet?.coin" [network]="wallet?.network"></coin-icon>
-          <div *ngIf="wallet" class="main-label">
-            {{wallet?.name}}
-          </div>
-          <div *ngIf="!wallet" class="main-label warn-msg" translate>
-            No wallet selected
-          </div>
-          <ion-note item-end>
-            <ion-row align-items-center>
-              <div class="secondary-note address-label">
-                <span>{{address | shortenedAddress}}</span>
-              </div>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-            </ion-row>
-          </ion-note>
-        </ion-item>
-      </ion-card>
-
-      <div class="item-label" translate>Country</div>
-      <ion-card class="item-card" (click)="openCountrySelectorModal()">
-        <ion-item>
-          <div class="main-label">{{selectedCountry?.name}}</div>
-          <ion-note item-end>
-            <ion-row align-items-center>
-              <div class="secondary-note address-label">
-                <span>{{selectedCountry?.threeLetterCode}}</span>
-              </div>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-            </ion-row>
-          </ion-note>
-        </ion-item>
-      </ion-card>
-
-      <div class="item-label" translate>Payment Method</div>
-      <ion-card class="item-card" (click)="openCryptoPaymentMethodModal()">
-        <ion-item>
-          <div class="main-label">{{paymentMethod?.label}}</div>
-          <ion-note item-end>
-            <ion-row align-items-center>
-              <ion-icon class="item-img" item-start>
-                <img src="{{paymentMethod?.imgSrc}}">
+          <div *ngIf="wallet">
+            <button ion-button class="select-wallet-button selected">
+              <ion-icon *ngIf="currencyProvider.COIN[wallet.coin | uppercase]" [ngClass]="{'testnet': wallet.network === 'testnet'}" class="item-img" item-start>
+                <img src="assets/img/currencies/{{wallet.coin.toLowerCase()}}.svg" />
               </ion-icon>
-              <ion-icon item-end name="ios-arrow-forward-outline" color="light-grey"></ion-icon>
-            </ion-row>
-          </ion-note>
+              <ion-icon *ngIf="!currencyProvider.COIN[wallet.coin | uppercase]" class="item-img" item-start>
+                <img src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(wallet.coin.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+              </ion-icon>
+              <span class="note-container ellipsis">{{wallet?.name}}</span>
+              <ion-icon [name]="isOpenSelector.destination ? 'ios-arrow-up-outline' : 'ios-arrow-down-outline'"></ion-icon>
+            </button>
+          </div>
+          <div *ngIf="!wallet">
+            <button ion-button class="select-wallet-button">
+              <span>{{'Select a Destination' | translate}}</span>
+              <ion-icon [name]="isOpenSelector.destination ? 'ios-arrow-up-outline' : 'ios-arrow-down-outline'"></ion-icon>
+            </button>
+          </div>
         </ion-item>
-      </ion-card>
+      </div>
+
+      <div class="exchange-container" (click)="openCountrySelectorModal()">
+        <div class="item-label card-title" translate>Country</div>
+        <ion-item>
+          <div *ngIf="!selectedCountry">
+            <button ion-button class="select-wallet-button">
+              <span>{{'Select a Country' | translate}}</span>
+              <ion-icon [name]="isOpenSelector.country ? 'ios-arrow-up-outline' : 'ios-arrow-down-outline'"></ion-icon>
+            </button>
+          </div>
+          <div *ngIf="selectedCountry" class="main-label">{{selectedCountry?.name}}</div>
+        </ion-item>
+      </div>
+
+    <div class="exchange-container" (click)="openCryptoPaymentMethodModal()">
+      <div class="item-label card-title" translate>Payment Method</div>
+      <ion-item>
+        <div *ngIf="!paymentMethod">
+          <button ion-button class="select-wallet-button">
+            <span>{{'Select a Payment Method' | translate}}</span>
+            <ion-icon [name]="isOpenSelector.paymentMethod ? 'ios-arrow-up-outline' : 'ios-arrow-down-outline'"></ion-icon>
+          </button>
+        </div>
+        <div *ngIf="paymentMethod" class="main-label">{{paymentMethod?.label}}</div>
+        <ion-note item-end>
+          <ion-row align-items-center>
+            <ion-icon class="item-img" item-start>
+              <img [ngClass]="{'fix-payment-icon': paymentMethod?.method == 'applePay'}" src="{{paymentMethod?.imgSrc}}">
+            </ion-icon>
+          </ion-row>
+        </ion-note>
+      </ion-item>
+    </div>
+
     </ion-list>
 
     <button ion-button class="button-standard button-primary" (click)="goToCryptoOffersPage()" [disabled]="!wallet">
