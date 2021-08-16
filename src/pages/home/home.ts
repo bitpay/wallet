@@ -1222,6 +1222,7 @@ export class HomePage {
           this.newWalletConnectSessionUri,
           redirParams
         );
+        setTimeout(() => (this.newWalletConnectSessionUri = null));
       } else {
         this.isCordova
           ? this.navCtrl.push(ScanPage, params, { animate: false })

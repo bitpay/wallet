@@ -29,7 +29,6 @@ export interface RedirParams {
   walletId?: string;
   wcRequest?: any;
   fromSettings?: boolean;
-  notifyOnly?: boolean;
 }
 
 @Injectable()
@@ -515,7 +514,10 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
-  private handleWalletConnectUri(uri: string, redirParams: RedirParams = {}): void {
+  private handleWalletConnectUri(
+    uri: string,
+    redirParams: RedirParams = {}
+  ): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
       this.logger.warn('Wallet Connect has been disabled for this build');
@@ -527,9 +529,7 @@ export class IncomingDataProvider {
       walletId,
       fromWalletConnect,
       wcRequest: request,
-      fromSettings,
-      notifyOnly,
-      fromFooterMenu
+      fromSettings
     } = redirParams;
 
     let stateParams = {
@@ -540,14 +540,14 @@ export class IncomingDataProvider {
       activePage: this.activePage,
       request,
       isDeepLink: uri && !redirParams,
-      fromSettings,
-      notifyOnly,
-      fromFooterMenu
+      fromSettings
     };
     let nextView = {
       name: 'WalletConnectPage',
       params: stateParams
     };
+
+    this.logger.log(JSON.stringify(nextView));
 
     this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.incomingDataRedir(nextView);

@@ -108,7 +108,7 @@ export class WalletConnectPage {
     this.navCtrl.swipeBackEnabled = false;
     this.isCordova = this.platformProvider.isCordova;
     this.uri = this.navParams.data.uri;
-    this.showDappInfo = this.uri ? true : false;
+    this.showDappInfo = !!this.uri;
     this.walletId = this.navParams.data.walletId;
     if (!this.walletId) this.showWalletSelector = true;
     this.wallet = this.profileProvider.getWallet(this.walletId);
@@ -129,11 +129,8 @@ export class WalletConnectPage {
       m: 1,
       n: 1
     });
-    this.uri &&
-    !this.navParams.data.activePage &&
-    !this.navParams.data.isDeepLink
-      ? this.initWalletConnect()
-      : this.initWallet();
+
+    this.init();
   }
 
   ionViewWillLeave() {
@@ -151,13 +148,22 @@ export class WalletConnectPage {
     this.events.unsubscribe('Update/WalletConnectDisconnected', this.goBack);
   }
 
+  private async init() {
+    const session = await this.persistenceProvider.getWalletConnect();
+    this.uri && !session ? this.initWalletConnect() : this.initWallet();
+  }
+
   private updateAddressHandler: any = data => {
     this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.uri = data.value;
   };
 
   private goBack = () => {
-    this.navCtrl.pop();
+    try {
+      this.navCtrl.pop();
+    } catch (err) {
+      this.logger.error(err);
+    }
   };
 
   private showNotification = () => {
@@ -292,11 +298,10 @@ export class WalletConnectPage {
   private resetView() {
     this.showDappInfo = false;
     this.uri = null;
+    this.walletId = null;
     this.peerMeta = null;
     this.connected = false;
     this.loading = false;
-    this.showWalletSelector = !this.walletId;
-    this.title = this.translate.instant('Enter WalletConnect URI');
     this.changeRef.detectChanges();
   }
 

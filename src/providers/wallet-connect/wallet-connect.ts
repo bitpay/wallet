@@ -43,7 +43,6 @@ export class WalletConnectProvider {
   private address: string;
   private activeChainId: number = 1;
   private walletId: string;
-  private notifyOnly: boolean;
 
   constructor(
     private logger: Logger,
@@ -60,10 +59,6 @@ export class WalletConnectProvider {
     private bwcProvider: BwcProvider
   ) {
     this.logger.debug('WalletConnect Provider initialized');
-    this.events.subscribe('NotifyOnly', (value: boolean) => {
-      this.logger.log('NotifyOnly set', value);
-      this.notifyOnly = value;
-    });
   }
 
   public signTypedData(data: any, wallet) {
@@ -265,8 +260,7 @@ export class WalletConnectProvider {
           incoming.slice(-1)[0]
         );
         this.incomingDataProvider.redir('wc:', {
-          wcRequest: payload,
-          notifyOnly: this.notifyOnly
+          wcRequest: payload
         });
       }
     });

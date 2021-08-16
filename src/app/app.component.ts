@@ -308,7 +308,9 @@ export class CopayApp {
         this.pushNotificationsProvider.clearAllNotifications();
 
         // Firebase Dynamic link
-        this.dynamicLinksProvider.init();
+        if (this.dynamicLinksProvider.initialCall) {
+          this.dynamicLinksProvider.init();
+        }
       });
 
       // Check PIN or Fingerprint
@@ -640,42 +642,30 @@ export class CopayApp {
               break;
 
             case 'WalletConnectPage':
-              const currentIndex = this.nav.getActive().index;
-              const currentView = this.nav.getViews();
-              const views = this.nav.getActiveChildNavs()[0].getSelected()
-                ._views;
-
-              if (
-                (views[views.length - 1].name ||
-                  currentView[currentIndex].name) === 'WalletConnectPage'
-              )
-                return;
+              const hasSession = !!(await this.persistenceProvider.getWalletConnect());
 
               const {
-                fromFooterMenu,
+                walletId,
                 uri,
                 pasteURL,
                 fromSettings,
                 isDeepLink,
                 request,
                 force,
-                activePage,
-                notifyOnly
+                activePage
               } = params;
-              this.logger.log(fromFooterMenu);
 
-              // coming from menu scan -> if valid wc uri and no current wc session
-              if (
-                fromFooterMenu &&
-                uri.includes('bridge') &&
-                !(await this.persistenceProvider.getWalletConnect())
-              ) {
+              // if coming from intent or scan -> no current session - has uri but wallet not selected
+              if (!walletId && uri.includes('bridge') && !hasSession) {
                 this.events.publish(
                   'Update/WalletConnectNewSessionRequest',
                   uri
                 );
                 return;
               }
+
+              // coming from intent/universalLink
+              if (uri.startsWith('https')) return;
 
               // if coming from scan -> pasteURL
               if (pasteURL || fromSettings) {
@@ -698,12 +688,23 @@ export class CopayApp {
 
               // inApp notification
               if (!isDeepLink) {
+                const isWalletConnect = this.nav
+                  .getActive(true)
+                  .name.includes('Wallet');
+                const pendingRequests = await this.persistenceProvider.getWalletConnectPendingRequests();
+                const hasPending =
+                  pendingRequests && pendingRequests.length > 1;
+
+                if (isWalletConnect && !hasPending) {
+                  return;
+                }
+
                 const notificationConfig = {
                   title: 'WalletConnect',
                   body: `New Pending Request`,
-                  action: notifyOnly ? 'notifyOnly' : 'goToWalletconnect',
-                  closeButtonText: notifyOnly ? 'Dismiss' : 'View',
-                  autoDismiss: notifyOnly,
+                  action: isWalletConnect ? 'notifyOnly' : 'goToWalletconnect',
+                  closeButtonText: isWalletConnect ? 'Dismiss' : 'View',
+                  autoDismiss: isWalletConnect,
                   request
                 };
                 this.pushNotificationsProvider.showInappNotification(
