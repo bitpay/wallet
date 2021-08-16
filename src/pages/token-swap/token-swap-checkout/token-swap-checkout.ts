@@ -318,12 +318,12 @@ export class TokenSwapCheckoutPage {
 
   private createTx(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      let message =
-        this.fromWalletSelected.coin.toUpperCase() +
-        ' to ' +
-        !_.isEmpty(this.toToken)
-          ? this.toToken.symbol.toUpperCase()
-          : this.toWalletSelected.coin.toUpperCase();
+      const toMsg: string = !_.isEmpty(this.toToken)
+        ? this.toToken.symbol.toUpperCase()
+        : this.toWalletSelected.coin.toUpperCase();
+
+      const message: string =
+        this.fromWalletSelected.coin.toUpperCase() + ' to ' + toMsg;
       let outputs = [];
 
       outputs.push({
