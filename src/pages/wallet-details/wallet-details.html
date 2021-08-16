@@ -208,8 +208,8 @@
           The XRP ledger requires that all wallets maintain a minimum balance of 20 XRP. This non-refundable 20 XRP will remain permanently locked in your wallet. Please first deposit no less than 20 XRP to activate your wallet.
         </span>
         <ng-template #noFunds>
-          <span translate *ngIf="wallet.network === 'testnet'">
-            {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into “real” coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: currencyProvider.getCoinName(wallet.credentials.coin) } }}
+          <span *ngIf="wallet.network === 'testnet'">
+            {{ 'Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into "real" coins and cannot be exchanged or sold as they have no value.' | translate : {coinName: currencyProvider.getCoinName(wallet.credentials.coin) } }}
           </span>
           <span translate *ngIf="!wallet?.credentials.multisigEthInfo && !wallet.network === 'livenet'">
             If you have funds stored on a website then you should move them into a secure wallet... like this one!

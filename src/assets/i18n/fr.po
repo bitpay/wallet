@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: copay\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2021-07-13 14:15\n"
+"PO-Revision-Date: 2021-08-04 18:54\n"
 
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
@@ -133,6 +133,9 @@ msgstr "Ajouter comme contact"
 
 msgid "Add copayers"
 msgstr "Ajouter des Copayers"
+
+msgid "Add custom token"
+msgstr ""
 
 msgid "Add funds"
 msgstr "Ajouter des fonds"
@@ -665,6 +668,9 @@ msgstr ""
 msgid "Continue to {storeName}"
 msgstr "Continuer vers {storeName}"
 
+msgid "Contract Address"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr "Contribuer aux traductions"
 
@@ -745,6 +751,9 @@ msgstr "Impossible de supprimer la proposition de paiement"
 
 msgid "Could not encrypt wallet"
 msgstr "Impossible de chiffrer le portefeuille"
+
+msgid "Could not find any ERC20 contract attach to the provided address"
+msgstr ""
 
 msgid "Could not get crypto offer. Please, try again later."
 msgstr ""
@@ -857,8 +866,14 @@ msgstr ""
 msgid "Custom"
 msgstr "Personnalisés"
 
+msgid "Custom Tokens"
+msgstr ""
+
 msgid "Custom fee"
 msgstr "Frais personnalisés"
+
+msgid "Custom tokens cannot be used for payments on BitPay"
+msgstr ""
 
 msgid "DETAILS"
 msgstr "DÉTAILS"
@@ -1619,6 +1634,9 @@ msgstr "Information"
 msgid "Instant Reloads*"
 msgstr "Rechargements instantanés*"
 
+msgid "Instantiation transaction ID"
+msgstr ""
+
 msgid "Instantly reload your card balance with no conversion fees. Powered by our competitive exchange rates."
 msgstr ""
 
@@ -1710,6 +1728,9 @@ msgid "Keep in mind fees are not charged by BitPay."
 msgstr ""
 
 msgid "Keep in mind that once the funds are received in your {{params.coin}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet ("
+msgstr ""
+
+msgid "Keep in mind that once the tokens funds are received, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees."
 msgstr ""
 
 msgid "Keep in mind your encrypt password is not the 12-word recovery phrase"
@@ -2153,6 +2174,9 @@ msgstr ""
 msgid "Open settings"
 msgstr "Ouvrir les paramètres"
 
+msgid "Or add a custom token"
+msgstr ""
+
 msgid "Or its equivalent in {{ fiatCurrency?.toUpperCase() }}."
 msgstr "Ou son équivalent en {{ fiatCurrency?.toUpperCase() }}."
 
@@ -2293,6 +2317,9 @@ msgstr ""
 
 msgid "Pending Proposals"
 msgstr "Propositions en attente"
+
+msgid "Pending multisig wallet"
+msgstr ""
 
 msgid "Perfect!"
 msgstr "Parfait !"
@@ -2579,6 +2606,9 @@ msgstr "Suggérer une nouvelle fonctionnalité"
 msgid "Request feature"
 msgstr "Demander une fonctionnalité"
 
+msgid "Required Confirmations - Total Copayers"
+msgstr ""
+
 msgid "Required number of signatures"
 msgstr "Nombre requis de signatures"
 
@@ -2656,6 +2686,12 @@ msgstr "Rechercher une marque"
 
 msgid "Search for a country"
 msgstr "Rechercher un pays"
+
+msgid "Search for a token"
+msgstr ""
+
+msgid "Search tokens"
+msgstr ""
 
 msgid "Security"
 msgstr "Sécurité "
@@ -2933,6 +2969,9 @@ msgstr "Faites glisser pour retirer"
 msgid "Some inputs you want to speed up have no confirmations. Please wait until they are confirmed and try again."
 msgstr "Certaines entrées que vous voulez accélérer n'ont aucune confirmation. Veuillez attendre qu'elles soient confirmées et réessayez."
 
+msgid "Someone asked you to create this wallet?"
+msgstr ""
+
 msgid "Something exciting is arriving"
 msgstr "Quelque chose de génial arrive"
 
@@ -3062,8 +3101,11 @@ msgstr "Conditions d'utilisation"
 msgid "Terms of use"
 msgstr "Conditions d’utilisation"
 
-msgid "Testnet Wallet"
-msgstr "Portefeuille testnet"
+msgid "Testnet coins have no value and cannot be converted into \"actual\" coins. If you are purchasing cryptocurrency through a third party, and they have requested you to create this type of wallet, they are scamming you."
+msgstr ""
+
+msgid "Testnet is an alternative {coinName} block chain meant for testing. This allows application developers and testers to experiment without having to use real {coinName}. Testnet coins are different from actual {coinName}, and do not have any value. They cannot be converted into \"real\" coins and cannot be exchanged or sold as they have no value."
+msgstr ""
 
 msgid "Text"
 msgstr "Texte"
@@ -3173,9 +3215,6 @@ msgstr "La proposition de dépense n'est pas en attente"
 msgid "The sum of the selected amounts must be at least:"
 msgstr ""
 
-msgid "The testnet is an alternative {coinName} block chain, to be used for testing. Testnet coins are separate and distinct from actual {coinName}, and do not have any value. This allows application developers or {coinName} testers to experiment, without having to use real {coinName}"
-msgstr "Le testnet est une blockchain {coinName} alternative qui est utilisée pour des tests. Les crypto-monnaies testnet sont séparées des {coinName} réels et n’ont aucune valeur. Cela permet aux développeurs d’applications d’expérimenter, sans devoir utiliser de vrais {coinName}."
-
 msgid "The total amount is the subtotal amount plus transaction fees."
 msgstr "Le montant total est le sous-total additionné des frais de transaction."
 
@@ -3187,6 +3226,9 @@ msgstr "La transaction de {{walletName}} que vous attendiez a été confirmée."
 
 msgid "The transaction history and every new incoming transaction are cached in the app. Clearing the cache cleans up the transaction history and synchronizes again from the server."
 msgstr "L'historique des transactions et chaque nouvelle transaction entrante sont mis en cache dans l'application. Supprimer le cache nettoie l'historique des transactions et synchronise à nouveau à partir du serveur."
+
+msgid "The transaction is taking longer than usual to confirm"
+msgstr ""
 
 msgid "The transaction you sent does not have any output to the address on the invoice"
 msgstr "La transaction que vous avez envoyée n'a pas de sortie à l'adresse sur la facture."
@@ -3316,6 +3358,18 @@ msgstr "Pour commencer, vous devrez entrer une adresse valide ou sélectionner u
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Pour {{reason}} vous devez d'abord ajouter votre compte BitPay - {{email}}"
+
+msgid "Token address"
+msgstr ""
+
+msgid "Token name"
+msgstr ""
+
+msgid "Token precision"
+msgstr ""
+
+msgid "Token symbol"
+msgstr ""
 
 msgid "Top up in progress..."
 msgstr "Rechargement en cours..."
@@ -3539,6 +3593,9 @@ msgstr "Version"
 msgid "View"
 msgstr "Voir"
 
+msgid "View Address"
+msgstr ""
+
 msgid "View Confirmation Status"
 msgstr "Afficher l’état de confirmation"
 
@@ -3745,6 +3802,9 @@ msgstr "Nouveautés"
 
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "Lorsque ce portefeuille a été créé, il se nommait \"{{walletName}}\". Vous pouvez modifier ci-dessous le nom affiché sur cet appareil."
+
+msgid "When your transaction is confirmed, the multisig wallet will show up in the wallet list. You can check the transaction status in the wallet history."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "Souhaitez-vous recevoir des notifications par e-mail à propos des paiements ?"
@@ -3964,6 +4024,9 @@ msgstr "moi"
 
 msgid "of total amount"
 msgstr "du montant total"
+
+msgid "or enter the contract address"
+msgstr ""
 
 msgid "preparing..."
 msgstr "préparation..."
