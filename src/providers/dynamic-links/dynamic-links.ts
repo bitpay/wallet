@@ -7,7 +7,6 @@ import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
 export class DynamicLinksProvider {
