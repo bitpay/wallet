@@ -10,6 +10,7 @@
   "appUri": "bitpay",
   "name": "bitpay",
   "applePay": "<config-file mode=\"add\" parent=\"com.apple.developer.payment-pass-provisioning\" target=\"Entitlements-Release.plist\"><true /></config-file><config-file mode=\"add\" parent=\"com.apple.developer.in-app-payments\" target=\"Entitlements-Release.plist\"><array><string>merchant.com.bitpay.wallet.applepay</string></array></config-file><config-file mode=\"add\" parent=\"com.apple.developer.pass-type-identifiers\" target=\"Entitlements-Release.plist\"><array><string>$(TeamIdentifierPrefix)*</string></array></config-file><config-file mode=\"add\" parent=\"com.apple.developer.associated-domains\" target=\"Entitlements-Release.plist\"><array><string>applinks:bitpayapp.page.link</string></array></config-file>",
+  "universalLinkDomains": "<config-file mode=\"merge\" parent=\"com.apple.developer.associated-domains\" target=\"Entitlements-Release.plist\"><array><string>applinks:staging.bitpay.com</string><string>applinks:test.bitpay.com</string><string>applinks:bitpay.com</string></array></config-file>",
   "dynamicLink": "bitpayapp.page.link",
   "nameNoSpace": "bitpay",
   "nameCase": "BitPay",

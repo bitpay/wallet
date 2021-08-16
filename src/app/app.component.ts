@@ -400,6 +400,8 @@ export class CopayApp {
 
     await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
 
+    this.platformProvider.platformReady.next(true);
+
     if (
       this.platformProvider.isCordova &&
       this.appProvider.info.name === 'bitpay'
