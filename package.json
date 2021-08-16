@@ -143,7 +143,7 @@
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-advanced-http": "2.1.0",
     "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-customurlscheme-ng": "11.0.0",
+    "cordova-plugin-customurlscheme-ng": "12.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-fcm-ng": "8.4.0",
