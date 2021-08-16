@@ -15,7 +15,6 @@ import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PayproProvider } from '../../providers/paypro/paypro';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -52,7 +51,6 @@ export class TxpDetailsPage {
   public amount: string;
   public isCordova: boolean;
 
-  private countDown;
   private executionPending: boolean;
 
   constructor(
@@ -71,7 +69,6 @@ export class TxpDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private payproProvider: PayproProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private errorsProvider: ErrorsProvider
   ) {
@@ -115,7 +112,6 @@ export class TxpDetailsPage {
   ionViewDidLoad() {
     this.displayFeeValues();
     this.initActionList();
-    this.checkPaypro();
     this.applyButtonText();
 
     this.amount = this.txFormatProvider.formatAmount(
@@ -220,74 +216,6 @@ export class TxpDetailsPage {
     setTimeout(() => {
       this.actionList.reverse();
     }, 10);
-  }
-
-  private checkPaypro(): void {
-    if (this.tx.payProUrl) {
-      this.walletProvider
-        .getAddress(this.wallet, false)
-        .then(address => {
-          const payload = {
-            address
-          };
-          const disableLoader = true;
-          this.payproProvider
-            .getPayProDetails({
-              paymentUrl: this.tx.payProUrl,
-              coin: this.tx.coin,
-              payload,
-              disableLoader
-            })
-            .then(payProDetails => {
-              this.tx.paypro = payProDetails;
-              this.paymentTimeControl(this.tx.paypro.expires);
-            })
-            .catch(err => {
-              this.logger.warn(
-                'Error fetching this invoice: ',
-                this.bwcErrorProvider.msg(err)
-              );
-              this.paymentExpired = true;
-              this.showErrorInfoSheet(
-                this.bwcErrorProvider.msg(err),
-                this.translate.instant('Error fetching this invoice')
-              );
-            });
-        })
-        .catch(err => {
-          this.logger.warn(
-            'Error fetching this invoice: ',
-            this.bwcErrorProvider.msg(err)
-          );
-          this.showErrorInfoSheet(
-            this.bwcErrorProvider.msg(err),
-            this.translate.instant('Error fetching this invoice')
-          );
-        });
-    }
-  }
-
-  private paymentTimeControl(expires): void {
-    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
-    let setExpirationTime = (): void => {
-      let now = Math.floor(Date.now() / 1000);
-      if (now > expirationTime) {
-        this.paymentExpired = true;
-        if (this.countDown) clearInterval(this.countDown);
-        return;
-      }
-      let totalSecs = expirationTime - now;
-      let m = Math.floor(totalSecs / 60);
-      let s = totalSecs % 60;
-      this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
-    };
-
-    this.paymentExpired = false;
-    setExpirationTime();
-
-    this.countDown = setInterval(() => {
-      setExpirationTime();
-    }, 1000);
   }
 
   private showErrorInfoSheet(error: Error | string, title?: string): void {

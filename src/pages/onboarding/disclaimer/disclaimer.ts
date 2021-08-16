@@ -5,7 +5,6 @@ import { Events, NavController, Platform } from 'ionic-angular';
 // Providers
 import { AppProvider } from '../../../providers/app/app';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 
@@ -28,7 +27,6 @@ export class DisclaimerPage {
     private externalLinkProvider: ExternalLinkProvider,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
-    private iabCardProvider: IABCardProvider,
     private events: Events,
     private platform: Platform,
     private appProvider: AppProvider
@@ -79,13 +77,6 @@ export class DisclaimerPage {
     this.persistenceProvider.setOnboardingFlowFlag('enabled');
     this.persistenceProvider.getCardFastTrackEnabled().then(context => {
       if (context) {
-        setTimeout(() => {
-          this.iabCardProvider.show();
-          this.iabCardProvider.sendMessage({
-            message: 'debitCardOrder',
-            payload: context
-          });
-        }, 200);
         this.persistenceProvider.setCardExperimentFlag('enabled');
         setTimeout(() => {
           this.events.publish('experimentUpdateStart');

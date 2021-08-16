@@ -6,19 +6,14 @@ import * as _ from 'lodash';
 
 // providers
 // pages
-import { User } from '../../models/user/user.model';
-import { BitPayIdProvider, IABCardProvider } from '../../providers';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
 import { NewFeatureData } from '../../providers/new-feature-data/new-feature-data';
 import {
-  Network,
   PersistenceProvider
 } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -35,7 +30,6 @@ import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitPayIdPage } from './bitpay-id/bitpay-id';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { KeySettingsPage } from './key-settings/key-settings';
 import { LanguagePage } from './language/language';
@@ -83,7 +77,6 @@ export class SettingsPage {
   public readOnlyWalletsGroup: any[];
   public bitPayIdUserInfo: any;
   public accountInitials: string;
-  private network = Network[this.bitPayIdProvider.getEnvironment().network];
   public showReorder: boolean = false;
   public showTotalBalance: boolean;
   public appTheme: string;
@@ -101,17 +94,13 @@ export class SettingsPage {
     public profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
     private analyticsProvider: AnalyticsProvider,
     private persistenceProvider: PersistenceProvider,
-    private bitPayIdProvider: BitPayIdProvider,
     private changeRef: ChangeDetectorRef,
-    private iabCardProvider: IABCardProvider,
     private themeProvider: ThemeProvider,
     private events: Events,
     private newFeatureData: NewFeatureData
@@ -124,15 +113,6 @@ export class SettingsPage {
 
   ngOnInit() {
     if (this.isCordova) {
-      // check for user info
-      this.persistenceProvider
-        .getBitPayIdUserInfo(this.network)
-        .then((user: User) => {
-          if (user) {
-            this.updateUser(user);
-          }
-        });
-
       this.events.subscribe('BitPayId/Disconnected', () => this.updateUser());
       this.events.subscribe('BitPayId/Connected', user =>
         this.updateUser(user)
@@ -190,45 +170,9 @@ export class SettingsPage {
   }
 
   ionViewDidEnter() {
-    // Show integrations
-    const integrations = this.homeIntegrationsProvider.get();
-
     // Get Theme
     this.appTheme = this.themeProvider.getCurrentAppTheme();
     this.navigation = this.themeProvider.getCurrentNavigationType();
-
-    // Hide BitPay if linked
-    setTimeout(() => {
-      this.integrationServices = _.remove(_.clone(integrations), x => {
-        if (
-          x.type == 'card' ||
-          x.type == 'external-services' ||
-          (this.platformProvider.isMacApp() && !x.linked)
-        )
-          return false;
-        else return x;
-      });
-      this.cardServices = _.remove(_.clone(integrations), x => {
-        if (
-          x.name === 'debitcard' ||
-          x.type === 'exchange' ||
-          x.type === 'external-services' ||
-          (x.name === 'giftcards' && this.platformProvider.isMacApp())
-        )
-          return false;
-        else return x;
-      });
-      this.externalServices = _.remove(_.clone(integrations), x => {
-        if (x.type !== 'external-services') return false;
-        else return x;
-      });
-    }, 200);
-
-    // Only BitPay Wallet
-    this.bitPayCardProvider.get({ noHistory: true }).then(cards => {
-      this.showBitPayCard = !!this.app.info._enabledExtensions.debitcard;
-      this.bitpayCardItems = cards;
-    });
   }
 
   private updateUser(user?) {
@@ -248,25 +192,6 @@ export class SettingsPage {
 
   public trackBy(index) {
     return index;
-  }
-
-  public openBitPayIdPage(): void {
-    if (this.bitPayIdUserInfo) {
-      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
-    } else {
-      this.iabCardProvider.loadingWrapper(() => {
-        this.logger.log('settings - pairing');
-        this.iabCardProvider.show();
-        setTimeout(() => {
-          this.iabCardProvider.sendMessage(
-            {
-              message: 'pairingOnly'
-            },
-            () => {}
-          );
-        }, 100);
-      });
-    }
   }
 
   public mdesFlag() {
@@ -370,21 +295,6 @@ export class SettingsPage {
 
   public openSharePage(): void {
     this.navCtrl.push(SharePage);
-  }
-
-  public openCardSettings(id): void {
-    this.iabCardProvider.loadingWrapper(() => {
-      const message = `openSettings?${id}`;
-      this.iabCardProvider.show();
-      setTimeout(() => {
-        this.iabCardProvider.sendMessage(
-          {
-            message
-          },
-          () => {}
-        );
-      });
-    });
   }
 
   public openHelpExternalLink(): void {

@@ -130,7 +130,7 @@
           </div>
           <ion-spinner name="crescent" *ngIf="shouldShowSpinner()"></ion-spinner>
         </div>
-        <!-- <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
+        <div class="action-buttons" [ngClass]="{'two-actions': !showBuyCrypto && !showExchangeCrypto}">
 
           <div class="action-btn" (click)="goToReceivePage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-receive-dm.svg' : 'assets/img/wallet-details/wd-receive.svg'" width="50">
@@ -149,7 +149,7 @@
             <div class="ellipsis">{{ 'Send' | translate }}</div>
           </div>
 
-        </div> -->
+        </div>
       </expandable-header-footer>
     </expandable-header>
 
@@ -253,9 +253,6 @@
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  <ng-container *ngIf="supportedCards | async as cardConfig">
-                    <img-loader class="icon-services" *ngIf="tx.customData.service === 'giftcards'" [src]="cardConfig[tx.customData.giftCardName]?.icon" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
-                  </ng-container>
                   <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
                 </span>
                 <span *ngIf="tx.customData && tx.customData.toWalletName && !tx.customData.service">

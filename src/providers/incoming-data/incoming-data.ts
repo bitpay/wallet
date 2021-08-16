@@ -7,14 +7,10 @@ import * as _ from 'lodash';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AnalyticsProvider } from '../analytics/analytics';
 import { AppProvider } from '../app/app';
-import { BitPayIdProvider } from '../bitpay-id/bitpay-id';
 import { BwcProvider } from '../bwc/bwc';
 import { Coin, CurrencyProvider } from '../currency/currency';
 import { ExternalLinkProvider } from '../external-link/external-link';
-import { IABCardProvider } from '../in-app-browser/card';
 import { Logger } from '../logger/logger';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
-import { PayproProvider } from '../paypro/paypro';
 import { PersistenceProvider } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
 
@@ -37,21 +33,14 @@ export class IncomingDataProvider {
     private bwcProvider: BwcProvider,
     private currencyProvider: CurrencyProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private payproProvider: PayproProvider,
     private logger: Logger,
     private analyticsProvider: AnalyticsProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
     private profileProvider: ProfileProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private iabCardProvider: IABCardProvider,
     private persistenceProvider: PersistenceProvider,
-    private bitPayIdProvider: BitPayIdProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
-    this.events.subscribe('unlockInvoice', paymentUrl =>
-      this.handleUnlock(paymentUrl)
-    );
   }
 
   public showMenu(data): void {
@@ -302,80 +291,6 @@ export class IncomingDataProvider {
     });
   }
 
-  private handlePayProNonBackwardsCompatible(data: string): void {
-    this.logger.debug(
-      'Incoming-data: Payment Protocol with non-backwards-compatible request'
-    );
-    const url = this.getPayProUrl(data);
-    this.handleBitPayInvoice(url);
-  }
-
-  private async handleBitPayInvoice(invoiceUrl: string) {
-    this.logger.debug('Incoming-data: Handling bitpay invoice');
-    try {
-      const disableLoader = true;
-      const payProOptions = await this.payproProvider.getPayProOptions(
-        invoiceUrl
-      );
-
-      const selected = payProOptions.paymentOptions.filter(
-        option => option.selected
-      );
-
-      if (selected.length === 1) {
-        // Confirm Page - selectedTransactionCurrency set to selected
-        const [{ currency }] = selected;
-        return this.goToPayPro(
-          invoiceUrl,
-          currency.toLowerCase(),
-          payProOptions,
-          disableLoader
-        );
-      } else {
-        // Select Invoice Currency - No selectedTransactionCurrency set
-        let hasWallets = {};
-        let availableWallets = [];
-        for (const option of payProOptions.paymentOptions) {
-          const fundedWallets = this.profileProvider.getWallets({
-            coin: option.currency.toLowerCase(),
-            network: option.network,
-            minAmount: option.estimatedAmount
-          });
-          if (fundedWallets.length === 0) {
-            option.disabled = true;
-          } else {
-            hasWallets[option.currency.toLowerCase()] = fundedWallets.length;
-            availableWallets.push(option);
-          }
-        }
-        if (availableWallets.length === 1) {
-          // Only one available wallet with balance
-          const [{ currency }] = availableWallets;
-          return this.goToPayPro(
-            invoiceUrl,
-            currency.toLowerCase(),
-            payProOptions,
-            disableLoader
-          );
-        }
-
-        const stateParams = {
-          payProOptions,
-          hasWallets
-        };
-        let nextView = {
-          name: 'SelectInvoicePage',
-          params: stateParams
-        };
-        this.incomingDataRedir(nextView);
-      }
-    } catch (err) {
-      this.onGoingProcessProvider.clear();
-      this.events.publish('incomingDataError', err);
-      this.logger.error(err);
-    }
-  }
-
   private handleDynamicLink(deepLink: string): void {
     this.logger.debug('Incoming-data: Dynamic Link ' + deepLink);
     this.persistenceProvider.setDynamicLink(deepLink);
@@ -423,8 +338,6 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -445,8 +358,6 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -467,8 +378,6 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -483,8 +392,6 @@ export class IncomingDataProvider {
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -498,8 +405,6 @@ export class IncomingDataProvider {
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -544,8 +449,6 @@ export class IncomingDataProvider {
     // Translate address
     this.logger.warn('Legacy Bitcoin Address translated to: ' + address);
     if (parsed.r) {
-      const payProUrl = this.getPayProUrl(parsed.r);
-      this.goToPayPro(payProUrl, coin);
     } else this.goSend(address, amount, message, coin);
   }
 
@@ -821,15 +724,6 @@ export class IncomingDataProvider {
     this.redir(invoiceUrl);
   }
 
-  private openIAB(message): void {
-    this.iabCardProvider.hasFirstView().then(() => {
-      this.iabCardProvider.show();
-      this.iabCardProvider.sendMessage({
-        message
-      });
-    });
-  }
-
   public redir(data: string, redirParams?: RedirParams): boolean {
     if (redirParams && redirParams.activePage)
       this.activePage = redirParams.activePage;
@@ -838,15 +732,8 @@ export class IncomingDataProvider {
 
     //  Handling of a bitpay invoice url
     if (this.isValidBitPayInvoice(data)) {
-      this.handleBitPayInvoice(data);
       return true;
-    } else if (data.includes('unlock')) {
-      this.handleUnlock(data);
-      return true;
-
-      // Payment Protocol
     } else if (this.isValidPayPro(data)) {
-      this.handlePayProNonBackwardsCompatible(data);
       return true;
 
       // Bitcoin  URI
@@ -1008,8 +895,6 @@ export class IncomingDataProvider {
             params['dashboardRedirect'] = true;
           }
 
-          this.iabCardProvider.pairing({ data: { params } });
-
           // this param is set if pairing for the first time after an order
           if (payload.includes('fb=orderComplete')) {
             this.persistenceProvider.getNetwork().then(network => {
@@ -1029,26 +914,6 @@ export class IncomingDataProvider {
           }, 300);
 
           break;
-
-        case 'email-verified':
-          this.openIAB('emailVerified');
-          break;
-
-        case 'get-started':
-          this.openIAB('orderCard');
-          break;
-
-        case 'retry':
-          this.openIAB('retry');
-          break;
-
-        case 'debit-card-order':
-          this.openIAB('debitCardOrder');
-          this.persistenceProvider.setCardExperimentFlag('enabled');
-          this.events.publish('experimentUpdateStart');
-          setTimeout(() => {
-            this.events.publish('experimentUpdateComplete');
-          }, 300);
       }
 
       return true;
@@ -1395,151 +1260,11 @@ export class IncomingDataProvider {
     this.incomingDataRedir(nextView);
   }
 
-  public goToPayPro(
-    url: string,
-    coin: Coin,
-    payProOptions?,
-    disableLoader?: boolean,
-    activePage?: string
-  ): void {
-    if (activePage) this.activePage = activePage;
-    this.payproProvider
-      .getPayProDetails({ paymentUrl: url, coin, disableLoader })
-      .then(details => {
-        this.onGoingProcessProvider.clear();
-        this.handlePayPro(details, payProOptions, url, coin);
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this.events.publish('incomingDataError', err);
-        this.logger.error(err);
-      });
-  }
-
-  private async handlePayPro(
-    payProDetails,
-    payProOptions,
-    url,
-    coin: Coin
-  ): Promise<void> {
-    if (!payProDetails) {
-      this.logger.error('No wallets available');
-      const error = this.translate.instant('No wallets available');
-      this.events.publish('incomingDataError', error);
-      return;
-    }
-
-    let invoiceID;
-    let requiredFeeRate;
-
-    if (payProDetails.requiredFeeRate) {
-      requiredFeeRate = !this.currencyProvider.isUtxoCoin(coin)
-        ? parseInt((payProDetails.requiredFeeRate * 1.1).toFixed(0), 10) // Workaround to avoid gas price supplied is lower than requested error
-        : Math.ceil(payProDetails.requiredFeeRate * 1000);
-    }
-
-    try {
-      const { memo, network } = payProDetails;
-      if (!payProOptions) {
-        payProOptions = await this.payproProvider.getPayProOptions(url);
-      }
-      const paymentOptions = payProOptions.paymentOptions;
-      const { estimatedAmount, minerFee } = paymentOptions.find(
-        option => option.currency.toLowerCase() === coin
-      );
-      const instructions = payProDetails.instructions[0];
-      const { toAddress, data } = instructions;
- 
-      const stateParams = {
-        amount: estimatedAmount,
-        toAddress,
-        description: memo,
-        data,
-        invoiceID,
-        paypro: payProDetails,
-        coin,
-        network,
-        payProUrl: url,
-        requiredFeeRate,
-        minerFee // needed for payments with Coinbase accounts
-      };
-      const nextView = {
-        name: 'ConfirmPage',
-        params: stateParams
-      };
-      this.incomingDataRedir(nextView);
-    } catch (err) {
-      this.events.publish('incomingDataError', err);
-      this.logger.error(err);
-    }
-  }
-
   private incomingDataRedir(nextView) {
     if (this.activePage === 'SendPage') {
       this.events.publish('SendPageRedir', nextView);
     } else {
       this.events.publish('IncomingDataRedir', nextView);
-    }
-  }
-
-  private async handleUnlock(data) {
-    try {
-      const url = data.split('?r=')[1];
-      const invoiceId = url.split('i/')[1];
-
-      const result = await this.bitPayIdProvider.unlockInvoice(invoiceId);
-
-      switch (result) {
-        case 'unlockSuccess':
-          await this.handleBitPayInvoice(`unlock:?${url}`);
-          break;
-
-        // call IAB and attempt pairing
-        case 'pairingRequired':
-          const authRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
-            'auth-required'
-          );
-          await authRequiredInfoSheet.present();
-          authRequiredInfoSheet.onDidDismiss(() => {
-            this.iabCardProvider.show();
-            setTimeout(() => {
-              this.iabCardProvider.sendMessage(
-                {
-                  message: 'pairingOnly',
-                  payload: { paymentUrl: data }
-                },
-                () => {}
-              );
-            }, 100);
-          });
-          break;
-
-        // needs verification - send to bitpay id verify
-        case 'userShopperNotFound':
-        case 'tierNotMet':
-          const verificationRequiredInfoSheet = this.actionSheetProvider.createInfoSheet(
-            'auth-required'
-          );
-          await verificationRequiredInfoSheet.present();
-          verificationRequiredInfoSheet.onDidDismiss(async () => {
-            const host = url.includes('test')
-              ? 'test.bitpay.com'
-              : 'bitpay.com';
-            await this.externalLinkProvider.open(
-              `https://${host}/id/verify?context=unlockv&id=${invoiceId}`
-            );
-          });
-      }
-    } catch (err) {
-      this.logger.error(err);
-      await this.actionSheetProvider
-        .createInfoSheet('default-error', {
-          msg: this.translate.instant(
-            'Uh oh something went wrong! Please try again later.'
-          ),
-          title: this.translate.instant('Error')
-        })
-        .present();
     }
   }
 }

@@ -22,9 +22,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
-import { ExchangeCryptoProvider } from '../../providers/exchange-crypto/exchange-crypto';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider, AppProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -91,7 +89,6 @@ export class WalletDetailsPage {
   public showExchangeCrypto: boolean;
   public isShowDonationBtn: boolean;
 
-  public supportedCards: Promise<CardConfigMap>;
   constructor(
     public http: HttpClient,
     private currencyProvider: CurrencyProvider,
@@ -116,23 +113,24 @@ export class WalletDetailsPage {
     private themeProvider: ThemeProvider,
     private configProvider: ConfigProvider,
     private analyticsProvider: AnalyticsProvider,
-    private exchangeCryptoProvider: ExchangeCryptoProvider,
     private appProvider: AppProvider
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isShowDonationBtn = _.some(this.navParams.data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
-    this.showBuyCrypto = (this.wallet.network == 'livenet' || (this.wallet.network == 'testnet' && env.name == 'development'));
-    this.showExchangeCrypto =
-      _.includes(
-        this.exchangeCryptoProvider.exchangeCoinsSupported,
-        this.wallet.coin
-      ) && this.wallet.network == 'livenet';
+    this.showBuyCrypto =
+      (this.wallet.network == 'livenet' ||
+        (this.wallet.network == 'testnet' && env.name == 'development'));
+    this.showExchangeCrypto = this.wallet.network == 'livenet';
 
+    // Check is show btn Donate
+    this.walletProvider.getDonationInfo().then((data: any) =>{
+      this.isShowDonationBtn = _.some(data.donationSupportCoins, (item: any) => item.network == this.wallet.network && item.coin == this.wallet.coin);
+    }) 
+    
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
@@ -704,7 +702,7 @@ export class WalletDetailsPage {
 
   public handleDonation() {
     this.walletProvider.getDonationInfo().then((data:any) => {
-      if(_.isEmpty(data))  throw 'No data Remaning'
+      if(_.isEmpty(data)) throw new Error("No data Remaning");
       this.navCtrl.push(AmountPage, {
         toAddress: _.get(_.find(data.donationToAddresses, item => item.coin == this.wallet.coin), 'address', ''),
         donationSupportCoins : data.donationSupportCoins,

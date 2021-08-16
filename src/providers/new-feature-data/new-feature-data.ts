@@ -3,8 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ViewController } from 'ionic-angular';
 import _ from 'lodash';
 import { AppProvider } from '../app/app';
-import { IABCardProvider } from '../in-app-browser/card';
-import { LocationProvider } from '../location/location';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -38,15 +36,12 @@ export type TryItType = ((viewCtrl?: ViewController) => void) | TryIt | boolean;
 @Injectable()
 export class NewFeatureData {
   private feature_list: FeatureList[];
-  private country: string;
   private NETWORK = 'livenet';
   constructor(
     private appProv: AppProvider,
-    private locationProv: LocationProvider,
     private platProv: PlatformProvider,
     private translate: TranslateService,
     private persistenceProvider: PersistenceProvider,
-    private iabCardProvider: IABCardProvider,
     private events: Events,
     private logger: Logger
   ) {
@@ -119,18 +114,7 @@ export class NewFeatureData {
                 c => c.provider === 'galileo' && c.cardType === 'virtual'
               );
               if (virtualCard) {
-                // go to card settings directly
-                this.iabCardProvider.loadingWrapper(() => {
-                  this.iabCardProvider.show();
-                  setTimeout(() => {
-                    this.iabCardProvider.sendMessage(
-                      {
-                        message: `openSettings?${virtualCard.id}`
-                      },
-                      () => {}
-                    );
-                  });
-                });
+                return;
               } else {
                 // new signup - * using events over navCtrl due to dependency issue
                 this.events.publish('IncomingDataRedir', {
@@ -164,7 +148,6 @@ export class NewFeatureData {
   }
 
   async get() {
-    await this.locationProv.countryPromise.then(data => (this.country = data));
     const list = this.feature_list.filter(
       vs =>
         vs.majorversion === this.appProv.version.major &&
@@ -177,9 +160,6 @@ export class NewFeatureData {
         (vs.platform.length == 0 ||
           vs.platform[0] === '*' ||
           vs.platform.find(plat => this.platProv.getPlatform() === plat)) &&
-        (!vs.country ||
-          vs.country[0] === '*' ||
-          vs.country.indexOf(this.country) != -1) &&
         vs.features.length > 0
     );
     return list && list.length > 0

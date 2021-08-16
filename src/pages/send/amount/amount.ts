@@ -5,7 +5,7 @@ import {
   NgZone,
   ViewChild
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
   Events,
   Navbar,
@@ -16,25 +16,20 @@ import {
 import * as _ from 'lodash';
 
 // Providers
-import { ActionSheetProvider, IABCardProvider } from '../../../providers';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ElectronProvider } from '../../../providers/electron/electron';
 import { FilterProvider } from '../../../providers/filter/filter';
-import { getActivationFee } from '../../../providers/gift-card/gift-card';
-import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
-import { SimplexProvider } from '../../../providers/simplex/simplex';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { ConfirmPage } from '../confirm/confirm';
 
-import { TranslateService } from '@ngx-translate/core';
 import { SendPage } from '../send';
 
 @Component({
@@ -86,7 +81,6 @@ export class AmountPage {
   any;
 
   public cardName: string;
-  public cardConfig: CardConfig;
 
   private fromCoinbase;
   private alternativeCurrency;
@@ -111,7 +105,6 @@ export class AmountPage {
   receiveLotus: string;
   receiveAmountLotus: number;
   constructor(
-    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private currencyProvider: CurrencyProvider,
@@ -126,10 +119,6 @@ export class AmountPage {
     private viewCtrl: ViewController,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
-    private iabCardProvider: IABCardProvider,
-    private simplexProvider: SimplexProvider,
-    private formBuilder: FormBuilder,
-    private translate: TranslateService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isDonation = this.navParams.data.isDonation
@@ -184,18 +173,13 @@ export class AmountPage {
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.cardName = this.navParams.get('cardName');
-    this.cardConfig = this.navParams.get('cardConfig');
   }
 
   async ionViewDidLoad() {
     this.navBar.backButtonClick = () => {
-      if (this.navParams.get('card') === 'v2') {
-        this.iabCardProvider.show(true);
-      }
       this.navCtrl.pop();
     };
     this.setAvailableUnits();
-    if (this.fromBuyCrypto) this.setBuyCryptoParams();
     this.updateUnitUI();
   }
 
@@ -566,22 +550,6 @@ export class AmountPage {
     return result;
   }
 
-  public validateGiftCardAmount(amount) {
-    return (
-      amount <= this.cardConfig.maxAmount && amount >= this.cardConfig.minAmount
-    );
-  }
-
-  public showCardAmountInfoSheet(amount) {
-    const sheetType =
-      amount < this.cardConfig.minAmount
-        ? 'below-minimum-gift-card-amount'
-        : 'above-maximum-gift-card-amount';
-    this.actionSheetProvider
-      .createInfoSheet(sheetType, this.cardConfig)
-      .present();
-  }
-
   private handleAmountDonation(data) {
     data.isDonation = true;
     data.wallet = this.wallet;
@@ -604,10 +572,6 @@ export class AmountPage {
 
     if (this.navParams.data.nextPage) {
       const amount = this.useSendMax ? null : _amount;
-      if (this.cardConfig && !this.validateGiftCardAmount(amount)) {
-        this.showCardAmountInfoSheet(amount);
-        return;
-      }
 
       data = {
         id: this._id,
@@ -616,7 +580,7 @@ export class AmountPage {
         coin: this.fromBuyCrypto && !this.navParams.data.coin ? null : coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId,
-        cardConfig: this.cardConfig,
+        cardConfig: null,
         cardName: this.cardName,
         description: this.description
       };
@@ -666,10 +630,7 @@ export class AmountPage {
     }
 
     if (this.cardName && !skipActivationFeeAlert) {
-      const activationFee = getActivationFee(data.amount, this.cardConfig);
-      if (activationFee) {
-        return this.alertActivationFeeIncluded(activationFee);
-      }
+      return;
     }
 
     if (this.navParams.get('card') === 'v2') {
@@ -683,20 +644,6 @@ export class AmountPage {
     this.useAsModal
       ? this.closeModal(data)
       : this.navCtrl.push(this.nextView, data);
-  }
-
-  private alertActivationFeeIncluded(fee) {
-    if (!fee) return;
-    const sheet = this.actionSheetProvider.createInfoSheet(
-      'activation-fee-included',
-      {
-        currency: this.cardConfig.currency,
-        displayName: this.cardConfig.displayName,
-        fee
-      }
-    );
-    sheet.present();
-    sheet.onDidDismiss(ok => ok && this.finish(true));
   }
 
   private updateUnitUI(): void {
@@ -760,51 +707,6 @@ export class AmountPage {
     } else {
       this.viewCtrl.dismiss(item);
     }
-  }
-
-  private setBuyCryptoParams() {
-    const isoCode = this.config.wallet.settings.alternativeIsoCode;
-    this.altCurrencyInitial =
-      this.fiatCode && this.isSupportedFiat(this.fiatCode)
-        ? this.fiatCode
-        : this.isSupportedFiat(isoCode)
-        ? isoCode
-        : 'USD';
-
-    this.quoteForm = this.formBuilder.group({
-      amount: [
-        200,
-        [Validators.required, Validators.min(50), Validators.max(20000)]
-      ],
-      altCurrency: [this.altCurrencyInitial, [Validators.required]]
-    });
-    this.altCurrenciesToShow = ['USD', 'EUR'];
-    this.altCurrenciesToShow2 = [];
-
-    if (this.altCurrenciesToShow.indexOf(this.altCurrencyInitial) < 0)
-      this.altCurrenciesToShow.push(this.altCurrencyInitial);
-
-    this.selectOptions = {
-      title: this.translate.instant('Select Currency'),
-      cssClass: 'buy-crypto-currency-' + this.altCurrenciesToShow.length
-    };
-
-    this.supportedFiatAltCurrencies = this.simplexProvider.getSupportedFiatAltCurrencies();
-
-    this.supportedFiatAltCurrencies.forEach((currency: string) => {
-      if (this.altCurrenciesToShow.indexOf(currency) < 0)
-        this.altCurrenciesToShow2.push(currency);
-    });
-
-    this.okText = this.translate.instant('Select');
-    this.cancelText = this.translate.instant('Cancel');
-    this.showLoading = false;
-  }
-
-  private isSupportedFiat(isoCode: string): boolean {
-    return (
-      this.simplexProvider.getSupportedFiatAltCurrencies().indexOf(isoCode) > -1
-    );
   }
 
   public altCurrencyChange(): void {

@@ -3,20 +3,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
 
 // Providers
 import {
   AppProvider,
-  BitPayIdProvider,
-  BwcProvider,
   DynamicLinksProvider,
   EmailNotificationsProvider,
   ExternalLinkProvider,
   FeedbackProvider,
-  IABCardProvider,
   Logger,
-  MerchantProvider,
   NewFeatureData,
   PersistenceProvider,
   PlatformProvider,
@@ -28,17 +23,14 @@ import {
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { ConfigProvider } from '../../providers/config/config';
-import { CardConfig } from '../../providers/gift-card/gift-card.types';
 
 // Pages
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { User } from '../../models/user/user.model';
 import { Network } from '../../providers/persistence/persistence';
 import { NewFeaturePage } from '../new-feature/new-feature';
 import { AddFundsPage } from '../onboarding/add-funds/add-funds';
 import { AmountPage } from '../send/amount/amount';
 import { AltCurrencyPage } from '../settings/alt-currency/alt-currency';
-import { BitPayIdPage } from '../settings/bitpay-id/bitpay-id';
 
 export interface Advertisement {
   name: string;
@@ -83,7 +75,6 @@ export class HomePage {
   public fetchingStatus: boolean;
   public showRateCard: boolean;
   public accessDenied: boolean;
-  public discountedCard: CardConfig;
   public newReleaseAvailable: boolean = false;
   public cardExperimentEnabled: boolean;
   public testingAdsEnabled: boolean;
@@ -91,12 +82,10 @@ export class HomePage {
   public bitPayIdUserInfo: any;
   public accountInitials: string;
   public isCopay: boolean;
-  private user$: Observable<User>;
-  private network = Network[this.bitPayIdProvider.getEnvironment().network];
   private newReleaseVersion: string;
   private pagesMap: any;
 
-  private isCordova: boolean;
+  public isCordova: boolean;
   private zone;
 
   constructor(
@@ -106,13 +95,11 @@ export class HomePage {
     private appProvider: AppProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private navCtrl: NavController,
-    private merchantProvider: MerchantProvider,
     private feedbackProvider: FeedbackProvider,
     private translate: TranslateService,
     private configProvider: ConfigProvider,
     private events: Events,
     private releaseProvider: ReleaseProvider,
-    private bwcProvider: BwcProvider,
     private platformProvider: PlatformProvider,
     private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
@@ -122,8 +109,6 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private popupProvider: PopupProvider,
     private splashScreen: SplashScreen,
-    private iabCardProvider: IABCardProvider,
-    private bitPayIdProvider: BitPayIdProvider,
     private rateProvider: RateProvider
   ) {
     this.logger.info('Loaded: HomePage');
@@ -137,13 +122,6 @@ export class HomePage {
       .getTestingAdvertisments()
       .then(testing => (this.testingAdsEnabled = testing === 'enabled'));
     this.isCordova = this.platformProvider.isCordova;
-    this.user$ = this.iabCardProvider.user$;
-    this.user$.subscribe(async user => {
-      if (user) {
-        this.bitPayIdUserInfo = user;
-        this.accountInitials = this.getBitPayIdInitials(user);
-      }
-    });
   }
 
   private showNewFeatureSlides() {
@@ -185,17 +163,6 @@ export class HomePage {
 
   ionViewWillEnter() {
     const config = this.configProvider.get();
-    if (this.iabCardProvider.ref) {
-      // check for user info
-      this.persistenceProvider
-        .getBitPayIdUserInfo(this.network)
-        .then((user: User) => {
-          this.bitPayIdUserInfo = user;
-          if (user) {
-            this.accountInitials = this.getBitPayIdInitials(user);
-          }
-        });
-    }
     this.totalBalanceAlternativeIsoCode =
       config.wallet.settings.alternativeIsoCode;
     this.events.publish('Local/showNewFeaturesSlides');
@@ -204,10 +171,6 @@ export class HomePage {
     if (this.showTotalBalance)
       this.updateTotalBalance(this.appProvider.homeBalance);
     if (this.platformProvider.isElectron) this.checkNewRelease();
-    this.showCoinbase = !!config.showIntegration['coinbase'];
-    this.setMerchantDirectoryAdvertisement();
-    this.loadAds();
-    this.fetchAdvertisements();
     this.persistenceProvider.getDynamicLink().then((deepLink: string) => {
       if (deepLink) {
         this.persistenceProvider.setOnboardingFlowFlag('disabled');
@@ -228,92 +191,11 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.preFetchWallets();
-    this.merchantProvider.getMerchants();
     // Required delay to improve performance loading
     setTimeout(() => {
       this.checkEmailLawCompliance();
       this.checkAltCurrency(); // Check if the alternative currency setted is no longer supported
     }, 2000);
-  }
-
-  private loadAds() {
-    const client = this.bwcProvider.getClient(null, {});
-
-    client.getAdvertisements(
-      { testing: this.testingAdsEnabled },
-      (err, ads) => {
-        if (err) throw err;
-
-        if (this.testingAdsEnabled) {
-          _.forEach(ads, ad => {
-            const alreadyVisible = this.testingAds.find(
-              a => a.name === ad.name
-            );
-            this.persistenceProvider
-              .getAdvertisementDismissed(ad.name)
-              .then((value: string) => {
-                if (value === 'dismissed') {
-                  return;
-                }
-
-                let link = this.getAdPageOrLink(ad.linkUrl);
-
-                !alreadyVisible &&
-                  this.verifySignature(ad) &&
-                  ad.isTesting &&
-                  this.testingAds.push({
-                    name: ad.name,
-                    advertisementId: ad.advertisementId,
-                    country: ad.country,
-                    title: ad.title,
-                    body: ad.body,
-                    app: ad.app,
-                    linkText: ad.linkText,
-                    link,
-                    imgSrc: ad.imgUrl,
-                    signature: ad.signature,
-                    isTesting: ad.isTesting,
-                    dismissible: true
-                  });
-                this.showAdvertisements = true;
-              });
-          });
-        } else {
-          _.forEach(ads, ad => {
-            const alreadyVisible = this.advertisements.find(
-              a => a.name === ad.name
-            );
-            this.persistenceProvider
-              .getAdvertisementDismissed(ad.name)
-              .then((value: string) => {
-                if (value === 'dismissed') {
-                  return;
-                }
-
-                let link = this.getAdPageOrLink(ad.linkUrl);
-
-                !alreadyVisible &&
-                  this.verifySignature(ad) &&
-                  this.advertisements.push({
-                    name: ad.name,
-                    country: ad.country,
-                    advertisementId: ad.advertisementId,
-                    title: ad.title,
-                    body: ad.body,
-                    app: ad.app,
-                    linkText: ad.linkText,
-                    link,
-                    imgSrc: ad.imgUrl,
-                    signature: ad.signature,
-                    isTesting: ad.isTesting,
-                    dismissible: true
-                  });
-                this.showAdvertisements = true;
-              });
-          });
-        }
-      }
-    );
   }
 
   getAdPageOrLink(link) {
@@ -332,61 +214,6 @@ export class HomePage {
     }
 
     return linkTo;
-  }
-
-  private setMerchantDirectoryAdvertisement() {
-    const alreadyVisible = this.advertisements.find(
-      a => a.name === 'merchant-directory'
-    );
-    !alreadyVisible &&
-      this.advertisements.push({
-        name: 'merchant-directory',
-        title: this.translate.instant('Merchant Directory'),
-        body: this.translate.instant(
-          'Learn where you can spend your crypto today.'
-        ),
-        app: 'bitpay',
-        linkText: this.translate.instant('View Directory'),
-        link: 'https://bitpay.com/directory/?hideGiftCards=true',
-        imgSrc: 'assets/img/icon-merch-dir.svg',
-        isTesting: false,
-        dismissible: true
-      });
-    this.showAdvertisements = true;
-  }
-
-  private verifySignature(ad): boolean {
-    var adMessage = JSON.stringify({
-      advertisementId: ad.advertisementId,
-      name: ad.name,
-      title: ad.title,
-      type: 'standard',
-      country: ad.country,
-      body: ad.body,
-      imgUrl: ad.imgUrl,
-      linkText: ad.linkText,
-      linkUrl: ad.linkUrl,
-      app: ad.app
-    });
-
-    const config = this.configProvider.getDefaults();
-    const pubKey = config.adPubKey.pubkey;
-    if (!pubKey) return false;
-
-    const b = this.bwcProvider.getBitcore();
-    const ECDSA = b.crypto.ECDSA;
-    const Hash = b.crypto.Hash;
-
-    const sigObj = b.crypto.Signature.fromString(ad.signature);
-    const _hashbuf = Hash.sha256(Buffer.from(adMessage));
-    const verificationResult = ECDSA.verify(
-      _hashbuf,
-      sigObj,
-      new b.PublicKey(pubKey),
-      'little'
-    );
-
-    return verificationResult;
   }
 
   private updateTotalBalance(data) {
@@ -425,29 +252,6 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
-    this.events.subscribe(
-      'CardAdvertisementUpdate',
-      ({ status, cards, cardExperimentEnabled }) => {
-        const hasGalileo = cards && cards.some(c => c.provider === 'galileo');
-        switch (status) {
-          case 'disconnected':
-            this.addBitPayCard();
-            this.removeAdvertisement('card-referral');
-            break;
-          default:
-            if (cardExperimentEnabled) {
-              this.cardExperimentEnabled = cardExperimentEnabled;
-            }
-            if (hasGalileo) {
-              this.addCardReferralAdvertisement();
-              this.removeAdvertisement('bitpay-card');
-            } else {
-              this.addBitPayCard();
-              this.removeAdvertisement('card-referral');
-            }
-        }
-      }
-    );
     this.events.subscribe('Local/TestAdsToggle', testAdsStatus => {
       this.testingAdsEnabled = testAdsStatus;
     });
@@ -466,46 +270,6 @@ export class HomePage {
     this.events.publish('Local/FetchWallets');
   }
 
-  private addCardReferralAdvertisement() {
-    if (!this.isCordova) return;
-    this.persistenceProvider
-      .getAdvertisementDismissed('card-referral')
-      .then((value: string) => {
-        if (value === 'dismissed') {
-          return;
-        }
-
-        const referral: Advertisement = {
-          name: 'card-referral',
-          title: this.translate.instant('Get $10'),
-          body: this.translate.instant(
-            'Refer a friend and get $10 loaded onto your BitPay card.'
-          ),
-          app: 'bitpay',
-          linkText: this.translate.instant('Refer Friend'),
-          link: 'card-referral',
-          isTesting: false,
-          imgSrc: 'assets/img/icon-bpcard.svg',
-          dismissible: true
-        };
-        const alreadyVisible = this.advertisements.find(
-          a => a.name === 'card-referral'
-        );
-        !alreadyVisible && this.advertisements.unshift(referral);
-      });
-  }
-
-  private addBitPayCard() {
-    if (!this.isCordova) return;
-    this.persistenceProvider
-      .getAdvertisementDismissed('bitpay-card')
-      .then((value: string) => {
-        if (value === 'dismissed') {
-          return;
-        }
-      });
-  }
-
   slideChanged() {
     const slideIndex = this.slides && this.slides.getActiveIndex();
     const activeAd = this.advertisements[slideIndex] || { linkParams: {} };
@@ -514,8 +278,6 @@ export class HomePage {
   }
 
   public doRefresh(refresher): void {
-    this.loadAds();
-    this.fetchAdvertisements();
     this.preFetchWallets();
     setTimeout(() => {
       refresher.complete();
@@ -564,71 +326,7 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private fetchAdvertisements(): void {
-    this.advertisements.forEach(advertisement => {
-      this.logger.debug('Add advertisement: ', advertisement.name);
-      if (
-        advertisement.app &&
-        advertisement.app != this.appProvider.info.name
-      ) {
-        this.removeAdvertisement(advertisement.name);
-        this.logger.debug('Removed advertisement: ', advertisement.name);
-        return;
-      }
-      this.persistenceProvider
-        .getAdvertisementDismissed(advertisement.name)
-        .then((value: string) => {
-          if (
-            value === 'dismissed' ||
-            (!this.showCoinbase && advertisement.name == 'coinbase')
-          ) {
-            this.removeAdvertisement(advertisement.name);
-            this.logger.debug('Removed advertisement: ', advertisement.name);
-            return;
-          }
-        });
-    });
-  }
-
-  public dismissAdvertisement(advertisement): void {
-    this.logger.debug(`Advertisement: ${advertisement.name} dismissed`);
-    this.persistenceProvider.setAdvertisementDismissed(advertisement.name);
-    this.removeAdvertisement(advertisement.name);
-  }
-
-  private removeAdvertisement(name): void {
-    if (this.testingAdsEnabled) {
-      this.testingAds = _.filter(this.testingAds, adv => adv.name !== name);
-    } else {
-      this.advertisements = _.filter(
-        this.advertisements,
-        adv => adv.name !== name
-      );
-      if (this.advertisements.length == 0) this.showAdvertisements = false;
-    }
-    if (this.slides) this.slides.slideTo(0, 500);
-  }
-
   public goTo(page, params: any = {}) {
-    if (page === 'card-referral') {
-      this.iabCardProvider.loadingWrapper(async () => {
-        const cards = await this.persistenceProvider.getBitpayDebitCards(
-          this.network
-        );
-        const { id } = cards.find(c => c.cardType === 'virtual');
-
-        this.iabCardProvider.sendMessage(
-          {
-            message: `openCardReferralDashboard?${id}`
-          },
-          () => {
-            this.iabCardProvider.show();
-          }
-        );
-      });
-      return;
-    }
-
     if (typeof page === 'string' && page.indexOf('https://') === 0) {
       this.externalLinkProvider.open(page);
     } else {
@@ -806,31 +504,5 @@ export class HomePage {
     ) {
       this.showInfoSheet(altCurrency);
     }
-  }
-
-  public openBitPayIdPage(): void {
-    if (this.bitPayIdUserInfo) {
-      this.navCtrl.push(BitPayIdPage, this.bitPayIdUserInfo);
-    } else {
-      this.iabCardProvider.loadingWrapper(() => {
-        this.logger.log('settings - pairing');
-        this.iabCardProvider.show();
-        setTimeout(() => {
-          this.iabCardProvider.sendMessage(
-            {
-              message: 'pairingOnly'
-            },
-            () => {}
-          );
-        }, 100);
-      });
-    }
-  }
-
-  private getBitPayIdInitials(user): string {
-    const { givenName, familyName } = user;
-    return [givenName, familyName]
-      .map(name => name && name.charAt(0).toUpperCase())
-      .join('');
   }
 }

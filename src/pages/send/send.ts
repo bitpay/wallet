@@ -10,14 +10,11 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { AnalyticsProvider } from '../../providers/analytics/analytics';
 import { AppProvider } from '../../providers/app/app';
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { Coin, CurrencyProvider } from '../../providers/currency/currency';
 import { ErrorsProvider } from '../../providers/errors/errors';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PayproProvider } from '../../providers/paypro/paypro';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 // Pages
@@ -81,7 +78,6 @@ export class SendPage {
     private currencyProvider: CurrencyProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private payproProvider: PayproProvider,
     private logger: Logger,
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider,
@@ -91,8 +87,6 @@ export class SendPage {
     private appProvider: AppProvider,
     private translate: TranslateService,
     private errorsProvider: ErrorsProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private bwcErrorProvider: BwcErrorProvider,
     private plt: Platform,
     private clipboardProvider: ClipboardProvider,
     private platformProvider: PlatformProvider
@@ -263,46 +257,6 @@ export class SendPage {
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
       if (
-        (parsedData && parsedData.type == 'PayPro') ||
-        (parsedData && parsedData.type == 'InvoiceUri')
-      ) {
-        try {
-          const invoiceUrl = this.incomingDataProvider.getPayProUrl(
-            this.search
-          );
-          const payproOptions = await this.payproProvider.getPayProOptions(
-            invoiceUrl
-          );
-          const selected = payproOptions.paymentOptions.find(
-            option =>
-              option.selected &&
-              this.wallet.coin.toUpperCase() === option.currency
-          );
-          if (selected) {
-            const activePage = 'SendPage';
-            const isValid = this.checkCoinAndNetwork(selected, true);
-            if (isValid) {
-              this.incomingDataProvider.goToPayPro(
-                payproOptions.payProUrl,
-                this.wallet.coin,
-                undefined,
-                true,
-                activePage
-              );
-            }
-          } else {
-            this.redir();
-          }
-        } catch (err) {
-          this.onGoingProcessProvider.clear();
-          this.invalidAddress = true;
-          this.logger.warn(this.bwcErrorProvider.msg(err));
-          this.errorsProvider.showDefaultError(
-            this.bwcErrorProvider.msg(err),
-            this.translate.instant('Error')
-          );
-        }
-      } else if (
         parsedData &&
         _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {

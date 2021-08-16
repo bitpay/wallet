@@ -25,17 +25,13 @@ import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
-import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Coin, CurrencyProvider } from '../../../providers/currency/currency';
 import { ErrorsProvider } from '../../../providers/errors/errors';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
-import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
-import { IABCardProvider } from '../../../providers/in-app-browser/card';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PayproProvider } from '../../../providers/paypro/paypro';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -44,7 +40,6 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletConnectProvider } from '../../../providers/wallet-connect/wallet-connect';
 import {
   TransactionProposal,
   WalletProvider
@@ -160,13 +155,8 @@ export class ConfirmPage {
     protected walletProvider: WalletProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
-    protected coinbaseProvider: CoinbaseProvider,
     protected appProvider: AppProvider,
-    protected payproProvider: PayproProvider,
-    private iabCardProvider: IABCardProvider,
-    protected homeIntegrationsProvider: HomeIntegrationsProvider,
     protected persistenceProvider: PersistenceProvider,
-    private walletConnectProvider: WalletConnectProvider,
     public http: HttpClient,
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -189,9 +179,6 @@ export class ConfirmPage {
     this.fromSelectInputs = this.navParams.data.fromSelectInputs;
     this.appName = this.appProvider.info.nameCase;
     this.isSpeedUpTx = this.navParams.data.speedUpTx;
-    this.showCoinbase =
-      this.homeIntegrationsProvider.shouldShowInHome('coinbase') &&
-      this.coinbaseProvider.isLinked();
     // this.isCardPurchase =
     //   this.navParams.data.payProUrl &&
     //   this.navParams.data.payProUrl.includes('redir=wc');
@@ -465,11 +452,6 @@ export class ConfirmPage {
       coin
     });
 
-    this.coinbaseAccounts =
-      this.showCoinbase && network === 'livenet'
-        ? this.coinbaseProvider.getAvailableAccounts(coin)
-        : [];
-
     if (_.isEmpty(this.wallets) && _.isEmpty(this.coinbaseAccounts)) {
       const msg = this.translate.instant(
         'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
@@ -516,20 +498,6 @@ export class ConfirmPage {
 
     if (this.tx.paypro) {
       if (!this.currencyProvider.isUtxoCoin(this.tx.coin)) {
-        // Update fees to most recent for eth ( in case required fee change ? )
-        const address = await this.walletProvider.getAddress(
-          this.wallet,
-          false
-        );
-        const payload = {
-          address
-        };
-        this.tx.paypro = await this.payproProvider.getPayProDetails({
-          paymentUrl: this.tx.payProUrl,
-          coin: this.wallet.coin,
-          payload,
-          disableLoader: true
-        });
         this.tx.feeRate = parseInt(
           (this.tx.paypro.requiredFeeRate * 1.1).toFixed(0),
           10
@@ -1555,10 +1523,7 @@ export class ConfirmPage {
           this.logger.warn('Error getting transaction proposal', err);
         });
     } else {
-      return this.payWithCoinbaseAccount(
-        this.tx.paypro.invoiceId,
-        this.coinbaseAccount.currency.code
-      );
+      return null;
     }
   }
 
@@ -1618,10 +1583,6 @@ export class ConfirmPage {
           this.onGoingProcessProvider.set('creatingEthMultisigWallet');
           return this.instantiateMultisigContract(txp);
         } else if (this.walletConnectRequestId) {
-          this.walletConnectProvider.approveRequest(
-            this.walletConnectRequestId,
-            txp.txid
-          );
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });
         } else {
@@ -1705,32 +1666,15 @@ export class ConfirmPage {
   }
 
   private navigateBack(redir?: string, walletId?: string) {
+    this.logger.debug(
+      'Redir:' + redir
+    );
     this.navCtrl.popToRoot().then(_ => {
-      if (this.fromCoinbase) {
-        this.coinbaseProvider.logEvent({
-          method: 'deposit',
-          amount: this.amount,
-          currency: this.coin
+      if (this.wallet) {
+        this.navCtrl.push(WalletDetailsPage, {
+          walletId: walletId ? walletId : this.wallet.credentials.walletId,
+          donationSupportCoins : this.donationSupportCoins
         });
-      } else {
-        if (redir) {
-          setTimeout(() => {
-            this.iabCardProvider.show();
-            this.iabCardProvider.sendMessage(
-              {
-                message: 'paymentBroadcasted'
-              },
-              () => {
-                this.logger.log('card IAB -> payment broadcasting opening IAB');
-              }
-            );
-          }, 1000);
-        } else if (this.wallet) {
-          this.navCtrl.push(WalletDetailsPage, {
-            walletId: walletId ? walletId : this.wallet.credentials.walletId,
-            donationSupportCoins : this.donationSupportCoins
-          });
-        }
       }
     });
   }
@@ -1856,12 +1800,6 @@ export class ConfirmPage {
     const id = this.wallet ? this.wallet.credentials.walletId : null;
 
     let coinbaseData = { user: [], availableAccounts: [] };
-    if (this.showCoinbase) {
-      coinbaseData = {
-        user: this.coinbaseProvider.coinbaseData.user,
-        availableAccounts: this.coinbaseAccounts
-      };
-    }
 
     const params = {
       wallets: this.wallets,
@@ -1897,37 +1835,6 @@ export class ConfirmPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromConfirm: true });
-  }
-
-  protected payWithCoinbaseAccount(invoiceId, coin, code?): Promise<void> {
-    this.onGoingProcessProvider.set('payingWithCoinbase');
-    return this.coinbaseProvider
-      .payInvoice(invoiceId, coin, code)
-      .then(() => {
-        this.onGoingProcessProvider.clear();
-        this.openFinishModal();
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        if (err == '2fa') {
-          const message = this.translate.instant('Enter 2-step verification');
-          const opts = {
-            type: 'number',
-            enableBackdropDismiss: false
-          };
-          this.popupProvider.ionicPrompt(null, message, opts).then(res => {
-            if (res === null) {
-              this.showErrorAndBack(
-                this.translate.instant('Missing 2-step verification')
-              );
-              return;
-            }
-            this.payWithCoinbaseAccount(invoiceId, coin, res);
-          });
-        } else {
-          this.showErrorAndBack(err);
-        }
-      });
   }
 
   protected showErrorAndBack(err): void {
