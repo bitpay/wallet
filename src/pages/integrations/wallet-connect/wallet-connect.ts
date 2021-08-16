@@ -133,7 +133,13 @@ export class WalletConnectPage {
     this.init();
   }
 
+  ionViewWillEnter() {
+    // not ideal - workaround for navCtrl issues
+    this.events.publish('Update/ViewingWalletConnectMain', true);
+  }
+
   ionViewWillLeave() {
+    this.events.publish('Update/ViewingWalletConnectMain', false);
     this.setExiting();
     this.onGoingProcessProvider.clear();
   }
@@ -159,10 +165,8 @@ export class WalletConnectPage {
   };
 
   private goBack = () => {
-    try {
+    if (this.navCtrl.canGoBack()) {
       this.navCtrl.pop();
-    } catch (err) {
-      this.logger.error(err);
     }
   };
 

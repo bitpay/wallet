@@ -104,6 +104,8 @@ export class CopayApp {
   private onResumeSubscription: Subscription;
   private isCopayerModalOpen: boolean;
   private copayerModal: any;
+  private walletConnectMainActive: boolean;
+  private walletConnectDetailsActive: boolean;
 
   private pageMap = {
     AboutPage,
@@ -400,6 +402,15 @@ export class CopayApp {
 
     await this.persistenceProvider.setTempMdesCertOnlyFlag('disabled');
 
+    // WalletConnect - not ideal - workaround for navCtrl issues
+    this.events.subscribe(
+      'Update/ViewingWalletConnectMain',
+      (status: boolean) => (this.walletConnectMainActive = status)
+    );
+    this.events.subscribe(
+      'Update/ViewingWalletConnectDetails',
+      (status: boolean) => (this.walletConnectDetailsActive = status)
+    );
     this.platformProvider.platformReady.next(true);
 
     if (
@@ -690,23 +701,24 @@ export class CopayApp {
 
               // inApp notification
               if (!isDeepLink) {
-                const isWalletConnect = this.nav
-                  .getActive(true)
-                  .name.includes('Wallet');
                 const pendingRequests = await this.persistenceProvider.getWalletConnectPendingRequests();
                 const hasPending =
                   pendingRequests && pendingRequests.length > 1;
 
-                if (isWalletConnect && !hasPending) {
+                if (this.walletConnectMainActive && !hasPending) {
                   return;
                 }
 
                 const notificationConfig = {
                   title: 'WalletConnect',
                   body: `New Pending Request`,
-                  action: isWalletConnect ? 'notifyOnly' : 'goToWalletconnect',
-                  closeButtonText: isWalletConnect ? 'Dismiss' : 'View',
-                  autoDismiss: isWalletConnect,
+                  action: this.walletConnectDetailsActive
+                    ? 'notifyOnly'
+                    : 'goToWalletconnect',
+                  closeButtonText: this.walletConnectDetailsActive
+                    ? 'Dismiss'
+                    : 'View',
+                  autoDismiss: this.walletConnectDetailsActive,
                   request
                 };
                 this.pushNotificationsProvider.showInappNotification(

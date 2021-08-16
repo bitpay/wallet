@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ConfirmPage } from '../../../../pages/send/confirm/confirm';
@@ -44,13 +44,22 @@ export class WalletConnectRequestDetailsPage {
     private errorsProvider: ErrorsProvider,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private events: Events
   ) {}
 
   ionViewDidLoad() {
     this.setConnectionData();
     this.request = this.navParams.data.request;
     this.params = this.navParams.data.params;
+  }
+
+  // not ideal - workaround for navCtrl issues
+  ionViewWillEnter() {
+    this.events.publish('Update/ViewingWalletConnectDetails', true);
+  }
+  ionViewWillLeave() {
+    this.events.publish('Update/ViewingWalletConnectDetails', false);
   }
 
   private setConnectionData: any = async _ => {
