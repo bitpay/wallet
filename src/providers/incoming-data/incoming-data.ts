@@ -523,7 +523,7 @@ export class IncomingDataProvider {
       this.logger.warn('Wallet Connect has been disabled for this build');
       return;
     }
-    
+
     const {
       force,
       walletId,
