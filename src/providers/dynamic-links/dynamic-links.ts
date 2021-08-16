@@ -10,6 +10,8 @@ import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class DynamicLinksProvider {
+  public initialCall: boolean;
+
   constructor(
     private logger: Logger,
     private events: Events,
@@ -45,8 +47,11 @@ export class DynamicLinksProvider {
         (ready: boolean) => {
           if (ready) {
             setTimeout(() => {
-              this.incomingDataProvider.redir(dynLink);
+              this.incomingDataProvider.redir(decodeURIComponent(dynLink), {
+                force: true
+              });
               this.onGoingProcessProvider.clear();
+              this.initialCall = true;
             }, timeout);
             subscription && subscription.unsubscribe();
           }
