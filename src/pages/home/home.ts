@@ -152,9 +152,8 @@ export class HomePage {
     private splashScreen: SplashScreen,
     private iabCardProvider: IABCardProvider,
     private bitPayIdProvider: BitPayIdProvider,
-    private rateProvider: RateProvider,
     private walletConnectProvider: WalletConnectProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
     private rateProvider: RateProvider,
     private domProvider: DomProvider
   ) {
