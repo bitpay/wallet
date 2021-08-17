@@ -139,7 +139,7 @@
 
           <div class="action-btn" *ngIf="showExchangeCrypto" (click)="goToExchangeCryptoPage()">
             <img [src]="themeProvider.currentAppTheme == 'dark' ? 'assets/img/wallet-details/wd-exchange-dm.svg': 'assets/img/wallet-details/wd-exchange.svg'" width="50">
-            <div class="ellipsis">{{ 'Exchange' | translate }}</div>
+            <div class="ellipsis">{{ 'Swap' | translate }}</div>
           </div>
 
           <div class="action-btn" (click)="goToReceivePage()">
@@ -305,9 +305,10 @@
                 <img src="assets/img/tx-action/icon-confirming.svg" width="40">
               </div>
               <div *ngIf="tx.confirmations > 0">
-                <span *ngIf="tx.customData && tx.customData.service">
+                <span *ngIf="tx.customData && tx.customData.service && tx.action == 'sent'">
                   <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
                   <img class="icon-services" src="assets/img/exchange-crypto/changelly-icon.svg" *ngIf="tx.customData.service == 'changelly'" width="40">
+                  <img class="icon-services" src="assets/img/exchange-crypto/1inch-icon.svg" *ngIf="tx.customData.service == 'oneInch'" width="40">
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'amazon'" src="https://bitpay.com/gift-cards/assets/amazoncom/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'mercadolibre'" src="https://bitpay.com/gift-cards/assets/mercadolivre/icon.svg" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>
                   <img-loader class="icon-services" *ngIf="tx.customData.service === 'coinbase'" src="assets/img/coinbase/coinbase-icon.png" width="40" fallbackUrl="assets/img/gift-cards/gift-cards-icon.svg"></img-loader>

@@ -140,10 +140,12 @@ export class WalletDetailsPage {
       (this.wallet.network == 'livenet' ||
         (this.wallet.network == 'testnet' && env.name == 'development'));
     this.showExchangeCrypto =
-      _.includes(
+      (_.includes(
         this.exchangeCryptoProvider.exchangeCoinsSupported,
         this.wallet.coin
-      ) && this.wallet.network == 'livenet';
+      ) ||
+        this.currencyProvider.isERCToken(this.wallet.coin)) &&
+      this.wallet.network == 'livenet';
 
     // Getting info from cache
     if (this.navParams.data.clearCache) {

@@ -11,6 +11,7 @@ describe('WalletDetailsPage', () => {
 
   beforeEach(async(() => {
     const mockWallet = {
+      coin: 'btc',
       name: 'Test Wallet',
       cachedStatus: null,
       credentials: { m: 1 },

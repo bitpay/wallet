@@ -348,9 +348,13 @@ export class CreateWalletPage implements OnInit {
           this.events.publish('Local/FetchWallets');
           setTimeout(() => {
             if (wallet.isComplete()) {
-              this.navCtrl.push(WalletDetailsPage, {
-                walletId: wallet.credentials.walletId
-              });
+              if (this.navParams.get('fromCoinAndWalletSelector')) {
+                this.navCtrl.pop();
+              } else {
+                this.navCtrl.push(WalletDetailsPage, {
+                  walletId: wallet.credentials.walletId
+                });
+              }
             } else {
               const copayerModal = this.modalCtrl.create(
                 CopayersPage,

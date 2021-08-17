@@ -20,8 +20,8 @@ import { TabProvider } from '../../providers/tab/tab';
 import { ThemeProvider } from '../../providers/theme/theme';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-import { CryptoCoinSelectorPage } from '../buy-crypto/crypto-coin-selector/crypto-coin-selector';
 import { CardsPage } from '../cards/cards';
+import { CoinAndWalletSelectorPage } from '../coin-and-wallet-selector/coin-and-wallet-selector';
 import { ExchangeCryptoPage } from '../exchange-crypto/exchange-crypto';
 import { HomePage } from '../home/home';
 import { CardCatalogPage } from '../integrations/gift-cards/card-catalog/card-catalog';
@@ -55,7 +55,7 @@ export class TabsPage {
   private pageMap = {
     AmountPage,
     ExchangeCryptoPage,
-    CryptoCoinSelectorPage,
+    CoinAndWalletSelectorPage,
     CardCatalogPage,
     ScanPage
   };

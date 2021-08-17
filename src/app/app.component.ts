@@ -592,7 +592,7 @@ export class CopayApp {
       this.buyCryptoProvider.register();
     }
 
-    // Exchange Crypto
+    // Swap Crypto
     if (
       this.appProvider.info._enabledExtensions.exchangecrypto &&
       !this.platformProvider.isMacApp()
