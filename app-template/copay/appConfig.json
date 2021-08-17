@@ -10,6 +10,7 @@
   "appUri": "copay",
   "name": "copay",
   "applePay": "",
+  "universalLinkDomains": "",
   "dynamicLink": "copay.page.link",
   "nameNoSpace": "copay",
   "nameCase": "Copay",

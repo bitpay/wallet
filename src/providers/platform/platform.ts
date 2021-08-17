@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { Platform } from 'ionic-angular';
 
+import { ReplaySubject } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -17,6 +18,8 @@ export class PlatformProvider {
   public ua: string;
   public isMobile: boolean;
   public isDevel: boolean;
+  public platformReady = new ReplaySubject();
+  public platformReady$ = this.platformReady.asObservable();
 
   constructor(
     private platform: Platform,

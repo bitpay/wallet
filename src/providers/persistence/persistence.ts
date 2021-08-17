@@ -95,6 +95,8 @@ const Keys = {
   NETWORK: 'network',
   CUSTOMTOKENSDATA: 'customTokensData',
   CUSTOMTOKENSOPTS: 'customTokensOpts',
+  BITPAY_CARD_ORDER_STARTED: `bitPayCardOrderStarted`,
+  BITPAY_SURVEY_CARD_DISMISSED: `bitPaySurveyCardDismissed`,
   ACCEPTED_SWAP_CRYPTO_DISCLAIMER: 'acceptedSwapCryptoDisclaimer'
 };
 
@@ -1081,6 +1083,22 @@ export class PersistenceProvider {
 
   getSwapCryptoDisclaimer() {
     return this.storage.get(Keys.ACCEPTED_SWAP_CRYPTO_DISCLAIMER);
+  }
+
+  setBitPayCardOrderStarted(ts: number) {
+    return this.storage.set(Keys.BITPAY_CARD_ORDER_STARTED, ts);
+  }
+
+  getBitPayCardOrderStarted() {
+    return this.storage.get(Keys.BITPAY_CARD_ORDER_STARTED);
+  }
+
+  setBitPaySurveyCardDismissed(ts: number) {
+    return this.storage.set(Keys.BITPAY_SURVEY_CARD_DISMISSED, ts);
+  }
+
+  getBitPaySurveyCardDismissed() {
+    return this.storage.get(Keys.BITPAY_SURVEY_CARD_DISMISSED);
   }
 }
 
