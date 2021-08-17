@@ -80,7 +80,8 @@ export type InfoSheetType =
   | 'sync-wallets'
   | 'custom-tokens-warning'
   | 'testnet-warning-1'
-  | 'multisig-instantiation';
+  | 'multisig-instantiation'
+  | 'exchange-crypto-disclaimer';
 
 export type OptionsSheetType =
   | 'wallet-options'
