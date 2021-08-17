@@ -892,7 +892,7 @@ export class HomePage {
     });
   }
 
-  public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
+  private createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
       .instance;
   }
@@ -926,7 +926,7 @@ export class HomePage {
     }
   }
 
-  public goToSwapCryptoPage() {
+  private goToSwapCryptoPage() {
     this.analyticsProvider.logEvent('exchange_crypto_button_clicked', {
       from: 'homePage'
     });
