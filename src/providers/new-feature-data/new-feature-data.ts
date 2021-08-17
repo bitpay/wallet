@@ -58,25 +58,18 @@ export class NewFeatureData {
     this.feature_list = [
       {
         major: 12,
-        minor: 7,
-        patch: 6,
+        minor: 8,
+        patch: 0,
         app: ['*'],
-        platform: ['*', 'android'],
+        platform: ['*'],
         dummy: this.translate.instant('dummy'),
         features: [
           {
-            title: 'Litecoin',
+            title: this.translate.instant('Swap Tokens'),
             details:
-              'Now you can store, send and receive Litecoin, a low cost, instant peer-to-peer Internet currency, in your BitPay App.',
+              this.translate.instant('Easily swap hundreds of ERC-20 tokens using 1Inch, a decentralized exchange (DEX) aggregator.'),
             image: {
-              path: 'assets/img/new-feature/12.7/12.7-1-ltc.svg'
-            }
-          },
-          {
-            title: 'Connect with Google Pay',
-            details: `Now it's easy to use your BitPay Card with Google Pay. Make payments in stores, in apps, and online.`,
-            image: {
-              path: 'assets/img/new-feature/12.7/12.7-2-google-pay.svg'
+              path: 'assets/img/new-feature/12.8/12.8-1-swap-crypto.svg'
             }
           }
         ]
