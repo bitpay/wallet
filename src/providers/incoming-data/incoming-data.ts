@@ -1056,6 +1056,11 @@ export class IncomingDataProvider {
             params['dashboardRedirect'] = true;
           }
 
+          if (payload.includes('&vcd=')) {
+            const currency = payload.split('&vcd=')[1];
+            this.persistenceProvider.setCustomVirtualCardDesign(currency);
+          }
+
           this.iabCardProvider.pairing({ data: { params } });
 
           // this param is set if pairing for the first time after an order
