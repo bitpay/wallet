@@ -43,6 +43,13 @@ export class WalletConnectProvider {
   private address: string;
   private activeChainId: number = 1;
   private walletId: string;
+  private supportedMethods: string[] = [
+    'eth_sendTransaction',
+    'eth_sign',
+    'eth_signTransaction',
+    'eth_signTypedData',
+    'personal_sign'
+  ];
 
   constructor(
     private logger: Logger,
@@ -469,5 +476,9 @@ export class WalletConnectProvider {
         );
       }
     }
+  }
+
+  public isSupportedMethod(method: string): boolean {
+    return this.supportedMethods.indexOf(method) > -1;
   }
 }

@@ -7,6 +7,17 @@
         </ion-label>
       </ion-item>
 
+      <label-tip type="warn" class="no-arrowhead" *ngIf="!isSupportedMethod">
+        <span label-tip-title translate>Method not supported</span>
+        <div label-tip-body>
+          <div translate>
+           <b>{{ request?.method }}</b> is not supported by BitPay. Please check the official WalletConnect documentation to see what the supported methods are.
+          </div>
+          <br>
+          <a class="label-tip-link" (click)="openExternalLink()" translate>Read More</a>
+        </div>
+      </label-tip>
+
       <div *ngFor="let param of request?.params; let i = index;">
         <div *ngIf="request.method === 'eth_sendTransaction'">
             <ion-item *ngIf="param.to">
@@ -148,7 +159,7 @@
       </ion-list>
       
       <div class="btn-container">
-        <button  margin-top (click)="approveRequest(request)" ion-button class="button-standard" color="primary">
+        <button  margin-top (click)="approveRequest(request)" ion-button class="button-standard" color="primary" [disabled]="!isSupportedMethod">
           {{ buttonAction[request?.method] || 'Confirm' | translate }}
         </button>
         <button  margin-top (click)="rejectRequest(request)" ion-button class="button-standard" color="primary" outline>
