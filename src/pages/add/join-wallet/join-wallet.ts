@@ -22,6 +22,7 @@ import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ErrorsProvider } from '../../../providers/errors/errors';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -71,7 +72,8 @@ export class JoinWalletPage {
     private clipboardProvider: ClipboardProvider,
     private modalCtrl: ModalController,
     private errorsProvider: ErrorsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
     this.isCordova = this.platformProvider.isCordova;
     this.okText = this.translate.instant('Ok');
@@ -377,7 +379,19 @@ export class JoinWalletPage {
       return;
     }
 
-    this.join(opts);
+    const joinWarningSheet = this.actionSheetProvider.createInfoSheet(
+      'join-wallet-warning'
+    );
+    joinWarningSheet.present();
+    joinWarningSheet.onDidDismiss(option => {
+      if (option) {
+        this.externalLinkProvider.open(
+          'https://support.bitpay.com/hc/en-us/articles/360032618692-What-is-a-Multisignature-Multisig-or-Shared-Wallet-'
+        );
+      } else {
+        this.join(opts);
+      }
+    });
   }
 
   private join(opts): void {
