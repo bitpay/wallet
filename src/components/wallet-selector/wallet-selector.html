@@ -2,6 +2,14 @@
   <div class="bp-header">
     <ion-title>{{ title }}</ion-title>
   </div>
+  <div *ngIf="linkEthTokens && token">
+    <label-tip type="info" class="no-arrowhead">
+      <span label-tip-title translate>Which Ethereum wallet would you like this token to use for transaction costs?</span>
+      <div label-tip-body>
+        <span translate>Keep in mind that once the funds are received in your {{token.name}} wallet, to move them you will need to have enough funds in your Ethereum linked wallet to pay the ETH miner fees.</span>
+      </div>
+    </label-tip>
+  </div>
   <div *ngIf="(walletsByKeys && walletsByKeys[0]) || coinbaseData; else noWallets">
     <div *ngFor="let walletsByKey of walletsByKeys">
       <ion-list no-lines class="bp-list">
@@ -44,8 +52,13 @@
     </div>
   </div>
   <ng-template #noWallets>
-    <div class="no-wallets">
+    <div *ngIf="!linkEthTokens" class="no-wallets">
       {{'No wallets available' | translate}}
+    </div>
+    <div *ngIf="linkEthTokens">
+      <span translate>
+        In order to create a token wallet, an Ethereum (ETH) wallet is required. Please create an ETH wallet first. Only one {{ token.name }} wallet is allowed per ETH wallet.
+      </span>
     </div>
   </ng-template>
   <ion-item-divider></ion-item-divider>

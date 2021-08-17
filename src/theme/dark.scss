@@ -27,7 +27,7 @@
 
 7 - Buy Crypto
 
-8 - Exchange Crypto
+8 - Swap Crypto
 
 9 - Onboarding
 
@@ -267,8 +267,8 @@
   }
 
   .search-wrapper {
-    background-color: $bg-color-dark-theme-2;
-    color: $text-color-dark-theme-2;
+    background-color: $bg-color-dark-theme-2 !important;
+    color: $text-color-dark-theme-2 !important;
   }
 
   search-bar {
@@ -1808,21 +1808,54 @@
     }
   }
 
+  page-coin-and-wallet-selector {
+    .search-wrapper {
+      background-color: $bg-color-dark-theme-2;
+      color: $text-color-dark-theme-2;
+      &.invalid {
+        border: 1px solid color($colors, error);
+        color: color($colors, error);
+      }
+    }
+    .bp-list {
+      .available-wallets {
+        &-container {
+          background-color: $bg-color-dark-theme-2;
+        }
+        &-label {
+          color: $text-color-dark-theme-2;
+        }
+      }
+    }
+  }
+
   // 7 - Buy Crypto
   page-crypto-order-summary {
     .bp-list {
-      .card {
-        background: $bg-color-dark-theme;
-        .item {
-          &.item-ios,
-          &.item-md {
-            background-color: $bg-color-dark-theme-2;
-            ion-note {
-              img {
-                filter: brightness(0.5);
-              }
-            }
+      .exchange-container {
+        background: $bg-color-dark-theme-2;
+        border: 1px solid $bg-color-dark-theme-2;
+        ion-item.item.item-block {
+          background: $bg-color-dark-theme-2;
+          ion-note {
+            color: $text-color-dark-theme;
           }
+        }
+        .amount {
+          color: $text-color-dark-theme;
+        }
+        .select-wallet-button {
+          &.selected {
+            background: $bg-color-dark-theme;
+            color: $text-color-dark-theme;
+          }
+          .ion-ios-arrow-down-outline,
+          .ion-ios-arrow-up-outline {
+            color: $text-color-dark-theme;
+          }
+        }
+        .card-title {
+          color: $text-color-dark-theme;
         }
       }
     }
@@ -1838,15 +1871,16 @@
         color: $text-color-dark-theme;
       }
     }
-  }
-  page-crypto-coin-selector {
-    .bp-list {
-      .available-wallets {
-        &-container {
-          background-color: $bg-color-dark-theme-2;
-        }
-        &-label {
-          color: $text-color-dark-theme-2;
+    .offer-card {
+      border: 1px solid $bg-color-dark-theme-2;
+      .secondary-label {
+        color: #9ba3ae;
+      }
+      .extended-info .bp-list {
+        .summary-item,
+        .summary-item-detail,
+        .summary-item-detail-sec {
+          color: #9ba3ae;
         }
       }
     }
@@ -1857,18 +1891,30 @@
     }
   }
 
-  // 8 - Exchange Crypto
+  // 8 - Swap Crypto
 
   page-exchange-crypto {
+    .bp-list {
+      .exchange-container {
+        background: $bg-color-dark-theme-2;
+        border: 1px solid $bg-color-dark-theme-2;
+        .select-wallet-button {
+          &.selected {
+            background: $bg-color-dark-theme;
+          }
+          .ion-ios-arrow-down-outline,
+          .ion-ios-arrow-up-outline {
+            color: $text-color-dark-theme;
+          }
+        }
+        .card-title {
+          color: $text-color-dark-theme;
+        }
+      }
+    }
     .amount .amount-container {
       background-color: $bg-color-dark-theme-2;
-      color: $text-color-dark-theme-2;
-    }
-    .divider {
-      border-bottom: 1px solid $border-color-dark-theme;
-      .arrow img {
-        filter: brightness(0.6);
-      }
+      color: $text-color-dark-theme;
     }
     .partner {
       color: $text-color-dark-theme-2;

@@ -762,6 +762,30 @@ export class PersistenceProvider {
     return this.storage.remove('changelly-' + env);
   }
 
+  setOneInch(env: string, tx) {
+    return this.storage.set('oneinch-' + env, tx);
+  }
+
+  getOneInch(env: string) {
+    return this.storage.get('oneinch-' + env);
+  }
+
+  removeOneInch(env: string) {
+    return this.storage.remove('oneinch-' + env);
+  }
+
+  setOneInchApprove(env: string, tx) {
+    return this.storage.set('oneinch-approve-' + env, tx);
+  }
+
+  getOneInchApprove(env: string) {
+    return this.storage.get('oneinch-approve-' + env);
+  }
+
+  removeOneInchApprove(env: string) {
+    return this.storage.remove('oneinch-approve-' + env);
+  }
+
   setSimplex(env: string, paymentRequests) {
     return this.storage.set('simplex-' + env, paymentRequests);
   }

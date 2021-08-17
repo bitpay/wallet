@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
-
 @Component({
   selector: 'wallet-selector',
   templateUrl: 'wallet-selector.html'
@@ -11,6 +10,8 @@ export class WalletSelectorComponent extends ActionSheetParent {
   public title: string;
   public selectedWalletId: string;
   public coinbaseData;
+  public linkEthTokens: boolean;
+  public token;
 
   constructor() {
     super();
@@ -20,6 +21,8 @@ export class WalletSelectorComponent extends ActionSheetParent {
     this.title = this.params.title;
     this.selectedWalletId = this.params.selectedWalletId;
     this.coinbaseData = this.params.coinbaseData;
+    this.linkEthTokens = this.params.linkEthTokens;
+    this.token = this.params.token;
     this.separateWallets();
   }
 

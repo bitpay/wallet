@@ -9,7 +9,11 @@
           </ion-col>
           <ion-col>
             <div class="summary-title" translate>Crypto</div>
-            <div class="summary-description"><img class="coin-icon" src="assets/img/currencies/{{coin}}.svg" /> {{coin | uppercase}}</div>
+            <div class="summary-description" [ngClass]="{'testnet': wallet.network === 'testnet'}">
+              <img class="coin-icon" *ngIf="currencyProvider.COIN[coin | uppercase]" src="assets/img/currencies/{{coin.toLowerCase()}}.svg" />
+              <img class="coin-icon" *ngIf="!currencyProvider.COIN[coin | uppercase]" src="https://tokens.1inch.exchange/{{currencyProvider.getTokenAddress(coin.toLowerCase())}}.png" onerror="this.onerror=null;this.src='assets/img/icon-swap.svg'"/>
+              {{coin | uppercase}}
+            </div>
           </ion-col>
           <ion-col col-4>
             <div class="summary-title" translate>Payment Method</div>

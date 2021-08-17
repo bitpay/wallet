@@ -49,6 +49,7 @@ export type InfoSheetType =
   | 'print-required'
   | 'send-max-min-amount'
   | 'sensitive-info'
+  | 'slippage-info'
   | 'in-app-notification'
   | 'request-feature'
   | 'report-issue'
@@ -81,7 +82,8 @@ export type InfoSheetType =
   | 'custom-tokens-warning'
   | 'testnet-warning-1'
   | 'multisig-instantiation'
-  | 'exchange-crypto-disclaimer';
+  | 'exchange-crypto-disclaimer'
+  | 'switch-exchange-crypto';
 
 export type OptionsSheetType =
   | 'wallet-options'
@@ -92,12 +94,14 @@ export type OptionsSheetType =
 
 export interface WalletSelectorParams {
   wallets: any[];
-  selectedWalletId: string;
   title: string;
+  selectedWalletId?: string;
   coinbaseData?: {
     user: any[];
     availableAccounts: any[];
   };
+  token?: any;
+  linkEthTokens?: boolean;
 }
 
 export interface WalletReceiveParams {

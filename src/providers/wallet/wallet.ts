@@ -75,6 +75,7 @@ export interface TransactionProposal {
     service?: string;
     giftCardName?: string;
     changelly?: string;
+    oneInch?: string;
     shapeShift?: string;
     toWalletName?: any;
   };
@@ -88,6 +89,7 @@ export interface TransactionProposal {
   invoiceID?: string;
   multisigGnosisContractAddress?: string;
   multisigContractAddress?: string;
+  isTokenSwap?: boolean;
 }
 
 @Injectable()
