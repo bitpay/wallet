@@ -4,7 +4,7 @@
 
 <ion-content no-bounce>
   <ion-slides (ionSlideDidChange)="slideChanged()" #featureEducationSlides [pager]="!featureEducationSlides.isEnd()" class="onboarding-slides">
-    <ion-slide class="key-creation">
+    <ion-slide>
       <ion-content>
         <div class="slide-info">
           <div class="img-container">
@@ -32,7 +32,7 @@
         </div>
       </ion-content>
     </ion-slide>
-    <ion-slide *ngIf="appName !== 'Copay'">
+    <ion-slide class="key-creation">
       <ion-content>
         <div class="slide-info">
           <div class="img-container">
@@ -41,7 +41,7 @@
           <div class="info">
             <h3 class="title" translate>Be your own bank with a simple <a (click)="openLink('https://be.cash')">be.cash</a> card</h3>
             <div class="text" translate>
-              Keep full control of your crypto while still being able to spend them with card. Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
+              Same form-factor as a credit card, but with the same decentralized, non-custodial and trustless nature we all love from Bitcoin.
               <!-- TODO: AbcPay update new text later -->
               <div class="note" translate>
                 *Coming soon...
