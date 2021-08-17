@@ -1705,31 +1705,6 @@ export class ConfirmPage {
           walletId: walletId ? walletId : this.wallet.credentials.walletId,
           donationSupportCoins : this.donationSupportCoins
         });
-<<<<<<< HEAD
-=======
-        this.navCtrl.push(CoinbaseAccountPage, {
-          id: this.fromCoinbase.accountId
-        });
-      } else {
-        if (redir) {
-          setTimeout(() => {
-            this.iabCardProvider.show();
-            this.iabCardProvider.sendMessage(
-              {
-                message: 'paymentBroadcasted'
-              },
-              () => {
-                this.logger.log('card IAB -> payment broadcasting opening IAB');
-              }
-            );
-          }, 1000);
-        } else if (this.wallet) {
-          this.navCtrl.push(WalletDetailsPage, {
-            walletId: walletId ? walletId : this.wallet.credentials.walletId,
-            donationSupportCoins: this.donationSupportCoins
-          });
-        }
->>>>>>> master
       }
     });
   }

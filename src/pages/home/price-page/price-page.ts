@@ -16,11 +16,7 @@ import {
   AnalyticsProvider,
   ConfigProvider,
   Logger,
-<<<<<<< HEAD
-=======
-  SimplexProvider,
   WalletProvider
->>>>>>> master
 } from '../../../providers';
 import { DateRanges, RateProvider } from '../../../providers/rate/rate';
 import { WalletsPage } from '../../wallets/wallets';
@@ -52,11 +48,7 @@ export class PricePage {
     private formatCurrencyPipe: FormatCurrencyPipe,
     private configProvider: ConfigProvider,
     private logger: Logger,
-<<<<<<< HEAD
-=======
     private walletProvider: WalletProvider,
-    private simplexProvider: SimplexProvider,
->>>>>>> master
     private analyticsProvider: AnalyticsProvider
   ) {
     this.getCoinDonate();

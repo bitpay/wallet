@@ -119,10 +119,6 @@ export class WalletDetailsPage {
     this.isCordova = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-<<<<<<< HEAD
-=======
-    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
->>>>>>> master
     this.useLegacyQrCode = this.configProvider.get().legacyQrCode.show;
     this.isDarkModeEnabled = this.themeProvider.isDarkModeEnabled();
     this.showBuyCrypto =
