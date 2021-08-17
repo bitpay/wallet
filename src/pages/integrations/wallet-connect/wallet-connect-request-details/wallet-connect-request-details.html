@@ -97,7 +97,7 @@
             </ion-item>
           </div>
 
-          <div *ngIf="request.method === 'eth_signTypedData'">
+          <div *ngIf="request.method === 'eth_signTypedData' || request.method === 'eth_sign'">
             <ion-item *ngIf="i === 0 && param" copy-to-clipboard="{{ param }}">
               <ion-label>
                 <div class="summary-item">
@@ -117,9 +117,7 @@
                   <span translate>Message</span>
                 </div>
               </ion-label>
-              <div>
-                <ion-textarea disabled [value]="param"></ion-textarea>
-              </div>
+              <ion-textarea disabled [value]="param"></ion-textarea>
             </ion-item>
           </div>
 

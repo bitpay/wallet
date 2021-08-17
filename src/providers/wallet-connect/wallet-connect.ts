@@ -390,9 +390,8 @@ export class WalletConnectProvider {
           : 0;
         break;
       case 'eth_signTypedData':
-        // nothing
-        break;
       case 'personal_sign':
+      case 'eth_sign':
         // nothing
         break;
       default:

@@ -150,6 +150,23 @@ export class WalletConnectRequestDetailsPage {
             );
           }
           break;
+        case 'eth_sign':
+          addressRequested = request.params[0];
+          if (address.toLowerCase() === addressRequested.toLowerCase()) {
+            const result = this.walletConnectProvider.personalSign(
+              request.params[1],
+              this.wallet
+            );
+            this.walletConnectProvider.approveRequest(request.id, result);
+          } else {
+            this.errorsProvider.showDefaultError(
+              this.translate.instant(
+                'Address requested does not match active account'
+              ),
+              this.translate.instant('Error')
+            );
+          }
+          break;
         default:
           this.errorsProvider.showDefaultError(
             `Not supported method: ${request.method}`,
