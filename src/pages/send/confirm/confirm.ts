@@ -1617,7 +1617,7 @@ export class ConfirmPage {
             txp.txid
           );
           this.onGoingProcessProvider.clear();
-          return this.openFinishModal(false, { redir });
+          return this.openFinishModal(false, { redir }, null, false);
         } else {
           this.onGoingProcessProvider.clear();
           return this.openFinishModal(false, { redir });
@@ -1657,7 +1657,8 @@ export class ConfirmPage {
   protected async openFinishModal(
     onlyPublish?: boolean,
     redirectionParam?: { redir: string },
-    walletId?: string
+    walletId?: string,
+    navigateBack: boolean = true
   ) {
     const { redir } = redirectionParam || { redir: '' };
 
@@ -1693,7 +1694,10 @@ export class ConfirmPage {
       'RippleUri',
       'InvoiceUri'
     ]);
-    this.navigateBack(redir, walletId);
+
+    if (navigateBack) {
+      this.navigateBack(redir, walletId);
+    }
   }
 
   private navigateBack(redir?: string, walletId?: string) {

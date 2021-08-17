@@ -9,7 +9,6 @@ import { SessionLogPage } from './session-log/session-log';
 // providers
 import {
   AppProvider,
-  BitPayProvider,
   ExternalLinkProvider,
   Logger,
   PersistenceProvider,
@@ -35,7 +34,6 @@ export class AboutPage {
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService,
-    private bitpayProvider: BitPayProvider,
     private persistenceProvider: PersistenceProvider,
     private events: Events
   ) {}
@@ -103,11 +101,15 @@ export class AboutPage {
   public async wipeBitPayAccounts() {
     this.tapped++;
     if (this.tapped >= 10) {
-      await this.persistenceProvider.removeAllBitPayAccounts(
-        this.bitpayProvider.getEnvironment().network
-      );
-      alert('removed accounts');
       this.tapped = 0;
+      localStorage.removeItem('walletconnect');
+      alert('[DEV] - wc - cleared local storage');
+      const wcSession = await this.persistenceProvider.getWalletConnect();
+      this.logger.log(wcSession);
+      if (wcSession) {
+        await this.persistenceProvider.removeWalletConnect();
+        alert('[DEV] - wc - cleared session');
+      }
     }
   }
 }

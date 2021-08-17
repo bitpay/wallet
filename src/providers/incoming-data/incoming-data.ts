@@ -24,7 +24,11 @@ export interface RedirParams {
   coin?: string;
   fromHomeCard?: boolean;
   fromFooterMenu?: boolean;
+  fromWalletConnect?: boolean;
   force?: boolean;
+  walletId?: string;
+  wcRequest?: any;
+  fromSettings?: boolean;
 }
 
 @Injectable()
@@ -510,20 +514,40 @@ export class IncomingDataProvider {
     } else this.goSend(address, amount, message, coin);
   }
 
-  private handleWalletConnectUri(uri: string): void {
+  private handleWalletConnectUri(
+    uri: string,
+    redirParams: RedirParams = {}
+  ): void {
     // Disable Wallet Connect
     if (!this.appProvider.info._enabledExtensions.walletConnect) {
       this.logger.warn('Wallet Connect has been disabled for this build');
       return;
     }
 
+    const {
+      force,
+      walletId,
+      fromWalletConnect,
+      wcRequest: request,
+      fromSettings
+    } = redirParams;
+
     let stateParams = {
-      uri
+      uri,
+      force,
+      walletId,
+      fromWalletConnect,
+      activePage: this.activePage,
+      request,
+      isDeepLink: uri && !redirParams,
+      fromSettings
     };
     let nextView = {
       name: 'WalletConnectPage',
       params: stateParams
     };
+
+    this.logger.log(JSON.stringify(nextView));
 
     this.analyticsProvider.logEvent('wallet_connect_camera_scan_attempt', {});
     this.incomingDataRedir(nextView);
@@ -885,8 +909,9 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    if (redirParams && redirParams.activePage)
-      this.activePage = redirParams.activePage;
+    this.activePage =
+      redirParams && redirParams.activePage ? redirParams.activePage : null;
+
     if (redirParams && redirParams.activePage)
       this.fromFooterMenu = redirParams.fromFooterMenu;
 
@@ -938,7 +963,7 @@ export class IncomingDataProvider {
       if (data.includes('?uri')) {
         data = data.split('?uri=')[1];
       }
-      this.handleWalletConnectUri(data);
+      this.handleWalletConnectUri(data, redirParams);
       return true;
 
       // Bitcoin Cash URI using Bitcoin Core legacy address

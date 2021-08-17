@@ -101,6 +101,7 @@ export interface WalletSelectorParams {
     user: any[];
     availableAccounts: any[];
   };
+  fromWalletConnect?: boolean;
   token?: any;
   linkEthTokens?: boolean;
 }

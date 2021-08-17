@@ -32,6 +32,8 @@
 9 - Onboarding
 
 10 - New Features Slides
+
+11 - WalletConnect
 */
 
 .dark {
@@ -687,6 +689,12 @@
     .item-divider-ios {
       background-color: $bg-color-dark-theme-2;
       border-bottom: 1px solid $bg-color-dark-theme-2;
+    }
+    .bp-header {
+      &__title,
+      &__subtitle {
+        color: $text-color-dark-theme;
+      }
     }
   }
 
@@ -2009,6 +2017,69 @@
         }
         .text {
           color: #ffffff;
+        }
+      }
+    }
+  }
+
+  // 11 - WalletConnect
+  page-wallet-connect,
+  page-wallet-connect-request-details {
+    .wc-container {
+      .wc-label {
+        color: $text-color-dark-theme-2;
+        opacity: 1;
+      }
+      .wc-wrapper {
+        background-color: $bg-color-dark-theme;
+        .scan-icon {
+          border-left: 1px solid #9ba3ae;
+        }
+        &.item {
+          &.item-ios,
+          &.item-md {
+            .item-inner {
+              border-bottom: 0px;
+            }
+          }
+        }
+        .text-input {
+          color: $text-color-dark-theme;
+          opacity: 1;
+        }
+      }
+      .bp-list {
+        ion-note {
+          color: $text-color-dark-theme;
+        }
+        .summary-item {
+          color: $text-color-dark-theme;
+        }
+        .background-content {
+          background-color: $bg-color-dark-theme-3;
+          .linked-wallet {
+            color: $text-color-dark-theme;
+          }
+        }
+      }
+      .dapp-info {
+        ion-item {
+          background-color: $bg-color-dark-theme;
+          color: $text-color-dark-theme;
+        }
+      }
+      .url-container {
+        background-color: $bg-color-dark-theme-3;
+        .url-wrapper {
+          color: $text-color-dark-theme;
+        }
+      }
+      .wc-permission {
+        background-color: $bg-color-dark-theme;
+        ion-row {
+          .wc-permission-label {
+            color: $text-color-dark-theme;
+          }
         }
       }
     }
