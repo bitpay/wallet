@@ -465,6 +465,15 @@ export class HomePage {
     this.events.subscribe('Local/AccessDenied', () => {
       this.accessDenied = true;
     });
+
+    this.events.subscribe(
+      'WalletConnectAdvertisementUpdate',
+      (status: 'connected' | 'disconnected') => {
+        status === 'connected'
+          ? this.removeAdvertisement('walletConnect')
+          : this.addWalletConnect();
+      }
+    );
     this.events.subscribe(
       'CardAdvertisementUpdate',
       ({ status, cards, cardExperimentEnabled }) => {
@@ -667,11 +676,14 @@ export class HomePage {
     this.showAdvertisements = true;
   }
 
-  private addWalletConnect() {
+  private async addWalletConnect() {
+    const session = await this.persistenceProvider.getWalletConnect();
+
     const alreadyVisible = this.advertisements.find(
       a => a.name === 'walletConnect'
     );
-    !alreadyVisible &&
+    !session &&
+      !alreadyVisible &&
       this.advertisements.unshift({
         name: 'walletConnect',
         title: this.translate.instant('Connect to Defi'),

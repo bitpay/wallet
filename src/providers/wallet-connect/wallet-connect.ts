@@ -279,6 +279,7 @@ export class WalletConnectProvider {
       this.analyticsProvider.logEvent('wallet_connect_connection_success', {});
       this.connected = true;
       this.events.publish('Update/ConnectionData');
+      this.events.publish('WalletConnectAdvertisementUpdate', 'connected');
       setTimeout(() => {
         this.events.publish('Update/GoBackToBrowserNotification');
       }, 300);
@@ -416,6 +417,7 @@ export class WalletConnectProvider {
 
       this.walletConnector.off('disconnect');
       this.logger.debug('walletConnector.killSession');
+      this.events.publish('WalletConnectAdvertisementUpdate', 'disconnected');
       try {
         this.peerMeta = null;
         this.connected = false;
