@@ -824,7 +824,7 @@ export class WalletProvider {
           // send update
           this.events.publish('Local/WalletHistoryUpdate', {
             walletId: wallet.id,
-            complete: false
+            finished: false
           });
 
           const getNewTxs = (
@@ -1420,7 +1420,7 @@ export class WalletProvider {
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
-        this.events.publish('Local/TxAction', {
+        this.events.publish('Local/WalletFocus', {
           walletId: wallet.id
         });
         return resolve();
@@ -1630,7 +1630,7 @@ export class WalletProvider {
       this.rejectTx(wallet, txp)
         .then(txpr => {
           this.invalidateCache(wallet);
-          this.events.publish('Local/TxAction', {
+          this.events.publish('Local/WalletFocus', {
             walletId: wallet.id
           });
           return resolve(txpr);
@@ -1646,7 +1646,7 @@ export class WalletProvider {
       this.publishTx(wallet, txp)
         .then(() => {
           this.invalidateCache(wallet);
-          this.events.publish('Local/TxAction', {
+          this.events.publish('Local/WalletFocus', {
             walletId: wallet.id
           });
           return resolve();
@@ -1692,9 +1692,10 @@ export class WalletProvider {
             this.onGoingProcessProvider.set('broadcastingTx');
             this.broadcastTx(wallet, signedTxp)
               .then(broadcastedTxp => {
-                this.events.publish('Local/TxAction', {
+                this.events.publish('Local/WalletFocus', {
                   walletId: wallet.id,
-                  until: { totalAmount: expected }
+                  until: { totalAmount: expected },
+                  alsoUpdateHistory: true
                 });
                 return resolve(broadcastedTxp);
               })
@@ -1702,8 +1703,9 @@ export class WalletProvider {
                 return reject(this.bwcErrorProvider.msg(err));
               });
           } else {
-            this.events.publish('Local/TxAction', {
-              walletId: wallet.id
+            this.events.publish('Local/WalletFocus', {
+              walletId: wallet.id,
+              alsoUpdateHistory: true
             });
             return resolve(signedTxp);
           }
@@ -1716,9 +1718,10 @@ export class WalletProvider {
                   'The payment was created but could not be completed. Please try again from home screen'
                 );
           this.logger.error('Sign error: ' + msg);
-          this.events.publish('Local/TxAction', {
+          this.events.publish('Local/WalletFocus', {
             walletId: wallet.id,
-            until: { totalAmount: expected }
+            until: { totalAmount: expected },
+            alsoUpdateHistory: true
           });
           return reject(msg);
         });

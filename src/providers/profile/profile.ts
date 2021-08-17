@@ -693,7 +693,12 @@ export class ProfileProvider {
       id = wallet.id + '-' + n.data.tokenAddress.toLowerCase();
       this.logger.debug(`event for token wallet: ${id}`);
     }
-    this.events.publish('bwsEvent', id, n.type, n);
+    let eventData = {
+      walletId: id,
+      notification_type: n.type,
+      notification: n
+    };
+    this.events.publish('bwsEvent', eventData);
   }
 
   public updateCredentials(credentials): void {
@@ -1946,7 +1951,6 @@ export class ProfileProvider {
     if (opts && !_.isObject(opts)) throw new Error('bad argument');
 
     opts = opts || {};
-
     let ret = _.values(this.wallet);
 
     if (opts.keyId === 'read-only') {
