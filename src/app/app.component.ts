@@ -701,24 +701,23 @@ export class CopayApp {
 
               // inApp notification
               if (!isDeepLink) {
-                const pendingRequests = await this.persistenceProvider.getWalletConnectPendingRequests();
-                const hasPending =
-                  pendingRequests && pendingRequests.length > 1;
 
-                if (this.walletConnectMainActive && !hasPending) {
+                if (this.walletConnectMainActive) {
                   return;
                 }
+
+                const notifyOnly = this.walletConnectMainActive || this.walletConnectDetailsActive;
 
                 const notificationConfig = {
                   title: 'WalletConnect',
                   body: `New Pending Request`,
-                  action: this.walletConnectDetailsActive
+                  action: notifyOnly
                     ? 'notifyOnly'
                     : 'goToWalletconnect',
-                  closeButtonText: this.walletConnectDetailsActive
+                  closeButtonText: notifyOnly
                     ? 'Dismiss'
                     : 'View',
-                  autoDismiss: this.walletConnectDetailsActive,
+                  autoDismiss: notifyOnly,
                   request
                 };
                 this.pushNotificationsProvider.showInappNotification(
