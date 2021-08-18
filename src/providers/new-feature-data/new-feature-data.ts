@@ -67,7 +67,7 @@ export class NewFeatureData {
           {
             title: this.translate.instant('Swap Tokens'),
             details: this.translate.instant(
-              'Easily swap hundreds of ERC-20 tokens using 1Inch, a decentralized exchange (DEX) aggregator.'
+              'Easily swap hundreds of ERC-20 tokens through Decentralized Exchanges (DEXs).'
             ),
             image: {
               path: 'assets/img/new-feature/12.8/12.8-1-swap-crypto.svg'
