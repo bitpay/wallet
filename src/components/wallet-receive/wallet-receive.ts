@@ -74,17 +74,18 @@ export class WalletReceiveComponent extends ActionSheetParent {
     });
   }
 
-  private bwsEventHandler: any = (walletId, type, n) => {
+  private bwsEventHandler: any = data => {
     if (
-      this.wallet.credentials.walletId == walletId &&
-      type == 'NewIncomingTx' &&
-      n.data
+      data &&
+      this.wallet.credentials.walletId == data.walletId &&
+      data.notification_type == 'NewIncomingTx' &&
+      data.notification
     ) {
       let addr =
         this.address.indexOf(':') > -1
           ? this.address.split(':')[1]
           : this.address;
-      if (n.data.address == addr) this.setAddress(true);
+      if (data.notification.address == addr) this.setAddress(true);
     }
   };
 
