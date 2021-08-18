@@ -8,6 +8,7 @@ import { ConfirmPage } from '../../../../pages/send/confirm/confirm';
 // Providers
 import {
   ErrorsProvider,
+  ExternalLinkProvider,
   Logger,
   PopupProvider,
   ProfileProvider,
@@ -34,6 +35,7 @@ export class WalletConnectRequestDetailsPage {
   public wallet: any;
   public dappImgSrc: string;
   private defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
+  public isSupportedMethod: boolean = true;
 
   constructor(
     private logger: Logger,
@@ -45,13 +47,17 @@ export class WalletConnectRequestDetailsPage {
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private events: Events
+    private events: Events,
+    private externalLinkProvider: ExternalLinkProvider
   ) {}
 
   ionViewDidLoad() {
     this.setConnectionData();
     this.request = this.navParams.data.request;
     this.params = this.navParams.data.params;
+    this.isSupportedMethod = this.walletConnectProvider.isSupportedMethod(
+      this.request.method
+    );
   }
 
   // not ideal - workaround for navCtrl issues
@@ -150,6 +156,23 @@ export class WalletConnectRequestDetailsPage {
             );
           }
           break;
+        case 'eth_sign':
+          addressRequested = request.params[0];
+          if (address.toLowerCase() === addressRequested.toLowerCase()) {
+            const result = this.walletConnectProvider.personalSign(
+              request.params[1],
+              this.wallet
+            );
+            this.walletConnectProvider.approveRequest(request.id, result);
+          } else {
+            this.errorsProvider.showDefaultError(
+              this.translate.instant(
+                'Address requested does not match active account'
+              ),
+              this.translate.instant('Error')
+            );
+          }
+          break;
         default:
           this.errorsProvider.showDefaultError(
             `Not supported method: ${request.method}`,
@@ -192,5 +215,11 @@ export class WalletConnectRequestDetailsPage {
           ? this.peerMeta.icons[1]
           : this.peerMeta.icons[0]
         : this.defaultImgSrc;
+  }
+
+  public openExternalLink(): void {
+    this.externalLinkProvider.open(
+      'https://docs.walletconnect.org/json-rpc-api-methods/ethereum'
+    );
   }
 }
