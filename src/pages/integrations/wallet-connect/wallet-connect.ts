@@ -85,8 +85,9 @@ export class WalletConnectPage {
   public defaultImgSrc: string = 'assets/img/wallet-connect/icon-dapp.svg';
   private isEventLogged: boolean = false;
   private walletId: string;
-  public exiting: boolean;
+  public exitingAnimationPatch: boolean;
   public isAndroid: boolean;
+  private detailsActive: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -123,6 +124,10 @@ export class WalletConnectPage {
       this.showNotification
     );
     this.events.subscribe('Update/WalletConnectDisconnected', this.goBack);
+    this.events.subscribe(
+      'Update/ViewingWalletConnectDetails',
+      (status: boolean) => (this.detailsActive = status)
+    );
 
     this.wallets = this.profileProvider.getWallets({
       coin: 'eth',
@@ -137,12 +142,13 @@ export class WalletConnectPage {
 
   ionViewWillEnter() {
     // not ideal - workaround for navCtrl issues
+    this.exitingAnimationPatch = false;
     this.events.publish('Update/ViewingWalletConnectMain', true);
   }
 
   ionViewWillLeave() {
+    this.exitingAnimationPatch = !this.detailsActive;
     this.events.publish('Update/ViewingWalletConnectMain', false);
-    this.setExiting();
     this.onGoingProcessProvider.clear();
   }
   ngOnDestroy() {
@@ -213,10 +219,10 @@ export class WalletConnectPage {
 
   private setRequests: any = (requests, incoming?) => {
     this.requests = requests;
-    this.changeRef.detectChanges();
-    if (incoming && this.navCtrl.getActive().name === 'WalletConnectPage') {
+    if (incoming && !this.detailsActive) {
       this.goToRequestDetailsPage(incoming, incoming.params);
     }
+    this.changeRef.detectChanges();
   };
 
   public async initWallet(): Promise<void> {
@@ -385,19 +391,5 @@ export class WalletConnectPage {
 
   public trackByFn(index: number): number {
     return index;
-  }
-
-  /*
-   * IOS workaround - ion-toolbar conflicts with the router animation and lags.
-   * This animates the toolbar out slightly before the router animation finishes to compensate.
-   * */
-  private setExiting() {
-    if (
-      !['WalletConnectRequestDetailsPage'].includes(
-        this.navCtrl.getActive(true).name
-      )
-    ) {
-      this.exiting = true;
-    }
   }
 }
