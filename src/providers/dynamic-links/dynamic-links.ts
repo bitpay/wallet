@@ -8,10 +8,11 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
+const LOCK_TIMEOUT = 500;
+
 @Injectable()
 export class DynamicLinksProvider {
-  public initialCall: boolean;
-
+  private locked: boolean;
   constructor(
     private logger: Logger,
     private events: Events,
@@ -45,14 +46,15 @@ export class DynamicLinksProvider {
 
       const subscription = this.platformProvider.platformReady$.subscribe(
         (ready: boolean) => {
-          if (ready) {
+          if (ready && !this.locked) {
+            this.locked = true;
             setTimeout(() => {
               this.incomingDataProvider.redir(decodeURIComponent(dynLink), {
                 force: true
               });
               this.onGoingProcessProvider.clear();
-              this.initialCall = true;
             }, timeout);
+            setTimeout(() => (this.locked = false), LOCK_TIMEOUT);
             subscription && subscription.unsubscribe();
           }
         }

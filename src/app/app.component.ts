@@ -310,9 +310,7 @@ export class CopayApp {
         this.pushNotificationsProvider.clearAllNotifications();
 
         // Firebase Dynamic link
-        if (this.dynamicLinksProvider.initialCall) {
-          this.dynamicLinksProvider.init();
-        }
+        this.dynamicLinksProvider.init();
       });
 
       // Check PIN or Fingerprint
@@ -321,7 +319,6 @@ export class CopayApp {
 
       // Clear all notifications
       this.pushNotificationsProvider.clearAllNotifications();
-
       // Firebase Dynamic link
       this.dynamicLinksProvider.init();
     }
