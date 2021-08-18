@@ -172,7 +172,7 @@ export class BitPayCardTopUpPage {
           hasFunds: true
         };
 
-        if (this.currency.toLowerCase()) {
+        if (Coin[this.currency]) {
           const { amountSat } = this.txFormatProvider.parseAmount(
             this.currency.toLowerCase(),
             this.amount,
